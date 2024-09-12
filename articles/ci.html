@@ -71,13 +71,16 @@
 <li><a href="#fetch-source-on-macos-arm64">4 Fetch Source on macOS Arm64</a><ul></ul></li>
 <li><a href="#utm-emulator-for-macos-arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-ubuntu-x64">7 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-macos-arm64">8 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
-<li><a href="#appendix-nuttx-ci-for-macos">9 Appendix: NuttX CI for macOS</a><ul></ul></li>
-<li><a href="#appendix-documentation-build-for-nuttx">10 Appendix: Documentation Build for NuttX</a><ul></ul></li>
-<li><a href="#appendix-ubuntu-x64-runner-in-action">11 Appendix: Ubuntu x64 Runner In Action</a><ul>
-<li><a href="#intel-pc-with-ubuntu-x64">11.1 Intel PC with Ubuntu x64</a><ul></ul></li>
-<li><a href="#macos-arm64-with-utm-emulator">11.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Sep 2024</em></p>
+<li><a href="#appendix-phase-1-of-ci-upgrade">7 Appendix: Phase 1 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-phase-2-of-ci-upgrade">8 Appendix: Phase 2 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-phase-3-of-ci-upgrade">9 Appendix: Phase 3 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-ubuntu-x64">10 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-macos-arm64">11 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
+<li><a href="#appendix-nuttx-ci-for-macos">12 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-documentation-build-for-nuttx">13 Appendix: Documentation Build for NuttX</a><ul></ul></li>
+<li><a href="#appendix-ubuntu-x64-runner-in-action">14 Appendix: Ubuntu x64 Runner In Action</a><ul>
+<li><a href="#intel-pc-with-ubuntu-x64">14.1 Intel PC with Ubuntu x64</a><ul></ul></li>
+<li><a href="#macos-arm64-with-utm-emulator">14.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
@@ -416,7 +419,13 @@ Current runner version: &#39;2.319.1&#39;
 <p>Let’s discuss!</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
-<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>7 Appendix: Fixes for Ubuntu x64</h1>
+<h1 id="appendix-phase-1-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-1-of-ci-upgrade">§</a>7 Appendix: Phase 1 of CI Upgrade</h1>
+<p>TODO</p>
+<h1 id="appendix-phase-2-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-2-of-ci-upgrade">§</a>8 Appendix: Phase 2 of CI Upgrade</h1>
+<p>TODO</p>
+<h1 id="appendix-phase-3-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-3-of-ci-upgrade">§</a>9 Appendix: Phase 3 of CI Upgrade</h1>
+<p>TODO</p>
+<h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>10 Appendix: Fixes for Ubuntu x64</h1>
 <p>To run the Self-Hosted Runners on Ubuntu x64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
 ## TODO: Apply this fix: https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
@@ -446,13 +455,13 @@ Error: statfs /var/run/docker.sock: permission denied
 <div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
 </code></pre></div>
 <p>That’s why we apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>.</p>
-<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>8 Appendix: Fixes for macOS Arm64</h1>
+<h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>11 Appendix: Fixes for macOS Arm64</h1>
 <p>To run the Self-Hosted Runners on macOS Arm64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
 sudo chgrp staff /Users/runner
 ls -ld /Users/runner
-</code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>9 Appendix: NuttX CI for macOS</h1>
+</code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>12 Appendix: NuttX CI for macOS</h1>
 <p>We have challenges running NuttX CI on macOS Arm64…</p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
 <div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
@@ -479,7 +488,7 @@ xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected e
 /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
 </code></pre></div>
 <p><strong>TODO:</strong> Do we change the toolchain from x64 to Arm64?</p>
-<h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>10 Appendix: Documentation Build for NuttX</h1>
+<h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>13 Appendix: Documentation Build for NuttX</h1>
 <p><em>Our Self-Hosted Runners: Do they work for Documentation Build?</em></p>
 <ul>
 <li>
@@ -529,7 +538,7 @@ Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#3
 <p><strong>TODO:</strong> Check the rmdir directory</p>
 </li>
 </ul>
-<h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>11 Appendix: Ubuntu x64 Runner In Action</h1>
+<h1 id="appendix-ubuntu-x64-runner-in-action"><a class="doc-anchor" href="#appendix-ubuntu-x64-runner-in-action">§</a>14 Appendix: Ubuntu x64 Runner In Action</h1>
 <p>Let’s watch the Ubuntu x64 Runner in action…</p>
 <ul>
 <li>
@@ -539,13 +548,13 @@ Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#3
 <p>On macOS Arm64 with UTM Emulator</p>
 </li>
 </ul>
-<h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>11.1 Intel PC with Ubuntu x64</h2>
+<h2 id="intel-pc-with-ubuntu-x64"><a class="doc-anchor" href="#intel-pc-with-ubuntu-x64">§</a>14.1 Intel PC with Ubuntu x64</h2>
 <p>Our 10-year-old MacBook Pro (Intel i7) hits 100% when running the Linux Build for NuttX CI. But it works!</p>
 <ul>
 <li><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349060343"><strong>Build for arm-02</strong></a></li>
 </ul>
 <p><img src="https://github.com/user-attachments/assets/2e2861bc-6af0-48f4-b3a1-d0083cd23155" alt="linux-build" /></p>
-<h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>11.2 macOS Arm64 with UTM Emulator</h2>
+<h2 id="macos-arm64-with-utm-emulator"><a class="doc-anchor" href="#macos-arm64-with-utm-emulator">§</a>14.2 macOS Arm64 with UTM Emulator</h2>
 <p>On a super-duper Mac Mini (M2 Pro, 32 GB RAM): We can emulate an Intel i7 PC with <strong>32 CPUs and 4 GB RAM</strong> (because we don’t need much RAM)</p>
 <p><img src="https://github.com/user-attachments/assets/5ff0d94e-4a04-4cf4-8f0a-8e0ee9d1cd59" alt="Screenshot 2024-08-29 at 10 08 07 PM" /></p>
 <p>Remember to <strong>Force Multicore</strong> and bump up the <strong>JIT Cache</strong>…</p>
