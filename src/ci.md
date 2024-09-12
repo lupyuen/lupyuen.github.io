@@ -436,7 +436,7 @@ Thus we'll cut down the Concurrent Jobs from 24 down to 15. That's 12 Linux Jobs
 
 (4) This will extend the Overall Build Duration from [__2 hours__](https://github.com/apache/nuttx/actions/runs/10817443237) to [__2.25 hours__](https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630)
 
-(5) We'll also limit macOS Jobs to 2, Windows Jobs to 1. Here's the [__Draft PR__](https://github.com/apache/nuttx/pull/13412).
+(5) We also limit macOS Jobs to 2, Windows Jobs to 1. Here's the [__Draft PR__](https://github.com/apache/nuttx/pull/13412).
 
 ```yaml
   macOS:
