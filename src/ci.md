@@ -393,13 +393,115 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+Previously...
+
+```yaml
+  Linux:
+    needs: Fetch-Source
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+
+    strategy:
+      matrix:
+        boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
+```
+
+Now...
+
+```yaml
+  Linux:
+    needs: Fetch-Source
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+
+    strategy:
+      max-parallel: 12
+      matrix:
+        boards: [
+          arm-01, other, risc-v-01, sim-01, xtensa-01,
+          arm-02, risc-v-02, sim-02, xtensa-02,
+          arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13
+        ]
+```
+
+Hi All: We're making some changes to NuttX CI (Continuous Integration) and GitHub Actions, to comply with the ASF Policy. Unfortunately, these changes will extend the Build Duration for a NuttX Pull Request from 2 hours to ??? hours.
+
+Lemme explain: Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), [executing them in parallel](https://lupyuen.github.io/articles/ci)
+
+According to the ASF Policy: We should run at most 15 Concurrent Jobs: ???url
+
+Thus we'll cut down the Concurrent Jobs from 24 down to 15. That's 12 Linux Jobs, 2 macOS, 1 Windows. (Each job takes 30 mins to 2 hours)
+
+For Phase 1: We'll do this ???url
+
+(1) Right now our "Linux > Strategy" is a flat list of 20 Linux Jobs, all executed in parallel...
+???
+
+(2) We'll change "Linux > Strategy" to prioritise by Target Architecture, and limit to 12 concurrent jobs...
+???
+
+(3) So NuttX CI will initially execute 12 Build Jobs across Arm32, Arm64, RISC-V, Simulator and Xtensa. As they complete, NuttX CI will execute the remaining 8 Build Jobs (for Arm32).
+
+(4) This will extend the Overall Build Duration from 2 hours to ??? hours (link above)
+
+[???how long](https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630)
+
+[???Right now 2 hours](https://github.com/apache/nuttx/actions/runs/10817443237)
+
+(5) We'll limit macOS Jobs to 2, Windows Jobs to 1. Here's the Draft PR: ???PR
+
+Also...
+
+```yaml
+  macOS:
+    permissions:
+      contents: none
+    runs-on: macos-13
+    needs: Fetch-Source
+    strategy:
+      max-parallel: 2
+      matrix:
+        boards: [macos, sim-01, sim-02]
+```
+
+And...
+
+```yaml
+  msys2:
+    needs: Fetch-Source
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        boards: [msys2]
+```
+
+Read on for Phase 2...
+
 # Appendix: Phase 2 of CI Upgrade
 
 TODO
 
+For Phase 2: ???url
+
+We should "rebalance" the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01. Hopefully this will allow NuttX CI to Fail Faster (for breaking changes), and prevent unnecessary builds (also reduce waiting time).
+
+???we should probably balance arm-01, risc-v-01, sim-01, xtensa-01 so they run in about 30 mins consistently
+
+Read on for Phase 3...
+
 # Appendix: Phase 3 of CI Upgrade
 
 TODO
+
+For Phase 3: ???url
+
+We should migrate most of the NuttX Targets to a Daily Job for Build and Test. Check out the discussion below.
+
+as explained in this thread
 
 # Appendix: Fixes for Ubuntu x64
 
