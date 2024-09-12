@@ -419,11 +419,12 @@ Current runner version: &#39;2.319.1&#39;
 <p>Let’s discuss!</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-ci3.png" alt="Phase 1 of CI Upgrade: Limit to 15 GitHub Runners" /></p>
 <h1 id="appendix-phase-1-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-1-of-ci-upgrade">§</a>7 Appendix: Phase 1 of CI Upgrade</h1>
 <p>We’re modifying NuttX CI (Continuous Integration) and GitHub Actions, to comply with ASF Policy. Unfortunately, these changes will extend the Build Duration for a NuttX Pull Request by roughly 15 mins, from 2 hours to 2.25 hours.</p>
 <p>Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), <a href="https://lupyuen.github.io/articles/ci"><strong>executing them in parallel</strong></a>.</p>
 <p>According to <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy</strong></a>: We should run at most 15 Concurrent Jobs.</p>
-<p>Thus we’ll cut down the Concurrent Jobs from 24 down to 15. That’s 12 Linux Jobs, 2 macOS, 1 Windows. (Each job takes 30 mins to 2 hours)</p>
+<p>Thus we’ll cut down the Concurrent Jobs from 24 down to 15 (pic above). That’s 12 Linux Jobs, 2 macOS, 1 Windows. (Each job takes 30 mins to 2 hours)</p>
 <p>(1) Right now our “Linux &gt; Strategy” is a flat list of 20 Linux Jobs, all executed in parallel…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  Linux:
     needs: Fetch-Source
