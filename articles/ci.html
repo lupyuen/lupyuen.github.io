@@ -453,7 +453,7 @@ Current runner version: &#39;2.319.1&#39;
 </code></pre></div>
 <p>(3) So NuttX CI will initially execute 12 Build Jobs across Arm32, Arm64, RISC-V, Simulator and Xtensa. As they complete, NuttX CI will execute the remaining 8 Build Jobs (for Arm32).</p>
 <p>(4) This will extend the Overall Build Duration from <a href="https://github.com/apache/nuttx/actions/runs/10817443237"><strong>2 hours</strong></a> to <a href="https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630"><strong>2.25 hours</strong></a></p>
-<p>(5) We’ll limit macOS Jobs to 2, Windows Jobs to 1. Here’s the <a href="https://github.com/apache/nuttx/pull/13412"><strong>Draft PR</strong></a>.</p>
+<p>(5) We’ll also limit macOS Jobs to 2, Windows Jobs to 1. Here’s the <a href="https://github.com/apache/nuttx/pull/13412"><strong>Draft PR</strong></a>.</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  macOS:
     permissions:
       contents: none
@@ -478,6 +478,7 @@ Current runner version: &#39;2.319.1&#39;
 <p>For Phase 2: We should “rebalance” the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01.</p>
 <p>Hopefully this will allow NuttX CI to Fail Faster (for breaking changes), and prevent unnecessary builds (also reduce waiting time).</p>
 <p>We should probably balance arm-01, risc-v-01, sim-01, xtensa-01 so they run in about 30 mins consistently.</p>
+<p>Read on for Phase 3…</p>
 <h1 id="appendix-phase-3-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-3-of-ci-upgrade">§</a>9 Appendix: Phase 3 of CI Upgrade</h1>
 <p>For Phase 3: We should migrate most of the NuttX Targets to a Daily Job for Build and Test.</p>
 <p>Check out the <a href="https://lists.apache.org/thread/3k6y28y8z6gklnws1pdg48gb6j28zmxp"><strong>discussion here</strong></a>.</p>
