@@ -421,10 +421,80 @@ Current runner version: &#39;2.319.1&#39;
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md"><strong>lupyuen.github.io/src/ci.md</strong></a></p>
 <h1 id="appendix-phase-1-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-1-of-ci-upgrade">§</a>7 Appendix: Phase 1 of CI Upgrade</h1>
 <p>TODO</p>
+<p>Previously…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  Linux:
+    needs: Fetch-Source
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+
+    strategy:
+      matrix:
+        boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
+</code></pre></div>
+<p>Now…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  Linux:
+    needs: Fetch-Source
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+
+    strategy:
+      max-parallel: 12
+      matrix:
+        boards: [
+          arm-01, other, risc-v-01, sim-01, xtensa-01,
+          arm-02, risc-v-02, sim-02, xtensa-02,
+          arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13
+        ]
+</code></pre></div>
+<p>Hi All: We’re making some changes to NuttX CI (Continuous Integration) and GitHub Actions, to comply with the ASF Policy. Unfortunately, these changes will extend the Build Duration for a NuttX Pull Request from 2 hours to ??? hours.</p>
+<p>Lemme explain: Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), <a href="https://lupyuen.github.io/articles/ci">executing them in parallel</a></p>
+<p>According to the ASF Policy: We should run at most 15 Concurrent Jobs: ???url</p>
+<p>Thus we’ll cut down the Concurrent Jobs from 24 down to 15. That’s 12 Linux Jobs, 2 macOS, 1 Windows. (Each job takes 30 mins to 2 hours)</p>
+<p>For Phase 1: We’ll do this ???url</p>
+<p>(1) Right now our “Linux &gt; Strategy” is a flat list of 20 Linux Jobs, all executed in parallel…
+???</p>
+<p>(2) We’ll change “Linux &gt; Strategy” to prioritise by Target Architecture, and limit to 12 concurrent jobs…
+???</p>
+<p>(3) So NuttX CI will initially execute 12 Build Jobs across Arm32, Arm64, RISC-V, Simulator and Xtensa. As they complete, NuttX CI will execute the remaining 8 Build Jobs (for Arm32).</p>
+<p>(4) This will extend the Overall Build Duration from 2 hours to ??? hours (link above)</p>
+<p><a href="https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630">???how long</a></p>
+<p><a href="https://github.com/apache/nuttx/actions/runs/10817443237">???Right now 2 hours</a></p>
+<p>(5) We’ll limit macOS Jobs to 2, Windows Jobs to 1. Here’s the Draft PR: ???PR</p>
+<p>Also…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  macOS:
+    permissions:
+      contents: none
+    runs-on: macos-13
+    needs: Fetch-Source
+    strategy:
+      max-parallel: 2
+      matrix:
+        boards: [macos, sim-01, sim-02]
+</code></pre></div>
+<p>And…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  msys2:
+    needs: Fetch-Source
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        boards: [msys2]
+</code></pre></div>
+<p>Read on for Phase 2…</p>
 <h1 id="appendix-phase-2-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-2-of-ci-upgrade">§</a>8 Appendix: Phase 2 of CI Upgrade</h1>
 <p>TODO</p>
+<p>For Phase 2: ???url</p>
+<p>We should “rebalance” the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01. Hopefully this will allow NuttX CI to Fail Faster (for breaking changes), and prevent unnecessary builds (also reduce waiting time).</p>
+<p>???we should probably balance arm-01, risc-v-01, sim-01, xtensa-01 so they run in about 30 mins consistently</p>
+<p>Read on for Phase 3…</p>
 <h1 id="appendix-phase-3-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-3-of-ci-upgrade">§</a>9 Appendix: Phase 3 of CI Upgrade</h1>
 <p>TODO</p>
+<p>For Phase 3: ???url</p>
+<p>We should migrate most of the NuttX Targets to a Daily Job for Build and Test. Check out the discussion below.</p>
+<p>as explained in this thread</p>
 <h1 id="appendix-fixes-for-ubuntu-x64"><a class="doc-anchor" href="#appendix-fixes-for-ubuntu-x64">§</a>10 Appendix: Fixes for Ubuntu x64</h1>
 <p>To run the Self-Hosted Runners on Ubuntu x64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine: https://docs.docker.com/engine/install/ubuntu/
