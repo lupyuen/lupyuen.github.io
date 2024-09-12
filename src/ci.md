@@ -477,6 +477,8 @@ For Phase 3: We should migrate most of the NuttX Targets to a Daily Job for Buil
 
 Check out the [__discussion here__](https://lists.apache.org/thread/3k6y28y8z6gklnws1pdg48gb6j28zmxp).
 
+And this [__discussion too__](https://lists.apache.org/thread/om8ss15rv8r69qg548b71kw2zsttw255).
+
 # Appendix: Fixes for Ubuntu x64
 
 To run the Self-Hosted Runners on Ubuntu x64, we need these fixes...
