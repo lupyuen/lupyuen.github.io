@@ -522,13 +522,13 @@ __Breathe. Take a break.__
 
 We're about to make __NuttX History__... Our changes will be recorded for posterity!
 
-Take a long walk and ponder...
+Take a [__long walk__](https://strava.app.link/CQoKM7ZOQMb) and ponder...
 
 -   __Who might benefit__ from our Pull Request
 
 -   How we might __best help them__
 
-(I walked 12 km for 3 hours while meditating on my Pull Request)
+(I walked [__29 km for 5.5 hours__](https://strava.app.link/CQoKM7ZOQMb) while meditating on my Pull Request)
 
 If we get an inspiration or epiphany, touch up the Pull Request.
 
