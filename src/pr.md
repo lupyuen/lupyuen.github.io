@@ -427,6 +427,8 @@ Now we tidy up our commits...
 
 # Squash the Commits
 
+[(__Note:__ Some kinds of Pull Requests won't need to Squash Commits)](https://github.com/apache/nuttx/issues/13552#issuecomment-2363653657)
+
 _What's this "squashing"?_
 
 "Squashing" means we're __combining Multiple Commits__ into One Single Commit.
