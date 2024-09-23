@@ -65,12 +65,12 @@ How did this happen? We find out...
 
 _Our Bot gets really chatty and naggy. Why?_
 
-TODO
+That's because we programmed it with a __Long List of Requirements__ for PR Review, in Markdown Format: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66)
 
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66)
+<div style="margin-left: 5%; width: 90%; font-size:90%">
 
 ```rust
-// Requirements for PR Review
+/// Requirements for PR Review
 const REQUIREMENTS: &str =
 r#####"
 # Here are the requirements for a NuttX PR
@@ -105,6 +105,12 @@ Testing logs before change: _your testing logs here_
 Testing logs after change: _your testing logs here_
 "#####;
 ```
+
+[(Thanks to __Tomek Cedro__)](TODO)
+
+</div>
+
+TODO: Why?
 
 # Gemini API
 
