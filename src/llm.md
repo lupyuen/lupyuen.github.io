@@ -59,7 +59,7 @@ This PR demonstrates a good understanding of NuttX requirements. Adding specific
 
 Hopefully this will be helpful to __New Contributors__ to NuttX. And it might help the __PR Reviewers__ too.
 
-TODO
+How did this happen? We find out...
 
 # Requirements
 
