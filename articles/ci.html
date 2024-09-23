@@ -454,7 +454,7 @@ Current runner version: &#39;2.319.1&#39;
 </code></pre></div>
 <p>(3) So NuttX CI will initially execute 12 Build Jobs across Arm32, Arm64, RISC-V, Simulator and Xtensa. As they complete, NuttX CI will execute the remaining 8 Build Jobs (for Arm32).</p>
 <p>(4) This will extend the Overall Build Duration from <a href="https://github.com/apache/nuttx/actions/runs/10817443237"><strong>2 hours</strong></a> to <a href="https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630"><strong>2.25 hours</strong></a></p>
-<p>(5) We also limit macOS Jobs to 2, Windows Jobs to 1. Here’s the <a href="https://github.com/apache/nuttx/pull/13412"><strong>Merged PR</strong></a>.</p>
+<p>(5) We also limit macOS Jobs to 2, Windows Jobs to 1. Here’s the <a href="https://github.com/apache/nuttx/pull/13412"><strong>Merged PR for NuttX Kernel</strong></a>. And the same for <a href="https://github.com/apache/nuttx-apps/pull/2591"><strong>NuttX Apps</strong></a>.</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  macOS:
     permissions:
       contents: none
