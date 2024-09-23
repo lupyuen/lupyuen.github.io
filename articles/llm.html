@@ -65,10 +65,60 @@
 
     <h1 class="title">LLM Bot that reviews Pull Requests for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#run-log">1 Run Log</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
+<li><a href="#example">1 Example</a><ul></ul></li>
+<li><a href="#requirements">2 Requirements</a><ul></ul></li>
+<li><a href="#gemini-api">3 Gemini API</a><ul></ul></li>
+<li><a href="#github-api">4 GitHub API</a><ul></ul></li>
+<li><a href="#todo">5 TODO</a><ul></ul></li>
+<li><a href="#run-log">6 Run Log</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/llm-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
+<h1 id="example"><a class="doc-anchor" href="#example">§</a>1 Example</h1>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/pull/13546">(Thanks to my colleague <strong>Tiago Medicci Serrano</strong>)</a></p>
+<h1 id="requirements"><a class="doc-anchor" href="#requirements">§</a>2 Requirements</h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Requirements for PR Review
+</span><span class="kw">const </span>REQUIREMENTS: <span class="kw-2">&amp;</span>str =
+<span class="string">r#####"
+
+# Summary
+
+* Why change is necessary (fix, update, new feature)?
+* What functional part of the code is being changed?
+* How does the change exactly work (what will change and how)?
+* Related [NuttX Issue](https://github.com/apache/nuttx/issues) reference if applicable.
+* Related NuttX Apps [Issue](https://github.com/apache/nuttx-apps/issues) / [Pull Request](https://github.com/apache/nuttx-apps/pulls) reference if applicable.
+
+# Impact
+
+* Is new feature added? Is existing feature changed?
+* Impact on user (will user need to adapt to change)? NO / YES (please describe if yes).
+* Impact on build (will build process change)? NO / YES (please descibe if yes).
+* Impact on hardware (will arch(s) / board(s) / driver(s) change)? NO / YES (please describe if yes).
+* Impact on documentation (is update required / provided)? NO / YES (please describe if yes).
+* Impact on security (any sort of implications)? NO / YES (please describe if yes).
+* Impact on compatibility (backward/forward/interoperability)? NO / YES (please describe if yes).
+* Anything else to consider?
+
+# Testing
+
+I confirm that changes are verified on local setup and works as intended:
+* Build Host(s): OS (Linux,BSD,macOS,Windows,..), CPU(Intel,AMD,ARM), compiler(GCC,CLANG,version), etc.
+* Target(s): arch(sim,RISC-V,ARM,..), board:config, etc.
+
+Testing logs before change: _your testing logs here_
+
+Testing logs after change: _your testing logs here_
+"#####</span>;</code></pre></div>
+<h1 id="gemini-api"><a class="doc-anchor" href="#gemini-api">§</a>3 Gemini API</h1>
+<p>TODO</p>
+<h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>4 GitHub API</h1>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Handle PRs for NuttX Kernel and Apps every 10 minutes
@@ -133,7 +183,7 @@ cargo run -- --owner apache --repo nuttx
 
 ## For NuttX Apps Repo
 cargo run -- --owner apache --repo nuttx-apps
-</code></pre></div><h1 id="run-log"><a class="doc-anchor" href="#run-log">§</a>1 Run Log</h1>
+</code></pre></div><h1 id="run-log"><a class="doc-anchor" href="#run-log">§</a>6 Run Log</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>+ cargo run --owner apache --repo nuttx
 warning: use of deprecated method `octocrab::pulls::PullRequestHandler::&lt;&#39;octo&gt;::pull_number`: specific PR builder transitioned to pr_review_actions, reply_to_comment, reply_to_comment
@@ -877,7 +927,7 @@ warning: `nuttx-pr-bot` (bin &quot;nuttx-pr-bot&quot;) generated 1 warning
 [2024-09-20T08:03:35Z INFO  nuttx_pr_bot] &quot;https://api.github.com/repos/apache/nuttx/pulls/13502&quot;
 [2024-09-20T08:03:35Z INFO  nuttx_pr_bot] Skipping PR with comments: 13502
 + sleep 600  
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
