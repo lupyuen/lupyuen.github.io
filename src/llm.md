@@ -110,7 +110,11 @@ Testing logs after change: _your testing logs here_
 
 </div>
 
-TODO: Why?
+_But these are Human-Readable Requirements?_
+
+That's the beauty of an LLM: We feed it the Human Text, then the LLM gets it (hopefully) and does what we expect it to do!
+
+TODO: Append PR Text
 
 # Gemini API
 
