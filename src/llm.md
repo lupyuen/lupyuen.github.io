@@ -12,7 +12,7 @@ TODO
 
 Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo...
 
-<div style="margin-left: 5%; width: 90%">
+<div style="margin-left: 5%; width: 90%; font-size:90%">
 
 __Summary__ <br>
 _Document stack and backtrace dump for Espressif SoCs [...more...]_
@@ -29,7 +29,7 @@ _Internal CI testing with HW on all Xtensa-based devices [...more...]_
 
 Our PR Review Bot will helpfully __Review the Pull Request__ and post a Review Comment...
 
-<div style="margin-left: 5%; width: 90%">
+<div style="margin-left: 5%; width: 90%; font-size:90%">
 
 _This PR appears to meet the NuttX requirements. Here's a breakdown:_
 
@@ -61,7 +61,9 @@ Hopefully this will be helpful to __New Contributors__ to NuttX. And it might he
 
 How did this happen? We find out...
 
-# Requirements
+# Requirements for PR Review
+
+_Our Bot gets really chatty and naggy. Why?_
 
 TODO
 
