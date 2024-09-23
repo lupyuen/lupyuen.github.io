@@ -114,6 +114,10 @@ _But these are Human-Readable Requirements?_
 
 That's the beauty of an LLM: We feed it the Human Text, then the LLM gets it (hopefully) and does what we expect it to do!
 
+It helps to define our requirements precisely, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate odd ways to validate our Pull Request.
+
+[(Which happened in our last __LLM Experiment__)](TODO)
+
 TODO: Append PR Text
 
 # Gemini API
