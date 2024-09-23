@@ -10,52 +10,54 @@ TODO
 
 TODO
 
-Suppose we __Submit a Pull Request__ to the NuttX Repo...
+Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo...
 
-<div style="margin-left: 5%, width: 90%">
+<div style="margin-left: 5%; width: 90%">
 
 __Summary__ <br>
-_Document stack and backtrace dump for Espressif SoCs..._
+_Document stack and backtrace dump for Espressif SoCs [...more...]_
 
 __Impact__ <br>
 _Fix backtrace dump on assertions considering assertions triggered by tasks or during an interrupt service._
 
 __Testing__ <br>
-_Internal CI testing with HW on all Xtensa-based devices..._
-
-</div>
+_Internal CI testing with HW on all Xtensa-based devices [...more...]_
 
 [(Thanks to __Tiago Medicci Serrano__)](https://github.com/apache/nuttx/pull/13546)
 
-Our __PR Review Bot__ will helpfully review the Pull Request and post a Review Comment...
+</div>
 
-<div style="margin-left: 5%, width: 90%">
+Our PR Review Bot will helpfully __Review the Pull Request__ and post a Review Comment...
+
+<div style="margin-left: 5%; width: 90%">
 
 _This PR appears to meet the NuttX requirements. Here's a breakdown:_
 
 __Summary:__
 
-- __Clear explanation of the change:__ The summary clearly states the purpose of the change, addressing a fix for the backtrace dump functionality specifically for Espressif SoCs...
+- __Clear explanation of the change:__ The summary clearly states the purpose of the change, addressing a fix for the backtrace dump functionality specifically for Espressif SoCs _[...more...]_
 - __Issue references:__ While not explicitly mentioned, the summary implies addressing an existing issue with backtrace dumps on the mentioned architectures. It would be beneficial to add specific issue references if applicable.
 
 __Impact:__
 
-- __Feature change:__ This PR focuses on fixing an existing feature (backtrace dump), not introducing a new one...
+- __Feature change:__ This PR focuses on fixing an existing feature (backtrace dump), not introducing a new one _[...more...]_
 - __Security impact:__ No security implications are mentioned.
 - __Compatibility impact:__ No backward or forward compatibility issues are mentioned.
 
 __Testing:__
 
 - __Verification:__ The author confirms testing on local setup with positive results.
-- __Host and Target:__ While "Internal CI testing" is mentioned, listing specific host OS, compiler versions, and target boards used for testing would strengthen the validation...
+- __Host and Target:__ While "Internal CI testing" is mentioned, listing specific host OS, compiler versions, and target boards used for testing would strengthen the validation _[...more...]_
 
 __Overall:__
 
 This PR demonstrates a good understanding of NuttX requirements. Adding specific issue references and detailing the testing environment would further strengthen it.
 
+[(See the __Review Comment__)](TODO)
+
 </div>
 
-[(See the __Review Comment__)](TODO)
+Hopefully this will be helpful to __New Contributors__ to NuttX. And it might help the __PR Reviewers__ too.
 
 TODO
 
