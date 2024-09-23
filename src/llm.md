@@ -6,6 +6,65 @@
 
 TODO
 
+# Example
+
+TODO
+
+[(Thanks to my colleague __Tiago Medicci Serrano__)](https://github.com/apache/nuttx/pull/13546)
+
+# Requirements
+
+TODO
+
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66)
+
+```rust
+// Requirements for PR Review
+const REQUIREMENTS: &str =
+r#####"
+# Here are the requirements for a NuttX PR
+
+## Summary
+
+* Why change is necessary (fix, update, new feature)?
+* What functional part of the code is being changed?
+* How does the change exactly work (what will change and how)?
+* Related [NuttX Issue](https://github.com/apache/nuttx/issues) reference if applicable.
+* Related NuttX Apps [Issue](https://github.com/apache/nuttx-apps/issues) / [Pull Request](https://github.com/apache/nuttx-apps/pulls) reference if applicable.
+
+## Impact
+
+* Is new feature added? Is existing feature changed?
+* Impact on user (will user need to adapt to change)? NO / YES (please describe if yes).
+* Impact on build (will build process change)? NO / YES (please descibe if yes).
+* Impact on hardware (will arch(s) / board(s) / driver(s) change)? NO / YES (please describe if yes).
+* Impact on documentation (is update required / provided)? NO / YES (please describe if yes).
+* Impact on security (any sort of implications)? NO / YES (please describe if yes).
+* Impact on compatibility (backward/forward/interoperability)? NO / YES (please describe if yes).
+* Anything else to consider?
+
+## Testing
+
+I confirm that changes are verified on local setup and works as intended:
+* Build Host(s): OS (Linux,BSD,macOS,Windows,..), CPU(Intel,AMD,ARM), compiler(GCC,CLANG,version), etc.
+* Target(s): arch(sim,RISC-V,ARM,..), board:config, etc.
+
+Testing logs before change: _your testing logs here_
+
+Testing logs after change: _your testing logs here_
+"#####;
+```
+
+# Gemini API
+
+TODO
+
+# GitHub API
+
+TODO
+
+# TODO
+
 [run.sh](https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh)
 
 ```bash
