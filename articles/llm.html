@@ -156,7 +156,8 @@ Testing logs after change: _your testing logs here_
 <p>It helps to <strong>define our requirements precisely</strong>, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.</p>
 <p><a href="TODO">(Which happened in our last <strong>LLM Experiment</strong>)</a></p>
 <p><em>How do we feed the PR Content to LLM?</em></p>
-<p>Our PR Requirements are in <strong>Markdown Format</strong>, same for the PR Content. Thus we meld them together into <strong>One Long Markdown Doc</strong> and feed to LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218">main.rs</a></p>
+<p>Our PR Requirements are in <strong>Markdown Format</strong>. Same for the PR Content.</p>
+<p>Thus we meld them together into <strong>One Long Markdown Doc</strong> and feed to LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Prompt for LLM Request:
 // PR Requirements + PR Body
