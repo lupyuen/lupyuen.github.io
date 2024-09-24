@@ -68,10 +68,11 @@
 <li><a href="#pr-bot-in-action">1 PR Bot in Action</a><ul></ul></li>
 <li><a href="#requirements-for-pr-review">2 Requirements for PR Review</a><ul></ul></li>
 <li><a href="#call-the-gemini-api">3 Call the Gemini API</a><ul></ul></li>
-<li><a href="#github-api">4 GitHub API</a><ul></ul></li>
-<li><a href="#todo">5 TODO</a><ul></ul></li>
-<li><a href="#run-log">6 Run Log</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
+<li><a href="#handle-gemini-failure">4 Handle Gemini Failure</a><ul></ul></li>
+<li><a href="#github-api">5 GitHub API</a><ul></ul></li>
+<li><a href="#todo">6 TODO</a><ul></ul></li>
+<li><a href="#run-log">7 Run Log</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/llm-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="pr-bot-in-action"><a class="doc-anchor" href="#pr-bot-in-action">§</a>1 PR Bot in Action</h1>
@@ -189,16 +190,23 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 <p>Nope it won’t. Our Bot will skip <a href="TODO"><strong>Pull Requests that have Comments</strong></a>.</p>
 <h1 id="call-the-gemini-api"><a class="doc-anchor" href="#call-the-gemini-api">§</a>3 Call the Gemini API</h1>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
+<p>We’re using <a href="TODO"><strong>Gemini Pro 1.5</strong></a> for the LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Prompt for Gemini Request:
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the Gemini Client (Pro 1.5)
+</span><span class="kw">let </span>client = Client::new_from_model(
+  Model::Gemini1_5Pro,
+  env::var(<span class="string">"GEMINI_API_KEY"</span>).unwrap().to_string()
+);
+
+<span class="comment">// Compose the Prompt for Gemini Request:
 // PR Requirements + PR Body
 </span><span class="kw">let </span>input = 
   REQUIREMENTS.to_string() +
   <span class="string">"\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" </span>+
-  <span class="kw-2">&amp;</span>body;
+  <span class="kw-2">&amp;</span>body;</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
 
-<span class="comment">// Compose the Gemini Request
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Gemini Request
 </span><span class="kw">let </span>txt_request = Request {
   contents: <span class="macro">vec!</span>[Content {
     role: Role::User,
@@ -227,9 +235,11 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
   .content.parts.first().unwrap()
   .text.clone().unwrap();</code></pre></div>
 <p>TODO: Gemini Pro 1.5, 50 requests per day, free tier</p>
-<h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>4 GitHub API</h1>
+<h1 id="handle-gemini-failure"><a class="doc-anchor" href="#handle-gemini-failure">§</a>4 Handle Gemini Failure</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
+<h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>5 GitHub API</h1>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Handle PRs for NuttX Kernel and Apps every 10 minutes
@@ -294,7 +304,7 @@ cargo run -- --owner apache --repo nuttx
 
 ## For NuttX Apps Repo
 cargo run -- --owner apache --repo nuttx-apps
-</code></pre></div><h1 id="run-log"><a class="doc-anchor" href="#run-log">§</a>6 Run Log</h1>
+</code></pre></div><h1 id="run-log"><a class="doc-anchor" href="#run-log">§</a>7 Run Log</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>+ cargo run --owner apache --repo nuttx
 warning: use of deprecated method `octocrab::pulls::PullRequestHandler::&lt;&#39;octo&gt;::pull_number`: specific PR builder transitioned to pr_review_actions, reply_to_comment, reply_to_comment
@@ -1038,7 +1048,7 @@ warning: `nuttx-pr-bot` (bin &quot;nuttx-pr-bot&quot;) generated 1 warning
 [2024-09-20T08:03:35Z INFO  nuttx_pr_bot] &quot;https://api.github.com/repos/apache/nuttx/pulls/13502&quot;
 [2024-09-20T08:03:35Z INFO  nuttx_pr_bot] Skipping PR with comments: 13502
 + sleep 600  
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
