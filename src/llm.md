@@ -6,7 +6,7 @@
 
 TODO
 
-# Example
+# PR Bot in Action
 
 TODO
 
@@ -112,15 +112,53 @@ Testing logs after change: _your testing logs here_
 
 _But these are Human-Readable Requirements?_
 
-That's the beauty of an LLM: We feed it the Human Text, then the LLM gets it (hopefully) and does what we expect it to do!
+That's the beauty of an LLM: We feed it the __Human Text__, then the LLM gets it (hopefully) and does what we expect it to do!
 
-It helps to define our requirements precisely, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.
+It helps to __define our requirements precisely__, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.
 
 [(Which happened in our last __LLM Experiment__)](TODO)
 
-TODO: Append PR Text
+_How do we feed the PR Content to LLM?_
 
-# Gemini API
+Our PR Requirements are in __Markdown Format__, same for the PR Content. Thus we meld them together into __One Long Markdown Doc__ and feed to LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218)
+
+```rust
+// Compose the Prompt for LLM Request:
+// PR Requirements + PR Body
+let input = 
+  REQUIREMENTS.to_string() +
+  "\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" +
+  &body;
+```
+
+Which will look like this...
+
+```text
+# Here are the requirements for a NuttX PR
+## Summary [...requirements...]
+## Impact [...requirements...]
+## Testing [...requirements...]
+
+# Does this PR meet the NuttX Requirements? Please be concise
+## Summary
+Document stack and backtrace dump for Espressif SoCs [...more...]
+
+## Impact
+Fix backtrace dump on assertions considering assertions triggered by tasks or during an interrupt service.
+
+## Testing
+Internal CI testing with HW on all Xtensa-based devices [...more...]
+```
+
+_Why "please be concise"?_
+
+Based on [__Community Feedback__](TODO), our Bot was getting way too chatty and naggy.
+
+It's hard to control the LLM Output, hence we politely asked LLM to __tone down the response__. (And be a little less irritating)
+
+Also we excluded the Bot from Pull Requests that are [__Extra Small__](TODO). (10 lines of code changes or fewer)
+
+# Call the Gemini API
 
 TODO
 
