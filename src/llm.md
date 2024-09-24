@@ -120,7 +120,9 @@ It helps to __define our requirements precisely__, mark the boundaries clearly. 
 
 _How do we feed the PR Content to LLM?_
 
-Our PR Requirements are in __Markdown Format__, same for the PR Content. Thus we meld them together into __One Long Markdown Doc__ and feed to LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218)
+Our PR Requirements are in __Markdown Format__. Same for the PR Content.
+
+Thus we meld them together into __One Long Markdown Doc__ and feed to LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218)
 
 ```rust
 // Compose the Prompt for LLM Request:
