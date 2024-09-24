@@ -162,6 +162,47 @@ Also we excluded the Bot from Pull Requests that are [__Extra Small__](TODO). (1
 
 TODO
 
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
+
+```rust
+// Compose the Prompt for Gemini Request: PR Requirements + PR Body
+let input = 
+  REQUIREMENTS.to_string() +
+  "\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" +
+  &body;
+
+// Compose the Gemini Request
+let txt_request = Request {
+  contents: vec![Content {
+    role: Role::User,
+    parts: vec![Part {
+      text: Some(input.to_string()),
+      inline_data: None,
+      file_data: None,
+      video_metadata: None,
+    }],
+  }],
+  tools: vec![],
+  safety_settings: vec![],
+  generation_config: None,
+  system_instruction: None,
+};
+
+// Send the Gemini Request
+let response = client
+  .post(30, &txt_request)
+  .await?;
+
+// Get the Gemini Response
+let response_text = 
+  response.rest().unwrap()
+  .candidates.first().unwrap()
+  .content.parts.first().unwrap()
+  .text.clone().unwrap();
+```
+
+TODO: Gemini Pro 1.5, 50 requests per day, free tier
+
 # GitHub API
 
 TODO
