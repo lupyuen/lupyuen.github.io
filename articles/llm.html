@@ -186,6 +186,43 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 <p>Also we excluded the Bot from Pull Requests that are <a href="TODO"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
 <h1 id="call-the-gemini-api"><a class="doc-anchor" href="#call-the-gemini-api">§</a>3 Call the Gemini API</h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Prompt for Gemini Request: PR Requirements + PR Body
+</span><span class="kw">let </span>input = 
+  REQUIREMENTS.to_string() +
+  <span class="string">"\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" </span>+
+  <span class="kw-2">&amp;</span>body;
+
+<span class="comment">// Compose the Gemini Request
+</span><span class="kw">let </span>txt_request = Request {
+  contents: <span class="macro">vec!</span>[Content {
+    role: Role::User,
+    parts: <span class="macro">vec!</span>[Part {
+      text: <span class="prelude-val">Some</span>(input.to_string()),
+      inline_data: <span class="prelude-val">None</span>,
+      file_data: <span class="prelude-val">None</span>,
+      video_metadata: <span class="prelude-val">None</span>,
+    }],
+  }],
+  tools: <span class="macro">vec!</span>[],
+  safety_settings: <span class="macro">vec!</span>[],
+  generation_config: <span class="prelude-val">None</span>,
+  system_instruction: <span class="prelude-val">None</span>,
+};
+
+<span class="comment">// Send the Gemini Request
+</span><span class="kw">let </span>response = client
+  .post(<span class="number">30</span>, <span class="kw-2">&amp;</span>txt_request)
+  .<span class="kw">await</span><span class="question-mark">?</span>;
+
+<span class="comment">// Get the Gemini Response
+</span><span class="kw">let </span>response_text = 
+  response.rest().unwrap()
+  .candidates.first().unwrap()
+  .content.parts.first().unwrap()
+  .text.clone().unwrap();</code></pre></div>
+<p>TODO: Gemini Pro 1.5, 50 requests per day, free tier</p>
 <h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>4 GitHub API</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
