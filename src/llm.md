@@ -168,16 +168,26 @@ Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](TODO).
 
 TODO
 
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
+We're using [__Gemini Pro 1.5__](TODO) for the LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212)
 
 ```rust
+// Init the Gemini Client (Pro 1.5)
+let client = Client::new_from_model(
+  Model::Gemini1_5Pro,
+  env::var("GEMINI_API_KEY").unwrap().to_string()
+);
+
 // Compose the Prompt for Gemini Request:
 // PR Requirements + PR Body
 let input = 
   REQUIREMENTS.to_string() +
   "\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" +
   &body;
+```
 
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
+
+```rust
 // Compose the Gemini Request
 let txt_request = Request {
   contents: vec![Content {
@@ -209,6 +219,10 @@ let response_text =
 ```
 
 TODO: Gemini Pro 1.5, 50 requests per day, free tier
+
+# Handle Gemini Failure
+
+TODO
 
 # GitHub API
 
