@@ -160,6 +160,10 @@ It's hard to control the LLM Output, hence we politely asked LLM to __tone down 
 
 Also we excluded the Bot from Pull Requests that are [__Extra Small__](TODO). (10 lines of code changes or fewer)
 
+_Will our Bot get stuck in a loop? Forever replying to its own responses?_
+
+Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](TODO).
+
 # Call the Gemini API
 
 TODO
