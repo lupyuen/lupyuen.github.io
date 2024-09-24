@@ -67,8 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#pr-bot-in-action">1 PR Bot in Action</a><ul></ul></li>
 <li><a href="#requirements-for-pr-review">2 Requirements for PR Review</a><ul></ul></li>
-<li><a href="#call-the-gemini-api">3 Call the Gemini API</a><ul></ul></li>
-<li><a href="#handle-gemini-failure">4 Handle Gemini Failure</a><ul></ul></li>
+<li><a href="#call-the-gemini-llm">3 Call the Gemini LLM</a><ul></ul></li>
+<li><a href="#handle-the-gemini-failures">4 Handle the Gemini Failures</a><ul></ul></li>
 <li><a href="#github-api">5 GitHub API</a><ul></ul></li>
 <li><a href="#todo">6 TODO</a><ul></ul></li>
 <li><a href="#run-log">7 Run Log</a><ul></ul></li>
@@ -188,9 +188,9 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 <p>Also we excluded the Bot from Pull Requests that are <a href="TODO"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
 <p><em>Will our Bot get stuck in a loop? Forever replying to its own responses?</em></p>
 <p>Nope it won’t. Our Bot will skip <a href="TODO"><strong>Pull Requests that have Comments</strong></a>.</p>
-<h1 id="call-the-gemini-api"><a class="doc-anchor" href="#call-the-gemini-api">§</a>3 Call the Gemini API</h1>
-<p>TODO</p>
-<p>We’re using <a href="TODO"><strong>Gemini Pro 1.5</strong></a> for the LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212">main.rs</a></p>
+<h1 id="call-the-gemini-llm"><a class="doc-anchor" href="#call-the-gemini-llm">§</a>3 Call the Gemini LLM</h1>
+<p><em>How are we running the LLM?</em></p>
+<p>We call <a href="TODO"><strong>Gemini Pro 1.5</strong></a> for the LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the Gemini Client (Pro 1.5)
 </span><span class="kw">let </span>client = Client::new_from_model(
@@ -235,7 +235,7 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
   .content.parts.first().unwrap()
   .text.clone().unwrap();</code></pre></div>
 <p>TODO: Gemini Pro 1.5, 50 requests per day, free tier</p>
-<h1 id="handle-gemini-failure"><a class="doc-anchor" href="#handle-gemini-failure">§</a>4 Handle Gemini Failure</h1>
+<h1 id="handle-the-gemini-failures"><a class="doc-anchor" href="#handle-the-gemini-failures">§</a>4 Handle the Gemini Failures</h1>
 <p>TODO</p>
 <h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>5 GitHub API</h1>
 <p>TODO</p>
