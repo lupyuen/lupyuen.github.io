@@ -164,11 +164,11 @@ _Will our Bot get stuck in a loop? Forever replying to its own responses?_
 
 Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](TODO).
 
-# Call the Gemini API
+# Call the Gemini LLM
 
-TODO
+_How are we running the LLM?_
 
-We're using [__Gemini Pro 1.5__](TODO) for the LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212)
+We call [__Gemini Pro 1.5__](TODO) for the LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212)
 
 ```rust
 // Init the Gemini Client (Pro 1.5)
@@ -220,7 +220,7 @@ let response_text =
 
 TODO: Gemini Pro 1.5, 50 requests per day, free tier
 
-# Handle Gemini Failure
+# Handle the Gemini Failures
 
 TODO
 
