@@ -171,7 +171,8 @@ TODO
 [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
 
 ```rust
-// Compose the Prompt for Gemini Request: PR Requirements + PR Body
+// Compose the Prompt for Gemini Request:
+// PR Requirements + PR Body
 let input = 
   REQUIREMENTS.to_string() +
   "\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" +
