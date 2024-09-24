@@ -185,6 +185,8 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 <p>Based on <a href="TODO"><strong>Community Feedback</strong></a>, our Bot was getting way too chatty and naggy.</p>
 <p>It’s hard to control the LLM Output, hence we politely asked LLM to <strong>tone down the response</strong>. (And be a little less irritating)</p>
 <p>Also we excluded the Bot from Pull Requests that are <a href="TODO"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
+<p><em>Will our Bot get stuck in a loop? Forever replying to its own responses?</em></p>
+<p>Nope it won’t. Our Bot will skip <a href="TODO"><strong>Pull Requests that have Comments</strong></a>.</p>
 <h1 id="call-the-gemini-api"><a class="doc-anchor" href="#call-the-gemini-api">§</a>3 Call the Gemini API</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
