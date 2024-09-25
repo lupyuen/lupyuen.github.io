@@ -53,7 +53,7 @@ __Overall:__
 
 This PR demonstrates a good understanding of NuttX requirements. Adding specific issue references and detailing the testing environment would further strengthen it.
 
-[(See the __Review Comment__)](TODO)
+[(See the __Review Comment__)](https://github.com/apache/nuttx/pull/13546)
 
 </div>
 
@@ -185,7 +185,7 @@ let input =
   &body;
 ```
 
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
+After composing the __LLM Prompt__ (PR Requirements + PR Contents), we send it to Gemini: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
 
 ```rust
 // Compose the Gemini Request
@@ -217,6 +217,47 @@ let response_text =
   .content.parts.first().unwrap()
   .text.clone().unwrap();
 ```
+
+__Gemini Response__ will look like...
+
+<div style="margin-left: 5%; width: 90%; font-size:90%">
+
+```text
+## NuttX PR Requirements Review
+
+This PR appears to meet the NuttX requirements. Here's a breakdown:
+
+**Summary:**
+
+* **Clear explanation of the change:** The summary clearly states the purpose of the change, addressing a fix for the backtrace dump functionality specifically for Espressif SoCs. 
+* **Functional area:**  The affected area is clearly identified (stack and backtrace dump for xtensa/esp32).
+* **Mechanism:**  The summary outlines how the change works, including fixes to the `MAKE_PC_FROM_RA` macro, sanity checks, and script updates.
+* **Issue references:** While not explicitly mentioned, the summary implies addressing an existing issue with backtrace dumps on the mentioned architectures. It would be beneficial to add specific issue references if applicable.
+
+**Impact:**
+
+* **Feature change:** This PR focuses on fixing an existing feature (backtrace dump), not introducing a new one.
+* **User impact:** No user-facing changes are described, implying minimal impact.
+* **Build impact:** No build process changes are mentioned.
+* **Hardware impact:** The changes are specific to Xtensa-based devices, specifically ESP32 and its variants, which is clearly stated.
+* **Documentation impact:** The summary explicitly mentions updating documentation for each affected chip. 
+* **Security impact:** No security implications are mentioned.
+* **Compatibility impact:**  No backward or forward compatibility issues are mentioned.
+
+**Testing:**
+
+* **Verification:** The author confirms testing on local setup with positive results. 
+* **Host and Target:**  While "Internal CI testing" is mentioned,  listing specific host OS, compiler versions, and target boards used for testing would strengthen the validation.
+* **Logs:** The PR provides clear steps to reproduce the issue and verify the fix on an ESP32. Including snippets of actual logs before and after the change would further enhance the testing section.
+
+**Overall:**
+
+This PR demonstrates a good understanding of NuttX requirements.  Adding specific issue references and detailing the testing environment would further strengthen it. 
+```
+
+[(See the __Gemini Response__)](https://github.com/apache/nuttx/pull/13546)
+
+</div>
 
 TODO: Gemini Pro 1.5, 50 requests per day, free tier
 
