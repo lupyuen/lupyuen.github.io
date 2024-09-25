@@ -261,7 +261,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 
 _But we didn't tell Gemini to respond in Markdown?_
 
-TODO: Monkey see monkey do
+That's the beauty of __"LLM See, LLM Do"__! We fed it Markdown, so it produced Markdown too.
 
 TODO: Gemini Pro 1.5, 50 requests per day, free tier
 
