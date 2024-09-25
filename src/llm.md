@@ -218,7 +218,7 @@ let response_text =
   .text.clone().unwrap();
 ```
 
-__Gemini Response__ will look like...
+__Gemini Response__ will be in Markdown Format...
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
@@ -258,6 +258,10 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 [(See the __Gemini Response__)](https://github.com/apache/nuttx/pull/13546)
 
 </div>
+
+_But we didn't tell Gemini to respond in Markdown?_
+
+TODO: Monkey see monkey do
 
 TODO: Gemini Pro 1.5, 50 requests per day, free tier
 
