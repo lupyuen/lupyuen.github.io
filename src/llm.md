@@ -8,8 +8,6 @@ TODO
 
 # PR Bot in Action
 
-TODO
-
 Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo...
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
