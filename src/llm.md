@@ -287,13 +287,12 @@ Our Bot uses __Emoji Reactions__ to tag each attempt. We will see the Pull Reque
 | 👀 | Second Attempt |
 | 🚀👀 | Third Attempt |
 
-And then the Bot gives up. If it's hunky dory, our Bot erases its own Emoji Reactions. We code it like this: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320)
+<br> And then the Bot gives up. If it's hunky dory, our Bot erases its own Emoji Reactions. Our code does this: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320)
 
 ```rust
 /// Bump up the 2 PR Reactions: 00 > 01 > 10 > 11
 /// Position 0 is the Rocket Reaction, Position 1 is the Eye Reaction
-async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Option<u64>, Option<u64>)) -> 
-  Result<(), Box<dyn std::error::Error>> {
+async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Option<u64>, Option<u64>)) -> Result<(), Box<dyn std::error::Error>> {
   match reactions {
     // (Rocket, Eye)
     (None,     None)    => { create_reaction(issues, pr_id, ReactionContent::Rocket).await?; }
@@ -313,7 +312,76 @@ TODO: Pic of Emoji Reactions
 
 # Call the GitHub API
 
-TODO
+_How do we fetch the Pull Request? And post the Review Comment?_
+
+We call the GitHub API with the [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab).
+
+TODO: Fetch the 20 Newest Pull Requests that are Open
+
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
+
+```rust
+// Fetch the 20 Newest Pull Requests that are Open
+let pr_list = octocrab
+  .pulls(owner, repo)
+  .list()
+  .state(params::State::Open)
+  .sort(params::pulls::Sort::Created)
+  .direction(params::Direction::Descending)
+  .per_page(20)
+  .send()
+  .await?;
+
+// Every 5 Seconds: Process the next PR fetched
+for pr in pr_list {
+  let pr_id = pr.number;
+  process_pr(&pulls, &issues, pr_id)
+    .await?;
+  sleep(Duration::from_secs(5));
+}
+```
+
+TODO: process_pr
+
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194)
+
+```rust
+// Skip if PR contains Comments
+if pr.comments.unwrap() > 0 { return Ok(()); }
+
+// Skip if PR Size is Unknown or Extra Small
+let labels = pr.labels.unwrap();
+let size_xs: Vec<Label> = labels
+  .into_iter()
+  .filter(|l| l.name == "Size: XS")
+  .collect();
+if labels.is_empty() || size_xs.len() > 0 { return Ok(()); }
+
+// Get the PR Body
+let body = pr.body.unwrap_or("".to_string());
+
+// Fetch the PR Commits. TODO: Will change `pull_number` to `pr_commits`
+let commits = octocrab
+  .pulls(owner, repo);
+  .pull_number(pr_id)
+  .commits()
+  .await;
+let commits = commits.unwrap().items;
+
+// Omitted: Check for Empty Commit Message
+```
+
+TODO: Post Comment
+
+[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267)
+
+```rust
+// Post the PR Comment
+let comment = octocrab
+  .issues(owner, repo);
+  .create_comment(pr_id, comment_text)
+  .await?;
+```
 
 # Run Everything
 
