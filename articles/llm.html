@@ -286,12 +286,11 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <tr><td>🚀👀</td><td>Third Attempt</td></tr>
 </tbody></table>
 </div>
-<p>And then the Bot gives up. If it’s hunky dory, our Bot erases its own Emoji Reactions. We code it like this: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320">main.rs</a></p>
+<p><br> And then the Bot gives up. If it’s hunky dory, our Bot erases its own Emoji Reactions. Our code does this: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Bump up the 2 PR Reactions: 00 &gt; 01 &gt; 10 &gt; 11
 /// Position 0 is the Rocket Reaction, Position 1 is the Eye Reaction
-</span><span class="kw">async fn </span>bump_reactions(issues: <span class="kw-2">&amp;</span>IssueHandler&lt;<span class="lifetime">'_</span>&gt;, pr_id: u64, reactions: (<span class="prelude-ty">Option</span>&lt;u64&gt;, <span class="prelude-ty">Option</span>&lt;u64&gt;)) -&gt; 
-  <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+</span><span class="kw">async fn </span>bump_reactions(issues: <span class="kw-2">&amp;</span>IssueHandler&lt;<span class="lifetime">'_</span>&gt;, pr_id: u64, reactions: (<span class="prelude-ty">Option</span>&lt;u64&gt;, <span class="prelude-ty">Option</span>&lt;u64&gt;)) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
   <span class="kw">match </span>reactions {
     <span class="comment">// (Rocket, Eye)
     </span>(<span class="prelude-val">None</span>,     <span class="prelude-val">None</span>)    =&gt; { create_reaction(issues, pr_id, ReactionContent::Rocket).<span class="kw">await</span><span class="question-mark">?</span>; }
@@ -305,7 +304,63 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p><a href="TODO">(<strong>delete_reaction</strong> is here)</a></p>
 <p>TODO: Pic of Emoji Reactions</p>
 <h1 id="call-the-github-api"><a class="doc-anchor" href="#call-the-github-api">§</a>5 Call the GitHub API</h1>
-<p>TODO</p>
+<p><em>How do we fetch the Pull Request? And post the Review Comment?</em></p>
+<p>We call the GitHub API with the <a href="https://github.com/XAMPPRocky/octocrab"><strong>Octocrab Crate</strong></a>.</p>
+<p>TODO: Fetch the 20 Newest Pull Requests that are Open</p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the 20 Newest Pull Requests that are Open
+</span><span class="kw">let </span>pr_list = octocrab
+  .pulls(owner, repo)
+  .list()
+  .state(params::State::Open)
+  .sort(params::pulls::Sort::Created)
+  .direction(params::Direction::Descending)
+  .per_page(<span class="number">20</span>)
+  .send()
+  .<span class="kw">await</span><span class="question-mark">?</span>;
+
+<span class="comment">// Every 5 Seconds: Process the next PR fetched
+</span><span class="kw">for </span>pr <span class="kw">in </span>pr_list {
+  <span class="kw">let </span>pr_id = pr.number;
+  process_pr(<span class="kw-2">&amp;</span>pulls, <span class="kw-2">&amp;</span>issues, pr_id)
+    .<span class="kw">await</span><span class="question-mark">?</span>;
+  sleep(Duration::from_secs(<span class="number">5</span>));
+}</code></pre></div>
+<p>TODO: process_pr</p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Skip if PR contains Comments
+</span><span class="kw">if </span>pr.comments.unwrap() &gt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
+
+<span class="comment">// Skip if PR Size is Unknown or Extra Small
+</span><span class="kw">let </span>labels = pr.labels.unwrap();
+<span class="kw">let </span>size_xs: Vec&lt;Label&gt; = labels
+  .into_iter()
+  .filter(|l| l.name == <span class="string">"Size: XS"</span>)
+  .collect();
+<span class="kw">if </span>labels.is_empty() || size_xs.len() &gt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
+
+<span class="comment">// Get the PR Body
+</span><span class="kw">let </span>body = pr.body.unwrap_or(<span class="string">""</span>.to_string());
+
+<span class="comment">// Fetch the PR Commits. TODO: Will change `pull_number` to `pr_commits`
+</span><span class="kw">let </span>commits = octocrab
+  .pulls(owner, repo);
+  .pull_number(pr_id)
+  .commits()
+  .<span class="kw">await</span>;
+<span class="kw">let </span>commits = commits.unwrap().items;
+
+<span class="comment">// Omitted: Check for Empty Commit Message</span></code></pre></div>
+<p>TODO: Post Comment</p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the PR Comment
+</span><span class="kw">let </span>comment = octocrab
+  .issues(owner, repo);
+  .create_comment(pr_id, comment_text)
+  .<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div>
 <h1 id="run-everything"><a class="doc-anchor" href="#run-everything">§</a>6 Run Everything</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
