@@ -275,9 +275,18 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="TODO"><strong>50 LLM Requests</strong></a> per day.</p>
 <p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> and the <a href="TODO"><strong>NuttX Apps Repo</strong></a>)</p>
 <h1 id="fail-gracefully-with-emojis"><a class="doc-anchor" href="#fail-gracefully-with-emojis">§</a>4 Fail Gracefully with Emojis</h1>
-<p>TODO: Emoji Reactions</p>
-<p>Google Gemini API will sometimes fail with HTTP 500 (not sure why). And the Failed Request will be charged to our Daily Quota! So we retry at most 3 times, in case the PR has some problematic text that the LLM couldn’t handle.</p>
-<p>How does our Bot know when to stop the retries? It uses Emoji Reactions to tag each attempt. So we will see the PR tagged with 🚀 which becomes 👀 which becomes 🚀👀 and then the Bot gives up. (If it’s hunky dory, our Bot erases its own Emoji Reactions)</p>
+<p><em>Any gotchas with the Free Tier of Gemini LLM?</em></p>
+<p>Gemini API will <strong>sometimes fail</strong> with HTTP 500 (not sure why). And the Failed Request will be <strong>counted in our Daily Quota</strong>! (50 per day)</p>
+<p>Thus we retry <strong>up to 3 times</strong>, in case the Pull Request has some problematic text that the LLM couldn’t handle.</p>
+<p><em>How does our Bot know when to stop the retries?</em></p>
+<p>Our Bot uses <strong>Emoji Reactions</strong> to tag each attempt. We will see the Pull Request tagged with…</p>
+<div><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>🚀</td><td>First Attempt</td></tr>
+<tr><td>👀</td><td>Second Attempt</td></tr>
+<tr><td>🚀👀</td><td>Third Attempt</td></tr>
+</tbody></table>
+</div>
+<p>And then the Bot gives up. (If it’s hunky dory, our Bot erases its own Emoji Reactions)</p>
 <p>TODO: Pic of Emoji Reactions</p>
 <h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>5 GitHub API</h1>
 <p>TODO</p>
