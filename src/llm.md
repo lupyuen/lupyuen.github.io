@@ -470,6 +470,10 @@ Inconsistency, can't force the output
 
 Different personas
 
+Free, doesn't rely on [__GitHub Runners__](TODO)
+
+_(What if Google starts charging for their LLM? We'll switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh)_
+
 # Run Log
 
 TODO
