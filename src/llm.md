@@ -4,7 +4,11 @@
 
 ![TODO](https://lupyuen.github.io/images/llm-title.jpg)
 
-TODO
+We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](TODO).
+
+This article explains...
+
+TODO: Sheer accident
 
 # PR Bot in Action
 
