@@ -458,9 +458,9 @@ LLM has limitations...
 
 - Sometimes the LLM will helpfully suggest an [__"Improved Summary"__](https://github.com/apache/nuttx/pull/13628#issuecomment-2376067862). Most of the time: [__It doesn't__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326).
 
-- Our LLM behaves as __Multiple Personas__? (Some extremely chatty and naggy)
+- The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? (Some extremely chatty and naggy)
 
-- Then again: Our [__LLM is Free__](TODO). And it doesn't depend on [__GitHub Runners__](TODO).
+- Then again: The [__LLM is Free__](TODO). And it doesn't depend on [__GitHub Runners__](TODO).
 
 _What if Google starts charging for their LLM?_
 
