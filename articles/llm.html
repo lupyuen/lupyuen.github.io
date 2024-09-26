@@ -365,9 +365,19 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <h1 id="run-everything"><a class="doc-anchor" href="#run-everything">§</a>6 Run Everything</h1>
 <p>TODO: Handle PRs for NuttX Kernel and Apps every 10 minutes</p>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Set the GitHub and Gemini Tokens
-## export GITHUB_TOKEN=...
-## export GEMINI_API_KEY=...
+<div class="example-wrap"><pre class="language-bash"><code>## For Gemini Token: Browse to Google AI Studio &gt; Get API Key &gt; Create API Key &gt; Create API Key In New Project
+## https://aistudio.google.com/app/apikey
+export GEMINI_API_KEY=...
+
+## For GitHub Token: Browse to GitHub Settings &gt; Developer Settings &gt; Tokens (Classic) &gt; Generate New Token (Classic)
+## Check the following:
+## repo (Full control of private repositories)
+## repo:status (Access commit status)
+## repo_deployment (Access deployment status)
+## public_repo (Access public repositories)
+## repo:invite (Access repository invitations)
+## security_events (Read and write security events)
+export GITHUB_TOKEN=...
 
 ## Enable Rust Logging
 export RUST_LOG=info 
