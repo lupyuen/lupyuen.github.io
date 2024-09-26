@@ -487,6 +487,8 @@ _What if Google starts charging for their LLM?_
 
 We'll scrounge around and switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh.
 
+TODO: Hike pic
+
 # What's Next
 
 TODO
