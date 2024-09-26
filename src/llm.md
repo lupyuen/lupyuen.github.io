@@ -53,7 +53,7 @@ __Overall:__
 
 This PR demonstrates a good understanding of NuttX requirements. Adding specific issue references and detailing the testing environment would further strengthen it.
 
-[(See the __Review Comment__)](https://github.com/apache/nuttx/pull/13546)
+[(See the __Review Comment__)](https://github.com/apache/nuttx/pull/13546#issuecomment-2361854435)
 
 </div>
 
@@ -154,7 +154,7 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 
 _Why "please be concise"?_
 
-Based on [__Community Feedback__](TODO), our Bot was getting way too chatty and naggy.
+Based on [__Community Feedback__](https://github.com/apache/nuttx/pull/13494#issuecomment-2360421272), our Bot was getting way too chatty and naggy.
 
 It's hard to control the LLM Output, hence we politely asked LLM to __tone down the response__. (And be a little less irritating)
 
@@ -255,19 +255,29 @@ This PR appears to meet the NuttX requirements. Here's a breakdown:
 This PR demonstrates a good understanding of NuttX requirements.  Adding specific issue references and detailing the testing environment would further strengthen it. 
 ```
 
-[(See the __Gemini Response__)](https://github.com/apache/nuttx/pull/13546)
+[(See the __Gemini Response__)](https://github.com/apache/nuttx/pull/13546#issuecomment-2361854435)
 
 </div>
 
 _But we didn't tell Gemini to respond in Markdown?_
 
-That's the beauty of __"LLM See, LLM Do"__! We fed it Markdown, so it produced Markdown too.
+That's the law of __"LLM See, LLM Do"__! We fed the input in Markdown Format, so it produced the output in Markdown Format too.
 
-TODO: Gemini Pro 1.5, 50 requests per day, free tier
+_Are we paying Google for the LLM?_
 
-# Handle the Gemini Failures
+Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](TODO) per day.
 
-TODO
+That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](TODO) and the [__NuttX Apps Repo__](TODO))
+
+# Fail Gracefully with Emojis
+
+TODO: Emoji Reactions
+
+Google Gemini API will sometimes fail with HTTP 500 (not sure why). And the Failed Request will be charged to our Daily Quota! So we retry at most 3 times, in case the PR has some problematic text that the LLM couldn't handle.
+
+How does our Bot know when to stop the retries? It uses Emoji Reactions to tag each attempt. So we will see the PR tagged with 🚀 which becomes 👀 which becomes 🚀👀 and then the Bot gives up. (If it's hunky dory, our Bot erases its own Emoji Reactions)
+
+TODO: Pic of Emoji Reactions
 
 # GitHub API
 
