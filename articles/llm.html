@@ -70,7 +70,7 @@
 <li><a href="#call-the-gemini-llm">3 Call the Gemini LLM</a><ul></ul></li>
 <li><a href="#fail-gracefully-with-emojis">4 Fail Gracefully with Emojis</a><ul></ul></li>
 <li><a href="#call-the-github-api">5 Call the GitHub API</a><ul></ul></li>
-<li><a href="#run-everything">6 Run Everything</a><ul></ul></li>
+<li><a href="#run-the-bot">6 Run The Bot</a><ul></ul></li>
 <li><a href="#all-things-considered">7 All Things Considered</a><ul></ul></li>
 <li><a href="#run-log">8 Run Log</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
@@ -362,9 +362,9 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
   .issues(owner, repo);
   .create_comment(pr_id, comment_text)
   .<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div>
-<h1 id="run-everything"><a class="doc-anchor" href="#run-everything">§</a>6 Run Everything</h1>
-<p>TODO: Handle PRs for NuttX Kernel and Apps every 10 minutes</p>
-<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
+<h1 id="run-the-bot"><a class="doc-anchor" href="#run-the-bot">§</a>6 Run The Bot</h1>
+<p><em>How to run our PR Review Bot?</em></p>
+<p>This is how we run our <strong>PR Review Bot</strong> to handle Pull Requests for NuttX Kernel Repo and NuttX Apps Repo, every 10 minutes: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Gemini Token: Browse to Google AI Studio &gt; Get API Key &gt; Create API Key &gt; Create API Key In New Project
 ## https://aistudio.google.com/app/apikey
 export GEMINI_API_KEY=...
@@ -383,6 +383,10 @@ export GITHUB_TOKEN=...
 export RUST_LOG=info 
 export RUST_BACKTRACE=1
 
+## Download our PR Review Bot
+git clone https://github.com/lupyuen/nuttx-pr-bot
+cd nuttx-pr-bot
+
 ## Handle PRs for NuttX Kernel and Apps every 10 minutes
 for (( ; ; ))
 do
@@ -395,6 +399,7 @@ do
   sleep 300
 done
 </code></pre></div>
+<p>TODO: Run Log</p>
 <p>TODO: See the <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091">discussion for NuttX PR Review Bot</a></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
 <p>TODO</p>
