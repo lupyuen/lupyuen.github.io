@@ -385,25 +385,14 @@ let comment = octocrab
 
 # Run Everything
 
-TODO
+TODO: Handle PRs for NuttX Kernel and Apps every 10 minutes
 
 [run.sh](https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Handle PRs for NuttX Kernel and Apps every 10 minutes
-
-## Update the repo
-git pull
-
-## Set the GitHub and Gemini Tokens
+## TODO: Set the GitHub and Gemini Tokens
 ## export GITHUB_TOKEN=...
 ## export GEMINI_API_KEY=...
-. $HOME/github-token.sh
-. $HOME/gemini-token.sh
-
-## Echo commands
-set -x
 
 ## Enable Rust Logging
 export RUST_LOG=info 
@@ -422,41 +411,7 @@ do
 done
 ```
 
-See the [discussion for NuttX PR Review Bot](https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091)
-
-```bash
-## See `run.sh` for the Complete Script
-
-## Browse to Google AI Studio > Get API Key > Create API Key > Create API Key In New Project
-## https://aistudio.google.com/app/apikey
-export GEMINI_API_KEY=...
-
-## GitHub Settings > Developer Settings > Tokens (Classic) > Generate New Token (Classic)
-## Check the following:
-## repo (Full control of private repositories)
-## repo:status (Access commit status)
-## repo_deployment (Access deployment status)
-## public_repo (Access public repositories)
-## repo:invite (Access repository invitations)
-## security_events (Read and write security events)
-export GITHUB_TOKEN=...
-
-## Enable Rust Logging
-export RUST_LOG=info 
-export RUST_BACKTRACE=1
-
-## Run the NuttX PR Bot once on NuttX Repo
-cargo run -- --owner apache --repo nuttx
-
-## Which will: Fetch the Latest 20 PRs
-##   If PR Status = Open
-##   And PR Comments don't exist
-##     Then Call Gemini API to Validate the PR
-##     And Post Gemini Response as PR Comment
-
-## For NuttX Apps Repo
-cargo run -- --owner apache --repo nuttx-apps
-```
+TODO: See the [discussion for NuttX PR Review Bot](https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091)
 
 # All Things Considered
 
