@@ -460,11 +460,11 @@ LLM has limitations...
 
 - Our LLM behaves as __Multiple Personas__? (Some extremely chatty and naggy)
 
-- Then again: Our [__LLM is Free__](TODO). And it doesn't rely on [__GitHub Runners__](TODO).
+- Then again: Our [__LLM is Free__](TODO). And it doesn't depend on [__GitHub Runners__](TODO).
 
 _What if Google starts charging for their LLM?_
 
-We'll switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh.
+We'll scrounge around and switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh.
 
 # What's Next
 
