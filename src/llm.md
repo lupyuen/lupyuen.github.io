@@ -311,11 +311,13 @@ async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Optio
 
 TODO: Pic of Emoji Reactions
 
-# GitHub API
+# Call the GitHub API
 
 TODO
 
-# TODO
+# Run Everything
+
+TODO
 
 [run.sh](https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh)
 
