@@ -287,7 +287,27 @@ Our Bot uses __Emoji Reactions__ to tag each attempt. We will see the Pull Reque
 | 👀 | Second Attempt |
 | 🚀👀 | Third Attempt |
 
-And then the Bot gives up. (If it's hunky dory, our Bot erases its own Emoji Reactions)
+And then the Bot gives up. If it's hunky dory, our Bot erases its own Emoji Reactions. We code it like this: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320)
+
+```rust
+/// Bump up the 2 PR Reactions: 00 > 01 > 10 > 11
+/// Position 0 is the Rocket Reaction, Position 1 is the Eye Reaction
+async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Option<u64>, Option<u64>)) -> 
+  Result<(), Box<dyn std::error::Error>> {
+  match reactions {
+    // (Rocket, Eye)
+    (None,     None)    => { create_reaction(issues, pr_id, ReactionContent::Rocket).await?; }
+    (Some(id), None)    => { delete_reaction(issues, pr_id, id).await?; create_reaction(issues, pr_id, ReactionContent::Eyes).await?; }
+    (None,     Some(_)) => { create_reaction(issues, pr_id, ReactionContent::Rocket).await?; }
+    (Some(_),  Some(_)) => { panic!("Reaction Overflow") }
+  }
+  Ok(())
+}
+```
+
+[(__create_reaction__ is here)](TODO)
+
+[(__delete_reaction__ is here)](TODO)
 
 TODO: Pic of Emoji Reactions
 
