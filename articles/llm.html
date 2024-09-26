@@ -307,8 +307,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <h1 id="call-the-github-api"><a class="doc-anchor" href="#call-the-github-api">§</a>5 Call the GitHub API</h1>
 <p><em>How do we fetch the Pull Request? And post the Review Comment?</em></p>
 <p>We call the GitHub API with the <a href="https://github.com/XAMPPRocky/octocrab"><strong>Octocrab Crate</strong></a>.</p>
-<p>TODO: Fetch the 20 Newest Pull Requests that are Open</p>
-<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115">main.rs</a></p>
+<p>Here we fetch the <strong>20 Newest Pull Requests</strong> that are Open: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the 20 Newest Pull Requests that are Open
 </span><span class="kw">let </span>pr_list = octocrab
@@ -328,8 +327,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
     .<span class="kw">await</span><span class="question-mark">?</span>;
   sleep(Duration::from_secs(<span class="number">5</span>));
 }</code></pre></div>
-<p>TODO: process_pr</p>
-<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194">main.rs</a></p>
+<p><strong>process_pr</strong> will read the PR Content: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Skip if PR contains Comments
 </span><span class="kw">if </span>pr.comments.unwrap() &gt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
@@ -354,10 +352,11 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <span class="kw">let </span>commits = commits.unwrap().items;
 
 <span class="comment">// Omitted: Check for Empty Commit Message</span></code></pre></div>
-<p>TODO: Post Comment</p>
-<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267">main.rs</a></p>
+<p>Then we <strong>Validate the PR Content</strong> with Gemini API and post the Gemini Response: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the PR Comment
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Omitted: Validate PR Body with Gemini LLM
+</span>...
+<span class="comment">// Post the PR Comment
 </span><span class="kw">let </span>comment = octocrab
   .issues(owner, repo);
   .create_comment(pr_id, comment_text)
@@ -402,6 +401,7 @@ done
 </code></pre></div>
 <p>And we’ll see this…</p>
 <p>TODO: Run Log</p>
+<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: See the <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091">discussion for NuttX PR Review Bot</a></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
 <p>TODO</p>
