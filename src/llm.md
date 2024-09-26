@@ -277,15 +277,15 @@ Thus we retry __up to 3 times__, in case the Pull Request has some problematic t
 
 _How does our Bot know when to stop the retries?_
 
-Our Bot uses __Emoji Reactions__ to tag each attempt. We will see the Pull Request tagged with...
+Our Bot uses __Emoji Reactions__ to tag each attempt. We'll see the Pull Request tagged with...
 
 |||
 |----|---------------|
-| 🚀 | First Attempt |
-| 👀 | Second Attempt |
-| 🚀👀 | Third Attempt |
+| 🚀 | _First Attempt_ |
+| 👀 | _Second Attempt_ |
+| 🚀👀 | _Third Attempt_ |
 
-<br> And then the Bot gives up. If it's hunky dory, our Bot erases its own Emoji Reactions. Our code does this: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320)
+<br> Then our Bot gives up. If it's hunky dory, our Bot erases its Emoji Reactions. Everything happens here: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320)
 
 ```rust
 /// Bump up the 2 PR Reactions: 00 > 01 > 10 > 11
