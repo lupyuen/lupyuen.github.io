@@ -388,15 +388,16 @@ cd nuttx-pr-bot
 ## Handle PRs for NuttX Kernel and Apps every 10 minutes
 for (( ; ; ))
 do
-  ## For NuttX Kernel Repo
+  ## For NuttX Kernel Repo: github.com/apache/nuttx
   cargo run -- --owner apache --repo nuttx
   sleep 300
 
-  ## For NuttX Apps Repo
+  ## For NuttX Apps Repo: github.com/apache/nuttx-apps
   cargo run -- --owner apache --repo nuttx-apps
   sleep 300
 done
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720">(Any GitHub ID will do. Don’t use a <strong>Privileged GitHub ID</strong>!)</a></p>
 <p>We’ll see this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run --owner apache --repo nuttx
 warning: use of deprecated method `octocrab::pulls::PullRequestHandler::&lt;&#39;octo&gt;::pull_number`: specific PR builder transitioned to pr_review_actions, reply_to_comment, reply_to_comment
