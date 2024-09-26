@@ -187,6 +187,8 @@ let input =
   &body;
 ```
 
+[(Thanks to the __TODO Crate__)](TODO)
+
 After composing the __LLM Prompt__ (PR Requirements + PR Contents), we send it to Gemini: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
 
 ```rust
