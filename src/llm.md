@@ -458,6 +458,18 @@ cargo run -- --owner apache --repo nuttx
 cargo run -- --owner apache --repo nuttx-apps
 ```
 
+# All Things Considered
+
+TODO
+
+Started as AI project? No, hike hallucination
+
+Still monitoring
+
+Inconsistency, can't force the output
+
+Different personas
+
 # Run Log
 
 TODO
