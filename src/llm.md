@@ -316,9 +316,7 @@ _How do we fetch the Pull Request? And post the Review Comment?_
 
 We call the GitHub API with the [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab).
 
-TODO: Fetch the 20 Newest Pull Requests that are Open
-
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
+Here we fetch the __20 Newest Pull Requests__ that are Open: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
 
 ```rust
 // Fetch the 20 Newest Pull Requests that are Open
@@ -341,9 +339,7 @@ for pr in pr_list {
 }
 ```
 
-TODO: process_pr
-
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194)
+__process_pr__ will read the PR Content: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L119-L194)
 
 ```rust
 // Skip if PR contains Comments
@@ -371,11 +367,11 @@ let commits = commits.unwrap().items;
 // Omitted: Check for Empty Commit Message
 ```
 
-TODO: Post Comment
-
-[main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267)
+Then we __Validate the PR Content__ with Gemini API and post the Gemini Response: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L261-L267)
 
 ```rust
+// Omitted: Validate PR Body with Gemini LLM
+...
 // Post the PR Comment
 let comment = octocrab
   .issues(owner, repo);
@@ -429,6 +425,8 @@ done
 And we'll see this...
 
 TODO: Run Log
+
+[(See the __Complete Log__)](TODO)
 
 TODO: See the [discussion for NuttX PR Review Bot](https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091)
 
