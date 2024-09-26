@@ -432,21 +432,65 @@ TODO: See the [discussion for NuttX PR Review Bot](https://github.com/apache/nut
 
 # All Things Considered
 
+_Something sounds super feeeshy about this AI Project? Very Hangyodon..._
+
+That's because it was __never meant__ to be an AI Project!
+
+- A bunch of us discussed the [__New Template__](https://github.com/apache/nuttx/pull/13494#issue-2528631514) for NuttX Pull Requests
+
+- But the New Template might be too [__onerous to enforce__](https://github.com/apache/nuttx/pull/13494#issuecomment-2354153887)
+
+- Then by sheer accident we thought: Why don't we let the [__machine enforce it__](https://github.com/apache/nuttx/pull/13494#issuecomment-2355202046)? (Thus the LLM and AI)
+
+- Or maybe we hallucinated the AI after a [__??? km overnight hike__](TODO)
+
+_How effective is our Bot in enforcing the PR Requirements?_
+
+We're still monitoring? Our Bot seems helpful for some NuttX Contributors, we noticed [__better quality__](https://github.com/apache/nuttx/pull/13494#issuecomment-2365235765) in some Pull Requests.
+
+Then again, our Bot might be [__too intimidating__](https://github.com/apache/nuttx/pull/13523) for some folks.
+
+_Is LLM the right tech for the job?_
+
+LLM has limitations...
+
+- We see [__inconsistency in the outputs__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326), yet we can't force the output
+
+- Sometimes the LLM will helpfully suggest an [__"Improved Summary"__](https://github.com/apache/nuttx/pull/13628#issuecomment-2376067862). Most of the time: [__It doesn't__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326).
+
+- Our LLM behaves as __Multiple Personas__? (Some extremely chatty and naggy)
+
+- Then again: Our [__LLM is Free__](TODO). And it doesn't rely on [__GitHub Runners__](TODO).
+
+_What if Google starts charging for their LLM?_
+
+We'll switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh.
+
+# What's Next
+
 TODO
 
-Started as AI project? No, hike hallucination
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
-Still monitoring
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
-Inconsistency, can't force the output
+-   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
 
-Different personas
+-   [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
 
-Free, doesn't rely on [__GitHub Runners__](TODO)
+-   [__Older Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
-_(What if Google starts charging for their LLM? We'll switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh)_
+-   [__Olderer Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
-# Run Log
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/llm.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/llm.md)
+
+# Appendix: Run Log
 
 TODO
 
@@ -1194,27 +1238,3 @@ warning: `nuttx-pr-bot` (bin "nuttx-pr-bot") generated 1 warning
 [2024-09-20T08:03:35Z INFO  nuttx_pr_bot] Skipping PR with comments: 13502
 + sleep 600  
 ```
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
-
--   [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__Older Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Olderer Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/llm.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/llm.md)
