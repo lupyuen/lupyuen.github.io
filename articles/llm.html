@@ -279,14 +279,14 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p>Gemini API will <strong>sometimes fail</strong> with HTTP 500 (not sure why). And the Failed Request will be <strong>counted in our Daily Quota</strong>! (50 per day)</p>
 <p>Thus we retry <strong>up to 3 times</strong>, in case the Pull Request has some problematic text that the LLM couldn’t handle.</p>
 <p><em>How does our Bot know when to stop the retries?</em></p>
-<p>Our Bot uses <strong>Emoji Reactions</strong> to tag each attempt. We will see the Pull Request tagged with…</p>
+<p>Our Bot uses <strong>Emoji Reactions</strong> to tag each attempt. We’ll see the Pull Request tagged with…</p>
 <div><table><thead><tr><th></th><th></th></tr></thead><tbody>
-<tr><td>🚀</td><td>First Attempt</td></tr>
-<tr><td>👀</td><td>Second Attempt</td></tr>
-<tr><td>🚀👀</td><td>Third Attempt</td></tr>
+<tr><td>🚀</td><td><em>First Attempt</em></td></tr>
+<tr><td>👀</td><td><em>Second Attempt</em></td></tr>
+<tr><td>🚀👀</td><td><em>Third Attempt</em></td></tr>
 </tbody></table>
 </div>
-<p><br> And then the Bot gives up. If it’s hunky dory, our Bot erases its own Emoji Reactions. Our code does this: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320">main.rs</a></p>
+<p><br> Then our Bot gives up. If it’s hunky dory, our Bot erases its Emoji Reactions. Everything happens here: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Bump up the 2 PR Reactions: 00 &gt; 01 &gt; 10 &gt; 11
 /// Position 0 is the Rocket Reaction, Position 1 is the Eye Reaction
