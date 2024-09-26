@@ -271,11 +271,23 @@ That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both 
 
 # Fail Gracefully with Emojis
 
-TODO: Emoji Reactions
+_Any gotchas with the Free Tier of Gemini LLM?_
 
-Google Gemini API will sometimes fail with HTTP 500 (not sure why). And the Failed Request will be charged to our Daily Quota! So we retry at most 3 times, in case the PR has some problematic text that the LLM couldn't handle.
+Gemini API will __sometimes fail__ with HTTP 500 (not sure why). And the Failed Request will be __counted in our Daily Quota__! (50 per day)
 
-How does our Bot know when to stop the retries? It uses Emoji Reactions to tag each attempt. So we will see the PR tagged with 🚀 which becomes 👀 which becomes 🚀👀 and then the Bot gives up. (If it's hunky dory, our Bot erases its own Emoji Reactions)
+Thus we retry __up to 3 times__, in case the Pull Request has some problematic text that the LLM couldn't handle.
+
+_How does our Bot know when to stop the retries?_
+
+Our Bot uses __Emoji Reactions__ to tag each attempt. We will see the Pull Request tagged with...
+
+|||
+|----|---------------|
+| 🚀 | First Attempt |
+| 👀 | Second Attempt |
+| 🚀👀 | Third Attempt |
+
+And then the Bot gives up. (If it's hunky dory, our Bot erases its own Emoji Reactions)
 
 TODO: Pic of Emoji Reactions
 
