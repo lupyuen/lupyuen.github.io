@@ -451,8 +451,6 @@ Skipping PR with comments: 13551
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-pr-bot?tab=readme-ov-file#run-log)
 
-TODO: See the [discussion for NuttX PR Review Bot](https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091)
-
 # All Things Considered
 
 _Something sounds super feeeshy about this AI Project? Very Hangyodon..._
