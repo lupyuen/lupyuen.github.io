@@ -363,22 +363,11 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
   .create_comment(pr_id, comment_text)
   .<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div>
 <h1 id="run-everything"><a class="doc-anchor" href="#run-everything">§</a>6 Run Everything</h1>
-<p>TODO</p>
+<p>TODO: Handle PRs for NuttX Kernel and Apps every 10 minutes</p>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Handle PRs for NuttX Kernel and Apps every 10 minutes
-
-## Update the repo
-git pull
-
-## Set the GitHub and Gemini Tokens
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Set the GitHub and Gemini Tokens
 ## export GITHUB_TOKEN=...
 ## export GEMINI_API_KEY=...
-. $HOME/github-token.sh
-. $HOME/gemini-token.sh
-
-## Echo commands
-set -x
 
 ## Enable Rust Logging
 export RUST_LOG=info 
@@ -396,39 +385,8 @@ do
   sleep 300
 done
 </code></pre></div>
-<p>See the <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091">discussion for NuttX PR Review Bot</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## See `run.sh` for the Complete Script
-
-## Browse to Google AI Studio &gt; Get API Key &gt; Create API Key &gt; Create API Key In New Project
-## https://aistudio.google.com/app/apikey
-export GEMINI_API_KEY=...
-
-## GitHub Settings &gt; Developer Settings &gt; Tokens (Classic) &gt; Generate New Token (Classic)
-## Check the following:
-## repo (Full control of private repositories)
-## repo:status (Access commit status)
-## repo_deployment (Access deployment status)
-## public_repo (Access public repositories)
-## repo:invite (Access repository invitations)
-## security_events (Read and write security events)
-export GITHUB_TOKEN=...
-
-## Enable Rust Logging
-export RUST_LOG=info 
-export RUST_BACKTRACE=1
-
-## Run the NuttX PR Bot once on NuttX Repo
-cargo run -- --owner apache --repo nuttx
-
-## Which will: Fetch the Latest 20 PRs
-##   If PR Status = Open
-##   And PR Comments don&#39;t exist
-##     Then Call Gemini API to Validate the PR
-##     And Post Gemini Response as PR Comment
-
-## For NuttX Apps Repo
-cargo run -- --owner apache --repo nuttx-apps
-</code></pre></div><h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
+<p>TODO: See the <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2357300091">discussion for NuttX PR Review Bot</a></p>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
 <p>TODO</p>
 <p>Started as AI project? No, hike hallucination</p>
 <p>Still monitoring</p>
