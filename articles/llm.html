@@ -68,7 +68,7 @@
 <li><a href="#pr-bot-in-action">1 PR Bot in Action</a><ul></ul></li>
 <li><a href="#requirements-for-pr-review">2 Requirements for PR Review</a><ul></ul></li>
 <li><a href="#call-the-gemini-llm">3 Call the Gemini LLM</a><ul></ul></li>
-<li><a href="#handle-the-gemini-failures">4 Handle the Gemini Failures</a><ul></ul></li>
+<li><a href="#fail-gracefully-with-emojis">4 Fail Gracefully with Emojis</a><ul></ul></li>
 <li><a href="#github-api">5 GitHub API</a><ul></ul></li>
 <li><a href="#todo">6 TODO</a><ul></ul></li>
 <li><a href="#run-log">7 Run Log</a><ul></ul></li>
@@ -108,7 +108,7 @@
 </ul>
 <p><strong>Overall:</strong></p>
 <p>This PR demonstrates a good understanding of NuttX requirements. Adding specific issue references and detailing the testing environment would further strengthen it.</p>
-<p><a href="https://github.com/apache/nuttx/pull/13546">(See the <strong>Review Comment</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/13546#issuecomment-2361854435">(See the <strong>Review Comment</strong>)</a></p>
 </div>
 <p>Hopefully this will be helpful to <strong>New Contributors</strong> to NuttX. And it might help the <strong>PR Reviewers</strong> too.</p>
 <p>How did this happen? We find out…</p>
@@ -183,7 +183,7 @@ Fix backtrace dump on assertions considering assertions triggered by tasks or du
 Internal CI testing with HW on all Xtensa-based devices [...more...]
 </code></pre></div>
 <p><em>Why “please be concise”?</em></p>
-<p>Based on <a href="TODO"><strong>Community Feedback</strong></a>, our Bot was getting way too chatty and naggy.</p>
+<p>Based on <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2360421272"><strong>Community Feedback</strong></a>, our Bot was getting way too chatty and naggy.</p>
 <p>It’s hard to control the LLM Output, hence we politely asked LLM to <strong>tone down the response</strong>. (And be a little less irritating)</p>
 <p>Also we excluded the Bot from Pull Requests that are <a href="TODO"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
 <p><em>Will our Bot get stuck in a loop? Forever replying to its own responses?</em></p>
@@ -267,13 +267,18 @@ This PR appears to meet the NuttX requirements. Here&#39;s a breakdown:
 
 This PR demonstrates a good understanding of NuttX requirements.  Adding specific issue references and detailing the testing environment would further strengthen it. 
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/pull/13546">(See the <strong>Gemini Response</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/13546#issuecomment-2361854435">(See the <strong>Gemini Response</strong>)</a></p>
 </div>
 <p><em>But we didn’t tell Gemini to respond in Markdown?</em></p>
-<p>That’s the beauty of <strong>“LLM See, LLM Do”</strong>! We fed it Markdown, so it produced Markdown too.</p>
-<p>TODO: Gemini Pro 1.5, 50 requests per day, free tier</p>
-<h1 id="handle-the-gemini-failures"><a class="doc-anchor" href="#handle-the-gemini-failures">§</a>4 Handle the Gemini Failures</h1>
-<p>TODO</p>
+<p>That’s the law of <strong>“LLM See, LLM Do”</strong>! We fed the input in Markdown Format, so it produced the output in Markdown Format too.</p>
+<p><em>Are we paying Google for the LLM?</em></p>
+<p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="TODO"><strong>50 LLM Requests</strong></a> per day.</p>
+<p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> and the <a href="TODO"><strong>NuttX Apps Repo</strong></a>)</p>
+<h1 id="fail-gracefully-with-emojis"><a class="doc-anchor" href="#fail-gracefully-with-emojis">§</a>4 Fail Gracefully with Emojis</h1>
+<p>TODO: Emoji Reactions</p>
+<p>Google Gemini API will sometimes fail with HTTP 500 (not sure why). And the Failed Request will be charged to our Daily Quota! So we retry at most 3 times, in case the PR has some problematic text that the LLM couldn’t handle.</p>
+<p>How does our Bot know when to stop the retries? It uses Emoji Reactions to tag each attempt. So we will see the PR tagged with 🚀 which becomes 👀 which becomes 🚀👀 and then the Bot gives up. (If it’s hunky dory, our Bot erases its own Emoji Reactions)</p>
+<p>TODO: Pic of Emoji Reactions</p>
 <h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>5 GitHub API</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
