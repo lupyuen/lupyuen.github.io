@@ -481,9 +481,9 @@ _Is LLM the right tech for the job?_
 
 LLM has limitations...
 
-- We see [__inconsistency in the outputs__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326), yet we can't force the output
+- We see [__inconsistency in the outputs__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326). Yet we can't force the output.
 
-- Sometimes the LLM will helpfully suggest an [__"Improved Summary"__](https://github.com/apache/nuttx/pull/13628#issuecomment-2376067862). Most of the time: [__It doesn't__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326).
+- Sometimes the LLM will helpfully suggest an [__"Improved Summary"__](https://github.com/apache/nuttx/pull/13628#issuecomment-2376067862). Most of the time: [__It doesn't__](https://github.com/apache/nuttx/pull/13575#issuecomment-2367182327).
 
 - The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? (Some extremely chatty and naggy)
 
@@ -491,7 +491,7 @@ LLM has limitations...
 
 _What if Google starts charging for their LLM?_
 
-We'll scrounge around and switch to another Free LLM. Yeah life gets tough for Open Source Projects sigh.
+We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [__Open Source Maintainers__](https://explore.tidelift.com/2024-survey) sigh.
 
 TODO: Hike pic
 
