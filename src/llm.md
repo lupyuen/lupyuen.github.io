@@ -410,15 +410,17 @@ cd nuttx-pr-bot
 ## Handle PRs for NuttX Kernel and Apps every 10 minutes
 for (( ; ; ))
 do
-  ## For NuttX Kernel Repo
+  ## For NuttX Kernel Repo: github.com/apache/nuttx
   cargo run -- --owner apache --repo nuttx
   sleep 300
 
-  ## For NuttX Apps Repo
+  ## For NuttX Apps Repo: github.com/apache/nuttx-apps
   cargo run -- --owner apache --repo nuttx-apps
   sleep 300
 done
 ```
+
+[(Any GitHub ID will do. Don't use a __Privileged GitHub ID__!)](https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720)
 
 We'll see this...
 
