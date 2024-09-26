@@ -286,7 +286,23 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <tr><td>🚀👀</td><td>Third Attempt</td></tr>
 </tbody></table>
 </div>
-<p>And then the Bot gives up. (If it’s hunky dory, our Bot erases its own Emoji Reactions)</p>
+<p>And then the Bot gives up. If it’s hunky dory, our Bot erases its own Emoji Reactions. We code it like this: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L306-L320">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Bump up the 2 PR Reactions: 00 &gt; 01 &gt; 10 &gt; 11
+/// Position 0 is the Rocket Reaction, Position 1 is the Eye Reaction
+</span><span class="kw">async fn </span>bump_reactions(issues: <span class="kw-2">&amp;</span>IssueHandler&lt;<span class="lifetime">'_</span>&gt;, pr_id: u64, reactions: (<span class="prelude-ty">Option</span>&lt;u64&gt;, <span class="prelude-ty">Option</span>&lt;u64&gt;)) -&gt; 
+  <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+  <span class="kw">match </span>reactions {
+    <span class="comment">// (Rocket, Eye)
+    </span>(<span class="prelude-val">None</span>,     <span class="prelude-val">None</span>)    =&gt; { create_reaction(issues, pr_id, ReactionContent::Rocket).<span class="kw">await</span><span class="question-mark">?</span>; }
+    (<span class="prelude-val">Some</span>(id), <span class="prelude-val">None</span>)    =&gt; { delete_reaction(issues, pr_id, id).<span class="kw">await</span><span class="question-mark">?</span>; create_reaction(issues, pr_id, ReactionContent::Eyes).<span class="kw">await</span><span class="question-mark">?</span>; }
+    (<span class="prelude-val">None</span>,     <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; { create_reaction(issues, pr_id, ReactionContent::Rocket).<span class="kw">await</span><span class="question-mark">?</span>; }
+    (<span class="prelude-val">Some</span>(<span class="kw">_</span>),  <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; { <span class="macro">panic!</span>(<span class="string">"Reaction Overflow"</span>) }
+  }
+  <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p><a href="TODO">(<strong>create_reaction</strong> is here)</a></p>
+<p><a href="TODO">(<strong>delete_reaction</strong> is here)</a></p>
 <p>TODO: Pic of Emoji Reactions</p>
 <h1 id="github-api"><a class="doc-anchor" href="#github-api">§</a>5 GitHub API</h1>
 <p>TODO</p>
