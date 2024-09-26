@@ -387,7 +387,7 @@ let comment = octocrab
 
 _How to run our PR Review Bot?_
 
-This is how we run our __PR Review Bot__ to handle Pull Requests for NuttX Kernel Repo and NuttX Apps Repo, every 10 minutes: [run.sh](https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh)
+This will run our __PR Review Bot__ to handle Pull Requests for NuttX Kernel Repo and NuttX Apps Repo, every 10 minutes: [run.sh](https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh)
 
 ```bash
 ## For Gemini Token: Browse to Google AI Studio > Get API Key > Create API Key > Create API Key In New Project
@@ -425,6 +425,8 @@ do
   sleep 300
 done
 ```
+
+And we'll see this...
 
 TODO: Run Log
 
