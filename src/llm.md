@@ -472,7 +472,7 @@ That's because it was __never meant__ to be an AI Project!
 
 _How effective is our Bot in enforcing the PR Requirements?_
 
-We're still monitoring? Our Bot seems helpful for some NuttX Contributors, we noticed [__better quality__](https://github.com/apache/nuttx/pull/13494#issuecomment-2365235765) in some Pull Requests.
+We're still monitoring? Our Bot seems helpful for newer NuttX Contributors, we noticed [__better quality__](https://github.com/apache/nuttx/pull/13494#issuecomment-2365235765) in some Pull Requests.
 
 Then again, our Bot might be [__too intimidating__](https://github.com/apache/nuttx/pull/13523) for some folks.
 
