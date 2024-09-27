@@ -484,7 +484,7 @@ LLM has limitations...
 
 - We see [__inconsistency in the outputs__](https://github.com/apache/nuttx/issues/13552#issuecomment-2367958326). Yet we can't force the output.
 
-- Sometimes the LLM will helpfully suggest [__"Example Improvements"__](https://github.com/apache/nuttx/pull/13638#issuecomment-2376471985) for easier copy-n-paste. Most of the time: [__It doesn't__](https://github.com/apache/nuttx/pull/13575#issuecomment-2367182327).
+- Sometimes the LLM will helpfully suggest [__"Example Improvements"__](https://github.com/apache/nuttx/pull/13669#issuecomment-2378828778) for easier copy-n-paste. Most of the time: [__It doesn't__](https://github.com/apache/nuttx/pull/13575#issuecomment-2367182327).
 
 - The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? (Some extremely chatty and naggy)
 
