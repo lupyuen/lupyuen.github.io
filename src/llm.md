@@ -328,7 +328,7 @@ async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Optio
 
 _How do we fetch the Pull Request? And post the Review Comment?_
 
-We call the GitHub API with the [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab). (Pic above)
+We call GitHub API with [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab). (Pic above)
 
 Here we fetch the __20 Newest Pull Requests__ that are Open: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
 
