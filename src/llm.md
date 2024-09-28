@@ -2,7 +2,7 @@
 
 📝 _30 Sep 2024_
 
-![TODO](https://lupyuen.github.io/images/llm-title.jpg)
+![TODO](https://lupyuen.github.io/images/llm-flow.jpg)
 
 We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](TODO).
 
@@ -10,9 +10,11 @@ This article explains...
 
 TODO: Sheer accident
 
+![TODO](https://lupyuen.github.io/images/llm-pr.jpg)
+
 # PR Bot in Action
 
-Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo...
+Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo (pic above)...
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
@@ -62,6 +64,8 @@ This PR demonstrates a good understanding of NuttX requirements. Adding specific
 Hopefully this will be helpful to __New Contributors__ to NuttX. And it might help the __PR Reviewers__ too.
 
 How did this happen? We find out...
+
+![TODO](https://lupyuen.github.io/images/llm-flow2.jpg)
 
 # Requirements for PR Review
 
@@ -165,6 +169,8 @@ Also we excluded the Bot from Pull Requests that are [__Extra Small__](TODO). (1
 _Will our Bot get stuck in a loop? Forever replying to its own responses?_
 
 Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](TODO).
+
+![TODO](https://lupyuen.github.io/images/llm-flow3.jpg)
 
 # Call the Gemini LLM
 
@@ -273,6 +279,8 @@ Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 
 
 That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](TODO) and the [__NuttX Apps Repo__](TODO))
 
+TODO: Pic of Emoji Reactions
+
 # Fail Gracefully with Emojis
 
 _Any gotchas with the Free Tier of Gemini LLM?_
@@ -312,7 +320,7 @@ async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Optio
 
 [(__delete_reaction__ is here)](TODO)
 
-TODO: Pic of Emoji Reactions
+![TODO](https://lupyuen.github.io/images/llm-flow4.jpg)
 
 # Call the GitHub API
 
@@ -382,6 +390,8 @@ let comment = octocrab
   .create_comment(pr_id, comment_text)
   .await?;
 ```
+
+![TODO](https://lupyuen.github.io/images/llm-pr.jpg)
 
 # Run The Bot
 
@@ -457,6 +467,8 @@ Skipping PR with comments: 13551
 ```
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-pr-bot?tab=readme-ov-file#run-log)
+
+![TODO](https://lupyuen.github.io/images/llm-flow.jpg)
 
 # All Things Considered
 
