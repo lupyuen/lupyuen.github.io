@@ -139,12 +139,12 @@
 <p><em>Our Bot gets really chatty and naggy. Why?</em></p>
 <p>That’s because we programmed it with a <strong>Long List of Requirements</strong> for PR Review (pic above), in Markdown Format: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
 <div style="margin-left: 5%; width: 90%; font-size:90%">
+<div class="example-wrap"><pre class="language-c"><code>/// Requirements for PR Review
+const REQUIREMENTS: &amp;str =
+r#####&quot;
+# Here are the requirements for a NuttX PR
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Requirements for PR Review
-</span><span class="kw">const </span>REQUIREMENTS: <span class="kw-2">&amp;</span>str =
-<span class="string">r#####"
-
-# Summary
+## Summary
 
 * Why change is necessary (fix, update, new feature)?
 * What functional part of the code is being changed?
@@ -152,7 +152,7 @@
 * Related [NuttX Issue](https://github.com/apache/nuttx/issues) reference if applicable.
 * Related NuttX Apps [Issue](https://github.com/apache/nuttx-apps/issues) / [Pull Request](https://github.com/apache/nuttx-apps/pulls) reference if applicable.
 
-# Impact
+## Impact
 
 * Is new feature added? Is existing feature changed?
 * Impact on user (will user need to adapt to change)? NO / YES (please describe if yes).
@@ -163,7 +163,7 @@
 * Impact on compatibility (backward/forward/interoperability)? NO / YES (please describe if yes).
 * Anything else to consider?
 
-# Testing
+## Testing
 
 I confirm that changes are verified on local setup and works as intended:
 * Build Host(s): OS (Linux,BSD,macOS,Windows,..), CPU(Intel,AMD,ARM), compiler(GCC,CLANG,version), etc.
@@ -172,7 +172,8 @@ I confirm that changes are verified on local setup and works as intended:
 Testing logs before change: _your testing logs here_
 
 Testing logs after change: _your testing logs here_
-"#####</span>;</code></pre></div>
+&quot;#####;
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/13494">(Thanks to <strong>Tomek Cedro</strong>)</a></p>
 </div>
 <p><em>But these are Human-Readable Requirements?</em></p>
