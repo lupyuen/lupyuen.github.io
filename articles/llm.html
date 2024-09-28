@@ -178,7 +178,7 @@ Testing logs after change: _your testing logs here_
 </div>
 <p><em>But these are Human-Readable Requirements?</em></p>
 <p>That’s the beauty of an LLM: We feed it the <strong>Human Text</strong>, then the LLM gets it (hopefully) and does what we expect it to do!</p>
-<p>It helps to <strong>define our requirements precisely</strong>, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.</p>
+<p>Remember to <strong>define our requirements precisely</strong>, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.</p>
 <p><a href="https://lupyuen.github.io/articles/chatgpt">(Which happened in our last <strong>LLM Experiment</strong>)</a></p>
 <p><em>How do we feed the PR Content to LLM?</em></p>
 <p>Our PR Requirements are in <strong>Markdown Format</strong>. Same for the PR Content.</p>
@@ -193,7 +193,7 @@ Testing logs after change: _your testing logs here_
 <p>Which will look like this…</p>
 <div class="example-wrap"><pre class="language-text"><code># Here are the requirements for a NuttX PR
 ## Summary [...requirements...]
-## Impact [...requirements...]
+## Impact  [...requirements...]
 ## Testing [...requirements...]
 
 # Does this PR meet the NuttX Requirements? Please be concise
@@ -230,7 +230,7 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
   <span class="string">"\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" </span>+
   <span class="kw-2">&amp;</span>body;</code></pre></div>
 <p><a href="https://github.com/avastmick/google-generative-ai-rs">(Thanks to <strong>google-generative-ai-rs</strong>)</a></p>
-<p>After composing the <strong>LLM Prompt</strong> (PR Requirements + PR Contents), we send it to Gemini: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
+<p>After composing the <strong>LLM Prompt</strong> (PR Requirements + PR Content), we send it to Gemini: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Gemini Request
 </span><span class="kw">let </span>txt_request = Request {
@@ -298,14 +298,14 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p><em>But we didn’t tell Gemini to respond in Markdown?</em></p>
 <p>That’s the law of <strong>“LLM See, LLM Do”</strong>! We fed the input in Markdown Format, so it produced the output in Markdown Format too.</p>
 <p><img src="https://lupyuen.github.io/images/llm-quota.png" alt="Gemini Pro 1.5 limits us to 50 LLM Requests per day" /></p>
-<p><em>Are we paying Google for the LLM?</em></p>
+<p><em>Are we paying for the LLM?</em></p>
 <p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="https://ai.google.dev/pricing"><strong>50 LLM Requests</strong></a> per day. (Pic above)</p>
 <p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="https://github.com/apache/nuttx/pulls"><strong>NuttX Kernel Repo</strong></a> and the <a href="https://github.com/apache/nuttx-apps/pulls"><strong>NuttX Apps Repo</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/llm-emoji.jpg" alt="Fail Gracefully with Emojis" /></p>
 <h1 id="fail-gracefully-with-emojis"><a class="doc-anchor" href="#fail-gracefully-with-emojis">§</a>4 Fail Gracefully with Emojis</h1>
 <p><em>Any gotchas with the Free Tier of Gemini LLM?</em></p>
 <p>Gemini API will <strong>sometimes fail</strong> with HTTP 500 (not sure why). And the Failed Request will be <strong>counted in our Daily Quota</strong>! (50 per day)</p>
-<p>Thus we retry <strong>up to 3 times</strong>, in case the Pull Request has some problematic text that the LLM couldn’t handle.</p>
+<p>Thus we retry <strong>up to 3 times</strong>, in case the Pull Request has problematic text that the LLM couldn’t handle.</p>
 <p><em>How does our Bot know when to stop the retries?</em></p>
 <p>Our Bot uses <strong>Emoji Reactions</strong> (pic above) to tag each attempt. We’ll see the Pull Request tagged with…</p>
 <div><table><thead><tr><th></th><th></th></tr></thead><tbody>
