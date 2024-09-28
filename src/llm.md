@@ -6,7 +6,7 @@
 
 We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
-This article explains how we...
+This article explains how we created the Bot in One Week...
 
 - TODO: PR Bot in Action
 
