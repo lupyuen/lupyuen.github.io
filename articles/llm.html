@@ -139,7 +139,7 @@
 <p><em>Our Bot gets really chatty and naggy. Why?</em></p>
 <p>That’s because we programmed it with a <strong>Long List of Requirements</strong> for PR Review (pic above), in Markdown Format: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
 <div style="margin-left: 5%; width: 90%; font-size:90%">
-<div class="example-wrap"><pre class="language-c"><code>/// Requirements for PR Review
+<div class="example-wrap"><pre class="language-text"><code>/// Requirements for PR Review
 const REQUIREMENTS: &amp;str =
 r#####&quot;
 # Here are the requirements for a NuttX PR
@@ -427,9 +427,10 @@ do
   sleep 300
 done
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720">(Any GitHub ID will do. Don’t use a <strong>Privileged GitHub ID</strong>!)</a></p>
-<p>We’ll see this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ cargo run --owner apache --repo nuttx
+<p>Any GitHub ID will do. Don’t use a <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720"><strong>Privileged GitHub ID</strong></a>!</p>
+<p>We’ll see…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Handle PRs for NuttX Kernel Repo: github.com/apache/nuttx
+$ cargo run --owner apache --repo nuttx
 warning: use of deprecated method `octocrab::pulls::PullRequestHandler::&lt;&#39;octo&gt;::pull_number`: specific PR builder transitioned to pr_review_actions, reply_to_comment, reply_to_comment
   --&gt; src/main.rs:141:10
 141 |         .pull_number(pr_id)
