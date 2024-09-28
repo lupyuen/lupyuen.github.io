@@ -18,7 +18,7 @@ This article explains how we created the LLM Bot in One Week...
 
 - Due to quirks in Gemini API: We use __Emoji Reactions__ to limit the API Calls
 
-- Though our LLM Bot was created by __Sheer Accident__
+- Though our LLM Bot was __Created by Accident__
 
   (It wasn't meant to be an AI Project!)
 
@@ -176,7 +176,9 @@ Based on [__Community Feedback__](https://github.com/apache/nuttx/pull/13494#iss
 
 It's hard to control the LLM Output, hence we politely asked LLM to __tone down the response__. (And be a little less irritating)
 
-Also we excluded the Bot from Pull Requests that are [__Extra Small__](https://lupyuen.github.io/articles/llm#call-the-github-api). (10 lines of code changes or fewer)
+Also we excluded the Bot from Pull Requests that are [__Extra Small__](https://lupyuen.github.io/articles/llm#call-the-github-api): 10 lines of code changes or fewer.
+
+[(Thanks to __Mateusz Szafoni__)](https://github.com/apache/nuttx/pull/13494#issuecomment-2360528437)
 
 _Will our Bot get stuck in a loop? Forever replying to its own responses?_
 
@@ -493,7 +495,7 @@ That's because it was __never meant__ to be an AI Project!
 
 - But the New Template might be too [__onerous to enforce__](https://github.com/apache/nuttx/pull/13494#issuecomment-2354153887)
 
-- Then by sheer accident we thought: Why don't we let the [__machine enforce it__](https://github.com/apache/nuttx/pull/13494#issuecomment-2355202046)? (Thus the LLM and AI)
+- Then by accident we thought: Why don't we let the [__machine enforce it__](https://github.com/apache/nuttx/pull/13494#issuecomment-2355202046)? (Thus the LLM and AI)
 
 - Or maybe we hallucinated the AI after a [__50 km overnight hike__](https://www.strava.com/activities/12427941691)
 
@@ -535,13 +537,15 @@ And that's how we created our __PR Review Bot__ in One Week...
 
 - Due to quirks in Gemini API: We use __Emoji Reactions__ to limit the API Calls
 
-- Though our LLM Bot was created by __Sheer Accident__
+- Though our LLM Bot was __Created by Accident__
 
   (It wasn't meant to be an AI Project!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=41683336)
 
 -   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
 

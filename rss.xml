@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>LLM Bot that reviews Pull Requests for Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/llm</link>
+            <description><![CDATA[We’re experimenting with an LLM Bot (Large Language Model) that will review Pull Requests for Apache NuttX RTOS. This article explains how we created the Bot in One Week... By sheer accident!]]></description>
+            <guid>https://lupyuen.github.io/articles/llm</guid>
+            <pubDate>Sun, 29 Sep 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Continuous Integration for Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/ci</link>
             <description><![CDATA[This article explains how Apache NuttX RTOS is running Continuous Integration with GitHub Actions. Every NuttX Pull Request will trigger 1,594 NuttX Builds!]]></description>
