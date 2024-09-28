@@ -450,11 +450,12 @@ do
 done
 ```
 
-[(Any GitHub ID will do. Don't use a __Privileged GitHub ID__!)](https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720)
+Any GitHub ID will do. Don't use a [__Privileged GitHub ID__](https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720)!
 
-We'll see this...
+We'll see...
 
 ```bash
+## Handle PRs for NuttX Kernel Repo: github.com/apache/nuttx
 $ cargo run --owner apache --repo nuttx
 warning: use of deprecated method `octocrab::pulls::PullRequestHandler::<'octo>::pull_number`: specific PR builder transitioned to pr_review_actions, reply_to_comment, reply_to_comment
   --> src/main.rs:141:10
