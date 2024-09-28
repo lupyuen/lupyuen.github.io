@@ -8,7 +8,7 @@ We're experimenting with an __LLM Bot__ (Large Language Model) that will review 
 
 This article explains how we created the LLM Bot in One Week...
 
-- We call the __GitHub API__ to fetch NuttX Pull Requests
+- We call __GitHub API__ to fetch NuttX Pull Requests
 
 - Append the PR Body to the __NuttX PR Requirements__
 
@@ -16,7 +16,7 @@ This article explains how we created the LLM Bot in One Week...
 
 - Our Bot posts the Gemini Response as a __PR Review Comment__
 
-- Due to quirks in the Gemini API: We use __Emoji Reactions__ to limit the API Calls
+- Due to quirks in Gemini API: We use __Emoji Reactions__ to limit the API Calls
 
 - Though our LLM Bot was created by __Sheer Accident__
 
@@ -526,7 +526,7 @@ We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [
 
 And that's how we created our __PR Review Bot__ in One Week...
 
-- We call the __GitHub API__ to fetch NuttX Pull Requests
+- We call __GitHub API__ to fetch NuttX Pull Requests
 
 - Append the PR Body to the __NuttX PR Requirements__
 
@@ -534,7 +534,7 @@ And that's how we created our __PR Review Bot__ in One Week...
 
 - Our Bot posts the Gemini Response as a __PR Review Comment__
 
-- Due to quirks in the Gemini API: We use __Emoji Reactions__ to limit the API Calls
+- Due to quirks in Gemini API: We use __Emoji Reactions__ to limit the API Calls
 
 - Though our LLM Bot was created by __Sheer Accident__
 
