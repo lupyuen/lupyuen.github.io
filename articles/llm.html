@@ -72,31 +72,29 @@
 <li><a href="#call-the-github-api">5 Call the GitHub API</a><ul></ul></li>
 <li><a href="#run-the-bot">6 Run The Bot</a><ul></ul></li>
 <li><a href="#all-things-considered">7 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="LLM Bot that reviews Pull Requests for Apache NuttX RTOS" /></p>
 <p>We’re experimenting with an <strong>LLM Bot</strong> (Large Language Model) that will review Pull Requests for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
-<p>This article explains how we created the Bot in One Week…</p>
+<p>This article explains how we created the LLM Bot in One Week…</p>
 <ul>
 <li>
-<p>TODO: PR Bot in Action</p>
+<p>We call the <strong>GitHub API</strong> to fetch NuttX Pull Requests</p>
 </li>
 <li>
-<p>TODO: 2 Requirements for PR Review</p>
+<p>Append the PR Body to the <strong>NuttX PR Requirements</strong></p>
 </li>
 <li>
-<p>TODO: 3 Call the Gemini LLM</p>
+<p>Which becomes the <strong>LLM Prompt</strong> that we send to <strong>Gemini API</strong></p>
 </li>
 <li>
-<p>TODO: 4 Fail Gracefully with Emojis</p>
+<p>Our Bot posts the Gemini Response as a <strong>PR Review Comment</strong></p>
 </li>
 <li>
-<p>TODO: 5 Call the GitHub API</p>
+<p>Due to quirks in the Gemini API: We use <strong>Emoji Reactions</strong> to limit the API Calls</p>
 </li>
 <li>
-<p>TODO: 6 Run The Bot</p>
-</li>
-<li>
-<p>TODO: Sheer accident</p>
+<p>Though our LLM Bot was created by <strong>Sheer Accident</strong></p>
+<p>(It wasn’t meant to be an AI Project!)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/llm-pr.jpg" alt="Pull Request for NuttX Repo" /></p>
@@ -498,7 +496,28 @@ Skipping PR with comments: 13551
 <p><img src="https://lupyuen.github.io/images/llm-hike.jpg" alt="50 km overnight hike will cause hallucinations" /></p>
 </blockquote>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
-<p>TODO: One week of work!</p>
+<p>And that’s how we created our <strong>PR Review Bot</strong> in One Week…</p>
+<ul>
+<li>
+<p>We call the <strong>GitHub API</strong> to fetch NuttX Pull Requests</p>
+</li>
+<li>
+<p>Append the PR Body to the <strong>NuttX PR Requirements</strong></p>
+</li>
+<li>
+<p>Which becomes the <strong>LLM Prompt</strong> that we send to <strong>Gemini API</strong></p>
+</li>
+<li>
+<p>Our Bot posts the Gemini Response as a <strong>PR Review Comment</strong></p>
+</li>
+<li>
+<p>Due to quirks in the Gemini API: We use <strong>Emoji Reactions</strong> to limit the API Calls</p>
+</li>
+<li>
+<p>Though our LLM Bot was created by <strong>Sheer Accident</strong></p>
+<p>(It wasn’t meant to be an AI Project!)</p>
+</li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
