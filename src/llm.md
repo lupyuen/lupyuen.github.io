@@ -87,7 +87,7 @@ That's because we programmed it with a __Long List of Requirements__ for PR Revi
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
-```c
+```text
 /// Requirements for PR Review
 const REQUIREMENTS: &str =
 r#####"
