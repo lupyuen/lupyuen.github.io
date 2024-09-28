@@ -132,7 +132,7 @@ _But these are Human-Readable Requirements?_
 
 That's the beauty of an LLM: We feed it the __Human Text__, then the LLM gets it (hopefully) and does what we expect it to do!
 
-It helps to __define our requirements precisely__, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.
+Remember to __define our requirements precisely__, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.
 
 [(Which happened in our last __LLM Experiment__)](https://lupyuen.github.io/articles/chatgpt)
 
@@ -156,7 +156,7 @@ Which will look like this...
 ```text
 # Here are the requirements for a NuttX PR
 ## Summary [...requirements...]
-## Impact [...requirements...]
+## Impact  [...requirements...]
 ## Testing [...requirements...]
 
 # Does this PR meet the NuttX Requirements? Please be concise
@@ -207,7 +207,7 @@ let input =
 
 [(Thanks to __google-generative-ai-rs__)](https://github.com/avastmick/google-generative-ai-rs)
 
-After composing the __LLM Prompt__ (PR Requirements + PR Contents), we send it to Gemini: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
+After composing the __LLM Prompt__ (PR Requirements + PR Content), we send it to Gemini: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
 
 ```rust
 // Compose the Gemini Request
@@ -287,7 +287,7 @@ That's the law of __"LLM See, LLM Do"__! We fed the input in Markdown Format, so
 
 ![Gemini Pro 1.5 limits us to 50 LLM Requests per day](https://lupyuen.github.io/images/llm-quota.png)
 
-_Are we paying Google for the LLM?_
+_Are we paying for the LLM?_
 
 Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](https://ai.google.dev/pricing) per day. (Pic above)
 
@@ -301,7 +301,7 @@ _Any gotchas with the Free Tier of Gemini LLM?_
 
 Gemini API will __sometimes fail__ with HTTP 500 (not sure why). And the Failed Request will be __counted in our Daily Quota__! (50 per day)
 
-Thus we retry __up to 3 times__, in case the Pull Request has some problematic text that the LLM couldn't handle.
+Thus we retry __up to 3 times__, in case the Pull Request has problematic text that the LLM couldn't handle.
 
 _How does our Bot know when to stop the retries?_
 
