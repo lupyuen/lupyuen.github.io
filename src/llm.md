@@ -512,7 +512,7 @@ We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [
 
 # What's Next
 
-TODO
+TODO: One week of work!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
