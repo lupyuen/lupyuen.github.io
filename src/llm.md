@@ -1,26 +1,26 @@
 # LLM Bot that reviews Pull Requests for Apache NuttX RTOS
 
-📝 _30 Sep 2024_
+📝 _29 Sep 2024_
 
 ![LLM Bot that reviews Pull Requests for Apache NuttX RTOS](https://lupyuen.github.io/images/llm-flow.jpg)
 
 We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
-This article explains how we created the Bot in One Week...
+This article explains how we created the LLM Bot in One Week...
 
-- TODO: PR Bot in Action
+- We call the __GitHub API__ to fetch NuttX Pull Requests
 
-- TODO: 2 Requirements for PR Review
+- Append the PR Body to the __NuttX PR Requirements__
 
-- TODO: 3 Call the Gemini LLM
+- Which becomes the __LLM Prompt__ that we send to __Gemini API__
 
-- TODO: 4 Fail Gracefully with Emojis
+- Our Bot posts the Gemini Response as a __PR Review Comment__
 
-- TODO: 5 Call the GitHub API
+- Due to quirks in the Gemini API: We use __Emoji Reactions__ to limit the API Calls
 
-- TODO: 6 Run The Bot
+- Though our LLM Bot was created by __Sheer Accident__
 
-- TODO: Sheer accident
+  (It wasn't meant to be an AI Project!)
 
 ![Pull Request for NuttX Repo](https://lupyuen.github.io/images/llm-pr.jpg)
 
@@ -524,7 +524,21 @@ We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [
 
 # What's Next
 
-TODO: One week of work!
+And that's how we created our __PR Review Bot__ in One Week...
+
+- We call the __GitHub API__ to fetch NuttX Pull Requests
+
+- Append the PR Body to the __NuttX PR Requirements__
+
+- Which becomes the __LLM Prompt__ that we send to __Gemini API__
+
+- Our Bot posts the Gemini Response as a __PR Review Comment__
+
+- Due to quirks in the Gemini API: We use __Emoji Reactions__ to limit the API Calls
+
+- Though our LLM Bot was created by __Sheer Accident__
+
+  (It wasn't meant to be an AI Project!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
