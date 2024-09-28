@@ -71,7 +71,7 @@ How did this happen? We find out...
 
 _Our Bot gets really chatty and naggy. Why?_
 
-That's because we programmed it with a __Long List of Requirements__ for PR Review, in Markdown Format: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66)
+That's because we programmed it with a __Long List of Requirements__ for PR Review (pic above), in Markdown Format: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66)
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
@@ -228,7 +228,7 @@ let response_text =
   .text.clone().unwrap();
 ```
 
-__Gemini Response__ will be in Markdown Format...
+__Gemini Response__ will be in Markdown Format (pic above)...
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
@@ -273,9 +273,11 @@ _But we didn't tell Gemini to respond in Markdown?_
 
 That's the law of __"LLM See, LLM Do"__! We fed the input in Markdown Format, so it produced the output in Markdown Format too.
 
+![TODO](https://lupyuen.github.io/images/llm-quota.png)
+
 _Are we paying Google for the LLM?_
 
-Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](TODO) per day.
+Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](TODO) per day. (Pic above)
 
 That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](TODO) and the [__NuttX Apps Repo__](TODO))
 
@@ -291,7 +293,7 @@ Thus we retry __up to 3 times__, in case the Pull Request has some problematic t
 
 _How does our Bot know when to stop the retries?_
 
-Our Bot uses __Emoji Reactions__ to tag each attempt. We'll see the Pull Request tagged with...
+Our Bot uses __Emoji Reactions__ (pic above) to tag each attempt. We'll see the Pull Request tagged with...
 
 |||
 |----|---------------|
@@ -326,7 +328,7 @@ async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Optio
 
 _How do we fetch the Pull Request? And post the Review Comment?_
 
-We call the GitHub API with the [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab).
+We call the GitHub API with the [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab). (Pic above)
 
 Here we fetch the __20 Newest Pull Requests__ that are Open: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
 
