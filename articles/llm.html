@@ -117,7 +117,7 @@
 <p><img src="https://lupyuen.github.io/images/llm-flow2.jpg" alt="TODO" /></p>
 <h1 id="requirements-for-pr-review"><a class="doc-anchor" href="#requirements-for-pr-review">§</a>2 Requirements for PR Review</h1>
 <p><em>Our Bot gets really chatty and naggy. Why?</em></p>
-<p>That’s because we programmed it with a <strong>Long List of Requirements</strong> for PR Review, in Markdown Format: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
+<p>That’s because we programmed it with a <strong>Long List of Requirements</strong> for PR Review (pic above), in Markdown Format: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Requirements for PR Review
@@ -239,7 +239,7 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
   .candidates.first().unwrap()
   .content.parts.first().unwrap()
   .text.clone().unwrap();</code></pre></div>
-<p><strong>Gemini Response</strong> will be in Markdown Format…</p>
+<p><strong>Gemini Response</strong> will be in Markdown Format (pic above)…</p>
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 <div class="example-wrap"><pre class="language-text"><code>## NuttX PR Requirements Review
 
@@ -276,8 +276,9 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 </div>
 <p><em>But we didn’t tell Gemini to respond in Markdown?</em></p>
 <p>That’s the law of <strong>“LLM See, LLM Do”</strong>! We fed the input in Markdown Format, so it produced the output in Markdown Format too.</p>
+<p><img src="https://lupyuen.github.io/images/llm-quota.png" alt="TODO" /></p>
 <p><em>Are we paying Google for the LLM?</em></p>
-<p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="TODO"><strong>50 LLM Requests</strong></a> per day.</p>
+<p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="TODO"><strong>50 LLM Requests</strong></a> per day. (Pic above)</p>
 <p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> and the <a href="TODO"><strong>NuttX Apps Repo</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/llm-emoji.jpg" alt="TODO" /></p>
 <h1 id="fail-gracefully-with-emojis"><a class="doc-anchor" href="#fail-gracefully-with-emojis">§</a>4 Fail Gracefully with Emojis</h1>
@@ -285,7 +286,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p>Gemini API will <strong>sometimes fail</strong> with HTTP 500 (not sure why). And the Failed Request will be <strong>counted in our Daily Quota</strong>! (50 per day)</p>
 <p>Thus we retry <strong>up to 3 times</strong>, in case the Pull Request has some problematic text that the LLM couldn’t handle.</p>
 <p><em>How does our Bot know when to stop the retries?</em></p>
-<p>Our Bot uses <strong>Emoji Reactions</strong> to tag each attempt. We’ll see the Pull Request tagged with…</p>
+<p>Our Bot uses <strong>Emoji Reactions</strong> (pic above) to tag each attempt. We’ll see the Pull Request tagged with…</p>
 <div><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td>🚀</td><td><em>First Attempt</em></td></tr>
 <tr><td>👀</td><td><em>Second Attempt</em></td></tr>
@@ -311,7 +312,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 <p><img src="https://lupyuen.github.io/images/llm-flow4.jpg" alt="TODO" /></p>
 <h1 id="call-the-github-api"><a class="doc-anchor" href="#call-the-github-api">§</a>5 Call the GitHub API</h1>
 <p><em>How do we fetch the Pull Request? And post the Review Comment?</em></p>
-<p>We call the GitHub API with the <a href="https://github.com/XAMPPRocky/octocrab"><strong>Octocrab Crate</strong></a>.</p>
+<p>We call the GitHub API with the <a href="https://github.com/XAMPPRocky/octocrab"><strong>Octocrab Crate</strong></a>. (Pic above)</p>
 <p>Here we fetch the <strong>20 Newest Pull Requests</strong> that are Open: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the 20 Newest Pull Requests that are Open
