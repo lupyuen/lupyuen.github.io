@@ -73,13 +73,13 @@
 <li><a href="#run-the-bot">6 Run The Bot</a><ul></ul></li>
 <li><a href="#all-things-considered">7 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="TODO" /></p>
-<p>We’re experimenting with an <strong>LLM Bot</strong> (Large Language Model) that will review Pull Requests for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="LLM Bot that reviews Pull Requests for Apache NuttX RTOS" /></p>
+<p>We’re experimenting with an <strong>LLM Bot</strong> (Large Language Model) that will review Pull Requests for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>This article explains…</p>
 <p>TODO: Sheer accident</p>
-<p><img src="https://lupyuen.github.io/images/llm-pr.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/llm-pr.jpg" alt="Pull Request for NuttX Repo" /></p>
 <h1 id="pr-bot-in-action"><a class="doc-anchor" href="#pr-bot-in-action">§</a>1 PR Bot in Action</h1>
-<p>Suppose we <a href="TODO"><strong>Submit a Pull Request</strong></a> to the NuttX Repo (pic above)…</p>
+<p>Suppose we <a href="https://github.com/apache/nuttx/pulls"><strong>Submit a Pull Request</strong></a> to the NuttX Repo (pic above)…</p>
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 <p><strong>Summary</strong> <br>
 <em>Document stack and backtrace dump for Espressif SoCs […more…]</em></p>
@@ -114,7 +114,7 @@
 </div>
 <p>Hopefully this will be helpful to <strong>New Contributors</strong> to NuttX. And it might help the <strong>PR Reviewers</strong> too.</p>
 <p>What just happened? We find out…</p>
-<p><img src="https://lupyuen.github.io/images/llm-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/llm-flow2.jpg" alt="Requirements for PR Review" /></p>
 <h1 id="requirements-for-pr-review"><a class="doc-anchor" href="#requirements-for-pr-review">§</a>2 Requirements for PR Review</h1>
 <p><em>Our Bot gets really chatty and naggy. Why?</em></p>
 <p>That’s because we programmed it with a <strong>Long List of Requirements</strong> for PR Review (pic above), in Markdown Format: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L24-L66">main.rs</a></p>
@@ -153,12 +153,12 @@ Testing logs before change: _your testing logs here_
 
 Testing logs after change: _your testing logs here_
 "#####</span>;</code></pre></div>
-<p><a href="TODO">(Thanks to <strong>Tomek Cedro</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/13494">(Thanks to <strong>Tomek Cedro</strong>)</a></p>
 </div>
 <p><em>But these are Human-Readable Requirements?</em></p>
 <p>That’s the beauty of an LLM: We feed it the <strong>Human Text</strong>, then the LLM gets it (hopefully) and does what we expect it to do!</p>
 <p>It helps to <strong>define our requirements precisely</strong>, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.</p>
-<p><a href="TODO">(Which happened in our last <strong>LLM Experiment</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/chatgpt">(Which happened in our last <strong>LLM Experiment</strong>)</a></p>
 <p><em>How do we feed the PR Content to LLM?</em></p>
 <p>Our PR Requirements are in <strong>Markdown Format</strong>. Same for the PR Content.</p>
 <p>Thus we meld them together into <strong>One Long Markdown Doc</strong> and feed to LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L218">main.rs</a></p>
@@ -188,13 +188,13 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
 <p><em>Why “please be concise”?</em></p>
 <p>Based on <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2360421272"><strong>Community Feedback</strong></a>, our Bot was getting way too chatty and naggy.</p>
 <p>It’s hard to control the LLM Output, hence we politely asked LLM to <strong>tone down the response</strong>. (And be a little less irritating)</p>
-<p>Also we excluded the Bot from Pull Requests that are <a href="TODO"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
+<p>Also we excluded the Bot from Pull Requests that are <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>Extra Small</strong></a>. (10 lines of code changes or fewer)</p>
 <p><em>Will our Bot get stuck in a loop? Forever replying to its own responses?</em></p>
-<p>Nope it won’t. Our Bot will skip <a href="TODO"><strong>Pull Requests that have Comments</strong></a>.</p>
-<p><img src="https://lupyuen.github.io/images/llm-flow3.jpg" alt="TODO" /></p>
+<p>Nope it won’t. Our Bot will skip <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>Pull Requests that have Comments</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/llm-flow3.jpg" alt="Call the Gemini LLM" /></p>
 <h1 id="call-the-gemini-llm"><a class="doc-anchor" href="#call-the-gemini-llm">§</a>3 Call the Gemini LLM</h1>
 <p><em>How are we running the LLM?</em></p>
-<p>We call <a href="TODO"><strong>Gemini Pro 1.5</strong></a> for the LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212">main.rs</a></p>
+<p>We call <a href="https://ai.google.dev/gemini-api/docs"><strong>Gemini Pro 1.5</strong></a> for the LLM: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the Gemini Client (Pro 1.5)
 </span><span class="kw">let </span>client = Client::new_from_model(
@@ -208,7 +208,7 @@ Internal CI testing with HW on all Xtensa-based devices [...more...]
   REQUIREMENTS.to_string() +
   <span class="string">"\n\n# Does this PR meet the NuttX Requirements? Please be concise\n\n" </span>+
   <span class="kw-2">&amp;</span>body;</code></pre></div>
-<p><a href="TODO">(Thanks to the <strong>TODO Crate</strong>)</a></p>
+<p><a href="https://github.com/avastmick/google-generative-ai-rs">(Thanks to <strong>google-generative-ai-rs</strong>)</a></p>
 <p>After composing the <strong>LLM Prompt</strong> (PR Requirements + PR Contents), we send it to Gemini: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Gemini Request
@@ -276,11 +276,11 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
 </div>
 <p><em>But we didn’t tell Gemini to respond in Markdown?</em></p>
 <p>That’s the law of <strong>“LLM See, LLM Do”</strong>! We fed the input in Markdown Format, so it produced the output in Markdown Format too.</p>
-<p><img src="https://lupyuen.github.io/images/llm-quota.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/llm-quota.png" alt="Gemini Pro 1.5 limits us to 50 LLM Requests per day" /></p>
 <p><em>Are we paying Google for the LLM?</em></p>
-<p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="TODO"><strong>50 LLM Requests</strong></a> per day. (Pic above)</p>
-<p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> and the <a href="TODO"><strong>NuttX Apps Repo</strong></a>)</p>
-<p><img src="https://lupyuen.github.io/images/llm-emoji.jpg" alt="TODO" /></p>
+<p>Right now we call the <strong>Free Tier</strong> of Gemini Pro 1.5. Which limits us to <a href="https://ai.google.dev/pricing"><strong>50 LLM Requests</strong></a> per day. (Pic above)</p>
+<p>That’s sufficient to review <strong>50 Pull Requests</strong> for NuttX every day. (For both the <a href="https://github.com/apache/nuttx/pulls"><strong>NuttX Kernel Repo</strong></a> and the <a href="https://github.com/apache/nuttx-apps/pulls"><strong>NuttX Apps Repo</strong></a>)</p>
+<p><img src="https://lupyuen.github.io/images/llm-emoji.jpg" alt="Fail Gracefully with Emojis" /></p>
 <h1 id="fail-gracefully-with-emojis"><a class="doc-anchor" href="#fail-gracefully-with-emojis">§</a>4 Fail Gracefully with Emojis</h1>
 <p><em>Any gotchas with the Free Tier of Gemini LLM?</em></p>
 <p>Gemini API will <strong>sometimes fail</strong> with HTTP 500 (not sure why). And the Failed Request will be <strong>counted in our Daily Quota</strong>! (50 per day)</p>
@@ -307,9 +307,9 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
   }
   <span class="prelude-val">Ok</span>(())
 }</code></pre></div>
-<p><a href="TODO">(<strong>create_reaction</strong> is here)</a></p>
-<p><a href="TODO">(<strong>delete_reaction</strong> is here)</a></p>
-<p><img src="https://lupyuen.github.io/images/llm-flow4.jpg" alt="TODO" /></p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L333-L341">(<strong>create_reaction</strong> is here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L341-L348">(<strong>delete_reaction</strong> is here)</a></p>
+<p><img src="https://lupyuen.github.io/images/llm-flow4.jpg" alt="Call the GitHub API" /></p>
 <h1 id="call-the-github-api"><a class="doc-anchor" href="#call-the-github-api">§</a>5 Call the GitHub API</h1>
 <p><em>How do we fetch the Pull Request? And post the Review Comment?</em></p>
 <p>We call the GitHub API with the <a href="https://github.com/XAMPPRocky/octocrab"><strong>Octocrab Crate</strong></a>. (Pic above)</p>
@@ -367,7 +367,7 @@ This PR demonstrates a good understanding of NuttX requirements.  Adding specifi
   .issues(owner, repo);
   .create_comment(pr_id, comment_text)
   .<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/llm-pr.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/llm-pr.jpg" alt="Pull Request for NuttX Repo" /></p>
 <h1 id="run-the-bot"><a class="doc-anchor" href="#run-the-bot">§</a>6 Run The Bot</h1>
 <p><em>How to run our PR Review Bot?</em></p>
 <p>This will run our <strong>PR Review Bot</strong> to handle Pull Requests for NuttX Kernel Repo and NuttX Apps Repo, every 10 minutes: <a href="https://github.com/lupyuen/nuttx-pr-bot/blob/main/run.sh">run.sh</a></p>
@@ -433,7 +433,7 @@ https://api.github.com/repos/apache/nuttx/pulls/13551
 Skipping PR with comments: 13551
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot?tab=readme-ov-file#run-log">(See the <strong>Complete Log</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="LLM Bot that reviews Pull Requests for Apache NuttX RTOS" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
 <p><em>Something sounds super feeeshy about this AI Project? Very Hangyodon…</em></p>
 <p>That’s because it was <strong>never meant</strong> to be an AI Project!</p>
@@ -467,7 +467,7 @@ Skipping PR with comments: 13551
 <p>The LLM behaves as <a href="https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849"><strong>Multiple Personas</strong></a>? (Some extremely chatty and naggy)</p>
 </li>
 <li>
-<p>Then again: The <a href="TODO"><strong>LLM is Free</strong></a>. And it doesn’t depend on <a href="TODO"><strong>GitHub Runners</strong></a>.</p>
+<p>Then again: The <a href="https://lupyuen.github.io/articles/llm#call-the-gemini-llm"><strong>LLM is Free</strong></a>. And it doesn’t depend on <a href="https://lupyuen.github.io/articles/ci"><strong>GitHub Runners</strong></a>.</p>
 </li>
 </ul>
 <p><em>What if Google starts charging for their LLM?</em></p>
