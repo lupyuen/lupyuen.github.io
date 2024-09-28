@@ -279,7 +279,7 @@ Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 
 
 That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](TODO) and the [__NuttX Apps Repo__](TODO))
 
-TODO: Pic of Emoji Reactions
+![TODO](https://lupyuen.github.io/images/llm-emoji.jpg)
 
 # Fail Gracefully with Emojis
 
@@ -506,7 +506,7 @@ _What if Google starts charging for their LLM?_
 
 We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [__Open Source Maintainers__](https://explore.tidelift.com/2024-survey) sigh.
 
-TODO: Hike pic
+![TODO](https://lupyuen.github.io/images/llm-hike.jpg)
 
 # What's Next
 
