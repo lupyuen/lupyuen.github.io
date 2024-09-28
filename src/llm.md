@@ -482,7 +482,7 @@ That's because it was __never meant__ to be an AI Project!
 
 - Then by sheer accident we thought: Why don't we let the [__machine enforce it__](https://github.com/apache/nuttx/pull/13494#issuecomment-2355202046)? (Thus the LLM and AI)
 
-- Or maybe we hallucinated the AI after a [__??? km overnight hike__](TODO)
+- Or maybe we hallucinated the AI after a [__50 km overnight hike__](https://www.strava.com/activities/12427941691)
 
 _How effective is our Bot in enforcing the PR Requirements?_
 
@@ -506,7 +506,7 @@ _What if Google starts charging for their LLM?_
 
 We'll scrounge around and switch to another Free LLM. Yeah life gets tough for [__Open Source Maintainers__](https://explore.tidelift.com/2024-survey) sigh.
 
-![TODO](https://lupyuen.github.io/images/llm-hike.jpg)
+> ![50 km overnight hike will cause hallucinations](https://lupyuen.github.io/images/llm-hike.jpg)
 
 # What's Next
 
