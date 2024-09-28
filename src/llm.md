@@ -450,9 +450,7 @@ do
 done
 ```
 
-Any GitHub ID will do. Don't use a [__Privileged GitHub ID__](https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720)!
-
-We'll see...
+Any GitHub ID will do. Don't use a [__Privileged GitHub ID__](https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720)! We'll see...
 
 ```bash
 ## Handle PRs for NuttX Kernel Repo: github.com/apache/nuttx
