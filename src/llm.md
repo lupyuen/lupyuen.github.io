@@ -2,19 +2,19 @@
 
 📝 _30 Sep 2024_
 
-![TODO](https://lupyuen.github.io/images/llm-flow.jpg)
+![LLM Bot that reviews Pull Requests for Apache NuttX RTOS](https://lupyuen.github.io/images/llm-flow.jpg)
 
-We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](TODO).
+We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
 This article explains...
 
 TODO: Sheer accident
 
-![TODO](https://lupyuen.github.io/images/llm-pr.jpg)
+![Pull Request for NuttX Repo](https://lupyuen.github.io/images/llm-pr.jpg)
 
 # PR Bot in Action
 
-Suppose we [__Submit a Pull Request__](TODO) to the NuttX Repo (pic above)...
+Suppose we [__Submit a Pull Request__](https://github.com/apache/nuttx/pulls) to the NuttX Repo (pic above)...
 
 <div style="margin-left: 5%; width: 90%; font-size:90%">
 
@@ -65,7 +65,7 @@ Hopefully this will be helpful to __New Contributors__ to NuttX. And it might he
 
 What just happened? We find out...
 
-![TODO](https://lupyuen.github.io/images/llm-flow2.jpg)
+![Requirements for PR Review](https://lupyuen.github.io/images/llm-flow2.jpg)
 
 # Requirements for PR Review
 
@@ -112,7 +112,7 @@ Testing logs after change: _your testing logs here_
 "#####;
 ```
 
-[(Thanks to __Tomek Cedro__)](TODO)
+[(Thanks to __Tomek Cedro__)](https://github.com/apache/nuttx/pull/13494)
 
 </div>
 
@@ -122,7 +122,7 @@ That's the beauty of an LLM: We feed it the __Human Text__, then the LLM gets it
 
 It helps to __define our requirements precisely__, mark the boundaries clearly. Otherwise our LLM will wander off, and hallucinate strange new ways to validate our Pull Request.
 
-[(Which happened in our last __LLM Experiment__)](TODO)
+[(Which happened in our last __LLM Experiment__)](https://lupyuen.github.io/articles/chatgpt)
 
 _How do we feed the PR Content to LLM?_
 
@@ -164,19 +164,19 @@ Based on [__Community Feedback__](https://github.com/apache/nuttx/pull/13494#iss
 
 It's hard to control the LLM Output, hence we politely asked LLM to __tone down the response__. (And be a little less irritating)
 
-Also we excluded the Bot from Pull Requests that are [__Extra Small__](TODO). (10 lines of code changes or fewer)
+Also we excluded the Bot from Pull Requests that are [__Extra Small__](https://lupyuen.github.io/articles/llm#call-the-github-api). (10 lines of code changes or fewer)
 
 _Will our Bot get stuck in a loop? Forever replying to its own responses?_
 
-Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](TODO).
+Nope it won't. Our Bot will skip [__Pull Requests that have Comments__](https://lupyuen.github.io/articles/llm#call-the-github-api).
 
-![TODO](https://lupyuen.github.io/images/llm-flow3.jpg)
+![Call the Gemini LLM](https://lupyuen.github.io/images/llm-flow3.jpg)
 
 # Call the Gemini LLM
 
 _How are we running the LLM?_
 
-We call [__Gemini Pro 1.5__](TODO) for the LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212)
+We call [__Gemini Pro 1.5__](https://ai.google.dev/gemini-api/docs) for the LLM: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L205-L212)
 
 ```rust
 // Init the Gemini Client (Pro 1.5)
@@ -193,7 +193,7 @@ let input =
   &body;
 ```
 
-[(Thanks to the __TODO Crate__)](TODO)
+[(Thanks to __google-generative-ai-rs__)](https://github.com/avastmick/google-generative-ai-rs)
 
 After composing the __LLM Prompt__ (PR Requirements + PR Contents), we send it to Gemini: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L212-L252)
 
@@ -273,15 +273,15 @@ _But we didn't tell Gemini to respond in Markdown?_
 
 That's the law of __"LLM See, LLM Do"__! We fed the input in Markdown Format, so it produced the output in Markdown Format too.
 
-![TODO](https://lupyuen.github.io/images/llm-quota.png)
+![Gemini Pro 1.5 limits us to 50 LLM Requests per day](https://lupyuen.github.io/images/llm-quota.png)
 
 _Are we paying Google for the LLM?_
 
-Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](TODO) per day. (Pic above)
+Right now we call the __Free Tier__ of Gemini Pro 1.5. Which limits us to [__50 LLM Requests__](https://ai.google.dev/pricing) per day. (Pic above)
 
-That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](TODO) and the [__NuttX Apps Repo__](TODO))
+That's sufficient to review __50 Pull Requests__ for NuttX every day. (For both the [__NuttX Kernel Repo__](https://github.com/apache/nuttx/pulls) and the [__NuttX Apps Repo__](https://github.com/apache/nuttx-apps/pulls))
 
-![TODO](https://lupyuen.github.io/images/llm-emoji.jpg)
+![Fail Gracefully with Emojis](https://lupyuen.github.io/images/llm-emoji.jpg)
 
 # Fail Gracefully with Emojis
 
@@ -318,11 +318,11 @@ async fn bump_reactions(issues: &IssueHandler<'_>, pr_id: u64, reactions: (Optio
 }
 ```
 
-[(__create_reaction__ is here)](TODO)
+[(__create_reaction__ is here)](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L333-L341)
 
-[(__delete_reaction__ is here)](TODO)
+[(__delete_reaction__ is here)](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L341-L348)
 
-![TODO](https://lupyuen.github.io/images/llm-flow4.jpg)
+![Call the GitHub API](https://lupyuen.github.io/images/llm-flow4.jpg)
 
 # Call the GitHub API
 
@@ -393,7 +393,7 @@ let comment = octocrab
   .await?;
 ```
 
-![TODO](https://lupyuen.github.io/images/llm-pr.jpg)
+![Pull Request for NuttX Repo](https://lupyuen.github.io/images/llm-pr.jpg)
 
 # Run The Bot
 
@@ -470,7 +470,7 @@ Skipping PR with comments: 13551
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-pr-bot?tab=readme-ov-file#run-log)
 
-![TODO](https://lupyuen.github.io/images/llm-flow.jpg)
+![LLM Bot that reviews Pull Requests for Apache NuttX RTOS](https://lupyuen.github.io/images/llm-flow.jpg)
 
 # All Things Considered
 
@@ -502,7 +502,7 @@ LLM has limitations...
 
 - The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? (Some extremely chatty and naggy)
 
-- Then again: The [__LLM is Free__](TODO). And it doesn't depend on [__GitHub Runners__](TODO).
+- Then again: The [__LLM is Free__](https://lupyuen.github.io/articles/llm#call-the-gemini-llm). And it doesn't depend on [__GitHub Runners__](https://lupyuen.github.io/articles/ci).
 
 _What if Google starts charging for their LLM?_
 
