@@ -6,9 +6,21 @@
 
 We're experimenting with an __LLM Bot__ (Large Language Model) that will review Pull Requests for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
-This article explains...
+This article explains how we...
 
-TODO: Sheer accident
+- TODO: PR Bot in Action
+
+- TODO: 2 Requirements for PR Review
+
+- TODO: 3 Call the Gemini LLM
+
+- TODO: 4 Fail Gracefully with Emojis
+
+- TODO: 5 Call the GitHub API
+
+- TODO: 6 Run The Bot
+
+- TODO: Sheer accident
 
 ![Pull Request for NuttX Repo](https://lupyuen.github.io/images/llm-pr.jpg)
 
