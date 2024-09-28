@@ -398,7 +398,7 @@ Then we __Validate the PR Content__ with Gemini API and post the Gemini Response
 ```rust
 // Omitted: Validate PR Body with Gemini LLM
 ...
-// Post the PR Comment
+// Post the Gemini Response as PR Comment
 let comment = octocrab
   .issues(owner, repo);
   .create_comment(pr_id, comment_text)
