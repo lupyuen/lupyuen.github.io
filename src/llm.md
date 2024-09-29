@@ -513,7 +513,7 @@ LLM has limitations...
 
 - Sometimes the LLM will helpfully suggest [__"Example Improvements"__](https://github.com/apache/nuttx/pull/13669#issuecomment-2378828778) for easier copy-n-paste. Most of the time: [__It doesn't__](https://github.com/apache/nuttx/pull/13575#issuecomment-2367182327).
 
-- The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? (Some extremely chatty and naggy)
+- The LLM behaves as [__Multiple Personas__](https://github.com/apache/nuttx/pull/13629#issuecomment-2376156849)? Some extremely chatty and naggy, [__possibly fierce__](https://github.com/apache/nuttx/pull/13712#issuecomment-2381094373).
 
 - Then again: The [__LLM is Free__](https://lupyuen.github.io/articles/llm#call-the-gemini-llm). And it doesn't depend on [__GitHub Runners__](https://lupyuen.github.io/articles/ci).
 
