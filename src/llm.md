@@ -170,6 +170,8 @@ Fix backtrace dump on assertions considering assertions triggered by tasks or du
 Internal CI testing with HW on all Xtensa-based devices [...more...]
 ```
 
+[(See the __LLM Prompt__)](https://gist.github.com/lupyuen/ad3c63c5c8d59c537bb2670c6b2d9416)
+
 _Why "please be concise"?_
 
 Based on [__Community Feedback__](https://github.com/apache/nuttx/pull/13494#issuecomment-2360421272), our Bot was getting way too chatty and naggy.
