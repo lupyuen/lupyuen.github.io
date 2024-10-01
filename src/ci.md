@@ -465,6 +465,8 @@ Read on for Phase 2...
 
 # Appendix: Phase 2 of CI Upgrade
 
+__UPDATE:__ We should also [__Skip the Builds for Unmodified Architectures__](https://github.com/apache/nuttx/issues/13775)
+
 For Phase 2: We should "rebalance" the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01.
 
 Hopefully this will allow NuttX CI to Fail Faster (for breaking changes), and prevent unnecessary builds (also reduce waiting time).
