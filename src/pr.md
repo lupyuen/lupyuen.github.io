@@ -524,7 +524,7 @@ __Breathe. Take a break.__
 
 We're about to make __NuttX History__... Our changes will be recorded for posterity!
 
-Take a [__long walk__](https://strava.app.link/CQoKM7ZOQMb) and ponder...
+Take a [__long walk__](https://strava.app.link/vD5XIh68tNb) and ponder...
 
 -   __Who might benefit__ from our Pull Request
 
