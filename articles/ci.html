@@ -476,7 +476,7 @@ Current runner version: &#39;2.319.1&#39;
 </code></pre></div>
 <p>Read on for Phase 2…</p>
 <h1 id="appendix-phase-2-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-2-of-ci-upgrade">§</a>8 Appendix: Phase 2 of CI Upgrade</h1>
-<p><strong>UPDATE:</strong> We should also <a href="https://github.com/apache/nuttx/pull/13800"><strong>Skip the Builds for Unmodified Architectures</strong></a>. And we’ll <a href="https://github.com/apache/nuttx/issues/13775#issuecomment-2390675906"><strong>Skip macos + msys2 for Simple PRs</strong></a>.</p>
+<p><strong>UPDATE:</strong> We should also <a href="https://github.com/apache/nuttx/pull/13862"><strong>skip the Builds for Unmodified Architectures</strong></a>. And we’ll <a href="https://github.com/apache/nuttx/issues/13775"><strong>skip macos + msys2 for Simple PRs</strong></a>.</p>
 <p>For Phase 2: We should “rebalance” the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01.</p>
 <p>Hopefully this will allow NuttX CI to Fail Faster (for breaking changes), and prevent unnecessary builds (also reduce waiting time).</p>
 <p>We should probably balance arm-01, risc-v-01, sim-01, xtensa-01 so they run in about 30 mins consistently.</p>
