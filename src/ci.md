@@ -465,7 +465,7 @@ Read on for Phase 2...
 
 # Appendix: Phase 2 of CI Upgrade
 
-__UPDATE:__ We should also [__Skip the Builds for Unmodified Architectures__](https://github.com/apache/nuttx/pull/13800). And we'll [__Skip macos + msys2 for Simple PRs__](https://github.com/apache/nuttx/issues/13775#issuecomment-2390675906).
+__UPDATE:__ We should also [__skip the Builds for Unmodified Architectures__](https://github.com/apache/nuttx/pull/13862). And we'll [__skip macos + msys2 for Simple PRs__](https://github.com/apache/nuttx/issues/13775).
 
 For Phase 2: We should "rebalance" the Build Targets. Move the Newer or Higher Priority or Riskier Targets to arm-01, risc-v-01, sim-01, xtensa-01.
 
