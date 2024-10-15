@@ -793,6 +793,7 @@ Changes not staged for commit:
 <p>To fix it, run <strong>tools/refresh.sh</strong>: <a href="https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302">nuttx/pull/12762</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Normalize the `defconfig` for `rv-virt:leds64`
 $ cd nuttx
+$ make distclean
 $ tools/refresh.sh --silent rv-virt:leds64
   Normalize rv-virt:leds64
   &lt; CONFIG_USERLED_LOWER=y
@@ -808,6 +809,7 @@ $ git status
 <p><strong>refresh.sh</strong> will also fix Kconfig Options that are misplaced…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## `CONFIG_USERLED_LOWER` is misplaced in `rv-virt:leds64`
 ## Remember to commit the updated `defconfig`!
+$ make distclean
 $ tools/refresh.sh --silent rv-virt:leds64
   Normalize rv-virt:leds64
   74d73
