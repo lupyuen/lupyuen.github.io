@@ -844,6 +844,7 @@ To fix it, run __tools/refresh.sh__: [nuttx/pull/12762](https://github.com/apach
 ```bash
 ## Normalize the `defconfig` for `rv-virt:leds64`
 $ cd nuttx
+$ make distclean
 $ tools/refresh.sh --silent rv-virt:leds64
   Normalize rv-virt:leds64
   < CONFIG_USERLED_LOWER=y
@@ -862,6 +863,7 @@ __refresh.sh__ will also fix Kconfig Options that are misplaced...
 ```bash
 ## `CONFIG_USERLED_LOWER` is misplaced in `rv-virt:leds64`
 ## Remember to commit the updated `defconfig`!
+$ make distclean
 $ tools/refresh.sh --silent rv-virt:leds64
   Normalize rv-virt:leds64
   74d73
