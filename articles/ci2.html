@@ -113,7 +113,9 @@ sudo docker run -it \
   cd nuttx/tools/ci ;
   ./cibuild.sh -c -A -N -R testlist/$job.dat ;
 &quot;
-</code></pre></div><div class="example-wrap"><pre class="language-bash"><code>$ sudo ./run-job.sh arm-01
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo ./run-job.sh arm-01
 NuttX Source: https://github.com/apache/nuttx/tree/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162
 ~
 ~/apps ~
@@ -132,6 +134,15 @@ arm-none-eabi-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permiss
 ====================================================================================
 Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
+</code></pre></div>
+<p>TODO: Build a single target?</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci ;
+./cibuild.sh -c -A -N -R testlist/$job.dat ;
+</code></pre></div>
+<p>To</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx ;
+tools/configure.sh ox64:nsh ;
+make ;
 </code></pre></div>
 <p><em>What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?</em></p>
 <p>I’m experimenting with a “Build Farm” at home (refurbished PC) that <strong>runs NuttX CI Jobs all day</strong> non-stop 24 x 7:</p>
