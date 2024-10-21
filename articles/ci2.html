@@ -71,24 +71,25 @@
 <li><a href="#todo">4 TODO</a><ul></ul></li>
 <li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci2-title.jpg" alt="TODO" /></p>
-<p><a href="TODO"><strong>Refurbished Ubuntu PCs</strong></a> have become quite affordable ($??? pic above). What if we could turn them into a <strong>(Low-Cost) Build Farm</strong> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>?</p>
+<p><a href="TODO"><strong>Refurbished Ubuntu PCs</strong></a> have become quite affordable ($??? pic above). Can we turn them into a <strong>(Low-Cost) Build Farm</strong> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>?</p>
 <p>TODO</p>
 <h1 id="run-a-single-ci-job"><a class="doc-anchor" href="#run-a-single-ci-job">§</a>1 Run A Single CI Job</h1>
-<p>TODO</p>
-<p><em>What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?</em></p>
-<p>I’m experimenting with a “Build Farm” at home (refurbished PC) that <strong>runs NuttX CI Jobs all day</strong> non-stop 24 x 7:</p>
-<ul>
-<li>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-01</code></li>
-<li>Wait for <code>arm-01</code> to complete (roughly 1.5 hours)</li>
-<li>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-02</code></li>
-<li>Wait for <code>arm-02</code> to complete (roughly 1.5 hours)</li>
-<li>Do the same until <code>arm-14</code>, then loop back to <code>arm-01</code></li>
-<li><a href="https://gist.github.com/nuttxpr">Here’s the CI Output Log</a></li>
-</ul>
-<p>How does it work?</p>
-<ul>
-<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a> will run a single CI Job, by calling the NuttX Docker Image, which is called by…</li>
-</ul>
+<p>TODO: CI Jobs <code>arm-01</code> to <code>arm-14</code></p>
+<p>TODO: Docker Image for NuttX</p>
+<p>This is how we…</p>
+<ol>
+<li>
+<p>Check out the <code>master</code> branches of <code>nuttx</code> and <code>nuttx-apps</code> repos</p>
+</li>
+<li>
+<p>Run the CI Job <code>arm-01</code></p>
+</li>
+<li>
+<p>Wait for <code>arm-01</code> to complete</p>
+<p>(About 1.5 hours)</p>
+</li>
+</ol>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a> will run a single CI Job, by calling the NuttX Docker Image, which is called by…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Run a NuttX CI Job with Docker
 
@@ -123,8 +124,30 @@ sudo docker run -it \
   ./cibuild.sh -c -A -N -R testlist/$job.dat ;
 &quot;
 </code></pre></div>
+<p><em>What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?</em></p>
+<p>I’m experimenting with a “Build Farm” at home (refurbished PC) that <strong>runs NuttX CI Jobs all day</strong> non-stop 24 x 7:</p>
 <ul>
-<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a> looping forever through <code>arm-01</code> to <code>arm-14</code>, running the job, searching for errors and uploading the logs</li>
+<li>
+<p>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-01</code></p>
+</li>
+<li>
+<p>Wait for <code>arm-01</code> to complete (roughly 1.5 hours)</p>
+</li>
+<li>
+<p>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-02</code></p>
+</li>
+<li>
+<p>Wait for <code>arm-02</code> to complete (roughly 1.5 hours)</p>
+</li>
+<li>
+<p>Do the same until <code>arm-14</code>, then loop back to <code>arm-01</code></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/nuttxpr">Here’s the CI Output Log</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a> looping forever through <code>arm-01</code> to <code>arm-14</code>, running the job, searching for errors and uploading the logs</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Run NuttX CI with Docker
