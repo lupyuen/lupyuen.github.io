@@ -42,6 +42,20 @@ https://github.com/apache/nuttx/blob/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162/.g
 ^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
 ```
 
+_What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
+
+I'm experimenting with a "Build Farm" at home (refurbished PC) that __runs NuttX CI Jobs all day__ non-stop 24 x 7:
+- Check out `master` branch of `nuttx`, run CI Job `arm-01`
+- Wait for `arm-01` to complete (roughly 1.5 hours)
+- Check out `master` branch of `nuttx`, run CI Job `arm-02`
+- Wait for `arm-02` to complete (roughly 1.5 hours)
+- Do the same until `arm-14`, then loop back to `arm-01`
+- [Here's the CI Output Log](https://gist.github.com/nuttxpr)
+
+How does it work?
+- [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh) will run a single CI Job, by calling the NuttX Docker Image, which is called by...
+- [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh) looping forever through `arm-01` to `arm-14`, running the job, searching for errors and uploading the logs
+
 # What's Next
 
 TODO
