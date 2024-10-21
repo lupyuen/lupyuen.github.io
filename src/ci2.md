@@ -1,6 +1,6 @@
 # Your very own Build Farm for Apache NuttX RTOS
 
-📝 _20 Oct 2024_
+📝 _20 Nov 2024_
 
 ![TODO](https://lupyuen.github.io/images/ci2-title.jpg)
 
