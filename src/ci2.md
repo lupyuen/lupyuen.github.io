@@ -12,7 +12,11 @@ TODO
 
 TODO: CI Jobs `arm-01` to `arm-14`
 
+[NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+
 TODO: Docker Image for NuttX
+
+TODO: Install Docker
 
 This is how we...
 
@@ -27,26 +31,15 @@ This is how we...
 [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh) will run a single CI Job, by calling the NuttX Docker Image, which is called by...
 
 ```bash
-#!/usr/bin/env bash
 ## Run a NuttX CI Job with Docker
-
-echo Now running https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh
-echo Called by https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh
-set -x  ## Echo commands
-
-# Parameter is CI Job, like "arm-01"
+## Parameter is thr CI Job, like "arm-01"
 job=$1
 
-## Show the System Info
-neofetch
-sleep 10
-
-## Download the Docker Image
+## Download the Docker Image for NuttX
 sudo docker pull \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
-sleep 10
 
-## Run the CI in Docker Container
+## Run the CI Job in the Docker Container
 sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash -c "
@@ -56,11 +49,33 @@ sudo docker run -it \
   git clone https://github.com/apache/nuttx-apps apps ;
   pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD) ; popd ;
   pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
-  sleep 10 ;
   cd nuttx/tools/ci ;
   ./cibuild.sh -c -A -N -R testlist/$job.dat ;
 "
 ```
+
+```bash
+$ sudo ./run-job.sh arm-01
+NuttX Source: https://github.com/apache/nuttx/tree/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162
+~
+~/apps ~
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/52a50ea72a2d88ff5b7f3308e1d132d0333982e8
+====================================================================================
+Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-10-20 17:38:10
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Building NuttX...
+arm-none-eabi-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permissions
+  Normalize pcduino-a10/nsh
+====================================================================================
+Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+2024-10-20 17:39:09
+```
+
 
 _What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
 
