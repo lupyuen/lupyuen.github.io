@@ -54,6 +54,8 @@ sudo docker run -it \
 "
 ```
 
+TODO
+
 ```bash
 $ sudo ./run-job.sh arm-01
 NuttX Source: https://github.com/apache/nuttx/tree/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162
@@ -76,6 +78,20 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 ```
 
+TODO: Build a single target?
+
+```bash
+cd nuttx/tools/ci ;
+./cibuild.sh -c -A -N -R testlist/$job.dat ;
+```
+
+To
+
+```bash
+cd nuttx ;
+tools/configure.sh ox64:nsh ;
+make ;
+```
 
 _What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
 
