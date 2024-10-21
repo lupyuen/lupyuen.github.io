@@ -4,6 +4,10 @@
 
 ![TODO](https://lupyuen.github.io/images/ci2-title.jpg)
 
+[__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). What if we could turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
+
+TODO
+
 # TODO
 
 ```text
