@@ -4,26 +4,27 @@
 
 ![TODO](https://lupyuen.github.io/images/ci2-title.jpg)
 
-[__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). What if we could turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
+[__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). Can we turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
 
 TODO
 
 # Run A Single CI Job
 
-TODO
+TODO: CI Jobs `arm-01` to `arm-14`
 
-_What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
+TODO: Docker Image for NuttX
 
-I'm experimenting with a "Build Farm" at home (refurbished PC) that __runs NuttX CI Jobs all day__ non-stop 24 x 7:
-- Check out `master` branch of `nuttx`, run CI Job `arm-01`
-- Wait for `arm-01` to complete (roughly 1.5 hours)
-- Check out `master` branch of `nuttx`, run CI Job `arm-02`
-- Wait for `arm-02` to complete (roughly 1.5 hours)
-- Do the same until `arm-14`, then loop back to `arm-01`
-- [Here's the CI Output Log](https://gist.github.com/nuttxpr)
+This is how we...
 
-How does it work?
-- [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh) will run a single CI Job, by calling the NuttX Docker Image, which is called by...
+1.  Check out the `master` branches of `nuttx` and `nuttx-apps` repos
+
+1.  Run the CI Job `arm-01`
+
+1.  Wait for `arm-01` to complete
+
+    (About 1.5 hours)
+
+[run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh) will run a single CI Job, by calling the NuttX Docker Image, which is called by...
 
 ```bash
 #!/usr/bin/env bash
@@ -60,6 +61,18 @@ sudo docker run -it \
   ./cibuild.sh -c -A -N -R testlist/$job.dat ;
 "
 ```
+
+_What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
+
+I'm experimenting with a "Build Farm" at home (refurbished PC) that __runs NuttX CI Jobs all day__ non-stop 24 x 7:
+- Check out `master` branch of `nuttx`, run CI Job `arm-01`
+- Wait for `arm-01` to complete (roughly 1.5 hours)
+- Check out `master` branch of `nuttx`, run CI Job `arm-02`
+- Wait for `arm-02` to complete (roughly 1.5 hours)
+- Do the same until `arm-14`, then loop back to `arm-01`
+- [Here's the CI Output Log](https://gist.github.com/nuttxpr)
+
+
 
 - [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh) looping forever through `arm-01` to `arm-14`, running the job, searching for errors and uploading the logs
 
