@@ -99,7 +99,23 @@ scatter / gather?
 https://github.com/apache/nuttx/blob/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162/.github/gcc.json
 
 ^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+</code></pre></div>
+<p><em>What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?</em></p>
+<p>I’m experimenting with a “Build Farm” at home (refurbished PC) that <strong>runs NuttX CI Jobs all day</strong> non-stop 24 x 7:</p>
+<ul>
+<li>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-01</code></li>
+<li>Wait for <code>arm-01</code> to complete (roughly 1.5 hours)</li>
+<li>Check out <code>master</code> branch of <code>nuttx</code>, run CI Job <code>arm-02</code></li>
+<li>Wait for <code>arm-02</code> to complete (roughly 1.5 hours)</li>
+<li>Do the same until <code>arm-14</code>, then loop back to <code>arm-01</code></li>
+<li><a href="https://gist.github.com/nuttxpr">Here’s the CI Output Log</a></li>
+</ul>
+<p>How does it work?</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a> will run a single CI Job, by calling the NuttX Docker Image, which is called by…</li>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a> looping forever through <code>arm-01</code> to <code>arm-14</code>, running the job, searching for errors and uploading the logs</li>
+</ul>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci2.md"><strong>lupyuen.github.io/src/ci2.md</strong></a></p>
