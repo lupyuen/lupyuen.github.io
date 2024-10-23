@@ -8,7 +8,7 @@
 
 TODO
 
-# Run A Single CI Job
+# Build NuttX for a Target Group
 
 TODO: CI Jobs `arm-01` to `arm-14`
 
@@ -18,7 +18,13 @@ TODO: Docker Image for NuttX
 
 TODO: Install Docker
 
-Suppose we wish to...
+Suppose we wish to compile the Targets for `arm-01`...
+
+TODO: Pic of targets
+
+Here are the steps...
+
+1.  Download the Docker Image for NuttX
 
 1.  Check out the `master` branch of `nuttx` repo
 
@@ -97,43 +103,26 @@ tools/configure.sh ox64:nsh ;
 make ;
 ```
 
-TODO
+# Build NuttX for All Target Groups
 
-_What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
+_What if we're compiling NuttX for All Target Groups? From `arm-01` to `arm-14`?_
 
-I'm experimenting with a "Build Farm" at home (refurbished PC) that __runs NuttX CI Jobs all day__ non-stop 24 x 7:
-- Check out `master` branch of `nuttx`, run CI Job `arm-01`
-- Wait for `arm-01` to complete (roughly 1.5 hours)
-- Check out `master` branch of `nuttx`, run CI Job `arm-02`
-- Wait for `arm-02` to complete (roughly 1.5 hours)
-- Do the same until `arm-14`, then loop back to `arm-01`
-- [Here's the CI Output Log](https://gist.github.com/nuttxpr)
+Let's loop through all the Target Groups and compile them...
 
+- For Each Target Group: `arm-01`, `arm-02`, ..., `arm-14`
 
+- Build the Target Group
 
-- [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh) looping forever through `arm-01` to `arm-14`, running the job, searching for errors and uploading the logs
+- Check for Warning and Errors
+
+- Upload the Build Log
+
+TODO: [Here's the CI Output Log](https://gist.github.com/nuttxpr)
+
+Our script becomes more sophisticated:  [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Run NuttX CI with Docker
-
-echo Now running https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh
-set -x  ## Echo commands
-device=ci
-
-## Get the Script Directory
-script_path="${BASH_SOURCE}"
-script_dir="$(cd -P "$(dirname -- "${script_path}")" >/dev/null 2>&1 && pwd)"
-log_file=/tmp/release-$device.log
-
-## Get the `script` option
-if [ "`uname`" == "Linux" ]; then
-  script_option=-c
-else
-  script_option=
-fi
-
-## Run the job
+## Run the Build Job, like `arm-01`
 function run_job {
   local job=$1
   pushd /tmp
@@ -141,23 +130,6 @@ function run_job {
     $script_option \
     "$script_dir/run-job.sh $job"
   popd
-}
-
-## Strip the control chars
-function clean_log {
-  local tmp_file=/tmp/release-tmp.log
-  cat $log_file \
-    | tr -d '\r' \
-    | tr -d '\r' \
-    | sed 's/\x08/ /g' \
-    | sed 's/\x1B(B//g' \
-    | sed 's/\x1B\[K//g' \
-    | sed 's/\x1B[<=>]//g' \
-    | sed 's/\x1B\[[0-9:;<=>?]*[!]*[A-Za-z]//g' \
-    | sed 's/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;<=>?]*[-!"#$%&'"'"'()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g' \
-    >$tmp_file
-  mv $tmp_file $log_file
-  echo ----- "Done! $log_file"
 }
 
 ## Search for Errors and Warnings
@@ -207,6 +179,8 @@ for (( ; ; )); do
   done
 done
 ```
+
+[(__clean_log__ is here)](TODO)
 
 # Run All CI Jobs
 
