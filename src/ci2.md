@@ -6,6 +6,12 @@
 
 [__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). Can we turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
 
+_Why not do all this in GitHub Actions? It's free ain't it?_
+
+We learnt a Painful Lesson: __Freebies Won't Last Forever!__ It's probably a bad idea to be locked-in and over-dependent on a __Single Provider for Continuous Integration__. That's why we're exploring alternatives...
+
+- TODO: Reducing GitHub Runners
+
 TODO
 
 # Build NuttX for a Target Group
