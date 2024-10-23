@@ -8,7 +8,9 @@
 
 _Why not do all this in GitHub Actions? It's free ain't it?_
 
-We learnt a Painful Lesson: __Freebies Won't Last Forever!__ It's probably a bad idea to be locked-in and over-dependent on a __Single Provider for Continuous Integration__. That's why we're exploring alternatives...
+We learnt a Painful Lesson: __Freebies Won't Last Forever!__
+
+It's probably a bad idea to be locked-in and over-dependent on a __Single Provider for Continuous Integration__. That's why we're exploring alternatives...
 
 - TODO: Reducing GitHub Runners
 
@@ -16,11 +18,25 @@ TODO
 
 # Inside a Target Group
 
-TODO: `arm-01` has all the cool classic boards...
+_What's a Target Group?_
+
+- arm-01 to arm-14
+- risc-v-01 to risc-v-06
+- sim-01 to sim-03
+- xtensa-01 to xtensa-02
+- arm64-01, x86_64-01, other
+
+`arm-01` has all the cool classic boards...
+
+TODO
 
 `arm-06` has RP2040 Boards...
 
+TODO
+
 `risc-v-01` has ???
+
+_How are Target Groups defined?_
 
 TODO: Filesystem wildcards
 
@@ -32,15 +48,9 @@ TODO: Filesystem wildcards
 ## CMake
 ```
 
+TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+
 # Build NuttX for a Target Group
-
-TODO: CI Jobs `arm-01` to `arm-14`
-
-[NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
-
-TODO: Docker Image for NuttX
-
-TODO: Install Docker
 
 Suppose we wish to compile the Targets for `arm-01`...
 
@@ -52,13 +62,15 @@ Here are the steps...
 
 1.  Download the Docker Image for NuttX
 
+1.  Start the Docker Container
+
 1.  Check out the `master` branch of `nuttx` repo
 
 1.  Do the same for `nuttx-apps` repo
 
 1.  Build the Targets for `arm-01`
 
-    (With the NuttX Docker Image)
+    (Inside the NuttX Docker Container)
 
 1.  Wait for `arm-01` to complete
 
@@ -141,7 +153,7 @@ Let's loop through all the Target Groups and compile them...
 
 - Build the Target Group
 
-- Check for Warning and Errors
+- Check for Errors and Warnings
 
 - Upload the Build Log
 
@@ -149,42 +161,9 @@ TODO: [Here's the CI Output Log](https://gist.github.com/nuttxpr)
 
 Our script becomes more sophisticated:  [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
+
 ```bash
-## Run the Build Job, like `arm-01`
-function run_job {
-  local job=$1
-  pushd /tmp
-  script $log_file \
-    $script_option \
-    "$script_dir/run-job.sh $job"
-  popd
-}
-
-## Search for Errors and Warnings
-function find_messages {
-  local tmp_file=/tmp/release-tmp.log
-  local msg_file=/tmp/release-msg.log
-  local pattern='^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$'
-  grep -P "$pattern" $log_file \
-    | uniq \
-    > $msg_file
-  cat $msg_file $log_file >$tmp_file
-  mv $tmp_file $log_file
-}
-
-## Upload to GitHub Gist
-function upload_log {
-  local job=$1
-  local nuttx_hash=$2
-  local apps_hash=$3
-  cat $log_file | \
-    gh gist create \
-    --public \
-    --desc "[$job] CI Log for nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash" \
-    --filename "ci-$job.log"
-}
-
-## Repeat forever for All CI Jobs
+## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
     arm-01 arm-02 arm-03 arm-04 \
@@ -210,15 +189,105 @@ done
 
 [(__clean_log__ is here)](TODO)
 
-# Run All CI Jobs
+__run_job__ will compile a single Target Group...
 
-TODO
+```bash
+## Build the Target Group, like `arm-01`
+function run_job {
+  local job=$1
+  pushd /tmp
+  script $log_file \
+    $script_option \
+    "$script_dir/run-job.sh $job"
+  popd
+}
+```
 
-# Scatter and Gather
+Which calls the script we've seen earlier: [__run-job.sh__](TODO)
 
-TODO
+Finally __upload_log__ will upload the log (to GitHub Gist) for further processing...
+
+```bash
+## Upload to GitHub Gist
+function upload_log {
+  local job=$1
+  local nuttx_hash=$2
+  local apps_hash=$3
+  cat $log_file | \
+    gh gist create \
+    --public \
+    --desc "[$job] CI Log for nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash" \
+    --filename "ci-$job.log"
+}
+```
+
+TODO: The outcome is here
+
+Let's talk about Errors and Warnings..
+
+# Find Errors and Warnings
+
+__find_messages__ will search for Errors and Warnings [(based on this __GCC Pattern__)](TODO)
+
+```bash
+## Search for Errors and Warnings
+function find_messages {
+  local tmp_file=/tmp/release-tmp.log
+  local msg_file=/tmp/release-msg.log
+  local pattern='^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$'
+  grep -P "$pattern" $log_file \
+    | uniq \
+    > $msg_file
+  cat $msg_file $log_file >$tmp_file
+  mv $tmp_file $log_file
+}
+```
+
+And inserts the Errors and Warnings into the top of the Log File.
+
+TODO: GCC Matcher is not perfect: CMake, strangely simplistic
+
+[CMake Error](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451)
+
+```text
+====================================================================================
+Cmake in present: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
+Configuration/Tool: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
+2024-10-22 20:31:16
+------------------------------------------------------------------------------------
+  Cleaning...
+  Configuring...
+CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
+  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
+  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
+  ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
+  by the following symbols:
+
+   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 && ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 && ARCH_ARM (value: y)
+
+Call Stack (most recent call first):
+  CMakeLists.txt:322 (nuttx_olddefconfig)
+
+
+  Select HOST_LINUX=y
+CMake Warning at cmake/nuttx_kconfig.cmake:192 (message):
+  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
+  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
+  ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
+  by the following symbols:
+
+   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 && ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 && ARCH_ARM (value: y)
+
+Call Stack (most recent call first):
+  cmake/nuttx_sethost.cmake:107 (nuttx_setconfig)
+  CMakeLists.txt:333 (nuttx_sethost)
+```
 
 # TODO
+
+TODO: What about the farm?
+
+GitHub charges a 10x Premium for macOS Runners. Probably cheaper to have our own Refurbished Mac Mini, running NuttX Jobs all day?
 
 ```text
 https://gist.github.com/nuttxpr
@@ -245,13 +314,10 @@ Intel mac mini
 security risk, not docker
 firewall
 
-scatter / gather?
-
-https://github.com/apache/nuttx/blob/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162/.github/gcc.json
+https://github.com/apache/nuttx/blob/master/.github/gcc.json
 
 ^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
 ```
-
 
 # What's Next
 
