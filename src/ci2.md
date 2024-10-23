@@ -18,17 +18,21 @@ TODO: Docker Image for NuttX
 
 TODO: Install Docker
 
-This is how we...
+Suppose we wish to...
 
-1.  Check out the `master` branches of `nuttx` and `nuttx-apps` repos
+1.  Check out the `master` branch of `nuttx` repo
 
-1.  Run the CI Job `arm-01`
+1.  Do the same for `nuttx-apps` repo
+
+1.  Build the Targets for `arm-01`
+
+    (With the NuttX Docker Image)
 
 1.  Wait for `arm-01` to complete
 
     (About 1.5 hours)
 
-[run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh) will run a single CI Job, by calling the NuttX Docker Image, which is called by...
+This is how we do it: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
 
 ```bash
 ## Run a NuttX CI Job with Docker
@@ -54,13 +58,11 @@ sudo docker run -it \
 "
 ```
 
-TODO
+We run it like this...
 
 ```bash
 $ sudo ./run-job.sh arm-01
 NuttX Source: https://github.com/apache/nuttx/tree/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162
-~
-~/apps ~
 NuttX Apps: https://github.com/apache/nuttx-apps/tree/52a50ea72a2d88ff5b7f3308e1d132d0333982e8
 ====================================================================================
 Configuration/Tool: pcduino-a10/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -78,20 +80,24 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 ```
 
-TODO: Build a single target?
+_What about building a Single Target?_
+
+Suppose we wish to build `ox64:nsh`. Just change this...
 
 ```bash
 cd nuttx/tools/ci ;
 ./cibuild.sh -c -A -N -R testlist/$job.dat ;
 ```
 
-To
+To this...
 
 ```bash
 cd nuttx ;
 tools/configure.sh ox64:nsh ;
 make ;
 ```
+
+TODO
 
 _What if we could run the CI Jobs on our own Ubuntu PCs? Without any help from GitHub Actions?_
 
