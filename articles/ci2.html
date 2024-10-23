@@ -110,11 +110,11 @@ make
 </li>
 </ul>
 <p><em>What’s inside the Target Groups?</em></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><code>arm-01</code></a> has BeagleBone Black and Sony Spresense…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><em>arm-01</em></a> has BeagleBone Black and Sony Spresense…</p>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat"><code>arm-06</code></a> has RP2040 Boards…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat"><em>arm-06</em></a> has RP2040 Boards…</p>
 <p>TODO</p>
-<p><a href="TODO"><code>risc-v-01</code></a> has ???</p>
+<p><a href="TODO"><em>risc-v-01</em></a> has ???</p>
 <p><em>How are Target Groups defined?</em></p>
 <p>Every NuttX Target has its own <strong>defconfig</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx ; find . -name defconfig
@@ -138,7 +138,7 @@ CMake,arduino-nano-33ble:nsh
 </code></pre></div>
 <p>TODO: <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">NuttX Builds for CI</a></p>
 <h1 id="build-nuttx-for-one-target-group"><a class="doc-anchor" href="#build-nuttx-for-one-target-group">§</a>2 Build NuttX for One Target Group</h1>
-<p>Suppose we wish to compile the Targets for <code>arm-01</code>…</p>
+<p>Suppose we wish to compile the Targets for <em>arm-01</em>…</p>
 <p>TODO: Pic of targets</p>
 <p>Here are the steps…</p>
 <ol>
@@ -158,25 +158,25 @@ CMake,arduino-nano-33ble:nsh
   /bin/bash -c &quot;...&quot;
 </code></pre></div></li>
 <li>
-<p>Check out the <code>master</code> branch of <code>nuttx</code> repo</p>
+<p>Check out the <strong>master</strong> branch of <strong>nuttx</strong> repo</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone \
   https://github.com/apache/nuttx
 </code></pre></div></li>
 <li>
-<p>Do the same for <code>nuttx-apps</code> repo</p>
+<p>Do the same for <strong>nuttx-apps</strong> repo</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone \
   https://github.com/apache/nuttx-apps \
   apps
 </code></pre></div></li>
 <li>
-<p>Inside the Docker Container: Build the Targets for <code>arm-01</code></p>
+<p>Inside the Docker Container: Build the Targets for <em>arm-01</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
   testlist/arm-01.dat
 </code></pre></div></li>
 <li>
-<p>Wait for <code>arm-01</code> to complete</p>
+<p>Wait for <em>arm-01</em> to complete</p>
 <p>(About 1.5 hours)</p>
 </li>
 </ol>
@@ -234,11 +234,11 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 tools/configure.sh ox64:nsh ;
 make ;
 </code></pre></div><h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
-<p><em>What if we’re compiling NuttX for All Target Groups? From <code>arm-01</code> to <code>arm-14</code>?</em></p>
+<p><em>What if we’re compiling NuttX for All Target Groups? From <em>arm-01</em> to <em>arm-14</em>?</em></p>
 <p>Let’s loop through all the Target Groups and compile them…</p>
 <ul>
 <li>
-<p>For Each Target Group: <code>arm-01</code>, <code>arm-02</code>, …, <code>arm-14</code></p>
+<p>For Each Target Group: <em>arm-01</em> … <em>arm-14</em></p>
 </li>
 <li>
 <p>Build the Target Group</p>
@@ -277,7 +277,7 @@ done
 </code></pre></div>
 <p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
 <p><strong>run_job</strong> will compile a single Target Group…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like `arm-01`
+<div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like _arm-01_
 function run_job {
   local job=$1
   pushd /tmp
