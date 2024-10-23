@@ -295,7 +295,9 @@ _What about macOS?_
 
 macOS compiles NuttX a little differently from Linux. [(See __sim/rpserver_virtio__)](https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448)
 
-BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
+BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [__we shut them down__](TODO).
+
+Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
 [(Sorry the NuttX Jobs won't run on __M1 Mac__)](TODO)
 
