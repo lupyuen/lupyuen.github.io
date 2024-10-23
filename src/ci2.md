@@ -156,7 +156,8 @@ job=$1
 sudo docker pull \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 
-## Build the Target Group in the Docker Container
+## Inside the Docker Container:
+## Build the Target Group 
 sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash -c "
