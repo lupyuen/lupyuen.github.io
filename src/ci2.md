@@ -16,6 +16,12 @@ TODO
 
 # Inside a Target Group
 
+TODO: `arm-01` has all the cool classic boards...
+
+`arm-06` has RP2040 Boards...
+
+`risc-v-01` has ???
+
 TODO: Filesystem wildcards
 
 ```text
