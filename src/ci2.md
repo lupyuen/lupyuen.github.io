@@ -42,21 +42,21 @@ To compile all ??? Targets, we lump them into __Target Groups__ (so they're easi
 
 - _xtensa-01_ ... _xtensa-02_
 
-- _arm64-01_, _x86_64-01_, [_other_](TODO)
+- _arm64-01_, _x86\_64-01_, [_other_](TODO)
 
   [(Check out the __Complete List__)](TODO)
 
 _What's inside the Target Groups?_
 
-[`arm-01`](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) has BeagleBone Black and Sony Spresense...
+[_arm-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) has BeagleBone Black and Sony Spresense...
 
 TODO
 
-[`arm-06`](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat) has RP2040 Boards...
+[_arm-06_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat) has RP2040 Boards...
 
 TODO
 
-[`risc-v-01`](TODO) has ???
+[_risc-v-01_](TODO) has ???
 
 _How are Target Groups defined?_
 
@@ -90,7 +90,7 @@ TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yh
 
 # Build NuttX for One Target Group
 
-Suppose we wish to compile the Targets for `arm-01`...
+Suppose we wish to compile the Targets for _arm-01_...
 
 TODO: Pic of targets
 
@@ -115,14 +115,14 @@ Here are the steps...
       /bin/bash -c "..."
     ```
 
-1.  Check out the `master` branch of `nuttx` repo
+1.  Check out the __master__ branch of __nuttx__ repo
 
     ```bash
     git clone \
       https://github.com/apache/nuttx
     ```
 
-1.  Do the same for `nuttx-apps` repo
+1.  Do the same for __nuttx-apps__ repo
 
     ```bash
     git clone \
@@ -130,7 +130,7 @@ Here are the steps...
       apps
     ```
 
-1.  Inside the Docker Container: Build the Targets for `arm-01`
+1.  Inside the Docker Container: Build the Targets for _arm-01_
 
     ```bash
     cd nuttx/tools/ci
@@ -139,7 +139,7 @@ Here are the steps...
       testlist/arm-01.dat
     ```
 
-1.  Wait for `arm-01` to complete
+1.  Wait for _arm-01_ to complete
 
     (About 1.5 hours)
 
@@ -212,11 +212,11 @@ make ;
 
 # Build NuttX for All Target Groups
 
-_What if we're compiling NuttX for All Target Groups? From `arm-01` to `arm-14`?_
+_What if we're compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
 
 Let's loop through all the Target Groups and compile them...
 
-- For Each Target Group: `arm-01`, `arm-02`, ..., `arm-14`
+- For Each Target Group: _arm-01_ ... _arm-14_
 
 - Build the Target Group
 
@@ -259,7 +259,7 @@ done
 __run_job__ will compile a single Target Group...
 
 ```bash
-## Build the Target Group, like `arm-01`
+## Build the Target Group, like _arm-01_
 function run_job {
   local job=$1
   pushd /tmp
