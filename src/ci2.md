@@ -34,15 +34,15 @@ Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target
 
 To compile all ??? Targets, we lump them into __Target Groups__ (so they're easier to track)
 
-- [__`arm-01`__](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) to __`arm-14`__
+- [_arm-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) ... _arm-14_
 
-- __`risc-v-01`__ to __`risc-v-06`__
+- _risc-v-01_ ... _risc-v-06_
 
-- __`sim-01`__ to __`sim-03`__
+- _sim-01_ ... _sim-03_
 
-- __`xtensa-01`__ to __`xtensa-02`__
+- _xtensa-01_ ... _xtensa-02_
 
-- __`arm64-01`__, __`x86_64-01`__, [__`other`__](TODO)
+- _arm64-01_, _x86_64-01_, [_other_](TODO)
 
   [(Check out the __Complete List__)](TODO)
 
