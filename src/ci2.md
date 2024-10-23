@@ -285,11 +285,19 @@ Call Stack (most recent call first):
   CMakeLists.txt:333 (nuttx_sethost)
 ```
 
-# TODO
+# What's Next
 
-TODO: What about the farm?
+_Huh? We're expecting a Build Farm, not a Build Server?_
 
-GitHub charges a 10x Premium for macOS Runners. Probably cheaper to have our own Refurbished Mac Mini, running NuttX Jobs all day?
+Just add a second Ubuntu PC, partition the Build Targets across the PCs, and we'll have a Build Farm!
+
+_What about macOS?_
+
+macOS compiles NuttX a little differently from Linux. [(See __sim/rpserver_virtio__)](https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448)
+
+BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
+
+[(Sorry the NuttX Jobs won't run on __M1 Mac__)](TODO)
 
 ```text
 https://gist.github.com/nuttxpr
@@ -320,8 +328,6 @@ https://github.com/apache/nuttx/blob/master/.github/gcc.json
 
 ^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
 ```
-
-# What's Next
 
 TODO
 
