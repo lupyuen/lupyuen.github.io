@@ -94,23 +94,52 @@ Here are the steps...
 
 1.  Install Docker
 
+    TODO
+
 1.  Download the Docker Image for NuttX
+
+    ```bash
+    sudo docker pull \
+      ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
+    ```
 
 1.  Start the Docker Container
 
+    ```bash
+    sudo docker run -it \
+      ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+      /bin/bash -c "..."
+    ```
+
 1.  Check out the `master` branch of `nuttx` repo
+
+    ```bash
+    git clone \
+      https://github.com/apache/nuttx
+    ```
 
 1.  Do the same for `nuttx-apps` repo
 
-1.  Build the Targets for `arm-01`
+    ```bash
+    git clone \
+      https://github.com/apache/nuttx-apps \
+      apps
+    ```
 
-    (Inside the NuttX Docker Container)
+1.  Inside the Docker Container: Build the Targets for `arm-01`
+
+    ```bash
+    cd nuttx/tools/ci
+    ./cibuild.sh \
+      -c -A -N -R \
+      testlist/arm-01.dat
+    ```
 
 1.  Wait for `arm-01` to complete
 
     (About 1.5 hours)
 
-This is how we do it: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
+Put everything together: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
 
 ```bash
 ## Run a NuttX CI Job with Docker
