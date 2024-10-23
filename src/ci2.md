@@ -88,6 +88,8 @@ CMake,arduino-nano-33ble:nsh
 
 TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
+![TODO](https://lupyuen.github.io/images/ci2-flow2.jpg)
+
 # Build NuttX for One Target Group
 
 Suppose we wish to compile the Targets for _arm-01_...
@@ -211,6 +213,8 @@ tools/configure.sh ox64:nsh ;
 make ;
 ```
 
+![TODO](https://lupyuen.github.io/images/ci2-flow.jpg)
+
 # Build NuttX for All Target Groups
 
 _What if we're compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
@@ -293,6 +297,8 @@ function upload_log {
 TODO: The outcome is here
 
 Let's talk about Errors and Warnings..
+
+![TODO](https://lupyuen.github.io/images/ci2-flow3.jpg)
 
 # Find Errors and Warnings
 
