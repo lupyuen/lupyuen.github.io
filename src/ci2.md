@@ -16,17 +16,35 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 TODO
 
-# NuttX Target Group
+# Target Groups in NuttX
 
 _What's a Target Group?_
 
-- arm-01 to arm-14
-- risc-v-01 to risc-v-06
-- sim-01 to sim-03
-- xtensa-01 to xtensa-02
-- arm64-01, x86_64-01, other
+```bash
+## Select the NuttX Target and compile it
+tools/configure.sh rv-virt:nsh
+make
+```
 
-`arm-01` has all the cool classic boards...
+Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target. There are [__??? NuttX Targets__](TODO).
+
+To compile all ??? Targets, we lump them into __Target Groups__ (so they're easier to track)
+
+- [`arm-01`](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) to `arm-14`
+
+- `risc-v-01` to `risc-v-06`
+
+- `sim-01` to `sim-03`
+
+- `xtensa-01` to `xtensa-02`
+
+- `arm64-01`, `x86_64-01`, [`other`](TODO)
+
+  [(Check out the __Complete List__)](TODO)
+
+_What's inside the Target Groups?_
+
+`arm-01` has all the cool classic boards (and Sony Spresense)...
 
 TODO
 
@@ -291,7 +309,7 @@ Call Stack (most recent call first):
 
 _Huh? We're expecting a Build Farm, not a Build Server?_
 
-Just add a second Ubuntu PC, partition the Build Targets across the PCs, and we'll have a Build Farm!
+Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we'll have a Build Farm!
 
 _What about macOS?_
 
