@@ -18,6 +18,10 @@ TODO
 
 # Target Groups in NuttX
 
+We're setting up a Build Farm that will compile all Target Groups in NuttX
+
+- TODO: Report
+
 _What's a Target Group?_
 
 ```bash
