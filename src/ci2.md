@@ -146,8 +146,8 @@ Here are the steps...
 Put everything together: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
 
 ```bash
-## Run a NuttX CI Job with Docker
-## Parameter is thr CI Job, like "arm-01"
+## Build a NuttX Target Group with Docker
+## Parameter is the Target Group, like "arm-01"
 job=$1
 
 ## TODO: Install Docker
@@ -156,7 +156,7 @@ job=$1
 sudo docker pull \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 
-## Run the CI Job in the Docker Container
+## Build the Target Group in the Docker Container
 sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash -c "
@@ -238,7 +238,8 @@ for (( ; ; )); do
     arm-09 arm-10 arm-11 arm-12 \
     arm-13 arm-14
   do
-    ## Run the CI Job and find errors / warnings
+    ## Build the Target Group
+    ## and find Errors / Warnings
     run_job $job
     clean_log
     find_messages
@@ -259,7 +260,7 @@ done
 __run_job__ will compile a single Target Group...
 
 ```bash
-## Build the Target Group, like _arm-01_
+## Build the Target Group, like "arm-01"
 function run_job {
   local job=$1
   pushd /tmp
