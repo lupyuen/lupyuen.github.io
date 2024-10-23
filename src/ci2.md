@@ -227,7 +227,7 @@ Let's talk about Errors and Warnings..
 
 # Find Errors and Warnings
 
-__find_messages__ will search for Errors and Warnings [(based on this __GCC Pattern__)](TODO)
+In the script above, we call __find_messages__ to search for Errors and Warnings:
 
 ```bash
 ## Search for Errors and Warnings
@@ -244,6 +244,8 @@ function find_messages {
 ```
 
 And inserts the Errors and Warnings into the top of the Log File.
+
+TODO: [(based on this __GCC Pattern__)](TODO)
 
 TODO: GCC Matcher is not perfect: CMake, strangely simplistic
 
