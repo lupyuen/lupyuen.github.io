@@ -14,6 +14,18 @@ We learnt a Painful Lesson: __Freebies Won't Last Forever!__ It's probably a bad
 
 TODO
 
+# Inside a Target Group
+
+TODO: Filesystem wildcards
+
+```text
+## This Target Group includes ???
+
+## Exclude mosh
+
+## CMake
+```
+
 # Build NuttX for a Target Group
 
 TODO: CI Jobs `arm-01` to `arm-14`
@@ -29,6 +41,8 @@ Suppose we wish to compile the Targets for `arm-01`...
 TODO: Pic of targets
 
 Here are the steps...
+
+1.  Install Docker
 
 1.  Download the Docker Image for NuttX
 
@@ -50,6 +64,8 @@ This is how we do it: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob
 ## Run a NuttX CI Job with Docker
 ## Parameter is thr CI Job, like "arm-01"
 job=$1
+
+## TODO: Install Docker
 
 ## Download the Docker Image for NuttX
 sudo docker pull \
