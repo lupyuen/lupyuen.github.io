@@ -213,6 +213,8 @@ tools/configure.sh ox64:nsh ;
 make ;
 ```
 
+Now we scale up...
+
 ![TODO](https://lupyuen.github.io/images/ci2-flow.jpg)
 
 # Build NuttX for All Target Groups
