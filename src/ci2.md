@@ -16,7 +16,7 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 TODO
 
-# Inside a Target Group
+# NuttX Target Group
 
 _What's a Target Group?_
 
@@ -50,7 +50,7 @@ TODO: Filesystem wildcards
 
 TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
-# Build NuttX for a Target Group
+# Build NuttX for One Target Group
 
 Suppose we wish to compile the Targets for `arm-01`...
 
@@ -285,6 +285,8 @@ Call Stack (most recent call first):
   CMakeLists.txt:333 (nuttx_sethost)
 ```
 
+> ![TODO](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
+
 # What's Next
 
 _Huh? We're expecting a Build Farm, not a Build Server?_
@@ -295,7 +297,7 @@ _What about macOS?_
 
 macOS compiles NuttX a little differently from Linux. [(See __sim/rpserver_virtio__)](https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448)
 
-BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [__we shut them down__](TODO).
+BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [__we shut them down__](TODO) to cut costs. (Pic above)
 
 Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
