@@ -274,7 +274,7 @@ function run_job {
 
 Which calls the script we've seen earlier: [__run-job.sh__](TODO)
 
-Finally __upload_log__ will upload the log (to GitHub Gist) for further processing...
+__upload_log__ will upload the log (to GitHub Gist) for further processing...
 
 ```bash
 ## Upload to GitHub Gist
