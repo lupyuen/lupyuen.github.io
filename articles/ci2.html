@@ -256,7 +256,7 @@ function upload_log {
 <p>TODO: The outcome is here</p>
 <p>Let’s talk about Errors and Warnings..</p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
-<p><strong>find_messages</strong> will search for Errors and Warnings <a href="TODO">(based on this <strong>GCC Pattern</strong>)</a></p>
+<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings:</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local tmp_file=/tmp/release-tmp.log
@@ -270,6 +270,7 @@ function find_messages {
 }
 </code></pre></div>
 <p>And inserts the Errors and Warnings into the top of the Log File.</p>
+<p>TODO: <a href="TODO">(based on this <strong>GCC Pattern</strong>)</a></p>
 <p>TODO: GCC Matcher is not perfect: CMake, strangely simplistic</p>
 <p><a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451">CMake Error</a></p>
 <div class="example-wrap"><pre class="language-text"><code>====================================================================================
