@@ -44,17 +44,30 @@ To compile all ??? Targets, we lump them into __Target Groups__ (so they're easi
 
 _What's inside the Target Groups?_
 
-`arm-01` has all the cool classic boards (and Sony Spresense)...
+[`arm-01`](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) has BeagleBone Black and Sony Spresense...
 
 TODO
 
-`arm-06` has RP2040 Boards...
+[`arm-06`](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat) has RP2040 Boards...
 
 TODO
 
-`risc-v-01` has ???
+[`risc-v-01`](TODO) has ???
 
 _How are Target Groups defined?_
+
+Every NuttX Target has its own __defconfig__...
+
+```bash
+$ cd nuttx ; find . -name defconfig
+./boards/arm/am335x/beaglebone-black/configs/nsh/defconfig
+./boards/arm/cxd56xx/spresense/configs/usbmsc/defconfig
+./boards/arm/cxd56xx/spresense/configs/lte/defconfig
+./boards/arm/cxd56xx/spresense/configs/wifi/defconfig
+...
+```
+
+So NuttX uses a Wildcard Pattern like ??? to select the defconfig
 
 TODO: Filesystem wildcards
 
