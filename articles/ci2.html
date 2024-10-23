@@ -106,12 +106,21 @@ make
 </li>
 </ul>
 <p><em>What’s inside the Target Groups?</em></p>
-<p><code>arm-01</code> has all the cool classic boards (and Sony Spresense)…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><code>arm-01</code></a> has BeagleBone Black and Sony Spresense…</p>
 <p>TODO</p>
-<p><code>arm-06</code> has RP2040 Boards…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat"><code>arm-06</code></a> has RP2040 Boards…</p>
 <p>TODO</p>
-<p><code>risc-v-01</code> has ???</p>
+<p><a href="TODO"><code>risc-v-01</code></a> has ???</p>
 <p><em>How are Target Groups defined?</em></p>
+<p>Every NuttX Target has its own <strong>defconfig</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx ; find . -name defconfig
+./boards/arm/am335x/beaglebone-black/configs/nsh/defconfig
+./boards/arm/cxd56xx/spresense/configs/usbmsc/defconfig
+./boards/arm/cxd56xx/spresense/configs/lte/defconfig
+./boards/arm/cxd56xx/spresense/configs/wifi/defconfig
+...
+</code></pre></div>
+<p>So NuttX uses a Wildcard Pattern like ??? to select the defconfig</p>
 <p>TODO: Filesystem wildcards</p>
 <div class="example-wrap"><pre class="language-text"><code>## This Target Group includes ???
 
