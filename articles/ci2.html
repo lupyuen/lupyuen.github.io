@@ -120,13 +120,17 @@ make
 ./boards/arm/cxd56xx/spresense/configs/wifi/defconfig
 ...
 </code></pre></div>
-<p>So NuttX uses a Wildcard Pattern like ??? to select the defconfig</p>
-<p>TODO: Filesystem wildcards</p>
-<div class="example-wrap"><pre class="language-text"><code>## This Target Group includes ???
+<p>So NuttX uses a <strong>Wildcard Pattern</strong> to select the <strong>defconfig</strong> (as a NuttX Target): <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat">tools/ci/testlist/arm-05.dat</a></p>
+<div class="example-wrap"><pre class="language-text"><code>## arm-05 Target Group contains:
+## boards/arm/[m-q]*/*/configs/*/defconfig
+## Compile with `make` and GCC Toolchain
+/arm/[m-q]*,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 
-## Exclude mosh
+## Except for these: Compile with CMake instead
+CMake,arduino-nano-33ble:nsh
 
-## CMake
+## Exclude this Target from the build
+-moxa:nsh
 </code></pre></div>
 <p>TODO: <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">NuttX Builds for CI</a></p>
 <h1 id="build-nuttx-for-one-target-group"><a class="doc-anchor" href="#build-nuttx-for-one-target-group">§</a>2 Build NuttX for One Target Group</h1>
