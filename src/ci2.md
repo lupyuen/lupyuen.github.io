@@ -67,16 +67,19 @@ $ cd nuttx ; find . -name defconfig
 ...
 ```
 
-So NuttX uses a Wildcard Pattern like ??? to select the defconfig
-
-TODO: Filesystem wildcards
+So NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (as a NuttX Target): [tools/ci/testlist/arm-05.dat](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat)
 
 ```text
-## This Target Group includes ???
+## arm-05 Target Group contains:
+## boards/arm/[m-q]*/*/configs/*/defconfig
+## Compile with `make` and GCC Toolchain
+/arm/[m-q]*,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 
-## Exclude mosh
+## Except for these: Compile with CMake instead
+CMake,arduino-nano-33ble:nsh
 
-## CMake
+## Exclude this Target from the build
+-moxa:nsh
 ```
 
 TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
