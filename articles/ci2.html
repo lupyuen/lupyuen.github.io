@@ -137,6 +137,7 @@ CMake,arduino-nano-33ble:nsh
 -moxa:nsh
 </code></pre></div>
 <p>TODO: <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">NuttX Builds for CI</a></p>
+<p><img src="https://lupyuen.github.io/images/ci2-flow2.jpg" alt="TODO" /></p>
 <h1 id="build-nuttx-for-one-target-group"><a class="doc-anchor" href="#build-nuttx-for-one-target-group">§</a>2 Build NuttX for One Target Group</h1>
 <p>Suppose we wish to compile the Targets for <em>arm-01</em>…</p>
 <p>TODO: Pic of targets</p>
@@ -234,7 +235,9 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx ;
 tools/configure.sh ox64:nsh ;
 make ;
-</code></pre></div><h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="TODO" /></p>
+<h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
 <p><em>What if we’re compiling NuttX for All Target Groups? From <em>arm-01</em> to <em>arm-14</em>?</em></p>
 <p>Let’s loop through all the Target Groups and compile them…</p>
 <ul>
@@ -305,6 +308,7 @@ function upload_log {
 </code></pre></div>
 <p>TODO: The outcome is here</p>
 <p>Let’s talk about Errors and Warnings..</p>
+<p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="TODO" /></p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
 <p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings:</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
