@@ -348,7 +348,7 @@ Call Stack (most recent call first):
   CMakeLists.txt:333 (nuttx_sethost)
 ```
 
-> ![TODO](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
+![TODO](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
 # What's Next
 
@@ -360,7 +360,7 @@ _What about macOS?_
 
 macOS compiles NuttX a little differently from Linux. [(See __sim/rpserver_virtio__)](https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448)
 
-BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [__we shut them down__](TODO) to cut costs. (Pic above)
+BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [__we shut them down__](TODO) to cut costs. [(Pic above)](https://github.com/apache/nuttx/issues/14376#issuecomment-2428086912)
 
 Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
