@@ -65,7 +65,7 @@
 
     <h1 class="title">Your very own Build Farm for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#nuttx-target-group">1 NuttX Target Group</a><ul></ul></li>
+<li><a href="#target-groups-in-nuttx">1 Target Groups in NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx-for-one-target-group">2 Build NuttX for One Target Group</a><ul></ul></li>
 <li><a href="#build-nuttx-for-all-target-groups">3 Build NuttX for All Target Groups</a><ul></ul></li>
 <li><a href="#find-errors-and-warnings">4 Find Errors and Warnings</a><ul></ul></li>
@@ -79,16 +79,34 @@
 <li>TODO: Reducing GitHub Runners</li>
 </ul>
 <p>TODO</p>
-<h1 id="nuttx-target-group"><a class="doc-anchor" href="#nuttx-target-group">§</a>1 NuttX Target Group</h1>
+<h1 id="target-groups-in-nuttx"><a class="doc-anchor" href="#target-groups-in-nuttx">§</a>1 Target Groups in NuttX</h1>
 <p><em>What’s a Target Group?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Select the NuttX Target and compile it
+tools/configure.sh rv-virt:nsh
+make
+</code></pre></div>
+<p>Remember this <strong>configure.sh</strong> thingy? Let’s call <strong>rv-virt:nsh</strong> a NuttX Target. There are <a href="TODO"><strong>??? NuttX Targets</strong></a>.</p>
+<p>To compile all ??? Targets, we lump them into <strong>Target Groups</strong> (so they’re easier to track)</p>
 <ul>
-<li>arm-01 to arm-14</li>
-<li>risc-v-01 to risc-v-06</li>
-<li>sim-01 to sim-03</li>
-<li>xtensa-01 to xtensa-02</li>
-<li>arm64-01, x86_64-01, other</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><code>arm-01</code></a> to <code>arm-14</code></p>
+</li>
+<li>
+<p><code>risc-v-01</code> to <code>risc-v-06</code></p>
+</li>
+<li>
+<p><code>sim-01</code> to <code>sim-03</code></p>
+</li>
+<li>
+<p><code>xtensa-01</code> to <code>xtensa-02</code></p>
+</li>
+<li>
+<p><code>arm64-01</code>, <code>x86_64-01</code>, <a href="TODO"><code>other</code></a></p>
+<p><a href="TODO">(Check out the <strong>Complete List</strong>)</a></p>
+</li>
 </ul>
-<p><code>arm-01</code> has all the cool classic boards…</p>
+<p><em>What’s inside the Target Groups?</em></p>
+<p><code>arm-01</code> has all the cool classic boards (and Sony Spresense)…</p>
 <p>TODO</p>
 <p><code>arm-06</code> has RP2040 Boards…</p>
 <p>TODO</p>
@@ -309,7 +327,7 @@ Call Stack (most recent call first):
 </blockquote>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p><em>Huh? We’re expecting a Build Farm, not a Build Server?</em></p>
-<p>Just add a second Ubuntu PC, partition the Build Targets across the PCs, and we’ll have a Build Farm!</p>
+<p>Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we’ll have a Build Farm!</p>
 <p><em>What about macOS?</em></p>
 <p>macOS compiles NuttX a little differently from Linux. <a href="https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448">(See <strong>sim/rpserver_virtio</strong>)</a></p>
 <p>BUT… GitHub charges a <a href="TODO"><strong>10x Premium for macOS Runners</strong></a>. That’s why <a href="TODO"><strong>we shut them down</strong></a> to cut costs. (Pic above)</p>
