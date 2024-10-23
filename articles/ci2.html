@@ -65,12 +65,13 @@
 
     <h1 class="title">Your very own Build Farm for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#build-nuttx-for-a-target-group">1 Build NuttX for a Target Group</a><ul></ul></li>
-<li><a href="#build-nuttx-for-all-target-groups">2 Build NuttX for All Target Groups</a><ul></ul></li>
-<li><a href="#run-all-ci-jobs">3 Run All CI Jobs</a><ul></ul></li>
-<li><a href="#scatter-and-gather">4 Scatter and Gather</a><ul></ul></li>
-<li><a href="#todo">5 TODO</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Nov 2024</em></p>
+<li><a href="#inside-a-target-group">1 Inside a Target Group</a><ul></ul></li>
+<li><a href="#build-nuttx-for-a-target-group">2 Build NuttX for a Target Group</a><ul></ul></li>
+<li><a href="#build-nuttx-for-all-target-groups">3 Build NuttX for All Target Groups</a><ul></ul></li>
+<li><a href="#run-all-ci-jobs">4 Run All CI Jobs</a><ul></ul></li>
+<li><a href="#scatter-and-gather">5 Scatter and Gather</a><ul></ul></li>
+<li><a href="#todo">6 TODO</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci2-title.jpg" alt="TODO" /></p>
 <p><a href="TODO"><strong>Refurbished Ubuntu PCs</strong></a> have become quite affordable ($??? pic above). Can we turn them into a <strong>(Low-Cost) Build Farm</strong> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>?</p>
 <p><em>Why not do all this in GitHub Actions? It’s free ain’t it?</em></p>
@@ -79,7 +80,14 @@
 <li>TODO: Reducing GitHub Runners</li>
 </ul>
 <p>TODO</p>
-<h1 id="build-nuttx-for-a-target-group"><a class="doc-anchor" href="#build-nuttx-for-a-target-group">§</a>1 Build NuttX for a Target Group</h1>
+<h1 id="inside-a-target-group"><a class="doc-anchor" href="#inside-a-target-group">§</a>1 Inside a Target Group</h1>
+<p>TODO: Filesystem wildcards</p>
+<div class="example-wrap"><pre class="language-text"><code>## This Target Group includes ???
+
+## Exclude mosh
+
+## CMake
+</code></pre></div><h1 id="build-nuttx-for-a-target-group"><a class="doc-anchor" href="#build-nuttx-for-a-target-group">§</a>2 Build NuttX for a Target Group</h1>
 <p>TODO: CI Jobs <code>arm-01</code> to <code>arm-14</code></p>
 <p><a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">NuttX Builds for CI</a></p>
 <p>TODO: Docker Image for NuttX</p>
@@ -88,6 +96,9 @@
 <p>TODO: Pic of targets</p>
 <p>Here are the steps…</p>
 <ol>
+<li>
+<p>Install Docker</p>
+</li>
 <li>
 <p>Download the Docker Image for NuttX</p>
 </li>
@@ -110,6 +121,8 @@
 <div class="example-wrap"><pre class="language-bash"><code>## Run a NuttX CI Job with Docker
 ## Parameter is thr CI Job, like &quot;arm-01&quot;
 job=$1
+
+## TODO: Install Docker
 
 ## Download the Docker Image for NuttX
 sudo docker pull \
@@ -157,7 +170,7 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx ;
 tools/configure.sh ox64:nsh ;
 make ;
-</code></pre></div><h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>2 Build NuttX for All Target Groups</h1>
+</code></pre></div><h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
 <p><em>What if we’re compiling NuttX for All Target Groups? From <code>arm-01</code> to <code>arm-14</code>?</em></p>
 <p>Let’s loop through all the Target Groups and compile them…</p>
 <ul>
@@ -234,11 +247,11 @@ for (( ; ; )); do
 done
 </code></pre></div>
 <p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
-<h1 id="run-all-ci-jobs"><a class="doc-anchor" href="#run-all-ci-jobs">§</a>3 Run All CI Jobs</h1>
+<h1 id="run-all-ci-jobs"><a class="doc-anchor" href="#run-all-ci-jobs">§</a>4 Run All CI Jobs</h1>
 <p>TODO</p>
-<h1 id="scatter-and-gather"><a class="doc-anchor" href="#scatter-and-gather">§</a>4 Scatter and Gather</h1>
+<h1 id="scatter-and-gather"><a class="doc-anchor" href="#scatter-and-gather">§</a>5 Scatter and Gather</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://gist.github.com/nuttxpr
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://gist.github.com/nuttxpr
 
 https://docs.docker.com/engine/install/ubuntu/
 sudo docker pull \
@@ -267,7 +280,7 @@ scatter / gather?
 https://github.com/apache/nuttx/blob/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162/.github/gcc.json
 
 ^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci2.md"><strong>lupyuen.github.io/src/ci2.md</strong></a></p>
