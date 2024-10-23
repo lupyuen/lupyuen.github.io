@@ -196,7 +196,7 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 
 _What about building a Single Target?_
 
-Suppose we wish to build `ox64:nsh`. Just change this...
+Suppose we wish to build __ox64:nsh__. Just change this...
 
 ```bash
 cd nuttx/tools/ci ;
