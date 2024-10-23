@@ -140,29 +140,43 @@ CMake,arduino-nano-33ble:nsh
 <ol>
 <li>
 <p>Install Docker</p>
+<p>TODO</p>
 </li>
 <li>
 <p>Download the Docker Image for NuttX</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker pull \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
+</code></pre></div></li>
 <li>
 <p>Start the Docker Container</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker run -it \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+  /bin/bash -c &quot;...&quot;
+</code></pre></div></li>
 <li>
 <p>Check out the <code>master</code> branch of <code>nuttx</code> repo</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>git clone \
+  https://github.com/apache/nuttx
+</code></pre></div></li>
 <li>
 <p>Do the same for <code>nuttx-apps</code> repo</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>git clone \
+  https://github.com/apache/nuttx-apps \
+  apps
+</code></pre></div></li>
 <li>
-<p>Build the Targets for <code>arm-01</code></p>
-<p>(Inside the NuttX Docker Container)</p>
-</li>
+<p>Inside the Docker Container: Build the Targets for <code>arm-01</code></p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci
+./cibuild.sh \
+  -c -A -N -R \
+  testlist/arm-01.dat
+</code></pre></div></li>
 <li>
 <p>Wait for <code>arm-01</code> to complete</p>
 <p>(About 1.5 hours)</p>
 </li>
 </ol>
-<p>This is how we do it: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a></p>
+<p>Put everything together: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run a NuttX CI Job with Docker
 ## Parameter is thr CI Job, like &quot;arm-01&quot;
 job=$1
