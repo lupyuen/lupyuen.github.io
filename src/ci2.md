@@ -109,18 +109,18 @@ TODO: Pic of targets
 
 Here are the steps...
 
-1.  Install Docker
+1.  Install __Docker Engine__
 
-    TODO
+    [__"Install Docker Engine on Ubuntu"__](https://docs.docker.com/engine/install/ubuntu/)
 
-1.  Download the Docker Image for NuttX
+1.  Download the __Docker Image__ for NuttX
 
     ```bash
     sudo docker pull \
       ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
     ```
 
-1.  Start the Docker Container
+1.  Start the __Docker Container__
 
     ```bash
     sudo docker run -it \
@@ -143,7 +143,7 @@ Here are the steps...
       apps
     ```
 
-1.  Inside the Docker Container: Build the Targets for _arm-01_
+1.  Inside the Docker Container: __Build the Targets__ for _arm-01_
 
     ```bash
     cd nuttx/tools/ci
@@ -154,7 +154,7 @@ Here are the steps...
 
 1.  Wait for _arm-01_ to complete
 
-    (About 1.5 hours)
+    (About 1.5 hours. That's 15 mins slower than GitHub Actions)
 
 Put everything together: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
 
@@ -163,7 +163,8 @@ Put everything together: [run-job.sh](https://github.com/lupyuen/nuttx-release/b
 ## Parameter is the Target Group, like "arm-01"
 job=$1
 
-## TODO: Install Docker
+## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
 
 ## Download the Docker Image for NuttX
 sudo docker pull \
@@ -381,37 +382,7 @@ BUT... GitHub charges a [__10x Premium for macOS Runners__](TODO). That's why [_
 
 Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
-[(Sorry the NuttX Jobs won't run on __M1 Mac__)](TODO)
-
-```text
-https://gist.github.com/nuttxpr
-
-https://docs.docker.com/engine/install/ubuntu/
-sudo docker pull \
-    ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
-
-https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci
-
-sudo docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash 
-
-root@f38a12771a26:~/nuttx/tools/ci# date ; ./cibuild.sh -c -A -N -R testlist/arm-01.dat ; date
-Fri Oct 18 05:58:29 UTC 2024
-...
-Fri Oct 18 07:24:36 UTC 2024
-
-arm-01: 1 hour 12 mins at GitHub
-https://github.com/apache/nuttx/actions/runs/11387572001/job/31692229034
-
-1 hour 26 mins at Ubuntu PC
-
-Intel mac mini
-security risk, not docker
-firewall
-
-https://github.com/apache/nuttx/blob/master/.github/gcc.json
-
-^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
-```
+[(Sorry NuttX Jobs won't run on __M1 Mac__)](TODO)
 
 TODO
 
