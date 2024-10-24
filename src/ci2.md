@@ -316,7 +316,7 @@ function upload_log {
 
 The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our Refurbished Intel i5 PC.
 
-(Constrained by CPU, not RAM or I/O, pic above)
+(Constrained by CPU, not RAM or I/O. Pic above)
 
 There's something quirky about about Errors and Warnings...
 
