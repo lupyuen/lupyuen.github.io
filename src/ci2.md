@@ -341,13 +341,20 @@ Which will insert the Errors and Warnings into the top of the Log File.
 
 _Why the funny Regex Pattern?_
 
-The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: [TODO](TODO)
+The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
 
-Which will match and detect __GCC Compiler Errors__ like...
+```bash
+## Filename : Line : Col : warning/error : Message
+^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
+```
 
-TODO
+Which will match and detect [__GCC Compiler Errors__](https://gist.github.com/nuttxpr/eb767fe53524e6db97c2b27327da5b7d#file-ci-arm-10-log-L1) like...
 
-But it won't match [__CMake Errors__](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451) like these!
+```bash
+chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
+```
+
+But it won't match [__CMake Errors__](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451) like this!
 
 ```text
 CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
