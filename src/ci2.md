@@ -8,7 +8,11 @@
 
 In this article we...
 
-TODO
+- __Compile NuttX__ for a group of Arm32 Boards
+
+- Then scale up and compile NuttX for __All Arm32 Boards__
+
+- Thanks to the __Docker Image__ provided by NuttX
 
 _Why not do all this in GitHub Actions? It's free ain't it?_
 
