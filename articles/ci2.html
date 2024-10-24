@@ -243,7 +243,7 @@ make ;
 <p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="TODO" /></p>
 <h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
 <p><em>What about compiling NuttX for All Target Groups? From <em>arm-01</em> to <em>arm-14</em>?</em></p>
-<p>Let’s loop through all the Target Groups and compile them…</p>
+<p>We loop through <strong>All Target Groups</strong> and compile them…</p>
 <ul>
 <li>
 <p>For Each Target Group: <em>arm-01</em> … <em>arm-14</em></p>
@@ -258,8 +258,7 @@ make ;
 <p>Upload the Build Log</p>
 </li>
 </ul>
-<p>TODO: <a href="https://gist.github.com/nuttxpr">Here’s the CI Output Log</a></p>
-<p>Our script becomes more sophisticated:  <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
+<p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
@@ -310,11 +309,11 @@ function upload_log {
     --filename &quot;ci-$job.log&quot;
 }
 </code></pre></div>
-<p>TODO: The outcome is here</p>
-<p>Let’s talk about Errors and Warnings..</p>
+<p><a href="https://gist.github.com/nuttxpr">(See the <strong>Uploaded Logs</strong>)</a></p>
+<p>There’s something quirky about about Errors and Warnings…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="TODO" /></p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
-<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings:</p>
+<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local tmp_file=/tmp/release-tmp.log
@@ -327,45 +326,21 @@ function find_messages {
   mv $tmp_file $log_file
 }
 </code></pre></div>
-<p>And inserts the Errors and Warnings into the top of the Log File.</p>
-<p>TODO: <a href="TODO">(based on this <strong>GCC Pattern</strong>)</a></p>
-<p>TODO: GCC Matcher is not perfect: CMake, strangely simplistic</p>
-<p><a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451">CMake Error</a></p>
-<div class="example-wrap"><pre class="language-text"><code>====================================================================================
-Cmake in present: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
-Configuration/Tool: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
-2024-10-22 20:31:16
-------------------------------------------------------------------------------------
-  Cleaning...
-  Configuring...
-CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
+<p>Which will insert the Errors and Warnings into the top of the Log File.</p>
+<p><em>Why the funny Regex Pattern?</em></p>
+<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: <a href="TODO">TODO</a></p>
+<p>Which will match and detect <strong>GCC Compiler Errors</strong> like…</p>
+<p>TODO</p>
+<p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like these!</p>
+<div class="example-wrap"><pre class="language-text"><code>CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
   ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
-  by the following symbols:
-
-   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM (value: y)
-
-Call Stack (most recent call first):
-  CMakeLists.txt:322 (nuttx_olddefconfig)
-
-
-  Select HOST_LINUX=y
-CMake Warning at cmake/nuttx_kconfig.cmake:192 (message):
-  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
-  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
-  ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
-  by the following symbols:
-
-   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM (value: y)
-
-Call Stack (most recent call first):
-  cmake/nuttx_sethost.cmake:107 (nuttx_setconfig)
-  CMakeLists.txt:333 (nuttx_sethost)
 </code></pre></div>
+<p>We might need to tweak the Regex Pattern and catch more errors.</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
-<p><em>Huh? We’re expecting a Build Farm, not a Build Server?</em></p>
+<p><em>Huh? Aren’t we making a Build Farm, not a Build Server?</em></p>
 <p>Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we’ll have a Build Farm!</p>
 <p><em>What about macOS?</em></p>
 <p>macOS compiles NuttX a little differently from Linux. <a href="https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448">(See <strong>sim/rpserver_virtio</strong>)</a></p>
