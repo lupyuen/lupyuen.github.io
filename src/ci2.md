@@ -314,7 +314,7 @@ function upload_log {
 
 ![TODO](https://lupyuen.github.io/images/ci2-load.png)
 
-The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our Refurbished Intel i5 PC.
+The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our [__Refurbished Intel i5 PC__](https://qoto.org/@lupyuen/113328181160576977).
 
 (Constrained by CPU, not RAM or I/O. Pic above)
 
