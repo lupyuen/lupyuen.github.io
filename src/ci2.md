@@ -158,6 +158,10 @@ Here are the steps...
       testlist/arm-01.dat
     ```
 
+    [(__cibuild.sh__ compiles a Target Group)](https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh)
+
+    [(__arm-01.dat__ selects the Arm32 Targets)](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat)
+
 1.  Wait for _arm-01_ to complete
 
     (About 1.5 hours. That's 15 mins slower than GitHub Actions)
