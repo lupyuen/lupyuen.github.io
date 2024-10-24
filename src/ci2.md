@@ -18,9 +18,9 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 # Target Groups in NuttX
 
-We're creating a Build Farm that will compile __All Boards__ in __All Configurations__ in NuttX (pic above)
+We're creating a Build Farm that will compile __All Boards__ in __All Configurations__ (pic above)
 
-- TODO: Report
+- [__Build Logs for All Boards__](https://gist.github.com/nuttxpr)
 
 To do that, we count every single thing that we're compiling: Targets and Target Groups.
 
