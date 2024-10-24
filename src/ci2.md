@@ -126,6 +126,8 @@ Here are the steps for Ubuntu x64...
       ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
     ```
 
+    [(Won't work for __Arm64__)](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)
+
 1.  Start the __Docker Container__
 
     ```bash
