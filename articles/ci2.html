@@ -78,10 +78,11 @@
 <p><a href="https://github.com/apache/nuttx/issues/14376"><strong>“[URGENT] Reducing our usage of GitHub Runners”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ci2-log.jpg" alt="TODO" /></p>
 <h1 id="target-groups-in-nuttx"><a class="doc-anchor" href="#target-groups-in-nuttx">§</a>1 Target Groups in NuttX</h1>
-<p>We’re creating a Build Farm that will compile all Target Groups in NuttX (pic above)</p>
+<p>We’re creating a Build Farm that will compile <strong>All Boards</strong> in <strong>All Configurations</strong> in NuttX (pic above)</p>
 <ul>
 <li>TODO: Report</li>
 </ul>
+<p>First we talk about Targets and Target Groups.</p>
 <p><em>What’s a Target Group?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Select the NuttX Target and compile it
 tools/configure.sh rv-virt:nsh
@@ -104,9 +105,10 @@ make
 </li>
 <li>
 <p><em>arm64-01</em>, <em>x86_64-01</em>, <a href="TODO"><em>other</em></a></p>
-<p><a href="TODO">(Check out the <strong>Complete List</strong>)</a></p>
 </li>
 </ul>
+<p>Looks familiar? Yep we see the above when we <a href="https://lupyuen.github.io/articles/pr#submit-the-pull-request"> <strong>Submit a Pull Request</strong></a>.</p>
+<p><a href="TODO">(See the <strong>Complete List</strong>)</a></p>
 <p><em>What’s inside the Target Groups?</em></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><em>arm-01</em></a> has BeagleBone Black and Sony Spresense…</p>
 <p>TODO</p>
