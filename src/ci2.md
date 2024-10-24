@@ -318,7 +318,7 @@ The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our
 
 (Constrained by CPU, not RAM or I/O. Pic above)
 
-There's something quirky about about Errors and Warnings...
+Something quirky about about Errors and Warnings...
 
 ![TODO](https://lupyuen.github.io/images/ci2-flow3.jpg)
 
