@@ -22,7 +22,7 @@ We're creating a Build Farm that will compile __All Boards__ in __All Configurat
 
 - TODO: Report
 
-First we talk about Targets and Target Groups.
+Let's count every single thing that we're compiling: Targets and Target Groups.
 
 _What's a Target Group?_
 
@@ -32,7 +32,7 @@ tools/configure.sh rv-virt:nsh
 make
 ```
 
-Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target. There are [__??? NuttX Targets__](TODO).
+Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target. Thanks to the awesome NuttX Contributors, we have created [__??? NuttX Targets__](TODO).
 
 To compile all ??? Targets, we lump them into 30 [__Target Groups__](https://github.com/apache/nuttx/tree/master/tools/ci/testlist) (so they're easier to track)
 
