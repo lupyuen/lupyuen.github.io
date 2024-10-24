@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/ci2-title.jpg)
 
-[__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). Can we turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
+[__Refurbished Ubuntu PCs__](https://qoto.org/@lupyuen/113328181160576977) have become quite affordable ($370 pic above). Can we turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)?
 
 In this article we...
 
