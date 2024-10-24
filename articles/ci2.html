@@ -148,16 +148,16 @@ CMake,arduino-nano-33ble:nsh
 <p>Here are the steps…</p>
 <ol>
 <li>
-<p>Install Docker</p>
-<p>TODO</p>
+<p>Install <strong>Docker Engine</strong></p>
+<p><a href="https://docs.docker.com/engine/install/ubuntu/"><strong>“Install Docker Engine on Ubuntu”</strong></a></p>
 </li>
 <li>
-<p>Download the Docker Image for NuttX</p>
+<p>Download the <strong>Docker Image</strong> for NuttX</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker pull \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 </code></pre></div></li>
 <li>
-<p>Start the Docker Container</p>
+<p>Start the <strong>Docker Container</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash -c &quot;...&quot;
@@ -174,7 +174,7 @@ CMake,arduino-nano-33ble:nsh
   apps
 </code></pre></div></li>
 <li>
-<p>Inside the Docker Container: Build the Targets for <em>arm-01</em></p>
+<p>Inside the Docker Container: <strong>Build the Targets</strong> for <em>arm-01</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
@@ -182,7 +182,7 @@ CMake,arduino-nano-33ble:nsh
 </code></pre></div></li>
 <li>
 <p>Wait for <em>arm-01</em> to complete</p>
-<p>(About 1.5 hours)</p>
+<p>(About 1.5 hours. That’s 15 mins slower than GitHub Actions)</p>
 </li>
 </ol>
 <p>Put everything together: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a></p>
@@ -190,7 +190,8 @@ CMake,arduino-nano-33ble:nsh
 ## Parameter is the Target Group, like &quot;arm-01&quot;
 job=$1
 
-## TODO: Install Docker
+## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
 
 ## Download the Docker Image for NuttX
 sudo docker pull \
@@ -355,35 +356,7 @@ function find_messages {
 <p>macOS compiles NuttX a little differently from Linux. <a href="https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448">(See <strong>sim/rpserver_virtio</strong>)</a></p>
 <p>BUT… GitHub charges a <a href="TODO"><strong>10x Premium for macOS Runners</strong></a>. That’s why <a href="TODO"><strong>we shut them down</strong></a> to cut costs. <a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2428086912">(Pic above)</a></p>
 <p>Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?</p>
-<p><a href="TODO">(Sorry the NuttX Jobs won’t run on <strong>M1 Mac</strong>)</a></p>
-<div class="example-wrap"><pre class="language-text"><code>https://gist.github.com/nuttxpr
-
-https://docs.docker.com/engine/install/ubuntu/
-sudo docker pull \
-    ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
-
-https://lupyuen.github.io/articles/pr#appendix-downloading-the-docker-image-for-nuttx-ci
-
-sudo docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash 
-
-root@f38a12771a26:~/nuttx/tools/ci# date ; ./cibuild.sh -c -A -N -R testlist/arm-01.dat ; date
-Fri Oct 18 05:58:29 UTC 2024
-...
-Fri Oct 18 07:24:36 UTC 2024
-
-arm-01: 1 hour 12 mins at GitHub
-https://github.com/apache/nuttx/actions/runs/11387572001/job/31692229034
-
-1 hour 26 mins at Ubuntu PC
-
-Intel mac mini
-security risk, not docker
-firewall
-
-https://github.com/apache/nuttx/blob/master/.github/gcc.json
-
-^(.*):(\\d+):(\\d+):\\s+(warning|fatal error|error):\\s+(.*)$
-</code></pre></div>
+<p><a href="TODO">(Sorry NuttX Jobs won’t run on <strong>M1 Mac</strong>)</a></p>
 <p>TODO</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci2.md"><strong>lupyuen.github.io/src/ci2.md</strong></a></p>
