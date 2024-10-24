@@ -333,10 +333,14 @@ function find_messages {
 </code></pre></div>
 <p>Which will insert the Errors and Warnings into the top of the Log File.</p>
 <p><em>Why the funny Regex Pattern?</em></p>
-<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: <a href="TODO">TODO</a></p>
-<p>Which will match and detect <strong>GCC Compiler Errors</strong> like…</p>
-<p>TODO</p>
-<p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like these!</p>
+<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
+^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
+</code></pre></div>
+<p>Which will match and detect <a href="https://gist.github.com/nuttxpr/eb767fe53524e6db97c2b27327da5b7d#file-ci-arm-10-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
+<div class="example-wrap"><pre class="language-bash"><code>chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
+</code></pre></div>
+<p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like this!</p>
 <div class="example-wrap"><pre class="language-text"><code>CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
