@@ -34,7 +34,7 @@ make
 
 Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target. There are [__??? NuttX Targets__](TODO).
 
-To compile all ??? Targets, we lump them into __Target Groups__ (so they're easier to track)
+To compile all ??? Targets, we lump them into 30 [__Target Groups__](https://github.com/apache/nuttx/tree/master/tools/ci/testlist) (so they're easier to track)
 
 - [_arm-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) ... _arm-14_
 
