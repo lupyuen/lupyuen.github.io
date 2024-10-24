@@ -22,7 +22,7 @@ We're creating a Build Farm that will compile __All Boards__ in __All Configurat
 
 - TODO: Report
 
-Let's count every single thing that we're compiling: Targets and Target Groups.
+To do that, we count every single thing that we're compiling: Targets and Target Groups.
 
 _What's a Target Group?_
 
