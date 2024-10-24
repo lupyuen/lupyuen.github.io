@@ -230,7 +230,7 @@ Now we scale up...
 
 _What about compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
 
-Let's loop through all the Target Groups and compile them...
+We loop through __All Target Groups__ and compile them...
 
 - For Each Target Group: _arm-01_ ... _arm-14_
 
@@ -240,9 +240,7 @@ Let's loop through all the Target Groups and compile them...
 
 - Upload the Build Log
 
-TODO: [Here's the CI Output Log](https://gist.github.com/nuttxpr)
-
-Our script becomes more sophisticated:  [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
+Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
 
 ```bash
@@ -305,15 +303,15 @@ function upload_log {
 }
 ```
 
-TODO: The outcome is here
+[(See the __Uploaded Logs__)](https://gist.github.com/nuttxpr)
 
-Let's talk about Errors and Warnings..
+There's something quirky about about Errors and Warnings...
 
 ![TODO](https://lupyuen.github.io/images/ci2-flow3.jpg)
 
 # Find Errors and Warnings
 
-In the script above, we call __find_messages__ to search for Errors and Warnings:
+In the script above, we call __find_messages__ to search for Errors and Warnings: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
 ```bash
 ## Search for Errors and Warnings
@@ -329,53 +327,32 @@ function find_messages {
 }
 ```
 
-And inserts the Errors and Warnings into the top of the Log File.
+Which will insert the Errors and Warnings into the top of the Log File.
 
-TODO: [(based on this __GCC Pattern__)](TODO)
+_Why the funny Regex Pattern?_
 
-TODO: GCC Matcher is not perfect: CMake, strangely simplistic
+The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: [TODO](TODO)
 
-[CMake Error](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451)
+Which will match and detect __GCC Compiler Errors__ like...
+
+TODO
+
+But it won't match [__CMake Errors__](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451) like these!
 
 ```text
-====================================================================================
-Cmake in present: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
-Configuration/Tool: stm32f334-disco/nsh,CONFIG_ARM_TOOLCHAIN_CLANG
-2024-10-22 20:31:16
-------------------------------------------------------------------------------------
-  Cleaning...
-  Configuring...
 CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
   ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
-  by the following symbols:
-
-   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 && ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 && ARCH_ARM (value: y)
-
-Call Stack (most recent call first):
-  CMakeLists.txt:322 (nuttx_olddefconfig)
-
-
-  Select HOST_LINUX=y
-CMake Warning at cmake/nuttx_kconfig.cmake:192 (message):
-  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
-  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
-  ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
-  by the following symbols:
-
-   - STM32_STM32F33XX (defined at arch/arm/src/stm32/Kconfig:1533), with value y, direct dependencies ARCH_CHIP_STM32 && ARCH_ARM (value: y), and select condition ARCH_CHIP_STM32 && ARCH_ARM (value: y)
-
-Call Stack (most recent call first):
-  cmake/nuttx_sethost.cmake:107 (nuttx_setconfig)
-  CMakeLists.txt:333 (nuttx_sethost)
 ```
+
+We might need to tweak the Regex Pattern and catch more errors.
 
 ![TODO](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
 # What's Next
 
-_Huh? We're expecting a Build Farm, not a Build Server?_
+_Huh? Aren't we making a Build Farm, not a Build Server?_
 
 Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we'll have a Build Farm!
 
