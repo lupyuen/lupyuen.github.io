@@ -6,6 +6,10 @@
 
 [__Refurbished Ubuntu PCs__](TODO) have become quite affordable ($??? pic above). Can we turn them into a __(Low-Cost) Build Farm__ for [__Apache NuttX RTOS__](TODO)?
 
+In this article we...
+
+TODO
+
 _Why not do all this in GitHub Actions? It's free ain't it?_
 
 We learnt a Painful Lesson: [__Freebies Won't Last Forever!__](https://github.com/apache/nuttx/issues/14376)
