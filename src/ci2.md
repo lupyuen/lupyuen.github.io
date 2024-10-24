@@ -14,11 +14,11 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 - TODO: Reducing GitHub Runners
 
-TODO: Pic of CI Logs
+![TODO](https://lupyuen.github.io/images/ci2-log.jpg)
 
 # Target Groups in NuttX
 
-We're creating a Build Farm that will compile all Target Groups in NuttX
+We're creating a Build Farm that will compile all Target Groups in NuttX (pic above)
 
 - TODO: Report
 
