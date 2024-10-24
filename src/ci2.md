@@ -75,7 +75,7 @@ $ cd nuttx ; find . -name defconfig
 ...
 ```
 
-So NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (as a NuttX Target): [tools/ci/testlist/arm-05.dat](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat)
+Thus NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (which becomes a NuttX Target): [tools/ci/testlist/arm-05.dat](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat)
 
 ```text
 ## arm-05 Target Group contains:
@@ -83,12 +83,15 @@ So NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (as a NuttX Tar
 ## Compile with `make` and GCC Toolchain
 /arm/[m-q]*,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 
-## Except for these: Compile with CMake instead
+## Except for these:
+## Compile with CMake instead
 CMake,arduino-nano-33ble:nsh
 
 ## Exclude this Target from the build
 -moxa:nsh
 ```
+
+We're ready to build the Target Groups...
 
 TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
@@ -96,7 +99,7 @@ TODO: [NuttX Builds for CI](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yh
 
 # Build NuttX for One Target Group
 
-Suppose we wish to compile the Targets for _arm-01_...
+Suppose we wish to compile the NuttX Targets inside __Target Group _arm-01___...
 
 TODO: Pic of targets
 
@@ -200,6 +203,8 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/nuttxpr/771a01e3b7ab6836a0cac4e1884665dd)
+
 _What about building a Single Target?_
 
 Suppose we wish to build __ox64:nsh__. Just change this...
@@ -223,7 +228,7 @@ Now we scale up...
 
 # Build NuttX for All Target Groups
 
-_What if we're compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
+_What about compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
 
 Let's loop through all the Target Groups and compile them...
 
