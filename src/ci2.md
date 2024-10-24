@@ -50,7 +50,7 @@ To compile all ??? Targets, we lump them into 30 [__Target Groups__](https://git
 
 - _arm64-01_, _x86\_64-01_, [_other_](TODO)
 
-Looks familiar? Yep we see the above when we [ __Submit a Pull Request__](https://lupyuen.github.io/articles/pr#submit-the-pull-request).
+Looks familiar? Yep we see these when we [ __Submit a Pull Request__](https://lupyuen.github.io/articles/pr#submit-the-pull-request).
 
 [(See the __Complete List__)](TODO)
 
@@ -65,6 +65,8 @@ TODO
 TODO
 
 [_risc-v-01_](TODO) has ???
+
+[(And __So Much More__)](TODO)
 
 _How are Target Groups defined?_
 
