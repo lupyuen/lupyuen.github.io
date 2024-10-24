@@ -185,7 +185,7 @@ sudo docker run -it \
 "
 ```
 
-We run it like this...
+We run it like this (will take 1.5 hours)...
 
 ```bash
 $ sudo ./run-job.sh arm-01
@@ -309,7 +309,11 @@ function upload_log {
 
 [(See the __Uploaded Logs__)](https://gist.github.com/nuttxpr)
 
+![TODO](https://lupyuen.github.io/images/ci2-load.png)
+
 The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our Refurbished Intel i5 PC.
+
+(Constrained by CPU, not RAM or I/O, pic above)
 
 There's something quirky about about Errors and Warnings...
 
