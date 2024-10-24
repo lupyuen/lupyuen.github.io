@@ -190,7 +190,10 @@ CMake,arduino-nano-33ble:nsh
 ./cibuild.sh \
   -c -A -N -R \
   testlist/arm-01.dat
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh">(<strong>cibuild.sh</strong> compiles a Target Group)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat">(<strong>arm-01.dat</strong> selects the Arm32 Targets)</a></p>
+</li>
 <li>
 <p>Wait for <em>arm-01</em> to complete</p>
 <p>(About 1.5 hours. That’s 15 mins slower than GitHub Actions)</p>
