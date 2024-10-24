@@ -1,6 +1,6 @@
 # Your very own Build Farm for Apache NuttX RTOS
 
-📝 _20 Nov 2024_
+📝 _27 Nov 2024_
 
 ![Refurbished Ubuntu PC becomes Build Farm for Apache NuttX RTOS](https://lupyuen.github.io/images/ci2-title.jpg)
 
