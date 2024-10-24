@@ -12,7 +12,7 @@ TODO
 
 _Why not do all this in GitHub Actions? It's free ain't it?_
 
-We learnt a Painful Lesson: [__Freebies Won't Last Forever!__](https://github.com/apache/nuttx/issues/14376)
+GitHub Actions taught us a Painful Lesson: [__Freebies Won't Last Forever!__](https://github.com/apache/nuttx/issues/14376)
 
 It's probably a bad idea to be locked-in and over-dependent on a __Single Provider for Continuous Integration__. That's why we're exploring alternatives...
 
