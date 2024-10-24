@@ -18,9 +18,11 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 # Target Groups in NuttX
 
-We're creating a Build Farm that will compile all Target Groups in NuttX (pic above)
+We're creating a Build Farm that will compile __All Boards__ in __All Configurations__ in NuttX (pic above)
 
 - TODO: Report
+
+First we talk about Targets and Target Groups.
 
 _What's a Target Group?_
 
@@ -44,7 +46,9 @@ To compile all ??? Targets, we lump them into __Target Groups__ (so they're easi
 
 - _arm64-01_, _x86\_64-01_, [_other_](TODO)
 
-  [(Check out the __Complete List__)](TODO)
+Looks familiar? Yep we see the above when we [ __Submit a Pull Request__](https://lupyuen.github.io/articles/pr#submit-the-pull-request).
+
+[(See the __Complete List__)](TODO)
 
 _What's inside the Target Groups?_
 
