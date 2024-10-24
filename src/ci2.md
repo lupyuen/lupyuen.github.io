@@ -44,7 +44,7 @@ Remember this __configure.sh__ thingy? Let's call __rv-virt:nsh__ a NuttX Target
 
 To compile all 1,594 Targets, we lump them into 30 [__Target Groups__](https://github.com/apache/nuttx/tree/master/tools/ci/testlist) (so they're easier to track)
 
-- [_arm-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) ... _arm-14_
+- [_arm-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat) ... [_arm-14_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-14.dat)
 
 - [_risc-v-01_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/risc-v-01.dat) ... [_risc-v-06_](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/risc-v-06.dat)
 
@@ -323,7 +323,7 @@ function upload_log {
 
 ![Build Server is constrained by CPU, not RAM or I/O](https://lupyuen.github.io/images/ci2-load.png)
 
-The whole thing _(arm-01 ... arm-14)_ will take __??? Hours__ to complete on our [__Refurbished Intel i5 PC__](https://qoto.org/@lupyuen/113328181160576977).
+The whole thing _(arm-01 ... arm-14)_ will take __17.5 Hours__ to complete on our [__Refurbished Intel i5 PC__](https://qoto.org/@lupyuen/113328181160576977).
 
 (Constrained by CPU, not RAM or I/O. Pic above)
 
