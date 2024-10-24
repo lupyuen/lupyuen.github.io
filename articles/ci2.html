@@ -70,7 +70,7 @@
 <li><a href="#build-nuttx-for-all-target-groups">3 Build NuttX for All Target Groups</a><ul></ul></li>
 <li><a href="#find-errors-and-warnings">4 Find Errors and Warnings</a><ul></ul></li>
 <li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Nov 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci2-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-title.jpg" alt="Refurbished Ubuntu PC becomes Build Farm for Apache NuttX RTOS" /></p>
 <p><a href="https://qoto.org/@lupyuen/113328181160576977"><strong>Refurbished Ubuntu PCs</strong></a> have become quite affordable ($370 pic above). Can we turn them into a <strong>(Low-Cost) Build Farm</strong> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>?</p>
 <p>In this article we…</p>
 <ul>
@@ -88,7 +88,7 @@
 <p>GitHub Actions taught us a Painful Lesson: <a href="https://github.com/apache/nuttx/issues/14376"><strong>Freebies Won’t Last Forever!</strong></a></p>
 <p>It’s probably a bad idea to be locked-in and over-dependent on a <strong>Single Provider for Continuous Integration</strong>. That’s why we’re exploring alternatives…</p>
 <p><a href="https://github.com/apache/nuttx/issues/14376"><strong>“[URGENT] Reducing our usage of GitHub Runners”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/ci2-log.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-log.jpg" alt="Build Logs for All Boards" /></p>
 <h1 id="target-groups-in-nuttx"><a class="doc-anchor" href="#target-groups-in-nuttx">§</a>1 Target Groups in NuttX</h1>
 <p>We’re creating a Build Farm that will compile <strong>All Boards</strong> in <strong>All Configurations</strong> (pic above)</p>
 <ul>
@@ -100,34 +100,35 @@
 tools/configure.sh rv-virt:nsh
 make
 </code></pre></div>
-<p>Remember this <strong>configure.sh</strong> thingy? Let’s call <strong>rv-virt:nsh</strong> a NuttX Target. Thanks to the awesome NuttX Contributors, we have created <a href="TODO"><strong>??? NuttX Targets</strong></a>.</p>
-<p>To compile all ??? Targets, we lump them into 30 <a href="https://github.com/apache/nuttx/tree/master/tools/ci/testlist"><strong>Target Groups</strong></a> (so they’re easier to track)</p>
+<p>Remember this <strong>configure.sh</strong> thingy? Let’s call <strong>rv-virt:nsh</strong> a NuttX Target. Thanks to the awesome NuttX Contributors, we have created <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 NuttX Targets</strong></a>.</p>
+<p>To compile all 1,594 Targets, we lump them into 30 <a href="https://github.com/apache/nuttx/tree/master/tools/ci/testlist"><strong>Target Groups</strong></a> (so they’re easier to track)</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><em>arm-01</em></a> … <em>arm-14</em></p>
 </li>
 <li>
-<p><em>risc-v-01</em> … <em>risc-v-06</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/risc-v-01.dat"><em>risc-v-01</em></a> … <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/risc-v-06.dat"><em>risc-v-06</em></a></p>
 </li>
 <li>
-<p><em>sim-01</em> … <em>sim-03</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/sim-01.dat"><em>sim-01</em></a> … <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/sim-03.dat"><em>sim-03</em></a></p>
 </li>
 <li>
-<p><em>xtensa-01</em> … <em>xtensa-02</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/xtensa-01.dat"><em>xtensa-01</em></a>, <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/xtensa-02.dat"><em>xtensa-02</em></a></p>
 </li>
 <li>
-<p><em>arm64-01</em>, <em>x86_64-01</em>, <a href="TODO"><em>other</em></a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm64-01.dat"><em>arm64-01</em></a>, <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/x86_64-01.dat"><em>x86_64-01</em></a>, <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/other.dat"><em>other</em></a></p>
 </li>
 </ul>
 <p>Looks familiar? Yep we see these when we <a href="https://lupyuen.github.io/articles/pr#submit-the-pull-request"> <strong>Submit a Pull Request</strong></a>.</p>
-<p><a href="TODO">(See the <strong>Complete List</strong>)</a></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the <strong>Complete List</strong>)</a></p>
 <p><em>What’s inside the Target Groups?</em></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat"><em>arm-01</em></a> has BeagleBone Black and Sony Spresense…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/ci2-group1.png" alt="Target Group arm-01" /></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-06.dat"><em>arm-06</em></a> has RP2040 Boards…</p>
-<p>TODO</p>
-<p><a href="TODO"><em>risc-v-01</em></a> has ???</p>
-<p><a href="TODO">(And <strong>So Much More</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci2-group2.png" alt="Target Group arm-06" /></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/risc-v-03.dat"><em>risc-v-03</em></a> has ESP32-C6 and ESP32-H2 Boards…</p>
+<p><img src="https://lupyuen.github.io/images/ci2-group3.png" alt="Target Group risc-v-03" /></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(And <strong>So Many More</strong>)</a></p>
 <p><em>How are Target Groups defined?</em></p>
 <p>Every NuttX Target has its own <strong>defconfig</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx ; find . -name defconfig
@@ -151,12 +152,11 @@ CMake,arduino-nano-33ble:nsh
 -moxa:nsh
 </code></pre></div>
 <p>We’re ready to build the Target Groups…</p>
-<p>TODO: <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">NuttX Builds for CI</a></p>
-<p><img src="https://lupyuen.github.io/images/ci2-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-flow2.jpg" alt="Build NuttX for One Target Group" /></p>
 <h1 id="build-nuttx-for-one-target-group"><a class="doc-anchor" href="#build-nuttx-for-one-target-group">§</a>2 Build NuttX for One Target Group</h1>
 <p>Suppose we wish to compile the NuttX Targets inside <strong>Target Group <em>arm-01</em></strong>…</p>
-<p>TODO: Pic of targets</p>
-<p>Here are the steps…</p>
+<p><img src="https://lupyuen.github.io/images/ci2-group1.png" alt="Target Group arm-01" /></p>
+<p>Here are the steps for Ubuntu x64…</p>
 <ol>
 <li>
 <p>Install <strong>Docker Engine</strong></p>
@@ -257,7 +257,7 @@ tools/configure.sh ox64:nsh ;
 make ;
 </code></pre></div>
 <p>Now we scale up…</p>
-<p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="Build NuttX for All Target Groups" /></p>
 <h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
 <p><em>What about compiling NuttX for All Target Groups? From <em>arm-01</em> to <em>arm-14</em>?</em></p>
 <p>We loop through <strong>All Target Groups</strong> and compile them…</p>
@@ -300,8 +300,8 @@ for (( ; ; )); do
   done
 done
 </code></pre></div>
-<p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
-<p><strong>run_job</strong> will compile a single Target Group…</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L29-L46">(<strong>clean_log</strong> is here)</a></p>
+<p><strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L19-L29">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like &quot;arm-01&quot;
 function run_job {
   local job=$1
@@ -312,8 +312,8 @@ function run_job {
   popd
 }
 </code></pre></div>
-<p>Which calls the script we’ve seen earlier: <a href="TODO"><strong>run-job.sh</strong></a></p>
-<p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing…</p>
+<p>Which calls the script we’ve seen earlier: <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>run-job.sh</strong></a></p>
+<p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L58-L70">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload to GitHub Gist
 function upload_log {
   local job=$1
@@ -327,13 +327,13 @@ function upload_log {
 }
 </code></pre></div>
 <p><a href="https://gist.github.com/nuttxpr">(See the <strong>Uploaded Logs</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/ci2-load.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-load.png" alt="Build Server is constrained by CPU, not RAM or I/O" /></p>
 <p>The whole thing <em>(arm-01 … arm-14)</em> will take <strong>??? Hours</strong> to complete on our <a href="https://qoto.org/@lupyuen/113328181160576977"><strong>Refurbished Intel i5 PC</strong></a>.</p>
 <p>(Constrained by CPU, not RAM or I/O. Pic above)</p>
 <p>Something quirky about about Errors and Warnings…</p>
-<p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="Find Errors and Warnings" /></p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
-<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
+<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L46-L58">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local tmp_file=/tmp/release-tmp.log
@@ -362,16 +362,39 @@ function find_messages {
   ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
 </code></pre></div>
 <p>We might need to tweak the Regex Pattern and catch more errors.</p>
-<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="NuttX GitHub Runners: Live Update" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p><em>Huh? Aren’t we making a Build Farm, not a Build Server?</em></p>
 <p>Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we’ll have a Build Farm!</p>
 <p><em>What about macOS?</em></p>
 <p>macOS compiles NuttX a little differently from Linux. <a href="https://github.com/NuttX/nuttx/actions/runs/11470464140/job/31924857916#step:7:1448">(See <strong>sim/rpserver_virtio</strong>)</a></p>
-<p>BUT… GitHub charges a <a href="TODO"><strong>10x Premium for macOS Runners</strong></a>. That’s why <a href="TODO"><strong>we shut them down</strong></a> to cut costs. <a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2428086912">(Pic above)</a></p>
+<p>BUT… GitHub charges a <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>10x Premium for macOS Runners</strong></a>. That’s why <a href="https://github.com/apache/nuttx/issues/14376"><strong>we shut them down</strong></a> to cut costs. <a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2428086912">(Pic above)</a></p>
 <p>Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?</p>
-<p><a href="TODO">(Sorry NuttX Jobs won’t run on <strong>M1 Mac</strong>)</a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/pull/14377#issuecomment-2419977985">(Sorry NuttX Jobs won’t run on <strong>M1 Mac</strong>)</a></p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci2.md"><strong>lupyuen.github.io/src/ci2.md</strong></a></p>
 
