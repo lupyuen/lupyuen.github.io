@@ -90,11 +90,11 @@ $ cd nuttx ; find . -name defconfig
 Thus NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (which becomes a NuttX Target): [tools/ci/testlist/arm-05.dat](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat)
 
 ```text
-## arm-05 Target Group contains:
+## Target Group arm-05 contains:
 ## boards/arm/[m-q]*/*/configs/*/defconfig
 /arm/[m-q]*,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 
-## Compile the above targets
+## Compile the above Targets
 ## with `make` and GCC Toolchain
 
 ## Except for these:
