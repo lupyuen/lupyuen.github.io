@@ -246,6 +246,20 @@ tools/configure.sh ox64:nsh ;
 make ;
 ```
 
+_How to copy the Compiled Files out of the Docker Container?_
+
+This will copy out the __Compiled NuttX Binary__ from Docker...
+
+```bash
+## Get the Container ID
+sudo docker ps
+
+## Fill in the Container ID below
+sudo docker cp \
+  CONTAINER_ID:/root/nuttx/nuttx \
+  .
+```
+
 Now we scale up...
 
 ![Build NuttX for All Target Groups](https://lupyuen.github.io/images/ci2-flow.jpg)
