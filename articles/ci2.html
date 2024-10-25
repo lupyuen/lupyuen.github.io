@@ -251,7 +251,7 @@ arm-none-eabi-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permiss
 Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 </code></pre></div>
-<p><a href="https://gist.github.com/nuttxpr/771a01e3b7ab6836a0cac4e1884665dd">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/nuttxpr/e35c57f3c318785d98ecdf435b261a23">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>What about building a Single Target?</em></p>
 <p>Suppose we wish to build <strong>ox64:nsh</strong>. Just change this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci ;
@@ -281,7 +281,7 @@ make ;
 <p>Upload the Build Log</p>
 </li>
 </ul>
-<p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
+<p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L71-L97">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
 ## sudo gh auth login
 ## sudo ./run-ci.sh
@@ -314,8 +314,8 @@ for (( ; ; )); do
   sudo docker system prune --force
 done
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L29-L46">(<strong>clean_log</strong> is here)</a></p>
-<p><strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L19-L29">run-ci.sh</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L30-L47">(<strong>clean_log</strong> is here)</a></p>
+<p><strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like &quot;arm-01&quot;
 function run_job {
   local job=$1
@@ -327,7 +327,7 @@ function run_job {
 }
 </code></pre></div>
 <p>Which calls the script we’ve seen earlier: <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>run-job.sh</strong></a></p>
-<p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L58-L70">run-ci.sh</a></p>
+<p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload to GitHub Gist
 ## https://gist.github.com/nuttxpr
 function upload_log {
@@ -349,7 +349,7 @@ function upload_log {
 <p>Something quirky about about Errors and Warnings…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="Find Errors and Warnings" /></p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
-<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L46-L58">run-ci.sh</a></p>
+<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L59">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local tmp_file=/tmp/release-tmp.log
@@ -368,7 +368,7 @@ function find_messages {
 <div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
 ^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
 </code></pre></div>
-<p>Which will match and detect <a href="https://gist.github.com/nuttxpr/eb767fe53524e6db97c2b27327da5b7d#file-ci-arm-10-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
+<p>Which will match and detect <a href="https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
 <div class="example-wrap"><pre class="language-bash"><code>chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
 </code></pre></div>
 <p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like this!</p>
