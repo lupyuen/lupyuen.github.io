@@ -267,8 +267,9 @@ We loop through __All Target Groups__ and compile them...
 Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
 ```bash
-## TODO: Login to GitHub as root. Quit the Text Browser, then use a Normal Browser to enter the One-Time Code.
+## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
 ## sudo gh auth login
+## sudo ./run-ci.sh
 
 ## Repeat Forever for All Target Groups
 for (( ; ; )); do
@@ -289,6 +290,7 @@ for (( ; ; )); do
     apps_hash=$(grep --only-matching -E "nuttx-apps/tree/[0-9a-z]+" $log_file | grep --only-matching -E "[0-9a-z]+$")
 
     ## Upload the log
+    ## https://gist.github.com/nuttxpr
     upload_log $job $nuttx_hash $apps_hash
     sleep 10
   done
@@ -320,6 +322,7 @@ __upload_log__ will upload the log (to GitHub Gist) for further processing: [run
 
 ```bash
 ## Upload to GitHub Gist
+## https://gist.github.com/nuttxpr
 function upload_log {
   local job=$1
   local nuttx_hash=$2
