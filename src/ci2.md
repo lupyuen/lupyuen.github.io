@@ -270,13 +270,15 @@ _What about compiling NuttX for All Target Groups? From _arm-01_ to _arm-14_?_
 
 We loop through __All Target Groups__ and compile them...
 
-- For Each Target Group: _arm-01_ ... _arm-14_
+- For Each __Target Group__:
 
-- Build the Target Group
+  _arm-01_ ... _arm-14_
 
-- Check for Errors and Warnings
+- __Compile NuttX__ for the Target Group
 
-- Upload the Build Log
+- Check for __Errors and Warnings__
+
+- Upload the __Build Log__
 
 Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L71-L97)
 
