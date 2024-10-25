@@ -92,8 +92,10 @@ Thus NuttX uses a __Wildcard Pattern__ to select the __defconfig__ (which become
 ```text
 ## arm-05 Target Group contains:
 ## boards/arm/[m-q]*/*/configs/*/defconfig
-## Compile with `make` and GCC Toolchain
 /arm/[m-q]*,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+
+## Compile the above targets
+## with `make` and GCC Toolchain
 
 ## Except for these:
 ## Compile with CMake instead
