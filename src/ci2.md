@@ -227,7 +227,7 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/nuttxpr/771a01e3b7ab6836a0cac4e1884665dd)
+[(See the __Complete Log__)](https://gist.github.com/nuttxpr/e35c57f3c318785d98ecdf435b261a23)
 
 _What about building a Single Target?_
 
@@ -264,7 +264,7 @@ We loop through __All Target Groups__ and compile them...
 
 - Upload the Build Log
 
-Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
+Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L71-L97)
 
 ```bash
 ## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
@@ -300,9 +300,9 @@ for (( ; ; )); do
 done
 ```
 
-[(__clean_log__ is here)](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L29-L46)
+[(__clean_log__ is here)](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L30-L47)
 
-__run_job__ will compile a single Target Group: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L19-L29)
+__run_job__ will compile a single Target Group: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30)
 
 ```bash
 ## Build the Target Group, like "arm-01"
@@ -318,7 +318,7 @@ function run_job {
 
 Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group)
 
-__upload_log__ will upload the log (to GitHub Gist) for further processing: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L58-L70)
+__upload_log__ will upload the log (to GitHub Gist) for further processing: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
 
 ```bash
 ## Upload to GitHub Gist
@@ -351,7 +351,7 @@ Something quirky about about Errors and Warnings...
 
 # Find Errors and Warnings
 
-In the script above, we call __find_messages__ to search for Errors and Warnings: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L46-L58)
+In the script above, we call __find_messages__ to search for Errors and Warnings: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L59)
 
 ```bash
 ## Search for Errors and Warnings
@@ -378,7 +378,7 @@ The __Regex Pattern__ above is the same one that NuttX uses to detect errors in 
 ^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
 ```
 
-Which will match and detect [__GCC Compiler Errors__](https://gist.github.com/nuttxpr/eb767fe53524e6db97c2b27327da5b7d#file-ci-arm-10-log-L1) like...
+Which will match and detect [__GCC Compiler Errors__](https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1) like...
 
 ```bash
 chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
