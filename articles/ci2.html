@@ -282,8 +282,9 @@ make ;
 </li>
 </ul>
 <p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Login to GitHub as root. Quit the Text Browser, then use a Normal Browser to enter the One-Time Code.
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
 ## sudo gh auth login
+## sudo ./run-ci.sh
 
 ## Repeat Forever for All Target Groups
 for (( ; ; )); do
@@ -304,6 +305,7 @@ for (( ; ; )); do
     apps_hash=$(grep --only-matching -E &quot;nuttx-apps/tree/[0-9a-z]+&quot; $log_file | grep --only-matching -E &quot;[0-9a-z]+$&quot;)
 
     ## Upload the log
+    ## https://gist.github.com/nuttxpr
     upload_log $job $nuttx_hash $apps_hash
     sleep 10
   done
@@ -327,6 +329,7 @@ function run_job {
 <p>Which calls the script we’ve seen earlier: <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>run-job.sh</strong></a></p>
 <p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L58-L70">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload to GitHub Gist
+## https://gist.github.com/nuttxpr
 function upload_log {
   local job=$1
   local nuttx_hash=$2
