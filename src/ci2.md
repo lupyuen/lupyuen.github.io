@@ -265,6 +265,9 @@ We loop through __All Target Groups__ and compile them...
 Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh)
 
 ```bash
+## TODO: Login to GitHub as root. Quit the Text Browser, then use a Normal Browser to enter the One-Time Code.
+## sudo gh auth login
+
 ## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
