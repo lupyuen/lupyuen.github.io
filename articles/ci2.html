@@ -280,7 +280,10 @@ make ;
 </li>
 </ul>
 <p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh">run-ci.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Repeat Forever for All Target Groups
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Login to GitHub as root. Quit the Text Browser, then use a Normal Browser to enter the One-Time Code.
+## sudo gh auth login
+
+## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
     arm-01 arm-02 arm-03 arm-04 \
