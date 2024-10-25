@@ -262,6 +262,16 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 tools/configure.sh ox64:nsh ;
 make ;
 </code></pre></div>
+<p><em>How to copy the Compiled Files out of the Docker Container?</em></p>
+<p>This will copy out the <strong>Compiled NuttX Binary</strong> from Docker…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Get the Container ID
+sudo docker ps
+
+## Fill in the Container ID below
+sudo docker cp \
+  CONTAINER_ID:/root/nuttx/nuttx \
+  .
+</code></pre></div>
 <p>Now we scale up…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="Build NuttX for All Target Groups" /></p>
 <h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
