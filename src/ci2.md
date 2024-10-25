@@ -164,9 +164,14 @@ Here are the steps for Ubuntu x64...
 
     [(__arm-01.dat__ selects the Arm32 Targets)](https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat)
 
-1.  Wait for _arm-01_ to complete
+1.  Wait for _arm-01_ to complete, then clean up
 
     (About 1.5 hours. That's 15 mins slower than GitHub Actions)
+
+    ```bash
+    ## Optional: Free up the Docker disk space
+    sudo docker system prune --force
+    ```
 
 Put everything together: [run-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh)
 
@@ -282,6 +287,9 @@ for (( ; ; )); do
     upload_log $job $nuttx_hash $apps_hash
     sleep 10
   done
+
+  ## Free up the Docker disk space
+  sudo docker system prune --force
 done
 ```
 
@@ -320,6 +328,8 @@ function upload_log {
 ```
 
 [(See the __Uploaded Logs__)](https://gist.github.com/nuttxpr)
+
+[(How to __Delete Gists__)](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L97-L104)
 
 ![Build Server is constrained by CPU, not RAM or I/O](https://lupyuen.github.io/images/ci2-load.png)
 
