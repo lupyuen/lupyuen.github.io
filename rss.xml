@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Your very own Build Farm for Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/ci2</link>
+            <description><![CDATA[Refurbished Ubuntu PCs have become quite affordable. Let's turn them into a (Low-Cost) Build Farm for Apache NuttX RTOS, thanks to the Docker Image provided by NuttX.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci2</guid>
+            <pubDate>Sun, 27 Oct 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>LLM Bot that reviews Pull Requests for Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/llm</link>
             <description><![CDATA[We’re experimenting with an LLM Bot (Large Language Model) that will review Pull Requests for Apache NuttX RTOS. This article explains how we created the Bot in One Week... By sheer accident!]]></description>
