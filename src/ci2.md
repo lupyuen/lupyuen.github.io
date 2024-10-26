@@ -255,6 +255,7 @@ This will copy out the __Compiled NuttX Binary__ from Docker...
 sudo docker ps
 
 ## Fill in the Container ID below
+## Works only when the container is still running so, hmmm...
 sudo docker cp \
   CONTAINER_ID:/root/nuttx/nuttx \
   .
