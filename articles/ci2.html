@@ -375,7 +375,7 @@ function find_messages {
 </code></pre></div>
 <p>Which will insert the Errors and Warnings into the top of the Log File.</p>
 <p><em>Why the funny Regex Pattern?</em></p>
-<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
+<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180"><strong>Continuous Integration</strong></a> builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
 ^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
 </code></pre></div>
@@ -387,6 +387,10 @@ function find_messages {
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
   ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
+</code></pre></div>
+<p>Also <a href="https://gist.github.com/nuttxpr/81855d9d8104e6b7c449e6c17df98116#file-ci-arm-05-log-L237"><strong>Network / Timeout Errors</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>curl: (6) Could not resolve host: github.com
+make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 </code></pre></div>
 <p>We might need to tweak the Regex Pattern and catch more errors.</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="NuttX GitHub Runners: Live Update" /></p>
