@@ -387,7 +387,7 @@ Which will insert the Errors and Warnings into the top of the Log File.
 
 _Why the funny Regex Pattern?_
 
-The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our Continuous Integration Builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
+The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our [__Continuous Integration__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180) builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
 
 ```bash
 ## Filename : Line : Col : warning/error : Message
@@ -407,6 +407,13 @@ CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
   ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
+```
+
+Also [__Network / Timeout Errors__](https://gist.github.com/nuttxpr/81855d9d8104e6b7c449e6c17df98116#file-ci-arm-05-log-L237)...
+
+```text
+curl: (6) Could not resolve host: github.com
+make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 ```
 
 We might need to tweak the Regex Pattern and catch more errors.
