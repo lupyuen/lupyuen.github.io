@@ -409,7 +409,7 @@ CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
 ```
 
-Also [__Network / Timeout Errors__](https://gist.github.com/nuttxpr/81855d9d8104e6b7c449e6c17df98116#file-ci-arm-05-log-L237)...
+Also [__Network and Timeout Errors__](https://gist.github.com/nuttxpr/81855d9d8104e6b7c449e6c17df98116#file-ci-arm-05-log-L237)...
 
 ```text
 curl: (6) Could not resolve host: github.com
