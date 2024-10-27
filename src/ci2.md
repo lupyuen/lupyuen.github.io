@@ -335,7 +335,7 @@ function run_job {
 
 Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group)
 
-__upload_log__ will upload the log (to GitHub Gist) for further processing: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
+__upload_log__ will upload the log (to GitHub Gist) for further processing (and alerting): [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
 
 ```bash
 ## Upload to GitHub Gist
