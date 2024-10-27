@@ -340,12 +340,15 @@ function run_job {
 </code></pre></div>
 <p>Which calls the script we’ve seen earlier: <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>run-job.sh</strong></a></p>
 <p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing (and alerting): <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71">run-ci.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Upload to GitHub Gist
+<div class="example-wrap"><pre class="language-bash"><code>## Upload to GitHub Gist.
+## For Safety: We should create a New GitHub Account for publishing Gists.
 ## https://gist.github.com/nuttxpr
 function upload_log {
   local job=$1
   local nuttx_hash=$2
   local apps_hash=$3
+
+  ## TODO: Change this to use GitHub Token for our new GitHub Account
   cat $log_file | \
     gh gist create \
     --public \
