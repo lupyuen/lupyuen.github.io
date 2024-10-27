@@ -338,12 +338,15 @@ Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.gith
 __upload_log__ will upload the log (to GitHub Gist) for further processing (and alerting): [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
 
 ```bash
-## Upload to GitHub Gist
+## Upload to GitHub Gist.
+## For Safety: We should create a New GitHub Account for publishing Gists.
 ## https://gist.github.com/nuttxpr
 function upload_log {
   local job=$1
   local nuttx_hash=$2
   local apps_hash=$3
+
+  ## TODO: Change this to use GitHub Token for our new GitHub Account
   cat $log_file | \
     gh gist create \
     --public \
