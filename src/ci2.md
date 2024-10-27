@@ -413,6 +413,13 @@ CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
 ```
 
+And [__Linker Errors__](https://gist.github.com/nuttxpr/74e46f5eca2a0cd5a234e5389d40457a#file-ci-arm-04-log-L157)...
+
+```text
+arm-none-eabi-ld: /root/nuttx/staging//libc.a(lib_arc4random.o): in function `arc4random_buf':
+/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks'
+```
+
 Also __Network and Timeout Errors__...
 
 ```text
