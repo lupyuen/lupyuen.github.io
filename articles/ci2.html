@@ -392,6 +392,10 @@ function find_messages {
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
   ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
 </code></pre></div>
+<p>And <a href="https://gist.github.com/nuttxpr/74e46f5eca2a0cd5a234e5389d40457a#file-ci-arm-04-log-L157"><strong>Linker Errors</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>arm-none-eabi-ld: /root/nuttx/staging//libc.a(lib_arc4random.o): in function `arc4random_buf&#39;:
+/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks&#39;
+</code></pre></div>
 <p>Also <strong>Network and Timeout Errors</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>curl: (6) Could not resolve host: github.com
 make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
