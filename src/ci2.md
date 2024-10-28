@@ -201,7 +201,7 @@ sudo docker run -it \
   pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD) ; popd ;
   pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
   cd nuttx/tools/ci ;
-  ./cibuild.sh -c -A -N -R testlist/$job.dat ;
+  (./cibuild.sh -c -A -N -R testlist/$job.dat || echo '***** BUILD FAILED') ;
 "
 ```
 
@@ -371,7 +371,7 @@ Something quirky about about Errors and Warnings...
 
 # Find Errors and Warnings
 
-In the script above, we call __find_messages__ to search for Errors and Warnings: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L59)
+In the script above, we call __find_messages__ to search for Errors and Warnings: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L61)
 
 ```bash
 ## Search for Errors and Warnings
@@ -379,9 +379,11 @@ function find_messages {
   local tmp_file=/tmp/release-tmp.log
   local msg_file=/tmp/release-msg.log
   local pattern='^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$'
+  grep '^\*\*\*\*\*' $log_file \
+    > $msg_file
   grep -P "$pattern" $log_file \
     | uniq \
-    > $msg_file
+    >> $msg_file
   cat $msg_file $log_file >$tmp_file
   mv $tmp_file $log_file
 }
