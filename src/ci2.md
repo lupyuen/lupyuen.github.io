@@ -341,6 +341,8 @@ sudo gh auth login
 sudo ./run-ci.sh
 ```
 
+(__For Safety:__ Create a __New GitHub Account__ for posting the gists)
+
 _How does it work?_
 
 Inside our script, __run_job__ will compile a single Target Group: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30)
@@ -461,7 +463,13 @@ We might need to tweak the Regex Pattern and catch more errors.
 
 _Why use Docker? Could've done all this without Docker right?_
 
-TODO: Yep we could have build
+TODO: Yep we could have built NuttX directly on our Ubuntu PC...
+
+TODO: Instead of calling Docker...
+
+TODO: But that requires us to install the GCC Compiler and Build Tools ourselves...
+
+TODO: Which means that we're NOT building with a __Fixed Version of GCC Compiler__ (and Build Tools)
 
 ![NuttX GitHub Runners: Live Update](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
