@@ -346,7 +346,7 @@ sudo gh auth login
 ## Run the Build Job forever: arm-01 ... arm-14
 sudo ./run-ci.sh
 </code></pre></div>
-<p>(<strong>For Safety:</strong> Create a <strong>New GitHub Account</strong> for posting the gists)</p>
+<p><a href="https://lists.apache.org/thread/dntkkb954oss4flcckqjgghzycplrdnf">(<strong>For Safety:</strong> Create a <strong>New GitHub Account</strong> for posting the gists)</a></p>
 <p><em>How does it work?</em></p>
 <p>Inside our script, <strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like &quot;arm-01&quot;
@@ -431,6 +431,8 @@ make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 <p>TODO: Instead of calling Docker…</p>
 <p>TODO: But that requires us to install the GCC Compiler and Build Tools ourselves…</p>
 <p>TODO: Which means that we’re NOT building with a <strong>Fixed Version of GCC Compiler</strong> (and Build Tools)</p>
+<p>TODO: Why do we see this error?</p>
+<p>TODO: That’s</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="NuttX GitHub Runners: Live Update" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p><em>Huh? Aren’t we making a Build Farm, not a Build Server?</em></p>
