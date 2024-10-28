@@ -229,7 +229,7 @@ sudo docker run -it \
   pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD) ; popd ;
   pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
   cd nuttx/tools/ci ;
-  ./cibuild.sh -c -A -N -R testlist/$job.dat ;
+  (./cibuild.sh -c -A -N -R testlist/$job.dat || echo &#39;***** BUILD FAILED&#39;) ;
 &quot;
 </code></pre></div>
 <p>We run it like this (will take 1.5 hours)…</p>
@@ -364,15 +364,17 @@ function upload_log {
 <p>Something quirky about about Errors and Warnings…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow3.jpg" alt="Find Errors and Warnings" /></p>
 <h1 id="find-errors-and-warnings"><a class="doc-anchor" href="#find-errors-and-warnings">§</a>4 Find Errors and Warnings</h1>
-<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L59">run-ci.sh</a></p>
+<p>In the script above, we call <strong>find_messages</strong> to search for Errors and Warnings: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L47-L61">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local tmp_file=/tmp/release-tmp.log
   local msg_file=/tmp/release-msg.log
   local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
+  grep &#39;^\*\*\*\*\*&#39; $log_file \
+    &gt; $msg_file
   grep -P &quot;$pattern&quot; $log_file \
     | uniq \
-    &gt; $msg_file
+    &gt;&gt; $msg_file
   cat $msg_file $log_file &gt;$tmp_file
   mv $tmp_file $log_file
 }
