@@ -325,6 +325,7 @@ git clone https://github.com/lupyuen/nuttx-release
 cd nuttx-release
 
 ## Login to GitHub in Headless Mode
+sudo apt install gh
 sudo gh auth login
 
 ## (1) What Account: "GitHub.com"
@@ -453,6 +454,14 @@ make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 ```
 
 We might need to tweak the Regex Pattern and catch more errors.
+
+![Build NuttX for All Target Groups](https://lupyuen.github.io/images/ci2-flow.jpg)
+
+# Docker vs Dockerless
+
+_Why use Docker? Could've done all this without Docker right?_
+
+TODO: Yep we could have build
 
 ![NuttX GitHub Runners: Live Update](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
