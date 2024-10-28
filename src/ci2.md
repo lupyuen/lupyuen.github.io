@@ -341,7 +341,7 @@ sudo gh auth login
 sudo ./run-ci.sh
 ```
 
-(__For Safety:__ Create a __New GitHub Account__ for posting the gists)
+[(__For Safety:__ Create a __New GitHub Account__ for posting the gists)](https://lists.apache.org/thread/dntkkb954oss4flcckqjgghzycplrdnf)
 
 _How does it work?_
 
@@ -470,6 +470,10 @@ TODO: Instead of calling Docker...
 TODO: But that requires us to install the GCC Compiler and Build Tools ourselves...
 
 TODO: Which means that we're NOT building with a __Fixed Version of GCC Compiler__ (and Build Tools)
+
+TODO: Why do we see this error?
+
+TODO: That's 
 
 ![NuttX GitHub Runners: Live Update](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
