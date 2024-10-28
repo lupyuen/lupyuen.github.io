@@ -470,7 +470,7 @@ BUT... GitHub charges a [__10x Premium for macOS Runners__](https://docs.github.
 
 Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
-[(Sorry NuttX Jobs won't run on __M1 Mac__)](https://github.com/apache/nuttx/pull/14377#issuecomment-2419977985)
+[(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
