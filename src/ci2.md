@@ -322,13 +322,17 @@ We run our Build Farm like this...
 git clone https://github.com/lupyuen/nuttx-release
 cd nuttx-release
 
-## Login to GitHub in Headless Mode:
-## (1) Copy the One-Time Code
-## (2) Press "q" to quit the Text Browser that appears
-## (3) Switch to Firefox Browser and load https://github.com/login/device
-## (4) Enter the One-Time Code. GitHub Login will proceed.
-## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
+## Login to GitHub in Headless Mode
 sudo gh auth login
+
+## (1) What Account: "GitHub.com"
+## (2) Preferred Protocol: "HTTPS"
+## (3) Authenticate GitHub CLI: "Login with a web browser"
+## (4) Copy the One-Time Code, press Enter
+## (5) Press "q" to quit the Text Browser that appears
+## (6) Switch to Firefox Browser and load https://github.com/login/device
+## (7) Enter the One-Time Code. GitHub Login will proceed.
+## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
 
 ## Run the Build Job forever: arm-01 ... arm-14
 sudo ./run-ci.sh
