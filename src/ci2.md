@@ -322,7 +322,7 @@ We run our Build Farm like this...
 git clone https://github.com/lupyuen/nuttx-release
 cd nuttx-release
 
-## Login to GitHub as root:
+## Login to GitHub in Headless Mode:
 ## (1) Copy the One-Time Code
 ## (2) Press "q" to quit the Text Browser that appears
 ## (3) Switch to Firefox Browser and load https://github.com/login/device
