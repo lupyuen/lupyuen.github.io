@@ -457,24 +457,6 @@ make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 
 We might need to tweak the Regex Pattern and catch more errors.
 
-![Build NuttX for All Target Groups](https://lupyuen.github.io/images/ci2-flow.jpg)
-
-# Docker vs Dockerless
-
-_Why use Docker? Could've done all this without Docker right?_
-
-TODO: Yep we could have built NuttX directly on our Ubuntu PC...
-
-TODO: Instead of calling Docker...
-
-TODO: But that requires us to install the GCC Compiler and Build Tools ourselves...
-
-TODO: Which means that we're NOT building with a __Fixed Version of GCC Compiler__ (and Build Tools)
-
-TODO: Why do we see this error?
-
-TODO: That's 
-
 ![NuttX GitHub Runners: Live Update](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
 # What's Next
