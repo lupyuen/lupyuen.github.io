@@ -284,10 +284,6 @@ We loop through __All Target Groups__ and compile them...
 Our script becomes more sophisticated: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L71-L97)
 
 ```bash
-## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
-## sudo gh auth login
-## sudo ./run-ci.sh
-
 ## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
@@ -319,7 +315,28 @@ done
 
 [(__clean_log__ is here)](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L30-L47)
 
-__run_job__ will compile a single Target Group: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30)
+We run our Build Farm like this...
+
+```bash
+## Download the scripts
+git clone https://github.com/lupyuen/nuttx-release
+cd nuttx-release
+
+## Login to GitHub as root:
+## (1) Copy the One-Time Code
+## (2) Press "q" to quit the Text Browser that appears
+## (3) Switch to Firefox Browser and load https://github.com/login/device
+## (4) Enter the One-Time Code. GitHub Login will proceed.
+## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
+sudo gh auth login
+
+## Run the Build Job forever: arm-01 ... arm-14
+sudo ./run-ci.sh
+```
+
+_How does it work?_
+
+Inside our script, __run_job__ will compile a single Target Group: [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30)
 
 ```bash
 ## Build the Target Group, like "arm-01"
