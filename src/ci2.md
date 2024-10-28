@@ -227,7 +227,9 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 2024-10-20 17:39:09
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/nuttxpr/e35c57f3c318785d98ecdf435b261a23)
+[(See the __Complete Log__)](https://gist.github.com/nuttxpr/15b86be9e100cace466b99bb790f3a75)
+
+[(Ignore "arm-nuttx-eabi-gcc: command not found")](https://github.com/apache/nuttx/issues/14374)
 
 _What about building a Single Target?_
 
