@@ -294,11 +294,7 @@ sudo docker cp \
 </li>
 </ul>
 <p>Our script becomes more sophisticated: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L71-L97">run-ci.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Login to GitHub as root. Quit the Text Browser, then switch to a Normal Browser to enter the One-Time Code. GitHub Login will proceed.
-## sudo gh auth login
-## sudo ./run-ci.sh
-
-## Repeat Forever for All Target Groups
+<div class="example-wrap"><pre class="language-bash"><code>## Repeat Forever for All Target Groups
 for (( ; ; )); do
   for job in \
     arm-01 arm-02 arm-03 arm-04 \
@@ -327,7 +323,24 @@ for (( ; ; )); do
 done
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L30-L47">(<strong>clean_log</strong> is here)</a></p>
-<p><strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
+<p>We run our Build Farm like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the scripts
+git clone https://github.com/lupyuen/nuttx-release
+cd nuttx-release
+
+## Login to GitHub as root:
+## (1) Copy the One-Time Code
+## (2) Press &quot;q&quot; to quit the Text Browser that appears
+## (3) Switch to Firefox Browser and load https://github.com/login/device
+## (4) Enter the One-Time Code. GitHub Login will proceed.
+## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
+sudo gh auth login
+
+## Run the Build Job forever: arm-01 ... arm-14
+sudo ./run-ci.sh
+</code></pre></div>
+<p><em>How does it work?</em></p>
+<p>Inside our script, <strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Target Group, like &quot;arm-01&quot;
 function run_job {
   local job=$1
