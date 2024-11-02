@@ -262,6 +262,8 @@ To this...
 git clone https://github.com/USER/nuttx --branch BRANCH ;
 ```
 
+[(More about this)](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
+
 _How to copy the Compiled Files out of the Docker Container?_
 
 This will copy out the __Compiled NuttX Binary__ from Docker...
