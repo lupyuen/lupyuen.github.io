@@ -248,6 +248,20 @@ tools/configure.sh ox64:nsh ;
 make ;
 ```
 
+_What if we're testing our own repo?_
+
+Suppose we're preparing a Pull Request at _github.com/USER/nuttx/tree/BRANCH_. Just change this...
+
+```bash
+git clone https://github.com/apache/nuttx ;
+```
+
+To this...
+
+```bash
+git clone https://github.com/USER/nuttx --branch BRANCH ;
+```
+
 _How to copy the Compiled Files out of the Docker Container?_
 
 This will copy out the __Compiled NuttX Binary__ from Docker...
