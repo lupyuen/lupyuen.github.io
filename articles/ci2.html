@@ -263,6 +263,13 @@ Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 tools/configure.sh ox64:nsh ;
 make ;
 </code></pre></div>
+<p><em>What if we’re testing our own repo?</em></p>
+<p>Suppose we’re preparing a Pull Request at <em>github.com/USER/nuttx/tree/BRANCH</em>. Just change this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx ;
+</code></pre></div>
+<p>To this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/USER/nuttx --branch BRANCH ;
+</code></pre></div>
 <p><em>How to copy the Compiled Files out of the Docker Container?</em></p>
 <p>This will copy out the <strong>Compiled NuttX Binary</strong> from Docker…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Container ID
