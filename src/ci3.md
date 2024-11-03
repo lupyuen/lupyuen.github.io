@@ -5,10 +5,14 @@
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
 TODO: Dev build time dropped from ??? to ???
-GitHub Usage dropped from ??? to ???
-cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
 
-# Ultimatum
+GitHub Usage dropped from ??? to ???
+
+```bash
+cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
+```
+
+# The Ultimatum
 
 TODO
 
@@ -28,13 +32,13 @@ Hi All: We have [an ultimatum](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11
 
    Let's monitor the GitHub Cost after disabling macOS and Windows Jobs. It's possible that macOS and Windows Jobs are contributing a huge part of the cost. We could re-enable and simplify them after monitoring.
 
-   (This must be done for BOTH `nuttx` and `nuttx-apps` repos. Sadly the ASF Report for GitHub Runners doesn't break down the usage by repo, so we'll never know how much macOS and Windows Jobs are contributing to the cost. That's why we need https://github.com/apache/nuttx/pull/14377)
+   (This must be done for BOTH `nuttx` and `nuttx-apps` repos. Sadly the ASF Report for GitHub Runners doesn't break down the usage by repo, so we'll never know how much macOS and Windows Jobs are contributing to the cost. That's why we need to [disable all macOS and Windows Jobs](https://github.com/apache/nuttx/pull/14377))
 
    (Wish I could run NuttX CI Jobs on my M2 Mac Mini. But the CI Script only supports Intel Macs sigh. Buy a Refurbished Intel Mac Mini?)
 
 We have done an Analysis of CI Jobs over the past 24 hours:
 
-https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0
+[Analysis of CI Jobs](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0)
 
 Many CI Jobs are __Incomplete__: We waste GitHub Runners on jobs that eventually get superseded and cancelled
 
@@ -58,9 +62,9 @@ Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a l
 - Our [__Merge Jobs are now at github.com/NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
 - ~~We have switched to [Four Scheduled Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) per day. New Merge Jobs will now run for a few seconds before getting auto-killed [by our script](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh), via the GitHub CLI. [(See the Merge Jobs)](https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush)~~
 - `nuttx-apps` has stopped macOS and Windows Jobs. But not much impact, since we don't compile `nuttx-apps` often <br> https://github.com/apache/nuttx-apps/pull/2750
-- Still waiting for `nuttx` repo to stop macOS and Windows Jobs (Update: merged!) <br> https://github.com/apache/nuttx/pull/14377
-- Also waiting for `nuttx` repo to Halve The Jobs (Update: merged!) <br> https://github.com/apache/nuttx/pull/14386
-- And for `nuttx-apps` to Halve The Jobs (probably not much impact, since we don't compile `nuttx-apps` often)  (Update: merged!) <br> https://github.com/apache/nuttx-apps/pull/2753
+- Still waiting for `nuttx` repo to [stop macOS and Windows Jobs](https://github.com/apache/nuttx/pull/14377) (Update: merged!)
+- Also waiting for `nuttx` repo to [Halve The Jobs](https://github.com/apache/nuttx/pull/14386) (Update: merged!)
+- And for `nuttx-apps` to [Halve The Jobs](https://github.com/apache/nuttx-apps/pull/2753) (probably not much impact, since we don't compile `nuttx-apps` often)  (Update: merged!)
 - Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)
 - If our Full-Time Runners don't reduce significantly after 24 hours: We shall [further reduce our jobs](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893), halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.
 - We shall close this issue only when we reach our target of __25 Full-Time Runners__ per day. (And ASF won't shut us down)
@@ -73,11 +77,9 @@ TODO
 
 __11 Days To Doomsday:__ But we're doing much better already! In the past 24 hours, we consumed __36 Full-Time GitHub Runners__. We're getting closer to the ASF Target of __25 Full-Time Runners__! Today we shall:
 
-- Halve the Jobs for __RISC-V, Xtensa and Simulator__ for Complex PRs <br>
-  https://github.com/apache/nuttx/pull/14400
-
-- Do the same for `nuttx-apps` repo <br>
-  https://github.com/apache/nuttx-apps/pull/2758
+- Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
+  
+- Do the same for [`nuttx-apps` repo](https://github.com/apache/nuttx-apps/pull/2758)  
 
 - Our [__Merge Jobs are now at github.com/nuttxpr/nuttx__](https://github.com/nuttxpr/nuttx/actions)
 
@@ -95,9 +97,9 @@ TODO: Re-enable Windows Builds, monitor closely
 
 Sorry I can't enable macOS Builds right now:
 - macOS Runners [cost 10 times](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers) as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.
-- Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs.
-https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934
-https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211
+- Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs. <br>
+[See this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) <br>
+[And this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211)
 
 [CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
 
@@ -180,7 +182,7 @@ TODO
 
 [Verify a PR after merging](https://github.com/apache/nuttx/issues/14407)
 
-macos
+sync CI Workflow from nuttx to nuttx apps
 
 merge jobs
 auto kill merge jobs
@@ -336,3 +338,467 @@ Is GitHub Actions starting our Docker Container with the wrong MTU (Network Pack
 - [Docker MTU issues and solutions](https://mlohr.com/docker-mtu/)
 
 Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repos: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
+
+# Appendix: Build Rules for CI Workflow
+
+TODO
+
+[Enhance the CI Workflow to skip the Unmodified Architectures](https://github.com/apache/nuttx/issues/13775)
+
+- NuttX Devs need to wait (2 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though they're modifying a Single Architecture
+- We're using too many GitHub Runners and Build Minutes, exceeding the [ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
+- Our usage of GitHub Runners is going up ($12K per month), we need to stay within the [ASF Budget for GitHub Runners](https://infra.apache.org/github-actions-policy.html) ($8.2K per month)
+- What if CI could build only the Modified Architecture?
+- Right now most of our CI Builds are taking 2 hours 15 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
+
+## Overall Solution
+
+- We propose a Partial Solution, based on the Arch and Board Labels (recently added to CI)
+- We target only the Simple PRs: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS"
+- If "Arch: arm" is the only non-size label, then we build only `arm-01`, `arm-02`, ...
+- Same for "Board: arm"
+- If Arch and Board Labels are both present: They must be the same
+- Similar rules for RISC-V, Simulator, x86_64 and Xtensa
+- Simple PR + Docs is still considered a Simple PR (so devs won't be penalised for adding docs)
+
+## Fetch the Arch Labels
+
+This is how we fetch the Arch Labels, and identify as Arm, Arm64, RISC-V, Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L32-L104)
+
+```yaml
+# Get the Arch for the PR: arm, arm64, risc-v, xtensa, ...
+- name: Get arch
+  id: get-arch
+  run: |        
+
+    # If PR is Not Created or Modified: Build all targets
+    pr=${{github.event.pull_request.number}}
+    if [[ "$pr" == "" ]]; then
+      echo "Not a Created or Modified PR, will build all targets"
+      exit
+    fi
+
+    # Ignore the Label "Area: Documentation", because it won't affect the Build Targets
+    query='.labels | map(select(.name != "Area: Documentation")) | '
+    select_name='.[].name'
+    select_length='length'
+
+    # Get the Labels for the PR: "Arch: risc-v \n Board: risc-v \n Size: XS"
+    # If GitHub CLI Fails: Build all targets
+    labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo "")
+    numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo "")
+    echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
+
+    # Identify the Size, Arch and Board Labels
+    if [[ "$labels" == *"Size: "* ]]; then
+      echo 'labels_contain_size=1' | tee -a $GITHUB_OUTPUT
+    fi
+    if [[ "$labels" == *"Arch: "* ]]; then
+      echo 'labels_contain_arch=1' | tee -a $GITHUB_OUTPUT
+    fi
+    if [[ "$labels" == *"Board: "* ]]; then
+      echo 'labels_contain_board=1' | tee -a $GITHUB_OUTPUT
+    fi
+
+    # Get the Arch Label
+    if [[ "$labels" == *"Arch: arm64"* ]]; then
+      echo 'arch_contains_arm64=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Arch: arm"* ]]; then
+      echo 'arch_contains_arm=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Arch: risc-v"* ]]; then
+      echo 'arch_contains_riscv=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Arch: simulator"* ]]; then
+      echo 'arch_contains_sim=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Arch: x86_64"* ]]; then
+      echo 'arch_contains_x86_64=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Arch: xtensa"* ]]; then
+      echo 'arch_contains_xtensa=1' | tee -a $GITHUB_OUTPUT
+    fi
+
+    # Get the Board Label
+    if [[ "$labels" == *"Board: arm64"* ]]; then
+      echo 'board_contains_arm64=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Board: arm"* ]]; then
+      echo 'board_contains_arm=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Board: risc-v"* ]]; then
+      echo 'board_contains_riscv=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Board: simulator"* ]]; then
+      echo 'board_contains_sim=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Board: x86_64"* ]]; then
+      echo 'board_contains_x86_64=1' | tee -a $GITHUB_OUTPUT
+    elif [[ "$labels" == *"Board: xtensa"* ]]; then
+      echo 'board_contains_xtensa=1' | tee -a $GITHUB_OUTPUT
+    fi
+
+  env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, we will build all targets. This ensures that our CI Workflow won't get disrupted due to errors in GitHub CLI.
+
+## Handle Only Simple PRs
+
+We handle only Simple PRs: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything.
+
+[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169)
+
+```yaml
+# inputs.boards is a JSON Array: ["arm-01", "risc-v-01", "xtensa-01", ...]
+# We compact and remove the newlines
+boards=$( echo '${{ inputs.boards }}' | jq --compact-output ".")
+numboards=$( echo "$boards" | jq "length" )
+
+# We consider only Simple PRs with:
+# Arch + Size Labels Only
+# Board + Size Labels Only
+# Arch + Board + Size Labels Only
+if [[ "$labels_contain_size" != "1" ]]; then
+  echo "Size Label Missing, will build all targets"
+  quit=1
+elif [[ "$numlabels" == "2" && "$labels_contain_arch" == "1" ]]; then
+  echo "Arch + Size Labels Only"
+elif [[ "$numlabels" == "2" && "$labels_contain_board" == "1" ]]; then
+  echo "Board + Size Labels Only"
+elif [[ "$numlabels" == "3" && "$labels_contain_arch" == "1"  && "$labels_contain_board" == "1" ]]; then
+  # Arch and Board must be the same
+  if [[
+    "$arch_contains_arm" != "$board_contains_arm" ||
+    "$arch_contains_arm64" != "$board_contains_arm64" ||
+    "$arch_contains_riscv" != "$board_contains_riscv" ||
+    "$arch_contains_sim" != "$board_contains_sim" ||
+    "$arch_contains_x86_64" != "$board_contains_x86_64" ||
+    "$arch_contains_xtensa" != "$board_contains_xtensa"
+  ]]; then
+    echo "Arch and Board are not the same, will build all targets"
+    quit=1
+  else
+    echo "Arch + Board + Size Labels Only"
+  fi
+else
+  echo "Not a Simple PR, will build all targets"
+  quit=1
+fi
+
+# If Not a Simple PR: Build all targets
+if [[ "$quit" == "1" ]]; then
+  echo "selected_builds=$boards" | tee -a $GITHUB_OUTPUT
+  exit
+fi
+```
+
+## For Arm Arch: Identify the Non-Arm Builds
+
+Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc):
+
+[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L169-L234)
+
+```yaml
+# For every board
+for (( i=0; i<numboards; i++ ))
+do
+  # Fetch the board
+  board=$( echo "$boards" | jq ".[$i]" )
+  skip_build=0
+  
+  # For "Arch / Board: arm": Build arm-01, arm-02, ...
+  if [[ "$arch_contains_arm" == "1" || "$board_contains_arm" == "1" ]]; then
+    if [[ "$board" != *"arm"* ]]; then
+      skip_build=1
+    fi
+  # Omitted: Arm64, RISC-V, Simulator x86_64, Xtensa
+  ...
+  # For Other Arch: Allow the build
+  else
+    echo Build by default: $board
+  fi
+
+  # Add the board to the selected builds
+  if [[ "$skip_build" == "0" ]]; then
+    echo Add $board to selected_builds
+    if [[ "$selected_builds" == "" ]]; then
+      selected_builds=$board
+    else
+      selected_builds=$selected_builds,$board
+    fi
+  fi
+done
+
+# Return the selected builds as JSON Array
+# If Selected Builds is empty: Skip all builds
+echo "selected_builds=[$selected_builds]" | tee -a $GITHUB_OUTPUT
+if [[ "$selected_builds" == "" ]]; then
+  echo "skip_all_builds=1" | tee -a $GITHUB_OUTPUT
+fi
+```
+
+## Skip The Non-Arm Builds
+
+Earlier we saw the code in `arch.yml` [(Reusable Workflow)](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that identifies the builds to be skipped. The code above is called by `build.yml` (Build Workflow) which will actually skip the builds:
+
+[build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148)
+
+```yaml
+# Select the Linux Builds based on PR Arch Label
+Linux-Arch:
+uses: apache/nuttx/.github/workflows/arch.yml@master
+needs: Fetch-Source
+with:
+  os: Linux
+  boards: |
+    [
+      "arm-01", "other", "risc-v-01", "sim-01", "xtensa-01",
+      "arm-02", "risc-v-02", "sim-02", "xtensa-02",
+      "arm-03", "arm-04", "arm-05", "arm-06", "arm-07", "arm-08", "arm-09", "arm-10", "arm-11", "arm-12", "arm-13"
+    ]
+
+# Run the selected Linux Builds
+Linux:
+needs: Linux-Arch
+if: ${{ needs.Linux-Arch.outputs.skip_all_builds != '1' }}
+runs-on: ubuntu-latest
+env:
+  DOCKER_BUILDKIT: 1
+
+strategy:
+  max-parallel: 12
+  matrix:
+    boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
+
+steps:
+  ## Omitted: Run cibuild.sh on Linux
+```
+
+Why `needs: Fetch-Source`? That's because the PR Labeler runs concurrently in the background. When we add `Fetch-Source` as a Job Dependency, we give the PR Labeler sufficient time to run (1 min), before we read the PR Label in `arch.yml`.
+
+## Same for RISC-V, Simulator, x86_64 and Xtensa Builds
+
+We do the same for RISC-V, Simulator, x86_64 and Xtensa:
+
+[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L105-L129)
+
+```yaml
+# For "Arch / Board: arm64": Build other
+elif [[ "$arch_contains_arm64" == "1" || "$board_contains_arm64" == "1" ]]; then
+  if [[ "$board" != *"other"* ]]; then
+    skip_build=1
+  fi
+
+# For "Arch / Board: risc-v": Build risc-v-01, risc-v-02
+elif [[ "$arch_contains_riscv" == "1" || "$board_contains_riscv" == "1" ]]; then
+  if [[ "$board" != *"risc-v"* ]]; then
+    skip_build=1
+  fi
+
+# For "Arch / Board: simulator": Build sim-01, sim-02
+elif [[ "$arch_contains_sim" == "1" || "$board_contains_sim" == "1" ]]; then
+  if [[ "$board" != *"sim"* ]]; then
+    skip_build=1
+  fi
+
+# For "Arch / Board: x86_64": Build other
+elif [[ "$arch_contains_x86_64" == "1" || "$board_contains_x86_64" == "1" ]]; then
+  if [[ "$board" != *"other"* ]]; then
+    skip_build=1
+  fi
+
+# For "Arch / Board: xtensa": Build xtensa-01, xtensa-02
+elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; then
+  if [[ "$board" != *"xtensa"* ]]; then
+    skip_build=1
+  fi
+```
+
+## Skip the macOS and Windows Builds
+
+For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (`macos`, `macos/sim-*`, `msys2`) since these builds are costly:
+
+(`macos` and `macos/sim-*` builds will take 2 hours to complete due to the queueing for macOS Runners)
+
+[build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281)
+
+```yaml
+# Select the macOS Builds based on PR Arch Label
+macOS-Arch:
+  uses: apache/nuttx/.github/workflows/arch.yml@master
+  needs: Fetch-Source
+  with:
+    os: Linux
+    boards: |
+      ["macos", "sim-01", "sim-02"]
+
+# Run the selected macOS Builds
+macOS:
+  permissions:
+    contents: none
+  runs-on: macos-13
+  needs: macOS-Arch
+  if: ${{ needs.macOS-Arch.outputs.skip_all_builds != '1' }}
+  strategy:
+    max-parallel: 2
+    matrix:
+      boards: ${{ fromJSON(needs.macOS-Arch.outputs.selected_builds) }}
+  steps:
+    ## Omitted: Run cibuild.sh on macOS
+    ...
+# Select the msys2 Builds based on PR Arch Label
+msys2-Arch:
+  uses: apache/nuttx/.github/workflows/arch.yml@master
+  needs: Fetch-Source
+  with:
+    os: Linux
+    boards: |
+      ["msys2"]
+
+# Run the selected msys2 Builds
+msys2:
+  needs: msys2-Arch
+  if: ${{ needs.msys2-Arch.outputs.skip_all_builds != '1' }}
+  runs-on: windows-latest
+  strategy:
+    fail-fast: false
+    max-parallel: 1
+    matrix:
+      boards: ${{ fromJSON(needs.msys2-Arch.outputs.selected_builds) }}
+
+  defaults:
+    run:
+      shell: msys2 {0}
+  steps:
+    ## Omitted: Run cibuild.sh on msys2
+```
+
+`skip_all_builds` will be set to `1` for Simple PRs on macOS and msys2.
+
+(Except for "Arch: Simulator", which will enable the macOS Builds for sim-01 and sim-02)
+
+## Ignore the Documentation
+
+NuttX Devs shouldn't be penalised for adding docs! That's why we ignore the label "Area: Documentation", so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds).
+
+[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
+
+```yaml
+# Ignore the Label "Area: Documentation", because it won't affect the Build Targets
+query='.labels | map(select(.name != "Area: Documentation")) | '
+select_name='.[].name'
+select_length='length'
+
+# Get the Labels for the PR: "Arch: risc-v \n Board: risc-v \n Size: XS"
+# If GitHub CLI Fails: Build all targets
+labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo "")
+numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo "")
+echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
+```
+
+## Sync the CI Workflow from nuttx repo to nuttx-apps
+
+Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`! https://github.com/apache/nuttx-apps/pull/2676
+
+`build.yml` refers to `arch.yml` (for the build rules). So when we sync `build.yml` from `nuttx` to `nuttx-apps`, we won't need to remove the references to `arch.yml`.
+
+We could make `nuttx-apps/build.yml` point to the `nuttx/arch.yml`. But that would make the CI fragile: Changes to `nuttx/arch.yml` might cause `nuttx-apps/build.yml` to break.
+
+Yep `arch.yml` is totally not needed in `nuttx-apps`. I have difficulty keeping `nuttx/build.yml` and `nuttx-apps/build.yml` in sync, that's why I simply copied over `arch.yml` as-is. In future we could extend `arch.yml` with Build Rules that are specific to `nuttx-apps`?
+
+If we decide to remove `nuttx-apps/arch.yml`: This means that we need to rewrite the `build.yml` logic from this:
+
+```yaml
+# Select the Linux Builds based on PR Arch Label
+Linux-Arch:
+  uses: apache/nuttx-apps/.github/workflows/arch.yml@master
+  needs: Fetch-Source
+  with:
+    boards: |
+      [
+        "arm-01", "other", "risc-v-01", "sim-01", "xtensa-01", ...
+      ]
+
+# Run the selected Linux Builds
+Linux:
+  needs: Linux-Arch
+  if: ${{ needs.Linux-Arch.outputs.skip_all_builds != '1' }}
+  strategy:
+    matrix:
+      boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
+```
+
+Back to this:
+
+```yaml
+Linux:
+  needs: Fetch-Source
+  strategy:
+    matrix:
+      boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
+```
+
+## Testing
+
+(Note: The timings here are obsolete)
+
+When we test our updated CI Workflow, we see that the irrelevant builds are skipped in seconds. Click "Show All Jobs" to reveal the timings:
+
+- [CI Build for Arm32 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11208805090)
+
+  (Completed in 2 hours, roughly 15 mins faster than before. Bottleneck is `arm-05`, which takes 2 hours, we should split into smaller jobs)
+
+- [CI Build for Arm64 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11210569865)
+
+  (Completed in 51 mins yay!)
+
+- [CI Build for RISC-V PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11197522570)
+
+  (Completed in 1 hour 50 mins. Bottleneck is `riscv-01` and `riscv-02`, at 1 hour 47 mins each, we should split into smaller jobs)
+
+- [CI Build for Xtensa PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11200284084)
+
+  (Completed in 1 hour 17 mins. Bottleneck is `xtensa-01` and `xtensa-02`, at 1 hour 15 mins each)
+
+- [CI Build for Other PRs and Non-PR (All Targets)](https://github.com/lupyuen5/label-nuttx/actions/runs/11199194493)
+
+  (Same as the present CI)
+
+- When PRs are Merged: All Targets are recompiled (2 hours 13 mins), no changes from the Present CI. [Merge Arm32 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11200309934)
+
+- Previously the irrelevant builds were skipped in seconds. Now the irrelevant builds (e.g. `arm-01`) are totally omitted for Simple PRs [(e.g. "Arch: risc-v")](https://github.com/lupyuen5/label-nuttx/actions/runs/11197522570)
+
+  ![Screenshot 2024-10-06 at 11 39 43 AM](https://github.com/user-attachments/assets/8fb091b9-2ba0-4c3a-a533-af5c6609dab7)
+
+## Actual Performance
+
+We recorded the CI Build Performance based on Real-World PRs:
+
+- **For Arm32:** Simple PRs will build in [**2 hours**](https://github.com/apache/nuttx/actions/runs/11217886131) (previously [**also 2 hours**](https://github.com/apache/nuttx/actions/runs/11210724531))
+
+- **For Arm64:** Simple PRs will build in [**49 mins**](https://github.com/apache/nuttx/actions/runs/11232103862) (previously [**2 hours 11 mins**](https://github.com/apache/nuttx/actions/runs/11140028404))
+
+- **For RISC-V:** Simple PRs will build in **1 hour 45 mins** (previously [**also 1 hour 45 mins**](https://github.com/apache/nuttx/actions/runs/11163805578))
+
+- **For Xtensa:** Simple PRs will build in **1 hour 17 mins** (previously [**2 hours 11 mins**](https://github.com/apache/nuttx/actions/runs/11105657530))
+
+- **For x86_64:** Simple PRs will build in [**48 mins**](https://github.com/apache/nuttx/actions/runs/11228070770) (previously [**2 hours 13 mins**](https://github.com/apache/nuttx/actions/runs/11158309196))
+
+- **For Simulator:** Simple PRs will build in [**1 hour 32 mins**](https://github.com/apache/nuttx/actions/runs/11216774654) (previously [**2 hours 12 mins**](https://github.com/apache/nuttx/actions/runs/11146942454))
+
+- OK no big wow yet. We need to break `arm-05`, `riscv-01` and `riscv-02` into multiple smaller jobs. Then things will really zoom! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+
+  Move the RP2040 jobs from `arm-05` to `arm-06`, then add `arm-14`. Add jobs `riscv-03` to `riscv-06`.
+
+   (__Update:__ All Done! Check the PRs below)
+
+- We already see a __27% Reduction in GitHub Runner Hours__! From [**15 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11210724531/usage) down to [**11 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11217886131/usage) per Arm32 Build.
+
+- Split the Board Labels according to Arch, like "Board: arm". So "Board: arm" should build the exact same way as "Arch: arm". Same for "Board: arm, Arch: arm". Update the Build Rules to use the Board Labels
+
+   (__Update:__ All Done! Check the PRs below)
+
+- Split the `others` job into `arm64` and `x86_64`
+
+   (__Update:__ All Done! Check the PRs below)
+
+__TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
+- I have a hunch that CI works better when we pack the jobs into One-Hour Time Slices
+- Kinda like packing yummy goodies into Bento Boxes, making sure they don't overflow the Time Boxes  :-)
+- We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job. So we can Fail Faster (in case of problems), and skip the rest of the jobs
+- Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
+- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubBoard (e.g. `stm32`)? [Maybe like this](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
