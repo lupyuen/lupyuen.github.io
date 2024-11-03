@@ -65,12 +65,154 @@
 
     <h1 class="title">Optimising the Continuous Integration for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
+<li><a href="#ultimatum">1 Ultimatum</a><ul></ul></li>
+<li><a href="#move-the-merge-jobs">2 Move the Merge Jobs</a><ul></ul></li>
+<li><a href="#half-the-ci-checks">3 Half the CI Checks</a><ul></ul></li>
+<li><a href="#disable-macos-and-windows-builds">4 Disable macOS and Windows Builds</a><ul></ul></li>
+<li><a href="#live-metric-for-full-time-runners">5 Live Metric for Full-Time Runners</a><ul></ul></li>
+<li><a href="#monitoring-our-ci-servers-24-x-7">6 Monitoring our CI Servers 24 x 7</a><ul></ul></li>
+<li><a href="#final-verdict">7 Final Verdict</a><ul></ul></li>
+<li><a href="#todo">8 TODO</a><ul></ul></li>
+<li><a href="#our-wishlist">9 Our Wishlist</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-merge-jobs-are-costly">11 Appendix: Merge Jobs are Costly</a><ul></ul></li>
+<li><a href="#appendix-verify-our-pr-merge">12 Appendix: Verify our PR Merge</a><ul></ul></li>
+<li><a href="#appendix-timeout-errors">13 Appendix: Timeout Errors</a><ul></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p>Dev build time dropped from ??? to ???
+<p>TODO: Dev build time dropped from ??? to ???
 GitHub Usage dropped from ??? to ???
 cp “$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png” ~/Desktop/before-30days.png</p>
+<h1 id="ultimatum"><a class="doc-anchor" href="#ultimatum">§</a>1 Ultimatum</h1>
+<p>TODO</p>
+<p>Hi All: We have <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q">an ultimatum</a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration will halt totally in Two Weeks. Here’s what I’ll implement within 24 hours for <code>nuttx</code> and <code>nuttx-apps</code> repos:</p>
+<ol>
+<li>
+<p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc): CI Workflow shall run only half the jobs. Previously CI Workflow will run <code>arm-01</code> to <code>arm-14</code>, now we will run only <code>arm-01</code> to <code>arm-07</code>. (This will reduce GitHub Cost by 32%)</p>
+</li>
+<li>
+<p>When the <strong>Complex PR is Merged:</strong> CI Workflow will still run all jobs <code>arm-01</code> to <code>arm-14</code></p>
+<p>(Simple PRs with One Single Arch / Board will build the same way as before: <code>arm-01</code> to <code>arm-14</code>)</p>
+</li>
+<li>
+<p><strong>For NuttX Admins:</strong> Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>. We shall have only <strong>Two Scheduled Merge Jobs</strong> per day</p>
+<p>I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Cancel any Merge Jobs</a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos. Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at <code>nuttxpr</code>. <del>(This will reduce GitHub Cost by 17%)</del></p>
+</li>
+<li>
+<p><strong>macOS and Windows Jobs</strong> (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs. (GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">10x premium for macOS runners</a>, 2x premium for Windows runners!)</p>
+<p>Let’s monitor the GitHub Cost after disabling macOS and Windows Jobs. It’s possible that macOS and Windows Jobs are contributing a huge part of the cost. We could re-enable and simplify them after monitoring.</p>
+<p>(This must be done for BOTH <code>nuttx</code> and <code>nuttx-apps</code> repos. Sadly the ASF Report for GitHub Runners doesn’t break down the usage by repo, so we’ll never know how much macOS and Windows Jobs are contributing to the cost. That’s why we need https://github.com/apache/nuttx/pull/14377)</p>
+<p>(Wish I could run NuttX CI Jobs on my M2 Mac Mini. But the CI Script only supports Intel Macs sigh. Buy a Refurbished Intel Mac Mini?)</p>
+</li>
+</ol>
+<p>We have done an Analysis of CI Jobs over the past 24 hours:</p>
+<p>https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0</p>
+<p>Many CI Jobs are <strong>Incomplete</strong>: We waste GitHub Runners on jobs that eventually get superseded and cancelled</p>
+<p><img src="https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e" alt="Screenshot 2024-10-17 at 1 18 14 PM" /></p>
+<p>When we <strong>Half the CI Jobs:</strong> We reduce the wastage of GitHub Runners</p>
+<p><img src="https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a" alt="Screenshot 2024-10-17 at 1 15 30 PM" /></p>
+<p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs don’t complete (only 1 completed yesterday)</p>
+<p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
+<p><a href="https://infra.apache.org/github-actions-policy.html">See the ASF Policy for GitHub Actions</a></p>
+<h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>2 Move the Merge Jobs</h1>
+<p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
+<p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
+<ul>
+<li>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></li>
+<li><del>We have switched to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Four Scheduled Merge Jobs</a> per day. New Merge Jobs will now run for a few seconds before getting auto-killed <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">by our script</a>, via the GitHub CLI. <a href="https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush">(See the Merge Jobs)</a></del></li>
+<li><code>nuttx-apps</code> has stopped macOS and Windows Jobs. But not much impact, since we don’t compile <code>nuttx-apps</code> often <br> https://github.com/apache/nuttx-apps/pull/2750</li>
+<li>Still waiting for <code>nuttx</code> repo to stop macOS and Windows Jobs (Update: merged!) <br> https://github.com/apache/nuttx/pull/14377</li>
+<li>Also waiting for <code>nuttx</code> repo to Halve The Jobs (Update: merged!) <br> https://github.com/apache/nuttx/pull/14386</li>
+<li>And for <code>nuttx-apps</code> to Halve The Jobs (probably not much impact, since we don’t compile <code>nuttx-apps</code> often)  (Update: merged!) <br> https://github.com/apache/nuttx-apps/pull/2753</li>
+<li>Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)</li>
+<li>If our Full-Time Runners don’t reduce significantly after 24 hours: We shall <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893">further reduce our jobs</a>, halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.</li>
+<li>We shall close this issue only when we reach our target of <strong>25 Full-Time Runners</strong> per day. (And ASF won’t shut us down)</li>
+</ul>
+<p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
+<h1 id="half-the-ci-checks"><a class="doc-anchor" href="#half-the-ci-checks">§</a>3 Half the CI Checks</h1>
+<p>TODO</p>
+<p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
+<ul>
+<li>
+<p>Halve the Jobs for <strong>RISC-V, Xtensa and Simulator</strong> for Complex PRs <br>
+https://github.com/apache/nuttx/pull/14400</p>
+</li>
+<li>
+<p>Do the same for <code>nuttx-apps</code> repo <br>
+https://github.com/apache/nuttx-apps/pull/2758</p>
+</li>
+<li>
+<p>Our <a href="https://github.com/nuttxpr/nuttx/actions"><strong>Merge Jobs are now at github.com/nuttxpr/nuttx</strong></a></p>
+<p><del>Reduce the Scheduled Merge Jobs to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Two Per Day</strong></a> at 00:00 / 12:00 UTC (down from Four Per Day)</del></p>
+</li>
+</ul>
+<p>Hopefully we’ll reach the ASF Target tomorrow, and ASF won’t kill our servers no more! Thanks!</p>
+<p><img src="https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749" alt="Screenshot 2024-10-19 at 7 15 11 AM" /></p>
+<h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>4 Disable macOS and Windows Builds</h1>
+<p>TODO: Re-enable Windows Builds, monitor closely</p>
+<p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
+<p>Sorry I can’t enable macOS Builds right now:</p>
+<ul>
+<li>macOS Runners <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">cost 10 times</a> as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.</li>
+<li>Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs.
+https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934
+https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211</li>
+</ul>
+<p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
+<p>But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?</p>
+<ul>
+<li>Nope this is simply impossible. In the good old days: We were using far too many GitHub Runners. This is not sustainable, we don’t have the budget to run all the CI Checks we used to.</li>
+<li>So we should expect some breakage to happen. We have to be prepared to backtrack and figure out which PR broke the build.</li>
+<li>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard</a>, to detect breakage earlier without depending on GitHub CI.</li>
+<li>Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.</li>
+</ul>
+<h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>5 Live Metric for Full-Time Runners</h1>
+<p>TODO</p>
+<p>ASF Infra Reports are still down. But now we have our own <strong>Live Metrics for Full-Time GitHub Runners!</strong> (reload for updates)</p>
+<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
+<p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
+<p>This shows the number of <strong>Full-Time Runners for the Day</strong>, computed since 00:00 UTC. (Remember: We should keep this below 25)</p>
+<ul>
+<li><strong>Date:</strong> We compute the Full-Time Runners for today’s date only (UTC)</li>
+<li><strong>Elapsed Hours:</strong> Number of hours elapsed since 00:00 UTC</li>
+<li><strong>GitHub Job Hours:</strong> Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs (cancelled / completed / failed). This data is available only AFTER the job has been cancelled / completed / failed (might be a lag of 1.5 hours). This is the Elapsed Job Duration, it doesn’t say that we’re running 8 smaller jobs in parallel, that’s why we need…</li>
+<li><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub. We compute this as 8 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346">averaged from past data</a>. (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)</li>
+<li><strong>Full-Time GitHub Runners:</strong> Equals GitHub Runner Hours / Elapsed Hours. It means “How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours”. (We should keep this below 25 per day, per week, per month, etc)</li>
+</ul>
+<p>How it works:</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh">compute-github-runners.sh</a> calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</li>
+<li><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh">run.sh</a> calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)</li>
+</ul>
+<h1 id="monitoring-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitoring-our-ci-servers-24-x-7">§</a>6 Monitoring our CI Servers 24 x 7</h1>
+<p>TODO</p>
+<p>This runs on my 4K TV (Xiaomi 65-inch) all day, all night:</p>
+<p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
+<p>When I’m out on <a href="https://www.strava.com/activities/12737067287">Overnight Hikes</a>: I check my phone at every water break:
+<img src="https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e" alt="GridArt_20241028_150938083" /></p>
+<p>I have GitHub Scripts that will run on Termux Android (remember to <code>pkg install gh</code> and set <code>GITHUB_TOKEN</code>):</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh">enable-macos-windows2.sh</a>: Enable the macOS and Windows Builds</li>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh">compute-github-runners2.sh</a>: Compute the number of Full-Time GitHub Runners for the day</li>
+<li><a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">kill-push-master.sh</a>: Cancel all Merge Jobs</li>
+</ul>
+<h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>7 Final Verdict</h1>
+<p>TODO</p>
+<p><strong>0 Days to Final Audit:</strong> ASF Infra Team will be checking on us one last time today! Yesterday was a super busy Tuesday, we consumed <strong>15 Full-Time GitHub Runners</strong> (peaked briefly at 31)</p>
+<p><img src="https://github.com/user-attachments/assets/538b9903-51d0-43e4-9537-fbd6e4d8d742" alt="Screenshot 2024-10-30 at 6 02 25 AM" /></p>
+<p>Past 7 Days: We consumed <strong>12 Full-Time Runners</strong>, which is half the ASF Quota of 25 Full-Time Runners yay!</p>
+<p><img src="https://github.com/user-attachments/assets/baa0734e-3875-4b58-bd51-9cb69f264f26" alt="Screenshot 2024-10-30 at 6 06 21 AM" /></p>
+<p>FYI: Our “Monthly Bill” for GitHub Actions used to be <strong>$18K</strong>…</p>
+<p><img src="https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36" alt="before-30days" /></p>
+<p>Right now our <strong>Monthly Bill is $14K</strong>. And still dropping!</p>
+<p><img src="https://github.com/user-attachments/assets/db9def46-e386-43a2-9e10-79475e34547b" alt="after-30days" /></p>
+<p>Let’s wait for the good news from ASF, thank you everyone! 🙏</p>
+<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
+<p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard for Build Farm</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114">Running CI Checks before submitting PR</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14407">Verify a PR after merging</a></p>
 <p>macos</p>
 <p>merge jobs
 auto kill merge jobs
@@ -94,7 +236,43 @@ google sheet analyse github runner minutes vs elapsed runtime</p>
 <p>nuttx website docs
 https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
 30 github minutes</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>1 What’s Next</h1>
+<p>It’s Oct 31 and our CI Servers are still running. We made it yay! 🎉</p>
+<p>We got plenty to do:</p>
+<ol>
+<li>
+<p>We made lots of fixes to the CI Workflow. I’ll document everything in an article.</p>
+</li>
+<li>
+<p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html">Our Own Build Farm</a> (away from GitHub)</p>
+</li>
+<li>
+<p>Analyse our Build Logs with <a href="https://github.com/apache/nuttx/issues/14558">Our Own Tools</a> (instead of GitHub)</p>
+</li>
+</ol>
+<p>Thank you everyone for making this happen! 🙏</p>
+<ul>
+<li>
+<p>Excellent Initiative by @raiden00pl: We <strong>Merge Multiple Targets</strong> into One Target, and reduce the build time</p>
+<p>https://github.com/apache/nuttx/pull/14410</p>
+</li>
+</ul>
+<p>Yeah it doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
+<img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
+<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
+<p>TODO</p>
+<blockquote>
+<p>We have the https://github.com/nuttx organization too maybe we can make use of it too? :-)</p>
+</blockquote>
+<p>I think we learnt a Painful Lesson today: Freebies Won’t Last Forever! The new GitHub Org for NuttX should probably be a <strong>Paid GitHub Org</strong>:</p>
+<ul>
+<li>New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, …)</li>
+<li>New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies</li>
+<li>Which means clicking Twice Per Day to trigger the <a href="https://github.com/nuttxpr/nuttx/actions">Scheduled Merge Jobs</a> (I’m getting tired of this)</li>
+<li>And restarting the Scheduled Merge Job (if it fails). Also: <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Killing the Old Merge Jobs</a></li>
+<li>New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)</li>
+<li>New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)</li>
+</ul>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -122,6 +300,50 @@ https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
+<h1 id="appendix-merge-jobs-are-costly"><a class="doc-anchor" href="#appendix-merge-jobs-are-costly">§</a>11 Appendix: Merge Jobs are Costly</h1>
+<p>TODO</p>
+<p>Hi All: Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></p>
+<p>Yesterday we spent <strong>One-Third</strong> of our GitHub Runner Minutes on Merge Jobs. This is not sustainable, so I moved them to <code>nuttxpr</code> repo. (Which won’t be charged)</p>
+<p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940">The data from yesterday</a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
+<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
+<p>Hi @xiaoxiang781216 @GUIDINGLI @cederom @raiden00pl @acassis @jerpelea: With immediate effect, please see <a href="https://github.com/nuttxpr/nuttx/actions"><strong>github.com/nuttxpr/nuttx</strong></a> for our Merge Jobs. I will trigger the jobs daily at 00:00 UTC and 12:00 UTC. I have given you Admin Access to <code>nuttxpr</code> in case you need to restart the jobs. Thanks!</p>
+<h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>12 Appendix: Verify our PR Merge</h1>
+<p>TODO</p>
+<p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
+<p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
+<ul>
+<li>https://github.com/apache/nuttx/issues/14407</li>
+</ul>
+<p>(I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)</p>
+<h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>13 Appendix: Timeout Errors</h1>
+<p>TODO</p>
+<p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
+(1) How do we retry these Timeout Errors?
+(2) Can we have Restartable Builds? Doesn’t quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+(3) Or xtensa2 should wait for others to finish, before it declares a timeout and dies? Hmmm…</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
+curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection timed out
+</code></pre></div>
+<p>https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1</p>
+<p>Something strange about <strong>Network Timeouts</strong> in our Docker Workflows: First Run fails while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626">downloading something from GitHub</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+curl: (28) Failed to connect to github.com port 443 after 134188 ms: Connection timed out
+make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
+</code></pre></div>
+<p>Second Run fails again, while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536">downloading NimBLE from GitHub</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+curl: (28) Failed to connect to github.com port [443](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:444) after 134619 ms: Connection timed out
+make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nimble_context] Error 2
+</code></pre></div>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222">Third Run succeeds.</a> Why do we keep seeing these errors: GitHub Actions with Docker, can’t connect to GitHub itself?</p>
+<p>Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on <a href="https://lupyuen.codeberg.page/articles/ci2.html">my own Build Farm</a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html">doesn’t show any errors</a>.</p>
+<p>Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔</p>
+<ul>
+<li>https://github.com/actions/actions-runner-controller/issues/393</li>
+<li><a href="https://mlohr.com/docker-mtu/">Docker MTU issues and solutions</a></li>
+</ul>
+<p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repos: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
