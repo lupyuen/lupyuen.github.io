@@ -379,6 +379,8 @@ Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.gith
 
 __upload_log__ will upload the log (to GitHub Gist) for further processing (and alerting): [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
 
+[(Now we have a __NuttX Dashboard__!)](https://github.com/apache/nuttx/issues/14558)
+
 ```bash
 ## Upload to GitHub Gist.
 ## For Safety: We should create a New GitHub Account for publishing Gists.
