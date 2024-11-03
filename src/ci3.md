@@ -28,6 +28,8 @@ Hi All: We have [an ultimatum](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11
 
    I shall quickly [Cancel any Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in `nuttx` and `nuttx-apps` repos. Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at `nuttxpr`. ~~(This will reduce GitHub Cost by 17%)~~
 
+   (Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
+
 1. __macOS and Windows Jobs__ (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs. (GitHub charges [10x premium for macOS runners](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x premium for Windows runners!)
 
    Let's monitor the GitHub Cost after disabling macOS and Windows Jobs. It's possible that macOS and Windows Jobs are contributing a huge part of the cost. We could re-enable and simplify them after monitoring.
