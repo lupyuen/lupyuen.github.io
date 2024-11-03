@@ -67,10 +67,10 @@
     <nav id="TOC"><ul>
 <li><a href="#the-ultimatum">1 The Ultimatum</a><ul></ul></li>
 <li><a href="#move-the-merge-jobs">2 Move the Merge Jobs</a><ul></ul></li>
-<li><a href="#half-the-ci-checks">3 Half the CI Checks</a><ul></ul></li>
+<li><a href="#halve-the-ci-checks">3 Halve the CI Checks</a><ul></ul></li>
 <li><a href="#disable-macos-and-windows-builds">4 Disable macOS and Windows Builds</a><ul></ul></li>
 <li><a href="#live-metric-for-full-time-runners">5 Live Metric for Full-Time Runners</a><ul></ul></li>
-<li><a href="#monitoring-our-ci-servers-24-x-7">6 Monitoring our CI Servers 24 x 7</a><ul></ul></li>
+<li><a href="#monitor-our-ci-servers-24-x-7">6 Monitor our CI Servers 24 x 7</a><ul></ul></li>
 <li><a href="#final-verdict">7 Final Verdict</a><ul></ul></li>
 <li><a href="#todo">8 TODO</a><ul></ul></li>
 <li><a href="#our-wishlist">9 Our Wishlist</a><ul></ul></li>
@@ -140,7 +140,7 @@
 <li>We shall close this issue only when we reach our target of <strong>25 Full-Time Runners</strong> per day. (And ASF won’t shut us down)</li>
 </ul>
 <p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
-<h1 id="half-the-ci-checks"><a class="doc-anchor" href="#half-the-ci-checks">§</a>3 Half the CI Checks</h1>
+<h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>3 Halve the CI Checks</h1>
 <p>TODO</p>
 <p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
 <ul>
@@ -193,8 +193,10 @@
 <li><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh">compute-github-runners.sh</a> calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</li>
 <li><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh">run.sh</a> calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)</li>
 </ul>
-<h1 id="monitoring-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitoring-our-ci-servers-24-x-7">§</a>6 Monitoring our CI Servers 24 x 7</h1>
+<h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>6 Monitor our CI Servers 24 x 7</h1>
 <p>TODO</p>
+<p>Yeah it doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
+<img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <p>This runs on my 4K TV (Xiaomi 65-inch) all day, all night:</p>
 <p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
 <p>When I’m out on <a href="https://www.strava.com/activities/12737067287">Overnight Hikes</a>: I check my phone at every water break:
@@ -243,8 +245,8 @@ gh and token
 we put our plan into action
 google sheet analyse github runner minutes vs elapsed runtime</p>
 <p>script to start jobs</p>
-<p>nuttx website docs
-https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
+<p>nuttx website docs</p>
+<p><a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
 30 github minutes</p>
 <p>It’s Oct 31 and our CI Servers are still running. We made it yay! 🎉</p>
 <p>We got plenty to do:</p>
@@ -261,13 +263,8 @@ https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
 </ol>
 <p>Thank you everyone for making this happen! 🙏</p>
 <ul>
-<li>
-<p>Excellent Initiative by @raiden00pl: We <strong>Merge Multiple Targets</strong> into One Target, and reduce the build time</p>
-<p>https://github.com/apache/nuttx/pull/14410</p>
-</li>
+<li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
 </ul>
-<p>Yeah it doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
-<img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
 <p>TODO</p>
 <blockquote>
@@ -322,20 +319,18 @@ https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
 <p>TODO</p>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
 <p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
-<ul>
-<li>https://github.com/apache/nuttx/issues/14407</li>
-</ul>
+<p><a href="https://github.com/apache/nuttx/issues/14407">“How to Verify a PR Merge”</a></p>
 <p>(I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)</p>
 <h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>13 Appendix: Timeout Errors</h1>
 <p>TODO</p>
-<p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
-(1) How do we retry these Timeout Errors?
-(2) Can we have Restartable Builds? Doesn’t quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
-(3) Or xtensa2 should wait for others to finish, before it declares a timeout and dies? Hmmm…</p>
+<p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
+<p>(1) How do we retry these Timeout Errors?</p>
+<p>(2) Can we have Restartable Builds? Doesn’t quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)</p>
+<p>(3) Or xtensa2 should wait for others to finish, before it declares a timeout and dies? Hmmm…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
 curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection timed out
 </code></pre></div>
-<p>https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1</p>
+<p><a href="https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1">(See the <strong>Complete Log</strong>)</a></p>
 <p>Something strange about <strong>Network Timeouts</strong> in our Docker Workflows: First Run fails while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626">downloading something from GitHub</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 curl: (28) Failed to connect to github.com port 443 after 134188 ms: Connection timed out
@@ -350,7 +345,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <p>Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on <a href="https://lupyuen.codeberg.page/articles/ci2.html">my own Build Farm</a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html">doesn’t show any errors</a>.</p>
 <p>Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔</p>
 <ul>
-<li>https://github.com/actions/actions-runner-controller/issues/393</li>
+<li><a href="https://github.com/actions/actions-runner-controller/issues/393">GitHub Actions with Smaller MTU Size</a></li>
 <li><a href="https://mlohr.com/docker-mtu/">Docker MTU issues and solutions</a></li>
 </ul>
 <p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repos: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
