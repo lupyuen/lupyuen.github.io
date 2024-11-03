@@ -54,6 +54,26 @@ __Scheduled Merge Jobs__ will also reduce wastage of GitHub Runners, since most 
 
 [See the ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
 
+# Disable macOS and Windows Builds
+
+TODO: Re-enable Windows Builds, monitor closely
+
+[CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
+
+Sorry I can't enable macOS Builds right now:
+- macOS Runners [cost 10 times](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers) as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.
+- Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs. <br>
+[See this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) <br>
+[And this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211)
+
+[CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
+
+But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?
+- Nope this is simply impossible. In the good old days: We were using far too many GitHub Runners. This is not sustainable, we don't have the budget to run all the CI Checks we used to.
+- So we should expect some breakage to happen. We have to be prepared to backtrack and figure out which PR broke the build.
+- That's why we have tools like the [NuttX Dashboard](https://github.com/apache/nuttx/issues/14558), to detect breakage earlier without depending on GitHub CI.
+- Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.
+
 # Move the Merge Jobs
 
 TODO: Isn't this cheating? Yeah that's why we need a Build Farm
@@ -88,26 +108,6 @@ __11 Days To Doomsday:__ But we're doing much better already! In the past 24 hou
 Hopefully we'll reach the ASF Target tomorrow, and ASF won't kill our servers no more! Thanks!
 
 ![Screenshot 2024-10-19 at 7 15 11 AM](https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749)
-
-# Disable macOS and Windows Builds
-
-TODO: Re-enable Windows Builds, monitor closely
-
-[CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
-
-Sorry I can't enable macOS Builds right now:
-- macOS Runners [cost 10 times](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers) as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.
-- Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs. <br>
-[See this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) <br>
-[And this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211)
-
-[CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
-
-But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?
-- Nope this is simply impossible. In the good old days: We were using far too many GitHub Runners. This is not sustainable, we don't have the budget to run all the CI Checks we used to.
-- So we should expect some breakage to happen. We have to be prepared to backtrack and figure out which PR broke the build.
-- That's why we have tools like the [NuttX Dashboard](https://github.com/apache/nuttx/issues/14558), to detect breakage earlier without depending on GitHub CI.
-- Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.
 
 # Live Metric for Full-Time Runners
 
@@ -187,49 +187,10 @@ TODO
 
 sync CI Workflow from nuttx to nuttx apps
 
-merge jobs
-auto kill merge jobs
-restart merge jobs
-why network error?
+????script to start jobs
 
-mirror repo
-enable windows and macos
-that's cheating ain't it? moving from one freebie to another freebit?
-yeah we might run our own build farm
-
-simple vs complex pr
-
-build rules
-
-runner live updates widget
-
-termux anywhere
-gh and token
-`pkg install gh`
-24x7 monitoring
-
-after 1 whole night of deliberation
-we put our plan into action
-google sheet analyse github runner minutes vs elapsed runtime
-
-script to start jobs
-
-nuttx website docs
-
-[nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
+nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
 30 github minutes
-
-It's Oct 31 and our CI Servers are still running. We made it yay! 🎉
-
-We got plenty to do:
-
-1. We made lots of fixes to the CI Workflow. I'll document everything in an article.
-
-2. Become more resilient and self-sufficient with [Our Own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html) (away from GitHub)
-
-3. Analyse our Build Logs with [Our Own Tools](https://github.com/apache/nuttx/issues/14558) (instead of GitHub)
-
-Thank you everyone for making this happen! 🙏
 
 - Excellent Initiative by @raiden00pl: We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target, and reduce the build time
 
@@ -237,7 +198,15 @@ Thank you everyone for making this happen! 🙏
 
 TODO
 
-> We have the https://github.com/nuttx organization too maybe we can make use of it too? :-)
+It's Oct 31 and our CI Servers are still running. We made it yay! 🎉
+
+We got plenty to do:
+
+1. Become more resilient and self-sufficient with [Our Own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html) (away from GitHub)
+
+1. Analyse our Build Logs with [Our Own Tools](https://github.com/apache/nuttx/issues/14558) (instead of GitHub)
+
+Thank you everyone for making this happen! 🙏
 
 I think we learnt a Painful Lesson today: Freebies Won't Last Forever! The new GitHub Org for NuttX should probably be a __Paid GitHub Org__:
 - New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, ...)
