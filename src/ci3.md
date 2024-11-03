@@ -61,7 +61,9 @@ TODO: Re-enable Windows Builds, monitor closely
 [CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
 
 Sorry I can't enable macOS Builds right now:
+
 - macOS Runners [cost 10 times](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers) as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.
+
 - Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs. <br>
 [See this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) <br>
 [And this log](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211)
@@ -69,9 +71,13 @@ Sorry I can't enable macOS Builds right now:
 [CI Jobs for macOS, msvc and msys2](https://github.com/apache/nuttx/issues/14598)
 
 But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?
+
 - Nope this is simply impossible. In the good old days: We were using far too many GitHub Runners. This is not sustainable, we don't have the budget to run all the CI Checks we used to.
+
 - So we should expect some breakage to happen. We have to be prepared to backtrack and figure out which PR broke the build.
+
 - That's why we have tools like the [NuttX Dashboard](https://github.com/apache/nuttx/issues/14558), to detect breakage earlier without depending on GitHub CI.
+
 - Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.
 
 # Move the Merge Jobs
@@ -79,14 +85,23 @@ But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?
 TODO: Isn't this cheating? Yeah that's why we need a Build Farm
 
 Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)
+
 - Our [__Merge Jobs are now at github.com/NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
+
 - ~~We have switched to [Four Scheduled Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) per day. New Merge Jobs will now run for a few seconds before getting auto-killed [by our script](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh), via the GitHub CLI. [(See the Merge Jobs)](https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush)~~
+
 - `nuttx-apps` has stopped macOS and Windows Jobs. But not much impact, since we don't compile `nuttx-apps` often <br> https://github.com/apache/nuttx-apps/pull/2750
+
 - Still waiting for `nuttx` repo to [stop macOS and Windows Jobs](https://github.com/apache/nuttx/pull/14377) (Update: merged!)
+
 - Also waiting for `nuttx` repo to [Halve The Jobs](https://github.com/apache/nuttx/pull/14386) (Update: merged!)
+
 - And for `nuttx-apps` to [Halve The Jobs](https://github.com/apache/nuttx-apps/pull/2753) (probably not much impact, since we don't compile `nuttx-apps` often)  (Update: merged!)
+
 - Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)
+
 - If our Full-Time Runners don't reduce significantly after 24 hours: We shall [further reduce our jobs](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893), halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.
+
 - We shall close this issue only when we reach our target of __25 Full-Time Runners__ per day. (And ASF won't shut us down)
 
 ![Screenshot 2024-10-18 at 6 14 48 AM](https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32)
@@ -120,15 +135,23 @@ ASF Infra Reports are still down. But now we have our own __Live Metrics for Ful
 [(Live Image)](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png) [(Live Log)](https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log)
 
 This shows the number of __Full-Time Runners for the Day__, computed since 00:00 UTC. (Remember: We should keep this below 25)
+
 - __Date:__ We compute the Full-Time Runners for today's date only (UTC)
+
 - __Elapsed Hours:__ Number of hours elapsed since 00:00 UTC
+
 - __GitHub Job Hours:__ Duration of all `nuttx` and `nuttx-apps` GitHub Jobs (cancelled / completed / failed). This data is available only AFTER the job has been cancelled / completed / failed (might be a lag of 1.5 hours). This is the Elapsed Job Duration, it doesn't say that we're running 8 smaller jobs in parallel, that's why we need...
+
 - __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub. We compute this as 8 * GitHub Job Hours. This is [averaged from past data](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346). (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)
+
 - __Full-Time GitHub Runners:__ Equals GitHub Runner Hours / Elapsed Hours. It means "How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours". (We should keep this below 25 per day, per week, per month, etc)
 
 How it works:
+
 - [compute-github-runners.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
+
 - [run.sh](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)
+- TODO: Linux Scripts, loss of precision
 
 # Monitor our CI Servers 24 x 7
 
@@ -142,11 +165,15 @@ This runs on my 4K TV (Xiaomi 65-inch) all day, all night:
 ![Screenshot 2024-10-28 at 1 53 26 PM](https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1)
 
 When I'm out on [Overnight Hikes](https://www.strava.com/activities/12737067287): I check my phone at every water break:
+
 ![GridArt_20241028_150938083](https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e)
 
 I have GitHub Scripts that will run on Termux Android (remember to `pkg install gh` and set `GITHUB_TOKEN`):
+
 - [enable-macos-windows2.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS and Windows Builds
+
 - [compute-github-runners2.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Compute the number of Full-Time GitHub Runners for the day
+
 - [kill-push-master.sh](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh): Cancel all Merge Jobs
 
 # Final Verdict
