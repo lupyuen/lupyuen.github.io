@@ -344,19 +344,29 @@ TODO
 [Enhance the CI Workflow to skip the Unmodified Architectures](https://github.com/apache/nuttx/issues/13775)
 
 - NuttX Devs need to wait (2 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though they're modifying a Single Architecture
+
 - We're using too many GitHub Runners and Build Minutes, exceeding the [ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
+
 - Our usage of GitHub Runners is going up ($12K per month), we need to stay within the [ASF Budget for GitHub Runners](https://infra.apache.org/github-actions-policy.html) ($8.2K per month)
+
 - What if CI could build only the Modified Architecture?
+
 - Right now most of our CI Builds are taking 2 hours 15 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
 
 ## Overall Solution
 
 - We propose a Partial Solution, based on the Arch and Board Labels (recently added to CI)
+
 - We target only the Simple PRs: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS"
+
 - If "Arch: arm" is the only non-size label, then we build only `arm-01`, `arm-02`, ...
+
 - Same for "Board: arm"
+
 - If Arch and Board Labels are both present: They must be the same
+
 - Similar rules for RISC-V, Simulator, x86_64 and Xtensa
+
 - Simple PR + Docs is still considered a Simple PR (so devs won't be penalised for adding docs)
 
 ## Fetch the Arch Labels
@@ -795,8 +805,13 @@ We recorded the CI Build Performance based on Real-World PRs:
    (__Update:__ All Done! Check the PRs below)
 
 __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
+
 - I have a hunch that CI works better when we pack the jobs into One-Hour Time Slices
+
 - Kinda like packing yummy goodies into Bento Boxes, making sure they don't overflow the Time Boxes  :-)
+
 - We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job. So we can Fail Faster (in case of problems), and skip the rest of the jobs
+
 - Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
+
 - How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubBoard (e.g. `stm32`)? [Maybe like this](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
