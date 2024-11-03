@@ -174,6 +174,8 @@ Let's wait for the good news from ASF, thank you everyone! 🙏
 
 TODO
 
+[NuttX Dashboard for Build Farm](https://github.com/apache/nuttx/issues/14558)
+
 [Running CI Checks before submitting PR](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
 
 [Verify a PR after merging](https://github.com/apache/nuttx/issues/14407)
