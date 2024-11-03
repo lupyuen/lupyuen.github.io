@@ -6,6 +6,43 @@
 
 TODO
 
+Dev build time dropped from ??? to ???
+GitHub Usage dropped from ??? to ???
+cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
+
+macos
+
+merge jobs
+auto kill merge jobs
+restart merge jobs
+why network error?
+
+mirror repo
+enable windows and macos
+that's cheating ain't it? moving from one freebie to another freebit?
+yeah we might run our own build farm
+
+simple vs complex pr
+
+build rules
+
+runner live updates widget
+
+termux anywhere
+gh and token
+`pkg install gh`
+24x7 monitoring
+
+after 1 whole night of deliberation
+we put our plan into action
+google sheet analyse github runner minutes vs elapsed runtime
+
+script to start jobs
+
+nuttx website docs
+https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
+30 github minutes
+
 # What's Next
 
 TODO
