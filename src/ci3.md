@@ -14,7 +14,7 @@ cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30
 
 # The Ultimatum
 
-TODO
+TODO: After a [whole night of deliberation](TODO), we [put our plan into action](TODO)...
 
 Hi All: We have [an ultimatum](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration will halt totally in Two Weeks. Here's what I'll implement within 24 hours for `nuttx` and `nuttx-apps` repos:
 
