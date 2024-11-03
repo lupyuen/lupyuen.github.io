@@ -66,9 +66,9 @@
     <h1 class="title">Optimising the Continuous Integration for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#the-ultimatum">1 The Ultimatum</a><ul></ul></li>
-<li><a href="#move-the-merge-jobs">2 Move the Merge Jobs</a><ul></ul></li>
-<li><a href="#halve-the-ci-checks">3 Halve the CI Checks</a><ul></ul></li>
-<li><a href="#disable-macos-and-windows-builds">4 Disable macOS and Windows Builds</a><ul></ul></li>
+<li><a href="#disable-macos-and-windows-builds">2 Disable macOS and Windows Builds</a><ul></ul></li>
+<li><a href="#move-the-merge-jobs">3 Move the Merge Jobs</a><ul></ul></li>
+<li><a href="#halve-the-ci-checks">4 Halve the CI Checks</a><ul></ul></li>
 <li><a href="#live-metric-for-full-time-runners">5 Live Metric for Full-Time Runners</a><ul></ul></li>
 <li><a href="#monitor-our-ci-servers-24-x-7">6 Monitor our CI Servers 24 x 7</a><ul></ul></li>
 <li><a href="#final-verdict">7 Final Verdict</a><ul></ul></li>
@@ -125,39 +125,7 @@
 <p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs don’t complete (only 1 completed yesterday)</p>
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
 <p><a href="https://infra.apache.org/github-actions-policy.html">See the ASF Policy for GitHub Actions</a></p>
-<h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>2 Move the Merge Jobs</h1>
-<p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
-<p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
-<ul>
-<li>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></li>
-<li><del>We have switched to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Four Scheduled Merge Jobs</a> per day. New Merge Jobs will now run for a few seconds before getting auto-killed <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">by our script</a>, via the GitHub CLI. <a href="https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush">(See the Merge Jobs)</a></del></li>
-<li><code>nuttx-apps</code> has stopped macOS and Windows Jobs. But not much impact, since we don’t compile <code>nuttx-apps</code> often <br> https://github.com/apache/nuttx-apps/pull/2750</li>
-<li>Still waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14377">stop macOS and Windows Jobs</a> (Update: merged!)</li>
-<li>Also waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14386">Halve The Jobs</a> (Update: merged!)</li>
-<li>And for <code>nuttx-apps</code> to <a href="https://github.com/apache/nuttx-apps/pull/2753">Halve The Jobs</a> (probably not much impact, since we don’t compile <code>nuttx-apps</code> often)  (Update: merged!)</li>
-<li>Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)</li>
-<li>If our Full-Time Runners don’t reduce significantly after 24 hours: We shall <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893">further reduce our jobs</a>, halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.</li>
-<li>We shall close this issue only when we reach our target of <strong>25 Full-Time Runners</strong> per day. (And ASF won’t shut us down)</li>
-</ul>
-<p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
-<h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>3 Halve the CI Checks</h1>
-<p>TODO</p>
-<p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
-<ul>
-<li>
-<p>Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
-</li>
-<li>
-<p>Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
-</li>
-<li>
-<p>Our <a href="https://github.com/nuttxpr/nuttx/actions"><strong>Merge Jobs are now at github.com/nuttxpr/nuttx</strong></a></p>
-<p><del>Reduce the Scheduled Merge Jobs to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Two Per Day</strong></a> at 00:00 / 12:00 UTC (down from Four Per Day)</del></p>
-</li>
-</ul>
-<p>Hopefully we’ll reach the ASF Target tomorrow, and ASF won’t kill our servers no more! Thanks!</p>
-<p><img src="https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749" alt="Screenshot 2024-10-19 at 7 15 11 AM" /></p>
-<h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>4 Disable macOS and Windows Builds</h1>
+<h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>2 Disable macOS and Windows Builds</h1>
 <p>TODO: Re-enable Windows Builds, monitor closely</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
 <p>Sorry I can’t enable macOS Builds right now:</p>
@@ -175,6 +143,38 @@
 <li>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard</a>, to detect breakage earlier without depending on GitHub CI.</li>
 <li>Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.</li>
 </ul>
+<h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>3 Move the Merge Jobs</h1>
+<p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
+<p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
+<ul>
+<li>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></li>
+<li><del>We have switched to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Four Scheduled Merge Jobs</a> per day. New Merge Jobs will now run for a few seconds before getting auto-killed <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">by our script</a>, via the GitHub CLI. <a href="https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush">(See the Merge Jobs)</a></del></li>
+<li><code>nuttx-apps</code> has stopped macOS and Windows Jobs. But not much impact, since we don’t compile <code>nuttx-apps</code> often <br> https://github.com/apache/nuttx-apps/pull/2750</li>
+<li>Still waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14377">stop macOS and Windows Jobs</a> (Update: merged!)</li>
+<li>Also waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14386">Halve The Jobs</a> (Update: merged!)</li>
+<li>And for <code>nuttx-apps</code> to <a href="https://github.com/apache/nuttx-apps/pull/2753">Halve The Jobs</a> (probably not much impact, since we don’t compile <code>nuttx-apps</code> often)  (Update: merged!)</li>
+<li>Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)</li>
+<li>If our Full-Time Runners don’t reduce significantly after 24 hours: We shall <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893">further reduce our jobs</a>, halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.</li>
+<li>We shall close this issue only when we reach our target of <strong>25 Full-Time Runners</strong> per day. (And ASF won’t shut us down)</li>
+</ul>
+<p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
+<h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>4 Halve the CI Checks</h1>
+<p>TODO</p>
+<p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
+<ul>
+<li>
+<p>Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
+</li>
+<li>
+<p>Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
+</li>
+<li>
+<p>Our <a href="https://github.com/nuttxpr/nuttx/actions"><strong>Merge Jobs are now at github.com/nuttxpr/nuttx</strong></a></p>
+<p><del>Reduce the Scheduled Merge Jobs to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Two Per Day</strong></a> at 00:00 / 12:00 UTC (down from Four Per Day)</del></p>
+</li>
+</ul>
+<p>Hopefully we’ll reach the ASF Target tomorrow, and ASF won’t kill our servers no more! Thanks!</p>
+<p><img src="https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749" alt="Screenshot 2024-10-19 at 7 15 11 AM" /></p>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>5 Live Metric for Full-Time Runners</h1>
 <p>TODO</p>
 <p>ASF Infra Reports are still down. But now we have our own <strong>Live Metrics for Full-Time GitHub Runners!</strong> (reload for updates)</p>
@@ -226,34 +226,17 @@
 <p><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114">Running CI Checks before submitting PR</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14407">Verify a PR after merging</a></p>
 <p>sync CI Workflow from nuttx to nuttx apps</p>
-<p>merge jobs
-auto kill merge jobs
-restart merge jobs
-why network error?</p>
-<p>mirror repo
-enable windows and macos
-that’s cheating ain’t it? moving from one freebie to another freebit?
-yeah we might run our own build farm</p>
-<p>simple vs complex pr</p>
-<p>build rules</p>
-<p>runner live updates widget</p>
-<p>termux anywhere
-gh and token
-<code>pkg install gh</code>
-24x7 monitoring</p>
-<p>after 1 whole night of deliberation
-we put our plan into action
-google sheet analyse github runner minutes vs elapsed runtime</p>
-<p>script to start jobs</p>
-<p>nuttx website docs</p>
-<p><a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
+<p>????script to start jobs</p>
+<p>nuttx website docs: <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
 30 github minutes</p>
+<ul>
+<li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
+</ul>
+<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
+<p>TODO</p>
 <p>It’s Oct 31 and our CI Servers are still running. We made it yay! 🎉</p>
 <p>We got plenty to do:</p>
 <ol>
-<li>
-<p>We made lots of fixes to the CI Workflow. I’ll document everything in an article.</p>
-</li>
 <li>
 <p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html">Our Own Build Farm</a> (away from GitHub)</p>
 </li>
@@ -262,14 +245,6 @@ google sheet analyse github runner minutes vs elapsed runtime</p>
 </li>
 </ol>
 <p>Thank you everyone for making this happen! 🙏</p>
-<ul>
-<li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
-</ul>
-<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
-<p>TODO</p>
-<blockquote>
-<p>We have the https://github.com/nuttx organization too maybe we can make use of it too? :-)</p>
-</blockquote>
 <p>I think we learnt a Painful Lesson today: Freebies Won’t Last Forever! The new GitHub Org for NuttX should probably be a <strong>Paid GitHub Org</strong>:</p>
 <ul>
 <li>New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, …)</li>
