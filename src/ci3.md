@@ -71,7 +71,7 @@ Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a l
 
 ![Screenshot 2024-10-18 at 6 14 48 AM](https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32)
 
-# Half the CI Checks
+# Halve the CI Checks
 
 TODO
 
@@ -130,9 +130,12 @@ How it works:
 - [compute-github-runners.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
 - [run.sh](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)
 
-# Monitoring our CI Servers 24 x 7
+# Monitor our CI Servers 24 x 7
 
 TODO
+
+Yeah it doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
+![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
 This runs on my 4K TV (Xiaomi 65-inch) all day, all night:
 
@@ -212,7 +215,8 @@ google sheet analyse github runner minutes vs elapsed runtime
 script to start jobs
 
 nuttx website docs
-https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml
+
+[nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
 30 github minutes
 
 It's Oct 31 and our CI Servers are still running. We made it yay! 🎉
@@ -227,12 +231,7 @@ We got plenty to do:
 
 Thank you everyone for making this happen! 🙏
 
-- Excellent Initiative by @raiden00pl: We __Merge Multiple Targets__ into One Target, and reduce the build time
-
-  https://github.com/apache/nuttx/pull/14410
-
-Yeah it doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
-![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
+- Excellent Initiative by @raiden00pl: We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target, and reduce the build time
 
 # Our Wishlist
 
@@ -296,7 +295,7 @@ _When NuttX merges our PR, the Merge Job won't run until 00:00 UTC and 12:00 UTC
 
 Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the __CI Workflow__. (Which won't charge any extra GitHub Runner Minutes to NuttX Project!)
 
-- https://github.com/apache/nuttx/issues/14407
+["How to Verify a PR Merge"](https://github.com/apache/nuttx/issues/14407)
 
 (I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)
 
@@ -305,15 +304,18 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 TODO
 
 Something That Bugs Me: __Timeout Errors__ will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
+
 (1) How do we retry these Timeout Errors?
+
 (2) Can we have Restartable Builds? Doesn't quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+
 (3) Or xtensa2 should wait for others to finish, before it declares a timeout and dies? Hmmm...
 
 ```text
 Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
 curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection timed out
 ```
-https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1
+[(See the __Complete Log__)](https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1)
 
 Something strange about __Network Timeouts__ in our Docker Workflows: First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626):
 ```text
@@ -334,7 +336,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [my own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html). It [doesn't show any errors](https://lupyuen.codeberg.page/articles/ci2.html).
 
 Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
-- https://github.com/actions/actions-runner-controller/issues/393
+- [GitHub Actions with Smaller MTU Size](https://github.com/actions/actions-runner-controller/issues/393)
 - [Docker MTU issues and solutions](https://mlohr.com/docker-mtu/)
 
 Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repos: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
