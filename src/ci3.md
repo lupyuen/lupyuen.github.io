@@ -150,7 +150,9 @@ Initially I ran a script that will quickly [__Cancel any Merge Jobs__](https://g
 
 Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). 
 
-(Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
+[(Also for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
+
+[(Fixing the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
 
 _How to trigger the Scheduled Merge Job?_
 
@@ -192,23 +194,43 @@ _Which CI Checks did we select?_
 
 Today we run these __CI Checks__ when submitting or updating a Complex PR (pic above)...
 
-TODO: CI Checks
+- _arm-03, 05, 06, 07, 08, 10, 13_
+- _risc-v-01, 02, 03_
+- _sim-01, 02_
+- _xtensa-01, arm64-01, x86\_64-01, other_
 
-TODO: [(See the __Pull Request__)](TODO)
+[(See the __Pull Request__)](TODO)
 
-TODO: [(Also synced to __NuttX Apps__)](TODO)
+[(Also synced to __NuttX Apps__)](TODO)
 
-TODO: Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
-  
-TODO: Do the same for [`nuttx-apps` repo](https://github.com/apache/nuttx-apps/pull/2758)  
+_Why did we choose these CI Checks?_
+
+We chose the CI Checks above because they validate NuttX Builds on these __Popular Boards__...
+
+- _arm-05:_ Nordic nRF52
+- _arm-06:_ Raspberry Pi RP2040
+- _arm-07:_ Microchip SAMD
+- _arm-08, 10, 13:_ STM32
+- _risc-v-02, 03:_ ESP32-C3, C6, H2
+- _sim-01, 02:_ CI Test, Matter
+
+TODO: See the list of builds
+
+(We might rotate the list to get better CI Coverage)
+
+_What about Simple PRs?_
+
+A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.
+
+When we create a Simple PR for Arm32: It runs only the CI Checks for _arm-01_ ... _arm-14_.
+
+(It will probably complete earlier than a Complex PR)
+
+_Sounds awfully complicated. How did we code the rules?_
+
+Indeed! The Build Rules are explained here...
 
 TODO: Build Rules
-
-TODO: Why were these jobs chosen?
-
-TODO: Rotate?
-
-TODO: Simple PR
 
 # Live Metric for Full-Time Runners
 
