@@ -95,7 +95,9 @@
 <p>TODO: Dev build time dropped from ??? to ???</p>
 <p>GitHub Usage dropped from ??? to ???</p>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
-</code></pre></div><h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
+</code></pre></div>
+<p>TODO: Pic of last 7 days</p>
+<h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
 <p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="TODO"><strong>our rescue plan</strong></a>…</p>
 <ol>
@@ -176,59 +178,57 @@
 </li>
 </ul>
 <h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
-<p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
-<p>The macOS and Windows Builds are now running in our NuttX Mirror: <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml">github.com/NuttX/nuttx</a></p>
-<p>This script will <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable macOS and Windows Builds</a> for our NuttX Mirror. Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>.</p>
-<p>Daily at 00:00 UTC and 12:00 UTC: I click <code>Sync Fork &gt; Discard Commits</code> then I run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a>.</p>
-<p>(Remember: We <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">run this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. Otherwise the GitHub Runners will spike!)</p>
-<p>TODO</p>
-<ul>
+<p><em>What are Merge Jobs? Why move them?</em></p>
+<p>Suppose our NuttX Admin <strong>Merges a PR</strong>.</p>
+<p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
+<p>Which means running <a href="TODO"><strong>34 Build Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
+<p>This is extremely costly, so we decided to run them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
+<p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
+<p><em>Is there a problem?</em></p>
+<p>We spent <strong>One-Third</strong> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs.</p>
+<p>And when we restart a Scheduled Merge Job, we waste GitHub Minutes.</p>
+<p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
+<p><em>And thus we moved them?</em></p>
+<p>Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>.</p>
+<p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
+<p>(Running in an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
+<p><em>What about the Old Merge Jobs?</em></p>
+<p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
+<p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
+<p>(Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
+<p><em>How do we trigger the Scheduled Merge Job?</em></p>
+<p>Every Day at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I do this…</p>
+<ol>
 <li>
-<p>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>. (Includes macOS and Windows Builds)</p>
+<p>Browse to the <a href="TODO"><strong>NuttX Mirror Repo</strong></a></p>
 </li>
 <li>
-<p>How It Happens: Daily at 00:00 UTC and 12:00 UTC, I browse to NuttX/nuttx repo, click <code>Sync Fork &gt; Discard Commits</code>. Then I <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">run this script</a> to enable the macOS and Windows Builds.</p>
-<p>TODO: Disable fail-fast so that it runs all builds, regardless of error</p>
-<p>TODO: Remove max-parallel so that it will use unlimited concurrent runners.</p>
+<p>Click “<strong>Sync Fork &gt; Discard Commits</strong>”</p>
 </li>
 <li>
-<p>Don’t Forget: I’m still <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">running this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. (Otherwise the GitHub Runners will spike!)</p>
-<p>(Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>. Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
-</li>
-</ul>
-<p>TODO</p>
-<p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
-<ul>
-<li>
-<p>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></p>
+<p>Which will <strong>Sync our Mirror Repo</strong> with the Upstream NuttX Repo</p>
 </li>
 <li>
-<p><del>We have switched to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Four Scheduled Merge Jobs</a> per day. New Merge Jobs will now run for a few seconds before getting auto-killed <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">by our script</a>, via the GitHub CLI. <a href="https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush">(See the Merge Jobs)</a></del></p>
+<p>Run this script to enable the <strong>macOS Builds</strong>: <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a></p>
 </li>
 <li>
-<p><code>nuttx-apps</code> has <a href="https://github.com/apache/nuttx-apps/pull/2750">stopped macOS and Windows Jobs</a>. But not much impact, since we don’t compile <code>nuttx-apps</code> often</p>
+<p>Which will also <a href="TODO"><strong>Disable Fail-Fast</strong></a> so that it runs all builds. (Regardless of error)</p>
 </li>
 <li>
-<p>Still waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14377">stop macOS and Windows Jobs</a> (Update: merged!)</p>
+<p>And <a href="TODO"><strong>Remove Max Parallel</strong></a> so that it will use unlimited concurrent runners. (Because it’s free!)</p>
 </li>
 <li>
-<p>Also waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14386">Halve The Jobs</a> (Update: merged!)</p>
+<p>If the Merge Job fails with a <a href="TODO"><strong>Network Error</strong></a>: I restart the Failed Sub-Jobs</p>
 </li>
 <li>
-<p>And for <code>nuttx-apps</code> to <a href="https://github.com/apache/nuttx-apps/pull/2753">Halve The Jobs</a> (probably not much impact, since we don’t compile <code>nuttx-apps</code> often)  (Update: merged!)</p>
+<p>Wait for the Merge Job to complete. Then <strong>Ingest the GitHub Logs</strong> into our NuttX Dashboard. (Next article)</p>
 </li>
-<li>
-<p>Will wait for the above to be merged, then we monitor some more (Update: All merged! Thanks Tomek :-)</p>
-</li>
-<li>
-<p>If our Full-Time Runners don’t reduce significantly after 24 hours: We shall <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1936368893#gid=1936368893">further reduce our jobs</a>, halving the jobs for RISC-V / Xtensa / Simulator when we Create / Modify a Complex PR. Also: Reduce the Daily Merge Jobs from 4 to 2.</p>
-</li>
-<li>
-<p>We shall close this issue only when we reach our target of <strong>25 Full-Time Runners</strong> per day. (And ASF won’t shut us down)</p>
-</li>
-</ul>
-<p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
+</ol>
+<p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
+<p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
+<p>TODO: <strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
 <p>TODO: Why were these jobs chosen?</p>
 <p>TODO: Rotate?</p>
 <p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
@@ -345,6 +345,7 @@
 </li>
 </ul>
 <p>Thank you everyone for making this happen! 🙏</p>
+<p><a href="TODO">(Please join <strong>Your Ubuntu PC</strong> to our Build Farm)</a></p>
 <p><em>But our Merge Jobs are still running in a Free Account?</em></p>
 <p>We learnt a Painful Lesson today: <strong>Freebies Won’t Last Forever!</strong></p>
 <p>We should probably maintain an official <strong>Paid GitHub Org Account</strong> to run our Merge Jobs…</p>
