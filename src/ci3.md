@@ -104,7 +104,7 @@ Nope this is __simply impossible__...
 
 - Also we should show some __love and respect__ for NuttX Devs!
 
-  Previously we waited 2.5 hours for All CI Checks. Now we wait at most __1.5 hours__, let's stick to this.
+  Previously we waited [__2.5 hours__](TODO) for All CI Checks. Now we wait at most [__1.5 hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
   [(Later we re-enabled the __Windows Jobs__)](https://github.com/apache/nuttx/issues/14598)
 
@@ -178,13 +178,17 @@ Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
 
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
 
-__Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs.
+[__Two-Thirds__](TODO) of our GitHub Runner Minutes were spent on Submitting and Updating PRs.
 
 That's why we decided to skip __Half the CI Checks__ for Complex PRs.
 
 (A __Complex PR__ affects __All Architectures__: Arm, RISC-V, Xtensa, etc)
 
-TODO: Today we run these CI Checks when creating or updating a Complex PR:
+_Which CI Checks did we select?_
+
+Today we run these __CI Checks__ when submitting or updating a Complex PR...
+
+TODO: CI Checks
 
 TODO: Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
   
@@ -198,51 +202,55 @@ TODO: Rotate?
 
 # Live Metric for Full-Time Runners
 
-TODO
+_Hitting the Target Metrics in 2 weeks... Everyone needs to help out right?_
 
-ASF Infra Reports are still down. But now we have our own __Live Metrics for Full-Time GitHub Runners!__ (reload for updates)
+Our quota is __25 Full-Time GitHub Runners__ per day.
 
-![](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
+We published our own __Live Metric for Full-Time Runners__, for everyone to track...
 
-[(Live Image)](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png) [(Live Log)](https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log)
+![Live Metric for Full-Time Runners](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
 
-This shows the number of __Full-Time Runners for the Day__, computed since 00:00 UTC. (Remember: We should keep this below 25)
-
-- __Date:__ We compute the Full-Time Runners for today's date only (UTC)
+- __Date:__ We compute the Full-Time Runners only for Today's Date (UTC)
 
 - __Elapsed Hours:__ Number of hours elapsed since 00:00 UTC
 
-- __GitHub Job Hours:__ Duration of all `nuttx` and `nuttx-apps` GitHub Jobs (cancelled / completed / failed).
+- __GitHub Job Hours:__ Elapsed Duration of all `nuttx` and `nuttx-apps` GitHub Jobs. (Cancelled / Completed / Failed)
 
-  This data is available only AFTER the job has been cancelled / completed / failed (might be lagged by 1.5 hours).
+  This data is available only AFTER the job has been Cancelled / Completed / Failed. (Might have lagged by 1.5 hours)
   
-  This is the Elapsed Job Duration, it doesn't say that we're running 8 smaller jobs in parallel, that's why we need...
+  But this is the _Elapsed Job Duration_. It doesn't say that we're running 8 Sub-Jobs in parallel. That's why we need...
 
-- __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub.
+- __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration. Effectively the _Chargeable Minutes_ by GitHub.
 
-  We compute this as 8 * GitHub Job Hours. This is [averaged from past data](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346).
+  We compute this as 8 * GitHub Job Hours. This is [__averaged from past data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346).
   
-  (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)
+  (Remember: One GitHub Runner will run One Single Sub-Job, like _arm-01_)
 
-- __Full-Time GitHub Runners:__ Equals GitHub Runner Hours / Elapsed Hours. It means "How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours". (We should keep this below 25 per day, per week, per month, etc)
+- __Full-Time GitHub Runners:__ Equals GitHub Runner Hours / Elapsed Hours.
 
-How it works:
-
-- [compute-github-runners.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the Duration of All Completed GitHub Jobs for today.
-
-  Then it extrapolates the Number of Full-Time GitHub Runners.
+  It means _"How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours"_.
   
-  (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
+  (We should keep this below 25 per day, per week, per month)
 
-- [run.sh](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)
+How it works...
 
-- TODO: Linux Scripts, loss of precision
+1.  [__compute-github-runners.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the __Elapsed Duration__ of All Completed GitHub Jobs for today.
+
+    Then it extrapolates the Number of __Full-Time GitHub Runners__.
+  
+    (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
+
+1.  [__run.sh__](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above and render the Full-Time GitHub Runners as a PNG.
+
+    (Thanks to ImageMagick)
+
+1.  TODO: Linux Scripts, loss of precision
 
 ![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
 # Monitor our CI Servers 24 x 7
 
-_Doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 ... But somebody's gotta do it!_ 👍
+_Doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 ... But someone's gotta do it!_ 👍
 
 This runs on a 4K TV (Xiaomi 65-inch) all day, all night...
 
