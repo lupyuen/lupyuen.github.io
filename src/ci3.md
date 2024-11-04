@@ -194,7 +194,9 @@ Today we run these __CI Checks__ when submitting or updating a Complex PR (pic a
 
 TODO: CI Checks
 
-TODO: [(See the PR)](TODO)
+TODO: [(See the __Pull Request__)](TODO)
+
+TODO: [(Also synced to __NuttX Apps__)](TODO)
 
 TODO: Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
   
