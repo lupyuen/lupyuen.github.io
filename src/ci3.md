@@ -444,7 +444,7 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 
 - [__"How to Verify a PR Merge"__](https://github.com/apache/nuttx/issues/14407)
 
-  (This will probably work if our CI Servers ever get shut down)
+(This will probably work if our CI Servers ever get shut down)
 
 # Appendix: Timeout Errors
 
