@@ -97,7 +97,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
 </code></pre></div><h1 id="the-ultimatum"><a class="doc-anchor" href="#the-ultimatum">§</a>1 The Ultimatum</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
-<p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly <a href="TODO"><strong>activated our plan</strong></a>…</p>
+<p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="TODO"><strong>our rescue plan</strong></a>…</p>
 <ol>
 <li>
 <p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
@@ -109,7 +109,7 @@
 <p>(Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only <code>arm-01</code> to <code>arm-14</code>)</p>
 </li>
 <li>
-<p>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at NuttX/nuttx</strong></a> repo. (Instead of <em>apache/nuttx</em> repo)</p>
+<p>When we <strong>Merge a PR:</strong> our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs will run at NuttX/nuttx</strong></a> repo. (Instead of <em>apache/nuttx</em> repo)</p>
 <p>We shall have only <strong>Two Scheduled Merge Jobs</strong> per day: 00:00 UTC and 12:00 UTC.</p>
 </li>
 <li>
@@ -124,16 +124,17 @@
 </ol>
 <p>Baffled? We have reasons for doing these, justified by real data…</p>
 <h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
-<p>TODO</p>
-<p>We have done an Analysis of CI Jobs over the past 24 hours:</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0">Analysis of CI Jobs</a></p>
-<p>Many CI Jobs are <strong>Incomplete</strong>: We waste GitHub Runners on jobs that eventually get superseded and cancelled</p>
+<p>We studied the CI Jobs for the previous day…</p>
+<ul>
+<li><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0"><strong>Analysis of CI Jobs over 24 Hours</strong></a></li>
+</ul>
+<p>Many CI Jobs were <strong>Incomplete</strong>: We wasted GitHub Runners on jobs that were eventually <strong>superseded and cancelled</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e" alt="Screenshot 2024-10-17 at 1 18 14 PM" /></p>
-<p>When we <strong>Half the CI Jobs:</strong> We reduce the wastage of GitHub Runners</p>
+<p>When we <strong>Halve the CI Jobs:</strong> We reduce the wastage of GitHub Runners…</p>
 <p><img src="https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a" alt="Screenshot 2024-10-17 at 1 15 30 PM" /></p>
-<p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs don’t complete (only 1 completed yesterday)</p>
+<p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs didn’t complete. Only One Merge Job completed on that day…</p>
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
-<p><a href="https://infra.apache.org/github-actions-policy.html">See the ASF Policy for GitHub Actions</a></p>
+<p>Hopefully our plan will comply with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>!</p>
 <h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
 <p>TODO: Re-enable Windows Builds, monitor closely</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
