@@ -65,7 +65,7 @@
 
     <h1 class="title">Optimising the Continuous Integration for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#the-ultimatum">1 The Ultimatum</a><ul></ul></li>
+<li><a href="#rescue-plan">1 Rescue Plan</a><ul></ul></li>
 <li><a href="#present-pains">2 Present Pains</a><ul></ul></li>
 <li><a href="#disable-macos-and-windows-builds">3 Disable macOS and Windows Builds</a><ul></ul></li>
 <li><a href="#move-the-merge-jobs">4 Move the Merge Jobs</a><ul></ul></li>
@@ -95,13 +95,13 @@
 <p>TODO: Dev build time dropped from ??? to ???</p>
 <p>GitHub Usage dropped from ??? to ???</p>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
-</code></pre></div><h1 id="the-ultimatum"><a class="doc-anchor" href="#the-ultimatum">§</a>1 The Ultimatum</h1>
+</code></pre></div><h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
 <p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="TODO"><strong>our rescue plan</strong></a>…</p>
 <ol>
 <li>
 <p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
-<p>CI Workflow shall run only <strong>half the jobs</strong> for CI Checks.</p>
+<p>CI Workflow shall run only <strong>Half the Jobs</strong> for CI Checks.</p>
 <p>(Will reduce GitHub Cost by 32%)</p>
 </li>
 <li>
@@ -134,40 +134,66 @@
 <p><img src="https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a" alt="Screenshot 2024-10-17 at 1 15 30 PM" /></p>
 <p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs didn’t complete. Only One Merge Job completed on that day…</p>
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
-<p>Hopefully our plan will comply with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>!</p>
+<p>All these fixes were super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>!</p>
 <h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
-<p>TODO: Re-enable Windows Builds, monitor closely</p>
-<p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
-<p>Sorry I can’t enable macOS Builds right now:</p>
+<p><em>Quitting the macOS Builds? That’s horribly drastic!</em></p>
+<p>Yeah sorry we can’t enable <strong>macOS Builds</strong> right now…</p>
 <ul>
 <li>
-<p>macOS Runners <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">cost 10 times</a> as much as Linux Runners. To enable One macOS Job, we need to disable 10 Linux Jobs! Which is not feasible.</p>
+<p>macOS Runners <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>cost 10 times</strong></a> as much as Linux Runners.</p>
+<p>To enable One macOS Job: We need to disable 10 Linux Jobs! Which is not feasible.</p>
 </li>
 <li>
-<p>Our macOS Jobs are in a bad state right now, showing too many warnings. We need someone familiar with Intel Macs to clean up the macOS Jobs. <br>
-<a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934">See this log</a> <br>
-<a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211">And this log</a></p>
+<p>Our macOS Jobs are in an <strong>untidy state</strong> right now, showing too many warnings.</p>
+<p>We need someone familiar with Intel Macs to clean up the macOS Jobs.</p>
+<p>(See this <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934"><strong>macOS Log</strong></a> and <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211"><strong>Another Log</strong></a>)</p>
+<p><a href="https://github.com/apache/nuttx/issues/14598">(Discussion here)</a></p>
 </li>
 </ul>
-<p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
-<p>But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?</p>
+<p><em>But can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?</em></p>
+<p>Nope this is <strong>simply impossible</strong>…</p>
 <ul>
 <li>
-<p>Nope this is simply impossible. In the good old days: We were using far too many GitHub Runners. This is not sustainable, we don’t have the budget to run all the CI Checks we used to.</p>
+<p>In the good old days: We were using <strong>far too many</strong> GitHub Runners.</p>
+<p>This is not sustainable, we don’t have the budget to run all the CI Checks we used to.</p>
 </li>
 <li>
-<p>So we should expect some breakage to happen. We have to be prepared to backtrack and figure out which PR broke the build.</p>
+<p>Hence we should expect <strong>some breakage</strong>.</p>
+<p>We should be prepared to backtrack and figure out which PR broke the build.</p>
 </li>
 <li>
-<p>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard</a>, to detect breakage earlier without depending on GitHub CI.</p>
+<p>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>, to detect breakage earlier.</p>
+<p>(Without depending on GitHub CI)</p>
 </li>
 <li>
-<p>Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.</p>
+<p>Also we should show some <strong>love and respect</strong> for NuttX Devs!</p>
+<p>Previously we waited 2.5 hours for All CI Checks. Now we wait at most <strong>1.5 hours</strong>, let’s stick to this.</p>
+<p><a href="https://github.com/apache/nuttx/issues/14598">(Later we re-enabled the <strong>Windows Jobs</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14526">(Seeking help to port NuttX Jobs to <strong>M1 Mac</strong>)</a></p>
 </li>
 </ul>
-<p>TODO: Seeking help to port to M1 Mac</p>
 <h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
 <p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
+<p>The macOS and Windows Builds are now running in our NuttX Mirror: https://github.com/NuttX/nuttx/actions/workflows/build.yml</p>
+<p>This script will <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable macOS and Windows Builds</a> for our NuttX Mirror. Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>.</p>
+<p>Daily at 00:00 UTC and 12:00 UTC: I click <code>Sync Fork &gt; Discard Commits</code> then I run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a>.</p>
+<p>(Remember: We <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">run this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. Otherwise the GitHub Runners will spike!)</p>
+<p>TODO</p>
+<ul>
+<li>
+<p>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>. (Includes macOS and Windows Builds)</p>
+</li>
+<li>
+<p>How It Happens: Daily at 00:00 UTC and 12:00 UTC, I browse to NuttX/nuttx repo, click <code>Sync Fork &gt; Discard Commits</code>. Then I <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">run this script</a> to enable the macOS and Windows Builds.</p>
+<p>TODO: Disable Fail-Fast, so all builds will complete.</p>
+<p>TODO: Remove Max Parallel, so builds can finish faster.</p>
+</li>
+<li>
+<p>Don’t Forget: I’m still <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">running this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. (Otherwise the GitHub Runners will spike!)</p>
+<p>(Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>. Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
+</li>
+</ul>
+<p>TODO</p>
 <p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
 <ul>
 <li>
