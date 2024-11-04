@@ -66,57 +66,65 @@
     <h1 class="title">Optimising the Continuous Integration for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#the-ultimatum">1 The Ultimatum</a><ul></ul></li>
-<li><a href="#disable-macos-and-windows-builds">2 Disable macOS and Windows Builds</a><ul></ul></li>
-<li><a href="#move-the-merge-jobs">3 Move the Merge Jobs</a><ul></ul></li>
-<li><a href="#halve-the-ci-checks">4 Halve the CI Checks</a><ul></ul></li>
-<li><a href="#live-metric-for-full-time-runners">5 Live Metric for Full-Time Runners</a><ul></ul></li>
-<li><a href="#monitor-our-ci-servers-24-x-7">6 Monitor our CI Servers 24 x 7</a><ul></ul></li>
-<li><a href="#final-verdict">7 Final Verdict</a><ul></ul></li>
-<li><a href="#todo">8 TODO</a><ul></ul></li>
-<li><a href="#our-wishlist">9 Our Wishlist</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-merge-jobs-are-costly">11 Appendix: Merge Jobs are Costly</a><ul></ul></li>
-<li><a href="#appendix-verify-our-pr-merge">12 Appendix: Verify our PR Merge</a><ul></ul></li>
-<li><a href="#appendix-timeout-errors">13 Appendix: Timeout Errors</a><ul></ul></li>
-<li><a href="#appendix-build-rules-for-ci-workflow">14 Appendix: Build Rules for CI Workflow</a><ul>
-<li><a href="#overall-solution">14.1 Overall Solution</a><ul></ul></li>
-<li><a href="#fetch-the-arch-labels">14.2 Fetch the Arch Labels</a><ul></ul></li>
-<li><a href="#handle-only-simple-prs">14.3 Handle Only Simple PRs</a><ul></ul></li>
-<li><a href="#for-arm-arch-identify-the-non-arm-builds">14.4 For Arm Arch: Identify the Non-Arm Builds</a><ul></ul></li>
-<li><a href="#skip-the-non-arm-builds">14.5 Skip The Non-Arm Builds</a><ul></ul></li>
-<li><a href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">14.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</a><ul></ul></li>
-<li><a href="#skip-the-macos-and-windows-builds">14.7 Skip the macOS and Windows Builds</a><ul></ul></li>
-<li><a href="#ignore-the-documentation">14.8 Ignore the Documentation</a><ul></ul></li>
-<li><a href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">14.9 Sync the CI Workflow from nuttx repo to nuttx-apps</a><ul></ul></li>
-<li><a href="#testing">14.10 Testing</a><ul></ul></li>
-<li><a href="#actual-performance">14.11 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
+<li><a href="#present-pains">2 Present Pains</a><ul></ul></li>
+<li><a href="#disable-macos-and-windows-builds">3 Disable macOS and Windows Builds</a><ul></ul></li>
+<li><a href="#move-the-merge-jobs">4 Move the Merge Jobs</a><ul></ul></li>
+<li><a href="#halve-the-ci-checks">5 Halve the CI Checks</a><ul></ul></li>
+<li><a href="#live-metric-for-full-time-runners">6 Live Metric for Full-Time Runners</a><ul></ul></li>
+<li><a href="#monitor-our-ci-servers-24-x-7">7 Monitor our CI Servers 24 x 7</a><ul></ul></li>
+<li><a href="#final-verdict">8 Final Verdict</a><ul></ul></li>
+<li><a href="#todo">9 TODO</a><ul></ul></li>
+<li><a href="#our-wishlist">10 Our Wishlist</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-merge-jobs-are-costly">12 Appendix: Merge Jobs are Costly</a><ul></ul></li>
+<li><a href="#appendix-verify-our-pr-merge">13 Appendix: Verify our PR Merge</a><ul></ul></li>
+<li><a href="#appendix-timeout-errors">14 Appendix: Timeout Errors</a><ul></ul></li>
+<li><a href="#appendix-build-rules-for-ci-workflow">15 Appendix: Build Rules for CI Workflow</a><ul>
+<li><a href="#overall-solution">15.1 Overall Solution</a><ul></ul></li>
+<li><a href="#fetch-the-arch-labels">15.2 Fetch the Arch Labels</a><ul></ul></li>
+<li><a href="#handle-only-simple-prs">15.3 Handle Only Simple PRs</a><ul></ul></li>
+<li><a href="#for-arm-arch-identify-the-non-arm-builds">15.4 For Arm Arch: Identify the Non-Arm Builds</a><ul></ul></li>
+<li><a href="#skip-the-non-arm-builds">15.5 Skip The Non-Arm Builds</a><ul></ul></li>
+<li><a href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">15.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</a><ul></ul></li>
+<li><a href="#skip-the-macos-and-windows-builds">15.7 Skip the macOS and Windows Builds</a><ul></ul></li>
+<li><a href="#ignore-the-documentation">15.8 Ignore the Documentation</a><ul></ul></li>
+<li><a href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">15.9 Sync the CI Workflow from nuttx repo to nuttx-apps</a><ul></ul></li>
+<li><a href="#testing">15.10 Testing</a><ul></ul></li>
+<li><a href="#actual-performance">15.11 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <p>TODO: Dev build time dropped from ??? to ???</p>
 <p>GitHub Usage dropped from ??? to ???</p>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
 </code></pre></div><h1 id="the-ultimatum"><a class="doc-anchor" href="#the-ultimatum">§</a>1 The Ultimatum</h1>
-<p>TODO: After a <a href="TODO">whole night of deliberation</a>, we <a href="TODO">put our plan into action</a>…</p>
-<p>Hi All: We have <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q">an ultimatum</a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration will halt totally in Two Weeks. Here’s what I’ll implement within 24 hours for <code>nuttx</code> and <code>nuttx-apps</code> repos:</p>
+<p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
+<p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly <a href="TODO"><strong>activated our plan</strong></a>…</p>
 <ol>
 <li>
-<p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc): CI Workflow shall run only half the jobs. Previously CI Workflow will run <code>arm-01</code> to <code>arm-14</code>, now we will run only <code>arm-01</code> to <code>arm-07</code>. (This will reduce GitHub Cost by 32%)</p>
+<p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
+<p>CI Workflow shall run only <strong>half the jobs</strong> for CI Checks.</p>
+<p>(Will reduce GitHub Cost by 32%)</p>
 </li>
 <li>
 <p>When the <strong>Complex PR is Merged:</strong> CI Workflow will still run all jobs <code>arm-01</code> to <code>arm-14</code></p>
-<p>(Simple PRs with One Single Arch / Board will build the same way as before: <code>arm-01</code> to <code>arm-14</code>)</p>
+<p>(Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only <code>arm-01</code> to <code>arm-14</code>)</p>
 </li>
 <li>
-<p><strong>For NuttX Admins:</strong> Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>. We shall have only <strong>Two Scheduled Merge Jobs</strong> per day</p>
-<p>I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Cancel any Merge Jobs</a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos. Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at <code>nuttxpr</code>. <del>(This will reduce GitHub Cost by 17%)</del></p>
+<p>Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at NuttX/nuttx</strong></a> repo. (Instead of <em>apache/nuttx</em> repo)</p>
+<p>We shall have only <strong>Two Scheduled Merge Jobs</strong> per day: 00:00 UTC and 12:00 UTC.</p>
+</li>
+<li>
+<p>How? I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
+<p>Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at <code>NuttX/nuttx</code> repo.</p>
 <p>(Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>. Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
 </li>
 <li>
-<p><strong>macOS and Windows Jobs</strong> (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs. (GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">10x premium for macOS runners</a>, 2x premium for Windows runners!)</p>
-<p>Let’s monitor the GitHub Cost after disabling macOS and Windows Jobs. It’s possible that macOS and Windows Jobs are contributing a huge part of the cost. We could re-enable and simplify them after monitoring.</p>
-<p>(This must be done for BOTH <code>nuttx</code> and <code>nuttx-apps</code> repos. Sadly the ASF Report for GitHub Runners doesn’t break down the usage by repo, so we’ll never know how much macOS and Windows Jobs are contributing to the cost. That’s why we need to <a href="https://github.com/apache/nuttx/pull/14377">disable all macOS and Windows Jobs</a>)</p>
-<p>(Wish I could run NuttX CI Jobs on my M2 Mac Mini. But the CI Script only supports Intel Macs sigh. Buy a Refurbished Intel Mac Mini?)</p>
+<p><strong>macOS and Windows Jobs</strong> (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs.</p>
+<p>(GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>10x Premium for macOS Runners</strong></a>, 2x Premium for Windows Runners!)</p>
 </li>
 </ol>
+<p>Baffled? We have reasons for doing these, justified by real data…</p>
+<h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
+<p>TODO</p>
 <p>We have done an Analysis of CI Jobs over the past 24 hours:</p>
 <p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0">Analysis of CI Jobs</a></p>
 <p>Many CI Jobs are <strong>Incomplete</strong>: We waste GitHub Runners on jobs that eventually get superseded and cancelled</p>
@@ -126,7 +134,7 @@
 <p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs don’t complete (only 1 completed yesterday)</p>
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
 <p><a href="https://infra.apache.org/github-actions-policy.html">See the ASF Policy for GitHub Actions</a></p>
-<h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>2 Disable macOS and Windows Builds</h1>
+<h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
 <p>TODO: Re-enable Windows Builds, monitor closely</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">CI Jobs for macOS, msvc and msys2</a></p>
 <p>Sorry I can’t enable macOS Builds right now:</p>
@@ -156,7 +164,8 @@
 <p>Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.</p>
 </li>
 </ul>
-<h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>3 Move the Merge Jobs</h1>
+<p>TODO: Seeking help to port to M1 Mac</p>
+<h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
 <p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
 <p>Stats for the past 24 hours: We consumed <strong>61 Full-Time Runners</strong>, still got a long way away from our target of 25 Full-Time Runners (otherwise ASF will halt our servers in 12 days)</p>
 <ul>
@@ -189,8 +198,9 @@
 </li>
 </ul>
 <p><img src="https://github.com/user-attachments/assets/8c3d193f-c836-4bd5-8a3c-37c5a073fe32" alt="Screenshot 2024-10-18 at 6 14 48 AM" /></p>
-<h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>4 Halve the CI Checks</h1>
-<p>TODO</p>
+<h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
+<p>TODO: Why were these jobs chosen?</p>
+<p>TODO: Rotate?</p>
 <p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
 <ul>
 <li>
@@ -206,7 +216,7 @@
 </ul>
 <p>Hopefully we’ll reach the ASF Target tomorrow, and ASF won’t kill our servers no more! Thanks!</p>
 <p><img src="https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749" alt="Screenshot 2024-10-19 at 7 15 11 AM" /></p>
-<h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>5 Live Metric for Full-Time Runners</h1>
+<h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
 <p>TODO</p>
 <p>ASF Infra Reports are still down. But now we have our own <strong>Live Metrics for Full-Time GitHub Runners!</strong> (reload for updates)</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
@@ -241,7 +251,7 @@
 <p>TODO: Linux Scripts, loss of precision</p>
 </li>
 </ul>
-<h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>6 Monitor our CI Servers 24 x 7</h1>
+<h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p>TODO</p>
 <p>Yeah it doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
 <img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
@@ -261,7 +271,7 @@
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">kill-push-master.sh</a>: Cancel all Merge Jobs</p>
 </li>
 </ul>
-<h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>7 Final Verdict</h1>
+<h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
 <p>TODO</p>
 <p><strong>0 Days to Final Audit:</strong> ASF Infra Team will be checking on us one last time today! Yesterday was a super busy Tuesday, we consumed <strong>15 Full-Time GitHub Runners</strong> (peaked briefly at 31)</p>
 <p><img src="https://github.com/user-attachments/assets/538b9903-51d0-43e4-9537-fbd6e4d8d742" alt="Screenshot 2024-10-30 at 6 02 25 AM" /></p>
@@ -274,7 +284,7 @@
 <p>Let’s wait for the good news from ASF, thank you everyone! 🙏</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard for Build Farm</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114">Running CI Checks before submitting PR</a></p>
@@ -286,7 +296,7 @@
 <ul>
 <li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
 </ul>
-<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
+<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>10 Our Wishlist</h1>
 <p>TODO</p>
 <p>It’s Oct 31 and our CI Servers are still running. We made it yay! 🎉</p>
 <p>We got plenty to do:</p>
@@ -308,7 +318,7 @@
 <li>New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)</li>
 <li>New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)</li>
 </ul>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -336,7 +346,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
-<h1 id="appendix-merge-jobs-are-costly"><a class="doc-anchor" href="#appendix-merge-jobs-are-costly">§</a>11 Appendix: Merge Jobs are Costly</h1>
+<h1 id="appendix-merge-jobs-are-costly"><a class="doc-anchor" href="#appendix-merge-jobs-are-costly">§</a>12 Appendix: Merge Jobs are Costly</h1>
 <p>TODO</p>
 <p>Hi All: Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></p>
 <p>Yesterday we spent <strong>One-Third</strong> of our GitHub Runner Minutes on Merge Jobs. This is not sustainable, so I moved them to <code>nuttxpr</code> repo. (Which won’t be charged)</p>
@@ -344,13 +354,13 @@
 <p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940">The data from yesterday</a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
 <p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
 <p>Hi @xiaoxiang781216 @GUIDINGLI @cederom @raiden00pl @acassis @jerpelea: With immediate effect, please see <a href="https://github.com/nuttxpr/nuttx/actions"><strong>github.com/nuttxpr/nuttx</strong></a> for our Merge Jobs. I will trigger the jobs daily at 00:00 UTC and 12:00 UTC. I have given you Admin Access to <code>nuttxpr</code> in case you need to restart the jobs. Thanks!</p>
-<h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>12 Appendix: Verify our PR Merge</h1>
+<h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>13 Appendix: Verify our PR Merge</h1>
 <p>TODO</p>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
 <p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
 <p><a href="https://github.com/apache/nuttx/issues/14407">“How to Verify a PR Merge”</a></p>
 <p>(I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)</p>
-<h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>13 Appendix: Timeout Errors</h1>
+<h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>14 Appendix: Timeout Errors</h1>
 <p>TODO</p>
 <p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
 <p>(1) How do we retry these Timeout Errors?</p>
@@ -378,7 +388,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <li><a href="https://mlohr.com/docker-mtu/">Docker MTU issues and solutions</a></li>
 </ul>
 <p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repos: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
-<h1 id="appendix-build-rules-for-ci-workflow"><a class="doc-anchor" href="#appendix-build-rules-for-ci-workflow">§</a>14 Appendix: Build Rules for CI Workflow</h1>
+<h1 id="appendix-build-rules-for-ci-workflow"><a class="doc-anchor" href="#appendix-build-rules-for-ci-workflow">§</a>15 Appendix: Build Rules for CI Workflow</h1>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/issues/13775">Enhance the CI Workflow to skip the Unmodified Architectures</a></p>
 <ul>
@@ -398,7 +408,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <p>Right now most of our CI Builds are taking 2 hours 15 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?</p>
 </li>
 </ul>
-<h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>14.1 Overall Solution</h2>
+<h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>15.1 Overall Solution</h2>
 <ul>
 <li>
 <p>We propose a Partial Solution, based on the Arch and Board Labels (recently added to CI)</p>
@@ -422,7 +432,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <p>Simple PR + Docs is still considered a Simple PR (so devs won’t be penalised for adding docs)</p>
 </li>
 </ul>
-<h2 id="fetch-the-arch-labels"><a class="doc-anchor" href="#fetch-the-arch-labels">§</a>14.2 Fetch the Arch Labels</h2>
+<h2 id="fetch-the-arch-labels"><a class="doc-anchor" href="#fetch-the-arch-labels">§</a>15.2 Fetch the Arch Labels</h2>
 <p>This is how we fetch the Arch Labels, and identify as Arm, Arm64, RISC-V, Xtensa: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L32-L104">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Get the Arch for the PR: arm, arm64, risc-v, xtensa, ...
 - name: Get arch
@@ -492,7 +502,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 </code></pre></div>
 <p>Why <code> || echo ""</code>? That’s because if the GitHub CLI <code>gh</code> fails for any reason, we will build all targets. This ensures that our CI Workflow won’t get disrupted due to errors in GitHub CLI.</p>
-<h2 id="handle-only-simple-prs"><a class="doc-anchor" href="#handle-only-simple-prs">§</a>14.3 Handle Only Simple PRs</h2>
+<h2 id="handle-only-simple-prs"><a class="doc-anchor" href="#handle-only-simple-prs">§</a>15.3 Handle Only Simple PRs</h2>
 <p>We handle only Simple PRs: One Arch Label + One Board Label + One Size Label, like “Arch: risc-v, Board: risc-v, Size: XS”. If it’s not a Simple PR: We build everything.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># inputs.boards is a JSON Array: [&quot;arm-01&quot;, &quot;risc-v-01&quot;, &quot;xtensa-01&quot;, ...]
@@ -536,7 +546,7 @@ if [[ &quot;$quit&quot; == &quot;1&quot; ]]; then
   echo &quot;selected_builds=$boards&quot; | tee -a $GITHUB_OUTPUT
   exit
 fi
-</code></pre></div><h2 id="for-arm-arch-identify-the-non-arm-builds"><a class="doc-anchor" href="#for-arm-arch-identify-the-non-arm-builds">§</a>14.4 For Arm Arch: Identify the Non-Arm Builds</h2>
+</code></pre></div><h2 id="for-arm-arch-identify-the-non-arm-builds"><a class="doc-anchor" href="#for-arm-arch-identify-the-non-arm-builds">§</a>15.4 For Arm Arch: Identify the Non-Arm Builds</h2>
 <p>Suppose the PR says “Arch: arm” or “Board: arm”. We filter out the builds that should be skipped (RISC-V, Xtensa, etc):</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L169-L234">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For every board
@@ -575,7 +585,7 @@ echo &quot;selected_builds=[$selected_builds]&quot; | tee -a $GITHUB_OUTPUT
 if [[ &quot;$selected_builds&quot; == &quot;&quot; ]]; then
   echo &quot;skip_all_builds=1&quot; | tee -a $GITHUB_OUTPUT
 fi
-</code></pre></div><h2 id="skip-the-non-arm-builds"><a class="doc-anchor" href="#skip-the-non-arm-builds">§</a>14.5 Skip The Non-Arm Builds</h2>
+</code></pre></div><h2 id="skip-the-non-arm-builds"><a class="doc-anchor" href="#skip-the-non-arm-builds">§</a>15.5 Skip The Non-Arm Builds</h2>
 <p>Earlier we saw the code in <code>arch.yml</code> <a href="https://docs.github.com/en/actions/sharing-automations/reusing-workflows">(Reusable Workflow)</a> that identifies the builds to be skipped. The code above is called by <code>build.yml</code> (Build Workflow) which will actually skip the builds:</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148">build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Select the Linux Builds based on PR Arch Label
@@ -608,7 +618,7 @@ steps:
   ## Omitted: Run cibuild.sh on Linux
 </code></pre></div>
 <p>Why <code>needs: Fetch-Source</code>? That’s because the PR Labeler runs concurrently in the background. When we add <code>Fetch-Source</code> as a Job Dependency, we give the PR Labeler sufficient time to run (1 min), before we read the PR Label in <code>arch.yml</code>.</p>
-<h2 id="same-for-risc-v-simulator-x86_64-and-xtensa-builds"><a class="doc-anchor" href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">§</a>14.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</h2>
+<h2 id="same-for-risc-v-simulator-x86_64-and-xtensa-builds"><a class="doc-anchor" href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">§</a>15.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</h2>
 <p>We do the same for RISC-V, Simulator, x86_64 and Xtensa:</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L105-L129">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For &quot;Arch / Board: arm64&quot;: Build other
@@ -640,7 +650,7 @@ elif [[ &quot;$arch_contains_xtensa&quot; == &quot;1&quot; || &quot;$board_conta
   if [[ &quot;$board&quot; != *&quot;xtensa&quot;* ]]; then
     skip_build=1
   fi
-</code></pre></div><h2 id="skip-the-macos-and-windows-builds"><a class="doc-anchor" href="#skip-the-macos-and-windows-builds">§</a>14.7 Skip the macOS and Windows Builds</h2>
+</code></pre></div><h2 id="skip-the-macos-and-windows-builds"><a class="doc-anchor" href="#skip-the-macos-and-windows-builds">§</a>15.7 Skip the macOS and Windows Builds</h2>
 <p>For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (<code>macos</code>, <code>macos/sim-*</code>, <code>msys2</code>) since these builds are costly:</p>
 <p>(<code>macos</code> and <code>macos/sim-*</code> builds will take 2 hours to complete due to the queueing for macOS Runners)</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281">build.yml</a></p>
@@ -695,7 +705,7 @@ msys2:
 </code></pre></div>
 <p><code>skip_all_builds</code> will be set to <code>1</code> for Simple PRs on macOS and msys2.</p>
 <p>(Except for “Arch: Simulator”, which will enable the macOS Builds for sim-01 and sim-02)</p>
-<h2 id="ignore-the-documentation"><a class="doc-anchor" href="#ignore-the-documentation">§</a>14.8 Ignore the Documentation</h2>
+<h2 id="ignore-the-documentation"><a class="doc-anchor" href="#ignore-the-documentation">§</a>15.8 Ignore the Documentation</h2>
 <p>NuttX Devs shouldn’t be penalised for adding docs! That’s why we ignore the label “Area: Documentation”, so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds).</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Ignore the Label &quot;Area: Documentation&quot;, because it won&#39;t affect the Build Targets
@@ -708,7 +718,7 @@ select_length=&#39;length&#39;
 labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo &quot;&quot;)
 numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo &quot;&quot;)
 echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
-</code></pre></div><h2 id="sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps"><a class="doc-anchor" href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">§</a>14.9 Sync the CI Workflow from nuttx repo to nuttx-apps</h2>
+</code></pre></div><h2 id="sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps"><a class="doc-anchor" href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">§</a>15.9 Sync the CI Workflow from nuttx repo to nuttx-apps</h2>
 <p>Remember to sync <code>build.yml</code> and <code>arch.yml</code> from <code>nuttx</code> repo to <code>nuttx-apps</code>! https://github.com/apache/nuttx-apps/pull/2676</p>
 <p><code>build.yml</code> refers to <code>arch.yml</code> (for the build rules). So when we sync <code>build.yml</code> from <code>nuttx</code> to <code>nuttx-apps</code>, we won’t need to remove the references to <code>arch.yml</code>.</p>
 <p>We could make <code>nuttx-apps/build.yml</code> point to the <code>nuttx/arch.yml</code>. But that would make the CI fragile: Changes to <code>nuttx/arch.yml</code> might cause <code>nuttx-apps/build.yml</code> to break.</p>
@@ -738,7 +748,7 @@ Linux:
   strategy:
     matrix:
       boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
-</code></pre></div><h2 id="testing"><a class="doc-anchor" href="#testing">§</a>14.10 Testing</h2>
+</code></pre></div><h2 id="testing"><a class="doc-anchor" href="#testing">§</a>15.10 Testing</h2>
 <p>(Note: The timings here are obsolete)</p>
 <p>When we test our updated CI Workflow, we see that the irrelevant builds are skipped in seconds. Click “Show All Jobs” to reveal the timings:</p>
 <ul>
@@ -770,7 +780,7 @@ Linux:
 <p><img src="https://github.com/user-attachments/assets/8fb091b9-2ba0-4c3a-a533-af5c6609dab7" alt="Screenshot 2024-10-06 at 11 39 43 AM" /></p>
 </li>
 </ul>
-<h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>14.11 Actual Performance</h2>
+<h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>15.11 Actual Performance</h2>
 <p>We recorded the CI Build Performance based on Real-World PRs:</p>
 <ul>
 <li>
