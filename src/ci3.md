@@ -166,7 +166,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  And [__Remove Max Parallel__](TODO) so that it will use unlimited concurrent runners. (Because it's free!)
 
-1.  If the Merge Job fails with a [__Network Error__](TODO): I restart the Failed Sub-Jobs
+1.  If the Merge Job fails with a [__Mystifying Network Error__](TODO): I restart the Failed Sub-Jobs
 
 1.  Wait for the Merge Job to complete. Then __Ingest the GitHub Logs__ into our NuttX Dashboard. (Next article)
 
@@ -341,7 +341,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to run our M
 
 1.  And __Restarting the Merge Jobs__ 
 
-    [(Which might fail due to __Network Errors__)](TODO)
+    [(Which might fail due to __Mysterious Network Errors__)](TODO)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
