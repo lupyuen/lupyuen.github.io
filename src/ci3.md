@@ -68,7 +68,7 @@ All these fixes were super helpful for complying with the [__ASF Policy for GitH
 
 _Quitting the macOS Builds? That's horribly drastic!_
 
-Yeah sorry we can't enable __macOS Builds__ right now...
+Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
 - macOS Runners [__cost 10 times__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers) as much as Linux Runners.
 
@@ -79,6 +79,8 @@ Yeah sorry we can't enable __macOS Builds__ right now...
   We need someone familiar with Intel Macs to clean up the macOS Jobs.
 
   (See this [__macOS Log__](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) and [__Another Log__](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211))
+
+- That's why we moved the macOS Builds to the __NuttX Mirror Repo__, which won't be charged to NuttX Project.
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
@@ -124,9 +126,9 @@ TODO
 
 - How It Happens: Daily at 00:00 UTC and 12:00 UTC, I browse to NuttX/nuttx repo, click `Sync Fork > Discard Commits`. Then I [run this script](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh) to enable the macOS and Windows Builds.
 
-  TODO: Disable Fail-Fast, so all builds will complete.
+  TODO: Disable fail-fast so that it runs all builds, regardless of error
   
-  TODO: Remove Max Parallel, so builds can finish faster.
+  TODO: Remove max-parallel so that it will use unlimited concurrent runners.
 
 - Don't Forget: I'm still [running this script](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) to kill the Merge Jobs on the old `nuttx` and `nuttx-apps` repos. (Otherwise the GitHub Runners will spike!)
 
@@ -224,19 +226,19 @@ How it works:
 
 # Monitor our CI Servers 24 x 7
 
-TODO
+_Doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 ... But somebody's gotta do it!_ 👍
 
-Doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 ... But somebody's gotta do it! 👍
-
-This runs on my 4K TV (Xiaomi 65-inch) all day, all night:
+This runs on a 4K TV (Xiaomi 65-inch) all day, all night...
 
 ![Screenshot 2024-10-28 at 1 53 26 PM](https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1)
 
-When I'm out on [Overnight Hikes](https://www.strava.com/activities/12737067287): I check my phone at every water break:
+When I'm out on [__Overnight Hikes__](https://www.strava.com/activities/12737067287): I check my phone at every water break:
 
 ![GridArt_20241028_150938083](https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e)
 
-I have GitHub Scripts that will run on Termux Android (remember to `pkg install gh` and set `GITHUB_TOKEN`):
+_If something goes wrong?_
+
+I have GitHub Scripts that will run on __Termux Android__. Remember to `pkg install gh` and set `GITHUB_TOKEN`...
 
 - [enable-macos-windows2.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS and Windows Builds
 
@@ -247,10 +249,6 @@ I have GitHub Scripts that will run on Termux Android (remember to `pkg install 
 # Final Verdict
 
 TODO
-
-__0 Days to Final Audit:__ ASF Infra Team will be checking on us one last time today! Yesterday was a super busy Tuesday, we consumed __15 Full-Time GitHub Runners__ (peaked briefly at 31)
-
-![Screenshot 2024-10-30 at 6 02 25 AM](https://github.com/user-attachments/assets/538b9903-51d0-43e4-9537-fbd6e4d8d742)
 
 Past 7 Days: We consumed __12 Full-Time Runners__, which is half the ASF Quota of 25 Full-Time Runners yay!
 
@@ -291,31 +289,49 @@ nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-web
 
 # Our Wishlist
 
-TODO
+It's past Diwali and Halloween... Our CI Servers are still running. __We made it yay!__ 🎉
 
-It's Oct 31 and our CI Servers are still running. We made it yay! 🎉
+We got plenty to do...
 
-We got plenty to do:
+- Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.codeberg.page/articles/ci2.html)
 
-1. Become more resilient and self-sufficient with [Our Own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html) (away from GitHub)
+  (Away from GitHub)
 
-1. Analyse our Build Logs with [Our Own Tools](https://github.com/apache/nuttx/issues/14558) (instead of GitHub)
+- Analyse our Build Logs with [__Our Own Tools__](https://github.com/apache/nuttx/issues/14558) 
+
+  (Instead of GitHub)
 
 Thank you everyone for making this happen! 🙏
 
-We learnt a Painful Lesson today: __Freebies Won't Last Forever!__ The new GitHub Org for NuttX should probably be a __Paid GitHub Org__:
+_But our Merge Jobs are still running in a Free Account?_
 
-- New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, ...)
+We learnt a Painful Lesson today: __Freebies Won't Last Forever!__
 
-- New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies
+We should probably maintain an official __Paid GitHub Org Account__ to run our Merge Jobs...
 
-- Which means clicking Twice Per Day to trigger the [Scheduled Merge Jobs](https://github.com/nuttxpr/nuttx/actions) (I'm getting tired of this)
+1.  New GitHub Org shall be sponsored by our generous __Stakeholder Companies__
 
-- And restarting the Scheduled Merge Job (if it fails). Also: [Killing the Old Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh)
+    (Espressif, Sony, Xiaomi, ...)
 
-- New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)
+1.  New GitHub Org shall be maintained by a __Paid Employee__ of our Stakeholder Companies
 
-- New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)
+    (Instead of an Unpaid Volunteer)
+
+1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](TODO)
+
+    (My fingers are getting tired)
+
+1.  And __Restarting the Merge Jobs__ 
+
+    [(Which might fail due to __Network Errors__)](TODO)
+
+1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
+
+    (For our upcoming __Board Testing Farm__)
+
+1.  New GitHub Org will eventually __Offload CI Checks__ from our NuttX Repos
+
+    (Maybe macOS CI Checks for New PRs)
 
 # What's Next
 
