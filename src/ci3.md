@@ -128,9 +128,9 @@ _Is there a problem?_
 
 We spent __One-Third__ of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)
 
-[__Our CI Data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs.
+[__Our CI Data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs.
 
-And when we restart a Scheduled Merge Job, we waste GitHub Minutes.
+And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.
 
 (__101 GitHub Hours__ for one single Scheduled Merge Job!)
 
@@ -140,7 +140,7 @@ Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a n
 
 Where the Merge Jobs can run free __without disruption__!
 
-(Running in an Unpaid GitHub Org Account that won't be charged to NuttX Project)
+(That's an Unpaid GitHub Org Account that won't be charged to NuttX Project)
 
 _What about the Old Merge Jobs?_
 
@@ -150,11 +150,11 @@ Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/ap
 
 (Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
 
-_How do we trigger the Scheduled Merge Job?_
+_How to trigger the Scheduled Merge Job?_
 
 Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
-1.  Browse to the [__NuttX Mirror Repo__](TODO)
+1.  Browse to the [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx)
 
 1.  Click "__Sync Fork > Discard Commits__"
 
@@ -176,27 +176,25 @@ Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
 
 # Halve the CI Checks
 
-TODO: __Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs. That's why we're skipping half the jobs today.
+_One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
+
+__Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs.
+
+That's why we decided to skip __Half the CI Checks__ for Complex PRs.
+
+(A __Complex PR__ affects __All Architectures__: Arm, RISC-V, Xtensa, etc)
+
+TODO: Today we run these CI Checks when creating or updating a Complex PR:
+
+TODO: Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
+  
+TODO: Do the same for [`nuttx-apps` repo](https://github.com/apache/nuttx-apps/pull/2758)  
+
+TODO: Build Rules
 
 TODO: Why were these jobs chosen?
 
 TODO: Rotate?
-
-__Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs. That's why we're skipping half the jobs today.
-
-__11 Days To Doomsday:__ But we're doing much better already! In the past 24 hours, we consumed __36 Full-Time GitHub Runners__. We're getting closer to the ASF Target of __25 Full-Time Runners__! Today we shall:
-
-- Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
-  
-- Do the same for [`nuttx-apps` repo](https://github.com/apache/nuttx-apps/pull/2758)  
-
-- Our [__Merge Jobs are now at github.com/nuttxpr/nuttx__](https://github.com/nuttxpr/nuttx/actions)
-
-  ~~Reduce the Scheduled Merge Jobs to [__Two Per Day__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) at 00:00 / 12:00 UTC (down from Four Per Day)~~
-
-Hopefully we'll reach the ASF Target tomorrow, and ASF won't kill our servers no more! Thanks!
-
-![Screenshot 2024-10-19 at 7 15 11 AM](https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749)
 
 # Live Metric for Full-Time Runners
 
