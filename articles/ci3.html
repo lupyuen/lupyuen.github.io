@@ -172,7 +172,7 @@
 </li>
 <li>
 <p>Also we should show some <strong>love and respect</strong> for NuttX Devs!</p>
-<p>Previously we waited 2.5 hours for All CI Checks. Now we wait at most <strong>1.5 hours</strong>, let’s stick to this.</p>
+<p>Previously we waited <a href="TODO"><strong>2.5 hours</strong></a> for All CI Checks. Now we wait at most <a href="https://github.com/apache/nuttx/actions/runs/11582139779"><strong>1.5 hours</strong></a>, let’s stick to this.</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">(Later we re-enabled the <strong>Windows Jobs</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14526">(Seeking help to port NuttX Jobs to <strong>M1 Mac</strong>)</a></p>
 </li>
@@ -229,59 +229,63 @@
 <p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
-<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs.</p>
+<p><a href="TODO"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on Submitting and Updating PRs.</p>
 <p>That’s why we decided to skip <strong>Half the CI Checks</strong> for Complex PRs.</p>
 <p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
-<p>TODO: Today we run these CI Checks when creating or updating a Complex PR:</p>
+<p><em>Which CI Checks did we select?</em></p>
+<p>Today we run these <strong>CI Checks</strong> when submitting or updating a Complex PR…</p>
+<p>TODO: CI Checks</p>
 <p>TODO: Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
 <p>TODO: Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
 <p>TODO: Build Rules</p>
 <p>TODO: Why were these jobs chosen?</p>
 <p>TODO: Rotate?</p>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
-<p>TODO</p>
-<p>ASF Infra Reports are still down. But now we have our own <strong>Live Metrics for Full-Time GitHub Runners!</strong> (reload for updates)</p>
-<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
-<p>This shows the number of <strong>Full-Time Runners for the Day</strong>, computed since 00:00 UTC. (Remember: We should keep this below 25)</p>
+<p><em>Hitting the Target Metrics in 2 weeks… Everyone needs to help out right?</em></p>
+<p>Our quota is <strong>25 Full-Time GitHub Runners</strong> per day.</p>
+<p>We published our own <strong>Live Metric for Full-Time Runners</strong>, for everyone to track…</p>
+<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="Live Metric for Full-Time Runners" /></p>
 <ul>
 <li>
-<p><strong>Date:</strong> We compute the Full-Time Runners for today’s date only (UTC)</p>
+<p><strong>Date:</strong> We compute the Full-Time Runners only for Today’s Date (UTC)</p>
 </li>
 <li>
 <p><strong>Elapsed Hours:</strong> Number of hours elapsed since 00:00 UTC</p>
 </li>
 <li>
-<p><strong>GitHub Job Hours:</strong> Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs (cancelled / completed / failed).</p>
-<p>This data is available only AFTER the job has been cancelled / completed / failed (might be lagged by 1.5 hours).</p>
-<p>This is the Elapsed Job Duration, it doesn’t say that we’re running 8 smaller jobs in parallel, that’s why we need…</p>
+<p><strong>GitHub Job Hours:</strong> Elapsed Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs. (Cancelled / Completed / Failed)</p>
+<p>This data is available only AFTER the job has been Cancelled / Completed / Failed. (Might have lagged by 1.5 hours)</p>
+<p>But this is the <em>Elapsed Job Duration</em>. It doesn’t say that we’re running 8 Sub-Jobs in parallel. That’s why we need…</p>
 </li>
 <li>
-<p><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub.</p>
-<p>We compute this as 8 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346">averaged from past data</a>.</p>
-<p>(Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)</p>
+<p><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration. Effectively the <em>Chargeable Minutes</em> by GitHub.</p>
+<p>We compute this as 8 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346"><strong>averaged from past data</strong></a>.</p>
+<p>(Remember: One GitHub Runner will run One Single Sub-Job, like <em>arm-01</em>)</p>
 </li>
 <li>
-<p><strong>Full-Time GitHub Runners:</strong> Equals GitHub Runner Hours / Elapsed Hours. It means “How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours”. (We should keep this below 25 per day, per week, per month, etc)</p>
+<p><strong>Full-Time GitHub Runners:</strong> Equals GitHub Runner Hours / Elapsed Hours.</p>
+<p>It means <em>“How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours”</em>.</p>
+<p>(We should keep this below 25 per day, per week, per month)</p>
 </li>
 </ul>
-<p>How it works:</p>
-<ul>
+<p>How it works…</p>
+<ol>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh">compute-github-runners.sh</a> calls GitHub API to add up the Duration of All Completed GitHub Jobs for today.</p>
-<p>Then it extrapolates the Number of Full-Time GitHub Runners.</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh"><strong>compute-github-runners.sh</strong></a> calls GitHub API to add up the <strong>Elapsed Duration</strong> of All Completed GitHub Jobs for today.</p>
+<p>Then it extrapolates the Number of <strong>Full-Time GitHub Runners</strong>.</p>
 <p>(1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh">run.sh</a> calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)</p>
+<p><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh"><strong>run.sh</strong></a> calls the script above and render the Full-Time GitHub Runners as a PNG.</p>
+<p>(Thanks to ImageMagick)</p>
 </li>
 <li>
 <p>TODO: Linux Scripts, loss of precision</p>
 </li>
-</ul>
+</ol>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
-<p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But somebody’s gotta do it!</em> 👍</p>
+<p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But someone’s gotta do it!</em> 👍</p>
 <p>This runs on a 4K TV (Xiaomi 65-inch) all day, all night…</p>
 <p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
 <p>When I’m out on <a href="https://www.strava.com/activities/12737067287"><strong>Overnight Hikes</strong></a>: I check my phone at every water break:</p>
