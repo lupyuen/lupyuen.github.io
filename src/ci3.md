@@ -4,7 +4,9 @@
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
-TODO: Dev build time dropped from ??? to ???
+TODO: Continuous Integration (CI)
+
+Dev build time dropped from ??? to ???
 
 GitHub Usage dropped from ??? to ???
 
@@ -44,7 +46,7 @@ After an [__overnight deliberation__](TODO), we swiftly activated [__our rescue 
 
     (GitHub charges [__10x Premium for macOS Runners__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x Premium for Windows Runners!)
 
-Baffled? We have reasons for doing these, justified by real data...
+We have reasons for doing these, backed by real data...
 
 # Present Pains
 
@@ -106,7 +108,7 @@ Nope this is __simply impossible__...
 
   Previously we waited [__2.5 hours__](TODO) for All CI Checks. Now we wait at most [__1.5 hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
-  [(Later we re-enabled the __Windows Jobs__)](https://github.com/apache/nuttx/issues/14598)
+  [(We re-enabled the __Windows Jobs__)](https://github.com/apache/nuttx/issues/14598)
 
   [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
 
@@ -134,13 +136,13 @@ And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.
 
 (__101 GitHub Hours__ for one single Scheduled Merge Job!)
 
-_And thus we moved them?_
+_Thus we moved them?_
 
 Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml).
 
 Where the Merge Jobs can run free __without disruption__!
 
-(That's an Unpaid GitHub Org Account that won't be charged to NuttX Project)
+(In an Unpaid GitHub Org Account that won't be charged to NuttX Project)
 
 _What about the Old Merge Jobs?_
 
@@ -174,6 +176,8 @@ _Isn't this cheating? Offloading to a Free GitHub Account?_
 
 Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
 
+![Halve the CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
+
 # Halve the CI Checks
 
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
@@ -186,7 +190,7 @@ That's why we decided to skip __Half the CI Checks__ for Complex PRs.
 
 _Which CI Checks did we select?_
 
-Today we run these __CI Checks__ when submitting or updating a Complex PR...
+Today we run these __CI Checks__ when submitting or updating a Complex PR (pic above)...
 
 TODO: CI Checks
 
@@ -248,7 +252,7 @@ We publish the data every __15 minutes__...
 
     (But less accurate, due to BC Rounding)
 
-Next we have the Watchmen...
+Next comes the Watchmen...
 
 ![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
@@ -270,7 +274,7 @@ I have GitHub Scripts that will run on __Termux Android__. Remember to `pkg inst
 
 - [__enable-macos-windows2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS Builds in the NuttX Mirror Repo
 
-- [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Compute the number of Full-Time GitHub Runners for the day (less accurately)
+- [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Compute the number of Full-Time GitHub Runners for the day (less accurately than macOS version)
 
 - [__kill-push-master.sh__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh): Cancel all Merge Jobs in NuttX Repo and NuttX Apps
 
