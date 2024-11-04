@@ -14,29 +14,39 @@ cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30
 
 # The Ultimatum
 
-TODO: After a [whole night of deliberation](TODO), we [put our plan into action](TODO)...
+We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would __Halt Totally in Two Weeks__!
 
-Hi All: We have [an ultimatum](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration will halt totally in Two Weeks. Here's what I'll implement within 24 hours for `nuttx` and `nuttx-apps` repos:
+After an [__overnight deliberation__](TODO), we swiftly [__activated our plan__](TODO)...
 
-1. When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc): CI Workflow shall run only half the jobs. Previously CI Workflow will run `arm-01` to `arm-14`, now we will run only `arm-01` to `arm-07`. (This will reduce GitHub Cost by 32%)
+1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
 
-1. When the __Complex PR is Merged:__ CI Workflow will still run all jobs `arm-01` to `arm-14`
+    CI Workflow shall run only __half the jobs__ for CI Checks.
 
-   (Simple PRs with One Single Arch / Board will build the same way as before: `arm-01` to `arm-14`)
+    (Will reduce GitHub Cost by 32%)
 
-1. __For NuttX Admins:__ Our [__Merge Jobs are now at github.com/NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). We shall have only __Two Scheduled Merge Jobs__ per day 
+1.  When the __Complex PR is Merged:__ CI Workflow will still run all jobs `arm-01` to `arm-14`
 
-   I shall quickly [Cancel any Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in `nuttx` and `nuttx-apps` repos. Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at `nuttxpr`. ~~(This will reduce GitHub Cost by 17%)~~
+    (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only `arm-01` to `arm-14`)
 
-   (Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
+1.  Our [__Merge Jobs are now at NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml) repo. (Instead of _apache/nuttx_ repo)
 
-1. __macOS and Windows Jobs__ (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs. (GitHub charges [10x premium for macOS runners](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x premium for Windows runners!)
+    We shall have only __Two Scheduled Merge Jobs__ per day: 00:00 UTC and 12:00 UTC.
 
-   Let's monitor the GitHub Cost after disabling macOS and Windows Jobs. It's possible that macOS and Windows Jobs are contributing a huge part of the cost. We could re-enable and simplify them after monitoring.
+1.  How? I shall quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in `nuttx` and `nuttx-apps` repos.
 
-   (This must be done for BOTH `nuttx` and `nuttx-apps` repos. Sadly the ASF Report for GitHub Runners doesn't break down the usage by repo, so we'll never know how much macOS and Windows Jobs are contributing to the cost. That's why we need to [disable all macOS and Windows Jobs](https://github.com/apache/nuttx/pull/14377))
+    Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at `NuttX/nuttx` repo.
 
-   (Wish I could run NuttX CI Jobs on my M2 Mac Mini. But the CI Script only supports Intel Macs sigh. Buy a Refurbished Intel Mac Mini?)
+    (Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
+
+1.  __macOS and Windows Jobs__ (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs.
+
+    (GitHub charges [__10x Premium for macOS Runners__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x Premium for Windows Runners!)
+
+Baffled? We have reasons for doing these, justified by real data...
+
+# Present Pains
+
+TODO
 
 We have done an Analysis of CI Jobs over the past 24 hours:
 
@@ -82,6 +92,8 @@ But can we still prevent breakage of Linux / macOS / msvc / msys2 Builds?
 
 - Also we should show some love and respect to NuttX Devs: Previously they waited 2.5 hours for All CI Checks. Now they wait at most 1.5 hours, I think we should stick to this.
 
+TODO: Seeking help to port to M1 Mac
+
 # Move the Merge Jobs
 
 TODO: Isn't this cheating? Yeah that's why we need a Build Farm
@@ -110,7 +122,9 @@ Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a l
 
 # Halve the CI Checks
 
-TODO
+TODO: Why were these jobs chosen?
+
+TODO: Rotate?
 
 __11 Days To Doomsday:__ But we're doing much better already! In the past 24 hours, we consumed __36 Full-Time GitHub Runners__. We're getting closer to the ASF Target of __25 Full-Time Runners__! Today we shall:
 
