@@ -180,6 +180,15 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
+_Is it really OK to Disable the Merge Jobs? What about Docker Builds? And Documentation?_
+
+TODO: Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). 
+
+TODO: [(Also for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
+
+TODO: [(Fixing the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
+
+
 _Isn't this cheating? Offloading to a Free GitHub Account?_
 
 Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
