@@ -445,11 +445,9 @@
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
 <p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
 <ul>
-<li>
-<p><a href="https://github.com/apache/nuttx/issues/14407"><strong>“How to Verify a PR Merge”</strong></a></p>
-<p>(This will probably work if our CI Servers ever get shut down)</p>
-</li>
+<li><a href="https://github.com/apache/nuttx/issues/14407"><strong>“How to Verify a PR Merge”</strong></a></li>
 </ul>
+<p>(This will probably work if our CI Servers ever get shut down)</p>
 <h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>14 Appendix: Timeout Errors</h1>
 <p>TODO</p>
 <p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
