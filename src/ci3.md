@@ -16,7 +16,7 @@ cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30
 
 We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would __Halt Totally in Two Weeks__!
 
-After an [__overnight deliberation__](TODO), we swiftly [__activated our plan__](TODO)...
+After an [__overnight deliberation__](TODO), we swiftly activated [__our rescue plan__](TODO)...
 
 1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
 
@@ -28,7 +28,7 @@ After an [__overnight deliberation__](TODO), we swiftly [__activated our plan__]
 
     (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only `arm-01` to `arm-14`)
 
-1.  Our [__Merge Jobs are now at NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml) repo. (Instead of _apache/nuttx_ repo)
+1.  When we __Merge a PR:__ our [__Merge Jobs will run at NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml) repo. (Instead of _apache/nuttx_ repo)
 
     We shall have only __Two Scheduled Merge Jobs__ per day: 00:00 UTC and 12:00 UTC.
 
@@ -46,25 +46,23 @@ Baffled? We have reasons for doing these, justified by real data...
 
 # Present Pains
 
-TODO
+We studied the CI Jobs for the previous day...
 
-We have done an Analysis of CI Jobs over the past 24 hours:
+- [__Analysis of CI Jobs over 24 Hours__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0)
 
-[Analysis of CI Jobs](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0)
-
-Many CI Jobs are __Incomplete__: We waste GitHub Runners on jobs that eventually get superseded and cancelled
+Many CI Jobs were __Incomplete__: We wasted GitHub Runners on jobs that were eventually __superseded and cancelled__...
 
 ![Screenshot 2024-10-17 at 1 18 14 PM](https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e)
 
-When we __Half the CI Jobs:__ We reduce the wastage of GitHub Runners
+When we __Halve the CI Jobs:__ We reduce the wastage of GitHub Runners...
 
 ![Screenshot 2024-10-17 at 1 15 30 PM](https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a)
 
-__Scheduled Merge Jobs__ will also reduce wastage of GitHub Runners, since most Merge Jobs don't complete (only 1 completed yesterday)
+__Scheduled Merge Jobs__ will also reduce wastage of GitHub Runners, since most Merge Jobs didn't complete. Only One Merge Job completed on that day...
 
 ![Screenshot 2024-10-17 at 1 16 16 PM](https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796)
 
-[See the ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
+Hopefully our plan will comply with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)!
 
 # Disable macOS and Windows Builds
 
