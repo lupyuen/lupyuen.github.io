@@ -110,7 +110,7 @@ Nope this is __simply impossible__...
 
 TODO: Isn't this cheating? Yeah that's why we need a Build Farm
 
-The macOS and Windows Builds are now running in our NuttX Mirror: https://github.com/NuttX/nuttx/actions/workflows/build.yml
+The macOS and Windows Builds are now running in our NuttX Mirror: [github.com/NuttX/nuttx](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
 
 This script will [enable macOS and Windows Builds](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh) for our NuttX Mirror. Our [__Merge Jobs are now at github.com/NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml).
 
@@ -140,7 +140,7 @@ Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a l
 
 - ~~We have switched to [Four Scheduled Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) per day. New Merge Jobs will now run for a few seconds before getting auto-killed [by our script](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh), via the GitHub CLI. [(See the Merge Jobs)](https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush)~~
 
-- `nuttx-apps` has stopped macOS and Windows Jobs. But not much impact, since we don't compile `nuttx-apps` often <br> https://github.com/apache/nuttx-apps/pull/2750
+- `nuttx-apps` has [stopped macOS and Windows Jobs](https://github.com/apache/nuttx-apps/pull/2750). But not much impact, since we don't compile `nuttx-apps` often 
 
 - Still waiting for `nuttx` repo to [stop macOS and Windows Jobs](https://github.com/apache/nuttx/pull/14377) (Update: merged!)
 
@@ -161,6 +161,8 @@ Stats for the past 24 hours: We consumed __61 Full-Time Runners__, still got a l
 TODO: Why were these jobs chosen?
 
 TODO: Rotate?
+
+__Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs. That's why we're skipping half the jobs today.
 
 __11 Days To Doomsday:__ But we're doing much better already! In the past 24 hours, we consumed __36 Full-Time GitHub Runners__. We're getting closer to the ASF Target of __25 Full-Time Runners__! Today we shall:
 
@@ -192,25 +194,39 @@ This shows the number of __Full-Time Runners for the Day__, computed since 00:00
 
 - __Elapsed Hours:__ Number of hours elapsed since 00:00 UTC
 
-- __GitHub Job Hours:__ Duration of all `nuttx` and `nuttx-apps` GitHub Jobs (cancelled / completed / failed). This data is available only AFTER the job has been cancelled / completed / failed (might be a lag of 1.5 hours). This is the Elapsed Job Duration, it doesn't say that we're running 8 smaller jobs in parallel, that's why we need...
+- __GitHub Job Hours:__ Duration of all `nuttx` and `nuttx-apps` GitHub Jobs (cancelled / completed / failed).
 
-- __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub. We compute this as 8 * GitHub Job Hours. This is [averaged from past data](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346). (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)
+  This data is available only AFTER the job has been cancelled / completed / failed (might be lagged by 1.5 hours).
+  
+  This is the Elapsed Job Duration, it doesn't say that we're running 8 smaller jobs in parallel, that's why we need...
+
+- __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub.
+
+  We compute this as 8 * GitHub Job Hours. This is [averaged from past data](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346).
+  
+  (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)
 
 - __Full-Time GitHub Runners:__ Equals GitHub Runner Hours / Elapsed Hours. It means "How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours". (We should keep this below 25 per day, per week, per month, etc)
 
 How it works:
 
-- [compute-github-runners.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
+- [compute-github-runners.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the Duration of All Completed GitHub Jobs for today.
+
+  Then it extrapolates the Number of Full-Time GitHub Runners.
+  
+  (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
 
 - [run.sh](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)
+
 - TODO: Linux Scripts, loss of precision
+
+![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
 # Monitor our CI Servers 24 x 7
 
 TODO
 
-Yeah it doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
-![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
+Doesn't sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 ... But somebody's gotta do it! 👍
 
 This runs on my 4K TV (Xiaomi 65-inch) all day, all night:
 
@@ -287,12 +303,18 @@ We got plenty to do:
 
 Thank you everyone for making this happen! 🙏
 
-I think we learnt a Painful Lesson today: Freebies Won't Last Forever! The new GitHub Org for NuttX should probably be a __Paid GitHub Org__:
+We learnt a Painful Lesson today: __Freebies Won't Last Forever!__ The new GitHub Org for NuttX should probably be a __Paid GitHub Org__:
+
 - New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, ...)
+
 - New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies
+
 - Which means clicking Twice Per Day to trigger the [Scheduled Merge Jobs](https://github.com/nuttxpr/nuttx/actions) (I'm getting tired of this)
+
 - And restarting the Scheduled Merge Job (if it fails). Also: [Killing the Old Merge Jobs](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh)
+
 - New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)
+
 - New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)
 
 # What's Next
@@ -332,8 +354,6 @@ Yesterday we spent __One-Third__ of our GitHub Runner Minutes on Merge Jobs. Thi
 [The data from yesterday](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (__101 GitHub Hours__ for one single Scheduled Merge Job!)
 
 __Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs. That's why we're skipping half the jobs today.
-
-Hi @xiaoxiang781216 @GUIDINGLI @cederom @raiden00pl @acassis @jerpelea: With immediate effect, please see [__github.com/nuttxpr/nuttx__](https://github.com/nuttxpr/nuttx/actions) for our Merge Jobs. I will trigger the jobs daily at 00:00 UTC and 12:00 UTC. I have given you Admin Access to `nuttxpr` in case you need to restart the jobs. Thanks!
 
 # Appendix: Verify our PR Merge
 
