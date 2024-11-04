@@ -268,7 +268,7 @@
 <p>(We should keep this below 25 per day, per week, per month)</p>
 </li>
 </ul>
-<p>How it works…</p>
+<p>We publish the data every <strong>15 minutes</strong>…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh"><strong>compute-github-runners.sh</strong></a> calls GitHub API to add up the <strong>Elapsed Duration</strong> of All Completed GitHub Jobs for today.</p>
@@ -280,27 +280,29 @@
 <p>(Thanks to ImageMagick)</p>
 </li>
 <li>
-<p>TODO: Linux Scripts, loss of precision</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a>: Is the Linux Version of the above macOS Script.</p>
+<p>(But less accurate, due to BC Rounding)</p>
 </li>
 </ol>
+<p>Next we have the Watchmen…</p>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But someone’s gotta do it!</em> 👍</p>
 <p>This runs on a 4K TV (Xiaomi 65-inch) all day, all night…</p>
 <p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
-<p>When I’m out on <a href="https://www.strava.com/activities/12737067287"><strong>Overnight Hikes</strong></a>: I check my phone at every water break:</p>
+<p>When I’m out on <a href="https://www.strava.com/activities/12737067287"><strong>Overnight Hikes</strong></a>: I check my phone at every water break…</p>
 <p><img src="https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e" alt="GridArt_20241028_150938083" /></p>
 <p><em>If something goes wrong?</em></p>
 <p>I have GitHub Scripts that will run on <strong>Termux Android</strong>. Remember to <code>pkg install gh</code> and set <code>GITHUB_TOKEN</code>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh">enable-macos-windows2.sh</a>: Enable the macOS and Windows Builds</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh"><strong>enable-macos-windows2.sh</strong></a>: Enable the macOS Builds in the NuttX Mirror Repo</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh">compute-github-runners2.sh</a>: Compute the number of Full-Time GitHub Runners for the day</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a>: Compute the number of Full-Time GitHub Runners for the day (less accurately)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">kill-push-master.sh</a>: Cancel all Merge Jobs</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>kill-push-master.sh</strong></a>: Cancel all Merge Jobs in NuttX Repo and NuttX Apps</p>
 </li>
 </ul>
 <h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
