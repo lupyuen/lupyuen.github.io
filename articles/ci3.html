@@ -174,7 +174,7 @@
 </ul>
 <h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
 <p>TODO: Isn’t this cheating? Yeah that’s why we need a Build Farm</p>
-<p>The macOS and Windows Builds are now running in our NuttX Mirror: https://github.com/NuttX/nuttx/actions/workflows/build.yml</p>
+<p>The macOS and Windows Builds are now running in our NuttX Mirror: <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml">github.com/NuttX/nuttx</a></p>
 <p>This script will <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable macOS and Windows Builds</a> for our NuttX Mirror. Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a>.</p>
 <p>Daily at 00:00 UTC and 12:00 UTC: I click <code>Sync Fork &gt; Discard Commits</code> then I run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a>.</p>
 <p>(Remember: We <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">run this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. Otherwise the GitHub Runners will spike!)</p>
@@ -203,7 +203,7 @@
 <p><del>We have switched to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Four Scheduled Merge Jobs</a> per day. New Merge Jobs will now run for a few seconds before getting auto-killed <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">by our script</a>, via the GitHub CLI. <a href="https://github.com/apache/nuttx/actions/workflows/build.yml?query=branch%3Amaster+event%3Apush">(See the Merge Jobs)</a></del></p>
 </li>
 <li>
-<p><code>nuttx-apps</code> has stopped macOS and Windows Jobs. But not much impact, since we don’t compile <code>nuttx-apps</code> often <br> https://github.com/apache/nuttx-apps/pull/2750</p>
+<p><code>nuttx-apps</code> has <a href="https://github.com/apache/nuttx-apps/pull/2750">stopped macOS and Windows Jobs</a>. But not much impact, since we don’t compile <code>nuttx-apps</code> often</p>
 </li>
 <li>
 <p>Still waiting for <code>nuttx</code> repo to <a href="https://github.com/apache/nuttx/pull/14377">stop macOS and Windows Jobs</a> (Update: merged!)</p>
@@ -228,6 +228,7 @@
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p>TODO: Why were these jobs chosen?</p>
 <p>TODO: Rotate?</p>
+<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
 <p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
 <ul>
 <li>
@@ -257,10 +258,14 @@
 <p><strong>Elapsed Hours:</strong> Number of hours elapsed since 00:00 UTC</p>
 </li>
 <li>
-<p><strong>GitHub Job Hours:</strong> Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs (cancelled / completed / failed). This data is available only AFTER the job has been cancelled / completed / failed (might be a lag of 1.5 hours). This is the Elapsed Job Duration, it doesn’t say that we’re running 8 smaller jobs in parallel, that’s why we need…</p>
+<p><strong>GitHub Job Hours:</strong> Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs (cancelled / completed / failed).</p>
+<p>This data is available only AFTER the job has been cancelled / completed / failed (might be lagged by 1.5 hours).</p>
+<p>This is the Elapsed Job Duration, it doesn’t say that we’re running 8 smaller jobs in parallel, that’s why we need…</p>
 </li>
 <li>
-<p><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub. We compute this as 8 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346">averaged from past data</a>. (Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)</p>
+<p><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration, which is effectively the Chargeable Minutes by GitHub.</p>
+<p>We compute this as 8 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346">averaged from past data</a>.</p>
+<p>(Remember: One GitHub Runner will run One Single Sub-Job, like arm-01)</p>
 </li>
 <li>
 <p><strong>Full-Time GitHub Runners:</strong> Equals GitHub Runner Hours / Elapsed Hours. It means “How many GitHub Runners, running Full-Time, in order to consume the GitHub Runner Hours”. (We should keep this below 25 per day, per week, per month, etc)</p>
@@ -269,7 +274,9 @@
 <p>How it works:</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh">compute-github-runners.sh</a> calls GitHub API to add up the Duration of All Completed GitHub Jobs for today. Then it extrapolates the Number of Full-Time GitHub Runners. (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh">compute-github-runners.sh</a> calls GitHub API to add up the Duration of All Completed GitHub Jobs for today.</p>
+<p>Then it extrapolates the Number of Full-Time GitHub Runners.</p>
+<p>(1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh">run.sh</a> calls the script above to render the Full-Time GitHub Runners as a PNG (with ImageMagick)</p>
@@ -278,10 +285,10 @@
 <p>TODO: Linux Scripts, loss of precision</p>
 </li>
 </ul>
+<p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p>TODO</p>
-<p>Yeah it doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 🤔
-<img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
+<p>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But somebody’s gotta do it! 👍</p>
 <p>This runs on my 4K TV (Xiaomi 65-inch) all day, all night:</p>
 <p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
 <p>When I’m out on <a href="https://www.strava.com/activities/12737067287">Overnight Hikes</a>: I check my phone at every water break:</p>
@@ -336,14 +343,26 @@
 </li>
 </ol>
 <p>Thank you everyone for making this happen! 🙏</p>
-<p>I think we learnt a Painful Lesson today: Freebies Won’t Last Forever! The new GitHub Org for NuttX should probably be a <strong>Paid GitHub Org</strong>:</p>
+<p>We learnt a Painful Lesson today: <strong>Freebies Won’t Last Forever!</strong> The new GitHub Org for NuttX should probably be a <strong>Paid GitHub Org</strong>:</p>
 <ul>
-<li>New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, …)</li>
-<li>New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies</li>
-<li>Which means clicking Twice Per Day to trigger the <a href="https://github.com/nuttxpr/nuttx/actions">Scheduled Merge Jobs</a> (I’m getting tired of this)</li>
-<li>And restarting the Scheduled Merge Job (if it fails). Also: <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Killing the Old Merge Jobs</a></li>
-<li>New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)</li>
-<li>New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)</li>
+<li>
+<p>New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, …)</p>
+</li>
+<li>
+<p>New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies</p>
+</li>
+<li>
+<p>Which means clicking Twice Per Day to trigger the <a href="https://github.com/nuttxpr/nuttx/actions">Scheduled Merge Jobs</a> (I’m getting tired of this)</p>
+</li>
+<li>
+<p>And restarting the Scheduled Merge Job (if it fails). Also: <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Killing the Old Merge Jobs</a></p>
+</li>
+<li>
+<p>New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)</p>
+</li>
+<li>
+<p>New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)</p>
+</li>
 </ul>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
@@ -380,7 +399,6 @@
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940">The data from yesterday</a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
 <p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
-<p>Hi @xiaoxiang781216 @GUIDINGLI @cederom @raiden00pl @acassis @jerpelea: With immediate effect, please see <a href="https://github.com/nuttxpr/nuttx/actions"><strong>github.com/nuttxpr/nuttx</strong></a> for our Merge Jobs. I will trigger the jobs daily at 00:00 UTC and 12:00 UTC. I have given you Admin Access to <code>nuttxpr</code> in case you need to restart the jobs. Thanks!</p>
 <h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>13 Appendix: Verify our PR Merge</h1>
 <p>TODO</p>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
