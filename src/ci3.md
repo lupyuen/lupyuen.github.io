@@ -232,7 +232,7 @@ We published our own __Live Metric for Full-Time Runners__, for everyone to trac
   
   (We should keep this below 25 per day, per week, per month)
 
-How it works...
+We publish the data every __15 minutes__...
 
 1.  [__compute-github-runners.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the __Elapsed Duration__ of All Completed GitHub Jobs for today.
 
@@ -244,7 +244,11 @@ How it works...
 
     (Thanks to ImageMagick)
 
-1.  TODO: Linux Scripts, loss of precision
+1.  [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Is the Linux Version of the above macOS Script.
+
+    (But less accurate, due to BC Rounding)
+
+Next we have the Watchmen...
 
 ![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
@@ -256,7 +260,7 @@ This runs on a 4K TV (Xiaomi 65-inch) all day, all night...
 
 ![Screenshot 2024-10-28 at 1 53 26 PM](https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1)
 
-When I'm out on [__Overnight Hikes__](https://www.strava.com/activities/12737067287): I check my phone at every water break:
+When I'm out on [__Overnight Hikes__](https://www.strava.com/activities/12737067287): I check my phone at every water break...
 
 ![GridArt_20241028_150938083](https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e)
 
@@ -264,11 +268,11 @@ _If something goes wrong?_
 
 I have GitHub Scripts that will run on __Termux Android__. Remember to `pkg install gh` and set `GITHUB_TOKEN`...
 
-- [enable-macos-windows2.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS and Windows Builds
+- [__enable-macos-windows2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS Builds in the NuttX Mirror Repo
 
-- [compute-github-runners2.sh](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Compute the number of Full-Time GitHub Runners for the day
+- [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Compute the number of Full-Time GitHub Runners for the day (less accurately)
 
-- [kill-push-master.sh](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh): Cancel all Merge Jobs
+- [__kill-push-master.sh__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh): Cancel all Merge Jobs in NuttX Repo and NuttX Apps
 
 # Final Verdict
 
