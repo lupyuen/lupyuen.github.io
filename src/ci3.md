@@ -170,7 +170,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  If the Merge Job fails with a [__Mystifying Network Error__](TODO): I restart the Failed Sub-Jobs
 
-1.  Wait for the Merge Job to complete. Then __Ingest the GitHub Logs__ into our NuttX Dashboard. (Next article)
+1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
 _Isn't this cheating? Offloading to a Free GitHub Account?_
 
@@ -194,6 +194,8 @@ Today we run these __CI Checks__ when submitting or updating a Complex PR (pic a
 
 TODO: CI Checks
 
+TODO: [(See the PR)](TODO)
+
 TODO: Halve the Jobs for [__RISC-V, Xtensa and Simulator__](https://github.com/apache/nuttx/pull/14400) for Complex PRs
   
 TODO: Do the same for [`nuttx-apps` repo](https://github.com/apache/nuttx-apps/pull/2758)  
@@ -203,6 +205,8 @@ TODO: Build Rules
 TODO: Why were these jobs chosen?
 
 TODO: Rotate?
+
+TODO: Simple PR
 
 # Live Metric for Full-Time Runners
 
