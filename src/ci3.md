@@ -108,9 +108,15 @@ Nope this is __simply impossible__...
 
   Previously we waited [__2.5 hours__](TODO) for All CI Checks. Now we wait at most [__1.5 hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
-  [(We re-enabled the __Windows Jobs__)](https://github.com/apache/nuttx/issues/14598)
-
   [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
+
+_What about the Windows Builds?_
+
+We recently [__re-enabled the Windows Builds__](https://github.com/apache/nuttx/issues/14598), because they're not as costly as macOS Builds.
+
+We'll continue to monitor our GitHub Costs. And shut down the Windows Builds if necessary.
+
+[(Windows Runners are __twice the cost__ of Linux Runners)](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers)
 
 # Move the Merge Jobs
 
