@@ -20,7 +20,7 @@ TODO: Pic of last 7 days
 
 We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would __Halt Totally in Two Weeks__!
 
-After an [__overnight deliberation__](TODO), we swiftly activated [__our rescue plan__](TODO)...
+After an [__overnight deliberation__](https://www.strava.com/activities/12673094079), we swiftly activated [__our rescue plan__](https://github.com/apache/nuttx/issues/14376)...
 
 1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
 
@@ -213,6 +213,7 @@ _Why did we choose these CI Checks?_
 
 We chose the CI Checks above because they validate NuttX Builds on these __Popular Boards__...
 
+- _arm-01:_ Sony Spresense (TODO)
 - _arm-05:_ Nordic nRF52
 - _arm-06:_ Raspberry Pi RP2040
 - _arm-07:_ Microchip SAMD
@@ -338,14 +339,6 @@ Let's wait for the good news from ASF, thank you everyone! 🙏
 
 TODO
 
-[NuttX Dashboard for Build Farm](https://github.com/apache/nuttx/issues/14558)
-
-[Running CI Checks before submitting PR](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
-
-[Verify a PR after merging](https://github.com/apache/nuttx/issues/14407)
-
-sync CI Workflow from nuttx to nuttx apps
-
 ????script to start jobs
 
 nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
@@ -425,31 +418,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ci3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md)
 
-# Appendix: Merge Jobs are Costly
+# Appendix: Check our PR Submission
 
-TODO
+_Before submitting a PR to NuttX: How can we check our PR thoroughly?_
 
-Hi All: Our [__Merge Jobs are now at github.com/NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
+Yep it's super important to __thoroughly test our PRs__ before submitting to NuttX.
 
-Yesterday we spent __One-Third__ of our GitHub Runner Minutes on Merge Jobs. This is not sustainable, so I moved them to `nuttxpr` repo. (Which won't be charged)
+But NuttX Project [__doesn't have the budget__](TODO) to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)...
 
-![Screenshot 2024-10-19 at 11 33 46 AM](https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0)
+1. Run the CI Builds ourselves with __Docker Engine__
 
-[The data from yesterday](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (__101 GitHub Hours__ for one single Scheduled Merge Job!)
+2. Or run the CI Builds with __GitHub Actions__
 
-__Two-Thirds__ of our GitHub Runner Minutes were spent on Creating and Updating PRs. That's why we're skipping half the jobs today.
+(1) might be slower, depending on our PC. With (2) we don't need to worry about Wasting GitHub Runners, so long as the CI Workflow runs entirely in our own personal repo, before submitting to NuttX Repo.
+
+Here are the instructions...
+
+- [__"CI Builds with Docker vs GitHub Actions"__](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
 
 # Appendix: Verify our PR Merge
-
-TODO
 
 _When NuttX merges our PR, the Merge Job won't run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?_
 
 Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the __CI Workflow__. (Which won't charge any extra GitHub Runner Minutes to NuttX Project!)
 
-["How to Verify a PR Merge"](https://github.com/apache/nuttx/issues/14407)
+- [__"How to Verify a PR Merge"__](https://github.com/apache/nuttx/issues/14407)
 
-(I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)
+  (This will probably work if our CI Servers ever get shut down)
 
 # Appendix: Timeout Errors
 
