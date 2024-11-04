@@ -137,7 +137,7 @@
 <p>All these fixes were super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>!</p>
 <h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
 <p><em>Quitting the macOS Builds? That’s horribly drastic!</em></p>
-<p>Yeah sorry we can’t enable <strong>macOS Builds</strong> right now…</p>
+<p>Yeah sorry we can’t enable <strong>macOS Builds</strong> in NuttX Repo right now…</p>
 <ul>
 <li>
 <p>macOS Runners <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>cost 10 times</strong></a> as much as Linux Runners.</p>
@@ -147,6 +147,9 @@
 <p>Our macOS Jobs are in an <strong>untidy state</strong> right now, showing too many warnings.</p>
 <p>We need someone familiar with Intel Macs to clean up the macOS Jobs.</p>
 <p>(See this <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934"><strong>macOS Log</strong></a> and <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211"><strong>Another Log</strong></a>)</p>
+</li>
+<li>
+<p>That’s why we moved the macOS Builds to the <strong>NuttX Mirror Repo</strong>, which won’t be charged to NuttX Project.</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">(Discussion here)</a></p>
 </li>
 </ul>
@@ -185,8 +188,8 @@
 </li>
 <li>
 <p>How It Happens: Daily at 00:00 UTC and 12:00 UTC, I browse to NuttX/nuttx repo, click <code>Sync Fork &gt; Discard Commits</code>. Then I <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">run this script</a> to enable the macOS and Windows Builds.</p>
-<p>TODO: Disable Fail-Fast, so all builds will complete.</p>
-<p>TODO: Remove Max Parallel, so builds can finish faster.</p>
+<p>TODO: Disable fail-fast so that it runs all builds, regardless of error</p>
+<p>TODO: Remove max-parallel so that it will use unlimited concurrent runners.</p>
 </li>
 <li>
 <p>Don’t Forget: I’m still <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">running this script</a> to kill the Merge Jobs on the old <code>nuttx</code> and <code>nuttx-apps</code> repos. (Otherwise the GitHub Runners will spike!)</p>
@@ -287,13 +290,13 @@
 </ul>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
-<p>TODO</p>
-<p>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But somebody’s gotta do it! 👍</p>
-<p>This runs on my 4K TV (Xiaomi 65-inch) all day, all night:</p>
+<p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But somebody’s gotta do it!</em> 👍</p>
+<p>This runs on a 4K TV (Xiaomi 65-inch) all day, all night…</p>
 <p><img src="https://github.com/user-attachments/assets/3f862ed6-8890-4d00-99e1-f5b8352ddcd1" alt="Screenshot 2024-10-28 at 1 53 26 PM" /></p>
-<p>When I’m out on <a href="https://www.strava.com/activities/12737067287">Overnight Hikes</a>: I check my phone at every water break:</p>
+<p>When I’m out on <a href="https://www.strava.com/activities/12737067287"><strong>Overnight Hikes</strong></a>: I check my phone at every water break:</p>
 <p><img src="https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e" alt="GridArt_20241028_150938083" /></p>
-<p>I have GitHub Scripts that will run on Termux Android (remember to <code>pkg install gh</code> and set <code>GITHUB_TOKEN</code>):</p>
+<p><em>If something goes wrong?</em></p>
+<p>I have GitHub Scripts that will run on <strong>Termux Android</strong>. Remember to <code>pkg install gh</code> and set <code>GITHUB_TOKEN</code>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh">enable-macos-windows2.sh</a>: Enable the macOS and Windows Builds</p>
@@ -307,8 +310,6 @@
 </ul>
 <h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
 <p>TODO</p>
-<p><strong>0 Days to Final Audit:</strong> ASF Infra Team will be checking on us one last time today! Yesterday was a super busy Tuesday, we consumed <strong>15 Full-Time GitHub Runners</strong> (peaked briefly at 31)</p>
-<p><img src="https://github.com/user-attachments/assets/538b9903-51d0-43e4-9537-fbd6e4d8d742" alt="Screenshot 2024-10-30 at 6 02 25 AM" /></p>
 <p>Past 7 Days: We consumed <strong>12 Full-Time Runners</strong>, which is half the ASF Quota of 25 Full-Time Runners yay!</p>
 <p><img src="https://github.com/user-attachments/assets/baa0734e-3875-4b58-bd51-9cb69f264f26" alt="Screenshot 2024-10-30 at 6 06 21 AM" /></p>
 <p>FYI: Our “Monthly Bill” for GitHub Actions used to be <strong>$18K</strong>…</p>
@@ -331,39 +332,48 @@
 <li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
 </ul>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>10 Our Wishlist</h1>
-<p>TODO</p>
-<p>It’s Oct 31 and our CI Servers are still running. We made it yay! 🎉</p>
-<p>We got plenty to do:</p>
-<ol>
-<li>
-<p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html">Our Own Build Farm</a> (away from GitHub)</p>
-</li>
-<li>
-<p>Analyse our Build Logs with <a href="https://github.com/apache/nuttx/issues/14558">Our Own Tools</a> (instead of GitHub)</p>
-</li>
-</ol>
-<p>Thank you everyone for making this happen! 🙏</p>
-<p>We learnt a Painful Lesson today: <strong>Freebies Won’t Last Forever!</strong> The new GitHub Org for NuttX should probably be a <strong>Paid GitHub Org</strong>:</p>
+<p>It’s past Diwali and Halloween… Our CI Servers are still running. <strong>We made it yay!</strong> 🎉</p>
+<p>We got plenty to do…</p>
 <ul>
 <li>
-<p>New GitHub Org shall be sponsored by our generous Stakeholder Companies (Espressif, Sony, Xiaomi, …)</p>
+<p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>Our Own Build Farm</strong></a></p>
+<p>(Away from GitHub)</p>
 </li>
 <li>
-<p>New GitHub Org shall be maintained by a Paid Employee of our Stakeholder Companies</p>
-</li>
-<li>
-<p>Which means clicking Twice Per Day to trigger the <a href="https://github.com/nuttxpr/nuttx/actions">Scheduled Merge Jobs</a> (I’m getting tired of this)</p>
-</li>
-<li>
-<p>And restarting the Scheduled Merge Job (if it fails). Also: <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh">Killing the Old Merge Jobs</a></p>
-</li>
-<li>
-<p>New GitHub Org shall host the Official Downloads of NuttX Compiled Binaries (for our upcoming Board Testing Farm)</p>
-</li>
-<li>
-<p>New GitHub Org will eventually offload more CI Jobs from our GitHub Repos (e.g. macOS and Windows Builds)</p>
+<p>Analyse our Build Logs with <a href="https://github.com/apache/nuttx/issues/14558"><strong>Our Own Tools</strong></a></p>
+<p>(Instead of GitHub)</p>
 </li>
 </ul>
+<p>Thank you everyone for making this happen! 🙏</p>
+<p><em>But our Merge Jobs are still running in a Free Account?</em></p>
+<p>We learnt a Painful Lesson today: <strong>Freebies Won’t Last Forever!</strong></p>
+<p>We should probably maintain an official <strong>Paid GitHub Org Account</strong> to run our Merge Jobs…</p>
+<ol>
+<li>
+<p>New GitHub Org shall be sponsored by our generous <strong>Stakeholder Companies</strong></p>
+<p>(Espressif, Sony, Xiaomi, …)</p>
+</li>
+<li>
+<p>New GitHub Org shall be maintained by a <strong>Paid Employee</strong> of our Stakeholder Companies</p>
+<p>(Instead of an Unpaid Volunteer)</p>
+</li>
+<li>
+<p>Which means clicking Twice Per Day to trigger the <a href="TODO"><strong>Scheduled Merge Jobs</strong></a></p>
+<p>(My fingers are getting tired)</p>
+</li>
+<li>
+<p>And <strong>Restarting the Merge Jobs</strong></p>
+<p><a href="TODO">(Which might fail due to <strong>Network Errors</strong>)</a></p>
+</li>
+<li>
+<p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
+<p>(For our upcoming <strong>Board Testing Farm</strong>)</p>
+</li>
+<li>
+<p>New GitHub Org will eventually <strong>Offload CI Checks</strong> from our NuttX Repos</p>
+<p>(Maybe macOS CI Checks for New PRs)</p>
+</li>
+</ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
