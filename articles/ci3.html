@@ -92,7 +92,8 @@
 <li><a href="#testing">15.10 Testing</a><ul></ul></li>
 <li><a href="#actual-performance">15.11 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
-<p>TODO: Dev build time dropped from ??? to ???</p>
+<p>TODO: Continuous Integration (CI)</p>
+<p>Dev build time dropped from ??? to ???</p>
 <p>GitHub Usage dropped from ??? to ???</p>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
 </code></pre></div>
@@ -124,7 +125,7 @@
 <p>(GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>10x Premium for macOS Runners</strong></a>, 2x Premium for Windows Runners!)</p>
 </li>
 </ol>
-<p>Baffled? We have reasons for doing these, justified by real data…</p>
+<p>We have reasons for doing these, backed by real data…</p>
 <h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
 <p>We studied the CI Jobs for the previous day…</p>
 <ul>
@@ -173,7 +174,7 @@
 <li>
 <p>Also we should show some <strong>love and respect</strong> for NuttX Devs!</p>
 <p>Previously we waited <a href="TODO"><strong>2.5 hours</strong></a> for All CI Checks. Now we wait at most <a href="https://github.com/apache/nuttx/actions/runs/11582139779"><strong>1.5 hours</strong></a>, let’s stick to this.</p>
-<p><a href="https://github.com/apache/nuttx/issues/14598">(Later we re-enabled the <strong>Windows Jobs</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14598">(We re-enabled the <strong>Windows Jobs</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14526">(Seeking help to port NuttX Jobs to <strong>M1 Mac</strong>)</a></p>
 </li>
 </ul>
@@ -189,10 +190,10 @@
 <p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs.</p>
 <p>And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.</p>
 <p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
-<p><em>And thus we moved them?</em></p>
+<p><em>Thus we moved them?</em></p>
 <p>Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>.</p>
 <p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
-<p>(That’s an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
+<p>(In an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
@@ -227,13 +228,14 @@
 </ol>
 <p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
 <p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
+<p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
 <p><a href="TODO"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on Submitting and Updating PRs.</p>
 <p>That’s why we decided to skip <strong>Half the CI Checks</strong> for Complex PRs.</p>
 <p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
 <p><em>Which CI Checks did we select?</em></p>
-<p>Today we run these <strong>CI Checks</strong> when submitting or updating a Complex PR…</p>
+<p>Today we run these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)…</p>
 <p>TODO: CI Checks</p>
 <p>TODO: Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
 <p>TODO: Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
@@ -284,7 +286,7 @@
 <p>(But less accurate, due to BC Rounding)</p>
 </li>
 </ol>
-<p>Next we have the Watchmen…</p>
+<p>Next comes the Watchmen…</p>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But someone’s gotta do it!</em> 👍</p>
@@ -299,7 +301,7 @@
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh"><strong>enable-macos-windows2.sh</strong></a>: Enable the macOS Builds in the NuttX Mirror Repo</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a>: Compute the number of Full-Time GitHub Runners for the day (less accurately)</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a>: Compute the number of Full-Time GitHub Runners for the day (less accurately than macOS version)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>kill-push-master.sh</strong></a>: Cancel all Merge Jobs in NuttX Repo and NuttX Apps</p>
