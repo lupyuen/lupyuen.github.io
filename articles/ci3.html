@@ -186,22 +186,22 @@
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
 <p>We spent <strong>One-Third</strong> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs.</p>
-<p>And when we restart a Scheduled Merge Job, we waste GitHub Minutes.</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs.</p>
+<p>And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.</p>
 <p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
 <p><em>And thus we moved them?</em></p>
 <p>Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>.</p>
 <p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
-<p>(Running in an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
+<p>(That’s an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
 <p>(Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
-<p><em>How do we trigger the Scheduled Merge Job?</em></p>
+<p><em>How to trigger the Scheduled Merge Job?</em></p>
 <p>Every Day at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I do this…</p>
 <ol>
 <li>
-<p>Browse to the <a href="TODO"><strong>NuttX Mirror Repo</strong></a></p>
+<p>Browse to the <a href="https://github.com/NuttX/nuttx"><strong>NuttX Mirror Repo</strong></a></p>
 </li>
 <li>
 <p>Click “<strong>Sync Fork &gt; Discard Commits</strong>”</p>
@@ -228,25 +228,16 @@
 <p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
 <p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
-<p>TODO: <strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
+<p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
+<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs.</p>
+<p>That’s why we decided to skip <strong>Half the CI Checks</strong> for Complex PRs.</p>
+<p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
+<p>TODO: Today we run these CI Checks when creating or updating a Complex PR:</p>
+<p>TODO: Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
+<p>TODO: Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
+<p>TODO: Build Rules</p>
 <p>TODO: Why were these jobs chosen?</p>
 <p>TODO: Rotate?</p>
-<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
-<p><strong>11 Days To Doomsday:</strong> But we’re doing much better already! In the past 24 hours, we consumed <strong>36 Full-Time GitHub Runners</strong>. We’re getting closer to the ASF Target of <strong>25 Full-Time Runners</strong>! Today we shall:</p>
-<ul>
-<li>
-<p>Halve the Jobs for <a href="https://github.com/apache/nuttx/pull/14400"><strong>RISC-V, Xtensa and Simulator</strong></a> for Complex PRs</p>
-</li>
-<li>
-<p>Do the same for <a href="https://github.com/apache/nuttx-apps/pull/2758"><code>nuttx-apps</code> repo</a></p>
-</li>
-<li>
-<p>Our <a href="https://github.com/nuttxpr/nuttx/actions"><strong>Merge Jobs are now at github.com/nuttxpr/nuttx</strong></a></p>
-<p><del>Reduce the Scheduled Merge Jobs to <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Two Per Day</strong></a> at 00:00 / 12:00 UTC (down from Four Per Day)</del></p>
-</li>
-</ul>
-<p>Hopefully we’ll reach the ASF Target tomorrow, and ASF won’t kill our servers no more! Thanks!</p>
-<p><img src="https://github.com/user-attachments/assets/b5bbc42b-df0c-4004-89dd-164293ae6749" alt="Screenshot 2024-10-19 at 7 15 11 AM" /></p>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
 <p>TODO</p>
 <p>ASF Infra Reports are still down. But now we have our own <strong>Live Metrics for Full-Time GitHub Runners!</strong> (reload for updates)</p>
