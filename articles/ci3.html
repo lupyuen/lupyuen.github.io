@@ -76,7 +76,7 @@
 <li><a href="#todo">9 TODO</a><ul></ul></li>
 <li><a href="#our-wishlist">10 Our Wishlist</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-merge-jobs-are-costly">12 Appendix: Merge Jobs are Costly</a><ul></ul></li>
+<li><a href="#appendix-check-our-pr-submission">12 Appendix: Check our PR Submission</a><ul></ul></li>
 <li><a href="#appendix-verify-our-pr-merge">13 Appendix: Verify our PR Merge</a><ul></ul></li>
 <li><a href="#appendix-timeout-errors">14 Appendix: Timeout Errors</a><ul></ul></li>
 <li><a href="#appendix-build-rules-for-ci-workflow">15 Appendix: Build Rules for CI Workflow</a><ul>
@@ -100,7 +100,7 @@
 <p>TODO: Pic of last 7 days</p>
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
-<p>After an <a href="TODO"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="TODO"><strong>our rescue plan</strong></a>…</p>
+<p>After an <a href="https://www.strava.com/activities/12673094079"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
 <ol>
 <li>
 <p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
@@ -251,6 +251,7 @@
 <p><em>Why did we choose these CI Checks?</em></p>
 <p>We chose the CI Checks above because they validate NuttX Builds on these <strong>Popular Boards</strong>…</p>
 <ul>
+<li><em>arm-01:</em> Sony Spresense (TODO)</li>
 <li><em>arm-05:</em> Nordic nRF52</li>
 <li><em>arm-06:</em> Raspberry Pi RP2040</li>
 <li><em>arm-07:</em> Microchip SAMD</li>
@@ -345,10 +346,6 @@
 <p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/issues/14558">NuttX Dashboard for Build Farm</a></p>
-<p><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114">Running CI Checks before submitting PR</a></p>
-<p><a href="https://github.com/apache/nuttx/issues/14407">Verify a PR after merging</a></p>
-<p>sync CI Workflow from nuttx to nuttx apps</p>
 <p>????script to start jobs</p>
 <p>nuttx website docs: <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
 30 github minutes</p>
@@ -427,19 +424,32 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
-<h1 id="appendix-merge-jobs-are-costly"><a class="doc-anchor" href="#appendix-merge-jobs-are-costly">§</a>12 Appendix: Merge Jobs are Costly</h1>
-<p>TODO</p>
-<p>Hi All: Our <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>Merge Jobs are now at github.com/NuttX/nuttx</strong></a></p>
-<p>Yesterday we spent <strong>One-Third</strong> of our GitHub Runner Minutes on Merge Jobs. This is not sustainable, so I moved them to <code>nuttxpr</code> repo. (Which won’t be charged)</p>
-<p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940">The data from yesterday</a> shows that our Scheduled Merge Job keeps getting disrupted by newer Merged PRs. And when we restart a Scheduled Merge Job, we waste GitHub Minutes. (<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
-<p><strong>Two-Thirds</strong> of our GitHub Runner Minutes were spent on Creating and Updating PRs. That’s why we’re skipping half the jobs today.</p>
+<h1 id="appendix-check-our-pr-submission"><a class="doc-anchor" href="#appendix-check-our-pr-submission">§</a>12 Appendix: Check our PR Submission</h1>
+<p><em>Before submitting a PR to NuttX: How can we check our PR thoroughly?</em></p>
+<p>Yep it’s super important to <strong>thoroughly test our PRs</strong> before submitting to NuttX.</p>
+<p>But NuttX Project <a href="TODO"><strong>doesn’t have the budget</strong></a> to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)…</p>
+<ol>
+<li>
+<p>Run the CI Builds ourselves with <strong>Docker Engine</strong></p>
+</li>
+<li>
+<p>Or run the CI Builds with <strong>GitHub Actions</strong></p>
+</li>
+</ol>
+<p>(1) might be slower, depending on our PC. With (2) we don’t need to worry about Wasting GitHub Runners, so long as the CI Workflow runs entirely in our own personal repo, before submitting to NuttX Repo.</p>
+<p>Here are the instructions…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114"><strong>“CI Builds with Docker vs GitHub Actions”</strong></a></li>
+</ul>
 <h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>13 Appendix: Verify our PR Merge</h1>
-<p>TODO</p>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
 <p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
-<p><a href="https://github.com/apache/nuttx/issues/14407">“How to Verify a PR Merge”</a></p>
-<p>(I think this might also work if ASF shuts down our CI Servers. We can create many many orgs actually)</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/issues/14407"><strong>“How to Verify a PR Merge”</strong></a></p>
+<p>(This will probably work if our CI Servers ever get shut down)</p>
+</li>
+</ul>
 <h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>14 Appendix: Timeout Errors</h1>
 <p>TODO</p>
 <p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
