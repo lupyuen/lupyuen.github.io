@@ -880,29 +880,32 @@ Linux:
 <p>We recorded the CI Build Performance based on Real-World PRs:</p>
 <ul>
 <li>
-<p><strong>For Arm32:</strong> Simple PRs will build in <a href="https://github.com/apache/nuttx/actions/runs/11217886131"><strong>2 hours</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11210724531"><strong>also 2 hours</strong></a>)</p>
+<p><strong>For Arm32:</strong> Simple PRs will build in <a href="TODO"><strong>TODO hours</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11210724531"><strong>2 hours</strong></a>)</p>
 </li>
 <li>
-<p><strong>For Arm64:</strong> Simple PRs will build in <a href="https://github.com/apache/nuttx/actions/runs/11232103862"><strong>49 mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11140028404"><strong>2 hours 11 mins</strong></a>)</p>
+<p><strong>For Arm64:</strong> Simple PRs will build in <a href="TODO"><strong>TODO mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11140028404"><strong>2 hours 11 mins</strong></a>)</p>
 </li>
 <li>
-<p><strong>For RISC-V:</strong> Simple PRs will build in <strong>1 hour 45 mins</strong> (previously <a href="https://github.com/apache/nuttx/actions/runs/11163805578"><strong>also 1 hour 45 mins</strong></a>)</p>
+<p><strong>For RISC-V:</strong> Simple PRs will build in <a href="TODO"><strong>TODO mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11163805578"><strong>1 hour 45 mins</strong></a>)</p>
 </li>
 <li>
-<p><strong>For Xtensa:</strong> Simple PRs will build in <strong>1 hour 17 mins</strong> (previously <a href="https://github.com/apache/nuttx/actions/runs/11105657530"><strong>2 hours 11 mins</strong></a>)</p>
+<p><strong>For Xtensa:</strong> Simple PRs will build in <a href="TODO"><strong>TODO mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11105657530"><strong>2 hours 11 mins</strong></a>)</p>
 </li>
 <li>
-<p><strong>For x86_64:</strong> Simple PRs will build in <a href="https://github.com/apache/nuttx/actions/runs/11228070770"><strong>48 mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11158309196"><strong>2 hours 13 mins</strong></a>)</p>
+<p><strong>For x86_64:</strong> Simple PRs will build in <a href="TODO"><strong>TODO mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11158309196"><strong>2 hours 13 mins</strong></a>)</p>
 </li>
 <li>
-<p><strong>For Simulator:</strong> Simple PRs will build in <a href="https://github.com/apache/nuttx/actions/runs/11216774654"><strong>1 hour 32 mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11146942454"><strong>2 hours 12 mins</strong></a>)</p>
+<p><strong>For Simulator:</strong> Simple PRs will build in <a href="TODO"><strong>TODO mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11146942454"><strong>2 hours 12 mins</strong></a>)</p>
 </li>
+</ul>
+<p>How did we accomplish the above?</p>
+<ul>
 <li>
-<p>We broke up big jobs (<code>arm-05</code>, <code>riscv-01</code>, <code>riscv-02</code>) into multiple smaller jobs. Smaller jobs will really zoom! <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Build Job Details)</a></p>
+<p>We broke up big jobs (<code>arm-05</code>, <code>riscv-01</code>, <code>riscv-02</code>) into multiple smaller jobs. Smaller jobs will really fly! <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Build Job Details)</a></p>
 <p>(We moved the RP2040 jobs from <code>arm-05</code> to <code>arm-06</code>, then added <code>arm-14</code>. Also added jobs <code>riscv-03</code> to <code>riscv-06</code>)</p>
 </li>
 <li>
-<p>We already see a <strong>27% Reduction in GitHub Runner Hours</strong>! From <a href="https://github.com/apache/nuttx/actions/runs/11210724531/usage"><strong>15 Runner Hours</strong></a> down to <a href="https://github.com/apache/nuttx/actions/runs/11217886131/usage"><strong>11 Runner Hours</strong></a> per Arm32 Build.</p>
+<p>We saw a <strong>27% Reduction in GitHub Runner Hours</strong>! From <a href="https://github.com/apache/nuttx/actions/runs/11210724531/usage"><strong>15 Runner Hours</strong></a> down to <a href="https://github.com/apache/nuttx/actions/runs/11217886131/usage"><strong>11 Runner Hours</strong></a> per Arm32 Build.</p>
 </li>
 <li>
 <p>We split the Board Labels according to Arch, like “Board: arm”. So “Board: arm” should build the exact same way as “Arch: arm”. Same for “Board: arm, Arch: arm”. Updated the Build Rules to use the Board Labels.</p>
@@ -927,9 +930,9 @@ Linux:
 </li>
 <li>
 <p>How will we filter out the Build Jobs (e.g. <code>arm-01</code>) that should be built for a SubArch (e.g. <code>stm32</code>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
+<p><a href="TODO">(Discussion here)</a></p>
 </li>
 </ul>
-<p><a href="TODO">(Discussion here)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-hike.jpg" alt="TODO" /></p>
 <p><a href="https://www.strava.com/activities/12673094079"><em>Spot the exact knotty moment that we were told about the CI Shutdown</em></a></p>
 
