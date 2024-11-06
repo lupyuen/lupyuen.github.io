@@ -80,6 +80,9 @@ __Scheduled Merge Jobs__ will also reduce wastage of GitHub Runners, since most 
 
 All these fixes were super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)!
 
+
+![TODO](https://lupyuen.github.io/images/ci3-macos.jpg)
+
 # Disable macOS and Windows Builds
 
 _Quitting the macOS Builds? That's horribly drastic!_
@@ -251,7 +254,7 @@ TODO: See the list of builds
 
 (We might rotate the list to get better CI Coverage)
 
-![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
+![TODO](https://lupyuen.github.io/images/ci3-pr.jpg)
 
 _What about Simple PRs?_
 
