@@ -24,10 +24,6 @@ This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__A
 
 - We can't run __All CI Checks__, but NuttX Devs can help ourselves!
 
-```bash
-cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
-```
-
 ![TODO](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
 # Rescue Plan
@@ -62,26 +58,27 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
 We have reasons for doing these, backed by real data...
 
+![TODO](https://lupyuen.github.io/images/ci3-cancel.jpg)
+
 # Present Pains
 
 We studied the CI Jobs for the previous day...
 
 - [__Analysis of CI Jobs over 24 Hours__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0)
 
-Many CI Jobs were __Incomplete__: We wasted GitHub Runners on jobs that were eventually __superseded and cancelled__...
+Many CI Jobs were __Incomplete__: We wasted GitHub Runners on jobs that were eventually __superseded and cancelled__ (pic above, we'll come back to this)
 
 ![Screenshot 2024-10-17 at 1 18 14 PM](https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e)
+
+__Scheduled Merge Jobs__ will reduce wastage of GitHub Runners, since most Merge Jobs didn't complete. Only One Merge Job completed on that day...
+
+![Screenshot 2024-10-17 at 1 16 16 PM](https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796)
 
 When we __Halve the CI Jobs:__ We reduce the wastage of GitHub Runners...
 
 ![Screenshot 2024-10-17 at 1 15 30 PM](https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a)
 
-__Scheduled Merge Jobs__ will also reduce wastage of GitHub Runners, since most Merge Jobs didn't complete. Only One Merge Job completed on that day...
-
-![Screenshot 2024-10-17 at 1 16 16 PM](https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796)
-
-All these fixes were super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)!
-
+This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Now we actually do it...
 
 ![TODO](https://lupyuen.github.io/images/ci3-macos.jpg)
 
@@ -374,7 +371,7 @@ TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to 
 
 # Our Wishlist
 
-_So everything is hunky dory?_
+_Everything is hunky dory?_
 
 We got plenty more to do...
 
@@ -426,6 +423,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to run our M
 
 # What's Next
 
+In the next article: We'll talk about __NuttX Dashboard__. And how we made it with Grafana and Prometheus.
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -472,13 +471,13 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 
 - [__"How to Verify a PR Merge"__](https://github.com/apache/nuttx/issues/14407)
 
-(This will probably work if our CI Servers ever get shut down)
+This will probably work if our CI Servers ever go dark.
 
 # Appendix: Network Timeout at GitHub
 
 Something super strange about __Network Timeouts__ in our CI Docker Workflows at GitHub Actions. Here's an example...
 
-- First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626)...
+- First Run fails while [__downloading something from GitHub__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626)...
 
   ```text
   Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -486,7 +485,7 @@ Something super strange about __Network Timeouts__ in our CI Docker Workflows at
   make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
   ```
 
-- Second Run fails again, while [downloading NimBLE from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536)...
+- Second Run fails again, while [__downloading NimBLE from GitHub__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536)...
 
   ```text
   Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -494,25 +493,27 @@ Something super strange about __Network Timeouts__ in our CI Docker Workflows at
   make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nimble_context] Error 2
   ```
 
-- [Third Run succeeds.](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
+- [__Third Run succeeds.__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
 
-- Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [my own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html). It [doesn't show any errors](https://lupyuen.codeberg.page/articles/ci2.html).
+- Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
 
 - Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
 
-  [GitHub Actions with Smaller MTU Size](https://github.com/actions/actions-runner-controller/issues/393)
+  [__GitHub Actions with Smaller MTU Size__](https://github.com/actions/actions-runner-controller/issues/393)
 
-  [Docker MTU issues and solutions](https://mlohr.com/docker-mtu/)
+  [__Docker MTU issues and solutions__](https://mlohr.com/docker-mtu/)
 
-- Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repos: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
+- Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repo: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
 
-These __Timeout Errors__ will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
+These __Timeout Errors__ will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these killed jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
 
 1.  How do we __Retry these Timeout Errors__?
 
-1.  Can we have __Restartable Builds__? Doesn't quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+1.  Can we have __Restartable Builds__?
 
-1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and dies? Hmmm...
+    Doesn't quite make sense to kill everything and rebuild from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+
+1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and dies?
 
 ```text
 Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
@@ -534,7 +535,9 @@ Initially we created the __Build Rules__ for CI Workflow to solve these problems
 
 - Right now most of our CI Builds are taking 2.5 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
 
-  [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
+This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs.
+
+[(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
 ## Overall Solution
 
