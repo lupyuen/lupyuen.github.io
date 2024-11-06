@@ -483,15 +483,43 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 
 # Appendix: Network Timeout at GitHub
 
-TODO
+Something strange about __Network Timeouts__ in our CI Docker Workflows at GitHub Action, here's an example...
 
-Something That Bugs Me: __Timeout Errors__ will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
+- First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626):
 
-(1) How do we retry these Timeout Errors?
+  ```text
+  Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  curl: (28) Failed to connect to github.com port 443 after 134188 ms: Connection timed out
+  make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
+  ```
 
-(2) Can we have Restartable Builds? Doesn't quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+- Second Run fails again, while [downloading NimBLE from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536):
 
-(3) Or xtensa2 should wait for others to finish, before it declares a timeout and dies? Hmmm...
+  ```text
+  Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  curl: (28) Failed to connect to github.com port [443](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:444) after 134619 ms: Connection timed out
+  make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nimble_context] Error 2
+  ```
+
+- [Third Run succeeds.](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
+
+- Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [my own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html). It [doesn't show any errors](https://lupyuen.codeberg.page/articles/ci2.html).
+
+- Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
+
+  [GitHub Actions with Smaller MTU Size](https://github.com/actions/actions-runner-controller/issues/393)
+
+  [Docker MTU issues and solutions](https://mlohr.com/docker-mtu/)
+
+- Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repos: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
+
+These __Timeout Errors__ will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)
+
+1.  How do we __Retry these Timeout Errors__?
+
+1.  Can we have __Restartable Builds__? Doesn't quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+
+1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and dies? Hmmm...
 
 ```text
 Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
@@ -499,37 +527,11 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
 ```
 [(See the __Complete Log__)](https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1)
 
-Something strange about __Network Timeouts__ in our Docker Workflows: First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626):
-```text
-Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-curl: (28) Failed to connect to github.com port 443 after 134188 ms: Connection timed out
-make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
-```
-
-Second Run fails again, while [downloading NimBLE from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536):
-```text
-Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-curl: (28) Failed to connect to github.com port [443](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:444) after 134619 ms: Connection timed out
-make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nimble_context] Error 2
-```
-
-[Third Run succeeds.](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
-
-Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [my own Build Farm](https://lupyuen.codeberg.page/articles/ci2.html). It [doesn't show any errors](https://lupyuen.codeberg.page/articles/ci2.html).
-
-Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
-- [GitHub Actions with Smaller MTU Size](https://github.com/actions/actions-runner-controller/issues/393)
-- [Docker MTU issues and solutions](https://mlohr.com/docker-mtu/)
-
-Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repos: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
-
 # Appendix: Build Rules for CI Workflow
 
-TODO
+Initially we created the __Build Rules__ for CI Workflow to solve these problems...
 
-[Enhance the CI Workflow to skip the Unmodified Architectures](https://github.com/apache/nuttx/issues/13775)
-
-- NuttX Devs need to wait (2 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though they're modifying a Single Architecture
+- NuttX Devs need to wait (2.5 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though they're modifying a Single Architecture
 
 - We're using too many GitHub Runners and Build Minutes, exceeding the [ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
 
@@ -537,13 +539,15 @@ TODO
 
 - What if CI could build only the Modified Architecture?
 
-- Right now most of our CI Builds are taking 2 hours 15 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
+- Right now most of our CI Builds are taking 2.5 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
+
+  [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
 ## Overall Solution
 
-- We propose a Partial Solution, based on the Arch and Board Labels (recently added to CI)
+We propose a Partial Solution, based on the __Arch and Board Labels__ (recently added to CI)...
 
-- We target only the Simple PRs: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS"
+- We target only the __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS"
 
 - If "Arch: arm" is the only non-size label, then we build only `arm-01`, `arm-02`, ...
 
@@ -557,7 +561,7 @@ TODO
 
 ## Fetch the Arch Labels
 
-This is how we fetch the Arch Labels, and identify as Arm, Arm64, RISC-V, Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L32-L104)
+__In our Build Rules:__ This is how we fetch the Arch Labels from a PR. And identify the PR as Arm, Arm64, RISC-V or Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L32-L104)
 
 ```yaml
 # Get the Arch for the PR: arm, arm64, risc-v, xtensa, ...
@@ -632,7 +636,7 @@ Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, w
 
 ## Handle Only Simple PRs
 
-We handle only Simple PRs: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything.
+We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything.
 
 [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169)
 
@@ -682,9 +686,7 @@ fi
 
 ## For Arm Arch: Identify the Non-Arm Builds
 
-Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc):
-
-[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L169-L234)
+Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L169-L234)
 
 ```yaml
 # For every board
@@ -727,9 +729,7 @@ fi
 
 ## Skip The Non-Arm Builds
 
-Earlier we saw the code in `arch.yml` [(Reusable Workflow)](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that identifies the builds to be skipped. The code above is called by `build.yml` (Build Workflow) which will actually skip the builds:
-
-[build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148)
+Earlier we saw the code in `arch.yml` [(Reusable Workflow)](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that identifies the builds to be skipped. The code above is called by `build.yml` (Build Workflow) which will actually skip the builds: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148)
 
 ```yaml
 # Select the Linux Builds based on PR Arch Label
@@ -766,9 +766,7 @@ Why `needs: Fetch-Source`? That's because the PR Labeler runs concurrently in th
 
 ## Same for RISC-V, Simulator, x86_64 and Xtensa Builds
 
-We do the same for RISC-V, Simulator, x86_64 and Xtensa:
-
-[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L105-L129)
+We do the same for RISC-V, Simulator, x86_64 and Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L105-L129)
 
 ```yaml
 # For "Arch / Board: arm64": Build other
@@ -803,6 +801,8 @@ elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; th
 ```
 
 ## Skip the macOS and Windows Builds
+
+TODO
 
 For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (`macos`, `macos/sim-*`, `msys2`) since these builds are costly:
 
@@ -867,9 +867,7 @@ msys2:
 
 ## Ignore the Documentation
 
-NuttX Devs shouldn't be penalised for adding docs! That's why we ignore the label "Area: Documentation", so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds).
-
-[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
+NuttX Devs shouldn't be __penalised for adding docs__! That's why we ignore the label "Area: Documentation", so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
 
 ```yaml
 # Ignore the Label "Area: Documentation", because it won't affect the Build Targets
@@ -886,7 +884,9 @@ echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
 
 ## Sync the CI Workflow from nuttx repo to nuttx-apps
 
-Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`! https://github.com/apache/nuttx-apps/pull/2676
+Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`!
+
+[(See the __Pull Request__)](https://github.com/apache/nuttx-apps/pull/2676)
 
 `build.yml` refers to `arch.yml` (for the build rules). So when we sync `build.yml` from `nuttx` to `nuttx-apps`, we won't need to remove the references to `arch.yml`.
 
@@ -926,39 +926,9 @@ Linux:
       boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
 ```
 
-## Testing
-
-(Note: The timings here are obsolete)
-
-When we test our updated CI Workflow, we see that the irrelevant builds are skipped in seconds. Click "Show All Jobs" to reveal the timings:
-
-- [CI Build for Arm32 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11208805090)
-
-  (Completed in 2 hours, roughly 15 mins faster than before. Bottleneck is `arm-05`, which takes 2 hours, we should split into smaller jobs)
-
-- [CI Build for Arm64 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11210569865)
-
-  (Completed in 51 mins yay!)
-
-- [CI Build for RISC-V PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11197522570)
-
-  (Completed in 1 hour 50 mins. Bottleneck is `riscv-01` and `riscv-02`, at 1 hour 47 mins each, we should split into smaller jobs)
-
-- [CI Build for Xtensa PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11200284084)
-
-  (Completed in 1 hour 17 mins. Bottleneck is `xtensa-01` and `xtensa-02`, at 1 hour 15 mins each)
-
-- [CI Build for Other PRs and Non-PR (All Targets)](https://github.com/lupyuen5/label-nuttx/actions/runs/11199194493)
-
-  (Same as the present CI)
-
-- When PRs are Merged: All Targets are recompiled (2 hours 13 mins), no changes from the Present CI. [Merge Arm32 PR](https://github.com/lupyuen5/label-nuttx/actions/runs/11200309934)
-
-- Previously the irrelevant builds were skipped in seconds. Now the irrelevant builds (e.g. `arm-01`) are totally omitted for Simple PRs [(e.g. "Arch: risc-v")](https://github.com/lupyuen5/label-nuttx/actions/runs/11197522570)
-
-  ![Screenshot 2024-10-06 at 11 39 43 AM](https://github.com/user-attachments/assets/8fb091b9-2ba0-4c3a-a533-af5c6609dab7)
-
 ## Actual Performance
+
+TODO
 
 We recorded the CI Build Performance based on Real-World PRs:
 
@@ -1000,4 +970,4 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
 
 - Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
 
-- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubBoard (e.g. `stm32`)? [Maybe like this](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
+- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [Maybe like this](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
