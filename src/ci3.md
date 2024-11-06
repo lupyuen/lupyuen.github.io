@@ -407,7 +407,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
     (My fingers are tired, pic above)
 
-1.  And __Restarting the Failed Merge Jobs__ 
+1.  And restarting the __Failed Merge Jobs__ 
 
     [(Because of __Mysterious Network Timeouts__)](TODO)
 
@@ -417,7 +417,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 1.  New GitHub Org will eventually __Offload CI Checks__ from our NuttX Repos
 
-    (Maybe macOS CI Checks for New PRs)
+    (Maybe do macOS CI Checks for PRs)
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
@@ -632,9 +632,7 @@ Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, w
 
 ## Handle Only Simple PRs
 
-We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything.
-
-[arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169)
+We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169)
 
 ```yaml
 # inputs.boards is a JSON Array: ["arm-01", "risc-v-01", "xtensa-01", ...]
@@ -800,11 +798,9 @@ elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; th
 
 TODO
 
-For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (`macos`, `macos/sim-*`, `msys2`) since these builds are costly:
+For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (`macos`, `macos/sim-*`, `msys2`) since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281)
 
 (`macos` and `macos/sim-*` builds will take 2 hours to complete due to the queueing for macOS Runners)
-
-[build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281)
 
 ```yaml
 # Select the macOS Builds based on PR Arch Label
@@ -940,21 +936,15 @@ We recorded the CI Build Performance based on Real-World PRs:
 
 - **For Simulator:** Simple PRs will build in [**1 hour 32 mins**](https://github.com/apache/nuttx/actions/runs/11216774654) (previously [**2 hours 12 mins**](https://github.com/apache/nuttx/actions/runs/11146942454))
 
-- OK no big wow yet. We need to break `arm-05`, `riscv-01` and `riscv-02` into multiple smaller jobs. Then things will really zoom! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+- We broke up big jobs (`arm-05`, `riscv-01`, `riscv-02`) into multiple smaller jobs. Smaller jobs will really zoom! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
-  Move the RP2040 jobs from `arm-05` to `arm-06`, then add `arm-14`. Add jobs `riscv-03` to `riscv-06`.
-
-   (__Update:__ All Done! Check the PRs below)
+  (We moved the RP2040 jobs from `arm-05` to `arm-06`, then added `arm-14`. Also added jobs `riscv-03` to `riscv-06`)
 
 - We already see a __27% Reduction in GitHub Runner Hours__! From [**15 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11210724531/usage) down to [**11 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11217886131/usage) per Arm32 Build.
 
-- Split the Board Labels according to Arch, like "Board: arm". So "Board: arm" should build the exact same way as "Arch: arm". Same for "Board: arm, Arch: arm". Update the Build Rules to use the Board Labels
+- We split the Board Labels according to Arch, like "Board: arm". So "Board: arm" should build the exact same way as "Arch: arm". Same for "Board: arm, Arch: arm". Updated the Build Rules to use the Board Labels.
 
-   (__Update:__ All Done! Check the PRs below)
-
-- Split the `others` job into `arm64` and `x86_64`
-
-   (__Update:__ All Done! Check the PRs below)
+- We split the `others` job into `arm64` and `x86_64`
 
 __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
 
@@ -962,8 +952,8 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
 
 - Kinda like packing yummy goodies into Bento Boxes, making sure they don't overflow the Time Boxes  :-)
 
-- We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job. So we can Fail Faster (in case of problems), and skip the rest of the jobs
+- We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job (`arm-00`, `risc-v-00`, `sim-00`). So we can Fail Faster (in case of problems), and skip the rest of the jobs
 
 - Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
 
-- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [Maybe like this](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
+- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
