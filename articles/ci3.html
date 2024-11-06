@@ -117,7 +117,7 @@
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter.jpg" alt="TODO" /></p>
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
-<p><a href="https://www.strava.com/activities/12673094079"><strong>After deliberating overnight:</strong></a> We swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
+<p>After <a href="https://www.strava.com/activities/12673094079"><strong>deliberating overnight:</strong></a> We swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
 <ol>
 <li>
 <p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
@@ -125,20 +125,20 @@
 <p>(Will reduce GitHub Cost by 32%)</p>
 </li>
 <li>
-<p>When the <strong>Complex PR is Merged:</strong> CI Workflow will still run all jobs <code>arm-01</code> to <code>arm-14</code></p>
-<p>(Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only <code>arm-01</code> to <code>arm-14</code>)</p>
+<p>When the <strong>Complex PR is Merged:</strong> CI Workflow will still run all jobs <em>arm-01 … arm-14, risc-v, xtensa, etc</em></p>
+<p>(Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall check only <em>arm-01 … arm-14</em>)</p>
 </li>
 <li>
 <p>When we <strong>Merge a PR:</strong> Our Merge Jobs shall run at <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Instead of OG Repo <em>apache/nuttx</em>)</p>
 <p>We shall have only <strong>Two Scheduled Merge Jobs</strong> per day: 00:00 UTC and 12:00 UTC.</p>
 </li>
 <li>
-<p>How? I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
-<p>Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at <code>NuttX/nuttx</code> repo.</p>
+<p>How? I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in NuttX Repo and NuttX Apps.</p>
+<p>Then at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I shall start the Latest Merge Job at NuttX Mirror Repo.</p>
 <p>(Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>. Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
 </li>
 <li>
-<p><strong>macOS and Windows Jobs</strong> (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs.</p>
+<p><strong>macOS and Windows Jobs</strong> <em>(msys2 / msvc)</em>: They shall be totally disabled until we find a way to manage their costs.</p>
 <p>(GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>10x Premium for macOS Runners</strong></a>, 2x Premium for Windows Runners!)</p>
 </li>
 </ol>
@@ -176,7 +176,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci3-dashboard.png" alt="TODO" /></p>
-<p><em>Can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?</em></p>
+<p><em>Can we still prevent breakage of ALL Builds? Linux, macOS AND Windows?</em></p>
 <p>Nope this is <strong>simply impossible</strong>…</p>
 <ul>
 <li>
@@ -188,7 +188,7 @@
 <p>We should be prepared to backtrack and figure out which PR broke the build.</p>
 </li>
 <li>
-<p>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a> (pic above), to detect breakage earlier.</p>
+<p>That’s why we have tools like <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a> (pic above), to detect breakage earlier.</p>
 <p>(Without depending on GitHub CI)</p>
 </li>
 <li>
@@ -206,7 +206,7 @@
 <p><em>What are Merge Jobs? Why move them?</em></p>
 <p>Suppose our NuttX Admin <strong>Merges a PR</strong>. (Pic above)</p>
 <p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
-<p>Which means running <a href="TODO"><strong>34 Build Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
+<p>Which means ploughing through <a href="TODO"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
 <p>This is extremely costly, hence we decided to trigger them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
@@ -221,7 +221,7 @@
 <p>(In an Unpaid GitHub Org Account, that won’t be charged to NuttX Project)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <p><em>What about the Old Merge Jobs?</em></p>
-<p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
+<p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in NuttX Repo and NuttX Apps.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2817">(Also for <strong>NuttX Apps</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14407">(Fixing the <strong>Auto-Build on Sync</strong>)</a></p>
@@ -262,11 +262,11 @@
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
-<p><a href="TODO"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on Submitting and Updating PRs.</p>
-<p>That’s why we decided to skip <strong>Half the CI Checks</strong> for Complex PRs.</p>
+<p><a href="TODO"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on <strong>Submitting and Updating PRs</strong>.</p>
+<p>Hence we’re skipping <strong>Half the CI Checks</strong> for Complex PRs.</p>
 <p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
 <p><em>Which CI Checks did we select?</em></p>
-<p>Today we start these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)…</p>
+<p>Today we start only these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)…</p>
 <ul>
 <li><em>arm-03, 05, 06, 07, 08, 10, 13</em></li>
 <li><em>risc-v-01, 02, 03</em></li>
@@ -274,9 +274,9 @@
 <li><em>xtensa-01, arm64-01, x86_64-01, other</em></li>
 </ul>
 <p><a href="TODO">(See the <strong>Pull Request</strong>)</a></p>
-<p><a href="TODO">(Also synced to <strong>NuttX Apps</strong>)</a></p>
+<p><a href="TODO">(Synced to <strong>NuttX Apps</strong>)</a></p>
 <p><em>Why did we choose these CI Checks?</em></p>
-<p>We chose the CI Checks above because they validate NuttX Builds on these <strong>Popular Boards</strong> (and special checks)…</p>
+<p>We selected the CI Checks above because they validate NuttX Builds on <strong>Popular Boards</strong> (and for special checks)…</p>
 <div><table><thead><tr><th style="text-align: left">Target Group</th><th style="text-align: left">Board</th></tr></thead><tbody>
 <tr><td style="text-align: left"><em>arm-01</em></td><td style="text-align: left">Sony Spresense (TODO)</td></tr>
 <tr><td style="text-align: left"><em>arm-05</em></td><td style="text-align: left">Nordic nRF52</td></tr>
@@ -351,7 +351,7 @@
 <p><a href="https://www.strava.com/activities/12737067287"><strong>On Overnight Hikes</strong></a>: I check my phone at every water break…</p>
 <p><img src="https://github.com/user-attachments/assets/88232734-aecc-4af8-bc0e-641db1cfdf9e" alt="GridArt_20241028_150938083" /></p>
 <p><em>If something goes wrong?</em></p>
-<p>I have GitHub Scripts for <strong>Termux Android</strong>. Remember to <code>pkg install gh</code> and set <code>GITHUB_TOKEN</code>…</p>
+<p>We have GitHub Scripts for <strong>Termux Android</strong>. Remember to <em>“pkg install gh”</em> and set <em>GITHUB_TOKEN</em>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh"><strong>enable-macos-windows2.sh</strong></a>: Enable the macOS Builds in the NuttX Mirror Repo</p>
@@ -367,7 +367,7 @@
 <p>It’s past Diwali and Halloween and Elections… Our CI Servers are still running. <strong>We made it yay!</strong> 🎉</p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$ TODO</strong> (weekly) down to <strong>$ TODO</strong>…</p>
 <p>TODO: Pic of last 7 days</p>
-<p>Our “Monthly Bill” for GitHub Actions used to be <strong>$18K</strong>…</p>
+<p><strong>“Monthly Bill”</strong> for GitHub Actions used to be <strong>$18K</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36" alt="before-30days" /></p>
 <p>Right now our <strong>Monthly Bill is $TODO</strong>. And still dropping! Thank you everyone for making this happen! 🙏</p>
 <p>TODO: after-30days</p>
@@ -375,7 +375,7 @@
 <p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
 <p><em>Everything is hunky dory?</em></p>
-<p>Depending on a Single Provider for Continuous Integration is a terrible thing. We got plenty more to do…</p>
+<p>Trusting a <strong>Single Provider for Continuous Integration</strong> is a terrible thing. We got plenty more to do…</p>
 <ul>
 <li>
 <p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>Our Own Build Farm</strong></a></p>
@@ -422,8 +422,8 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
-<p>In the next article: We’ll talk about <strong>NuttX Dashboard</strong>. And how we made it with Grafana and Prometheus.</p>
-<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! I couldn’t have survived the two choatic weeks without your help. And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
+<p>Next Article: We’ll chat about <strong>NuttX Dashboard</strong>. And how we made it with Grafana and Prometheus.</p>
+<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! I couldn’t have survived the two choatic and stressful weeks without your help. And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
@@ -513,7 +513,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <p>Doesn’t quite make sense to kill everything and rebuild from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)</p>
 </li>
 <li>
-<p>Or xtensa2 should <strong>wait for others</strong> to finish, before it declares a timeout and dies?</p>
+<p>Or xtensa2 should <strong>wait for others</strong> to finish, before it declares a timeout and croaks?</p>
 </li>
 </ol>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
@@ -929,6 +929,9 @@ Linux:
 <p>How will we filter out the Build Jobs (e.g. <code>arm-01</code>) that should be built for a SubArch (e.g. <code>stm32</code>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
 </li>
 </ul>
+<p><a href="TODO">(Discussion here)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci3-hike.jpg" alt="TODO" /></p>
+<p><a href="https://www.strava.com/activities/12673094079"><em>Spot the exact knotty moment that we were told about the CI Shutdown</em></a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
