@@ -351,7 +351,7 @@ We have GitHub Scripts for __Termux Android__. Remember to _"pkg install gh"_ an
 
 # Final Verdict
 
-It's past Diwali and Halloween and Elections... Our CI Servers are still running. __We made it yay!__ 🎉
+It's past Diwali and Halloween and Elections... Our CI Servers are still alive. __We made it yay!__ 🎉
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
 
