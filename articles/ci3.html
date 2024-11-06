@@ -78,7 +78,7 @@
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-check-our-pr-submission">12 Appendix: Check our PR Submission</a><ul></ul></li>
 <li><a href="#appendix-verify-our-pr-merge">13 Appendix: Verify our PR Merge</a><ul></ul></li>
-<li><a href="#appendix-timeout-errors">14 Appendix: Timeout Errors</a><ul></ul></li>
+<li><a href="#appendix-network-timeout-at-github">14 Appendix: Network Timeout at GitHub</a><ul></ul></li>
 <li><a href="#appendix-build-rules-for-ci-workflow">15 Appendix: Build Rules for CI Workflow</a><ul>
 <li><a href="#overall-solution">15.1 Overall Solution</a><ul></ul></li>
 <li><a href="#fetch-the-arch-labels">15.2 Fetch the Arch Labels</a><ul></ul></li>
@@ -246,7 +246,7 @@
 <p>And <a href="TODO"><strong>Remove Max Parallel</strong></a> so that it will use unlimited concurrent runners. (Because it’s free!)</p>
 </li>
 <li>
-<p>If the Merge Job fails with a <a href="TODO"><strong>Mystifying Network Error</strong></a>: I restart the Failed Sub-Jobs</p>
+<p>If the Merge Job fails with a <a href="TODO"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs</p>
 </li>
 <li>
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
@@ -414,7 +414,7 @@
 </li>
 <li>
 <p>And <strong>Restarting the Merge Jobs</strong></p>
-<p><a href="TODO">(Which might fail due to <strong>Mysterious Network Errors</strong>)</a></p>
+<p><a href="TODO">(Which might fail due to <strong>Mysterious Network Timeouts</strong>)</a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
@@ -477,7 +477,7 @@
 <li><a href="https://github.com/apache/nuttx/issues/14407"><strong>“How to Verify a PR Merge”</strong></a></li>
 </ul>
 <p>(This will probably work if our CI Servers ever get shut down)</p>
-<h1 id="appendix-timeout-errors"><a class="doc-anchor" href="#appendix-timeout-errors">§</a>14 Appendix: Timeout Errors</h1>
+<h1 id="appendix-network-timeout-at-github"><a class="doc-anchor" href="#appendix-network-timeout-at-github">§</a>14 Appendix: Network Timeout at GitHub</h1>
 <p>TODO</p>
 <p>Something That Bugs Me: <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
 <p>(1) How do we retry these Timeout Errors?</p>
