@@ -22,7 +22,7 @@ This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__A
 
 - Coding the __Build Rules__ for our CI Workflow, monitoring our CI Servers 24 x 7
 
-- We can't run __All CI Checks__, but our NuttX Devs can help!
+- We can't run __All CI Checks__, but NuttX Devs can help ourselves!
 
 ```bash
 cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
@@ -354,25 +354,29 @@ I have GitHub Scripts that will run on __Termux Android__. Remember to `pkg inst
 
 TODO
 
-Past 7 Days: We consumed __12 Full-Time Runners__, which is half the ASF Quota of 25 Full-Time Runners yay!
+It's past Diwali and Halloween... Our CI Servers are still running. __We made it yay!__ 🎉
 
-![Screenshot 2024-10-30 at 6 06 21 AM](https://github.com/user-attachments/assets/baa0734e-3875-4b58-bd51-9cb69f264f26)
+__Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
 
-FYI: Our "Monthly Bill" for GitHub Actions used to be __$18K__...
+TODO: Pic of last 7 days
+
+Our "Monthly Bill" for GitHub Actions used to be __$18K__...
 
 ![before-30days](https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36)
 
-Right now our __Monthly Bill is $14K__. And still dropping!
+Right now our __Monthly Bill is $TODO__. And still dropping! Thank you everyone for making this happen! 🙏
 
-![after-30days](https://github.com/user-attachments/assets/db9def46-e386-43a2-9e10-79475e34547b)
+TODO: after-30days
+
+TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now they wait at most __1.5 Hours__! (Pic below)
 
 ![TODO](https://lupyuen.github.io/images/ci3-sync.jpg)
 
 # Our Wishlist
 
-It's past Diwali and Halloween... Our CI Servers are still running. __We made it yay!__ 🎉
+_So everything is hunky dory?_
 
-We got plenty to do...
+We got plenty more to do...
 
 - Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.codeberg.page/articles/ci2.html)
 
@@ -382,9 +386,11 @@ We got plenty to do...
 
   (Instead of GitHub)
 
-Thank you everyone for making this happen! 🙏
+- Excellent Initiative by [__Mateusz Szafoni__](https://github.com/raiden00pl): We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target
 
-[(Please join __Your Ubuntu PC__ to our Build Farm)](TODO)
+  (And cut the Build Time)
+
+[🙏🙏🙏 Please join __Your Ubuntu PC__ to our Build Farm! 🙏🙏🙏](TODO)
 
 _But our Merge Jobs are still running in a Free Account?_
 
@@ -416,24 +422,11 @@ We should probably maintain an official __Paid GitHub Org Account__ to run our M
 
     (Maybe macOS CI Checks for New PRs)
 
-# TODO
-
-TODO
-
-????script to start jobs
-
-nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
-30 github minutes
-
-- Excellent Initiative by @raiden00pl: We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target, and reduce the build time
-
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
 # What's Next
 
-TODO
-
-Many Thanks to the awesome NuttX Admins and NuttX Devs, I couldn't have survived the two choatic weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
+Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
@@ -483,9 +476,9 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 
 # Appendix: Network Timeout at GitHub
 
-Something strange about __Network Timeouts__ in our CI Docker Workflows at GitHub Action, here's an example...
+Something super strange about __Network Timeouts__ in our CI Docker Workflows at GitHub Actions. Here's an example...
 
-- First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626):
+- First Run fails while [downloading something from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626)...
 
   ```text
   Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
@@ -493,7 +486,7 @@ Something strange about __Network Timeouts__ in our CI Docker Workflows at GitHu
   make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
   ```
 
-- Second Run fails again, while [downloading NimBLE from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536):
+- Second Run fails again, while [downloading NimBLE from GitHub](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536)...
 
   ```text
   Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
