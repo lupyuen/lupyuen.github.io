@@ -92,15 +92,35 @@
 <li><a href="#testing">15.10 Testing</a><ul></ul></li>
 <li><a href="#actual-performance">15.11 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
-<p>TODO: Continuous Integration (CI)</p>
-<p>Dev build time dropped from ??? to ???</p>
-<p>GitHub Usage dropped from ??? to ???</p>
+<p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from $ TODO (weekly) down to $$$ TODO…</p>
+<p>TODO: Dev build time dropped from ??? to ???</p>
+<p>This article explains everything we did in the (Semi-Chaotic) Two Weeks for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<ul>
+<li>
+<p>Shutting down the <strong>macOS and Windows Builds</strong>, reviving them in a different form</p>
+</li>
+<li>
+<p><strong>Merge Jobs</strong> are super costly, we moved them to the NuttX Mirror Repo</p>
+</li>
+<li>
+<p>We <strong>Halved the CI Checks</strong> for Complex PRs. (Continuous Integration)</p>
+</li>
+<li>
+<p><strong>Simple PRs</strong> are already quite fast. (12 mins sometimes!)</p>
+</li>
+<li>
+<p>Coding the <strong>Build Rules</strong> for our CI Workflow, monitoring our CI Servers 24 x 7</p>
+</li>
+<li>
+<p>We can’t run <strong>All CI Checks</strong>, but our NuttX Devs can help!</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
 </code></pre></div>
 <p>TODO: Pic of last 7 days</p>
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
-<p>After an <a href="https://www.strava.com/activities/12673094079"><strong>overnight deliberation</strong></a>, we swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
+<p><a href="https://www.strava.com/activities/12673094079"><strong>After deliberating overnight:</strong></a> We swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
 <ol>
 <li>
 <p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
@@ -190,13 +210,15 @@
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
 <p>We spent <strong>One-Third</strong> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs.</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs. (Pic below)</p>
 <p>And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.</p>
 <p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
+<p><img src="https://lupyuen.github.io/images/ci3-before.jpg" alt="TODO" /></p>
 <p><em>Thus we moved them?</em></p>
-<p>Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>.</p>
+<p>Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Pic below)</p>
 <p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
 <p>(In an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
+<p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
@@ -253,22 +275,25 @@
 <p><a href="TODO">(See the <strong>Pull Request</strong>)</a></p>
 <p><a href="TODO">(Also synced to <strong>NuttX Apps</strong>)</a></p>
 <p><em>Why did we choose these CI Checks?</em></p>
-<p>We chose the CI Checks above because they validate NuttX Builds on these <strong>Popular Boards</strong>…</p>
-<ul>
-<li><em>arm-01:</em> Sony Spresense (TODO)</li>
-<li><em>arm-05:</em> Nordic nRF52</li>
-<li><em>arm-06:</em> Raspberry Pi RP2040</li>
-<li><em>arm-07:</em> Microchip SAMD</li>
-<li><em>arm-08, 10, 13:</em> STM32</li>
-<li><em>risc-v-02, 03:</em> ESP32-C3, C6, H2</li>
-<li><em>sim-01, 02:</em> CI Test, Matter</li>
-</ul>
+<p>We chose the CI Checks above because they validate NuttX Builds on these <strong>Popular Boards</strong> (and special checks)…</p>
+<div><table><thead><tr><th style="text-align: left">Target Group</th><th style="text-align: left">Board</th></tr></thead><tbody>
+<tr><td style="text-align: left"><em>arm-01:</em></td><td style="text-align: left">Sony Spresense (TODO)</td></tr>
+<tr><td style="text-align: left"><em>arm-05:</em></td><td style="text-align: left">Nordic nRF52</td></tr>
+<tr><td style="text-align: left"><em>arm-06:</em></td><td style="text-align: left">Raspberry Pi RP2040</td></tr>
+<tr><td style="text-align: left"><em>arm-07:</em></td><td style="text-align: left">Microchip SAMD</td></tr>
+<tr><td style="text-align: left"><em>arm-08, 10, 13:</em></td><td style="text-align: left">STM32</td></tr>
+<tr><td style="text-align: left"><em>risc-v-02, 03:</em></td><td style="text-align: left">ESP32-C3, C6, H2</td></tr>
+<tr><td style="text-align: left"><em>sim-01, 02:</em></td><td style="text-align: left">CI Test, Matter</td></tr>
+</tbody></table>
+</div>
 <p>TODO: See the list of builds</p>
 <p>(We might rotate the list to get better CI Coverage)</p>
+<p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <p><em>What about Simple PRs?</em></p>
 <p>A <strong>Simple PR</strong> concerns only <strong>One Single Architecture</strong>: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.</p>
 <p>When we create a Simple PR for Arm32: It runs only the CI Checks for <em>arm-01</em> … <em>arm-14</em>.</p>
 <p>(It will probably complete earlier than a Complex PR)</p>
+<p>TODO: X86_64 dev probably the happiest, Their PRs complete in 10 mins</p>
 <p><em>Sounds awfully complicated. How did we code the rules?</em></p>
 <p>Indeed! The Build Rules are explained here…</p>
 <p>TODO: Build Rules</p>
@@ -402,7 +427,7 @@
 </ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> (and the awesome NuttX Community) for supporting my work! This article wouldn’t have been possible without your support.</p>
+<p>Many Thanks to the awesome NuttX Admins and NuttX Devs, I couldn’t have survived the two choatic weeks without your help. And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
