@@ -408,7 +408,7 @@
 <p>(My fingers are tired, pic above)</p>
 </li>
 <li>
-<p>And <strong>Restarting the Failed Merge Jobs</strong></p>
+<p>And restarting the <strong>Failed Merge Jobs</strong></p>
 <p><a href="TODO">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
 </li>
 <li>
@@ -417,7 +417,7 @@
 </li>
 <li>
 <p>New GitHub Org will eventually <strong>Offload CI Checks</strong> from our NuttX Repos</p>
-<p>(Maybe macOS CI Checks for New PRs)</p>
+<p>(Maybe do macOS CI Checks for PRs)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
@@ -634,8 +634,7 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
 </code></pre></div>
 <p>Why <code> || echo ""</code>? That’s because if the GitHub CLI <code>gh</code> fails for any reason, we will build all targets. This ensures that our CI Workflow won’t get disrupted due to errors in GitHub CLI.</p>
 <h2 id="handle-only-simple-prs"><a class="doc-anchor" href="#handle-only-simple-prs">§</a>14.3 Handle Only Simple PRs</h2>
-<p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label, like “Arch: risc-v, Board: risc-v, Size: XS”. If it’s not a Simple PR: We build everything.</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169">arch.yml</a></p>
+<p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label, like “Arch: risc-v, Board: risc-v, Size: XS”. If it’s not a Simple PR: We build everything. Like so: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># inputs.boards is a JSON Array: [&quot;arm-01&quot;, &quot;risc-v-01&quot;, &quot;xtensa-01&quot;, ...]
 # We compact and remove the newlines
 boards=$( echo &#39;${{ inputs.boards }}&#39; | jq --compact-output &quot;.&quot;)
@@ -780,9 +779,8 @@ elif [[ &quot;$arch_contains_xtensa&quot; == &quot;1&quot; || &quot;$board_conta
   fi
 </code></pre></div><h2 id="skip-the-macos-and-windows-builds"><a class="doc-anchor" href="#skip-the-macos-and-windows-builds">§</a>14.7 Skip the macOS and Windows Builds</h2>
 <p>TODO</p>
-<p>For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (<code>macos</code>, <code>macos/sim-*</code>, <code>msys2</code>) since these builds are costly:</p>
+<p>For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (<code>macos</code>, <code>macos/sim-*</code>, <code>msys2</code>) since these builds are costly: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281">build.yml</a></p>
 <p>(<code>macos</code> and <code>macos/sim-*</code> builds will take 2 hours to complete due to the queueing for macOS Runners)</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281">build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Select the macOS Builds based on PR Arch Label
 macOS-Arch:
   uses: apache/nuttx/.github/workflows/arch.yml@master
@@ -900,20 +898,17 @@ Linux:
 <p><strong>For Simulator:</strong> Simple PRs will build in <a href="https://github.com/apache/nuttx/actions/runs/11216774654"><strong>1 hour 32 mins</strong></a> (previously <a href="https://github.com/apache/nuttx/actions/runs/11146942454"><strong>2 hours 12 mins</strong></a>)</p>
 </li>
 <li>
-<p>OK no big wow yet. We need to break <code>arm-05</code>, <code>riscv-01</code> and <code>riscv-02</code> into multiple smaller jobs. Then things will really zoom! <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Build Job Details)</a></p>
-<p>Move the RP2040 jobs from <code>arm-05</code> to <code>arm-06</code>, then add <code>arm-14</code>. Add jobs <code>riscv-03</code> to <code>riscv-06</code>.</p>
-<p>(<strong>Update:</strong> All Done! Check the PRs below)</p>
+<p>We broke up big jobs (<code>arm-05</code>, <code>riscv-01</code>, <code>riscv-02</code>) into multiple smaller jobs. Smaller jobs will really zoom! <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Build Job Details)</a></p>
+<p>(We moved the RP2040 jobs from <code>arm-05</code> to <code>arm-06</code>, then added <code>arm-14</code>. Also added jobs <code>riscv-03</code> to <code>riscv-06</code>)</p>
 </li>
 <li>
 <p>We already see a <strong>27% Reduction in GitHub Runner Hours</strong>! From <a href="https://github.com/apache/nuttx/actions/runs/11210724531/usage"><strong>15 Runner Hours</strong></a> down to <a href="https://github.com/apache/nuttx/actions/runs/11217886131/usage"><strong>11 Runner Hours</strong></a> per Arm32 Build.</p>
 </li>
 <li>
-<p>Split the Board Labels according to Arch, like “Board: arm”. So “Board: arm” should build the exact same way as “Arch: arm”. Same for “Board: arm, Arch: arm”. Update the Build Rules to use the Board Labels</p>
-<p>(<strong>Update:</strong> All Done! Check the PRs below)</p>
+<p>We split the Board Labels according to Arch, like “Board: arm”. So “Board: arm” should build the exact same way as “Arch: arm”. Same for “Board: arm, Arch: arm”. Updated the Build Rules to use the Board Labels.</p>
 </li>
 <li>
-<p>Split the <code>others</code> job into <code>arm64</code> and <code>x86_64</code></p>
-<p>(<strong>Update:</strong> All Done! Check the PRs below)</p>
+<p>We split the <code>others</code> job into <code>arm64</code> and <code>x86_64</code></p>
 </li>
 </ul>
 <p><strong>TODO:</strong> Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?</p>
@@ -925,13 +920,13 @@ Linux:
 <p>Kinda like packing yummy goodies into Bento Boxes, making sure they don’t overflow the Time Boxes  :-)</p>
 </li>
 <li>
-<p>We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job. So we can Fail Faster (in case of problems), and skip the rest of the jobs</p>
+<p>We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job (<code>arm-00</code>, <code>risc-v-00</code>, <code>sim-00</code>). So we can Fail Faster (in case of problems), and skip the rest of the jobs</p>
 </li>
 <li>
 <p>Recently we see many builds for <a href="https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+">Arm32 Goldfish</a>. Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: “Arch: arm, SubArch: goldfish” and/or “Board: arm, SubBoard: goldfish”</p>
 </li>
 <li>
-<p>How will we filter out the Build Jobs (e.g. <code>arm-01</code>) that should be built for a SubArch (e.g. <code>stm32</code>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">Maybe like this</a></p>
+<p>How will we filter out the Build Jobs (e.g. <code>arm-01</code>) that should be built for a SubArch (e.g. <code>stm32</code>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
 </li>
 </ul>
 
