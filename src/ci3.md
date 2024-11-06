@@ -135,11 +135,13 @@ We'll continue to monitor our GitHub Costs. And shut down the Windows Builds if 
 
 [(Windows Runners are __twice the cost__ of Linux Runners)](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers)
 
+![TODO](https://lupyuen.github.io/images/ci3-merge.jpg)
+
 # Move the Merge Jobs
 
 _What are Merge Jobs? Why move them?_
 
-Suppose our NuttX Admin __Merges a PR__.
+Suppose our NuttX Admin __Merges a PR__. (Pic above)
 
 Normally our CI Workflow will trigger a __Merge Job__, to verify that everything compiles OK after Merging the PR.
 
