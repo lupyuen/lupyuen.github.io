@@ -73,8 +73,8 @@
 <li><a href="#live-metric-for-full-time-runners">6 Live Metric for Full-Time Runners</a><ul></ul></li>
 <li><a href="#monitor-our-ci-servers-24-x-7">7 Monitor our CI Servers 24 x 7</a><ul></ul></li>
 <li><a href="#final-verdict">8 Final Verdict</a><ul></ul></li>
-<li><a href="#todo">9 TODO</a><ul></ul></li>
-<li><a href="#our-wishlist">10 Our Wishlist</a><ul></ul></li>
+<li><a href="#our-wishlist">9 Our Wishlist</a><ul></ul></li>
+<li><a href="#todo">10 TODO</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-check-our-pr-submission">12 Appendix: Check our PR Submission</a><ul></ul></li>
 <li><a href="#appendix-verify-our-pr-merge">13 Appendix: Verify our PR Merge</a><ul></ul></li>
@@ -92,8 +92,9 @@
 <li><a href="#testing">15.10 Testing</a><ul></ul></li>
 <li><a href="#actual-performance">15.11 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
-<p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from $ TODO (weekly) down to $$$ TODO…</p>
-<p>TODO: Dev build time dropped from ??? to ???</p>
+<p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from $ TODO (weekly) down to $ TODO…</p>
+<p>TODO: Pic of last 7 days</p>
+<p><strong>Previously:</strong> Our developers waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now they wait at most <strong>1.5 Hours</strong>! (Pic below)</p>
 <p>This article explains everything we did in the (Semi-Chaotic) Two Weeks for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
 <li>
@@ -117,7 +118,7 @@
 </ul>
 <div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
 </code></pre></div>
-<p>TODO: Pic of last 7 days</p>
+<p><img src="https://lupyuen.github.io/images/ci3-beforeafter.jpg" alt="TODO" /></p>
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
 <p><a href="https://www.strava.com/activities/12673094079"><strong>After deliberating overnight:</strong></a> We swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
@@ -371,18 +372,8 @@
 <p><img src="https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36" alt="before-30days" /></p>
 <p>Right now our <strong>Monthly Bill is $14K</strong>. And still dropping!</p>
 <p><img src="https://github.com/user-attachments/assets/db9def46-e386-43a2-9e10-79475e34547b" alt="after-30days" /></p>
-<p>Let’s wait for the good news from ASF, thank you everyone! 🙏</p>
-<p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="" /></p>
-<p><a href="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png">(Live Image)</a> <a href="https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log">(Live Log)</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
-<p>TODO</p>
-<p>????script to start jobs</p>
-<p>nuttx website docs: <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
-30 github minutes</p>
-<ul>
-<li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
-</ul>
-<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>10 Our Wishlist</h1>
+<p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
+<h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
 <p>It’s past Diwali and Halloween… Our CI Servers are still running. <strong>We made it yay!</strong> 🎉</p>
 <p>We got plenty to do…</p>
 <ul>
@@ -411,7 +402,7 @@
 </li>
 <li>
 <p>Which means clicking Twice Per Day to trigger the <a href="TODO"><strong>Scheduled Merge Jobs</strong></a></p>
-<p>(My fingers are getting tired)</p>
+<p>(My fingers are getting tired, pic above)</p>
 </li>
 <li>
 <p>And <strong>Restarting the Merge Jobs</strong></p>
@@ -426,6 +417,15 @@
 <p>(Maybe macOS CI Checks for New PRs)</p>
 </li>
 </ol>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>10 TODO</h1>
+<p>TODO</p>
+<p>????script to start jobs</p>
+<p>nuttx website docs: <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml">nuttx-website main.yml</a>
+30 github minutes</p>
+<ul>
+<li>Excellent Initiative by @raiden00pl: We <a href="https://github.com/apache/nuttx/pull/14410"><strong>Merge Multiple Targets</strong></a> into One Target, and reduce the build time</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome NuttX Admins and NuttX Devs, I couldn’t have survived the two choatic weeks without your help. And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
