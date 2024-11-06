@@ -241,9 +241,9 @@ Today we start only these __CI Checks__ when submitting or updating a Complex PR
 
 _Why did we choose these CI Checks?_
 
-We selected the CI Checks above because they validate NuttX Builds on __Popular Boards__ (and for special checks)...
+We selected the CI Checks above because they validate NuttX Builds on __Popular Boards__ (and for special tests)...
 
-| Target Group | Board |
+| Target Group | Board / Test |
 |:----------|:----------------------|
 | _arm-01_ | Sony Spresense (TODO) |
 | _arm-05_ | Nordic nRF52 |
@@ -253,9 +253,9 @@ We selected the CI Checks above because they validate NuttX Builds on __Popular 
 | _risc-v-02, 03_ | ESP32-C3, C6, H2 |
 | _sim-01, 02_ | CI Test, Matter |
 
-TODO: See the list of builds
-
 We might [__rotate the list__](TODO) above to get better CI Coverage.
+
+TODO: See the list of builds
 
 ![TODO](https://lupyuen.github.io/images/ci3-pr.jpg)
 
@@ -265,7 +265,7 @@ A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RIS
 
 When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
-Which will probably complete earlier than a Complex PR.
+Which will complete earlier than a Complex PR.
 
 [(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](TODO)
 
