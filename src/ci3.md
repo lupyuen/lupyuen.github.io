@@ -6,7 +6,7 @@
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
 
-TODO: Pic of last 7 days
+TODO: Pic of before 7 days, after 7 days
 
 __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
 
@@ -34,7 +34,7 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
 1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
 
-    CI Workflow shall run only __Half the Jobs__ for CI Checks.
+    CI Workflow shall trigger only __Half the Jobs__ for CI Checks.
 
     (Will reduce GitHub Cost by 32%)
 
@@ -42,7 +42,7 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
     (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only `arm-01` to `arm-14`)
 
-1.  When we __Merge a PR:__ our [__Merge Jobs will run at NuttX/nuttx__](https://github.com/NuttX/nuttx/actions/workflows/build.yml) repo. (Instead of _apache/nuttx_ repo)
+1.  When we __Merge a PR:__ Our Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Instead of OG Repo _apache/nuttx_)
 
     We shall have only __Two Scheduled Merge Jobs__ per day: 00:00 UTC and 12:00 UTC.
 
@@ -56,7 +56,7 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
     (GitHub charges [__10x Premium for macOS Runners__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x Premium for Windows Runners!)
 
-We have reasons for doing these, backed by real data...
+We have reasons for doing these, backed by solid data...
 
 ![TODO](https://lupyuen.github.io/images/ci3-cancel.jpg)
 
@@ -78,7 +78,7 @@ When we __Halve the CI Jobs:__ We reduce the wastage of GitHub Runners...
 
 ![Screenshot 2024-10-17 at 1 15 30 PM](https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a)
 
-This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Now we actually do it...
+This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Now we follow through...
 
 ![TODO](https://lupyuen.github.io/images/ci3-macos.jpg)
 
@@ -102,13 +102,13 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
-_But can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?_
+_Can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?_
 
 Nope this is __simply impossible__...
 
 - In the good old days: We were using __far too many__ GitHub Runners.
 
-  This is not sustainable, we don't have the budget to run all the CI Checks we used to.
+  This is not sustainable, we don't have the budget to do all the CI Checks we used to.
 
 - Hence we should expect __some breakage__.
 
@@ -118,9 +118,9 @@ Nope this is __simply impossible__...
 
   (Without depending on GitHub CI)
 
-- Also we should show some __love and respect__ for NuttX Devs!
+- We should show some __love and respect__ for NuttX Devs!
 
-  Previously we waited [__2.5 hours__](TODO) for All CI Checks. Now we wait at most [__1.5 hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
+  Previously we waited [__2.5 Hours__](TODO) for All CI Checks. Now we wait at most [__1.5 Hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
   [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
 
@@ -144,7 +144,7 @@ Normally our CI Workflow will trigger a __Merge Job__, to verify that everything
 
 Which means running [__34 Build Sub-Jobs__](TODO) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
 
-This is extremely costly, so we decided to run them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
+This is extremely costly, hence we decided to trigger them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
 
 ![Screenshot 2024-10-19 at 11 33 46 AM](https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0)
 
@@ -162,7 +162,7 @@ And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.
 
 _Thus we moved them?_
 
-Yep this is clearly not sustainable. So we moved the Scheduled Merge Jobs to a new [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Pic below)
+Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Pic below)
 
 Where the Merge Jobs can run free __without disruption__!
 
@@ -192,9 +192,9 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
-1.  Which will also [__Disable Fail-Fast__](TODO) so that it runs all builds. (Regardless of error)
+1.  Which will also [__Disable Fail-Fast__](TODO) and run all builds. (Regardless of error)
 
-1.  And [__Remove Max Parallel__](TODO) so that it will use unlimited concurrent runners. (Because it's free!)
+1.  And [__Remove Max Parallel__](TODO) to use unlimited concurrent runners. (Because it's free!)
 
 1.  If the Merge Job fails with a [__Mystifying Network Timeout__](TODO): I restart the Failed Sub-Jobs
 
@@ -226,7 +226,7 @@ That's why we decided to skip __Half the CI Checks__ for Complex PRs.
 
 _Which CI Checks did we select?_
 
-Today we run these __CI Checks__ when submitting or updating a Complex PR (pic above)...
+Today we start these __CI Checks__ when submitting or updating a Complex PR (pic above)...
 
 - _arm-03, 05, 06, 07, 08, 10, 13_
 - _risc-v-01, 02, 03_
@@ -339,7 +339,7 @@ This runs on a 4K TV (Xiaomi 65-inch) all day, all night...
 
 _If something goes wrong?_
 
-I have GitHub Scripts that will run on __Termux Android__. Remember to `pkg install gh` and set `GITHUB_TOKEN`...
+I have GitHub Scripts for __Termux Android__. Remember to `pkg install gh` and set `GITHUB_TOKEN`...
 
 - [__enable-macos-windows2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS Builds in the NuttX Mirror Repo
 
@@ -393,7 +393,7 @@ _But our Merge Jobs are still running in a Free Account?_
 
 We learnt a Painful Lesson today: __Freebies Won't Last Forever!__
 
-We should probably maintain an official __Paid GitHub Org Account__ to run our Merge Jobs...
+We should probably maintain an official __Paid GitHub Org Account__ to execute our Merge Jobs...
 
 1.  New GitHub Org shall be sponsored by our generous __Stakeholder Companies__
 
