@@ -114,8 +114,6 @@
 <p>We can’t run <strong>All CI Checks</strong>, but NuttX Devs can help ourselves!</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-bash"><code>cp &quot;$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png&quot; ~/Desktop/before-30days.png
-</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter.jpg" alt="TODO" /></p>
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
@@ -145,18 +143,19 @@
 </li>
 </ol>
 <p>We have reasons for doing these, backed by real data…</p>
+<p><img src="https://lupyuen.github.io/images/ci3-cancel.jpg" alt="TODO" /></p>
 <h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
 <p>We studied the CI Jobs for the previous day…</p>
 <ul>
 <li><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0"><strong>Analysis of CI Jobs over 24 Hours</strong></a></li>
 </ul>
-<p>Many CI Jobs were <strong>Incomplete</strong>: We wasted GitHub Runners on jobs that were eventually <strong>superseded and cancelled</strong>…</p>
+<p>Many CI Jobs were <strong>Incomplete</strong>: We wasted GitHub Runners on jobs that were eventually <strong>superseded and cancelled</strong> (pic above, we’ll come back to this)</p>
 <p><img src="https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e" alt="Screenshot 2024-10-17 at 1 18 14 PM" /></p>
+<p><strong>Scheduled Merge Jobs</strong> will reduce wastage of GitHub Runners, since most Merge Jobs didn’t complete. Only One Merge Job completed on that day…</p>
+<p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
 <p>When we <strong>Halve the CI Jobs:</strong> We reduce the wastage of GitHub Runners…</p>
 <p><img src="https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a" alt="Screenshot 2024-10-17 at 1 15 30 PM" /></p>
-<p><strong>Scheduled Merge Jobs</strong> will also reduce wastage of GitHub Runners, since most Merge Jobs didn’t complete. Only One Merge Job completed on that day…</p>
-<p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
-<p>All these fixes were super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>!</p>
+<p>This analysis was super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>! Now we actually do it…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-macos.jpg" alt="TODO" /></p>
 <h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
 <p><em>Quitting the macOS Builds? That’s horribly drastic!</em></p>
@@ -375,7 +374,7 @@
 <p>TODO: <strong>Previously:</strong> Our developers waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now they wait at most <strong>1.5 Hours</strong>! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
-<p><em>So everything is hunky dory?</em></p>
+<p><em>Everything is hunky dory?</em></p>
 <p>We got plenty more to do…</p>
 <ul>
 <li>
@@ -423,6 +422,7 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<p>In the next article: We’ll talk about <strong>NuttX Dashboard</strong>. And how we made it with Grafana and Prometheus.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! I couldn’t have survived the two choatic weeks without your help. And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -472,47 +472,48 @@
 <ul>
 <li><a href="https://github.com/apache/nuttx/issues/14407"><strong>“How to Verify a PR Merge”</strong></a></li>
 </ul>
-<p>(This will probably work if our CI Servers ever get shut down)</p>
+<p>This will probably work if our CI Servers ever go dark.</p>
 <h1 id="appendix-network-timeout-at-github"><a class="doc-anchor" href="#appendix-network-timeout-at-github">§</a>13 Appendix: Network Timeout at GitHub</h1>
 <p>Something super strange about <strong>Network Timeouts</strong> in our CI Docker Workflows at GitHub Actions. Here’s an example…</p>
 <ul>
 <li>
-<p>First Run fails while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626">downloading something from GitHub</a>…</p>
+<p>First Run fails while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626"><strong>downloading something from GitHub</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: imxrt1050-evk/libcxxtest,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 curl: (28) Failed to connect to github.com port 443 after 134188 ms: Connection timed out
 make[1]: *** [libcxx.defs:28: libcxx-17.0.6.src.tar.xz] Error 28
 </code></pre></div></li>
 <li>
-<p>Second Run fails again, while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536">downloading NimBLE from GitHub</a>…</p>
+<p>Second Run fails again, while <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:536"><strong>downloading NimBLE from GitHub</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: nucleo-wb55rg/nimble,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 curl: (28) Failed to connect to github.com port [443](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32112716849#step:7:444) after 134619 ms: Connection timed out
 make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nimble_context] Error 2
 </code></pre></div></li>
 <li>
-<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222">Third Run succeeds.</a> Why do we keep seeing these errors: GitHub Actions with Docker, can’t connect to GitHub itself?</p>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222"><strong>Third Run succeeds.</strong></a> Why do we keep seeing these errors: GitHub Actions with Docker, can’t connect to GitHub itself?</p>
 </li>
 <li>
-<p>Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on <a href="https://lupyuen.codeberg.page/articles/ci2.html">my own Build Farm</a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html">doesn’t show any errors</a>.</p>
+<p>Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on <a href="https://lupyuen.github.io/articles/ci2"><strong>our own Build Farm</strong></a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>doesn’t show any errors</strong></a>.</p>
 </li>
 <li>
 <p>Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔</p>
-<p><a href="https://github.com/actions/actions-runner-controller/issues/393">GitHub Actions with Smaller MTU Size</a></p>
-<p><a href="https://mlohr.com/docker-mtu/">Docker MTU issues and solutions</a></p>
+<p><a href="https://github.com/actions/actions-runner-controller/issues/393"><strong>GitHub Actions with Smaller MTU Size</strong></a></p>
+<p><a href="https://mlohr.com/docker-mtu/"><strong>Docker MTU issues and solutions</strong></a></p>
 </li>
 <li>
-<p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repos: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
+<p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repo: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
 </li>
 </ul>
-<p>These <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these remaining jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
+<p>These <strong>Timeout Errors</strong> will cost us precious GitHub Minutes. The remaining jobs get killed, and restarting these killed jobs from scratch will consume extra GitHub Minutes. (The restart below costs us 6 extra GitHub Runner Hours)</p>
 <ol>
 <li>
 <p>How do we <strong>Retry these Timeout Errors</strong>?</p>
 </li>
 <li>
-<p>Can we have <strong>Restartable Builds</strong>? Doesn’t quite make sense to build everything from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)</p>
+<p>Can we have <strong>Restartable Builds</strong>?</p>
+<p>Doesn’t quite make sense to kill everything and rebuild from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)</p>
 </li>
 <li>
-<p>Or xtensa2 should <strong>wait for others</strong> to finish, before it declares a timeout and dies? Hmmm…</p>
+<p>Or xtensa2 should <strong>wait for others</strong> to finish, before it declares a timeout and dies?</p>
 </li>
 </ol>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
@@ -536,9 +537,10 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
 </li>
 <li>
 <p>Right now most of our CI Builds are taking 2.5 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?</p>
-<p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
 </li>
 </ul>
+<p>This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs.</p>
+<p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
 <h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>14.1 Overall Solution</h2>
 <p>We propose a Partial Solution, based on the <strong>Arch and Board Labels</strong> (recently added to CI)…</p>
 <ul>
