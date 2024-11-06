@@ -8,7 +8,7 @@ __Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (
 
 TODO: Pic of last 7 days
 
-__Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now they wait at most __1.5 Hours__! (Pic below)
+__Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
 
 This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__Apache NuttX RTOS__](TODO)...
 
@@ -365,7 +365,7 @@ Right now our __Monthly Bill is $TODO__. And still dropping! Thank you everyone 
 
 TODO: after-30days
 
-TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now they wait at most __1.5 Hours__! (Pic below)
+TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
 
 ![TODO](https://lupyuen.github.io/images/ci3-sync.jpg)
 
@@ -525,7 +525,7 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
 
 Initially we created the __Build Rules__ for CI Workflow to solve these problems...
 
-- NuttX Devs need to wait (2.5 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though they're modifying a Single Architecture
+- NuttX Devs need to wait (2.5 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though we're modifying a Single Architecture
 
 - We're using too many GitHub Runners and Build Minutes, exceeding the [ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
 
