@@ -175,6 +175,7 @@
 <p><a href="https://github.com/apache/nuttx/issues/14598">(Discussion here)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/ci3-dashboard.png" alt="TODO" /></p>
 <p><em>Can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?</em></p>
 <p>Nope this is <strong>simply impossible</strong>…</p>
 <ul>
@@ -187,11 +188,11 @@
 <p>We should be prepared to backtrack and figure out which PR broke the build.</p>
 </li>
 <li>
-<p>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>, to detect breakage earlier.</p>
+<p>That’s why we have tools like the <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a> (pic above), to detect breakage earlier.</p>
 <p>(Without depending on GitHub CI)</p>
 </li>
 <li>
-<p>We should show some <strong>love and respect</strong> for NuttX Devs!</p>
+<p>Remember to show <strong>Love and Respect</strong> for NuttX Devs!</p>
 <p>Previously we waited <a href="TODO"><strong>2.5 Hours</strong></a> for All CI Checks. Now we wait at most <a href="https://github.com/apache/nuttx/actions/runs/11582139779"><strong>1.5 Hours</strong></a>, let’s stick to this.</p>
 <p><a href="https://github.com/apache/nuttx/issues/14526">(Seeking help to port NuttX Jobs to <strong>M1 Mac</strong>)</a></p>
 </li>
@@ -217,7 +218,7 @@
 <p><em>Thus we moved them?</em></p>
 <p>Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Pic below)</p>
 <p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
-<p>(In an Unpaid GitHub Org Account that won’t be charged to NuttX Project)</p>
+<p>(In an Unpaid GitHub Org Account, that won’t be charged to NuttX Project)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="TODO" /></p>
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in <code>nuttx</code> and <code>nuttx-apps</code> repos.</p>
@@ -240,7 +241,7 @@
 <p>Run this script to enable the <strong>macOS Builds</strong>: <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a></p>
 </li>
 <li>
-<p>Which will also <a href="TODO"><strong>Disable Fail-Fast</strong></a> and run all builds. (Regardless of error)</p>
+<p>Which will also <a href="TODO"><strong>Disable Fail-Fast</strong></a> and grind through all builds. (Regardless of error)</p>
 </li>
 <li>
 <p>And <a href="TODO"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
@@ -363,19 +364,18 @@
 </li>
 </ul>
 <h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
-<p>TODO</p>
-<p>It’s past Diwali and Halloween… Our CI Servers are still running. <strong>We made it yay!</strong> 🎉</p>
+<p>It’s past Diwali and Halloween and Elections… Our CI Servers are still running. <strong>We made it yay!</strong> 🎉</p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$ TODO</strong> (weekly) down to <strong>$ TODO</strong>…</p>
 <p>TODO: Pic of last 7 days</p>
 <p>Our “Monthly Bill” for GitHub Actions used to be <strong>$18K</strong>…</p>
 <p><img src="https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36" alt="before-30days" /></p>
 <p>Right now our <strong>Monthly Bill is $TODO</strong>. And still dropping! Thank you everyone for making this happen! 🙏</p>
 <p>TODO: after-30days</p>
-<p>TODO: <strong>Previously:</strong> Our developers waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>! (Pic below)</p>
+<p><strong>Bonus Love &amp; Respect:</strong> Previously our devs waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
 <p><em>Everything is hunky dory?</em></p>
-<p>We got plenty more to do…</p>
+<p>Depending on a Single Provider for Continuous Integration is a terrible thing. We got plenty more to do…</p>
 <ul>
 <li>
 <p>Become more resilient and self-sufficient with <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>Our Own Build Farm</strong></a></p>
@@ -405,15 +405,15 @@
 </li>
 <li>
 <p>Which means clicking Twice Per Day to trigger the <a href="TODO"><strong>Scheduled Merge Jobs</strong></a></p>
-<p>(My fingers are getting tired, pic above)</p>
+<p>(My fingers are tired, pic above)</p>
 </li>
 <li>
-<p>And <strong>Restarting the Merge Jobs</strong></p>
-<p><a href="TODO">(Which might fail due to <strong>Mysterious Network Timeouts</strong>)</a></p>
+<p>And <strong>Restarting the Failed Merge Jobs</strong></p>
+<p><a href="TODO">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
-<p>(For our upcoming <strong>Board Testing Farm</strong>)</p>
+<p>(For upcoming <strong>Board Testing Farm</strong>)</p>
 </li>
 <li>
 <p>New GitHub Org will eventually <strong>Offload CI Checks</strong> from our NuttX Repos</p>
@@ -450,7 +450,7 @@
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
 <h1 id="appendix-check-our-pr-submission"><a class="doc-anchor" href="#appendix-check-our-pr-submission">§</a>11 Appendix: Check our PR Submission</h1>
-<p><em>Before submitting a PR to NuttX: How can we check our PR thoroughly?</em></p>
+<p><em>Before submitting a PR to NuttX: How to check our PR thoroughly?</em></p>
 <p>Yep it’s super important to <strong>thoroughly test our PRs</strong> before submitting to NuttX.</p>
 <p>But NuttX Project <a href="TODO"><strong>doesn’t have the budget</strong></a> to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)…</p>
 <ol>
