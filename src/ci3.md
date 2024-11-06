@@ -4,9 +4,11 @@
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
-__Within Two Weeks:__ We squashed our GitHub Actions spending from $ TODO (weekly) down to $$$ TODO...
+__Within Two Weeks:__ We squashed our GitHub Actions spending from $ TODO (weekly) down to $ TODO...
 
-TODO: Dev build time dropped from ??? to ???
+TODO: Pic of last 7 days
+
+__Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now they wait at most __1.5 Hours__! (Pic below)
 
 This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__Apache NuttX RTOS__](TODO)...
 
@@ -26,7 +28,7 @@ This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__A
 cp "$HOME/Desktop/Screenshot 2024-10-17 at 5.01.11 PM.png" ~/Desktop/before-30days.png
 ```
 
-TODO: Pic of last 7 days
+![TODO](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
 # Rescue Plan
 
@@ -362,22 +364,7 @@ Right now our __Monthly Bill is $14K__. And still dropping!
 
 ![after-30days](https://github.com/user-attachments/assets/db9def46-e386-43a2-9e10-79475e34547b)
 
-Let's wait for the good news from ASF, thank you everyone! 🙏
-
-![](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
-
-[(Live Image)](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png) [(Live Log)](https://github.com/lupyuen/nuttx-metrics/blob/main/compute-github-runners.log)
-
-# TODO
-
-TODO
-
-????script to start jobs
-
-nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
-30 github minutes
-
-- Excellent Initiative by @raiden00pl: We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target, and reduce the build time
+![TODO](https://lupyuen.github.io/images/ci3-sync.jpg)
 
 # Our Wishlist
 
@@ -413,7 +400,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to run our M
 
 1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](TODO)
 
-    (My fingers are getting tired)
+    (My fingers are getting tired, pic above)
 
 1.  And __Restarting the Merge Jobs__ 
 
@@ -426,6 +413,19 @@ We should probably maintain an official __Paid GitHub Org Account__ to run our M
 1.  New GitHub Org will eventually __Offload CI Checks__ from our NuttX Repos
 
     (Maybe macOS CI Checks for New PRs)
+
+# TODO
+
+TODO
+
+????script to start jobs
+
+nuttx website docs: [nuttx-website main.yml](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml)
+30 github minutes
+
+- Excellent Initiative by @raiden00pl: We [__Merge Multiple Targets__](https://github.com/apache/nuttx/pull/14410) into One Target, and reduce the build time
+
+![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
 # What's Next
 
