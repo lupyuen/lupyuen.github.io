@@ -12,13 +12,13 @@ __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be che
 
 This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__Apache NuttX RTOS__](TODO)...
 
-- Shutting down the __macOS and Windows Builds__, reviving them in a different form
+- Shut down the __macOS and Windows Builds__, revive them in a different form
 
 - __Merge Jobs__ are super costly, we moved them to the NuttX Mirror Repo
 
 - We __Halved the CI Checks__ for Complex PRs. (Continuous Integration)
 
-- __Simple PRs__ are already quite fast. (12 mins sometimes!)
+- __Simple PRs__ are already quite fast. (Sometimes 12 Mins!)
 
 - Coding the __Build Rules__ for our CI Workflow, monitoring our CI Servers 24 x 7
 
@@ -246,17 +246,17 @@ We chose the CI Checks above because they validate NuttX Builds on these __Popul
 
 | Target Group | Board |
 |:----------|:----------------------|
-| _arm-01:_ | Sony Spresense (TODO) |
-| _arm-05:_ | Nordic nRF52 |
-| _arm-06:_ | Raspberry Pi RP2040 |
-| _arm-07:_ | Microchip SAMD |
-| _arm-08, 10, 13:_ | STM32 |
-| _risc-v-02, 03:_ | ESP32-C3, C6, H2 |
-| _sim-01, 02:_ | CI Test, Matter |
+| _arm-01_ | Sony Spresense (TODO) |
+| _arm-05_ | Nordic nRF52 |
+| _arm-06_ | Raspberry Pi RP2040 |
+| _arm-07_ | Microchip SAMD |
+| _arm-08, 10, 13_ | STM32 |
+| _risc-v-02, 03_ | ESP32-C3, C6, H2 |
+| _sim-01, 02_ | CI Test, Matter |
 
 TODO: See the list of builds
 
-(We might rotate the list to get better CI Coverage)
+We might [__rotate the list__](TODO) above to get better CI Coverage.
 
 ![TODO](https://lupyuen.github.io/images/ci3-pr.jpg)
 
@@ -264,11 +264,11 @@ _What about Simple PRs?_
 
 A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.
 
-When we create a Simple PR for Arm32: It runs only the CI Checks for _arm-01_ ... _arm-14_.
+When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
-(It will probably complete earlier than a Complex PR)
+Which will probably complete earlier than a Complex PR.
 
-TODO: X86_64 dev probably the happiest, Their PRs complete in 10 mins
+[(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](TODO)
 
 _Sounds awfully complicated. How did we code the rules?_
 
