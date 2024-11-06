@@ -30,7 +30,7 @@ This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__A
 
 We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q) to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would __Halt Totally in Two Weeks__!
 
-[__After deliberating overnight:__](https://www.strava.com/activities/12673094079) We swiftly activated [__our rescue plan__](https://github.com/apache/nuttx/issues/14376)...
+After [__deliberating overnight:__](https://www.strava.com/activities/12673094079) We swiftly activated [__our rescue plan__](https://github.com/apache/nuttx/issues/14376)...
 
 1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
 
@@ -38,21 +38,21 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
     (Will reduce GitHub Cost by 32%)
 
-1.  When the __Complex PR is Merged:__ CI Workflow will still run all jobs `arm-01` to `arm-14`
+1.  When the __Complex PR is Merged:__ CI Workflow will still run all jobs _arm-01 ... arm-14, risc-v, xtensa, etc_
 
-    (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall build only `arm-01` to `arm-14`)
+    (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall check only _arm-01 ... arm-14_)
 
 1.  When we __Merge a PR:__ Our Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Instead of OG Repo _apache/nuttx_)
 
     We shall have only __Two Scheduled Merge Jobs__ per day: 00:00 UTC and 12:00 UTC.
 
-1.  How? I shall quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in `nuttx` and `nuttx-apps` repos.
+1.  How? I shall quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in NuttX Repo and NuttX Apps.
 
-    Then at 00:00 UTC and 12:00 UTC: I shall start the Latest Merge Job at `NuttX/nuttx` repo.
+    Then at __00:00 UTC__ and __12:00 UTC__: I shall start the Latest Merge Job at NuttX Mirror Repo.
 
     (Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
 
-1.  __macOS and Windows Jobs__ (msys2 / msvc): They shall be totally disabled until we find a way to manage their costs.
+1.  __macOS and Windows Jobs__ _(msys2 / msvc)_: They shall be totally disabled until we find a way to manage their costs.
 
     (GitHub charges [__10x Premium for macOS Runners__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x Premium for Windows Runners!)
 
@@ -104,7 +104,7 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
 ![TODO](https://lupyuen.github.io/images/ci3-dashboard.png)
 
-_Can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?_
+_Can we still prevent breakage of ALL Builds? Linux, macOS AND Windows?_
 
 Nope this is __simply impossible__...
 
@@ -116,7 +116,7 @@ Nope this is __simply impossible__...
 
   We should be prepared to backtrack and figure out which PR broke the build.
 
-- That's why we have tools like the [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558) (pic above), to detect breakage earlier.
+- That's why we have tools like [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558) (pic above), to detect breakage earlier.
 
   (Without depending on GitHub CI)
 
@@ -144,7 +144,7 @@ Suppose our NuttX Admin __Merges a PR__. (Pic above)
 
 Normally our CI Workflow will trigger a __Merge Job__, to verify that everything compiles OK after Merging the PR.
 
-Which means running [__34 Build Sub-Jobs__](TODO) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
+Which means ploughing through [__34 Sub-Jobs__](TODO) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
 
 This is extremely costly, hence we decided to trigger them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
 
@@ -174,7 +174,7 @@ Where the Merge Jobs can run free __without disruption__!
 
 _What about the Old Merge Jobs?_
 
-Initially I ran a script that will quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in `nuttx` and `nuttx-apps` repos.
+Initially I ran a script that will quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in NuttX Repo and NuttX Apps.
 
 Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). 
 
@@ -220,15 +220,15 @@ Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
 
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
 
-[__Two-Thirds__](TODO) of our GitHub Runner Minutes were spent on Submitting and Updating PRs.
+[__Two-Thirds__](TODO) of our GitHub Runner Minutes were spent on __Submitting and Updating PRs__.
 
-That's why we decided to skip __Half the CI Checks__ for Complex PRs.
+Hence we're skipping __Half the CI Checks__ for Complex PRs.
 
 (A __Complex PR__ affects __All Architectures__: Arm, RISC-V, Xtensa, etc)
 
 _Which CI Checks did we select?_
 
-Today we start these __CI Checks__ when submitting or updating a Complex PR (pic above)...
+Today we start only these __CI Checks__ when submitting or updating a Complex PR (pic above)...
 
 - _arm-03, 05, 06, 07, 08, 10, 13_
 - _risc-v-01, 02, 03_
@@ -237,11 +237,11 @@ Today we start these __CI Checks__ when submitting or updating a Complex PR (pic
 
 [(See the __Pull Request__)](TODO)
 
-[(Also synced to __NuttX Apps__)](TODO)
+[(Synced to __NuttX Apps__)](TODO)
 
 _Why did we choose these CI Checks?_
 
-We chose the CI Checks above because they validate NuttX Builds on these __Popular Boards__ (and special checks)...
+We selected the CI Checks above because they validate NuttX Builds on __Popular Boards__ (and for special checks)...
 
 | Target Group | Board |
 |:----------|:----------------------|
@@ -341,7 +341,7 @@ This runs on a 4K TV (Xiaomi 65-inch) all day, all night...
 
 _If something goes wrong?_
 
-I have GitHub Scripts for __Termux Android__. Remember to `pkg install gh` and set `GITHUB_TOKEN`...
+We have GitHub Scripts for __Termux Android__. Remember to _"pkg install gh"_ and set _GITHUB_TOKEN_...
 
 - [__enable-macos-windows2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows2.sh): Enable the macOS Builds in the NuttX Mirror Repo
 
@@ -357,7 +357,7 @@ __Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (
 
 TODO: Pic of last 7 days
 
-Our "Monthly Bill" for GitHub Actions used to be __$18K__...
+__"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
 ![before-30days](https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36)
 
@@ -373,7 +373,7 @@ __Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Re
 
 _Everything is hunky dory?_
 
-Depending on a Single Provider for Continuous Integration is a terrible thing. We got plenty more to do...
+Trusting a __Single Provider for Continuous Integration__ is a terrible thing. We got plenty more to do...
 
 - Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.codeberg.page/articles/ci2.html)
 
@@ -423,9 +423,9 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 # What's Next
 
-In the next article: We'll talk about __NuttX Dashboard__. And how we made it with Grafana and Prometheus.
+Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus.
 
-Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
+Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
@@ -513,7 +513,7 @@ These __Timeout Errors__ will cost us precious GitHub Minutes. The remaining job
 
     Doesn't quite make sense to kill everything and rebuild from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
 
-1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and dies?
+1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and croaks?
 
 ```text
 Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
@@ -957,3 +957,9 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
 - Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
 
 - How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
+
+[(Discussion here)](TODO)
+
+![TODO](https://lupyuen.github.io/images/ci3-hike.jpg)
+
+[_Spot the exact knotty moment that we were told about the CI Shutdown_](https://www.strava.com/activities/12673094079)
