@@ -203,9 +203,10 @@
 <p>We recently <a href="https://github.com/apache/nuttx/issues/14598"><strong>re-enabled the Windows Builds</strong></a>, because they’re not as costly as macOS Builds.</p>
 <p>We’ll continue to monitor our GitHub Costs. And shut down the Windows Builds if necessary.</p>
 <p><a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">(Windows Runners are <strong>twice the cost</strong> of Linux Runners)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci3-merge.jpg" alt="TODO" /></p>
 <h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
 <p><em>What are Merge Jobs? Why move them?</em></p>
-<p>Suppose our NuttX Admin <strong>Merges a PR</strong>.</p>
+<p>Suppose our NuttX Admin <strong>Merges a PR</strong>. (Pic above)</p>
 <p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
 <p>Which means running <a href="TODO"><strong>34 Build Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
 <p>This is extremely costly, so we decided to run them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
