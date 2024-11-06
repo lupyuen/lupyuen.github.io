@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
-__Within Two Weeks:__ We squashed our GitHub Actions spending from $ TODO (weekly) down to $ TODO...
+__Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
 
 TODO: Pic of last 7 days
 
