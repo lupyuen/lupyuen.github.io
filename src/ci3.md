@@ -265,7 +265,7 @@ A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RIS
 
 When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
-Which will complete earlier than a Complex PR.
+Which will [__complete earlier__](TODO) than a Complex PR.
 
 [(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](TODO)
 
