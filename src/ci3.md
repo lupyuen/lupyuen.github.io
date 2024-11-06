@@ -102,6 +102,8 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
+![TODO](https://lupyuen.github.io/images/ci3-dashboard.png)
+
 _Can we still prevent breakage of ALL Builds? Linux / macOS / msvc / msys2?_
 
 Nope this is __simply impossible__...
@@ -114,11 +116,11 @@ Nope this is __simply impossible__...
 
   We should be prepared to backtrack and figure out which PR broke the build.
 
-- That's why we have tools like the [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558), to detect breakage earlier.
+- That's why we have tools like the [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558) (pic above), to detect breakage earlier.
 
   (Without depending on GitHub CI)
 
-- We should show some __love and respect__ for NuttX Devs!
+- Remember to show __Love and Respect__ for NuttX Devs!
 
   Previously we waited [__2.5 Hours__](TODO) for All CI Checks. Now we wait at most [__1.5 Hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
@@ -166,7 +168,7 @@ Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new 
 
 Where the Merge Jobs can run free __without disruption__!
 
-(In an Unpaid GitHub Org Account that won't be charged to NuttX Project)
+(In an Unpaid GitHub Org Account, that won't be charged to NuttX Project)
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
@@ -192,7 +194,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
-1.  Which will also [__Disable Fail-Fast__](TODO) and run all builds. (Regardless of error)
+1.  Which will also [__Disable Fail-Fast__](TODO) and grind through all builds. (Regardless of error)
 
 1.  And [__Remove Max Parallel__](TODO) to use unlimited concurrent runners. (Because it's free!)
 
@@ -349,9 +351,7 @@ I have GitHub Scripts for __Termux Android__. Remember to `pkg install gh` and s
 
 # Final Verdict
 
-TODO
-
-It's past Diwali and Halloween... Our CI Servers are still running. __We made it yay!__ 🎉
+It's past Diwali and Halloween and Elections... Our CI Servers are still running. __We made it yay!__ 🎉
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
 
@@ -365,7 +365,7 @@ Right now our __Monthly Bill is $TODO__. And still dropping! Thank you everyone 
 
 TODO: after-30days
 
-TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
+__Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__!
 
 ![TODO](https://lupyuen.github.io/images/ci3-sync.jpg)
 
@@ -373,7 +373,7 @@ TODO: __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to 
 
 _Everything is hunky dory?_
 
-We got plenty more to do...
+Depending on a Single Provider for Continuous Integration is a terrible thing. We got plenty more to do...
 
 - Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.codeberg.page/articles/ci2.html)
 
@@ -405,15 +405,15 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](TODO)
 
-    (My fingers are getting tired, pic above)
+    (My fingers are tired, pic above)
 
-1.  And __Restarting the Merge Jobs__ 
+1.  And __Restarting the Failed Merge Jobs__ 
 
-    [(Which might fail due to __Mysterious Network Timeouts__)](TODO)
+    [(Because of __Mysterious Network Timeouts__)](TODO)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
-    (For our upcoming __Board Testing Farm__)
+    (For upcoming __Board Testing Farm__)
 
 1.  New GitHub Org will eventually __Offload CI Checks__ from our NuttX Repos
 
@@ -447,7 +447,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Check our PR Submission
 
-_Before submitting a PR to NuttX: How can we check our PR thoroughly?_
+_Before submitting a PR to NuttX: How to check our PR thoroughly?_
 
 Yep it's super important to __thoroughly test our PRs__ before submitting to NuttX.
 
