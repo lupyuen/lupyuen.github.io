@@ -253,10 +253,19 @@
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
 </li>
 </ol>
-<p><em>Is it really OK to Disable the Merge Jobs? What about Docker Builds? And Documentation?</em></p>
-<p>TODO: Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
-<p>TODO: <a href="https://github.com/apache/nuttx-apps/pull/2817">(Also for <strong>NuttX Apps</strong>)</a></p>
-<p>TODO: <a href="https://github.com/apache/nuttx/issues/14407">(Fixing the <strong>Auto-Build on Sync</strong>)</a></p>
+<p><em>Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?</em></p>
+<ul>
+<li>
+<p><strong>Docker Builds:</strong> When <a href="TODO"><strong>Dockerfile</strong></a> is updated, it will trigger the CI Workflow <a href="TODO"><strong>docker_linux.yml</strong></a>. Which is not affected by this new setup, and will continue to execute. (Exactly like today)</p>
+</li>
+<li>
+<p><strong>Documentation:</strong> When the docs are updated, they are published to NuttX Website via the CI Workflow <a href="TODO"><strong>main.yml</strong></a> from the NuttX Website repo (scheduled daily). Which is not affected by our new grand plan.</p>
+</li>
+<li>
+<p><strong>Release Branch:</strong> Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). <a href="TODO"><strong>Release Branch</strong></a> shall always be verified through Complete CI Checks.</p>
+<p><a href="https://github.com/apache/nuttx/pull/14618">(More about this)</a></p>
+</li>
+</ul>
 <p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
 <p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
@@ -297,7 +306,9 @@
 <p><a href="TODO">(<strong>x86_64 Devs</strong> are the happiest. Their PRs complete in <strong>10 Mins</strong>!)</a></p>
 <p><em>Sounds awfully complicated. How did we code the rules?</em></p>
 <p>Indeed! The Build Rules are explained here…</p>
-<p>TODO: Build Rules</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow">“<strong>Build Rules for CI Workflow</strong>”</a></li>
+</ul>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
 <p><em>Hitting the Target Metrics in 2 weeks… Everyone needs to help out right?</em></p>
 <p>Our quota is <strong>25 Full-Time GitHub Runners</strong> per day.</p>
