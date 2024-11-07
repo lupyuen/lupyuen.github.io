@@ -102,7 +102,7 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
-![TODO](https://lupyuen.github.io/images/ci3-dashboard.png)
+![NuttX Dashboard](https://lupyuen.github.io/images/ci3-dashboard.png)
 
 _Can we still prevent breakage of ALL Builds? Linux, macOS AND Windows?_
 
@@ -468,6 +468,20 @@ Here are the instructions...
 - [__CI Check: Docker vs GitHub Actions__](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
 
 - [__CI Check: Enable for PR Branch__](https://github.com/apache/nuttx/pull/14590#issuecomment-2459178845)
+
+![NuttX Dashboard](https://lupyuen.github.io/images/ci3-dashboard.png)
+
+_What if our PR fails the check, caused by Another PR?_
+
+We wait for the __Other PR to be patched__ (otherwise we might miss a major bug)
+
+1.  Keep checking the __NuttX Dashboard__ (above)
+
+1.  Wait patiently for the __Red Error Boxes__ to disappear
+
+1.  [__Rebase our PR__](https://lupyuen.github.io/articles/pr#submit-the-pull-request) with the Master Branch
+
+1.  Our PR should pass the CI Check
 
 ![Screenshot 2024-10-19 at 8 11 22 AM](https://github.com/user-attachments/assets/ca08db63-ecca-4b18-984e-46ba3a9716c2)
 
