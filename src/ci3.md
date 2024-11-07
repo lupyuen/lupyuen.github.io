@@ -6,11 +6,11 @@
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
-![TODO](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
+![Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
 
 __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
 
-This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__Apache NuttX RTOS__](TODO)...
+This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 - Shut down the __macOS and Windows Builds__, revive them in a different form
 
@@ -58,7 +58,7 @@ After [__deliberating overnight:__](https://www.strava.com/activities/1267309407
 
 We have reasons for doing these, backed by solid data...
 
-![TODO](https://lupyuen.github.io/images/ci3-cancel.jpg)
+![We wasted GitHub Runners on Merge Jobs that were eventually superseded and cancelled](https://lupyuen.github.io/images/ci3-cancel.jpg)
 
 # Present Pains
 
@@ -66,7 +66,7 @@ We studied the CI Jobs for the previous day...
 
 - [__Analysis of CI Jobs over 24 Hours__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0)
 
-Many CI Jobs were __Incomplete__: We wasted GitHub Runners on jobs that were eventually __superseded and cancelled__ (pic above, we'll come back to this)
+Many CI Jobs were __Incomplete__: We wasted GitHub Runners on Merge Jobs that were eventually __superseded and cancelled__ (pic above, we'll come back to this)
 
 ![Screenshot 2024-10-17 at 1 18 14 PM](https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e)
 
@@ -122,7 +122,7 @@ Nope this is __simply impossible__...
 
 - Remember to show __Love and Respect__ for NuttX Devs!
 
-  Previously we waited [__2.5 Hours__](TODO) for All CI Checks. Now we wait at most [__1.5 Hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
+  Previously we waited [__2.5 Hours__](https://github.com/apache/nuttx/actions/runs/11308145630) for All CI Checks. Now we wait at most [__1.5 Hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
 
   [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
 
@@ -134,7 +134,7 @@ We'll continue to monitor our GitHub Costs. And shut down the Windows Builds if 
 
 [(Windows Runners are __twice the cost__ of Linux Runners)](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers)
 
-![TODO](https://lupyuen.github.io/images/ci3-merge.jpg)
+![Normally our CI Workflow will trigger a Merge Job, to verify that everything compiles OK after Merging the PR](https://lupyuen.github.io/images/ci3-merge.jpg)
 
 # Move the Merge Jobs
 
@@ -144,7 +144,7 @@ Suppose our NuttX Admin __Merges a PR__. (Pic above)
 
 Normally our CI Workflow will trigger a __Merge Job__, to verify that everything compiles OK after Merging the PR.
 
-Which means ploughing through [__34 Sub-Jobs__](TODO) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
+Which means ploughing through [__34 Sub-Jobs__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
 
 This is extremely costly, hence we decided to trigger them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
 
@@ -154,13 +154,13 @@ _Is there a problem?_
 
 We spent __One-Third__ of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)
 
-[__Our CI Data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs. (Pic below)
+[__Our CI Data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that the Scheduled Merge Job kept getting disrupted by Newer Merged PRs. (Pic below)
 
 And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.
 
 (__101 GitHub Hours__ for one single Scheduled Merge Job!)
 
-![TODO](https://lupyuen.github.io/images/ci3-before.jpg)
+![Merge Job kept getting disrupted by Newer Merged PRs](https://lupyuen.github.io/images/ci3-before.jpg)
 
 _Thus we moved them?_
 
@@ -194,27 +194,27 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
-1.  Which will also [__Disable Fail-Fast__](TODO) and grind through all builds. (Regardless of error)
+1.  Which will also [__Disable Fail-Fast__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) and grind through all builds. (Regardless of error)
 
-1.  And [__Remove Max Parallel__](TODO) to use unlimited concurrent runners. (Because it's free!)
+1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. (Because it's free!)
 
-1.  If the Merge Job fails with a [__Mystifying Network Timeout__](TODO): I restart the Failed Sub-Jobs
+1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
 _Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
 
-- __Docker Builds:__ When [__Dockerfile__](TODO) is updated, it will trigger the CI Workflow [__docker_linux.yml__](TODO). Which is not affected by this new setup, and will continue to execute. (Exactly like today)
+- __Docker Builds:__ When [__Dockerfile__](https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile) is updated, it will trigger the CI Workflow [__docker_linux.yml__](https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml). Which is not affected by this new setup, and will continue to execute. (Exactly like today)
 
-- __Documentation:__ When the docs are updated, they are published to NuttX Website via the CI Workflow [__main.yml__](TODO) from the NuttX Website repo (scheduled daily). Which is not affected by our new grand plan.
+- __Documentation:__ When the docs are updated, they are published to NuttX Website via the CI Workflow [__main.yml__](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml) from the NuttX Website repo (scheduled daily). Which is not affected by our grand plan.
 
-- __Release Branch:__ Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). [__Release Branch__](TODO) shall always be verified through Complete CI Checks.
+- __Release Branch:__ Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). [__Release Branch__](https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748) shall always be verified through [__Complete CI Checks__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26).
 
   [(More about this)](https://github.com/apache/nuttx/pull/14618)
 
 _Isn't this cheating? Offloading to a Free GitHub Account?_
 
-Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
+Yeah that's why we need a [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci3#our-wishlist). (Details below)
 
 ![Halve the CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
 
@@ -222,7 +222,7 @@ Yeah that's why we need a [__NuttX Build Farm__](TODO). (Details below)
 
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
 
-[__Two-Thirds__](TODO) of our GitHub Runner Minutes were spent on __Submitting and Updating PRs__.
+[__Two-Thirds__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) of our GitHub Runner Minutes were spent on __Submitting and Updating PRs__.
 
 Hence we're skipping __Half the CI Checks__ for Complex PRs.
 
@@ -237,9 +237,9 @@ Today we start only these __CI Checks__ when submitting or updating a Complex PR
 - _sim-01, 02_
 - _xtensa-01, arm64-01, x86\_64-01, other_
 
-[(See the __Pull Request__)](TODO)
+[(See the __Pull Request__)](https://github.com/apache/nuttx/pull/14602)
 
-[(Synced to __NuttX Apps__)](TODO)
+[(Synced to __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2813)
 
 _Why did we choose these CI Checks?_
 
@@ -255,11 +255,11 @@ We selected the CI Checks above because they validate NuttX Builds on __Popular 
 | _risc-v-02, 03_ | ESP32-C3, C6, H2 |
 | _sim-01, 02_ | CI Test, Matter |
 
-We might [__rotate the list__](TODO) above to get better CI Coverage.
+We might [__rotate the list__](https://github.com/apache/nuttx/pull/14602) above to get better CI Coverage.
 
-TODO: See the list of builds
+[(See the Complete List of __CI Builds__)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
-![TODO](https://lupyuen.github.io/images/ci3-pr.jpg)
+![Complex PR vs Simple PR](https://lupyuen.github.io/images/ci3-pr.jpg)
 
 _What about Simple PRs?_
 
@@ -267,9 +267,9 @@ A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RIS
 
 When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
-Which will [__complete earlier__](TODO) than a Complex PR.
+Which will [__complete earlier__](https://lupyuen.codeberg.page/articles/ci3.html#actual-performance) than a Complex PR.
 
-[(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](TODO)
+[(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](https://lupyuen.codeberg.page/articles/ci3.html#actual-performance)
 
 _Sounds awfully complicated. How did we code the rules?_
 
@@ -357,19 +357,19 @@ It's past Diwali and Halloween and Elections... Our CI Servers are still alive. 
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
-![TODO](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
+![Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
 
 __"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
-![TODO](https://lupyuen.github.io/images/ci3-before30days.png)
+![Monthly Bill for GitHub Actions used to be $18K](https://lupyuen.github.io/images/ci3-before30days.png)
 
 Right now our __Monthly Bill is $12K__. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏
 
-![TODO](https://lupyuen.github.io/images/ci3-after30days.png)
+![Right now our Monthly Bill is $12K](https://lupyuen.github.io/images/ci3-after30days.png)
 
 __Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__!
 
-![TODO](https://lupyuen.github.io/images/ci3-sync.jpg)
+![Tired Fingers syncing the NuttX Repo to NuttX Mirror Repo](https://lupyuen.github.io/images/ci3-sync.jpg)
 
 # Our Wishlist
 
@@ -389,7 +389,7 @@ Trusting a __Single Provider for Continuous Integration__ is a terrible thing. W
 
   (And cut the Build Time)
 
-[🙏🙏🙏 Please join __Your Ubuntu PC__ to our Build Farm! 🙏🙏🙏](TODO)
+[🙏🙏🙏 Please join __Your Ubuntu PC__ to our Build Farm! 🙏🙏🙏](https://github.com/apache/nuttx/issues/14558)
 
 _But our Merge Jobs are still running in a Free Account?_
 
@@ -405,13 +405,13 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
     (Instead of an Unpaid Volunteer)
 
-1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](TODO)
+1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](https://lupyuen.codeberg.page/articles/ci3.html#move-the-merge-jobs)
 
     (My fingers are tired, pic above)
 
 1.  And restarting the __Failed Merge Jobs__ 
 
-    [(Because of __Mysterious Network Timeouts__)](TODO)
+    [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
@@ -455,7 +455,7 @@ _Before submitting a PR to NuttX: How to check our PR thoroughly?_
 
 Yep it's super important to __thoroughly test our PRs__ before submitting to NuttX.
 
-But NuttX Project [__doesn't have the budget__](TODO) to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)...
+But NuttX Project [__doesn't have the budget__](https://lupyuen.codeberg.page/articles/ci3.html#disable-macos-and-windows-builds) to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)
 
 1. Run the CI Builds ourselves with __Docker Engine__
 
@@ -909,7 +909,7 @@ numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$s
 echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
 ```
 
-## Sync the CI Workflow from NuttX Repo to Nuttx Apps
+## Sync the CI Workflow from NuttX Repo to NuttX Apps
 
 Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`!
 
@@ -994,7 +994,7 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
 
 - How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
 
-  [(Discussion here)](TODO)
+  [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
 ![Spot the exact knotty moment that we were told about the CI Shutdown](https://lupyuen.github.io/images/ci3-hike.jpg)
 
