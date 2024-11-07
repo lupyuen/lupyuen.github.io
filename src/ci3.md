@@ -463,7 +463,9 @@ But NuttX Project [__doesn't have the budget__](TODO) to run all CI Checks for N
 
 Here are the instructions...
 
-- [__"CI Builds with Docker vs GitHub Actions"__](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
+- [__CI Check: Docker vs GitHub Actions__](https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114)
+
+- [__CI Check: Enable for PR Branch__](https://github.com/apache/nuttx/pull/14590#issuecomment-2459178845)
 
 # Appendix: Verify our PR Merge
 
