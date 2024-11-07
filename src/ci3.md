@@ -636,7 +636,7 @@ Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, w
 
 ## Handle Only Simple PRs
 
-We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L127-L169)
+We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189)
 
 ```yaml
 # inputs.boards is a JSON Array: ["arm-01", "risc-v-01", "xtensa-01", ...]
@@ -677,6 +677,23 @@ fi
 
 # If Not a Simple PR: Build all targets
 if [[ "$quit" == "1" ]]; then
+  # If PR was Created or Modified: Exclude some boards
+  pr=${{github.event.pull_request.number}}
+  if [[ "$pr" != "" ]]; then
+    echo "Excluding arm-0[1249], arm-1[124-9], risc-v-04..06, sim-03, xtensa-02"
+    boards=$(
+      echo '${{ inputs.boards }}' |
+      jq --compact-output \
+      'map(
+        select(
+          test("arm-0[1249]") == false and test("arm-1[124-9]") == false and
+          test("risc-v-0[4-9]") == false and
+          test("sim-0[3-9]") == false and
+          test("xtensa-0[2-9]") == false
+        )
+      )'
+    )
+  fi
   echo "selected_builds=$boards" | tee -a $GITHUB_OUTPUT
   exit
 fi
@@ -684,7 +701,7 @@ fi
 
 ## For Arm Arch: Identify the Non-Arm Builds
 
-Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L169-L234)
+Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254)
 
 ```yaml
 # For every board
@@ -738,9 +755,13 @@ with:
   os: Linux
   boards: |
     [
-      "arm-01", "other", "risc-v-01", "sim-01", "xtensa-01",
+      "arm-01", "risc-v-01", "sim-01", "xtensa-01", "arm64-01", "x86_64-01", "other",
       "arm-02", "risc-v-02", "sim-02", "xtensa-02",
-      "arm-03", "arm-04", "arm-05", "arm-06", "arm-07", "arm-08", "arm-09", "arm-10", "arm-11", "arm-12", "arm-13"
+      "arm-03", "risc-v-03", "sim-03",
+      "arm-04", "risc-v-04",
+      "arm-05", "risc-v-05",
+      "arm-06", "risc-v-06",
+      "arm-07", "arm-08", "arm-09", "arm-10", "arm-11", "arm-12", "arm-13", "arm-14"
     ]
 
 # Run the selected Linux Builds
@@ -764,45 +785,43 @@ Why `needs: Fetch-Source`? That's because the PR Labeler runs concurrently in th
 
 ## Same for RISC-V, Simulator, x86_64 and Xtensa Builds
 
-We do the same for RISC-V, Simulator, x86_64 and Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L105-L129)
+We do the same for Arm64, RISC-V, Simulator, x86_64 and Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L202-L232)
 
 ```yaml
-# For "Arch / Board: arm64": Build other
+# For "Arch / Board: arm64": Build arm64-01
 elif [[ "$arch_contains_arm64" == "1" || "$board_contains_arm64" == "1" ]]; then
-  if [[ "$board" != *"other"* ]]; then
+  if [[ "$board" != *"arm64-"* ]]; then
     skip_build=1
   fi
 
-# For "Arch / Board: risc-v": Build risc-v-01, risc-v-02
+# For "Arch / Board: risc-v": Build risc-v-01, risc-v-02, ...
 elif [[ "$arch_contains_riscv" == "1" || "$board_contains_riscv" == "1" ]]; then
-  if [[ "$board" != *"risc-v"* ]]; then
+  if [[ "$board" != *"risc-v-"* ]]; then
     skip_build=1
   fi
 
 # For "Arch / Board: simulator": Build sim-01, sim-02
 elif [[ "$arch_contains_sim" == "1" || "$board_contains_sim" == "1" ]]; then
-  if [[ "$board" != *"sim"* ]]; then
+  if [[ "$board" != *"sim-"* ]]; then
     skip_build=1
   fi
 
-# For "Arch / Board: x86_64": Build other
+# For "Arch / Board: x86_64": Build x86_64-01
 elif [[ "$arch_contains_x86_64" == "1" || "$board_contains_x86_64" == "1" ]]; then
-  if [[ "$board" != *"other"* ]]; then
+  if [[ "$board" != *"x86_64-"* ]]; then
     skip_build=1
   fi
 
 # For "Arch / Board: xtensa": Build xtensa-01, xtensa-02
 elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; then
-  if [[ "$board" != *"xtensa"* ]]; then
+  if [[ "$board" != *"xtensa-"* ]]; then
     skip_build=1
   fi
 ```
 
-## Skip the macOS and Windows Builds
+## Skip the macOS Builds
 
-TODO
-
-For these Simple PRs (One Arch Label + One Size Label), we skip the macOS and Windows builds (`macos`, `macos/sim-*`, `msys2`) since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L194-L281)
+For Simple PRs and Complex PRs: We skip the macOS builds (`macos`, `macos/sim-*`) since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L196-L256)
 
 (`macos` and `macos/sim-*` builds will take 2 hours to complete due to the queueing for macOS Runners)
 
@@ -812,9 +831,9 @@ macOS-Arch:
   uses: apache/nuttx/.github/workflows/arch.yml@master
   needs: Fetch-Source
   with:
-    os: Linux
+    os: macOS
     boards: |
-      ["macos", "sim-01", "sim-02"]
+      ["macos", "sim-01", "sim-02", "sim-03"]
 
 # Run the selected macOS Builds
 macOS:
@@ -829,37 +848,23 @@ macOS:
       boards: ${{ fromJSON(needs.macOS-Arch.outputs.selected_builds) }}
   steps:
     ## Omitted: Run cibuild.sh on macOS
-    ...
-# Select the msys2 Builds based on PR Arch Label
-msys2-Arch:
-  uses: apache/nuttx/.github/workflows/arch.yml@master
-  needs: Fetch-Source
-  with:
-    os: Linux
-    boards: |
-      ["msys2"]
-
-# Run the selected msys2 Builds
-msys2:
-  needs: msys2-Arch
-  if: ${{ needs.msys2-Arch.outputs.skip_all_builds != '1' }}
-  runs-on: windows-latest
-  strategy:
-    fail-fast: false
-    max-parallel: 1
-    matrix:
-      boards: ${{ fromJSON(needs.msys2-Arch.outputs.selected_builds) }}
-
-  defaults:
-    run:
-      shell: msys2 {0}
-  steps:
-    ## Omitted: Run cibuild.sh on msys2
 ```
 
-`skip_all_builds` will be set to `1` for Simple PRs on macOS and msys2.
+`skip_all_builds` for macOS will be set to `1`: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L100-L112)
 
-(Except for "Arch: Simulator", which will enable the macOS Builds for sim-01 and sim-02)
+```yaml
+# Select the Builds for the PR: arm-01, risc-v-01, xtensa-01, ...
+- name: Select builds
+  id: select-builds
+  run: |
+
+    # Skip all macOS Builds
+    if [[ "${{ inputs.os }}" == "macOS" ]]; then
+      echo "Skipping all macOS Builds"
+      echo "skip_all_builds=1" | tee -a $GITHUB_OUTPUT
+      exit
+    fi
+```
 
 ## Ignore the Documentation
 
@@ -892,7 +897,7 @@ Yep `arch.yml` is totally not needed in `nuttx-apps`. I have difficulty keeping 
 
 _CI Build Workflow looks very different now?_
 
-Yeah our CI Build Workflow used to be simpler: [build.yml](TODO)
+Yeah our CI Build Workflow used to be simpler: [build.yml](https://github.com/apache/nuttx/blob/6a0c0722e23f5fc294a4574111742765e8c0dd04/.github/workflows/build.yml#L117-L179)
 
 ```yaml
 Linux:
@@ -902,7 +907,7 @@ Linux:
       boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
 ```
 
-Now with Build Rules, it becomes more complicated: [build.yml](TODO)
+Now with Build Rules, it becomes more complicated: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L118-L196)
 
 ```yaml
 # Select the Linux Builds based on PR Arch Label
