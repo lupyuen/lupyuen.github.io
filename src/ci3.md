@@ -248,6 +248,7 @@ We selected the CI Checks above because they validate NuttX Builds on __Popular 
 | Target Group | Board / Test |
 |:----------|:----------------------|
 | _arm-01_ | Sony Spresense (TODO) |
+| _arm-02_ | SABRE 6Quad CI Test (QEMU) |
 | _arm-05_ | Nordic nRF52 |
 | _arm-06_ | Raspberry Pi RP2040 |
 | _arm-07_ | Microchip SAMD |
