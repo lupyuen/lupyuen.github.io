@@ -198,7 +198,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. (Because it's free!)
 
-1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs
+1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might also overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
@@ -412,6 +412,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 1.  And restarting the __Failed Merge Jobs__ 
 
     [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github)
+
+    [(__CI Test__ might also overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
