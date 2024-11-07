@@ -4,9 +4,9 @@
 
 ![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
 
-__Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
+__Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
-TODO: Pic of before 7 days, after 7 days
+![TODO](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
 
 __Previously:__ Our developers waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__! (Pic below)
 
@@ -361,11 +361,11 @@ TODO: Pic of last 7 days
 
 __"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
-![before-30days](https://github.com/user-attachments/assets/f05c8da2-4930-4b0e-ba4d-a4c1f1ffae36)
+![TODO](https://lupyuen.github.io/images/ci3-before30days.png)
 
 Right now our __Monthly Bill is $TODO__. And still dropping! Thank you everyone for making this happen! 🙏
 
-TODO: after-30days
+![TODO](https://lupyuen.github.io/images/ci3-after30days.png)
 
 __Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__!
 
