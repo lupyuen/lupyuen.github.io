@@ -87,13 +87,13 @@
 <li><a href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">14.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</a><ul></ul></li>
 <li><a href="#skip-the-macos-builds">14.7 Skip the macOS Builds</a><ul></ul></li>
 <li><a href="#ignore-the-documentation">14.8 Ignore the Documentation</a><ul></ul></li>
-<li><a href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">14.9 Sync the CI Workflow from NuttX Repo to Nuttx Apps</a><ul></ul></li>
+<li><a href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">14.9 Sync the CI Workflow from NuttX Repo to NuttX Apps</a><ul></ul></li>
 <li><a href="#actual-performance">14.10 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>23 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="Optimising the Continuous Integration for Apache NuttX RTOS" /></p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$4,900</strong> (weekly) down to <strong>$890</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890" /></p>
 <p><strong>Previously:</strong> Our developers waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>! (Pic below)</p>
-<p>This article explains everything we did in the (Semi-Chaotic) Two Weeks for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p>This article explains everything we did in the (Semi-Chaotic) Two Weeks for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
 <li>
 <p>Shut down the <strong>macOS and Windows Builds</strong>, revive them in a different form</p>
@@ -143,13 +143,13 @@
 </li>
 </ol>
 <p>We have reasons for doing these, backed by solid data…</p>
-<p><img src="https://lupyuen.github.io/images/ci3-cancel.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-cancel.jpg" alt="We wasted GitHub Runners on Merge Jobs that were eventually superseded and cancelled" /></p>
 <h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
 <p>We studied the CI Jobs for the previous day…</p>
 <ul>
 <li><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=0#gid=0"><strong>Analysis of CI Jobs over 24 Hours</strong></a></li>
 </ul>
-<p>Many CI Jobs were <strong>Incomplete</strong>: We wasted GitHub Runners on jobs that were eventually <strong>superseded and cancelled</strong> (pic above, we’ll come back to this)</p>
+<p>Many CI Jobs were <strong>Incomplete</strong>: We wasted GitHub Runners on Merge Jobs that were eventually <strong>superseded and cancelled</strong> (pic above, we’ll come back to this)</p>
 <p><img src="https://github.com/user-attachments/assets/953e2ac7-aee5-45c6-986c-3bcdd97d0b5e" alt="Screenshot 2024-10-17 at 1 18 14 PM" /></p>
 <p><strong>Scheduled Merge Jobs</strong> will reduce wastage of GitHub Runners, since most Merge Jobs didn’t complete. Only One Merge Job completed on that day…</p>
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
@@ -193,7 +193,7 @@
 </li>
 <li>
 <p>Remember to show <strong>Love and Respect</strong> for NuttX Devs!</p>
-<p>Previously we waited <a href="TODO"><strong>2.5 Hours</strong></a> for All CI Checks. Now we wait at most <a href="https://github.com/apache/nuttx/actions/runs/11582139779"><strong>1.5 Hours</strong></a>, let’s stick to this.</p>
+<p>Previously we waited <a href="https://github.com/apache/nuttx/actions/runs/11308145630"><strong>2.5 Hours</strong></a> for All CI Checks. Now we wait at most <a href="https://github.com/apache/nuttx/actions/runs/11582139779"><strong>1.5 Hours</strong></a>, let’s stick to this.</p>
 <p><a href="https://github.com/apache/nuttx/issues/14526">(Seeking help to port NuttX Jobs to <strong>M1 Mac</strong>)</a></p>
 </li>
 </ul>
@@ -201,20 +201,20 @@
 <p>We recently <a href="https://github.com/apache/nuttx/issues/14598"><strong>re-enabled the Windows Builds</strong></a>, because they’re not as costly as macOS Builds.</p>
 <p>We’ll continue to monitor our GitHub Costs. And shut down the Windows Builds if necessary.</p>
 <p><a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">(Windows Runners are <strong>twice the cost</strong> of Linux Runners)</a></p>
-<p><img src="https://lupyuen.github.io/images/ci3-merge.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-merge.jpg" alt="Normally our CI Workflow will trigger a Merge Job, to verify that everything compiles OK after Merging the PR" /></p>
 <h1 id="move-the-merge-jobs"><a class="doc-anchor" href="#move-the-merge-jobs">§</a>4 Move the Merge Jobs</h1>
 <p><em>What are Merge Jobs? Why move them?</em></p>
 <p>Suppose our NuttX Admin <strong>Merges a PR</strong>. (Pic above)</p>
 <p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
-<p>Which means ploughing through <a href="TODO"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
+<p>Which means ploughing through <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
 <p>This is extremely costly, hence we decided to trigger them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
 <p>We spent <strong>One-Third</strong> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job keeps getting disrupted by Newer Merged PRs. (Pic below)</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job kept getting disrupted by Newer Merged PRs. (Pic below)</p>
 <p>And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.</p>
 <p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
-<p><img src="https://lupyuen.github.io/images/ci3-before.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-before.jpg" alt="Merge Job kept getting disrupted by Newer Merged PRs" /></p>
 <p><em>Thus we moved them?</em></p>
 <p>Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Pic below)</p>
 <p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
@@ -241,13 +241,13 @@
 <p>Run this script to enable the <strong>macOS Builds</strong>: <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a></p>
 </li>
 <li>
-<p>Which will also <a href="TODO"><strong>Disable Fail-Fast</strong></a> and grind through all builds. (Regardless of error)</p>
+<p>Which will also <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Disable Fail-Fast</strong></a> and grind through all builds. (Regardless of error)</p>
 </li>
 <li>
-<p>And <a href="TODO"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
+<p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
 </li>
 <li>
-<p>If the Merge Job fails with a <a href="TODO"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs</p>
+<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs</p>
 </li>
 <li>
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
@@ -256,22 +256,22 @@
 <p><em>Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?</em></p>
 <ul>
 <li>
-<p><strong>Docker Builds:</strong> When <a href="TODO"><strong>Dockerfile</strong></a> is updated, it will trigger the CI Workflow <a href="TODO"><strong>docker_linux.yml</strong></a>. Which is not affected by this new setup, and will continue to execute. (Exactly like today)</p>
+<p><strong>Docker Builds:</strong> When <a href="https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile"><strong>Dockerfile</strong></a> is updated, it will trigger the CI Workflow <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml"><strong>docker_linux.yml</strong></a>. Which is not affected by this new setup, and will continue to execute. (Exactly like today)</p>
 </li>
 <li>
-<p><strong>Documentation:</strong> When the docs are updated, they are published to NuttX Website via the CI Workflow <a href="TODO"><strong>main.yml</strong></a> from the NuttX Website repo (scheduled daily). Which is not affected by our new grand plan.</p>
+<p><strong>Documentation:</strong> When the docs are updated, they are published to NuttX Website via the CI Workflow <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml"><strong>main.yml</strong></a> from the NuttX Website repo (scheduled daily). Which is not affected by our grand plan.</p>
 </li>
 <li>
-<p><strong>Release Branch:</strong> Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). <a href="TODO"><strong>Release Branch</strong></a> shall always be verified through Complete CI Checks.</p>
+<p><strong>Release Branch:</strong> Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). <a href="https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748"><strong>Release Branch</strong></a> shall always be verified through <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26"><strong>Complete CI Checks</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx/pull/14618">(More about this)</a></p>
 </li>
 </ul>
 <p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
-<p>Yeah that’s why we need a <a href="TODO"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
+<p>Yeah that’s why we need a <a href="https://lupyuen.github.io/articles/ci3#our-wishlist"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
-<p><a href="TODO"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on <strong>Submitting and Updating PRs</strong>.</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on <strong>Submitting and Updating PRs</strong>.</p>
 <p>Hence we’re skipping <strong>Half the CI Checks</strong> for Complex PRs.</p>
 <p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
 <p><em>Which CI Checks did we select?</em></p>
@@ -282,8 +282,8 @@
 <li><em>sim-01, 02</em></li>
 <li><em>xtensa-01, arm64-01, x86_64-01, other</em></li>
 </ul>
-<p><a href="TODO">(See the <strong>Pull Request</strong>)</a></p>
-<p><a href="TODO">(Synced to <strong>NuttX Apps</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/14602">(See the <strong>Pull Request</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/pull/2813">(Synced to <strong>NuttX Apps</strong>)</a></p>
 <p><em>Why did we choose these CI Checks?</em></p>
 <p>We selected the CI Checks above because they validate NuttX Builds on <strong>Popular Boards</strong> (and for special tests)…</p>
 <div><table><thead><tr><th style="text-align: left">Target Group</th><th style="text-align: left">Board / Test</th></tr></thead><tbody>
@@ -296,14 +296,14 @@
 <tr><td style="text-align: left"><em>sim-01, 02</em></td><td style="text-align: left">CI Test, Matter</td></tr>
 </tbody></table>
 </div>
-<p>We might <a href="TODO"><strong>rotate the list</strong></a> above to get better CI Coverage.</p>
-<p>TODO: See the list of builds</p>
-<p><img src="https://lupyuen.github.io/images/ci3-pr.jpg" alt="TODO" /></p>
+<p>We might <a href="https://github.com/apache/nuttx/pull/14602"><strong>rotate the list</strong></a> above to get better CI Coverage.</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Complete List of <strong>CI Builds</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci3-pr.jpg" alt="Complex PR vs Simple PR" /></p>
 <p><em>What about Simple PRs?</em></p>
 <p>A <strong>Simple PR</strong> concerns only <strong>One Single Architecture</strong>: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.</p>
 <p>When we create a Simple PR for Arm32: It will trigger only the CI Checks for <em>arm-01</em> … <em>arm-14</em>.</p>
-<p>Which will <a href="TODO"><strong>complete earlier</strong></a> than a Complex PR.</p>
-<p><a href="TODO">(<strong>x86_64 Devs</strong> are the happiest. Their PRs complete in <strong>10 Mins</strong>!)</a></p>
+<p>Which will <a href="https://lupyuen.codeberg.page/articles/ci3.html#actual-performance"><strong>complete earlier</strong></a> than a Complex PR.</p>
+<p><a href="https://lupyuen.codeberg.page/articles/ci3.html#actual-performance">(<strong>x86_64 Devs</strong> are the happiest. Their PRs complete in <strong>10 Mins</strong>!)</a></p>
 <p><em>Sounds awfully complicated. How did we code the rules?</em></p>
 <p>Indeed! The Build Rules are explained here…</p>
 <ul>
@@ -377,13 +377,13 @@
 <h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
 <p>It’s past Diwali and Halloween and Elections… Our CI Servers are still alive. <strong>We made it yay!</strong> 🎉</p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$4,900</strong> (weekly) down to <strong>$890</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890" /></p>
 <p><strong>“Monthly Bill”</strong> for GitHub Actions used to be <strong>$18K</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci3-before30days.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-before30days.png" alt="Monthly Bill for GitHub Actions used to be $18K" /></p>
 <p>Right now our <strong>Monthly Bill is $12K</strong>. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏</p>
-<p><img src="https://lupyuen.github.io/images/ci3-after30days.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-after30days.png" alt="Right now our Monthly Bill is $12K" /></p>
 <p><strong>Bonus Love &amp; Respect:</strong> Previously our devs waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>!</p>
-<p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="Tired Fingers syncing the NuttX Repo to NuttX Mirror Repo" /></p>
 <h1 id="our-wishlist"><a class="doc-anchor" href="#our-wishlist">§</a>9 Our Wishlist</h1>
 <p><em>Everything is hunky dory?</em></p>
 <p>Trusting a <strong>Single Provider for Continuous Integration</strong> is a terrible thing. We got plenty more to do…</p>
@@ -401,7 +401,7 @@
 <p>(And cut the Build Time)</p>
 </li>
 </ul>
-<p><a href="TODO">🙏🙏🙏 Please join <strong>Your Ubuntu PC</strong> to our Build Farm! 🙏🙏🙏</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14558">🙏🙏🙏 Please join <strong>Your Ubuntu PC</strong> to our Build Farm! 🙏🙏🙏</a></p>
 <p><em>But our Merge Jobs are still running in a Free Account?</em></p>
 <p>We learnt a Painful Lesson today: <strong>Freebies Won’t Last Forever!</strong></p>
 <p>We should probably maintain an official <strong>Paid GitHub Org Account</strong> to execute our Merge Jobs…</p>
@@ -415,12 +415,12 @@
 <p>(Instead of an Unpaid Volunteer)</p>
 </li>
 <li>
-<p>Which means clicking Twice Per Day to trigger the <a href="TODO"><strong>Scheduled Merge Jobs</strong></a></p>
+<p>Which means clicking Twice Per Day to trigger the <a href="https://lupyuen.codeberg.page/articles/ci3.html#move-the-merge-jobs"><strong>Scheduled Merge Jobs</strong></a></p>
 <p>(My fingers are tired, pic above)</p>
 </li>
 <li>
 <p>And restarting the <strong>Failed Merge Jobs</strong></p>
-<p><a href="TODO">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
@@ -464,7 +464,7 @@
 <h1 id="appendix-check-our-pr-submission"><a class="doc-anchor" href="#appendix-check-our-pr-submission">§</a>11 Appendix: Check our PR Submission</h1>
 <p><em>Before submitting a PR to NuttX: How to check our PR thoroughly?</em></p>
 <p>Yep it’s super important to <strong>thoroughly test our PRs</strong> before submitting to NuttX.</p>
-<p>But NuttX Project <a href="TODO"><strong>doesn’t have the budget</strong></a> to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)…</p>
+<p>But NuttX Project <a href="https://lupyuen.codeberg.page/articles/ci3.html#disable-macos-and-windows-builds"><strong>doesn’t have the budget</strong></a> to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)</p>
 <ol>
 <li>
 <p>Run the CI Builds ourselves with <strong>Docker Engine</strong></p>
@@ -888,7 +888,7 @@ select_length=&#39;length&#39;
 labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo &quot;&quot;)
 numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo &quot;&quot;)
 echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
-</code></pre></div><h2 id="sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps"><a class="doc-anchor" href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">§</a>14.9 Sync the CI Workflow from NuttX Repo to Nuttx Apps</h2>
+</code></pre></div><h2 id="sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps"><a class="doc-anchor" href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">§</a>14.9 Sync the CI Workflow from NuttX Repo to NuttX Apps</h2>
 <p>Remember to sync <code>build.yml</code> and <code>arch.yml</code> from <code>nuttx</code> repo to <code>nuttx-apps</code>!</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2676">(See the <strong>Pull Request</strong>)</a></p>
 <p><code>build.yml</code> refers to <code>arch.yml</code> (for the build rules). So when we sync <code>build.yml</code> from <code>nuttx</code> to <code>nuttx-apps</code>, we won’t need to remove the references to <code>arch.yml</code>.</p>
@@ -965,7 +965,7 @@ Linux:
 </li>
 <li>
 <p>How will we filter out the Build Jobs (e.g. <code>arm-01</code>) that should be built for a SubArch (e.g. <code>stm32</code>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
-<p><a href="TODO">(Discussion here)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci3-hike.jpg" alt="Spot the exact knotty moment that we were told about the CI Shutdown" /></p>
