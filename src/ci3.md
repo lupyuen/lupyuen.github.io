@@ -202,13 +202,15 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
-_Is it really OK to Disable the Merge Jobs? What about Docker Builds? And Documentation?_
+_Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
 
-TODO: Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). 
+- __Docker Builds:__ When [__Dockerfile__](TODO) is updated, it will trigger the CI Workflow [__docker_linux.yml__](TODO). Which is not affected by this new setup, and will continue to execute. (Exactly like today)
 
-TODO: [(Also for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
+- __Documentation:__ When the docs are updated, they are published to NuttX Website via the CI Workflow [__main.yml__](TODO) from the NuttX Website repo (scheduled daily). Which is not affected by our new grand plan.
 
-TODO: [(Fixing the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
+- __Release Branch:__ Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). [__Release Branch__](TODO) shall always be verified through Complete CI Checks.
+
+  [(More about this)](https://github.com/apache/nuttx/pull/14618)
 
 _Isn't this cheating? Offloading to a Free GitHub Account?_
 
@@ -273,7 +275,7 @@ _Sounds awfully complicated. How did we code the rules?_
 
 Indeed! The Build Rules are explained here...
 
-TODO: Build Rules
+- ["__Build Rules for CI Workflow__"](https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow)
 
 # Live Metric for Full-Time Runners
 
