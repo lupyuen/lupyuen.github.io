@@ -243,7 +243,7 @@ Today we start only these __CI Checks__ when submitting or updating a Complex PR
 
 _Why did we choose these CI Checks?_
 
-We selected the CI Checks above because they validate NuttX Builds on __Popular Boards__ (and for special tests)...
+We selected the CI Checks above because they validate NuttX Builds on __Popular Boards__ (and for special tests)
 
 | Target Group | Board / Test |
 |:----------|:----------------------|
