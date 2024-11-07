@@ -247,7 +247,7 @@
 <p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
 </li>
 <li>
-<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs</p>
+<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might also overrun)</a></p>
 </li>
 <li>
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
@@ -421,6 +421,7 @@
 <li>
 <p>And restarting the <strong>Failed Merge Jobs</strong></p>
 <p><a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might also overrun)</a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
