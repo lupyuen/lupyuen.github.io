@@ -175,7 +175,7 @@
 <p><a href="https://github.com/apache/nuttx/issues/14598">(Discussion here)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/ci3-dashboard.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci3-dashboard.png" alt="NuttX Dashboard" /></p>
 <p><em>Can we still prevent breakage of ALL Builds? Linux, macOS AND Windows?</em></p>
 <p>Nope this is <strong>simply impossible</strong>…</p>
 <ul>
@@ -483,6 +483,23 @@
 <p><a href="https://github.com/apache/nuttx/pull/14590#issuecomment-2459178845"><strong>CI Check: Enable for PR Branch</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/ci3-dashboard.png" alt="NuttX Dashboard" /></p>
+<p><em>What if our PR fails the check, caused by Another PR?</em></p>
+<p>We wait for the <strong>Other PR to be patched</strong> (otherwise we might miss a major bug)</p>
+<ol>
+<li>
+<p>Keep checking the <strong>NuttX Dashboard</strong> (above)</p>
+</li>
+<li>
+<p>Wait patiently for the <strong>Red Error Boxes</strong> to disappear</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pr#submit-the-pull-request"><strong>Rebase our PR</strong></a> with the Master Branch</p>
+</li>
+<li>
+<p>Our PR should pass the CI Check</p>
+</li>
+</ol>
 <p><img src="https://github.com/user-attachments/assets/ca08db63-ecca-4b18-984e-46ba3a9716c2" alt="Screenshot 2024-10-19 at 8 11 22 AM" /></p>
 <h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>12 Appendix: Verify our PR Merge</h1>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
