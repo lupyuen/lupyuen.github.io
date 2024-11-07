@@ -376,11 +376,11 @@
 </ul>
 <h1 id="final-verdict"><a class="doc-anchor" href="#final-verdict">§</a>8 Final Verdict</h1>
 <p>It’s past Diwali and Halloween and Elections… Our CI Servers are still alive. <strong>We made it yay!</strong> 🎉</p>
-<p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$ TODO</strong> (weekly) down to <strong>$ TODO</strong>…</p>
-<p>TODO: Pic of last 7 days</p>
+<p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$4,900</strong> (weekly) down to <strong>$890</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="TODO" /></p>
 <p><strong>“Monthly Bill”</strong> for GitHub Actions used to be <strong>$18K</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-before30days.png" alt="TODO" /></p>
-<p>Right now our <strong>Monthly Bill is $TODO</strong>. And still dropping! Thank you everyone for making this happen! 🙏</p>
+<p>Right now our <strong>Monthly Bill is $12K</strong>. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/ci3-after30days.png" alt="TODO" /></p>
 <p><strong>Bonus Love &amp; Respect:</strong> Previously our devs waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="TODO" /></p>
@@ -866,7 +866,15 @@ echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
 <p><code>build.yml</code> refers to <code>arch.yml</code> (for the build rules). So when we sync <code>build.yml</code> from <code>nuttx</code> to <code>nuttx-apps</code>, we won’t need to remove the references to <code>arch.yml</code>.</p>
 <p>We could make <code>nuttx-apps/build.yml</code> point to the <code>nuttx/arch.yml</code>. But that would make the CI fragile: Changes to <code>nuttx/arch.yml</code> might cause <code>nuttx-apps/build.yml</code> to break.</p>
 <p>Yep <code>arch.yml</code> is totally not needed in <code>nuttx-apps</code>. I have difficulty keeping <code>nuttx/build.yml</code> and <code>nuttx-apps/build.yml</code> in sync, that’s why I simply copied over <code>arch.yml</code> as-is. In future we could extend <code>arch.yml</code> with Build Rules that are specific to <code>nuttx-apps</code>?</p>
-<p>If we decide to remove <code>nuttx-apps/arch.yml</code>: This means that we need to rewrite the <code>build.yml</code> logic from this:</p>
+<p><em>CI Build Workflow looks very different now?</em></p>
+<p>Yeah our CI Build Workflow used to be simpler: <a href="TODO">build.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>Linux:
+  needs: Fetch-Source
+  strategy:
+    matrix:
+      boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
+</code></pre></div>
+<p>Now with Build Rules, it becomes more complicated: <a href="TODO">build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Select the Linux Builds based on PR Arch Label
 Linux-Arch:
   uses: apache/nuttx-apps/.github/workflows/arch.yml@master
@@ -885,13 +893,8 @@ Linux:
     matrix:
       boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
 </code></pre></div>
-<p>Back to this:</p>
-<div class="example-wrap"><pre class="language-yaml"><code>Linux:
-  needs: Fetch-Source
-  strategy:
-    matrix:
-      boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
-</code></pre></div><h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>14.10 Actual Performance</h2>
+<p>One thing remains the same: We configure the Target Groups in <code>build.yml</code>. (Instead of <code>arch.yml</code>)</p>
+<h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>14.10 Actual Performance</h2>
 <p>TODO</p>
 <p>We recorded the CI Build Performance based on Real-World PRs:</p>
 <ul>
