@@ -2,7 +2,7 @@
 
 📝 _23 Nov 2024_
 
-![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
+![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
@@ -24,7 +24,7 @@ This article explains everything we did in the (Semi-Chaotic) Two Weeks for [__A
 
 - We can't run __All CI Checks__, but NuttX Devs can help ourselves!
 
-![TODO](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
+![Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
 # Rescue Plan
 
@@ -80,7 +80,7 @@ When we __Halve the CI Jobs:__ We reduce the wastage of GitHub Runners...
 
 This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Now we follow through...
 
-![TODO](https://lupyuen.github.io/images/ci3-macos.jpg)
+![Disable macOS Builds](https://lupyuen.github.io/images/ci3-macos.jpg)
 
 # Disable macOS and Windows Builds
 
@@ -170,7 +170,7 @@ Where the Merge Jobs can run free __without disruption__!
 
 (In an Unpaid GitHub Org Account, that won't be charged to NuttX Project)
 
-![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
+![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
 _What about the Old Merge Jobs?_
 
@@ -421,7 +421,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
     (Maybe do macOS CI Checks for PRs)
 
-![TODO](https://lupyuen.github.io/images/ci3-title.jpg)
+![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
 # What's Next
 
@@ -447,6 +447,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ci3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md)
 
+![CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
+
 # Appendix: Check our PR Submission
 
 _Before submitting a PR to NuttX: How to check our PR thoroughly?_
@@ -467,6 +469,8 @@ Here are the instructions...
 
 - [__CI Check: Enable for PR Branch__](https://github.com/apache/nuttx/pull/14590#issuecomment-2459178845)
 
+![Screenshot 2024-10-19 at 8 11 22 AM](https://github.com/user-attachments/assets/ca08db63-ecca-4b18-984e-46ba3a9716c2)
+
 # Appendix: Verify our PR Merge
 
 _When NuttX merges our PR, the Merge Job won't run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?_
@@ -477,9 +481,11 @@ Let's create a __GitHub Org__ (at no cost), fork the NuttX Repo and trigger the 
 
 This will probably work if our CI Servers ever go dark.
 
+![Network Timeout at GitHub](https://lupyuen.github.io/images/ci3-timeout.png)
+
 # Appendix: Network Timeout at GitHub
 
-Something super strange about __Network Timeouts__ in our CI Docker Workflows at GitHub Actions. Here's an example...
+Something super strange about __Network Timeouts__ (pic above) in our CI Docker Workflows at GitHub Actions. Here's an example...
 
 - First Run fails while [__downloading something from GitHub__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626)...
 
@@ -524,6 +530,8 @@ Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
 curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection timed out
 ```
 [(See the __Complete Log__)](https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1)
+
+![Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
 # Appendix: Build Rules for CI Workflow
 
@@ -819,6 +827,8 @@ elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; th
   fi
 ```
 
+![Disable macOS Builds](https://lupyuen.github.io/images/ci3-macos.jpg)
+
 ## Skip the macOS Builds
 
 For Simple PRs and Complex PRs: We skip the macOS builds (`macos`, `macos/sim-*`) since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L196-L256)
@@ -883,7 +893,7 @@ numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$s
 echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
 ```
 
-## Sync the CI Workflow from nuttx repo to nuttx-apps
+## Sync the CI Workflow from NuttX Repo to Nuttx Apps
 
 Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`!
 
@@ -970,6 +980,6 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
 
   [(Discussion here)](TODO)
 
-![TODO](https://lupyuen.github.io/images/ci3-hike.jpg)
+![Spot the exact knotty moment that we were told about the CI Shutdown](https://lupyuen.github.io/images/ci3-hike.jpg)
 
 [_Spot the exact knotty moment that we were told about the CI Shutdown_](https://www.strava.com/activities/12673094079)
