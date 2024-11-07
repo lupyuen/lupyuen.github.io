@@ -473,7 +473,7 @@ Here are the instructions...
 
 _What if our PR fails the check, caused by Another PR?_
 
-We wait for the __Other PR to be patched__ (otherwise we might miss a major bug)
+We wait for the __Other PR to be patched__...
 
 1.  Keep checking the __NuttX Dashboard__ (above)
 
@@ -482,6 +482,8 @@ We wait for the __Other PR to be patched__ (otherwise we might miss a major bug)
 1.  [__Rebase our PR__](https://lupyuen.github.io/articles/pr#submit-the-pull-request) with the Master Branch
 
 1.  Our PR should pass the CI Check
+
+Otherwise we might miss a [__Serious Bug__](https://github.com/apache/nuttx/actions/runs/11700129839).
 
 ![Screenshot 2024-10-19 at 8 11 22 AM](https://github.com/user-attachments/assets/ca08db63-ecca-4b18-984e-46ba3a9716c2)
 
