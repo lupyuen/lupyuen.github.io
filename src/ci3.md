@@ -355,15 +355,15 @@ We have GitHub Scripts for __Termux Android__. Remember to _"pkg install gh"_ an
 
 It's past Diwali and Halloween and Elections... Our CI Servers are still alive. __We made it yay!__ 🎉
 
-__Within Two Weeks:__ We squashed our GitHub Actions spending from __\$ TODO__ (weekly) down to __\$ TODO__...
+__Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
-TODO: Pic of last 7 days
+![TODO](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
 
 __"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
 ![TODO](https://lupyuen.github.io/images/ci3-before30days.png)
 
-Right now our __Monthly Bill is $TODO__. And still dropping! Thank you everyone for making this happen! 🙏
+Right now our __Monthly Bill is $12K__. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏
 
 ![TODO](https://lupyuen.github.io/images/ci3-after30days.png)
 
@@ -890,7 +890,19 @@ We could make `nuttx-apps/build.yml` point to the `nuttx/arch.yml`. But that wou
 
 Yep `arch.yml` is totally not needed in `nuttx-apps`. I have difficulty keeping `nuttx/build.yml` and `nuttx-apps/build.yml` in sync, that's why I simply copied over `arch.yml` as-is. In future we could extend `arch.yml` with Build Rules that are specific to `nuttx-apps`?
 
-If we decide to remove `nuttx-apps/arch.yml`: This means that we need to rewrite the `build.yml` logic from this:
+_CI Build Workflow looks very different now?_
+
+Yeah our CI Build Workflow used to be simpler: [build.yml](TODO)
+
+```yaml
+Linux:
+  needs: Fetch-Source
+  strategy:
+    matrix:
+      boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
+```
+
+Now with Build Rules, it becomes more complicated: [build.yml](TODO)
 
 ```yaml
 # Select the Linux Builds based on PR Arch Label
@@ -912,15 +924,7 @@ Linux:
       boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
 ```
 
-Back to this:
-
-```yaml
-Linux:
-  needs: Fetch-Source
-  strategy:
-    matrix:
-      boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
-```
+One thing remains the same: We configure the Target Groups in `build.yml`. (Instead of `arch.yml`)
 
 ## Actual Performance
 
