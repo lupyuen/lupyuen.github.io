@@ -928,21 +928,16 @@ One thing remains the same: We configure the Target Groups in `build.yml`. (Inst
 
 ## Actual Performance
 
-TODO
+We recorded the CI Build Performance for Simple PRs...
 
-We recorded the CI Build Performance based on Real-World PRs:
-
-- **For Arm32:** Simple PRs will build in [**TODO hours**](TODO) (previously [**2 hours**](https://github.com/apache/nuttx/actions/runs/11210724531))
-
-- **For Arm64:** Simple PRs will build in [**TODO mins**](TODO) (previously [**2 hours 11 mins**](https://github.com/apache/nuttx/actions/runs/11140028404))
-
-- **For RISC-V:** Simple PRs will build in [**TODO mins**](TODO) (previously [**1 hour 45 mins**](https://github.com/apache/nuttx/actions/runs/11163805578))
-
-- **For Xtensa:** Simple PRs will build in [**TODO mins**](TODO) (previously [**2 hours 11 mins**](https://github.com/apache/nuttx/actions/runs/11105657530))
-
-- **For x86_64:** Simple PRs will build in [**TODO mins**](TODO) (previously [**2 hours 13 mins**](https://github.com/apache/nuttx/actions/runs/11158309196))
-
-- **For Simulator:** Simple PRs will build in [**TODO mins**](TODO) (previously [**2 hours 12 mins**](https://github.com/apache/nuttx/actions/runs/11146942454))
+| Build Time | Before | After |
+|:------------------|:------:|:-----:|
+| Arm32 | [**2 hours**](https://github.com/apache/nuttx/actions/runs/11210724531) | [**1.5 hours**](https://github.com/apache/nuttx/actions/runs/11707495067)
+| Arm64 | [**2.5 hours**](https://github.com/apache/nuttx/actions/runs/11140028404) | [**30 mins**](https://github.com/apache/nuttx/actions/runs/11704164434)
+| RISC-V | [**1.8 hours**](https://github.com/apache/nuttx/actions/runs/11163805578) | [**50 mins**](https://github.com/apache/nuttx/actions/runs/11669727849)
+| Xtensa | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11105657530) | [**1.5 hours**](https://github.com/apache/nuttx/actions/runs/11699279596)
+| x86_64 | [**2.5 hours**](https://github.com/apache/nuttx/actions/runs/11158309196) | [**10 mins**](https://github.com/apache/nuttx/actions/runs/11661703226)
+| Simulator | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11146942454) | [**1 hour**](https://github.com/apache/nuttx/actions/runs/11499427672)
 
 How did we accomplish the above?
 
