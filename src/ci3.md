@@ -102,6 +102,8 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
+  [(Migrating from Intel Mac to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
+
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci3-dashboard.png)
 
 _Can we still prevent breakage of ALL Builds? Linux, macOS AND Windows?_
@@ -123,8 +125,6 @@ Nope this is __simply impossible__...
 - Remember to show __Love and Respect__ for NuttX Devs!
 
   Previously we waited [__2.5 Hours__](https://github.com/apache/nuttx/actions/runs/11308145630) for All CI Checks. Now we wait at most [__1.5 Hours__](https://github.com/apache/nuttx/actions/runs/11582139779), let's stick to this.
-
-  [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
 
 _What about the Windows Builds?_
 
