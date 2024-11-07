@@ -503,6 +503,8 @@ This will probably work if our CI Servers ever go dark.
 
 # Appendix: Network Timeout at GitHub
 
+[(See the __NuttX Issue__)](https://github.com/apache/nuttx/issues/14682)
+
 Something super strange about __Network Timeouts__ (pic above) in our CI Docker Workflows at GitHub Actions. Here's an example...
 
 - First Run fails while [__downloading something from GitHub__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:626)...
