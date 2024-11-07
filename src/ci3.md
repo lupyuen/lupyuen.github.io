@@ -477,13 +477,15 @@ _What if our PR fails the check, caused by Another PR?_
 
 We wait for the __Other PR to be patched__...
 
+1.  Set our PR to __Draft Mode__
+
 1.  Keep checking the __NuttX Dashboard__ (above)
 
 1.  Wait patiently for the __Red Error Boxes__ to disappear
 
 1.  [__Rebase our PR__](https://lupyuen.github.io/articles/pr#submit-the-pull-request) with the Master Branch
 
-1.  Our PR should pass the CI Check
+1.  Our PR should pass the CI Check. Set our PR to __Ready for Review__.
 
 Otherwise we might miss a [__Serious Bug__](https://github.com/apache/nuttx/actions/runs/11700129839).
 
