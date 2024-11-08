@@ -174,9 +174,9 @@
 <p>To enable One macOS Job: We need to disable 10 Linux Jobs! Which is not feasible.</p>
 </li>
 <li>
-<p>Our macOS Jobs are in an <strong>untidy state</strong> right now, showing too many warnings.</p>
+<p>Our macOS Jobs are in an <strong>untidy state</strong> right now, showing many many warnings.</p>
 <p>We need someone familiar with Intel Macs to clean up the macOS Jobs.</p>
-<p>(See this <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934"><strong>macOS Log</strong></a> and <a href="https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211"><strong>Another Log</strong></a>)</p>
+<p>(See the <a href="https://github.com/NuttX/nuttx/actions/runs/11728929385/job/32673549658#step:7:4236"><strong>macOS Log</strong></a>)</p>
 </li>
 <li>
 <p>That’s why we moved the macOS Builds to the <strong>NuttX Mirror Repo</strong>, which won’t be charged to NuttX Project.</p>
@@ -206,7 +206,7 @@
 </li>
 </ul>
 <p><em>What about the Windows Builds?</em></p>
-<p>We recently <a href="https://github.com/apache/nuttx/issues/14598"><strong>re-enabled the Windows Builds</strong></a>, because they’re not as costly as macOS Builds.</p>
+<p>Recently we <a href="https://github.com/apache/nuttx/issues/14598"><strong>re-enabled the Windows Builds</strong></a>, because they’re not as costly as macOS Builds.</p>
 <p>We’ll continue to monitor our GitHub Costs. And shut down the Windows Builds if necessary.</p>
 <p><a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers">(Windows Runners are <strong>twice the cost</strong> of Linux Runners)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-merge.jpg" alt="Normally our CI Workflow will trigger a Merge Job, to verify that everything compiles OK after Merging the PR" /></p>
@@ -231,8 +231,8 @@
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in NuttX Repo and NuttX Apps.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
-<p><a href="https://github.com/apache/nuttx-apps/pull/2817">(Also for <strong>NuttX Apps</strong>)</a></p>
-<p><a href="https://github.com/apache/nuttx/issues/14407">(Fixing the <strong>Auto-Build on Sync</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/pull/2817">(And for <strong>NuttX Apps</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14407">(Restoring the <strong>Auto-Build on Sync</strong>)</a></p>
 <p><em>How to trigger the Scheduled Merge Job?</em></p>
 <p>Every Day at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I do this…</p>
 <ol>
@@ -243,7 +243,7 @@
 <p>Click “<strong>Sync Fork &gt; Discard Commits</strong>”</p>
 </li>
 <li>
-<p>Which will <strong>Sync our Mirror Repo</strong> with the Upstream NuttX Repo</p>
+<p>Which will <strong>Sync our Mirror Repo</strong> based on the Upstream NuttX Repo</p>
 </li>
 <li>
 <p>Run this script to enable the <strong>macOS Builds</strong>: <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a></p>
@@ -255,7 +255,7 @@
 <p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
 </li>
 <li>
-<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might also overrun)</a></p>
+<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
 </li>
 <li>
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
@@ -283,7 +283,7 @@
 <p>Hence we’re skipping <strong>Half the CI Checks</strong> for Complex PRs.</p>
 <p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
 <p><em>Which CI Checks did we select?</em></p>
-<p>Today we start only these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)…</p>
+<p>Today we start only these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)</p>
 <ul>
 <li><em>arm-03, 05, 06, 07, 08, 10, 13</em></li>
 <li><em>risc-v-01, 02, 03</em></li>
@@ -320,7 +320,7 @@
 </ul>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
 <p><em>Hitting the Target Metrics in 2 weeks… Everyone needs to help out right?</em></p>
-<p>Our quota is <strong>25 Full-Time GitHub Runners</strong> per day.</p>
+<p>Our quota is <a href="https://infra.apache.org/github-actions-policy.html"><strong>25 Full-Time GitHub Runners</strong></a> per day.</p>
 <p>We published our own <strong>Live Metric for Full-Time Runners</strong>, for everyone to track…</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="Live Metric for Full-Time Runners" /></p>
 <ul>
@@ -331,7 +331,7 @@
 <p><strong>Elapsed Hours:</strong> Number of hours elapsed since 00:00 UTC</p>
 </li>
 <li>
-<p><strong>GitHub Job Hours:</strong> Elapsed Duration of all <code>nuttx</code> and <code>nuttx-apps</code> GitHub Jobs. (Cancelled / Completed / Failed)</p>
+<p><strong>GitHub Job Hours:</strong> Elapsed Duration of all GitHub Jobs at NuttX Repo and NuttX Apps. <em>(Cancelled / Completed / Failed)</em></p>
 <p>This data is available only AFTER the job has been Cancelled / Completed / Failed. (Might have lagged by 1.5 hours)</p>
 <p>But this is the <em>Elapsed Job Duration</em>. It doesn’t say that we’re running 8 Sub-Jobs in parallel. That’s why we need…</p>
 </li>
@@ -430,7 +430,7 @@
 <li>
 <p>And restarting the <strong>Failed Merge Jobs</strong></p>
 <p><a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
-<p><a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might also overrun)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
@@ -989,7 +989,7 @@ Linux:
 <li>
 <p>We broke up <strong>Big Jobs</strong> <em>(arm-05, riscv-01, riscv-02)</em> into Multiple Smaller Jobs.</p>
 <p><strong>Small Jobs</strong> will really fly! <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Build Job Details)</a></p>
-<p>(We moved the RP2040 jobs from <em>arm-05</em> to <em>arm-06</em>, then added <em>arm-14</em>. Also we added jobs <em>riscv-03 … riscv-06</em>)</p>
+<p>(We moved the RP2040 jobs from <em>arm-05</em> to <em>arm-06</em>, then added <em>arm-14</em>. Followed by jobs <em>riscv-03 … riscv-06</em>)</p>
 </li>
 <li>
 <p>We saw a <strong>27% Reduction in GitHub Runner Hours</strong>! From <a href="https://github.com/apache/nuttx/actions/runs/11210724531/usage"><strong>15 Runner Hours</strong></a> down to <a href="https://github.com/apache/nuttx/actions/runs/11217886131/usage"><strong>11 Runner Hours</strong></a> per Arm32 Build.</p>
