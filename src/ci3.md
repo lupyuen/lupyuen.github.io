@@ -114,7 +114,7 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
-  [(Migrating from Intel Mac to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
+  [(__macOS Build Farm__ coming soon!)](https://github.com/apache/nuttx/issues/14526)
 
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci3-dashboard.png)
 
