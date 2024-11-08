@@ -1000,7 +1000,9 @@ Linux:
 <p>To identify <strong>Goldfish PRs</strong>, we can label the PRs like this: <em>“Arch: arm, SubArch: goldfish”</em> and <em>“Board: arm, SubBoard: goldfish”</em></p>
 </li>
 <li>
-<p>How will we filter out the Build Jobs (e.g. <em>arm-01</em>) that should be <strong>built for a SubArch</strong> (e.g. <em>stm32</em>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
+<p>Instead of Building an <strong>Entire Arch</strong> <em>(arm-01)</em>…</p>
+<p>Can we build <strong>One Single SubArch</strong> <em>(stm32)</em>?</p>
+<p>How will we <strong>Filter the Build Jobs</strong> (e.g. <em>arm-01</em>) that should be built for a SubArch (e.g. <em>stm32</em>)? <a href="https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c">(Maybe like this)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
 </li>
 </ul>
