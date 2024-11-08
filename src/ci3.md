@@ -40,25 +40,27 @@ After [__deliberating overnight:__](https://www.strava.com/activities/1267309407
 
 - __Merge a Complex PR:__
 
-  CI Workflow shall __Run All Jobs__ like before
+  CI Workflow shall __Run All Jobs__ like before.
   
   _(arm-01 ... arm-14, risc-v, xtensa, etc)_
 
 - __Simple PRs:__
 
-  No change. Thus Simple Arm32 PRs shall build only _arm-01 ... arm-14_
+  No change. Thus Simple Arm32 PRs shall build only _arm-01 ... arm-14._
 
   _(A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RISC-V etc)_
 
 - __After Merging Any PR:__
 
-  Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
+  Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml).
   
   _(Instead of OG Repo _apache/nuttx_)_
 
 - __Two Scheduled Merge Jobs:__
 
-  Daily at __00:00 UTC__ and __12:00 UTC__
+  Daily at __00:00 UTC__ and __12:00 UTC__.
+
+  _(No more Ad Hoc, On-Demand Merge Jobs)_
 
 - __macOS and Windows Jobs:__
 
