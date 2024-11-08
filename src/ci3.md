@@ -1029,7 +1029,7 @@ Then we made the Simple PRs faster...
 | x86_64 | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11158309196) | [**10 mins**](https://github.com/apache/nuttx/actions/runs/11661703226)
 | Simulator | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11146942454) | [**1 hour**](https://github.com/apache/nuttx/actions/runs/11499427672)
 
-How did we make the __Simple PRs faster__?
+_How did we make the Simple PRs faster?_
 
 - We broke up __Big Jobs__ _(arm-05, riscv-01, riscv-02)_ into Multiple Smaller Jobs.
 
