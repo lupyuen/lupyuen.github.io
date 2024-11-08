@@ -90,7 +90,7 @@ When we __Halve the CI Jobs:__ We reduce the wastage of GitHub Runners...
 
 ![Screenshot 2024-10-17 at 1 15 30 PM](https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a)
 
-This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Now we follow through...
+This analysis was super helpful for complying with the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)! Next we follow through...
 
 ![Disable macOS Builds](https://lupyuen.github.io/images/ci3-macos.jpg)
 
@@ -216,11 +216,11 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 _Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
 
-- __Docker Builds:__ When [__Dockerfile__](https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile) is updated, it will trigger the CI Workflow [__docker_linux.yml__](https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml). Which is not affected by this new setup, and will continue to execute. (Exactly like today)
+- __Docker Builds:__ When [__Dockerfile__](https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile) is updated, it will trigger the CI Workflow [__docker_linux.yml__](https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml). Which is not affected by this new setup, and will continue to execute. (Exactly like before)
 
 - __Documentation:__ When the docs are updated, they are published to NuttX Website via the CI Workflow [__main.yml__](https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml) from the NuttX Website repo (scheduled daily). Which is not affected by our grand plan.
 
-- __Release Branch:__ Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). [__Release Branch__](https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748) shall always be verified through [__Complete CI Checks__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26).
+- __Release Branch:__ Merging a PR to the Release Branch will still run the PR Merge Job (exactly like before). [__Release Branch__](https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748) shall always be verified through [__Complete CI Checks__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26).
 
   [(More about this)](https://github.com/apache/nuttx/pull/14618)
 
@@ -375,7 +375,7 @@ __"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
 ![Monthly Bill for GitHub Actions used to be $18K](https://lupyuen.github.io/images/ci3-before30days.png)
 
-Right now our __Monthly Bill is $12K__. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏
+Presently our __Monthly Bill is $12K__. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏
 
 ![Right now our Monthly Bill is $12K](https://lupyuen.github.io/images/ci3-after30days.png)
 
@@ -570,7 +570,7 @@ Connection timed out
 
 # Appendix: Build Rules for CI Workflow
 
-Initially we created the __Build Rules__ for CI Workflow to solve these problems...
+Initially we created the __Build Rules__ for CI Workflow to solve these problems that we observed in Sep 2024...
 
 - NuttX Devs need to wait (2.5 hours) for the CI Build to complete __Across all Architectures__ _(Arm32, Arm64, RISC-V, Xtensa)_...
 
@@ -588,7 +588,7 @@ Initially we created the __Build Rules__ for CI Workflow to solve these problems
 
   Can we __complete the build within 1 hour__, when we Create / Modify a Simple PR?
 
-This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs.
+This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs in Nov 2024.
 
 [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
