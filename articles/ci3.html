@@ -179,7 +179,7 @@
 <p>(See the <a href="https://github.com/NuttX/nuttx/actions/runs/11728929385/job/32673549658#step:7:4236"><strong>macOS Log</strong></a>)</p>
 </li>
 <li>
-<p>That’s why we moved the macOS Builds to the <strong>NuttX Mirror Repo</strong>, which won’t be charged to NuttX Project.</p>
+<p>That’s why we moved the macOS Builds to the <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>, which won’t be charged to NuttX Project.</p>
 <p><a href="https://github.com/apache/nuttx/issues/14598">(Discussion here)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14526">(Migrating from Intel Mac to <strong>M1 Mac</strong>)</a></p>
 </li>
@@ -214,25 +214,25 @@
 <p><em>What are Merge Jobs? Why move them?</em></p>
 <p>Suppose our NuttX Admin <strong>Merges a PR</strong>. (Pic above)</p>
 <p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
-<p>Which means ploughing through <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</p>
+<p>Which means ploughing through <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across <strong>All Architectures</strong>: <em>Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</em></p>
 <p>This is extremely costly, hence we decided to trigger them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
-<p>We spent <strong>One-Third</strong> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
+<p>We spent <a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132"><strong>One-Third</strong></a> of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)</p>
 <p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Our CI Data</strong></a> shows that the Scheduled Merge Job kept getting disrupted by Newer Merged PRs. (Pic below)</p>
 <p>And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.</p>
-<p>(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</p>
+<p><a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132">(<strong>101 GitHub Hours</strong> for one single Scheduled Merge Job!)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-before.jpg" alt="Merge Job kept getting disrupted by Newer Merged PRs" /></p>
-<p><em>Thus we moved them?</em></p>
+<p><em>Our Merge Jobs are overwhelming!</em></p>
 <p>Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Pic below)</p>
-<p>Where the Merge Jobs can run free <strong>without disruption</strong>!</p>
-<p>(In an Unpaid GitHub Org Account, that won’t be charged to NuttX Project)</p>
+<p>Where the Merge Jobs can run free <strong>without disruption</strong>.</p>
+<p><a href="https://github.com/NuttX">(In an <strong>Unpaid GitHub Org Account</strong>, not charged to NuttX Project)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="Optimising the Continuous Integration for Apache NuttX RTOS" /></p>
 <p><em>What about the Old Merge Jobs?</em></p>
 <p>Initially I ran a script that will quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in NuttX Repo and NuttX Apps.</p>
 <p>Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2817">(And for <strong>NuttX Apps</strong>)</a></p>
-<p><a href="https://github.com/apache/nuttx/issues/14407">(Restoring the <strong>Auto-Build on Sync</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/14407">(Restoring <strong>Auto-Build on Sync</strong>)</a></p>
 <p><em>How to trigger the Scheduled Merge Job?</em></p>
 <p>Every Day at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I do this…</p>
 <ol>
@@ -279,9 +279,9 @@
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><em>One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?</em></p>
-<p><a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on <strong>Submitting and Updating PRs</strong>.</p>
+<p><a href="https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132"><strong>Two-Thirds</strong></a> of our GitHub Runner Minutes were spent on validating <strong>New and Updated PRs</strong>.</p>
 <p>Hence we’re skipping <strong>Half the CI Checks</strong> for Complex PRs.</p>
-<p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm, RISC-V, Xtensa, etc)</p>
+<p>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: <em>Arm32, Arm64 RISC-V, Xtensa, etc</em>)</p>
 <p><em>Which CI Checks did we select?</em></p>
 <p>Today we start only these <strong>CI Checks</strong> when submitting or updating a Complex PR (pic above)</p>
 <ul>
@@ -296,7 +296,6 @@
 <p>We selected the CI Checks above because they validate NuttX Builds on <strong>Popular Boards</strong> (and for special tests)</p>
 <div><table><thead><tr><th style="text-align: left">Target Group</th><th style="text-align: left">Board / Test</th></tr></thead><tbody>
 <tr><td style="text-align: left"><em>arm-01</em></td><td style="text-align: left">Sony Spresense (TODO)</td></tr>
-<tr><td style="text-align: left"><em>arm-02</em></td><td style="text-align: left">SABRE 6Quad CI Test (QEMU)</td></tr>
 <tr><td style="text-align: left"><em>arm-05</em></td><td style="text-align: left">Nordic nRF52</td></tr>
 <tr><td style="text-align: left"><em>arm-06</em></td><td style="text-align: left">Raspberry Pi RP2040</td></tr>
 <tr><td style="text-align: left"><em>arm-07</em></td><td style="text-align: left">Microchip SAMD</td></tr>
@@ -309,7 +308,7 @@
 <p><a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0">(See the Complete List of <strong>CI Builds</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-pr.jpg" alt="Complex PR vs Simple PR" /></p>
 <p><em>What about Simple PRs?</em></p>
-<p>A <strong>Simple PR</strong> concerns only <strong>One Single Architecture</strong>: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.</p>
+<p>A <strong>Simple PR</strong> concerns only <strong>One Single Architecture</strong>: <em>Arm32 OR Arm64 OR RISC-V OR Xtensa etc.</em></p>
 <p>When we create a Simple PR for Arm32: It will trigger only the CI Checks for <em>arm-01</em> … <em>arm-14</em>.</p>
 <p>Which will <a href="https://lupyuen.codeberg.page/articles/ci3.html#actual-performance"><strong>complete earlier</strong></a> than a Complex PR.</p>
 <p><a href="https://lupyuen.codeberg.page/articles/ci3.html#actual-performance">(<strong>x86_64 Devs</strong> are the happiest. Their PRs complete in <strong>10 Mins</strong>!)</a></p>
