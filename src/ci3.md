@@ -1,6 +1,6 @@
 # Optimising the Continuous Integration for Apache NuttX RTOS
 
-📝 _23 Nov 2024_
+📝 _10 Nov 2024_
 
 ![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
