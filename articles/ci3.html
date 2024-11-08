@@ -973,17 +973,18 @@ Linux:
 </code></pre></div>
 <p>One thing remains the same: We configure the <strong>Target Groups</strong> in <em>build.yml</em>. (Instead of <em>arch.yml</em>)</p>
 <h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>14.10 Actual Performance</h2>
-<p>We recorded the <strong>CI Build Performance</strong> for Simple PRs…</p>
+<p>For our Initial Implementation of Build Rules: We recorded the <strong>CI Build Performance</strong> for Simple PRs.</p>
+<p>Then we made the Simple PRs faster…</p>
 <div><table><thead><tr><th style="text-align: left">Build Time</th><th style="text-align: center">Before</th><th style="text-align: center">After</th></tr></thead><tbody>
 <tr><td style="text-align: left">Arm32</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11210724531"><strong>2 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11707495067"><strong>1.5 hours</strong></a></td></tr>
-<tr><td style="text-align: left">Arm64</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11140028404"><strong>2.5 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11704164434"><strong>30 mins</strong></a></td></tr>
+<tr><td style="text-align: left">Arm64</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11140028404"><strong>2.2 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11704164434"><strong>30 mins</strong></a></td></tr>
 <tr><td style="text-align: left">RISC-V</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11163805578"><strong>1.8 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11669727849"><strong>50 mins</strong></a></td></tr>
 <tr><td style="text-align: left">Xtensa</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11105657530"><strong>2.2 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11699279596"><strong>1.5 hours</strong></a></td></tr>
-<tr><td style="text-align: left">x86_64</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11158309196"><strong>2.5 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11661703226"><strong>10 mins</strong></a></td></tr>
+<tr><td style="text-align: left">x86_64</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11158309196"><strong>2.2 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11661703226"><strong>10 mins</strong></a></td></tr>
 <tr><td style="text-align: left">Simulator</td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11146942454"><strong>2.2 hours</strong></a></td><td style="text-align: center"><a href="https://github.com/apache/nuttx/actions/runs/11499427672"><strong>1 hour</strong></a></td></tr>
 </tbody></table>
 </div>
-<p>How did we accomplish the above?</p>
+<p>How did we make the <strong>Simple PRs faster</strong>?</p>
 <ul>
 <li>
 <p>We broke up <strong>Big Jobs</strong> <em>(arm-05, riscv-01, riscv-02)</em> into Multiple Smaller Jobs.</p>
@@ -1002,7 +1003,7 @@ Linux:
 <p>We split the <em>others</em> job into <em>arm64</em> and <em>x86_64</em></p>
 </li>
 </ul>
-<p><strong>TODO:</strong> Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?</p>
+<p><strong>Up Next:</strong> Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?</p>
 <ul>
 <li>
 <p>I have a hunch that CI works better when we pack the jobs into <strong>One-Hour Time Slices</strong></p>
