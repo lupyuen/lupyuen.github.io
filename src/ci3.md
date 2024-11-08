@@ -1017,18 +1017,20 @@ One thing remains the same: We configure the __Target Groups__ in _build.yml_. (
 
 ## Actual Performance
 
-We recorded the __CI Build Performance__ for Simple PRs...
+For our Initial Implementation of Build Rules: We recorded the __CI Build Performance__ for Simple PRs.
+
+Then we made the Simple PRs faster...
 
 | Build Time | Before | After |
 |:------------------|:------:|:-----:|
 | Arm32 | [**2 hours**](https://github.com/apache/nuttx/actions/runs/11210724531) | [**1.5 hours**](https://github.com/apache/nuttx/actions/runs/11707495067)
-| Arm64 | [**2.5 hours**](https://github.com/apache/nuttx/actions/runs/11140028404) | [**30 mins**](https://github.com/apache/nuttx/actions/runs/11704164434)
+| Arm64 | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11140028404) | [**30 mins**](https://github.com/apache/nuttx/actions/runs/11704164434)
 | RISC-V | [**1.8 hours**](https://github.com/apache/nuttx/actions/runs/11163805578) | [**50 mins**](https://github.com/apache/nuttx/actions/runs/11669727849)
 | Xtensa | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11105657530) | [**1.5 hours**](https://github.com/apache/nuttx/actions/runs/11699279596)
-| x86_64 | [**2.5 hours**](https://github.com/apache/nuttx/actions/runs/11158309196) | [**10 mins**](https://github.com/apache/nuttx/actions/runs/11661703226)
+| x86_64 | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11158309196) | [**10 mins**](https://github.com/apache/nuttx/actions/runs/11661703226)
 | Simulator | [**2.2 hours**](https://github.com/apache/nuttx/actions/runs/11146942454) | [**1 hour**](https://github.com/apache/nuttx/actions/runs/11499427672)
 
-How did we accomplish the above?
+How did we make the __Simple PRs faster__?
 
 - We broke up __Big Jobs__ _(arm-05, riscv-01, riscv-02)_ into Multiple Smaller Jobs.
 
@@ -1046,7 +1048,7 @@ How did we accomplish the above?
 
 - We split the _others_ job into _arm64_ and _x86_64_
 
-__TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
+__Up Next:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
 
 - I have a hunch that CI works better when we pack the jobs into __One-Hour Time Slices__
 
