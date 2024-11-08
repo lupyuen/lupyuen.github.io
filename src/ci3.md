@@ -60,11 +60,13 @@ After [__deliberating overnight:__](https://www.strava.com/activities/1267309407
 
   Daily at __00:00 UTC__ and __12:00 UTC__.
 
-  _(No more Ad Hoc, On-Demand Merge Jobs)_
+  _(No more On-Demand Merge Jobs)_
 
 - __macOS and Windows Jobs:__
 
-  Shall be __Totally Disabled__ until we find a way to manage their costs
+  Shall be __Totally Disabled__.
+  
+  _(Until we find a way to manage their costs)_
 
 We have reasons for doing these, backed by solid data...
 
