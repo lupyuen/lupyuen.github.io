@@ -104,11 +104,11 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   To enable One macOS Job: We need to disable 10 Linux Jobs! Which is not feasible.
 
-- Our macOS Jobs are in an __untidy state__ right now, showing too many warnings.
+- Our macOS Jobs are in an __untidy state__ right now, showing many many warnings.
 
   We need someone familiar with Intel Macs to clean up the macOS Jobs.
 
-  (See this [__macOS Log__](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388421934) and [__Another Log__](https://github.com/NuttX/nuttx/actions/runs/11630100298/job/32388422211))
+  (See the [__macOS Log__](https://github.com/NuttX/nuttx/actions/runs/11728929385/job/32673549658#step:7:4236))
 
 - That's why we moved the macOS Builds to the __NuttX Mirror Repo__, which won't be charged to NuttX Project.
 
@@ -140,7 +140,7 @@ Nope this is __simply impossible__...
 
 _What about the Windows Builds?_
 
-We recently [__re-enabled the Windows Builds__](https://github.com/apache/nuttx/issues/14598), because they're not as costly as macOS Builds.
+Recently we [__re-enabled the Windows Builds__](https://github.com/apache/nuttx/issues/14598), because they're not as costly as macOS Builds.
 
 We'll continue to monitor our GitHub Costs. And shut down the Windows Builds if necessary.
 
@@ -190,9 +190,9 @@ Initially I ran a script that will quickly [__Cancel any Merge Jobs__](https://g
 
 Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). 
 
-[(Also for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
+[(And for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
 
-[(Fixing the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
+[(Restoring the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
 
 _How to trigger the Scheduled Merge Job?_
 
@@ -202,7 +202,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Click "__Sync Fork > Discard Commits__"
 
-1.  Which will __Sync our Mirror Repo__ with the Upstream NuttX Repo
+1.  Which will __Sync our Mirror Repo__ based on the Upstream NuttX Repo
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
@@ -210,7 +210,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. (Because it's free!)
 
-1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might also overrun)](https://github.com/apache/nuttx/issues/14680)
+1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
@@ -242,7 +242,7 @@ Hence we're skipping __Half the CI Checks__ for Complex PRs.
 
 _Which CI Checks did we select?_
 
-Today we start only these __CI Checks__ when submitting or updating a Complex PR (pic above)...
+Today we start only these __CI Checks__ when submitting or updating a Complex PR (pic above)
 
 - _arm-03, 05, 06, 07, 08, 10, 13_
 - _risc-v-01, 02, 03_
@@ -294,7 +294,7 @@ Indeed! The Build Rules are explained here...
 
 _Hitting the Target Metrics in 2 weeks... Everyone needs to help out right?_
 
-Our quota is __25 Full-Time GitHub Runners__ per day.
+Our quota is [__25 Full-Time GitHub Runners__](https://infra.apache.org/github-actions-policy.html) per day.
 
 We published our own __Live Metric for Full-Time Runners__, for everyone to track...
 
@@ -304,7 +304,7 @@ We published our own __Live Metric for Full-Time Runners__, for everyone to trac
 
 - __Elapsed Hours:__ Number of hours elapsed since 00:00 UTC
 
-- __GitHub Job Hours:__ Elapsed Duration of all `nuttx` and `nuttx-apps` GitHub Jobs. (Cancelled / Completed / Failed)
+- __GitHub Job Hours:__ Elapsed Duration of all GitHub Jobs at NuttX Repo and NuttX Apps. _(Cancelled / Completed / Failed)_
 
   This data is available only AFTER the job has been Cancelled / Completed / Failed. (Might have lagged by 1.5 hours)
   
@@ -426,7 +426,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
     [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github)
 
-    [(__CI Test__ might also overrun)](https://github.com/apache/nuttx/issues/14680)
+    [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
@@ -1036,7 +1036,7 @@ How did we make the __Simple PRs faster__?
 
   __Small Jobs__ will really fly! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
-  (We moved the RP2040 jobs from _arm-05_ to _arm-06_, then added _arm-14_. Also we added jobs _riscv-03 ... riscv-06_)
+  (We moved the RP2040 jobs from _arm-05_ to _arm-06_, then added _arm-14_. Followed by jobs _riscv-03 ... riscv-06_)
 
 - We saw a __27% Reduction in GitHub Runner Hours__! From [**15 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11210724531/usage) down to [**11 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11217886131/usage) per Arm32 Build.
 
