@@ -32,29 +32,37 @@ We had [__an ultimatum__](https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b
 
 After [__deliberating overnight:__](https://www.strava.com/activities/12673094079) We swiftly activated [__our rescue plan__](https://github.com/apache/nuttx/issues/14376)...
 
-1.  When we submit or update a __Complex PR__ that affects __All Architectures__ (Arm, RISC-V, Xtensa, etc)...
+- __Submit / Update a Complex PR:__
 
-    CI Workflow shall trigger only __Half the Jobs__ for CI Checks.
+  CI Workflow shall trigger only __Half the Jobs__ for CI Checks.
 
-    (Will reduce GitHub Cost by 32%)
+  _(A __Complex PR__ affects __All Architectures__: Arm32, Arm64, RISC-V, Xtensa, etc. Will reduce GitHub Cost by 32%)_
 
-1.  When the __Complex PR is Merged:__ CI Workflow will still run all jobs _arm-01 ... arm-14, risc-v, xtensa, etc_
+- __Merge a Complex PR:__
 
-    (Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall check only _arm-01 ... arm-14_)
+  CI Workflow shall __Run All Jobs__ like before
+  
+  _(arm-01 ... arm-14, risc-v, xtensa, etc)_
 
-1.  When we __Merge a PR:__ Our Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Instead of OG Repo _apache/nuttx_)
+- __Simple PRs:__
 
-    We shall have only __Two Scheduled Merge Jobs__ per day: 00:00 UTC and 12:00 UTC.
+  No change. Thus Simple Arm32 PRs shall build only _arm-01 ... arm-14_
 
-1.  How? I shall quickly [__Cancel any Merge Jobs__](https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh) that appear in NuttX Repo and NuttX Apps.
+  _(A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RISC-V etc)_
 
-    Then at __00:00 UTC__ and __12:00 UTC__: I shall start the Latest Merge Job at NuttX Mirror Repo.
+- __After Merging Any PR:__
 
-    (Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/apache/nuttx/pull/14618). Also for [__NuttX Apps__](https://github.com/apache/nuttx-apps/pull/2817))
+  Merge Jobs shall run at [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml)
+  
+  _(Instead of OG Repo _apache/nuttx_)_
 
-1.  __macOS and Windows Jobs__ _(msys2 / msvc)_: They shall be totally disabled until we find a way to manage their costs.
+- __Two Scheduled Merge Jobs:__
 
-    (GitHub charges [__10x Premium for macOS Runners__](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers), 2x Premium for Windows Runners!)
+  Daily at __00:00 UTC__ and __12:00 UTC__
+
+- __macOS and Windows Jobs:__
+
+  Shall be __Totally Disabled__ until we find a way to manage their costs
 
 We have reasons for doing these, backed by solid data...
 
