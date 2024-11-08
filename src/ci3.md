@@ -539,13 +539,29 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
 - [__Third Run succeeds.__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
 
-- Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
+- Is there a __Concurrent Connection Limit__ for GitHub Connections?
+
+  We see __4 Concurrent Connections__ to GitHub...
+
+  - [__risc-v-05__ at 00:41:06](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111489166#step:7:84)
+
+  - [__xtensa-02__ at 00:41:17](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488582#step:7:510)
+
+  - [__xtensa-01__ at 00:41:34](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111487874#step:7:586)
+
+  - [__risc-v-02__ at 00:41:58](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488301#step:7:532)
+
+  The __Fifth Connection__ failed: [__arm-02__ at 00:42:52](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:619)
+
+- Is something misconfigured in our __Docker Image__?
+
+  But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
 
 - Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
 
-  [__GitHub Actions with Smaller MTU Size__](https://github.com/actions/actions-runner-controller/issues/393)
+  - [__GitHub Actions with Smaller MTU Size__](https://github.com/actions/actions-runner-controller/issues/393)
 
-  [__Docker MTU issues and solutions__](https://mlohr.com/docker-mtu/)
+  - [__Docker MTU issues and solutions__](https://mlohr.com/docker-mtu/)
 
 - Meanwhile I'm running a script to Restart Failed Jobs on our NuttX Mirror Repo: [restart-failed-job.sh](https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh)
 
