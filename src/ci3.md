@@ -206,13 +206,15 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
-1.  Which will also [__Disable Fail-Fast__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) and grind through all builds. (Regardless of error)
+1.  Which will also [__Disable Fail-Fast__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) and grind through all builds. [(Regardless of error, pic below)](https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca)
 
-1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. (Because it's free!)
+1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. [(Because it's free! Pic below)](https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca)
 
 1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
+
+![Disable Fail-Fast and Remove Max Parallel](https://lupyuen.github.io/images/ci3-workflow.png)
 
 _Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
 
