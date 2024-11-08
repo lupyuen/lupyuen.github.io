@@ -539,9 +539,9 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
 - [__Third Run succeeds.__](https://github.com/nuttxpr/nuttx/actions/runs/11535899222) Why do we keep seeing these errors: GitHub Actions with Docker, can't connect to GitHub itself?
 
-- Is there a __Concurrent Connection Limit__ for GitHub Connections?
+- Is there a __Concurrent Connection Limit__ for GitHub HTTPS Connections?
 
-  We see __4 Concurrent Connections__ to GitHub...
+  We see __4 Concurrent Connections__ to GitHub HTTPS...
 
   - [__risc-v-05__ at 00:41:06](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111489166#step:7:84)
 
