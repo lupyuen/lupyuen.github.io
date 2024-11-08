@@ -81,13 +81,13 @@
 <li><a href="#appendix-build-rules-for-ci-workflow">14 Appendix: Build Rules for CI Workflow</a><ul>
 <li><a href="#overall-solution">14.1 Overall Solution</a><ul></ul></li>
 <li><a href="#fetch-the-arch-labels">14.2 Fetch the Arch Labels</a><ul></ul></li>
-<li><a href="#handle-only-simple-prs">14.3 Handle Only Simple PRs</a><ul></ul></li>
-<li><a href="#for-arm-arch-identify-the-non-arm-builds">14.4 For Arm Arch: Identify the Non-Arm Builds</a><ul></ul></li>
+<li><a href="#limit-to-simple-prs">14.3 Limit to Simple PRs</a><ul></ul></li>
+<li><a href="#identify-the-non-arm-builds">14.4 Identify the Non-Arm Builds</a><ul></ul></li>
 <li><a href="#skip-the-non-arm-builds">14.5 Skip The Non-Arm Builds</a><ul></ul></li>
-<li><a href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">14.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</a><ul></ul></li>
+<li><a href="#same-for-other-builds">14.6 Same for Other Builds</a><ul></ul></li>
 <li><a href="#skip-the-macos-builds">14.7 Skip the macOS Builds</a><ul></ul></li>
-<li><a href="#ignore-the-documentation">14.8 Ignore the Documentation</a><ul></ul></li>
-<li><a href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">14.9 Sync the CI Workflow from NuttX Repo to NuttX Apps</a><ul></ul></li>
+<li><a href="#ignore-the-docs">14.8 Ignore the Docs</a><ul></ul></li>
+<li><a href="#sync-to-nuttx-apps">14.9 Sync to NuttX Apps</a><ul></ul></li>
 <li><a href="#actual-performance">14.10 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="Optimising the Continuous Integration for Apache NuttX RTOS" /></p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$4,900</strong> (weekly) down to <strong>$890</strong>…</p>
@@ -677,7 +677,7 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 </code></pre></div>
 <p>Why <code> || echo ""</code>? That’s because if the GitHub CLI <code>gh</code> fails for any reason, we will build all targets. This ensures that our CI Workflow won’t get disrupted due to errors in GitHub CLI.</p>
-<h2 id="handle-only-simple-prs"><a class="doc-anchor" href="#handle-only-simple-prs">§</a>14.3 Handle Only Simple PRs</h2>
+<h2 id="limit-to-simple-prs"><a class="doc-anchor" href="#limit-to-simple-prs">§</a>14.3 Limit to Simple PRs</h2>
 <p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label, like “Arch: risc-v, Board: risc-v, Size: XS”. If it’s not a Simple PR: We build everything. Like so: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># inputs.boards is a JSON Array: [&quot;arm-01&quot;, &quot;risc-v-01&quot;, &quot;xtensa-01&quot;, ...]
 # We compact and remove the newlines
@@ -737,7 +737,7 @@ if [[ &quot;$quit&quot; == &quot;1&quot; ]]; then
   echo &quot;selected_builds=$boards&quot; | tee -a $GITHUB_OUTPUT
   exit
 fi
-</code></pre></div><h2 id="for-arm-arch-identify-the-non-arm-builds"><a class="doc-anchor" href="#for-arm-arch-identify-the-non-arm-builds">§</a>14.4 For Arm Arch: Identify the Non-Arm Builds</h2>
+</code></pre></div><h2 id="identify-the-non-arm-builds"><a class="doc-anchor" href="#identify-the-non-arm-builds">§</a>14.4 Identify the Non-Arm Builds</h2>
 <p>Suppose the PR says “Arch: arm” or “Board: arm”. We filter out the builds that should be skipped (RISC-V, Xtensa, etc): <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For every board
 for (( i=0; i&lt;numboards; i++ ))
@@ -811,7 +811,7 @@ steps:
   ## Omitted: Run cibuild.sh on Linux
 </code></pre></div>
 <p>Why <code>needs: Fetch-Source</code>? That’s because the PR Labeler runs concurrently in the background. When we add <code>Fetch-Source</code> as a Job Dependency, we give the PR Labeler sufficient time to run (1 min), before we read the PR Label in <code>arch.yml</code>.</p>
-<h2 id="same-for-risc-v-simulator-x86_64-and-xtensa-builds"><a class="doc-anchor" href="#same-for-risc-v-simulator-x86_64-and-xtensa-builds">§</a>14.6 Same for RISC-V, Simulator, x86_64 and Xtensa Builds</h2>
+<h2 id="same-for-other-builds"><a class="doc-anchor" href="#same-for-other-builds">§</a>14.6 Same for Other Builds</h2>
 <p>We do the same for Arm64, RISC-V, Simulator, x86_64 and Xtensa: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L202-L232">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For &quot;Arch / Board: arm64&quot;: Build arm64-01
 elif [[ &quot;$arch_contains_arm64&quot; == &quot;1&quot; || &quot;$board_contains_arm64&quot; == &quot;1&quot; ]]; then
@@ -882,7 +882,7 @@ macOS:
       echo &quot;skip_all_builds=1&quot; | tee -a $GITHUB_OUTPUT
       exit
     fi
-</code></pre></div><h2 id="ignore-the-documentation"><a class="doc-anchor" href="#ignore-the-documentation">§</a>14.8 Ignore the Documentation</h2>
+</code></pre></div><h2 id="ignore-the-docs"><a class="doc-anchor" href="#ignore-the-docs">§</a>14.8 Ignore the Docs</h2>
 <p>NuttX Devs shouldn’t be <strong>penalised for adding docs</strong>! That’s why we ignore the label “Area: Documentation”, so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds): <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Ignore the Label &quot;Area: Documentation&quot;, because it won&#39;t affect the Build Targets
 query=&#39;.labels | map(select(.name != &quot;Area: Documentation&quot;)) | &#39;
@@ -894,7 +894,7 @@ select_length=&#39;length&#39;
 labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo &quot;&quot;)
 numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo &quot;&quot;)
 echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
-</code></pre></div><h2 id="sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps"><a class="doc-anchor" href="#sync-the-ci-workflow-from-nuttx-repo-to-nuttx-apps">§</a>14.9 Sync the CI Workflow from NuttX Repo to NuttX Apps</h2>
+</code></pre></div><h2 id="sync-to-nuttx-apps"><a class="doc-anchor" href="#sync-to-nuttx-apps">§</a>14.9 Sync to NuttX Apps</h2>
 <p>Remember to sync <code>build.yml</code> and <code>arch.yml</code> from <code>nuttx</code> repo to <code>nuttx-apps</code>!</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2676">(See the <strong>Pull Request</strong>)</a></p>
 <p><code>build.yml</code> refers to <code>arch.yml</code> (for the build rules). So when we sync <code>build.yml</code> from <code>nuttx</code> to <code>nuttx-apps</code>, we won’t need to remove the references to <code>arch.yml</code>.</p>
