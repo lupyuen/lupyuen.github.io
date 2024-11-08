@@ -542,12 +542,38 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 <p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222"><strong>Third Run succeeds.</strong></a> Why do we keep seeing these errors: GitHub Actions with Docker, can’t connect to GitHub itself?</p>
 </li>
 <li>
-<p>Is something misconfigured in our Docker Image? But the exact same Docker Image runs fine on <a href="https://lupyuen.github.io/articles/ci2"><strong>our own Build Farm</strong></a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>doesn’t show any errors</strong></a>.</p>
+<p>Is there a <strong>Concurrent Connection Limit</strong> for GitHub Connections?</p>
+<p>We see <strong>4 Concurrent Connections</strong> to GitHub…</p>
+<ul>
+<li>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111489166#step:7:84"><strong>risc-v-05</strong> at 00:41:06</a></p>
+</li>
+<li>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488582#step:7:510"><strong>xtensa-02</strong> at 00:41:17</a></p>
+</li>
+<li>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111487874#step:7:586"><strong>xtensa-01</strong> at 00:41:34</a></p>
+</li>
+<li>
+<p><a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488301#step:7:532"><strong>risc-v-02</strong> at 00:41:58</a></p>
+</li>
+</ul>
+<p>The <strong>Fifth Connection</strong> failed: <a href="https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:619"><strong>arm-02</strong> at 00:42:52</a></p>
+</li>
+<li>
+<p>Is something misconfigured in our <strong>Docker Image</strong>?</p>
+<p>But the exact same Docker Image runs fine on <a href="https://lupyuen.github.io/articles/ci2"><strong>our own Build Farm</strong></a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>doesn’t show any errors</strong></a>.</p>
 </li>
 <li>
 <p>Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔</p>
+<ul>
+<li>
 <p><a href="https://github.com/actions/actions-runner-controller/issues/393"><strong>GitHub Actions with Smaller MTU Size</strong></a></p>
+</li>
+<li>
 <p><a href="https://mlohr.com/docker-mtu/"><strong>Docker MTU issues and solutions</strong></a></p>
+</li>
+</ul>
 </li>
 <li>
 <p>Meanwhile I’m running a script to Restart Failed Jobs on our NuttX Mirror Repo: <a href="https://github.com/lupyuen/nuttx-release/blob/main/restart-failed-job.sh">restart-failed-job.sh</a></p>
