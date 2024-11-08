@@ -553,6 +553,13 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
   The __Fifth Connection__ failed: [__arm-02__ at 00:42:52](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:619)
 
+- Should we use a __Local Proxy Server__ for curl?
+
+  ```bash
+  $ export https_proxy=https://1.2.3.4:1234
+  $ curl https://github.com/...
+  ```
+
 - Is something misconfigured in our __Docker Image__?
 
   But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
