@@ -556,15 +556,16 @@ These __Timeout Errors__ will cost us precious GitHub Minutes. The remaining job
 
 1.  Can we have __Restartable Builds__?
 
-    Doesn't quite make sense to kill everything and rebuild from scratch (arm6, arm7, riscv7) just because one job failed (xtensa2)
+    Doesn't quite make sense to kill everything and rebuild from scratch _(arm6, arm7, riscv7)_ just because one job failed _(xtensa2)_
 
-1.  Or xtensa2 should __wait for others__ to finish, before it declares a timeout and croaks?
+1.  Or _xtensa2_ should __wait for others__ to finish, before it declares a timeout and croaks?
 
 ```text
 Configuration/Tool: esp32s2-kaluga-1/lvgl_st7789
-curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection timed out
+curl: Failed to connect to github.com port 443 after 133994 ms:
+Connection timed out
 ```
-[(See the __Complete Log__)](https://github.com/apache/nuttx/actions/runs/11395811301/attempts/1)
+[(See the __Complete Log__)](https://github.com/apache/nuttx/actions/runs/11395811301/job/31708665147#step:7:348)
 
 ![Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
@@ -572,15 +573,21 @@ curl: (28) Failed to connect to github.com port 443 after 133994 ms: Connection 
 
 Initially we created the __Build Rules__ for CI Workflow to solve these problems...
 
-- NuttX Devs need to wait (2.5 hours) for the CI Build to complete across all Architectures (Arm32, Arm64, RISC-V, Xtensa), even though we're modifying a Single Architecture
+- NuttX Devs need to wait (2.5 hours) for the CI Build to complete __Across all Architectures__ _(Arm32, Arm64, RISC-V, Xtensa)_...
 
-- We're using too many GitHub Runners and Build Minutes, exceeding the [ASF Policy for GitHub Actions](https://infra.apache.org/github-actions-policy.html)
+  Even though we're modifying a __Single Architecture__.
 
-- Our usage of GitHub Runners is going up ($12K per month), we need to stay within the [ASF Budget for GitHub Runners](https://infra.apache.org/github-actions-policy.html) ($8.2K per month)
+- We're using __too many GitHub Runners__ and Build Minutes, exceeding the [__ASF Policy for GitHub Actions__](https://infra.apache.org/github-actions-policy.html)
 
-- What if CI could build only the Modified Architecture?
+- Our usage of GitHub Runners is going up ($12K per month)
 
-- Right now most of our CI Builds are taking 2.5 mins. Can we complete the build within 1 hour, when we Create / Modify a Simple PR?
+  We need to stay within the [__ASF Budget for GitHub Runners__](https://infra.apache.org/github-actions-policy.html) ($8.2K per month)
+
+- What if CI could build only the __Modified Architecture__?
+
+- Right now most of our CI Builds are taking 2.5 mins.
+
+  Can we __complete the build within 1 hour__, when we Create / Modify a Simple PR?
 
 This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs.
 
@@ -588,19 +595,19 @@ This section explains how we coded the Build Rules. Which were mighty helpful fo
 
 ## Overall Solution
 
-We propose a Partial Solution, based on the __Arch and Board Labels__ (recently added to CI)...
+We propose a Partial Solution, based on the [__Arch and Board Labels__](https://github.com/apache/nuttx/pull/13545) (recently added to CI)...
 
-- We target only the __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS"
+- We target only the __Simple PRs__: One Arch Label + One Board Label + One Size Label, like _"Arch: risc-v, Board: risc-v, Size: XS"_
 
-- If "Arch: arm" is the only non-size label, then we build only `arm-01`, `arm-02`, ...
+- If _"Arch: arm"_ is the only non-size label, then we build only _arm-01, arm-02, ..._
 
-- Same for "Board: arm"
+- Same for _"Board: arm"_
 
-- If Arch and Board Labels are both present: They must be the same
+- If __Arch and Board Labels__ are both present: They must be the same
 
 - Similar rules for RISC-V, Simulator, x86_64 and Xtensa
 
-- Simple PR + Docs is still considered a Simple PR (so devs won't be penalised for adding docs)
+- __Simple PR + Docs__ is still considered a Simple PR (so devs won't be penalised for adding docs)
 
 ## Fetch the Arch Labels
 
@@ -675,11 +682,15 @@ __In our Build Rules:__ This is how we fetch the Arch Labels from a PR. And iden
     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, we will build all targets. This ensures that our CI Workflow won't get disrupted due to errors in GitHub CLI.
+Why "` || echo ""`"? That's because if the __GitHub CLI gh__ fails for any reason, we shall build all targets.
+
+This ensures that our CI Workflow won't get disrupted due to errors in GitHub CLI.
 
 ## Limit to Simple PRs
 
-We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189)
+We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like _"Arch: risc-v, Board: risc-v, Size: XS"_.
+
+If it's __Not a Simple PR__: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189)
 
 ```yaml
 # inputs.boards is a JSON Array: ["arm-01", "risc-v-01", "xtensa-01", ...]
@@ -744,7 +755,9 @@ fi
 
 ## Identify the Non-Arm Builds
 
-Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254)
+Suppose the PR says _"Arch: arm"_ or _"Board: arm"_.
+
+We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254)
 
 ```yaml
 # For every board
@@ -787,7 +800,9 @@ fi
 
 ## Skip The Non-Arm Builds
 
-Earlier we saw the code in `arch.yml` [(Reusable Workflow)](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that identifies the builds to be skipped. The code above is called by `build.yml` (Build Workflow) which will actually skip the builds: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148)
+Earlier we saw the code in _arch.yml_ [__Reusable Workflow__](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) that identifies the builds to be skipped.
+
+The code above is called by _build.yml_ (Build Workflow). Which will actually skip the builds: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148)
 
 ```yaml
 # Select the Linux Builds based on PR Arch Label
@@ -824,7 +839,9 @@ steps:
   ## Omitted: Run cibuild.sh on Linux
 ```
 
-Why `needs: Fetch-Source`? That's because the PR Labeler runs concurrently in the background. When we add `Fetch-Source` as a Job Dependency, we give the PR Labeler sufficient time to run (1 min), before we read the PR Label in `arch.yml`.
+Why _"needs: Fetch-Source"_? That's because the PR Labeler runs __concurrently in the background__.
+
+When we add _Fetch-Source_ as a __Job Dependency__: We give the PR Labeler sufficient time to run (1 min), before we read the PR Label in _arch.yml_.
 
 ## Same for Other Builds
 
@@ -866,9 +883,9 @@ elif [[ "$arch_contains_xtensa" == "1" || "$board_contains_xtensa" == "1" ]]; th
 
 ## Skip the macOS Builds
 
-For Simple PRs and Complex PRs: We skip the macOS builds (`macos`, `macos/sim-*`) since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L196-L256)
+__For Simple PRs and Complex PRs:__ We skip the macOS builds _(macos, macos/sim-*)_ since these builds are costly: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L196-L256)
 
-(`macos` and `macos/sim-*` builds will take 2 hours to complete due to the queueing for macOS Runners)
+(macOS builds will take __2 hours to complete__ due to the queueing for macOS Runners)
 
 ```yaml
 # Select the macOS Builds based on PR Arch Label
@@ -895,7 +912,7 @@ macOS:
     ## Omitted: Run cibuild.sh on macOS
 ```
 
-`skip_all_builds` for macOS will be set to `1`: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L100-L112)
+_skip_all_builds_ for macOS will be set to `1`: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L100-L112)
 
 ```yaml
 # Select the Builds for the PR: arm-01, risc-v-01, xtensa-01, ...
@@ -911,9 +928,13 @@ macOS:
     fi
 ```
 
-## Ignore the Docs
+## Ignore the Docs Label
 
-NuttX Devs shouldn't be __penalised for adding docs__! That's why we ignore the label "Area: Documentation", so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
+NuttX Devs shouldn't be __penalised for adding docs__!
+
+That's why we ignore the label _"Area: Documentation"_. Which means that __Simple PR + Docs__ is still a Simple PR.
+
+And will skip the unnecessary builds: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
 
 ```yaml
 # Ignore the Label "Area: Documentation", because it won't affect the Build Targets
@@ -930,19 +951,29 @@ echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
 
 ## Sync to NuttX Apps
 
-Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`!
+Remember to sync _build.yml_ and _arch.yml_ from __NuttX Repo to NuttX Apps__!
 
 [(See the __Pull Request__)](https://github.com/apache/nuttx-apps/pull/2676)
 
-`build.yml` refers to `arch.yml` (for the build rules). So when we sync `build.yml` from `nuttx` to `nuttx-apps`, we won't need to remove the references to `arch.yml`.
+_How are they connected?_
 
-We could make `nuttx-apps/build.yml` point to the `nuttx/arch.yml`. But that would make the CI fragile: Changes to `nuttx/arch.yml` might cause `nuttx-apps/build.yml` to break.
+_build.yml_ points to _arch.yml_ for the __Build Rules__. When we sync _build.yml_ from NuttX Repo to NuttX Apps, we won't need to remove the references to _arch.yml_.
 
-Yep `arch.yml` is totally not needed in `nuttx-apps`. I have difficulty keeping `nuttx/build.yml` and `nuttx-apps/build.yml` in sync, that's why I simply copied over `arch.yml` as-is. In future we could extend `arch.yml` with Build Rules that are specific to `nuttx-apps`?
+We could make _nuttx-apps/build.yml_ point to _nuttx/arch.yml_. But that would make the __CI Fragile__: Changes to _nuttx/arch.yml_ might cause _nuttx-apps/build.yml_ to break.
+
+That's why we point _nuttx-apps/build.yml_ to  _nuttx-apps/arch.yml_ instead.
+
+_But NuttX Apps don't need Build Rules?_
+
+Yep _arch.yml_ is kinda redundant in NuttX Apps. Everything is a __Complex PR__!
+
+But I have difficulty keeping _nuttx/build.yml_ and _nuttx-apps/build.yml_ in sync. That's why I simply copied over _arch.yml_ as-is. 
+
+(In future we could extend _arch.yml_ with __App-Specific__ Build Ruiles)
 
 _CI Build Workflow looks very different now?_
 
-Yeah our CI Build Workflow used to be simpler: [build.yml](https://github.com/apache/nuttx/blob/6a0c0722e23f5fc294a4574111742765e8c0dd04/.github/workflows/build.yml#L117-L179)
+Yeah our __CI Build Workflow__ used to be simpler: [build.yml](https://github.com/apache/nuttx/blob/6a0c0722e23f5fc294a4574111742765e8c0dd04/.github/workflows/build.yml#L117-L179)
 
 ```yaml
 Linux:
@@ -952,7 +983,7 @@ Linux:
       boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
 ```
 
-Now with Build Rules, it becomes more complicated: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L118-L196)
+Now with __Build Rules__, it becomes more complicated: [build.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L118-L196)
 
 ```yaml
 # Select the Linux Builds based on PR Arch Label
@@ -974,11 +1005,11 @@ Linux:
       boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
 ```
 
-One thing remains the same: We configure the Target Groups in `build.yml`. (Instead of `arch.yml`)
+One thing remains the same: We configure the __Target Groups__ in _build.yml_. (Instead of _arch.yml_)
 
 ## Actual Performance
 
-We recorded the CI Build Performance for Simple PRs...
+We recorded the __CI Build Performance__ for Simple PRs...
 
 | Build Time | Before | After |
 |:------------------|:------:|:-----:|
@@ -991,27 +1022,39 @@ We recorded the CI Build Performance for Simple PRs...
 
 How did we accomplish the above?
 
-- We broke up big jobs (`arm-05`, `riscv-01`, `riscv-02`) into multiple smaller jobs. Smaller jobs will really fly! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+- We broke up __Big Jobs__ _(arm-05, riscv-01, riscv-02)_ into Multiple Smaller Jobs.
 
-  (We moved the RP2040 jobs from `arm-05` to `arm-06`, then added `arm-14`. Also added jobs `riscv-03` to `riscv-06`)
+  __Small Jobs__ will really fly! [(See the Build Job Details)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
+
+  (We moved the RP2040 jobs from _arm-05_ to _arm-06_, then added _arm-14_. Also we added jobs _riscv-03 ... riscv-06_)
 
 - We saw a __27% Reduction in GitHub Runner Hours__! From [**15 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11210724531/usage) down to [**11 Runner Hours**](https://github.com/apache/nuttx/actions/runs/11217886131/usage) per Arm32 Build.
 
-- We split the Board Labels according to Arch, like "Board: arm". So "Board: arm" should build the exact same way as "Arch: arm". Same for "Board: arm, Arch: arm". Updated the Build Rules to use the Board Labels.
+- We split the __Board Labels__ according to Arch, like _"Board: arm"_.
 
-- We split the `others` job into `arm64` and `x86_64`
+  Thus _"Board: arm"_ should build the exact same way as _"Arch: arm"_.
+  
+  Same for _"Board: arm, Arch: arm"_. We updated the Build Rules to use the Board Labels.
+
+- We split the _others_ job into _arm64_ and _x86_64_
 
 __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier maintenance. But how?
 
-- I have a hunch that CI works better when we pack the jobs into One-Hour Time Slices
+- I have a hunch that CI works better when we pack the jobs into __One-Hour Time Slices__
 
-- Kinda like packing yummy goodies into Bento Boxes, making sure they don't overflow the Time Boxes  :-)
+- Kinda like packing yummy goodies into __Bento Boxes__, making sure they don't overflow the Time Boxes  :-)
 
-- We should probably shift the Riskiest / Most Failure Prone builds into the First Build Job (`arm-00`, `risc-v-00`, `sim-00`). So we can Fail Faster (in case of problems), and skip the rest of the jobs
+- We should probably shift the __Riskiest / Most Failure Prone__ builds into the First Build Job _(arm-00, risc-v-00, sim-00)_.
 
-- Recently we see many builds for [Arm32 Goldfish](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+). Can we limit the builds to the Goldfish Boards only? To identify Goldfish PRs, we can label the PRs like this: "Arch: arm, SubArch: goldfish" and/or "Board: arm, SubBoard: goldfish"
+  And we shall __Fail Faster__ (in case of problems), skipping the rest of the jobs.
 
-- How will we filter out the Build Jobs (e.g. `arm-01`) that should be built for a SubArch (e.g. `stm32`)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
+- Recently we see many builds for [__Arm32 Goldfish__](https://github.com/apache/nuttx/pulls?q=is%3Apr+is%3Aclosed+goldfish+).
+
+  Can we limit the builds to the __Goldfish Boards__ only? 
+  
+  To identify __Goldfish PRs__, we can label the PRs like this: _"Arch: arm, SubArch: goldfish"_ and _"Board: arm, SubBoard: goldfish"_
+
+- How will we filter out the Build Jobs (e.g. _arm-01_) that should be __built for a SubArch__ (e.g. _stm32_)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
