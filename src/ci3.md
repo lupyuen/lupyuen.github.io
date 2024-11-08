@@ -665,7 +665,7 @@ __In our Build Rules:__ This is how we fetch the Arch Labels from a PR. And iden
 
 Why ` || echo ""`? That's because if the GitHub CLI `gh` fails for any reason, we will build all targets. This ensures that our CI Workflow won't get disrupted due to errors in GitHub CLI.
 
-## Handle Only Simple PRs
+## Limit to Simple PRs
 
 We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like "Arch: risc-v, Board: risc-v, Size: XS". If it's not a Simple PR: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189)
 
@@ -730,7 +730,7 @@ if [[ "$quit" == "1" ]]; then
 fi
 ```
 
-## For Arm Arch: Identify the Non-Arm Builds
+## Identify the Non-Arm Builds
 
 Suppose the PR says "Arch: arm" or "Board: arm". We filter out the builds that should be skipped (RISC-V, Xtensa, etc): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254)
 
@@ -814,7 +814,7 @@ steps:
 
 Why `needs: Fetch-Source`? That's because the PR Labeler runs concurrently in the background. When we add `Fetch-Source` as a Job Dependency, we give the PR Labeler sufficient time to run (1 min), before we read the PR Label in `arch.yml`.
 
-## Same for RISC-V, Simulator, x86_64 and Xtensa Builds
+## Same for Other Builds
 
 We do the same for Arm64, RISC-V, Simulator, x86_64 and Xtensa: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L202-L232)
 
@@ -899,7 +899,7 @@ macOS:
     fi
 ```
 
-## Ignore the Documentation
+## Ignore the Docs
 
 NuttX Devs shouldn't be __penalised for adding docs__! That's why we ignore the label "Area: Documentation", so that Simple PR + Docs is still a Simple PR (which will skip the unnecessary builds): [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55)
 
@@ -916,7 +916,7 @@ numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$s
 echo "numlabels=$numlabels" | tee -a $GITHUB_OUTPUT
 ```
 
-## Sync the CI Workflow from NuttX Repo to NuttX Apps
+## Sync to NuttX Apps
 
 Remember to sync `build.yml` and `arch.yml` from `nuttx` repo to `nuttx-apps`!
 
