@@ -597,7 +597,9 @@ This section explains how we coded the Build Rules. Which were mighty helpful fo
 
 We propose a Partial Solution, based on the [__Arch and Board Labels__](https://github.com/apache/nuttx/pull/13545) (recently added to CI)...
 
-- We target only the __Simple PRs__: One Arch Label + One Board Label + One Size Label, like _"Arch: risc-v, Board: risc-v, Size: XS"_
+- We target only the __Simple PRs__: One Arch Label + One Board Label + One Size Label.
+
+  Like _"Arch: risc-v, Board: risc-v, Size: XS"_
 
 - If _"Arch: arm"_ is the only non-size label, then we build only _arm-01, arm-02, ..._
 
@@ -688,7 +690,9 @@ This ensures that our CI Workflow won't get disrupted due to errors in GitHub CL
 
 ## Limit to Simple PRs
 
-We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label, like _"Arch: risc-v, Board: risc-v, Size: XS"_.
+We handle only __Simple PRs__: One Arch Label + One Board Label + One Size Label.
+
+Like _"Arch: risc-v, Board: risc-v, Size: XS"_.
 
 If it's __Not a Simple PR__: We build everything. Like so: [arch.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189)
 
@@ -957,19 +961,23 @@ Remember to sync _build.yml_ and _arch.yml_ from __NuttX Repo to NuttX Apps__!
 
 _How are they connected?_
 
-_build.yml_ points to _arch.yml_ for the __Build Rules__. When we sync _build.yml_ from NuttX Repo to NuttX Apps, we won't need to remove the references to _arch.yml_.
+- _build.yml_ points to _arch.yml_ for the __Build Rules__.
 
-We could make _nuttx-apps/build.yml_ point to _nuttx/arch.yml_. But that would make the __CI Fragile__: Changes to _nuttx/arch.yml_ might cause _nuttx-apps/build.yml_ to break.
+  When we sync _build.yml_ from NuttX Repo to NuttX Apps, we won't need to remove the references to _arch.yml_.
 
-That's why we point _nuttx-apps/build.yml_ to  _nuttx-apps/arch.yml_ instead.
+- We could make _nuttx-apps/build.yml_ point to _nuttx/arch.yml_.
+
+  But that would make the __CI Fragile__: Changes to _nuttx/arch.yml_ might cause _nuttx-apps/build.yml_ to break.
+
+- That's why we point _nuttx-apps/build.yml_ to  _nuttx-apps/arch.yml_ instead.
 
 _But NuttX Apps don't need Build Rules?_
 
-Yep _arch.yml_ is kinda redundant in NuttX Apps. Everything is a __Complex PR__!
+- _arch.yml_ is kinda redundant in NuttX Apps. Everything is a __Complex PR__!
 
-But I have difficulty keeping _nuttx/build.yml_ and _nuttx-apps/build.yml_ in sync. That's why I simply copied over _arch.yml_ as-is. 
+- I have difficulty keeping _nuttx/build.yml_ and _nuttx-apps/build.yml_ in sync. That's why I simply copied over _arch.yml_ as-is. 
 
-(In future we could extend _arch.yml_ with __App-Specific__ Build Ruiles)
+- In future we could extend _arch.yml_ with __App-Specific__ Build Ruiles
 
 _CI Build Workflow looks very different now?_
 
