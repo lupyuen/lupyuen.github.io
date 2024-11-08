@@ -118,30 +118,36 @@
 <h1 id="rescue-plan"><a class="doc-anchor" href="#rescue-plan">§</a>1 Rescue Plan</h1>
 <p>We had <a href="https://lists.apache.org/thread/2yzv1fdf9y6pdkg11j9b4b93grb2bn0q"><strong>an ultimatum</strong></a> to reduce (drastically) our usage of GitHub Actions. Or our Continuous Integration would <strong>Halt Totally in Two Weeks</strong>!</p>
 <p>After <a href="https://www.strava.com/activities/12673094079"><strong>deliberating overnight:</strong></a> We swiftly activated <a href="https://github.com/apache/nuttx/issues/14376"><strong>our rescue plan</strong></a>…</p>
-<ol>
+<ul>
 <li>
-<p>When we submit or update a <strong>Complex PR</strong> that affects <strong>All Architectures</strong> (Arm, RISC-V, Xtensa, etc)…</p>
+<p><strong>Submit / Update a Complex PR:</strong></p>
 <p>CI Workflow shall trigger only <strong>Half the Jobs</strong> for CI Checks.</p>
-<p>(Will reduce GitHub Cost by 32%)</p>
+<p><em>(A <strong>Complex PR</strong> affects <strong>All Architectures</strong>: Arm32, Arm64, RISC-V, Xtensa, etc. Will reduce GitHub Cost by 32%)</em></p>
 </li>
 <li>
-<p>When the <strong>Complex PR is Merged:</strong> CI Workflow will still run all jobs <em>arm-01 … arm-14, risc-v, xtensa, etc</em></p>
-<p>(Simple PRs with One Single Arch / Board will build the same way as before. Thus Arm32 PRs shall check only <em>arm-01 … arm-14</em>)</p>
+<p><strong>Merge a Complex PR:</strong></p>
+<p>CI Workflow shall <strong>Run All Jobs</strong> like before</p>
+<p><em>(arm-01 … arm-14, risc-v, xtensa, etc)</em></p>
 </li>
 <li>
-<p>When we <strong>Merge a PR:</strong> Our Merge Jobs shall run at <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a>. (Instead of OG Repo <em>apache/nuttx</em>)</p>
-<p>We shall have only <strong>Two Scheduled Merge Jobs</strong> per day: 00:00 UTC and 12:00 UTC.</p>
+<p><strong>Simple PRs:</strong></p>
+<p>No change. Thus Simple Arm32 PRs shall build only <em>arm-01 … arm-14</em></p>
+<p><em>(A <strong>Simple PR</strong> concerns only <strong>One Single Architecture</strong>: Arm32 OR Arm64 OR RISC-V etc)</em></p>
 </li>
 <li>
-<p>How? I shall quickly <a href="https://github.com/lupyuen/nuttx-release/blob/main/kill-push-master.sh"><strong>Cancel any Merge Jobs</strong></a> that appear in NuttX Repo and NuttX Apps.</p>
-<p>Then at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong>: I shall start the Latest Merge Job at NuttX Mirror Repo.</p>
-<p>(Eventually we disabled the <a href="https://github.com/apache/nuttx/pull/14618"><strong>Merge Jobs for NuttX Repo</strong></a>. Also for <a href="https://github.com/apache/nuttx-apps/pull/2817"><strong>NuttX Apps</strong></a>)</p>
+<p><strong>After Merging Any PR:</strong></p>
+<p>Merge Jobs shall run at <a href="https://github.com/NuttX/nuttx/actions/workflows/build.yml"><strong>NuttX Mirror Repo</strong></a></p>
+<p><em>(Instead of OG Repo <em>apache/nuttx</em>)</em></p>
 </li>
 <li>
-<p><strong>macOS and Windows Jobs</strong> <em>(msys2 / msvc)</em>: They shall be totally disabled until we find a way to manage their costs.</p>
-<p>(GitHub charges <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions#minute-multipliers"><strong>10x Premium for macOS Runners</strong></a>, 2x Premium for Windows Runners!)</p>
+<p><strong>Two Scheduled Merge Jobs:</strong></p>
+<p>Daily at <strong>00:00 UTC</strong> and <strong>12:00 UTC</strong></p>
 </li>
-</ol>
+<li>
+<p><strong>macOS and Windows Jobs:</strong></p>
+<p>Shall be <strong>Totally Disabled</strong> until we find a way to manage their costs</p>
+</li>
+</ul>
 <p>We have reasons for doing these, backed by solid data…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-cancel.jpg" alt="We wasted GitHub Runners on Merge Jobs that were eventually superseded and cancelled" /></p>
 <h1 id="present-pains"><a class="doc-anchor" href="#present-pains">§</a>2 Present Pains</h1>
