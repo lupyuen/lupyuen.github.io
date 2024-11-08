@@ -249,10 +249,10 @@
 <p>Run this script to enable the <strong>macOS Builds</strong>: <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh">enable-macos-windows.sh</a></p>
 </li>
 <li>
-<p>Which will also <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Disable Fail-Fast</strong></a> and grind through all builds. (Regardless of error)</p>
+<p>Which will also <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Disable Fail-Fast</strong></a> and grind through all builds. <a href="https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca">(Regardless of error, pic below)</a></p>
 </li>
 <li>
-<p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. (Because it’s free!)</p>
+<p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. <a href="https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca">(Because it’s free! Pic below)</a></p>
 </li>
 <li>
 <p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
@@ -261,6 +261,7 @@
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/ci3-workflow.png" alt="Disable Fail-Fast and Remove Max Parallel" /></p>
 <p><em>Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?</em></p>
 <ul>
 <li>
