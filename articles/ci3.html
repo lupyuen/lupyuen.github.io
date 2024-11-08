@@ -601,7 +601,8 @@ Connection timed out
 <p>We propose a Partial Solution, based on the <a href="https://github.com/apache/nuttx/pull/13545"><strong>Arch and Board Labels</strong></a> (recently added to CI)…</p>
 <ul>
 <li>
-<p>We target only the <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label, like <em>“Arch: risc-v, Board: risc-v, Size: XS”</em></p>
+<p>We target only the <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label.</p>
+<p>Like <em>“Arch: risc-v, Board: risc-v, Size: XS”</em></p>
 </li>
 <li>
 <p>If <em>“Arch: arm”</em> is the only non-size label, then we build only <em>arm-01, arm-02, …</em></p>
@@ -691,7 +692,8 @@ Connection timed out
 <p>Why “<code> || echo ""</code>”? That’s because if the <strong>GitHub CLI gh</strong> fails for any reason, we shall build all targets.</p>
 <p>This ensures that our CI Workflow won’t get disrupted due to errors in GitHub CLI.</p>
 <h2 id="limit-to-simple-prs"><a class="doc-anchor" href="#limit-to-simple-prs">§</a>14.3 Limit to Simple PRs</h2>
-<p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label, like <em>“Arch: risc-v, Board: risc-v, Size: XS”</em>.</p>
+<p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label.</p>
+<p>Like <em>“Arch: risc-v, Board: risc-v, Size: XS”</em>.</p>
 <p>If it’s <strong>Not a Simple PR</strong>: We build everything. Like so: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># inputs.boards is a JSON Array: [&quot;arm-01&quot;, &quot;risc-v-01&quot;, &quot;xtensa-01&quot;, ...]
 # We compact and remove the newlines
@@ -917,13 +919,31 @@ echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
 <p>Remember to sync <em>build.yml</em> and <em>arch.yml</em> from <strong>NuttX Repo to NuttX Apps</strong>!</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2676">(See the <strong>Pull Request</strong>)</a></p>
 <p><em>How are they connected?</em></p>
-<p><em>build.yml</em> points to <em>arch.yml</em> for the <strong>Build Rules</strong>. When we sync <em>build.yml</em> from NuttX Repo to NuttX Apps, we won’t need to remove the references to <em>arch.yml</em>.</p>
-<p>We could make <em>nuttx-apps/build.yml</em> point to <em>nuttx/arch.yml</em>. But that would make the <strong>CI Fragile</strong>: Changes to <em>nuttx/arch.yml</em> might cause <em>nuttx-apps/build.yml</em> to break.</p>
+<ul>
+<li>
+<p><em>build.yml</em> points to <em>arch.yml</em> for the <strong>Build Rules</strong>.</p>
+<p>When we sync <em>build.yml</em> from NuttX Repo to NuttX Apps, we won’t need to remove the references to <em>arch.yml</em>.</p>
+</li>
+<li>
+<p>We could make <em>nuttx-apps/build.yml</em> point to <em>nuttx/arch.yml</em>.</p>
+<p>But that would make the <strong>CI Fragile</strong>: Changes to <em>nuttx/arch.yml</em> might cause <em>nuttx-apps/build.yml</em> to break.</p>
+</li>
+<li>
 <p>That’s why we point <em>nuttx-apps/build.yml</em> to  <em>nuttx-apps/arch.yml</em> instead.</p>
+</li>
+</ul>
 <p><em>But NuttX Apps don’t need Build Rules?</em></p>
-<p>Yep <em>arch.yml</em> is kinda redundant in NuttX Apps. Everything is a <strong>Complex PR</strong>!</p>
-<p>But I have difficulty keeping <em>nuttx/build.yml</em> and <em>nuttx-apps/build.yml</em> in sync. That’s why I simply copied over <em>arch.yml</em> as-is.</p>
-<p>(In future we could extend <em>arch.yml</em> with <strong>App-Specific</strong> Build Ruiles)</p>
+<ul>
+<li>
+<p><em>arch.yml</em> is kinda redundant in NuttX Apps. Everything is a <strong>Complex PR</strong>!</p>
+</li>
+<li>
+<p>I have difficulty keeping <em>nuttx/build.yml</em> and <em>nuttx-apps/build.yml</em> in sync. That’s why I simply copied over <em>arch.yml</em> as-is.</p>
+</li>
+<li>
+<p>In future we could extend <em>arch.yml</em> with <strong>App-Specific</strong> Build Ruiles</p>
+</li>
+</ul>
 <p><em>CI Build Workflow looks very different now?</em></p>
 <p>Yeah our <strong>CI Build Workflow</strong> used to be simpler: <a href="https://github.com/apache/nuttx/blob/6a0c0722e23f5fc294a4574111742765e8c0dd04/.github/workflows/build.yml#L117-L179">build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>Linux:
