@@ -553,7 +553,7 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
   The __Fifth Connection__ failed: [__arm-02__ at 00:42:52](https://github.com/nuttxpr/nuttx/actions/runs/11535899222/job/32111488205#step:7:619)
 
-- Should we use a __Local Proxy Server__ for curl?
+- Should we use a [__Caching Proxy Server__](https://ubuntu.com/server/docs/how-to-install-a-squid-server) for curl?
 
   ```bash
   $ export https_proxy=https://1.2.3.4:1234
