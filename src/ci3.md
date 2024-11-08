@@ -1054,7 +1054,11 @@ __TODO:__ Reorg and rename the CI Build Jobs, for better performance and easier 
   
   To identify __Goldfish PRs__, we can label the PRs like this: _"Arch: arm, SubArch: goldfish"_ and _"Board: arm, SubBoard: goldfish"_
 
-- How will we filter out the Build Jobs (e.g. _arm-01_) that should be __built for a SubArch__ (e.g. _stm32_)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
+- Instead of Building an __Entire Arch__ _(arm-01)_...
+
+  Can we build __One Single SubArch__ _(stm32)_?
+
+  How will we __Filter the Build Jobs__ (e.g. _arm-01_) that should be built for a SubArch (e.g. _stm32_)? [(Maybe like this)](https://gist.github.com/lupyuen/bccd1ac260603a2e3cd7440b8b4ee86c)
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/13775)
 
