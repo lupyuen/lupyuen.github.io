@@ -110,7 +110,7 @@ Yeah sorry we can't enable __macOS Builds__ in NuttX Repo right now...
 
   (See the [__macOS Log__](https://github.com/NuttX/nuttx/actions/runs/11728929385/job/32673549658#step:7:4236))
 
-- That's why we moved the macOS Builds to the __NuttX Mirror Repo__, which won't be charged to NuttX Project.
+- That's why we moved the macOS Builds to the [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml), which won't be charged to NuttX Project.
 
   [(Discussion here)](https://github.com/apache/nuttx/issues/14598)
 
@@ -156,7 +156,7 @@ Suppose our NuttX Admin __Merges a PR__. (Pic above)
 
 Normally our CI Workflow will trigger a __Merge Job__, to verify that everything compiles OK after Merging the PR.
 
-Which means ploughing through [__34 Sub-Jobs__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets) (2.5 elapsed hours) across all architectures: Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ...
+Which means ploughing through [__34 Sub-Jobs__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets) (2.5 elapsed hours) across __All Architectures__: _Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ..._
 
 This is extremely costly, hence we decided to trigger them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
 
@@ -164,23 +164,23 @@ This is extremely costly, hence we decided to trigger them as __Scheduled Merge 
 
 _Is there a problem?_
 
-We spent __One-Third__ of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)
+We spent [__One-Third__](https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132) of our GitHub Runner Minutes on Scheduled Merge Jobs! (Pic above)
 
 [__Our CI Data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) shows that the Scheduled Merge Job kept getting disrupted by Newer Merged PRs. (Pic below)
 
 And when we restart a Scheduled Merge Job, we waste precious GitHub Minutes.
 
-(__101 GitHub Hours__ for one single Scheduled Merge Job!)
+[(__101 GitHub Hours__ for one single Scheduled Merge Job!)](https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132)
 
 ![Merge Job kept getting disrupted by Newer Merged PRs](https://lupyuen.github.io/images/ci3-before.jpg)
 
-_Thus we moved them?_
+_Our Merge Jobs are overwhelming!_
 
 Yep this is clearly not sustainable. We moved the Scheduled Merge Jobs to a new [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx/actions/workflows/build.yml). (Pic below)
 
-Where the Merge Jobs can run free __without disruption__!
+Where the Merge Jobs can run free __without disruption__.
 
-(In an Unpaid GitHub Org Account, that won't be charged to NuttX Project)
+[(In an __Unpaid GitHub Org Account__, not charged to NuttX Project)](https://github.com/NuttX)
 
 ![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
@@ -192,7 +192,7 @@ Eventually we disabled the [__Merge Jobs for NuttX Repo__](https://github.com/ap
 
 [(And for __NuttX Apps__)](https://github.com/apache/nuttx-apps/pull/2817)
 
-[(Restoring the __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
+[(Restoring __Auto-Build on Sync__)](https://github.com/apache/nuttx/issues/14407)
 
 _How to trigger the Scheduled Merge Job?_
 
@@ -234,11 +234,11 @@ Yeah that's why we need a [__NuttX Build Farm__](https://lupyuen.github.io/artic
 
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
 
-[__Two-Thirds__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=650325940#gid=650325940) of our GitHub Runner Minutes were spent on __Submitting and Updating PRs__.
+[__Two-Thirds__](https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132) of our GitHub Runner Minutes were spent on validating __New and Updated PRs__.
 
 Hence we're skipping __Half the CI Checks__ for Complex PRs.
 
-(A __Complex PR__ affects __All Architectures__: Arm, RISC-V, Xtensa, etc)
+(A __Complex PR__ affects __All Architectures__: _Arm32, Arm64 RISC-V, Xtensa, etc_)
 
 _Which CI Checks did we select?_
 
@@ -260,7 +260,6 @@ We selected the CI Checks above because they validate NuttX Builds on __Popular 
 | Target Group | Board / Test |
 |:----------|:----------------------|
 | _arm-01_ | Sony Spresense (TODO) |
-| _arm-02_ | SABRE 6Quad CI Test (QEMU) |
 | _arm-05_ | Nordic nRF52 |
 | _arm-06_ | Raspberry Pi RP2040 |
 | _arm-07_ | Microchip SAMD |
@@ -276,7 +275,7 @@ We might [__rotate the list__](https://github.com/apache/nuttx/pull/14602) above
 
 _What about Simple PRs?_
 
-A __Simple PR__ concerns only __One Single Architecture__: Arm32 OR Arm64 OR RISC-V OR Xtensa etc.
+A __Simple PR__ concerns only __One Single Architecture__: _Arm32 OR Arm64 OR RISC-V OR Xtensa etc._
 
 When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
