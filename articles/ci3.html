@@ -163,7 +163,7 @@
 <p><img src="https://github.com/user-attachments/assets/1452067f-a151-4641-8d1e-3c84c0f45796" alt="Screenshot 2024-10-17 at 1 16 16 PM" /></p>
 <p>When we <strong>Halve the CI Jobs:</strong> We reduce the wastage of GitHub Runners…</p>
 <p><img src="https://github.com/user-attachments/assets/bda5c8c3-862a-41b6-bab3-20352ba9976a" alt="Screenshot 2024-10-17 at 1 15 30 PM" /></p>
-<p>This analysis was super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>! Now we follow through…</p>
+<p>This analysis was super helpful for complying with the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy for GitHub Actions</strong></a>! Next we follow through…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-macos.jpg" alt="Disable macOS Builds" /></p>
 <h1 id="disable-macos-and-windows-builds"><a class="doc-anchor" href="#disable-macos-and-windows-builds">§</a>3 Disable macOS and Windows Builds</h1>
 <p><em>Quitting the macOS Builds? That’s horribly drastic!</em></p>
@@ -264,13 +264,13 @@
 <p><em>Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?</em></p>
 <ul>
 <li>
-<p><strong>Docker Builds:</strong> When <a href="https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile"><strong>Dockerfile</strong></a> is updated, it will trigger the CI Workflow <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml"><strong>docker_linux.yml</strong></a>. Which is not affected by this new setup, and will continue to execute. (Exactly like today)</p>
+<p><strong>Docker Builds:</strong> When <a href="https://github.com/apache/nuttx/blob/master/tools/ci/docker/linux/Dockerfile"><strong>Dockerfile</strong></a> is updated, it will trigger the CI Workflow <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/docker_linux.yml"><strong>docker_linux.yml</strong></a>. Which is not affected by this new setup, and will continue to execute. (Exactly like before)</p>
 </li>
 <li>
 <p><strong>Documentation:</strong> When the docs are updated, they are published to NuttX Website via the CI Workflow <a href="https://github.com/apache/nuttx-website/blob/master/.github/workflows/main.yml"><strong>main.yml</strong></a> from the NuttX Website repo (scheduled daily). Which is not affected by our grand plan.</p>
 </li>
 <li>
-<p><strong>Release Branch:</strong> Merging a PR to the Release Branch will still run the PR Merge Job (exactly like today). <a href="https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748"><strong>Release Branch</strong></a> shall always be verified through <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26"><strong>Complete CI Checks</strong></a>.</p>
+<p><strong>Release Branch:</strong> Merging a PR to the Release Branch will still run the PR Merge Job (exactly like before). <a href="https://github.com/apache/nuttx/issues/14062#issuecomment-2406373748"><strong>Release Branch</strong></a> shall always be verified through <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L14-L26"><strong>Complete CI Checks</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx/pull/14618">(More about this)</a></p>
 </li>
 </ul>
@@ -388,7 +388,7 @@
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890" /></p>
 <p><strong>“Monthly Bill”</strong> for GitHub Actions used to be <strong>$18K</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-before30days.png" alt="Monthly Bill for GitHub Actions used to be $18K" /></p>
-<p>Right now our <strong>Monthly Bill is $12K</strong>. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏</p>
+<p>Presently our <strong>Monthly Bill is $12K</strong>. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/ci3-after30days.png" alt="Right now our Monthly Bill is $12K" /></p>
 <p><strong>Bonus Love &amp; Respect:</strong> Previously our devs waited <strong>2.5 Hours</strong> for a Pull Request to be checked. Now we wait at most <strong>1.5 Hours</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/ci3-sync.jpg" alt="Tired Fingers syncing the NuttX Repo to NuttX Mirror Repo" /></p>
@@ -573,7 +573,7 @@ Connection timed out
 <p><a href="https://github.com/apache/nuttx/actions/runs/11395811301/job/31708665147#step:7:348">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter.jpg" alt="Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours" /></p>
 <h1 id="appendix-build-rules-for-ci-workflow"><a class="doc-anchor" href="#appendix-build-rules-for-ci-workflow">§</a>14 Appendix: Build Rules for CI Workflow</h1>
-<p>Initially we created the <strong>Build Rules</strong> for CI Workflow to solve these problems…</p>
+<p>Initially we created the <strong>Build Rules</strong> for CI Workflow to solve these problems that we observed in Sep 2024…</p>
 <ul>
 <li>
 <p>NuttX Devs need to wait (2.5 hours) for the CI Build to complete <strong>Across all Architectures</strong> <em>(Arm32, Arm64, RISC-V, Xtensa)</em>…</p>
@@ -594,7 +594,7 @@ Connection timed out
 <p>Can we <strong>complete the build within 1 hour</strong>, when we Create / Modify a Simple PR?</p>
 </li>
 </ul>
-<p>This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs.</p>
+<p>This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs in Nov 2024.</p>
 <p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
 <h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>14.1 Overall Solution</h2>
 <p>We propose a Partial Solution, based on the <a href="https://github.com/apache/nuttx/pull/13545"><strong>Arch and Board Labels</strong></a> (recently added to CI)…</p>
