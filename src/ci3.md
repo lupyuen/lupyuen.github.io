@@ -377,9 +377,9 @@ __"Monthly Bill"__ for GitHub Actions used to be __$18K__...
 
 ![Monthly Bill for GitHub Actions used to be $18K](https://lupyuen.github.io/images/ci3-before30days.png)
 
-Presently our __Monthly Bill is $12K__. Dropping 33% and still dropping! Thank you everyone for making this happen! 🙏
+Presently our __Monthly Bill is $9.8K__. Slashed by half (almost) and still dropping! Thank you everyone for making this happen! 🙏
 
-![Right now our Monthly Bill is $12K](https://lupyuen.github.io/images/ci3-after30days.png)
+![Right now our Monthly Bill is $9.8K](https://lupyuen.github.io/images/ci3-after30days.png)
 
 __Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__!
 
@@ -446,6 +446,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Hacker News__](TODO)
 
 -   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
 
