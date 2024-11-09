@@ -447,7 +447,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have 
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [__Discuss this article on Hacker News__](TODO)
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=42097212)
 
 -   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
 

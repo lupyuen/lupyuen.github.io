@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Optimising the Continuous Integration for Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/ci3</link>
+            <description><![CDATA[Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890. Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours! This article explains everything we did in the (Semi-Chaotic) Two Weeks for Apache NuttX RTOS.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci3</guid>
+            <pubDate>Sun, 10 Nov 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Your very own Build Farm for Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/ci2</link>
             <description><![CDATA[Refurbished Ubuntu PCs have become quite affordable. Let's turn them into a (Low-Cost) Build Farm for Apache NuttX RTOS, thanks to the Docker Image provided by NuttX.]]></description>
