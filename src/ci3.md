@@ -273,7 +273,7 @@ We might [__rotate the list__](https://github.com/apache/nuttx/pull/14602) above
 
 [(See the Complete List of __CI Builds__)](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0)
 
-[(Sorry we can't run __xtensa-01__ and __arm-01__)](https://github.com/apache/nuttx/pull/14681#issuecomment-2471703480)
+[(Sorry we can't run __xtensa-02__ and __arm-01__)](https://github.com/apache/nuttx/pull/14681#issuecomment-2471703480)
 
 ![Complex PR vs Simple PR](https://lupyuen.github.io/images/ci3-pr.jpg)
 
