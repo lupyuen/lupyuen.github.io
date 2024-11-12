@@ -341,6 +341,8 @@ We publish the data every __15 minutes__...
 
 Next comes the Watchmen...
 
+[(Can we run __All CI Checks__ for All PRs?)](https://lupyuen.github.io/articles/ci3#appendix-self-hosted-github-runners)
+
 ![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
 # Monitor our CI Servers 24 x 7
@@ -467,11 +469,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Self-Hosted GitHub Runners
 
-_Have we tried Self-Hosted GitHub Runners?_
+_To run the Complete Suite of CI Checks on every PR... We could use Self-Hosted GitHub Runners?_
 
 Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci)
 
-- GitHub Runners are actually quite complex to setup. And the machine needs to be [__properly secured__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.), in case any unauthorised code is pushed down from GitHub.
+- __Self-Hosted GitHub Runners__ are actually quite complex to setup. And the machine needs to be [__properly secured__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.), in case any unauthorised code is pushed down from GitHub.
 
 - We don't have budget to set up [__Virtual Machines maintained by IT Security Professionals__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.) for GitHub Runners anyway
 
