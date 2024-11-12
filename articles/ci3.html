@@ -75,20 +75,21 @@
 <li><a href="#final-verdict">8 Final Verdict</a><ul></ul></li>
 <li><a href="#our-wishlist">9 Our Wishlist</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-check-our-pr-submission">11 Appendix: Check our PR Submission</a><ul></ul></li>
-<li><a href="#appendix-verify-our-pr-merge">12 Appendix: Verify our PR Merge</a><ul></ul></li>
-<li><a href="#appendix-network-timeout-at-github">13 Appendix: Network Timeout at GitHub</a><ul></ul></li>
-<li><a href="#appendix-build-rules-for-ci-workflow">14 Appendix: Build Rules for CI Workflow</a><ul>
-<li><a href="#overall-solution">14.1 Overall Solution</a><ul></ul></li>
-<li><a href="#fetch-the-arch-labels">14.2 Fetch the Arch Labels</a><ul></ul></li>
-<li><a href="#limit-to-simple-prs">14.3 Limit to Simple PRs</a><ul></ul></li>
-<li><a href="#identify-the-non-arm-builds">14.4 Identify the Non-Arm Builds</a><ul></ul></li>
-<li><a href="#skip-the-non-arm-builds">14.5 Skip The Non-Arm Builds</a><ul></ul></li>
-<li><a href="#same-for-other-builds">14.6 Same for Other Builds</a><ul></ul></li>
-<li><a href="#skip-the-macos-builds">14.7 Skip the macOS Builds</a><ul></ul></li>
-<li><a href="#ignore-the-docs-label">14.8 Ignore the Docs Label</a><ul></ul></li>
-<li><a href="#sync-to-nuttx-apps">14.9 Sync to NuttX Apps</a><ul></ul></li>
-<li><a href="#actual-performance">14.10 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Nov 2024</em></p>
+<li><a href="#appendix-self-hosted-github-runners">11 Appendix: Self-Hosted GitHub Runners</a><ul></ul></li>
+<li><a href="#appendix-check-our-pr-submission">12 Appendix: Check our PR Submission</a><ul></ul></li>
+<li><a href="#appendix-verify-our-pr-merge">13 Appendix: Verify our PR Merge</a><ul></ul></li>
+<li><a href="#appendix-network-timeout-at-github">14 Appendix: Network Timeout at GitHub</a><ul></ul></li>
+<li><a href="#appendix-build-rules-for-ci-workflow">15 Appendix: Build Rules for CI Workflow</a><ul>
+<li><a href="#overall-solution">15.1 Overall Solution</a><ul></ul></li>
+<li><a href="#fetch-the-arch-labels">15.2 Fetch the Arch Labels</a><ul></ul></li>
+<li><a href="#limit-to-simple-prs">15.3 Limit to Simple PRs</a><ul></ul></li>
+<li><a href="#identify-the-non-arm-builds">15.4 Identify the Non-Arm Builds</a><ul></ul></li>
+<li><a href="#skip-the-non-arm-builds">15.5 Skip The Non-Arm Builds</a><ul></ul></li>
+<li><a href="#same-for-other-builds">15.6 Same for Other Builds</a><ul></ul></li>
+<li><a href="#skip-the-macos-builds">15.7 Skip the macOS Builds</a><ul></ul></li>
+<li><a href="#ignore-the-docs-label">15.8 Ignore the Docs Label</a><ul></ul></li>
+<li><a href="#sync-to-nuttx-apps">15.9 Sync to NuttX Apps</a><ul></ul></li>
+<li><a href="#actual-performance">15.10 Actual Performance</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="Optimising the Continuous Integration for Apache NuttX RTOS" /></p>
 <p><strong>Within Two Weeks:</strong> We squashed our GitHub Actions spending from <strong>$4,900</strong> (weekly) down to <strong>$890</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter7days.jpg" alt="Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890" /></p>
@@ -473,8 +474,25 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
+<h1 id="appendix-self-hosted-github-runners"><a class="doc-anchor" href="#appendix-self-hosted-github-runners">§</a>11 Appendix: Self-Hosted GitHub Runners</h1>
+<p><em>Have we tried Self-Hosted GitHub Runners?</em></p>
+<p>Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: <a href="https://lupyuen.github.io/articles/ci"><strong>“Continuous Integration for Apache NuttX RTOS”</strong></a></p>
+<ul>
+<li>
+<p>GitHub Runners are actually quite complex to setup. And the machine needs to be <strong>properly secured</strong>, in case any unauthorised code is pushed down from GitHub.</p>
+</li>
+<li>
+<p>We don’t have budget to set up <strong>Professionally-Secured VMs</strong> for GitHub Runners anyway</p>
+</li>
+<li>
+<p>NuttX Project might be a little <strong>too dependent on GitHub</strong>. Even if we had the funds, the ASF contract with GitHub won’t allow us to pay more for extra usage. So we’re trying alternatives.</p>
+</li>
+<li>
+<p>Right now we’re testing a <strong>Community-Hosted Build Farm</strong> based on Ubuntu PCs and macOS: <a href="https://lupyuen.github.io/articles/ci2"><strong>“Your very own Build Farm for Apache NuttX RTOS”</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="CI Checks for a Complex PR" /></p>
-<h1 id="appendix-check-our-pr-submission"><a class="doc-anchor" href="#appendix-check-our-pr-submission">§</a>11 Appendix: Check our PR Submission</h1>
+<h1 id="appendix-check-our-pr-submission"><a class="doc-anchor" href="#appendix-check-our-pr-submission">§</a>12 Appendix: Check our PR Submission</h1>
 <p><em>Before submitting a PR to NuttX: How to check our PR thoroughly?</em></p>
 <p>Yep it’s super important to <strong>thoroughly test our PRs</strong> before submitting to NuttX.</p>
 <p>But NuttX Project <a href="https://lupyuen.codeberg.page/articles/ci3.html#disable-macos-and-windows-builds"><strong>doesn’t have the budget</strong></a> to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)</p>
@@ -518,7 +536,7 @@
 </ol>
 <p>Otherwise we might miss a <a href="https://github.com/apache/nuttx/actions/runs/11700129839"><strong>Serious Bug</strong></a>.</p>
 <p><img src="https://github.com/user-attachments/assets/ca08db63-ecca-4b18-984e-46ba3a9716c2" alt="Screenshot 2024-10-19 at 8 11 22 AM" /></p>
-<h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>12 Appendix: Verify our PR Merge</h1>
+<h1 id="appendix-verify-our-pr-merge"><a class="doc-anchor" href="#appendix-verify-our-pr-merge">§</a>13 Appendix: Verify our PR Merge</h1>
 <p><em>When NuttX merges our PR, the Merge Job won’t run until 00:00 UTC and 12:00 UTC. How can we be really sure that our PR was merged correctly?</em></p>
 <p>Let’s create a <strong>GitHub Org</strong> (at no cost), fork the NuttX Repo and trigger the <strong>CI Workflow</strong>. (Which won’t charge any extra GitHub Runner Minutes to NuttX Project!)</p>
 <ul>
@@ -526,7 +544,7 @@
 </ul>
 <p>This will probably work if our CI Servers ever go dark.</p>
 <p><img src="https://lupyuen.github.io/images/ci3-timeout.png" alt="Network Timeout at GitHub" /></p>
-<h1 id="appendix-network-timeout-at-github"><a class="doc-anchor" href="#appendix-network-timeout-at-github">§</a>13 Appendix: Network Timeout at GitHub</h1>
+<h1 id="appendix-network-timeout-at-github"><a class="doc-anchor" href="#appendix-network-timeout-at-github">§</a>14 Appendix: Network Timeout at GitHub</h1>
 <p><a href="https://github.com/apache/nuttx/issues/14682">(See the <strong>NuttX Issue</strong>)</a></p>
 <p>Something super strange about <strong>Network Timeouts</strong> (pic above) in our CI Docker Workflows at GitHub Actions. Here’s an example…</p>
 <ul>
@@ -607,7 +625,7 @@ Connection timed out
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/11395811301/job/31708665147#step:7:348">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci3-beforeafter.jpg" alt="Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours" /></p>
-<h1 id="appendix-build-rules-for-ci-workflow"><a class="doc-anchor" href="#appendix-build-rules-for-ci-workflow">§</a>14 Appendix: Build Rules for CI Workflow</h1>
+<h1 id="appendix-build-rules-for-ci-workflow"><a class="doc-anchor" href="#appendix-build-rules-for-ci-workflow">§</a>15 Appendix: Build Rules for CI Workflow</h1>
 <p>Initially we created the <strong>Build Rules</strong> for CI Workflow to solve these problems that we observed in Sep 2024…</p>
 <ul>
 <li>
@@ -631,7 +649,7 @@ Connection timed out
 </ul>
 <p>This section explains how we coded the Build Rules. Which were mighty helpful for cutting costs in Nov 2024.</p>
 <p><a href="https://github.com/apache/nuttx/issues/13775">(Discussion here)</a></p>
-<h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>14.1 Overall Solution</h2>
+<h2 id="overall-solution"><a class="doc-anchor" href="#overall-solution">§</a>15.1 Overall Solution</h2>
 <p>We propose a Partial Solution, based on the <a href="https://github.com/apache/nuttx/pull/13545"><strong>Arch and Board Labels</strong></a> (recently added to CI)…</p>
 <ul>
 <li>
@@ -654,7 +672,7 @@ Connection timed out
 <p><strong>Simple PR + Docs</strong> is still considered a Simple PR (so devs won’t be penalised for adding docs)</p>
 </li>
 </ul>
-<h2 id="fetch-the-arch-labels"><a class="doc-anchor" href="#fetch-the-arch-labels">§</a>14.2 Fetch the Arch Labels</h2>
+<h2 id="fetch-the-arch-labels"><a class="doc-anchor" href="#fetch-the-arch-labels">§</a>15.2 Fetch the Arch Labels</h2>
 <p><strong>In our Build Rules:</strong> This is how we fetch the Arch Labels from a PR. And identify the PR as Arm, Arm64, RISC-V or Xtensa: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L32-L104">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Get the Arch for the PR: arm, arm64, risc-v, xtensa, ...
 - name: Get arch
@@ -725,7 +743,7 @@ Connection timed out
 </code></pre></div>
 <p>Why “<code> || echo ""</code>”? That’s because if the <strong>GitHub CLI gh</strong> fails for any reason, we shall build all targets.</p>
 <p>This ensures that our CI Workflow won’t get disrupted due to errors in GitHub CLI.</p>
-<h2 id="limit-to-simple-prs"><a class="doc-anchor" href="#limit-to-simple-prs">§</a>14.3 Limit to Simple PRs</h2>
+<h2 id="limit-to-simple-prs"><a class="doc-anchor" href="#limit-to-simple-prs">§</a>15.3 Limit to Simple PRs</h2>
 <p>We handle only <strong>Simple PRs</strong>: One Arch Label + One Board Label + One Size Label.</p>
 <p>Like <em>“Arch: risc-v, Board: risc-v, Size: XS”</em>.</p>
 <p>If it’s <strong>Not a Simple PR</strong>: We build everything. Like so: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L130-L189">arch.yml</a></p>
@@ -787,7 +805,7 @@ if [[ &quot;$quit&quot; == &quot;1&quot; ]]; then
   echo &quot;selected_builds=$boards&quot; | tee -a $GITHUB_OUTPUT
   exit
 fi
-</code></pre></div><h2 id="identify-the-non-arm-builds"><a class="doc-anchor" href="#identify-the-non-arm-builds">§</a>14.4 Identify the Non-Arm Builds</h2>
+</code></pre></div><h2 id="identify-the-non-arm-builds"><a class="doc-anchor" href="#identify-the-non-arm-builds">§</a>15.4 Identify the Non-Arm Builds</h2>
 <p>Suppose the PR says <em>“Arch: arm”</em> or <em>“Board: arm”</em>.</p>
 <p>We filter out the builds that should be skipped (RISC-V, Xtensa, etc): <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L189-L254">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For every board
@@ -826,7 +844,7 @@ echo &quot;selected_builds=[$selected_builds]&quot; | tee -a $GITHUB_OUTPUT
 if [[ &quot;$selected_builds&quot; == &quot;&quot; ]]; then
   echo &quot;skip_all_builds=1&quot; | tee -a $GITHUB_OUTPUT
 fi
-</code></pre></div><h2 id="skip-the-non-arm-builds"><a class="doc-anchor" href="#skip-the-non-arm-builds">§</a>14.5 Skip The Non-Arm Builds</h2>
+</code></pre></div><h2 id="skip-the-non-arm-builds"><a class="doc-anchor" href="#skip-the-non-arm-builds">§</a>15.5 Skip The Non-Arm Builds</h2>
 <p>Earlier we saw the code in <em>arch.yml</em> <a href="https://docs.github.com/en/actions/sharing-automations/reusing-workflows"><strong>Reusable Workflow</strong></a> that identifies the builds to be skipped.</p>
 <p>The code above is called by <em>build.yml</em> (Build Workflow). Which will actually skip the builds: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L119-L148">build.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># Select the Linux Builds based on PR Arch Label
@@ -864,7 +882,7 @@ steps:
 </code></pre></div>
 <p>Why <em>“needs: Fetch-Source”</em>? That’s because the PR Labeler runs <strong>concurrently in the background</strong>.</p>
 <p>When we add <em>Fetch-Source</em> as a <strong>Job Dependency</strong>: We give the PR Labeler sufficient time to run (1 min), before we read the PR Label in <em>arch.yml</em>.</p>
-<h2 id="same-for-other-builds"><a class="doc-anchor" href="#same-for-other-builds">§</a>14.6 Same for Other Builds</h2>
+<h2 id="same-for-other-builds"><a class="doc-anchor" href="#same-for-other-builds">§</a>15.6 Same for Other Builds</h2>
 <p>We do the same for Arm64, RISC-V, Simulator, x86_64 and Xtensa: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L202-L232">arch.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code># For &quot;Arch / Board: arm64&quot;: Build arm64-01
 elif [[ &quot;$arch_contains_arm64&quot; == &quot;1&quot; || &quot;$board_contains_arm64&quot; == &quot;1&quot; ]]; then
@@ -897,7 +915,7 @@ elif [[ &quot;$arch_contains_xtensa&quot; == &quot;1&quot; || &quot;$board_conta
   fi
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci3-macos.jpg" alt="Disable macOS Builds" /></p>
-<h2 id="skip-the-macos-builds"><a class="doc-anchor" href="#skip-the-macos-builds">§</a>14.7 Skip the macOS Builds</h2>
+<h2 id="skip-the-macos-builds"><a class="doc-anchor" href="#skip-the-macos-builds">§</a>15.7 Skip the macOS Builds</h2>
 <p><strong>For Simple PRs and Complex PRs:</strong> We skip the macOS builds <em>(macos, macos/sim-*)</em> since these builds are costly: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L196-L256">build.yml</a></p>
 <p>(macOS builds will take <strong>2 hours to complete</strong> due to the queueing for macOS Runners)</p>
 <div class="example-wrap"><pre class="language-yaml"><code># Select the macOS Builds based on PR Arch Label
@@ -935,7 +953,7 @@ macOS:
       echo &quot;skip_all_builds=1&quot; | tee -a $GITHUB_OUTPUT
       exit
     fi
-</code></pre></div><h2 id="ignore-the-docs-label"><a class="doc-anchor" href="#ignore-the-docs-label">§</a>14.8 Ignore the Docs Label</h2>
+</code></pre></div><h2 id="ignore-the-docs-label"><a class="doc-anchor" href="#ignore-the-docs-label">§</a>15.8 Ignore the Docs Label</h2>
 <p>NuttX Devs shouldn’t be <strong>penalised for adding docs</strong>!</p>
 <p>That’s why we ignore the label <em>“Area: Documentation”</em>. Which means that <strong>Simple PR + Docs</strong> is still a Simple PR.</p>
 <p>And will skip the unnecessary builds: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml#L44-L55">arch.yml</a></p>
@@ -949,7 +967,7 @@ select_length=&#39;length&#39;
 labels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_name || echo &quot;&quot;)
 numlabels=$(gh pr view $pr --repo $GITHUB_REPOSITORY --json labels --jq $query$select_length || echo &quot;&quot;)
 echo &quot;numlabels=$numlabels&quot; | tee -a $GITHUB_OUTPUT
-</code></pre></div><h2 id="sync-to-nuttx-apps"><a class="doc-anchor" href="#sync-to-nuttx-apps">§</a>14.9 Sync to NuttX Apps</h2>
+</code></pre></div><h2 id="sync-to-nuttx-apps"><a class="doc-anchor" href="#sync-to-nuttx-apps">§</a>15.9 Sync to NuttX Apps</h2>
 <p>Remember to sync <em>build.yml</em> and <em>arch.yml</em> from <strong>NuttX Repo to NuttX Apps</strong>!</p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2676">(See the <strong>Pull Request</strong>)</a></p>
 <p><em>How are they connected?</em></p>
@@ -1006,7 +1024,7 @@ Linux:
       boards: ${{ fromJSON(needs.Linux-Arch.outputs.selected_builds) }}
 </code></pre></div>
 <p>One thing remains the same: We configure the <strong>Target Groups</strong> in <em>build.yml</em>. (Instead of <em>arch.yml</em>)</p>
-<h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>14.10 Actual Performance</h2>
+<h2 id="actual-performance"><a class="doc-anchor" href="#actual-performance">§</a>15.10 Actual Performance</h2>
 <p>For our Initial Implementation of Build Rules: We recorded the <strong>CI Build Performance</strong> for Simple PRs.</p>
 <p>Then we made the Simple PRs faster…</p>
 <div><table><thead><tr><th style="text-align: left">Build Time</th><th style="text-align: center">Before</th><th style="text-align: center">After</th></tr></thead><tbody>
