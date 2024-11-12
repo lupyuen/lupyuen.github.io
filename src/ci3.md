@@ -471,9 +471,9 @@ _Have we tried Self-Hosted GitHub Runners?_
 
 Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci)
 
-- GitHub Runners are actually quite complex to setup. And the machine needs to be __properly secured__, in case any unauthorised code is pushed down from GitHub.
+- GitHub Runners are actually quite complex to setup. And the machine needs to be [__properly secured__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.), in case any unauthorised code is pushed down from GitHub.
 
-- We don't have budget to set up __Professionally-Secured VMs__ for GitHub Runners anyway
+- We don't have budget to set up [__Virtual Machines maintained by IT Security Professionals__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.) for GitHub Runners anyway
 
 - NuttX Project might be a little __too dependent on GitHub__. Even if we had the funds, the ASF contract with GitHub won't allow us to pay more for extra usage. So we're trying alternatives.
 
