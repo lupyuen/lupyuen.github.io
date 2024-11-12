@@ -465,6 +465,20 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/ci3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md)
 
+# Appendix: Self-Hosted GitHub Runners
+
+_Have we tried Self-Hosted GitHub Runners?_
+
+Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci)
+
+- GitHub Runners are actually quite complex to setup. And the machine needs to be __properly secured__, in case any unauthorised code is pushed down from GitHub.
+
+- We don't have budget to set up __Professionally-Secured VMs__ for GitHub Runners anyway
+
+- NuttX Project might be a little __too dependent on GitHub__. Even if we had the funds, the ASF contract with GitHub won't allow us to pay more for extra usage. So we're trying alternatives.
+
+- Right now we're testing a __Community-Hosted Build Farm__ based on Ubuntu PCs and macOS: [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
+
 ![CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
 
 # Appendix: Check our PR Submission
