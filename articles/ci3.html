@@ -364,6 +364,7 @@
 </li>
 </ol>
 <p>Next comes the Watchmen…</p>
+<p><a href="https://lupyuen.github.io/articles/ci3#appendix-self-hosted-github-runners">(Can we run <strong>All CI Checks</strong> for All PRs?)</a></p>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But someone’s gotta do it!</em> 👍</p>
@@ -475,11 +476,11 @@
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
 <h1 id="appendix-self-hosted-github-runners"><a class="doc-anchor" href="#appendix-self-hosted-github-runners">§</a>11 Appendix: Self-Hosted GitHub Runners</h1>
-<p><em>Have we tried Self-Hosted GitHub Runners?</em></p>
+<p><em>To run the Complete Suite of CI Checks on every PR… We could use Self-Hosted GitHub Runners?</em></p>
 <p>Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: <a href="https://lupyuen.github.io/articles/ci"><strong>“Continuous Integration for Apache NuttX RTOS”</strong></a></p>
 <ul>
 <li>
-<p>GitHub Runners are actually quite complex to setup. And the machine needs to be <a href="https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you."><strong>properly secured</strong></a>, in case any unauthorised code is pushed down from GitHub.</p>
+<p><strong>Self-Hosted GitHub Runners</strong> are actually quite complex to setup. And the machine needs to be <a href="https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you."><strong>properly secured</strong></a>, in case any unauthorised code is pushed down from GitHub.</p>
 </li>
 <li>
 <p>We don’t have budget to set up <a href="https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you."><strong>Virtual Machines maintained by IT Security Professionals</strong></a> for GitHub Runners anyway</p>
