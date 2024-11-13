@@ -212,7 +212,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
-1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
+1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) (like an Amoeba) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
 ![Disable Fail-Fast and Remove Max Parallel](https://lupyuen.github.io/images/ci3-workflow.png)
 
