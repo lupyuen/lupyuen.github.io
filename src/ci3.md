@@ -214,6 +214,8 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) (like an Amoeba) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
+1.  Track down any bugs that [__Fail the Merge Job__](https://github.com/apache/nuttx/issues/14796).
+
 ![Disable Fail-Fast and Remove Max Parallel](https://lupyuen.github.io/images/ci3-workflow.png)
 
 _Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
@@ -432,6 +434,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
     [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github)
 
     [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
+
+1.  Track down any bugs that [__Fail the Merge Job__](https://github.com/apache/nuttx/issues/14796)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
