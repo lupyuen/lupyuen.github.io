@@ -6,6 +6,22 @@
 
 TODO
 
+# Build Score
+
+TODo
+
+# Grafana Dashboard
+
+TODO
+
+# Prometheus Setup
+
+TODO
+
+# Ingest the Build Logs
+
+TODO
+
 # What's Next
 
 TODO
