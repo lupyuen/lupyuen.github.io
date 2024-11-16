@@ -31,13 +31,21 @@ Remove Duplicates
 
 TODO
 
+Create a simple dashboard
+
+Assume Build Score already set up
+
 # Prometheus Setup
 
 TODO
 
+HTTP Request
+
 # Ingest the Build Logs
 
 TODO
+
+Rust App
 
 # What's Next
 
