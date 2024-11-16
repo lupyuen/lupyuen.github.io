@@ -47,7 +47,15 @@ TODO
 
 HTTP Request
 
-Pushgateway
+Nowhere to pull
+
+So pull from Pushgateway
+
+We push to Pushgateway
+
+OK to push latest data twice
+
+OK to push from multiple PCs, they are distinct
 
 ```bash
 brew install prometheus
