@@ -47,6 +47,8 @@ TODO
 
 HTTP Request
 
+Pushgateway
+
 ```bash
 brew install prometheus
 brew services start prometheus
