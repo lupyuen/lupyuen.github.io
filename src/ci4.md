@@ -10,10 +10,22 @@ TODO
 
 TODO
 
-| 0.0 |
-| 0.5 |
-| 0.8 |
-| 1.0 |
+| Score | Status | Example |
+|:-----:|:-------|:--------|
+| 0.0 | Error |
+| 0.5 | Warning |
+| 0.8 | Unknown |
+| 1.0 | Success |
+
+Examples
+
+Metric per Target and Source
+
+Why Pull not Push?
+
+Multple Values
+
+Remove Duplicates
 
 # Grafana Dashboard
 
