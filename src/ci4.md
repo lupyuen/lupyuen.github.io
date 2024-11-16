@@ -1,6 +1,6 @@
 # Continuous Integration Dashboard for Apache NuttX RTOS
 
-📝 _130 Nov 2024_
+📝 _30 Nov 2024_
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-title.jpg)
 
@@ -8,7 +8,12 @@ TODO
 
 # Build Score
 
-TODo
+TODO
+
+| 0.0 |
+| 0.5 |
+| 0.8 |
+| 1.0 |
 
 # Grafana Dashboard
 
