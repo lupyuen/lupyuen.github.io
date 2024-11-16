@@ -75,10 +75,10 @@
 <h1 id="build-score"><a class="doc-anchor" href="#build-score">§</a>1 Build Score</h1>
 <p>TODO</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
-<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left">TODO</td></tr>
+<tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"> TODO</td></tr>
+<tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left">TODO</td></tr>
+<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left">TODO</td></tr>
 </tbody></table>
 </div>
 <p>Examples</p>
@@ -90,10 +90,29 @@
 <p>TODO</p>
 <p>Create a simple dashboard</p>
 <p>Assume Build Score already set up</p>
-<h1 id="prometheus-setup"><a class="doc-anchor" href="#prometheus-setup">§</a>3 Prometheus Setup</h1>
+<div class="example-wrap"><pre class="language-bash"><code>brew install grafana
+brew services start grafana
+http://localhost:3000
+</code></pre></div><h1 id="prometheus-setup"><a class="doc-anchor" href="#prometheus-setup">§</a>3 Prometheus Setup</h1>
 <p>TODO</p>
 <p>HTTP Request</p>
-<h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
+<div class="example-wrap"><pre class="language-bash"><code>brew install prometheus
+brew services start prometheus
+http://localhost:9090
+admin for username and password
+
+brew install go
+git clone https://github.com/prometheus/pushgateway
+cd pushgateway
+go run main.go
+http://localhost:9091
+
+cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{ url=&quot;http://bbb&quot;, msg=&quot;warning: bbb&quot; } 0.7
+EOF
+</code></pre></div><h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>TODO</p>
 <p>Rust App</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
