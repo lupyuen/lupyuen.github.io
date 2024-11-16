@@ -12,10 +12,10 @@ TODO
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error |
-| 0.5 | Warning |
-| 0.8 | Unknown |
-| 1.0 | Success |
+| 0.0 | Error | TODO
+| 0.5 | Warning | TODO
+| 0.8 | Unknown | TODO
+| 1.0 | Success | TODO
 
 Examples
 
@@ -35,11 +35,36 @@ Create a simple dashboard
 
 Assume Build Score already set up
 
+```bash
+brew install grafana
+brew services start grafana
+http://localhost:3000
+```
+
 # Prometheus Setup
 
 TODO
 
 HTTP Request
+
+```bash
+brew install prometheus
+brew services start prometheus
+http://localhost:9090
+admin for username and password
+
+brew install go
+git clone https://github.com/prometheus/pushgateway
+cd pushgateway
+go run main.go
+http://localhost:9091
+
+cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{ url="http://bbb", msg="warning: bbb" } 0.7
+EOF
+```
 
 # Ingest the Build Logs
 
