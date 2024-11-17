@@ -14,11 +14,11 @@ TODO: history
 
 # Build Score
 
-TODO
+TODO: Goodiness of the Build
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error | _test_pipe FAILED_
+| 0.0 | Error | _test\_pipe FAILED_
 | 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
 | 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
 | 1.0 | Success | TODO
@@ -32,6 +32,14 @@ Why Pull not Push?
 Multple Values
 
 Remove Duplicates
+
+Type of errors:
+
+Compile Errors: TODO
+
+Linker Errors: _undefined reference to `atomic\_fetch\_add\_2'_
+
+CI Test Errors: _test\_pipe FAILED_
 
 # Grafana Dashboard
 
