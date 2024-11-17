@@ -210,7 +210,7 @@ EOF
 <p>Remember that this <strong>Build Score</strong> <em>(0.0)</em> is specific to our <strong>Build PC</strong> <em>(nuttxpr)</em> and <strong>NuttX Target</strong> <em>(milkv_duos:nsh)</em>.</p>
 <p>TODO: Will change</p>
 <p><em>What about the other fields?</em></p>
-<p>Oh yes we have a long list of fields detailing every Build Score (beyond the above)…</p>
+<p>Oh yes we have a long list of fields detailing every Build Score (beyond the above)</p>
 <ul>
 <li><strong>version</strong>: TODO</li>
 <li><strong>timestamp</strong>:  TODO</li>
@@ -230,7 +230,13 @@ EOF
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>TODO: Ingest logs from nuttxpr GitHub Gist</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Ingest logs from nuttxpr GitHub Gist. Remove special characters.
+<div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig files
+find $HOME/nuttx \
+  -name defconfig \
+  &gt;/tmp/defconfig.txt
+
+## Ingest logs from nuttxpr GitHub Gist.
+## Remove special characters so they don&#39;t mess up the terminal.
 cargo run -- \
   --user nuttxpr \
   --defconfig /tmp/defconfig.txt \
@@ -239,8 +245,7 @@ cargo run -- \
 <p>TODO: Skip the known lines</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
-    <span class="comment">// To Identify Errors / Warnings: Skip the known lines
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// To Identify Errors / Warnings: Skip the known lines
     </span><span class="kw">let </span><span class="kw-2">mut </span>msg: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="macro">vec!</span>[];
     <span class="kw">let </span>lines = <span class="kw-2">&amp;</span>lines[l..];
     <span class="kw">for </span>line <span class="kw">in </span>lines {
@@ -344,6 +349,71 @@ build_score ... version= ...
 }</code></pre></div>
 <h1 id="ingest-the-logs-from-github-actions"><a class="doc-anchor" href="#ingest-the-logs-from-github-actions">§</a>5 Ingest the Logs from GitHub Actions</h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
+cargo run -- \
+  --user $user \
+  --repo $repo \
+  --defconfig $defconfig \
+  --file $pathname \
+  --nuttx-hash $nuttx_hash \
+  --apps-hash $apps_hash \
+  --group $group \
+  --run-id $run_id \
+  --job-id $job_id \
+  --step $step
+</code></pre></div>
+<p>TODO: Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+  local os=$1 ## &quot;Linux&quot; or &quot;msys2&quot;
+  local step=$2 ## &quot;7&quot; or &quot;9&quot;
+  local group=$3 ## &quot;arm-01&quot;
+  local job_name=&quot;$os ($group)&quot;
+  local job_id=$(
+    curl -L \
+      -H &quot;Accept: application/vnd.github+json&quot; \
+      -H &quot;Authorization: Bearer $GITHUB_TOKEN&quot; \
+      -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
+      https://api.github.com/repos/$user/$repo/actions/runs/$run_id/jobs?per_page=100 \
+      | jq &quot;.jobs | map(select(.name == \&quot;$job_name\&quot;)) | .[].id&quot;
+  )
+</code></pre></div>
+<p>TODO: Download the Run Logs</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Download the Run Logs
+  ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
+  curl -L \
+    --output /tmp/run-log.zip \
+    -H &quot;Accept: application/vnd.github+json&quot; \
+    -H &quot;Authorization: Bearer $GITHUB_TOKEN&quot; \
+    -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
+    https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
+</code></pre></div>
+<p>TODO: For All Target Groups: Ingest the Log File</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## For All Target Groups
+  ## TODO: Handle macOS when the warnings have been cleaned up
+  for group in \
+    arm-01 arm-02 arm-03 arm-04 \
+    arm-05 arm-06 arm-07 arm-08 \
+    arm-09 arm-10 arm-11 arm-12 \
+    arm-13 arm-14 \
+    risc-v-01 risc-v-02 risc-v-03 risc-v-04 \
+    risc-v-05 risc-v-06 \
+    sim-01 sim-02 sim-03 \
+    xtensa-01 xtensa-02 \
+    arm64-01 x86_64-01 other msys2
+  do
+    ## Ingest the Log File
+    if [[ &quot;$group&quot; == &quot;msys2&quot; ]]; then
+      ingest_log &quot;msys2&quot; $msys2_step $group
+    else
+      ingest_log &quot;Linux&quot; $linux_step $group
+    fi
+  done
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73">(<strong>ingest_log</strong> is here)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
