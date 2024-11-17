@@ -4,7 +4,13 @@
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-title.jpg)
 
-TODO
+TODO: dashboard
+
+![TODO](https://lupyuen.github.io/images/ci4-dashboard.png)
+
+TODO: history
+
+![TODO](https://lupyuen.github.io/images/ci4-history.png)
 
 # Build Score
 
@@ -122,6 +128,14 @@ OK to push latest data twice
 
 OK to push from multiple PCs, they are distinct
 
+TODO: prometheus
+
+![TODO](https://lupyuen.github.io/images/ci4-prometheus.png)
+
+TODO: pushgateway
+
+![TODO](https://lupyuen.github.io/images/ci4-pushgateway.png)
+
 ```bash
 ## For macOS:
 brew install prometheus
@@ -200,9 +214,134 @@ TODO: Incomplete Fields
 
 # Ingest the Build Logs
 
-TODO
+TODO: Skip the known lines
 
-Rust App
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342)
+
+```rust
+
+    // To Identify Errors / Warnings: Skip the known lines
+    let mut msg: Vec<&str> = vec![];
+    let lines = &lines[l..];
+    for line in lines {
+        let line = line.trim();
+        if line.starts_with("----------") ||
+            line.starts_with("-- ") ||  // "-- Build type:"
+            line.starts_with("Cleaning") ||
+            line.starts_with("Configuring") ||
+            line.starts_with("Select") ||
+            line.starts_with("Disabling") ||
+            line.starts_with("Enabling") ||
+            line.starts_with("Building") ||
+            line.starts_with("Normalize") ||
+            line.starts_with("% Total") ||
+            line.starts_with("Dload") ||
+            line.starts_with("~/apps") ||
+            line.starts_with("~/nuttx") ||
+            line.starts_with("find: 'boards/") ||  // "find: 'boards/risc-v/q[0-d]*': No such file or directory"
+            line.starts_with("|        ^~~~~~~") ||  // `warning "FPU test not built; Only available in the flat build (CONFIG_BUILD_FLAT)"`
+            line.contains("FPU test not built") ||
+            line.starts_with("a nuttx-export-") ||  // "a nuttx-export-12.7.0/tools/incdir.c"
+            line.contains(" PASSED") ||  // CI Test: "test_hello PASSED"
+            line.contains(" SKIPPED")  // CI Test: "test_mm SKIPPED"
+        { continue; }
+
+        // Skip Downloads: "100  533k    0  533k    0     0   541k      0 --:--:-- --:--:-- --:--:--  541k100 1646k    0 1646k    0     0  1573k      0 --:--:--  0:00:01 --:--:-- 17.8M"
+        let re = Regex::new(r#"^[0-9]+\s+[0-9]+"#).unwrap();
+        let caps = re.captures(line);
+        if caps.is_some() { continue; }
+
+```
+
+TODO: Compute the Build Score
+
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L347-L370)
+
+```rust
+    // Compute the Build Score based on Error vs Warning. Not an error:
+    // "test_ltp_interfaces_aio_error_1_1 PASSED"
+    // "lua-5.4.0/testes/errors.lua"
+    // "nuttx-export-12.7.0/include/libcxx/__system_error"
+    let contains_error = msg.join(" ")
+        .replace("aio_error", "aio_e_r_r_o_r")
+        .replace("errors.lua", "e_r_r_o_r_s.lua")
+        .replace("_error", "_e_r_r_o_r")
+        .replace("error_", "e_r_r_o_r_")
+        .to_lowercase()
+        .contains("error");
+    let contains_error = contains_error ||
+        msg.join(" ")
+        .contains(" FAILED");  // CI Test: "test_helloxx FAILED"
+    let contains_warning = msg.join(" ")
+        .to_lowercase()
+        .contains("warning");
+    let build_score =
+        if msg.is_empty() { 1.0 }
+        else if contains_error { 0.0 }
+        else if contains_warning { 0.5 }
+        else { 0.8 };
+```
+
+TODO: Post to Pushgateway
+
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+
+```rust
+    // Compose the Pushgateway Metric
+    let body = format!(
+r##"
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{{ version="{version}", timestamp="{timestamp}", user="{user}", arch="{arch}", subarch="{subarch}", group="{group}", board="{board}", config="{config}", target="{target}", url="{url}", url_display="{url_display}"{msg_opt}{nuttx_hash_opt}{apps_hash_opt} }} {build_score}
+"##);
+    println!("body={body}");
+    let client = reqwest::Client::new();
+    let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target}");
+    let res = client
+        .post(pushgateway)
+        .body(body)
+        .send()
+        .await?;
+    println!("res={res:?}");
+    if !res.status().is_success() {
+        println!("*** Pushgateway Failed");
+        sleep(Duration::from_secs(1));
+    }
+```
+
+TODO: Given a list of all defconfig pathnames, search for a target (like "ox64:nsh") and return the Sub-Architecture (like "bl808")
+
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+
+```rust
+// Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
+// and return the Sub-Architecture (like "bl808")
+async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let target_split = target.split(":").collect::<Vec<_>>();
+    let board = target_split[0];
+    let config = target_split[1];
+
+    // defconfig contains "/.../nuttx/boards/risc-v/bl808/ox64/configs/nsh/defconfig"
+    // Search for "/{board}/configs/{config}/defconfig"
+    let search = format!("/{board}/configs/{config}/defconfig");
+    let input = File::open(defconfig).unwrap();
+    let buffered = BufReader::new(input);
+    for line in buffered.lines() {
+        let line = line.unwrap();
+        if let Some(pos) = line.find(&search) {
+            let s = &line[0..pos];
+            let slash = s.rfind("/").unwrap();
+            let subarch = s[slash + 1..].to_string();
+            return Ok(subarch);
+        }
+    }
+    Ok("unknown".into())
+}
+```
+
+# Ingest the Logs from GitHub Actions
+
+TODO
 
 # What's Next
 
