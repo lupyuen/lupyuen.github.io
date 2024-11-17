@@ -214,6 +214,18 @@ TODO: Incomplete Fields
 
 # Ingest the Build Logs
 
+TODO: Ingest logs from nuttxpr GitHub Gist
+
+[run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+
+```bash
+## Ingest logs from nuttxpr GitHub Gist. Remove special characters.
+cargo run -- \
+  --user nuttxpr \
+  --defconfig /tmp/defconfig.txt \
+  | tr -d '\033\007'
+```
+
 TODO: Skip the known lines
 
 [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342)
@@ -291,7 +303,7 @@ TODO: Post to Pushgateway
 r##"
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{{ version="{version}", timestamp="{timestamp}", user="{user}", arch="{arch}", subarch="{subarch}", group="{group}", board="{board}", config="{config}", target="{target}", url="{url}", url_display="{url_display}"{msg_opt}{nuttx_hash_opt}{apps_hash_opt} }} {build_score}
+build_score ... version= ...
 "##);
     println!("body={body}");
     let client = reqwest::Client::new();
