@@ -250,7 +250,6 @@ TODO: Skip the known lines
         let re = Regex::new(r#"^[0-9]+\s+[0-9]+"#).unwrap();
         let caps = re.captures(line);
         if caps.is_some() { continue; }
-
 ```
 
 TODO: Compute the Build Score
