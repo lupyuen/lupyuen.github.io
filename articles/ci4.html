@@ -114,7 +114,32 @@ http://localhost:3000
 <p><img src="https://lupyuen.github.io/images/ci4-grafana9.png" alt="TODO" /></p>
 <p>TODO: ci4-grafana10.png</p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana10.png" alt="TODO" /></p>
+<p>TODO: View JSON</p>
+<p>TODO: Grafana Config</p>
+<p>TODO: Watch for usage</p>
+<p>Update the Grafana and Prometheus Configuration…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini">/opt/homebrew/etc/grafana/grafana.ini</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">/opt/homebrew/etc/prometheus.yml</a></p>
+</li>
+</ul>
+<p>Add the Grafana Dashboard and Panels…</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json">dashboard.json</a></p>
+<ul>
+<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json">links.json</a></li>
+<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json">highlights.json</a></li>
+<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json">error-builds.json</a></li>
+<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json">success-builds.json</a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json">dashboard-history.json</a></p>
+<ul>
+<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json">history.json</a></li>
+</ul>
 <h1 id="prometheus-setup"><a class="doc-anchor" href="#prometheus-setup">§</a>3 Prometheus Setup</h1>
+<p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
 <p>TODO</p>
 <p>HTTP Request</p>
 <p>Nowhere to pull</p>
@@ -122,12 +147,22 @@ http://localhost:3000
 <p>We push to Pushgateway</p>
 <p>OK to push latest data twice</p>
 <p>OK to push from multiple PCs, they are distinct</p>
-<div class="example-wrap"><pre class="language-bash"><code>brew install prometheus
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install prometheus
 brew services start prometheus
+
+## For Ubuntu:
+TODO
+
 http://localhost:9090
 admin for username and password
 
+## For macOS:
 brew install go
+
+## For Ubuntu:
+TODO
+
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
@@ -136,9 +171,55 @@ http://localhost:9091
 cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ url=&quot;http://bbb&quot;, msg=&quot;warning: bbb&quot; } 0.7
+build_score{ url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
-</code></pre></div><h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
+</code></pre></div>
+<p>Note the URL…</p>
+<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+</code></pre></div>
+<ul>
+<li>
+<p><em>nuttxpr</em> is the name of our Ubuntu Build PC</p>
+</li>
+<li>
+<p><em>milkv_duos:nsh</em> is the NuttX Target that we’re building</p>
+</li>
+</ul>
+<p>The body of the HTTP POST says…</p>
+<div class="example-wrap"><pre class="language-text"><code>build_score{ url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+</code></pre></div>
+<ul>
+<li>
+<p><em>gist.github.com</em> points to the Build Log for the NuttX Target (GitHub Gist)</p>
+</li>
+<li>
+<p><em>“test_pipe FAILED”</em> says why the NuttX Build failed (due to CI Test)</p>
+</li>
+<li>
+<p><em>0.0</em> is the Build Score (0 means Error)</p>
+</li>
+</ul>
+<p>Remember that this <strong>Build Score</strong> <em>(0.0)</em> is specific to our <strong>Build PC</strong> <em>(nuttxpr)</em> and <strong>NuttX Target</strong> <em>(milkv_duos:nsh)</em>.</p>
+<p>TODO: Will change</p>
+<p><em>What about the other fields?</em></p>
+<p>Oh yes we have a long list of fields detailing every Build Score (beyond the above)…</p>
+<ul>
+<li><strong>version</strong>: TODO</li>
+<li><strong>timestamp</strong>:  TODO</li>
+<li><strong>user</strong>:  TODO</li>
+<li><strong>arch</strong>:  TODO</li>
+<li><strong>subarch</strong>:  TODO</li>
+<li><strong>group</strong>:  TODO</li>
+<li><strong>board</strong>:  TODO</li>
+<li><strong>config</strong>:  TODO</li>
+<li><strong>target</strong>:  TODO</li>
+<li><strong>url_display</strong>:  TODO</li>
+<li><strong>nuttx_hash</strong>: TODO</li>
+<li><strong>apps_hash</strong>: TODO</li>
+</ul>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">(See the <strong>Complete Fields</strong>)</a></p>
+<p>TODO: Incomplete Fields</p>
+<h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>TODO</p>
 <p>Rust App</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
