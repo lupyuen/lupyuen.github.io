@@ -193,7 +193,7 @@ TODO: Will change
 
 _What about the other fields?_
 
-Oh yes we have a long list of fields detailing every Build Score (beyond the above)...
+Oh yes we have a long list of fields detailing every Build Score (beyond the above)
 
 - __version__: TODO
 - __timestamp__:  TODO
@@ -219,7 +219,13 @@ TODO: Ingest logs from nuttxpr GitHub Gist
 [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
-## Ingest logs from nuttxpr GitHub Gist. Remove special characters.
+## Find all defconfig files
+find $HOME/nuttx \
+  -name defconfig \
+  >/tmp/defconfig.txt
+
+## Ingest logs from nuttxpr GitHub Gist.
+## Remove special characters so they don't mess up the terminal.
 cargo run -- \
   --user nuttxpr \
   --defconfig /tmp/defconfig.txt \
@@ -231,7 +237,6 @@ TODO: Skip the known lines
 [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342)
 
 ```rust
-
     // To Identify Errors / Warnings: Skip the known lines
     let mut msg: Vec<&str> = vec![];
     let lines = &lines[l..];
@@ -353,6 +358,87 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 # Ingest the Logs from GitHub Actions
 
 TODO
+
+[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73)
+
+```bash
+## Ingest the Log File
+cargo run -- \
+  --user $user \
+  --repo $repo \
+  --defconfig $defconfig \
+  --file $pathname \
+  --nuttx-hash $nuttx_hash \
+  --apps-hash $apps_hash \
+  --group $group \
+  --run-id $run_id \
+  --job-id $job_id \
+  --step $step
+```
+
+TODO: Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+
+[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
+
+```bash
+  ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+  local os=$1 ## "Linux" or "msys2"
+  local step=$2 ## "7" or "9"
+  local group=$3 ## "arm-01"
+  local job_name="$os ($group)"
+  local job_id=$(
+    curl -L \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      https://api.github.com/repos/$user/$repo/actions/runs/$run_id/jobs?per_page=100 \
+      | jq ".jobs | map(select(.name == \"$job_name\")) | .[].id"
+  )
+```
+
+TODO: Download the Run Logs
+
+[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153)
+
+```bash
+  ## Download the Run Logs
+  ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
+  curl -L \
+    --output /tmp/run-log.zip \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
+```
+
+TODO: For All Target Groups: Ingest the Log File
+
+[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185)
+
+```bash
+  ## For All Target Groups
+  ## TODO: Handle macOS when the warnings have been cleaned up
+  for group in \
+    arm-01 arm-02 arm-03 arm-04 \
+    arm-05 arm-06 arm-07 arm-08 \
+    arm-09 arm-10 arm-11 arm-12 \
+    arm-13 arm-14 \
+    risc-v-01 risc-v-02 risc-v-03 risc-v-04 \
+    risc-v-05 risc-v-06 \
+    sim-01 sim-02 sim-03 \
+    xtensa-01 xtensa-02 \
+    arm64-01 x86_64-01 other msys2
+  do
+    ## Ingest the Log File
+    if [[ "$group" == "msys2" ]]; then
+      ingest_log "msys2" $msys2_step $group
+    else
+      ingest_log "Linux" $linux_step $group
+    fi
+  done
+```
+
+[(__ingest_log__ is here)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73)
 
 # What's Next
 
