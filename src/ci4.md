@@ -81,7 +81,32 @@ TODO: ci4-grafana10.png
 
 ![TODO](https://lupyuen.github.io/images/ci4-grafana10.png)
 
+TODO: View JSON
+
+TODO: Grafana Config
+
+TODO: Watch for usage
+
+Update the Grafana and Prometheus Configuration...
+
+- [/opt/homebrew/etc/grafana/grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
+
+- [/opt/homebrew/etc/prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
+
+Add the Grafana Dashboard and Panels...
+
+[dashboard.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
+- [links.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
+- [highlights.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
+- [error-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+- [success-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+
+[dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
+- [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
+
 # Prometheus Setup
+
+_We've seen the Grafana Dashboard Setup. What about the Prometheus Metrics?_
 
 TODO
 
@@ -98,12 +123,22 @@ OK to push latest data twice
 OK to push from multiple PCs, they are distinct
 
 ```bash
+## For macOS:
 brew install prometheus
 brew services start prometheus
+
+## For Ubuntu:
+TODO
+
 http://localhost:9090
 admin for username and password
 
+## For macOS:
 brew install go
+
+## For Ubuntu:
+TODO
+
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
@@ -112,9 +147,56 @@ http://localhost:9091
 cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ url="http://bbb", msg="warning: bbb" } 0.7
+build_score{ url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 EOF
 ```
+
+Note the URL...
+
+```text
+localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+```
+
+- _nuttxpr_ is the name of our Ubuntu Build PC
+
+- _milkv\_duos:nsh_ is the NuttX Target that we're building
+
+The body of the HTTP POST says...
+
+```text
+build_score{ url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+```
+
+- _gist.github.com_ points to the Build Log for the NuttX Target (GitHub Gist)
+
+- _"test\_pipe FAILED"_ says why the NuttX Build failed (due to CI Test)
+
+- _0.0_ is the Build Score (0 means Error)
+
+Remember that this __Build Score__ _(0.0)_ is specific to our __Build PC__ _(nuttxpr)_ and __NuttX Target__ _(milkv\_duos:nsh)_.
+
+TODO: Will change
+
+_What about the other fields?_
+
+Oh yes we have a long list of fields detailing every Build Score (beyond the above)...
+
+- __version__: TODO
+- __timestamp__:  TODO
+- __user__:  TODO
+- __arch__:  TODO
+- __subarch__:  TODO
+- __group__:  TODO
+- __board__:  TODO
+- __config__:  TODO
+- __target__:  TODO
+- __url_display__:  TODO
+- __nuttx_hash__: TODO
+- __apps_hash__: TODO
+
+[(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+
+TODO: Incomplete Fields
 
 # Ingest the Build Logs
 
