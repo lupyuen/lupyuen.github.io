@@ -41,6 +41,46 @@ brew services start grafana
 http://localhost:3000
 ```
 
+TODO: ci4-grafana1.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
+
+TODO: ci4-grafana2.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
+
+TODO: ci4-grafana3.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana3.png)
+
+TODO: ci4-grafana4.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana4.png)
+
+TODO: ci4-grafana5.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
+
+TODO: ci4-grafana6.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana6.png)
+
+TODO: ci4-grafana7.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana7.png)
+
+TODO: ci4-grafana8.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana8.png)
+
+TODO: ci4-grafana9.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
+
+TODO: ci4-grafana10.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana10.png)
+
 # Prometheus Setup
 
 TODO
