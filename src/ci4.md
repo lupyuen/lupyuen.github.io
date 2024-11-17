@@ -18,9 +18,9 @@ TODO
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error | TODO
-| 0.5 | Warning | TODO
-| 0.8 | Unknown | TODO
+| 0.0 | Error | _test_pipe FAILED_
+| 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
+| 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
 | 1.0 | Success | TODO
 
 Examples
