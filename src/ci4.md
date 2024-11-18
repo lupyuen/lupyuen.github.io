@@ -138,7 +138,7 @@ Add the Grafana Dashboard and Panels...
 [dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 - [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
 
-# Prometheus Setup
+# Prometheus Metrics
 
 _We've seen the Grafana Dashboard Setup. What about the Prometheus Metrics?_
 
