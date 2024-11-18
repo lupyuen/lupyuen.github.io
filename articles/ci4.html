@@ -113,7 +113,22 @@
 <p><strong>CI Test Failures:</strong> <em>“test_pipe FAILED”</em></p>
 </li>
 </ul>
-<p>Metric per Target and Source</p>
+<p><em>Doesn’t the Build Score vary over time?</em></p>
+<p>Yep the Build Score is actually a <a href="https://prometheus.io/docs/concepts/data_model/"><strong>Time Series Metric</strong></a>! It will have the following dimensions…</p>
+<ul>
+<li>
+<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2025-05-22T00:00:00)</em></p>
+</li>
+<li>
+<p><strong>User:</strong> Whose PC executed the NuttX Build <em>(nuttxpr)</em></p>
+</li>
+<li>
+<p><strong>Target:</strong> NuttX Target that we’re building <em>(milkv_duos:nsh)</em></p>
+</li>
+</ul>
+<p>Which folds neatly into this URL, as we’ll soon see…</p>
+<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+</code></pre></div>
 <p>Why Pull not Push?</p>
 <p>Multple Values</p>
 <p>Remove Duplicates</p>
