@@ -14,16 +14,37 @@ TODO: history
 
 # Build Score
 
-TODO: Goodiness of the Build
+_What's this Build Score?_
+
+Our NuttX Dashboard needs to know the __"Goodiness"__ of Every NuttX Build. Whether it's a...
+
+- __Total Fail__: _"undefined reference to atomic\_fetch\_add\_2"_
+
+- __Warning__: _"nuttx has a LOAD segment with RWX permission"_
+
+- __Success__: NuttX compiles and links OK
+
+That's why we assign a __Build Score__ for every build...
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error | _test\_pipe FAILED_
+| 0.0 | Error | _undefined reference to atomic\_fetch\_add\_2_
 | 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
 | 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
-| 1.0 | Success | TODO
+| 1.0 | Success | _(No Errors and Warnings)_
 
-Examples
+Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yellow _(Warning)_ / Red _(Error)_.
+
+Sounds easy? But we'll catch __Multiple Kinds of Errors__...
+
+- __Compile Errors:__ TODO
+
+- __Linker Errors:__ _"undefined reference to atomic\_fetch\_add\_2"_
+
+- __CI Test Failures:__ _"test\_pipe FAILED"_
+
+
+
 
 Metric per Target and Source
 
@@ -32,14 +53,6 @@ Why Pull not Push?
 Multple Values
 
 Remove Duplicates
-
-Type of errors:
-
-Compile Errors: TODO
-
-Linker Errors: _undefined reference to `atomic\_fetch\_add\_2'_
-
-CI Test Errors: _test\_pipe FAILED_
 
 # Grafana Dashboard
 
@@ -473,3 +486,11 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md)
+
+# Appendix: All Builds Dashboard
+
+TODO
+
+# Appendix: Build History Dashboard
+
+TODO
