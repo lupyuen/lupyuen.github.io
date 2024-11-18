@@ -43,10 +43,21 @@ Sounds easy? But we'll catch __Multiple Kinds of Errors__...
 
 - __CI Test Failures:__ _"test\_pipe FAILED"_
 
+_Doesn't the Build Score vary over time?_
 
+Yep the Build Score is actually a [__Time Series Metric__](https://prometheus.io/docs/concepts/data_model/)! It will have the following dimensions...
 
+- __Timestamp:__ When the NuttX Build was executed _(2025-05-22T00:00:00)_
 
-Metric per Target and Source
+- __User:__ Whose PC executed the NuttX Build _(nuttxpr)_
+
+- __Target:__ NuttX Target that we're building _(milkv\_duos:nsh)_
+
+Which folds neatly into this URL, as we'll soon see...
+
+```text
+localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+```
 
 Why Pull not Push?
 
