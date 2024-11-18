@@ -59,11 +59,11 @@ Which folds neatly into this URL, as we'll soon see...
 localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 ```
 
-Why Pull not Push?
+_Where do we store the Build Scores?_
 
-Multple Values
+Inside a special __Time Series Database__ called [__Prometheus__](TODO).
 
-Remove Duplicates
+We'll come back to Prometheus, first we study the Dashboard...
 
 # Grafana Dashboard
 
@@ -147,6 +147,12 @@ Add the Grafana Dashboard and Panels...
 _We've seen the Grafana Dashboard Setup. What about the Prometheus Metrics?_
 
 TODO
+
+Why Pull not Push?
+
+Multple Values
+
+Remove Duplicates
 
 HTTP Request
 
