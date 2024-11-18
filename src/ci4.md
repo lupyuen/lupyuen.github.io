@@ -448,6 +448,8 @@ TODO: For All Target Groups: Ingest the Log File
 
 [(__ingest_log__ is here)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73)
 
+How we trigger it
+
 # What's Next
 
 TODO

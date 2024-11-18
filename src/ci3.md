@@ -387,6 +387,8 @@ Presently our __Monthly Bill is $9.8K__. Slashed by half (almost) and still drop
 
 ![Right now our Monthly Bill is $9.8K](https://lupyuen.github.io/images/ci3-after30days.png)
 
+(__At Mid Nov 2024:__ Monthly Bill is now __$3.1K__ 🎉)
+
 __Bonus Love & Respect:__ Previously our devs waited __2.5 Hours__ for a Pull Request to be checked. Now we wait at most __1.5 Hours__!
 
 ![Tired Fingers syncing the NuttX Repo to NuttX Mirror Repo](https://lupyuen.github.io/images/ci3-sync.jpg)
