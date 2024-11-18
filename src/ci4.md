@@ -4,11 +4,11 @@
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
-Last article we spoke about monitoring the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](TODO)...
+Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](TODO)...
 
 - [__"Optimising the Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci3)
 
-TODO: Today we'll
+TODO: Today we'll talk about monitoring
 
 TODO: Sorry our dashboard is getting spammed by Wordpress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
 
