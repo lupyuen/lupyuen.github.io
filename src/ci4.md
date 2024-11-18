@@ -2,11 +2,7 @@
 
 📝 _30 Nov 2024_
 
-![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-title.jpg)
-
-TODO: dashboard
-
-![TODO](https://lupyuen.github.io/images/ci4-dashboard.png)
+![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
 TODO: history
 
@@ -16,7 +12,7 @@ TODO: history
 
 _What's this Build Score?_
 
-Our NuttX Dashboard needs to know the __"Goodiness"__ of Every NuttX Build. Whether it's a...
+Our NuttX Dashboard needs to know the __"Goodiness"__ of Every NuttX Build (pic above). Whether it's a...
 
 - __Total Fail__: _"undefined reference to atomic\_fetch\_add\_2"_
 
