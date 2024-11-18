@@ -4,6 +4,8 @@
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
+TODO: Sorry our dashboard is getting spammed by Wordpress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
+
 TODO: history
 
 ![TODO](https://lupyuen.github.io/images/ci4-history.png)
