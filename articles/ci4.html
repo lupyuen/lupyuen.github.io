@@ -70,30 +70,53 @@
 <li><a href="#prometheus-setup">3 Prometheus Setup</a><ul></ul></li>
 <li><a href="#ingest-the-build-logs">4 Ingest the Build Logs</a><ul></ul></li>
 <li><a href="#ingest-the-logs-from-github-actions">5 Ingest the Logs from GitHub Actions</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2024</em></p>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-all-builds-dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
+<li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci4-title.jpg" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
 <p>TODO: dashboard</p>
 <p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="TODO" /></p>
 <p>TODO: history</p>
 <p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="TODO" /></p>
 <h1 id="build-score"><a class="doc-anchor" href="#build-score">§</a>1 Build Score</h1>
-<p>TODO: Goodiness of the Build</p>
+<p><em>What’s this Build Score?</em></p>
+<p>Our NuttX Dashboard needs to know the <strong>“Goodiness”</strong> of Every NuttX Build. Whether it’s a…</p>
+<ul>
+<li>
+<p><strong>Total Fail</strong>: <em>“undefined reference to atomic_fetch_add_2”</em></p>
+</li>
+<li>
+<p><strong>Warning</strong>: <em>“nuttx has a LOAD segment with RWX permission”</em></p>
+</li>
+<li>
+<p><strong>Success</strong>: NuttX compiles and links OK</p>
+</li>
+</ul>
+<p>That’s why we assign a <strong>Build Score</strong> for every build…</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
-<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>test_pipe FAILED</em></td></tr>
+<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
 <tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
 <tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
-<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left">TODO</td></tr>
+<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
 </tbody></table>
 </div>
-<p>Examples</p>
+<p>Which makes it simpler to <strong>Colour-Code</strong> our Dashboard: Green <em>(Success)</em> / Yellow <em>(Warning)</em> / Red <em>(Error)</em>.</p>
+<p>Sounds easy? But we’ll catch <strong>Multiple Kinds of Errors</strong>…</p>
+<ul>
+<li>
+<p><strong>Compile Errors:</strong> TODO</p>
+</li>
+<li>
+<p><strong>Linker Errors:</strong> <em>“undefined reference to atomic_fetch_add_2”</em></p>
+</li>
+<li>
+<p><strong>CI Test Failures:</strong> <em>“test_pipe FAILED”</em></p>
+</li>
+</ul>
 <p>Metric per Target and Source</p>
 <p>Why Pull not Push?</p>
 <p>Multple Values</p>
 <p>Remove Duplicates</p>
-<p>Type of errors:</p>
-<p>Compile Errors: TODO</p>
-<p>Linker Errors: <em>undefined reference to `atomic_fetch_add_2’</em></p>
-<p>CI Test Errors: <em>test_pipe FAILED</em></p>
 <h1 id="grafana-dashboard"><a class="doc-anchor" href="#grafana-dashboard">§</a>2 Grafana Dashboard</h1>
 <p>TODO</p>
 <p>Create a simple dashboard</p>
@@ -447,6 +470,10 @@ cargo run -- \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md"><strong>lupyuen.github.io/src/ci4.md</strong></a></p>
+<h1 id="appendix-all-builds-dashboard"><a class="doc-anchor" href="#appendix-all-builds-dashboard">§</a>7 Appendix: All Builds Dashboard</h1>
+<p>TODO</p>
+<h1 id="appendix-build-history-dashboard"><a class="doc-anchor" href="#appendix-build-history-dashboard">§</a>8 Appendix: Build History Dashboard</h1>
+<p>TODO</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
