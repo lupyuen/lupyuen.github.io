@@ -140,7 +140,7 @@
 <p>Yep the Build Score is actually a <a href="https://prometheus.io/docs/concepts/data_model/"><strong>Time Series Metric</strong></a>! It will have the following dimensions…</p>
 <ul>
 <li>
-<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2025-05-22T00:00:00)</em></p>
+<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2024-05-22T00:00:00)</em></p>
 </li>
 <li>
 <p><strong>User:</strong> Whose PC executed the NuttX Build <em>(nuttxpr)</em></p>
@@ -209,20 +209,8 @@ http://localhost:3000
 </ul>
 <h1 id="prometheus-metrics"><a class="doc-anchor" href="#prometheus-metrics">§</a>3 Prometheus Metrics</h1>
 <p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
-<p>TODO</p>
-<p>Why Pull not Push?</p>
-<p>Multple Values</p>
-<p>Remove Duplicates</p>
-<p>HTTP Request</p>
-<p>Nowhere to pull</p>
-<p>So pull from Pushgateway</p>
-<p>We push to Pushgateway</p>
-<p>OK to push latest data twice</p>
-<p>OK to push from multiple PCs, they are distinct</p>
-<p>TODO: prometheus</p>
-<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
-<p>TODO: pushgateway</p>
-<p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="TODO" /></p>
+<p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
+<p>This is how we install Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 brew install prometheus
 brew services start prometheus
@@ -238,18 +226,47 @@ brew install go
 
 ## For Ubuntu:
 TODO
-
+</code></pre></div>
+<p>TODO: Prometheus Config</p>
+<p>Recall that we assign a <strong>Build Score</strong> for every build…</p>
+<div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
+<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
+<tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
+<tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
+<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
+</tbody></table>
+</div>
+<p>This is how we <strong>Load a Build Score</strong> into Prometheus…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install and start Pushgateway
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
-http://localhost:9091
 
+## TODO: Check that Pushgateway is up
+## http://localhost:9091
+
+## Load a Build Score into Pushgateway
+## Build Score is 0 for User nuttxpr, Target milkv_duos:nsh
 cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+build_score{ timestamp=&quot;2024-05-22T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
 </code></pre></div>
+<p>TODO</p>
+<p>Why Pull not Push?</p>
+<p>Multple Values</p>
+<p>Remove Duplicates</p>
+<p>HTTP Request</p>
+<p>Nowhere to pull</p>
+<p>So pull from Pushgateway</p>
+<p>We push to Pushgateway</p>
+<p>OK to push latest data twice</p>
+<p>OK to push from multiple PCs, they are distinct</p>
+<p>TODO: prometheus</p>
+<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
+<p>TODO: pushgateway</p>
+<p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="TODO" /></p>
 <p>Note the URL…</p>
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 </code></pre></div>
