@@ -12,6 +12,12 @@ TODO: Today we'll talk about monitoring
 
 TODO: Sorry our dashboard is getting spammed by Wordpress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
 
+TODO: user
+
+![TODO](https://lupyuen.github.io/images/ci4-user.png)
+
+TODO: filter
+
 TODO: history
 
 ![TODO](https://lupyuen.github.io/images/ci4-history.png)
