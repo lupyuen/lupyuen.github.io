@@ -34,7 +34,7 @@ To see the __History of Builds__: Click the link for _"NuttX Build History"_. Re
 
 _Sounds Great! What's the URL?_
 
-Sorry our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
+Sorry can't print it here, our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and seek NuttX-Dashboard. (Dog Tea? Organic!)
 
 ![TODO](https://lupyuen.github.io/images/ci4-history.png)
 
