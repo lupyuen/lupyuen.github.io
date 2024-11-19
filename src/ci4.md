@@ -8,19 +8,33 @@ Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTO
 
 - [__"Optimising the Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci3)
 
-TODO: Today we'll talk about monitoring
+Today we'll talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](TODO)) with our __NuttX Dashboard__...
 
-TODO: Sorry our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
+- TODO
 
-_What can we do with NuttX Dashboard?_
+- TODO
 
-TODO: user
+- TODO
+
+_What will NuttX Dashboard tell us?_
+
+NuttX Dashboard shows a __Snapshot of Failed Builds__ for the present moment. (Pic above)
+
+We may __Filter the Builds__ by Architecture, Board and Config...
+
+![TODO](https://lupyuen.github.io/images/ci4-filter.png)
+
+The snapshot includes builds from the (community-hosted) [__NuttX Build Farm__](TODO) as well as __GitHub Actions__ (twice-daily builds).
+
+To see __GitHub Actions Only__: Click __`[+]`__ and set __`User`__ to __`NuttX`__...
 
 ![TODO](https://lupyuen.github.io/images/ci4-user.png)
 
-TODO: filter
+To see the __History of Builds__: Click the link for _"NuttX Build History"_. Remember to select the Board and Config. (Pic below)
 
-TODO: history
+_Sounds Great! What's the URL?_
+
+Sorry our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
 
 ![TODO](https://lupyuen.github.io/images/ci4-history.png)
 
