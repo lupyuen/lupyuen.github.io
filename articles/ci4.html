@@ -311,14 +311,15 @@ cargo run -- \
   | tr -d &#39;\033\007&#39;
 </code></pre></div>
 <p>TODO: Skip the known lines</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// To Identify Errors / Warnings: Skip the known lines
     </span><span class="kw">let </span><span class="kw-2">mut </span>msg: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="macro">vec!</span>[];
     <span class="kw">let </span>lines = <span class="kw-2">&amp;</span>lines[l..];
     <span class="kw">for </span>line <span class="kw">in </span>lines {
         <span class="kw">let </span>line = line.trim();
-        <span class="kw">if </span>line.starts_with(<span class="string">"----------"</span>) ||
+        <span class="kw">if </span>line.len() == <span class="number">0 </span>||
+            line.starts_with(<span class="string">"----------"</span>) ||
             line.starts_with(<span class="string">"-- "</span>) ||  <span class="comment">// "-- Build type:"
             </span>line.starts_with(<span class="string">"Cleaning"</span>) ||
             line.starts_with(<span class="string">"Configuring"</span>) ||
@@ -336,7 +337,12 @@ cargo run -- \
             </span>line.contains(<span class="string">"FPU test not built"</span>) ||
             line.starts_with(<span class="string">"a nuttx-export-"</span>) ||  <span class="comment">// "a nuttx-export-12.7.0/tools/incdir.c"
             </span>line.contains(<span class="string">" PASSED"</span>) ||  <span class="comment">// CI Test: "test_hello PASSED"
-            </span>line.contains(<span class="string">" SKIPPED"</span>)  <span class="comment">// CI Test: "test_mm SKIPPED"
+            </span>line.contains(<span class="string">" SKIPPED"</span>) ||  <span class="comment">// CI Test: "test_mm SKIPPED"
+            </span>line.contains(<span class="string">"On branch master"</span>) ||  <span class="comment">// "On branch master"
+            </span>line.contains(<span class="string">"Your branch is up to date"</span>) ||  <span class="comment">// "Your branch is up to date with 'origin/master'"
+            </span>line.contains(<span class="string">"Changes not staged for commit"</span>) ||  <span class="comment">// "Changes not staged for commit:"
+            </span>line.contains(<span class="string">"git add &lt;file&gt;"</span>) ||  <span class="comment">// "(use "git add &lt;file&gt;..." to update what will be committed)"
+            </span>line.contains(<span class="string">"git restore &lt;file&gt;"</span>)  <span class="comment">// "(use "git restore &lt;file&gt;..." to discard changes in working directory)"
         </span>{ <span class="kw">continue</span>; }
 
         <span class="comment">// Skip Downloads: "100  533k    0  533k    0     0   541k      0 --:--:-- --:--:-- --:--:--  541k100 1646k    0 1646k    0     0  1573k      0 --:--:--  0:00:01 --:--:-- 17.8M"
@@ -344,26 +350,45 @@ cargo run -- \
         <span class="kw">let </span>caps = re.captures(line);
         <span class="kw">if </span>caps.is_some() { <span class="kw">continue</span>; }</code></pre></div>
 <p>TODO: Compute the Build Score</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L347-L370">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Compute the Build Score based on Error vs Warning. Not an error:
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Not an error:
     // "test_ltp_interfaces_aio_error_1_1 PASSED"
     // "lua-5.4.0/testes/errors.lua"
     // "nuttx-export-12.7.0/include/libcxx/__system_error"
-    </span><span class="kw">let </span>contains_error = msg.join(<span class="string">" "</span>)
+    </span><span class="kw">let </span>msg_join = msg.join(<span class="string">" "</span>);
+    <span class="kw">let </span>contains_error = msg_join
         .replace(<span class="string">"aio_error"</span>, <span class="string">"aio_e_r_r_o_r"</span>)
         .replace(<span class="string">"errors.lua"</span>, <span class="string">"e_r_r_o_r_s.lua"</span>)
         .replace(<span class="string">"_error"</span>, <span class="string">"_e_r_r_o_r"</span>)
         .replace(<span class="string">"error_"</span>, <span class="string">"e_r_r_o_r_"</span>)
         .to_lowercase()
         .contains(<span class="string">"error"</span>);
+
+    <span class="comment">// Identify CI Test as Error: "test_helloxx FAILED"
+    </span><span class="kw">let </span>contains_error = contains_error ||
+        msg_join.contains(<span class="string">" FAILED"</span>);
+
+    <span class="comment">// Given Board=sim, Config=rtptools
+    // Identify defconfig as Error: "modified:...boards/sim/sim/sim/configs/rtptools/defconfig"
+    </span><span class="kw">let </span>target_split = target.split(<span class="string">":"</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+    <span class="kw">let </span>board = target_split[<span class="number">0</span>];
+    <span class="kw">let </span>config = target_split[<span class="number">1</span>];
+    <span class="kw">let </span>board_config = <span class="macro">format!</span>(<span class="string">"/{board}/configs/{config}/defconfig"</span>);
     <span class="kw">let </span>contains_error = contains_error ||
-        msg.join(<span class="string">" "</span>)
-        .contains(<span class="string">" FAILED"</span>);  <span class="comment">// CI Test: "test_helloxx FAILED"
-    </span><span class="kw">let </span>contains_warning = msg.join(<span class="string">" "</span>)
+    (
+        msg_join.contains(<span class="kw-2">&amp;</span><span class="string">"modified:"</span>) &amp;&amp;
+        msg_join.contains(<span class="kw-2">&amp;</span><span class="string">"boards/"</span>) &amp;&amp;
+        msg_join.contains(<span class="kw-2">&amp;</span>board_config.as_str())
+    );
+
+    <span class="comment">// Search for Warnings
+    </span><span class="kw">let </span>contains_warning = msg_join
         .to_lowercase()
         .contains(<span class="string">"warning"</span>);
-    <span class="kw">let </span>build_score =
+
+    <span class="comment">// Compute the Build Score based on Error vs Warning
+    </span><span class="kw">let </span>build_score =
         <span class="kw">if </span>msg.is_empty() { <span class="number">1.0 </span>}
         <span class="kw">else if </span>contains_error { <span class="number">0.0 </span>}
         <span class="kw">else if </span>contains_warning { <span class="number">0.5 </span>}
