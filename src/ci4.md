@@ -10,7 +10,9 @@ Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTO
 
 TODO: Today we'll talk about monitoring
 
-TODO: Sorry our dashboard is getting spammed by Wordpress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
+TODO: Sorry our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and search for NuttX Dashboard.
+
+_What can we do with NuttX Dashboard?_
 
 TODO: user
 
