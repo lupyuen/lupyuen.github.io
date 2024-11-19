@@ -73,7 +73,7 @@ _Doesn't the Build Score vary over time?_
 
 Yep the Build Score is actually a [__Time Series Metric__](https://prometheus.io/docs/concepts/data_model/)! It will have the following dimensions...
 
-- __Timestamp:__ When the NuttX Build was executed _(2025-05-22T00:00:00)_
+- __Timestamp:__ When the NuttX Build was executed _(2024-05-22T00:00:00)_
 
 - __User:__ Whose PC executed the NuttX Build _(nuttxpr)_
 
@@ -172,6 +172,59 @@ Add the Grafana Dashboard and Panels...
 
 _We've seen the Grafana Dashboard Setup. What about the Prometheus Metrics?_
 
+Remember that our Build Scores are stored inside a special (open-source) __Time Series Database__ called [__Prometheus__](TODO).
+
+This is how we install Prometheus...
+
+```bash
+## For macOS:
+brew install prometheus
+brew services start prometheus
+
+## For Ubuntu:
+TODO
+
+http://localhost:9090
+admin for username and password
+
+## For macOS:
+brew install go
+
+## For Ubuntu:
+TODO
+```
+
+TODO: Prometheus Config
+
+Recall that we assign a __Build Score__ for every build...
+
+| Score | Status | Example |
+|:-----:|:-------|:--------|
+| 0.0 | Error | _undefined reference to atomic\_fetch\_add\_2_
+| 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
+| 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
+| 1.0 | Success | _(No Errors and Warnings)_
+
+This is how we __Load a Build Score__ into Prometheus...
+
+```bash
+## Install and start Pushgateway
+git clone https://github.com/prometheus/pushgateway
+cd pushgateway
+go run main.go
+
+## TODO: Check that Pushgateway is up
+## http://localhost:9091
+
+## Load a Build Score into Pushgateway
+## Build Score is 0 for User nuttxpr, Target milkv_duos:nsh
+cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{ timestamp="2024-05-22T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+EOF
+```
+
 TODO
 
 Why Pull not Push?
@@ -199,35 +252,6 @@ TODO: prometheus
 TODO: pushgateway
 
 ![TODO](https://lupyuen.github.io/images/ci4-pushgateway.png)
-
-```bash
-## For macOS:
-brew install prometheus
-brew services start prometheus
-
-## For Ubuntu:
-TODO
-
-http://localhost:9090
-admin for username and password
-
-## For macOS:
-brew install go
-
-## For Ubuntu:
-TODO
-
-git clone https://github.com/prometheus/pushgateway
-cd pushgateway
-go run main.go
-http://localhost:9091
-
-cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
-# TYPE build_score gauge
-# HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
-EOF
-```
 
 Note the URL...
 
