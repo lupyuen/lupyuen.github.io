@@ -298,7 +298,7 @@ cargo run -- \
 
 TODO: Skip the known lines
 
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L342)
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353)
 
 ```rust
     // To Identify Errors / Warnings: Skip the known lines
@@ -306,7 +306,8 @@ TODO: Skip the known lines
     let lines = &lines[l..];
     for line in lines {
         let line = line.trim();
-        if line.starts_with("----------") ||
+        if line.len() == 0 ||
+            line.starts_with("----------") ||
             line.starts_with("-- ") ||  // "-- Build type:"
             line.starts_with("Cleaning") ||
             line.starts_with("Configuring") ||
@@ -324,7 +325,12 @@ TODO: Skip the known lines
             line.contains("FPU test not built") ||
             line.starts_with("a nuttx-export-") ||  // "a nuttx-export-12.7.0/tools/incdir.c"
             line.contains(" PASSED") ||  // CI Test: "test_hello PASSED"
-            line.contains(" SKIPPED")  // CI Test: "test_mm SKIPPED"
+            line.contains(" SKIPPED") ||  // CI Test: "test_mm SKIPPED"
+            line.contains("On branch master") ||  // "On branch master"
+            line.contains("Your branch is up to date") ||  // "Your branch is up to date with 'origin/master'"
+            line.contains("Changes not staged for commit") ||  // "Changes not staged for commit:"
+            line.contains("git add <file>") ||  // "(use "git add <file>..." to update what will be committed)"
+            line.contains("git restore <file>")  // "(use "git restore <file>..." to discard changes in working directory)"
         { continue; }
 
         // Skip Downloads: "100  533k    0  533k    0     0   541k      0 --:--:-- --:--:-- --:--:--  541k100 1646k    0 1646k    0     0  1573k      0 --:--:--  0:00:01 --:--:-- 17.8M"
@@ -335,26 +341,45 @@ TODO: Skip the known lines
 
 TODO: Compute the Build Score
 
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L347-L370)
+[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
 
 ```rust
-    // Compute the Build Score based on Error vs Warning. Not an error:
+    // Not an error:
     // "test_ltp_interfaces_aio_error_1_1 PASSED"
     // "lua-5.4.0/testes/errors.lua"
     // "nuttx-export-12.7.0/include/libcxx/__system_error"
-    let contains_error = msg.join(" ")
+    let msg_join = msg.join(" ");
+    let contains_error = msg_join
         .replace("aio_error", "aio_e_r_r_o_r")
         .replace("errors.lua", "e_r_r_o_r_s.lua")
         .replace("_error", "_e_r_r_o_r")
         .replace("error_", "e_r_r_o_r_")
         .to_lowercase()
         .contains("error");
+
+    // Identify CI Test as Error: "test_helloxx FAILED"
     let contains_error = contains_error ||
-        msg.join(" ")
-        .contains(" FAILED");  // CI Test: "test_helloxx FAILED"
-    let contains_warning = msg.join(" ")
+        msg_join.contains(" FAILED");
+
+    // Given Board=sim, Config=rtptools
+    // Identify defconfig as Error: "modified:...boards/sim/sim/sim/configs/rtptools/defconfig"
+    let target_split = target.split(":").collect::<Vec<_>>();
+    let board = target_split[0];
+    let config = target_split[1];
+    let board_config = format!("/{board}/configs/{config}/defconfig");
+    let contains_error = contains_error ||
+    (
+        msg_join.contains(&"modified:") &&
+        msg_join.contains(&"boards/") &&
+        msg_join.contains(&board_config.as_str())
+    );
+
+    // Search for Warnings
+    let contains_warning = msg_join
         .to_lowercase()
         .contains("warning");
+
+    // Compute the Build Score based on Error vs Warning
     let build_score =
         if msg.is_empty() { 1.0 }
         else if contains_error { 0.0 }
