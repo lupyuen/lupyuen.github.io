@@ -482,23 +482,9 @@ find nuttx \
     <span class="prelude-val">Ok</span>(<span class="string">"unknown"</span>.into())
 }</code></pre></div>
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
-cargo run -- \
-  --user $user \
-  --repo $repo \
-  --defconfig $defconfig \
-  --file $pathname \
-  --nuttx-hash $nuttx_hash \
-  --apps-hash $apps_hash \
-  --group $group \
-  --run-id $run_id \
-  --job-id $job_id \
-  --step $step
-</code></pre></div>
-<p>TODO: Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
+<p><em>What about the Build Logs from GitHub Actions?</em></p>
+<p>It gets a little more complicated, we need to download the Build Logs from GitHub Actions.</p>
+<p>But before that, we need the <strong>GitHub Run ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>  ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
   local os=$1 ## &quot;Linux&quot; or &quot;msys2&quot;
   local step=$2 ## &quot;7&quot; or &quot;9&quot;
@@ -513,8 +499,7 @@ cargo run -- \
       | jq &quot;.jobs | map(select(.name == \&quot;$job_name\&quot;)) | .[].id&quot;
   )
 </code></pre></div>
-<p>TODO: Download the Run Logs</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153">github.sh</a></p>
+<p>Now we can <strong>Download the Run Logs</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>  ## Download the Run Logs
   ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
   curl -L \
@@ -524,8 +509,7 @@ cargo run -- \
     -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
     https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
 </code></pre></div>
-<p>TODO: For All Target Groups: Ingest the Log File</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185">github.sh</a></p>
+<p><strong>For Each Target Group:</strong> We ingest the Log File: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>  ## For All Target Groups
   ## TODO: Handle macOS when the warnings have been cleaned up
   for group in \
@@ -548,7 +532,22 @@ cargo run -- \
   done
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73">(<strong>ingest_log</strong> is here)</a></p>
-<p>How we trigger it</p>
+<p>Which will be ingested like this: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
+## TODO: Example
+cargo run -- \
+  --user $user \
+  --repo $repo \
+  --defconfig $defconfig \
+  --file $pathname \
+  --nuttx-hash $nuttx_hash \
+  --apps-hash $apps_hash \
+  --group $group \
+  --run-id $run_id \
+  --job-id $job_id \
+  --step $step
+</code></pre></div>
+<p>TODO: How we trigger it</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
