@@ -157,7 +157,7 @@
   ],
   "publications": [
     {
-      "name": "Optimising the Continuous Integration for Apache NuttX RTOS",
+      "name": "Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-11-10",
       "website": "https://lupyuen.github.io/articles/ci3",
