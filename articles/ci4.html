@@ -461,18 +461,18 @@ find nuttx \
 ## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 </code></pre></div>
-<p>To identify the <strong>Sub-Architecture</strong> <em>(“bl808”)</em> of a NuttX Target <em>(“ox64:nsh”)</em>, we look up the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
+<p>Suppose we’re ingesting a NuttX Target <em>milkv_duos:nsh</em>. To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames:
-// Search for a Target ("ox64:nsh")
-// Return the Sub-Architecture ("bl808")
+// Search for a Target ("milkv_duos:nsh")
+// Return the Sub-Architecture ("sg2000")
 </span><span class="kw">async fn </span>get_sub_arch(defconfig: <span class="kw-2">&amp;</span>str, target: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
   <span class="kw">let </span>target_split = target.split(<span class="string">":"</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
   <span class="kw">let </span>board = target_split[<span class="number">0</span>];
   <span class="kw">let </span>config = target_split[<span class="number">1</span>];
 
-  <span class="comment">// defconfig contains "/.../nuttx/boards/risc-v/bl808/ox64/configs/nsh/defconfig"
+  <span class="comment">// defconfig contains ".../boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig"
   // Search for "/{board}/configs/{config}/defconfig"
   </span><span class="kw">let </span>search = <span class="macro">format!</span>(<span class="string">"/{board}/configs/{config}/defconfig"</span>);
   <span class="kw">let </span>input = File::open(defconfig).unwrap();
