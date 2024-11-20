@@ -351,9 +351,10 @@ cargo run -- \
 <p>Which will <strong>Identify Errors and Warnings</strong> in the logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353">main.rs</a></p>
 <span style="font-size:90%">
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// To Identify Errors / Warnings: Skip the known lines
-</span><span class="kw">if </span>line.len() == <span class="number">0 </span>||
-  line.starts_with(<span class="string">"----------"</span>) ||
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// To Identify Errors and Warnings:
+// We skip the known lines
+</span><span class="kw">if
+  </span>line.starts_with(<span class="string">"----------"</span>) ||
   line.starts_with(<span class="string">"-- "</span>) ||  <span class="comment">// "-- Build type:"
   </span>line.starts_with(<span class="string">"Cleaning"</span>) ||
   line.starts_with(<span class="string">"Configuring"</span>) ||
@@ -384,7 +385,7 @@ cargo run -- \
 <span class="kw">let </span>caps = re.captures(line);
 <span class="kw">if </span>caps.is_some() { <span class="kw">continue</span>; }</code></pre></div>
 </span>
-<p>Then compute the <strong>Build Score</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
+<p>Then we compute the <strong>Build Score</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Not an error:
@@ -429,7 +430,7 @@ cargo run -- \
   <span class="kw">else if </span>contains_warning { <span class="number">0.5 </span>}
   <span class="kw">else </span>{ <span class="number">0.8 </span>};</code></pre></div>
 </span>
-<p>And post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
+<p>And we post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Pushgateway Metric
@@ -481,11 +482,11 @@ find nuttx \
   <span class="prelude-val">Ok</span>(<span class="string">"unknown"</span>.into())
 }</code></pre></div>
 </span>
-<p><em>Phew extracting the Errors and Warnings look so complicated!</em></p>
-<p>TODO: Yeah</p>
+<p><em>Phew the Errors and Warnings look so complicated!</em></p>
+<p>Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.</p>
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p><em>What about the Build Logs from GitHub Actions?</em></p>
-<p>It gets a little more complicated, we need to download the Build Logs from GitHub Actions.</p>
+<p>It gets a little more complicated, we need to download the <strong>Build Logs from GitHub Actions</strong>.</p>
 <p>But before that, we need the <strong>GitHub Run ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
 local os=$1 ## &quot;Linux&quot; or &quot;msys2&quot;
