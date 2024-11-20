@@ -468,8 +468,9 @@ To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")
 <span style="font-size:90%">
 
 ```rust
-// Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
-// and return the Sub-Architecture (like "bl808")
+// Given a list of all defconfig pathnames:
+// Search for a Target ("ox64:nsh")
+// Return the Sub-Architecture ("bl808")
 async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn std::error::Error>> {
   let target_split = target.split(":").collect::<Vec<_>>();
   let board = target_split[0];
