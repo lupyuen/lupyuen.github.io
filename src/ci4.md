@@ -103,6 +103,7 @@ Assume Build Score already set up
 brew install grafana
 brew services start grafana
 http://localhost:3000
+admin for username and password
 ```
 
 TODO: ci4-grafana1.png
@@ -184,17 +185,23 @@ brew services start prometheus
 ## For Ubuntu:
 TODO
 
-http://localhost:9090
-admin for username and password
+## TODO: Check that Prometheus is up
+## http://localhost:9090
 
-## For macOS:
-brew install go
+## TODO: Update the Prometheus Config
+## Edit /opt/homebrew/etc/prometheus.yml (macOS)
+## Or TODO (Ubuntu)
+## Replace by contents of:
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
-## For Ubuntu:
-TODO
+## Restart Prometheus
+brew services restart prometheus ## macOS
+TODO ## Ubuntu
 ```
 
-TODO: Prometheus Config
+Prometheus looks like this...
+
+![TODO](https://lupyuen.github.io/images/ci4-prometheus.png)
 
 Recall that we assign a __Build Score__ for every build...
 
@@ -208,6 +215,12 @@ Recall that we assign a __Build Score__ for every build...
 This is how we __Load a Build Score__ into Prometheus...
 
 ```bash
+## For macOS:
+brew install go
+
+## For Ubuntu:
+TODO
+
 ## Install and start Pushgateway
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
@@ -225,35 +238,21 @@ build_score{ timestamp="2024-05-22T00:00:00", url="http://gist.github.com/...", 
 EOF
 ```
 
-TODO
-
-Why Pull not Push?
-
-Multple Values
-
-Remove Duplicates
-
-HTTP Request
-
-Nowhere to pull
-
-So pull from Pushgateway
-
-We push to Pushgateway
-
-OK to push latest data twice
-
-OK to push from multiple PCs, they are distinct
-
-TODO: prometheus
-
-![TODO](https://lupyuen.github.io/images/ci4-prometheus.png)
-
-TODO: pushgateway
+Pushgateway looks like this...
 
 ![TODO](https://lupyuen.github.io/images/ci4-pushgateway.png)
 
-Note the URL...
+_What's this Pushgateway?_
+
+Prometheus works by [__Scraping Metrics__](https://prometheus.io/docs/prometheus/latest/getting_started/) over HTTP.
+
+That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint that will serve the Metrics (Build Score) to Prometheus.
+
+(Which means that we load the Build Scores into Pushgateway, like above)
+
+_How does it work?_
+
+We post the Build Score over HTTP to Pushgateway at...
 
 ```text
 localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
@@ -266,7 +265,7 @@ localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 The body of the HTTP POST says...
 
 ```text
-build_score{ url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+build_score{ timestamp="2024-05-22T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 ```
 
 - _gist.github.com_ points to the Build Log for the NuttX Target (GitHub Gist)
@@ -277,14 +276,13 @@ build_score{ url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 
 Remember that this __Build Score__ _(0.0)_ is specific to our __Build PC__ _(nuttxpr)_ and __NuttX Target__ _(milkv\_duos:nsh)_.
 
-TODO: Will change
+(It will vary over time, hence it's a Time Series)
 
 _What about the other fields?_
 
-Oh yes we have a long list of fields detailing every Build Score (beyond the above)
+Oh yes we have a long list of fields describing every Build Score...
 
 - __version__: TODO
-- __timestamp__:  TODO
 - __user__:  TODO
 - __arch__:  TODO
 - __subarch__:  TODO
@@ -295,10 +293,21 @@ Oh yes we have a long list of fields detailing every Build Score (beyond the abo
 - __url_display__:  TODO
 - __nuttx_hash__: TODO
 - __apps_hash__: TODO
+- Plus timestamp, url, msg (from above)
 
 [(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
-TODO: Incomplete Fields
+TODO: [prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
+
+Multple Values
+
+Remove Duplicates
+
+HTTP Request
+
+OK to push latest data twice
+
+OK to push from multiple PCs, they are distinct
 
 # Ingest the Build Logs
 
