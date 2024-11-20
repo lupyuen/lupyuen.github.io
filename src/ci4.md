@@ -516,8 +516,8 @@ But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/l
 
 ```bash
 ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
-local os=$1 ## "Linux" or "msys2"
-local step=$2 ## "7" or "9"
+local os=$1    ## "Linux" or "msys2"
+local step=$2  ## "7" or "9"
 local group=$3 ## "arm-01"
 local job_name="$os ($group)"
 local job_id=$(
@@ -533,7 +533,7 @@ local job_id=$(
 Now we can __Download the Run Logs__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153)
 
 ```bash
-## Download the Run Logs
+## Download the Run Logs from GitHub
 ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
 curl -L \
   --output /tmp/run-log.zip \
@@ -574,7 +574,6 @@ Which will be ingested like this: [github.sh](https://github.com/lupyuen/ingest-
 
 ```bash
 ## Ingest the Log File
-## TODO: Example
 cargo run -- \
   --user $user \
   --repo $repo \
@@ -586,9 +585,36 @@ cargo run -- \
   --run-id $run_id \
   --job-id $job_id \
   --step $step
+
+## TODO: Example
 ```
 
-TODO: How we trigger it
+_How do we run all this?_
+
+We ingest the GitHub Logs right after the [__Twice-Daily Build__](TODO) of NuttX. (00:00 UTC and 12:00 UTC)
+
+Thus it makes sense to bundle the Build and Ingest into one single script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
+
+```bash
+## Build NuttX Mirror Repo and Ingest NuttX Build Logs
+## from GitHub Actions into Prometheus Pushgateway
+
+## TODO: Twice Daily at 00:00 UTC and 12:00 UTC
+## Go to NuttX Mirror Repo: github.com/NuttX/nuttx
+## Click Sync Fork > Discard Commits
+
+## Start the Linux, macOS and Windows Builds for NuttX
+## https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh
+~/nuttx-release/enable-macos-windows.sh
+
+## Wait for the NuttX Build to start
+sleep 300
+
+## Wait for the NuttX Build to complete
+## Then ingest the GitHub Logs
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
+./github.sh
+```
 
 # What's Next
 
