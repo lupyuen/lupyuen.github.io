@@ -69,7 +69,7 @@
 <li><a href="#grafana-dashboard">2 Grafana Dashboard</a><ul></ul></li>
 <li><a href="#prometheus-metrics">3 Prometheus Metrics</a><ul></ul></li>
 <li><a href="#ingest-the-build-logs">4 Ingest the Build Logs</a><ul></ul></li>
-<li><a href="#ingest-the-logs-from-github-actions">5 Ingest the Logs from GitHub Actions</a><ul></ul></li>
+<li><a href="#ingest-from-github-actions">5 Ingest from GitHub Actions</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-all-builds-dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
 <li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2024</em></p>
@@ -140,7 +140,7 @@
 <p>Yep the Build Score is actually a <a href="https://prometheus.io/docs/concepts/data_model/"><strong>Time Series Metric</strong></a>! It will have the following dimensions…</p>
 <ul>
 <li>
-<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2024-05-22T00:00:00)</em></p>
+<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2024-11-30T00:00:00)</em></p>
 </li>
 <li>
 <p><strong>User:</strong> Whose PC executed the NuttX Build <em>(nuttxpr)</em></p>
@@ -262,7 +262,7 @@ go run main.go
 cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ timestamp=&quot;2024-05-22T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+build_score{ timestamp=&quot;2024-11-30T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
 </code></pre></div>
 <p>Pushgateway looks like this…</p>
@@ -284,7 +284,7 @@ EOF
 </li>
 </ul>
 <p>The body of the HTTP POST says…</p>
-<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-05-22T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-30T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 </code></pre></div>
 <ul>
 <li>
@@ -323,22 +323,32 @@ EOF
 <p>OK to push latest data twice</p>
 <p>OK to push from multiple PCs, they are distinct</p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
-<p>TODO: Ingest logs from nuttxpr GitHub Gist</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig files
-find $HOME/nuttx \
+<p>Now we be like an Amoeba and ingest all kinds of Build Logs!</p>
+<ul>
+<li>
+<p>Build Logs from <a href="TODO"><strong>NuttX Build Farm</strong></a></p>
+</li>
+<li>
+<p>Build Logs from <a href="TODO"><strong>GitHub Actions</strong></a></p>
+</li>
+</ul>
+<p>We ingest the <a href="TODO"><strong>GitHub Gists</strong></a> from our Build Farm: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig pathnames in NuttX Repo
+git clone https://github.com/apache/nuttx
+find nuttx \
   -name defconfig \
   &gt;/tmp/defconfig.txt
 
 ## Ingest logs from nuttxpr GitHub Gist.
 ## Remove special characters so they don&#39;t mess up the terminal.
+git clone https://github.com/lupyuen/ingest-nuttx-builds
+cd ingest-nuttx-builds
 cargo run -- \
   --user nuttxpr \
   --defconfig /tmp/defconfig.txt \
   | tr -d &#39;\033\007&#39;
 </code></pre></div>
-<p>TODO: Skip the known lines</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353">main.rs</a></p>
+<p>Which will <strong>Identify Errors and Warnings</strong> in the logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// To Identify Errors / Warnings: Skip the known lines
     </span><span class="kw">let </span><span class="kw-2">mut </span>msg: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="macro">vec!</span>[];
@@ -376,8 +386,7 @@ cargo run -- \
         </span><span class="kw">let </span>re = Regex::new(<span class="string">r#"^[0-9]+\s+[0-9]+"#</span>).unwrap();
         <span class="kw">let </span>caps = re.captures(line);
         <span class="kw">if </span>caps.is_some() { <span class="kw">continue</span>; }</code></pre></div>
-<p>TODO: Compute the Build Score</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
+<p>Then compute the <strong>Build Score</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Not an error:
     // "test_ltp_interfaces_aio_error_1_1 PASSED"
@@ -420,8 +429,7 @@ cargo run -- \
         <span class="kw">else if </span>contains_error { <span class="number">0.0 </span>}
         <span class="kw">else if </span>contains_warning { <span class="number">0.5 </span>}
         <span class="kw">else </span>{ <span class="number">0.8 </span>};</code></pre></div>
-<p>TODO: Post to Pushgateway</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
+<p>And post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Compose the Pushgateway Metric
     </span><span class="kw">let </span>body = <span class="macro">format!</span>(
@@ -441,8 +449,14 @@ build_score ... version= ...
         <span class="macro">println!</span>(<span class="string">"*** Pushgateway Failed"</span>);
         sleep(Duration::from_secs(<span class="number">1</span>));
     }</code></pre></div>
-<p>TODO: Given a list of all defconfig pathnames, search for a target (like “ox64:nsh”) and return the Sub-Architecture (like “bl808”)</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
+<p><em>Why do we need the defconfigs?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig pathnames in NuttX Repo
+git clone https://github.com/apache/nuttx
+find nuttx \
+  -name defconfig \
+  &gt;/tmp/defconfig.txt
+</code></pre></div>
+<p>To identify the <strong>Sub-Architecture</strong> <em>(“bl808”)</em> of a NuttX Target <em>(“ox64:nsh”)</em>, we look up the list of <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
 // and return the Sub-Architecture (like "bl808")
@@ -467,7 +481,7 @@ build_score ... version= ...
     }
     <span class="prelude-val">Ok</span>(<span class="string">"unknown"</span>.into())
 }</code></pre></div>
-<h1 id="ingest-the-logs-from-github-actions"><a class="doc-anchor" href="#ingest-the-logs-from-github-actions">§</a>5 Ingest the Logs from GitHub Actions</h1>
+<h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
