@@ -488,28 +488,11 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 
 # Ingest from GitHub Actions
 
-TODO
+_What about the Build Logs from GitHub Actions?_
 
-[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73)
+It gets a little more complicated, we need to download the Build Logs from GitHub Actions.
 
-```bash
-## Ingest the Log File
-cargo run -- \
-  --user $user \
-  --repo $repo \
-  --defconfig $defconfig \
-  --file $pathname \
-  --nuttx-hash $nuttx_hash \
-  --apps-hash $apps_hash \
-  --group $group \
-  --run-id $run_id \
-  --job-id $job_id \
-  --step $step
-```
-
-TODO: Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
-
-[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
+But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
 
 ```bash
   ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
@@ -527,9 +510,7 @@ TODO: Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
   )
 ```
 
-TODO: Download the Run Logs
-
-[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153)
+Now we can __Download the Run Logs__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153)
 
 ```bash
   ## Download the Run Logs
@@ -542,9 +523,7 @@ TODO: Download the Run Logs
     https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
 ```
 
-TODO: For All Target Groups: Ingest the Log File
-
-[github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185)
+__For Each Target Group:__ We ingest the Log File: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185)
 
 ```bash
   ## For All Target Groups
@@ -571,7 +550,25 @@ TODO: For All Target Groups: Ingest the Log File
 
 [(__ingest_log__ is here)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73)
 
-How we trigger it
+Which will be ingested like this: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73)
+
+```bash
+## Ingest the Log File
+## TODO: Example
+cargo run -- \
+  --user $user \
+  --repo $repo \
+  --defconfig $defconfig \
+  --file $pathname \
+  --nuttx-hash $nuttx_hash \
+  --apps-hash $apps_hash \
+  --group $group \
+  --run-id $run_id \
+  --job-id $job_id \
+  --step $step
+```
+
+TODO: How we trigger it
 
 # What's Next
 
