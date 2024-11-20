@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Continuous Integration Dashboard for Apache NuttX RTOS</title>
+    <title>Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Continuous Integration Dashboard for Apache NuttX RTOS" 
+    content="Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)" 
     data-rh="true">
 <meta property="og:description" 
     content=""
@@ -63,7 +63,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Continuous Integration Dashboard for Apache NuttX RTOS</h1>
+    <h1 class="title">Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)</h1>
     <nav id="TOC"><ul>
 <li><a href="#build-score">1 Build Score</a><ul></ul></li>
 <li><a href="#grafana-dashboard">2 Grafana Dashboard</a><ul></ul></li>
@@ -72,7 +72,7 @@
 <li><a href="#ingest-from-github-actions">5 Ingest from GitHub Actions</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-all-builds-dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
-<li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2024</em></p>
+<li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>24 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
 <p>Last article we spoke about the <strong>(Twice) Daily Builds</strong> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
@@ -140,7 +140,7 @@
 <p>Yep the Build Score is actually a <a href="https://prometheus.io/docs/concepts/data_model/"><strong>Time Series Metric</strong></a>! It will have the following dimensions…</p>
 <ul>
 <li>
-<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2024-11-30T00:00:00)</em></p>
+<p><strong>Timestamp:</strong> When the NuttX Build was executed <em>(2024-11-24T00:00:00)</em></p>
 </li>
 <li>
 <p><strong>User:</strong> Whose PC executed the NuttX Build <em>(nuttxpr)</em></p>
@@ -262,7 +262,7 @@ go run main.go
 cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ timestamp=&quot;2024-11-30T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
 </code></pre></div>
 <p>Pushgateway looks like this…</p>
@@ -284,7 +284,7 @@ EOF
 </li>
 </ul>
 <p>The body of the HTTP POST says…</p>
-<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-30T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 </code></pre></div>
 <ul>
 <li>
