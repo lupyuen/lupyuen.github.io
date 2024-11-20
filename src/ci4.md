@@ -1,6 +1,6 @@
-# Continuous Integration Dashboard for Apache NuttX RTOS
+# Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)
 
-📝 _30 Nov 2024_
+📝 _24 Nov 2024_
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
@@ -73,7 +73,7 @@ _Doesn't the Build Score vary over time?_
 
 Yep the Build Score is actually a [__Time Series Metric__](https://prometheus.io/docs/concepts/data_model/)! It will have the following dimensions...
 
-- __Timestamp:__ When the NuttX Build was executed _(2024-11-30T00:00:00)_
+- __Timestamp:__ When the NuttX Build was executed _(2024-11-24T00:00:00)_
 
 - __User:__ Whose PC executed the NuttX Build _(nuttxpr)_
 
@@ -234,7 +234,7 @@ go run main.go
 cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ timestamp="2024-11-30T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+build_score{ timestamp="2024-11-24T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 EOF
 ```
 
@@ -265,7 +265,7 @@ localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 The body of the HTTP POST says...
 
 ```text
-build_score{ timestamp="2024-11-30T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+build_score{ timestamp="2024-11-24T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 ```
 
 - _gist.github.com_ points to the Build Log for the NuttX Target (GitHub Gist)
