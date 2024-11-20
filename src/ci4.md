@@ -338,115 +338,119 @@ cargo run -- \
 
 Which will __Identify Errors and Warnings__ in the logs: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353)
 
-```rust
-    // To Identify Errors / Warnings: Skip the known lines
-    let mut msg: Vec<&str> = vec![];
-    let lines = &lines[l..];
-    for line in lines {
-        let line = line.trim();
-        if line.len() == 0 ||
-            line.starts_with("----------") ||
-            line.starts_with("-- ") ||  // "-- Build type:"
-            line.starts_with("Cleaning") ||
-            line.starts_with("Configuring") ||
-            line.starts_with("Select") ||
-            line.starts_with("Disabling") ||
-            line.starts_with("Enabling") ||
-            line.starts_with("Building") ||
-            line.starts_with("Normalize") ||
-            line.starts_with("% Total") ||
-            line.starts_with("Dload") ||
-            line.starts_with("~/apps") ||
-            line.starts_with("~/nuttx") ||
-            line.starts_with("find: 'boards/") ||  // "find: 'boards/risc-v/q[0-d]*': No such file or directory"
-            line.starts_with("|        ^~~~~~~") ||  // `warning "FPU test not built; Only available in the flat build (CONFIG_BUILD_FLAT)"`
-            line.contains("FPU test not built") ||
-            line.starts_with("a nuttx-export-") ||  // "a nuttx-export-12.7.0/tools/incdir.c"
-            line.contains(" PASSED") ||  // CI Test: "test_hello PASSED"
-            line.contains(" SKIPPED") ||  // CI Test: "test_mm SKIPPED"
-            line.contains("On branch master") ||  // "On branch master"
-            line.contains("Your branch is up to date") ||  // "Your branch is up to date with 'origin/master'"
-            line.contains("Changes not staged for commit") ||  // "Changes not staged for commit:"
-            line.contains("git add <file>") ||  // "(use "git add <file>..." to update what will be committed)"
-            line.contains("git restore <file>")  // "(use "git restore <file>..." to discard changes in working directory)"
-        { continue; }
+<span style="font-size:90%">
 
-        // Skip Downloads: "100  533k    0  533k    0     0   541k      0 --:--:-- --:--:-- --:--:--  541k100 1646k    0 1646k    0     0  1573k      0 --:--:--  0:00:01 --:--:-- 17.8M"
-        let re = Regex::new(r#"^[0-9]+\s+[0-9]+"#).unwrap();
-        let caps = re.captures(line);
-        if caps.is_some() { continue; }
+```rust
+// To Identify Errors / Warnings: Skip the known lines
+if line.len() == 0 ||
+  line.starts_with("----------") ||
+  line.starts_with("-- ") ||  // "-- Build type:"
+  line.starts_with("Cleaning") ||
+  line.starts_with("Configuring") ||
+  line.starts_with("Select") ||
+  line.starts_with("Disabling") ||
+  line.starts_with("Enabling") ||
+  line.starts_with("Building") ||
+  line.starts_with("Normalize") ||
+  line.starts_with("% Total") ||
+  line.starts_with("Dload") ||
+  line.starts_with("~/apps") ||
+  line.starts_with("~/nuttx") ||
+  line.starts_with("find: 'boards/") ||  // "find: 'boards/risc-v/q[0-d]*': No such file or directory"
+  line.starts_with("|        ^~~~~~~") ||  // `warning "FPU test not built; Only available in the flat build (CONFIG_BUILD_FLAT)"`
+  line.contains("FPU test not built") ||
+  line.starts_with("a nuttx-export-") ||  // "a nuttx-export-12.7.0/tools/incdir.c"
+  line.contains(" PASSED") ||  // CI Test: "test_hello PASSED"
+  line.contains(" SKIPPED") ||  // CI Test: "test_mm SKIPPED"
+  line.contains("On branch master") ||  // "On branch master"
+  line.contains("Your branch is up to date") ||  // "Your branch is up to date with 'origin/master'"
+  line.contains("Changes not staged for commit") ||  // "Changes not staged for commit:"
+  line.contains("git add <file>") ||  // "(use "git add <file>..." to update what will be committed)"
+  line.contains("git restore <file>")  // "(use "git restore <file>..." to discard changes in working directory)"
+{ continue; }
+
+// Skip Downloads: "100  533k    0  533k    0     0   541k      0 --:--:-- --:--:-- --:--:--  541k100 1646k    0 1646k    0     0  1573k      0 --:--:--  0:00:01 --:--:-- 17.8M"
+let re = Regex::new(r#"^[0-9]+\s+[0-9]+"#).unwrap();
+let caps = re.captures(line);
+if caps.is_some() { continue; }
 ```
+
+</span>
 
 Then compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
 
+<span style="font-size:90%">
+
 ```rust
-    // Not an error:
-    // "test_ltp_interfaces_aio_error_1_1 PASSED"
-    // "lua-5.4.0/testes/errors.lua"
-    // "nuttx-export-12.7.0/include/libcxx/__system_error"
-    let msg_join = msg.join(" ");
-    let contains_error = msg_join
-        .replace("aio_error", "aio_e_r_r_o_r")
-        .replace("errors.lua", "e_r_r_o_r_s.lua")
-        .replace("_error", "_e_r_r_o_r")
-        .replace("error_", "e_r_r_o_r_")
-        .to_lowercase()
-        .contains("error");
+// Not an error:
+// "test_ltp_interfaces_aio_error_1_1 PASSED"
+// "lua-5.4.0/testes/errors.lua"
+// "nuttx-export-12.7.0/include/libcxx/__system_error"
+let msg_join = msg.join(" ");
+let contains_error = msg_join
+  .replace("aio_error", "aio_e_r_r_o_r")
+  .replace("errors.lua", "e_r_r_o_r_s.lua")
+  .replace("_error", "_e_r_r_o_r")
+  .replace("error_", "e_r_r_o_r_")
+  .to_lowercase()
+  .contains("error");
 
-    // Identify CI Test as Error: "test_helloxx FAILED"
-    let contains_error = contains_error ||
-        msg_join.contains(" FAILED");
+// Identify CI Test as Error: "test_helloxx FAILED"
+let contains_error = contains_error ||
+  msg_join.contains(" FAILED");
 
-    // Given Board=sim, Config=rtptools
-    // Identify defconfig as Error: "modified:...boards/sim/sim/sim/configs/rtptools/defconfig"
-    let target_split = target.split(":").collect::<Vec<_>>();
-    let board = target_split[0];
-    let config = target_split[1];
-    let board_config = format!("/{board}/configs/{config}/defconfig");
-    let contains_error = contains_error ||
-    (
-        msg_join.contains(&"modified:") &&
-        msg_join.contains(&"boards/") &&
-        msg_join.contains(&board_config.as_str())
-    );
+// Given Board=sim, Config=rtptools
+// Identify defconfig as Error: "modified:...boards/sim/sim/sim/configs/rtptools/defconfig"
+let target_split = target.split(":").collect::<Vec<_>>();
+let board = target_split[0];
+let config = target_split[1];
+let board_config = format!("/{board}/configs/{config}/defconfig");
+let contains_error = contains_error ||
+(
+  msg_join.contains(&"modified:") &&
+  msg_join.contains(&"boards/") &&
+  msg_join.contains(&board_config.as_str())
+);
 
-    // Search for Warnings
-    let contains_warning = msg_join
-        .to_lowercase()
-        .contains("warning");
+// Search for Warnings
+let contains_warning = msg_join
+  .to_lowercase()
+  .contains("warning");
 
-    // Compute the Build Score based on Error vs Warning
-    let build_score =
-        if msg.is_empty() { 1.0 }
-        else if contains_error { 0.0 }
-        else if contains_warning { 0.5 }
-        else { 0.8 };
+// Compute the Build Score based on Error vs Warning
+let build_score =
+  if msg.is_empty() { 1.0 }
+  else if contains_error { 0.0 }
+  else if contains_warning { 0.5 }
+  else { 0.8 };
 ```
+
+</span>
 
 And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
+<span style="font-size:90%">
+
 ```rust
-    // Compose the Pushgateway Metric
-    let body = format!(
+// Compose the Pushgateway Metric
+let body = format!(
 r##"
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
 build_score ... version= ...
 "##);
-    println!("body={body}");
-    let client = reqwest::Client::new();
-    let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target}");
-    let res = client
-        .post(pushgateway)
-        .body(body)
-        .send()
-        .await?;
-    println!("res={res:?}");
-    if !res.status().is_success() {
-        println!("*** Pushgateway Failed");
-        sleep(Duration::from_secs(1));
-    }
+
+// Post to Pushgateway over HTTP
+let client = reqwest::Client::new();
+let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target}");
+let res = client
+  .post(pushgateway)
+  .body(body)
+  .send()
+  .await?;
 ```
+
+</span>
 
 _Why do we need the defconfigs?_
 
@@ -460,31 +464,39 @@ find nuttx \
 
 To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")_, we look up the list of _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
 
+<span style="font-size:90%">
+
 ```rust
 // Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
 // and return the Sub-Architecture (like "bl808")
 async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let target_split = target.split(":").collect::<Vec<_>>();
-    let board = target_split[0];
-    let config = target_split[1];
+  let target_split = target.split(":").collect::<Vec<_>>();
+  let board = target_split[0];
+  let config = target_split[1];
 
-    // defconfig contains "/.../nuttx/boards/risc-v/bl808/ox64/configs/nsh/defconfig"
-    // Search for "/{board}/configs/{config}/defconfig"
-    let search = format!("/{board}/configs/{config}/defconfig");
-    let input = File::open(defconfig).unwrap();
-    let buffered = BufReader::new(input);
-    for line in buffered.lines() {
-        let line = line.unwrap();
-        if let Some(pos) = line.find(&search) {
-            let s = &line[0..pos];
-            let slash = s.rfind("/").unwrap();
-            let subarch = s[slash + 1..].to_string();
-            return Ok(subarch);
-        }
+  // defconfig contains "/.../nuttx/boards/risc-v/bl808/ox64/configs/nsh/defconfig"
+  // Search for "/{board}/configs/{config}/defconfig"
+  let search = format!("/{board}/configs/{config}/defconfig");
+  let input = File::open(defconfig).unwrap();
+  let buffered = BufReader::new(input);
+  for line in buffered.lines() {
+    let line = line.unwrap();
+    if let Some(pos) = line.find(&search) {
+      let s = &line[0..pos];
+      let slash = s.rfind("/").unwrap();
+      let subarch = s[slash + 1..].to_string();
+      return Ok(subarch);
     }
-    Ok("unknown".into())
+  }
+  Ok("unknown".into())
 }
 ```
+
+</span>
+
+_Phew extracting the Errors and Warnings look so complicated!_
+
+TODO: Yeah
 
 # Ingest from GitHub Actions
 
@@ -495,57 +507,57 @@ It gets a little more complicated, we need to download the Build Logs from GitHu
 But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
 
 ```bash
-  ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
-  local os=$1 ## "Linux" or "msys2"
-  local step=$2 ## "7" or "9"
-  local group=$3 ## "arm-01"
-  local job_name="$os ($group)"
-  local job_id=$(
-    curl -L \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer $GITHUB_TOKEN" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      https://api.github.com/repos/$user/$repo/actions/runs/$run_id/jobs?per_page=100 \
-      | jq ".jobs | map(select(.name == \"$job_name\")) | .[].id"
-  )
+## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+local os=$1 ## "Linux" or "msys2"
+local step=$2 ## "7" or "9"
+local group=$3 ## "arm-01"
+local job_name="$os ($group)"
+local job_id=$(
+  curl -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/$user/$repo/actions/runs/$run_id/jobs?per_page=100 \
+    | jq ".jobs | map(select(.name == \"$job_name\")) | .[].id"
+)
 ```
 
 Now we can __Download the Run Logs__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153)
 
 ```bash
-  ## Download the Run Logs
-  ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
-  curl -L \
-    --output /tmp/run-log.zip \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer $GITHUB_TOKEN" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
+## Download the Run Logs
+## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
+curl -L \
+  --output /tmp/run-log.zip \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
 ```
 
 __For Each Target Group:__ We ingest the Log File: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185)
 
 ```bash
-  ## For All Target Groups
-  ## TODO: Handle macOS when the warnings have been cleaned up
-  for group in \
-    arm-01 arm-02 arm-03 arm-04 \
-    arm-05 arm-06 arm-07 arm-08 \
-    arm-09 arm-10 arm-11 arm-12 \
-    arm-13 arm-14 \
-    risc-v-01 risc-v-02 risc-v-03 risc-v-04 \
-    risc-v-05 risc-v-06 \
-    sim-01 sim-02 sim-03 \
-    xtensa-01 xtensa-02 \
-    arm64-01 x86_64-01 other msys2
-  do
-    ## Ingest the Log File
-    if [[ "$group" == "msys2" ]]; then
-      ingest_log "msys2" $msys2_step $group
-    else
-      ingest_log "Linux" $linux_step $group
-    fi
-  done
+## For All Target Groups
+## TODO: Handle macOS when the warnings have been cleaned up
+for group in \
+  arm-01 arm-02 arm-03 arm-04 \
+  arm-05 arm-06 arm-07 arm-08 \
+  arm-09 arm-10 arm-11 arm-12 \
+  arm-13 arm-14 \
+  risc-v-01 risc-v-02 risc-v-03 risc-v-04 \
+  risc-v-05 risc-v-06 \
+  sim-01 sim-02 sim-03 \
+  xtensa-01 xtensa-02 \
+  arm64-01 x86_64-01 other msys2
+do
+  ## Ingest the Log File
+  if [[ "$group" == "msys2" ]]; then
+    ingest_log "msys2" $msys2_step $group
+  else
+    ingest_log "Linux" $linux_step $group
+  fi
+done
 ```
 
 [(__ingest_log__ is here)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73)
