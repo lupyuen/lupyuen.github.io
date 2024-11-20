@@ -454,8 +454,14 @@ git clone https://github.com/apache/nuttx
 find nuttx \
   -name defconfig \
   &gt;/tmp/defconfig.txt
+
+## defconfig.txt contains:
+## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
+## boards/z80/ez80/ez80f910200kitg/configs/ostest/defconfig
+## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
+## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 </code></pre></div>
-<p>To identify the <strong>Sub-Architecture</strong> <em>(“bl808”)</em> of a NuttX Target <em>(“ox64:nsh”)</em>, we look up the list of <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
+<p>To identify the <strong>Sub-Architecture</strong> <em>(“bl808”)</em> of a NuttX Target <em>(“ox64:nsh”)</em>, we look up the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames:
