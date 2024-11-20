@@ -73,7 +73,7 @@ _Doesn't the Build Score vary over time?_
 
 Yep the Build Score is actually a [__Time Series Metric__](https://prometheus.io/docs/concepts/data_model/)! It will have the following dimensions...
 
-- __Timestamp:__ When the NuttX Build was executed _(2024-05-22T00:00:00)_
+- __Timestamp:__ When the NuttX Build was executed _(2024-11-30T00:00:00)_
 
 - __User:__ Whose PC executed the NuttX Build _(nuttxpr)_
 
@@ -234,7 +234,7 @@ go run main.go
 cat <<EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{ timestamp="2024-05-22T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+build_score{ timestamp="2024-11-30T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 EOF
 ```
 
@@ -265,7 +265,7 @@ localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 The body of the HTTP POST says...
 
 ```text
-build_score{ timestamp="2024-05-22T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
+build_score{ timestamp="2024-11-30T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
 ```
 
 - _gist.github.com_ points to the Build Log for the NuttX Target (GitHub Gist)
@@ -311,27 +311,32 @@ OK to push from multiple PCs, they are distinct
 
 # Ingest the Build Logs
 
-TODO: Ingest logs from nuttxpr GitHub Gist
+Now we be like an Amoeba and ingest all kinds of Build Logs!
 
-[run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+- Build Logs from [__NuttX Build Farm__](TODO)
+
+- Build Logs from [__GitHub Actions__](TODO)
+
+We ingest the [__GitHub Gists__](TODO) from our Build Farm: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
-## Find all defconfig files
-find $HOME/nuttx \
+## Find all defconfig pathnames in NuttX Repo
+git clone https://github.com/apache/nuttx
+find nuttx \
   -name defconfig \
   >/tmp/defconfig.txt
 
 ## Ingest logs from nuttxpr GitHub Gist.
 ## Remove special characters so they don't mess up the terminal.
+git clone https://github.com/lupyuen/ingest-nuttx-builds
+cd ingest-nuttx-builds
 cargo run -- \
   --user nuttxpr \
   --defconfig /tmp/defconfig.txt \
   | tr -d '\033\007'
 ```
 
-TODO: Skip the known lines
-
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353)
+Which will __Identify Errors and Warnings__ in the logs: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353)
 
 ```rust
     // To Identify Errors / Warnings: Skip the known lines
@@ -372,9 +377,7 @@ TODO: Skip the known lines
         if caps.is_some() { continue; }
 ```
 
-TODO: Compute the Build Score
-
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
+Then compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
 
 ```rust
     // Not an error:
@@ -420,9 +423,7 @@ TODO: Compute the Build Score
         else { 0.8 };
 ```
 
-TODO: Post to Pushgateway
-
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
 ```rust
     // Compose the Pushgateway Metric
@@ -447,9 +448,17 @@ build_score ... version= ...
     }
 ```
 
-TODO: Given a list of all defconfig pathnames, search for a target (like "ox64:nsh") and return the Sub-Architecture (like "bl808")
+_Why do we need the defconfigs?_
 
-[main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+```bash
+## Find all defconfig pathnames in NuttX Repo
+git clone https://github.com/apache/nuttx
+find nuttx \
+  -name defconfig \
+  >/tmp/defconfig.txt
+```
+
+To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")_, we look up the list of _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
 
 ```rust
 // Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
@@ -477,7 +486,7 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 }
 ```
 
-# Ingest the Logs from GitHub Actions
+# Ingest from GitHub Actions
 
 TODO
 
