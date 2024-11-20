@@ -461,9 +461,15 @@ git clone https://github.com/apache/nuttx
 find nuttx \
   -name defconfig \
   >/tmp/defconfig.txt
+
+## defconfig.txt contains:
+## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
+## boards/z80/ez80/ez80f910200kitg/configs/ostest/defconfig
+## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
+## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 ```
 
-To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")_, we look up the list of _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")_, we look up the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
 
 <span style="font-size:90%">
 
