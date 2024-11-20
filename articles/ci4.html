@@ -458,8 +458,9 @@ find nuttx \
 <p>To identify the <strong>Sub-Architecture</strong> <em>(“bl808”)</em> of a NuttX Target <em>(“ox64:nsh”)</em>, we look up the list of <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
 <span style="font-size:90%">
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames, search for a target (like "ox64:nsh")
-// and return the Sub-Architecture (like "bl808")
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames:
+// Search for a Target ("ox64:nsh")
+// Return the Sub-Architecture ("bl808")
 </span><span class="kw">async fn </span>get_sub_arch(defconfig: <span class="kw-2">&amp;</span>str, target: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
   <span class="kw">let </span>target_split = target.split(<span class="string">":"</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
   <span class="kw">let </span>board = target_split[<span class="number">0</span>];
