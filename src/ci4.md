@@ -469,20 +469,20 @@ find nuttx \
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 ```
 
-To identify the __Sub-Architecture__ _("bl808")_ of a NuttX Target _("ox64:nsh")_, we look up the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+Suppose we're ingesting a NuttX Target _milkv_duos:nsh_. To identify the Target's __Sub-Architecture__ _(sg2000)_, we search the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
 
 <span style="font-size:90%">
 
 ```rust
 // Given a list of all defconfig pathnames:
-// Search for a Target ("ox64:nsh")
-// Return the Sub-Architecture ("bl808")
+// Search for a Target ("milkv_duos:nsh")
+// Return the Sub-Architecture ("sg2000")
 async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn std::error::Error>> {
   let target_split = target.split(":").collect::<Vec<_>>();
   let board = target_split[0];
   let config = target_split[1];
 
-  // defconfig contains "/.../nuttx/boards/risc-v/bl808/ox64/configs/nsh/defconfig"
+  // defconfig contains ".../boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig"
   // Search for "/{board}/configs/{config}/defconfig"
   let search = format!("/{board}/configs/{config}/defconfig");
   let input = File::open(defconfig).unwrap();
