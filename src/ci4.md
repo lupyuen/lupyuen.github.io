@@ -341,8 +341,9 @@ Which will __Identify Errors and Warnings__ in the logs: [main.rs](https://githu
 <span style="font-size:90%">
 
 ```rust
-// To Identify Errors / Warnings: Skip the known lines
-if line.len() == 0 ||
+// To Identify Errors and Warnings:
+// We skip the known lines
+if
   line.starts_with("----------") ||
   line.starts_with("-- ") ||  // "-- Build type:"
   line.starts_with("Cleaning") ||
@@ -377,7 +378,7 @@ if caps.is_some() { continue; }
 
 </span>
 
-Then compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
+Then we compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
 
 <span style="font-size:90%">
 
@@ -427,7 +428,7 @@ let build_score =
 
 </span>
 
-And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+And we post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
 <span style="font-size:90%">
 
@@ -494,15 +495,15 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 
 </span>
 
-_Phew extracting the Errors and Warnings look so complicated!_
+_Phew the Errors and Warnings look so complicated!_
 
-TODO: Yeah
+Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.
 
 # Ingest from GitHub Actions
 
 _What about the Build Logs from GitHub Actions?_
 
-It gets a little more complicated, we need to download the Build Logs from GitHub Actions.
+It gets a little more complicated, we need to download the __Build Logs from GitHub Actions__.
 
 But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
 
