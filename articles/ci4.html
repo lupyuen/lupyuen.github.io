@@ -162,6 +162,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>brew install grafana
 brew services start grafana
 http://localhost:3000
+admin for username and password
 </code></pre></div>
 <p>TODO: ci4-grafana1.png</p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana1.png" alt="TODO" /></p>
@@ -218,16 +219,21 @@ brew services start prometheus
 ## For Ubuntu:
 TODO
 
-http://localhost:9090
-admin for username and password
+## TODO: Check that Prometheus is up
+## http://localhost:9090
 
-## For macOS:
-brew install go
+## TODO: Update the Prometheus Config
+## Edit /opt/homebrew/etc/prometheus.yml (macOS)
+## Or TODO (Ubuntu)
+## Replace by contents of:
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
-## For Ubuntu:
-TODO
+## Restart Prometheus
+brew services restart prometheus ## macOS
+TODO ## Ubuntu
 </code></pre></div>
-<p>TODO: Prometheus Config</p>
+<p>Prometheus looks like this…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
 <p>Recall that we assign a <strong>Build Score</strong> for every build…</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
 <tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
@@ -237,7 +243,13 @@ TODO
 </tbody></table>
 </div>
 <p>This is how we <strong>Load a Build Score</strong> into Prometheus…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Install and start Pushgateway
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install go
+
+## For Ubuntu:
+TODO
+
+## Install and start Pushgateway
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
@@ -253,21 +265,14 @@ cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxp
 build_score{ timestamp=&quot;2024-05-22T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
 </code></pre></div>
-<p>TODO</p>
-<p>Why Pull not Push?</p>
-<p>Multple Values</p>
-<p>Remove Duplicates</p>
-<p>HTTP Request</p>
-<p>Nowhere to pull</p>
-<p>So pull from Pushgateway</p>
-<p>We push to Pushgateway</p>
-<p>OK to push latest data twice</p>
-<p>OK to push from multiple PCs, they are distinct</p>
-<p>TODO: prometheus</p>
-<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
-<p>TODO: pushgateway</p>
+<p>Pushgateway looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="TODO" /></p>
-<p>Note the URL…</p>
+<p><em>What’s this Pushgateway?</em></p>
+<p>Prometheus works by <a href="https://prometheus.io/docs/prometheus/latest/getting_started/"><strong>Scraping Metrics</strong></a> over HTTP.</p>
+<p>That’s why we install <a href="TODO"><strong>Pushgateway</strong></a> as a HTTP Endpoint that will serve the Metrics (Build Score) to Prometheus.</p>
+<p>(Which means that we load the Build Scores into Pushgateway, like above)</p>
+<p><em>How does it work?</em></p>
+<p>We post the Build Score over HTTP to Pushgateway at…</p>
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 </code></pre></div>
 <ul>
@@ -279,7 +284,7 @@ EOF
 </li>
 </ul>
 <p>The body of the HTTP POST says…</p>
-<div class="example-wrap"><pre class="language-text"><code>build_score{ url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-05-22T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 </code></pre></div>
 <ul>
 <li>
@@ -293,12 +298,11 @@ EOF
 </li>
 </ul>
 <p>Remember that this <strong>Build Score</strong> <em>(0.0)</em> is specific to our <strong>Build PC</strong> <em>(nuttxpr)</em> and <strong>NuttX Target</strong> <em>(milkv_duos:nsh)</em>.</p>
-<p>TODO: Will change</p>
+<p>(It will vary over time, hence it’s a Time Series)</p>
 <p><em>What about the other fields?</em></p>
-<p>Oh yes we have a long list of fields detailing every Build Score (beyond the above)</p>
+<p>Oh yes we have a long list of fields describing every Build Score…</p>
 <ul>
 <li><strong>version</strong>: TODO</li>
-<li><strong>timestamp</strong>:  TODO</li>
 <li><strong>user</strong>:  TODO</li>
 <li><strong>arch</strong>:  TODO</li>
 <li><strong>subarch</strong>:  TODO</li>
@@ -309,9 +313,15 @@ EOF
 <li><strong>url_display</strong>:  TODO</li>
 <li><strong>nuttx_hash</strong>: TODO</li>
 <li><strong>apps_hash</strong>: TODO</li>
+<li>Plus timestamp, url, msg (from above)</li>
 </ul>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">(See the <strong>Complete Fields</strong>)</a></p>
-<p>TODO: Incomplete Fields</p>
+<p>TODO: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">prometheus.yml</a></p>
+<p>Multple Values</p>
+<p>Remove Duplicates</p>
+<p>HTTP Request</p>
+<p>OK to push latest data twice</p>
+<p>OK to push from multiple PCs, they are distinct</p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>TODO: Ingest logs from nuttxpr GitHub Gist</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
