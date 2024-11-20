@@ -496,8 +496,8 @@ find nuttx \
 <p>It gets a little more complicated, we need to download the <strong>Build Logs from GitHub Actions</strong>.</p>
 <p>But before that, we need the <strong>GitHub Run ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
-local os=$1 ## &quot;Linux&quot; or &quot;msys2&quot;
-local step=$2 ## &quot;7&quot; or &quot;9&quot;
+local os=$1    ## &quot;Linux&quot; or &quot;msys2&quot;
+local step=$2  ## &quot;7&quot; or &quot;9&quot;
 local group=$3 ## &quot;arm-01&quot;
 local job_name=&quot;$os ($group)&quot;
 local job_id=$(
@@ -510,7 +510,7 @@ local job_id=$(
 )
 </code></pre></div>
 <p>Now we can <strong>Download the Run Logs</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153">github.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the Run Logs
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Run Logs from GitHub
 ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
 curl -L \
   --output /tmp/run-log.zip \
@@ -544,7 +544,6 @@ done
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73">(<strong>ingest_log</strong> is here)</a></p>
 <p>Which will be ingested like this: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
-## TODO: Example
 cargo run -- \
   --user $user \
   --repo $repo \
@@ -556,9 +555,31 @@ cargo run -- \
   --run-id $run_id \
   --job-id $job_id \
   --step $step
+
+## TODO: Example
 </code></pre></div>
-<p>TODO: How we trigger it</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+<p><em>How do we run all this?</em></p>
+<p>We ingest the GitHub Logs right after the <a href="TODO"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
+<p>Thus it makes sense to bundle the Build and Ingest into one single script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Mirror Repo and Ingest NuttX Build Logs
+## from GitHub Actions into Prometheus Pushgateway
+
+## TODO: Twice Daily at 00:00 UTC and 12:00 UTC
+## Go to NuttX Mirror Repo: github.com/NuttX/nuttx
+## Click Sync Fork &gt; Discard Commits
+
+## Start the Linux, macOS and Windows Builds for NuttX
+## https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh
+~/nuttx-release/enable-macos-windows.sh
+
+## Wait for the NuttX Build to start
+sleep 300
+
+## Wait for the NuttX Build to complete
+## Then ingest the GitHub Logs
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
+./github.sh
+</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
