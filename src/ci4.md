@@ -508,9 +508,9 @@ _Phew the Errors and Warnings look so complicated!_
 
 Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.
 
-![TODO](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+![Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 
-TODO: [4 times the throughput!](https://qoto.org/@lupyuen/113517788288458811)
+[_Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!_](https://qoto.org/@lupyuen/113517788288458811)
 
 # Ingest from GitHub Actions
 
