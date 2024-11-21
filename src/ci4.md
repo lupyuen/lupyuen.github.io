@@ -284,23 +284,25 @@ Oh yes we have a long list of fields describing every Build Score...
 
 <span style="font-size:90%">
 
-| __version__ | Always 3 |
-| __user__ | Which Build PC |
-| __arch__ | Architecture |
-| __subarch__ | Sub-Architecture |
-| __group__ | Target Group | 
-| __board__ | Board |
-| __config__ | Config |
-| __target__ | Board:Config |
-| __url_display__ | Short URL |
-| __nuttx_hash__ | Commit Hash of NuttX Repo
-| __apps_hash__ | Commit Hash of NuttX Apps
+| Field | Value |
+|:------|:------|
+| __version__ | Always 3
+| __user__ | Which Build PC _(nuttxmacos)_
+| __arch__ | Architecture _(risc-v)_
+| __group__ | Target Group _(risc-v-01)_
+| __board__ | Board _(ox64)_
+| __config__ | Config _(nsh)_
+| __target__ | Board:Config _(ox64:nsh)_
+| __subarch__ | Sub-Architecture _(bl808)_
+| __url_display__ | Short URL of Build Log
+| __nuttx_hash__ | Commit Hash of NuttX Repo _(7f84a64109f94787d92c2f44465e43fde6f3d28f)_
+| __apps_hash__ | Commit Hash of NuttX Apps _(d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288)_
 
 <span>
 
-Plus timestamp, url, msg (from above)
+Plus the earlier fields: __timestamp, url, msg__
 
-[(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+[(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L426-L515)
 
 TODO: [prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
 
