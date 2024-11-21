@@ -252,7 +252,7 @@ _What's this Pushgateway?_
 
 Prometheus works by [__Scraping Metrics__](https://prometheus.io/docs/prometheus/latest/getting_started/) over HTTP.
 
-That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint that will serve the Metrics (Build Score) to Prometheus.
+That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint (Staging Area) that will serve the Metrics (Build Score) to Prometheus.
 
 (Which means that we load the Build Scores into Pushgateway, like above)
 
