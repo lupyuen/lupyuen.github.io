@@ -101,84 +101,71 @@ _What's this Grafana?_
 
 [__Grafana__](TODO) is an open-source toolkit for creating __Monitoring Dashboards__.
 
-Sadly there isn't a "programming language" for coding Grafana. Thus we'll walk through (step-by-step) to understand how we created __NuttX Dashboard with Grafana__...
+Sadly there isn't a "programming language" for coding Grafana. Thus we walk through the steps to create our __NuttX Dashboard with Grafana__...
 
 ```bash
-## Install Grafana on macOS
+## Install Grafana on Ubuntu
+TODO
+
+## Or macOS
 brew install grafana
 brew services start grafana
-
-## Or Ubuntu
-TODO
 
 ## Browse to http://localhost:3000
 ## Login as `admin` for username and password
 ```
 
-Inside Grafana: We create a __New Dashboard__...
+1.  Inside Grafana: We create a __New Dashboard__...
 
-TODO: ci4-grafana3.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana3.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana3.png)
+1.  Add a __Visualisation__...
 
-TODO: ci4-grafana4.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana4.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana4.png)
+1.  Select the __Prometheus Data Source__ (we'll see why)
 
-TODO: ci4-grafana5.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
+1.  Choose __Build Score__ as the Metric. Click __"Run Queries"__...
 
-TODO: ci4-grafana1.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
+1.  We see a list of Build Scores in the Data Table above.
 
-TODO: ci4-grafana2.png
+    But where's the Timestamp, Board and Config?
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
+    That's why we click __Transformations__ > __Add Transformation__ > __Labels To Fields__
 
-TODO: ci4-grafana6.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana6.png)
+1.  And the data appears! Timestamp, Board, Config, ...
 
-TODO: ci4-grafana7.png
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana6.png)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana7.png)
+1.  Hmmm it's the same Board and Config! (Just different Timestamps)
 
-TODO: ci4-grafana8.png
+    We click __Queries__ > __Format: Table__ > __Type: Instant__ > __Refresh__
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana8.png)
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana7.png)
 
-TODO: ci4-grafana9.png
+1.  Much better! We see the __Build Score__ at the End of Each Row (to be colourised)
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana8.png)
 
-TODO: ci4-grafana10.png
+1.  More tweaks coming up. To check our progress: Click __Inspect__ > __Panel JSON__
 
-![TODO](https://lupyuen.github.io/images/ci4-grafana10.png)
+    ![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
 
-TODO: View JSON
+1.  And compare with our __Final Panel JSON__...
 
-TODO: Grafana Config
+    [__Panel JSON: Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
-TODO: Watch for usage
+    [__Panel JSON: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
-Update the Grafana and Prometheus Configuration...
+1.  How shall we get there? Check out the details...
 
-- [/opt/homebrew/etc/grafana/grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
-
-- [/opt/homebrew/etc/prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
-
-Add the Grafana Dashboard and Panels...
-
-[dashboard.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
-- [links.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
-- [highlights.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
-- [error-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
-- [success-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
-
-[dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
-- [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
+    - TODO: Appendix
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
@@ -670,6 +657,27 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
 # Appendix: All Builds Dashboard
+
+TODO: Grafana Config
+
+TODO: Watch for usage
+
+Update the Grafana and Prometheus Configuration...
+
+- [/opt/homebrew/etc/grafana/grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
+
+- [/opt/homebrew/etc/prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
+
+Add the Grafana Dashboard and Panels...
+
+[dashboard.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
+- [links.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
+- [highlights.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
+- [error-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+- [success-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+
+[dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
+- [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
 
 TODO: datasource
 
