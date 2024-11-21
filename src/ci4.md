@@ -91,6 +91,8 @@ Inside a special __Time Series Database__ called [__Prometheus__](TODO).
 
 We'll come back to Prometheus, first we study the Dashboard...
 
+![TODO](https://lupyuen.github.io/images/ci4-flow.jpg)
+
 # Grafana Dashboard
 
 TODO
@@ -505,6 +507,10 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 _Phew the Errors and Warnings look so complicated!_
 
 Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.
+
+![TODO](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+
+TODO: [4 times the throughput!](https://qoto.org/@lupyuen/113517788288458811)
 
 # Ingest from GitHub Actions
 
