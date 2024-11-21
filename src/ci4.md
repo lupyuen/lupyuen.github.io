@@ -642,8 +642,48 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: All Builds Dashboard
 
-TODO
+TODO: error1
+
+![TODO](https://lupyuen.github.io/images/ci4-error1.png)
+
+TODO: error2
+
+![TODO](https://lupyuen.github.io/images/ci4-error2.png)
+
+TODO: error3
+
+![TODO](https://lupyuen.github.io/images/ci4-error3.png)
+
+TODO: error4
+
+![TODO](https://lupyuen.github.io/images/ci4-error4.png)
+
+TODO: error5
+
+![TODO](https://lupyuen.github.io/images/ci4-error5.png)
+
+TODO: error6
+
+![TODO](https://lupyuen.github.io/images/ci4-error6.png)
+
+TODO: highlight1
+
+![TODO](https://lupyuen.github.io/images/ci4-highlight1.png)
+
+TODO: highlight2
+
+![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
 
 # Appendix: Build History Dashboard
 
-TODO
+TODO: history1
+
+![TODO](https://lupyuen.github.io/images/ci4-history1.png)
+
+TODO: history2
+
+![TODO](https://lupyuen.github.io/images/ci4-history2.png)
+
+TODO: history3
+
+![TODO](https://lupyuen.github.io/images/ci4-history3.png)
