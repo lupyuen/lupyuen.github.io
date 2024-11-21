@@ -298,7 +298,7 @@ Oh yes we have a long list of fields describing every Build Score...
 | __nuttx_hash__ | Commit Hash of NuttX Repo _(7f84a64109f94787d92c2f44465e43fde6f3d28f)_
 | __apps_hash__ | Commit Hash of NuttX Apps _(d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288)_
 
-<span>
+</span>
 
 Plus the earlier fields: __timestamp, url, msg__. Commit Hash is super helpful for tracking a Breaking Commit!
 
