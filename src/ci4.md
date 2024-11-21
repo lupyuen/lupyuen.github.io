@@ -215,11 +215,9 @@ Recall that we assign a __Build Score__ for every build...
 This is how we __Load a Build Score__ into Prometheus...
 
 ```bash
-## For macOS:
-brew install go
-
-## For Ubuntu:
-TODO
+## Install GoLang
+TODO ## For Ubuntu
+brew install go  ## For macOS
 
 ## Install and start Pushgateway
 git clone https://github.com/prometheus/pushgateway
@@ -284,18 +282,23 @@ _What about the other fields?_
 
 Oh yes we have a long list of fields describing every Build Score...
 
-- __version__: TODO
-- __user__:  TODO
-- __arch__:  TODO
-- __subarch__:  TODO
-- __group__:  TODO
-- __board__:  TODO
-- __config__:  TODO
-- __target__:  TODO
-- __url_display__:  TODO
-- __nuttx_hash__: TODO
-- __apps_hash__: TODO
-- Plus timestamp, url, msg (from above)
+<span style="font-size:90%">
+
+| __version__ | Always 3 |
+| __user__ | Which Build PC |
+| __arch__ | Architecture |
+| __subarch__ | Sub-Architecture |
+| __group__ | Target Group | 
+| __board__ | Board |
+| __config__ | Config |
+| __target__ | Board:Config |
+| __url_display__ | Short URL |
+| __nuttx_hash__ | Commit Hash of NuttX Repo
+| __apps_hash__ | Commit Hash of NuttX Apps
+
+<span>
+
+Plus timestamp, url, msg (from above)
 
 [(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
