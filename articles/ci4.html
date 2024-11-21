@@ -158,14 +158,20 @@
 <p>We’ll come back to Prometheus, first we study the Dashboard…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow3.jpg" alt="TODO" /></p>
 <h1 id="grafana-dashboard"><a class="doc-anchor" href="#grafana-dashboard">§</a>2 Grafana Dashboard</h1>
-<p>TODO</p>
-<p>Create a simple dashboard</p>
-<p>Assume Build Score already set up</p>
-<div class="example-wrap"><pre class="language-bash"><code>brew install grafana
+<p><em>What’s this Grafana?</em></p>
+<p><a href="TODO"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
+<p>Sadly there isn’t a “programming language” for coding Grafana. Thus we’ll walk through (step-by-step) to understand how we created <strong>NuttX Dashboard with Grafana</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install Grafana on macOS
+brew install grafana
 brew services start grafana
-http://localhost:3000
-admin for username and password
+
+## Or Ubuntu
+TODO
+
+## Browse to http://localhost:3000
+## Login as `admin` for username and password
 </code></pre></div>
+<p>Inside Grafana: We create a <strong>New Dashboard</strong>…</p>
 <p>TODO: ci4-grafana1.png</p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana1.png" alt="TODO" /></p>
 <p>TODO: ci4-grafana2.png</p>
@@ -620,6 +626,8 @@ sleep 300
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md"><strong>lupyuen.github.io/src/ci4.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
 <h1 id="appendix-all-builds-dashboard"><a class="doc-anchor" href="#appendix-all-builds-dashboard">§</a>7 Appendix: All Builds Dashboard</h1>
+<p>TODO: datasource</p>
+<p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="TODO" /></p>
 <p>TODO: error1</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="TODO" /></p>
 <p>TODO: error2</p>
