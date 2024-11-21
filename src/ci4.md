@@ -36,7 +36,7 @@ _Sounds Great! What's the URL?_
 
 Sorry can't print it here, our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and seek NuttX-Dashboard. (Dog Tea? Organic!)
 
-![TODO](https://lupyuen.github.io/images/ci4-history.png)
+![Build History Dashboard](https://lupyuen.github.io/images/ci4-history.png)
 
 # Build Score
 
@@ -60,6 +60,8 @@ That's why we assign a __Build Score__ for every build...
 | 1.0 | Success | _(No Errors and Warnings)_
 
 Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yellow _(Warning)_ / Red _(Error)_.
+
+TODO: Pic of build score
 
 Sounds easy? But we'll catch __Multiple Kinds of Errors__...
 
@@ -91,7 +93,7 @@ Inside a special __Time Series Database__ called [__Prometheus__](TODO).
 
 We'll come back to Prometheus, first we study the Dashboard...
 
-![TODO](https://lupyuen.github.io/images/ci4-flow.jpg)
+TODO: Pic of Grafana
 
 # Grafana Dashboard
 
@@ -170,6 +172,8 @@ Add the Grafana Dashboard and Panels...
 
 [dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 - [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
+
+TODO: Pic of Prometheus and Pushgateway
 
 # Prometheus Metrics
 
@@ -310,6 +314,8 @@ HTTP Request
 OK to push latest data twice
 
 OK to push from multiple PCs, they are distinct
+
+TODO: Pic of ingesting
 
 # Ingest the Build Logs
 
@@ -510,7 +516,11 @@ Yeah our Build Logs appear in all shapes and sizes. We might need to standardise
 
 ![Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 
+<span style="font-size:80%">
+
 [_Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
 
 # Ingest from GitHub Actions
 
@@ -622,6 +632,8 @@ sleep 300
 ./github.sh
 ```
 
+![TODO](https://lupyuen.github.io/images/ci4-flow.jpg)
+
 # What's Next
 
 TODO
@@ -645,6 +657,8 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md)
+
+![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
 # Appendix: All Builds Dashboard
 
@@ -679,6 +693,10 @@ TODO: highlight1
 TODO: highlight2
 
 ![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
+
+TODO
+
+![Build History Dashboard](https://lupyuen.github.io/images/ci4-history.png)
 
 # Appendix: Build History Dashboard
 
