@@ -300,7 +300,7 @@ Oh yes we have a long list of fields describing every Build Score...
 
 <span>
 
-Plus the earlier fields: __timestamp, url, msg__
+Plus the earlier fields: __timestamp, url, msg__. Commit Hash is super helpful for tracking a Breaking Commit!
 
 [(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L426-L515)
 
