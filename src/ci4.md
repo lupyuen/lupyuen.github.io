@@ -163,7 +163,7 @@ brew services start grafana
 
     [__Panel JSON: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
-1.  How shall we get there? Check out the details...
+1.  How to get there? Watch the steps...
 
     - TODO: Appendix
 
