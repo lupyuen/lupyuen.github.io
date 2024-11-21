@@ -61,7 +61,7 @@ That's why we assign a __Build Score__ for every build...
 
 Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yellow _(Warning)_ / Red _(Error)_.
 
-TODO: Pic of build score
+![TODO](https://lupyuen.github.io/images/ci4-flow2.jpg)
 
 Sounds easy? But we'll catch __Multiple Kinds of Errors__...
 
@@ -93,7 +93,7 @@ Inside a special __Time Series Database__ called [__Prometheus__](TODO).
 
 We'll come back to Prometheus, first we study the Dashboard...
 
-TODO: Pic of Grafana
+![TODO](https://lupyuen.github.io/images/ci4-flow3.jpg)
 
 # Grafana Dashboard
 
@@ -173,7 +173,7 @@ Add the Grafana Dashboard and Panels...
 [dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 - [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
 
-TODO: Pic of Prometheus and Pushgateway
+![TODO](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
 # Prometheus Metrics
 
@@ -256,6 +256,8 @@ That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint that will serve
 
 (Which means that we load the Build Scores into Pushgateway, like above)
 
+![TODO](https://lupyuen.github.io/images/ci4-flow2.jpg)
+
 _How does it work?_
 
 We post the Build Score over HTTP to Pushgateway at...
@@ -315,7 +317,7 @@ OK to push latest data twice
 
 OK to push from multiple PCs, they are distinct
 
-TODO: Pic of ingesting
+![TODO](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
 # Ingest the Build Logs
 
@@ -510,7 +512,7 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
 
 </span>
 
-_Phew the Errors and Warnings look so complicated!_
+_Phew the Errors and Warnings are so complicated!_
 
 Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.
 
