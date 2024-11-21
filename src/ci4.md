@@ -97,18 +97,25 @@ We'll come back to Prometheus, first we study the Dashboard...
 
 # Grafana Dashboard
 
-TODO
+_What's this Grafana?_
 
-Create a simple dashboard
+[__Grafana__](TODO) is an open-source toolkit for creating __Monitoring Dashboards__.
 
-Assume Build Score already set up
+Sadly there isn't a "programming language" for coding Grafana. Thus we'll walk through (step-by-step) to understand how we created __NuttX Dashboard with Grafana__...
 
 ```bash
+## Install Grafana on macOS
 brew install grafana
 brew services start grafana
-http://localhost:3000
-admin for username and password
+
+## Or Ubuntu
+TODO
+
+## Browse to http://localhost:3000
+## Login as `admin` for username and password
 ```
+
+Inside Grafana: We create a __New Dashboard__...
 
 TODO: ci4-grafana1.png
 
@@ -663,6 +670,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 ![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
 
 # Appendix: All Builds Dashboard
+
+TODO: datasource
+
+![TODO](https://lupyuen.github.io/images/ci4-datasource.png)
 
 TODO: error1
 
