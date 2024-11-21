@@ -259,11 +259,9 @@ TODO ## Ubuntu
 </tbody></table>
 </div>
 <p>This is how we <strong>Load a Build Score</strong> into Prometheus…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install go
-
-## For Ubuntu:
-TODO
+<div class="example-wrap"><pre class="language-bash"><code>## Install GoLang
+TODO ## For Ubuntu
+brew install go  ## For macOS
 
 ## Install and start Pushgateway
 git clone https://github.com/prometheus/pushgateway
@@ -318,20 +316,20 @@ EOF
 <p>(It will vary over time, hence it’s a Time Series)</p>
 <p><em>What about the other fields?</em></p>
 <p>Oh yes we have a long list of fields describing every Build Score…</p>
-<ul>
-<li><strong>version</strong>: TODO</li>
-<li><strong>user</strong>:  TODO</li>
-<li><strong>arch</strong>:  TODO</li>
-<li><strong>subarch</strong>:  TODO</li>
-<li><strong>group</strong>:  TODO</li>
-<li><strong>board</strong>:  TODO</li>
-<li><strong>config</strong>:  TODO</li>
-<li><strong>target</strong>:  TODO</li>
-<li><strong>url_display</strong>:  TODO</li>
-<li><strong>nuttx_hash</strong>: TODO</li>
-<li><strong>apps_hash</strong>: TODO</li>
-<li>Plus timestamp, url, msg (from above)</li>
-</ul>
+<span style="font-size:90%">
+<p>| <strong>version</strong> | Always 3 |
+| <strong>user</strong> | Which Build PC |
+| <strong>arch</strong> | Architecture |
+| <strong>subarch</strong> | Sub-Architecture |
+| <strong>group</strong> | Target Group |
+| <strong>board</strong> | Board |
+| <strong>config</strong> | Config |
+| <strong>target</strong> | Board:Config |
+| <strong>url_display</strong> | Short URL |
+| <strong>nuttx_hash</strong> | Commit Hash of NuttX Repo
+| <strong>apps_hash</strong> | Commit Hash of NuttX Apps</p>
+<span>
+<p>Plus timestamp, url, msg (from above)</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">(See the <strong>Complete Fields</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">prometheus.yml</a></p>
 <p>Multple Values</p>
