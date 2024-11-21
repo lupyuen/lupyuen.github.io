@@ -100,7 +100,7 @@
 <p>To see the <strong>History of Builds</strong>: Click the link for <em>“NuttX Build History”</em>. Remember to select the Board and Config. (Pic below)</p>
 <p><em>Sounds Great! What’s the URL?</em></p>
 <p>Sorry can’t print it here, our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and seek NuttX-Dashboard. (Dog Tea? Organic!)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="Build History Dashboard" /></p>
 <h1 id="build-score"><a class="doc-anchor" href="#build-score">§</a>1 Build Score</h1>
 <p><em>What’s this Build Score?</em></p>
 <p>Our NuttX Dashboard needs to know the <strong>“Goodiness”</strong> of Every NuttX Build (pic above). Whether it’s a…</p>
@@ -124,6 +124,7 @@
 </tbody></table>
 </div>
 <p>Which makes it simpler to <strong>Colour-Code</strong> our Dashboard: Green <em>(Success)</em> / Yellow <em>(Warning)</em> / Red <em>(Error)</em>.</p>
+<p>TODO: Pic of build score</p>
 <p>Sounds easy? But we’ll catch <strong>Multiple Kinds of Errors</strong>…</p>
 <ul>
 <li>
@@ -155,7 +156,7 @@
 <p><em>Where do we store the Build Scores?</em></p>
 <p>Inside a special <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
 <p>We’ll come back to Prometheus, first we study the Dashboard…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
+<p>TODO: Pic of Grafana</p>
 <h1 id="grafana-dashboard"><a class="doc-anchor" href="#grafana-dashboard">§</a>2 Grafana Dashboard</h1>
 <p>TODO</p>
 <p>Create a simple dashboard</p>
@@ -209,6 +210,7 @@ admin for username and password
 <ul>
 <li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json">history.json</a></li>
 </ul>
+<p>TODO: Pic of Prometheus and Pushgateway</p>
 <h1 id="prometheus-metrics"><a class="doc-anchor" href="#prometheus-metrics">§</a>3 Prometheus Metrics</h1>
 <p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
 <p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
@@ -323,6 +325,7 @@ EOF
 <p>HTTP Request</p>
 <p>OK to push latest data twice</p>
 <p>OK to push from multiple PCs, they are distinct</p>
+<p>TODO: Pic of ingesting</p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>Now we be like an Amoeba and ingest all kinds of Build Logs!</p>
 <ul>
@@ -493,7 +496,9 @@ find nuttx \
 <p><em>Phew the Errors and Warnings look so complicated!</em></p>
 <p>Yeah our Build Logs appear in all shapes and sizes. We might need to standardise the way we present the logs.</p>
 <p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!" /></p>
+<span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!</em></a></p>
+</span>
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p><em>What about the Build Logs from GitHub Actions?</em></p>
 <p>It gets a little more complicated, we need to download the <strong>Build Logs from GitHub Actions</strong>.</p>
@@ -582,7 +587,9 @@ sleep 300
 ## Then ingest the GitHub Logs
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 ./github.sh
-</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
@@ -610,6 +617,7 @@ sleep 300
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md"><strong>lupyuen.github.io/src/ci4.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
 <h1 id="appendix-all-builds-dashboard"><a class="doc-anchor" href="#appendix-all-builds-dashboard">§</a>7 Appendix: All Builds Dashboard</h1>
 <p>TODO: error1</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="TODO" /></p>
@@ -627,6 +635,8 @@ sleep 300
 <p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="TODO" /></p>
 <p>TODO: highlight2</p>
 <p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="Build History Dashboard" /></p>
 <h1 id="appendix-build-history-dashboard"><a class="doc-anchor" href="#appendix-build-history-dashboard">§</a>8 Appendix: Build History Dashboard</h1>
 <p>TODO: history1</p>
 <p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
