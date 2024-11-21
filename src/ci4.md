@@ -117,14 +117,6 @@ TODO
 
 Inside Grafana: We create a __New Dashboard__...
 
-TODO: ci4-grafana1.png
-
-![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
-
-TODO: ci4-grafana2.png
-
-![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
-
 TODO: ci4-grafana3.png
 
 ![TODO](https://lupyuen.github.io/images/ci4-grafana3.png)
@@ -136,6 +128,14 @@ TODO: ci4-grafana4.png
 TODO: ci4-grafana5.png
 
 ![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
+
+TODO: ci4-grafana1.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
+
+TODO: ci4-grafana2.png
+
+![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
 
 TODO: ci4-grafana6.png
 
