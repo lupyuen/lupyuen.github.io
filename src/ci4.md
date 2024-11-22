@@ -54,10 +54,10 @@ That's why we assign a __Build Score__ for every build...
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error | _undefined reference to atomic\_fetch\_add\_2_
-| 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
-| 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
-| 1.0 | Success | _(No Errors and Warnings)_
+| __`0.0`__ | Error | _undefined reference to atomic\_fetch\_add\_2_
+| __`0.5`__ | Warning | _nuttx has a LOAD segment with RWX permission_
+| __`0.8`__ | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
+| __`1.0`__ | Success | _(No Errors and Warnings)_
 
 Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yellow _(Warning)_ / Red _(Error)_.
 
@@ -207,7 +207,7 @@ brew services restart prometheus  ## macOS
 ## http://localhost:9090
 ```
 
-Prometheus looks like this...
+__Prometheus__ looks like this...
 
 ![TODO](https://lupyuen.github.io/images/ci4-prometheus.png)
 
@@ -215,10 +215,10 @@ Recall that we assign a __Build Score__ for every build...
 
 | Score | Status | Example |
 |:-----:|:-------|:--------|
-| 0.0 | Error | _undefined reference to atomic\_fetch\_add\_2_
-| 0.5 | Warning | _nuttx has a LOAD segment with RWX permission_
-| 0.8 | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
-| 1.0 | Success | _(No Errors and Warnings)_
+| __`0.0`__ | Error | _undefined reference to atomic\_fetch\_add\_2_
+| __`0.5`__ | Warning | _nuttx has a LOAD segment with RWX permission_
+| __`0.8`__ | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
+| __`1.0`__ | Success | _(No Errors and Warnings)_
 
 This is how we __Load a Build Score__ into Prometheus...
 
@@ -244,7 +244,7 @@ build_score{ timestamp="2024-11-24T00:00:00", url="http://gist.github.com/...", 
 EOF
 ```
 
-Pushgateway looks like this...
+__Pushgateway__ looks like this...
 
 ![TODO](https://lupyuen.github.io/images/ci4-pushgateway.png)
 
@@ -252,7 +252,7 @@ _What's this Pushgateway?_
 
 Prometheus works by [__Scraping Metrics__](https://prometheus.io/docs/prometheus/latest/getting_started/) over HTTP.
 
-That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint (Staging Area) that will serve the Metrics (Build Score) to Prometheus.
+That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics)) to Prometheus.
 
 (Which means that we load the Build Scores into Pushgateway, like above)
 
@@ -260,7 +260,7 @@ That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint (Staging Area) 
 
 _How does it work?_
 
-We post the Build Score over HTTP to Pushgateway at...
+We post the Build Score over __HTTP to Pushgateway__ at...
 
 ```text
 localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
@@ -270,7 +270,7 @@ localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 
 - _milkv\_duos:nsh_ is the NuttX Target that we're building
 
-The body of the HTTP POST says...
+The Body of the __HTTP POST__ says...
 
 ```text
 build_score{ timestamp="2024-11-24T00:00:00", url="http://gist.github.com/...", msg="test_pipe FAILED" } 0.0
@@ -333,7 +333,7 @@ scrape_configs:
     - targets: ["localhost:9091"]
 ```
 
-And it's perfectly OK to push the __same data twice__ to Pushgateway. (Because we added the Timestamp)
+And it's perfectly OK to post the __Same Build Log__ twice to Pushgateway. (Because the Timestamp will differentiate them)
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
