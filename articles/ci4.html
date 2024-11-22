@@ -368,14 +368,14 @@ scrape_configs:
 <p>Build Logs from <a href="TODO"><strong>GitHub Actions</strong></a></p>
 </li>
 </ul>
-<p>For NuttX Build Farm, we ingest the <a href="TODO"><strong>GitHub Gists</strong></a>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
+<p>For NuttX Build Farm, we ingest the <a href="TODO"><strong>GitHub Gists</strong></a> that contain the Build Logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig pathnames in NuttX Repo
 git clone https://github.com/apache/nuttx
 find nuttx \
   -name defconfig \
   &gt;/tmp/defconfig.txt
 
-## Ingest logs from nuttxpr GitHub Gist.
+## Ingest the Build Logs from GitHub Gists: `nuttxpr`
 ## Remove special characters so they don&#39;t mess up the terminal.
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
@@ -421,7 +421,7 @@ cargo run -- \
 <span class="kw">let </span>caps = re.captures(line);
 <span class="kw">if </span>caps.is_some() { <span class="kw">continue</span>; }</code></pre></div>
 </span>
-<p>Then we compute the <strong>Build Score</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
+<p>Then compute the <strong>Build Score</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Not an error:
@@ -466,7 +466,7 @@ cargo run -- \
   <span class="kw">else if </span>contains_warning { <span class="number">0.5 </span>}
   <span class="kw">else </span>{ <span class="number">0.8 </span>};</code></pre></div>
 </span>
-<p>And we post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
+<p>And post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Pushgateway Metric
@@ -497,7 +497,8 @@ find nuttx \
 ## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 </code></pre></div>
-<p>Suppose we’re ingesting a NuttX Target <em>milkv_duos:nsh</em>. To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
+<p>Suppose we’re ingesting a NuttX Target <em>milkv_duos:nsh</em>.</p>
+<p>To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search for <em>milkv_duos/…/nsh</em> in the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames:
@@ -514,7 +515,9 @@ find nuttx \
   <span class="kw">let </span>input = File::open(defconfig).unwrap();
   <span class="kw">let </span>buffered = BufReader::new(input);
   <span class="kw">for </span>line <span class="kw">in </span>buffered.lines() {
-    <span class="kw">let </span>line = line.unwrap();
+
+    <span class="comment">// Sub-Architecture appears before "/{board}"
+    </span><span class="kw">let </span>line = line.unwrap();
     <span class="kw">if let </span><span class="prelude-val">Some</span>(pos) = line.find(<span class="kw-2">&amp;</span>search) {
       <span class="kw">let </span>s = <span class="kw-2">&amp;</span>line[<span class="number">0</span>..pos];
       <span class="kw">let </span>slash = s.rfind(<span class="string">"/"</span>).unwrap();
@@ -609,7 +612,7 @@ cargo run -- \
 </code></pre></div>
 <p><em>How to run all this?</em></p>
 <p>We ingest the GitHub Logs right after the <a href="TODO"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
-<p>Thus it makes sense to bundle the Build and Ingest into one single script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
+<p>Thus it makes sense to bundle the <strong>Build and Ingest</strong> into One Single Script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Mirror Repo and Ingest NuttX Build Logs
 ## from GitHub Actions into Prometheus Pushgateway
 
@@ -631,8 +634,8 @@ sleep 300
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>TODO: macOS Build Farm</p>
-<p>TODO: PyTest / QEMU / expect</p>
+<p>Next Article: We look inside the updated NuttX Build Farm that runs on <strong>macOS for Apple Silicon</strong>.</p>
+<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>mystifying bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
