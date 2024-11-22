@@ -793,7 +793,7 @@ TODO: history3
 
 TODO: Grafana Config
 
-TODO: Watch for usage
+Watch out for the pesky __WordPress Malware Bots__! This might help: TODO
 
 Update the Grafana and Prometheus Configuration: /etc/grafana/grafana.ini
 
