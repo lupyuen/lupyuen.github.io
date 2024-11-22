@@ -213,7 +213,7 @@ brew services start grafana
 <p><img src="https://lupyuen.github.io/images/ci4-grafana8.png" alt="TODO" /></p>
 </li>
 <li>
-<p>More tweaks coming up. To check our progress: Click <strong>Inspect</strong> &gt; <strong>Panel JSON</strong></p>
+<p>Our NuttX Deashboard is nearly ready. To check our progress: Click <strong>Inspect</strong> &gt; <strong>Panel JSON</strong></p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana9.png" alt="TODO" /></p>
 </li>
 <li>
@@ -229,7 +229,7 @@ brew services start grafana
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci4-flow4.jpg" alt="TODO" /></p>
 <h1 id="prometheus-metrics"><a class="doc-anchor" href="#prometheus-metrics">§</a>3 Prometheus Metrics</h1>
-<p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
+<p><em>We saw the setup for Grafana Dashboard. What about the Prometheus Metrics?</em></p>
 <p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
 <p>This is how we install Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Prometheus on Ubuntu
@@ -368,7 +368,7 @@ scrape_configs:
 <p>Build Logs from <a href="TODO"><strong>GitHub Actions</strong></a></p>
 </li>
 </ul>
-<p>We ingest the <a href="TODO"><strong>GitHub Gists</strong></a> from our Build Farm: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
+<p>For NuttX Build Farm, we ingest the <a href="TODO"><strong>GitHub Gists</strong></a>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig pathnames in NuttX Repo
 git clone https://github.com/apache/nuttx
 find nuttx \
