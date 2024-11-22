@@ -217,7 +217,7 @@ brew services start grafana
 <p><img src="https://lupyuen.github.io/images/ci4-grafana9.png" alt="TODO" /></p>
 </li>
 <li>
-<p>And compare with our <strong>Final Panel JSON</strong>…</p>
+<p>And compare with our <strong>Completed Panel JSON</strong>…</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
 </li>
@@ -634,8 +634,8 @@ sleep 300
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>Next Article: We look inside the updated NuttX Build Farm that runs on <strong>macOS for Apple Silicon</strong>.</p>
-<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>mystifying bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
+<p>Next Article: We look inside the updated <strong>NuttX Build Farm</strong> that runs on <strong>macOS for Apple Silicon</strong>. (Great news for NuttX Devs on macOS!)</p>
+<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>mystifying bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>. (So someday it will disappear from NuttX Dashboard!)</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -664,6 +664,95 @@ sleep 300
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci4.md"><strong>lupyuen.github.io/src/ci4.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
 <h1 id="appendix-all-builds-dashboard"><a class="doc-anchor" href="#appendix-all-builds-dashboard">§</a>7 Appendix: All Builds Dashboard</h1>
+<p>Earlier we spoke about creating the <strong>NuttX Dashboard</strong> (pic above). And we created a <strong>Rudimentary Dashboard</strong> with Grafana…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>And we’re supposed to achieve these <strong>Completed Panel JSON</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
+</li>
+</ul>
+<p>Let’s flesh out the remaining bits of our creation.</p>
+<p>Before we begin: Check that our <strong>Prometheus Data Source</strong> is configured to fetch the Build Scores from Prometheus and Pushgateway…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="TODO" /></p>
+<p><a href="TODO">(Remember to configure <strong>prometheus.yml</strong>)</a></p>
+<p>Head back to our upcoming dashboard…</p>
+<ol>
+<li>
+<p>This is how we <strong>Filter by Arch, Sub-Arch, Board, Config</strong>, …</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Why match the <strong>Funny Timestamps</strong>? Well mistakes were make. We exclude these Timestamps so they won’t appear in the dashboard…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>For Builds with Errors and Warnings: We select <strong>Values (Build Scores) &lt;= 0.5</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>We <strong>Rename the Fields</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Set the <strong>Timestamp</strong> to Lower Case, <strong>Config</strong> to Upper Case…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error4.png" alt="TODO" /></p>
+</li>
+<li>
+<p><strong>Colour the Values</strong> (Build Scores)…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="TODO" /></p>
+</li>
+<li>
+<p>And we’ll achieve this <strong>Completed Panel JSON</strong>…</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
+</li>
+</ol>
+<p><em>What about the Successful Builds?</em></p>
+<ol>
+<li>
+<p>Copy the Panel for <strong>“Builds with Errors and Warnings”</strong></p>
+<p>Paste into a New Panel: <strong>“Successful Builds”</strong></p>
+</li>
+<li>
+<p>Select <strong>Values (Build Scores) &gt; 0.5</strong></p>
+</li>
+<li>
+<p>And we’ll achieve this <strong>Completed Panel JSON</strong></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
+</li>
+</ol>
+<p><em>And the Highlights Panel at the top?</em></p>
+<ol>
+<li>
+<p>Copy the Panel for <strong>“Builds with Errors and Warnings”</strong></p>
+<p>Paste into a New Panel: <strong>“Highlights of Errors / Warnings”</strong></p>
+</li>
+<li>
+<p>Change the Visualisation from <strong>“Table” to “Stat”</strong></p>
+<p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="TODO" /></p>
+</li>
+<li>
+<p><strong>Sort by Value</strong> (Build Score) and <strong>Limit to 8 Items</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>And we’ll get this <strong>Completed Panel JSON</strong></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json"><strong>Highlights of Errors / Warnings</strong></a></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="Build History Dashboard" /></p>
+<h1 id="appendix-build-history-dashboard"><a class="doc-anchor" href="#appendix-build-history-dashboard">§</a>8 Appendix: Build History Dashboard</h1>
+<p>TODO: history1</p>
+<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
+<p>TODO: history2</p>
+<p><img src="https://lupyuen.github.io/images/ci4-history2.png" alt="TODO" /></p>
+<p>TODO: history3</p>
+<p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="TODO" /></p>
 <p>TODO: Grafana Config</p>
 <p>TODO: Watch for usage</p>
 <p>Update the Grafana and Prometheus Configuration: /etc/grafana/grafana.ini</p>
@@ -687,33 +776,6 @@ sleep 300
 <ul>
 <li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json">history.json</a></li>
 </ul>
-<p>TODO: datasource</p>
-<p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="TODO" /></p>
-<p>TODO: error1</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="TODO" /></p>
-<p>TODO: error2</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error2.png" alt="TODO" /></p>
-<p>TODO: error3</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error3.png" alt="TODO" /></p>
-<p>TODO: error4</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error4.png" alt="TODO" /></p>
-<p>TODO: error5</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="TODO" /></p>
-<p>TODO: error6</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error6.png" alt="TODO" /></p>
-<p>TODO: highlight1</p>
-<p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="TODO" /></p>
-<p>TODO: highlight2</p>
-<p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="Build History Dashboard" /></p>
-<h1 id="appendix-build-history-dashboard"><a class="doc-anchor" href="#appendix-build-history-dashboard">§</a>8 Appendix: Build History Dashboard</h1>
-<p>TODO: history1</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
-<p>TODO: history2</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history2.png" alt="TODO" /></p>
-<p>TODO: history3</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="TODO" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
