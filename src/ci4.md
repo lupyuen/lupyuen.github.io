@@ -157,7 +157,7 @@ brew services start grafana
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana8.png)
 
-1.  More tweaks coming up. To check our progress: Click __Inspect__ > __Panel JSON__
+1.  Our NuttX Deashboard is nearly ready. To check our progress: Click __Inspect__ > __Panel JSON__
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
 
@@ -177,7 +177,7 @@ brew services start grafana
 
 # Prometheus Metrics
 
-_We've seen the Grafana Dashboard Setup. What about the Prometheus Metrics?_
+_We saw the setup for Grafana Dashboard. What about the Prometheus Metrics?_
 
 Remember that our Build Scores are stored inside a special (open-source) __Time Series Database__ called [__Prometheus__](TODO).
 
@@ -345,7 +345,7 @@ Now we be like an Amoeba and ingest all kinds of Build Logs!
 
 - Build Logs from [__GitHub Actions__](TODO)
 
-We ingest the [__GitHub Gists__](TODO) from our Build Farm: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+For NuttX Build Farm, we ingest the [__GitHub Gists__](TODO): [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
 ## Find all defconfig pathnames in NuttX Repo
