@@ -125,13 +125,16 @@
 </div>
 <p>Which makes it simpler to <strong>Colour-Code</strong> our Dashboard: Green <em>(Success)</em> / Yellow <em>(Warning)</em> / Red <em>(Error)</em>.</p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="TODO" /></p>
-<p>Sounds easy? But we’ll catch <strong>Multiple Kinds of Errors</strong>…</p>
+<p>Sounds easy? But we’ll catch <strong>Multiple Kinds of Errors</strong> (in various formats)</p>
 <ul>
 <li>
-<p><strong>Compile Errors:</strong> TODO</p>
+<p><strong>Compile Errors:</strong> <em>“return with no value”</em></p>
 </li>
 <li>
 <p><strong>Linker Errors:</strong> <em>“undefined reference to atomic_fetch_add_2”</em></p>
+</li>
+<li>
+<p><strong>Network Errors:</strong> <em>“curl 92 HTTP/2 stream 0 was not closed cleanly”</em></p>
 </li>
 <li>
 <p><strong>CI Test Failures:</strong> <em>“test_pipe FAILED”</em></p>
@@ -150,7 +153,7 @@
 <p><strong>Target:</strong> NuttX Target that we’re building <em>(milkv_duos:nsh)</em></p>
 </li>
 </ul>
-<p>Which folds neatly into this URL, as we’ll soon see…</p>
+<p>Which will fold neatly into this URL, as we’ll soon see…</p>
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 </code></pre></div>
 <p><em>Where do we store the Build Scores?</em></p>
@@ -162,7 +165,9 @@
 <p><a href="TODO"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
 <p>Sadly there isn’t a “programming language” for coding Grafana. Thus we walk through the steps to create our <strong>NuttX Dashboard with Grafana</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Grafana on Ubuntu
-TODO
+## See https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
+sudo apt install grafana
+sudo systemctl start grafana-server
 
 ## Or macOS
 brew install grafana
@@ -227,25 +232,26 @@ brew services start grafana
 <p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
 <p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
 <p>This is how we install Prometheus…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu:
-TODO
+<div class="example-wrap"><pre class="language-bash"><code>## Install Prometheus on Ubuntu
+sudp apt install prometheus
+sudo systemctl start prometheus
 
-## For macOS:
+## Or macOS
 brew install prometheus
 brew services start prometheus
 
 ## TODO: Update the Prometheus Config
-## Edit TODO (Ubuntu)
+## Edit /etc/prometheus/prometheus.yml (Ubuntu)
 ## Or /opt/homebrew/etc/prometheus.yml (macOS)
 
-## Replace by contents of:
+## Replace by contents of
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
 ## Restart Prometheus
-TODO ## Ubuntu
-brew services restart prometheus ## macOS
+sudo systemctl restart prometheus ## Ubuntu
+brew services restart prometheus  ## macOS
 
-## TODO: Check that Prometheus is up
+## Check that Prometheus is up
 ## http://localhost:9090
 </code></pre></div>
 <p>Prometheus looks like this…</p>
@@ -260,15 +266,15 @@ brew services restart prometheus ## macOS
 </div>
 <p>This is how we <strong>Load a Build Score</strong> into Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GoLang
-TODO ## For Ubuntu
+sudo apt install golang-go ## For Ubuntu
 brew install go  ## For macOS
 
-## Install and start Pushgateway
+## Install Pushgateway
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
 
-## TODO: Check that Pushgateway is up
+## Check that Pushgateway is up
 ## http://localhost:9091
 
 ## Load a Build Score into Pushgateway
@@ -625,7 +631,8 @@ sleep 300
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>TODO</p>
+<p>TODO: macOS Build Farm</p>
+<p>TODO: PyTest / QEMU / expect</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
