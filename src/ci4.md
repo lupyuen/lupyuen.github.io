@@ -161,7 +161,7 @@ brew services start grafana
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
 
-1.  And compare with our __Final Panel JSON__...
+1.  And compare with our __Completed Panel JSON__...
 
     [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
@@ -669,9 +669,9 @@ sleep 300
 
 # What's Next
 
-Next Article: We look inside the updated NuttX Build Farm that runs on __macOS for Apple Silicon__.
+Next Article: We look inside the updated __NuttX Build Farm__ that runs on __macOS for Apple Silicon__. (Great news for NuttX Devs on macOS!)
 
-Then we study the internals of a [__mystifying bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
+Then we study the internals of a [__mystifying bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So someday it will disappear from NuttX Dashboard!)
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
@@ -697,6 +697,100 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: All Builds Dashboard
 
+Earlier we spoke about creating the __NuttX Dashboard__ (pic above). And we created a __Rudimentary Dashboard__ with Grafana...
+
+- TODO
+
+And we're supposed to achieve these __Completed Panel JSON__...
+
+- [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+
+- [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+
+Let's flesh out the remaining bits of our creation.
+
+Before we begin: Check that our __Prometheus Data Source__ is configured to fetch the Build Scores from Prometheus and Pushgateway...
+
+![TODO](https://lupyuen.github.io/images/ci4-datasource.png)
+
+[(Remember to configure __prometheus.yml__)](TODO)
+
+Head back to our upcoming dashboard...
+
+1.  This is how we __Filter by Arch, Sub-Arch, Board, Config__, ...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error1.png)
+
+1.  Why match the __Funny Timestamps__? Well mistakes were make. We exclude these Timestamps so they won't appear in the dashboard...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error2.png)
+
+1.  For Builds with Errors and Warnings: We select __Values (Build Scores) <= 0.5__...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error3.png)
+
+1.  We __Rename the Fields__...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error6.png)
+
+1.  Set the __Timestamp__ to Lower Case, __Config__ to Upper Case...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error4.png)
+
+1.  __Colour the Values__ (Build Scores)...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-error5.png)
+
+1.  And we'll achieve this __Completed Panel JSON__...
+
+    [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+
+_What about the Successful Builds?_
+
+1.  Copy the Panel for __"Builds with Errors and Warnings"__
+
+    Paste into a New Panel: __"Successful Builds"__
+
+1.  Select __Values (Build Scores) > 0.5__
+
+1.  And we'll achieve this __Completed Panel JSON__
+
+    [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+
+_And the Highlights Panel at the top?_
+
+1.  Copy the Panel for __"Builds with Errors and Warnings"__
+
+    Paste into a New Panel: __"Highlights of Errors / Warnings"__
+
+1.  Change the Visualisation from __"Table" to "Stat"__
+
+    ![TODO](https://lupyuen.github.io/images/ci4-highlight1.png)
+
+1.  __Sort by Value__ (Build Score) and __Limit to 8 Items__...
+
+    ![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
+
+1.  And we'll get this __Completed Panel JSON__
+
+    [__Highlights of Errors / Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
+
+![Build History Dashboard](https://lupyuen.github.io/images/ci4-history.png)
+
+# Appendix: Build History Dashboard
+
+TODO: history1
+
+![TODO](https://lupyuen.github.io/images/ci4-history1.png)
+
+TODO: history2
+
+![TODO](https://lupyuen.github.io/images/ci4-history2.png)
+
+TODO: history3
+
+![TODO](https://lupyuen.github.io/images/ci4-history3.png)
+
 TODO: Grafana Config
 
 TODO: Watch for usage
@@ -717,57 +811,3 @@ Add the Grafana Dashboard and Panels...
 
 [dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 - [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
-
-TODO: datasource
-
-![TODO](https://lupyuen.github.io/images/ci4-datasource.png)
-
-TODO: error1
-
-![TODO](https://lupyuen.github.io/images/ci4-error1.png)
-
-TODO: error2
-
-![TODO](https://lupyuen.github.io/images/ci4-error2.png)
-
-TODO: error3
-
-![TODO](https://lupyuen.github.io/images/ci4-error3.png)
-
-TODO: error4
-
-![TODO](https://lupyuen.github.io/images/ci4-error4.png)
-
-TODO: error5
-
-![TODO](https://lupyuen.github.io/images/ci4-error5.png)
-
-TODO: error6
-
-![TODO](https://lupyuen.github.io/images/ci4-error6.png)
-
-TODO: highlight1
-
-![TODO](https://lupyuen.github.io/images/ci4-highlight1.png)
-
-TODO: highlight2
-
-![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
-
-TODO
-
-![Build History Dashboard](https://lupyuen.github.io/images/ci4-history.png)
-
-# Appendix: Build History Dashboard
-
-TODO: history1
-
-![TODO](https://lupyuen.github.io/images/ci4-history1.png)
-
-TODO: history2
-
-![TODO](https://lupyuen.github.io/images/ci4-history2.png)
-
-TODO: history3
-
-![TODO](https://lupyuen.github.io/images/ci4-history3.png)
