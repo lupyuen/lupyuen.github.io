@@ -697,7 +697,7 @@ TODO: Grafana Config
 
 TODO: Watch for usage
 
-Update the Grafana and Prometheus Configuration...
+Update the Grafana and Prometheus Configuration: /etc/grafana/grafana.ini
 
 - [/opt/homebrew/etc/grafana/grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
 
