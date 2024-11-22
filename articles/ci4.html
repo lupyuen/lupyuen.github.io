@@ -117,10 +117,10 @@
 </ul>
 <p>That’s why we assign a <strong>Build Score</strong> for every build…</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
-<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
-<tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
-<tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
-<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.0</code></strong></td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.5</code></strong></td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.8</code></strong></td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
+<tr><td style="text-align: center"><strong><code>1.0</code></strong></td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
 </tbody></table>
 </div>
 <p>Which makes it simpler to <strong>Colour-Code</strong> our Dashboard: Green <em>(Success)</em> / Yellow <em>(Warning)</em> / Red <em>(Error)</em>.</p>
@@ -254,14 +254,14 @@ brew services restart prometheus  ## macOS
 ## Check that Prometheus is up
 ## http://localhost:9090
 </code></pre></div>
-<p>Prometheus looks like this…</p>
+<p><strong>Prometheus</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
 <p>Recall that we assign a <strong>Build Score</strong> for every build…</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
-<tr><td style="text-align: center">0.0</td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
-<tr><td style="text-align: center">0.5</td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
-<tr><td style="text-align: center">0.8</td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
-<tr><td style="text-align: center">1.0</td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.0</code></strong></td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.5</code></strong></td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.8</code></strong></td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
+<tr><td style="text-align: center"><strong><code>1.0</code></strong></td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
 </tbody></table>
 </div>
 <p>This is how we <strong>Load a Build Score</strong> into Prometheus…</p>
@@ -285,15 +285,15 @@ cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxp
 build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 EOF
 </code></pre></div>
-<p>Pushgateway looks like this…</p>
+<p><strong>Pushgateway</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="TODO" /></p>
 <p><em>What’s this Pushgateway?</em></p>
 <p>Prometheus works by <a href="https://prometheus.io/docs/prometheus/latest/getting_started/"><strong>Scraping Metrics</strong></a> over HTTP.</p>
-<p>That’s why we install <a href="TODO"><strong>Pushgateway</strong></a> as a HTTP Endpoint (Staging Area) that will serve the Metrics (Build Score) to Prometheus.</p>
+<p>That’s why we install <a href="TODO"><strong>Pushgateway</strong></a> as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics)) to Prometheus.</p>
 <p>(Which means that we load the Build Scores into Pushgateway, like above)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="TODO" /></p>
 <p><em>How does it work?</em></p>
-<p>We post the Build Score over HTTP to Pushgateway at…</p>
+<p>We post the Build Score over <strong>HTTP to Pushgateway</strong> at…</p>
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 </code></pre></div>
 <ul>
@@ -304,7 +304,7 @@ EOF
 <p><em>milkv_duos:nsh</em> is the NuttX Target that we’re building</p>
 </li>
 </ul>
-<p>The body of the HTTP POST says…</p>
+<p>The Body of the <strong>HTTP POST</strong> says…</p>
 <div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
 </code></pre></div>
 <ul>
@@ -356,7 +356,7 @@ scrape_configs:
     static_configs:
     - targets: [&quot;localhost:9091&quot;]
 </code></pre></div>
-<p>And it’s perfectly OK to push the <strong>same data twice</strong> to Pushgateway. (Because we added the Timestamp)</p>
+<p>And it’s perfectly OK to post the <strong>Same Build Log</strong> twice to Pushgateway. (Because the Timestamp will differentiate them)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow5.jpg" alt="TODO" /></p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>Now we be like an Amoeba and ingest all kinds of Build Logs!</p>
