@@ -131,7 +131,9 @@ brew services start grafana
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
 
-1.  Choose __Build Score__ as the Metric. Click __"Run Queries"__...
+1.  Change the Visualisation to __"Table"__ (top right)
+
+    Choose __Build Score__ as the Metric. Click __"Run Queries"__...
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
 
@@ -163,9 +165,9 @@ brew services start grafana
 
 1.  And compare with our __Completed Panel JSON__...
 
-    [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+    [__Panel: Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
-    [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+    [__Panel: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
 1.  How to get there? Watch the steps...
 
@@ -703,9 +705,9 @@ Earlier we spoke about creating the __NuttX Dashboard__ (pic above). And we crea
 
 And we're supposed to achieve these __Completed Panel JSON__...
 
-- [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+- [__Panel: Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
-- [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+- [__Panel: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
 Let's flesh out the remaining bits of our creation.
 
@@ -737,13 +739,17 @@ Head back to our upcoming dashboard...
 
     ![TODO](https://lupyuen.github.io/images/ci4-error4.png)
 
-1.  __Colour the Values__ (Build Scores)...
+1.  Set the __Color Scheme__ to __From Thresholds By Value__
+
+    Set the __Data Links__: Title is `Show the Build Log`, URL is `${__data.fields.url}`
+
+    Colour the Values (Build Scores) with the __Value Mappings__ below
 
     ![TODO](https://lupyuen.github.io/images/ci4-error5.png)
 
 1.  And we'll achieve this __Completed Panel JSON__...
 
-    [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+    [__Panel: Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
 _What about the Successful Builds?_
 
@@ -753,9 +759,11 @@ _What about the Successful Builds?_
 
 1.  Select __Values (Build Scores) > 0.5__
 
+    ![TODO](https://lupyuen.github.io/images/ci4-history1.png)
+
 1.  And we'll achieve this __Completed Panel JSON__
 
-    [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+    [__Panel: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
 _And the Highlights Panel at the top?_
 
@@ -763,51 +771,91 @@ _And the Highlights Panel at the top?_
 
     Paste into a New Panel: __"Highlights of Errors / Warnings"__
 
-1.  Change the Visualisation from __"Table" to "Stat"__
+1.  Change the Visualisation from __"Table" to "Stat"__  (top right)
 
     ![TODO](https://lupyuen.github.io/images/ci4-highlight1.png)
 
-1.  __Sort by Value__ (Build Score) and __Limit to 8 Items__...
+1.  Select __Sort by Value__ (Build Score) and __Limit to 8 Items__...
 
     ![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
 
 1.  And we'll get this __Completed Panel JSON__
 
-    [__Highlights of Errors / Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
+    [__Panel: Highlights of Errors / Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
+
+1.  Also check out the __Dashboard JSON__ and __Links Panel__ _("See the NuttX Build History")_
+
+    [__Dashboard JSON__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
+
+    [__Links Panel__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
+
+Up Next: The NuttX Dashboard for Build History...
 
 ![Build History Dashboard](https://lupyuen.github.io/images/ci4-history.png)
 
 # Appendix: Build History Dashboard
 
-TODO: history1
+In the previous section: We created the NuttX Dashboard for Errors, Warnings and Successful Builds.
 
-![TODO](https://lupyuen.github.io/images/ci4-history1.png)
+Now we do the same for __Build History Dashboard__ (pic above)...
 
-TODO: history2
+1.  Copy the Dashboard from the previous section.
 
-![TODO](https://lupyuen.github.io/images/ci4-history2.png)
+    Delete all Panels, except __"Builds with Errors and Warnings"__.
 
-TODO: history3
+    Edit the Panel.
 
-![TODO](https://lupyuen.github.io/images/ci4-history3.png)
+1.  Under Queries: Set __Options > Type__ to __Range__
 
-TODO: Grafana Config
+    ![TODO](https://lupyuen.github.io/images/ci4-history2.png)
 
-Watch out for the pesky __WordPress Malware Bots__! This might help: TODO
+1.  Under Transformations: Set __Group By__ to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash
 
-Update the Grafana and Prometheus Configuration: /etc/grafana/grafana.ini
+    In __Organise Fields By Name__: Rename the fields as shown below
 
-- [/opt/homebrew/etc/grafana/grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
+    Set the __Value Mappings__ as shown below
 
-- [/opt/homebrew/etc/prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
+    ![TODO](https://lupyuen.github.io/images/ci4-history3.png)
 
-Add the Grafana Dashboard and Panels...
+1.  Here are the __Panel and Dashboard JSON__...
 
-[dashboard.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
-- [links.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
-- [highlights.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json)
-- [error-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
-- [success-builds.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+    [__Panel: Build History__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
 
-[dashboard-history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
-- [history.json](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json)
+    [__Dashboard: NuttX Build History__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
+
+_Is Grafana really safe for web hosting?_
+
+Use this (safer) __Grafana Configuration__: [grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini)
+
+- Modified Entries are tagged by "__TODO__"
+
+- __For Ubuntu:__ Copy to _/etc/grafana/grafana.ini_
+
+- __For macOS:__ Copy to _/opt/homebrew/etc/grafana/grafana.ini_
+
+Watch out for the pesky __WordPress Malware Bots__! This might help: [show-log.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/show-log.sh)
+
+```bash
+## Show Logs from Grafana
+log_file=/var/log/grafana/grafana.log ## For Ubuntu
+log_file=/opt/homebrew/var/log/grafana/grafana.log ## For macOS
+
+## Watch for any suspicious activity
+for (( ; ; )); do
+  clear
+  tail -f $log_file \
+    | grep --line-buffered 'logger=context ' \
+    | grep --line-buffered -v ' path=/api/frontend-metrics ' \
+    | grep --line-buffered -v ' path=/api/live/ws ' \
+    | grep --line-buffered -v ' path=/api/plugins/grafana-lokiexplore-app/settings ' \
+    | grep --line-buffered -v ' path=/api/user/auth-tokens/rotate ' \
+    | grep --line-buffered -v ' path=/favicon.ico ' \
+    | grep --line-buffered -v ' remote_addr=\[::1\] ' \
+    | cut -d ' ' -f 9-15 \
+    &
+
+  ## Restart the log display every 12 hours, due to Log Rotation
+  sleep $(( 12 * 60 * 60 ))
+  kill %1
+done
+```
