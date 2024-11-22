@@ -63,11 +63,13 @@ Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yel
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow2.jpg)
 
-Sounds easy? But we'll catch __Multiple Kinds of Errors__...
+Sounds easy? But we'll catch __Multiple Kinds of Errors__ (in various formats)
 
-- __Compile Errors:__ TODO
+- __Compile Errors:__ _"return with no value"_
 
 - __Linker Errors:__ _"undefined reference to atomic\_fetch\_add\_2"_
+
+- __Network Errors:__ _"curl 92 HTTP/2 stream 0 was not closed cleanly"_
 
 - __CI Test Failures:__ _"test\_pipe FAILED"_
 
@@ -81,7 +83,7 @@ Yep the Build Score is actually a [__Time Series Metric__](https://prometheus.io
 
 - __Target:__ NuttX Target that we're building _(milkv\_duos:nsh)_
 
-Which folds neatly into this URL, as we'll soon see...
+Which will fold neatly into this URL, as we'll soon see...
 
 ```text
 localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
@@ -105,7 +107,9 @@ Sadly there isn't a "programming language" for coding Grafana. Thus we walk thro
 
 ```bash
 ## Install Grafana on Ubuntu
-TODO
+## See https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
+sudo apt install grafana
+sudo systemctl start grafana-server
 
 ## Or macOS
 brew install grafana
@@ -180,25 +184,26 @@ Remember that our Build Scores are stored inside a special (open-source) __Time 
 This is how we install Prometheus...
 
 ```bash
-## For Ubuntu:
-TODO
+## Install Prometheus on Ubuntu
+sudp apt install prometheus
+sudo systemctl start prometheus
 
-## For macOS:
+## Or macOS
 brew install prometheus
 brew services start prometheus
 
 ## TODO: Update the Prometheus Config
-## Edit TODO (Ubuntu)
+## Edit /etc/prometheus/prometheus.yml (Ubuntu)
 ## Or /opt/homebrew/etc/prometheus.yml (macOS)
 
-## Replace by contents of:
+## Replace by contents of
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
 ## Restart Prometheus
-TODO ## Ubuntu
-brew services restart prometheus ## macOS
+sudo systemctl restart prometheus ## Ubuntu
+brew services restart prometheus  ## macOS
 
-## TODO: Check that Prometheus is up
+## Check that Prometheus is up
 ## http://localhost:9090
 ```
 
@@ -219,15 +224,15 @@ This is how we __Load a Build Score__ into Prometheus...
 
 ```bash
 ## Install GoLang
-TODO ## For Ubuntu
+sudo apt install golang-go ## For Ubuntu
 brew install go  ## For macOS
 
-## Install and start Pushgateway
+## Install Pushgateway
 git clone https://github.com/prometheus/pushgateway
 cd pushgateway
 go run main.go
 
-## TODO: Check that Pushgateway is up
+## Check that Pushgateway is up
 ## http://localhost:9091
 
 ## Load a Build Score into Pushgateway
@@ -660,7 +665,9 @@ sleep 300
 
 # What's Next
 
-TODO
+TODO: macOS Build Farm
+
+TODO: PyTest / QEMU / expect
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
