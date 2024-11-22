@@ -181,7 +181,7 @@ brew services start grafana
 <p><img src="https://lupyuen.github.io/images/ci4-grafana4.png" alt="TODO" /></p>
 </li>
 <li>
-<p>Select the <strong>Prometheus Data Source</strong> (we’ll see why)</p>
+<p>Select the <strong>Prometheus Data Source</strong> (we’ll come back to this)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana5.png" alt="TODO" /></p>
 </li>
 <li>
@@ -191,7 +191,7 @@ brew services start grafana
 <li>
 <p>We see a list of Build Scores in the Data Table above.</p>
 <p>But where’s the Timestamp, Board and Config?</p>
-<p>That’s why we click <strong>Transformations</strong> &gt; <strong>Add Transformation</strong> &gt; <strong>Labels To Fields</strong></p>
+<p>That’s why we do <strong>Transformations</strong> &gt; <strong>Add Transformation</strong> &gt; <strong>Labels To Fields</strong></p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana2.png" alt="TODO" /></p>
 </li>
 <li>
@@ -213,14 +213,13 @@ brew services start grafana
 </li>
 <li>
 <p>And compare with our <strong>Final Panel JSON</strong>…</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Panel JSON: Errors and Warnings</strong></a></p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Panel JSON: Successful Builds</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
 </li>
 <li>
 <p>How to get there? Watch the steps…</p>
-<ul>
-<li>TODO: Appendix</li>
-</ul>
+<p>TODO: Appendix</p>
+<p>TODO: Appendix</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci4-flow4.jpg" alt="TODO" /></p>
@@ -228,25 +227,26 @@ brew services start grafana
 <p><em>We’ve seen the Grafana Dashboard Setup. What about the Prometheus Metrics?</em></p>
 <p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
 <p>This is how we install Prometheus…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+<div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu:
+TODO
+
+## For macOS:
 brew install prometheus
 brew services start prometheus
 
-## For Ubuntu:
-TODO
-
-## TODO: Check that Prometheus is up
-## http://localhost:9090
-
 ## TODO: Update the Prometheus Config
-## Edit /opt/homebrew/etc/prometheus.yml (macOS)
-## Or TODO (Ubuntu)
+## Edit TODO (Ubuntu)
+## Or /opt/homebrew/etc/prometheus.yml (macOS)
+
 ## Replace by contents of:
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
 ## Restart Prometheus
-brew services restart prometheus ## macOS
 TODO ## Ubuntu
+brew services restart prometheus ## macOS
+
+## TODO: Check that Prometheus is up
+## http://localhost:9090
 </code></pre></div>
 <p>Prometheus looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
@@ -315,7 +315,7 @@ EOF
 <p>Remember that this <strong>Build Score</strong> <em>(0.0)</em> is specific to our <strong>Build PC</strong> <em>(nuttxpr)</em> and <strong>NuttX Target</strong> <em>(milkv_duos:nsh)</em>.</p>
 <p>(It will vary over time, hence it’s a Time Series)</p>
 <p><em>What about the other fields?</em></p>
-<p>Oh yes we have a long list of fields describing every Build Score…</p>
+<p>Oh yes we have a long list of fields describing <strong>Every Build Score</strong>…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>version</strong></td><td style="text-align: left">Always 3</td></tr>
@@ -333,12 +333,24 @@ EOF
 </div></span>
 <p>Plus the earlier fields: <strong>timestamp, url, msg</strong>. Commit Hash is super helpful for tracking a Breaking Commit!</p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L426-L515">(See the <strong>Complete Fields</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">prometheus.yml</a></p>
-<p>Multple Values</p>
-<p>Remove Duplicates</p>
-<p>HTTP Request</p>
-<p>OK to push latest data twice</p>
-<p>OK to push from multiple PCs, they are distinct</p>
+<p><em>Anything else we should know about Prometheus?</em></p>
+<p>We configured Prometheus to scrape the <strong>Build Scores from Pushgateway</strong>, every 15 seconds: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">prometheus.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>## Prometheus Configuration
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: &quot;prometheus&quot;
+    static_configs:
+    - targets: [&quot;localhost:9090&quot;]
+
+  ## Prometheus will scrape the Metrics
+  ## from Pushgateway every 15 seconds
+  - job_name: &quot;pushgateway&quot;
+    static_configs:
+    - targets: [&quot;localhost:9091&quot;]
+</code></pre></div>
+<p>And it’s perfectly OK to push the <strong>same data twice</strong> to Pushgateway. (Because we added the Timestamp)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow5.jpg" alt="TODO" /></p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>Now we be like an Amoeba and ingest all kinds of Build Logs!</p>
@@ -565,7 +577,7 @@ done
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73">(<strong>ingest_log</strong> is here)</a></p>
 <p>Which will be ingested like this: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log File
+<div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log Files from GitHub Actions
 cargo run -- \
   --user $user \
   --repo $repo \
@@ -578,9 +590,18 @@ cargo run -- \
   --job-id $job_id \
   --step $step
 
-## TODO: Example
+## user=NuttX
+## repo=nuttx
+## defconfig=/tmp/defconfig.txt (from earlier)
+## pathname=/tmp/ingest-nuttx-builds/ci-arm-01.log
+## nuttx_hash=7f84a64109f94787d92c2f44465e43fde6f3d28f
+## apps_hash=d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288
+## group=arm-01
+## run_id=11603561928
+## job_id=32310817851
+## step=7
 </code></pre></div>
-<p><em>How do we run all this?</em></p>
+<p><em>How to run all this?</em></p>
 <p>We ingest the GitHub Logs right after the <a href="TODO"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
 <p>Thus it makes sense to bundle the Build and Ingest into one single script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Mirror Repo and Ingest NuttX Build Logs
