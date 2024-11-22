@@ -345,7 +345,7 @@ Now we be like an Amoeba and ingest all kinds of Build Logs!
 
 - Build Logs from [__GitHub Actions__](TODO)
 
-For NuttX Build Farm, we ingest the [__GitHub Gists__](TODO): [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+For NuttX Build Farm, we ingest the [__GitHub Gists__](TODO) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
 ## Find all defconfig pathnames in NuttX Repo
@@ -354,7 +354,7 @@ find nuttx \
   -name defconfig \
   >/tmp/defconfig.txt
 
-## Ingest logs from nuttxpr GitHub Gist.
+## Ingest the Build Logs from GitHub Gists: `nuttxpr`
 ## Remove special characters so they don't mess up the terminal.
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
@@ -406,7 +406,7 @@ if caps.is_some() { continue; }
 
 </span>
 
-Then we compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
+Then compute the __Build Score__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L353-L395)
 
 <span style="font-size:90%">
 
@@ -456,7 +456,7 @@ let build_score =
 
 </span>
 
-And we post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
 
 <span style="font-size:90%">
 
@@ -497,7 +497,9 @@ find nuttx \
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
 ```
 
-Suppose we're ingesting a NuttX Target _milkv_duos:nsh_. To identify the Target's __Sub-Architecture__ _(sg2000)_, we search the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+Suppose we're ingesting a NuttX Target _milkv\_duos:nsh_.
+
+To identify the Target's __Sub-Architecture__ _(sg2000)_, we search for _milkv\_duos/.../nsh_ in the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
 
 <span style="font-size:90%">
 
@@ -516,6 +518,8 @@ async fn get_sub_arch(defconfig: &str, target: &str) -> Result<String, Box<dyn s
   let input = File::open(defconfig).unwrap();
   let buffered = BufReader::new(input);
   for line in buffered.lines() {
+
+    // Sub-Architecture appears before "/{board}"
     let line = line.unwrap();
     if let Some(pos) = line.find(&search) {
       let s = &line[0..pos];
@@ -638,7 +642,7 @@ _How to run all this?_
 
 We ingest the GitHub Logs right after the [__Twice-Daily Build__](TODO) of NuttX. (00:00 UTC and 12:00 UTC)
 
-Thus it makes sense to bundle the Build and Ingest into one single script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
+Thus it makes sense to bundle the __Build and Ingest__ into One Single Script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
 
 ```bash
 ## Build NuttX Mirror Repo and Ingest NuttX Build Logs
@@ -665,9 +669,9 @@ sleep 300
 
 # What's Next
 
-TODO: macOS Build Farm
+Next Article: We look inside the updated NuttX Build Farm that runs on __macOS for Apple Silicon__.
 
-TODO: PyTest / QEMU / expect
+Then we study the internals of a [__mystifying bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
