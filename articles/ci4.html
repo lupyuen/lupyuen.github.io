@@ -190,6 +190,7 @@ brew services start grafana
 <p><img src="https://lupyuen.github.io/images/ci4-grafana5.png" alt="TODO" /></p>
 </li>
 <li>
+<p>Change the Visualisation to <strong>“Table”</strong> (top right)</p>
 <p>Choose <strong>Build Score</strong> as the Metric. Click <strong>“Run Queries”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-grafana1.png" alt="TODO" /></p>
 </li>
@@ -218,8 +219,8 @@ brew services start grafana
 </li>
 <li>
 <p>And compare with our <strong>Completed Panel JSON</strong>…</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Panel: Builds with Errors and Warnings</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Panel: Successful Builds</strong></a></p>
 </li>
 <li>
 <p>How to get there? Watch the steps…</p>
@@ -671,10 +672,10 @@ sleep 300
 <p>And we’re supposed to achieve these <strong>Completed Panel JSON</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Panel: Builds with Errors and Warnings</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Panel: Successful Builds</strong></a></p>
 </li>
 </ul>
 <p>Let’s flesh out the remaining bits of our creation.</p>
@@ -704,12 +705,14 @@ sleep 300
 <p><img src="https://lupyuen.github.io/images/ci4-error4.png" alt="TODO" /></p>
 </li>
 <li>
-<p><strong>Colour the Values</strong> (Build Scores)…</p>
+<p>Set the <strong>Color Scheme</strong> to <strong>From Thresholds By Value</strong></p>
+<p>Set the <strong>Data Links</strong>: Title is <code>Show the Build Log</code>, URL is <code>${__data.fields.url}</code></p>
+<p>Colour the Values (Build Scores) with the <strong>Value Mappings</strong> below</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="TODO" /></p>
 </li>
 <li>
 <p>And we’ll achieve this <strong>Completed Panel JSON</strong>…</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Builds with Errors and Warnings</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Panel: Builds with Errors and Warnings</strong></a></p>
 </li>
 </ol>
 <p><em>What about the Successful Builds?</em></p>
@@ -720,10 +723,11 @@ sleep 300
 </li>
 <li>
 <p>Select <strong>Values (Build Scores) &gt; 0.5</strong></p>
+<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
 </li>
 <li>
 <p>And we’ll achieve this <strong>Completed Panel JSON</strong></p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Successful Builds</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Panel: Successful Builds</strong></a></p>
 </li>
 </ol>
 <p><em>And the Highlights Panel at the top?</em></p>
@@ -733,50 +737,87 @@ sleep 300
 <p>Paste into a New Panel: <strong>“Highlights of Errors / Warnings”</strong></p>
 </li>
 <li>
-<p>Change the Visualisation from <strong>“Table” to “Stat”</strong></p>
+<p>Change the Visualisation from <strong>“Table” to “Stat”</strong>  (top right)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="TODO" /></p>
 </li>
 <li>
-<p><strong>Sort by Value</strong> (Build Score) and <strong>Limit to 8 Items</strong>…</p>
+<p>Select <strong>Sort by Value</strong> (Build Score) and <strong>Limit to 8 Items</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="TODO" /></p>
 </li>
 <li>
 <p>And we’ll get this <strong>Completed Panel JSON</strong></p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json"><strong>Highlights of Errors / Warnings</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json"><strong>Panel: Highlights of Errors / Warnings</strong></a></p>
+</li>
+<li>
+<p>Also check out the <strong>Dashboard JSON</strong> and <strong>Links Panel</strong> <em>(“See the NuttX Build History”)</em></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json"><strong>Dashboard JSON</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json"><strong>Links Panel</strong></a></p>
 </li>
 </ol>
+<p>Up Next: The NuttX Dashboard for Build History…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-history.png" alt="Build History Dashboard" /></p>
 <h1 id="appendix-build-history-dashboard"><a class="doc-anchor" href="#appendix-build-history-dashboard">§</a>8 Appendix: Build History Dashboard</h1>
-<p>TODO: history1</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
-<p>TODO: history2</p>
+<p>In the previous section: We created the NuttX Dashboard for Errors, Warnings and Successful Builds.</p>
+<p>Now we do the same for <strong>Build History Dashboard</strong> (pic above)…</p>
+<ol>
+<li>
+<p>Copy the Dashboard from the previous section.</p>
+<p>Delete all Panels, except <strong>“Builds with Errors and Warnings”</strong>.</p>
+<p>Edit the Panel.</p>
+</li>
+<li>
+<p>Under Queries: Set <strong>Options &gt; Type</strong> to <strong>Range</strong></p>
 <p><img src="https://lupyuen.github.io/images/ci4-history2.png" alt="TODO" /></p>
-<p>TODO: history3</p>
+</li>
+<li>
+<p>Under Transformations: Set <strong>Group By</strong> to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash</p>
+<p>In <strong>Organise Fields By Name</strong>: Rename the fields as shown below</p>
+<p>Set the <strong>Value Mappings</strong> as shown below</p>
 <p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="TODO" /></p>
-<p>TODO: Grafana Config</p>
-<p>Watch out for the pesky <strong>WordPress Malware Bots</strong>! This might help: TODO</p>
-<p>Update the Grafana and Prometheus Configuration: /etc/grafana/grafana.ini</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini">/opt/homebrew/etc/grafana/grafana.ini</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">/opt/homebrew/etc/prometheus.yml</a></p>
+<p>Here are the <strong>Panel and Dashboard JSON</strong>…</p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json"><strong>Panel: Build History</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json"><strong>Dashboard: NuttX Build History</strong></a></p>
+</li>
+</ol>
+<p><em>Is Grafana really safe for web hosting?</em></p>
+<p>Use this (safer) <strong>Grafana Configuration</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana.ini">grafana.ini</a></p>
+<ul>
+<li>
+<p>Modified Entries are tagged by “<strong>TODO</strong>”</p>
+</li>
+<li>
+<p><strong>For Ubuntu:</strong> Copy to <em>/etc/grafana/grafana.ini</em></p>
+</li>
+<li>
+<p><strong>For macOS:</strong> Copy to <em>/opt/homebrew/etc/grafana/grafana.ini</em></p>
 </li>
 </ul>
-<p>Add the Grafana Dashboard and Panels…</p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json">dashboard.json</a></p>
-<ul>
-<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json">links.json</a></li>
-<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/highlights.json">highlights.json</a></li>
-<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json">error-builds.json</a></li>
-<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json">success-builds.json</a></li>
-</ul>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json">dashboard-history.json</a></p>
-<ul>
-<li><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/history.json">history.json</a></li>
-</ul>
+<p>Watch out for the pesky <strong>WordPress Malware Bots</strong>! This might help: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/show-log.sh">show-log.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Show Logs from Grafana
+log_file=/var/log/grafana/grafana.log ## For Ubuntu
+log_file=/opt/homebrew/var/log/grafana/grafana.log ## For macOS
 
+## Watch for any suspicious activity
+for (( ; ; )); do
+  clear
+  tail -f $log_file \
+    | grep --line-buffered &#39;logger=context &#39; \
+    | grep --line-buffered -v &#39; path=/api/frontend-metrics &#39; \
+    | grep --line-buffered -v &#39; path=/api/live/ws &#39; \
+    | grep --line-buffered -v &#39; path=/api/plugins/grafana-lokiexplore-app/settings &#39; \
+    | grep --line-buffered -v &#39; path=/api/user/auth-tokens/rotate &#39; \
+    | grep --line-buffered -v &#39; path=/favicon.ico &#39; \
+    | grep --line-buffered -v &#39; remote_addr=\[::1\] &#39; \
+    | cut -d &#39; &#39; -f 9-15 \
+    &amp;
+
+  ## Restart the log display every 12 hours, due to Log Rotation
+  sleep $(( 12 * 60 * 60 ))
+  kill %1
+done
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
