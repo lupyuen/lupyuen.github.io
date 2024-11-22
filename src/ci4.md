@@ -171,9 +171,9 @@ brew services start grafana
 
 1.  How to get there? Watch the steps...
 
-    TODO: Appendix
+    [__"All Builds Dashboard"__](https://lupyuen.github.io/articles/ci4#appendix-all-builds-dashboard)
 
-    TODO: Appendix
+    [__"Build History Dashboard"__](https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard)
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
@@ -701,9 +701,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Earlier we spoke about creating the __NuttX Dashboard__ (pic above). And we created a __Rudimentary Dashboard__ with Grafana...
 
-- TODO
+- [__"Grafana Dashboard"__](https://lupyuen.github.io/articles/ci4#grafana-dashboard)
 
-And we're supposed to achieve these __Completed Panel JSON__...
+And we're about to complete these __Panel JSON__...
 
 - [__Panel: Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
