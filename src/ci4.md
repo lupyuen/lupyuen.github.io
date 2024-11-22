@@ -123,7 +123,7 @@ brew services start grafana
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana4.png)
 
-1.  Select the __Prometheus Data Source__ (we'll see why)
+1.  Select the __Prometheus Data Source__ (we'll come back to this)
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
 
@@ -135,7 +135,7 @@ brew services start grafana
 
     But where's the Timestamp, Board and Config?
 
-    That's why we click __Transformations__ > __Add Transformation__ > __Labels To Fields__
+    That's why we do __Transformations__ > __Add Transformation__ > __Labels To Fields__
 
     ![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
 
@@ -159,13 +159,15 @@ brew services start grafana
 
 1.  And compare with our __Final Panel JSON__...
 
-    [__Panel JSON: Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
+    [__Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
-    [__Panel JSON: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
+    [__Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
 1.  How to get there? Watch the steps...
 
-    - TODO: Appendix
+    TODO: Appendix
+
+    TODO: Appendix
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
@@ -178,25 +180,26 @@ Remember that our Build Scores are stored inside a special (open-source) __Time 
 This is how we install Prometheus...
 
 ```bash
+## For Ubuntu:
+TODO
+
 ## For macOS:
 brew install prometheus
 brew services start prometheus
 
-## For Ubuntu:
-TODO
-
-## TODO: Check that Prometheus is up
-## http://localhost:9090
-
 ## TODO: Update the Prometheus Config
-## Edit /opt/homebrew/etc/prometheus.yml (macOS)
-## Or TODO (Ubuntu)
+## Edit TODO (Ubuntu)
+## Or /opt/homebrew/etc/prometheus.yml (macOS)
+
 ## Replace by contents of:
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 
 ## Restart Prometheus
-brew services restart prometheus ## macOS
 TODO ## Ubuntu
+brew services restart prometheus ## macOS
+
+## TODO: Check that Prometheus is up
+## http://localhost:9090
 ```
 
 Prometheus looks like this...
@@ -280,7 +283,7 @@ Remember that this __Build Score__ _(0.0)_ is specific to our __Build PC__ _(nut
 
 _What about the other fields?_
 
-Oh yes we have a long list of fields describing every Build Score...
+Oh yes we have a long list of fields describing __Every Build Score__...
 
 <span style="font-size:90%">
 
@@ -304,17 +307,28 @@ Plus the earlier fields: __timestamp, url, msg__. Commit Hash is super helpful f
 
 [(See the __Complete Fields__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L426-L515)
 
-TODO: [prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
+_Anything else we should know about Prometheus?_
 
-Multple Values
+We configured Prometheus to scrape the __Build Scores from Pushgateway__, every 15 seconds: [prometheus.yml](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml)
 
-Remove Duplicates
+```yaml
+## Prometheus Configuration
+global:
+  scrape_interval: 15s
 
-HTTP Request
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+    - targets: ["localhost:9090"]
 
-OK to push latest data twice
+  ## Prometheus will scrape the Metrics
+  ## from Pushgateway every 15 seconds
+  - job_name: "pushgateway"
+    static_configs:
+    - targets: ["localhost:9091"]
+```
 
-OK to push from multiple PCs, they are distinct
+And it's perfectly OK to push the __same data twice__ to Pushgateway. (Because we added the Timestamp)
 
 ![TODO](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
@@ -590,7 +604,7 @@ done
 Which will be ingested like this: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73)
 
 ```bash
-## Ingest the Log File
+## Ingest the Log Files from GitHub Actions
 cargo run -- \
   --user $user \
   --repo $repo \
@@ -603,10 +617,19 @@ cargo run -- \
   --job-id $job_id \
   --step $step
 
-## TODO: Example
+## user=NuttX
+## repo=nuttx
+## defconfig=/tmp/defconfig.txt (from earlier)
+## pathname=/tmp/ingest-nuttx-builds/ci-arm-01.log
+## nuttx_hash=7f84a64109f94787d92c2f44465e43fde6f3d28f
+## apps_hash=d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288
+## group=arm-01
+## run_id=11603561928
+## job_id=32310817851
+## step=7
 ```
 
-_How do we run all this?_
+_How to run all this?_
 
 We ingest the GitHub Logs right after the [__Twice-Daily Build__](TODO) of NuttX. (00:00 UTC and 12:00 UTC)
 
