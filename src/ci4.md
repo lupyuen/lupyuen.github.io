@@ -337,7 +337,9 @@ scrape_configs:
     - targets: ["localhost:9091"]
 ```
 
-And it's perfectly OK to post the __Same Build Log__ twice to Pushgateway. (Because the Timestamp will differentiate them)
+And it's perfectly OK to post the __Same Build Log__ twice to Pushgateway. (Because the Timestamp will differentiate the logs)
+
+[(Ask your Local Library for __"Mastering Prometheus"__)](https://share.libbyapp.com/title/10565151)
 
 ![Ingest the Build Logs](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
