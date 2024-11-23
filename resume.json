@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-11-24",
+      "website": "https://lupyuen.github.io/articles/ci4",
+      "summary": "Last article we spoke about the (Twice) Daily Builds for Apache NuttX RTOS. Today we talk about Monitoring the Daily Builds (also the NuttX Build Farm) with our new NuttX Dashboard."
+    },
+    {
       "name": "Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-11-10",
