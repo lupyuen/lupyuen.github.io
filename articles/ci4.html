@@ -73,12 +73,12 @@
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-all-builds-dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
 <li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>24 Nov 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS" /></p>
-<p>Last article we spoke about the <strong>(Twice) Daily Builds</strong> for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)" /></p>
+<p>Last article we spoke about the <strong>(Twice) Daily Builds</strong> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ci3"><strong>“Optimising the Continuous Integration for Apache NuttX RTOS”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ci3"><strong>“Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)”</strong></a></li>
 </ul>
-<p>Today we’ll talk about <strong>Monitoring the Daily Builds</strong> (also the <a href="TODO"><strong>NuttX Build Farm</strong></a>) with our <strong>NuttX Dashboard</strong>…</p>
+<p>Today we’ll talk about <strong>Monitoring the Daily Builds</strong> (also the <a href="https://lupyuen.github.io/articles/ci2"><strong>NuttX Build Farm</strong></a>) with our <strong>NuttX Dashboard</strong>…</p>
 <ul>
 <li>
 <p>TODO</p>
@@ -87,16 +87,19 @@
 <p>TODO</p>
 </li>
 <li>
-<p>TODO</p>
+<p>Why do all this? Because <a href="https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds"><strong>we can’t afford</strong></a> to run Complete CI Checks on Every Pull Request!</p>
+</li>
+<li>
+<p>We expect <strong>some breakage</strong>, and NuttX Dashboard will help with the fixing</p>
 </li>
 </ul>
 <p><em>What will NuttX Dashboard tell us?</em></p>
 <p>NuttX Dashboard shows a <strong>Snapshot of Failed Builds</strong> for the present moment. (Pic above)</p>
 <p>We may <strong>Filter the Builds</strong> by Architecture, Board and Config…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-filter.png" alt="TODO" /></p>
-<p>The snapshot includes builds from the (community-hosted) <a href="TODO"><strong>NuttX Build Farm</strong></a> as well as <strong>GitHub Actions</strong> (twice-daily builds).</p>
+<p><img src="https://lupyuen.github.io/images/ci4-filter.png" alt="Filter the Builds by Architecture, Board and Config" /></p>
+<p>The snapshot includes builds from the (community-hosted) <a href="https://lupyuen.github.io/articles/ci2"><strong>NuttX Build Farm</strong></a> as well as <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>GitHub Actions</strong></a> (twice-daily builds).</p>
 <p>To see <strong>GitHub Actions Only</strong>: Click <strong><code>[+]</code></strong> and set <strong><code>User</code></strong> to <strong><code>NuttX</code></strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-user.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-user.png" alt="Show GitHub Actions Only" /></p>
 <p>To see the <strong>History of Builds</strong>: Click the link for <em>“NuttX Build History”</em>. Remember to select the Board and Config. (Pic below)</p>
 <p><em>Sounds Great! What’s the URL?</em></p>
 <p>Sorry can’t print it here, our dashboard is under attack by WordPress Malware Bots (!). Please head over to NuttX Repo and seek NuttX-Dashboard. (Dog Tea? Organic!)</p>
@@ -124,7 +127,7 @@
 </tbody></table>
 </div>
 <p>Which makes it simpler to <strong>Colour-Code</strong> our Dashboard: Green <em>(Success)</em> / Yellow <em>(Warning)</em> / Red <em>(Error)</em>.</p>
-<p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="Build Scores for NuttX Dashboard" /></p>
 <p>Sounds easy? But we’ll catch <strong>Multiple Kinds of Errors</strong> (in various formats)</p>
 <ul>
 <li>
@@ -157,12 +160,12 @@
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 </code></pre></div>
 <p><em>Where do we store the Build Scores?</em></p>
-<p>Inside a special <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
+<p>Inside a special open-source <strong>Time Series Database</strong> called <a href="https://prometheus.io/"><strong>Prometheus</strong></a>.</p>
 <p>We’ll come back to Prometheus, first we study the Dashboard…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow3.jpg" alt="Grafana Dashboard" /></p>
 <h1 id="grafana-dashboard"><a class="doc-anchor" href="#grafana-dashboard">§</a>2 Grafana Dashboard</h1>
 <p><em>What’s this Grafana?</em></p>
-<p><a href="TODO"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
+<p><a href="https://grafana.com/oss/"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
 <p>Sadly there isn’t a “programming language” for coding Grafana. Thus we walk through the steps to create our <strong>NuttX Dashboard with Grafana</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Grafana on Ubuntu
 ## See https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
@@ -179,43 +182,43 @@ brew services start grafana
 <ol>
 <li>
 <p>Inside Grafana: We create a <strong>New Dashboard</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana3.png" alt="Create a New Dashboard" /></p>
 </li>
 <li>
 <p>Add a <strong>Visualisation</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana4.png" alt="Add a Visualisation" /></p>
 </li>
 <li>
-<p>Select the <strong>Prometheus Data Source</strong> (we’ll come back to this)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana5.png" alt="TODO" /></p>
+<p>Select the <strong>Prometheus Data Source</strong> (we’ll explain why)</p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana5.png" alt="Select the Prometheus Data Source" /></p>
 </li>
 <li>
 <p>Change the Visualisation to <strong>“Table”</strong> (top right)</p>
 <p>Choose <strong>Build Score</strong> as the Metric. Click <strong>“Run Queries”</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana1.png" alt="Change to Table Visualisation" /></p>
 </li>
 <li>
 <p>We see a list of Build Scores in the Data Table above.</p>
 <p>But where’s the Timestamp, Board and Config?</p>
 <p>That’s why we do <strong>Transformations</strong> &gt; <strong>Add Transformation</strong> &gt; <strong>Labels To Fields</strong></p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana2.png" alt="Transform Label To Fields" /></p>
 </li>
 <li>
 <p>And the data appears! Timestamp, Board, Config, …</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana6.png" alt="Build Scores with Timestamp, Board, Config" /></p>
 </li>
 <li>
-<p>Hmmm it’s the same Board and Config! (Just different Timestamps)</p>
+<p>Hmmm it’s the same Board and Config… Just different Timestamps.</p>
 <p>We click <strong>Queries</strong> &gt; <strong>Format: Table</strong> &gt; <strong>Type: Instant</strong> &gt; <strong>Refresh</strong></p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana7.png" alt="Change to Instant Query" /></p>
 </li>
 <li>
 <p>Much better! We see the <strong>Build Score</strong> at the End of Each Row (to be colourised)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana8.png" alt="Build Scores" /></p>
 </li>
 <li>
 <p>Our NuttX Deashboard is nearly ready. To check our progress: Click <strong>Inspect</strong> &gt; <strong>Panel JSON</strong></p>
-<p><img src="https://lupyuen.github.io/images/ci4-grafana9.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-grafana9.png" alt="Inspect Panel JSON" /></p>
 </li>
 <li>
 <p>And compare with our <strong>Completed Panel JSON</strong>…</p>
@@ -228,10 +231,10 @@ brew services start grafana
 <p><a href="https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard"><strong>“Build History Dashboard”</strong></a></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/ci4-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow4.jpg" alt="Prometheus Metrics" /></p>
 <h1 id="prometheus-metrics"><a class="doc-anchor" href="#prometheus-metrics">§</a>3 Prometheus Metrics</h1>
 <p><em>We saw the setup for Grafana Dashboard. What about the Prometheus Metrics?</em></p>
-<p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="TODO"><strong>Prometheus</strong></a>.</p>
+<p>Remember that our Build Scores are stored inside a special (open-source) <strong>Time Series Database</strong> called <a href="https://prometheus.io/"><strong>Prometheus</strong></a>.</p>
 <p>This is how we install Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Prometheus on Ubuntu
 sudp apt install prometheus
@@ -256,7 +259,7 @@ brew services restart prometheus  ## macOS
 ## http://localhost:9090
 </code></pre></div>
 <p><strong>Prometheus</strong> looks like this…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="Prometheus User Interface" /></p>
 <p>Recall that we assign a <strong>Build Score</strong> for every build…</p>
 <div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0.0</code></strong></td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
@@ -287,12 +290,12 @@ build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.gi
 EOF
 </code></pre></div>
 <p><strong>Pushgateway</strong> looks like this…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="Pushgateway User Interface" /></p>
 <p><em>What’s this Pushgateway?</em></p>
 <p>Prometheus works by <a href="https://prometheus.io/docs/prometheus/latest/getting_started/"><strong>Scraping Metrics</strong></a> over HTTP.</p>
-<p>That’s why we install <a href="TODO"><strong>Pushgateway</strong></a> as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics)) to Prometheus.</p>
+<p>That’s why we install <a href="https://prometheus.io/docs/practices/pushing/"><strong>Pushgateway</strong></a> as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics) to Prometheus.</p>
 <p>(Which means that we load the Build Scores into Pushgateway, like above)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="Pushgateway and Prometheus for Build Scores" /></p>
 <p><em>How does it work?</em></p>
 <p>We post the Build Score over <strong>HTTP to Pushgateway</strong> at…</p>
 <div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
@@ -358,18 +361,18 @@ scrape_configs:
     - targets: [&quot;localhost:9091&quot;]
 </code></pre></div>
 <p>And it’s perfectly OK to post the <strong>Same Build Log</strong> twice to Pushgateway. (Because the Timestamp will differentiate them)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-flow5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow5.jpg" alt="Ingest the Build Logs" /></p>
 <h1 id="ingest-the-build-logs"><a class="doc-anchor" href="#ingest-the-build-logs">§</a>4 Ingest the Build Logs</h1>
 <p>Now we be like an Amoeba and ingest all kinds of Build Logs!</p>
 <ul>
 <li>
-<p>Build Logs from <a href="TODO"><strong>NuttX Build Farm</strong></a></p>
+<p>Build Logs from <a href="https://lupyuen.github.io/articles/ci2"><strong>NuttX Build Farm</strong></a></p>
 </li>
 <li>
-<p>Build Logs from <a href="TODO"><strong>GitHub Actions</strong></a></p>
+<p>Build Logs from <a href="https://lupyuen.github.io/articles/ci3"><strong>GitHub Actions</strong></a></p>
 </li>
 </ul>
-<p>For NuttX Build Farm, we ingest the <a href="TODO"><strong>GitHub Gists</strong></a> that contain the Build Logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
+<p>For NuttX Build Farm, we ingest the <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-all-target-groups"><strong>GitHub Gists</strong></a> that contain the Build Logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all defconfig pathnames in NuttX Repo
 git clone https://github.com/apache/nuttx
 find nuttx \
@@ -537,7 +540,7 @@ find nuttx \
 </span>
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p><em>What about the Build Logs from GitHub Actions?</em></p>
-<p>It gets a little more complicated, we need to download the <strong>Build Logs from GitHub Actions</strong>.</p>
+<p>It gets a little more complicated, we need to download the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Build Logs from GitHub Actions</strong></a>.</p>
 <p>But before that, we need the <strong>GitHub Run ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
 local os=$1    ## &quot;Linux&quot; or &quot;msys2&quot;
@@ -612,7 +615,7 @@ cargo run -- \
 ## step=7
 </code></pre></div>
 <p><em>How to run all this?</em></p>
-<p>We ingest the GitHub Logs right after the <a href="TODO"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
+<p>We ingest the GitHub Logs right after the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
 <p>Thus it makes sense to bundle the <strong>Build and Ingest</strong> into One Single Script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Mirror Repo and Ingest NuttX Build Logs
 ## from GitHub Actions into Prometheus Pushgateway
@@ -633,10 +636,20 @@ sleep 300
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 ./github.sh
 </code></pre></div>
-<p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>Next Article: We look inside the updated <strong>NuttX Build Farm</strong> that runs on <strong>macOS for Apple Silicon</strong>. (Great news for NuttX Devs on macOS!)</p>
-<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>mystifying bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>. (So someday it will disappear from NuttX Dashboard!)</p>
+<p><em>Why are we doing all this?</em></p>
+<p>That’s because <a href="https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds"><strong>we can’t afford</strong></a> to run Complete CI Checks on Every Pull Request!</p>
+<p>We expect <strong>some breakage</strong>, and NuttX Dashboard will help with the fixing.</p>
+<p><em>What happens when NuttX Dashboard reports a Broken Build?</em></p>
+<p>Right now we scramble to identify the <a href="https://github.com/apache/nuttx/issues/14808"><strong>Breaking Commit</strong></a>. And prevent more Broken Commits from piling on.</p>
+<p>Yes NuttX Dashboard will tell us the <a href="https://lupyuen.github.io/articles/ci4#build-score"><strong>Commit Hashes</strong></a> for the <a href="https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard"><strong>Build History</strong></a>. But the Batched Commits aren’t <strong>Temporally Precise</strong>, and we race against time to inspect and recompile each Past Commit.</p>
+<p><em>Can we automate this?</em></p>
+<p>Yeah someday our NuttX Build Farm shall <strong>“Rewind The Build”</strong> when something breaks…</p>
+<p>Automatically <strong>Backtrack the Commits</strong>, Compile each Commit and discover the Breaking Commit. <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L42-L69">(Like this)</a></p>
+<p><em>Any more stories of NuttX CI?</em></p>
+<p>Next Article: We chat about the updated <strong>NuttX Build Farm</strong> that runs on <strong>macOS for Apple Silicon</strong>. (Great news for NuttX Devs on macOS)</p>
+<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>. (So it will disappear sooner from NuttX Dashboard)</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -680,35 +693,35 @@ sleep 300
 </ul>
 <p>Let’s flesh out the remaining bits of our creation.</p>
 <p>Before we begin: Check that our <strong>Prometheus Data Source</strong> is configured to fetch the Build Scores from Prometheus and Pushgateway…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="TODO" /></p>
-<p><a href="TODO">(Remember to configure <strong>prometheus.yml</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="Configure our Prometheus Data Source" /></p>
+<p><a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics">(Remember to configure <strong>prometheus.yml</strong>)</a></p>
 <p>Head back to our upcoming dashboard…</p>
 <ol>
 <li>
 <p>This is how we <strong>Filter by Arch, Sub-Arch, Board, Config</strong>, …</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="Filter by Arch, Sub-Arch, Board, Config" /></p>
 </li>
 <li>
 <p>Why match the <strong>Funny Timestamps</strong>? Well mistakes were make. We exclude these Timestamps so they won’t appear in the dashboard…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error2.png" alt="We exclude these Timestamps" /></p>
 </li>
 <li>
 <p>For Builds with Errors and Warnings: We select <strong>Values (Build Scores) &lt;= 0.5</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error3.png" alt="select Values (Build Scores) &lt;= 0.5" /></p>
 </li>
 <li>
 <p>We <strong>Rename the Fields</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error6.png" alt="Rename the Fields" /></p>
 </li>
 <li>
 <p>Set the <strong>Timestamp</strong> to Lower Case, <strong>Config</strong> to Upper Case…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error4.png" alt="Set the Timestamp to Lower Case, Config to Upper Case" /></p>
 </li>
 <li>
 <p>Set the <strong>Color Scheme</strong> to <strong>From Thresholds By Value</strong></p>
 <p>Set the <strong>Data Links</strong>: Title is <code>Show the Build Log</code>, URL is <code>${__data.fields.url}</code></p>
 <p>Colour the Values (Build Scores) with the <strong>Value Mappings</strong> below</p>
-<p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="Set the Color Scheme and Data Links" /></p>
 </li>
 <li>
 <p>And we’ll achieve this <strong>Completed Panel JSON</strong>…</p>
@@ -723,10 +736,10 @@ sleep 300
 </li>
 <li>
 <p>Select <strong>Values (Build Scores) &gt; 0.5</strong></p>
-<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-history1.png" alt="Select Values (Build Scores) &gt; 0.5" /></p>
 </li>
 <li>
-<p>And we’ll achieve this <strong>Completed Panel JSON</strong></p>
+<p>And we’ll accomplish this <strong>Completed Panel JSON</strong></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json"><strong>Panel: Successful Builds</strong></a></p>
 </li>
 </ol>
@@ -738,11 +751,11 @@ sleep 300
 </li>
 <li>
 <p>Change the Visualisation from <strong>“Table” to “Stat”</strong>  (top right)</p>
-<p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-highlight1.png" alt="Change the Visualisation from “Table” to “Stat”" /></p>
 </li>
 <li>
 <p>Select <strong>Sort by Value</strong> (Build Score) and <strong>Limit to 8 Items</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-highlight2.png" alt="Sort by Value and Limit to 8 Items" /></p>
 </li>
 <li>
 <p>And we’ll get this <strong>Completed Panel JSON</strong></p>
@@ -767,13 +780,13 @@ sleep 300
 </li>
 <li>
 <p>Under Queries: Set <strong>Options &gt; Type</strong> to <strong>Range</strong></p>
-<p><img src="https://lupyuen.github.io/images/ci4-history2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-history2.png" alt="Set Type to Range" /></p>
 </li>
 <li>
 <p>Under Transformations: Set <strong>Group By</strong> to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash</p>
 <p>In <strong>Organise Fields By Name</strong>: Rename the fields as shown below</p>
 <p>Set the <strong>Value Mappings</strong> as shown below</p>
-<p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="Organise Fields By Name and Value Mappings" /></p>
 </li>
 <li>
 <p>Here are the <strong>Panel and Dashboard JSON</strong>…</p>
