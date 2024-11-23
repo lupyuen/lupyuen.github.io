@@ -2,19 +2,21 @@
 
 📝 _24 Nov 2024_
 
-![Continuous Integration Dashboard for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-dashboard.png)
+![Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)](https://lupyuen.github.io/images/ci4-dashboard.png)
 
-Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](TODO)...
+Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci3)
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
 
-Today we'll talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](TODO)) with our __NuttX Dashboard__...
-
-- TODO
+Today we'll talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)) with our __NuttX Dashboard__...
 
 - TODO
 
 - TODO
+
+- Why do all this? Because [__we can't afford__](https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
+
+- We expect __some breakage__, and NuttX Dashboard will help with the fixing
 
 _What will NuttX Dashboard tell us?_
 
@@ -22,13 +24,13 @@ NuttX Dashboard shows a __Snapshot of Failed Builds__ for the present moment. (P
 
 We may __Filter the Builds__ by Architecture, Board and Config...
 
-![TODO](https://lupyuen.github.io/images/ci4-filter.png)
+![Filter the Builds by Architecture, Board and Config](https://lupyuen.github.io/images/ci4-filter.png)
 
-The snapshot includes builds from the (community-hosted) [__NuttX Build Farm__](TODO) as well as __GitHub Actions__ (twice-daily builds).
+The snapshot includes builds from the (community-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2) as well as [__GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) (twice-daily builds).
 
 To see __GitHub Actions Only__: Click __`[+]`__ and set __`User`__ to __`NuttX`__...
 
-![TODO](https://lupyuen.github.io/images/ci4-user.png)
+![Show GitHub Actions Only](https://lupyuen.github.io/images/ci4-user.png)
 
 To see the __History of Builds__: Click the link for _"NuttX Build History"_. Remember to select the Board and Config. (Pic below)
 
@@ -61,7 +63,7 @@ That's why we assign a __Build Score__ for every build...
 
 Which makes it simpler to __Colour-Code__ our Dashboard: Green _(Success)_ / Yellow _(Warning)_ / Red _(Error)_.
 
-![TODO](https://lupyuen.github.io/images/ci4-flow2.jpg)
+![Build Scores for NuttX Dashboard](https://lupyuen.github.io/images/ci4-flow2.jpg)
 
 Sounds easy? But we'll catch __Multiple Kinds of Errors__ (in various formats)
 
@@ -91,17 +93,17 @@ localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
 
 _Where do we store the Build Scores?_
 
-Inside a special __Time Series Database__ called [__Prometheus__](TODO).
+Inside a special open-source __Time Series Database__ called [__Prometheus__](https://prometheus.io/).
 
 We'll come back to Prometheus, first we study the Dashboard...
 
-![TODO](https://lupyuen.github.io/images/ci4-flow3.jpg)
+![Grafana Dashboard](https://lupyuen.github.io/images/ci4-flow3.jpg)
 
 # Grafana Dashboard
 
 _What's this Grafana?_
 
-[__Grafana__](TODO) is an open-source toolkit for creating __Monitoring Dashboards__.
+[__Grafana__](https://grafana.com/oss/) is an open-source toolkit for creating __Monitoring Dashboards__.
 
 Sadly there isn't a "programming language" for coding Grafana. Thus we walk through the steps to create our __NuttX Dashboard with Grafana__...
 
@@ -121,21 +123,21 @@ brew services start grafana
 
 1.  Inside Grafana: We create a __New Dashboard__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana3.png)
+    ![Create a New Dashboard](https://lupyuen.github.io/images/ci4-grafana3.png)
 
 1.  Add a __Visualisation__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana4.png)
+    ![Add a Visualisation](https://lupyuen.github.io/images/ci4-grafana4.png)
 
-1.  Select the __Prometheus Data Source__ (we'll come back to this)
+1.  Select the __Prometheus Data Source__ (we'll explain why)
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana5.png)
+    ![Select the Prometheus Data Source](https://lupyuen.github.io/images/ci4-grafana5.png)
 
 1.  Change the Visualisation to __"Table"__ (top right)
 
     Choose __Build Score__ as the Metric. Click __"Run Queries"__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana1.png)
+    ![Change to Table Visualisation](https://lupyuen.github.io/images/ci4-grafana1.png)
 
 1.  We see a list of Build Scores in the Data Table above.
 
@@ -143,25 +145,25 @@ brew services start grafana
 
     That's why we do __Transformations__ > __Add Transformation__ > __Labels To Fields__
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana2.png)
+    ![Transform Label To Fields](https://lupyuen.github.io/images/ci4-grafana2.png)
 
 1.  And the data appears! Timestamp, Board, Config, ...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana6.png)
+    ![Build Scores with Timestamp, Board, Config](https://lupyuen.github.io/images/ci4-grafana6.png)
 
-1.  Hmmm it's the same Board and Config! (Just different Timestamps)
+1.  Hmmm it's the same Board and Config... Just different Timestamps.
 
     We click __Queries__ > __Format: Table__ > __Type: Instant__ > __Refresh__
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana7.png)
+    ![Change to Instant Query](https://lupyuen.github.io/images/ci4-grafana7.png)
 
 1.  Much better! We see the __Build Score__ at the End of Each Row (to be colourised)
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana8.png)
+    ![Build Scores](https://lupyuen.github.io/images/ci4-grafana8.png)
 
 1.  Our NuttX Deashboard is nearly ready. To check our progress: Click __Inspect__ > __Panel JSON__
 
-    ![TODO](https://lupyuen.github.io/images/ci4-grafana9.png)
+    ![Inspect Panel JSON](https://lupyuen.github.io/images/ci4-grafana9.png)
 
 1.  And compare with our __Completed Panel JSON__...
 
@@ -175,13 +177,13 @@ brew services start grafana
 
     [__"Build History Dashboard"__](https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard)
 
-![TODO](https://lupyuen.github.io/images/ci4-flow4.jpg)
+![Prometheus Metrics](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
 # Prometheus Metrics
 
 _We saw the setup for Grafana Dashboard. What about the Prometheus Metrics?_
 
-Remember that our Build Scores are stored inside a special (open-source) __Time Series Database__ called [__Prometheus__](TODO).
+Remember that our Build Scores are stored inside a special (open-source) __Time Series Database__ called [__Prometheus__](https://prometheus.io/).
 
 This is how we install Prometheus...
 
@@ -211,7 +213,7 @@ brew services restart prometheus  ## macOS
 
 __Prometheus__ looks like this...
 
-![TODO](https://lupyuen.github.io/images/ci4-prometheus.png)
+![Prometheus User Interface](https://lupyuen.github.io/images/ci4-prometheus.png)
 
 Recall that we assign a __Build Score__ for every build...
 
@@ -248,17 +250,17 @@ EOF
 
 __Pushgateway__ looks like this...
 
-![TODO](https://lupyuen.github.io/images/ci4-pushgateway.png)
+![Pushgateway User Interface](https://lupyuen.github.io/images/ci4-pushgateway.png)
 
 _What's this Pushgateway?_
 
 Prometheus works by [__Scraping Metrics__](https://prometheus.io/docs/prometheus/latest/getting_started/) over HTTP.
 
-That's why we install [__Pushgateway__](TODO) as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics)) to Prometheus.
+That's why we install [__Pushgateway__](https://prometheus.io/docs/practices/pushing/) as a HTTP Endpoint (Staging Area) that will serve the Build Score (Metrics) to Prometheus.
 
 (Which means that we load the Build Scores into Pushgateway, like above)
 
-![TODO](https://lupyuen.github.io/images/ci4-flow2.jpg)
+![Pushgateway and Prometheus for Build Scores](https://lupyuen.github.io/images/ci4-flow2.jpg)
 
 _How does it work?_
 
@@ -337,17 +339,17 @@ scrape_configs:
 
 And it's perfectly OK to post the __Same Build Log__ twice to Pushgateway. (Because the Timestamp will differentiate them)
 
-![TODO](https://lupyuen.github.io/images/ci4-flow5.jpg)
+![Ingest the Build Logs](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
 # Ingest the Build Logs
 
 Now we be like an Amoeba and ingest all kinds of Build Logs!
 
-- Build Logs from [__NuttX Build Farm__](TODO)
+- Build Logs from [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)
 
-- Build Logs from [__GitHub Actions__](TODO)
+- Build Logs from [__GitHub Actions__](https://lupyuen.github.io/articles/ci3)
 
-For NuttX Build Farm, we ingest the [__GitHub Gists__](TODO) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+For NuttX Build Farm, we ingest the [__GitHub Gists__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-all-target-groups) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
 ## Find all defconfig pathnames in NuttX Repo
@@ -552,7 +554,7 @@ Yeah our Build Logs appear in all shapes and sizes. We might need to standardise
 
 _What about the Build Logs from GitHub Actions?_
 
-It gets a little more complicated, we need to download the __Build Logs from GitHub Actions__.
+It gets a little more complicated, we need to download the [__Build Logs from GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs).
 
 But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
 
@@ -642,7 +644,7 @@ cargo run -- \
 
 _How to run all this?_
 
-We ingest the GitHub Logs right after the [__Twice-Daily Build__](TODO) of NuttX. (00:00 UTC and 12:00 UTC)
+We ingest the GitHub Logs right after the [__Twice-Daily Build__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) of NuttX. (00:00 UTC and 12:00 UTC)
 
 Thus it makes sense to bundle the __Build and Ingest__ into One Single Script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
 
@@ -667,13 +669,33 @@ sleep 300
 ./github.sh
 ```
 
-![TODO](https://lupyuen.github.io/images/ci4-flow.jpg)
+![Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)](https://lupyuen.github.io/images/ci4-flow.jpg)
 
 # What's Next
 
-Next Article: We look inside the updated __NuttX Build Farm__ that runs on __macOS for Apple Silicon__. (Great news for NuttX Devs on macOS!)
+_Why are we doing all this?_
 
-Then we study the internals of a [__mystifying bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So someday it will disappear from NuttX Dashboard!)
+That's because [__we can't afford__](https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
+
+We expect __some breakage__, and NuttX Dashboard will help with the fixing.
+
+_What happens when NuttX Dashboard reports a Broken Build?_
+
+Right now we scramble to identify the [__Breaking Commit__](https://github.com/apache/nuttx/issues/14808). And prevent more Broken Commits from piling on.
+
+Yes NuttX Dashboard will tell us the [__Commit Hashes__](https://lupyuen.github.io/articles/ci4#build-score) for the [__Build History__](https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard). But the Batched Commits aren't __Temporally Precise__, and we race against time to inspect and recompile each Past Commit.
+
+_Can we automate this?_
+
+Yeah someday our NuttX Build Farm shall __"Rewind The Build"__ when something breaks...
+
+Automatically __Backtrack the Commits__, Compile each Commit and discover the Breaking Commit. [(Like this)](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L42-L69)
+
+_Any more stories of NuttX CI?_
+
+Next Article: We chat about the updated __NuttX Build Farm__ that runs on __macOS for Apple Silicon__. (Great news for NuttX Devs on macOS)
+
+Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So it will disappear sooner from NuttX Dashboard)
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
@@ -713,31 +735,31 @@ Let's flesh out the remaining bits of our creation.
 
 Before we begin: Check that our __Prometheus Data Source__ is configured to fetch the Build Scores from Prometheus and Pushgateway...
 
-![TODO](https://lupyuen.github.io/images/ci4-datasource.png)
+![Configure our Prometheus Data Source](https://lupyuen.github.io/images/ci4-datasource.png)
 
-[(Remember to configure __prometheus.yml__)](TODO)
+[(Remember to configure __prometheus.yml__)](https://lupyuen.github.io/articles/ci4#prometheus-metrics)
 
 Head back to our upcoming dashboard...
 
 1.  This is how we __Filter by Arch, Sub-Arch, Board, Config__, ...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error1.png)
+    ![Filter by Arch, Sub-Arch, Board, Config](https://lupyuen.github.io/images/ci4-error1.png)
 
 1.  Why match the __Funny Timestamps__? Well mistakes were make. We exclude these Timestamps so they won't appear in the dashboard...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error2.png)
+    ![We exclude these Timestamps](https://lupyuen.github.io/images/ci4-error2.png)
 
 1.  For Builds with Errors and Warnings: We select __Values (Build Scores) <= 0.5__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error3.png)
+    ![select Values (Build Scores) <= 0.5](https://lupyuen.github.io/images/ci4-error3.png)
 
 1.  We __Rename the Fields__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error6.png)
+    ![Rename the Fields](https://lupyuen.github.io/images/ci4-error6.png)
 
 1.  Set the __Timestamp__ to Lower Case, __Config__ to Upper Case...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error4.png)
+    ![Set the Timestamp to Lower Case, Config to Upper Case](https://lupyuen.github.io/images/ci4-error4.png)
 
 1.  Set the __Color Scheme__ to __From Thresholds By Value__
 
@@ -745,7 +767,7 @@ Head back to our upcoming dashboard...
 
     Colour the Values (Build Scores) with the __Value Mappings__ below
 
-    ![TODO](https://lupyuen.github.io/images/ci4-error5.png)
+    ![Set the Color Scheme and Data Links](https://lupyuen.github.io/images/ci4-error5.png)
 
 1.  And we'll achieve this __Completed Panel JSON__...
 
@@ -759,9 +781,9 @@ _What about the Successful Builds?_
 
 1.  Select __Values (Build Scores) > 0.5__
 
-    ![TODO](https://lupyuen.github.io/images/ci4-history1.png)
+    ![Select Values (Build Scores) > 0.5](https://lupyuen.github.io/images/ci4-history1.png)
 
-1.  And we'll achieve this __Completed Panel JSON__
+1.  And we'll accomplish this __Completed Panel JSON__
 
     [__Panel: Successful Builds__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/success-builds.json)
 
@@ -773,11 +795,11 @@ _And the Highlights Panel at the top?_
 
 1.  Change the Visualisation from __"Table" to "Stat"__  (top right)
 
-    ![TODO](https://lupyuen.github.io/images/ci4-highlight1.png)
+    ![Change the Visualisation from "Table" to "Stat"](https://lupyuen.github.io/images/ci4-highlight1.png)
 
 1.  Select __Sort by Value__ (Build Score) and __Limit to 8 Items__...
 
-    ![TODO](https://lupyuen.github.io/images/ci4-highlight2.png)
+    ![Sort by Value and Limit to 8 Items](https://lupyuen.github.io/images/ci4-highlight2.png)
 
 1.  And we'll get this __Completed Panel JSON__
 
@@ -807,7 +829,7 @@ Now we do the same for __Build History Dashboard__ (pic above)...
 
 1.  Under Queries: Set __Options > Type__ to __Range__
 
-    ![TODO](https://lupyuen.github.io/images/ci4-history2.png)
+    ![Set Type to Range](https://lupyuen.github.io/images/ci4-history2.png)
 
 1.  Under Transformations: Set __Group By__ to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash
 
@@ -815,7 +837,7 @@ Now we do the same for __Build History Dashboard__ (pic above)...
 
     Set the __Value Mappings__ as shown below
 
-    ![TODO](https://lupyuen.github.io/images/ci4-history3.png)
+    ![Organise Fields By Name and Value Mappings](https://lupyuen.github.io/images/ci4-history3.png)
 
 1.  Here are the __Panel and Dashboard JSON__...
 
