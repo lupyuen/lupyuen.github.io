@@ -8,7 +8,7 @@ Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTO
 
 - [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
 
-Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)) with our __NuttX Dashboard__...
+Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)) with our new __NuttX Dashboard__...
 
 - TODO
 
