@@ -4,7 +4,14 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
-            <title>Optimising the Continuous Integration for Apache NuttX RTOS</title>
+            <title>Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)</title>
+            <link>https://lupyuen.github.io/articles/ci4</link>
+            <description><![CDATA[Last article we spoke about the (Twice) Daily Builds for Apache NuttX RTOS. Today we talk about Monitoring the Daily Builds (also the NuttX Build Farm) with our new NuttX Dashboard.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci4</guid>
+            <pubDate>Sun, 24 Nov 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)</title>
             <link>https://lupyuen.github.io/articles/ci3</link>
             <description><![CDATA[Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890. Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours! This article explains everything we did in the (Semi-Chaotic) Two Weeks for Apache NuttX RTOS.]]></description>
             <guid>https://lupyuen.github.io/articles/ci3</guid>
