@@ -71,6 +71,8 @@ Sounds easy? But we'll catch __Multiple Kinds of Errors__ (in various formats)
 
 - __Linker Errors:__ _"undefined reference to atomic\_fetch\_add\_2"_
 
+- __Config Errors:__ _"modified: sim/configs/rtptools/defconfig"_
+
 - __Network Errors:__ _"curl 92 HTTP/2 stream 0 was not closed cleanly"_
 
 - __CI Test Failures:__ _"test\_pipe FAILED"_
@@ -103,7 +105,7 @@ We'll come back to Prometheus, first we study the Dashboard...
 
 _What's this Grafana?_
 
-[__Grafana__](https://grafana.com/oss/) is an open-source toolkit for creating __Monitoring Dashboards__.
+[__Grafana__](https://grafana.com/oss/grafana/) is an open-source toolkit for creating __Monitoring Dashboards__.
 
 Sadly there isn't a "programming language" for coding Grafana. Thus we walk through the steps to create our __NuttX Dashboard with Grafana__...
 
@@ -378,29 +380,29 @@ Which will __Identify Errors and Warnings__ in the logs: [main.rs](https://githu
 // To Identify Errors and Warnings:
 // We skip the known lines
 if
-  line.starts_with("----------") ||
   line.starts_with("-- ") ||  // "-- Build type:"
-  line.starts_with("Cleaning") ||
+  line.starts_with("----------")  ||
+  line.starts_with("Cleaning")    ||
   line.starts_with("Configuring") ||
-  line.starts_with("Select") ||
-  line.starts_with("Disabling") ||
-  line.starts_with("Enabling") ||
-  line.starts_with("Building") ||
-  line.starts_with("Normalize") ||
-  line.starts_with("% Total") ||
-  line.starts_with("Dload") ||
-  line.starts_with("~/apps") ||
-  line.starts_with("~/nuttx") ||
-  line.starts_with("find: 'boards/") ||  // "find: 'boards/risc-v/q[0-d]*': No such file or directory"
+  line.starts_with("Select")      ||
+  line.starts_with("Disabling")   ||
+  line.starts_with("Enabling")    ||
+  line.starts_with("Building")    ||
+  line.starts_with("Normalize")   ||
+  line.starts_with("% Total")     ||
+  line.starts_with("Dload")       ||
+  line.starts_with("~/apps")      ||
+  line.starts_with("~/nuttx")     ||
+  line.starts_with("find: 'boards/")   ||  // "find: 'boards/risc-v/q[0-d]*': No such file or directory"
   line.starts_with("|        ^~~~~~~") ||  // `warning "FPU test not built; Only available in the flat build (CONFIG_BUILD_FLAT)"`
-  line.contains("FPU test not built") ||
-  line.starts_with("a nuttx-export-") ||  // "a nuttx-export-12.7.0/tools/incdir.c"
-  line.contains(" PASSED") ||  // CI Test: "test_hello PASSED"
+  line.contains("FPU test not built")  ||
+  line.starts_with("a nuttx-export-")  ||  // "a nuttx-export-12.7.0/tools/incdir.c"
+  line.contains(" PASSED")  ||  // CI Test: "test_hello PASSED"
   line.contains(" SKIPPED") ||  // CI Test: "test_mm SKIPPED"
   line.contains("On branch master") ||  // "On branch master"
-  line.contains("Your branch is up to date") ||  // "Your branch is up to date with 'origin/master'"
+  line.contains("Your branch is up to date")     ||  // "Your branch is up to date with 'origin/master'"
   line.contains("Changes not staged for commit") ||  // "Changes not staged for commit:"
-  line.contains("git add <file>") ||  // "(use "git add <file>..." to update what will be committed)"
+  line.contains("git add <file>")  ||  // "(use "git add <file>..." to update what will be committed)"
   line.contains("git restore <file>")  // "(use "git restore <file>..." to discard changes in working directory)"
 { continue; }
 
@@ -462,7 +464,7 @@ let build_score =
 
 </span>
 
-And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490)
+And post the __Build Scores to Pushgateway__: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L474-L515)
 
 <span style="font-size:90%">
 
@@ -497,15 +499,14 @@ find nuttx \
   >/tmp/defconfig.txt
 
 ## defconfig.txt contains:
-## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
-## boards/z80/ez80/ez80f910200kitg/configs/ostest/defconfig
 ## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
+## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
 ```
 
 Suppose we're ingesting a NuttX Target _milkv\_duos:nsh_.
 
-To identify the Target's __Sub-Architecture__ _(sg2000)_, we search for _milkv\_duos/.../nsh_ in the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513)
+To identify the Target's __Sub-Architecture__ _(sg2000)_, we search for _milkv\_duos/.../nsh_ in the _defconfig_ pathnames: [main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L515-L538)
 
 <span style="font-size:90%">
 
@@ -558,7 +559,7 @@ _What about the Build Logs from GitHub Actions?_
 
 It gets a little more complicated, we need to download the [__Build Logs from GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs).
 
-But before that, we need the __GitHub Run ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
+But before that, we need the __GitHub Run ID__ to identify the Build Job: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
 
 ```bash
 ## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
@@ -671,6 +672,10 @@ sleep 300
 ./github.sh
 ```
 
+And that's how we created our Continuous Integration Dashboard for NuttX!
+
+[(Please join our __Build Farm__ 🙏)](https://github.com/apache/nuttx/issues/14558)
+
 ![Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)](https://lupyuen.github.io/images/ci4-flow.jpg)
 
 # What's Next
@@ -727,7 +732,7 @@ Earlier we spoke about creating the __NuttX Dashboard__ (pic above). And we crea
 
 - [__"Grafana Dashboard"__](https://lupyuen.github.io/articles/ci4#grafana-dashboard)
 
-And we're about to complete these __Panel JSON__...
+We nearly completed the __Panel JSON__...
 
 - [__Panel: Builds with Errors and Warnings__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json)
 
@@ -739,11 +744,11 @@ Before we begin: Check that our __Prometheus Data Source__ is configured to fetc
 
 ![Configure our Prometheus Data Source](https://lupyuen.github.io/images/ci4-datasource.png)
 
-[(Remember to configure __prometheus.yml__)](https://lupyuen.github.io/articles/ci4#prometheus-metrics)
+[(Remember to set __prometheus.yml__)](https://lupyuen.github.io/articles/ci4#prometheus-metrics)
 
 Head back to our upcoming dashboard...
 
-1.  This is how we __Filter by Arch, Sub-Arch, Board, Config__, ...
+1.  This is how we __Filter by Arch, Sub-Arch, Board, Config__, which we defined as [__Dashboard Variables__](https://grafana.com/docs/grafana/latest/dashboards/variables/) (see below)
 
     ![Filter by Arch, Sub-Arch, Board, Config](https://lupyuen.github.io/images/ci4-error1.png)
 
@@ -755,7 +760,7 @@ Head back to our upcoming dashboard...
 
     ![select Values (Build Scores) <= 0.5](https://lupyuen.github.io/images/ci4-error3.png)
 
-1.  We __Rename the Fields__...
+1.  We __Rename and Reorder the Fields__...
 
     ![Rename the Fields](https://lupyuen.github.io/images/ci4-error6.png)
 
@@ -765,7 +770,7 @@ Head back to our upcoming dashboard...
 
 1.  Set the __Color Scheme__ to __From Thresholds By Value__
 
-    Set the __Data Links__: Title is `Show the Build Log`, URL is `${__data.fields.url}`
+    Set the __Data Links__: Title becomes "`Show the Build Log`", URL becomes "`${__data.fields.url}`"
 
     Colour the Values (Build Scores) with the __Value Mappings__ below
 
@@ -809,9 +814,13 @@ _And the Highlights Panel at the top?_
 
 1.  Also check out the __Dashboard JSON__ and __Links Panel__ _("See the NuttX Build History")_
 
+    [__Links Panel__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
+
     [__Dashboard JSON__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
 
-    [__Links Panel__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json)
+    Which will define the __Dashboard Variables__...
+
+    ![Dashboard Variables](https://lupyuen.github.io/images/ci4-variables.png)
 
 Up Next: The NuttX Dashboard for Build History...
 
@@ -835,9 +844,9 @@ Now we do the same for __Build History Dashboard__ (pic above)...
 
 1.  Under Transformations: Set __Group By__ to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash
 
-    In __Organise Fields By Name__: Rename the fields as shown below
+    In __Organise Fields By Name__: Rename and Reorder the fields as shown below
 
-    Set the __Value Mappings__ as shown below
+    Set the __Value Mappings__ below
 
     ![Organise Fields By Name and Value Mappings](https://lupyuen.github.io/images/ci4-history3.png)
 
