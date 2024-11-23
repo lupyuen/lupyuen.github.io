@@ -137,6 +137,9 @@
 <p><strong>Linker Errors:</strong> <em>“undefined reference to atomic_fetch_add_2”</em></p>
 </li>
 <li>
+<p><strong>Config Errors:</strong> <em>“modified: sim/configs/rtptools/defconfig”</em></p>
+</li>
+<li>
 <p><strong>Network Errors:</strong> <em>“curl 92 HTTP/2 stream 0 was not closed cleanly”</em></p>
 </li>
 <li>
@@ -165,7 +168,7 @@
 <p><img src="https://lupyuen.github.io/images/ci4-flow3.jpg" alt="Grafana Dashboard" /></p>
 <h1 id="grafana-dashboard"><a class="doc-anchor" href="#grafana-dashboard">§</a>2 Grafana Dashboard</h1>
 <p><em>What’s this Grafana?</em></p>
-<p><a href="https://grafana.com/oss/"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
+<p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is an open-source toolkit for creating <strong>Monitoring Dashboards</strong>.</p>
 <p>Sadly there isn’t a “programming language” for coding Grafana. Thus we walk through the steps to create our <strong>NuttX Dashboard with Grafana</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install Grafana on Ubuntu
 ## See https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
@@ -395,29 +398,29 @@ cargo run -- \
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// To Identify Errors and Warnings:
 // We skip the known lines
 </span><span class="kw">if
-  </span>line.starts_with(<span class="string">"----------"</span>) ||
-  line.starts_with(<span class="string">"-- "</span>) ||  <span class="comment">// "-- Build type:"
-  </span>line.starts_with(<span class="string">"Cleaning"</span>) ||
+  </span>line.starts_with(<span class="string">"-- "</span>) ||  <span class="comment">// "-- Build type:"
+  </span>line.starts_with(<span class="string">"----------"</span>)  ||
+  line.starts_with(<span class="string">"Cleaning"</span>)    ||
   line.starts_with(<span class="string">"Configuring"</span>) ||
-  line.starts_with(<span class="string">"Select"</span>) ||
-  line.starts_with(<span class="string">"Disabling"</span>) ||
-  line.starts_with(<span class="string">"Enabling"</span>) ||
-  line.starts_with(<span class="string">"Building"</span>) ||
-  line.starts_with(<span class="string">"Normalize"</span>) ||
-  line.starts_with(<span class="string">"% Total"</span>) ||
-  line.starts_with(<span class="string">"Dload"</span>) ||
-  line.starts_with(<span class="string">"~/apps"</span>) ||
-  line.starts_with(<span class="string">"~/nuttx"</span>) ||
-  line.starts_with(<span class="string">"find: 'boards/"</span>) ||  <span class="comment">// "find: 'boards/risc-v/q[0-d]*': No such file or directory"
+  line.starts_with(<span class="string">"Select"</span>)      ||
+  line.starts_with(<span class="string">"Disabling"</span>)   ||
+  line.starts_with(<span class="string">"Enabling"</span>)    ||
+  line.starts_with(<span class="string">"Building"</span>)    ||
+  line.starts_with(<span class="string">"Normalize"</span>)   ||
+  line.starts_with(<span class="string">"% Total"</span>)     ||
+  line.starts_with(<span class="string">"Dload"</span>)       ||
+  line.starts_with(<span class="string">"~/apps"</span>)      ||
+  line.starts_with(<span class="string">"~/nuttx"</span>)     ||
+  line.starts_with(<span class="string">"find: 'boards/"</span>)   ||  <span class="comment">// "find: 'boards/risc-v/q[0-d]*': No such file or directory"
   </span>line.starts_with(<span class="string">"|        ^~~~~~~"</span>) ||  <span class="comment">// `warning "FPU test not built; Only available in the flat build (CONFIG_BUILD_FLAT)"`
-  </span>line.contains(<span class="string">"FPU test not built"</span>) ||
-  line.starts_with(<span class="string">"a nuttx-export-"</span>) ||  <span class="comment">// "a nuttx-export-12.7.0/tools/incdir.c"
-  </span>line.contains(<span class="string">" PASSED"</span>) ||  <span class="comment">// CI Test: "test_hello PASSED"
+  </span>line.contains(<span class="string">"FPU test not built"</span>)  ||
+  line.starts_with(<span class="string">"a nuttx-export-"</span>)  ||  <span class="comment">// "a nuttx-export-12.7.0/tools/incdir.c"
+  </span>line.contains(<span class="string">" PASSED"</span>)  ||  <span class="comment">// CI Test: "test_hello PASSED"
   </span>line.contains(<span class="string">" SKIPPED"</span>) ||  <span class="comment">// CI Test: "test_mm SKIPPED"
   </span>line.contains(<span class="string">"On branch master"</span>) ||  <span class="comment">// "On branch master"
-  </span>line.contains(<span class="string">"Your branch is up to date"</span>) ||  <span class="comment">// "Your branch is up to date with 'origin/master'"
+  </span>line.contains(<span class="string">"Your branch is up to date"</span>)     ||  <span class="comment">// "Your branch is up to date with 'origin/master'"
   </span>line.contains(<span class="string">"Changes not staged for commit"</span>) ||  <span class="comment">// "Changes not staged for commit:"
-  </span>line.contains(<span class="string">"git add &lt;file&gt;"</span>) ||  <span class="comment">// "(use "git add &lt;file&gt;..." to update what will be committed)"
+  </span>line.contains(<span class="string">"git add &lt;file&gt;"</span>)  ||  <span class="comment">// "(use "git add &lt;file&gt;..." to update what will be committed)"
   </span>line.contains(<span class="string">"git restore &lt;file&gt;"</span>)  <span class="comment">// "(use "git restore &lt;file&gt;..." to discard changes in working directory)"
 </span>{ <span class="kw">continue</span>; }
 
@@ -471,7 +474,7 @@ cargo run -- \
   <span class="kw">else if </span>contains_warning { <span class="number">0.5 </span>}
   <span class="kw">else </span>{ <span class="number">0.8 </span>};</code></pre></div>
 </span>
-<p>And post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L466-L490">main.rs</a></p>
+<p>And post the <strong>Build Scores to Pushgateway</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L474-L515">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose the Pushgateway Metric
@@ -497,13 +500,12 @@ find nuttx \
   &gt;/tmp/defconfig.txt
 
 ## defconfig.txt contains:
-## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
-## boards/z80/ez80/ez80f910200kitg/configs/ostest/defconfig
 ## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
+## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
 </code></pre></div>
 <p>Suppose we’re ingesting a NuttX Target <em>milkv_duos:nsh</em>.</p>
-<p>To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search for <em>milkv_duos/…/nsh</em> in the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L490-L513">main.rs</a></p>
+<p>To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search for <em>milkv_duos/…/nsh</em> in the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L515-L538">main.rs</a></p>
 <span style="font-size:90%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Given a list of all defconfig pathnames:
@@ -542,7 +544,7 @@ find nuttx \
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p><em>What about the Build Logs from GitHub Actions?</em></p>
 <p>It gets a little more complicated, we need to download the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Build Logs from GitHub Actions</strong></a>.</p>
-<p>But before that, we need the <strong>GitHub Run ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
+<p>But before that, we need the <strong>GitHub Run ID</strong> to identify the Build Job: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
 local os=$1    ## &quot;Linux&quot; or &quot;msys2&quot;
 local step=$2  ## &quot;7&quot; or &quot;9&quot;
@@ -637,6 +639,8 @@ sleep 300
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 ./github.sh
 </code></pre></div>
+<p>And that’s how we created our Continuous Integration Dashboard for NuttX!</p>
+<p><a href="https://github.com/apache/nuttx/issues/14558">(Please join our <strong>Build Farm</strong> 🙏)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p><em>Why are we doing all this?</em></p>
@@ -683,7 +687,7 @@ sleep 300
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ci4#grafana-dashboard"><strong>“Grafana Dashboard”</strong></a></li>
 </ul>
-<p>And we’re about to complete these <strong>Panel JSON</strong>…</p>
+<p>We nearly completed the <strong>Panel JSON</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/error-builds.json"><strong>Panel: Builds with Errors and Warnings</strong></a></p>
@@ -695,11 +699,11 @@ sleep 300
 <p>Let’s flesh out the remaining bits of our creation.</p>
 <p>Before we begin: Check that our <strong>Prometheus Data Source</strong> is configured to fetch the Build Scores from Prometheus and Pushgateway…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-datasource.png" alt="Configure our Prometheus Data Source" /></p>
-<p><a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics">(Remember to configure <strong>prometheus.yml</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics">(Remember to set <strong>prometheus.yml</strong>)</a></p>
 <p>Head back to our upcoming dashboard…</p>
 <ol>
 <li>
-<p>This is how we <strong>Filter by Arch, Sub-Arch, Board, Config</strong>, …</p>
+<p>This is how we <strong>Filter by Arch, Sub-Arch, Board, Config</strong>, which we defined as <a href="https://grafana.com/docs/grafana/latest/dashboards/variables/"><strong>Dashboard Variables</strong></a> (see below)</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error1.png" alt="Filter by Arch, Sub-Arch, Board, Config" /></p>
 </li>
 <li>
@@ -711,7 +715,7 @@ sleep 300
 <p><img src="https://lupyuen.github.io/images/ci4-error3.png" alt="select Values (Build Scores) &lt;= 0.5" /></p>
 </li>
 <li>
-<p>We <strong>Rename the Fields</strong>…</p>
+<p>We <strong>Rename and Reorder the Fields</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error6.png" alt="Rename the Fields" /></p>
 </li>
 <li>
@@ -720,7 +724,7 @@ sleep 300
 </li>
 <li>
 <p>Set the <strong>Color Scheme</strong> to <strong>From Thresholds By Value</strong></p>
-<p>Set the <strong>Data Links</strong>: Title is <code>Show the Build Log</code>, URL is <code>${__data.fields.url}</code></p>
+<p>Set the <strong>Data Links</strong>: Title becomes “<code>Show the Build Log</code>”, URL becomes “<code>${__data.fields.url}</code>”</p>
 <p>Colour the Values (Build Scores) with the <strong>Value Mappings</strong> below</p>
 <p><img src="https://lupyuen.github.io/images/ci4-error5.png" alt="Set the Color Scheme and Data Links" /></p>
 </li>
@@ -764,8 +768,10 @@ sleep 300
 </li>
 <li>
 <p>Also check out the <strong>Dashboard JSON</strong> and <strong>Links Panel</strong> <em>(“See the NuttX Build History”)</em></p>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json"><strong>Dashboard JSON</strong></a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/links.json"><strong>Links Panel</strong></a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json"><strong>Dashboard JSON</strong></a></p>
+<p>Which will define the <strong>Dashboard Variables</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-variables.png" alt="Dashboard Variables" /></p>
 </li>
 </ol>
 <p>Up Next: The NuttX Dashboard for Build History…</p>
@@ -785,8 +791,8 @@ sleep 300
 </li>
 <li>
 <p>Under Transformations: Set <strong>Group By</strong> to First Severity, First Board, First Config, First Build Log, First Apps Hash, First NuttX Hash</p>
-<p>In <strong>Organise Fields By Name</strong>: Rename the fields as shown below</p>
-<p>Set the <strong>Value Mappings</strong> as shown below</p>
+<p>In <strong>Organise Fields By Name</strong>: Rename and Reorder the fields as shown below</p>
+<p>Set the <strong>Value Mappings</strong> below</p>
 <p><img src="https://lupyuen.github.io/images/ci4-history3.png" alt="Organise Fields By Name and Value Mappings" /></p>
 </li>
 <li>
