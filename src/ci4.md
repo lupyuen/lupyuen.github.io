@@ -10,9 +10,13 @@ Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTO
 
 Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)) with our new __NuttX Dashboard__...
 
-- TODO
+- We created our Dashboard with __Grafana__ (open-source)
 
-- TODO
+- Pulling the Build Data from __Prometheus__ (also open-source)
+
+- Which is populated by __Pushgateway__ (staging database)
+
+- Integrated with our __Build Farm__ and __GitHub Actions__
 
 - Why do all this? Because [__we can't afford__](https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
 
