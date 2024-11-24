@@ -698,9 +698,9 @@ Yes NuttX Dashboard will tell us the [__Commit Hashes__](https://lupyuen.github.
 
 _Can we automate this?_
 
-Yeah someday our NuttX Build Farm shall __"Rewind The Build"__ when something breaks...
+Yeah someday our NuttX Build Farm shall [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks...
 
-Automatically __Backtrack the Commits__, Compile each Commit and discover the Breaking Commit. [(Like this)](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L42-L69)
+Automatically [__Backtrack the Commits__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh), Compile each Commit and discover the Breaking Commit. [(Like this)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
 
 _Any more stories of NuttX CI?_
 
