@@ -482,6 +482,12 @@ We might need to tweak the Regex Pattern and catch more errors.
 
 # What's Next
 
+We have more stories about __NuttX Continuous Integration__ in these articles...
+
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+
 _Huh? Aren't we making a Build Farm, not a Build Server?_
 
 Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we'll have a Build Farm!

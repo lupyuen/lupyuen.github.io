@@ -369,6 +369,14 @@ We'll chat about this in [__NuttX Discord Channel__](https://discord.com/channel
 
 # What's Next
 
+We have more stories about __NuttX Continuous Integration__ in these articles...
+
+- [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
+
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+
 According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.html): We should reduce to __15 Concurrent GitHub Runners__  (we're now at 24 concurrent runners). How?
 
 1.  We could review the [__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) and decide which targets should be excluded. Or reprioritised to run earlier / later.

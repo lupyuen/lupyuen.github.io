@@ -451,7 +451,9 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 # What's Next
 
-Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus.
+Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus...
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
