@@ -347,6 +347,8 @@ And it's perfectly OK to post the __Same Build Log__ twice to Pushgateway. (Beca
 
 [(Ask your Local Library for __"Mastering Prometheus"__)](https://share.libbyapp.com/title/10565151)
 
+[(Might need to wait __15 Seconds__ for ingestion)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L528-L535)
+
 ![Ingest the Build Logs](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
 # Ingest the Build Logs
