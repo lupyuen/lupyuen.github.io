@@ -678,6 +678,8 @@ sleep 300
 ./github.sh
 ```
 
+[(See the __Run Log__)](https://gist.github.com/lupyuen/1c0c3ff584d083d59d4b2190ecee3f99)
+
 And that's how we created our Continuous Integration Dashboard for NuttX!
 
 [(Please join our __Build Farm__ 🙏)](https://github.com/apache/nuttx/issues/14558)
