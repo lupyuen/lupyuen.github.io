@@ -357,7 +357,11 @@ Now we be like an Amoeba and ingest all kinds of Build Logs!
 
 - Build Logs from [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)
 
+  [(Like this)](https://gist.github.com/nuttxlinux/0f065106e8ec31b0e0f1597370609a89#file-ci-risc-v-04-log-L165)
+
 - Build Logs from [__GitHub Actions__](https://lupyuen.github.io/articles/ci3)
+
+  [(Like this)](https://github.com/NuttX/nuttx/actions/runs/12022165125/job/33513971236#step:7:88)
 
 For NuttX Build Farm, we ingest the [__GitHub Gists__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-all-target-groups) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
