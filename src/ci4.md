@@ -328,6 +328,8 @@ We configured Prometheus to scrape the __Build Scores from Pushgateway__, every 
 
 ```yaml
 ## Prometheus Configuration
+## Ubuntu: /etc/prometheus/prometheus.yml
+## macOS: /opt/homebrew/etc/prometheus.yml
 global:
   scrape_interval: 15s
 
