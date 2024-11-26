@@ -553,8 +553,24 @@ find nuttx \
 <h1 id="ingest-from-github-actions"><a class="doc-anchor" href="#ingest-from-github-actions">§</a>5 Ingest from GitHub Actions</h1>
 <p><em>What about the Build Logs from GitHub Actions?</em></p>
 <p>It gets a little more complicated, we need to download the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Build Logs from GitHub Actions</strong></a>.</p>
-<p>But before that, we need the <strong>GitHub Run ID</strong> to identify the Build Job: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39">github.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+<p>But before that, we need the <strong>GitHub Run ID</strong> to identify the Build Job: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L85-L94">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Get the Latest Completed Run ID for today
+user=NuttX
+repo=nuttx
+date=$(date -u +&#39;%Y-%m-%d&#39;)
+run_id=$(
+  gh run list \
+    --repo $user/$repo \
+    --limit 1 \
+    --created $date \
+    --status completed \
+    --json databaseId,name,displayTitle,conclusion \
+    --jq &#39;.[].databaseId&#39;
+)
+</code></pre></div>
+<p>Then the <strong>GitHub Job ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L16-L40">github.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID.
+## Get the Job ID for the Job Name.
 local os=$1    ## &quot;Linux&quot; or &quot;msys2&quot;
 local step=$2  ## &quot;7&quot; or &quot;9&quot;
 local group=$3 ## &quot;arm-01&quot;
