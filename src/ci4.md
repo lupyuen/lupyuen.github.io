@@ -567,10 +567,29 @@ _What about the Build Logs from GitHub Actions?_
 
 It gets a little more complicated, we need to download the [__Build Logs from GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs).
 
-But before that, we need the __GitHub Run ID__ to identify the Build Job: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L17-L39)
+But before that, we need the __GitHub Run ID__ to identify the Build Job: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L85-L94)
 
 ```bash
-## Fetch the Jobs for the Run ID. Get the Job ID for the Job Name.
+## Get the Latest Completed Run ID for today
+user=NuttX
+repo=nuttx
+date=$(date -u +'%Y-%m-%d')
+run_id=$(
+  gh run list \
+    --repo $user/$repo \
+    --limit 1 \
+    --created $date \
+    --status completed \
+    --json databaseId,name,displayTitle,conclusion \
+    --jq '.[].databaseId'
+)
+```
+
+Then the __GitHub Job ID__: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L16-L40)
+
+```bash
+## Fetch the Jobs for the Run ID.
+## Get the Job ID for the Job Name.
 local os=$1    ## "Linux" or "msys2"
 local step=$2  ## "7" or "9"
 local group=$3 ## "arm-01"
