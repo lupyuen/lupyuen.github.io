@@ -355,6 +355,8 @@ EOF
 <p><em>Anything else we should know about Prometheus?</em></p>
 <p>We configured Prometheus to scrape the <strong>Build Scores from Pushgateway</strong>, every 15 seconds: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml">prometheus.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Prometheus Configuration
+## Ubuntu: /etc/prometheus/prometheus.yml
+## macOS: /opt/homebrew/etc/prometheus.yml
 global:
   scrape_interval: 15s
 
