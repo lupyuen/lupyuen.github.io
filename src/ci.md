@@ -126,7 +126,7 @@ We experiment with [__Self-Hosted Runners__](https://docs.github.com/en/actions/
 
 - With plenty of __Internet Bandwidth__
 
-Look for this code in our __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
+In our Fork of NuttX Repo: Look for this code in the __GitHub Actions Worklow__: [.github/workflows/build.yml](https://github.com/lupyuen3/runner-nuttx/pull/1/files#diff-5c3fa597431eda03ac3339ae6bf7f05e1a50d6fc7333679ec38e21b337cb6721)
 
 ```yaml
 ## Linux Build runs on GitHub Runners
