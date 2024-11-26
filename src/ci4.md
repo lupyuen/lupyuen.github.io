@@ -343,7 +343,9 @@ scrape_configs:
     - targets: ["localhost:9091"]
 ```
 
-[(Ask your Local Library for __"Mastering Prometheus"__)](https://share.libbyapp.com/title/10565151)
+And it's perfectly OK to post the __Latest Build Log__ twice to Pushgateway. Though we're careful to [__Skip the Older Logs__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L100-L109) when posting to Pushgateway.
+
+[(Ask your Local Library for __"Mastering Prometheus"__. It's an excellent book!)](https://share.libbyapp.com/title/10565151)
 
 ![Ingest the Build Logs](https://lupyuen.github.io/images/ci4-flow5.jpg)
 
