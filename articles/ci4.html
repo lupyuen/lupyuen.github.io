@@ -647,6 +647,7 @@ cargo run -- \
 <p><em>How to run all this?</em></p>
 <p>We ingest the GitHub Logs right after the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
 <p>Thus it makes sense to bundle the <strong>Build and Ingest</strong> into One Single Script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh">(<strong>UPDATE:</strong> We now use <strong>sync-build-ingest.sh</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Mirror Repo and Ingest NuttX Build Logs
 ## from GitHub Actions into Prometheus Pushgateway
 
