@@ -11,6 +11,13 @@ PATH
 
 Build Farm
 
+Compile arm on arm? Not really so fast
+compile riscv is faster than compile arm
+Mac pro
+M4 ultra
+
+https://github.com/devMEremenko/XcodeBenchmark
+
 # What's Next
 
 TODO
