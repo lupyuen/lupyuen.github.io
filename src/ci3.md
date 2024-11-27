@@ -206,6 +206,8 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  Run this script to enable the __macOS Builds__: [enable-macos-windows.sh](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh)
 
+    [(__UPDATE:__ We now use __sync-build-ingest.sh__)](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh)
+
 1.  Which will also [__Disable Fail-Fast__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) and grind through all builds. [(Regardless of error, pic below)](https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca)
 
 1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. [(Because it's free! Pic below)](https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca)
@@ -430,6 +432,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](https://lupyuen.codeberg.page/articles/ci3.html#move-the-merge-jobs)
 
     (My fingers are tired, pic above)
+
+    [(__UPDATE:__ We now use __sync-build-ingest.sh__)](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh)
 
 1.  And restarting the __Failed Merge Jobs__ 
 

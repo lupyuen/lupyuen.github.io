@@ -682,6 +682,8 @@ We ingest the GitHub Logs right after the [__Twice-Daily Build__](https://lupyue
 
 Thus it makes sense to bundle the __Build and Ingest__ into One Single Script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
 
+[(__UPDATE:__ We now use __sync-build-ingest.sh__)](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh)
+
 ```bash
 ## Build NuttX Mirror Repo and Ingest NuttX Build Logs
 ## from GitHub Actions into Prometheus Pushgateway
