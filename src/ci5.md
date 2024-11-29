@@ -49,6 +49,10 @@ TODO
 
 # TODO
 
+Simbit18 commit
+Upgrade Toolchain 
+More Commits 
+
 Build Farm
 
 Compile arm on arm? Not really so fast
