@@ -4,6 +4,21 @@
 
 ![TODO](https://lupyuen.github.io/images/ci5-title.jpg)
 
+For macOS Devs: Compiling [__Apache NuttX RTOS__](TODO) used to be tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
+
+```bash
+## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build.macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
+```
+
+TODO
+
+- TODO: Thanks to the awesome work by [__Simbit18__](TODO)!
 
 # Fix the PATH!
 
@@ -12,7 +27,8 @@ TODO
 https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
 
 ```bash
-## Remove Homebrew ar from PATH. Instead, we use /usr/bin/ar
+## Remove Homebrew ar from PATH
+## Instead: We use /usr/bin/ar
 export PATH=$(
   echo $PATH \
     | tr ':' '\n' \
