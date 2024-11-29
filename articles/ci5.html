@@ -76,7 +76,7 @@
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 ./run-build-macos.sh raspberrypi-pico:nsh
-./run-build.macos.sh ox64:nsh
+./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 </code></pre></div>
 <p>TODO</p>
@@ -125,8 +125,13 @@ make
 </code></pre></div>
 <p>Yes we could install the toolchains ourselves</p>
 <p>But there’s a simpler, slightly slower way</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run a NuttX Build on macOS:
-./run-build.macos.sh ox64:nsh
+<div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build-macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
 
 ## To re-download the toolchain:
 ## rm -rf /tmp/run-build-macos
@@ -134,6 +139,7 @@ make
 <p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761">run-build-macos.sh ox64:nsh</a></p>
 <p><a href="https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb">run-build-macos.sh raspberrypi-pico:nsh</a></p>
 <p><a href="https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be">run-build-macos.sh esp32s3-devkit:nsh</a></p>
+<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761">10 mins to download all toolchains</a></p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 #  Run NuttX Build Farm for macOS
