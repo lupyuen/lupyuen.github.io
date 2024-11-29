@@ -29,6 +29,7 @@ https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
 ```bash
 ## Remove Homebrew ar from PATH
 ## Instead: We use /usr/bin/ar
+## https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741
 export PATH=$(
   echo $PATH \
     | tr ':' '\n' \
@@ -50,8 +51,13 @@ TODO
 # TODO
 
 Simbit18 commit
-Upgrade Toolchain 
+https://github.com/apache/nuttx/pull/14691
+
+Upgrade Toolchain to Arm64
+https://github.com/apache/nuttx/pull/14723
+
 More Commits 
+https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin.sh
 
 Build Farm
 
