@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/ci5-title.jpg)
 
-For macOS Devs: Compiling [__Apache NuttX RTOS__](TODO) used to be tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
+__Folks on macOS:__ Compiling [__Apache NuttX RTOS__](TODO) used to be so tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
 
 ```bash
 ## Build Anything on Apple Silicon macOS:
