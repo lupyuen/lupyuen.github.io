@@ -63,6 +63,10 @@ make
 ./nuttx
 ```
 
+Yes we could install the toolchains ourselves
+
+But there's a simpler, slightly slower way
+
 ```bash
 ## Run a NuttX Build on macOS:
 ./run-build.macos.sh ox64:nsh
@@ -70,6 +74,10 @@ make
 ## To re-download the toolchain:
 ## rm -rf /tmp/run-build-macos
 ```
+
+[run-build-macos.sh ox64:nsh](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761)
+
+[run-build-macos.sh raspberrypi-pico:nsh](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb)
 
 https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh
 
