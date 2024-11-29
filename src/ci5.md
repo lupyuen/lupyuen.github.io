@@ -79,6 +79,8 @@ But there's a simpler, slightly slower way
 
 [run-build-macos.sh raspberrypi-pico:nsh](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb)
 
+[run-build-macos.sh esp32s3-devkit:nsh](https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be)
+
 https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh
 
 ```bash
