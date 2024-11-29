@@ -70,10 +70,24 @@
 <li><a href="#todo">3 TODO</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
+<p>For macOS Devs: Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build.macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
+</code></pre></div>
+<p>TODO</p>
+<ul>
+<li>TODO: Thanks to the awesome work by <a href="TODO"><strong>Simbit18</strong></a>!</li>
+</ul>
 <h1 id="fix-the-path"><a class="doc-anchor" href="#fix-the-path">§</a>1 Fix the PATH!</h1>
 <p>TODO</p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Remove Homebrew ar from PATH. Instead, we use /usr/bin/ar
+<div class="example-wrap"><pre class="language-bash"><code>## Remove Homebrew ar from PATH
+## Instead: We use /usr/bin/ar
 export PATH=$(
   echo $PATH \
     | tr &#39;:&#39; &#39;\n&#39; \
