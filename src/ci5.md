@@ -27,6 +27,10 @@ if [[ $(which ar) != "/usr/bin/ar" ]]; then
 fi
 ```
 
+# Except These Targets
+
+TODO
+
 # TODO
 
 Build Farm
