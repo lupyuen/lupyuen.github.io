@@ -42,6 +42,35 @@ M4 ultra
 
 https://github.com/devMEremenko/XcodeBenchmark
 
+Refurbished Xeon Workstation is still faster
+And more predictable
+Use macOS as Front End
+VSCode Remote
+As a Maintainer, quite tough to depend solely on macOS
+
+brew install gh neofetch
+
+x64 vs arm64 toolchains
+
+TG Pro
+Set Fan Speed to "Auto-Max"
+
+Doesn't work:
+
+```bash
+tools/configure.sh sim/nsh
+make
+./nuttx
+```
+
+```bash
+## Run a NuttX Build on macOS:
+./run-build.macos.sh ox64:nsh
+
+## To re-download the toolchain:
+## rm -rf /tmp/run-build-macos
+```
+
 https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh
 
 ```bash
