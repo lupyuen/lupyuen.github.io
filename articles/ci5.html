@@ -88,6 +88,7 @@ cd nuttx-build-farm
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remove Homebrew ar from PATH
 ## Instead: We use /usr/bin/ar
+## https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741
 export PATH=$(
   echo $PATH \
     | tr &#39;:&#39; &#39;\n&#39; \
@@ -104,8 +105,11 @@ fi
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
 <p>Simbit18 commit
-Upgrade Toolchain
-More Commits</p>
+https://github.com/apache/nuttx/pull/14691</p>
+<p>Upgrade Toolchain to Arm64
+https://github.com/apache/nuttx/pull/14723</p>
+<p>More Commits
+https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin.sh</p>
 <p>Build Farm</p>
 <p>Compile arm on arm? Not really so fast
 compile riscv is faster than compile arm
