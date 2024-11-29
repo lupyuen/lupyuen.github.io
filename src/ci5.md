@@ -12,7 +12,7 @@ __Folks on macOS:__ Compiling [__Apache NuttX RTOS__](TODO) used to be so tireso
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 ./run-build-macos.sh raspberrypi-pico:nsh
-./run-build.macos.sh ox64:nsh
+./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 ```
 
@@ -84,8 +84,13 @@ Yes we could install the toolchains ourselves
 But there's a simpler, slightly slower way
 
 ```bash
-## Run a NuttX Build on macOS:
-./run-build.macos.sh ox64:nsh
+## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build-macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
 
 ## To re-download the toolchain:
 ## rm -rf /tmp/run-build-macos
@@ -96,6 +101,8 @@ But there's a simpler, slightly slower way
 [run-build-macos.sh raspberrypi-pico:nsh](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb)
 
 [run-build-macos.sh esp32s3-devkit:nsh](https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be)
+
+[10 mins to download all toolchains](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761)
 
 https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh
 
