@@ -193,13 +193,20 @@ pushd nuttx-patched/tools/ci
 ...
 ```
 
-_How does it compare with Docker?_
-
-TODO: Compare with Docker
-
 # Except These Targets
 
 TODO
+
+```bash
+## arm-05: "nrf5340-dk/rpmsghci_nimble_cpuapp: apps/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/services/gatt/src/ble_svc_gatt.c:174:9: error: variable 'rc' set but not used"
+## arm-07: "ucans32k146/se05x: mv: illegal option -- T"
+## xtensa-02: "esp32s3-devkit/qemu_debug: common/xtensa_hostfs.c:102:24: error: 'SIMCALL_O_NONBLOCK' undeclared"
+## xtensa-02: "esp32s3-devkit/knsh: sed: 1: invalid command code ."
+## arm64-01: "imx93-evk/bootloader: ld: library not found for -lcrt0.o"
+## sim-01, 02, 03: "clang: error: invalid argument 'medium' to -mcmodel="
+## other: "micropendous3/hello: make: avr-objcopy: Bad CPU type in executable"
+## x86_64-01: "argtable3/src/arg_rex.c:295:10: fatal error: setjmp.h: No such file or directory"
+```
 
 # macOS Build Farm
 
@@ -207,42 +214,9 @@ _What about the macOS Build Farm?_
 
 Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile All NuttX Targets__... Non-Stop 24 by 7!
 
-TODO: Why? So
+[(Why? So we can catch Build Errors without depending on GitHub Actions)](TODO)
 
-# TODO
-
-Build Farm
-
-Compile arm on arm? Not really so fast
-compile riscv is faster than compile arm
-Mac pro
-M4 ultra
-
-https://github.com/devMEremenko/XcodeBenchmark
-
-Refurbished Xeon Workstation is still faster
-And more predictable
-Use macOS as Front End
-VSCode Remote
-As a Maintainer, quite tough to depend solely on macOS
-
-brew install gh neofetch
-
-x64 vs arm64 toolchains
-
-TG Pro
-Set Fan Speed to "Auto-Max"
-
-Doesn't work:
-
-```bash
-tools/configure.sh sim/nsh
-make
-./nuttx
-```
-
-
-https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh
+If you have Some Spare CPU Cycles: Please join our __macOS Build Farm__! Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
 
 ```bash
 #!/usr/bin/env bash
@@ -535,6 +509,40 @@ popd
 df -H
 ```
 
+# TODO
+
+Build Farm
+
+Compile arm on arm? Not really so fast
+compile riscv is faster than compile arm
+Mac pro
+M4 ultra
+
+https://github.com/devMEremenko/XcodeBenchmark
+
+Refurbished Xeon Workstation is still faster
+And more predictable
+Use macOS as Front End
+VSCode Remote
+As a Maintainer, quite tough to depend solely on macOS
+
+brew install gh neofetch
+
+x64 vs arm64 toolchains
+
+TG Pro
+Set Fan Speed to "Auto-Max"
+
+Doesn't work:
+
+```bash
+tools/configure.sh sim/nsh
+make
+./nuttx
+```
+
+
+
 _Is macOS good enough for NuttX Development?_
 
 If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Yep sure!
@@ -548,6 +556,10 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 - Maybe Docker for Arm64?
 
 - By modding the Dockerfile?
+
+_How does it compare with Docker?_
+
+TODO: Compare with Docker
 
 # What's Next
 
