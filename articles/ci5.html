@@ -194,23 +194,24 @@ popd
 <p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="TODO">TODO</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment: Works OK for GitHub Actions
 python_tools() { ...
-  python3 -m venv --system-site-packages /opt/homebrew ...
+  python3 -m venv \
+    --system-site-packages /opt/homebrew ...
 </code></pre></div>
-<p>But Not Locally. Hence we patch <em>darwin_arm64.sh</em> to Run Locally: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
+<p>But it doesn’t work locally. Hence we patch <em>darwin_arm64.sh</em> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment: For Local macOS
 python_tools() {
   python3 -m venv .venv
   source .venv/bin/activate
 </code></pre></div>
 <p><em>Why the “uncommitted darwin_arm64.sh warning”?</em></p>
-<p>TODO</p>
+<p>Remember we just patched <em>darwin_arm64.sh</em>? NuttX CI is super picky about <strong>Modified Files</strong>, it will warn us because we changed <em>darwin_arm64.sh</em>.</p>
+<p>The Workaround: We copy the modified <em>nuttx</em> folder to <em>nuttx-patched</em>. Then we run NuttX CI from <em>nuttx-patched</em> folder: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Suppress the uncommitted darwin_arm64.sh warning:
 ## We copy the patched &quot;nuttx&quot; folder to &quot;nuttx-patched&quot;
 ## Then restore the original &quot;nuttx&quot; folder
 cp -r nuttx nuttx-patched
 pushd nuttx
 git restore tools/ci
-git status
 popd
 
 ## Patch the CI Job cibuild.sh to point to &quot;nuttx-patched&quot;
@@ -225,6 +226,11 @@ cat $file \
   &gt;$tmp_file
 mv $tmp_file $file
 chmod +x $file
+
+## Run the NuttX CI Build in &quot;nuttx-patched&quot;
+pushd nuttx-patched/tools/ci
+./cibuild.sh -i -c -A -R $target_file
+...
 </code></pre></div>
 <p><em>How does it compare with Docker?</em></p>
 <p>TODO: Compare with Docker</p>
