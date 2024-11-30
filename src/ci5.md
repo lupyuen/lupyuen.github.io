@@ -216,27 +216,33 @@ Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile A
 
 [(Why? So we can catch Build Errors without depending on GitHub Actions)](TODO)
 
-If you have Some Spare CPU Cycles: Please join our __macOS Build Farm__! Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
+If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
 
 ```bash
-#!/usr/bin/env bash
-#  Run NuttX Build Farm for macOS
-
-## Set the GitHub Token
+## Run the NuttX Build Farm for macOS
+## Set the GitHub Token: (should have Gist Permission)
 ## export GITHUB_TOKEN=...
 . $HOME/github-token-macos.sh
+brew install neofetch gh
 
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
-
-## Run All NuttX CI Jobs on macOS
+## Run All NuttX CI Jobs on macOS.
+## Will repeat forever.
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
 ./run-ci-macos.sh
 
+## For Testing:
 ## Run One Single NuttX CI Job on macOS
-# ./run-job-macos.sh risc-v-05
+## ./run-job-macos.sh risc-v-05
 ```
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh
+(And please tell me your __Gist ID__)
+
+_How does it work?_
+
+TODO
+
+[run-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh)
 
 ```bash
 #!/usr/bin/env bash
