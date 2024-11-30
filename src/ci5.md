@@ -42,7 +42,12 @@ if [[ $(which ar) != "/usr/bin/ar" ]]; then
 fi
 ```
 
-Thus we should always do the above before compiling NuttX.
+Thus we should always do the above before compiling NuttX. Otherwise we'll see a conflict between the [__Homebrew and Clang Linkers__](https://github.com/apache/nuttx/pull/14691#issuecomment-2462583245)...
+
+```text
+ld: archive member '/' not a mach-o file in 'libgp.a'
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+```
 
 # Build Anything on macOS
 
@@ -65,6 +70,10 @@ And it works on __Apple Silicon__! M1, M2, M3, M4, ...
 - [__Build Log for RISC-V__](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761) _(ox64:nsh)_
 
 - [__Build Log for Xtensa__](https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be) _(esp32s3-devkit:nsh)_
+
+  (With some exceptions, see below)
+
+_How does it work?_
 
 TODO
 
