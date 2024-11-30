@@ -96,7 +96,7 @@ Just make sure we've installed [__brew__](TODO), [__neofetch__](TODO) and [__Xco
 
 _We're running the NuttX CI Script on our computer. How does it work?_
 
-This is how we call [_tools/ci/cibuild.sh_](https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh) to Download the Toolchains and Build our NuttX Target: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
+This is how we call [_tools/ci/cibuild.sh_](https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh) to Download the Toolchains and __Compile our NuttX Target__: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
 
 ```bash
 ## Let's download the NuttX Toolchains and Run a NuttX Build on macOS
@@ -142,7 +142,8 @@ _What's this patch-ci-macos.sh?_
 __To run NuttX CI Locally:__ We made Minor Tweaks. Somehow this Python Environment runs OK at __GitHub Actions__: [TODO](TODO)
 
 ```bash
-## Original Python Environment: Works OK for GitHub Actions
+## Original Python Environment:
+## Works OK for GitHub Actions
 python_tools() { ...
   python3 -m venv \
     --system-site-packages /opt/homebrew ...
@@ -151,7 +152,8 @@ python_tools() { ...
 But it doesn't work locally. Hence we patch _darwin_arm64.sh_ to __Run Locally__: [patch-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75)
 
 ```bash
-## Modified Python Environment: For Local macOS
+## Modified Python Environment:
+## For Local macOS
 python_tools() {
   python3 -m venv .venv
   source .venv/bin/activate
@@ -161,7 +163,7 @@ _Why the "uncommitted darwin_arm64.sh warning"?_
 
 Remember we just patched _darwin_arm64.sh_? NuttX CI is super picky about __Modified Files__, it will warn us because we changed _darwin_arm64.sh_.
 
-The Workaround: We copy the modified _nuttx_ folder to _nuttx-patched_. Then we run NuttX CI from _nuttx-patched_ folder: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134)
+__Our Workaround:__ We copy the modified _nuttx_ folder to _nuttx-patched_. Then we run NuttX CI from _nuttx-patched_ folder: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134)
 
 ```bash
 ## Suppress the uncommitted darwin_arm64.sh warning:
@@ -199,8 +201,11 @@ TODO: Compare with Docker
 
 TODO
 
-# TODO
+# macOS Build Farm
 
+TODO: Scale Up
+
+# TODO
 
 Build Farm
 
