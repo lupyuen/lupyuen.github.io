@@ -22,9 +22,7 @@ TODO
 
 # Fix the PATH!
 
-TODO
-
-https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
+__Super Important!__ NuttX won't build correctly on macOS unless we remove __Homebrew ar__ from __PATH__: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
 
 ```bash
 ## Remove Homebrew ar from PATH
@@ -43,6 +41,36 @@ if [[ $(which ar) != "/usr/bin/ar" ]]; then
   exit 1
 fi
 ```
+
+Thus we should always do the above before compiling NuttX.
+
+# Build Anything on macOS
+
+Earlier we talked about compiling __Any NuttX Target__ on macOS: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
+
+```bash
+## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build-macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
+```
+
+And it works on __Apple Silicon__! M1, M2, M3, M4, ...
+
+- [__Build Log for Arm32__](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb) _(raspberrypi-pico:nsh)_
+
+- [__Build Log for RISC-V__](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761) _(ox64:nsh)_
+
+- [__Build Log for Xtensa__](https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be) _(esp32s3-devkit:nsh)_
+
+TODO
+
+_How does it compare with Docker?_
+
+TODO: Compare with Docker
 
 # Except These Targets
 
@@ -106,11 +134,7 @@ cd nuttx-build-farm
 ## rm -rf /tmp/run-build-macos
 ```
 
-[run-build-macos.sh ox64:nsh](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761)
 
-[run-build-macos.sh raspberrypi-pico:nsh](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb)
-
-[run-build-macos.sh esp32s3-devkit:nsh](https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be)
 
 [10 mins to download all toolchains](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761)
 
