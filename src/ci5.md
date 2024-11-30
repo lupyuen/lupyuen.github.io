@@ -75,11 +75,17 @@ And it works on __Apple Silicon__! M1, M2, M3, M4, ...
 
 _Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa..._
 
-__Toolchains are Auto-Downloaded__, thanks to the awesome Continuous Integration Script by [__Simbit18__](TODO)!
+__Toolchains are Auto-Downloaded__, thanks to the brilliant Continuous Integration Script by [__Simbit18__](TODO)!
 
-- TODO
+- [__NuttX CI for macOS: darwin.sh__](https://github.com/apache/nuttx/pull/14691)
+
+- [__Upgrade Toolchain from x64 to Arm64__](https://github.com/apache/nuttx/pull/14723)
+
+  [(Plus more updates)](https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin.sh)
 
 Just make sure we've installed [__brew__](TODO) and [__Xcode Command-Line Tools__](TODO).
+
+[(Yep the same script drives our __GitHub Daily Builds__)](TODO)
 
 _How does it work?_
 
@@ -95,14 +101,6 @@ TODO
 
 # TODO
 
-Simbit18 commit
-https://github.com/apache/nuttx/pull/14691
-
-Upgrade Toolchain to Arm64
-https://github.com/apache/nuttx/pull/14723
-
-More Commits 
-https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin.sh
 
 Build Farm
 
