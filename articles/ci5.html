@@ -234,37 +234,21 @@ chmod +x $file
 pushd nuttx-patched/tools/ci
 ./cibuild.sh -i -c -A -R $target_file
 ...
-</code></pre></div>
-<p><em>How does it compare with Docker?</em></p>
-<p>TODO: Compare with Docker</p>
-<h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
+</code></pre></div><h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
 <p>TODO</p>
-<h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
+<div class="example-wrap"><pre class="language-bash"><code>## arm-05: &quot;nrf5340-dk/rpmsghci_nimble_cpuapp: apps/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/services/gatt/src/ble_svc_gatt.c:174:9: error: variable &#39;rc&#39; set but not used&quot;
+## arm-07: &quot;ucans32k146/se05x: mv: illegal option -- T&quot;
+## xtensa-02: &quot;esp32s3-devkit/qemu_debug: common/xtensa_hostfs.c:102:24: error: &#39;SIMCALL_O_NONBLOCK&#39; undeclared&quot;
+## xtensa-02: &quot;esp32s3-devkit/knsh: sed: 1: invalid command code .&quot;
+## arm64-01: &quot;imx93-evk/bootloader: ld: library not found for -lcrt0.o&quot;
+## sim-01, 02, 03: &quot;clang: error: invalid argument &#39;medium&#39; to -mcmodel=&quot;
+## other: &quot;micropendous3/hello: make: avr-objcopy: Bad CPU type in executable&quot;
+## x86_64-01: &quot;argtable3/src/arg_rex.c:295:10: fatal error: setjmp.h: No such file or directory&quot;
+</code></pre></div><h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
 <p><em>What about the macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
-<p>TODO: Why? So</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
-<p>Build Farm</p>
-<p>Compile arm on arm? Not really so fast
-compile riscv is faster than compile arm
-Mac pro
-M4 ultra</p>
-<p>https://github.com/devMEremenko/XcodeBenchmark</p>
-<p>Refurbished Xeon Workstation is still faster
-And more predictable
-Use macOS as Front End
-VSCode Remote
-As a Maintainer, quite tough to depend solely on macOS</p>
-<p>brew install gh neofetch</p>
-<p>x64 vs arm64 toolchains</p>
-<p>TG Pro
-Set Fan Speed to “Auto-Max”</p>
-<p>Doesn’t work:</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh sim/nsh
-make
-./nuttx
-</code></pre></div>
-<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh</p>
+<p><a href="TODO">(Why? So we can catch Build Errors without depending on GitHub Actions)</a></p>
+<p>If you have Some Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 #  Run NuttX Build Farm for macOS
 
@@ -547,6 +531,26 @@ popd
 
 ## Monitor the Disk Space
 df -H
+</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
+<p>Build Farm</p>
+<p>Compile arm on arm? Not really so fast
+compile riscv is faster than compile arm
+Mac pro
+M4 ultra</p>
+<p>https://github.com/devMEremenko/XcodeBenchmark</p>
+<p>Refurbished Xeon Workstation is still faster
+And more predictable
+Use macOS as Front End
+VSCode Remote
+As a Maintainer, quite tough to depend solely on macOS</p>
+<p>brew install gh neofetch</p>
+<p>x64 vs arm64 toolchains</p>
+<p>TG Pro
+Set Fan Speed to “Auto-Max”</p>
+<p>Doesn’t work:</p>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh sim/nsh
+make
+./nuttx
 </code></pre></div>
 <p><em>Is macOS good enough for NuttX Development?</em></p>
 <p>If we’re Compiling NuttX for <strong>One Single Target</strong>: Arm32 / RISC-V / Xtensa… Yep sure!</p>
@@ -565,6 +569,8 @@ df -H
 <p>By modding the Dockerfile?</p>
 </li>
 </ul>
+<p><em>How does it compare with Docker?</em></p>
+<p>TODO: Compare with Docker</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
