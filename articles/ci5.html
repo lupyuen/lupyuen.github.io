@@ -548,12 +548,23 @@ popd
 ## Monitor the Disk Space
 df -H
 </code></pre></div>
-<p>Is macOS good enough for NuttX Development?</p>
-<p>Honestly as a NuttX Maintainer: I find it tough to reproduce All Possible NuttX Builds on macOS</p>
-<p>We have limited skills for maintaining NuttX CI on macOS</p>
-<p>My Preferred Setup: macOS Front End to Refurbished Xeon Backend for Docker Builds (which can build truly everything)</p>
-<p>Docker for Arm64?</p>
-<p>Mod the Dockerfile?</p>
+<p><em>Is macOS good enough for NuttX Development?</em></p>
+<p>If we’re Compiling NuttX for <strong>One Single Target</strong>: Arm32 / RISC-V / Xtensa… Yep sure!</p>
+<p>But as NuttX Maintainer: I find it tough to reproduce <strong>All Possible NuttX Builds</strong> on macOS…</p>
+<ul>
+<li>
+<p>We have <strong>Limited Skills</strong> for maintaining NuttX CI on macOS</p>
+</li>
+<li>
+<p>My Preferred Setup: <a href="TODO"><strong>VSCode on macOS</strong></a> controlling a <a href="TODO"><strong>Refurbished Xeon Workstation</strong></a> for <a href="TODO"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
+</li>
+<li>
+<p>Maybe Docker for Arm64?</p>
+</li>
+<li>
+<p>By modding the Dockerfile?</p>
+</li>
+</ul>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
