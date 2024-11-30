@@ -67,9 +67,10 @@
     <nav id="TOC"><ul>
 <li><a href="#fix-the-path">1 Fix the PATH!</a><ul></ul></li>
 <li><a href="#build-anything-on-macos">2 Build Anything on macOS</a><ul></ul></li>
-<li><a href="#except-these-targets">3 Except These Targets</a><ul></ul></li>
-<li><a href="#todo">4 TODO</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#patch-the-ci-script">3 Patch the CI Script</a><ul></ul></li>
+<li><a href="#except-these-targets">4 Except These Targets</a><ul></ul></li>
+<li><a href="#todo">5 TODO</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -114,6 +115,9 @@ cd nuttx-build-farm
 ./run-build-macos.sh raspberrypi-pico:nsh
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
+
+## To re-download the GCC Toolchains:
+## rm -rf /tmp/run-build-macos
 </code></pre></div>
 <p>And it works on <strong>Apple Silicon</strong>! M1, M2, M3, M4, …</p>
 <ul>
@@ -125,29 +129,108 @@ cd nuttx-build-farm
 </li>
 <li>
 <p><a href="https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be"><strong>Build Log for Xtensa</strong></a> <em>(esp32s3-devkit:nsh)</em></p>
-<p>(With some exceptions, see below)</p>
+</li>
+<li>
+<p>With <strong>Some Exceptions</strong>, see below</p>
 </li>
 </ul>
 <p><em>Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa…</em></p>
 <p><strong>Toolchains are Auto-Downloaded</strong>, thanks to the brilliant Continuous Integration Script by <a href="TODO"><strong>Simbit18</strong></a>!</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/pull/14691"><strong>NuttX CI for macOS: darwin.sh</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/14723"><strong>NuttX CI for macOS Arm64</strong></a> <em>(darwin_arm64.sh)</em></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/pull/14723"><strong>Upgrade Toolchain from x64 to Arm64</strong></a></p>
-<p><a href="https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin.sh">(Plus more updates)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/14934"><strong>Add Xtensa Toolchain</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin_arm64.sh"><strong>Plus more updates</strong></a></p>
 </li>
 </ul>
-<p>Just make sure we’ve installed <a href="TODO"><strong>brew</strong></a> and <a href="TODO"><strong>Xcode Command-Line Tools</strong></a>.</p>
+<p>Just make sure we’ve installed <a href="TODO"><strong>brew</strong></a>, <a href="TODO"><strong>neofetch</strong></a> and <a href="TODO"><strong>Xcode Command-Line Tools</strong></a>.</p>
 <p><a href="TODO">(Yep the same script drives our <strong>GitHub Daily Builds</strong>)</a></p>
-<p><em>How does it work?</em></p>
+<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236">(Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker)</a></p>
+<h1 id="patch-the-ci-script"><a class="doc-anchor" href="#patch-the-ci-script">§</a>3 Patch the CI Script</h1>
+<p><em>We’re running the NuttX CI Script on our computer. How does it work?</em></p>
+<p>This is how we call <a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh"><em>tools/ci/cibuild.sh</em></a> to Download the Toolchains and Build our NuttX Target: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Let&#39;s download the NuttX Toolchains and Run a NuttX Build on macOS
+## First we checkout the NuttX Repo and NuttX Apps...
+tmp_dir=/tmp/run-build-macos
+cd $tmp_dir
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+## Then we patch the NuttX CI Script for Apple Silicon: darwin_arm64.sh
+## Which will trigger an &quot;uncommitted files&quot; warning later
+pushd nuttx
+$script_dir/patch-ci-macos.sh
+popd
+
+## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
+## We copy the patched &quot;nuttx&quot; folder to &quot;nuttx-patched&quot;
+## Then restore the original &quot;nuttx&quot; folder
+...
+
+## NuttX CI Build expects this Target Format:
+## /arm/rp2040/raspberrypi-pico/configs/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+## /risc-v/bl808/ox64/configs/nsh
+## /xtensa/esp32s3/esp32s3-devkit/configs/nsh
+## TODO: Add arm64, sim, x86_64, ...
+target_file=$tmp_dir/target.dat
+rm -f $target_file
+echo &quot;/arm/*/$board/configs/$config,CONFIG_ARM_TOOLCHAIN_GNU_EABI&quot; &gt;&gt;$target_file
+echo &quot;/risc-v/*/$board/configs/$config&quot; &gt;&gt;$target_file
+echo &quot;/xtensa/*/$board/configs/$config&quot; &gt;&gt;$target_file
+
+## Run the NuttX CI Build in &quot;nuttx-patched&quot;
+pushd nuttx-patched/tools/ci
+(
+  ./cibuild.sh -i -c -A -R $target_file \
+    || echo &#39;***** BUILD FAILED&#39;
+)
+popd
+</code></pre></div>
+<p><em>What’s this patch-ci-macos.sh?</em></p>
+<p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="TODO">TODO</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment: Works OK for GitHub Actions
+python_tools() { ...
+  python3 -m venv --system-site-packages /opt/homebrew ...
+</code></pre></div>
+<p>But Not Locally. Hence we patch <em>darwin_arm64.sh</em> to Run Locally: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment: For Local macOS
+python_tools() {
+  python3 -m venv .venv
+  source .venv/bin/activate
+</code></pre></div>
+<p><em>Why the “uncommitted darwin_arm64.sh warning”?</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Suppress the uncommitted darwin_arm64.sh warning:
+## We copy the patched &quot;nuttx&quot; folder to &quot;nuttx-patched&quot;
+## Then restore the original &quot;nuttx&quot; folder
+cp -r nuttx nuttx-patched
+pushd nuttx
+git restore tools/ci
+git status
+popd
+
+## Patch the CI Job cibuild.sh to point to &quot;nuttx-patched&quot;
+## Change: CIPLAT=${CIWORKSPACE}/nuttx/tools/ci/platforms
+## To:     CIPLAT=${CIWORKSPACE}/nuttx-patched/tools/ci/platforms
+file=nuttx-patched/tools/ci/cibuild.sh
+tmp_file=$tmp_dir/cibuild.sh
+search=&#39;\/nuttx\/tools\/&#39;
+replace=&#39;\/nuttx-patched\/tools\/&#39;
+cat $file \
+  | sed &quot;s/$search/$replace/g&quot; \
+  &gt;$tmp_file
+mv $tmp_file $file
+chmod +x $file
+</code></pre></div>
 <p><em>How does it compare with Docker?</em></p>
 <p>TODO: Compare with Docker</p>
-<h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>3 Except These Targets</h1>
+<h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
 <p>Build Farm</p>
 <p>Compile arm on arm? Not really so fast
 compile riscv is faster than compile arm
@@ -168,20 +251,6 @@ Set Fan Speed to “Auto-Max”</p>
 make
 ./nuttx
 </code></pre></div>
-<p>Yes we could install the toolchains ourselves</p>
-<p>But there’s a simpler, slightly slower way</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
-## Arm32, RISC-V and Xtensa!
-git clone https://github.com/lupyuen/nuttx-build-farm
-cd nuttx-build-farm
-./run-build-macos.sh raspberrypi-pico:nsh
-./run-build-macos.sh ox64:nsh
-./run-build-macos.sh esp32s3-devkit:nsh
-
-## To re-download the toolchain:
-## rm -rf /tmp/run-build-macos
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761">10 mins to download all toolchains</a></p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 #  Run NuttX Build Farm for macOS
@@ -466,92 +535,9 @@ popd
 ## Monitor the Disk Space
 df -H
 </code></pre></div>
-<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Patch the NuttX CI Job for macOS (darwin_arm64.sh), so that it runs on Build Farm
-## Read the article: https://lupyuen.codeberg.page/articles/ci2.html
-
-## We change the Python Environment from:
-##   python_tools() { ...
-##     python3 -m venv --system-site-packages /opt/homebrew ...
-##     # workaround for Cython issue
-## To:
-##   NOTUSED_python_tools() { ...
-##     python3 -m venv --system-site-packages /opt/homebrew ...
-##   }
-##   python_tools() {
-##     python3 -m venv .venv
-##     source .venv/bin/activate
-##     # workaround for Cython issue
-
-## Remember to remove Homebrew ar from PATH:
-## https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
-## export PATH=$(
-##   echo $PATH \
-##     | tr &#39;:&#39; &#39;\n&#39; \
-##     | grep -v &quot;/opt/homebrew/opt/make/libexec/gnubin&quot; \
-##     | grep -v &quot;/opt/homebrew/opt/coreutils/libexec/gnubin&quot; \
-##     | grep -v &quot;/opt/homebrew/opt/binutils/bin&quot; \
-##     | tr &#39;\n&#39; &#39;:&#39;
-## )
-## which ar ## Should show /usr/bin/ar
-
-echo Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh
-echo Called by https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
-
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
-
-## Create the Temp Folder
-tmp_dir=/tmp/macos-build-farm
-rm -rf $tmp_dir
-mkdir $tmp_dir
-
-## We shall rewrite darwin_arm64.sh
-file=tools/ci/platforms/darwin_arm64.sh
-tmp_file=$tmp_dir/darwin_arm64.sh
-
-## Search and replace in the file
-function rewrite_file {
-  cat $file \
-    | sed &quot;s/$search/$replace/g&quot; \
-    &gt;$tmp_file
-  mv $tmp_file $file
-}
-
-## Change: python_tools() {
-## To:     NOTUSED_python_tools() {
-search=&#39;^python_tools() {&#39;
-replace=&#39;NOTUSED_python_tools() {&#39;
-rewrite_file
-
-## Change: # workaround for Cython issue
-## To:     } \r python_tools() { \r python3 -m venv .venv \r source .venv/bin/activate \r # workaround for Cython issue
-search=&#39;^  # workaround for Cython issue&#39;
-replace=$(
-cat &lt;&lt;&#39;EOF&#39; | tr &#39;\n&#39; &#39;\r&#39;
-}
-
-python_tools() {
-  #### TODO: We fixed the Python Environment
-  python3 -m venv .venv
-  source .venv\/bin\/activate
-
-  # workaround for Cython issue
-EOF
-)
-rewrite_file
-
-## Change \r back to \n
-cat $file \
-  | tr &#39;\r&#39; &#39;\n&#39; \
-  &gt;$tmp_file
-mv $tmp_file $file
-chmod +x $file
-</code></pre></div>
 <p>Docker for Arm64?</p>
 <p>Mod the Dockerfile?</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
