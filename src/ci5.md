@@ -535,17 +535,19 @@ popd
 df -H
 ```
 
-Is macOS good enough for NuttX Development?
+_Is macOS good enough for NuttX Development?_
 
-Honestly as a NuttX Maintainer: I find it tough to reproduce All Possible NuttX Builds on macOS
+If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Yep sure!
 
-We have limited skills for maintaining NuttX CI on macOS
+But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Builds__ on macOS...
 
-My Preferred Setup: macOS Front End to Refurbished Xeon Backend for Docker Builds (which can build truly everything)
+- We have __Limited Skills__ for maintaining NuttX CI on macOS
 
-Docker for Arm64?
+- My Preferred Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
 
-Mod the Dockerfile?
+- Maybe Docker for Arm64?
+
+- By modding the Dockerfile?
 
 # What's Next
 
