@@ -203,7 +203,11 @@ TODO
 
 # macOS Build Farm
 
-TODO: Scale Up
+_What about the macOS Build Farm?_
+
+Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile All NuttX Targets__... Non-Stop 24 by 7!
+
+TODO: Why? So
 
 # TODO
 
