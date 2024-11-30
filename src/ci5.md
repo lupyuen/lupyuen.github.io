@@ -535,7 +535,13 @@ popd
 df -H
 ```
 
+Is macOS good enough for NuttX Development?
 
+Honestly as a NuttX Maintainer: I find it tough to reproduce All Possible NuttX Builds on macOS
+
+We have limited skills for maintaining NuttX CI on macOS
+
+My Preferred Setup: macOS Front End to Refurbished Xeon Backend for Docker Builds (which can build truly everything)
 
 Docker for Arm64?
 
