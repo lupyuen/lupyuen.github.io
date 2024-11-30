@@ -66,9 +66,10 @@
     <h1 class="title">macOS Build Farm for Apache NuttX RTOS (Apple Silicon)</h1>
     <nav id="TOC"><ul>
 <li><a href="#fix-the-path">1 Fix the PATH!</a><ul></ul></li>
-<li><a href="#except-these-targets">2 Except These Targets</a><ul></ul></li>
-<li><a href="#todo">3 TODO</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#build-anything-on-macos">2 Build Anything on macOS</a><ul></ul></li>
+<li><a href="#except-these-targets">3 Except These Targets</a><ul></ul></li>
+<li><a href="#todo">4 TODO</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -84,8 +85,7 @@ cd nuttx-build-farm
 <li>TODO: Thanks to the awesome work by <a href="TODO"><strong>Simbit18</strong></a>!</li>
 </ul>
 <h1 id="fix-the-path"><a class="doc-anchor" href="#fix-the-path">§</a>1 Fix the PATH!</h1>
-<p>TODO</p>
-<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh</p>
+<p><strong>Super Important!</strong> NuttX won’t build correctly on macOS unless we remove <strong>Homebrew ar</strong> from <strong>PATH</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remove Homebrew ar from PATH
 ## Instead: We use /usr/bin/ar
 ## https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741
@@ -101,9 +101,36 @@ if [[ $(which ar) != &quot;/usr/bin/ar&quot; ]]; then
   echo &quot;ERROR: Expected &#39;which ar&#39; to return /usr/bin/ar, not $(which ar)&quot;
   exit 1
 fi
-</code></pre></div><h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>2 Except These Targets</h1>
+</code></pre></div>
+<p>Thus we should always do the above before compiling NuttX.</p>
+<h1 id="build-anything-on-macos"><a class="doc-anchor" href="#build-anything-on-macos">§</a>2 Build Anything on macOS</h1>
+<p>Earlier we talked about compiling <strong>Any NuttX Target</strong> on macOS: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
+## Arm32, RISC-V and Xtensa!
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+./run-build-macos.sh raspberrypi-pico:nsh
+./run-build-macos.sh ox64:nsh
+./run-build-macos.sh esp32s3-devkit:nsh
+</code></pre></div>
+<p>And it works on <strong>Apple Silicon</strong>! M1, M2, M3, M4, …</p>
+<ul>
+<li>
+<p><a href="https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb"><strong>Build Log for Arm32</strong></a> <em>(raspberrypi-pico:nsh)</em></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761"><strong>Build Log for RISC-V</strong></a> <em>(ox64:nsh)</em></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be"><strong>Build Log for Xtensa</strong></a> <em>(esp32s3-devkit:nsh)</em></p>
+</li>
+</ul>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
+<p><em>How does it compare with Docker?</em></p>
+<p>TODO: Compare with Docker</p>
+<h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>3 Except These Targets</h1>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
 <p>Simbit18 commit
 https://github.com/apache/nuttx/pull/14691</p>
 <p>Upgrade Toolchain to Arm64
@@ -143,9 +170,6 @@ cd nuttx-build-farm
 ## To re-download the toolchain:
 ## rm -rf /tmp/run-build-macos
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761">run-build-macos.sh ox64:nsh</a></p>
-<p><a href="https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb">run-build-macos.sh raspberrypi-pico:nsh</a></p>
-<p><a href="https://gist.github.com/lupyuen/2e9934d78440551f10771b7afcbb33be">run-build-macos.sh esp32s3-devkit:nsh</a></p>
 <p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761">10 mins to download all toolchains</a></p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
@@ -516,7 +540,7 @@ chmod +x $file
 </code></pre></div>
 <p>Docker for Arm64?</p>
 <p>Mod the Dockerfile?</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
