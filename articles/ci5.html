@@ -69,8 +69,9 @@
 <li><a href="#build-anything-on-macos">2 Build Anything on macOS</a><ul></ul></li>
 <li><a href="#patch-the-ci-script">3 Patch the CI Script</a><ul></ul></li>
 <li><a href="#except-these-targets">4 Except These Targets</a><ul></ul></li>
-<li><a href="#todo">5 TODO</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#macos-build-farm">5 macOS Build Farm</a><ul></ul></li>
+<li><a href="#todo">6 TODO</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -152,7 +153,7 @@ cd nuttx-build-farm
 <p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236">(Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker)</a></p>
 <h1 id="patch-the-ci-script"><a class="doc-anchor" href="#patch-the-ci-script">§</a>3 Patch the CI Script</h1>
 <p><em>We’re running the NuttX CI Script on our computer. How does it work?</em></p>
-<p>This is how we call <a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh"><em>tools/ci/cibuild.sh</em></a> to Download the Toolchains and Build our NuttX Target: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
+<p>This is how we call <a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh"><em>tools/ci/cibuild.sh</em></a> to Download the Toolchains and <strong>Compile our NuttX Target</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Let&#39;s download the NuttX Toolchains and Run a NuttX Build on macOS
 ## First we checkout the NuttX Repo and NuttX Apps...
 tmp_dir=/tmp/run-build-macos
@@ -192,20 +193,22 @@ popd
 </code></pre></div>
 <p><em>What’s this patch-ci-macos.sh?</em></p>
 <p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="TODO">TODO</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment: Works OK for GitHub Actions
+<div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment:
+## Works OK for GitHub Actions
 python_tools() { ...
   python3 -m venv \
     --system-site-packages /opt/homebrew ...
 </code></pre></div>
 <p>But it doesn’t work locally. Hence we patch <em>darwin_arm64.sh</em> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment: For Local macOS
+<div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment:
+## For Local macOS
 python_tools() {
   python3 -m venv .venv
   source .venv/bin/activate
 </code></pre></div>
 <p><em>Why the “uncommitted darwin_arm64.sh warning”?</em></p>
 <p>Remember we just patched <em>darwin_arm64.sh</em>? NuttX CI is super picky about <strong>Modified Files</strong>, it will warn us because we changed <em>darwin_arm64.sh</em>.</p>
-<p>The Workaround: We copy the modified <em>nuttx</em> folder to <em>nuttx-patched</em>. Then we run NuttX CI from <em>nuttx-patched</em> folder: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134">run-build-macos.sh</a></p>
+<p><strong>Our Workaround:</strong> We copy the modified <em>nuttx</em> folder to <em>nuttx-patched</em>. Then we run NuttX CI from <em>nuttx-patched</em> folder: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Suppress the uncommitted darwin_arm64.sh warning:
 ## We copy the patched &quot;nuttx&quot; folder to &quot;nuttx-patched&quot;
 ## Then restore the original &quot;nuttx&quot; folder
@@ -236,7 +239,9 @@ pushd nuttx-patched/tools/ci
 <p>TODO: Compare with Docker</p>
 <h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
+<h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
+<p>TODO: Scale Up</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
 <p>Build Farm</p>
 <p>Compile arm on arm? Not really so fast
 compile riscv is faster than compile arm
@@ -543,7 +548,7 @@ df -H
 </code></pre></div>
 <p>Docker for Arm64?</p>
 <p>Mod the Dockerfile?</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
