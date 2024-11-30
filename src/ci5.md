@@ -144,10 +144,11 @@ __To run NuttX CI Locally:__ We made Minor Tweaks. Somehow this Python Environme
 ```bash
 ## Original Python Environment: Works OK for GitHub Actions
 python_tools() { ...
-  python3 -m venv --system-site-packages /opt/homebrew ...
+  python3 -m venv \
+    --system-site-packages /opt/homebrew ...
 ```
 
-But Not Locally. Hence we patch _darwin_arm64.sh_ to Run Locally: [patch-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75)
+But it doesn't work locally. Hence we patch _darwin_arm64.sh_ to __Run Locally__: [patch-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75)
 
 ```bash
 ## Modified Python Environment: For Local macOS
@@ -158,7 +159,9 @@ python_tools() {
 
 _Why the "uncommitted darwin_arm64.sh warning"?_
 
-TODO
+Remember we just patched _darwin_arm64.sh_? NuttX CI is super picky about __Modified Files__, it will warn us because we changed _darwin_arm64.sh_.
+
+The Workaround: We copy the modified _nuttx_ folder to _nuttx-patched_. Then we run NuttX CI from _nuttx-patched_ folder: [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134)
 
 ```bash
 ## Suppress the uncommitted darwin_arm64.sh warning:
@@ -167,7 +170,6 @@ TODO
 cp -r nuttx nuttx-patched
 pushd nuttx
 git restore tools/ci
-git status
 popd
 
 ## Patch the CI Job cibuild.sh to point to "nuttx-patched"
@@ -182,6 +184,11 @@ cat $file \
   >$tmp_file
 mv $tmp_file $file
 chmod +x $file
+
+## Run the NuttX CI Build in "nuttx-patched"
+pushd nuttx-patched/tools/ci
+./cibuild.sh -i -c -A -R $target_file
+...
 ```
 
 _How does it compare with Docker?_
