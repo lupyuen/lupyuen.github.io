@@ -115,7 +115,7 @@ git clone https://github.com/apache/nuttx-apps apps
 ## Then we patch the NuttX CI Script for Apple Silicon: darwin_arm64.sh
 ## Which will trigger an "uncommitted files" warning later
 pushd nuttx
-$script_dir/patch-ci-macos.sh
+$script_dir/patch-ci-macos.sh  ## https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh
 popd
 
 ## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
@@ -226,7 +226,7 @@ If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! Like so:
 
 ```bash
 ## Run the NuttX Build Farm for macOS
-## Set the GitHub Token: (should have Gist Permission)
+## Set the GitHub Token: (Should have Gist Permission)
 ## export GITHUB_TOKEN=...
 . $HOME/github-token-macos.sh
 brew install neofetch gh
@@ -245,7 +245,7 @@ cd nuttx-build-farm
 ## ./run-job-macos.sh risc-v-05
 ```
 
-(And please tell me your __Gist ID__)
+(And please tell me your __Gist User ID__)
 
 _How does it work?_
 
@@ -309,7 +309,7 @@ git clone https://github.com/apache/nuttx-apps apps
 ## Patch the macOS CI Job for Apple Silicon: darwin_arm64.sh
 ## Which will trigger an "uncommitted files" warning later
 pushd nuttx
-$script_dir/patch-ci-macos.sh
+$script_dir/patch-ci-macos.sh  ## https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh
 popd
 
 ## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
