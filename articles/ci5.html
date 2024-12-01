@@ -171,7 +171,7 @@ git clone https://github.com/apache/nuttx-apps apps
 ## Then we patch the NuttX CI Script for Apple Silicon: darwin_arm64.sh
 ## Which will trigger an &quot;uncommitted files&quot; warning later
 pushd nuttx
-$script_dir/patch-ci-macos.sh
+$script_dir/patch-ci-macos.sh  ## https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh
 popd
 
 ## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
@@ -257,7 +257,7 @@ pushd nuttx-patched/tools/ci
 <p><a href="TODO">(Why? So we can catch Build Errors without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS
-## Set the GitHub Token: (should have Gist Permission)
+## Set the GitHub Token: (Should have Gist Permission)
 ## export GITHUB_TOKEN=...
 . $HOME/github-token-macos.sh
 brew install neofetch gh
@@ -275,7 +275,7 @@ cd nuttx-build-farm
 ## Run One Single NuttX CI Job on macOS
 ## ./run-job-macos.sh risc-v-05
 </code></pre></div>
-<p>(And please tell me your <strong>Gist ID</strong>)</p>
+<p>(And please tell me your <strong>Gist User ID</strong>)</p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS. Will repeat forever.
@@ -328,7 +328,7 @@ git clone https://github.com/apache/nuttx-apps apps
 ## Patch the macOS CI Job for Apple Silicon: darwin_arm64.sh
 ## Which will trigger an &quot;uncommitted files&quot; warning later
 pushd nuttx
-$script_dir/patch-ci-macos.sh
+$script_dir/patch-ci-macos.sh  ## https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh
 popd
 
 ## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
