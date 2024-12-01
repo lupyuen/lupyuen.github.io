@@ -248,24 +248,27 @@ pushd nuttx-patched/tools/ci
 <p><em>What about the macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
 <p><a href="TODO">(Why? So we can catch Build Errors without depending on GitHub Actions)</a></p>
-<p>If you have Some Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-#  Run NuttX Build Farm for macOS
-
-## Set the GitHub Token
+<p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS
+## Set the GitHub Token: (should have Gist Permission)
 ## export GITHUB_TOKEN=...
 . $HOME/github-token-macos.sh
+brew install neofetch gh
 
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
-
-## Run All NuttX CI Jobs on macOS
+## Run All NuttX CI Jobs on macOS.
+## Will repeat forever.
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
 ./run-ci-macos.sh
 
+## For Testing:
 ## Run One Single NuttX CI Job on macOS
-# ./run-job-macos.sh risc-v-05
+## ./run-job-macos.sh risc-v-05
 </code></pre></div>
-<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh</p>
+<p>(And please tell me your <strong>Gist ID</strong>)</p>
+<p><em>How does it work?</em></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Run All NuttX CI Jobs on macOS
 ## Read the article: https://lupyuen.codeberg.page/articles/ci2.html
