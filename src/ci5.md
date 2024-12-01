@@ -353,15 +353,19 @@ pushd nuttx-patched/tools/ci
 popd
 ```
 
+Now we can cook some NuttX on macOS...
+
 ![TODO](https://lupyuen.github.io/images/ci5-title.png)
 
 # Mac Gets Smokin' Hot
 
 _Anything we should worry about?_
 
-Yeah Mac Mini will get (nearly) __Boiling Hot__ (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
+Yeah Mac Mini will get (nearly) __Boiling Hot__ (90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
 
-I recommend [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__ (pic below). Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
+I recommend [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__. (Pic below)
+
+Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
 
 Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](TODO)! 🙏
 
