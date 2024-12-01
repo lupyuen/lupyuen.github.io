@@ -206,7 +206,7 @@ python_tools() { ...
   python3 -m venv \
     --system-site-packages /opt/homebrew ...
 </code></pre></div>
-<p>But it doesn’t work locally. Hence we patch <em>darwin_arm64.sh</em> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
+<p>But it doesn’t work locally. Hence we patch <a href="https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh"><em>darwin_arm64.sh</em></a> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment:
 ## For Local macOS
 python_tools() {
