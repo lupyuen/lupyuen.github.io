@@ -391,7 +391,7 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 
 - We have __Limited Skills__ (and machines) for maintaining NuttX CI on macOS
 
-- My Preferred Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
+- My Favourite Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
 
 - Shall we use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
