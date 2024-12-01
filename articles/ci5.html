@@ -244,28 +244,30 @@ pushd nuttx-patched/tools/ci
 ./cibuild.sh -i -c -A -R $target_file
 ...
 </code></pre></div><h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
-<p>TODO</p>
+<p><em>Awesome! We can compile Everything NuttX on macOS Arm64?</em></p>
+<p>Erm sorry not quite. These NuttX Targets <strong>won’t compile on macOS</strong>…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">Group</th><th style="text-align: left">Target</th><th style="text-align: left">Troubles</th></tr></thead><tbody>
-<tr><td style="text-align: left">arm-05</td><td style="text-align: left"><a href="TODO"><em>nrf5340-dk <br> : rpmsghci_nimble_cpuapp</em></a></td><td style="text-align: left"><em>ble_svc_gatt.c: rc set but not used</em></td></tr>
-<tr><td style="text-align: left">arm-07</td><td style="text-align: left"><a href="TODO"><em>ucans32k146 <br> : se05x</em></a></td><td style="text-align: left"><em>mv: illegal option T</em></td></tr>
-<tr><td style="text-align: left">xtensa-02</td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit <br> : qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
-<tr><td style="text-align: left">xtensa-02</td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit <br> : knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
-<tr><td style="text-align: left">arm64-01</td><td style="text-align: left"><a href="TODO"><em>imx93-evk <br> : bootloader</em></a></td><td style="text-align: left"><em>ld: library not found for -lcrt0.o</em></td></tr>
-<tr><td style="text-align: left">sim-01, 02, 03</td><td style="text-align: left"><a href="TODO"><em>TODO <br> : TODO</em></a></td><td style="text-align: left"><em>clang: invalid argument ‘medium’ to -mcmodel=</em></td></tr>
-<tr><td style="text-align: left">other</td><td style="text-align: left"><a href="TODO"><em>micropendous3 <br> : hello</em></a></td><td style="text-align: left"><em>avr-objcopy: Bad CPU type in executable</em></td></tr>
-<tr><td style="text-align: left">x86_64-01</td><td style="text-align: left"><a href="TODO"><em>TODO <br> : TODO</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
+<tr><td style="text-align: left">arm-05</td><td style="text-align: left"><a href="TODO"><em>nrf5340-dk : <br> rpmsghci_nimble_cpuapp</em></a></td><td style="text-align: left"><em>ble_svc_gatt.c: rc set but not used</em></td></tr>
+<tr><td style="text-align: left">arm-07</td><td style="text-align: left"><a href="TODO"><em>ucans32k146 : <br> se05x</em></a></td><td style="text-align: left"><em>mv: illegal option T</em></td></tr>
+<tr><td style="text-align: left">xtensa-02</td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
+<tr><td style="text-align: left">xtensa-02</td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
+<tr><td style="text-align: left">arm64-01</td><td style="text-align: left"><a href="TODO"><em>imx93-evk : <br> bootloader</em></a></td><td style="text-align: left"><em>ld: library not found for -lcrt0.o</em></td></tr>
+<tr><td style="text-align: left">sim-01, 02, 03</td><td style="text-align: left"><a href="TODO"><em>TODO : <br> TODO</em></a></td><td style="text-align: left"><em>clang: invalid argument ‘medium’ to -mcmodel=</em></td></tr>
+<tr><td style="text-align: left">other</td><td style="text-align: left"><a href="TODO"><em>micropendous3 : <br> hello</em></a></td><td style="text-align: left"><em>avr-objcopy: Bad CPU type in executable</em></td></tr>
+<tr><td style="text-align: left">x86_64-01</td><td style="text-align: left"><a href="TODO"><em>TODO : <br> TODO</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
 </tbody></table>
 </div></span>
+<p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
 <h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
 <p><em>What about the macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
-<p><a href="TODO">(Why? So we can catch Build Errors without depending on GitHub Actions)</a></p>
+<p><a href="TODO">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! 🙏 Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS
+<div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS.
 ## Set the GitHub Token: (Should have Gist Permission)
 ## export GITHUB_TOKEN=...
-. $HOME/github-token-macos.sh
+. $HOME/github-token.sh
 brew install neofetch gh
 
 ## Run All NuttX CI Jobs on macOS.
@@ -319,6 +321,7 @@ function run_job {
   popd
 }
 </code></pre></div>
+<p><a href="TODO">(<strong>Some Target Groups</strong> won’t compile)</a></p>
 <p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
 <p><a href="TODO">(<strong>find_messages</strong> is here)</a></p>
 <p><a href="TODO">(<strong>upload_log</strong> is here)</a></p>
