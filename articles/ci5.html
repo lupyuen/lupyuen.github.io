@@ -17,7 +17,7 @@
 <meta name="description" 
     content=">
 <meta property="og:image" 
-    content="https://lupyuen.github.io/images/ci5-title.jpg">
+    content="https://lupyuen.github.io/images/ci5-title.png">
 <meta property="og:type" 
     content="article" data-rh="true">
 <link rel="canonical"
@@ -71,9 +71,9 @@
 <li><a href="#except-these-targets">4 Except These Targets</a><ul></ul></li>
 <li><a href="#macos-build-farm">5 macOS Build Farm</a><ul></ul></li>
 <li><a href="#mac-gets-smokin-hot">6 Mac Gets Smokin’ Hot</a><ul></ul></li>
-<li><a href="#todo">7 TODO</a><ul></ul></li>
+<li><a href="#macos-reconsidered">7 macOS Reconsidered</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="TODO" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
 ## Arm32, RISC-V and Xtensa!
@@ -183,11 +183,13 @@ popd
 ## /arm/rp2040/raspberrypi-pico/configs/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ## /risc-v/bl808/ox64/configs/nsh
 ## /xtensa/esp32s3/esp32s3-devkit/configs/nsh
-## TODO: Add arm64, sim, x86_64, ...
 target_file=$tmp_dir/target.dat
 rm -f $target_file
 echo &quot;/arm/*/$board/configs/$config,CONFIG_ARM_TOOLCHAIN_GNU_EABI&quot; &gt;&gt;$target_file
+echo &quot;/arm64/*/$board/configs/$config&quot; &gt;&gt;$target_file
 echo &quot;/risc-v/*/$board/configs/$config&quot; &gt;&gt;$target_file
+echo &quot;/sim/*/$board/configs/$config&quot; &gt;&gt;$target_file
+echo &quot;/x86_64/*/$board/configs/$config&quot; &gt;&gt;$target_file
 echo &quot;/xtensa/*/$board/configs/$config&quot; &gt;&gt;$target_file
 
 ## Run the NuttX CI Build in &quot;nuttx-patched&quot;
@@ -358,45 +360,45 @@ pushd nuttx-patched/tools/ci
     || echo &#39;***** BUILD FAILED&#39;
 )
 popd
-</code></pre></div><h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
-<p>TODO</p>
-<p>Compile arm on arm? Not really so fast
-compile riscv is faster than compile arm
-Mac pro
-M4 ultra</p>
-<p>https://github.com/devMEremenko/XcodeBenchmark</p>
-<p>Refurbished Xeon Workstation is still faster
-And more predictable
-Use macOS as Front End
-VSCode Remote
-As a Maintainer, quite tough to depend solely on macOS</p>
-<p>TG Pro
-Set Fan Speed to “Auto-Max”</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
-<p>Doesn’t work:</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh sim/nsh
-make
-./nuttx
 </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="TODO" /></p>
+<h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
+<p><em>Anything we should worry about?</em></p>
+<p>Yeah Mac Mini will get (nearly) <strong>Boiling Hot</strong> (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be <strong>100% Maxed Out</strong>. (Pic above, M2 Pro)</p>
+<p>I recommend installing <a href="TODO"><strong>TG Pro</strong></a>. Set the <strong>Fan Speed to Auto-Max</strong>, which will trigger the fans at 70 deg C, keeping things cool…</p>
+<p><img src="https://lupyuen.github.io/images/ci5-fan.png" alt="TODO" /></p>
+<p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please try the NuttX Build Farm!</p>
+<p>(<a href="https://github.com/devMEremenko/XcodeBenchmark"><strong>Xcode Benchmark</strong></a> suggests that Your Mac might be twice as fast as my M2 Pro)</p>
+<p><em>Is macOS Arm64 faster than Intel x64? For compiling NuttX Arm32?</em></p>
+<p>Strangely: macOS Arm64 seems to compile <a href="TODO"><strong>NuttX RISC-V</strong></a> quicker than <a href="TODO"><strong>NuttX Arm32</strong></a>!</p>
+<p>I prefer Ubuntu PC for compiling NuttX, lemme explain…</p>
+<h1 id="macos-reconsidered"><a class="doc-anchor" href="#macos-reconsidered">§</a>7 macOS Reconsidered</h1>
 <p><em>Is macOS good enough for NuttX Development?</em></p>
 <p>If we’re Compiling NuttX for <strong>One Single Target</strong>: Arm32 / RISC-V / Xtensa… Yep sure!</p>
 <p>But as NuttX Maintainer: I find it tough to reproduce <strong>All Possible NuttX Builds</strong> on macOS…</p>
 <ul>
 <li>
-<p>We have <strong>Limited Skills</strong> for maintaining NuttX CI on macOS</p>
+<p>We have <strong>Limited Skills</strong> for maintaining NuttX CI for macOS</p>
 </li>
 <li>
 <p>My Preferred Setup: <a href="TODO"><strong>VSCode on macOS</strong></a> controlling a <a href="TODO"><strong>Refurbished Xeon Workstation</strong></a> for <a href="TODO"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
 </li>
 <li>
-<p>Maybe Docker for Arm64?</p>
+<p>Maybe we should use <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>Docker for macOS Arm64</strong></a>?</p>
 </li>
 <li>
-<p>By modding the Dockerfile?</p>
+<p>By <a href="TODO"><strong>Modding the NuttX Dockerfile</strong></a>?</p>
 </li>
 </ul>
-<p><em>How does it compare with Docker?</em></p>
-<p>TODO: Compare with Docker</p>
+<p>Hopefully someday we’ll find a reliable way to compile <em>sim:nsh</em> on macOS Arm64…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## macOS Arm64 won&#39;t compile sim:nsh
+$ git clone https://github.com/lupyuen/nuttx-build-farm
+$ cd nuttx-build-farm
+$ ./run-build-macos.sh sim:nsh
+clang: error: invalid argument &#39;medium&#39; to -mcmodel=
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903">(It was <strong>Previously Working!</strong>)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
