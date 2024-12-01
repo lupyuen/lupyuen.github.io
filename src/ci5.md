@@ -205,16 +205,20 @@ pushd nuttx-patched/tools/ci
 
 TODO
 
-```bash
-## arm-05: "nrf5340-dk/rpmsghci_nimble_cpuapp: apps/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/services/gatt/src/ble_svc_gatt.c:174:9: error: variable 'rc' set but not used"
-## arm-07: "ucans32k146/se05x: mv: illegal option -- T"
-## xtensa-02: "esp32s3-devkit/qemu_debug: common/xtensa_hostfs.c:102:24: error: 'SIMCALL_O_NONBLOCK' undeclared"
-## xtensa-02: "esp32s3-devkit/knsh: sed: 1: invalid command code ."
-## arm64-01: "imx93-evk/bootloader: ld: library not found for -lcrt0.o"
-## sim-01, 02, 03: "clang: error: invalid argument 'medium' to -mcmodel="
-## other: "micropendous3/hello: make: avr-objcopy: Bad CPU type in executable"
-## x86_64-01: "argtable3/src/arg_rex.c:295:10: fatal error: setjmp.h: No such file or directory"
-```
+<span style="font-size:90%">
+
+| Group | Target | Troubles |
+|:------|:-------|:---------|
+| arm-05 | [_nrf5340-dk <br> : rpmsghci_nimble_cpuapp_](TODO) | _ble_svc_gatt.c: rc set but not used_
+| arm-07 | [_ucans32k146 <br> : se05x_](TODO) | _mv: illegal option T_
+| xtensa-02 | [_esp32s3-devkit <br> : qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
+| xtensa-02 | [_esp32s3-devkit <br> : knsh_](TODO) | _sed: invalid command code ._
+| arm64-01 | [_imx93-evk <br> : bootloader_](TODO) | _ld: library not found for -lcrt0.o_
+| sim-01, 02, 03 | [_TODO <br> : TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
+| other | [_micropendous3 <br> : hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
+| x86_64-01 | [_TODO <br> : TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
+
+</span>
 
 # macOS Build Farm
 
@@ -224,7 +228,7 @@ Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile A
 
 [(Why? So we can catch Build Errors without depending on GitHub Actions)](TODO)
 
-If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
+If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! 🙏 Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
 
 ```bash
 ## Run the NuttX Build Farm for macOS
@@ -349,15 +353,15 @@ popd
 
 _Anything we should worry about?_
 
-Yeah Mac Mini will get (nearly) __Boiling Hot__ (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (Pic above, M2 Pro)
+Yeah Mac Mini will get (nearly) __Boiling Hot__ (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
 
-I recommend installing [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__, which will trigger the fans at 70 deg C, keeping things cool...
+I recommend installing [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__, which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
 
-![TODO](https://lupyuen.github.io/images/ci5-fan.png)
-
-Do you have a __Mac Pro__ or __M4 Pro__? Please try the NuttX Build Farm!
+Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](TODO)! 🙏
 
 ([__Xcode Benchmark__](https://github.com/devMEremenko/XcodeBenchmark) suggests that Your Mac might be twice as fast as my M2 Pro)
+
+![TODO](https://lupyuen.github.io/images/ci5-fan.png)
 
 _Is macOS Arm64 faster than Intel x64? For compiling NuttX Arm32?_
 
