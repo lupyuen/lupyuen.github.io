@@ -70,8 +70,9 @@
 <li><a href="#patch-the-ci-script">3 Patch the CI Script</a><ul></ul></li>
 <li><a href="#except-these-targets">4 Except These Targets</a><ul></ul></li>
 <li><a href="#macos-build-farm">5 macOS Build Farm</a><ul></ul></li>
-<li><a href="#todo">6 TODO</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#mac-gets-smokin-hot">6 Mac Gets Smokin’ Hot</a><ul></ul></li>
+<li><a href="#todo">7 TODO</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.jpg" alt="TODO" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -81,6 +82,9 @@ cd nuttx-build-farm
 ./run-build-macos.sh raspberrypi-pico:nsh
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
+
+## NuttX Executable will be at:
+## /tmp/run-build-macos/nuttx
 </code></pre></div>
 <p>TODO</p>
 <ul>
@@ -116,6 +120,9 @@ cd nuttx-build-farm
 ./run-build-macos.sh raspberrypi-pico:nsh
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
+
+## NuttX Executable will be at:
+## /tmp/run-build-macos/nuttx
 
 ## To re-download the GCC Toolchains:
 ## rm -rf /tmp/run-build-macos
@@ -261,104 +268,19 @@ git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 ./run-ci-macos.sh
 
+## To re-download the GCC Toolchains:
+## rm -rf /tmp/run-job-macos
+
 ## For Testing:
 ## Run One Single NuttX CI Job on macOS
 ## ./run-job-macos.sh risc-v-05
 </code></pre></div>
 <p>(And please tell me your <strong>Gist ID</strong>)</p>
 <p><em>How does it work?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Run All NuttX CI Jobs on macOS
-## Read the article: https://lupyuen.codeberg.page/articles/ci2.html
-
-echo Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh
-device=ci
-
-set -x  ## Echo commands
-
-## Get the Script Directory
-script_path=&quot;${BASH_SOURCE}&quot;
-script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-log_file=/tmp/release-$device.log
-
-## Get the `script` option
-if [ &quot;`uname`&quot; == &quot;Linux&quot; ]; then
-  script_option=-c
-else
-  script_option=
-fi
-
-## Run the job
-function run_job {
-  local job=$1
-  pushd /tmp
-  script $log_file \
-    $script_option \
-    $script_dir/run-job-macos.sh $job
-  popd
-}
-
-## Strip the control chars
-function clean_log {
-  local tmp_file=/tmp/release-tmp.log
-  cat $log_file \
-    | tr -d &#39;\r&#39; \
-    | tr -d &#39;\r&#39; \
-    | sed &#39;s/\x08/ /g&#39; \
-    | sed &#39;s/\x1B(B//g&#39; \
-    | sed &#39;s/\x1B\[K//g&#39; \
-    | sed &#39;s/\x1B[&lt;=&gt;]//g&#39; \
-    | sed &#39;s/\x1B\[[0-9:;&lt;=&gt;?]*[!]*[A-Za-z]//g&#39; \
-    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
-    | cat -v \
-    &gt;$tmp_file
-  mv $tmp_file $log_file
-  echo ----- &quot;Done! $log_file&quot;
-}
-
-## Search for Errors and Warnings
-function find_messages {
-  local tmp_file=/tmp/release-tmp.log
-  local msg_file=/tmp/release-msg.log
-  local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
-  grep &#39;^\*\*\*\*\*&#39; $log_file \
-    &gt; $msg_file
-  grep -E &quot;$pattern&quot; $log_file \
-    | uniq \
-    &gt;&gt; $msg_file
-  cat $msg_file $log_file &gt;$tmp_file
-  mv $tmp_file $log_file
-}
-
-## Upload to GitHub Gist
-function upload_log {
-  local job=$1
-  local nuttx_hash=$2
-  local apps_hash=$3
-  cat $log_file | \
-    gh gist create \
-    --public \
-    --desc &quot;[$job] CI Log for nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot; \
-    --filename &quot;ci-$job.log&quot;
-}
-
-## Skip to a Random CI Job. Assume max 32 CI Jobs.
-let &quot;skip = $RANDOM % 32&quot;
-echo Skipping $skip CI Jobs...
-
-## Repeat forever for All CI Jobs, excluding:
-## arm-05: &quot;nrf5340-dk/rpmsghci_nimble_cpuapp: apps/wireless/bluetooth/nimble/mynewt-nimble/nimble/host/services/gatt/src/ble_svc_gatt.c:174:9: error: variable &#39;rc&#39; set but not used&quot;
-## arm-07: &quot;ucans32k146/se05x: mv: illegal option -- T&quot;
-## xtensa-02: &quot;esp32s3-devkit/qemu_debug: common/xtensa_hostfs.c:102:24: error: &#39;SIMCALL_O_NONBLOCK&#39; undeclared&quot;
-## xtensa-02: &quot;esp32s3-devkit/knsh: sed: 1: invalid command code .&quot;
-## arm64-01: &quot;imx93-evk/bootloader: ld: library not found for -lcrt0.o&quot;
-## sim-01, 02, 03: &quot;clang: error: invalid argument &#39;medium&#39; to -mcmodel=&quot;
-## other: &quot;micropendous3/hello: make: avr-objcopy: Bad CPU type in executable&quot;
-## x86_64-01: &quot;argtable3/src/arg_rex.c:295:10: fatal error: setjmp.h: No such file or directory&quot;
-## risc-v-05: CI Test may hang, we move to the end
+<p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS. Will repeat forever.
 ## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
+## risc-v-05: CI Test may hang, we move to the end
 for (( ; ; )); do
   for job in \
     arm-08 risc-v-06 \
@@ -370,143 +292,49 @@ for (( ; ; )); do
     arm-04 risc-v-04 \
     arm-06 risc-v-05
   do
-    ## Skip to a Random CI Job
-    if [[ $skip -gt 0 ]]; then
-      let skip--
-      continue
-    fi
-
     ## Run the CI Job and find errors / warnings
     run_job $job
     clean_log
     find_messages
 
-    ## Get the hashes for NuttX and Apps
-    nuttx_hash=$(
-      cat $log_file \
-      | grep --only-matching -E &#39;nuttx/tree/[0-9a-z]+&#39; \
-      | grep --only-matching -E &#39;[0-9a-z]+$&#39; --max-count=1
-    )
-    apps_hash=$(
-      cat $log_file \
-      | grep --only-matching -E &#39;nuttx-apps/tree/[0-9a-z]+&#39; \
-      | grep --only-matching -E &#39;[0-9a-z]+$&#39; --max-count=1
-    )
-
-    ## Upload the log
+    ## Upload the log to GitHub Gist
     upload_log $job $nuttx_hash $apps_hash
-    date ; sleep 20
   done
-
-  ## Re-download the toolchain, in case the files got messed up
-  rm -rf /tmp/run-job-macos
 done
 
-## Here&#39;s how we delete the 20 latest gists
-function delete_gists {
-  local gist_ids=($(gh gist list --limit 20 | cut -f 1 | xargs))
-  for gist_id in &quot;${gist_ids[@]}&quot;; do
-    gh gist delete $gist_id
-  done
+## Run the NuttX CI Job (e.g. risc-v-01)
+## And capture the output
+function run_job {
+  local job=$1
+  pushd /tmp
+  script $log_file \
+    $script_option \
+    $script_dir/run-job-macos.sh $job
+  popd
 }
 </code></pre></div>
-<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Run a NuttX CI Job on macOS
-## To re-download the toolchain: rm -rf /tmp/run-job-macos
-## Read the article: https://lupyuen.codeberg.page/articles/ci2.html
-
-echo Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh
-echo Called by https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh
-echo utc_time=$(date -u +&#39;%Y-%m-%dT%H:%M:%S&#39;)
-echo local_time=$(date +&#39;%Y-%m-%dT%H:%M:%S&#39;)
-
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
-
-# Parameter is CI Job, like &quot;arm-01&quot;
-job=$1
-if [[ &quot;$job&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Job Parameter is missing (e.g. arm-01)&quot;
-  exit 1
-fi
-
-## Show the System Info
-set | grep TMUX || true
-neofetch
-uname -a
-
-## Get the Script Directory
-script_path=&quot;${BASH_SOURCE}&quot;
-script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-
-## Remove Homebrew ar from PATH. It shall become /usr/bin/ar
-export PATH=$(
-  echo $PATH \
-    | tr &#39;:&#39; &#39;\n&#39; \
-    | grep -v &quot;/opt/homebrew/opt/make/libexec/gnubin&quot; \
-    | grep -v &quot;/opt/homebrew/opt/coreutils/libexec/gnubin&quot; \
-    | grep -v &quot;/opt/homebrew/opt/binutils/bin&quot; \
-    | tr &#39;\n&#39; &#39;:&#39;
-)
-if [[ $(which ar) != &quot;/usr/bin/ar&quot; ]]; then
-  echo &quot;ERROR: Expected &#39;which ar&#39; to return /usr/bin/ar, not $(which ar)&quot;
-  exit 1
-fi
-
-## Preserve the Tools Folder
+<p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
+<p><a href="TODO">(<strong>find_messages</strong> is here)</a></p>
+<p><a href="TODO">(<strong>upload_log</strong> is here)</a></p>
+<p><em>What’s inside run-job-macos.sh?</em></p>
+<p>It will run one single <strong>NuttX CI Job</strong>, very similar to the <a href="TODO"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
+## Checkout the NuttX Repo and NuttX Apps
 tmp_dir=/tmp/run-job-macos
-tools_dir=$tmp_dir/tools
-if [[ -d $tools_dir ]]; then
-  rm -rf /tmp/tools
-  mv $tools_dir /tmp
-fi
-
-## Create the Temp Folder and restore the Tools Folder
-rm -rf $tmp_dir
-mkdir $tmp_dir
 cd $tmp_dir
-if [[ -d /tmp/tools ]]; then
-  mv /tmp/tools .
-fi
-
-## Somehow wasi-sdk always fails. We re-download.
-rm -rf $tmp_dir/tools/wasi-sdk*
-
-## Checkout NuttX Repo and NuttX Apps
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
-pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
-pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
 
 ## Patch the macOS CI Job for Apple Silicon: darwin_arm64.sh
 ## Which will trigger an &quot;uncommitted files&quot; warning later
 pushd nuttx
 $script_dir/patch-ci-macos.sh
-git status
 popd
 
-## Suppress the uncommitted darwin_arm64.sh warning:
+## Omitted: Suppress the uncommitted darwin_arm64.sh warning:
 ## We copy the patched &quot;nuttx&quot; folder to &quot;nuttx-patched&quot;
 ## Then restore the original &quot;nuttx&quot; folder
-cp -r nuttx nuttx-patched
-pushd nuttx
-git restore tools/ci
-git status
-popd
-
-## Patch the CI Job cibuild.sh to point to &quot;nuttx-patched&quot;
-## Change: CIPLAT=${CIWORKSPACE}/nuttx/tools/ci/platforms
-## To:     CIPLAT=${CIWORKSPACE}/nuttx-patched/tools/ci/platforms
-file=nuttx-patched/tools/ci/cibuild.sh
-tmp_file=$tmp_dir/cibuild.sh
-search=&#39;\/nuttx\/tools\/&#39;
-replace=&#39;\/nuttx-patched\/tools\/&#39;
-cat $file \
-  | sed &quot;s/$search/$replace/g&quot; \
-  &gt;$tmp_file
-mv $tmp_file $file
-chmod +x $file
+...
 
 ## Exclude clang Targets from macOS Build, because they will fail due to unknown arch
 ## &quot;/arm/lpc54xx,CONFIG_ARM_TOOLCHAIN_CLANG&quot;
@@ -523,19 +351,15 @@ done
 ( sleep 3600 ; echo Killing pytest after timeout... ; pkill -f pytest )&amp;
 
 ## Run the CI Job in &quot;nuttx-patched&quot;
-## ./cibuild.sh -i -c -A -R testlist/macos.dat
-## ./cibuild.sh -i -c -A -R testlist/arm-01.dat
+## ./cibuild.sh -i -c -A -R testlist/risc-v-01.dat
 pushd nuttx-patched/tools/ci
 (
   ./cibuild.sh -i -c -A -R testlist/$job.dat \
     || echo &#39;***** BUILD FAILED&#39;
 )
 popd
-
-## Monitor the Disk Space
-df -H
-</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
-<p>Build Farm</p>
+</code></pre></div><h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
+<p>TODO</p>
 <p>Compile arm on arm? Not really so fast
 compile riscv is faster than compile arm
 Mac pro
@@ -546,10 +370,9 @@ And more predictable
 Use macOS as Front End
 VSCode Remote
 As a Maintainer, quite tough to depend solely on macOS</p>
-<p>brew install gh neofetch</p>
-<p>x64 vs arm64 toolchains</p>
 <p>TG Pro
 Set Fan Speed to “Auto-Max”</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
 <p>Doesn’t work:</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh sim/nsh
 make
@@ -574,7 +397,7 @@ make
 </ul>
 <p><em>How does it compare with Docker?</em></p>
 <p>TODO: Compare with Docker</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
