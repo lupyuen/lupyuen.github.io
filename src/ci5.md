@@ -130,9 +130,9 @@ popd
 target_file=$tmp_dir/target.dat
 rm -f $target_file
 echo "/arm/*/$board/configs/$config,CONFIG_ARM_TOOLCHAIN_GNU_EABI" >>$target_file
-echo "/arm64/*/$board/configs/$config" >>$target_file
+echo "/arm64/*/$board/configs/$config"  >>$target_file
 echo "/risc-v/*/$board/configs/$config" >>$target_file
-echo "/sim/*/$board/configs/$config" >>$target_file
+echo "/sim/*/$board/configs/$config"    >>$target_file
 echo "/x86_64/*/$board/configs/$config" >>$target_file
 echo "/xtensa/*/$board/configs/$config" >>$target_file
 
@@ -211,14 +211,14 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 
 | Group | Target | Troubles |
 |:------|:-------|:---------|
-| arm-05 | [_nrf5340-dk : <br> rpmsghci_nimble_cpuapp_](TODO) | _ble_svc_gatt.c: rc set but not used_
-| arm-07 | [_ucans32k146 : <br> se05x_](TODO) | _mv: illegal option T_
-| xtensa-02 | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
-| xtensa-02 | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
-| arm64-01 | [_imx93-evk : <br> bootloader_](TODO) | _ld: library not found for -lcrt0.o_
-| sim-01, 02, 03 | [_TODO : <br> TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
-| other | [_micropendous3 : <br> hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
-| x86_64-01 | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
+| __arm-05__ | [_nrf5340-dk : <br> rpmsghci_nimble_cpuapp_](TODO) | _ble_svc_gatt.c: rc set but not used_
+| __arm-07__ | [_ucans32k146 : <br> se05x_](TODO) | _mv: illegal option T_
+| __arm64-01__ | [_imx93-evk : <br> bootloader_](TODO) | _ld: library not found for -lcrt0.o_
+| __other__ | [_micropendous3 : <br> hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
+| __sim-01 to 03__ | [_TODO : <br> TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
+| __x86_64-01__ | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
+| __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
+| __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
 
 </span>
 
