@@ -215,7 +215,7 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __arm-07__ | [_ucans32k146 : <br> se05x_](TODO) | _mv: illegal option T_
 | __arm64-01__ | [_imx93-evk : <br> bootloader_](TODO) | _ld: library not found for -lcrt0.o_
 | __other__ | [_micropendous3 : <br> hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
-| __sim-01 to 03__ | [_TODO : <br> TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
+| __sim-01 to 03__ | [_sim : <br> nsh_](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d) | _clang: invalid argument 'medium' to -mcmodel=_
 | __x86_64-01__ | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
 | __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
 | __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
@@ -361,19 +361,19 @@ _Anything we should worry about?_
 
 Yeah Mac Mini will get (nearly) __Boiling Hot__ (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
 
-I recommend installing [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__, which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
+I recommend [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__ (pic below). Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
 
 Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](TODO)! 🙏
 
-([__Xcode Benchmark__](https://github.com/devMEremenko/XcodeBenchmark) suggests that Your Mac might be twice as fast as my M2 Pro)
+([__Xcode Benchmark__](https://github.com/devMEremenko/XcodeBenchmark) suggests Your Mac might be twice as fast as my M2 Pro)
 
 ![TODO](https://lupyuen.github.io/images/ci5-fan.png)
 
-_Is macOS Arm64 faster than Intel x64? For compiling NuttX Arm32?_
+_Is macOS Arm64 faster than Intel PC? For compiling NuttX Arm32?_
 
-Strangely: macOS Arm64 seems to compile [__NuttX RISC-V__](TODO) quicker than [__NuttX Arm32__](TODO)!
+Not really, Compiling Arm on Arm isn't much faster. Strangely: macOS Arm64 seems to compile [__NuttX RISC-V__](TODO) quicker than [__NuttX Arm32__](TODO)!
 
-I prefer Ubuntu PC for compiling NuttX, lemme explain...
+I still prefer Ubuntu PC for compiling NuttX, lemme explain...
 
 # macOS Reconsidered
 
@@ -383,15 +383,17 @@ If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Y
 
 But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Builds__ on macOS...
 
-- We have __Limited Skills__ for maintaining NuttX CI for macOS
+- [__Some NuttX Targets__](TODO) won't compile for macOS
+
+- We have __Limited Skills__ (and machines) for maintaining NuttX CI on macOS
 
 - My Preferred Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
 
-- Maybe we should use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
+- Shall we use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
 - By [__Modding the NuttX Dockerfile__](TODO)?
 
-Hopefully someday we'll find a reliable way to compile _sim:nsh_ on macOS Arm64...
+Hopefully we'll find a reliable way to compile _sim:nsh_ on macOS...
 
 ```bash
 ## macOS Arm64 won't compile sim:nsh
