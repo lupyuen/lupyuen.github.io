@@ -2,7 +2,7 @@
 
 📝 _24 Dec 2024_
 
-![TODO](https://lupyuen.github.io/images/ci5-title.jpg)
+![TODO](https://lupyuen.github.io/images/ci5-title.png)
 
 __Folks on macOS:__ Compiling [__Apache NuttX RTOS__](TODO) used to be so tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
 
@@ -127,11 +127,13 @@ popd
 ## /arm/rp2040/raspberrypi-pico/configs/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
 ## /risc-v/bl808/ox64/configs/nsh
 ## /xtensa/esp32s3/esp32s3-devkit/configs/nsh
-## TODO: Add arm64, sim, x86_64, ...
 target_file=$tmp_dir/target.dat
 rm -f $target_file
 echo "/arm/*/$board/configs/$config,CONFIG_ARM_TOOLCHAIN_GNU_EABI" >>$target_file
+echo "/arm64/*/$board/configs/$config" >>$target_file
 echo "/risc-v/*/$board/configs/$config" >>$target_file
+echo "/sim/*/$board/configs/$config" >>$target_file
+echo "/x86_64/*/$board/configs/$config" >>$target_file
 echo "/xtensa/*/$board/configs/$config" >>$target_file
 
 ## Run the NuttX CI Build in "nuttx-patched"
@@ -341,35 +343,29 @@ pushd nuttx-patched/tools/ci
 popd
 ```
 
+![TODO](https://lupyuen.github.io/images/ci5-title.png)
+
 # Mac Gets Smokin' Hot
 
-TODO
+_Anything we should worry about?_
 
-Compile arm on arm? Not really so fast
-compile riscv is faster than compile arm
-Mac pro
-M4 ultra
+Yeah Mac Mini will get (nearly) __Boiling Hot__ (80 to 90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (Pic above, M2 Pro)
 
-https://github.com/devMEremenko/XcodeBenchmark
+I recommend installing [__TG Pro__](TODO). Set the __Fan Speed to Auto-Max__, which will trigger the fans at 70 deg C, keeping things cool...
 
-Refurbished Xeon Workstation is still faster
-And more predictable
-Use macOS as Front End
-VSCode Remote
-As a Maintainer, quite tough to depend solely on macOS
+![TODO](https://lupyuen.github.io/images/ci5-fan.png)
 
-TG Pro
-Set Fan Speed to "Auto-Max"
+Do you have a __Mac Pro__ or __M4 Pro__? Please try the NuttX Build Farm!
 
-# TODO
+([__Xcode Benchmark__](https://github.com/devMEremenko/XcodeBenchmark) suggests that Your Mac might be twice as fast as my M2 Pro)
 
-Doesn't work:
+_Is macOS Arm64 faster than Intel x64? For compiling NuttX Arm32?_
 
-```bash
-tools/configure.sh sim/nsh
-make
-./nuttx
-```
+Strangely: macOS Arm64 seems to compile [__NuttX RISC-V__](TODO) quicker than [__NuttX Arm32__](TODO)!
+
+I prefer Ubuntu PC for compiling NuttX, lemme explain...
+
+# macOS Reconsidered
 
 _Is macOS good enough for NuttX Development?_
 
@@ -377,17 +373,27 @@ If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Y
 
 But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Builds__ on macOS...
 
-- We have __Limited Skills__ for maintaining NuttX CI on macOS
+- We have __Limited Skills__ for maintaining NuttX CI for macOS
 
 - My Preferred Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
 
-- Maybe Docker for Arm64?
+- Maybe we should use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
-- By modding the Dockerfile?
+- By [__Modding the NuttX Dockerfile__](TODO)?
 
-_How does it compare with Docker?_
+Hopefully someday we'll find a reliable way to compile _sim:nsh_ on macOS Arm64...
 
-TODO: Compare with Docker
+```bash
+## macOS Arm64 won't compile sim:nsh
+$ git clone https://github.com/lupyuen/nuttx-build-farm
+$ cd nuttx-build-farm
+$ ./run-build-macos.sh sim:nsh
+clang: error: invalid argument 'medium' to -mcmodel=
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d)
+
+[(It was __Previously Working!__)](https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903)
 
 # What's Next
 
