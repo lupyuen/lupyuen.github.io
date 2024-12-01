@@ -143,7 +143,7 @@ cd nuttx-build-farm
 </li>
 </ul>
 <p><em>Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa…</em></p>
-<p><strong>Toolchains are Auto-Downloaded</strong>, thanks to the brilliant Continuous Integration Script by <a href="TODO"><strong>Simbit18</strong></a>!</p>
+<p><strong>Toolchains are Auto-Downloaded</strong>. Thanks to the brilliant Continuous Integration Script by <a href="TODO"><strong>Simbit18</strong></a>!</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/14723"><strong>NuttX CI for macOS Arm64</strong></a> <em>(darwin_arm64.sh)</em></p>
@@ -270,8 +270,8 @@ pushd nuttx-patched/tools/ci
 . $HOME/github-token.sh
 brew install neofetch gh
 
-## Run All NuttX CI Jobs on macOS.
-## Will repeat forever.
+## Run All NuttX CI Jobs on macOS
+## Will repeat forever
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 ./run-ci-macos.sh
@@ -281,12 +281,12 @@ cd nuttx-build-farm
 
 ## For Testing:
 ## Run One Single NuttX CI Job on macOS
-## ./run-job-macos.sh risc-v-05
+## ./run-job-macos.sh risc-v-01
 </code></pre></div>
 <p>(And please tell me your <strong>Gist User ID</strong>)</p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS. Will repeat forever.
+<div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS, forever and ever
 ## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
 ## risc-v-05: CI Test may hang, we move to the end
 for (( ; ; )); do
