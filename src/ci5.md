@@ -84,7 +84,7 @@ And it works on __Apple Silicon__! M1, M2, M3, M4, ...
 
 _Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa..._
 
-__Toolchains are Auto-Downloaded__, thanks to the brilliant Continuous Integration Script by [__Simbit18__](TODO)!
+__Toolchains are Auto-Downloaded__. Thanks to the brilliant Continuous Integration Script by [__Simbit18__](TODO)!
 
 - [__NuttX CI for macOS Arm64__](https://github.com/apache/nuttx/pull/14723) _(darwin_arm64.sh)_
 
@@ -241,8 +241,8 @@ If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! 🙏 Lik
 . $HOME/github-token.sh
 brew install neofetch gh
 
-## Run All NuttX CI Jobs on macOS.
-## Will repeat forever.
+## Run All NuttX CI Jobs on macOS
+## Will repeat forever
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 ./run-ci-macos.sh
@@ -252,7 +252,7 @@ cd nuttx-build-farm
 
 ## For Testing:
 ## Run One Single NuttX CI Job on macOS
-## ./run-job-macos.sh risc-v-05
+## ./run-job-macos.sh risc-v-01
 ```
 
 (And please tell me your __Gist User ID__)
@@ -262,7 +262,7 @@ _How does it work?_
 macOS Build Farm shall run (nearly) __All NuttX CI Jobs__, forever and ever: [run-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh)
 
 ```bash
-## Run All NuttX CI Jobs on macOS. Will repeat forever.
+## Run All NuttX CI Jobs on macOS, forever and ever
 ## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
 ## risc-v-05: CI Test may hang, we move to the end
 for (( ; ; )); do
