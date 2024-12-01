@@ -155,7 +155,7 @@ python_tools() { ...
     --system-site-packages /opt/homebrew ...
 ```
 
-But it doesn't work locally. Hence we patch _darwin_arm64.sh_ to __Run Locally__: [patch-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75)
+But it doesn't work locally. Hence we patch [_darwin_arm64.sh_](https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh) to __Run Locally__: [patch-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75)
 
 ```bash
 ## Modified Python Environment:
