@@ -203,22 +203,26 @@ pushd nuttx-patched/tools/ci
 
 # Except These Targets
 
-TODO
+_Awesome! We can compile Everything NuttX on macOS Arm64?_
+
+Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 
 <span style="font-size:90%">
 
 | Group | Target | Troubles |
 |:------|:-------|:---------|
-| arm-05 | [_nrf5340-dk <br> : rpmsghci_nimble_cpuapp_](TODO) | _ble_svc_gatt.c: rc set but not used_
-| arm-07 | [_ucans32k146 <br> : se05x_](TODO) | _mv: illegal option T_
-| xtensa-02 | [_esp32s3-devkit <br> : qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
-| xtensa-02 | [_esp32s3-devkit <br> : knsh_](TODO) | _sed: invalid command code ._
-| arm64-01 | [_imx93-evk <br> : bootloader_](TODO) | _ld: library not found for -lcrt0.o_
-| sim-01, 02, 03 | [_TODO <br> : TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
-| other | [_micropendous3 <br> : hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
-| x86_64-01 | [_TODO <br> : TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
+| arm-05 | [_nrf5340-dk : <br> rpmsghci_nimble_cpuapp_](TODO) | _ble_svc_gatt.c: rc set but not used_
+| arm-07 | [_ucans32k146 : <br> se05x_](TODO) | _mv: illegal option T_
+| xtensa-02 | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
+| xtensa-02 | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
+| arm64-01 | [_imx93-evk : <br> bootloader_](TODO) | _ld: library not found for -lcrt0.o_
+| sim-01, 02, 03 | [_TODO : <br> TODO_](TODO) | _clang: invalid argument 'medium' to -mcmodel=_
+| other | [_micropendous3 : <br> hello_](TODO) | _avr-objcopy: Bad CPU type in executable_
+| x86_64-01 | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
 
 </span>
+
+We'll come back to this. First we talk about NuttX Build Farm...
 
 # macOS Build Farm
 
@@ -226,15 +230,15 @@ _What about the macOS Build Farm?_
 
 Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile All NuttX Targets__... Non-Stop 24 by 7!
 
-[(Why? So we can catch Build Errors without depending on GitHub Actions)](TODO)
+[(Why? So we can __Catch Build Errors__ without depending on GitHub Actions)](TODO)
 
 If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! 🙏 Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
 
 ```bash
-## Run the NuttX Build Farm for macOS
+## Run the NuttX Build Farm for macOS.
 ## Set the GitHub Token: (Should have Gist Permission)
 ## export GITHUB_TOKEN=...
-. $HOME/github-token-macos.sh
+. $HOME/github-token.sh
 brew install neofetch gh
 
 ## Run All NuttX CI Jobs on macOS.
@@ -293,6 +297,8 @@ function run_job {
   popd
 }
 ```
+
+[(__Some Target Groups__ won't compile)](TODO)
 
 [(__clean_log__ is here)](TODO)
 
