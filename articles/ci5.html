@@ -90,6 +90,12 @@ cd nuttx-build-farm
 <ul>
 <li>TODO: Thanks to the awesome work by <a href="TODO"><strong>Simbit18</strong></a>!</li>
 </ul>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ci5-path.png" alt="GNU Coreutils and Binutils on PATH are also known to break build in MacOS" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741"><em>“GNU Coreutils and Binutils on PATH are also known to break build in MacOS”</em></a></p>
+</blockquote>
 <h1 id="fix-the-path"><a class="doc-anchor" href="#fix-the-path">§</a>1 Fix the PATH!</h1>
 <p><strong>Super Important!</strong> NuttX won’t build correctly on macOS unless we remove <strong>Homebrew ar</strong> from <strong>PATH</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remove Homebrew ar from PATH
@@ -111,7 +117,11 @@ fi
 <p>Thus we should always do the above before compiling NuttX. Otherwise we’ll see a conflict between the <a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2462583245"><strong>Homebrew and Clang Linkers</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>ld: archive member &#39;/&#39; not a mach-o file in &#39;libgp.a&#39;
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
-</code></pre></div><h1 id="build-anything-on-macos"><a class="doc-anchor" href="#build-anything-on-macos">§</a>2 Build Anything on macOS</h1>
+</code></pre></div>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ci5-build.png" alt="Building raspberrypi-pico:nsh on macOS" /></p>
+</blockquote>
+<h1 id="build-anything-on-macos"><a class="doc-anchor" href="#build-anything-on-macos">§</a>2 Build Anything on macOS</h1>
 <p>Earlier we talked about compiling <strong>Any NuttX Target</strong> on macOS: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
 ## Arm32, RISC-V and Xtensa!
@@ -157,7 +167,12 @@ cd nuttx-build-farm
 </ul>
 <p>Just make sure we’ve installed <a href="TODO"><strong>brew</strong></a>, <a href="TODO"><strong>neofetch</strong></a> and <a href="TODO"><strong>Xcode Command-Line Tools</strong></a>.</p>
 <p><a href="TODO">(Yep the same script drives our <strong>GitHub Daily Builds</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236">(Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker)</a></p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ci5-toolchains.png" alt="Toolchains are downloaded in 10 mins, subsequent builds are quicker" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236"><em>Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker</em></a></p>
+</blockquote>
 <h1 id="patch-the-ci-script"><a class="doc-anchor" href="#patch-the-ci-script">§</a>3 Patch the CI Script</h1>
 <p><em>We’re running the NuttX CI Script on our computer. How does it work?</em></p>
 <p>This is how we call <a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh"><em>tools/ci/cibuild.sh</em></a> to Download the Toolchains and <strong>Compile our NuttX Target</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
@@ -243,7 +258,9 @@ chmod +x $file
 pushd nuttx-patched/tools/ci
 ./cibuild.sh -i -c -A -R $target_file
 ...
-</code></pre></div><h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
+</code></pre></div>
+<p>TODO: Pic of sim:nsh</p>
+<h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
 <p><em>Awesome! We can compile Everything NuttX on macOS Arm64?</em></p>
 <p>Erm sorry not quite. These NuttX Targets <strong>won’t compile on macOS</strong>…</p>
 <span style="font-size:90%">
@@ -259,6 +276,7 @@ pushd nuttx-patched/tools/ci
 </tbody></table>
 </div></span>
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
+<p><img src="https://lupyuen.github.io/images/ci5-farm.jpg" alt="TODO" /></p>
 <h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
 <p><em>What about the macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
@@ -381,6 +399,10 @@ popd
 <p><em>Is macOS Arm64 faster than Intel PC? For compiling NuttX Arm32?</em></p>
 <p>Not really, Compiling Arm on Arm isn’t much faster. Strangely: macOS Arm64 seems to compile <a href="TODO"><strong>NuttX RISC-V</strong></a> quicker than <a href="TODO"><strong>NuttX Arm32</strong></a>!</p>
 <p>I still prefer Ubuntu PC for compiling NuttX, lemme explain…</p>
+<p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!" /></p>
+<span style="font-size:80%">
+<p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!</em></a></p>
+</span>
 <h1 id="macos-reconsidered"><a class="doc-anchor" href="#macos-reconsidered">§</a>7 macOS Reconsidered</h1>
 <p><em>Is macOS good enough for NuttX Development?</em></p>
 <p>If we’re Compiling NuttX for <strong>One Single Target</strong>: Arm32 / RISC-V / Xtensa… Yep sure!</p>
@@ -411,6 +433,7 @@ clang: error: invalid argument &#39;medium&#39; to -mcmodel=
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903">(It was <strong>Previously Working!</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Build Farm for Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
