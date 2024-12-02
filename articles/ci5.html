@@ -94,7 +94,7 @@ cd nuttx-build-farm
 <p><img src="https://lupyuen.github.io/images/ci5-path.png" alt="GNU Coreutils and Binutils on PATH are also known to break build in MacOS" /></p>
 </blockquote>
 <blockquote>
-<p><a href="https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741"><em>“GNU Coreutils and Binutils on PATH are also known to break build in MacOS”</em></a></p>
+<p><span style="font-size:80%"> <a href="https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741"><em>“GNU Coreutils and Binutils on PATH are also known to break build in MacOS”</em></a> </span></p>
 </blockquote>
 <h1 id="fix-the-path"><a class="doc-anchor" href="#fix-the-path">§</a>1 Fix the PATH!</h1>
 <p><strong>Super Important!</strong> NuttX won’t build correctly on macOS unless we remove <strong>Homebrew ar</strong> from <strong>PATH</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
@@ -118,9 +118,7 @@ fi
 <div class="example-wrap"><pre class="language-text"><code>ld: archive member &#39;/&#39; not a mach-o file in &#39;libgp.a&#39;
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 </code></pre></div>
-<blockquote>
 <p><img src="https://lupyuen.github.io/images/ci5-build.png" alt="Building raspberrypi-pico:nsh on macOS" /></p>
-</blockquote>
 <h1 id="build-anything-on-macos"><a class="doc-anchor" href="#build-anything-on-macos">§</a>2 Build Anything on macOS</h1>
 <p>Earlier we talked about compiling <strong>Any NuttX Target</strong> on macOS: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -171,7 +169,7 @@ cd nuttx-build-farm
 <p><img src="https://lupyuen.github.io/images/ci5-toolchains.png" alt="Toolchains are downloaded in 10 mins, subsequent builds are quicker" /></p>
 </blockquote>
 <blockquote>
-<p><a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236"><em>Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker</em></a></p>
+<p><span style="font-size:80%"> <a href="https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236"><em>Toolchains are downloaded in <strong>10 mins</strong>, subsequent builds are quicker</em></a> </span></p>
 </blockquote>
 <h1 id="patch-the-ci-script"><a class="doc-anchor" href="#patch-the-ci-script">§</a>3 Patch the CI Script</h1>
 <p><em>We’re running the NuttX CI Script on our computer. How does it work?</em></p>
@@ -273,6 +271,7 @@ pushd nuttx-patched/tools/ci
 <tr><td style="text-align: left"><strong>x86_64-01</strong></td><td style="text-align: left"><a href="TODO"><em>TODO : <br> TODO</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
+<tr><td style="text-align: left"><strong>Any CMake</strong></td><td style="text-align: left"><a href="TODO"><em>Any CMake</em></a></td><td style="text-align: left"><em>TODO</em></td></tr>
 </tbody></table>
 </div></span>
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
