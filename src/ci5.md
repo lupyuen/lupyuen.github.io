@@ -15,7 +15,7 @@ cd nuttx-build-farm
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 
-## NuttX Executable will be at:
+## NuttX Executable will be at
 ## /tmp/run-build-macos/nuttx
 ```
 
@@ -71,10 +71,10 @@ cd nuttx-build-farm
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 
-## NuttX Executable will be at:
+## NuttX Executable will be at
 ## /tmp/run-build-macos/nuttx
 
-## To re-download the GCC Toolchains:
+## To re-download the GCC Toolchains
 ## rm -rf /tmp/run-build-macos
 ```
 
@@ -153,7 +153,7 @@ pushd nuttx-patched/tools/ci
 popd
 ```
 
-_What's this patch-ci-macos.sh?_
+_What is patch-ci-macos.sh?_
 
 __To run NuttX CI Locally:__ We made Minor Tweaks. Somehow this Python Environment runs OK at __GitHub Actions__: [TODO](TODO)
 
@@ -239,7 +239,7 @@ We'll come back to this. First we talk about NuttX Build Farm...
 
 # macOS Build Farm
 
-_What about the macOS Build Farm?_
+_What about the macOS Build Farm for NuttX?_
 
 Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile All NuttX Targets__... Non-Stop 24 by 7!
 
