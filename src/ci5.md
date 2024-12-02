@@ -23,6 +23,10 @@ TODO
 
 - TODO: Thanks to the awesome work by [__Simbit18__](TODO)!
 
+> ![GNU Coreutils and Binutils on PATH are also known to break build in MacOS](https://lupyuen.github.io/images/ci5-path.png)
+
+> [_"GNU Coreutils and Binutils on PATH are also known to break build in MacOS"_](https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741)
+
 # Fix the PATH!
 
 __Super Important!__ NuttX won't build correctly on macOS unless we remove __Homebrew ar__ from __PATH__: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
@@ -51,6 +55,8 @@ Thus we should always do the above before compiling NuttX. Otherwise we'll see a
 ld: archive member '/' not a mach-o file in 'libgp.a'
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
+
+> ![Building raspberrypi-pico:nsh on macOS](https://lupyuen.github.io/images/ci5-build.png)
 
 # Build Anything on macOS
 
@@ -96,7 +102,9 @@ Just make sure we've installed [__brew__](TODO), [__neofetch__](TODO) and [__Xco
 
 [(Yep the same script drives our __GitHub Daily Builds__)](TODO)
 
-[(Toolchains are downloaded in __10 mins__, subsequent builds are quicker)](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236)
+> ![Toolchains are downloaded in __10 mins__, subsequent builds are quicker](https://lupyuen.github.io/images/ci5-toolchains.png)
+
+> [_Toolchains are downloaded in __10 mins__, subsequent builds are quicker_](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236)
 
 # Patch the CI Script
 
@@ -201,6 +209,8 @@ pushd nuttx-patched/tools/ci
 ...
 ```
 
+TODO: Pic of sim:nsh
+
 # Except These Targets
 
 _Awesome! We can compile Everything NuttX on macOS Arm64?_
@@ -223,6 +233,8 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 </span>
 
 We'll come back to this. First we talk about NuttX Build Farm...
+
+![TODO](https://lupyuen.github.io/images/ci5-farm.jpg)
 
 # macOS Build Farm
 
@@ -379,6 +391,14 @@ Not really, Compiling Arm on Arm isn't much faster. Strangely: macOS Arm64 seems
 
 I still prefer Ubuntu PC for compiling NuttX, lemme explain...
 
+![Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
+
 # macOS Reconsidered
 
 _Is macOS good enough for NuttX Development?_
@@ -410,6 +430,8 @@ clang: error: invalid argument 'medium' to -mcmodel=
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d)
 
 [(It was __Previously Working!__)](https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903)
+
+![Build Farm for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-flow.jpg)
 
 # What's Next
 
