@@ -25,7 +25,7 @@ TODO
 
 > ![GNU Coreutils and Binutils on PATH are also known to break build in MacOS](https://lupyuen.github.io/images/ci5-path.png)
 
-> [_"GNU Coreutils and Binutils on PATH are also known to break build in MacOS"_](https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741)
+> <span style="font-size:80%"> [_"GNU Coreutils and Binutils on PATH are also known to break build in MacOS"_](https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741) </span>
 
 # Fix the PATH!
 
@@ -56,7 +56,7 @@ ld: archive member '/' not a mach-o file in 'libgp.a'
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
 
-> ![Building raspberrypi-pico:nsh on macOS](https://lupyuen.github.io/images/ci5-build.png)
+![Building raspberrypi-pico:nsh on macOS](https://lupyuen.github.io/images/ci5-build.png)
 
 # Build Anything on macOS
 
@@ -104,7 +104,7 @@ Just make sure we've installed [__brew__](TODO), [__neofetch__](TODO) and [__Xco
 
 > ![Toolchains are downloaded in __10 mins__, subsequent builds are quicker](https://lupyuen.github.io/images/ci5-toolchains.png)
 
-> [_Toolchains are downloaded in __10 mins__, subsequent builds are quicker_](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236)
+> <span style="font-size:80%"> [_Toolchains are downloaded in __10 mins__, subsequent builds are quicker_](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761#file-gistfile1-txt-L4236) </span>
 
 # Patch the CI Script
 
@@ -229,6 +229,7 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __x86_64-01__ | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
 | __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
 | __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
+| __Any CMake__ | [_Any CMake_](TODO) | _TODO_
 
 </span>
 
