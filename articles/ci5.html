@@ -83,7 +83,7 @@ cd nuttx-build-farm
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 
-## NuttX Executable will be at:
+## NuttX Executable will be at
 ## /tmp/run-build-macos/nuttx
 </code></pre></div>
 <p>TODO</p>
@@ -129,10 +129,10 @@ cd nuttx-build-farm
 ./run-build-macos.sh ox64:nsh
 ./run-build-macos.sh esp32s3-devkit:nsh
 
-## NuttX Executable will be at:
+## NuttX Executable will be at
 ## /tmp/run-build-macos/nuttx
 
-## To re-download the GCC Toolchains:
+## To re-download the GCC Toolchains
 ## rm -rf /tmp/run-build-macos
 </code></pre></div>
 <p>And it works on <strong>Apple Silicon</strong>! M1, M2, M3, M4, …</p>
@@ -213,7 +213,7 @@ pushd nuttx-patched/tools/ci
 )
 popd
 </code></pre></div>
-<p><em>What’s this patch-ci-macos.sh?</em></p>
+<p><em>What is patch-ci-macos.sh?</em></p>
 <p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="TODO">TODO</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment:
 ## Works OK for GitHub Actions
@@ -277,7 +277,7 @@ pushd nuttx-patched/tools/ci
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
 <p><img src="https://lupyuen.github.io/images/ci5-farm.jpg" alt="TODO" /></p>
 <h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
-<p><em>What about the macOS Build Farm?</em></p>
+<p><em>What about the macOS Build Farm for NuttX?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
 <p><a href="TODO">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! 🙏 Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
