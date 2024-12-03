@@ -418,6 +418,8 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 
 - By [__Modding the NuttX Dockerfile__](TODO)?
 
+![VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds](https://lupyuen.github.io/images/ci5-remote.jpg)
+
 Hopefully we'll find a reliable way to compile _sim:nsh_ on macOS...
 
 ```bash
