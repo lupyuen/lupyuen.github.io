@@ -90,6 +90,18 @@ cd nuttx-build-farm
 
 And it works on __Apple Silicon__! M1, M2, M3, M4, ...
 
+```text
+$ ./run-build-macos.sh raspberrypi-pico:nsh
+
+Configuration/Tool: raspberrypi-pico/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Cleaning...
+  Configuring...
+  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Building NuttX...
+  Normalize raspberrypi-pico/nsh
+```
+
 - [__Build Log for Arm32__](https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb) _(raspberrypi-pico:nsh)_
 
 - [__Build Log for RISC-V__](https://gist.github.com/lupyuen/0274fa1ed737d3c82a6b11883a4ad761) _(ox64:nsh)_
