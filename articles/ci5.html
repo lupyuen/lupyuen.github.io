@@ -73,8 +73,8 @@
 <li><a href="#mac-gets-smokin-hot">6 Mac Gets Smokin’ Hot</a><ul></ul></li>
 <li><a href="#macos-reconsidered">7 macOS Reconsidered</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="TODO" /></p>
-<p><strong>Folks on macOS:</strong> Compiling <a href="TODO"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
+<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="macOS Build Farm for Apache NuttX RTOS (Apple Silicon)" /></p>
+<p><strong>Folks on macOS:</strong> Compiling <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
 ## Arm32, RISC-V and Xtensa!
 git clone https://github.com/lupyuen/nuttx-build-farm
@@ -88,7 +88,12 @@ cd nuttx-build-farm
 </code></pre></div>
 <p>TODO</p>
 <ul>
-<li>TODO: Thanks to the awesome work by <a href="TODO"><strong>Simbit18</strong></a>!</li>
+<li>
+<p>TODO: Thanks to the awesome work by <a href="https://github.com/simbit18"><strong>Simbit18</strong></a>!</p>
+</li>
+<li>
+<p>TODO: Though macOS isn’t a perfect replacement for PC</p>
+</li>
 </ul>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/ci5-path.png" alt="GNU Coreutils and Binutils on PATH are also known to break build in MacOS" /></p>
@@ -151,7 +156,7 @@ cd nuttx-build-farm
 </li>
 </ul>
 <p><em>Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa…</em></p>
-<p><strong>Toolchains are Auto-Downloaded</strong>. Thanks to the brilliant Continuous Integration Script by <a href="TODO"><strong>Simbit18</strong></a>!</p>
+<p><strong>Toolchains are Auto-Downloaded</strong>. Thanks to the brilliant Continuous Integration Script by <a href="https://github.com/simbit18"><strong>Simbit18</strong></a>!</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/14723"><strong>NuttX CI for macOS Arm64</strong></a> <em>(darwin_arm64.sh)</em></p>
@@ -163,8 +168,8 @@ cd nuttx-build-farm
 <p><a href="https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin_arm64.sh"><strong>Plus more updates</strong></a></p>
 </li>
 </ul>
-<p>Just make sure we’ve installed <a href="TODO"><strong>brew</strong></a>, <a href="TODO"><strong>neofetch</strong></a> and <a href="TODO"><strong>Xcode Command-Line Tools</strong></a>.</p>
-<p><a href="TODO">(Yep the same script drives our <strong>GitHub Daily Builds</strong>)</a></p>
+<p>Just make sure we’ve installed <a href="https://brew.sh"><strong>brew</strong></a>, <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L1-L11"><strong>neofetch</strong></a> and <a href="https://www.makeuseof.com/install-xcode-command-line-tools/"><strong>Xcode Command-Line Tools</strong></a>.</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L239-L251">(Yep the same script drives our <strong>GitHub Daily Builds</strong>)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/ci5-toolchains.png" alt="Toolchains are downloaded in 10 mins, subsequent builds are quicker" /></p>
 </blockquote>
@@ -214,11 +219,12 @@ pushd nuttx-patched/tools/ci
 popd
 </code></pre></div>
 <p><em>What is patch-ci-macos.sh?</em></p>
-<p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="TODO">TODO</a></p>
+<p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh#L209-L250">darwin_arm64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment:
 ## Works OK for GitHub Actions
 python_tools() { ...
-  python3 -m venv \
+  python3 \
+    -m venv \
     --system-site-packages /opt/homebrew ...
 </code></pre></div>
 <p>But it doesn’t work locally. Hence we patch <a href="https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh"><em>darwin_arm64.sh</em></a> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
@@ -424,6 +430,7 @@ popd
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci5-remote.jpg" alt="VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds" /></p>
+<p><a href="TODO">(Watch the <strong>Video on YouTube</strong>)</a></p>
 <p>Hopefully we’ll find a reliable way to compile <em>sim:nsh</em> on macOS…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## macOS Arm64 won&#39;t compile sim:nsh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
