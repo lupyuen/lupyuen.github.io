@@ -23,7 +23,7 @@ TODO
 
 - TODO: Thanks to the awesome work by [__Simbit18__](https://github.com/simbit18)!
 
-- TODO: Though macOS isn't a perfect replacement for PC
+- __Can macOS replace a PC?__ Not quite yet
 
 > ![GNU Coreutils and Binutils on PATH are also known to break build in MacOS](https://lupyuen.github.io/images/ci5-path.png)
 
@@ -231,8 +231,8 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __arm64-01__ | [_imx93-evk : <br> bootloader_](https://gist.github.com/lupyuen/90d5825725c5abfe89805f104bfa8696) | _ld: library not found for -lcrt0.o_
 | __other__ | [_micropendous3 : <br> hello_](https://gist.github.com/lupyuen/966ba9c1bafdfb4cc11625c68a66709b) | _avr-objcopy: Bad CPU type in executable_
 | __sim-01 to 03__ | [_sim : <br> nsh_](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d) | _clang: invalid argument 'medium' to -mcmodel=_
-| __x86_64-01__ | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
-| __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
+| __x86_64-01__ | [_qemu-intel64 : <br> jumbo_](https://gist.github.com/lupyuen/2771ee11a07f0a33bf0c5d8ef2e5db5f) | _arg_rex.c: setjmp.h: No such file or directory_
+| __xtensa-02__ | [_esp32s3-devkit : <br> qemu\_debug_](https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
 | __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189) | _sed: invalid command code ._
 | __Clang Targets__ | [_Clang Targets_](https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544) | _clang++: configuration file cannot be found_
 
