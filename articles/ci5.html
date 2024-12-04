@@ -149,6 +149,15 @@ cd nuttx-build-farm
 ## To re-download the GCC Toolchains
 ## rm -rf /tmp/run-build-macos</code></pre></div>
 <p>And it works on <strong>Apple Silicon</strong>! M1, M2, M3, M4, …</p>
+<div class="example-wrap"><pre class="language-text"><code>$ ./run-build-macos.sh raspberrypi-pico:nsh
+
+Configuration/Tool: raspberrypi-pico/nsh,CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Cleaning...
+  Configuring...
+  Disabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
+  Building NuttX...
+  Normalize raspberrypi-pico/nsh</code></pre></div>
 <ul>
 <li>
 <p><a href="https://gist.github.com/lupyuen/5feabeb03f07da716745f9edde73babb"><strong>Build Log for Arm32</strong></a> <em>(raspberrypi-pico:nsh)</em></p>
