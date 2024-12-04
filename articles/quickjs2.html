@@ -64,18 +64,18 @@
     
 
     <h1 class="title">(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way</h1>
-    <nav id="TOC"><ul>
-<li><a href="#drag-n-drop-a-blinky-app">1 Drag-n-Drop a Blinky App</a><ul></ul></li>
-<li><a href="#posix-blocks-in-blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
-<li><a href="#code-generator-in-blockly">3 Code Generator in Blockly</a><ul></ul></li>
-<li><a href="#transmit-javascript-via-local-storage">4 Transmit JavaScript via Local Storage</a><ul></ul></li>
-<li><a href="#blinky-on-a-real-ox64-sbc">5 Blinky on a Real Ox64 SBC</a><ul></ul></li>
-<li><a href="#control-ox64-via-web-serial-api">6 Control Ox64 via Web Serial API</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-posix-blocks-in-blockly">8 Appendix: POSIX Blocks in Blockly</a><ul></ul></li>
-<li><a href="#appendix-load-a-blockly-app">9 Appendix: Load a Blockly App</a><ul></ul></li>
-<li><a href="#appendix-control-ox64-via-web-serial-api">10 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
-<li><a href="#appendix-transmit-javascript-to-ox64-sbc">11 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li></ul></nav><p>📝 <em>25 Feb 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#drag-n-drop-a-blinky-app" title="Drag-n-Drop a Blinky App">1 Drag-n-Drop a Blinky App</a><ul></ul></li>
+<li><a href="#posix-blocks-in-blockly" title="POSIX Blocks in Blockly">2 POSIX Blocks in Blockly</a><ul></ul></li>
+<li><a href="#code-generator-in-blockly" title="Code Generator in Blockly">3 Code Generator in Blockly</a><ul></ul></li>
+<li><a href="#transmit-javascript-via-local-storage" title="Transmit JavaScript via Local Storage">4 Transmit JavaScript via Local Storage</a><ul></ul></li>
+<li><a href="#blinky-on-a-real-ox64-sbc" title="Blinky on a Real Ox64 SBC">5 Blinky on a Real Ox64 SBC</a><ul></ul></li>
+<li><a href="#control-ox64-via-web-serial-api" title="Control Ox64 via Web Serial API">6 Control Ox64 via Web Serial API</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-posix-blocks-in-blockly" title="Appendix: POSIX Blocks in Blockly">8 Appendix: POSIX Blocks in Blockly</a><ul></ul></li>
+<li><a href="#appendix-load-a-blockly-app" title="Appendix: Load a Blockly App">9 Appendix: Load a Blockly App</a><ul></ul></li>
+<li><a href="#appendix-control-ox64-via-web-serial-api" title="Appendix: Control Ox64 via Web Serial API">10 Appendix: Control Ox64 via Web Serial API</a><ul></ul></li>
+<li><a href="#appendix-transmit-javascript-to-ox64-sbc" title="Appendix: Transmit JavaScript to Ox64 SBC">11 Appendix: Transmit JavaScript to Ox64 SBC</a><ul></ul></li></ul></nav><p>📝 <em>25 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way" /></p>
 <p>Remember MakeCode? BBC micro:bit and its Drag-n-Drop App Builder?</p>
 <p><a href="https://www.microsoft.com/en-sg/makecode/teach/microbit?rtc=1"><strong>MakeCode for BBC micro:bit</strong></a> is an awesome creation that’s way ahead of its time (7 years ago!)</p>
@@ -159,8 +159,7 @@ for (var count = 0; count &lt; 20; count++) {
 }
 
 // Close the LED Device
-os.close(fd);
-</code></pre></div>
+os.close(fd);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nim#blink-an-led">(<strong>ULEDIOC_SETALL</strong> sets the <strong>LED State</strong>)</a></p>
 </li>
 <li>
@@ -172,8 +171,7 @@ os.close(fd);
 nsh&gt; qjs
 
 QuickJS - Type &quot;\h&quot; for help
-qjs &gt;
-</code></pre></div>
+qjs &gt;</code></pre></div>
 <p>And starts the <a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS JavaScript Engine</strong></a>.</p>
 </li>
 <li>
@@ -188,8 +186,7 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
   os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
   os.sleep(5000);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which blinks the <a href="https://lupyuen.github.io/articles/quickjs#simulate-the-led-on-ox64-emulator"><strong>Simulated LED</strong></a> (GPIO 29, pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite:
   regaddr=0x20000938,
@@ -197,8 +194,7 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
 
 bl808_gpiowrite:
   regaddr=0x20000938,
-  clear=0x1000000
-</code></pre></div>
+  clear=0x1000000</code></pre></div>
 <p><a href="https://youtu.be/-dG5ZSXELDc?si=pAkGdtvUHW9qpjoG&amp;t=88">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
@@ -219,8 +215,7 @@ ret = os.ioctl(fd, ULEDIOC_SETALL, 1);
 os.sleep(5000);
 
 // Close the LED Device
-os.close(fd);
-</code></pre></div>
+os.close(fd);</code></pre></div>
 <p>Our POSIX Blocks are parked at the top left…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-blocks.png" alt="POSIX Blocks in Blockly" /></p>
 <p><em>How did we create the POSIX Blocks?</em></p>
@@ -236,8 +231,7 @@ npm run start
 ## Deploy to GitHub Pages at `docs`
 npm run build \
   &amp;&amp; rm -r docs \
-  &amp;&amp; mv dist docs
-</code></pre></div>
+  &amp;&amp; mv dist docs</code></pre></div>
 <p>We added these <strong>POSIX Blocks</strong> to Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/quickjs2-posix.png" alt="POSIX Blocks in Blockly" /></p>
@@ -263,8 +257,7 @@ forBlock[&#39;posix_open&#39;] = function (
   // os.open(&#39;/dev/userleds&#39;)
   const code = `os.open(${text})`;
   return [code, Order.ATOMIC];
-};
-</code></pre></div>
+};</code></pre></div>
 <p>We do this for every POSIX Block…</p>
 <ul>
 <li>
@@ -299,8 +292,7 @@ function runEmulator() {
 
   // Open the Ox64 Emulator. Reuse the same tab.
   window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/blockly/&quot;, &quot;Emulator&quot;);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong>In Ox64 Emulator</strong>: We fetch the Generated JavaScript from Local Storage: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L542-L554">jslinux.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Fetch the Generated JavaScript from Local Storage.
 // Newlines become Carriage Returns.
@@ -319,8 +311,7 @@ const cmd = [
 // Send the command to the Emulator Console
 window.setTimeout(()=&gt;{
   send_command(cmd);
-}, 5000);  // Wait 5 seconds for NuttX and QuickJS to boot
-</code></pre></div>
+}, 5000);  // Wait 5 seconds for NuttX and QuickJS to boot</code></pre></div>
 <p>And send it to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542"><strong>Ox64 Emulator Console</strong></a>, character by character.</p>
 <p>Thanks to <a href="https://lupyuen.github.io/articles/tinyemu2"><strong>TinyEMU</strong></a> and <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/term.js"><strong>Term.js</strong></a>, everything works hunky dory!</p>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/blockly/jslinux.js#L522-L542">(<strong>send_command</strong> is here)</a></p>
@@ -364,8 +355,7 @@ window.setTimeout(()=&gt;{
 nsh&gt; qjs
 
 QuickJS - Type &quot;\h&quot; for help
-qjs &gt;
-</code></pre></div>
+qjs &gt;</code></pre></div>
 <p>And starts the <a href="https://lupyuen.github.io/articles/quickjs"><strong>QuickJS JavaScript Engine</strong></a>.</p>
 </li>
 <li>
@@ -380,8 +370,7 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
   os.sleep(5000);
   ret = os.ioctl(fd, ULEDIOC_SETALL, 0);
   os.sleep(5000);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which blinks the <a href="https://lupyuen.github.io/articles/quickjs#quickjs-blinks-the-led-on-ox64-sbc"><strong>Real Ox64 LED</strong></a> (GPIO 29, pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl808_gpiowrite:
   regaddr=0x20000938,
@@ -389,8 +378,7 @@ qjs &gt; for (var count = 0; count &lt; 20; count++) {
 
 bl808_gpiowrite:
   regaddr=0x20000938,
-  clear=0x1000000
-</code></pre></div>
+  clear=0x1000000</code></pre></div>
 <p><a href="https://youtu.be/lUhrLWvwizU">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
@@ -418,8 +406,7 @@ bl808_gpiowrite:
   id=&quot;connect&quot;
   onclick=&quot;control_device();&quot;&gt;
   Connect
-&lt;/button&gt;
-</code></pre></div>
+&lt;/button&gt;</code></pre></div>
 <p>That calls our JavaScript Function to <strong>connect to a Serial Port</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L611-L675">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
@@ -437,8 +424,7 @@ async function control_device() {
 
   // Wait for the Serial Port to open.
   // TODO: Ox64 only connects at 2 Mbps, change this for other devices
-  await port.open({ baudRate: 2000000 });
-</code></pre></div>
+  await port.open({ baudRate: 2000000 });</code></pre></div>
 <p>The code above pops up a prompt to <strong>select a Serial Port</strong> and connect at 2 Mbps…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-serial.png" alt="Selecting the Serial Port" /></p>
 <p>We’re all set to Read and Write the Serial Port! First we need the <strong>Reader and Writer Streams</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L627-L641">webserial.js</a></p>
@@ -450,8 +436,7 @@ async function control_device() {
   // Prepare to Read from the Serial Port
   const textDecoder = new TextDecoderStream();
   const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-  const reader = textDecoder.readable.getReader();
-</code></pre></div>
+  const reader = textDecoder.readable.getReader();</code></pre></div>
 <p>That we may <strong>read and write</strong> like so: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L641-L695">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Read from the Serial Port
   const { data, done } = await reader.read();
@@ -463,8 +448,7 @@ async function control_device() {
   term.write(data);
 
   // Send the QuickJS Command to Serial Port
-  await writer.write(&quot;qjs\r&quot;);
-</code></pre></div>
+  await writer.write(&quot;qjs\r&quot;);</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047">(<strong>term.write</strong> is in <strong>Term.js</strong>)</a></p>
 <p><em>But we need to wait for the “nsh&gt;” prompt?</em></p>
 <p>Yep we have a loop that waits for the <strong>NuttX Shell</strong>, before sending any commands.</p>
@@ -575,8 +559,7 @@ const posixOpen = {
   &#39;colour&#39;: 160,
   &#39;tooltip&#39;: &#39;&#39;,
   &#39;helpUrl&#39;: &#39;&#39;,
-};
-</code></pre></div>
+};</code></pre></div>
 <p>These are the <strong>POSIX Blocks</strong> that we added…</p>
 <ul>
 <li>
@@ -618,8 +601,7 @@ const posixOpen = {
           },
         },
         // Followed by the other POSIX Blocks:
-        // Close, IOCtl, Sleep
-</code></pre></div>
+        // Close, IOCtl, Sleep</code></pre></div>
 <p>Then we <strong>Build and Deploy</strong> our Blockly Website…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Blockly Website
 git clone https://github.com/lupyuen/nuttx-blockly
@@ -631,8 +613,7 @@ npm run start
 ## Deploy to GitHub Pages at `docs`
 npm run build \
   &amp;&amp; rm -r docs \
-  &amp;&amp; mv dist docs
-</code></pre></div>
+  &amp;&amp; mv dist docs</code></pre></div>
 <p>Remember to <a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/index.ts#L35-L38"><strong>Disable the JavaScript Eval</strong></a>. (Because our Web Browser won’t do POSIX)</p>
 <p>Let’s talk about loading a Blockly App…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-title.png" alt="NuttX App Builder with Blockly" /></p>
@@ -672,8 +653,7 @@ function selectDemo(ev: Event) {
     load(ws); 
     runCode();
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>To see the <strong>Blocks JSON</strong> for a Blockly App…</p>
 <ol>
 <li>
@@ -692,8 +672,7 @@ localStorage.getItem(&quot;mainWorkspace&quot;);
 
 // Set the Blocks in JSON Format.
 // Change `...` to the JSON of the Blocks to be loaded.
-localStorage.setItem(&quot;mainWorkspace&quot;, `...`);
-</code></pre></div>
+localStorage.setItem(&quot;mainWorkspace&quot;, `...`);</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-blockly/blob/main/src/serialization.ts#L8-L10">(<strong>“mainWorkspace”</strong> is hardcoded here)</a></p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-device.png" alt="Running our Drag-n-Drop App on Ox64 BL808 SBC" /></p>
 <h1 id="appendix-control-ox64-via-web-serial-api"><a class="doc-anchor" href="#appendix-control-ox64-via-web-serial-api">§</a>10 Appendix: Control Ox64 via Web Serial API</h1>
@@ -755,8 +734,7 @@ async function control_device() {
       send_command(writer, cmd); }, 
     1000);  // Wait a second
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/term.js#L487-L1047">(<strong>term.write</strong> is in <strong>Term.js</strong>)</a></p>
 <p>Let’s look inside <strong>send_command</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/quickjs2-nuttx3.jpg" alt="Running our NuttX App on Ox64 SBC" /></p>
@@ -775,8 +753,7 @@ function runDevice() {
 
   // Open the Web Serial Monitor. Reuse the same tab.
   window.open(&quot;https://lupyuen.github.io/nuttx-tinyemu/webserial/&quot;, &quot;Device&quot;);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong>In the Web Serial Monitor</strong>: We read the Generated JavaScript from the Web Browser Local Storage. And feed it (character by character) to the NuttX Console: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L612-L694">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Control Ox64 over UART. Called by the &quot;Connect&quot; Button.
 // https://developer.chrome.com/docs/capabilities/serial
@@ -821,8 +798,7 @@ async function control_device() {
       send_command(writer, cmd); }, 
     1000);  // Wait a second
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We saw this in the previous section)</p>
 <p>Here’s the implementation of <strong>send_command</strong>: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/webserial/webserial.js#L675-L695">webserial.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Send a Command to serial port, character by character
@@ -849,8 +825,7 @@ async function send_command(writer, cmd) {
 }
 
 // Command to be sent to Serial Port
-let send_str = &quot;&quot;;
-</code></pre></div>
+let send_str = &quot;&quot;;</code></pre></div>
 <p>(Yeah it’s timing-sensitive, we might drop characters if we send too quickly. Zmodem is probably the better way)</p>
 
     

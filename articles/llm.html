@@ -64,15 +64,15 @@
     
 
     <h1 class="title">LLM Bot that reviews Pull Requests for Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#pr-bot-in-action">1 PR Bot in Action</a><ul></ul></li>
-<li><a href="#requirements-for-pr-review">2 Requirements for PR Review</a><ul></ul></li>
-<li><a href="#call-the-gemini-llm">3 Call the Gemini LLM</a><ul></ul></li>
-<li><a href="#fail-gracefully-with-emojis">4 Fail Gracefully with Emojis</a><ul></ul></li>
-<li><a href="#call-the-github-api">5 Call the GitHub API</a><ul></ul></li>
-<li><a href="#run-the-bot">6 Run The Bot</a><ul></ul></li>
-<li><a href="#all-things-considered">7 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Sep 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#pr-bot-in-action" title="PR Bot in Action">1 PR Bot in Action</a><ul></ul></li>
+<li><a href="#requirements-for-pr-review" title="Requirements for PR Review">2 Requirements for PR Review</a><ul></ul></li>
+<li><a href="#call-the-gemini-llm" title="Call the Gemini LLM">3 Call the Gemini LLM</a><ul></ul></li>
+<li><a href="#fail-gracefully-with-emojis" title="Fail Gracefully with Emojis">4 Fail Gracefully with Emojis</a><ul></ul></li>
+<li><a href="#call-the-github-api" title="Call the GitHub API">5 Call the GitHub API</a><ul></ul></li>
+<li><a href="#run-the-bot" title="Run The Bot">6 Run The Bot</a><ul></ul></li>
+<li><a href="#all-things-considered" title="All Things Considered">7 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="LLM Bot that reviews Pull Requests for Apache NuttX RTOS" /></p>
 <p>We’re experimenting with an <strong>LLM Bot</strong> (Large Language Model) that will review Pull Requests for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>This article explains how we created the LLM Bot in One Week…</p>
@@ -172,8 +172,7 @@ I confirm that changes are verified on local setup and works as intended:
 Testing logs before change: _your testing logs here_
 
 Testing logs after change: _your testing logs here_
-&quot;#####;
-</code></pre></div>
+&quot;#####;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/13494">(Thanks to <strong>Tomek Cedro</strong>)</a></p>
 </div>
 <p><em>But these are Human-Readable Requirements?</em></p>
@@ -204,8 +203,7 @@ Document stack and backtrace dump for Espressif SoCs [...more...]
 Fix backtrace dump on assertions considering assertions triggered by tasks or during an interrupt service.
 
 ## Testing
-Internal CI testing with HW on all Xtensa-based devices [...more...]
-</code></pre></div>
+Internal CI testing with HW on all Xtensa-based devices [...more...]</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ad3c63c5c8d59c537bb2670c6b2d9416">(See the <strong>LLM Prompt</strong>)</a></p>
 <p><em>Why “please be concise”?</em></p>
 <p>Based on <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2360421272"><strong>Community Feedback</strong></a>, our Bot was getting way too chatty and naggy.</p>
@@ -293,8 +291,7 @@ This PR appears to meet the NuttX requirements. Here&#39;s a breakdown:
 
 **Overall:**
 
-This PR demonstrates a good understanding of NuttX requirements.  Adding specific issue references and detailing the testing environment would further strengthen it. 
-</code></pre></div>
+This PR demonstrates a good understanding of NuttX requirements.  Adding specific issue references and detailing the testing environment would further strengthen it. </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/13546#issuecomment-2361854435">(See the <strong>Gemini Response</strong>)</a></p>
 </div>
 <p><em>But we didn’t tell Gemini to respond in Markdown?</em></p>
@@ -427,8 +424,7 @@ do
   ## For NuttX Apps Repo: github.com/apache/nuttx-apps
   cargo run -- --owner apache --repo nuttx-apps
   sleep 300
-done
-</code></pre></div>
+done</code></pre></div>
 <p>Any GitHub ID will do. Don’t use a <a href="https://github.com/apache/nuttx/pull/13494#issuecomment-2358374720"><strong>Privileged GitHub ID</strong></a>! We’ll see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Handle PRs for NuttX Kernel Repo: github.com/apache/nuttx
 $ cargo run --owner apache --repo nuttx
@@ -453,8 +449,7 @@ PR Comment:
   &quot;[**\\[Experimental Bot, please feedback here\\]**](https://github.com/search?q=repo%3Aapache%2Fnuttx+13552&amp;type=issues)\n\n\n\n**No, this PR does not meet the NuttX requirements.**\n\n**Missing Information:**\n\n* **Summary:** \n    * Lacks a clear explanation of why the change is necessary. Is it a bug fix, performance improvement, or code cleanup?\n    * Doesn&#39;t describe the functional part of the code being changed within the i2c driver. \n    *  Missing details on how the optimization works. \n    *  No mention of related issues.\n* **Impact:**\n    * All impact sections are marked as \&quot;i2c_driver,\&quot; which is too vague.\n    *  The description should clearly state whether the impact is \&quot;NO\&quot; or \&quot;YES\&quot; and provide specific details if applicable. For example, does the change affect any specific architectures, boards, or drivers?\n* **Testing:**\n    * Lacks details about the local setup (host OS, target architecture, board configuration).\n    *  \&quot;Local iic testing\&quot; is insufficient. Provide specific test cases and commands used.\n    *  No testing logs provided. \n\n**To meet the NuttX requirements, the PR needs to provide comprehensive information in each section. ** \n&quot;,),
   ...
 https://api.github.com/repos/apache/nuttx/pulls/13551
-Skipping PR with comments: 13551
-</code></pre></div>
+Skipping PR with comments: 13551</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-pr-bot?tab=readme-ov-file#run-log">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/llm-flow.jpg" alt="LLM Bot that reviews Pull Requests for Apache NuttX RTOS" /></p>
 <h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>

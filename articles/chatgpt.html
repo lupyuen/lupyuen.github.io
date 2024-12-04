@@ -62,14 +62,14 @@
     
 
     <h1 class="title">Apache NuttX RTOS trips ChatGPT</h1>
-    <nav id="TOC"><ul>
-<li><a href="#fix-the-code">1 Fix the Code</a><ul></ul></li>
-<li><a href="#build-and-run-nuttx">2 Build and Run NuttX</a><ul></ul></li>
-<li><a href="#nsh-fails-to-start">3 NSH Fails To Start</a><ul></ul></li>
-<li><a href="#fix-the-task-arguments">4 Fix the Task Arguments</a><ul></ul></li>
-<li><a href="#nsh-function">5 NSH Function</a><ul></ul></li>
-<li><a href="#correct-code">6 Correct Code</a><ul></ul></li>
-<li><a href="#other-attempts">7 Other Attempts</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#fix-the-code" title="Fix the Code">1 Fix the Code</a><ul></ul></li>
+<li><a href="#build-and-run-nuttx" title="Build and Run NuttX">2 Build and Run NuttX</a><ul></ul></li>
+<li><a href="#nsh-fails-to-start" title="NSH Fails To Start">3 NSH Fails To Start</a><ul></ul></li>
+<li><a href="#fix-the-task-arguments" title="Fix the Task Arguments">4 Fix the Task Arguments</a><ul></ul></li>
+<li><a href="#nsh-function" title="NSH Function">5 NSH Function</a><ul></ul></li>
+<li><a href="#correct-code" title="Correct Code">6 Correct Code</a><ul></ul></li>
+<li><a href="#other-attempts" title="Other Attempts">7 Other Attempts</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/chatgpt-title.jpg" alt="ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
 <p><em>(As a teacher I won’t criticise my student in public… But an “AI Student” should be OK, I guess?)</em></p>
 <p>Suppose we’re building a <a href="https://lupyuen.github.io/articles/terminal"><strong>Terminal App</strong></a> for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System).</p>
@@ -104,8 +104,7 @@ int main(int argc, char *argv[]) {
     task_start(pid);
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We added the annotations)</p>
 <p>Will it create a NuttX Task that starts NSH Shell? Let’s find out!</p>
 <h1 id="fix-the-code"><a class="doc-anchor" href="#fix-the-code">§</a>1 Fix the Code</h1>
@@ -147,8 +146,7 @@ int main(int argc, char *argv[]) {
     printf(&quot;Error creating task\n&quot;);
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Now we test this with QEMU…</p>
 <h1 id="build-and-run-nuttx"><a class="doc-anchor" href="#build-and-run-nuttx">§</a>2 Build and Run NuttX</h1>
 <p>Here are the steps to <strong>build NuttX RTOS</strong> and run it with the QEMU Emulator…</p>
@@ -165,11 +163,9 @@ int main(int argc, char *argv[]) {
 </li>
 <li>
 <p>Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin</code></pre></div>
 <p>Check the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div></li>
 <li>
 <p>Download the QEMU Machine Emulator…</p>
 <p><a href="https://lupyuen.github.io/articles/arm#download-qemu"><strong>“Download QEMU”</strong></a></p>
@@ -180,25 +176,21 @@ int main(int argc, char *argv[]) {
 cd nuttx
 git clone https://github.com/apache/nuttx nuttx
 git clone https://github.com/apache/nuttx-apps apps
-cd nuttx
-</code></pre></div></li>
+cd nuttx</code></pre></div></li>
 <li>
 <p>Add <strong><code>nshtask</code></strong> to our NuttX Project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pushd ../apps/examples
 git submodule add https://github.com/lupyuen/nshtask
-popd
-</code></pre></div></li>
+popd</code></pre></div></li>
 <li>
 <p>Look for this source file…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/apps/examples/nshtask/nshtask.c
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/apps/examples/nshtask/nshtask.c</code></pre></div>
 <p>And paste the fixed code from the previous section.</p>
 </li>
 <li>
 <p>Configure our NuttX Project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh -l qemu-armv8a:nsh
-make menuconfig
-</code></pre></div></li>
+make menuconfig</code></pre></div></li>
 <li>
 <p>In “Application Configuration &gt; Examples”</p>
 <p>Enable “NSH Task Demo”</p>
@@ -208,19 +200,16 @@ make menuconfig
 </li>
 <li>
 <p>Build NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 <li>
 <p>Run NuttX with QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-aarch64 -cpu cortex-a53 -nographic \
   -machine virt,virtualization=on,gic-version=3 \
   -net none -chardev stdio,id=con,mux=on -serial chardev:con \
-  -mon chardev=con,mode=readline -kernel ./nuttx
-</code></pre></div></li>
+  -mon chardev=con,mode=readline -kernel ./nuttx</code></pre></div></li>
 <li>
 <p>At the NSH Prompt, enter this to run our program…</p>
-<div class="example-wrap"><pre class="language-bash"><code>nshtask
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>nshtask</code></pre></div>
 <p>When we’re done, press Ctrl-C to quit QEMU.</p>
 </li>
 </ol>
@@ -229,8 +218,7 @@ make menuconfig
 <p>Our program tries to start a NuttX Task for NSH Shell. But it fails with an <strong><code>fopen</code></strong> error…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; nshtask
 NuttShell (NSH) NuttX-12.0.0-RC1
-nsh: nsh: fopen failed: 2
-</code></pre></div>
+nsh: nsh: fopen failed: 2</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/832a1bae98720ce0841791176812dbd9">(See the Complete Log)</a></p>
 <p><em>Huh? What a weird error…</em></p>
 <p>That’s the <strong>same problem that stumped me</strong> the first time I created a NuttX Task!</p>
@@ -247,8 +235,7 @@ int main(int argc, char *argv[]) {
     2048,      // Task Stack Size
     nsh_main,  // Task Function
     (FAR char * const *)argv  // Task Arguments
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><em>What’s inside <code>argv</code>?</em></p>
 <p>As with any typical C program…</p>
 <ul>
@@ -276,8 +263,7 @@ int main(int argc, char *argv[]) {
     2048,      // Task Stack Size
     nsh_main,  // Task Function
     argv2      // Task Arguments (None)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>Or we may pass <strong><code>NULL</code></strong> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Passing NULL works too
   pid_t pid = task_create(
@@ -286,8 +272,7 @@ int main(int argc, char *argv[]) {
     2048,      // Task Stack Size
     nsh_main,  // Task Function
     NULL       // Task Arguments (None)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>Thus it seems ChatGPT is hitting the <strong>same newbie mistake</strong> as other NuttX Developers!</p>
 <p>(Which gets really frustrating if folks blindly copy the code suggested by ChatGPT)</p>
 <h1 id="nsh-function"><a class="doc-anchor" href="#nsh-function">§</a>5 NSH Function</h1>
@@ -299,8 +284,7 @@ pid_t pid = task_create(
   2048,      // Task Stack Size
   nsh_main,  // Task Function
   NULL       // Task Arguments
-);
-</code></pre></div>
+);</code></pre></div>
 <p>Normally we start <strong><code>nsh_consolemain</code></strong> when we create an NSH Shell. (Instead of <strong><code>nsh_main</code></strong>)</p>
 <p>Hence we change the code to…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for nsh_consolemain
@@ -313,8 +297,7 @@ pid_t pid = task_create(
   2048,   // Task Stack Size
   nsh_consolemain,  // Task Function
   NULL    // Task Arguments
-);
-</code></pre></div>
+);</code></pre></div>
 <p><em>Is there a difference?</em></p>
 <p><strong><code>nsh_main</code></strong> crashes if we configure NuttX to boot directly into our <strong><code>nshtask</code></strong> app.</p>
 <p><strong><code>nsh_consolemain</code></strong> works fine.</p>
@@ -346,21 +329,18 @@ int main(int argc, char *argv[]) {
     printf(&quot;Error creating task\n&quot;);
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We changed the <strong>Task Stack Size</strong> to be consistent with other NuttX Apps)</p>
 <p>Our <strong><code>nshtask</code></strong> command now starts NSH Shell correctly…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; nshtask
 NuttShell (NSH) NuttX-12.0.0-RC1
-nsh&gt; nsh&gt;
-</code></pre></div>
+nsh&gt; nsh&gt;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d">(See the Complete Log)</a></p>
 <p>But if we enter a command like <strong><code>ls</code></strong>, things get wonky…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls
 nsh: l: command not found
 nsh&gt;
-nsh: s: command not found
-</code></pre></div>
+nsh: s: command not found</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d">(See the Complete Log)</a></p>
 <p>That’s because we now have <strong>TWO NSH Shells</strong> reading commands from the same Console Input!</p>
 <p>To fix this, we need to redirect the Console Input and Output streams.</p>
@@ -385,8 +365,7 @@ int ret = posix_spawn(
 );
 
 // Check for error
-if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
-</code></pre></div>
+if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }</code></pre></div>
 <p>More details here…</p>
 <ul>
 <li>

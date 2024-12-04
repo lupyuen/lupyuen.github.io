@@ -64,12 +64,12 @@
     
 
     <h1 class="title">Your very own Build Farm for Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#target-groups-in-nuttx">1 Target Groups in NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx-for-one-target-group">2 Build NuttX for One Target Group</a><ul></ul></li>
-<li><a href="#build-nuttx-for-all-target-groups">3 Build NuttX for All Target Groups</a><ul></ul></li>
-<li><a href="#find-errors-and-warnings">4 Find Errors and Warnings</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>27 Oct 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#target-groups-in-nuttx" title="Target Groups in NuttX">1 Target Groups in NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx-for-one-target-group" title="Build NuttX for One Target Group">2 Build NuttX for One Target Group</a><ul></ul></li>
+<li><a href="#build-nuttx-for-all-target-groups" title="Build NuttX for All Target Groups">3 Build NuttX for All Target Groups</a><ul></ul></li>
+<li><a href="#find-errors-and-warnings" title="Find Errors and Warnings">4 Find Errors and Warnings</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>27 Oct 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci2-title.jpg" alt="Refurbished Ubuntu PC becomes Build Farm for Apache NuttX RTOS" /></p>
 <p><a href="https://qoto.org/@lupyuen/113328181160576977"><strong>Refurbished Ubuntu PCs</strong></a> have become quite affordable ($370 pic above). Can we turn them into a <strong>(Low-Cost) Build Farm</strong> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>?</p>
 <p>In this article we…</p>
@@ -98,8 +98,7 @@
 <p><em>What’s a Target Group?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Select the NuttX Target and compile it
 tools/configure.sh rv-virt:nsh
-make
-</code></pre></div>
+make</code></pre></div>
 <p>Remember this <strong>configure.sh</strong> thingy? Let’s call <strong>rv-virt:nsh</strong> a NuttX Target. Thanks to the awesome NuttX Contributors, we have created <a href="https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0"><strong>1,594 NuttX Targets</strong></a>.</p>
 <p>To compile all 1,594 Targets, we lump them into 30 <a href="https://github.com/apache/nuttx/tree/master/tools/ci/testlist"><strong>Target Groups</strong></a> (so they’re easier to track)</p>
 <ul>
@@ -136,8 +135,7 @@ make
 ./boards/arm/cxd56xx/spresense/configs/usbmsc/defconfig
 ./boards/arm/cxd56xx/spresense/configs/lte/defconfig
 ./boards/arm/cxd56xx/spresense/configs/wifi/defconfig
-...
-</code></pre></div>
+...</code></pre></div>
 <p>Thus NuttX uses a <strong>Wildcard Pattern</strong> to select the <strong>defconfig</strong> (which becomes a NuttX Target): <a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-05.dat">tools/ci/testlist/arm-05.dat</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Target Group arm-05 contains:
 ## boards/arm/[m-q]*/*/configs/*/defconfig
@@ -151,8 +149,7 @@ make
 CMake,arduino-nano-33ble:nsh
 
 ## Exclude this Target from the build
--moxa:nsh
-</code></pre></div>
+-moxa:nsh</code></pre></div>
 <p>We’re ready to build the Target Groups…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow2.jpg" alt="Build NuttX for One Target Group" /></p>
 <h1 id="build-nuttx-for-one-target-group"><a class="doc-anchor" href="#build-nuttx-for-one-target-group">§</a>2 Build NuttX for One Target Group</h1>
@@ -167,34 +164,29 @@ CMake,arduino-nano-33ble:nsh
 <li>
 <p>Download the <strong>Docker Image</strong> for NuttX</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker pull \
-  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
-</code></pre></div>
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">(Won’t work for <strong>Arm64</strong>)</a></p>
 </li>
 <li>
 <p>Start the <strong>Docker Container</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
-  /bin/bash -c &quot;...&quot;
-</code></pre></div></li>
+  /bin/bash -c &quot;...&quot;</code></pre></div></li>
 <li>
 <p>Check out the <strong>master</strong> branch of <strong>nuttx</strong> repo</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone \
-  https://github.com/apache/nuttx
-</code></pre></div></li>
+  https://github.com/apache/nuttx</code></pre></div></li>
 <li>
 <p>Do the same for <strong>nuttx-apps</strong> repo</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone \
   https://github.com/apache/nuttx-apps \
-  apps
-</code></pre></div></li>
+  apps</code></pre></div></li>
 <li>
 <p>Inside the Docker Container: <strong>Build the Targets</strong> for <em>arm-01</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
-  testlist/arm-01.dat
-</code></pre></div>
+  testlist/arm-01.dat</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh">(<strong>cibuild.sh</strong> compiles a Target Group)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testlist/arm-01.dat">(<strong>arm-01.dat</strong> selects the Arm32 Targets)</a></p>
 </li>
@@ -202,8 +194,7 @@ CMake,arduino-nano-33ble:nsh
 <p>Wait for <em>arm-01</em> to complete, then clean up</p>
 <p>(About 1.5 hours. That’s 15 mins slower than GitHub Actions)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Optional: Free up the Docker disk space
-sudo docker system prune --force
-</code></pre></div></li>
+sudo docker system prune --force</code></pre></div></li>
 </ol>
 <p>Put everything together: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build a NuttX Target Group with Docker
@@ -233,8 +224,7 @@ sudo docker run -it \
   pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
   cd nuttx/tools/ci ;
   (./cibuild.sh -c -A -N -R testlist/$job.dat || echo &#39;***** BUILD FAILED&#39;) ;
-&quot;
-</code></pre></div>
+&quot;</code></pre></div>
 <p>We run it like this (will take 1.5 hours)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo ./run-job.sh arm-01
 NuttX Source: https://github.com/apache/nuttx/tree/9c1e0d3d640a297cab9f2bfeedff02f6ce7a8162
@@ -252,27 +242,22 @@ arm-none-eabi-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permiss
   Normalize pcduino-a10/nsh
 ====================================================================================
 Configuration/Tool: beaglebone-black/lcd,CONFIG_ARM_TOOLCHAIN_GNU_EABI
-2024-10-20 17:39:09
-</code></pre></div>
+2024-10-20 17:39:09</code></pre></div>
 <p><a href="https://gist.github.com/nuttxpr/15b86be9e100cace466b99bb790f3a75">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14374">(Ignore “arm-nuttx-eabi-gcc: command not found”)</a></p>
 <p><em>What about building a Single Target?</em></p>
 <p>Suppose we wish to build <strong>ox64:nsh</strong>. Just change this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/tools/ci ;
-./cibuild.sh -c -A -N -R testlist/$job.dat ;
-</code></pre></div>
+./cibuild.sh -c -A -N -R testlist/$job.dat ;</code></pre></div>
 <p>To this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx ;
 tools/configure.sh ox64:nsh ;
-make ;
-</code></pre></div>
+make ;</code></pre></div>
 <p><em>What if we’re testing our own repo?</em></p>
 <p>Suppose we’re preparing a Pull Request at <em>github.com/USER/nuttx/tree/BRANCH</em>. Just change this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx ;
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx ;</code></pre></div>
 <p>To this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/USER/nuttx --branch BRANCH ;
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/USER/nuttx --branch BRANCH ;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/issues/14601#issuecomment-2452875114">(More about this)</a></p>
 <p><em>How to copy the Compiled Files out of the Docker Container?</em></p>
 <p>This will copy out the <strong>Compiled NuttX Binary</strong> from Docker…</p>
@@ -283,8 +268,7 @@ sudo docker ps
 ## Works only when the container is still running so, hmmm...
 sudo docker cp \
   CONTAINER_ID:/root/nuttx/nuttx \
-  .
-</code></pre></div>
+  .</code></pre></div>
 <p>Now we scale up…</p>
 <p><img src="https://lupyuen.github.io/images/ci2-flow.jpg" alt="Build NuttX for All Target Groups" /></p>
 <h1 id="build-nuttx-for-all-target-groups"><a class="doc-anchor" href="#build-nuttx-for-all-target-groups">§</a>3 Build NuttX for All Target Groups</h1>
@@ -332,8 +316,7 @@ for (( ; ; )); do
 
   ## Free up the Docker disk space
   sudo docker system prune --force
-done
-</code></pre></div>
+done</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L30-L47">(<strong>clean_log</strong> is here)</a></p>
 <p>We run our Build Farm like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the scripts
@@ -354,8 +337,7 @@ sudo gh auth login
 ## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
 
 ## Run the Build Job forever: arm-01 ... arm-14
-sudo ./run-ci.sh
-</code></pre></div>
+sudo ./run-ci.sh</code></pre></div>
 <p><a href="https://lists.apache.org/thread/dntkkb954oss4flcckqjgghzycplrdnf">(<strong>For Safety:</strong> Create a <strong>New GitHub Account</strong> for posting the gists)</a></p>
 <p><em>How does it work?</em></p>
 <p>Inside our script, <strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
@@ -367,8 +349,7 @@ function run_job {
     $script_option \
     &quot;$script_dir/run-job.sh $job&quot;
   popd
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which calls the script we’ve seen earlier: <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>run-job.sh</strong></a></p>
 <p><strong>upload_log</strong> will upload the log (to GitHub Gist) for further processing (and alerting): <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71">run-ci.sh</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14558">(Now we have a <strong>NuttX Dashboard</strong>!)</a></p>
@@ -386,8 +367,7 @@ function upload_log {
     --public \
     --desc &quot;[$job] CI Log for nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot; \
     --filename &quot;ci-$job.log&quot;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://gist.github.com/nuttxpr">(See the <strong>Uploaded Logs</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L97-L104">(How to <strong>Delete Gists</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci2-load.png" alt="Build Server is constrained by CPU, not RAM or I/O" /></p>
@@ -409,31 +389,25 @@ function find_messages {
     &gt;&gt; $msg_file
   cat $msg_file $log_file &gt;$tmp_file
   mv $tmp_file $log_file
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which will insert the Errors and Warnings into the top of the Log File.</p>
 <p><em>Why the funny Regex Pattern?</em></p>
 <p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180"><strong>Continuous Integration</strong></a> builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
-^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
-</code></pre></div>
+^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$</code></pre></div>
 <p>Which will match and detect <a href="https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
-<div class="example-wrap"><pre class="language-bash"><code>chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated</code></pre></div>
 <p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like this!</p>
 <div class="example-wrap"><pre class="language-text"><code>CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
   Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
   arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
-  ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected
-</code></pre></div>
+  ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected</code></pre></div>
 <p>And <a href="https://gist.github.com/nuttxpr/74e46f5eca2a0cd5a234e5389d40457a#file-ci-arm-04-log-L157"><strong>Linker Errors</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>arm-none-eabi-ld: /root/nuttx/staging//libc.a(lib_arc4random.o): in function `arc4random_buf&#39;:
-/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks&#39;
-</code></pre></div>
+/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks&#39;</code></pre></div>
 <p>Also <strong>Network and Timeout Errors</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>curl: (6) Could not resolve host: github.com
-make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
-</code></pre></div>
+make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6</code></pre></div>
 <p>We might need to tweak the Regex Pattern and catch more errors.</p>
 <p><img src="https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png" alt="NuttX GitHub Runners: Live Update" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>

@@ -64,18 +64,18 @@
     
 
     <h1 class="title">Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)</h1>
-    <nav id="TOC"><ul>
-<li><a href="#demo-walkthrough">1 Demo Walkthrough</a><ul></ul></li>
-<li><a href="#explain-the-risc-v-exception">2 Explain the RISC-V Exception</a><ul></ul></li>
-<li><a href="#parse-the-risc-v-exception">3 Parse the RISC-V Exception</a><ul></ul></li>
-<li><a href="#pass-nuttx-logs-to-purescript">4 Pass NuttX Logs to PureScript</a><ul></ul></li>
-<li><a href="#identify-a-nuttx-address">5 Identify a NuttX Address</a><ul></ul></li>
-<li><a href="#disassemble-nuttx-by-address">6 Disassemble NuttX by Address</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-nuttx-log-parser">8 Appendix: NuttX Log Parser</a><ul></ul></li>
-<li><a href="#appendix-rewrite-the-imports">9 Appendix: Rewrite the Imports</a><ul></ul></li>
-<li><a href="#appendix-bigint-in-purescript">10 Appendix: BigInt in PureScript</a><ul></ul></li>
-<li><a href="#appendix-online-purescript-compiler">11 Appendix: Online PureScript Compiler</a><ul></ul></li></ul></nav><p>📝 <em>3 Mar 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#demo-walkthrough" title="Demo Walkthrough">1 Demo Walkthrough</a><ul></ul></li>
+<li><a href="#explain-the-risc-v-exception" title="Explain the RISC-V Exception">2 Explain the RISC-V Exception</a><ul></ul></li>
+<li><a href="#parse-the-risc-v-exception" title="Parse the RISC-V Exception">3 Parse the RISC-V Exception</a><ul></ul></li>
+<li><a href="#pass-nuttx-logs-to-purescript" title="Pass NuttX Logs to PureScript">4 Pass NuttX Logs to PureScript</a><ul></ul></li>
+<li><a href="#identify-a-nuttx-address" title="Identify a NuttX Address">5 Identify a NuttX Address</a><ul></ul></li>
+<li><a href="#disassemble-nuttx-by-address" title="Disassemble NuttX by Address">6 Disassemble NuttX by Address</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-nuttx-log-parser" title="Appendix: NuttX Log Parser">8 Appendix: NuttX Log Parser</a><ul></ul></li>
+<li><a href="#appendix-rewrite-the-imports" title="Appendix: Rewrite the Imports">9 Appendix: Rewrite the Imports</a><ul></ul></li>
+<li><a href="#appendix-bigint-in-purescript" title="Appendix: BigInt in PureScript">10 Appendix: BigInt in PureScript</a><ul></ul></li>
+<li><a href="#appendix-online-purescript-compiler" title="Appendix: Online PureScript Compiler">11 Appendix: Online PureScript Compiler</a><ul></ul></li></ul></nav><p>📝 <em>3 Mar 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/purescript-title.png" alt="Parsing Apache NuttX RTOS Logs with PureScript" /></p>
 <p><a href="https://lupyuen.github.io/nuttx-tinyemu/purescript"><em>Try the Online Demo</em></a></p>
 <p><a href="https://youtu.be/9oBhy3P7pYc"><em>Watch the Demo on YouTube</em></a></p>
@@ -182,8 +182,7 @@ explainException 13 epc mtval =
   &quot;We hit a Load Page Fault.&quot;
   &lt;&gt; &quot; Our code at Code Address &quot; &lt;&gt; epc
   &lt;&gt; &quot; tried to access the Data Address &quot; &lt;&gt; mtval
-  &lt;&gt; &quot;, which is Invalid.&quot;
-</code></pre></div>
+  &lt;&gt; &quot;, which is Invalid.&quot;</code></pre></div>
 <p><em>Hello Marvin the Martian?</em></p>
 <p>Yeah we’ll meet some alien symbols in PureScript.</p>
 <p>‘<strong><code>&lt;&gt;</code></strong>’ <em>(Diamond Operator)</em> will <strong>concatenate 2 strings</strong>.</p>
@@ -200,8 +199,7 @@ explainException 12 epc mtval =
 -- `show` converts a Number to a String
 
 explainException mcause epc mtval =
-  &quot;Unknown Exception: mcause=&quot; &lt;&gt; show mcause &lt;&gt; &quot;, epc=&quot; &lt;&gt; epc &lt;&gt; &quot;, mtval=&quot; &lt;&gt; mtval
-</code></pre></div>
+  &quot;Unknown Exception: mcause=&quot; &lt;&gt; show mcause &lt;&gt; &quot;, epc=&quot; &lt;&gt; epc &lt;&gt; &quot;, mtval=&quot; &lt;&gt; mtval</code></pre></div>
 <p>Which looks like a tidy bunch of <strong>Explain Rules</strong>. (Similar to Prolog!)</p>
 <p>This thing about PureScript looks totally alien: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L29-L38">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare the Function Type.
@@ -211,8 +209,7 @@ explainException ::
   Int        -- MCAUSE: Cause of Exception
   -&gt; String  -- EPC: Exception Program Counter
   -&gt; String  -- MTVAL: Exception Value
-  -&gt; String  -- Returns the Exception Explanation
-</code></pre></div>
+  -&gt; String  -- Returns the Exception Explanation</code></pre></div>
 <p>But it works like a <strong>Function Declaration</strong> in C.</p>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-nuttx-log-parser">(<strong>VSCode</strong> will generate the declaration)</a></p>
 <p><em>How will we call this from JavaScript?</em></p>
@@ -225,8 +222,7 @@ import { explainException } from &#39;./output/Main/index.js&#39;;
 result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
 
 // Instead of the normal non-spicy Uncurried Way:
-// explainException(13, &quot;8000a0e4&quot;, &quot;880203b88&quot;)
-</code></pre></div>
+// explainException(13, &quot;8000a0e4&quot;, &quot;880203b88&quot;)</code></pre></div>
 <p>Our JavaScript will call PureScript the (yummy) <a href="https://javascript.info/currying-partials"><strong>Curried Way</strong></a>, because PureScript is a Functional Language.</p>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler">(Try <strong>PureScript Online</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/purescript-explain.png" alt="PureScript looks like a neat way to express our NuttX Troubleshooting Skills as high-level rules" /></p>
@@ -242,8 +238,7 @@ result = explainException(13)(&quot;8000a0e4&quot;)(&quot;880203b88&quot;);
   EXCEPTION: Load page fault.
   MCAUSE:    000000000000000d,
   EPC:       000000008000a0e4,
-  MTVAL:     0000000880203b88
-</code></pre></div>
+  MTVAL:     0000000880203b88</code></pre></div>
 <p>PureScript really shines for <strong>Parsing Text Strings</strong>. We walk through the steps: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L136-L208">Main.purs</a></p>
 <div class="example-wrap"><pre class="language-purescript"><code>-- Declare our Function to Parse the RISC-V Exception
 parseException :: Parser  -- We&#39;re creating a Parser...
@@ -252,8 +247,7 @@ parseException :: Parser  -- We&#39;re creating a Parser...
   , mcause     :: Int     -- MCAUSE: 13
   , epc        :: String  -- EPC: `8000a0e4`
   , mtval      :: String  -- MTVAL: `0000000880203b88`
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-nuttx-log-parser">(<strong>VSCode</strong> will generate the declaration)</a></p>
 <p>We’re about to create a <strong>PureScript String Parser</strong> that will accept a printed RISC-V Exception and return the MCAUSE, EPC and MTVAL.</p>
 <p>This is how we write our <strong>Parsing Function</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L148-L208">Main.purs</a></p>
@@ -265,8 +259,7 @@ parseException = do
     string &quot;riscv_exception:&quot; -- Match the string `riscv_exception:`
     &lt;* skipSpaces             -- Skip the following spaces
     &lt;* string &quot;EXCEPTION:&quot;    -- Match the string `EXCEPTION:`
-    &lt;* skipSpaces             -- Skip the following spaces
-</code></pre></div>
+    &lt;* skipSpaces             -- Skip the following spaces</code></pre></div>
 <p>As promised, please meet our alien symbols…</p>
 <ul>
 <li>
@@ -284,15 +277,13 @@ parseException = do
 </li>
 </ul>
 <p>Which will skip the unnecessary prelude…</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: 
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: </code></pre></div>
 <p>Next comes the <strong>Exception Message</strong>, which we’ll capture via a <strong>Regular Expression</strong> (and an alien raygun)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- `exception` becomes `Load page fault`
   -- `&lt;*` says when we should stop the Text Capture
   exception &lt;- regex &quot;[^.]+&quot; 
     &lt;* string &quot;.&quot; 
-    &lt;* skipSpaces 
-</code></pre></div>
+    &lt;* skipSpaces </code></pre></div>
 <p>We do the same to capture <strong>MCAUSE</strong> (as a String)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `MCAUSE: `
   -- `void` means ignore the Text Captured
@@ -302,8 +293,7 @@ parseException = do
 
   -- `mcauseStr` becomes `000000000000000d`
   -- We&#39;ll convert to integer later
-  mcauseStr &lt;- regex &quot;[0-9a-f]+&quot; &lt;* string &quot;,&quot; &lt;* skipSpaces
-</code></pre></div>
+  mcauseStr &lt;- regex &quot;[0-9a-f]+&quot; &lt;* string &quot;,&quot; &lt;* skipSpaces</code></pre></div>
 <p>Then we capture <strong>EPC</strong> and <strong>MTVAL</strong> (with the Zero Prefix)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Skip `EPC: `
   -- `epcWithPrefix` becomes `000000008000a0e4`
@@ -315,8 +305,7 @@ parseException = do
   -- `mtvalWithPrefix` becomes `0000000880203b88`
   -- We might strip the zero prefix later
   void $ string &quot;MTVAL:&quot; &lt;* skipSpaces
-  mtvalWithPrefix &lt;- regex &quot;[0-9a-f]+&quot;
-</code></pre></div>
+  mtvalWithPrefix &lt;- regex &quot;[0-9a-f]+&quot;</code></pre></div>
 <p>Finally we return the parsed <strong>MCAUSE</strong> (as integer), <strong>EPC</strong> (without prefix), <strong>MTVAL</strong> (without prefix)</p>
 <div class="example-wrap"><pre class="language-purescript"><code>  -- Return the parsed content.
   -- `pure` because we&#39;re in a `do` block that allows (Side) Effects
@@ -333,19 +322,16 @@ parseException = do
     , mtval:
         mtvalWithPrefix `fromMaybe` -- If `mtvalWithPrefix` does not have prefix `00000000`, return it
           stripPrefix (Pattern &quot;00000000&quot;) mtvalWithPrefix -- Else strip prefix `00000000` from `mtval`
-    }
-</code></pre></div><span style="font-size:90%">
+    }</code></pre></div><span style="font-size:90%">
 <p><a href="https://pursuit.purescript.org/packages/purescript-maybe/docs/Data.Maybe#v:fromMaybe">(<strong>fromMaybe</strong> resolves an Optional Value)</a></p>
 <p><a href="https://pursuit.purescript.org/packages/purescript-integers/docs/Data.Int#v:fromStringAs">(<strong>fromStringAs</strong> converts String to Integer)</a></p>
 <p><a href="https://pursuit.purescript.org/packages/purescript-strings/6.0.1/docs/Data.String#v:stripPrefix">(<strong>stripPrefix</strong> removes the String Prefix)</a></p>
 </span>
 <p><em>fromMaybe looks weird?</em></p>
 <p>We tried to make our code “friendlier”…</p>
-<div class="example-wrap"><pre class="language-purescript"><code>a `fromMaybe` b
-</code></pre></div>
+<div class="example-wrap"><pre class="language-purescript"><code>a `fromMaybe` b</code></pre></div>
 <p>Is actually equivalent to the Bracket Bonanza…</p>
-<div class="example-wrap"><pre class="language-purescript"><code>(fromMaybe a b)
-</code></pre></div>
+<div class="example-wrap"><pre class="language-purescript"><code>(fromMaybe a b)</code></pre></div>
 <p>(Maybe we tried too hard)</p>
 <p><em>Does it work with JavaScript?</em></p>
 <p>Yep it does! This is how we <strong>parse a RISC-V Exception</strong> in JavaScript: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html#L17-L28">index.html</a></p>
@@ -358,8 +344,7 @@ const exception = `riscv_exception: EXCEPTION: Load page fault. MCAUSE: 00000000
 
 // Call PureScript to parse the RISC-V Exception
 const result = StringParser_Parser
-  .runParser(parseException)(exception);
-</code></pre></div>
+  .runParser(parseException)(exception);</code></pre></div>
 <p>Which returns the <strong>JSON Result</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;value0&quot;: {
@@ -368,8 +353,7 @@ const result = StringParser_Parser
     &quot;epc&quot;:       &quot;8000a0e4&quot;,
     &quot;mtval&quot;:     &quot;0000000880203b88&quot;
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And it works great with our <a href="https://lupyuen.github.io/articles/purescript#explain-the-risc-v-exception"><strong>RISC-V Exception Explainer</strong></a>!</p>
 <div class="example-wrap"><pre class="language-javascript"><code>// In JavaScript: Import our Exception Explainer from PureScript
 import { explainException } from &#39;./output/Main/index.js&#39;;
@@ -383,8 +367,7 @@ const exception = result.value0;
 const explain = explainException
   (exception.mcause)
   (exception.epc)
-  (exception.mtval);
-</code></pre></div>
+  (exception.mtval);</code></pre></div>
 <p>Let’s talk about log passing (and tossing)…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow4.jpg" alt="Pass NuttX Logs to PureScript" /></p>
 <h1 id="pass-nuttx-logs-to-purescript"><a class="doc-anchor" href="#pass-nuttx-logs-to-purescript">§</a>4 Pass NuttX Logs to PureScript</h1>
@@ -396,8 +379,7 @@ const explain = explainException
 Term.prototype.write = function(ch) {
 
   // Send it to our NuttX Log Parser
-  parseLog(ch);
-</code></pre></div>
+  parseLog(ch);</code></pre></div>
 <p>Our JavaScript <strong>parses NuttX Logs</strong> like this: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1483-L1575">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Parse NuttX Logs with PureScript.
 // Assume `ch` is a single character for Terminal Output.
@@ -418,8 +400,7 @@ function parseLog(ch) {
   const explain = explainException
     (exception.mcause)
     (exception.epc)
-    (exception.mtval);
-</code></pre></div>
+    (exception.mtval);</code></pre></div>
 <p>Line by line, we pass the NuttX Logs to PureScript, to <strong>parse the RISC-V Exceptions</strong> and explain them.</p>
 <p>Then we display everything…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Link the Exception to the Disassembly
@@ -441,8 +422,7 @@ function parseLog(ch) {
   parser_output.innerHTML +=
     `&lt;p&gt;${explain}&lt;/p&gt;`
     .split(exception.epc,   2).join(epc)     // Link EPC to Disassembly
-    .split(exception.mtval, 2).join(mtval);  // Link MTVAL to Disassembly
-</code></pre></div>
+    .split(exception.mtval, 2).join(mtval);  // Link MTVAL to Disassembly</code></pre></div>
 <p>(We’ll see <strong>disassemble</strong> later)</p>
 <p>We do the same for the <strong>Stack Dump</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Parse the Stack Dump and link to the Disassembly
@@ -465,8 +445,7 @@ function parseLog(ch) {
 }
 
 // Buffer the last line of the Terminal Output
-let termbuf = &quot;&quot;;
-</code></pre></div><span style="font-size:90%">
+let termbuf = &quot;&quot;;</code></pre></div><span style="font-size:90%">
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L208-L275">(<strong>parseStackDump</strong> comes from PureScript)</a></p>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-rewrite-the-imports">(<strong>NuttX Emulator</strong> imports PureScript like this)</a></p>
 </span>
@@ -477,8 +456,7 @@ let termbuf = &quot;&quot;;
 <p>Instead of printing addresses plainly like <code>8000a0e4</code>, we show <strong>Addresses as Hyperlinks</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;
   8000a0e4
-&lt;/a&gt;
-</code></pre></div>
+&lt;/a&gt;</code></pre></div>
 <p>Which links to our page that displays the <strong>NuttX Disassembly</strong> for the address: <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/term.js#L1556-L1571">term.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// If `addr` is a valid address,
 // wrap it with the Disassembly URL:
@@ -499,8 +477,7 @@ function disassemble(addr) {
     addr,
     `&lt;/a&gt;`,
   ].join(&quot;&quot;);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>But we do this only for <strong>Valid NuttX Addresses</strong>. (Otherwise we’ll hyperlink to hot garbage)</p>
 <p>How will <strong>identifyAddress</strong> know if it’s a Valid NuttX Address? Coming right up…</p>
 <p><img src="https://lupyuen.github.io/images/purescript-flow5.jpg" alt="Identify a NuttX Address" /></p>
@@ -525,8 +502,7 @@ identifyAddress addr
     Just { origin: &quot;qjs&quot;,   type: Code }
 
   -- Otherwise it&#39;s an Unknown Address
-  | otherwise = Nothing
-</code></pre></div><span style="font-size:90%">
+  | otherwise = Nothing</code></pre></div><span style="font-size:90%">
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/src/Main.purs#L84-L102">(<strong>matches</strong> does <strong>Regex Matching</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/purescript#appendix-bigint-in-purescript">(<strong>Addresses as Numbers</strong> instead of Strings)</a></p>
 </span>
@@ -552,8 +528,7 @@ addressType = result.value0.type.constructor.name;
 result = identifyAddress(&quot;0000000800203b88&quot;);
 
 // This will return &quot;Nothing&quot;
-resultType = result.constructor.name;
-</code></pre></div>
+resultType = result.constructor.name;</code></pre></div>
 <p><em>Tsk tsk we’re hard-coding Address Patterns?</em></p>
 <p>Our <strong>Troubleshooting Rules</strong> are still evolving, we’re not sure how the NuttX Log Parser will be used in future.</p>
 <p>That’s why we’ll have an <a href="https://lupyuen.github.io/articles/purescript#appendix-online-purescript-compiler"><strong>Online PureScript Compiler</strong></a> that will allow the Troubleshooting Rules to be <strong>tweaked and tested easily</strong> across all NuttX Platforms.</p>
@@ -570,24 +545,20 @@ qjs-80002000.S
 ...
 qjs-80063000.S
 qjs-80064000.S
-qjs-80065000.S
-</code></pre></div>
+qjs-80065000.S</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk">(See the <strong>Disassembly Chunks</strong>)</a></p>
 <p>So <strong><code>8000a0e4</code></strong> will appear in the file <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/qjs-chunk/qjs-8000b000.S#L171"><strong>qjs-8000b000.S</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Disassembly for 8000a0e4
 quickjs-nuttx/quickjs.c:2876
   p = rt-&gt;atom_array[i];
-    8000a0e4:  6380  ld  s0,0(a5)
-</code></pre></div>
+    8000a0e4:  6380  ld  s0,0(a5)</code></pre></div>
 <p>Which gets hyperlinked in our <a href="https://lupyuen.github.io/nuttx-tinyemu/purescript/disassemble.html?addr=8000a0e4"><strong>NuttX Log Display</strong></a> whenever <code>8000a0e4</code> is shown…</p>
 <div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;disassemble.html?addr=8000a0e4&quot; target=&quot;_blank&quot;&gt;
   8000a0e4
-&lt;/a&gt;
-</code></pre></div>
+&lt;/a&gt;</code></pre></div>
 <p><em>What’s inside disassemble.html? (Pic above)</em></p>
 <p>Given a <strong>NuttX Address</strong> like <strong><code>8000a0e4</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>disassemble.html?addr=8000a0e4
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>disassemble.html?addr=8000a0e4</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/purescript/disassemble.js"><strong>disassemble.html</strong></a> will…</p>
 <ol>
 <li>
@@ -603,8 +574,7 @@ quickjs-nuttx/quickjs.c:2876
 <p>Hyperlink to the <a href="https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877"><strong>NuttX Source Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>&lt;a href=&quot;https://github.com/lupyuen/quickjs-nuttx/blob/master/quickjs.c#L2877&quot; target=&quot;_blank&quot;&gt;
   quickjs-nuttx/quickjs.c:2877
-&lt;/a&gt;
-</code></pre></div></li>
+&lt;/a&gt;</code></pre></div></li>
 </ol>
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser#show-nuttx-disassembly-by-address">(More about <strong>disassemble.html</strong>)</a></p>
 <p><em>How do we chunk a NuttX Dissassembly?</em></p>
@@ -646,8 +616,7 @@ rm -f $chunkpath/$chunkbase-chunk/*
 ## TODO: Edit the pathnames in https://github.com/lupyuen/nuttx-disassembly-chunker/blob/main/src/main.rs#L81-L91
 git clone https://github.com/lupyuen/nuttx-disassembly-chunker
 cd nuttx-disassembly-chunker
-cargo run -- $chunkpath $chunkbase
-</code></pre></div>
+cargo run -- $chunkpath $chunkbase</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-tinyemu/tree/main/docs/purescript/qjs-chunk">(See the <strong>Disassembly Chunks</strong>)</a></p>
 <p><em>So what exactly caused our NuttX Crash Dump over the holidays? And made us ponder our life choices?</em></p>
 <p>Our <a href="https://lupyuen.github.io/articles/quickjs#nuttx-stack-is-full-of-quickjs"><strong>NuttX Stack was Full!</strong></a> There was a clear sign that we missed: The <a href="https://github.com/lupyuen/quickjs-nuttx/blob/0aafbb7572d4d0a1f7ac48d0b6a5ac0ba8374cfc/nuttx/qemu.log#L5385-L5478"><strong>Loopy Stack Dump</strong></a> means that the NuttX Stack was obviously full.</p>
@@ -713,8 +682,7 @@ spago run
 
 ## Deploy to GitHub Pages in `docs` folder
 ## https://lupyuen.github.io/nuttx-purescript-parser/
-./run.sh
-</code></pre></div>
+./run.sh</code></pre></div>
 <p><strong>“<code>spago</code> <code>run</code>”</strong> will compile our NuttX Log Parser and generate…</p>
 <ul>
 <li>
@@ -761,8 +729,7 @@ cat index.html \
 
 cat output/Main/index.js \
   | sed &#39;s/from \&quot;../from \&quot;https:\/\/compile.purescript.org\/output/&#39; \
-  &gt;docs/index.js
-</code></pre></div>
+  &gt;docs/index.js</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/index.html">(<strong>index.html</strong> is our Test JavaScript)</a></p>
 <p>This produces the <strong>Modified JavaScript</strong>: <a href="https://github.com/lupyuen/nuttx-purescript-parser/blob/main/docs/index.js">docs/index.js</a></p>
 <p>Which gets published at <a href="https://lupyuen.github.io/nuttx-purescript-parser/index.js">nuttx-purescript-parser/index.js</a></p>
@@ -785,15 +752,13 @@ cat output/Main/index.js \
   window.identifyAddress  = identifyAddress;
 
   // Call the PureScript Function
-  const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)
-</code></pre></div><h1 id="appendix-bigint-in-purescript"><a class="doc-anchor" href="#appendix-bigint-in-purescript">§</a>10 Appendix: BigInt in PureScript</h1>
+  const result2 = explainException(12)(&#39;000000008000ad8a&#39;)(&#39;000000008000ad8a&#39;)</code></pre></div><h1 id="appendix-bigint-in-purescript"><a class="doc-anchor" href="#appendix-bigint-in-purescript">§</a>10 Appendix: BigInt in PureScript</h1>
 <p><em>Why are we passing addresses in Text instead of Numbers? Like <code>"8000ad8a"</code></em></p>
 <p>That’s because <code>0x8000ad8a</code> is too big for <strong>PureScript Int</strong>, a signed 32-bit integer.</p>
 <p>PureScript Int is meant to interoperate with JavaScript Integer, which is also 32-bit.</p>
 <p><em>What about PureScript BigInt?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>spago install bigints
-npm install big-integer
-</code></pre></div>
+npm install big-integer</code></pre></div>
 <p>If we use <a href="https://pursuit.purescript.org/packages/purescript-bigints/docs/Data.BigInt"><strong>PureScript BigInt</strong></a>, then we need <a href="https://www.npmjs.com/package/big-integer"><strong>NPM big-integer</strong></a>.</p>
 <p>But NPM big-integer won’t run inside a Web Browser with Plain Old JavaScript. That’s why we’re passing addresses as Strings instead of Numbers.</p>
 <p><strong>TODO:</strong> BigInt is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>already supported</strong></a> by Web Browsers. Do we really need NPM big-integer?</p>
@@ -823,22 +788,19 @@ Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;000000
 -----
 (runParser) Parsing content with &#39;parseStackDump&#39;
 Result: { addr: &quot;c02027e0&quot;, v1: &quot;c0202010&quot;, v2: &quot;00000000&quot;, v3: &quot;00000001&quot;, v4: &quot;00000000&quot;, v5: &quot;00000000&quot;, v6: &quot;00000000&quot;, v7: &quot;8000ad8a&quot;, v8: &quot;00000000&quot; }
------
-</code></pre></div></li>
+-----</code></pre></div></li>
 <li>
 <p>Try tweaking the rules for <strong>explainException</strong>…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>explainException 13 epc mtval =
   &quot;We hit a Load Page Fault.&quot;
   &lt;&gt; &quot; Our code at Code Address &quot; &lt;&gt; epc
   &lt;&gt; &quot; tried to access the Data Address &quot; &lt;&gt; mtval
-  &lt;&gt; &quot;, which is Invalid.&quot;
-</code></pre></div>
+  &lt;&gt; &quot;, which is Invalid.&quot;</code></pre></div>
 <p>And <strong>identifyAddress</strong>…</p>
 <div class="example-wrap"><pre class="language-purescript"><code>identifyAddress addr
   | &quot;502.....&quot; `matches` addr = Just { origin: &quot;nuttx&quot;, type: Code }
   | &quot;800.....&quot; `matches` addr = Just { origin: &quot;qjs&quot;,   type: Code }
-  | otherwise = Nothing
-</code></pre></div>
+  | otherwise = Nothing</code></pre></div>
 <p>The changes will take effect immediately.</p>
 <p><a href="https://youtu.be/wbycFBQho_E">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
@@ -870,8 +832,7 @@ cp -r public ../docs
 ## To Test Locally the GitHub Pages in `docs` folder:
 ## http://0.0.0.0:8000/docs/index.html?gist=1405685d6f847ea5d4d6302b196bb05e
 cargo install simple-http-server
-simple-http-server .. &amp;
-</code></pre></div>
+simple-http-server .. &amp;</code></pre></div>
 <p>The Test Code comes from our <a href="https://gist.github.com/lupyuen/1405685d6f847ea5d4d6302b196bb05e"><strong>GitHub Gist</strong></a>.</p>
 
     

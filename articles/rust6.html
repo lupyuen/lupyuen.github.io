@@ -64,21 +64,21 @@
     
 
     <h1 class="title">Early Days of Rust Apps on Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#blink-the-led">1 Blink The LED</a><ul></ul></li>
-<li><a href="#test-on-qemu-emulator">2 Test on QEMU Emulator</a><ul></ul></li>
-<li><a href="#handle-errors-safely">3 Handle Errors Safely</a><ul></ul></li>
-<li><a href="#runs-on-linux--macos--windows">4 Runs on Linux / macOS / Windows</a><ul></ul></li>
-<li><a href="#main-function-for-rust">5 Main Function for Rust</a><ul></ul></li>
-<li><a href="#panic-handler-for-rust">6 Panic Handler for Rust</a><ul></ul></li>
-<li><a href="#no-crates-in-nuttx">7 No Crates in NuttX</a><ul></ul></li>
-<li><a href="#led-drivers-for-nuttx">8 LED Drivers for NuttX</a><ul></ul></li>
-<li><a href="#daily-build-and-test">9 Daily Build and Test</a><ul></ul></li>
-<li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-rust-blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li>
-<li><a href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#blink-the-led" title="Blink The LED">1 Blink The LED</a><ul></ul></li>
+<li><a href="#test-on-qemu-emulator" title="Test on QEMU Emulator">2 Test on QEMU Emulator</a><ul></ul></li>
+<li><a href="#handle-errors-safely" title="Handle Errors Safely">3 Handle Errors Safely</a><ul></ul></li>
+<li><a href="#runs-on-linux--macos--windows" title="Runs on Linux / macOS / Windows">4 Runs on Linux / macOS / Windows</a><ul></ul></li>
+<li><a href="#main-function-for-rust" title="Main Function for Rust">5 Main Function for Rust</a><ul></ul></li>
+<li><a href="#panic-handler-for-rust" title="Panic Handler for Rust">6 Panic Handler for Rust</a><ul></ul></li>
+<li><a href="#no-crates-in-nuttx" title="No Crates in NuttX">7 No Crates in NuttX</a><ul></ul></li>
+<li><a href="#led-drivers-for-nuttx" title="LED Drivers for NuttX">8 LED Drivers for NuttX</a><ul></ul></li>
+<li><a href="#daily-build-and-test" title="Daily Build and Test">9 Daily Build and Test</a><ul></ul></li>
+<li><a href="#all-things-considered" title="All Things Considered">10 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-rust-blinky" title="Appendix: Daily Test of Rust Blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v" title="Appendix: Daily Test of NuttX QEMU RISC-V">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li>
+<li><a href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions" title="Appendix: NuttX QEMU RISC-V fails on GitHub Actions">14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <p>My student <a href="https://github.com/rushabhvg"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="https://summerofcode.withgoogle.com/"><strong>Google Summer of Code</strong></a>. Rushabh has created <strong>Safer Rust Apps</strong> for <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
@@ -204,8 +204,7 @@ qemu-system-riscv64 \
   -cpu rv64 \
   -bios none \
   -kernel nuttx \
-  -nographic
-</code></pre></div>
+  -nographic</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">(See the <strong>Build Script</strong>)</a></p>
 <p>At the NSH Prompt: Enter “<strong><code>leds_rust</code></strong>” (pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.6.0-RC1
@@ -222,8 +221,7 @@ Sleeping...
 Set LED 1 to 0
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-</code></pre></div>
+board_userled: LED 3 set to 0</code></pre></div>
 <p>Rust blinks our Simulated LED on NuttX QEMU! Let’s head back inside the code…</p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/runs/10396419763/job/28790386663">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/rust4#custom-target-for-rust">(QEMU RISC-V 32-bit needs a <strong>Custom Rust Target</strong>)</a></p>
@@ -264,8 +262,7 @@ $ cd app
 $ cargo run
 Hello, Rust!!
 Opening /dev/userleds
-ERROR: rust_main() failed with error -1
-</code></pre></div>
+ERROR: rust_main() failed with error -1</code></pre></div>
 <p>Though it fails (as expected) because <em>“/dev/userleds”</em> doesn’t exist on Linux / macOS / Windows. (Pic above)</p>
 <p>This greatly simplifies our NuttX App Development: We could (potentially) compile and run our NuttX App on our <strong>Local Computer</strong>, before testing on NuttX!</p>
 <p>(<strong>Rust Analyzer</strong> won’t work inside NuttX Projects sigh)</p>
@@ -343,8 +340,7 @@ $ tools/configure.sh rv-virt:leds64_rust
 
 ## Build the NuttX Project
 ## Which calls `rustc`
-$ make
-</code></pre></div>
+$ make</code></pre></div>
 <p>Which complicates our coding of NuttX Rust Apps. That’s why we hope to test them first on <a href="https://lupyuen.github.io/articles/rust6#runs-on-linux--macos--windows"><strong>Linux / macOS / Windows</strong></a>.</p>
 <p>(<strong>NuttX Module nuttx.rs</strong> should probably live in a Common Source Folder)</p>
 <p>(Maybe NuttX will allow some crates, similar to <a href="https://rust-for-linux.com/third-party-crates"><strong>Rust for Linux Kernel</strong></a>)</p>
@@ -530,8 +526,7 @@ Sleeping...
 Set LED 1 to 0
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-</code></pre></div>
+board_userled: LED 3 set to 0</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-leds64-rust.yml">(See the <strong>GitHub Actions Log</strong>)</a></p>
 <p>Here’s the <strong>GitHub Actions Workflow</strong> (pic below) to build and run Rust Blinky: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-leds64-rust.yml">qemu-riscv-leds64-rust.yml</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code for NuttX Kernel and Apps
@@ -554,8 +549,7 @@ sudo apt install qemu-system-riscv64
 ## Test NuttX and Rust Blinky with our Expect Script
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-leds64-rust.exp
 chmod +x qemu-riscv-leds64-rust.exp
-./qemu-riscv-leds64-rust.exp
-</code></pre></div>
+./qemu-riscv-leds64-rust.exp</code></pre></div>
 <p>Which calls our <strong>Expect Script</strong> to test Rust Blinky: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-leds64-rust.exp">qemu-riscv-leds64-rust.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX Rust Blinky with QEMU Emulator
@@ -598,8 +592,7 @@ expect {
 ## Terminate the session: Ctrl-A x
 send &quot;\x01x&quot;
 puts &quot;\n===== Test OK\n&quot;
-exit 0 
-</code></pre></div>
+exit 0 </code></pre></div>
 <p>But our test is incomplete: We need to know if NuttX on QEMU is really OK…</p>
 <p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="Daily Build and Test of Rust Blinky App at GitHub Actions" /></p>
 <h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>13 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
@@ -639,8 +632,7 @@ $ spawn qemu-system-riscv32 \
 NuttShell (NSH) NuttX-12.6.0-RC1
 nsh&gt; ostest
 ...
-ostest_main: Exiting with status 0
-</code></pre></div>
+ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">(See the <strong>GitHub Actions Log</strong>)</a></p>
 <p>Here’s the <strong>GitHub Actions Workflow</strong> to build and run NuttX QEMU RISC-V (32-bit): <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-nsh.yml">qemu-riscv-nsh.yml</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code for NuttX Kernel and Apps
@@ -660,8 +652,7 @@ sudo apt install qemu-system-riscv32
 ## Test NuttX and OSTest with our Expect Script
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-nsh.exp
 chmod +x qemu-riscv-nsh.exp
-./qemu-riscv-nsh.exp
-</code></pre></div>
+./qemu-riscv-nsh.exp</code></pre></div>
 <p>Which calls our <strong>Expect Script</strong> to boot NuttX and run <a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>OSTest</strong></a>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh.exp">qemu-riscv-nsh.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
 ## Expect Script for Testing NuttX with QEMU Emulator
@@ -702,8 +693,7 @@ expect {
     puts &quot;\n===== Error: Test Failed\n&quot;
     exit 1 
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>But there’s a problem: OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions…</p>
 <p><img src="https://lupyuen.github.io/images/rust6-task.jpg" alt="Running a script on my Home Computer to download the 64-bit Daily Builds and run OSTest locally" /></p>
 <h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
@@ -774,8 +764,7 @@ function test_nuttx {
   upload-nsh64.sh \
     /tmp/release-$BUILD_PREFIX.tag \
     /tmp/release-$BUILD_PREFIX.log
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Then we call our <strong>Test Script</strong> to boot NuttX on QEMU and verify the output of <a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>OSTest</strong></a>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/test-nsh64.sh">test-nsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test Script: Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
 BUILD_PREFIX=qemu-riscv-nsh64
@@ -793,8 +782,7 @@ echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release-$BUILD_PREFIX.tag
 ## Boot NuttX on QEMU and run OSTest
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-nsh64.exp
 chmod +x qemu-riscv-nsh64.exp
-./qemu-riscv-nsh64.exp
-</code></pre></div>
+./qemu-riscv-nsh64.exp</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-nsh64.exp">(<strong>qemu-riscv-nsh64.exp</strong> is here)</a></p>
 <p>Finally our Task Script calls our <strong>Upload Script</strong>, to upload the Test Log into the <strong>GitHub Release Notes</strong>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/task/upload-nsh64.sh">upload-nsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Upload Test Log to GitHub Release Notes of Apache NuttX RTOS for QEMU RISC-V 64-bit Flat Build
@@ -855,8 +843,7 @@ echo &#39;```&#39; &gt;&gt;/tmp/upload-nsh64.log
 gh release edit \
   `cat $tag` \
   --notes-file /tmp/upload-nsh64.log \
-  --repo $repo
-</code></pre></div>
+  --repo $repo</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

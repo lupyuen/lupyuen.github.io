@@ -64,18 +64,18 @@
     
 
     <h1 class="title">Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC</h1>
-    <nav id="TOC"><ul>
-<li><a href="#basic-nim-from-scratch">1 Basic Nim from scratch</a><ul></ul></li>
-<li><a href="#blink-an-led">2 Blink an LED</a><ul></ul></li>
-<li><a href="#import-nuttx-functions">3 Import NuttX Functions</a><ul></ul></li>
-<li><a href="#run-nim-on-qemu">4 Run Nim on QEMU</a><ul></ul></li>
-<li><a href="#nim-blinky-on-ox64">5 Nim Blinky on Ox64</a><ul></ul></li>
-<li><a href="#inside-nim-on-nuttx">6 Inside Nim on NuttX</a><ul></ul></li>
-<li><a href="#led-driver-for-ox64">7 LED Driver for Ox64</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-ox64">10 Appendix: Build NuttX for Ox64</a><ul></ul></li>
-<li><a href="#appendix-opensbi-timer-for-nuttx">11 Appendix: OpenSBI Timer for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>1 Jan 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#basic-nim-from-scratch" title="Basic Nim from scratch">1 Basic Nim from scratch</a><ul></ul></li>
+<li><a href="#blink-an-led" title="Blink an LED">2 Blink an LED</a><ul></ul></li>
+<li><a href="#import-nuttx-functions" title="Import NuttX Functions">3 Import NuttX Functions</a><ul></ul></li>
+<li><a href="#run-nim-on-qemu" title="Run Nim on QEMU">4 Run Nim on QEMU</a><ul></ul></li>
+<li><a href="#nim-blinky-on-ox64" title="Nim Blinky on Ox64">5 Nim Blinky on Ox64</a><ul></ul></li>
+<li><a href="#inside-nim-on-nuttx" title="Inside Nim on NuttX">6 Inside Nim on NuttX</a><ul></ul></li>
+<li><a href="#led-driver-for-ox64" title="LED Driver for Ox64">7 LED Driver for Ox64</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu" title="Appendix: Build NuttX for QEMU">9 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-ox64" title="Appendix: Build NuttX for Ox64">10 Appendix: Build NuttX for Ox64</a><ul></ul></li>
+<li><a href="#appendix-opensbi-timer-for-nuttx" title="Appendix: OpenSBI Timer for NuttX">11 Appendix: OpenSBI Timer for NuttX</a><ul></ul></li></ul></nav><p>📝 <em>1 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
 <p>Happy New Year! 2024 is here and we’re running <a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on Single-Board Computers with <strong>plenty of RAM</strong>…</p>
 <p>Like <a href="https://pine64.org/documentation/Ox64/"><strong>Pine64 Ox64 BL808</strong></a> RISC-V SBC with <strong>64 MB RAM!</strong> (Pic below)</p>
@@ -119,8 +119,7 @@ proc hello_nim() {.exportc, cdecl.} =
   echo &quot;Hello Nim!&quot;
 
   ## Force the Garbage Collection
-  GC_runOrc()
-</code></pre></div>
+  GC_runOrc()</code></pre></div>
 <p>Which looks a lot like Python!</p>
 <p><em>What’s GC_runOrc?</em></p>
 <p>Our Nim Program will be <strong>called by C</strong>. (Remember NuttX?)</p>
@@ -145,8 +144,7 @@ proc hello_nim() {.exportc, cdecl.} =
   defer: GC_runOrc()
 
   ## Print something
-  echo &quot;Hello Nim!&quot;
-</code></pre></div>
+  echo &quot;Hello Nim!&quot;</code></pre></div>
 <p><a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> ensures that the Garbage Collection <strong>will always happen</strong>, as soon as we return from the Main Function.</p>
 <p>Now we do something cool and enlightening…</p>
 <p>(<a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>hello_nim</strong></a> is called by our C Program <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_main.c#L35-L42"><strong>hello_nim_main.c</strong></a>)</p>
@@ -164,29 +162,25 @@ proc blink_led() =
   ## Check the File Descriptor for error
   if fd &lt; 0:
     echo &quot;Failed to open /dev/userleds&quot;
-    return
-</code></pre></div>
+    return</code></pre></div>
 <p>First we call the NuttX Function <strong><code>open</code></strong> to access the <strong>LED Driver</strong>.</p>
 <p>We might forget to <strong><code>close</code></strong> the LED Driver (in case of error), so we <a href="https://nim-lang.org/docs/manual.html#exception-handling-defer-statement"><strong><code>defer</code></strong></a> the closing…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## On Return: Close the LED Driver
-  defer: c_close(fd)
-</code></pre></div>
+  defer: c_close(fd)</code></pre></div>
 <p>Next we call the NuttX Function <strong><code>ioctl</code></strong> to flip <strong>LED 0 to On</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## Turn on LED
   echo &quot;Set LED 0 to 1&quot;
   var ret = c_ioctl(fd, ULEDIOC_SETALL, 1)
   if ret &lt; 0:
     echo &quot;ioctl(ULEDIOC_SETALL) failed&quot;
-    return
-</code></pre></div>
+    return</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/leds/userled.h#L57-L66"><strong>ULEDIOC_SETALL</strong></a> accepts a Bit Mask of LED States. The value <strong><code>1</code></strong> says that <strong>LED 0</strong> (Bit 0) will be flipped On.</p>
 <p>(Other LEDs will be flipped Off)</p>
 <p>We <strong>pause a while</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## Wait a second (literally)
   ## Because 1 million microseconds = 1 second
   echo &quot;Waiting...&quot;
-  c_usleep(1000_000)
-</code></pre></div>
+  c_usleep(1000_000)</code></pre></div>
 <p>Finally we flip <strong>LED 0 to Off</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>  ## Turn off LED
   echo &quot;Set LED 0 to 0&quot;
@@ -197,8 +191,7 @@ proc blink_led() =
 
   ## Wait again
   echo &quot;Waiting...&quot;
-  c_usleep(1000_000)
-</code></pre></div>
+  c_usleep(1000_000)</code></pre></div>
 <p>In our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L67"><strong>Main Function</strong></a>: We call the above function <strong>20 times</strong> to blink our LED (pic below)…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Main Function in Nim
 proc hello_nim() {.exportc, cdecl.} =
@@ -208,8 +201,7 @@ proc hello_nim() {.exportc, cdecl.} =
 
   ## Blink the LED 20 times
   for loop in 0..19:
-    blink_led()
-</code></pre></div>
+    blink_led()</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85">(Looks mighty similar to the <strong>C Version</strong>)</a></p>
 <p>And we’re almost done! Nim needs to discover our NuttX Functions…</p>
 <p><img src="https://lupyuen.github.io/images/nim-blink2.jpg" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Nim blinks our LED" /></p>
@@ -236,8 +228,7 @@ proc c_ioctl(fd: cint, request: cint): cint {.
 proc c_usleep(usec: cuint): cint {.
   importc: &quot;usleep&quot;,
   header: &quot;&lt;unistd.h&gt;&quot;,
-  discardable.}
-</code></pre></div>
+  discardable.}</code></pre></div>
 <p><a href="https://nim-lang.org/docs/manual.html#statements-and-expressions-discard-statement">(<strong>discardable</strong> tells Nim Compiler that the Return Value is Optional)</a></p>
 <p>We do the same for <strong>NuttX Macros</strong>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Import NuttX Macros from C.
@@ -249,8 +240,7 @@ var O_WRONLY {.
 
 var ULEDIOC_SETALL {.
   importc: &quot;ULEDIOC_SETALL&quot;, 
-  header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint
-</code></pre></div>
+  header: &quot;&lt;nuttx/leds/userled.h&gt;&quot;.}: cint</code></pre></div>
 <p>We’re ready to run this!</p>
 <p><img src="https://lupyuen.github.io/images/nim-qemu.png" alt="Nim with Apache NuttX RTOS on QEMU RISC-V (64-bit)" /></p>
 <h1 id="run-nim-on-qemu"><a class="doc-anchor" href="#run-nim-on-qemu">§</a>4 Run Nim on QEMU</h1>
@@ -263,8 +253,7 @@ var ULEDIOC_SETALL {.
 brew install qemu
 
 ## For Debian and Ubuntu:
-sudo apt install qemu-system-riscv64
-</code></pre></div></li>
+sudo apt install qemu-system-riscv64</code></pre></div></li>
 <li>
 <p>Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1"><strong>NuttX Release</strong></a>…</p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/qemu-1/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
@@ -278,23 +267,20 @@ sudo apt install qemu-system-riscv64
   -cpu rv64 \
   -bios none \
   -kernel nuttx \
-  -nographic
-</code></pre></div>
+  -nographic</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">(About the <strong>QEMU Options</strong>)</a></p>
 </li>
 <li>
 <p>NuttX is now running in the <strong>QEMU Emulator</strong>! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L199-L208">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
 <p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
 Hello Nim!
-Opening /dev/userleds
-</code></pre></div>
+Opening /dev/userleds</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
 </li>
 <li>
@@ -309,8 +295,7 @@ Waiting...
 
 Set LED 0 to 1
 board_userled_all: led=0, val=1
-Waiting...
-</code></pre></div>
+Waiting...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
@@ -353,16 +338,14 @@ Waiting...
 <p>NuttX is now running on our <strong>Ox64 SBC</strong>! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 NuttShell (NSH) NuttX-12.0.3
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96#file-ox64-nuttx-nim-blink-log-L112-L125">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
 <p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
 Hello Nim!
-Opening /dev/userleds
-</code></pre></div>
+Opening /dev/userleds</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
 </li>
 <li>
@@ -377,8 +360,7 @@ Waiting...
 
 Set LED 0 to 1
 board_userled_all: led=0, val=1
-Waiting...
-</code></pre></div>
+Waiting...</code></pre></div>
 <p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96#file-ox64-nuttx-nim-blink-log-L129-L395">(See the <strong>Complete Log</strong>)</a></p>
 </li>
@@ -394,13 +376,11 @@ Waiting...
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Nim to C
 export TOPDIR=$PWD/nuttx
 cd apps/examples/hello_nim
-nim c --header hello_nim_async.nim 
-</code></pre></div>
+nim c --header hello_nim_async.nim </code></pre></div>
 <p>Nim Compiler compiles our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello_nim/hello_nim_async.nim#L54-L63"><strong>Nim Program</strong></a>…</p>
 <div class="example-wrap"><pre class="language-nim"><code>## Nim Program that prints something
 proc hello_nim() {.exportc, cdecl.} =
-  echo &quot;Hello Nim!&quot;
-</code></pre></div>
+  echo &quot;Hello Nim!&quot;</code></pre></div>
 <p>Into this <a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L198-L203"><strong>C Program</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Main Function compiled from Nim to C:
 // echo &quot;Hello Nim!&quot;
@@ -418,8 +398,7 @@ static NIM_CONST tyArray__nHXaesL0DJZHyVS07ARPRA TM__1vqzGCGyH8jPEpAwiaNwvg_2
 
 // Actual String for &quot;Hello Nim!&quot;
 static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_3 
-  = { 10 | NIM_STRLIT_FLAG, &quot;Hello Nim!&quot; };
-</code></pre></div>
+  = { 10 | NIM_STRLIT_FLAG, &quot;Hello Nim!&quot; };</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L198-L203">(From .nimcache/@mhello_nim_async.nim.c)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/download/ox64-1/nimcache.tar">(See the <strong>nimcache</strong>)</a></p>
 <p>Hence Nim Compiler has produced a <a href="https://gist.github.com/lupyuen/4d3f44b58fa88b17ca851decb0419b86#file-mhello_nim_async-nim-c-L198-L203"><strong>perfectly valid C Program</strong></a>. That will compile with any C Compiler!</p>
@@ -429,8 +408,7 @@ static const struct { NI cap; NIM_CHAR data[10+1]; } TM__1vqzGCGyH8jPEpAwiaNwvg_
 <div class="example-wrap"><pre class="language-bash"><code>## Compile everything in the .nimcache folder
 NIMPATH = $(shell choosenim show path)
 CFLAGS += -I $(NIMPATH)/lib -I ../../.nimcache
-CSRCS  += $(wildcard ../../.nimcache/*.c)
-</code></pre></div>
+CSRCS  += $(wildcard ../../.nimcache/*.c)</code></pre></div>
 <p>And links the Nim Modules (compiled by GCC) into NuttX.</p>
 <p><em>So Nim Compiler is aware of NuttX?</em></p>
 <p>Yep! Nim Compiler is internally wired to <strong>produce NuttX Code</strong> (that GCC will compile correctly)…</p>
@@ -475,8 +453,7 @@ Hint: used config file &#39;/home/vscode/.choosenim/toolchains/nim-#devel/config
 Hint: used config file &#39;/workspaces/bookworm/apps/config.nims&#39; [Conf]
 ....................................................................................................................................
 Hint: mm: orc; opt: size; options: -d:danger
-92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]
-</code></pre></div>
+92931 lines; 1.214s; 137.633MiB peakmem; proj: /workspaces/bookworm/apps/examples/hello_nim/hello_nim_async.nim; out: /workspaces/bookworm/apps/.nimcache/hello_nim_async.json [SuccessX]</code></pre></div>
 <p><em>Isn’t Nim supposed to be Memory Safe?</em></p>
 <p>Yeah so far we’re doing Low-Level Coding with NuttX. And the <a href="https://nim-lang.org/faq.html"><strong>Nim Memory Safety</strong></a> doesn’t shine through.</p>
 <p>Later when we write <strong>LVGL Graphical Apps</strong> in Nim, we’ll appreciate the <a href="https://github.com/mantielero/lvgl.nim/blob/main/examples/ex02_label.nim"><strong>safety and simplicity</strong></a> of Nim…</p>
@@ -514,8 +491,7 @@ $ mw 0x20000938 0xb40 1
 
 ## Dump the GPIO 29 Register to verify
 $ md 0x20000938 1
-20000938: 00000b40                             @...
-</code></pre></div>
+20000938: 00000b40                             @...</code></pre></div>
 <p>And our LED (GPIO 29) will <strong>flip On and Off</strong>!</p>
 <p>Thus we have verified the <strong>Magic Bits</strong> for flipping our LED…</p>
 <ul>
@@ -599,8 +575,7 @@ void board_userled_all(uint32_t ledset) {
       }
     }
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>That’s how we created a barebones LED Driver for Ox64!</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/boards/risc-v/bl808/ox64/src/bl808_autoleds.c">(Remember to add the <strong>Auto LED Driver</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/47/files#diff-60cc096e3a9b22a769602cbbc3b0f5e7731e72db7b0338da04fcf665ed753b64">(And update the <strong>Board Kconfig</strong>)</a></p>
@@ -614,8 +589,7 @@ const bool val = ((ledset &amp; g_led_setmap[i]) != 0);
 bl808_gpio_write(  // Write to the GPIO Output...
   g_led_map[i],    // GPIO Number for LED[i]
   val              // Flip it On or Off
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/52">(See the <strong>Upcoming GPIO Driver</strong>)</a></p>
 <p><em>Anything else we patched?</em></p>
 <p>We fixed the <strong>NuttX Timer</strong> for Ox64 (otherwise we can’t blink)…</p>
@@ -716,8 +690,7 @@ choosenim devel --latest
 ## Version should be 2.1.1 or later:
 ## Nim Compiler Version 2.1.1 [Linux: amd64]
 ## Compiled at 2023-12-22
-nim -v
-</code></pre></div>
+nim -v</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode">(Nim won’t install? Try a <strong>Linux Container</strong>)</a></p>
 <p>Then we download and build NuttX for <strong>QEMU RISC-V (64-bit)</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
@@ -743,8 +716,7 @@ riscv64-unknown-elf-objdump \
   --debugging \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div>
+  2&gt;&amp;1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/qemu-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa">(See the <strong>Build Log</strong>)</a></p>
@@ -757,13 +729,11 @@ qemu-system-riscv64 \
   -cpu rv64 \
   -bios none \
   -kernel nuttx \
-  -nographic
-</code></pre></div>
+  -nographic</code></pre></div>
 <p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_nim
 Hello Nim!
-Opening /dev/userleds
-</code></pre></div>
+Opening /dev/userleds</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
 <p>Nim on NuttX blinks our <strong>Simulated LED</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Set LED 0 to 1
@@ -776,14 +746,12 @@ Waiting...
 
 Set LED 0 to 1
 board_userled_all: led=0, val=1
-Waiting...
-</code></pre></div>
+Waiting...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L210-L471">(See the <strong>NuttX Log</strong>)</a></p>
 <p>To Exit QEMU: Press <strong><code>Ctrl-A</code></strong> then <strong><code>x</code></strong></p>
 <p><em>How to run our own Nim Code on NuttX?</em></p>
 <p>Locate this <strong>Nim Source File</strong> and replace by our own Nim Code…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim</code></pre></div>
 <p>Then rebuild and restart NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/nim-ox64.png" alt="Apache NuttX RTOS on Ox64 BL808 RISC-V SBC: Works great with Nim!" /></p>
 <h1 id="appendix-build-nuttx-for-ox64"><a class="doc-anchor" href="#appendix-build-nuttx-for-ox64">§</a>10 Appendix: Build NuttX for Ox64</h1>
@@ -824,8 +792,7 @@ choosenim devel --latest
 ## Version should be 2.1.1 or later:
 ## Nim Compiler Version 2.1.1 [Linux: amd64]
 ## Compiled at 2023-12-22
-nim -v
-</code></pre></div>
+nim -v</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-nim#build-nuttx-with-debian-container-in-vscode">(Nim won’t install? Try a <strong>Linux Container</strong>)</a></p>
 <p>Then we download and build NuttX for <strong>Ox64 BL808 SBC</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the WIP NuttX Source Code
@@ -866,8 +833,7 @@ riscv64-unknown-elf-objdump \
   --debugging \
   ../apps/bin/hello_nim \
   &gt;hello_nim.S \
-  2&gt;&amp;1
-</code></pre></div>
+  2&gt;&amp;1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p>We build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Apps Filesystem
@@ -891,8 +857,7 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image
-</code></pre></div>
+  &gt;Image</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/578a7eb2d4d827aa252fff37c172dd18">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-nim/releases/tag/ox64-1">(See the <strong>Build Outputs</strong>)</a></p>
@@ -904,8 +869,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 ## on Ox64 microSD
 cp Image \
   &quot;/Volumes/NO NAME/Image&quot;
-diskutil unmountDisk /dev/disk2
-</code></pre></div>
+diskutil unmountDisk /dev/disk2</code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
 <p>At the NuttX Prompt, enter “<strong>hello_nim</strong>”…</p>
@@ -919,16 +883,14 @@ Waiting...
 
 Set LED 0 to 0
 board_userled_all: led=0, val=0
-Waiting...
-</code></pre></div>
+Waiting...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09e653cbd227b9cdff7cf3cb0a5e1ffa#file-qemu-nuttx-nim-build-log-L472-L497">(Enter “<strong>help</strong>” to see the available commands)</a></p>
 <p>Nim on NuttX <a href="https://lupyuen.github.io/images/nim-blink.jpg"><strong>blinks our LED</strong></a>.</p>
 <p><a href="https://youtube.com/shorts/KCkiXFxBgxQ">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/553c2da4ad5d119468d223e162573e96">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>How to run our own Nim Code on NuttX?</em></p>
 <p>Locate this <strong>Nim Source File</strong> and replace by our own Nim Code…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello_nim/hello_nim_async.nim</code></pre></div>
 <p>Then rebuild NuttX, copy to microSD and restart NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="OpenSBI Supervisor Binary Interface" /></p>
 <h1 id="appendix-opensbi-timer-for-nuttx"><a class="doc-anchor" href="#appendix-opensbi-timer-for-nuttx">§</a>11 Appendix: OpenSBI Timer for NuttX</h1>
@@ -950,8 +912,7 @@ void up_timer_initialize(void) {
     0, 0, RISCV_IRQ_STIMER, MTIMER_FREQ);
   DEBUGASSERT(lower);
   up_alarm_set_lowerhalf(lower);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>How it works: At startup, <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L98-L116"><strong>up_timer_initialize</strong></a> (above) calls…</p>
 <ul>
 <li>
@@ -971,11 +932,9 @@ void up_timer_initialize(void) {
 </li>
 </ul>
 <p>Originally we set <strong>MTIMER_FREQ</strong> to <code>10000000</code>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 10000000</code></pre></div>
 <p>But this causes the command <strong><code>sleep 1</code></strong> to pause for 10 seconds. So we divide the frequency by 10: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nim/arch/risc-v/src/bl808/bl808_timerisr.c#L44-L48">bl808_timerisr.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000</code></pre></div>
 <p>Now the <strong><code>sleep</code></strong> command works correctly in NuttX Shell! Here’s the log (ignore the errors)…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/8aa66e7f88d1e31a5f198958c15e4393"><strong><code>sleep</code> works OK on Ox64</strong></a></li>
