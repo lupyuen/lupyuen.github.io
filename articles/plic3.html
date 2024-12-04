@@ -64,18 +64,18 @@
     
 
     <h1 class="title">Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)</h1>
-    <nav id="TOC"><ul>
-<li><a href="#uart-interrupt">1 UART Interrupt</a><ul></ul></li>
-<li><a href="#uart-and-plic-troubles">2 UART and PLIC Troubles</a><ul></ul></li>
-<li><a href="#leaky-reads-in-uart">3 Leaky Reads in UART</a><ul></ul></li>
-<li><a href="#t-head-errata">4 T-Head Errata</a><ul></ul></li>
-<li><a href="#memory-management-unit">5 Memory Management Unit</a><ul></ul></li>
-<li><a href="#enable-strong-order">6 Enable Strong Order</a><ul></ul></li>
-<li><a href="#it-works">7 It Works!</a><ul></ul></li>
-<li><a href="#lessons-learnt">8 Lessons Learnt</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-mmu-caching-for-t-head-c906">10 Appendix: MMU Caching for T-Head C906</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx">11 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>10 Dec 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#uart-interrupt" title="UART Interrupt">1 UART Interrupt</a><ul></ul></li>
+<li><a href="#uart-and-plic-troubles" title="UART and PLIC Troubles">2 UART and PLIC Troubles</a><ul></ul></li>
+<li><a href="#leaky-reads-in-uart" title="Leaky Reads in UART">3 Leaky Reads in UART</a><ul></ul></li>
+<li><a href="#t-head-errata" title="T-Head Errata">4 T-Head Errata</a><ul></ul></li>
+<li><a href="#memory-management-unit" title="Memory Management Unit">5 Memory Management Unit</a><ul></ul></li>
+<li><a href="#enable-strong-order" title="Enable Strong Order">6 Enable Strong Order</a><ul></ul></li>
+<li><a href="#it-works" title="It Works!">7 It Works!</a><ul></ul></li>
+<li><a href="#lessons-learnt" title="Lessons Learnt">8 Lessons Learnt</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-mmu-caching-for-t-head-c906" title="Appendix: MMU Caching for T-Head C906">10 Appendix: MMU Caching for T-Head C906</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx" title="Appendix: Build and Run NuttX">11 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>10 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic3-title.png" alt="UART Input and Platform-Level Interrupt Controller are finally OK on Apache NuttX RTOS and Ox64 BL808 RISC-V SBC!" /></p>
 <p>Last week we walked through the <strong>Serial Console</strong> for <a href="https://pine64.org/documentation/Ox64/"><strong>Pine64 Ox64 BL808</strong></a> 64-bit RISC-V Single-Board Computer (pic below)…</p>
 <ul>
@@ -197,8 +197,7 @@ int bl808_receive(...) {
 
     // Then read the Actual UART Input
     // (FIFO_RDATA is 0x3000208c)
-    rxdata = getreg32(BL808_UART_FIFO_RDATA(uart_idx)) &amp; UART_FIFO_RDATA_MASK;
-</code></pre></div>
+    rxdata = getreg32(BL808_UART_FIFO_RDATA(uart_idx)) &amp; UART_FIFO_RDATA_MASK;</code></pre></div>
 <p>Which says that we…</p>
 <ul>
 <li>
@@ -218,16 +217,14 @@ uintptr_t pending = getreg32(0x30002084);
 uintptr_t rx = getreg32(0x3000208c);
 
 // Dump the values
-_info(&quot;pending=%p, rx=%p\n&quot;, pending, rx);
-</code></pre></div>
+_info(&quot;pending=%p, rx=%p\n&quot;, pending, rx);</code></pre></div>
 <p><em>What happens when we run this?</em></p>
 <p>Something strange happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Yep there&#39;s Pending UART Input...
 pending=0x7070120
 
 // But Actual UART Input is empty!
-rx=0
-</code></pre></div>
+rx=0</code></pre></div>
 <p>UART Controller says there’s <strong>UART Input to be read</strong>… And it’s <strong>totally empty</strong>!</p>
 <p><em>How is that possible?</em></p>
 <p>The only logical explanation: Someone has <strong>already read</strong> the UART Input!</p>
@@ -261,8 +258,7 @@ rx=0
   // so on T-Head chips, check if no other memory type is set,
   // and set the non-0 PMA type if applicable.
   ...
-  asm volatile(... _PAGE_MTMASK_THEAD ...)
-</code></pre></div>
+  asm volatile(... _PAGE_MTMASK_THEAD ...)</code></pre></div>
 <p><a href="https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt">(<strong>Svpbmt Extension</strong> defines <strong>Page-Based Memory Types</strong>)</a></p>
 <p><em>Aha! A Linux Errata for T-Head CPU!</em></p>
 <p>We track down <strong>PAGE_MTMASK_THEAD</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">pgtable-64.h</a></p>
@@ -270,8 +266,7 @@ rx=0
 #define _PAGE_PMA_THEAD     ((1UL &lt;&lt; 62) | (1UL &lt;&lt; 61) | (1UL &lt;&lt; 60))
 #define _PAGE_NOCACHE_THEAD ((1UL &lt; 61) | (1UL &lt;&lt; 60))
 #define _PAGE_IO_THEAD      ((1UL &lt;&lt; 63) | (1UL &lt;&lt; 60))
-#define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))
-</code></pre></div>
+#define _PAGE_MTMASK_THEAD  (_PAGE_PMA_THEAD | _PAGE_IO_THEAD | (1UL &lt;&lt; 59))</code></pre></div>
 <p><a href="https://qoto.org/@lupyuen/111544462454486393">(Spot the Typo!)</a></p>
 <p>Which is annotated with…</p>
 <div class="example-wrap"><pre class="language-text"><code>[63:59] T-Head Memory Type definitions:
@@ -283,8 +278,7 @@ Bit[59] Sec - Trustable
 
 00110 - NC:  Weakly-Ordered, Non-Cacheable, Bufferable, Shareable, Non-Trustable
 01110 - PMA: Weakly-Ordered, Cacheable, Bufferable, Shareable, Non-Trustable
-10010 - IO:  Strongly-Ordered, Non-Cacheable, Non-Bufferable, Shareable, Non-Trustable
-</code></pre></div>
+10010 - IO:  Strongly-Ordered, Non-Cacheable, Non-Bufferable, Shareable, Non-Trustable</code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142">(Source)</a></p>
 <p><em>Something sus about I/O Memory?</em></p>
 <p>The last line suggests we should configure the <strong>T-Head Memory Type</strong> specifically to support <strong>I/O Memory</strong>: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/pgtable-64.h#L126-L142"><strong>PAGE_IO_THEAD</strong></a></p>
@@ -395,8 +389,7 @@ void mmu_ln_setentry(
     // and Shareable Bits
     lntable[index] = lntable[index]
       | _PAGE_IO_THEAD;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(Moved here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L241-L253">(And here)</a></p>
 <p>The code above will set the <strong>Strong Order and Shareable Bits</strong> for…</p>
@@ -421,8 +414,7 @@ map PLIC as Interrupt L2
   ...
   vaddr=0xefc00000, lntable[index]=0x900000003bf000e7
   vaddr=0xefe00000, lntable[index]=0x900000003bf800e7
-  // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set
-</code></pre></div>
+  // &quot;0x9000...&quot; means Strong Order (Bit 63) and Shareable (Bit 60) are set</code></pre></div>
 <p><em>If we don’t specify MMU Caching for T-Head C906… Is MMU Caching enabled by default?</em></p>
 <p>Nope, we need to <strong>explicitly enable MMU Caching</strong> ourselves! Otherwise Memory Accesses (Kernel and Apps) will become <a href="https://github.com/apache/nuttx/issues/12696"><strong>really slooooow</strong></a>…</p>
 <ul>
@@ -443,21 +435,17 @@ map PLIC as Interrupt L2
 <div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
 0000  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
 0010  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
-0020  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
-</code></pre></div></li>
+0020  01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................</code></pre></div></li>
 <li>
 <p><strong>Interrupt Enable</strong> <a href="https://gist.github.com/lupyuen/3761d9e73ca2c5b97b2f33dc1fc63946/4b137b2f6a20289bbaab8d79ed0f2f9ea2a87ef5#file-ox64-nuttx-uart-ok-log-L280-L281"><strong>doesn’t leak</strong></a> to the next word</p>
 <div class="example-wrap"><pre class="language-text"><code>PLIC Hart 0 S-Mode Interrupt Enable (0xe0002080):
-0000  00 00 10 00 00 00 00 00                          ........   
-</code></pre></div></li>
+0000  00 00 10 00 00 00 00 00                          ........   </code></pre></div></li>
 <li>
 <p><strong>Interrupt Claim</strong> returns the <a href="https://gist.github.com/lupyuen/365d9d6d162a60a5f8514d1040eec495#file-ox64-nuttx-claim-ok-log-L33-L44"><strong>correct Interrupt Number</strong></a></p>
-<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: claim=0x14
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: claim=0x14</code></pre></div></li>
 <li>
 <p>Our <strong>UART Driver</strong> returns the <a href="https://gist.github.com/lupyuen/6f3e24278c4700f73da72b9efd703167#file-ox64-nuttx-mmu-uncache-log-L344"><strong>correct UART Input</strong></a></p>
-<div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=0x31
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=0x31</code></pre></div></li>
 </ul>
 <p><em>Is NuttX usable on Ox64?</em></p>
 <p>Yep! <a href="https://lupyuen.github.io/articles/plic3#appendix-build-and-run-nuttx"><strong>NuttX RTOS on Ox64</strong></a> now boots OK to the NuttX Shell (NSH).</p>
@@ -474,8 +462,7 @@ nsh&gt; ls /dev
  zero
 
 nsh&gt; hello
-Hello, World!!
-</code></pre></div>
+Hello, World!!</code></pre></div>
 <p><a href="https://youtu.be/l7Y36nTkr8c">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/eda07e8fb1791e18451f0b4e99868324#file-ox64-nuttx-uart-ok2-log-L127-L146">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/plic3-ox64.jpg" alt="We are hunky dory with Ox64 BL808 and T-Head C906 👍" /></p>
@@ -602,8 +589,7 @@ Hello, World!!
 #define MMU_THEAD_PMA_FLAGS \
   (MMU_THEAD_SHAREABLE | \
    MMU_THEAD_BUFFERABLE | \
-   MMU_THEAD_CACHEABLE)
-</code></pre></div>
+   MMU_THEAD_CACHEABLE)</code></pre></div>
 <p>Then we cache the <strong>Kernel Text, Data and Heap</strong>, by passing  <strong>MMU_THEAD_PMA_FLAGS</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L268-L290">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Cache the Kernel Text, Data and Page Pool
 map_region(KFLASH_START, KFLASH_START, KFLASH_SIZE,
@@ -613,8 +599,7 @@ map_region(KSRAM_START, KSRAM_START, KSRAM_SIZE,
   MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
 
 mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
-  MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);
-</code></pre></div>
+  MMU_KDATA_FLAGS | MMU_THEAD_PMA_FLAGS);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/12722">(See the <strong>Pull Request for Ox64 and SG2000</strong>)</a></p>
 <p><em>What about User Text and Data? For NuttX Apps?</em></p>
 <p>Yep they need to be explicitly cached too!</p>
@@ -636,8 +621,7 @@ mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
 
 // Flags for user FLASH (RX) and user RAM (RW)
 #define MMU_UTEXT_FLAGS (PTE_R | PTE_X | PTE_U | EXT_UTEXT_FLAGS)
-#define MMU_UDATA_FLAGS (PTE_R | PTE_W | PTE_U | EXT_UDATA_FLAGS)
-</code></pre></div>
+#define MMU_UDATA_FLAGS (PTE_R | PTE_W | PTE_U | EXT_UDATA_FLAGS)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_addrenv.c#L429-L465">(<strong>MMU_UTEXT_FLAGS</strong> and <strong>MMU_UDATA_FLAGS</strong> are used by <strong>up_addrenv_create</strong> to configure the User Text, Data and Heap)</a></p>
 <p>Then we enable <strong>ARCH_MMU_EXT_THEAD</strong> for SG2000 and BL808: <a href="https://github.com/apache/nuttx/pull/13199/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">arch/risc-v/Kconfig</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>config ARCH_CHIP_SG2000
@@ -646,8 +630,7 @@ mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE,
 	...
 config ARCH_CHIP_BL808
 	select ARCH_MMU_TYPE_SV39
-	select ARCH_MMU_EXT_THEAD
-</code></pre></div>
+	select ARCH_MMU_EXT_THEAD</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/13199">(See the <strong>Pull Request for SG2000</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/13208">(See the <strong>Pull Request for BL808</strong>)</a></p>
 <p><em>Does MMU Caching affect NuttX Performance?</em></p>
@@ -705,8 +688,7 @@ riscv64-unknown-elf-objdump \
   --debugging \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div>
+  2&gt;&amp;1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p>Then we build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Apps Filesystem
@@ -730,8 +712,7 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image
-</code></pre></div>
+  &gt;Image</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64c-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
@@ -742,8 +723,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 ## on Ox64 microSD
 cp Image \
   &quot;/Volumes/NO NAME/Image&quot;
-diskutil unmountDisk /dev/disk2
-</code></pre></div>
+diskutil unmountDisk /dev/disk2</code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
 <p>NuttX Commands will run OK in NuttX Shell. (Pic above)</p>

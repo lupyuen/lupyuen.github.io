@@ -60,30 +60,30 @@
     
 
     <h1 class="title">(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board</h1>
-    <nav id="TOC"><ul>
-<li><a href="#testing-checkpoints">1 Testing Checkpoints</a><ul></ul></li>
-<li><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a><ul></ul></li>
-<li><a href="#run-automated-test">3 Run Automated Test</a><ul>
-<li><a href="#automated-nuttx-build">3.1 Automated NuttX Build</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
-<li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a><ul>
-<li><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
-<li><a href="#spi-test">6 SPI Test</a><ul>
-<li><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-test">7 LoRaWAN Test</a><ul>
-<li><a href="#checkpoint-delta">7.1 Checkpoint Delta</a><ul></ul></li></ul></li>
-<li><a href="#touch-panel-test">8 Touch Panel Test</a><ul>
-<li><a href="#checkpoint-echo">8.1 Checkpoint Echo</a><ul></ul></li></ul></li>
-<li><a href="#upload-test-log">9 Upload Test Log</a><ul></ul></li>
-<li><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a><ul>
-<li><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a><ul></ul></li>
-<li><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a><ul></ul></li>
-<li><a href="#merge-conflicts">10.3 Merge Conflicts</a><ul></ul></li></ul></li>
-<li><a href="#why-nuttx">11 Why NuttX</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li>
-<li><a href="#appendix-select-usb-device">14 Appendix: Select USB Device</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2022</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#testing-checkpoints" title="Testing Checkpoints">1 Testing Checkpoints</a><ul></ul></li>
+<li><a href="#connect-pinedio-stack-to-sbc" title="Connect PineDio Stack to SBC">2 Connect PineDio Stack to SBC</a><ul></ul></li>
+<li><a href="#run-automated-test" title="Run Automated Test">3 Run Automated Test</a><ul>
+<li><a href="#automated-nuttx-build" title="Automated NuttX Build">3.1 Automated NuttX Build</a><ul></ul></li></ul></li>
+<li><a href="#nuttx-must-boot" title="NuttX Must Boot">4 NuttX Must Boot</a><ul>
+<li><a href="#checkpoint-alpha" title="Checkpoint Alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
+<li><a href="#nuttx-must-not-crash" title="NuttX Must Not Crash">5 NuttX Must Not Crash</a><ul>
+<li><a href="#checkpoint-bravo" title="Checkpoint Bravo">5.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#spi-test" title="SPI Test">6 SPI Test</a><ul>
+<li><a href="#checkpoint-charlie" title="Checkpoint Charlie">6.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
+<li><a href="#lorawan-test" title="LoRaWAN Test">7 LoRaWAN Test</a><ul>
+<li><a href="#checkpoint-delta" title="Checkpoint Delta">7.1 Checkpoint Delta</a><ul></ul></li></ul></li>
+<li><a href="#touch-panel-test" title="Touch Panel Test">8 Touch Panel Test</a><ul>
+<li><a href="#checkpoint-echo" title="Checkpoint Echo">8.1 Checkpoint Echo</a><ul></ul></li></ul></li>
+<li><a href="#upload-test-log" title="Upload Test Log">9 Upload Test Log</a><ul></ul></li>
+<li><a href="#merge-updates-from-nuttx" title="Merge Updates From NuttX">10 Merge Updates From NuttX</a><ul>
+<li><a href="#pinecone-to-pinedio-stack" title="PineCone to PineDio Stack">10.1 PineCone to PineDio Stack</a><ul></ul></li>
+<li><a href="#pinedio-stack-to-pinecone" title="PineDio Stack to PineCone">10.2 PineDio Stack to PineCone</a><ul></ul></li>
+<li><a href="#merge-conflicts" title="Merge Conflicts">10.3 Merge Conflicts</a><ul></ul></li></ul></li>
+<li><a href="#why-nuttx" title="Why NuttX">11 Why NuttX</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-select-usb-device" title="Appendix: Select USB Device">14 Appendix: Select USB Device</a><ul></ul></li></ul></nav><p>📝 <em>22 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing</em></p>
 <p>Pine64 is about to launch their most exciting RISC-V IoT gadget: <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> with Touch Screen, LoRa and many other features.</p>
@@ -244,8 +244,7 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 ##  Log in a GitHub Token that has &quot;repo&quot; and &quot;read:org&quot; permissions
 
 ##  Optional: Upload the Test Log to the GitHub Release Notes
-remote-bl602/scripts/upload.sh
-</code></pre></div>
+remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
 <p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack (published on GitHub Releases).</p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
@@ -254,8 +253,7 @@ remote-bl602/scripts/upload.sh
 Flash BL602 over USB UART with blflash
 ...
 All OK! BL602 has successfully joined the LoRaWAN Network
-All OK! BL604 has responded to touch
-</code></pre></div>
+All OK! BL604 has responded to touch</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
 <p>Beware: The script <strong>fails silently</strong> if there’s no NuttX Build for today. (Sorry!)</p>
 <p><em>Can we pick a different NuttX Build?</em></p>
@@ -269,12 +267,10 @@ export BUILD_DATE=2022-05-10
 
 ##  Run the script for Auto Flash and Test for PineDio Stack BL604.
 ##  Capture the Test Log in /tmp/release.log
-script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
-</code></pre></div>
+script -c remote-bl602/scripts/pinedio.sh /tmp/release.log</code></pre></div>
 <p><em>Will this work over SSH?</em></p>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh
-</code></pre></div><h2 id="automated-nuttx-build"><a class="doc-anchor" href="#automated-nuttx-build">§</a>3.1 Automated NuttX Build</h2>
+<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div><h2 id="automated-nuttx-build"><a class="doc-anchor" href="#automated-nuttx-build">§</a>3.1 Automated NuttX Build</h2>
 <p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
 <p>Whenever we commit changes to the <a href="https://github.com/lupyuen/nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
 <ul>
@@ -295,8 +291,7 @@ popd
 
 ##  Write the Release Tag for uploading the Test Log later:
 ##  &quot;pinedio-2022-05-10&quot;
-echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag
-</code></pre></div>
+echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
 <p>We’ll see <strong>release.tag</strong> later when we upload the Test Log to the GitHub Release.</p>
 <p>Let’s walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.</p>
 <blockquote>
@@ -317,8 +312,7 @@ Flash BL602 over USB UART with blflash
 + blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 Sending eflash_loader...
 Program flash... 
-Success
-</code></pre></div>
+Success</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>Our script restarts PineDio Stack in <strong>Flashing Mode</strong> and calls <strong>blflash</strong> to flash the NuttX Firmware.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
@@ -328,12 +322,10 @@ Toggle GPIO 6 High-Low-High (Reset BL602)
 BL602 is now in Normal Mode
 
 NuttShell (NSH) NuttX-10.3.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>The NuttX Shell appears. Our script sends this command to reveal the <strong>NuttX Commit ID</strong> and Build Timestamp…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
-</code></pre></div>
+NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></div>
 <p>Then it lists the <strong>Device Drivers</strong> loaded on NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
 /dev:
@@ -346,8 +338,7 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
  gpio20   timer0
  gpio21   urandom
  gpio3    zero
- gpio9
-</code></pre></div>
+ gpio9</code></pre></div>
 <p>Shown above are these <strong>NuttX Device Drivers</strong>: <a href="https://lupyuen.github.io/articles/expander"><strong>GPIO Expander</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>I2C</strong></a>, <a href="https://lupyuen.github.io/articles/touch"><strong>Touch Input</strong></a>, <a href="https://lupyuen.github.io/articles/st7789"><strong>LCD Display</strong></a>, <a href="https://lupyuen.github.io/articles/spi2"><strong>SPI Test</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3#appendix-posix-timers-and-message-queues"><strong>Timer</strong></a> and <a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>Random Number Generator</strong></a>.</p>
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX to PineDio Stack" /></p>
@@ -375,8 +366,7 @@ fi
 
 ##  Set GPIO 5 and 6 as output
 echo out &gt;/sys/class/gpio/gpio5/direction
-echo out &gt;/sys/class/gpio/gpio6/direction
-</code></pre></div>
+echo out &gt;/sys/class/gpio/gpio6/direction</code></pre></div>
 <p>To switch PineDio Stack to <strong>Flashing Mode</strong>, we set GPIO 5 to High and restart PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set GPIO 5 to High (BL602 Flashing Mode)
 echo 1 &gt;/sys/class/gpio/gpio5/value ; sleep 1
@@ -384,16 +374,14 @@ echo 1 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 ##  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
-echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
-</code></pre></div>
+echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
 <p>We run the <strong>blflash</strong> command to flash the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  BL602 is now in Flashing Mode
 ##  Flash BL602 over USB UART with blflash
 set -x  ##  Enable echo
 blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
-sleep 1
-</code></pre></div>
+sleep 1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
 <p>After flashing NuttX, we switch PineDio Stack back to <strong>Normal Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set GPIO 5 to Low (BL602 Normal Mode)
@@ -402,21 +390,18 @@ echo 0 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 ##  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
-echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
-</code></pre></div>
+echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
 <p>We configure the USB Port for 2 Mbps and <strong>capture the Console Output</strong> from PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set USB UART to 2 Mbps
 stty -F /dev/ttyUSB0 raw 2000000
 
 ##  Show the BL602 output and capture to /tmp/test.log.
 ##  Run this in the background so we can kill it later.
-cat /dev/ttyUSB0 | tee /tmp/test.log &amp;
-</code></pre></div>
+cat /dev/ttyUSB0 | tee /tmp/test.log &amp;</code></pre></div>
 <p>Finally we send the <strong>uname</strong> and <strong>ls</strong> commands, to show the NuttX Build Details and the loaded Device Drivers…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  If BL602 has not crashed, send the test command to BL602
 echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
-echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1
-</code></pre></div>
+echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div>
 <p>Let’s move on to the second checkpoint.</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Register and Stack Dump</em></a></p>
@@ -430,8 +415,7 @@ riscv_registerdump: EPC: deadbeee
 riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 420141c
 ...
 riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
-riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
-</code></pre></div>
+riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001</code></pre></div>
 <p>Our script can’t proceed with the Automated Testing, but it can help us make sense of these numbers to <strong>understand why NuttX crashed</strong>.</p>
 <p>Our script detects the crash and does a <strong>Crash Analysis</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Crash Analysis
@@ -442,8 +426,7 @@ arch/risc-v/src/common/riscv_assert.c:364
 
 Code Address 230042e2:
 libs/libc/assert/lib_assert.c:37
-  exit(EXIT_FAILURE);
-</code></pre></div>
+  exit(EXIT_FAILURE);</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>Through this Crash Analysis, we get some idea <strong>which lines of code</strong> caused the crash.</p>
 <p>And hopefully we can heal NuttX on PineDio Stack!</p>
@@ -461,8 +444,7 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
   ...
 else
   ##  If NuttX has crashed, do the Crash Analysis
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>Then it proceeds to <strong>decode the Stack Dump</strong> by matching the addresses with the <strong>RISC-V Disassembly</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L153-L211">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  If NuttX has crashed, do the Crash Analysis.
 ##  Find all code addresses 23?????? in the Output Log, remove duplicates, skip 23007000.
@@ -488,8 +470,7 @@ for addr in $(cat /tmp/test.addr); do
       /tmp/nuttx.S
     echo
   fi
-done
-</code></pre></div>
+done</code></pre></div>
 <p>The Crash Analysis is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto#nuttx-crash-analysis"><strong>“NuttX Crash Analysis”</strong></a></li>
@@ -523,20 +504,17 @@ SX1262 Status is 2
 Read Register 8: received
   a2 a2 a2 a2 80 
 SX1262 Register 8 is 0x80
-SX1262 is OK
-</code></pre></div>
+SX1262 is OK</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p><strong>spi_test2</strong> says that <strong>SX1262 Register 8</strong> has value <strong><code>0x80</code></strong>, which is correct.</p>
 <p>If we receive any other value for SX1262 Register 8…</p>
 <div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
-Error: SX1262 is NOT OK. Check the SPI connection
-</code></pre></div>
+Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>Then our script halts with an error.</p>
 <p>Let’s look at the implementation of the checkpoint.</p>
 <h2 id="checkpoint-charlie"><a class="doc-anchor" href="#checkpoint-charlie">§</a>6.1 Checkpoint Charlie</h2>
 <p>Our script executes the SPI Test by sending the <strong>spi_test2</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
 <p>And verifies that the result is correct: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Check whether SX1262 is OK
 set +e  ##  Don&#39;t exit when any command fails
@@ -546,8 +524,7 @@ set +e  ##  Don&#39;t exit when any command fails
 ##  If SX1262 is not OK, quit
 if [ &quot;$match&quot; == &quot;&quot; ]; then
   echo; echo &quot;===== Error: SX1262 is NOT OK. Check the SPI connection&quot;
-  test_status=unknown
-</code></pre></div>
+  test_status=unknown</code></pre></div>
 <p>Source code for <strong>spi_test2</strong> is located here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-apps/blob/pinedio/examples/spi_test2/spi_test2_main.c"><strong>examples/spi_test2</strong></a></li>
@@ -629,24 +606,21 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p>Our script starts the LoRaWAN Test by sending the <strong>lorawan_test</strong> command to PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 init_entropy_pool
-temperature = 25.667484 Celsius
-</code></pre></div>
+temperature = 25.667484 Celsius</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The test begins by reading BL604’s <a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce"><strong>Internal Temperature Sensor</strong></a> and using the temperature value to seed the <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce"><strong>Strong Random Number Generator</strong></a>.</p>
 <p>Then we send the <strong>Join LoRaWAN Network</strong> Request to our LoRaWAN Gateway (ChirpStack)…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MLME-Request ============
               MLME_JOIN              
 =====================================
-STATUS      : OK
-</code></pre></div>
+STATUS      : OK</code></pre></div>
 <p>We receive the correct <strong>Join Network Response</strong> from our LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MLME-Confirm ============
 STATUS      : OK
 ===========   JOINED     ============
 OTAA
 DevAddr     : 00F76FBF
-DATA RATE   : DR_2
-</code></pre></div>
+DATA RATE   : DR_2</code></pre></div>
 <p>PineDio Stack has successfully joined the LoRaWAN Network!</p>
 <p>We proceed to send a <strong>LoRaWAN Data Packet</strong> <em>(“Hi NuttX”)</em> to our LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MCPS-Confirm ============
@@ -659,11 +633,9 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003
-</code></pre></div>
+CHANNEL MASK: 0003</code></pre></div>
 <p>Finally our script reports that the LoRaWAN Test has succeeded…</p>
-<div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
 <p>Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!</p>
 <h2 id="checkpoint-delta"><a class="doc-anchor" href="#checkpoint-delta">§</a>7.1 Checkpoint Delta</h2>
 <p>To run the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
@@ -671,8 +643,7 @@ CHANNEL MASK: 0003
 echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0
 
 ##  Wait 20 seconds to join the LoRaWAN Network
-sleep 20
-</code></pre></div>
+sleep 20</code></pre></div>
 <p>And checks whether PineDio Stack has successfully <strong>joined the LoRaWAN Network</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Check whether BL602 has joined the LoRaWAN Network
 set +e  ##  Don&#39;t exit when any command fails
@@ -681,8 +652,7 @@ set -e  ##  Exit when any command fails
 
 ##  If BL602 has joined the LoRaWAN Network, then everything is super hunky dory!
 if [ &quot;$match&quot; != &quot;&quot; ]; then
-  echo; echo &quot;===== All OK! BL602 has successfully joined the LoRaWAN Network&quot;
-</code></pre></div>
+  echo; echo &quot;===== All OK! BL602 has successfully joined the LoRaWAN Network&quot;</code></pre></div>
 <p><em>What happens if PineDio Stack fails to join the LoRaWAN Network?</em></p>
 <p>PineDio Stack will <strong>retry repeatedly</strong> until it hits the timeout after 20 seconds.</p>
 <p>Be sure that the <strong>LoRaWAN Gateway Settings</strong> are correct! The gateway will silently drop invalid requests without notifying our device.</p>
@@ -764,21 +734,17 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
-HELLO HUMAN: TOUCH PINEDIO STACK NOW
-</code></pre></div>
+HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The script prompts us to touch the screen.</p>
 <p>When we touch the screen, the <strong>CST816S Touch Panel Driver</strong> shows a <strong>Touch Down Event</strong> with the coordinates of the touched point (read over I2C)…</p>
-<div class="example-wrap"><pre class="language-text"><code>DOWN: id=0, touch=0, x=83, y=106
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>DOWN: id=0, touch=0, x=83, y=106</code></pre></div>
 <p>As we lift our finger off the screen, the driver shows a <strong>Touch Up Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Invalid touch data: id=9, touch=2, x=639, y=1688
-UP: id=0, touch=2, x=83, y=106
-</code></pre></div>
+UP: id=0, touch=2, x=83, y=106</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/touch#touch-up-event">(Why the Touch Data is invalid)</a></p>
 <p>Our script <strong>detects the Touch Up Event</strong> and reports that the test has succeeded…</p>
-<div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch</code></pre></div>
 <p>Yep PineDio Stack’s Touch Panel and I2C Bus are working OK!</p>
 <h2 id="checkpoint-echo"><a class="doc-anchor" href="#checkpoint-echo">§</a>8.1 Checkpoint Echo</h2>
 <p>The Touch Panel Test lives in a separate script: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh"><strong>pinedio2.sh</strong></a></p>
@@ -786,16 +752,14 @@ UP: id=0, touch=2, x=83, y=106
 <div class="example-wrap"><pre class="language-bash"><code>##  Start the second script: pinedio2.sh
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-$SCRIPT_DIR/pinedio2.sh
-</code></pre></div>
+$SCRIPT_DIR/pinedio2.sh</code></pre></div>
 <p>The second script sends the <strong>lvgltest</strong> command to start the LVGL Test App: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L102-L108">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Send command to PineDio Stack: lvgltest
 echo &quot;lvgltest&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2
 
 ##  Wait 30 seconds for the screen to be tapped
-sleep 30
-</code></pre></div>
+sleep 30</code></pre></div>
 <p>And prompts us to tap the screen.</p>
 <p>30 seconds later our script searches for a <strong>Touch Up Event</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Check whether BL604 has responded to touch
@@ -805,8 +769,7 @@ set -e  ##  Exit when any command fails
 
 ##  If BL604 has responded to touch, then everything is super hunky dory!
 if [ &quot;$match&quot; != &quot;&quot; ]; then
-  echo; echo &quot;===== All OK! BL604 has responded to touch&quot;
-</code></pre></div>
+  echo; echo &quot;===== All OK! BL604 has responded to touch&quot;</code></pre></div>
 <p>And reports that the test has succeeded.</p>
 <p><em>What’s inside lvgltest?</em></p>
 <p><strong>lvgltest</strong> is our Test App for the <strong>LVGL Graphics Library</strong>…</p>
@@ -851,8 +814,7 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 ##  Log in a GitHub Token that has &quot;repo&quot; and &quot;read:org&quot; permissions
 
 ##  Optional: Upload the Test Log to the GitHub Release Notes
-remote-bl602/scripts/upload.sh
-</code></pre></div>
+remote-bl602/scripts/upload.sh</code></pre></div>
 <p>The <strong>script</strong> command runs our Automated Testing Script and captures the Automated Test Log into <strong>/tmp/release.log</strong>.</p>
 <p>Our Upload Script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh"><strong>upload.sh</strong></a> reads the Automated Test Log and <strong>uploads to GitHub Release Notes</strong>.</p>
 <p><em>So the Upload Script needs write access to GitHub Release Notes?</em></p>
@@ -869,8 +831,7 @@ remote-bl602/scripts/upload.sh
 gh auth login --with-token
 
 ##  Verify that GitHub CLI can access GitHub Releases
-gh release list --repo lupyuen/nuttx
-</code></pre></div>
+gh release list --repo lupyuen/nuttx</code></pre></div>
 <p><em>What’s inside our Upload Script?</em></p>
 <p>Our Upload Script assumes that the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow</strong></a> has published a <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100"><strong>GitHub Release</strong></a> with <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100"><strong>Auto-Generated Release Notes</strong></a>.</p>
 <p>The script begins by calling the <strong>GitHub CLI to download</strong> the Auto-Generated Release Notes: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh">upload.sh</a></p>
@@ -886,8 +847,7 @@ gh release view \
   --json body \
   --jq &#39;.body&#39; \
   --repo lupyuen/nuttx \
-  &gt;/tmp/release.old
-</code></pre></div>
+  &gt;/tmp/release.old</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_view">(“<strong>gh release view</strong>” is explained here)</a></p>
 <p>In case the script is run twice, we search for the <strong>Previous Automated Test Log</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Find the position of the Previous Test Log, starting with &quot;```&quot;
@@ -895,8 +855,7 @@ cat /tmp/release.old \
   | grep &#39;```&#39; --max-count=1 --byte-offset \
   | sed &#39;s/:.*//g&#39; \
   &gt;/tmp/previous-log.txt
-prev=`cat /tmp/previous-log.txt`
-</code></pre></div>
+prev=`cat /tmp/previous-log.txt`</code></pre></div>
 <p>And we <strong>remove the Previous Test Log</strong>, while retaining the Auto-Generated Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  If Previous Test Log exists, discard it
 if [ &quot;$prev&quot; != &#39;&#39; ]; then
@@ -908,14 +867,12 @@ else
   cat /tmp/release.old \
     &gt;&gt;/tmp/release2.log
   echo &quot;&quot; &gt;&gt;/tmp/release2.log
-fi
-</code></pre></div>
+fi</code></pre></div>
 <p>Just before adding the Automated Test Log, we insert the <strong>Test Status</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Show the Test Status, like &quot;All OK! BL602 has successfully joined the LoRaWAN Network&quot;
 grep &quot;^===== &quot; /tmp/release.log \
   | colrm 1 6 \
-  &gt;&gt;/tmp/release2.log
-</code></pre></div>
+  &gt;&gt;/tmp/release2.log</code></pre></div>
 <p>Then we <strong>embed the Automated Test Log</strong>, taking care of the Special Characters…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Enquote the Test Log without Carriage Return and Terminal Control Characters
 ##  https://stackoverflow.com/questions/17998978/removing-colors-from-output
@@ -924,15 +881,13 @@ cat /tmp/release.log \
   | tr -d &#39;\r&#39; \
   | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
   &gt;&gt;/tmp/release2.log
-echo &#39;```&#39; &gt;&gt;/tmp/release2.log
-</code></pre></div>
+echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
 <p>Finally we call the <strong>GitHub CLI to upload</strong> the Auto-Generated Release Notes appended with the Automated Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Upload the Test Log to the GitHub Release Notes
 gh release edit \
   `cat /tmp/release.tag` \
   --notes-file /tmp/release2.log \
-  --repo lupyuen/nuttx
-</code></pre></div>
+  --repo lupyuen/nuttx</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_edit">(“<strong>gh release edit</strong>” is explained here)</a></p>
 <p>That’s it for uploading the Automated Test Log to GitHub!</p>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
@@ -1053,15 +1008,13 @@ gh release edit \
 <div class="example-wrap"><pre class="language-c"><code>//  If this is PineDio Stack...
 #ifdef PINEDIO_STACK_BL604
 //  Code for SPI Device Table goes here...
-#endif  //  PINEDIO_STACK_BL604
-</code></pre></div></li>
+#endif  //  PINEDIO_STACK_BL604</code></pre></div></li>
 <li>
 <p><strong>PINEDIO_STACK_BL604</strong> is defined below, should probably be improved: <a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151"><strong>board.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Identify as PineDio Stack if both ST7789 and CST816S are present
 #if defined(CONFIG_LCD_ST7789) &amp;&amp; defined(CONFIG_INPUT_CST816S)
 #define PINEDIO_STACK_BL604
-#endif  //  CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S
-</code></pre></div></li>
+#endif  //  CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S</code></pre></div></li>
 </ul>
 <p><em>Is there a cleaner way to merge updates from NuttX Mainline?</em></p>
 <p>The cleaner way to merge updates from NuttX Mainline might be to <strong>split the NuttX Drivers</strong> for PineCone and PineDio Stack.</p>
@@ -1079,8 +1032,7 @@ gh release edit \
 ./tools/configure.sh bl602evb:pinecone
 
 ## Configure build for PineDio Stack BL604
-./tools/configure.sh bl602evb:pinedio
-</code></pre></div>
+./tools/configure.sh bl602evb:pinedio</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
 <p><a href="https://gist.github.com/lupyuen/a6396ccbe9427087e73e5f29bf570eda">(How we resolve Merge Conflicts between NuttX Mainline and our Downstream Branch)</a></p>
@@ -1158,8 +1110,7 @@ cp .config boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig
 
 ## So the next time we configure the build,
 ## we will use the updated Build Config...
-## ./tools/configure.sh bl602evb:pinedio
-</code></pre></div></li>
+## ./tools/configure.sh bl602evb:pinedio</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
@@ -1179,16 +1130,14 @@ lsusb -v -s 1:4 2&gt;&amp;1 | grep bcdDevice | colrm 1 23
 
 ## Output for PineCone BL602:
 ## 2.63
-## See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908
-</code></pre></div>
+## See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908</code></pre></div>
 <p>Here’s how we <strong>override the Default USB Device</strong> for PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Tell the script to use /dev/ttyUSB1
 ##  (Default is /dev/ttyUSB0)
 export USB_DEVICE=/dev/ttyUSB1
 
 ##  Auto flash and test PineDio Stack BL604 at /dev/ttyUSB1
-remote-bl602/scripts/pinedio.sh
-</code></pre></div>
+remote-bl602/scripts/pinedio.sh</code></pre></div>
 <p><strong>TODO:</strong> We should automate this selection of USB Device in our Automated Testing Script.</p>
 
     

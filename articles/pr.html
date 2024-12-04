@@ -62,28 +62,28 @@
     
 
     <h1 class="title">Preparing a Pull Request for Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#nuttx-repositories">1 NuttX Repositories</a><ul></ul></li>
-<li><a href="#build-and-test">2 Build and Test</a><ul>
-<li><a href="#regression-test">2.1 Regression Test</a><ul></ul></li>
-<li><a href="#documentation">2.2 Documentation</a><ul></ul></li></ul></li>
-<li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
-<li><a href="#write-the-pull-request">4 Write the Pull Request</a><ul>
-<li><a href="#title">4.1 Title</a><ul></ul></li>
-<li><a href="#summary">4.2 Summary</a><ul></ul></li>
-<li><a href="#impact">4.3 Impact</a><ul></ul></li>
-<li><a href="#testing">4.4 Testing</a><ul></ul></li></ul></li>
-<li><a href="#squash-the-commits">5 Squash the Commits</a><ul></ul></li>
-<li><a href="#meditate">6 Meditate</a><ul></ul></li>
-<li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
-<li><a href="#update-our-repositories">8 Update Our Repositories</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-with-cmake">11 Appendix: Build NuttX with CMake</a><ul></ul></li>
-<li><a href="#appendix-nuttx-configuration-files">12 Appendix: NuttX Configuration Files</a><ul></ul></li>
-<li><a href="#appendix-validate-nuttx-release">13 Appendix: Validate NuttX Release</a><ul></ul></li>
-<li><a href="#appendix-building-the-docker-image-for-nuttx-ci">14 Appendix: Building the Docker Image for NuttX CI</a><ul></ul></li>
-<li><a href="#appendix-downloading-the-docker-image-for-nuttx-ci">15 Appendix: Downloading the Docker Image for NuttX CI</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#nuttx-repositories" title="NuttX Repositories">1 NuttX Repositories</a><ul></ul></li>
+<li><a href="#build-and-test" title="Build and Test">2 Build and Test</a><ul>
+<li><a href="#regression-test" title="Regression Test">2.1 Regression Test</a><ul></ul></li>
+<li><a href="#documentation" title="Documentation">2.2 Documentation</a><ul></ul></li></ul></li>
+<li><a href="#check-coding-style" title="Check Coding Style">3 Check Coding Style</a><ul></ul></li>
+<li><a href="#write-the-pull-request" title="Write the Pull Request">4 Write the Pull Request</a><ul>
+<li><a href="#title" title="Title">4.1 Title</a><ul></ul></li>
+<li><a href="#summary" title="Summary">4.2 Summary</a><ul></ul></li>
+<li><a href="#impact" title="Impact">4.3 Impact</a><ul></ul></li>
+<li><a href="#testing" title="Testing">4.4 Testing</a><ul></ul></li></ul></li>
+<li><a href="#squash-the-commits" title="Squash the Commits">5 Squash the Commits</a><ul></ul></li>
+<li><a href="#meditate" title="Meditate">6 Meditate</a><ul></ul></li>
+<li><a href="#submit-the-pull-request" title="Submit the Pull Request">7 Submit the Pull Request</a><ul></ul></li>
+<li><a href="#update-our-repositories" title="Update Our Repositories">8 Update Our Repositories</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">10 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-with-cmake" title="Appendix: Build NuttX with CMake">11 Appendix: Build NuttX with CMake</a><ul></ul></li>
+<li><a href="#appendix-nuttx-configuration-files" title="Appendix: NuttX Configuration Files">12 Appendix: NuttX Configuration Files</a><ul></ul></li>
+<li><a href="#appendix-validate-nuttx-release" title="Appendix: Validate NuttX Release">13 Appendix: Validate NuttX Release</a><ul></ul></li>
+<li><a href="#appendix-building-the-docker-image-for-nuttx-ci" title="Appendix: Building the Docker Image for NuttX CI">14 Appendix: Building the Docker Image for NuttX CI</a><ul></ul></li>
+<li><a href="#appendix-downloading-the-docker-image-for-nuttx-ci" title="Appendix: Downloading the Docker Image for NuttX CI">15 Appendix: Downloading the Docker Image for NuttX CI</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p><a href="https://youtu.be/p6ly3EBhtpo?si=ArHLgnu5JWLb5FtW"><strong>(Watch the Video on YouTube)</strong></a></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
@@ -140,8 +140,7 @@ git clone \
 git clone \
   --branch gic \
   https://github.com/lupyuen2/wip-nuttx-apps \
-  apps
-</code></pre></div></li>
+  apps</code></pre></div></li>
 </ol>
 <h1 id="build-and-test"><a class="doc-anchor" href="#build-and-test">§</a>2 Build and Test</h1>
 <p>We’re ready to code!</p>
@@ -176,8 +175,7 @@ git clone \
 <p>Sometimes the <strong>GitHub Actions Workflow</strong> will fail with a strange error (like below). Just re-run the failed jobs. <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Error response from daemon:
 login attempt to https://ghcr.io/v2/
-failed with status: 503 Service Unavailable&quot;
-</code></pre></div></li>
+failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 </ol>
 <h2 id="regression-test"><a class="doc-anchor" href="#regression-test">§</a>2.1 Regression Test</h2>
 <p><em>Will our modified code break other parts of NuttX?</em></p>
@@ -187,12 +185,10 @@ failed with status: 503 Service Unavailable&quot;
 <li><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></li>
 </ul>
 <p>We tested with <a href="https://www.qemu.org/docs/master/system/target-arm.html"><strong>QEMU Emulator</strong></a> our <strong>new implementation</strong> of Generic Interrupt Controller v2…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></p>
 <p>And for Regression Testing we tested the <strong>existing implementation</strong> of Generic Interrupt Controller v3…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></p>
 <p>Remember to capture the <strong>Output Log</strong>, we’ll add it to our Pull Request.</p>
 <p>(Yeah it will be hard to run a Regression Test if it requires hardware that we don’t have)</p>
@@ -220,8 +216,7 @@ pipenv install
 pipenv shell
 pip install setuptools
 rm -r _build
-make html
-</code></pre></div>
+make html</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eeae419776fba2b59502fcce05bb1859">(See the Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.jpg" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a class="doc-anchor" href="#check-coding-style">§</a>3 Check Coding Style</h1>
@@ -239,8 +234,7 @@ gcc -o $HOME/nxstyle $HOME/nuttx/nuttx/tools/nxstyle.c
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/Kconfig
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/Make.defs
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gic.h
-$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c
-</code></pre></div>
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/nxstyle.c">(<code>nxstyle.c</code> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(How I run <code>nxstyle</code> in my <strong>Build Script</strong>)</a></p>
 <p><em>Will <code>nxstyle</code> check Kconfig and Makefiles?</em></p>
@@ -252,8 +246,7 @@ $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c
 - Mixed case identifier found
 - Operator/assignment must be followed/preceded with whitespace
 - Upper case hex constant found
-- #include outside of &#39;Included Files&#39; section
-</code></pre></div>
+- #include outside of &#39;Included Files&#39; section</code></pre></div>
 <p>We modify our code so that this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize GIC. Called by CPU0 only.
 int arm64_gic_initialize(void) {
@@ -267,8 +260,7 @@ int arm64_gic_initialize(void) {
   // CPU-generic initialization for GIC
   arm_gic_initialize();
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743">(Source)</a></p>
 <p>Becomes this…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -307,18 +299,15 @@ int arm64_gic_initialize(void)
   arm_gic_initialize();
 
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363">(Source)</a></p>
 <p>If we see this…</p>
-<div class="example-wrap"><pre class="language-text"><code>/* */ not balanced
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>/* */ not balanced</code></pre></div>
 <p>Check that our stars “<strong><code>*</code></strong>” are aligned (heh)…</p>
 <div class="example-wrap"><pre class="language-text"><code>/******************************
  * Name: missing_asterisk_below
  *
- *****************************/
-</code></pre></div>
+ *****************************/</code></pre></div>
 <p>After fixing, <strong>test our code</strong> one last time.</p>
 <h1 id="write-the-pull-request"><a class="doc-anchor" href="#write-the-pull-request">§</a>4 Write the Pull Request</h1>
 <p>Our Pull Request will have…</p>
@@ -453,12 +442,10 @@ int arm64_gic_initialize(void)
 - Fixing Build
 - Build OK!
 - Oops fixing bug
-- Tested OK yay!
-</code></pre></div>
+- Tested OK yay!</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c">(Source)</a></p>
 <p>So we always <strong>Squash the Commits</strong> into One Single Commit (to help future maintainers)…</p>
-<div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/7630/commits">(Source)</a></p>
 <p><em>How do we squash the commits?</em></p>
 <p>We’ll use <a href="https://desktop.github.com/"><strong>GitHub Desktop</strong></a> (because I’m terrible with the Git Command Line)…</p>
@@ -483,13 +470,11 @@ int arm64_gic_initialize(void)
 </li>
 <li>
 <p>Copy the <strong>Title</strong> of our Pull Request and paste into the <strong>Title Box</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>arch/arm64: Add support for Generic Interrupt Controller Version 2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
 <p>In the <strong>Description Box</strong>, erase the old Commit Messages.</p>
 <p>Copy the <strong>Summary</strong> of our Pull Request and paste into the <strong>Description Box</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>This PR adds support for GIC Version 2.
-- `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration
-</code></pre></div>
+- `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration</code></pre></div>
 <p>Click “<strong>Squash Commits</strong>”</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash2.png" alt="Squash Commits with GitHub Desktop" /></p>
 </li>
@@ -709,8 +694,7 @@ int arm64_gic_initialize(void)
 riscv-none-elf-gcc CMakeFiles/nuttx.dir/empty.c.obj -o nuttx ...
 riscv_createstack.c: undefined reference to board_autoled_on
 collect2: error: ld returned 1 exit status
-ninja: build stopped: subcommand failed.
-</code></pre></div>
+ninja: build stopped: subcommand failed.</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">(Source)</a></p>
 <p>That’s because the NuttX Automated Check (Continuous Integration with GitHub Actions) runs <strong>CMake on some NuttX Configurations!</strong></p>
 <p>(Instead of the usual GNU Make)</p>
@@ -739,8 +723,7 @@ cmake \
 ## with CMake and Ninja
 cmake --build build
 
-## Note: No more `tools/configure.sh` and `make`!
-</code></pre></div>
+## Note: No more `tools/configure.sh` and `make`!</code></pre></div>
 <p><em>But why did CMake fail?</em></p>
 <p>Probably because the CMake Makefiles are <strong>out of sync</strong> with the GNU Make Makefiles.</p>
 <p>Suppose we have a <strong>GNU Make Makefile</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/Makefile">rv-virt/src/Makefile</a></p>
@@ -757,8 +740,7 @@ endif
 ## Compile `qemu_rv_userleds.c`
 ifeq ($(CONFIG_USERLED),y)
   CSRCS += qemu_rv_userleds.c
-endif
-</code></pre></div>
+endif</code></pre></div>
 <p>Note that it checks the Kconfig Options <strong>CONFIG_ARCH_LEDS</strong> and <strong>CONFIG_USERLED</strong>. And optionally compiles <strong>qemu_rv_autoleds.c</strong> and <strong>qemu_rv_userleds.c</strong>.</p>
 <p>We need to <strong>Sync the Build Rules</strong> into the CMake Makefile like so: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/src/CMakeLists.txt">rv-virt/src/CMakeLists.txt</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Always compile `qemu_rv_appinit.c`
@@ -774,8 +756,7 @@ endif()
 ## Compile `qemu_rv_userleds.c`
 if(CONFIG_USERLED)
   list(APPEND SRCS qemu_rv_userleds.c)
-endif()
-</code></pre></div>
+endif()</code></pre></div>
 <p>This will ensure that the Build Rules are consistent across the GNU Make Makefiles and CMake Makefiles. <a href="https://github.com/apache/nuttx/pull/12762/files#diff-bae223efa0f0ca8d345bef6373514be02c79bdfa8da568b2029fd54e3d268e34">(Like this)</a></p>
 <h1 id="appendix-nuttx-configuration-files"><a class="doc-anchor" href="#appendix-nuttx-configuration-files">§</a>12 Appendix: NuttX Configuration Files</h1>
 <p><em>Why did our NuttX Pull Request fail with this defconfig error?</em></p>
@@ -786,8 +767,7 @@ Changes not staged for commit:
   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
   (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
   modified:   boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
-  no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
-</code></pre></div>
+  no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/10093621571/job/27909785064?pr=12762">(Source)</a></p>
 <p>This means that the NuttX Configuration File for <strong>rv-virt:leds64</strong> has a problem, like a Missing Newline.</p>
 <p>To fix it, run <strong>tools/refresh.sh</strong>: <a href="https://github.com/apache/nuttx/pull/12762#issuecomment-2250656302">nuttx/pull/12762</a></p>
@@ -804,8 +784,7 @@ $ tools/refresh.sh --silent rv-virt:leds64
 
 ## Remember to commit the updated `defconfig`!
 $ git status
-  modified: boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig
-</code></pre></div>
+  modified: boards/risc-v/qemu-rv/rv-virt/configs/leds64/defconfig</code></pre></div>
 <p><strong>refresh.sh</strong> will also fix Kconfig Options that are misplaced…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## `CONFIG_USERLED_LOWER` is misplaced in `rv-virt:leds64`
 ## Remember to commit the updated `defconfig`!
@@ -816,8 +795,7 @@ $ tools/refresh.sh --silent rv-virt:leds64
   &lt; CONFIG_USERLED_LOWER=y
   75a75
   &gt; CONFIG_USERLED_LOWER=y
-  Saving the new configuration file
-</code></pre></div>
+  Saving the new configuration file</code></pre></div>
 <p><em>What else will cause defconfig errors?</em></p>
 <p>When we modify the <strong>Kconfig</strong> Configuration Files, remember to update the <strong>defconfig</strong> Configuration Files! <a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Like this)</a></p>
 <p>If we forget to update <strong>defconfig</strong>…</p>
@@ -831,8 +809,7 @@ HEAD detached at pull/9243/merge
 Changes not staged for commit:
 (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
 (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
-    modified:   boards/arm64/a64/pinephone/configs/sensor/defconfig
-</code></pre></div>
+    modified:   boards/arm64/a64/pinephone/configs/sensor/defconfig</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Source)</a></p>
 <p><em>How to create a new defconfig?</em></p>
 <p>To <strong>Create or Update a defconfig</strong>, do this…</p>
@@ -845,15 +822,13 @@ mkdir -p boards/risc-v/bl808/ox64/configs/nsh
 make menuconfig \
   &amp;&amp; make savedefconfig \
   &amp;&amp; grep -v CONFIG_HOST defconfig \
-  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig
-</code></pre></div>
+  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig</code></pre></div>
 <p><em>Some Default Settings in .config are missing from defconfig. Can we copy them ourselves to defconfig?</em></p>
 <p>Sorry it won’t work. Suppose we copy these Default UART3 Settings from <strong>.config</strong> to <strong>defconfig</strong> (to hard-code the UART3 Baud Rate)…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_UART3_BAUD=115200
 CONFIG_UART3_BITS=8
 CONFIG_UART3_PARITY=0
-CONFIG_UART3_2STOP=0
-</code></pre></div>
+CONFIG_UART3_2STOP=0</code></pre></div>
 <p>The Auto-Build will fail with the error below. Thus we can’t copy any Default Settings in <strong>.config</strong> to <strong>defconfig</strong>.</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/modem
 Building NuttX...
@@ -868,20 +843,17 @@ HEAD detached at pull/9304/merge
 Changes not staged for commit:
 (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
 (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
-    modified:   boards/arm64/a64/pinephone/configs/modem/defconfig
-</code></pre></div>
+    modified:   boards/arm64/a64/pinephone/configs/modem/defconfig</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341">(Source)</a></p>
 <p><em>What if the auto-build fails with “Untracked etctmp”?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>HEAD detached at pull/11379/merge
 Untracked files: (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
 boards/risc-v/k230/canmv230/src/etctmp.c
-boards/risc-v/k230/canmv230/src/etctmp/
-</code></pre></div>
+boards/risc-v/k230/canmv230/src/etctmp/</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/7203675079/job/19625255417?pr=11379">(Source)</a></p>
 <p>Check that we’ve added “<strong>etctmp</strong>” to the <strong>Board-Specific Git Ignore</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/src/.gitignore">boards/risc-v/jh7110/star64/src/.gitignore</a></p>
 <div class="example-wrap"><pre class="language-text"><code>etctmp
-etctmp.c
-</code></pre></div>
+etctmp.c</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">(NuttX CI validates the Config Files by calling <strong>cibuild.sh</strong>)</a></p>
 <h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>13 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
@@ -911,8 +883,7 @@ nsh&gt; uname -a
 NuttX 12.1.0 d40f4032fc Apr 12 2023 07:11:20 arm64 pinephone
 nsh&gt; free
       total     used   free      largest   nused nfree
-Umem: 133414240 550768 132863472 132863376 56    2
-</code></pre></div>
+Umem: 133414240 550768 132863472 132863376 56    2</code></pre></div>
 <p>The <strong>NuttX Hash</strong> (like “d40f4032fc” above) should match the <a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html"><strong>Validation Request</strong></a>.</p>
 <p>Copy the above into a <strong>Validation Response</strong> email…</p>
 <ul>
@@ -926,12 +897,10 @@ Umem: 133414240 550768 132863472 132863376 56    2
 <li>
 <p>To verify the NuttX Signature, we need to <strong>import the NuttX Keys</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>wget https://dist.apache.org/repos/dist/dev/nuttx/KEYS
-gpg --import KEYS
-</code></pre></div></li>
+gpg --import KEYS</code></pre></div></li>
 <li>
 <p>We also need to <strong>trust the NuttX Keys</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>gpg --edit-key 9208D2E4B800D66F749AD4E94137A71698C5E4DB
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>gpg --edit-key 9208D2E4B800D66F749AD4E94137A71698C5E4DB</code></pre></div>
 <p>(That’s the RSA Key Fingerprint from “<strong>gpg –verify</strong>”)</p>
 <p>Then enter “<strong>trust</strong>” and “<strong>5</strong>”</p>
 </li>
@@ -942,8 +911,7 @@ gpg --import KEYS
 <h1 id="appendix-building-the-docker-image-for-nuttx-ci"><a class="doc-anchor" href="#appendix-building-the-docker-image-for-nuttx-ci">§</a>14 Appendix: Building the Docker Image for NuttX CI</h1>
 <p>Why are we doing this? Suppose we need to tweak the NuttX CI Docker Image (for Continuous Integration), like to <a href="https://github.com/apache/nuttx/pull/12858"><strong>install a Rust Target for a RISC-V Build</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install the Rust Target for QEMU RISC-V 64-bit
-rustup target add riscv64gc-unknown-none-elf
-</code></pre></div>
+rustup target add riscv64gc-unknown-none-elf</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/12858/files#diff-a4a1b8c80e9671130b6ea4bafc8eeb126cddf3d157c019083d322c98cb765f37">(Source)</a></p>
 <p>We need to test our Modified CI Docker Image. But if we’re on <strong>Arm64 macOS</strong>: Sorry we can’t download the CI Docker Image, we need to build ourselves! (Skip to the next section if we’re on x64 Linux)</p>
 <p>Here’s how we created our <strong>CI Docker Image</strong> and Custom Dockerfile: <a href="https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f">tools/ci/docker/linux/Dockerfile</a></p>
@@ -954,12 +922,10 @@ rustup target add riscv64gc-unknown-none-elf
 </ul>
 <p>Then we build the <strong>Docker Image</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx/tools/ci/docker/linux
-$ docker build -t nuttx:v1 .
-</code></pre></div>
+$ docker build -t nuttx:v1 .</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401">(See the <strong>Docker Log</strong>)</a></p>
 <p>If we see…</p>
-<div class="example-wrap"><pre class="language-text"><code>76.31 error: Cannot download gmp-6.1.0.tar.bz2 from ftp://gcc.gnu.org/pub/gcc/infrastructure/
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>76.31 error: Cannot download gmp-6.1.0.tar.bz2 from ftp://gcc.gnu.org/pub/gcc/infrastructure/</code></pre></div>
 <p>Then GNU Server might be busy. Try again later and it works!</p>
 <p>But <strong>i386 packages</strong> are missing (because we’re hosting Docker on Arm64 macOS)…</p>
 <div class="example-wrap"><pre class="language-text"><code> &gt; [stage-12  5/50] RUN apt-get update -qq &amp;&amp; DEBIAN_FRONTEND=&quot;noninteractive&quot; TZ=Etc/UTC apt-get install -y -qq --no-install-recommends   -o APT::Immediate-Configure=0   avr-libc   ccache   clang   clang-tidy   g++-12-multilib   gcc-avr   gcc-12-multilib   genromfs   gettext   git   lib32z1-dev   libasound2-dev libasound2-dev:i386   libc6-dev-i386   libcurl4-openssl-dev   libmp3lame-dev:i386   libmad0-dev:i386   libncurses5-dev   libpulse-dev libpulse-dev:i386   libpython2.7   libtinfo5   libusb-1.0-0-dev libusb-1.0-0-dev:i386   libv4l-dev libv4l-dev:i386   libx11-dev libx11-dev:i386   libxext-dev libxext-dev:i386   linux-headers-generic   linux-libc-dev:i386   ninja-build   npm   qemu-system-arm   qemu-system-misc   python3   python3-pip   python-is-python3   u-boot-tools   unzip   wget   xxd   file   tclsh   &amp;&amp; rm -rf /var/lib/apt/lists/*:
@@ -967,8 +933,7 @@ $ docker build -t nuttx:v1 .
 15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-updates/multiverse/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
 15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-backports/universe/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
 15.03 E: Failed to fetch http://ports.ubuntu.com/ubuntu-ports/dists/jammy-security/main/binary-i386/Packages  404  Not Found [IP: 185.125.190.39 80]
-15.03 E: Some index files failed to download. They have been ignored, or old ones used instead.
-</code></pre></div>
+15.03 E: Some index files failed to download. They have been ignored, or old ones used instead.</code></pre></div>
 <p>We don’t need the i386 packages. So we comment out everything in Dockerfile except NuttX Build Tools, RISC-V Toolchain and Rust Toolchain:</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f">tools/ci/docker/linux/Dockerfile</a></li>
@@ -977,8 +942,7 @@ $ docker build -t nuttx:v1 .
 <div class="example-wrap"><pre class="language-text"><code># Download the latest RISCV GCC toolchain prebuilt by xPack
 RUN mkdir riscv-none-elf-gcc &amp;&amp; \
   curl -s -L &quot;https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-arm64.tar.gz&quot; \
-  | tar -C riscv-none-elf-gcc --strip-components 1 -xz
-</code></pre></div>
+  | tar -C riscv-none-elf-gcc --strip-components 1 -xz</code></pre></div>
 <p><strong>If RISC-V Toolchain fails:</strong> Try again…</p>
 <div class="example-wrap"><pre class="language-text"><code> =&gt; ERROR [nuttx-toolchain-riscv 1/1] RUN mkdir riscv-none-elf-gcc &amp;&amp;    195.2s
 ------                                                                          
@@ -988,8 +952,7 @@ RUN mkdir riscv-none-elf-gcc &amp;&amp; \
 195.2 tar: Unexpected EOF in archive
 195.2 tar: Unexpected EOF in archive
 195.2 tar: Error is not recoverable: exiting now
-------
-</code></pre></div>
+------</code></pre></div>
 <p><strong>zap</strong> seems to fail for Arm64. So we comment out zap in Dockerfile…</p>
 <div class="example-wrap"><pre class="language-text"><code>39.86 npm ERR! code 1
 39.86 npm ERR! path /tools/zap/node_modules/canvas
@@ -1001,8 +964,7 @@ RUN mkdir riscv-none-elf-gcc &amp;&amp; \
 39.86 npm ERR! node-pre-gyp info using node@12.22.9 | linux | arm64
 39.86 npm ERR! node-pre-gyp http GET https://github.com/Automattic/node-canvas/releases/download/v2.11.2/canvas-v2.11.2-node-v72-linux-glibc-arm64.tar.gz
 39.86 npm ERR! node-pre-gyp ERR! install response status 404 Not Found on https://github.com/Automattic/node-canvas/releases/download/v2.11.2/canvas-v2.11.2-node-v72-linux-glibc-arm64.tar.gz 
-39.86 npm ERR! node-pre-gyp WARN Pre-built binaries not installable for canvas@2.11.2 and node@12.22.9 (node-v72 ABI, glibc) (falling back to source compile with node-gyp) 
-</code></pre></div>
+39.86 npm ERR! node-pre-gyp WARN Pre-built binaries not installable for canvas@2.11.2 and node@12.22.9 (node-v72 ABI, glibc) (falling back to source compile with node-gyp) </code></pre></div>
 <p>And we’re done!</p>
 <div class="example-wrap"><pre class="language-text"><code> =&gt; [stage-4 27/33] COPY --from=nuttx-tools /tools/bloaty/ bloaty/         1.8s
  =&gt; [stage-4 28/33] COPY --from=nuttx-tools /tools/kconfig-frontends/ kco  0.0s
@@ -1014,8 +976,7 @@ RUN mkdir riscv-none-elf-gcc &amp;&amp; \
  =&gt; exporting to image                                                    15.0s
  =&gt; =&gt; exporting layers                                                   15.0s
  =&gt; =&gt; writing image sha256:27da351829f15ecf1dd333cc43b864045d462a595f512  0.0s
- =&gt; =&gt; naming to docker.io/library/nuttx:v1                                0.0s
-</code></pre></div>
+ =&gt; =&gt; naming to docker.io/library/nuttx:v1                                0.0s</code></pre></div>
 <p>After the above fixes, here’s our <strong>Custom Dockerfile</strong> for NuttX CI + RISC-V + Rust (that works on Arm64 macOS)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/a4c52e10bee3d6dfc6b02347fc0687c99512953f">tools/ci/docker/linux/Dockerfile</a></li>
@@ -1048,8 +1009,7 @@ riscv64gc-unknown-none-elf (installed)
 thumbv6m-none-eabi (installed)
 thumbv7m-none-eabi (installed)
 
-root@?:/tools# exit
-</code></pre></div>
+root@?:/tools# exit</code></pre></div>
 <p>Looks hunky dory! We download the <strong>NuttX Source Files</strong> and start the build…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ docker run -it nuttx:v1 /bin/bash 
 # cd
@@ -1058,8 +1018,7 @@ root@?:/tools# exit
 # git clone https://github.com/apache/nuttx
 # git clone https://github.com/apache/nuttx-apps apps
 # cd nuttx/tools/ci
-# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
-</code></pre></div>
+# ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat</code></pre></div>
 <p>Why <strong>risc-v-02.dat</strong>? That’s because we’re running the <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849"><strong>“Linux (risc-v-02)”</strong></a> build. Which will build the Second Batch of RISC-V Targets, including <code>rv-virt:*</code> (QEMU RISC-V).</p>
 <p>(Why <strong>cibuild.sh</strong>? See the next section)</p>
 <p>We will see…</p>
@@ -1070,8 +1029,7 @@ Configuration/Tool: hifive1-revb/nsh
 ------------------------------------------------------------------------------------
   Cleaning...
   Configuring...
-  Building NuttX...
-</code></pre></div>
+  Building NuttX...</code></pre></div>
 <p>Exactly like <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28416251531?pr=12849"><strong>NuttX CI in GitHub Actions</strong></a>!</p>
 <p>Finally we see our Rust Build completing successfully in our Docker Container yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/leds64_rust
@@ -1079,8 +1037,7 @@ Configuration/Tool: hifive1-revb/nsh
   Configuring...
   Building NuttX...
 riscv-none-elf-ld: warning: /root/nuttx/nuttx has a LOAD segment with RWX permissions
-  Normalize rv-virt/leds64_rust
-</code></pre></div>
+  Normalize rv-virt/leds64_rust</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/23da1272aaf55f7fe37bc6ab5fe94401">(See the <strong>Docker Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/12858">(See the <strong>Pull Request</strong>)</a></p>
 <p>And that’s how we test a NuttX CI Docker Image on Arm64 macOS.</p>
@@ -1105,8 +1062,7 @@ make[1]: Target &#39;all&#39; not remade because of errors.
 make: *** [tools/LibTargets.mk:232: /root/apps/libapps.a] Error 2
 make: Target &#39;all&#39; not remade because of errors.
 /root/nuttx/tools/testbuild.sh: line 378: /root/nuttx/../nuttx/nuttx.manifest: No such file or directory
-  Normalize rv-virt/leds64_rust
-</code></pre></div>
+  Normalize rv-virt/leds64_rust</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f90f57306ac984d7c617e4b177b77d0a#file-nuttx-ci-docker-fail-log-L1056-L1077">(See the <strong>Docker Log</strong>)</a></p>
 <p><em>What about testing a Single Config?</em></p>
 <p>Just do it the normal NuttX way…</p>
@@ -1116,15 +1072,13 @@ make: Target &#39;all&#39; not remade because of errors.
 # git clone https://github.com/apache/nuttx-apps apps
 # cd nuttx
 # tools/configure.sh rv-virt:leds64_rust
-# make
-</code></pre></div>
+# make</code></pre></div>
 <p>(Based on <a href="https://acassis.wordpress.com/2023/01/21/how-i-create-a-docker-image-for-nuttx/"><strong>“Create a Docker Image for NuttX”</strong></a>)</p>
 <h1 id="appendix-downloading-the-docker-image-for-nuttx-ci"><a class="doc-anchor" href="#appendix-downloading-the-docker-image-for-nuttx-ci">§</a>15 Appendix: Downloading the Docker Image for NuttX CI</h1>
 <p><strong>If we’re on x64 Linux:</strong> We can <strong>Build the Docker Image</strong> for NuttX CI, without any changes to the Dockerfile…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo apt install podman-docker
 $ cd nuttx/tools/ci/docker/linux
-$ docker build -t nuttx:v1 .
-</code></pre></div>
+$ docker build -t nuttx:v1 .</code></pre></div>
 <p>(Takes a few hours to complete. Unless we trim down the Dockerfile, as explained in the previous section)</p>
 <p>Or we can <strong>Download the Docker Image</strong> for NuttX CI and tweak it (for testing). This works only if we’re on x64 Linux…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo apt install podman-docker
@@ -1132,8 +1086,7 @@ $ docker pull \
     ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
 $ docker images
 REPOSITORY                                  TAG         IMAGE ID      CREATED         SIZE
-ghcr.io/apache/nuttx/apache-nuttx-ci-linux  latest      60a6cdc2c7cc  5 hours ago     15.9 GB
-</code></pre></div>
+ghcr.io/apache/nuttx/apache-nuttx-ci-linux  latest      60a6cdc2c7cc  5 hours ago     15.9 GB</code></pre></div>
 <p>If we see <em>“No matching manifest for linux/arm64/v8”</em>: Nope sorry we’re not on x64 Linux, we can’t download and run the Docker Image!</p>
 <p>After building or downloading the Docker Image: Run these steps (from previous section) to start the Docker Container, download the NuttX Source Files and start the build…</p>
 <div class="example-wrap"><pre class="language-text"><code>## If we built the Docker Image ourselves:
@@ -1150,16 +1103,14 @@ $ pwd
 $ git clone https://github.com/apache/nuttx
 $ git clone https://github.com/apache/nuttx-apps apps
 $ cd nuttx/tools/ci
-$ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat
-</code></pre></div>
+$ ./cibuild.sh -c -A -N -R testlist/risc-v-02.dat</code></pre></div>
 <p>Or for a Single Config…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ cd
 $ git clone https://github.com/apache/nuttx
 $ git clone https://github.com/apache/nuttx-apps apps
 $ cd nuttx
 $ tools/configure.sh rv-virt:leds64_rust
-$ make
-</code></pre></div>
+$ make</code></pre></div>
 <p>Why <strong>cibuild.sh</strong>? We got it from the <a href="https://github.com/apache/nuttx/actions/runs/10263378328/job/28395177537?pr=12849"><strong>NuttX CI Log</strong></a>…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L163">(<strong>cibuild.sh</strong> is called by <strong>.github/workflows/build.yml</strong>)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/tools/index.html#testbuild-sh">(<strong>testbuild.sh</strong> is explained here)</a></p>
@@ -1241,8 +1192,7 @@ $ make
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux  \
   &quot;/bin/bash&quot; \
   &quot;-ce&quot; \
-  &quot;echo \&quot;::add-matcher::sources/nuttx/.github/gcc.json\&quot;
-</code></pre></div>
+  &quot;echo \&quot;::add-matcher::sources/nuttx/.github/gcc.json\&quot;</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

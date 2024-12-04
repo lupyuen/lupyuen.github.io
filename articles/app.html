@@ -64,17 +64,17 @@
     
 
     <h1 class="title">RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk</h1>
-    <nav id="TOC"><ul>
-<li><a href="#inside-a-nuttx-app">1 Inside a NuttX App</a><ul></ul></li>
-<li><a href="#nuttx-app-calls-nuttx-kernel">2 NuttX App calls NuttX Kernel</a><ul></ul></li>
-<li><a href="#nuttx-kernel-handles-system-call">3 NuttX Kernel handles System Call</a><ul></ul></li>
-<li><a href="#system-call-in-action">4 System Call in Action</a><ul></ul></li>
-<li><a href="#kernel-accesses-app-memory">5 Kernel Accesses App Memory</a><ul></ul></li>
-<li><a href="#kernel-starts-a-nuttx-app">6 Kernel Starts a NuttX App</a><ul></ul></li>
-<li><a href="#initial-ram-disk">7 Initial RAM Disk</a><ul></ul></li>
-<li><a href="#mount-the-initial-ram-disk">8 Mount the Initial RAM Disk</a><ul></ul></li>
-<li><a href="#pad-the-initial-ram-disk">9 Pad the Initial RAM Disk</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Nov 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#inside-a-nuttx-app" title="Inside a NuttX App">1 Inside a NuttX App</a><ul></ul></li>
+<li><a href="#nuttx-app-calls-nuttx-kernel" title="NuttX App calls NuttX Kernel">2 NuttX App calls NuttX Kernel</a><ul></ul></li>
+<li><a href="#nuttx-kernel-handles-system-call" title="NuttX Kernel handles System Call">3 NuttX Kernel handles System Call</a><ul></ul></li>
+<li><a href="#system-call-in-action" title="System Call in Action">4 System Call in Action</a><ul></ul></li>
+<li><a href="#kernel-accesses-app-memory" title="Kernel Accesses App Memory">5 Kernel Accesses App Memory</a><ul></ul></li>
+<li><a href="#kernel-starts-a-nuttx-app" title="Kernel Starts a NuttX App">6 Kernel Starts a NuttX App</a><ul></ul></li>
+<li><a href="#initial-ram-disk" title="Initial RAM Disk">7 Initial RAM Disk</a><ul></ul></li>
+<li><a href="#mount-the-initial-ram-disk" title="Mount the Initial RAM Disk">8 Mount the Initial RAM Disk</a><ul></ul></li>
+<li><a href="#pad-the-initial-ram-disk" title="Pad the Initial RAM Disk">9 Pad the Initial RAM Disk</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/app-title.png" alt="NuttX App makes a System Call to NuttX Kernel" /></p>
 <p>In Asia the wise folks say…</p>
 <blockquote>
@@ -115,8 +115,7 @@
 int main(int argc, FAR char *argv[]) {
   printf(&quot;Hello, World!!\n&quot;);
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Let’s find out! First we build <a href="https://lupyuen.github.io/articles/mmu#appendix-build-and-run-nuttx"><strong>NuttX for Ox64 BL808 SBC</strong></a>.</p>
 <p>Which produces this <strong>ELF Executable</strong> for our NuttX App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## ELF Executable for `hello` looks big...
@@ -134,8 +133,7 @@ $ riscv64-unknown-elf-objdump \
   --debugging \
   ../apps/bin/hello \
   &gt;hello.S \
-  2&gt;&amp;1
-</code></pre></div>
+  2&gt;&amp;1</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>Here’s the <strong>RISC-V Disassembly</strong> of our NuttX App: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/hello.S">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Omitted: _start() prepares for signals (sig_trampoline) and calls main()
@@ -159,8 +157,7 @@ return 0;
   56: 0141      addi  sp,sp,16  ## Add 16 to Stack Pointer
   58: 8082      ret             ## Return to caller: _start()
 
-## Followed by the code for puts(), lib_fwrite_unlocked(), write(), ...
-</code></pre></div>
+## Followed by the code for puts(), lib_fwrite_unlocked(), write(), ...</code></pre></div>
 <p>In the RISC-V Disassembly, we see that <a href="https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c#L36-L40"><strong>main</strong></a> calls…</p>
 <ul>
 <li>
@@ -184,14 +181,12 @@ return 0;
   4a: 00000097  auipc  ra, 0x0
 
   ## Call the function in Register RA: puts()
-  4e: 000080e7  jalr   ra
-</code></pre></div>
+  4e: 000080e7  jalr   ra</code></pre></div>
 <p>We break it down…</p>
 <ul>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions"><strong><code>auipc</code></strong></a> sets Register RA to…</p>
-<div class="example-wrap"><pre class="language-c"><code>Program Counter + 0x0
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-c"><code>Program Counter + 0x0</code></pre></div></li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--unconditional-jumps"><strong><code>jalr</code></strong></a> jumps to the Function pointed by Register RA…</p>
 <p>Which we expect to be <a href="https://github.com/apache/nuttx/blob/master/libs/libc/stdio/lib_puts.c#L34-L96"><strong>puts</strong></a></p>
@@ -210,8 +205,7 @@ return 0;
 
   ## Call the function in Register RA: puts()
   ## Which will work when ELF Loader fixes the Offset of puts()
-  4e: 000080e7  jalr   ra     # 4a &lt;.LVL1+0x2&gt;
-</code></pre></div>
+  4e: 000080e7  jalr   ra     # 4a &lt;.LVL1+0x2&gt;</code></pre></div>
 <p>Therefore we’re all good! (Eventually)</p>
 <p><em>Why <code>puts</code> instead of <code>printf</code>?</em></p>
 <p>The GCC Compiler has cleverly optimised away <strong>printf</strong> to become <strong>puts</strong>.</p>
@@ -220,8 +214,7 @@ return 0;
 printf(
   &quot;Hello, World %s!!\n&quot;,  // Meaningful Format String
   &quot;Luppy&quot;                 // Makes it complicated
-);
-</code></pre></div>
+);</code></pre></div>
 <p>Then <strong>printf</strong> will appear in our RISC-V Disassembly.</p>
 <p>We circle back to <strong>write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
@@ -272,16 +265,14 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
     (uintptr_t) parm2,         // Buffer to be written
     (uintptr_t) parm3          // Number of bytes to write
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Our NuttX App (implicitly) calls this <strong>Proxy Version</strong> of “<strong>write</strong>” (that pretends to be the Kernel “<strong>write</strong>”)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Our App calls the Proxy Function...
 int ret = write(
   1,                   // File Descriptor (1 = Standard Output)
   &quot;Hello, World!!\n&quot;,  // Buffer to be written
   15                   // Number of bytes to write
-);
-</code></pre></div>
+);</code></pre></div>
 <p>Which triggers a <strong>System Call</strong> to the Kernel.</p>
 <p>(Indeed “More than meets the eye!”)</p>
 <p><em>What’s sys_call3?</em></p>
@@ -317,8 +308,7 @@ uintptr_t sys_call3(
 
   // Return the result from Register A0
   return r0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--rv32"><strong><code>ecall</code></strong></a> is the RISC-V Instruction that jumps from RISC-V <strong>User Mode to Supervisor Mode</strong>…</p>
 <p>That allows NuttX Kernel to execute the actual “<strong>write</strong>” function, with the real Serial Device.</p>
 <p>(We’ll explain how)</p>
@@ -340,8 +330,7 @@ PROXY_sem_destroy.c
 PROXY_sem_post.c
 PROXY_sem_trywait.c
 PROXY_task_setcancelstate.c
-PROXY_write.c
-</code></pre></div>
+PROXY_write.c</code></pre></div>
 <p>Next we figure out how System Calls will work…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall2.jpg" alt="NuttX Kernel handles System Call" /></p>
 <h1 id="nuttx-kernel-handles-system-call"><a class="doc-anchor" href="#nuttx-kernel-handles-system-call">§</a>3 NuttX Kernel handles System Call</h1>
@@ -361,8 +350,7 @@ uintptr_t STUB_write(int nbr, uintptr_t parm1, uintptr_t parm2, uintptr_t parm3)
     (FAR const void *) parm2,  // Buffer to be written
     (size_t) parm3  // Number of bytes to write
   );                // Return the result to the App
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Thus our <strong>NuttX Build</strong> auto-generates 2 things…</p>
 <ul>
 <li>
@@ -380,8 +368,7 @@ STUB__exit.c
 STUB_boardctl.c
 STUB_chmod.c
 STUB_chown.c
-...
-</code></pre></div>
+...</code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/components/syscall.html">(More about <strong>Proxy and Stub Functions</strong>)</a></p>
 <p><em>Who calls STUB_write?</em></p>
 <p>When our NuttX App makes an <strong><code>ecall</code></strong>, it triggers <strong>IRQ 8</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L52-L75"><strong>(RISCV_IRQ_ECALLU)</strong></a> that’s <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L114-L119"><strong>handled by</strong></a>…</p>
@@ -409,8 +396,7 @@ ssize_t write(int parm1, FAR const void * parm2, size_t parm3) {
   // Make a System Call with 3 parameters...
   return (ssize_t) sys_call3(
     (unsigned int) SYS_write,  // System Call Number (63 = `write`)
-    ...
-</code></pre></div>
+    ...</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_swint.c#L54-L100"><strong>dispatch_syscall</strong></a> (in NuttX Kernel) will look up the System Call Number in the <a href="https://github.com/apache/nuttx/blob/master/syscall/syscall_stublookup.c#L80-L93"><strong>Stub Lookup Table</strong></a>. And fetch the <strong>Stub Function</strong> to call.</p>
 <p><em>How did we figure out that 63 is the System Call Number for “write”?</em></p>
 <p>OK this gets tricky. Below is the Enum that defines all <strong>System Call Numbers</strong>: <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall.h#L55-L66">syscall.h</a> and <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L202">syscall_lookup.h</a></p>
@@ -423,14 +409,12 @@ enum {
   SYSCALL_LOOKUP(read,  3)  // 3 Parameters
   SYSCALL_LOOKUP(write, 3)  // 3 Parameters
   ...
-};
-</code></pre></div>
+};</code></pre></div>
 <p>However it’s an Enum, <strong>numbered sequentially</strong> from 8 to 147-ish. We won’t literally see 63 in the NuttX Source Code.</p>
 <p>Then we lookup the <strong>Debug Info</strong> in the RISC-V Disassembly for NuttX Kernel: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/ox64a-1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Abbrev Number: 6 (DW_TAG_enumerator)
   DW_AT_name        : SYS_write
-  DW_AT_const_value : 63
-</code></pre></div>
+  DW_AT_const_value : 63</code></pre></div>
 <p>Whoomp there it is! Says here that “<strong>write</strong>” is <strong>System Call #63</strong>.</p>
 <p><em>That’s an odd way to define System Call Numbers…</em></p>
 <p>Yeah it’s <strong>not strictly an immutable ABI</strong> like Linux, because our System Call Numbers may change! It depends on the <a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h#L90-L152"><strong>Build Options</strong></a> that we select.</p>
@@ -446,8 +430,7 @@ enum {
 <div class="example-wrap"><pre class="language-text"><code>Build Setup 
   &gt; Debug Options 
     &gt; Syscall Debug Features 
-      &gt; Enable &quot;Syscall Warning, Error and Info&quot;
-</code></pre></div>
+      &gt; Enable &quot;Syscall Warning, Error and Info&quot;</code></pre></div>
 <p>Watch what happens when we <strong>boot NuttX on Ox64</strong> (pic above)…</p>
 <ul>
 <li>
@@ -463,8 +446,7 @@ enum {
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq: irq=8
 riscv_swint: Entry: regs: 0x5040bcb0 cmd: 63
 EPC: 800019b2
-A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
-</code></pre></div>
+A0: 003f A1: 0001 A2: 8000ad00 A3: 001e</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ce82b29c664b1d5898b6a59743310c17#file-ox64-nuttx-ecall-log-L563-L588">(See the <strong>Complete Log</strong>)</a></p>
 <p>The <strong>RISC-V Registers</strong> look familiar…</p>
 <ul>
@@ -488,15 +470,13 @@ A0: 003f A1: 0001 A2: 8000ad00 A3: 001e
 <p>NuttX Kernel calls our Stub Function <strong>STUB_write</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_swint: SWInt Return: 37
 STUB_write: nbr=440, parm1=1, parm2=8000ad00, parm3=1e
-NuttShell (NSH) NuttX-12.0.3
-</code></pre></div>
+NuttShell (NSH) NuttX-12.0.3</code></pre></div>
 <p>Which calls Kernel “<strong>write</strong>” and <strong>prints the text</strong>: “NuttShell”</p>
 <p>Then NuttX Kernel completes the <strong><code>ecall</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_swint: Entry: regs: 0x5040baa0 cmd: 3
 EPC: 80001a6a
 A0: 0003 A1: 5040bbec A2: 001e A3: 0000
-riscv_swint: SWInt Return: 1e
-</code></pre></div>
+riscv_swint: SWInt Return: 1e</code></pre></div>
 <ul>
 <li>
 <p>A0 is <strong>3</strong></p>
@@ -645,8 +625,7 @@ popd
 genromfs \
   -f initrd \
   -d ../apps/bin \
-  -V &quot;NuttXBootVol&quot;
-</code></pre></div>
+  -V &quot;NuttXBootVol&quot;</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
 <p><em>How to load the Initial RAM Disk from microSD to RAM?</em></p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will do it for us!</p>
@@ -685,8 +664,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 cp Image &quot;/Volumes/NO NAME/&quot;
 
 ## U-Boot Bootloader will load NuttX Kernel and
-## Initial RAM Disk into RAM
-</code></pre></div>
+## Initial RAM Disk into RAM</code></pre></div>
 <p>This is how we made it work…</p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/issues/24">(Ox64 can boot NuttX from <strong>Flash Memory</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/app-initrd.jpg" alt="Initial RAM Disk for Ox64" /></p>
@@ -733,8 +711,7 @@ void bl808_copy_ramdisk(void) {
   // Which doesn&#39;t work with memcpy.
   // Sadly memmove is aliased to memcpy, so we implement memmove ourselves
   bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(More about <strong>edata</strong>, <strong>Idle Stack</strong> and <strong>bl808_copy_overlap</strong> in the next section)</p>
 <p><em>Why did we copy Initial RAM Disk to ramdisk_start?</em></p>
 <p><strong>ramdisk_start</strong> points to the Memory Region that we reserved for mounting our RAM Disk.</p>
@@ -744,8 +721,7 @@ ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M
 ...
 __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size = LENGTH(ramdisk);
-__ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
-</code></pre></div>
+__ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div>
 <p><em>Who calls the code above?</em></p>
 <p>We locate and copy the Initial RAM Disk at the very top of our <strong>NuttX Start Code</strong>.</p>
 <p>This just after <strong>erasing the BSS</strong> (Global and Static Variables), in case we need to print some messages and it uses Global and Static Variables: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L254-L284">bl808_start.c</a></p>
@@ -756,8 +732,7 @@ void bl808_start(int mhartid) {
   bl808_clear_bss();
 
   // Copy the RAM Disk
-  bl808_copy_ramdisk();
-</code></pre></div>
+  bl808_copy_ramdisk();</code></pre></div>
 <p>Later during startup, we <strong>mount the RAM Disk</strong> from the Memory Region: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/src/bl808_appinit.c#L51-L87">bl808_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// After NuttX has booted...
 void board_late_initialize(void) {
@@ -771,8 +746,7 @@ int mount_ramdisk(void) {
   desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
   desc.sectsize = SECTORSIZE;
   desc.image    = __ramdisk_start;
-  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);
-</code></pre></div>
+  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-nuttx-boot-flow">(How NuttX calls <strong>board_late_initialize</strong>)</a></p>
 <p>All this works great: NuttX mounts our RAM Disk successfully, and starts the ELF Executable for NuttX Shell!</p>
 <div class="example-wrap"><pre class="language-text"><code>bl808_copy_ramdisk:
@@ -789,8 +763,7 @@ nx_start_application: Starting init task: /system/bin/init
 load_absmodule: Loading /system/bin/init
 elf_loadbinary: Loading file: /system/bin/init
 elf_init: filename: /system/bin/init loadinfo: 0x5040c618
-elf_read: Read 64 bytes from offset 0
-</code></pre></div>
+elf_read: Read 64 bytes from offset 0</code></pre></div>
 <p>(“<strong>system/bin/init</strong>” is the NuttX Shell)</p>
 <p><a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L159">(See the <strong>Complete Log</strong>)</a></p>
 <p>Last thing for today: The mysterious 64 KB padding…</p>
@@ -806,8 +779,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
 ## U-Boot Bootloader will load NuttX Kernel and
-## Initial RAM Disk into RAM
-</code></pre></div>
+## Initial RAM Disk into RAM</code></pre></div>
 <p>U-Boot Bootloader will load our Initial RAM Disk into RAM. However it’s dangerously close to <strong>BSS Memory</strong> (Global and Static Variables) and <strong>Kernel Stack</strong>.</p>
 <p>There’s a risk that our Initial RAM Disk will be <strong>contaminated by BSS and Stack</strong>. This is how we found a clean, safe space for our Initial RAM Disk (pic above)…</p>
 <p>We inspect the <a href="https://gist.github.com/lupyuen/74a44a3e432e159c62cc2df6a726cb89#file-ox64-nuttx13-log-L114-L118"><strong>NuttX Log</strong></a> and the <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L20-L28"><strong>NuttX Linker Script</strong></a>…</p>
@@ -827,8 +799,7 @@ BL808_IDLESTACK_TOP=0x50407c00
 ramdisk_addr=0x50408288, size=8192016
 
 // And we copied initrd to the Memory Region for the RAM Disk
-__ramdisk_start=0x50a00000
-</code></pre></div>
+__ramdisk_start=0x50a00000</code></pre></div>
 <p>Or graphically…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start</th><th style="text-align: center">End</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Data Section</strong></td><td style="text-align: center"></td><td style="text-align: center"><code>0x5040_0257</code></td></tr>
@@ -881,8 +852,7 @@ if (ramdisk_addr == NULL) { _err(&quot;Missing RAM Disk. Check the initrd paddin
 if (ramdisk_addr &lt;= (uint8_t *)BL808_IDLESTACK_TOP) { _err(&quot;RAM Disk must be after Idle Stack. Increase the initrd padding by %ul bytes.&quot;, (size_t)BL808_IDLESTACK_TOP - (size_t)ramdisk_addr); PANIC(): }
 
 // Filesystem Size must be less than RAM Disk Memory Region
-if (size &gt; (size_t)__ramdisk_size) { _err(&quot;RAM Disk Region too small&quot;); PANIC(); }
-</code></pre></div>
+if (size &gt; (size_t)__ramdisk_size) { _err(&quot;RAM Disk Region too small&quot;); PANIC(); }</code></pre></div>
 <p><em>Why call bl808_copy_overlap to copy initrd to RAM Disk Region? Why not memcpy?</em></p>
 <p>That’s because <strong><code>initrd</code></strong> overlaps with <strong>RAM Disk Region</strong>! (See above)</p>
 <p><strong><code>memcpy</code></strong> won’t work with <strong>Overlapping Memory Regions</strong>. Thus we added this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L70-L104">bl808_start.c</a></p>
@@ -900,8 +870,7 @@ void *bl808_copy_overlap(void *dest, const void *src, size_t count) {
     *d = c;
   }
   return dest;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>We’re sure that it works?</em></p>
 <p>We called <strong><code>verify_image</code></strong> to do a simple Integrity Check on <strong><code>initrd</code></strong>, before and after copying: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L236-L248">jh7110_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Before Copy: Verify the RAM Disk Image to be copied
@@ -914,8 +883,7 @@ verify_image(ramdisk_addr);
 bl808_copy_overlap((void *)__ramdisk_start, ramdisk_addr, size);
 
 // After Copy: Verify the copied RAM Disk Image
-verify_image(__ramdisk_start);
-</code></pre></div>
+verify_image(__ramdisk_start);</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64a/arch/risc-v/src/jh7110/jh7110_start.c#L248-L455">(<strong><code>verify_image</code></strong> searches for a specific byte)</a></p>
 <p>That’s how we discovered that <strong><code>memcpy</code></strong> doesn’t work. And our <strong><code>bl808_copy_overlap</code></strong> works great for the Initial RAM Disk and NuttX Shell! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/mmu-boot1.png" alt="Ox64 boots to NuttX Shell" /></p>

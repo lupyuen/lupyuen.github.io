@@ -62,21 +62,21 @@
     
 
     <h1 class="title">Star64 JH7110 + NuttX RTOS: Creating the First Release for the RISC-V SBC</h1>
-    <nav id="TOC"><ul>
-<li><a href="#build-nuttx-for-star64">1 Build NuttX for Star64</a><ul></ul></li>
-<li><a href="#nuttx-in-a-bootable-microsd">2 NuttX in a Bootable microSD</a><ul></ul></li>
-<li><a href="#boot-nuttx-on-star64">3 Boot NuttX on Star64</a><ul></ul></li>
-<li><a href="#nuttx-startup-explained">4 NuttX Startup Explained</a><ul></ul></li>
-<li><a href="#add-the-nuttx-arch-and-board">5 Add the NuttX Arch and Board</a><ul>
-<li><a href="#patch-the-nuttx-dependencies">5.1 Patch the NuttX Dependencies</a><ul></ul></li>
-<li><a href="#add-the-nuttx-arch">5.2 Add the NuttX Arch</a><ul></ul></li>
-<li><a href="#add-the-nuttx-board">5.3 Add the NuttX Board</a><ul></ul></li></ul></li>
-<li><a href="#update-the-nuttx-docs">6 Update the NuttX Docs</a><ul></ul></li>
-<li><a href="#upcoming-features">7 Upcoming Features</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-missing-mathh">9 Appendix: Missing Math.h</a><ul></ul></li>
-<li><a href="#appendix-starfive-visionfive2-software-release">10 Appendix: StarFive VisionFive2 Software Release</a><ul></ul></li>
-<li><a href="#appendix-uart-clock-for-jh7110">11 Appendix: UART Clock for JH7110</a><ul></ul></li></ul></nav><p>📝 <em>7 Aug 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#build-nuttx-for-star64" title="Build NuttX for Star64">1 Build NuttX for Star64</a><ul></ul></li>
+<li><a href="#nuttx-in-a-bootable-microsd" title="NuttX in a Bootable microSD">2 NuttX in a Bootable microSD</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-star64" title="Boot NuttX on Star64">3 Boot NuttX on Star64</a><ul></ul></li>
+<li><a href="#nuttx-startup-explained" title="NuttX Startup Explained">4 NuttX Startup Explained</a><ul></ul></li>
+<li><a href="#add-the-nuttx-arch-and-board" title="Add the NuttX Arch and Board">5 Add the NuttX Arch and Board</a><ul>
+<li><a href="#patch-the-nuttx-dependencies" title="Patch the NuttX Dependencies">5.1 Patch the NuttX Dependencies</a><ul></ul></li>
+<li><a href="#add-the-nuttx-arch" title="Add the NuttX Arch">5.2 Add the NuttX Arch</a><ul></ul></li>
+<li><a href="#add-the-nuttx-board" title="Add the NuttX Board">5.3 Add the NuttX Board</a><ul></ul></li></ul></li>
+<li><a href="#update-the-nuttx-docs" title="Update the NuttX Docs">6 Update the NuttX Docs</a><ul></ul></li>
+<li><a href="#upcoming-features" title="Upcoming Features">7 Upcoming Features</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-missing-mathh" title="Appendix: Missing Math.h">9 Appendix: Missing Math.h</a><ul></ul></li>
+<li><a href="#appendix-starfive-visionfive2-software-release" title="Appendix: StarFive VisionFive2 Software Release">10 Appendix: StarFive VisionFive2 Software Release</a><ul></ul></li>
+<li><a href="#appendix-uart-clock-for-jh7110" title="Appendix: UART Clock for JH7110">11 Appendix: UART Clock for JH7110</a><ul></ul></li></ul></nav><p>📝 <em>7 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/release-title.png" alt="Apache NuttX RTOS boots OK on Star64 JH7110 SBC" /></p>
 <p><a href="https://www.hackster.io/lupyuen/rtos-on-a-risc-v-sbc-star64-jh7110-apache-nuttx-2a7429"><em>(Also on <strong>Hackster.io</strong>)</em></a></p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) now officially supports <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer! (Pic below)</p>
@@ -125,22 +125,19 @@
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
 <p>Add the downloaded toolchain to the <strong>PATH</strong> Environment Variable.</p>
 <p>Check the RISC-V Toolchain:</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc -v
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>$ riscv64-unknown-elf-gcc -v</code></pre></div></li>
 <li>
 <p>Download the <strong>NuttX Repositories</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ mkdir nuttx
 $ cd nuttx
 $ git clone https://github.com/apache/nuttx.git nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-</code></pre></div></li>
+$ git clone https://github.com/apache/nuttx-apps apps</code></pre></div></li>
 <li>
 <p>Configure and <strong>build the NuttX Project</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx
 $ tools/configure.sh star64:nsh
 $ make
-$ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
-</code></pre></div>
+$ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin</code></pre></div>
 <p>This produces the NuttX Kernel <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/nuttx.bin"><strong>nuttx.bin</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-missing-mathh">(Missing <strong><code>math.h</code></strong>? See this)</a></p>
 </li>
@@ -151,16 +148,14 @@ $ pushd ../apps
 $ tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 $ make import
 $ popd
-$ genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
-</code></pre></div>
+$ genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;</code></pre></div>
 <p>This generates the Initial RAM Disk <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/initrd"><strong>initrd</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem">(Inside a <strong>ROM FS Filesystem</strong>)</a></p>
 </li>
 <li>
 <p>Download the Device Tree <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb"><strong>jh7110-visionfive-v2.dtb</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
 <p>Save it into the <strong>nuttx</strong> folder. Or do this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>$ wget https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/jh7110-visionfive-v2.dtb</code></pre></div>
 <p>(NuttX doesn’t need a Device Tree, but U-Boot Bootloader needs it)</p>
 </li>
 <li>
@@ -178,8 +173,7 @@ $ riscv64-unknown-elf-objdump \
 ## Dump the NSH `init` disassembly to `init.S`
 $ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
-  ../
-</code></pre></div>
+  ../</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/jh7110c-1.0.0">(See the Build Outputs)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/jh7110c-1.0.0">(See the Build Steps)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c6dc9aeec74d399029ebaf46ac16ef79">(See the Build Log)</a></p>
@@ -261,11 +255,9 @@ with the following content: <a href="https://github.com/lupyuen/nuttx-star64/blo
       loadables = &quot;ramdisk&quot;;
     };
   };
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Or do this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>$ wget https://raw.githubusercontent.com/lupyuen/nuttx-star64/main/nuttx.its</code></pre></div>
 <p>Package the NuttX Kernel, Initial RAM Disk and Device Tree into a Flat Image Tree…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
 $ brew install u-boot-tools
@@ -284,8 +276,7 @@ $ mkimage \
   starfiveu.fit
 
 ## To check FIT image
-$ mkimage -l starfiveu.fit
-</code></pre></div>
+$ mkimage -l starfiveu.fit</code></pre></div>
 <p>We’ll see the <strong>NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ mkimage -f nuttx.its -A riscv -O linux -T flat_dt starfiveu.fit
 FIT description: NuttX FIT image
@@ -299,8 +290,7 @@ Created:         Fri Aug  4 23:20:52 2023
   Architecture: RISC-V
   OS:           Linux
   Load Address: 0x40200000
-  Entry Point:  0x40200000
-</code></pre></div>
+  Entry Point:  0x40200000</code></pre></div>
 <p>Followed by the <strong>Initial RAM Disk</strong> (containing <strong>NuttX Apps</strong>)…</p>
 <div class="example-wrap"><pre class="language-text"><code> Image 1 (ramdisk)
   Description:  buildroot initramfs
@@ -313,8 +303,7 @@ Created:         Fri Aug  4 23:20:52 2023
   Load Address: 0x46100000
   Entry Point:  unavailable
   Hash algo:    sha256
-  Hash value:   44b3603e6e611ade7361a936aab09def23651399d4a0a3c284f47082d788e877
-</code></pre></div>
+  Hash value:   44b3603e6e611ade7361a936aab09def23651399d4a0a3c284f47082d788e877</code></pre></div>
 <p>Finally the <strong>Device Tree</strong> (not used by NuttX)…</p>
 <div class="example-wrap"><pre class="language-text"><code> Image 2 (fdt)
   Description:  unavailable
@@ -331,8 +320,7 @@ Created:         Fri Aug  4 23:20:52 2023
   Description:  NuttX
   Kernel:       vmlinux
   FDT:          fdt
-  Loadables:    ramdisk
-</code></pre></div>
+  Loadables:    ramdisk</code></pre></div>
 <p>This produces the Flat Image Tree <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/jh7110c-1.0.0/starfiveu.fit"><strong>starfiveu.fit</strong></a>, which we’ll copy later to a microSD Card.</p>
 <p>To prepare the microSD Card, download the microSD Image <a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>sdcard.img</strong></a> from <a href="https://github.com/starfive-tech/VisionFive2/releases"><strong>StarFive VisionFive2 Software Releases</strong></a>.</p>
 <p>Write the downloaded image to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>. <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6">(Or use <strong><code>dd</code></strong>)</a></p>
@@ -342,8 +330,7 @@ cp starfiveu.fit &quot;/Volumes/NO NAME&quot;
 
 ## For macOS: Unmount the microSD
 ## TODO: Verify that /dev/disk2 is microSD
-diskutil unmountDisk /dev/disk2
-</code></pre></div>
+diskutil unmountDisk /dev/disk2</code></pre></div>
 <p>We’re ready to boot NuttX on Star64!</p>
 <p><a href="https://u-boot.readthedocs.io/en/latest/usage/fit/source_file_format.html">(More about <strong>Flat Image Tree</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-starfive-visionfive2-software-release">(How <strong>sdcard.img</strong> was created)</a></p>
@@ -356,8 +343,7 @@ diskutil unmountDisk /dev/disk2
 <p>Insert the microSD Card into Star64 and power up Star64.
 NuttX boots on Star64 and <strong>NuttShell (nsh)</strong> appears in the Serial Console.</p>
 <p>To see the available commands in NuttShell:</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ help
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>$ help</code></pre></div>
 <p><a href="https://youtu.be/6vQ-TXXojbQ">(Watch the <strong>Demo Video</strong> on YouTube)</a></p>
 <p><a href="https://gist.github.com/lupyuen/eef8de0817ceed2072b2bacc925cdd96">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp"><strong>Booting NuttX over TFTP</strong></a> is also supported on Star64.</p>
@@ -526,8 +512,7 @@ config ARCH_CHIP
 ...
 if ARCH_CHIP_JH7110
 source &quot;arch/risc-v/src/jh7110/Kconfig&quot;
-endif
-</code></pre></div>
+endif</code></pre></div>
 <p>(Remember to indent with Tabs, not Spaces!)</p>
 <p>And we create a <strong>Kconfig for JH7110 SoC</strong>: <a href="https://github.com/apache/nuttx/pull/10069/files#diff-36a3009882ced77a24e9a7fd7ce3cf481ded4655f1adc366e7722a87ceab293b">arch/risc-v/src/jh7110/Kconfig</a></p>
 <p>Then we add the <strong>NuttX Arch Source Files</strong> for JH7110 SoC at…</p>
@@ -556,8 +541,7 @@ config ARCH_BOARD
 ...
 if ARCH_BOARD_JH7110_STAR64
 source &quot;boards/risc-v/jh7110/star64/Kconfig&quot;
-endif
-</code></pre></div>
+endif</code></pre></div>
 <p>(Remember to indent with Tabs, not Spaces!)</p>
 <p>We create a <strong>Kconfig for Star64 SBC</strong>: <a href="https://github.com/apache/nuttx/pull/10094/files#diff-76f41ff047f7cc79980a18f527aa05f1337be8416d3d946048b099743f10631c">nuttx/boards/risc-v/jh7110/star64/Kconfig</a></p>
 <p>And we add the <strong>NuttX Board Source Files</strong> for Star64 SBC at…</p>
@@ -586,14 +570,12 @@ curl -L $pr.diff \
   | grep &quot;diff --git&quot; \
   | sort \
   | cut -d&quot; &quot; -f3 \
-  | cut -c3-
-</code></pre></div>
+  | cut -c3-</code></pre></div>
 <p>Like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>boards/risc-v/jh7110/star64/include/board.h
 boards/risc-v/jh7110/star64/include/board_memorymap.h
 boards/risc-v/jh7110/star64/scripts/Make.defs
-boards/risc-v/jh7110/star64/scripts/ld.script
-</code></pre></div>
+boards/risc-v/jh7110/star64/scripts/ld.script</code></pre></div>
 <p>That we can <strong>copy to another branch</strong> in a simple script…</p>
 <div class="example-wrap"><pre class="language-bash"><code>b=$HOME/new_branch
 mkdir -p $b/boards/risc-v/jh7110/star64/include
@@ -605,8 +587,7 @@ cp $a $b/$a
 a=boards/risc-v/jh7110/star64/scripts/Make.defs
 cp $a $b/$a
 a=boards/risc-v/jh7110/star64/scripts/ld.script
-cp $a $b/$a
-</code></pre></div>
+cp $a $b/$a</code></pre></div>
 <p><em>How did we generate the NuttX Build Configuration?</em></p>
 <p>The NuttX Build Configuration for Star64 is at…</p>
 <ul>
@@ -616,8 +597,7 @@ cp $a $b/$a
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig \
   &amp;&amp; make savedefconfig \
   &amp;&amp; grep -v CONFIG_HOST defconfig \
-  &gt;boards/risc-v/jh7110/star64/configs/nsh/defconfig
-</code></pre></div>
+  &gt;boards/risc-v/jh7110/star64/configs/nsh/defconfig</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110">(How we computed the <strong>UART Clock</strong>)</a></p>
 <p>During development, we should enable additional <strong>Debug Options</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_DEBUG_ASSERTIONS=y
@@ -640,8 +620,7 @@ CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 CONFIG_DEBUG_SYMBOLS=y
-CONFIG_DEBUG_WARN=y
-</code></pre></div>
+CONFIG_DEBUG_WARN=y</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64d/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L49-L69">(Source)</a></p>
 <ul>
 <li>
@@ -671,8 +650,7 @@ StarFive JH7110
 `StarFive JH7110 &lt;https://doc-en.rvspace.org/Doc_Center/jh7110.html&gt;`_ is a 64-bit RISC-V SoC that features:
 
 - **CPU:** SiFive RISC-V U74 Application Cores (4 cores, RV64GCB) and SiFive RISC-V S7 Monitor Core (single core, RV64IMACB)
-...
-</code></pre></div>
+...</code></pre></div>
 <p>(Which goes under “RISC-V” because it’s a RISC-V SoC)</p>
 <p><a href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">(Tips for <strong>Restructured Text</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/release-doc1.png" alt="Star64 NuttX Board" /></p>
@@ -685,8 +663,7 @@ PINE64 Star64
 `Star64 &lt;https://wiki.pine64.org/wiki/STAR64&gt;`_ is a 64-bit RISC-V based
 Single Board Computer powered by StarFive JH7110 Quad-Core SiFive U74 64-Bit CPU,
 Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
-...
-</code></pre></div>
+...</code></pre></div>
 <p>On that page, remember to document the steps to <strong>Build and Boot NuttX</strong>…</p>
 <ul>
 <li>
@@ -876,8 +853,7 @@ Imagination Technology BX-4-32 GPU and supports up to 8GB 1866MHz LPDDR4 memory.
 $ make
 ./stdio/lib_dtoa_engine.c:40:10:
   fatal error: math.h: No such file or directory
-  #include &lt;math.h&gt;
-</code></pre></div>
+  #include &lt;math.h&gt;</code></pre></div>
 <p>If the NuttX Build fails due to missing <strong><code>math.h</code></strong>, install the <strong>xPack GNU RISC-V Embedded GCC Toolchain</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></li>
@@ -885,8 +861,7 @@ $ make
 <p><em>Is there another solution?</em></p>
 <p>Here’s a quick hack: Edit the file <strong><code>nuttx/.config</code></strong> and add…</p>
 <div class="example-wrap"><pre class="language-text"><code>NEED_MATH_H=y
-CONFIG_LIBM=y
-</code></pre></div>
+CONFIG_LIBM=y</code></pre></div>
 <p>This fixes the NuttX Build to use the NuttX Version of  <strong><code>math.h</code></strong>. (Instead of the System Version)</p>
 <p>NuttX Kernel will boot OK if we don’t actually use any Math Functions. But NuttX Apps will fail to load if they call Math Functions. (Like <strong><code>floor</code></strong>)</p>
 <p><a href="https://lists.apache.org/thread/1lzjphvlhr0b6b4tdq6k1l4rhy900h0z">(See this)</a></p>
@@ -903,8 +878,7 @@ CONFIG_LIBM=y
 <p><a href="https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v3.1.5/sdcard.img"><strong>SD Card Image</strong></a></p>
 <p>Login with…</p>
 <div class="example-wrap"><pre class="language-text"><code>buildroot login: root
-Password: starfive
-</code></pre></div>
+Password: starfive</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/030e4feb2fa95319290f3027032c24a8">(See the Boot Log for Star64)</a></p>
 </li>
 </ul>
@@ -924,8 +898,7 @@ Password: starfive
   --tmppath &quot;${GENIMAGE_TMP}&quot;    \
   --inputpath &quot;${INPUT_DIR}&quot;  \
   --outputpath &quot;${OUTPUT_DIR}&quot; \
-  --config genimage-vf2.cfg
-</code></pre></div>
+  --config genimage-vf2.cfg</code></pre></div>
 <p>The <strong>SD Card Partitions</strong> are defined here: <a href="https://github.com/starfive-tech/VisionFive2/blob/JH7110_VisionFive2_devel/conf/genimage-vf2.cfg">genimage-vf2.cfg</a></p>
 <div class="example-wrap"><pre class="language-text"><code>image sdcard.img {
   hdimage {
@@ -961,34 +934,28 @@ Password: starfive
     offset = 300M
     bootable = true
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Useful for creating our own SD Card Partitions!</p>
 <p>(We won’t need the <strong>spl</strong>, <strong>uboot</strong> and <strong>root</strong> partitions for NuttX)</p>
 <h1 id="appendix-uart-clock-for-jh7110"><a class="doc-anchor" href="#appendix-uart-clock-for-jh7110">§</a>11 Appendix: UART Clock for JH7110</h1>
 <p><em>How did we figure out the UART Clock for JH7110?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">(Source)</a></p>
 <p>We logged the values of DLM and DLL in the UART Driver during startup…</p>
 <div class="example-wrap"><pre class="language-c"><code>uint32_t dlm = u16550_serialin(priv, UART_DLM_OFFSET);
-uint32_t dll = u16550_serialin(priv, UART_DLL_OFFSET);
-</code></pre></div>
+uint32_t dll = u16550_serialin(priv, UART_DLL_OFFSET);</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L84-L90">(We capture DLM and DLL only when DLAB=1)</a></p>
 <p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L142-L146">(Be careful to print only when DLAB=0)</a></p>
 <p><a href="https://gist.github.com/lupyuen/4df6624c9691149099f177a18618e6a7#file-uart_16550-c-L1"><strong>According to our log</strong></a>, DLM is 0 and DLL is 13. Which means..</p>
 <div class="example-wrap"><pre class="language-text"><code>dlm =  0 = (div &gt;&gt; 8)
-dll = 13 = (div &amp; 0xff)
-</code></pre></div>
+dll = 13 = (div &amp; 0xff)</code></pre></div>
 <p>Which gives <code>div=13</code>. Now since <code>baud=115200</code> at startup…</p>
 <div class="example-wrap"><pre class="language-text"><code>div = (uartclk + (baud &lt;&lt; 3)) / (baud &lt;&lt; 4)
 13  = (uartclk + 921600) / 1843200
 uartclk = (13 * 1843200) - 921600
-        = 23040000
-</code></pre></div>
+        = 23040000</code></pre></div>
 <p>Thus <code>uartclk=23040000</code>. And that’s why we set…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_CLOCK=23040000</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/52527d9915ea0ba1d7e75bb9f2f81356bb2b8ba9/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">(Source)</a></p>
 <p><em>Shouldn’t we get the UART Clock from the SoC Datasheet?</em></p>
 <p>Yep absolutely! For JH7110 there isn’t a complete Datasheet, the docs only point to the Linux Device Tree. That’s why we derived the UART Clock ourselves.</p>

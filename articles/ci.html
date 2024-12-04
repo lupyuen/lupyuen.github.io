@@ -64,23 +64,23 @@
     
 
     <h1 class="title">Continuous Integration for Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#one-thousand-build-targets">1 One Thousand Build Targets</a><ul></ul></li>
-<li><a href="#self-hosted-runners">2 Self-Hosted Runners</a><ul></ul></li>
-<li><a href="#running-the-runners">3 Running the Runners</a><ul></ul></li>
-<li><a href="#fetch-source-on-macos-arm64">4 Fetch Source on macOS Arm64</a><ul></ul></li>
-<li><a href="#utm-emulator-for-macos-arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-phase-1-of-ci-upgrade">7 Appendix: Phase 1 of CI Upgrade</a><ul></ul></li>
-<li><a href="#appendix-phase-2-of-ci-upgrade">8 Appendix: Phase 2 of CI Upgrade</a><ul></ul></li>
-<li><a href="#appendix-phase-3-of-ci-upgrade">9 Appendix: Phase 3 of CI Upgrade</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-ubuntu-x64">10 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
-<li><a href="#appendix-fixes-for-macos-arm64">11 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
-<li><a href="#appendix-nuttx-ci-for-macos">12 Appendix: NuttX CI for macOS</a><ul></ul></li>
-<li><a href="#appendix-documentation-build-for-nuttx">13 Appendix: Documentation Build for NuttX</a><ul></ul></li>
-<li><a href="#appendix-ubuntu-x64-runner-in-action">14 Appendix: Ubuntu x64 Runner In Action</a><ul>
-<li><a href="#intel-pc-with-ubuntu-x64">14.1 Intel PC with Ubuntu x64</a><ul></ul></li>
-<li><a href="#macos-arm64-with-utm-emulator">14.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Sep 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#one-thousand-build-targets" title="One Thousand Build Targets">1 One Thousand Build Targets</a><ul></ul></li>
+<li><a href="#self-hosted-runners" title="Self-Hosted Runners">2 Self-Hosted Runners</a><ul></ul></li>
+<li><a href="#running-the-runners" title="Running the Runners">3 Running the Runners</a><ul></ul></li>
+<li><a href="#fetch-source-on-macos-arm64" title="Fetch Source on macOS Arm64">4 Fetch Source on macOS Arm64</a><ul></ul></li>
+<li><a href="#utm-emulator-for-macos-arm64" title="UTM Emulator for macOS Arm64">5 UTM Emulator for macOS Arm64</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-phase-1-of-ci-upgrade" title="Appendix: Phase 1 of CI Upgrade">7 Appendix: Phase 1 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-phase-2-of-ci-upgrade" title="Appendix: Phase 2 of CI Upgrade">8 Appendix: Phase 2 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-phase-3-of-ci-upgrade" title="Appendix: Phase 3 of CI Upgrade">9 Appendix: Phase 3 of CI Upgrade</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-ubuntu-x64" title="Appendix: Fixes for Ubuntu x64">10 Appendix: Fixes for Ubuntu x64</a><ul></ul></li>
+<li><a href="#appendix-fixes-for-macos-arm64" title="Appendix: Fixes for macOS Arm64">11 Appendix: Fixes for macOS Arm64</a><ul></ul></li>
+<li><a href="#appendix-nuttx-ci-for-macos" title="Appendix: NuttX CI for macOS">12 Appendix: NuttX CI for macOS</a><ul></ul></li>
+<li><a href="#appendix-documentation-build-for-nuttx" title="Appendix: Documentation Build for NuttX">13 Appendix: Documentation Build for NuttX</a><ul></ul></li>
+<li><a href="#appendix-ubuntu-x64-runner-in-action" title="Appendix: Ubuntu x64 Runner In Action">14 Appendix: Ubuntu x64 Runner In Action</a><ul>
+<li><a href="#intel-pc-with-ubuntu-x64" title="Intel PC with Ubuntu x64">14.1 Intel PC with Ubuntu x64</a><ul></ul></li>
+<li><a href="#macos-arm64-with-utm-emulator" title="macOS Arm64 with UTM Emulator">14.2 macOS Arm64 with UTM Emulator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Sep 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-ci.jpg" alt="Continuous Integration for Apache NuttX RTOS" /></p>
 <p><em>Why do we need Continuous Integration?</em></p>
 <p>Suppose we <a href="https://lupyuen.github.io/articles/pr"><strong>Submit a Pull Request</strong></a> for NuttX. We need to be sure that our Modified Code won’t break the Existing Builds in NuttX.</p>
@@ -109,16 +109,14 @@ Configuring...
 Enabling CONFIG_ARM_TOOLCHAIN_GNU_EABI
 Building NuttX...
 arm-none-eabi-ld: warning: /github/workspace/sources/nuttx/nuttx has a LOAD segment with RWX permissions
-Normalize pcduino-a10/nsh
-</code></pre></div>
+Normalize pcduino-a10/nsh</code></pre></div>
 <p>Followed by <strong>Many More Arm32 Builds</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Config: beaglebone-black/nsh
 Config: at32f437-mini/eth
 Config: at32f437-mini/sdcard
 Config: at32f437-mini/systemview
 Config: at32f437-mini/rtc
-...
-</code></pre></div>
+...</code></pre></div>
 <p><em>What’s in a NuttX Build?</em></p>
 <p>Each <strong>NuttX Build</strong> will be a…</p>
 <ul>
@@ -206,12 +204,10 @@ Config: at32f437-mini/rtc
 <div class="example-wrap"><pre class="language-yaml"><code>## Linux Build runs on GitHub Runners
 Linux:
   needs:   Fetch-Source
-  runs-on: ubuntu-latest
-</code></pre></div>
+  runs-on: ubuntu-latest</code></pre></div>
 <p>Change <strong><code>runs-on</code></strong> to…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  ## Linux Build now runs on Self-Hosted Runners (Linux x64)
-  runs-on: [self-hosted, Linux, X64]
-</code></pre></div>
+  runs-on: [self-hosted, Linux, X64]</code></pre></div>
 <p>Install <strong>Self-Hosted Runners</strong> for Linux x64 and macOS Arm64…</p>
 <ul>
 <li>
@@ -242,8 +238,7 @@ Enter name of work folder: &lt;Press Enter&gt;
 $ ./run.sh
 Current runner version: &#39;2.319.1&#39;
 Listening for Jobs
-Running job: Linux (arm-01)
-</code></pre></div>
+Running job: Linux (arm-01)</code></pre></div>
 <p>Beware of <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Concerns</strong></a>!</p>
 <ul>
 <li>
@@ -297,12 +292,10 @@ Running job: Linux (arm-01)
 <div class="example-wrap"><pre class="language-yaml"><code>## Fetch-Source runs on GitHub Runners
 jobs:
   Fetch-Source:
-    runs-on: ubuntu-latest
-</code></pre></div>
+    runs-on: ubuntu-latest</code></pre></div>
 <p>Change <strong><code>runs-on</code></strong> to…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    ## Fetch-Source now runs on Self-Hosted Runners (macOS Arm64)
-    runs-on: [self-hosted, macOS, ARM64]
-</code></pre></div>
+    runs-on: [self-hosted, macOS, ARM64]</code></pre></div>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343582486"><strong>According to our log</strong></a>, Fetch Source runs OK on macOS Arm64.</p>
 <p>(Completes in about a minute, 700 MB GitHub Uploads are surprisingly quick)</p>
 <p><em>How is Fetch Source used?</em></p>
@@ -353,8 +346,7 @@ Current runner version: &#39;2.319.1&#39;
 02:33:17Z: Listening for Jobs
 02:33:23Z: Running job: Linux (arm-04)
 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
-06:47:43Z: Running job: Linux (arm-01)
-</code></pre></div>
+06:47:43Z: Running job: Linux (arm-01)</code></pre></div>
 <p>During <strong>Run Builds</strong>: CPU hits 100%…</p>
 <p><img src="https://github.com/user-attachments/assets/60d4d3eb-d075-49c9-b3ac-bcfa74150668" alt="Screenshot 2024-08-29 at 4 56 06 PM" /></p>
 <p>(Don’t leave System Monitor running, it consumes quite a bit of CPU!)</p>
@@ -446,8 +438,7 @@ Current runner version: &#39;2.319.1&#39;
 
     strategy:
       matrix:
-        boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]
-</code></pre></div>
+        boards: [arm-01, arm-02, arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13, other, risc-v-01, risc-v-02, sim-01, sim-02, xtensa-01, xtensa-02]</code></pre></div>
 <p>(2) We change “Linux &gt; Strategy” to prioritise by Target Architecture, and limit to 12 concurrent jobs…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  Linux:
     needs: Fetch-Source
@@ -462,8 +453,7 @@ Current runner version: &#39;2.319.1&#39;
           arm-01, other, risc-v-01, sim-01, xtensa-01,
           arm-02, risc-v-02, sim-02, xtensa-02,
           arm-03, arm-04, arm-05, arm-06, arm-07, arm-08, arm-09, arm-10, arm-11, arm-12, arm-13
-        ]
-</code></pre></div>
+        ]</code></pre></div>
 <p>(3) So NuttX CI will initially execute 12 Build Jobs across Arm32, Arm64, RISC-V, Simulator and Xtensa. As they complete, NuttX CI will execute the remaining 8 Build Jobs (for Arm32).</p>
 <p>(4) This will extend the Overall Build Duration from <a href="https://github.com/apache/nuttx/actions/runs/10817443237"><strong>2 hours</strong></a> to <a href="https://github.com/lupyuen4/ci-nuttx/actions/runs/10828246630"><strong>2.25 hours</strong></a></p>
 <p>(5) We also limit macOS Jobs to 2, Windows Jobs to 1. Here’s the <a href="https://github.com/apache/nuttx/pull/13412"><strong>Merged PR for NuttX Kernel</strong></a>. And the same for <a href="https://github.com/apache/nuttx-apps/pull/2591"><strong>NuttX Apps</strong></a>.</p>
@@ -484,8 +474,7 @@ Current runner version: &#39;2.319.1&#39;
       fail-fast: false
       max-parallel: 1
       matrix:
-        boards: [msys2]
-</code></pre></div>
+        boards: [msys2]</code></pre></div>
 <p>Read on for Phase 2…</p>
 <h1 id="appendix-phase-2-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-2-of-ci-upgrade">§</a>8 Appendix: Phase 2 of CI Upgrade</h1>
 <p><strong>UPDATE:</strong> We should also <a href="https://github.com/apache/nuttx/pull/13862"><strong>skip the Builds for Unmodified Architectures</strong></a>. And we’ll <a href="https://github.com/apache/nuttx/issues/13775"><strong>skip macos + msys2 for Simple PRs</strong></a>.</p>
@@ -516,24 +505,20 @@ cd $HOME/actions-runner
 ./run.sh
 
 ## TODO: In case of timeout after 6 hours:
-## Restart the Ubuntu Machine, because the tasks are still running in background!
-</code></pre></div>
+## Restart the Ubuntu Machine, because the tasks are still running in background!</code></pre></div>
 <p><em>Why Docker Engine? Not Podman Docker?</em></p>
 <p>Podman Docker on Linux x64 <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677">fails with this error</a>. Might be a <a href="https://github.com/containers/podman/discussions/14238">problem with Podman</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Writing manifest to image destination
-Error: statfs /var/run/docker.sock: permission denied
-</code></pre></div>
+Error: statfs /var/run/docker.sock: permission denied</code></pre></div>
 <p>Docker Engine <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29344966455">fails with a similar error</a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post &quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=ghcr.io%2Fapache%2Fnuttx%2Fapache-nuttx-ci-linux&amp;tag=latest&quot;: dial unix /var/run/docker.sock: connect: permission denied</code></pre></div>
 <p>That’s why we apply <a href="https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue">this Docker Fix</a>.</p>
 <h1 id="appendix-fixes-for-macos-arm64"><a class="doc-anchor" href="#appendix-fixes-for-macos-arm64">§</a>11 Appendix: Fixes for macOS Arm64</h1>
 <p>To run the Self-Hosted Runners on macOS Arm64, we need these fixes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo mkdir /Users/runner
 sudo chown $USER /Users/runner
 sudo chgrp staff /Users/runner
-ls -ld /Users/runner
-</code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>12 Appendix: NuttX CI for macOS</h1>
+ls -ld /Users/runner</code></pre></div><h1 id="appendix-nuttx-ci-for-macos"><a class="doc-anchor" href="#appendix-nuttx-ci-for-macos">§</a>12 Appendix: NuttX CI for macOS</h1>
 <p>We have challenges running NuttX CI on macOS Arm64…</p>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/build.yml"><code>Build macOS (macos / sim-01 / sim-02)</code></a> on macOS Arm64: <code>setup-python</code> will <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440434/job/29343630883">hang because it’s prompting for password</a>. So we comment out <code>setup-python</code>.</p>
 <div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
@@ -545,20 +530,17 @@ Extract downloaded archive
 /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
 Execute installation script
 Check if Python hostedtoolcache folder exist...
-Install Python binaries from prebuilt package
-</code></pre></div>
+Install Python binaries from prebuilt package</code></pre></div>
 <p>Then it fails while <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10591125185/job/29349061179">downloading the toolchain</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>+ wget --quiet https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
 + xz -d arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz
-xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input
-</code></pre></div>
+xz: arm-gnu-toolchain-13.2.rel1-darwin-x86_64-arm-none-eabi.tar.xz: Unexpected end of input</code></pre></div>
 <p>Retry and it <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10594022857/job/29359739769">fails at objcopy sigh</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>+ rm -f /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
 + ln -s /usr/local/opt/binutils/bin/objcopy /Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/tools/bintools/bin/objcopy
 + command objcopy --version
 + objcopy --version
-/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found
-</code></pre></div>
+/Users/luppy/actions-runner3/_work/runner-nuttx/runner-nuttx/sources/nuttx/tools/ci/platforms/darwin.sh: line 93: objcopy: command not found</code></pre></div>
 <p><strong>TODO:</strong> Do we change the toolchain from x64 to Arm64?</p>
 <h1 id="appendix-documentation-build-for-nuttx"><a class="doc-anchor" href="#appendix-documentation-build-for-nuttx">§</a>13 Appendix: Documentation Build for NuttX</h1>
 <p><em>Our Self-Hosted Runners: Do they work for Documentation Build?</em></p>
@@ -574,8 +556,7 @@ Extract downloaded archive
 /usr/bin/tar xz -C /Users/luppy/actions-runner2/_work/_temp/2e[13](https://github.com/lupyuen3/runner-nuttx/actions/runs/10589440489/job/29343575677#step:3:14)8b05-b7c9-4759-956a-7283af148721 -f /Users/luppy/actions-runner2/_work/_temp/792ffa3a-a28f-4443-91c8-0d81f55e422f
 Execute installation script
 Check if Python hostedtoolcache folder exist...
-Install Python binaries from prebuilt package
-</code></pre></div>
+Install Python binaries from prebuilt package</code></pre></div>
 <p>And it won’t work on macOS because it needs <code>apt</code>: <a href="https://github.com/lupyuen3/runner-nuttx/blob/master/.github/workflows/doc.yml#L34-L40">workflows/doc.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Install LaTeX packages
       run: |
@@ -583,19 +564,16 @@ Install Python binaries from prebuilt package
         sudo apt-get install -y \
           texlive-latex-recommended texlive-fonts-recommended \
           texlive-latex-base texlive-latex-extra latexmk texlive-luatex \
-          fonts-freefont-otf xindy
-</code></pre></div></li>
+          fonts-freefont-otf xindy</code></pre></div></li>
 <li>
 <p><a href="https://github.com/lupyuen3/runner-nuttx/actions/workflows/doc.yml"><code>Documentation</code></a> on Linux Arm64:  <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289">Fails at setup-python</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Run actions/setup-python@v5
 Installed versions
 Version 3.[8](https://github.com/lupyuen3/runner-nuttx/actions/runs/10590973119/job/29347607289#step:3:9) was not found in the local cache
 Error: The version &#39;3.8&#39; with architecture &#39;arm64&#39; was not found for Debian 12.
-The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
-</code></pre></div>
+The list of all available versions can be found here: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json</code></pre></div>
 <p>So we comment out <code>setup-python</code>. Then it fails with <a href="https://github.com/lupyuen3/runner-nuttx/actions/runs/10593895809/job/29356477035">pip3 not found</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>pip3: command not found
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pip3: command not found</code></pre></div>
 <p><strong>TODO:</strong> Switch to pipenv</p>
 </li>
 <li>
@@ -605,8 +583,7 @@ Temporarily overriding HOME=&#39;/home/luppy/actions-runner/_work/_temp/8c370e2f
 Adding repository directory to the temporary git global config as a safe directory
 /usr/bin/git config --global --add safe.directory /home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx
 Deleting the contents of &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx&#39;
-Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;
-</code></pre></div>
+Error: File was unable to be removed Error: EACCES: permission denied, rmdir &#39;/home/luppy/actions-runner/_work/runner-nuttx/runner-nuttx/buildartifacts/at32f437-mini&#39;</code></pre></div>
 <p><strong>TODO:</strong> Check the rmdir directory</p>
 </li>
 </ul>
@@ -662,8 +639,7 @@ tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M  8.2k  5.3M   1% /run/lock
 efivarfs        263k   57k  201k  23% /sys/firmware/efi/efivars
 /dev/sda1       1.2G  6.5M  1.2G   1% /boot/efi
-tmpfs           410M  115k  410M   1% /run/user/1000
-</code></pre></div>
+tmpfs           410M  115k  410M   1% /run/user/1000</code></pre></div>
 <p>During <code>Download Source Artifact</code>: GitHub seems to be throttling the download (total 700 MB over 25 mins)</p>
 <p><img src="https://github.com/user-attachments/assets/585bc261-bc39-4be4-8515-85894254aace" alt="Screenshot 2024-08-29 at 2 09 11 PM" /></p>
 <p>During <code>Run Builds</code>: CPU hits 100%</p>
@@ -693,8 +669,7 @@ Current runner version: &#39;2.319.1&#39;
 2024-08-30 02:33:17Z: Listening for Jobs
 2024-08-30 02:33:23Z: Running job: Linux (arm-04)
 2024-08-30 06:47:38Z: Job Linux (arm-04) completed with result: Succeeded
-2024-08-30 06:47:43Z: Running job: Linux (arm-01)
-</code></pre></div>
+2024-08-30 06:47:43Z: Running job: Linux (arm-01)</code></pre></div>
 <p>Here are the Runner Options:</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ./run.sh --help
 Commands:
@@ -733,8 +708,7 @@ Examples:
  Configure a runner non-interactively with three extra labels:
   ./config.sh --unattended --url &lt;url&gt; --token &lt;token&gt; --labels L1,L2,L3
 Runner listener exit with 0 return code, stop the service, no retry needed.
-Exiting runner...
-</code></pre></div>
+Exiting runner...</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
