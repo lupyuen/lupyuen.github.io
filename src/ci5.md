@@ -1,6 +1,6 @@
 # macOS Build Farm for Apache NuttX RTOS (Apple Silicon)
 
-📝 _24 Dec 2024_
+📝 _8 Dec 2024_
 
 ![macOS Build Farm for Apache NuttX RTOS (Apple Silicon)](https://lupyuen.github.io/images/ci5-title.png)
 
@@ -21,9 +21,9 @@ cd nuttx-build-farm
 
 In this article, we explain...
 
-- How we __Build Anything__ on macOS
+- How we __Build Anything__ on macOS Arm64
 
-- By patching the __NuttX CI Script__
+- By patching the __NuttX CI Script__ for macOS
 
 - Which also becomes our __macOS Build Farm__
 
