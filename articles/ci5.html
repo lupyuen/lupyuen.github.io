@@ -64,15 +64,15 @@
     
 
     <h1 class="title">macOS Build Farm for Apache NuttX RTOS (Apple Silicon)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#fix-the-path" title="Fix the PATH!">1 Fix the PATH!</a><ul></ul></li>
-<li><a href="#build-anything-on-macos" title="Build Anything on macOS">2 Build Anything on macOS</a><ul></ul></li>
-<li><a href="#patch-the-ci-script" title="Patch the CI Script">3 Patch the CI Script</a><ul></ul></li>
-<li><a href="#except-these-targets" title="Except These Targets">4 Except These Targets</a><ul></ul></li>
-<li><a href="#macos-build-farm" title="macOS Build Farm">5 macOS Build Farm</a><ul></ul></li>
-<li><a href="#mac-gets-smokin-hot" title="Mac Gets Smokin’ Hot">6 Mac Gets Smokin’ Hot</a><ul></ul></li>
-<li><a href="#macos-reconsidered" title="macOS Reconsidered">7 macOS Reconsidered</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#fix-the-path">1 Fix the PATH!</a><ul></ul></li>
+<li><a href="#build-anything-on-macos">2 Build Anything on macOS</a><ul></ul></li>
+<li><a href="#patch-the-ci-script">3 Patch the CI Script</a><ul></ul></li>
+<li><a href="#except-these-targets">4 Except These Targets</a><ul></ul></li>
+<li><a href="#macos-build-farm">5 macOS Build Farm</a><ul></ul></li>
+<li><a href="#mac-gets-smokin-hot">6 Mac Gets Smokin’ Hot</a><ul></ul></li>
+<li><a href="#macos-reconsidered">7 macOS Reconsidered</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="macOS Build Farm for Apache NuttX RTOS (Apple Silicon)" /></p>
 <p><strong>Folks on macOS:</strong> Compiling <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> used to be so tiresome. Not any more! <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build Anything on Apple Silicon macOS:
@@ -84,7 +84,8 @@ cd nuttx-build-farm
 ./run-build-macos.sh esp32s3-devkit:nsh
 
 ## NuttX Executable will be at
-## /tmp/run-build-macos/nuttx</code></pre></div>
+## /tmp/run-build-macos/nuttx
+</code></pre></div>
 <p>TODO</p>
 <ul>
 <li>
@@ -116,10 +117,12 @@ export PATH=$(
 if [[ $(which ar) != &quot;/usr/bin/ar&quot; ]]; then
   echo &quot;ERROR: Expected &#39;which ar&#39; to return /usr/bin/ar, not $(which ar)&quot;
   exit 1
-fi</code></pre></div>
+fi
+</code></pre></div>
 <p>Thus we should always do the above before compiling NuttX. Otherwise we’ll see a conflict between the <a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2462583245"><strong>Homebrew and Clang Linkers</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>ld: archive member &#39;/&#39; not a mach-o file in &#39;libgp.a&#39;
-clang++: error: linker command failed with exit code 1 (use -v to see invocation)</code></pre></div>
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci5-build.png" alt="Building raspberrypi-pico:nsh on macOS" /></p>
 <h1 id="build-anything-on-macos"><a class="doc-anchor" href="#build-anything-on-macos">§</a>2 Build Anything on macOS</h1>
 <p>Earlier we talked about compiling <strong>Any NuttX Target</strong> on macOS: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh">run-build-macos.sh</a></p>
@@ -135,7 +138,8 @@ cd nuttx-build-farm
 ## /tmp/run-build-macos/nuttx
 
 ## To re-download the GCC Toolchains
-## rm -rf /tmp/run-build-macos</code></pre></div>
+## rm -rf /tmp/run-build-macos
+</code></pre></div>
 <p>And it works on <strong>Apple Silicon</strong>! M1, M2, M3, M4, …</p>
 <ul>
 <li>
@@ -215,7 +219,8 @@ pushd nuttx-patched/tools/ci
   ./cibuild.sh -i -c -A -R $target_file \
     || echo &#39;***** BUILD FAILED&#39;
 )
-popd</code></pre></div>
+popd
+</code></pre></div>
 <p><em>What is patch-ci-macos.sh?</em></p>
 <p><strong>To run NuttX CI Locally:</strong> We made Minor Tweaks. Somehow this Python Environment runs OK at <strong>GitHub Actions</strong>: <a href="https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh#L209-L250">darwin_arm64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Original Python Environment:
@@ -223,13 +228,15 @@ popd</code></pre></div>
 python_tools() { ...
   python3 \
     -m venv \
-    --system-site-packages /opt/homebrew ...</code></pre></div>
+    --system-site-packages /opt/homebrew ...
+</code></pre></div>
 <p>But it doesn’t work locally. Hence we patch <a href="https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh"><em>darwin_arm64.sh</em></a> to <strong>Run Locally</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/patch-ci-macos.sh#L52-L75">patch-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Modified Python Environment:
 ## For Local macOS
 python_tools() {
   python3 -m venv .venv
-  source .venv/bin/activate</code></pre></div>
+  source .venv/bin/activate
+</code></pre></div>
 <p><em>Why the “uncommitted darwin_arm64.sh warning”?</em></p>
 <p>Remember we just patched <em>darwin_arm64.sh</em>? NuttX CI is super picky about <strong>Modified Files</strong>, it will warn us because we changed <em>darwin_arm64.sh</em>.</p>
 <p><strong>Our Workaround:</strong> We copy the modified <em>nuttx</em> folder to <em>nuttx-patched</em>. Then we run NuttX CI from <em>nuttx-patched</em> folder: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L89-L134">run-build-macos.sh</a></p>
@@ -257,8 +264,9 @@ chmod +x $file
 ## Run the NuttX CI Build in &quot;nuttx-patched&quot;
 pushd nuttx-patched/tools/ci
 ./cibuild.sh -i -c -A -R $target_file
-...</code></pre></div>
-<p>TODO: Pic of sim:nsh</p>
+...
+</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/ci5-simnsh.png" alt="macOS won’t compile sim:nsh" /></p>
 <h1 id="except-these-targets"><a class="doc-anchor" href="#except-these-targets">§</a>4 Except These Targets</h1>
 <p><em>Awesome! We can compile Everything NuttX on macOS Arm64?</em></p>
 <p>Erm sorry not quite. These NuttX Targets <strong>won’t compile on macOS</strong>…</p>
@@ -272,7 +280,7 @@ pushd nuttx-patched/tools/ci
 <tr><td style="text-align: left"><strong>x86_64-01</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/2771ee11a07f0a33bf0c5d8ef2e5db5f"><em>qemu-intel64 : <br> jumbo</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
-<tr><td style="text-align: left"><strong>Clang Targets</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544"><em>Clang Targets</em></a></td><td style="text-align: left"><em>clang++: configuration file cannot be found</em></td></tr>
+<tr><td style="text-align: left"><strong>Clang Groups</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544"><em>Clang Targets</em></a></td><td style="text-align: left"><em>clang++: configuration file cannot be found</em></td></tr>
 </tbody></table>
 </div></span>
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
@@ -299,7 +307,8 @@ cd nuttx-build-farm
 
 ## For Testing:
 ## Run One Single NuttX CI Job on macOS
-## ./run-job-macos.sh risc-v-01</code></pre></div>
+## ./run-job-macos.sh risc-v-01
+</code></pre></div>
 <p>(And please tell me your <strong>Gist User ID</strong>)</p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139">run-ci-macos.sh</a></p>
@@ -336,7 +345,8 @@ function run_job {
     $script_option \
     $script_dir/run-job-macos.sh $job
   popd
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets">(<strong>Some Target Groups</strong> won’t compile)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55">(<strong>clean_log</strong> removes Control Chars)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69">(<strong>find_messages</strong> searches for Errors)</a></p>
@@ -382,7 +392,8 @@ pushd nuttx-patched/tools/ci
   ./cibuild.sh -i -c -A -R testlist/$job.dat \
     || echo &#39;***** BUILD FAILED&#39;
 )
-popd</code></pre></div>
+popd
+</code></pre></div>
 <p>Now we can cook some NuttX on macOS…</p>
 <p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="Mac Mini will get (nearly) Boiling Hot (90 deg C) when running the NuttX Build Farm" /></p>
 <h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
@@ -427,7 +438,8 @@ popd</code></pre></div>
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
 $ ./run-build-macos.sh sim:nsh
-clang: error: invalid argument &#39;medium&#39; to -mcmodel=</code></pre></div>
+clang: error: invalid argument &#39;medium&#39; to -mcmodel=
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903">(It was <strong>Previously Working!</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Build Farm for Apache NuttX RTOS" /></p>

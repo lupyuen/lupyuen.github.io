@@ -62,14 +62,14 @@
     
 
     <h1 class="title">Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#send-everything-twice" title="Send Everything Twice">1 Send Everything Twice</a><ul></ul></li>
-<li><a href="#no-more-timeouts" title="No More Timeouts!">2 No More Timeouts!</a><ul></ul></li>
-<li><a href="#anyone-else-seeing-this" title="Anyone Else Seeing This?">3 Anyone Else Seeing This?</a><ul></ul></li>
-<li><a href="#reduce-tftp-timeout-duration" title="Reduce TFTP Timeout Duration">4 Reduce TFTP Timeout Duration</a><ul></ul></li>
-<li><a href="#throttle-tftp-server" title="Throttle TFTP Server">5 Throttle TFTP Server</a><ul></ul></li>
-<li><a href="#all-things-considered" title="All Things Considered">6 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#send-everything-twice">1 Send Everything Twice</a><ul></ul></li>
+<li><a href="#no-more-timeouts">2 No More Timeouts!</a><ul></ul></li>
+<li><a href="#anyone-else-seeing-this">3 Anyone Else Seeing This?</a><ul></ul></li>
+<li><a href="#reduce-tftp-timeout-duration">4 Reduce TFTP Timeout Duration</a><ul></ul></li>
+<li><a href="#throttle-tftp-server">5 Throttle TFTP Server</a><ul></ul></li>
+<li><a href="#all-things-considered">6 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> RISC-V Single-Board Computer. (Pic below)</p>
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC, same as the VisionFive2 SBC)</p>
@@ -80,7 +80,8 @@
 . #####T ##############################
 . ######################T #############
 . ###################T T ##############
-. 48.8 KiB/s</code></pre></div>
+. 48.8 KiB/s
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(Source)</a></p>
 <p>This makes NuttX Testing super slow… Our SBC takes <strong>4 minutes to boot</strong> over the Wired Local Network!</p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the Demo on YouTube)</a></p>
@@ -184,7 +185,8 @@ sudo --preserve-env \
 ## TODO: Change `initrd` to a file in your TFTP Folder
 curl -v \
   --output initrd \
-  tftp://192.168.x.x/initrd</code></pre></div>
+  tftp://192.168.x.x/initrd
+</code></pre></div>
 <p><em>Won’t the extra Data Packet confuse the TFTP Client?</em></p>
 <p>That’s perfectly OK because the <strong>TFTP Block Number</strong> (sequence number) is encoded inside the UDP Data Packet.</p>
 <p>The TFTP Client (like <strong><code>curl</code></strong>) will do the right thing and drop the <strong>Duplicate Data Packets</strong>…</p>
@@ -202,7 +204,8 @@ curl -v \
 * Received last DATA packet block 1 again.
 * Received last DATA packet block 2 again.
 * Received last DATA packet block 3 again.
-* Received last DATA packet block 4 again.</code></pre></div>
+* Received last DATA packet block 4 again.
+</code></pre></div>
 <p>Let’s test this with Star64 U-Boot…</p>
 <p><strong>UPDATE:</strong> <strong><code>rs-tftpd</code></strong> now supports sending <a href="https://github.com/altugbakan/rs-tftpd/issues/5"><strong>Duplicate Packets</strong>!</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `tftpd` in Rust
@@ -221,7 +224,8 @@ sudo $HOME/.cargo/bin/tftpd \
   -d &quot;$HOME/tftproot&quot;
 
 ## Or use `nohup` to keep it running continuously
-nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;</code></pre></div>
+nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
+</code></pre></div>
 <p><a href="https://github.com/altugbakan/rs-tftpd/pull/7">(See the <strong>Pull Request</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <h1 id="no-more-timeouts"><a class="doc-anchor" href="#no-more-timeouts">§</a>2 No More Timeouts!</h1>
@@ -245,7 +249,8 @@ nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quo
 . ######################T #############
 . ###################T T ##############
 . 48.8 KiB/s
-Bytes transferred = 9,231,360</code></pre></div>
+Bytes transferred = 9,231,360
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b36278130fbd281d03fc20189de5485e">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/MPBc2Qec6jo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><strong>After Fixing:</strong> TFTP Transfer Rate (for our Modified TFTP Server) is <strong>8 Mbps</strong> (with NO timeouts)</p>
@@ -256,7 +261,8 @@ Bytes transferred = 9,231,360</code></pre></div>
 . #####################################
 . #####################################
 . 1.1 MiB/s
-Bytes transferred = 9,231,360</code></pre></div>
+Bytes transferred = 9,231,360
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/19ab2e16c0c2bb46175bcd8fba7116f2">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/ABpi2ABln5o">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Yep it works: No more TFTP Timeouts!</p>
@@ -353,7 +359,8 @@ thread::sleep(millis);</code></pre></div>
 +++ send_window DELAY: block_num=2366
 +++ send_window DELAY: block_num=2755
 +++ send_window DELAY: block_num=5012
-Sent initrd</code></pre></div>
+Sent initrd
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/d7a699f7f206121ba392dd8f864f2bc386dfea27/src/worker.rs#L275-L295">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/rs-tftpd-timeout/blob/52ee5a9b3ddcb4972578141c0479ee172c46e6c0/src/worker.rs#L302-L308">(See the <strong>Resend Log</strong>)</a></p>
 <p>Thus throttling our TFTP Server doesn’t help.</p>
@@ -381,7 +388,8 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 9015k  100 9015k    0     0   411k      0  0:00:21  0:00:21 --:--:--  411k</code></pre></div>
+100 9015k  100 9015k    0     0   411k      0  0:00:21  0:00:21 --:--:--  411k
+</code></pre></div>
 <p>Our Wired Ethernet Network looks hunky dory, no problems here.</p>
 <p>(Our Modified TFTP Server is slower because of the 1 millisecond delay between packets. And we sent every packet twice)</p>
 <p><em>So this TFTP Timeout seems specific to JH7110 U-Boot?</em></p>

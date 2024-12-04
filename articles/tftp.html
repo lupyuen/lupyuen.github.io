@@ -64,22 +64,22 @@
     
 
     <h1 class="title">Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#boot-from-network" title="Boot From Network">1 Boot From Network</a><ul></ul></li>
-<li><a href="#install-tftp-server" title="Install TFTP Server">2 Install TFTP Server</a><ul></ul></li>
-<li><a href="#copy-kernel-to-tftp-server" title="Copy Kernel to TFTP Server">3 Copy Kernel to TFTP Server</a><ul></ul></li>
-<li><a href="#test-u-boot-with-tftp" title="Test U-Boot with TFTP">4 Test U-Boot with TFTP</a><ul></ul></li>
-<li><a href="#configure-u-boot-for-tftp" title="Configure U-Boot for TFTP">5 Configure U-Boot for TFTP</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-boot-script-for-u-boot-bootloader" title="Appendix: Boot Script for U-Boot Bootloader">7 Appendix: Boot Script for U-Boot Bootloader</a><ul>
-<li><a href="#boot-from-mmc0" title="Boot from MMC0">7.1 Boot from MMC0</a><ul></ul></li>
-<li><a href="#boot-from-dhcp" title="Boot from DHCP">7.2 Boot from DHCP</a><ul></ul></li></ul></li>
-<li><a href="#appendix-commands-for-u-boot-bootloader" title="Appendix: Commands for U-Boot Bootloader">8 Appendix: Commands for U-Boot Bootloader</a><ul>
-<li><a href="#dhcp-command" title="dhcp Command">8.1 dhcp Command</a><ul></ul></li>
-<li><a href="#tftpboot-command" title="tftpboot Command">8.2 tftpboot Command</a><ul></ul></li>
-<li><a href="#booti-command" title="booti Command">8.3 booti Command</a><ul></ul></li>
-<li><a href="#bootefi-command" title="bootefi Command">8.4 bootefi Command</a><ul></ul></li>
-<li><a href="#fdt-command" title="fdt Command">8.5 fdt Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>13 Jul 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#boot-from-network">1 Boot From Network</a><ul></ul></li>
+<li><a href="#install-tftp-server">2 Install TFTP Server</a><ul></ul></li>
+<li><a href="#copy-kernel-to-tftp-server">3 Copy Kernel to TFTP Server</a><ul></ul></li>
+<li><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a><ul></ul></li>
+<li><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-boot-script-for-u-boot-bootloader">7 Appendix: Boot Script for U-Boot Bootloader</a><ul>
+<li><a href="#boot-from-mmc0">7.1 Boot from MMC0</a><ul></ul></li>
+<li><a href="#boot-from-dhcp">7.2 Boot from DHCP</a><ul></ul></li></ul></li>
+<li><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a><ul>
+<li><a href="#dhcp-command">8.1 dhcp Command</a><ul></ul></li>
+<li><a href="#tftpboot-command">8.2 tftpboot Command</a><ul></ul></li>
+<li><a href="#booti-command">8.3 booti Command</a><ul></ul></li>
+<li><a href="#bootefi-command">8.4 bootefi Command</a><ul></ul></li>
+<li><a href="#fdt-command">8.5 fdt Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>13 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, <a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>again and again and again</strong></a>!</p>
@@ -153,7 +153,8 @@ sudo $HOME/.cargo/bin/tftpd \
   -d &quot;$HOME/tftproot&quot;
 
 ## Or use `nohup` to keep it running continuously
-nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;</code></pre></div>
+nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp2#send-everything-twice">(<strong><code>duplicate-packets</code></strong> is needed to prevent TFTP Timeouts)</a></p>
 <p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(<strong><code>xinetd</code> + <code>tftpd</code></strong> might cause TFTP Timeouts)</a></p>
 <p>(<a href="https://crates.io/crates/tftp_server"><strong><code>tftp_server</code></strong></a> won’t work, it only supports localhost)</p>
@@ -164,7 +165,8 @@ nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quo
 ## Sending a.txt to 127.0.0.1:57125
 ##   Sent a.txt to 127.0.0.1:57125
 ## Sending a.txt to 192.168.x.x:33499
-##   Sent a.txt to 192.168.x.x:33499</code></pre></div>
+##   Sent a.txt to 192.168.x.x:33499
+</code></pre></div>
 <p>Let’s <strong>test the server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create a Test File for TFTP
 echo Test123 &gt;$HOME/tftproot/a.txt
@@ -172,7 +174,8 @@ echo Test123 &gt;$HOME/tftproot/a.txt
 ## Fetch the Test File over TFTP.
 ## TODO: Change `192.168.x.x` to our Computer&#39;s IP Address
 curl -v tftp://127.0.0.1/a.txt
-curl -v tftp://192.168.x.x/a.txt</code></pre></div>
+curl -v tftp://192.168.x.x/a.txt
+</code></pre></div>
 <p>(<strong><code>localhost</code></strong> won’t work because of IPv6, I think)</p>
 <p>We should see our <strong>Test File</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>* Trying 192.168.x.x:69...
@@ -181,13 +184,15 @@ curl -v tftp://192.168.x.x/a.txt</code></pre></div>
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * set timeouts for state 0; Total  300000, retry 6 maxtry 50
 ...
-Test123</code></pre></div>
+Test123
+</code></pre></div>
 <p>(Ignore the warnings)</p>
 <p>Our TFTP Server is up! In olden days we would actually do this…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tftp 127.0.0.1
 tftp&gt; get a.txt
 Received 8 bytes in 0.0 seconds
-tftp&gt; quit</code></pre></div>
+tftp&gt; quit
+</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">(Just like <strong>FTP</strong>)</a></p>
 <p>But <strong><code>curl</code></strong> is so much simpler!</p>
 <p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian MicroSD for Star64" /></p>
@@ -207,7 +212,8 @@ cp nuttx.bin $HOME/tftproot/Image
 curl -v tftp://192.168.x.x/Image
 
 ## We should see:
-## `Warning: Binary output can mess up your terminal`</code></pre></div>
+## `Warning: Binary output can mess up your terminal`
+</code></pre></div>
 <p><strong>For Linux:</strong> Copy the Linux Kernel File <strong><code>Image</code></strong> to our TFTP Folder.</p>
 <p><em>What about the Linux Device Tree?</em></p>
 <p>(NuttX won’t need it, but let’s do it anyway)</p>
@@ -228,7 +234,8 @@ cp jh7110-star64-pine64.dtb $HOME/tftproot
 curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
 ## We should see:
-## `Warning: Binary output can mess up your terminal`</code></pre></div>
+## `Warning: Binary output can mess up your terminal`
+</code></pre></div>
 <p><strong>For Linux:</strong> Just copy the Linux Device Tree <strong>jh7110-star64-pine64.dtb</strong> to our TFTP Folder.</p>
 <p>Finally we copy the <strong>Initial RAM Disk “initrd”</strong> (NuttX or Linux) to our TFTP Folder…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy Initial RAM Disk to TFTP Folder
@@ -239,7 +246,8 @@ cp initrd $HOME/tftproot
 curl -v tftp://192.168.x.x/initrd
 
 ## We should see:
-## `Warning: Binary output can mess up your terminal`</code></pre></div>
+## `Warning: Binary output can mess up your terminal`
+</code></pre></div>
 <p>Let’s test this…</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
 <h1 id="test-u-boot-with-tftp"><a class="doc-anchor" href="#test-u-boot-with-tftp">§</a>4 Test U-Boot with TFTP</h1>
@@ -260,7 +268,8 @@ Load address: 0x43900000
 Load address: 0x40200000
   TFTP server died; starting again
 
-StarFive #</code></pre></div>
+StarFive #
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
 <p>That’s because we don’t have a <a href="https://en.wikipedia.org/wiki/Bootstrap_Protocol"><strong>BOOTP Server</strong></a> or a <a href="https://lupyuen.github.io/articles/tftp#boot-from-dhcp"><strong>DHCP+TFTP Combo Server</strong></a>.</p>
 <p>Since we have a <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>Dedicated TFTP Server</strong></a>, we run these <strong>U-Boot Commands</strong> at the prompt…</p>
@@ -295,7 +304,8 @@ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 ## ramdisk_addr_r=0x46100000
 ## ramdisk_size=0x1000000
 ## fdt_addr_r=0x46000000
-booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}</code></pre></div>
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
@@ -349,14 +359,16 @@ Bytes transferred = 8020992 (7a6400 hex)
 $ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
-Using Device Tree in place at 0000000046000000, end 000000004600f43a</code></pre></div>
+Using Device Tree in place at 0000000046000000, end 000000004600f43a
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9325fee202d38a671cd0eb3cfd35a1db">(Source)</a></p>
 <p>(It might load quicker if we connect our Computer to the <strong>Ethernet Wired Network</strong>, instead of WiFi)</p>
 <p>And NuttX (or Linux) boots magically over the Network, no more MicroSD yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-123067DFAGHBC</code></pre></div>
+123067DFAGHBC
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
 <h1 id="configure-u-boot-for-tftp"><a class="doc-anchor" href="#configure-u-boot-for-tftp">§</a>5 Configure U-Boot for TFTP</h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
@@ -398,7 +410,8 @@ setenv boot_targets &quot;$boot_targets tftp&quot;
 ## Should show `mmc0 dhcp  tftp`
 printenv boot_targets
 ## Save it for future reboots
-saveenv</code></pre></div>
+saveenv
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot">(See the <strong>Network Boot Log</strong>)</a></p>
 <p>Now Star64 will <strong>Auto-Boot from the Network</strong>, every time we power up! (Pic above)</p>
@@ -411,15 +424,18 @@ setenv boot_targets &quot;$orig_boot_targets&quot;
 ## Should show `mmc0 dhcp`
 printenv boot_targets
 ## Save it for future reboots
-saveenv</code></pre></div>
+saveenv
+</code></pre></div>
 <p><em>What’s boot_targets?</em></p>
 <p>U-Boot Bootloader defines a list of <strong>Targets for Auto-Booting</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## On Power Up: Try booting from MicroSD,
 ## then from DHCP+TFTP Combo Server
-boot_targets=mmc0 dhcp </code></pre></div>
+boot_targets=mmc0 dhcp 
+</code></pre></div>
 <p>We added <strong>TFTP to the Boot Targets</strong> (pardon the space)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added TFTP to the Boot Targets
-boot_targets=mmc0 dhcp  tftp</code></pre></div>
+boot_targets=mmc0 dhcp  tftp
+</code></pre></div>
 <p>Thus U-Boot will execute our TFTP Boot Script <strong>bootcmd_tftp</strong> at startup.</p>
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(As explained here)</a></p>
 <p><em>What’s bootcmd_tftp?</em></p>
@@ -454,7 +470,8 @@ then
       fi;
     fi;
   fi;
-fi</code></pre></div>
+fi
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p>Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.</p>
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(As explained here)</a></p>
@@ -463,7 +480,8 @@ fi</code></pre></div>
 <p>Yeah <strong>frequent TFTP Timeouts</strong> (“T” below) are affecting our NuttX Testing on Star64 JH7110 SBC.  Effective Transfer Rate is only 430 kbps!</p>
 <div class="example-wrap"><pre class="language-text"><code>Loading: . ##############T ###################################################
 . ####################T #########T ####################################
-. 53.7 KiB/s</code></pre></div>
+. 53.7 KiB/s
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9bdb1f5478318631d0480f03f6041d83#file-jh7110-nuttx-math-log-L140-L173">(Source)</a></p>
 <p>Check out the solution here…</p>
 <ul>
@@ -532,7 +550,8 @@ run boot2;
 
 ## For every Boot Target:
 ## Run the Boot Command 
-run distro_bootcmd</code></pre></div>
+run distro_bootcmd
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 <p>Which executes <strong>distro_bootcmd</strong></p>
 </li>
@@ -543,12 +562,14 @@ for target in ${boot_targets};
 
   ## Run the Boot Command for the Target
   do run bootcmd_${target};
-done</code></pre></div>
+done
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 </li>
 <li>
 <p>Previously we changed <strong>boot_targets</strong> to…</p>
-<div class="example-wrap"><pre class="language-text"><code>mmc0 dhcp  tftp</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>mmc0 dhcp  tftp
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp">(Source)</a></p>
 <p>Which means U-Boot will execute this sequence…</p>
 <ul>
@@ -580,7 +601,8 @@ done</code></pre></div>
 devnum=0;
 
 ## Boot from MMC
-run mmc_boot</code></pre></div>
+run mmc_boot
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 <p><strong>mmc_boot</strong> is…</p>
 <div class="example-wrap"><pre class="language-bash"><code>if mmc dev ${devnum};
@@ -602,7 +624,8 @@ then
     echo Running uenvcmd ...;
     run uenvcmd;
   fi;
-fi</code></pre></div>
+fi
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 <h2 id="boot-from-dhcp"><a class="doc-anchor" href="#boot-from-dhcp">§</a>7.2 Boot from DHCP</h2>
 <p><em>What about bootcmd_dhcp?</em></p>
@@ -659,7 +682,8 @@ setenv bootp_vci ${efi_old_vci};
 setenv bootp_arch ${efi_old_arch};
 setenv efi_fdtfile;
 setenv efi_old_arch;
-setenv efi_old_vci;</code></pre></div>
+setenv efi_old_vci;
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#dhcp-command">(<strong>dhcp</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
@@ -741,7 +765,8 @@ exposed as EFI configuration table.</p>
 Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
-No UEFI binary known at 0x40200000</code></pre></div>
+No UEFI binary known at 0x40200000
+</code></pre></div>
 <p>That’s why we call <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>booti</strong></a> to boot NuttX.</p>
 <h2 id="fdt-command"><a class="doc-anchor" href="#fdt-command">§</a>8.5 fdt Command</h2>
 <p><strong>fdt</strong> - flattened device tree utility commands</p>

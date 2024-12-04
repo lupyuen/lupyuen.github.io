@@ -64,21 +64,21 @@
     
 
     <h1 class="title">TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#tcc-in-the-web-browser" title="TCC in the Web Browser">1 TCC in the Web Browser</a><ul></ul></li>
-<li><a href="#zig-compiles-tcc-to-webassembly" title="Zig compiles TCC to WebAssembly">2 Zig compiles TCC to WebAssembly</a><ul></ul></li>
-<li><a href="#posix-for-webassembly" title="POSIX for WebAssembly">3 POSIX for WebAssembly</a><ul></ul></li>
-<li><a href="#file-input-and-output" title="File Input and Output">4 File Input and Output</a><ul></ul></li>
-<li><a href="#fearsome-fprintf-and-friends" title="Fearsome fprintf and Friends">5 Fearsome fprintf and Friends</a><ul></ul></li>
-<li><a href="#test-with-apache-nuttx-rtos" title="Test with Apache NuttX RTOS">6 Test with Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#hello-nuttx" title="Hello NuttX!">7 Hello NuttX!</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-compile-tcc-with-zig" title="Appendix: Compile TCC with Zig">9 Appendix: Compile TCC with Zig</a><ul></ul></li>
-<li><a href="#appendix-javascript-calls-tcc" title="Appendix: JavaScript calls TCC">10 Appendix: JavaScript calls TCC</a><ul></ul></li>
-<li><a href="#appendix-pattern-matching" title="Appendix: Pattern Matching">11 Appendix: Pattern Matching</a><ul></ul></li>
-<li><a href="#appendix-nuttx-system-call" title="Appendix: NuttX System Call">12 Appendix: NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu" title="Appendix: Build NuttX for QEMU">13 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-missing-functions" title="Appendix: Missing Functions">14 Appendix: Missing Functions</a><ul></ul></li></ul></nav><p>📝 <em>4 Feb 2024</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#tcc-in-the-web-browser">1 TCC in the Web Browser</a><ul></ul></li>
+<li><a href="#zig-compiles-tcc-to-webassembly">2 Zig compiles TCC to WebAssembly</a><ul></ul></li>
+<li><a href="#posix-for-webassembly">3 POSIX for WebAssembly</a><ul></ul></li>
+<li><a href="#file-input-and-output">4 File Input and Output</a><ul></ul></li>
+<li><a href="#fearsome-fprintf-and-friends">5 Fearsome fprintf and Friends</a><ul></ul></li>
+<li><a href="#test-with-apache-nuttx-rtos">6 Test with Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#hello-nuttx">7 Hello NuttX!</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-compile-tcc-with-zig">9 Appendix: Compile TCC with Zig</a><ul></ul></li>
+<li><a href="#appendix-javascript-calls-tcc">10 Appendix: JavaScript calls TCC</a><ul></ul></li>
+<li><a href="#appendix-pattern-matching">11 Appendix: Pattern Matching</a><ul></ul></li>
+<li><a href="#appendix-nuttx-system-call">12 Appendix: NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu">13 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-missing-functions">14 Appendix: Missing Functions</a><ul></ul></li></ul></nav><p>📝 <em>4 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/tcc-title.png" alt="TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/DJMDYq52Iv8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -140,10 +140,12 @@
 int main(int argc, char *argv[]) {
   printf(&quot;Hello, World!!\n&quot;);
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Click the “<strong>Compile</strong>” button. Our Web Browser calls TCC to compile the above program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile to RISC-V ELF
-tcc -c hello.c</code></pre></div>
+tcc -c hello.c
+</code></pre></div>
 <p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a>. We inspect the Compiled Output…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly
 ## of TCC Output
@@ -179,7 +181,8 @@ main():
   30: 01813083  ld     ra, 24(sp)
   34: 01013403  ld     s0, 16(sp)
   38: 02010113  addi   sp, sp, 32
-  3c: 00008067  ret</code></pre></div>
+  3c: 00008067  ret
+</code></pre></div>
 <p>Yep the <strong>64-bit RISC-V Code</strong> looks legit! Very similar to our <a href="https://lupyuen.github.io/articles/app#inside-a-nuttx-app"><strong>NuttX App</strong></a>. (So it will probably run on NuttX)</p>
 <p>What just happened? We go behind the scenes…</p>
 <p><a href="https://gist.github.com/lupyuen/ab8febefa9c649ad7c242ee3f7aaf974">(See the <strong>Entire Disassembly</strong>)</a></p>
@@ -212,7 +215,8 @@ zig cc \
   -Wno-format-truncation \
   -Wno-stringop-truncation \
   -I. \
-  tcc.c</code></pre></div>
+  tcc.c
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/tcc.c">(See the <strong>TCC Source Code</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-compile-tcc-with-zig">(About the <strong>Zig Compiler Options</strong>)</a></p>
 <p>We link the TCC WebAssembly with our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig"><strong>Zig Wrapper</strong></a> (that exports the TCC Compiler to JavaScript)…</p>
@@ -232,7 +236,8 @@ zig build-exe \
 
 ## Test everything with Web Browser
 ## or Node.js
-node zig/test.js</code></pre></div>
+node zig/test.js
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig">(See the <strong>Zig Wrapper tcc-wasm.zig</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js">(See the <strong>Test JavaScript test.js</strong>)</a></p>
 <p><em>What’s inside our Zig Wrapper?</em></p>
@@ -282,7 +287,8 @@ pub export fn compile_program(
   size_ptr.* = write_buflen;
   @memcpy(slice[4 .. write_buflen + 4], write_buf[0..write_buflen]);
   return slice.ptr; // TODO: Deallocate this memory
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Plus a couple of Magical Bits that we’ll cover in the next section.</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-javascript-calls-tcc">(How JavaScript calls our <strong>Zig Wrapper</strong>)</a></p>
 <p><em>Zig Compiler compiles TCC without any code changes?</em></p>
@@ -334,7 +340,8 @@ pub export fn fopen(_: c_int) c_int {
   @panic(&quot;TODO: fopen&quot;);
 }
 
-// And many more functions...</code></pre></div>
+// And many more functions...
+</code></pre></div>
 <p>Some of these functions are especially troubling for WebAssembly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/tcc-posix2.jpg" alt="File Input and Output are especially troubling for WebAssembly" /></p>
@@ -367,7 +374,8 @@ export fn read(fd0: c_int, buf: [*:0]u8, nbyte: size_t) isize {
 }
 
 /// Read Buffer for read
-var read_buf: []const u8 = undefined;</code></pre></div>
+var read_buf: []const u8 = undefined;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L26-L32">(<strong>read_buf</strong> is populated at startup)</a></p>
 <p><strong>Writing the Compiled Output <code>a.out</code></strong> is just as barebones: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L128-L140">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Emulate the POSIX Function `write()`
@@ -385,7 +393,8 @@ export fn fwrite(ptr: [*:0]const u8, size: usize, nmemb: usize, stream: *FILE) u
 
 /// Write Buffer for fputc and fwrite
 var write_buf = std.mem.zeroes([8192]u8);
-var write_buflen: usize = 0;</code></pre></div>
+var write_buflen: usize = 0;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L62-L78">(<strong>write_buf</strong> will be returned to JavaScript)</a></p>
 <p><em>Can we handle Multiple Files?</em></p>
 <p>Right now we’re trying to embed the simple <a href="https://github.com/lupyuen/tcc-riscv32-wasm#rom-fs-filesystem-for-tcc-webassembly"><strong>ROM FS Filesystem</strong></a> into our Zig Wrapper.</p>
@@ -422,7 +431,8 @@ FormatPattern{
   // from the Varargs...
   .type0 = c_int,
   .type1 = null
-}</code></pre></div>
+}
+</code></pre></div>
 <p>This works OK (for now) because TCC Compiler only uses <strong>5 Patterns for C Format Strings</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L189-L207">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Pattern Matching for C String Formatting:
 /// We&#39;ll match these patterns when
@@ -460,7 +470,8 @@ const format_patterns = [_]FormatPattern{
     .c_spec = &quot;%s:%d&quot;, .zig_spec = &quot;{s}:{}&quot;,
     .type0  = [*:0]const u8, .type1 = c_int
   },
-};</code></pre></div>
+};
+</code></pre></div>
 <p>That’s our quick hack for <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L209-L447"><strong>fprintf and friends</strong></a>!</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching">(How we do <strong>Pattern Matching</strong>)</a></p>
 <p><em>So simple? Unbelievable!</em></p>
@@ -480,7 +491,8 @@ const format_patterns = [_]FormatPattern{
 <div class="example-wrap"><pre class="language-bash"><code>## Copy RISC-V ELF `a.out`
 ## to NuttX Apps Filesystem
 cp a.out apps/bin/
-chmod +x apps/bin/a.out</code></pre></div>
+chmod +x apps/bin/a.out
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-build-nuttx-for-qemu">(How we build <strong>NuttX for QEMU</strong>)</a></p>
 <p>Then we boot NuttX and run <strong><code>a.out</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX on QEMU 64-bit RISC-V
@@ -498,7 +510,8 @@ NuttShell (NSH) NuttX-12.4.0
 nsh&gt; a.out
 Loading /system/bin/a.out
 Exported symbol &quot;printf&quot; not found
-Failed to load program &#39;a.out&#39;</code></pre></div>
+Failed to load program &#39;a.out&#39;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#test-tcc-output-with-nuttx">(See the <strong>Complete Log</strong>)</a></p>
 <p>NuttX politely accepts the RISC-V ELF (produced by TCC). And says that <strong>printf</strong> is missing.</p>
 <p>Which makes sense: We haven’t linked our C Program with the <a href="https://github.com/lupyuen/tcc-riscv32-wasm#how-nuttx-build-links-a-nuttx-app"><strong>C Library</strong></a>!</p>
@@ -519,7 +532,8 @@ ssize_t write(
 // Register A0 is 61 (SYS_write)
 // Register A1 is the File Descriptor (1 for Standard Output)
 // Register A2 points to the String Buffer to be printed
-// Register A3 is the Buffer Length</code></pre></div>
+// Register A3 is the Buffer Length
+</code></pre></div>
 <p>That’s the same NuttX System Call that <strong>printf</strong> executes internally.</p>
 <p>Final chance to say hello to NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/tcc-ecall.png" alt="TCC WebAssembly compiles a NuttX System Call" /></p>
@@ -581,7 +595,8 @@ ssize_t write(
   // Loop Forever
   for(;;) {}
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>We copy this into our Web Browser and compile it. (Pic above)</p>
 <p><a href="https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call">(Why so complicated? <strong>Explained here</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(Caution: <strong>SYS_write 61</strong> may change)</a></p>
@@ -599,7 +614,8 @@ riscv_swint:
   A3:  0f        ## Buffer Length
 ...
 ## NuttX Kernel says hello
-Hello, World!!</code></pre></div>
+Hello, World!!
+</code></pre></div>
 <p>NuttX Kernel prints <strong>“Hello World”</strong> yay!</p>
 <p>Indeed we’ve created a C Compiler in a Web Browser, that <strong>produces proper NuttX Apps</strong>!</p>
 <p><em>OK so we can build NuttX Apps in a Web Browser… But can we run them in a Web Browser?</em></p>
@@ -695,7 +711,8 @@ zig cc ...
 
 ## Omitted: Run the `zig build-exe` command from earlier...
 ## https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly
-zig build-exe ...</code></pre></div>
+zig build-exe ...
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><em>How did we figure out the “<code>zig</code> <code>cc</code>” options?</em></p>
 <p>Earlier we saw a long list of <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Compiler Options</strong></a>…</p>
@@ -707,7 +724,8 @@ zig cc \
   -DCONFIG_TCC_CRTPREFIX=&quot;\&quot;/usr/riscv64-linux-gnu/lib\&quot;&quot; \
   -DCONFIG_TCC_LIBPATHS=&quot;\&quot;{B}:/usr/riscv64-linux-gnu/lib\&quot;&quot; \
   -DCONFIG_TCC_SYSINCLUDEPATHS=&quot;\&quot;{B}/include:/usr/riscv64-linux-gnu/include\&quot;&quot;   \
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p>We got them from “<strong><code>make</code> <code>--trace</code></strong>”, which reveals the <strong>GCC Compiler Options</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Show the GCC Options for compiling TCC
 $ make --trace cross-riscv64
@@ -731,7 +749,8 @@ gcc \
   -Wno-unused-result \
   -Wno-format-truncation \
   -Wno-stringop-truncation \
-  -I. </code></pre></div>
+  -I. 
+</code></pre></div>
 <p>And we copied above GCC Options to become our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Compiler Options</strong></a>.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tcc-zig.jpg" alt="Zig Compiler compiles TCC Compiler to WebAssembly" /></p>
@@ -756,10 +775,12 @@ simple-http-server ./docs &amp;
 
 ## Whenever we rebuild TCC WebAssembly...
 ## Copy it to the Web Server
-cp tcc-wasm.wasm docs/</code></pre></div>
+cp tcc-wasm.wasm docs/
+</code></pre></div>
 <p>Browse to this URL and our TCC WebAssembly will appear…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test TCC WebAssembly with Web Browser
-http://localhost:8000/index.html</code></pre></div>
+http://localhost:8000/index.html
+</code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="https://gist.github.com/lupyuen/5f8191d5c63b7dba030582cbe7481572">(See the <strong>JavaScript Log</strong>)</a></p>
 <p><em>How does it work?</em></p>
@@ -781,7 +802,8 @@ async function bootstrap() {
 
   // Start the Main Function
   window.requestAnimationFrame(main);
-}        </code></pre></div>
+}        
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L25-L48">(<strong>importObject</strong> exports our <strong>JavaScript Logger</strong> to Zig)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L6-L25">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
 <p>Which triggers the <strong>Main Function</strong> and calls our Zig Function <strong>compile_program</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L48-L90">tcc.js</a></p>
@@ -820,13 +842,15 @@ function main() {
 
   // Save the ELF Data to Local Storage for loading by NuttX Emulator
   localStorage.setItem(&quot;elf_data&quot;, encoded_data);
-};</code></pre></div>
+};
+</code></pre></div>
 <p>Our Main Function then downloads the <strong><code>a.out</code></strong> file returned by our Zig Function.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L90-L112">(<strong>allocateString</strong> allocates a String from Zig Memory)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/docs/tcc.js#L162-L174">(<strong>download</strong> is here)</a></p>
 <p><em>What about Node.js calling TCC WebAssembly?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test TCC WebAssembly with Node.js
-node zig/test.js</code></pre></div>
+node zig/test.js
+</code></pre></div>
 <p><strong>For Easier Testing</strong> (via Command-Line): We copied the JavaScript above into a Node.js Script: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test.js#L46-L78">test.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Allocate a String for passing the Compiler Options to Zig
 const options = [&quot;-c&quot;, &quot;hello.c&quot;];
@@ -842,7 +866,8 @@ const code_ptr = allocateString(`
 
 // Call TCC to compile a program
 const ptr = wasm.instance.exports
-  .compile_program(options_ptr, code_ptr);</code></pre></div>
+  .compile_program(options_ptr, code_ptr);
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/795327506cad9b1ee82206e614c399cd">(See the <strong>Node.js Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js">(Test Script for NuttX QEMU: <strong>test-nuttx.js</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/55a4d4cae26994aa673e6d8451716b27">(Test Log for NuttX QEMU: <strong>test-nuttx.log</strong>)</a></p>
@@ -867,7 +892,8 @@ FormatPattern{
   // from the Varargs...
   .type0 = c_int,
   .type1 = null
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L438-L446">(<strong>FormatPattern</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209">(See the <strong>Format Patterns</strong>)</a></p>
 <p>To implement this, we call <strong>comptime Functions</strong> in Zig: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L276-L327">tcc-wasm.zig</a></p>
@@ -919,7 +945,8 @@ fn format_string1(
 }
 
 // Omitted: Function `format_string2` looks similar,
-// but for 2 Varargs (instead of 1)</code></pre></div>
+// but for 2 Varargs (instead of 1)
+</code></pre></div>
 <p>The function above is called by a <strong>comptime Inline Loop</strong> that applies all the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L191-L209"><strong>Format Patterns</strong></a> that we saw earlier: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L207-L251">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Runtime Function to format a string by Pattern Matching.
 /// Return the number of bytes written to `str`, excluding terminating null.
@@ -963,7 +990,8 @@ fn format_string(
   @memcpy(str[0..len3], format[0..len3]);
   str[len3] = 0;
   return len3;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L327-L382">(<strong>format_string2</strong> is here)</a></p>
 <p>And the above function is called by <strong>fprintf and friends</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/tcc-wasm.zig#L382-L438">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Implement the POSIX Function `fprintf`
@@ -983,7 +1011,8 @@ export fn fprintf(stream: *FILE, format: [*:0]const u8, ...) c_int {
   return @intCast(len);
 }
 
-// Do the same for sprintf, snprintf, vsnprintf</code></pre></div>
+// Do the same for sprintf, snprintf, vsnprintf
+</code></pre></div>
 <p>Right now we’re doing simple <a href="https://lupyuen.github.io/articles/tcc#appendix-pattern-matching"><strong>Pattern Matching</strong></a>. But it might not be sufficient when TCC compiles Real Programs. See the updates here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/romfs#appendix-nuttx-rom-fs-driver"><strong>“Multiple Format Patterns per Format String”</strong></a></li>
@@ -1023,7 +1052,8 @@ asm volatile (
   :
   : &quot;r&quot;(r0), &quot;r&quot;(r1), &quot;r&quot;(r2), &quot;r&quot;(r3)
   : &quot;memory&quot;
-);</code></pre></div>
+);
+</code></pre></div>
 <p>Strangely TCC generates <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>mysterious RISC-V Machine Code</strong></a> that mashes up the RISC-V Registers…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>main():
 // Prepare the Stack
@@ -1058,7 +1088,8 @@ asm volatile (
 // Execute ECALL with Register A0 set to 15.
 // Nope: A0 should be 61!
   40:  00000073  ecall
-  44:  0001      nop</code></pre></div>
+  44:  0001      nop
+</code></pre></div>
 <p>Thus we <a href="https://github.com/lupyuen/tcc-riscv32-wasm#ecall-for-nuttx-system-call"><strong>hardcode Registers A0 to A3</strong></a> in RISC-V Assembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/test-nuttx.js#L55-L97">test-nuttx.js</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 61 to Register A0 (SYS_write)
 addi  a0, zero, 61
@@ -1078,7 +1109,8 @@ addi  a3, zero, 15
 ecall
 
 // NuttX needs NOP after ECALL
-.word 0x0001</code></pre></div>
+.word 0x0001
+</code></pre></div>
 <p>And it prints “Hello World”!</p>
 <p><strong>TODO:</strong> Is there a workaround? Do we paste the ECALL Assembly Code ourselves? <a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app"><strong>NuttX Libraries</strong></a> won’t link with TCC</p>
 <p><a href="https://gist.github.com/lupyuen/55a4d4cae26994aa673e6d8451716b27">(See the <strong>TCC WebAssembly Log</strong>)</a></p>
@@ -1091,7 +1123,8 @@ ecall
 // So we do this...
 
 // Add 0 to 61 and save to Register A0
-addi a0, zero, 61</code></pre></div>
+addi a0, zero, 61
+</code></pre></div>
 <p>“<strong><code>lui / addiw / slli</code></strong>” above is our expansion of “<strong><code>li a2, 0xc0101000</code></strong>”, which TCC won’t assemble…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load 0xC010_1000 to Register A2 (Buffer)
 // But TCC won&#39;t assemble `li a2, 0xc0101000`
@@ -1104,7 +1137,8 @@ lui   a2, 0xc0
 addiw a2, a2, 257
 
 // Shift Left by 12 Bits (0xC010_1000)
-slli  a2, a2, 0xc</code></pre></div>
+slli  a2, a2, 0xc
+</code></pre></div>
 <p><em>How did we figure out that the buffer is at 0xC010_1000?</em></p>
 <p>We saw this in our <a href="https://gist.github.com/lupyuen/a715e4e77c011d610d0b418e97f8bf5d#file-nuttx-tcc-app-log-L32-L42"><strong>ELF Loader Log</strong></a>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NuttShell (NSH) NuttX-12.4.0
@@ -1117,7 +1151,8 @@ Read 0 bytes from offset 224
 2. 00000000-&gt;c0101000
 Read 16 bytes from offset 224
 3. 00000000-&gt;c0101000
-4. 00000000-&gt;c0101010</code></pre></div>
+4. 00000000-&gt;c0101010
+</code></pre></div>
 <p>Which says that the NuttX ELF Loader copied 16 bytes from our NuttX App Data Section (<strong><code>.data.ro</code></strong>) to <strong><code>0xC010_1000</code></strong>.</p>
 <p>That’s all 15 bytes of <em>“Hello, World!!\n”</em>, including the terminating null.</p>
 <p>Thus our buffer in NuttX QEMU should be at <strong><code>0xC010_1000</code></strong>.</p>
@@ -1128,7 +1163,8 @@ Read 16 bytes from offset 224
 asm volatile ( ... );
 
 // Loop Forever
-for(;;) {}</code></pre></div>
+for(;;) {}
+</code></pre></div>
 <p>That’s because NuttX Apps are not supposed to <a href="https://github.com/lupyuen/tcc-riscv32-wasm#fix-missing-printf-in-nuttx-app"><strong>Return to NuttX Kernel</strong></a>.</p>
 <p>We should call the NuttX System Call <strong><code>__exit</code></strong> to terminate peacefully.</p>
 <p><img src="https://lupyuen.github.io/images/tcc-demo.png" alt="Online Demo of Apache NuttX RTOS" /></p>
@@ -1155,7 +1191,8 @@ git clone https://github.com/apache/nuttx-apps apps
 ## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
 cd nuttx
 tools/configure.sh rv-virt:knsh64
-make menuconfig</code></pre></div>
+make menuconfig
+</code></pre></div>
 <p>We use <a href="https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem"><strong>Kernel Mode</strong></a> because it allows loading of NuttX Apps as ELF Files.</p>
 <p>(Instead of Statically Linking the NuttX Apps into NuttX Kernel)</p>
 </li>
@@ -1186,7 +1223,8 @@ make -j 8 export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j 8 import
-popd</code></pre></div></li>
+popd
+</code></pre></div></li>
 </ol>
 <p>This produces the NuttX ELF Image <strong><code>nuttx</code></strong> that we may boot on QEMU RISC-V Emulator…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS: Install QEMU
@@ -1203,12 +1241,14 @@ qemu-system-riscv64 \
   -cpu rv64 \
   -bios none \
   -kernel nuttx \
-  -nographic</code></pre></div>
+  -nographic
+</code></pre></div>
 <p>NuttX Apps are located in <strong><code>apps/bin</code></strong>.</p>
 <p>We may copy our <strong>RISC-V ELF <code>a.out</code></strong> to that folder and run it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; a.out
-Hello, World!!</code></pre></div>
+Hello, World!!
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tcc-posix.jpg" alt="POSIX Functions aren’t supported for TCC in WebAssembly" /></p>
 <h1 id="appendix-missing-functions"><a class="doc-anchor" href="#appendix-missing-functions">§</a>14 Appendix: Missing Functions</h1>
 <p>Remember we said that POSIX Functions aren’t supported in WebAssembly? (Pic above)</p>
@@ -1228,7 +1268,8 @@ Import:
  ...
  - func[69] sig=2  &lt;env.localtime&gt; &lt;- env.localtime
  - func[70] sig=13 &lt;env.qsort&gt;     &lt;- env.qsort
- - func[71] sig=19 &lt;env.strtoll&gt;   &lt;- env.strtoll</code></pre></div>
+ - func[71] sig=19 &lt;env.strtoll&gt;   &lt;- env.strtoll
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm#missing-functions-in-tcc-webassembly">(See the <strong>Complete List</strong>)</a></p>
 <p>Do we need all 72 POSIX Functions? We scrutinise the list…</p>
 <hr>

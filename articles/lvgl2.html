@@ -62,16 +62,16 @@
     
 
     <h1 class="title">NuttX RTOS for PinePhone: Boot to LVGL</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#boot-nuttx-on-pinephone" title="Boot NuttX on PinePhone">1 Boot NuttX on PinePhone</a><ul></ul></li>
-<li><a href="#boot-to-lvgl" title="Boot to LVGL">2 Boot to LVGL</a><ul></ul></li>
-<li><a href="#touch-friendly-lvgl" title="Touch-Friendly LVGL">3 Touch-Friendly LVGL</a><ul></ul></li>
-<li><a href="#lvgl-demos" title="LVGL Demos">4 LVGL Demos</a><ul></ul></li>
-<li><a href="#lvgl-performance" title="LVGL Performance">5 LVGL Performance</a><ul></ul></li>
-<li><a href="#create-a-touchscreen-app" title="Create a Touchscreen App">6 Create a Touchscreen App</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-pinephone" title="Appendix: Build Apache NuttX RTOS for PinePhone">8 Appendix: Build Apache NuttX RTOS for PinePhone</a><ul></ul></li>
-<li><a href="#appendix-boot-apache-nuttx-rtos-on-pinephone" title="Appendix: Boot Apache NuttX RTOS on PinePhone">9 Appendix: Boot Apache NuttX RTOS on PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>22 Jan 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#boot-nuttx-on-pinephone">1 Boot NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#boot-to-lvgl">2 Boot to LVGL</a><ul></ul></li>
+<li><a href="#touch-friendly-lvgl">3 Touch-Friendly LVGL</a><ul></ul></li>
+<li><a href="#lvgl-demos">4 LVGL Demos</a><ul></ul></li>
+<li><a href="#lvgl-performance">5 LVGL Performance</a><ul></ul></li>
+<li><a href="#create-a-touchscreen-app">6 Create a Touchscreen App</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">8 Appendix: Build Apache NuttX RTOS for PinePhone</a><ul></ul></li>
+<li><a href="#appendix-boot-apache-nuttx-rtos-on-pinephone">9 Appendix: Boot Apache NuttX RTOS on PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>22 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable" /></p>
 <p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>! (Pic above)</p>
 <p><em>Does it need a special Serial Cable for PinePhone?</em></p>
@@ -149,7 +149,8 @@
 <p><em>How did we configure NuttX to boot an LVGL App?</em></p>
 <p>Normally NuttX boots to the <strong>NSH Shell</strong>. Which lets us execute Console Commands through a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>. (Pic above)</p>
 <p>But for today’s demo we configured NuttX to boot instead with the <strong>LVGL Demo App</strong>. In the NuttX Project Folder, we ran…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
+</code></pre></div>
 <p>And we set these options…</p>
 <ol>
 <li>
@@ -205,7 +206,8 @@ void lv_demo_widgets(void) {
 
   // Insert this: Print warning if font is missing
   #undef LV_LOG_WARN
-  #define LV_LOG_WARN(s) puts(s)</code></pre></div>
+  #define LV_LOG_WARN(s) puts(s)
+</code></pre></div>
 <p>The first part of the code above comes from LVGL. Since PinePhone has 720 Horizontal Pixels, the code sets <strong>Display Size to Large</strong>. Which squishes everything on PinePhone.</p>
 <p>That’s why in the code above we override and set <strong>Display Size to Medium</strong>. Which makes the screen less dense.</p>
 <p><em>Shouldn’t the Display Size be computed based on Screen DPI?</em></p>
@@ -250,11 +252,13 @@ void lv_demo_widgets(void) {
 #else
     LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
 #endif
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>We set the Default Font to <strong>Montserrat 20</strong> (previously Montserrat 14) in the LVGL Configuration for NuttX: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">configs/lvgl/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>## Set the LVGL Default Font to Montserrat 20
 ## (Previously Montserrat 14)
-CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y</code></pre></div>
+CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
+</code></pre></div>
 <p>Which will make (most) LVGL Apps more legible on PinePhone.</p>
 <p>The LVGL Demo App is now less dense and easier to touch (pic below)…</p>
 <ul>
@@ -349,14 +353,16 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y</code></pre></div>
 <p><em>Can we create our own Touchscreen App?</em></p>
 <p>Yep! Simplest way to create our own app: We take the <strong>LVGL Widget Demo</strong> and modify it.</p>
 <p>Inside our NuttX Project, look for the <strong>Widget Demo Source Code</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c
+</code></pre></div>
 <p>Modify the function <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L97-L197"><strong>lv_demo_widgets</strong></a> to create our own <strong>LVGL Widgets</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Create a Button, set the Width and Height
 void lv_demo_widgets(void) {
   lv_obj_t *btn = lv_btn_create(lv_scr_act());
   lv_obj_set_height(btn, LV_SIZE_CONTENT);
   lv_obj_set_width(btn, 120);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L221-L225">(<strong>lv_demo_widgets</strong> is called by LVGL Demo App <strong>lvgldemo_main</strong>)</a></p>
 <p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a>.</p>
 <p><em>But coding LVGL Apps in C looks cumbersome…</em></p>
@@ -431,9 +437,11 @@ void lv_demo_widgets(void) {
 </li>
 <li>
 <p>Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
+</code></pre></div>
 <p>Check the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
+</code></pre></div></li>
 <li>
 <p>Download and configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -442,7 +450,8 @@ git clone https://github.com/apache/nuttx nuttx
 git clone https://github.com/apache/nuttx-apps apps
 
 cd nuttx
-tools/configure.sh pinephone:lvgl</code></pre></div></li>
+tools/configure.sh pinephone:lvgl
+</code></pre></div></li>
 <li>
 <p>By default, NuttX boots into the <strong>NSH Shell</strong>.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">(Which requires a <strong>USB Serial Debug Cable</strong> for PinePhone)</a></p>
@@ -451,14 +460,16 @@ tools/configure.sh pinephone:lvgl</code></pre></div></li>
 </li>
 <li>
 <p>Build the NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
 <p><a href="https://lupyuen.github.io/articles/release#appendix-missing-mathh">(Missing <strong><code>math.h</code></strong>? See this)</a></p>
 </li>
 <li>
 <p>With the default settings, the <strong>LVGL Widget Demo</strong> isn’t quite so Touch-Friendly. <a href="https://lupyuen.github.io/articles/lvgl2#touch-friendly-lvgl">(See this)</a></p>
 <p>To fix this, look for this LVGL Source File…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c
+</code></pre></div>
 <p>And replace by the contents of this file: <a href="https://raw.githubusercontent.com/lupyuen2/wip-pinephone-lvgl/pinephone/demos/widgets/lv_demo_widgets.c"><strong>lv_demo_widgets.c</strong></a></p>
 </li>
 <li>
@@ -474,21 +485,25 @@ tools/configure.sh pinephone:lvgl</code></pre></div></li>
 <div class="example-wrap"><pre class="language-bash"><code>make
 cp nuttx.bin Image
 rm -f Image.gz
-gzip Image</code></pre></div>
+gzip Image
+</code></pre></div>
 <p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone.</p>
 </li>
 <li>
 <p>If the build fails with…</p>
-<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor
+</code></pre></div>
 <p>Then look for this file in the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-text"><code>aarch64-none-elf/include/_newlib_version.h</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>aarch64-none-elf/include/_newlib_version.h
+</code></pre></div>
 <p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>, so that it looks like this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Near the end of _newlib_version.h, insert this...
 #define _NEWLIB_VERSION &quot;4.2.0&quot;
 #define __NEWLIB__ 4
 #define __NEWLIB_MINOR__ 2
 
-#endif /* !_NEWLIB_VERSION_H__ */</code></pre></div></li>
+#endif /* !_NEWLIB_VERSION_H__ */
+</code></pre></div></li>
 </ol>
 <p>Follow the steps in the next section to boot the NuttX Image…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
@@ -522,9 +537,11 @@ to <strong>Off</strong>.</p>
 </li>
 <li>
 <p>To see the available commands in NuttShell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>help
+</code></pre></div>
 <p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Widget Demo</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/fb-lvgl3.jpg">(We should see this)</a></p>
 <p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Other LVGL Demos)</a></p>
 </li>

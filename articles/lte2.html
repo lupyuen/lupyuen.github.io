@@ -62,22 +62,22 @@
     
 
     <h1 class="title">NuttX RTOS for PinePhone: Phone Calls and Text Messages</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#quectel-eg25-g-lte-modem" title="Quectel EG25-G LTE Modem">1 Quectel EG25-G LTE Modem</a><ul></ul></li>
-<li><a href="#start-lte-modem" title="Start LTE Modem">2 Start LTE Modem</a><ul></ul></li>
-<li><a href="#send-at-commands" title="Send AT Commands">3 Send AT Commands</a><ul></ul></li>
-<li><a href="#check-the-lte-network" title="Check the LTE Network">4 Check the LTE Network</a><ul></ul></li>
-<li><a href="#outgoing-phone-call" title="Outgoing Phone Call">5 Outgoing Phone Call</a><ul></ul></li>
-<li><a href="#send-sms-in-text-mode" title="Send SMS in Text Mode">6 Send SMS in Text Mode</a><ul></ul></li>
-<li><a href="#send-sms-in-pdu-mode" title="Send SMS in PDU Mode">7 Send SMS in PDU Mode</a><ul></ul></li>
-<li><a href="#sms-text-mode-vs-pdu-mode" title="SMS Text Mode vs PDU Mode">8 SMS Text Mode vs PDU Mode</a><ul></ul></li>
-<li><a href="#at-modem-api" title="AT Modem API">9 AT Modem API</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-receive-phone-call-and-sms" title="Appendix: Receive Phone Call and SMS">11 Appendix: Receive Phone Call and SMS</a><ul></ul></li>
-<li><a href="#appendix-pcm-digital-audio" title="Appendix: PCM Digital Audio">12 Appendix: PCM Digital Audio</a><ul></ul></li>
-<li><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem" title="Appendix: Troubleshoot LTE IP Multimedia Subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-format" title="Appendix: SMS PDU Format">14 Appendix: SMS PDU Format</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-message-encoding" title="Appendix: SMS PDU Message Encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>4 May 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a><ul></ul></li>
+<li><a href="#start-lte-modem">2 Start LTE Modem</a><ul></ul></li>
+<li><a href="#send-at-commands">3 Send AT Commands</a><ul></ul></li>
+<li><a href="#check-the-lte-network">4 Check the LTE Network</a><ul></ul></li>
+<li><a href="#outgoing-phone-call">5 Outgoing Phone Call</a><ul></ul></li>
+<li><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a><ul></ul></li>
+<li><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a><ul></ul></li>
+<li><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a><ul></ul></li>
+<li><a href="#at-modem-api">9 AT Modem API</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a><ul></ul></li>
+<li><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a><ul></ul></li>
+<li><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>4 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -128,7 +128,8 @@
 </li>
 </ul>
 <p>So to dial the number <strong><code>1711</code></strong>, we send this AT Command…</p>
-<div class="example-wrap"><pre class="language-text"><code>ATD1711;</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>ATD1711;
+</code></pre></div>
 <p>The LTE Modem has similar AT Commands for SMS and Mobile Data.</p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
 <p><em>How to send AT Commands to LTE Modem?</em></p>
@@ -182,7 +183,8 @@ Status=1
 Status=0
 
 NuttShell (NSH) NuttX-12.0.3
-nsh&gt; </code></pre></div>
+nsh&gt; 
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L473-L562">(See the Complete Log)</a></p>
 <p>Which says that PinePhone’s LTE Modem is up and <strong>accessible at Port UART3</strong>!</p>
 <p>Let’s send some AT Commands to UART3…</p>
@@ -218,15 +220,18 @@ for (int i = 0; i &lt; 5; i++) {
 }
 
 // Close the device
-close(fd);</code></pre></div>
+close(fd);
+</code></pre></div>
 <p>The above NuttX App sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
 <p>Watch what happens when we run it…</p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” to the LTE Modem over UART3…</p>
 <div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
-Write command: AT\r</code></pre></div>
+Write command: AT\r
+</code></pre></div>
 <p>No response! At startup, the LTE Modem might take <a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>30 seconds</strong></a> to become operational. Then this appears…</p>
 <div class="example-wrap"><pre class="language-text"><code>Response:
-RDY</code></pre></div>
+RDY
+</code></pre></div>
 <p>“<strong><code>RDY</code></strong>” means that the LTE Modem is ready for AT Commands!</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” again…</p>
@@ -236,7 +241,8 @@ Response:
 +CPIN: READY
 +QUSIM: 1
 +QIND: SMS DONE
-+QIND: PB DONE</code></pre></div>
++QIND: PB DONE
+</code></pre></div>
 <p>LTE Modem replies…</p>
 <ul>
 <li>
@@ -269,7 +275,8 @@ Response:
 <div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
 Response:
 AT
-OK</code></pre></div>
+OK
+</code></pre></div>
 <p>LTE Modem echoes our command “<strong><code>AT</code></strong>”…</p>
 <p>And responds to our command with  “<strong><code>OK</code></strong>”.</p>
 <p>Which means that our LTE Modem is running AT Commands all OK!</p>
@@ -312,7 +319,8 @@ sleep(2);
 const char cmd[] = &quot;AT+COPS?\r&quot;;
 write(fd, cmd, strlen(cmd));
 
-// Omitted: Read response and wait 2 seconds</code></pre></div>
+// Omitted: Read response and wait 2 seconds
+</code></pre></div>
 <p>And here’s the output (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; hello
@@ -326,7 +334,8 @@ Response:
 // Get Network Operator (SGP-M1)
 Command: AT+COPS?
 Response:
-+COPS: 0,0,&quot;SGP-M1&quot;,7</code></pre></div>
++COPS: 0,0,&quot;SGP-M1&quot;,7
+</code></pre></div>
 <p>“<strong><code>+CREG: 0,1</code></strong>” says that the 4G LTE Network is ready.</p>
 <p>“<strong><code>SGP-M1</code></strong>” is the name of our 4G LTE Network Operator.</p>
 <p>We’re all set to make some calls!</p>
@@ -343,7 +352,8 @@ write(fd, cmd, strlen(cmd));
 // Get Current PCM Configuration for Digital Audio
 const char cmd[] = &quot;AT+QDAI?\r&quot;;
 write(fd, cmd, strlen(cmd));
-// Omitted: Read response and wait 2 seconds</code></pre></div>
+// Omitted: Read response and wait 2 seconds
+</code></pre></div>
 <p>We begin by configuring the <strong>PCM Digital Audio</strong> for our Voice Call.</p>
 <p>(More about “<strong><code>AT+QDAI</code></strong>” in a while)</p>
 <p>Suppose we’re dialing the (fictitious) number “<strong><code>+1234567890</code></strong>”.</p>
@@ -358,16 +368,19 @@ const char cmd[] =
   PHONE_NUMBER
   &quot;;\r&quot;;
 write(fd, cmd, strlen(cmd));
-// Omitted: Read response</code></pre></div>
+// Omitted: Read response
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
 <p>We <strong>wait 20 seconds</strong> for the Called Number to answer…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait 20 seconds for receiver to answer
-sleep(20);</code></pre></div>
+sleep(20);
+</code></pre></div>
 <p>Finally we hang up the call with “<strong><code>ATH</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Hang up Phone Call
 const char cmd[] = &quot;ATH\r&quot;;
 write(fd, cmd, strlen(cmd));
-// Omitted: Read response and wait 2 seconds</code></pre></div>
+// Omitted: Read response and wait 2 seconds
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 116)</a></p>
 <p>Here’s the output (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
@@ -389,7 +402,8 @@ NO CARRIER
 
 // After 20 seconds, hang up Phone Call
 Command: ATH
-Response: OK</code></pre></div>
+Response: OK
+</code></pre></div>
 <p>And the phone rings for the called Phone Number! (Pic above)</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><em>But how will we talk to the called Phone Number?</em></p>
@@ -426,12 +440,14 @@ Response: OK</code></pre></div>
 </li>
 <li>
 <p><strong>Enter SMS Message</strong> in Text Format, terminate with Ctrl-Z…</p>
-<div class="example-wrap"><pre class="language-text"><code>Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
+</code></pre></div>
 <p>(<strong>Ctrl-Z</strong> is Character Code <strong><code>0x1A</code></strong>)</p>
 </li>
 <li>
 <p>Modem sends our SMS and responds with the <strong>Message ID</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>+CMGS: 22</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>+CMGS: 22
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
@@ -479,7 +495,8 @@ const char cmd[] =
 write(fd, cmd, strlen(cmd));
 
 // Omitted: Read response and wait 2 seconds
-// Modem responds with the Message ID</code></pre></div>
+// Modem responds with the Message ID
+</code></pre></div>
 <p>Here’s the log (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select Text Mode for SMS (instead of PDU Mode)
 Command: AT+CMGF=1
@@ -505,17 +522,20 @@ Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
 // Modem responds with the Message ID
 Response:
 +CMGS: 22
-OK</code></pre></div>
+OK
+</code></pre></div>
 <p>And the SMS Message will be sent to the Phone Number! (Pic above)</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659">(See the Complete Log)</a></p>
 <p><em>What if we get Error 350?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
+</code></pre></div>
 <p>This means that the Telco’s <strong>SMS Centre has rejected</strong> our SMS Message.</p>
 <p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/modem/examples/hello/hello_main.c#L145-L163">(like this)</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get SMS Centre
 Command: AT+CSCA?
 Response:
-+CSCA: &quot;+6587614701&quot;,145</code></pre></div>
++CSCA: &quot;+6587614701&quot;,145
+</code></pre></div>
 <p>Also check that the SIM Card works OK on another phone.</p>
 <p>We might have a problem with the <strong>LTE IP Multimedia Subsystem</strong> (IMS)…</p>
 <ul>
@@ -553,11 +573,13 @@ Response:
 <p><strong>Phone Numbers</strong> are a little odd in PDU Mode.</p>
 <p>Suppose we’re sending an SMS to this Phone Number (Country Code is mandatory)…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
-#define PHONE_NUMBER_PDU &quot;2143658709&quot;</code></pre></div>
+#define PHONE_NUMBER_PDU &quot;2143658709&quot;
+</code></pre></div>
 <p>Note that we <strong>flip the nibbles</strong> (half-bytes) from the Original Phone Number to produce the <strong>PDU Phone Number</strong>.</p>
 <p>If the number of <strong>nibbles is odd</strong>, insert “<strong><code>F</code></strong>” into the PDU Phone Number, like this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
-#define PHONE_NUMBER_PDU &quot;214365870F9&quot;</code></pre></div></li>
+#define PHONE_NUMBER_PDU &quot;214365870F9&quot;
+</code></pre></div></li>
 <li>
 <p>Let’s assume there are 10 Decimal Digits in the destination Phone Number: “<strong><code>+1234567890</code></strong>” (Country Code is mandatory)</p>
 <p>This is the AT Command to <strong>send an SMS</strong>…</p>
@@ -565,7 +587,8 @@ Response:
 const char cmd[] = 
   &quot;AT+CMGS=&quot;
   &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
-  &quot;\r&quot;;</code></pre></div>
+  &quot;\r&quot;;
+</code></pre></div>
 <p>(More about PDU Length in a while)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
@@ -588,13 +611,15 @@ const char cmd[] =
   &quot;1C&quot;  // TP-User-Data-Length: Length of Encoded Message Text in bytes
   // TP-User-Data: Encoded Message Text &quot;Hello,Quectel!&quot;
   &quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
-  &quot;\x1A&quot;;  // End of Message (Ctrl-Z)</code></pre></div>
+  &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
+</code></pre></div>
 <p>(More about these fields in a while)</p>
 <p>(Remember to set “<strong>Address-Length</strong>” according to the destination Phone Number)</p>
 </li>
 <li>
 <p>Modem sends our SMS and responds with the <strong>Message ID</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>+CMGS: 23</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>+CMGS: 23
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
@@ -643,7 +668,8 @@ const char cmd[] =
 write(fd, cmd, strlen(cmd));
 
 // Omitted: Read response and wait 2 seconds
-// Modem responds with the Message ID</code></pre></div>
+// Modem responds with the Message ID
+</code></pre></div>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select PDU Mode for SMS (instead of SMS Mode)
 Command: AT+CMGF=0
@@ -662,7 +688,8 @@ Command:
 // Modem responds with the Message ID
 Response: 
 +CMGS: 23
-OK</code></pre></div>
+OK
+</code></pre></div>
 <p>And our SMS Message <strong>“Hello,Quectel!”</strong> appears at the destination Phone Number!</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
 <p><em>How to encode the SMS in PDU Format? What’s the PDU Length?</em></p>
@@ -676,7 +703,8 @@ OK</code></pre></div>
 </li>
 </ul>
 <p><em>What if we get Error 304?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304
+</code></pre></div>
 <p>The LTE Modem tells us that the <strong>PDU Encoding is invalid</strong>.</p>
 <p>Check the docs above to verify the PDU Encoding for our SMS Message.</p>
 <p>Let’s find out why we prefer PDU Mode over Text Mode…</p>
@@ -688,18 +716,21 @@ OK</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>// Text Mode: How many characters in this SMS?
 AT+CMGS=&quot;+1234567890&quot;
 
-// Followed by Message Text...</code></pre></div>
+// Followed by Message Text...
+</code></pre></div>
 <p><strong>PDU Mode:</strong> This is how we do it…</p>
 <div class="example-wrap"><pre class="language-text"><code>// PDU Mode: 41 bytes in this SMS (excluding SMSC)
 AT+CMGS=41
 
-// Followed by SMS Message encoded as PDU...</code></pre></div>
+// Followed by SMS Message encoded as PDU...
+</code></pre></div>
 <p>See the difference? <strong>PDU Mode is more precise</strong> because we state exactly how many bytes there are in the SMS.</p>
 <p>With Text Mode, there’s a risk of garbled messages when characters are dropped during UART Transmission.</p>
 <p>(Which happens!)</p>
 <p><em>But what if characters are dropped in PDU Mode?</em></p>
 <p>The LTE Modem will say it’s an <strong>Invalid PDU</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304
+</code></pre></div>
 <p>Our app should catch this error and resend.</p>
 <h1 id="at-modem-api"><a class="doc-anchor" href="#at-modem-api">§</a>9 AT Modem API</h1>
 <p><em>What about receiving Phone Calls and SMS Messages?</em></p>
@@ -714,7 +745,8 @@ RING
 ...
 // Incoming SMS Notification
 +CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
-// Followed by Message Text</code></pre></div>
+// Followed by Message Text
+</code></pre></div>
 <p>Which is totally <strong>Asynchronous</strong>. And tricky to handle over UART.</p>
 <p><em>Any other UART problems with LTE Modem?</em></p>
 <p>Our <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621"><strong>UART Output</strong></a> looks all jumbled up because our NuttX App didn’t <strong>wait for the response</strong> of every AT Command…</p>
@@ -761,7 +793,8 @@ if (err = 0) {
   // Response is not &quot;OK&quot;
   switch(modem_at_err_type(err)) {
     // Modem returned &quot;ERROR&quot;
-    case NRF_MODEM_AT_ERROR: ...</code></pre></div>
+    case NRF_MODEM_AT_ERROR: ...
+</code></pre></div>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">(Source)</a></p>
 <p>And it handles <strong>AT Notifications as Callbacks</strong>. <a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications">(Like this)</a></p>
 <p>(Very nice!)</p>
@@ -870,7 +903,8 @@ OK
 
 // Accept the Voice Call
 ATA
-OK</code></pre></div>
+OK
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
 <p>And we <strong>receive an SMS</strong> (in Text Mode) like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
@@ -888,7 +922,8 @@ This is a test from Quectel.
 
 // Send ACK to the network
 AT+CNMA
-OK</code></pre></div>
+OK
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
 <p>Receiving an SMS in <strong>PDU Mode</strong> will look slightly different.</p>
 <p><em>How does the Ring Indicator work with Incoming Call and SMS?</em></p>
@@ -898,7 +933,8 @@ OK</code></pre></div>
 AT+QCFG=&quot;urc/ri/ring&quot;
 
 // For Incoming SMS: Signal the Ring Indicator
-AT+QCFG=&quot;urc/ri/smsincoming&quot; </code></pre></div>
+AT+QCFG=&quot;urc/ri/smsincoming&quot; 
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 46)</a></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=urc/ri</code></strong>”, Page 20)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="LTE Modem is connected to Port PCM0 for Digital Audio" /></p>
@@ -914,7 +950,8 @@ Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
 
 // Get Current PCM Configuration for Digital Audio
 Command: AT+QDAI?
-Response: +QDAI: 1,1,0,1,0,0,1,1</code></pre></div>
+Response: +QDAI: 1,1,0,1,0,0,1,1
+</code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 233)</a></p>
 <p>The above <strong>PCM Digital Audio Configuration</strong> for the LTE Modem says…</p>
 <ul>
@@ -1011,7 +1048,8 @@ Response: +QDAI: 1,1,0,1,0,0,1,1</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>// Outgoing SMS fails with Error 350
 AT+CMGS=&quot;yourphonenumber&quot;
 ...
-+CMS ERROR: 350</code></pre></div></li>
++CMS ERROR: 350
+</code></pre></div></li>
 <li>
 <p><strong>Second SIM Card</strong> (SIMBA): Fail for Phone Calls, OK for SMS</p>
 <p><a href="https://en.wikipedia.org/wiki/Voice_over_LTE">(SIMBA requires <strong>VoLTE: Voice-over-LTE</strong>)</a></p>
@@ -1022,12 +1060,14 @@ AT+CMGS=&quot;yourphonenumber&quot;
 <p><em>Is this caused by LTE IMS?</em></p>
 <p>Some folks suggested we should force <a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303"><strong>LTE IMS to be Disabled</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Force LTE IMS to be Disabled
-AT+QCFG=&quot;ims&quot;,2</code></pre></div>
+AT+QCFG=&quot;ims&quot;,2
+</code></pre></div>
 <p><a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
 <p>But maybe for some SIM Cards, we should force <strong>LTE IMS to be Enabled</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Force LTE IMS to be Enabled
-AT+QCFG=&quot;ims&quot;,1</code></pre></div>
+AT+QCFG=&quot;ims&quot;,1
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
 <p>That’s because Quectel says we should <a href="https://forums.quectel.com/t/volte-on-eg25-g/13512"><strong>Force-Enable LTE IMS</strong></a> to support <a href="https://en.wikipedia.org/wiki/Voice_over_LTE"><strong>VoLTE (Voice-over-LTE)</strong></a>…</p>
 <p>“You can use <strong><code>AT+QCFG="ims",1</code></strong> to restart the module…”</p>
@@ -1040,7 +1080,8 @@ AT+QCFG=&quot;ims&quot;,1</code></pre></div>
 <p><em>Earlier we saw this command for sending SMS in PDU Mode…</em></p>
 <p><em>What’s the PDU Length?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// Send an SMS with PDU Length of 41 bytes (excluding SMSC)
-Command: AT+CMGS=41</code></pre></div>
+Command: AT+CMGS=41
+</code></pre></div>
 <p>Our SMS Message PDU has <strong>42 total bytes</strong> (assuming 5 bytes in our PDU Phone Number)…</p>
 <div class="example-wrap"><pre class="language-c"><code>&quot;00&quot;  // Length of SMSC information (None)
 &quot;11&quot;  // SMS-SUBMIT message
@@ -1053,14 +1094,16 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 &quot;01&quot;  // TP-Validity-Period
 &quot;1C&quot;  // TP-User-Data-Length: Length of Encoded Message Text in bytes
 // TP-User-Data: Assume 28 bytes in Encoded Message Text
-&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;</code></pre></div>
+&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
+</code></pre></div>
 <p>But PDU Length <strong>excludes the SMS Centre Information</strong>. (First Byte)</p>
 <p>Thus our PDU Length is <strong>41 bytes</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Send SMS Command
 const char cmd[] = 
   &quot;AT+CMGS=&quot;
   &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
-  &quot;\r&quot;;</code></pre></div>
+  &quot;\r&quot;;
+</code></pre></div>
 <p>Remember to <strong>update the PDU Length</strong> according to your phone number and message text.</p>
 <p><em>What do the PDU Fields mean?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>&quot;00&quot;  // Length of SMSC information (None)
@@ -1074,7 +1117,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 &quot;01&quot;  // TP-Validity-Period
 &quot;1C&quot;  // TP-User-Data-Length: Length of Encoded Message Text in bytes
 // TP-User-Data: Assume 28 bytes in Encoded Message Text
-&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;</code></pre></div>
+&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
+</code></pre></div>
 <ul>
 <li>
 <p><strong>Length of SMSC information:</strong> “<code>00</code>”</p>
@@ -1123,10 +1167,12 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <li>
 <p><strong>PHONE_NUMBER_PDU:</strong> Phone Number in PDU Format (nibbles swapped)</p>
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
-#define PHONE_NUMBER_PDU &quot;2143658709&quot;</code></pre></div>
+#define PHONE_NUMBER_PDU &quot;2143658709&quot;
+</code></pre></div>
 <p>Remember to insert “<code>F</code>” if Phone Number has <strong>odd number of nibbles</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
-#define PHONE_NUMBER_PDU &quot;214365870F9&quot;</code></pre></div>
+#define PHONE_NUMBER_PDU &quot;214365870F9&quot;
+</code></pre></div>
 <p>Country Code is mandatory because <strong>Type Of Number</strong> (above) is International Number.</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Address_examples">(GSM 03.40, Address Examples)</a></p>
 </li>
@@ -1177,7 +1223,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <p><a href="https://en.wikipedia.org/wiki/UTF-16">(Source)</a></p>
 <p>So this Encoded Message Text…</p>
 <div class="example-wrap"><pre class="language-c"><code>// TP-User-Data: Message Text encoded with UCS2 Character Set
-&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;</code></pre></div>
+&quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
+</code></pre></div>
 <p>Comes from the <a href="https://en.wikipedia.org/wiki/UTF-16"><strong>Unicode UTF-16 Encoding</strong></a> of the Message Text “<code>Hello,Quectel!</code>”…</p>
 <div><table><thead><tr><th style="text-align: center">Character</th><th style="text-align: center">UTF-16 Encoding</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>H</code></td><td style="text-align: center"><code>0048</code></td></tr>

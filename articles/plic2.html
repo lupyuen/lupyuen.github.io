@@ -64,28 +64,28 @@
     
 
     <h1 class="title">RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#platform-level-interrupt-controller" title="Platform-Level Interrupt Controller">1 Platform-Level Interrupt Controller</a><ul></ul></li>
-<li><a href="#uart-interrupt" title="UART Interrupt">2 UART Interrupt</a><ul></ul></li>
-<li><a href="#initialise-the-interrupts" title="Initialise the Interrupts">3 Initialise the Interrupts</a><ul>
-<li><a href="#disable-all-interrupts" title="Disable all Interrupts">3.1 Disable all Interrupts</a><ul></ul></li>
-<li><a href="#clear-the-interrupts" title="Clear the Interrupts">3.2 Clear the Interrupts</a><ul></ul></li>
-<li><a href="#set-the-interrupt-priority" title="Set the Interrupt Priority">3.3 Set the Interrupt Priority</a><ul></ul></li>
-<li><a href="#set-the-interrupt-threshold" title="Set the Interrupt Threshold">3.4 Set the Interrupt Threshold</a><ul></ul></li></ul></li>
-<li><a href="#enable-the-interrupt" title="Enable the Interrupt">4 Enable the Interrupt</a><ul></ul></li>
-<li><a href="#hart-0-supervisor-mode" title="Hart 0, Supervisor Mode">5 Hart 0, Supervisor Mode</a><ul></ul></li>
-<li><a href="#handle-the-interrupt" title="Handle the Interrupt">6 Handle the Interrupt</a><ul>
-<li><a href="#claim-the-interrupt" title="Claim the Interrupt">6.1 Claim the Interrupt</a><ul></ul></li>
-<li><a href="#dispatch-the-interrupt" title="Dispatch the Interrupt">6.2 Dispatch the Interrupt</a><ul></ul></li>
-<li><a href="#complete-the-interrupt" title="Complete the Interrupt">6.3 Complete the Interrupt</a><ul></ul></li>
-<li><a href="#pending-interrupts" title="Pending Interrupts">6.4 Pending Interrupts</a><ul></ul></li></ul></li>
-<li><a href="#trouble-with-interrupt-priority" title="Trouble with Interrupt Priority">7 Trouble with Interrupt Priority</a><ul></ul></li>
-<li><a href="#more-trouble-with-interrupt-claim" title="More Trouble with Interrupt Claim">8 More Trouble with Interrupt Claim</a><ul></ul></li>
-<li><a href="#backup-plan" title="Backup Plan">9 Backup Plan</a><ul></ul></li>
-<li><a href="#all-things-considered" title="All Things Considered">10 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-uart-driver-for-ox64" title="Appendix: UART Driver for Ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx" title="Appendix: Build and Run NuttX">13 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>3 Dec 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#platform-level-interrupt-controller">1 Platform-Level Interrupt Controller</a><ul></ul></li>
+<li><a href="#uart-interrupt">2 UART Interrupt</a><ul></ul></li>
+<li><a href="#initialise-the-interrupts">3 Initialise the Interrupts</a><ul>
+<li><a href="#disable-all-interrupts">3.1 Disable all Interrupts</a><ul></ul></li>
+<li><a href="#clear-the-interrupts">3.2 Clear the Interrupts</a><ul></ul></li>
+<li><a href="#set-the-interrupt-priority">3.3 Set the Interrupt Priority</a><ul></ul></li>
+<li><a href="#set-the-interrupt-threshold">3.4 Set the Interrupt Threshold</a><ul></ul></li></ul></li>
+<li><a href="#enable-the-interrupt">4 Enable the Interrupt</a><ul></ul></li>
+<li><a href="#hart-0-supervisor-mode">5 Hart 0, Supervisor Mode</a><ul></ul></li>
+<li><a href="#handle-the-interrupt">6 Handle the Interrupt</a><ul>
+<li><a href="#claim-the-interrupt">6.1 Claim the Interrupt</a><ul></ul></li>
+<li><a href="#dispatch-the-interrupt">6.2 Dispatch the Interrupt</a><ul></ul></li>
+<li><a href="#complete-the-interrupt">6.3 Complete the Interrupt</a><ul></ul></li>
+<li><a href="#pending-interrupts">6.4 Pending Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#trouble-with-interrupt-priority">7 Trouble with Interrupt Priority</a><ul></ul></li>
+<li><a href="#more-trouble-with-interrupt-claim">8 More Trouble with Interrupt Claim</a><ul></ul></li>
+<li><a href="#backup-plan">9 Backup Plan</a><ul></ul></li>
+<li><a href="#all-things-considered">10 All Things Considered</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx">13 Appendix: Build and Run NuttX</a><ul></ul></li></ul></nav><p>📝 <em>3 Dec 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers.jpg" alt="Platform-Level Interrupt Controller for Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <blockquote>
 <p><em>“It’s time for the little red chicken’s bedtime story - and a reminder from Papa to try not to interrupt. But the chicken can’t help herself!”</em></p>
@@ -224,7 +224,8 @@ void up_irqinitialize(void) {
   // PLIC_ENABLE2 is 0xE000_2084
   // putreg32(V, A) writes 32-bit value V to address A
   putreg32(0x0, PLIC_ENABLE1);  // RISC-V IRQ 1  to 31
-  putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63</code></pre></div>
+  putreg32(0x0, PLIC_ENABLE2);  // RISC-V IRQ 32 to 63
+</code></pre></div>
 <p>Hence at startup, all PLIC Interrupts are disabled until we <strong>enable them later</strong> (in PLIC).</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703">(<strong>up_irq_save</strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>putreg32</strong> is defined here)</a></p>
@@ -237,7 +238,8 @@ void up_irqinitialize(void) {
   // PLIC_CLAIM is 0xE020_1004
   // getreg32(A) reads a 32-bit value from address A
   uintptr_t val = getreg32(PLIC_CLAIM);
-  putreg32(val, PLIC_CLAIM);</code></pre></div>
+  putreg32(val, PLIC_CLAIM);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L124-L132">(<strong>getreg32</strong> is defined here)</a></p>
 <p>(More about <strong>Claim and Complete</strong> in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
@@ -251,7 +253,8 @@ void up_irqinitialize(void) {
       1,  // Value
       (uintptr_t)(PLIC_PRIORITY + 4 * id)  // Address
     );
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p><em>Why set Interrupt Priority to 1?</em></p>
 <ul>
 <li>
@@ -274,7 +277,8 @@ void up_irqinitialize(void) {
 
   // Enable Supervisor-Mode Interrupts (SIE Register)
   up_irq_enable();
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L89-L142">(<strong>riscv_exception_attach</strong> is here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L187-L201">(<strong>up_irq_enable</strong> is here)</a></p>
 <p><em>Why set Interrupt Threshold to 0?</em></p>
@@ -323,7 +327,8 @@ void up_enable_irq(int irq) {
     }
     else { PANIC(); }  // IRQ not supported (for now)
   }
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L37-L57">(<strong>modifyreg32</strong> is here)</a></p>
 <p>And PLIC will happily accept RISC-V IRQ 20 whenever we press a key!</p>
 <p>(On the Serial Console, pic above)</p>
@@ -334,7 +339,8 @@ static int bl808_attach(struct uart_dev_s *dev) {
   ...
   // Enable Interrupt for UART3.
   // `irq` is NuttX IRQ 45
-  up_enable_irq(priv-&gt;irq);</code></pre></div>
+  up_enable_irq(priv-&gt;irq);
+</code></pre></div>
 <p>Which will call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L145-L187"><strong>up_enable_irq</strong></a> to enable the UART3 Interrupt.</p>
 <p>We’re halfway through our Grand Plan of <strong>PLIC Interrupts</strong>! (Steps 1, 2 and 3, pic below)</p>
 <p>We pause a moment to talk about Harts…</p>
@@ -423,7 +429,8 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     irq += val;
   }
   // For UART3: `val` is 20 and `irq` is 45
-  // Up Next: Dispatch and Complete the Interrupt</code></pre></div>
+  // Up Next: Dispatch and Complete the Interrupt
+</code></pre></div>
 <p><em>What exactly are we “claiming”?</em></p>
 <p>When we <a href="https://five-embeddev.com/riscv-isa-manual/latest/plic.html#interrupt-claims"><strong>Claim an Interrupt</strong></a> (by reading the Interrupt Claim Register)…</p>
 <p>We’re telling the PLIC: “Yes we <strong>acknowledge the Interrupt</strong>, but we’re not done yet!”</p>
@@ -443,7 +450,8 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // Call the Interrupt Handler
     regs = riscv_doirq(irq, regs);
   }
-  // Up Next: Complete the Interrupt</code></pre></div>
+  // Up Next: Complete the Interrupt
+</code></pre></div>
 <p>For UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_doirq.c#L58-L134"><strong>riscv_doirq</strong></a> will call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> to handle the keypress.</p>
 <p>(That’s because at startup, <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304"><strong>bl808_attach</strong></a> has registered <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L166-L225"><strong>uart_interrupt</strong></a> as the UART Interrupt Handler)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers5.jpg" alt="Interrupt Claim Register" /></p>
@@ -471,7 +479,8 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 
   // Return the Registers to the Caller
   return regs;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>And that’s how we handle a PLIC Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers6.jpg" alt="Interrupt Pending Register" /></p>
 <h2 id="pending-interrupts"><a class="doc-anchor" href="#pending-interrupts">§</a>6.4 Pending Interrupts</h2>
@@ -486,13 +495,15 @@ uintptr_t ip0 = getreg32(0xe0001000);
 if (ip0 &amp; (1 &lt;&lt; 20)) {
   // Then UART3 Interrupt was fired (RISC-V IRQ 20)
   val = 20;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>To tell PLIC we’re done: We <strong>clear the Individual Bits</strong> in the Interrupt Pending Register: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts...
 // Set PLIC_IP0: Interrupt Pending for interrupts 1 to 31
 putreg32(0, 0xe0001000);
 
-// TODO: Clear the Individual Bits instead of wiping out the Entire Register</code></pre></div>
+// TODO: Clear the Individual Bits instead of wiping out the Entire Register
+</code></pre></div>
 <p>Once again, we don’t need really need this. We’ll stash this as our <strong>Backup Plan</strong> in case things go wrong.</p>
 <p>(Oh yes, things will go wrong in a while)</p>
 <p><img src="https://lupyuen.github.io/images/plic2-registers1.jpg" alt="Set Interrupt Priority" /></p>
@@ -513,13 +524,15 @@ void up_irqinitialize(void) {
   }
 
   // Dump the Interrupt Priorities
-  infodumpbuffer(&quot;PLIC Interrupt Priority: After&quot;, 0xe0000004, 0x50 * 4);</code></pre></div>
+  infodumpbuffer(&quot;PLIC Interrupt Priority: After&quot;, 0xe0000004, 0x50 * 4);
+</code></pre></div>
 <p>When we <a href="https://lupyuen.github.io/articles/plic2#appendix-build-and-run-nuttx"><strong>boot NuttX on Ox64</strong></a>, something strange happens…</p>
 <div class="example-wrap"><pre class="language-text"><code>PLIC Interrupt Priority: After (0xe0000004):
 0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 0010  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
 0020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................</code></pre></div>
+0030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L152-L172">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Everything becomes zero! Why???</em></p>
 <p>Yeah this is totally baffling! And no Interrupts get fired, because <strong>Interrupt Priority 0 is NOT valid</strong>.</p>
@@ -542,10 +555,12 @@ void test_interrupt_priority(void) {
   // Dump before and after values:
   _info(&quot;before50=%u, before54=%u, after50=%u, after54=%u\n&quot;,
     before50, before54, after50, after54);
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Again we get odd results (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>before50=0, before54=0
-after50=1,  after54=1</code></pre></div>
+after50=1,  after54=1
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L258-L260">(See the <strong>Complete Log</strong>)</a></p>
 <p>IRQ 20 is set correctly: <em>“after50=1”</em></p>
 <p>However <strong>IRQ 21 is also set</strong>! <em>“after54=1”</em></p>
@@ -561,7 +576,8 @@ up_enable_irq: extirq=20, addr=0xe0002080, val=0x1048576
 // After setting Interrupt Enable:
 // Bit 20 is also set in the next word!
 PLIC Hart 0 S-Mode Interrupt Enable: After (0xe0002080):
-0000  00 00 10 00 00 00 10 00                          ........  </code></pre></div>
+0000  00 00 10 00 00 00 10 00                          ........  
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L196-L200">(See the <strong>Complete Log</strong>)</a></p>
 <p>Interrupt Enable has leaked over from <strong><code>0xE000</code> <code>2080</code></strong> to <strong><code>0xE000</code> <code>2084</code></strong>!</p>
 <p>Thus we have an unexplained problem of <strong>Leaky Writes</strong>, affecting the Interrupt Priority and Interrupt Enable Registers.</p>
@@ -584,15 +600,18 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
     // From PLIC Claim Register
     // Which also Claims the Interrupt
     // PLIC_CLAIM is 0xE020_1004
-    uintptr_t val = getreg32(PLIC_CLAIM);</code></pre></div>
+    uintptr_t val = getreg32(PLIC_CLAIM);
+</code></pre></div>
 <p><em>What happens when we run this?</em></p>
 <p>On Ox64 we see NuttX booting normally to the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
 <p>When we <strong>press a key</strong> on the Serial Console (to trigger a UART Interrupt)…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
-  claim=0</code></pre></div>
+  claim=0
+</code></pre></div>
 <p>Our Interrupt Handler says that the <strong>Interrupt Claim Register is 0</strong>…</p>
 <p>Which means we can’t read the <strong>RISC-V IRQ Number</strong>!</p>
 <p>We activate our Backup Plan…</p>
@@ -618,10 +637,12 @@ if (val == 0) {
 irq += val;
 
 // Omitted: Call the Interrupt Handler
-// and Complete the Interrupt</code></pre></div>
+// and Complete the Interrupt
+</code></pre></div>
 <p>Which tells us the correct <strong>RISC-V IRQ Number</strong> for UART3 yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dispatch_irq:
-  irq=45</code></pre></div>
+  irq=45
+</code></pre></div>
 <p>(<strong>NuttX IRQ 45</strong> means <strong>RISC-V IRQ 20</strong>)</p>
 <p>Don’t forget to <strong>clear the Pending Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L94-L101">jh7110_irq.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Clear the Pending Interrupts
@@ -634,11 +655,13 @@ infodumpbuffer(&quot;PLIC Interrupt Pending&quot;, 0xe0001000, 2 * 4);
 
 // Yep works great, Pending Interrupts have been cleared...
 // PLIC Interrupt Pending (0xe0001000):
-// 0000  00 00 00 00 00 00 00 00                          ........        </code></pre></div>
+// 0000  00 00 00 00 00 00 00 00                          ........        
+</code></pre></div>
 <p><em>Does it work for UART Input?</em></p>
 <p>Since we’ve correctly identified the IRQ Number, <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64b/arch/risc-v/src/jh7110/jh7110_irq_dispatch.c#L48-L105"><strong>riscv_dispatch_irq</strong></a> will (eventually) call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>bl808_receive</strong></a> to read the UART Input (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl808_receive: rxdata=-1
-bl808_receive: rxdata=0x0</code></pre></div>
+bl808_receive: rxdata=0x0
+</code></pre></div>
 <p>But the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L502-L540"><strong>UART Input is empty</strong></a>! We need to <a href="https://github.com/lupyuen/nuttx-ox64#compare-ox64-bl808-uart-registers"><strong>troubleshoot our UART Driver</strong></a> some more.</p>
 <p>Meanwhile we wrap up our story for today…</p>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L294-L325">(See the <strong>Complete Log</strong>)</a></p>
@@ -691,7 +714,8 @@ test_interrupt_priority:
   after50=1,  after54=0
 
 // Leaky Writes after enabling Memory Mgmt Unit
-bl808_kernel_mppings: map I/O regions</code></pre></div>
+bl808_kernel_mppings: map I/O regions
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/cf32c834f4f5b8f66715ee4c606b7580#file-ox64-nuttx-int-clear-pending2-log-L118-L120">(See the <strong>Complete Log</strong>)</a></p>
 <p>So it might be a problem with our MMU Settings.</p>
 <p><a href="https://lupyuen.github.io/articles/mmu">(More about <strong>Memory Management Unit</strong>)</a></p>
@@ -820,13 +844,15 @@ and will unmask the IRQ upon write to CLAIM register”</p>
 <div class="example-wrap"><pre class="language-c"><code>// UART3 Base Address
 #define BL808_UART3_BASE   0x30002000ul
 #define BL808_UART_BASE(n) (UNUSED(n), BL808_UART3_BASE)
-// We call `UNUSED` to suppress warnings about unused `uart_idx`</code></pre></div>
+// We call `UNUSED` to suppress warnings about unused `uart_idx`
+</code></pre></div>
 <p>Then we set the <strong>UART3 Interrupt Number</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/bl808/irq.h#L31-L39">irq.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From BL808 Manual: UART3 Interrupt = (IRQ_NUM_BASE + 4)
 // Where IRQ_NUM_BASE = 16
 // So RISC-V IRQ = 20
 // And NuttX IRQ = 45 (Offset by 25)
-#define BL808_IRQ_UART3 45</code></pre></div>
+#define BL808_IRQ_UART3 45
+</code></pre></div>
 <p>And we modified the <strong>NuttX Start Code</strong> to call our new UART Driver: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_start.c#L297-L327">bl808_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At Startup, init the new UART Driver
 void riscv_earlyserialinit(void) {
@@ -836,7 +862,8 @@ void riscv_earlyserialinit(void) {
 // Same here
 void riscv_serialinit(void) {
   bl808_serialinit();
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Finally we enabled and handled the <strong>UART Interrupt</strong>…</p>
 <ul>
 <li>
@@ -855,17 +882,20 @@ config BL808_UART3
 	default n
 	select UART3_SERIALDRIVER
 	select ARCH_HAVE_SERIAL_TERMIOS
-endmenu</code></pre></div>
+endmenu
+</code></pre></div>
 <p>And we select UART3 as the <strong>Serial Console</strong> in the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L34-L83">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_BL808_UART3=y
 CONFIG_UART3_BAUD=2000000
-CONFIG_UART3_SERIAL_CONSOLE=y</code></pre></div>
+CONFIG_UART3_SERIAL_CONSOLE=y
+</code></pre></div>
 <p>For now, the <strong>UART3 Baud Rate</strong> isn’t used. We assume that U-Boot Bootloader has already configured the UART3 Port: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L225-L238">bl808_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Configure the UART baud, bits, parity, etc.
 static void bl808_uart_configure(const struct uart_config_s *config)
 {
   // Assume that U-Boot Bootloader has already configured the UART
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/11371#discussion_r1423963947">(Comments on <strong>UART Configuration</strong>)</a></p>
 <p><em>Does it work?</em></p>
 <p>After making these changes, the UART Driver works OK for Serial Console Input and Output! We need to enable <strong>Strongly-Ordered Access to I/O Memory</strong>, as explained here…</p>
@@ -907,7 +937,8 @@ riscv64-unknown-elf-objdump \
   --debugging \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1</code></pre></div>
+  2&gt;&amp;1
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
 <p>Then we build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
@@ -932,7 +963,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image</code></pre></div>
+  &gt;Image
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64b-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
@@ -943,7 +975,8 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 ## on Ox64 microSD
 cp Image \
   &quot;/Volumes/NO NAME/Image&quot;
-diskutil unmountDisk /dev/disk2</code></pre></div>
+diskutil unmountDisk /dev/disk2
+</code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH).</p>
 <p><em>What happens when we press a key?</em></p>

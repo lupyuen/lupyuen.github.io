@@ -64,22 +64,22 @@
     
 
     <h1 class="title">Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#start-with-qemu-emulator" title="Start with QEMU Emulator">1 Start with QEMU Emulator</a><ul></ul></li>
-<li><a href="#print-to-qemu-console" title="Print to QEMU Console">2 Print to QEMU Console</a><ul></ul></li>
-<li><a href="#uart-controller-on-star64" title="UART Controller on Star64">3 UART Controller on Star64</a><ul></ul></li>
-<li><a href="#risc-v-linux-kernel-header" title="RISC-V Linux Kernel Header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
-<li><a href="#start-address-of-nuttx-kernel" title="Start Address of NuttX Kernel">5 Start Address of NuttX Kernel</a><ul></ul></li>
-<li><a href="#boot-nuttx-on-star64" title="Boot NuttX on Star64">6 Boot NuttX on Star64</a><ul></ul></li>
-<li><a href="#nuttx-fails-to-get-hart-id" title="NuttX Fails To Get Hart ID">7 NuttX Fails To Get Hart ID</a><ul></ul></li>
-<li><a href="#risc-v-privilege-levels" title="RISC-V Privilege Levels">8 RISC-V Privilege Levels</a><ul></ul></li>
-<li><a href="#downgrade-nuttx-to-supervisor-mode" title="Downgrade NuttX to Supervisor Mode">9 Downgrade NuttX to Supervisor Mode</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-boot-code" title="Fix the NuttX Boot Code">10 Fix the NuttX Boot Code</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-hart-id-from-opensbi" title="Appendix: Hart ID from OpenSBI">12 Appendix: Hart ID from OpenSBI</a><ul></ul></li>
-<li><a href="#appendix-nuttx-in-supervisor-mode" title="Appendix: NuttX in Supervisor Mode">13 Appendix: NuttX in Supervisor Mode</a><ul></ul></li>
-<li><a href="#appendix-nuttx-start-address" title="Appendix: NuttX Start Address">14 Appendix: NuttX Start Address</a><ul></ul></li>
-<li><a href="#appendix-nuttx-crash-log" title="Appendix: NuttX Crash Log">15 Appendix: NuttX Crash Log</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a><ul></ul></li>
+<li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
+<li><a href="#uart-controller-on-star64">3 UART Controller on Star64</a><ul></ul></li>
+<li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
+<li><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
+<li><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a><ul></ul></li>
+<li><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a><ul></ul></li>
+<li><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a><ul></ul></li>
+<li><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-hart-id-from-opensbi">12 Appendix: Hart ID from OpenSBI</a><ul></ul></li>
+<li><a href="#appendix-nuttx-in-supervisor-mode">13 Appendix: NuttX in Supervisor Mode</a><ul></ul></li>
+<li><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a><ul></ul></li>
+<li><a href="#appendix-nuttx-crash-log">15 Appendix: NuttX Crash Log</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
 <p>In this article we’ll boot a tiny bit of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a>, the same SoC in VisionFive2)</p>
@@ -143,7 +143,8 @@ CONFIG_16550_UART0_BASE=0x10000000
 CONFIG_16550_UART0_CLOCK=3686400
 CONFIG_16550_UART0_IRQ=37
 CONFIG_16550_UART0_SERIAL_CONSOLE=y
-CONFIG_16550_UART=y</code></pre></div>
+CONFIG_16550_UART=y
+</code></pre></div>
 <p>This says that QEMU emulates a <a href="https://en.wikipedia.org/wiki/16550_UART"><strong>16550 UART Controller</strong></a>.</p>
 <p>And the <strong>Base Address</strong> of QEMU’s UART Controller is <strong><code>0x1000</code> <code>0000</code></strong>.</p>
 <p><em>How to print to the 16550 UART Port?</em></p>
@@ -160,15 +161,18 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
     UART_THR_OFFSET,       // Offset of Transmit Holding Register
     (uart_datawidth_t) ch  // Character to print
   );
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624">(<strong>u16550_serialout</strong> is defined here)</a></p>
 <p>To print a character, the driver writes to the UART Base Address <strong><code>0x1000</code> <code>0000</code></strong> at Offset <strong>UART_THR_OFFSET</strong>.</p>
 <p>And we discover that <strong>UART_THR_OFFSET</strong> is 0: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200">uart_16550.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR 0 /* Transmit Holding Register (when DLAB is 0) */
-#define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)</code></pre></div>
+#define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
+</code></pre></div>
 <p>Which means that we can print to QEMU Console by writing to <strong><code>0x1000</code> <code>0000</code></strong>. How convenient!</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `1` to QEMU Console
-*(volatile uint8_t *) 0x10000000 = &#39;1&#39;;</code></pre></div>
+*(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
+</code></pre></div>
 <p><em>What about RISC-V Assembly?</em></p>
 <p>This is how we print to QEMU Console in <strong>RISC-V Assembly</strong> (to debug our NuttX Boot Code)…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART Base Address to Register t0 */
@@ -187,7 +191,8 @@ sb  t1, 0(t0)
 /* Load `3` to Register t1 */
 li  t1, 0x33
 /* Store byte from Register t1 to UART Base Address, Offset 0 */
-sb  t1, 0(t0)</code></pre></div>
+sb  t1, 0(t0)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">(Previously here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
@@ -203,7 +208,8 @@ $ qemu-system-riscv64 \
 
 123123123123123123112323
 NuttShell (NSH) NuttX-12.0.3
-nsh&gt; </code></pre></div>
+nsh&gt; 
+</code></pre></div>
 <p>“<strong><code>123</code></strong>” is printed 8 times because QEMU is running with 8 CPUs.</p>
 <p>Now we sprinkle some Debug Logs on Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
@@ -229,7 +235,8 @@ nsh&gt; </code></pre></div>
 </ul>
 <p><em>Isn’t that the same UART Base Address as QEMU?</em></p>
 <p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_UART0_BASE=0x10000000</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_UART0_BASE=0x10000000
+</code></pre></div>
 <p><strong><code>0x1000</code> <code>0000</code></strong> is the exact same UART Base Address for QEMU AND Star64…</p>
 <p>So no changes needed, our Debug Log will work on Star64!</p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit">(Star64 uses a different <strong>CONFIG_16550_REGINCR</strong>)</a></p>
@@ -262,10 +269,12 @@ nsh&gt; </code></pre></div>
 .long   0                    /* Reserved for PE COFF offset */
 
 real_start:
-  /* Actual Boot Code starts here... */</code></pre></div>
+  /* Actual Boot Code starts here... */
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/star64#decompile-the-kernel-with-ghidra">(<strong><code>c.li</code></strong> emits the <strong>Magic Signature “MZ”</strong>)</a></p>
 <p>Note that <strong>Image Load Offset</strong> must be <strong><code>0x20</code> <code>0000</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>.quad  0x200000  /* Image load offset from start of RAM */</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>.quad  0x200000  /* Image load offset from start of RAM */
+</code></pre></div>
 <p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Chew on it for a bit…</p>
 <h1 id="start-address-of-nuttx-kernel"><a class="doc-anchor" href="#start-address-of-nuttx-kernel">§</a>5 Start Address of NuttX Kernel</h1>
 <p><em>What’s this magical address <code>0x4020</code> <code>0000</code>?</em></p>
@@ -282,7 +291,8 @@ real_start:
 <p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in our <strong>NuttX Build Configuration</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L79-L80">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>// TODO: Fix CONFIG_RAM_SIZE
 CONFIG_RAM_SIZE=33554432
-CONFIG_RAM_START=0x40200000</code></pre></div>
+CONFIG_RAM_START=0x40200000
+</code></pre></div>
 <p>And our <strong>NuttX Linker Script</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/scripts/ld.script#L20-L53">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
@@ -294,7 +304,8 @@ SECTIONS
 {
   /* Previously 0x80000000 */
   . = 0x40200000;
-  .text :</code></pre></div>
+  .text :
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-start-address">(Also <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
 <p><em>We’re sure this is correct?</em></p>
 <p>We check the <strong>RISC-V Disassembly</strong> of our NuttX Kernel: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
@@ -302,7 +313,8 @@ SECTIONS
   li  s4, -0xd    /* Magic Signature &quot;MZ&quot; (2 bytes) */
     40200000: 5a4d  li s4,-13
   j   real_start  /* Jump to Kernel Start (2 bytes) */
-    40200002: a83d  j  40200040 &lt;real_start&gt;</code></pre></div>
+    40200002: a83d  j  40200040 &lt;real_start&gt;
+</code></pre></div>
 <p>The Start Address is indeed <strong><code>0x4020</code> <code>0000</code></strong>.</p>
 <p>Yep Looks Good To Us (YLGTU), we’re ready to serve it on Star64!</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
@@ -356,7 +368,8 @@ sudo chmod go+w /run/media/$USER/armbi_root/boot
 sudo chmod go+w /run/media/$USER/armbi_root/boot/dtb/starfive
 cp \
   /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
-  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-star64-pine64.dtb</code></pre></div>
+  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-star64-pine64.dtb
+</code></pre></div>
 <p>Then we overwrite the Linux Kernel Image by our <strong>NuttX Binary Image</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## We assume that `nuttx` contains the NuttX ELF Image.
 ## Export the NuttX Binary Image to `nuttx.bin`
@@ -369,14 +382,16 @@ riscv64-unknown-elf-objcopy \
 rm /run/media/$USER/armbi_root/boot/Image
 
 ## Copy `nuttx.bin` to Linux Kernel `/boot/Image`
-cp nuttx.bin /run/media/$USER/armbi_root/boot/Image</code></pre></div>
+cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
+</code></pre></div>
 <p>Insert the microSD Card into Star64 and power up.</p>
 <p><a href="https://lupyuen.github.io/articles/tftp">(Or boot <strong>NuttX over the Network</strong>)</a></p>
 <p>When it boots on Star64, NuttX prints “<strong><code>123</code></strong>” yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-123</code></pre></div>
+123
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">(Printed by our <strong>Boot Code</strong>)</a></p>
 <p>But NuttX crashes with a <strong>RISC-V Illegal Instruction Exception</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Unhandled exception: Illegal instruction
@@ -386,7 +401,8 @@ EPC: ffffffff804ba05c RA: 00000000402011c6 reloc adjusted
 SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
 T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
 S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
-A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000</code></pre></div>
+A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(See the <strong>Complete Log</strong>)</a></p>
 <p>(<strong>EPC</strong> is the Program Counter for the Exception: <strong><code>0x4020</code> <code>005C</code></strong>)</p>
 <p>And Star64 (OpenSBI) shows the offending <strong>RISC-V Machine Code</strong> (in brackets)…</p>
@@ -395,7 +411,8 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000</code></pre></
   (2573 f140)
 resetting ...
 reset not supported yet
-### ERROR ### Please RESET the board ###</code></pre></div>
+### ERROR ### Please RESET the board ###
+</code></pre></div>
 <p>Why did NuttX crash at <strong><code>0x4020</code> <code>005C</code></strong>? We percolate our code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-exception.jpg" alt="Cody AI Assistant tries to explain our RISC-V Exception" /></p>
 <p><em>Cody AI Assistant tries to explain our RISC-V Exception</em></p>
@@ -406,10 +423,12 @@ reset not supported yet
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
   /* Load the Hart ID (CPU ID) */
   csrr a0, mhartid
-    4020005c: f1402573  csrr a0, mhartid</code></pre></div>
+    4020005c: f1402573  csrr a0, mhartid
+</code></pre></div>
 <p>Breaking it down…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid</code></pre></div>
+csrr a0, mhartid
+</code></pre></div>
 <ul>
 <li>
 <p><strong><code>csrr</code></strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>Control and Status Register</strong></a></p>
@@ -445,7 +464,8 @@ csrr a0, mhartid</code></pre></div>
 <p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
 <p>Remember this?</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid</code></pre></div>
+csrr a0, mhartid
+</code></pre></div>
 <p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong><code>mhartid</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
 <p>That’s why NuttX fails to read the Hart ID!</p>
 <p><em>What runs in Machine Mode?</em></p>
@@ -468,11 +488,13 @@ csrr a0, mhartid</code></pre></div>
 <p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi"><strong>Register A0</strong></a>.</p>
 <p>So this (overly-powerful) line in our <a href="https://github.com/lupyuen2/wip-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103"><strong>NuttX Boot Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid</code></pre></div>
+csrr a0, mhartid
+</code></pre></div>
 <p>Gets demoted to this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L68-L76">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
 /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
-addi a0, a0, -1</code></pre></div>
+addi a0, a0, -1
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi">(OpenSBI passes <strong>Hart ID as 1</strong>, instead of 0)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <p><em>What about other CSR Instructions in our NuttX Boot Code?</em></p>
@@ -482,14 +504,16 @@ addi a0, a0, -1</code></pre></div>
 <p><strong>To Disable Interrupts:</strong> Change <a href="https://lupyuen.github.io/articles/riscv#disable-interrupts"><strong><code>mie</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong><code>sie</code></strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Disable all interrupts (i.e. timer, external) */
 csrw  sie, zero
-/* Previously `mie` */</code></pre></div>
+/* Previously `mie` */
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L125-L131">(Source)</a></p>
 </li>
 <li>
 <p><strong>To Load Trap Vector Table:</strong> Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load address of Trap Vector Table */
 csrw  stvec, t0
-/* Previously `mtvec` */</code></pre></div>
+/* Previously `mtvec` */
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L131-L134">(Source)</a></p>
 </li>
 </ul>
@@ -531,7 +555,8 @@ csrw  stvec, t0
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-123067</code></pre></div>
+123067
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1">(Source)</a></p>
 <p>Now we’re smokin’ hot…</p>
 <ul>
@@ -547,11 +572,13 @@ clk u5_dw_i2c_clk_apb already disabled
 <div class="example-wrap"><pre class="language-text"><code>/* Print `7` */
 li  t0, 0x10000000
 li  t1, 0x37
-sb  t1, 0(t0)</code></pre></div>
+sb  t1, 0(t0)
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Previously here)</a></p>
 <p>Before jumping to the Start Code…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Jump to jh7110_start */
-jal  x1, jh7110_start</code></pre></div>
+jal  x1, jh7110_start
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L134-L138">(Source)</a></p>
 </li>
 <li>
@@ -635,7 +662,8 @@ jal  x1, jh7110_start</code></pre></div>
 <p>(Tip: CONFIG_RISCV_M_MODE is False and CONFIG_EFI is True)</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Save hart ID and DTB physical address */
 mv s0, a0
-mv s1, a1</code></pre></div>
+mv s1, a1
+</code></pre></div>
 <p>Here we see that U-Boot <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.adoc#function-hart-start-fid-0">(or OpenSBI)</a> will pass 2 arguments when it starts the kernel…</p>
 <ul>
 <li>
@@ -651,7 +679,8 @@ mv s1, a1</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
 T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
 S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
-A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000</code></pre></div>
+A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
+</code></pre></div>
 <p>This says that…</p>
 <ul>
 <li>
@@ -680,7 +709,8 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000</code></pre></
 <p><em>The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Mask all interrupts */
 csrw CSR_IE, zero
-csrw CSR_IP, zero</code></pre></div>
+csrw CSR_IP, zero
+</code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L195-L200">(Source)</a></p>
 <p>That’s because the Linux Boot Code will work for Machine Mode AND Supervisor Mode! Here’s how <strong><code>CSR_IE</code></strong> and <strong><code>CSR_IP</code></strong> are mapped to the <strong><code>m</code></strong> and <strong><code>s</code></strong> CSR Registers…</p>
 <p>(Remember: CONFIG_RISCV_M_MODE is false for NuttX)</p>
@@ -694,7 +724,8 @@ csrw CSR_IP, zero</code></pre></div>
   # define CSR_IE		CSR_SIE
   # define CSR_IP		CSR_SIP
   ...
-#endif /* !CONFIG_RISCV_M_MODE */</code></pre></div>
+#endif /* !CONFIG_RISCV_M_MODE */
+</code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L393-L446">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-boot.png" alt="After fixing NuttX for Supervisor Mode" /></p>
 <h1 id="appendix-nuttx-in-supervisor-mode"><a class="doc-anchor" href="#appendix-nuttx-in-supervisor-mode">§</a>13 Appendix: NuttX in Supervisor Mode</h1>
@@ -723,7 +754,8 @@ csrw CSR_IP, zero</code></pre></div>
 
   /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0. */
   /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
-  addi a0, a0, -1</code></pre></div>
+  addi a0, a0, -1
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L68-L76">(Source)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx">(<strong>RISC-V Instructions</strong> explained)</a></p>
 <p><strong>If Hart ID is 0 (First CPU):</strong></p>
@@ -731,7 +763,8 @@ csrw CSR_IP, zero</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>  /* Set stack pointer to the idle thread stack */
   bnez a0, 1f
   la   sp, QEMU_RV_IDLESTACK_TOP
-  j    2f</code></pre></div>
+  j    2f
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L76-L83">(Source)</a></p>
 <p><strong>If Hart ID is 1, 2, 3, …</strong></p>
 <ul>
@@ -775,7 +808,8 @@ csrw CSR_IP, zero</code></pre></div>
    * running and using the per CPU idle stack.
    */
   li   t0, STACK_ALIGN_UP(CONFIG_IDLETHREAD_STACKSIZE - XCPTCONTEXT_SIZE)
-  add  sp, sp, t0</code></pre></div>
+  add  sp, sp, t0
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L83-L127">(Source)</a></p>
 <p><strong>For All Hart IDs:</strong></p>
 <ul>
@@ -796,7 +830,8 @@ csrw CSR_IP, zero</code></pre></div>
   /* Jump to jh7110_start */
   jal  x1, jh7110_start
 
-  /* We shouldn&#39;t return from _start */</code></pre></div>
+  /* We shouldn&#39;t return from _start */
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_head.S#L127-L149">(Source)</a></p>
 <p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Like when we hit Exceptions with <strong>Machine-Mode Instructions</strong>)</a></p>
@@ -821,16 +856,19 @@ SECTIONS
 {
   /* Previously 0x80000000 */
   . = 0x40200000;
-  .text :</code></pre></div>
+  .text :
+</code></pre></div>
 <p>Which should match the <strong>NuttX Build Configuration</strong> for Kernel Mode: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_PGPOOL_PBASE=0x40600000
 CONFIG_ARCH_PGPOOL_VBASE=0x40600000
 // TODO: Fix CONFIG_RAM_SIZE
 CONFIG_RAM_SIZE=1048576
-CONFIG_RAM_START=0x40200000</code></pre></div>
+CONFIG_RAM_START=0x40200000
+</code></pre></div>
 <p><em>Why will we use NuttX Kernel Mode?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX Build for Kernel Mode
-tools/configure.sh rv-virt:knsh64</code></pre></div>
+tools/configure.sh rv-virt:knsh64
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/star64-0.0.1">(Source)</a></p>
 <p>We use <code>rv-virt:knsh64</code> (NuttX Kernel Mode) instead of <code>rv-virt:nsh64</code> (NuttX Flat Mode) so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>. (Instead of RISC-V Machine Mode)</p>
 <p>More about this in the next article.</p>
@@ -891,7 +929,8 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 resetting ...
 reset not supported yet
-### ERROR ### Please RESET the board ###</code></pre></div>
+### ERROR ### Please RESET the board ###
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

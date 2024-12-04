@@ -64,25 +64,25 @@
     
 
     <h1 class="title">Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#c-compiler-in-our-web-browser" title="C Compiler in our Web Browser">1 C Compiler in our Web Browser</a><ul></ul></li>
-<li><a href="#file-access-for-webassembly" title="File Access for WebAssembly">2 File Access for WebAssembly</a><ul></ul></li>
-<li><a href="#rom-fs-filesystem" title="ROM FS Filesystem">3 ROM FS Filesystem</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-rom-fs" title="NuttX Driver for ROM FS">4 NuttX Driver for ROM FS</a><ul>
-<li><a href="#mount-the-filesystem" title="Mount the Filesystem">4.1 Mount the Filesystem</a><ul></ul></li>
-<li><a href="#open-a-rom-fs-file" title="Open a ROM FS File">4.2 Open a ROM FS File</a><ul></ul></li>
-<li><a href="#read-a-rom-fs-file" title="Read a ROM FS File">4.3 Read a ROM FS File</a><ul></ul></li></ul></li>
-<li><a href="#inside-a-rom-fs-filesystem" title="Inside a ROM FS Filesystem">5 Inside a ROM FS Filesystem</a><ul></ul></li>
-<li><a href="#tcc-calls-rom-fs-driver" title="TCC calls ROM FS Driver">6 TCC calls ROM FS Driver</a><ul></ul></li>
-<li><a href="#from-tcc-to-nuttx-emulator" title="From TCC to NuttX Emulator">7 From TCC to NuttX Emulator</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-tcc-webassembly" title="Appendix: Build TCC WebAssembly">9 Appendix: Build TCC WebAssembly</a><ul></ul></li>
-<li><a href="#appendix-nuttx-rom-fs-driver" title="Appendix: NuttX ROM FS Driver">10 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
-<li><a href="#appendix-download-rom-fs" title="Appendix: Download ROM FS">11 Appendix: Download ROM FS</a><ul></ul></li>
-<li><a href="#appendix-print-via-nuttx-system-call" title="Appendix: Print via NuttX System Call">12 Appendix: Print via NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-exit-via-nuttx-system-call" title="Appendix: Exit via NuttX System Call">13 Appendix: Exit via NuttX System Call</a><ul></ul></li>
-<li><a href="#appendix-patch-the-nuttx-emulator" title="Appendix: Patch the NuttX Emulator">14 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
-<li><a href="#appendix-rom-fs-filesystem" title="Appendix: ROM FS Filesystem">15 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>11 Feb 2024</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#c-compiler-in-our-web-browser">1 C Compiler in our Web Browser</a><ul></ul></li>
+<li><a href="#file-access-for-webassembly">2 File Access for WebAssembly</a><ul></ul></li>
+<li><a href="#rom-fs-filesystem">3 ROM FS Filesystem</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-rom-fs">4 NuttX Driver for ROM FS</a><ul>
+<li><a href="#mount-the-filesystem">4.1 Mount the Filesystem</a><ul></ul></li>
+<li><a href="#open-a-rom-fs-file">4.2 Open a ROM FS File</a><ul></ul></li>
+<li><a href="#read-a-rom-fs-file">4.3 Read a ROM FS File</a><ul></ul></li></ul></li>
+<li><a href="#inside-a-rom-fs-filesystem">5 Inside a ROM FS Filesystem</a><ul></ul></li>
+<li><a href="#tcc-calls-rom-fs-driver">6 TCC calls ROM FS Driver</a><ul></ul></li>
+<li><a href="#from-tcc-to-nuttx-emulator">7 From TCC to NuttX Emulator</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-tcc-webassembly">9 Appendix: Build TCC WebAssembly</a><ul></ul></li>
+<li><a href="#appendix-nuttx-rom-fs-driver">10 Appendix: NuttX ROM FS Driver</a><ul></ul></li>
+<li><a href="#appendix-download-rom-fs">11 Appendix: Download ROM FS</a><ul></ul></li>
+<li><a href="#appendix-print-via-nuttx-system-call">12 Appendix: Print via NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-exit-via-nuttx-system-call">13 Appendix: Exit via NuttX System Call</a><ul></ul></li>
+<li><a href="#appendix-patch-the-nuttx-emulator">14 Appendix: Patch the NuttX Emulator</a><ul></ul></li>
+<li><a href="#appendix-rom-fs-filesystem">15 Appendix: ROM FS Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>11 Feb 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/romfs-title.png" alt="Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)" /></p>
 <p><a href="https://lupyuen.github.io/tcc-riscv32-wasm/romfs">(Try the <strong>Online Demo</strong>)</a></p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -125,10 +125,12 @@
 void main(int argc, char *argv[]) {
   puts(&quot;Hello, World!!\n&quot;);
   exit(0);
-}            </code></pre></div>
+}            
+</code></pre></div>
 <p>Click the “<strong>Compile</strong>” button. Our Web Browser calls TCC to compile the above program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile to RISC-V ELF
-tcc -c hello.c</code></pre></div>
+tcc -c hello.c
+</code></pre></div>
 <p>And it downloads the compiled <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>RISC-V ELF <code>a.out</code></strong></a>.</p>
 <p>To test the Compiled Output, we browse to the Emulator for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
@@ -138,7 +140,8 @@ tcc -c hello.c</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>TinyEMU Emulator for Ox64 BL808 RISC-V SBC
 NuttShell (NSH) NuttX-12.4.0-RC0
 nsh&gt; a.out
-Hello, World!!</code></pre></div>
+Hello, World!!
+</code></pre></div>
 <p>And it works: Our Web Browser generates a RISC-V Executable, that runs in a RISC-V Emulator!</p>
 <p><a href="https://youtu.be/sU69bUyrgN8">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>Surely it’s a staged demo? Something server-side?</em></p>
@@ -175,7 +178,8 @@ Hello, World!!</code></pre></div>
 void main(int argc, char *argv[]) {
   puts(&quot;Hello, World!!\n&quot;);
   exit(0);
-}            </code></pre></div>
+}            
+</code></pre></div>
 <p><em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> come from the <strong>ROM FS Filesystem</strong> that’s bundled inside our TCC WebAssembly.</p>
 <p>ROM FS works like a regular Filesystem (think FAT and EXT4). Just that it’s tiny, <strong>runs in memory</strong>. And bundles easily with WebAssembly.</p>
 <p>(Coming up in the next section)</p>
@@ -207,7 +211,8 @@ brew install px4/px4/genromfs
 genromfs \
   -f romfs.bin \
   -d romfs \
-  -V &quot;ROMFS&quot;</code></pre></div>
+  -V &quot;ROMFS&quot;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p>We embed the <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a> into our <a href="https://lupyuen.github.io/articles/tcc#zig-compiles-tcc-to-webassembly"><strong>Zig Wrapper</strong></a>, so it will be accessible by TCC WebAssembly: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/c2146f65cc8f338b8a3aaa4c2e88e550e82514ec/zig/tcc-wasm.zig#L993-L997">tcc-wasm.zig</a></p>
@@ -218,7 +223,8 @@ const ROMFS_DATA = @embedFile(
 );
 
 // Later: Mount the ROM FS Filesystem
-// from `ROMFS_DATA`</code></pre></div>
+// from `ROMFS_DATA`
+</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><strong>For Easier Updates</strong>: We should download <a href="https://lupyuen.github.io/articles/romfs#appendix-download-rom-fs"><strong><code>romfs.bin</code> from our Web Server</strong></a>. (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/romfs-flow.jpg" alt="NuttX Driver for ROM FS" /></p>
@@ -268,7 +274,8 @@ pub export fn compile_program(...) [*]const u8 {
     c.romfs_mountpt  // Mount Point
   );
 
-  // Omitted: Call the TCC Compiler</code></pre></div>
+  // Omitted: Call the TCC Compiler
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is our <strong>Mount Inode</strong>)</a></p>
 <p><em>What if the ROM FS Filesystem contains garbage?</em></p>
 <p>Our ROM FS Driver will <strong>Fail the Mount Operation</strong>.</p>
@@ -289,7 +296,8 @@ const ret2 = c.romfs_open(
   c.O_RDONLY,  // Read-Only
   0            // Mode (Unused for Read-Only Files)
 );
-assert(ret2 &gt;= 0);</code></pre></div>
+assert(ret2 &gt;= 0);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L160-L163">(<strong>romfs_inode</strong> is our <strong>Mount Inode</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L99-L101">(See the <strong>Open Log</strong>)</a></p>
 <p>In the code above, we allocate the File Struct from the Stack. In a while we’ll allocate the File Struct from the Heap.</p>
@@ -312,7 +320,8 @@ hexdump.hexdump(@ptrCast(&amp;buf), @intCast(ret3));
 
 // Close the ROM FS File
 const ret4 = c.romfs_close(&amp;file);
-assert(ret4 &gt;= 0);</code></pre></div>
+assert(ret4 &gt;= 0);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/main/zig/hexdump.zig#L9-L92">(<strong>hexdump</strong> is here)</a></p>
 <p>We’ll see this…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>romfs_read: Read 4 bytes from offset 0 
@@ -321,7 +330,8 @@ romfs_filecacheread: sector: 2 cached: 0 ncached: 1 sectorsize: 64 XIP base: any
 romfs_filecacheread: XIP buffer: anyopaque@1122ff4 
 romfs_read: Return 4 bytes from sector offset 0 
   0000:  2F 2F 20 43  // C
-romfs_close: Closing </code></pre></div>
+romfs_close: Closing 
+</code></pre></div>
 <p>Which looks right: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><em>&lt;stdio.h&gt;</em></a> begins with “<a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L1"><strong><code>// C</code></strong></a>”</p>
 <p>What’s going on inside the filesystem? We snoop around…</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L102-L113">(See the <strong>Read Log</strong>)</a></p>
@@ -342,12 +352,14 @@ brew install px4/px4/genromfs
 genromfs \
   -f romfs.bin \
   -d romfs \
-  -V &quot;ROMFS&quot;</code></pre></div>
+  -V &quot;ROMFS&quot;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p>Guided by the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a>, we snoop around our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
-hexdump -C romfs.bin </code></pre></div>
+hexdump -C romfs.bin 
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d">(See the <strong>Filesystem Dump</strong>)</a></p>
 <p>This <strong>ROM FS Header</strong> appears at the top of the filesystem (pic above)…</p>
 <ul>
@@ -432,7 +444,8 @@ export fn open(path: [*:0]const u8, oflag: c_uint, ...) c_int {
   romfs_files.append(file)
     catch { @panic(&quot;Failed to add file&quot;); };
   return fd;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L139-L141">(See the <strong>Open Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L166-L219">(Caution: We might have <strong>holes</strong>)</a></p>
 <p><strong><code>romfs_files</code></strong> remembers our <strong>POSIX File Descriptors</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L27-L31">tcc-wasm.zig</a></p>
@@ -446,7 +459,8 @@ var romfs_files: std.ArrayList(  // Array List of...
 // At Startup: Allocate the POSIX
 // File Descriptors for TCC
 romfs_files = std.ArrayList(?*c.struct_file)
-  .init(std.heap.page_allocator);</code></pre></div>
+  .init(std.heap.page_allocator);
+</code></pre></div>
 <p>Why <a href="https://ziglang.org/documentation/master/std/#A;std:ArrayList"><strong>ArrayList</strong></a>? It grows easily as we add File Descriptors…</p>
 <p><img src="https://lupyuen.github.io/images/romfs-fd.jpg" alt="romfs_files remembers our POSIX File Descriptors" /></p>
 <p>When TCC WebAssembly calls <strong>POSIX <code>read()</code></strong> to read the C Header File, we call ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L226-L256">tcc-wasm.zig</a></p>
@@ -471,7 +485,8 @@ export fn read(fd: c_int, buf: [*:0]u8, nbyte: size_t) isize {
   );
   assert(ret &gt;= 0);
   return @intCast(ret);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L142-L238">(See the <strong>Read Log</strong>)</a></p>
 <p>Finally TCC WebAssembly calls <strong>POSIX <code>close()</code></strong> to close the C Header File. We do the same for ROM FS: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L277-L302">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Close the POSIX File Descriptor
@@ -495,7 +510,8 @@ export fn close(fd: c_int) c_int {
     romfs_files.items[f] = null;
   }
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>That’s all we need to support C Header Files in TCC WebAssembly!</p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L238-L240">(See the <strong>Close Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/romfs#appendix-build-tcc-webassembly">(Build and Test <strong>TCC WebAssembly</strong>)</a></p>
@@ -549,7 +565,8 @@ for (const i in data) {
 localStorage.setItem(
   &quot;elf_data&quot;,   // Name for Local Storage
   encoded_data  // Encoded ELF Data
-);</code></pre></div>
+);
+</code></pre></div>
 <p><em>But NuttX Emulator boots from a Fixed NuttX Image, loaded from our Static Web Server…</em></p>
 <p><em>How did <code>a.out</code> magically appear inside the NuttX Image?</em></p>
 <p>We conjured a Nifty Illusion… <strong><code>a.out</code></strong> was in the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a> all along!</p>
@@ -575,7 +592,8 @@ hexdump -C apps/bin/a.out
 ## Fake `a.out` looks like...
 ## 0000  22 05 69 00 22 05 69 01  22 05 69 02 22 05 69 03  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
 ## 0010  22 05 69 04 22 05 69 05  22 05 69 06 22 05 69 07  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
-## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|</code></pre></div>
+## 0020  22 05 69 08 22 05 69 09  22 05 69 0a 22 05 69 0b  |&quot;.i.&quot;.i.&quot;.i.&quot;.i.|
+</code></pre></div>
 <p>In our <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/.github/workflows/ox64.yml#L88-L98"><strong>NuttX Build</strong></a>: <strong>Fake <code>a.out</code></strong> gets bundled into the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/initrd"><strong>Initial RAM Disk <code>initrd</code></strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/app#initial-ram-disk"><strong>Which gets appended</strong></a> to the <a href="https://github.com/lupyuen/nuttx-tinyemu/blob/main/docs/tcc/Image"><strong>NuttX Image</strong></a>.</p>
 <p><em>So we patched Fake <code>a.out</code> in the NuttX Image with the Real <code>a.out</code>?</em></p>
@@ -608,7 +626,8 @@ hexdump -C apps/bin/a.out
 void main(int argc, char *argv[]) {
   puts(&quot;Hello, World!!\n&quot;);
   exit(0);
-}            </code></pre></div>
+}            
+</code></pre></div>
 <p>They’ll make System Calls to <strong>NuttX Kernel</strong>, for printing and quitting…</p>
 <ul>
 <li>
@@ -695,12 +714,14 @@ simple-http-server ./docs &amp;
 
 ## Or test with Node.js
 node zig/test.js
-node zig/test-nuttx.js</code></pre></div>
+node zig/test-nuttx.js
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/build.sh">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L1-L93">(See the <strong>Build Log</strong>)</a></p>
 <p>Browse to this URL and our TCC WebAssembly will appear (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test ROM FS with TCC WebAssembly
-http://localhost:8000/romfs/index.html</code></pre></div>
+http://localhost:8000/romfs/index.html
+</code></pre></div>
 <p>Check the <strong>JavaScript Console</strong> for Debug Messages.</p>
 <p><a href="https://gist.github.com/lupyuen/748e6d36ce21f7db76cb963eee099d9e">(See the <strong>Web Browser Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/c05f606e4c25162136fd05c7a02d2191#file-tcc-wasm-nodejs-log-L94-L1454">(See the <strong>Node.js Log</strong>)</a></p>
@@ -757,7 +778,8 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
   // Unknown Request
   } else { debug(&quot;mtd_ioctl: Unknown command {}&quot;, .{cmd}); }
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#embedFile">(About <strong>@embedFile</strong>)</a></p>
 <p><em>Anything else we changed in our Zig Wrapper?</em></p>
 <p>Last week we hacked up a simple <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>Format Pattern</strong></a> for handling <a href="https://lupyuen.github.io/articles/tcc#fearsome-fprintf-and-friends"><strong>fprintf and friends</strong></a>. (One Format Pattern per C Format String)</p>
@@ -772,7 +794,8 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 /// But what if we need to update it?
 const ROMFS_DATA = @embedFile(
   &quot;romfs.bin&quot;
-);</code></pre></div>
+);
+</code></pre></div>
 <p><strong>For Easier Updates</strong>: We should download <strong><code>romfs.bin</code></strong> from our <strong>Web Server</strong> (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L189-L212">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// JavaScript to load the WebAssembly Module
 // and start the Main Function.
@@ -787,7 +810,8 @@ async function bootstrap() {
 
   // Start the Main Function
   window.requestAnimationFrame(main);
-}        </code></pre></div>
+}        
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
 <p>Our JavaScript Main Function passes the <strong>ROM FS Filesystem</strong> to our Zig Wrapper: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L52-L81">tcc.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
@@ -809,7 +833,8 @@ function main() {
     
   // Call TCC to compile the program
   const ptr = wasm.instance.exports
-    .compile_program(options_ptr, code_ptr);</code></pre></div>
+    .compile_program(options_ptr, code_ptr);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/docs/romfs/tcc.js#L6-L28">(<strong>wasm</strong> is our <strong>WebAssembly Helper</strong>)</a></p>
 <p>In our <strong>Zig Wrapper</strong>: <strong><code>get_romfs</code></strong> returns the WebAssembly Memory reserved for our ROM FS Filesystem: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L112-L121">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Storage for ROM FS Filesystem, loaded from Web Server
@@ -825,7 +850,8 @@ pub export fn get_romfs(size: u32) [*]const u8 {
     @panic(&quot;Increase ROMFS_DATA size&quot;);
   }
   return &amp;ROMFS_DATA;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><strong>NuttX ROM FS Driver</strong> fetches <strong><code>ROMFS_DATA</code></strong> from our Zig Wrapper, via an <strong>IOCTL Request</strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/tcc-wasm.zig#L967-L991">tcc-wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// ROM FS Driver makes this IOCTL Request
 export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
@@ -837,7 +863,8 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
     // because we&#39;re loading from Web Server
     rm_xipbase.?.* = @intCast(@intFromPtr(
       &amp;ROMFS_DATA
-    ));</code></pre></div>
+    ));
+</code></pre></div>
 <p>With a few tweaks to <strong><code>ROMFS_DATA</code></strong>, we’re now loading <strong><code>romfs.bin</code></strong> from our Web Server. Which is better for maintainability.</p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/tree/romfs/docs/romfs">(See the <strong>Web Server Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/test.js#L62-L75">(Loading <strong><code>romfs.bin</code></strong> also works in <strong>Node.js</strong>)</a></p>
@@ -852,14 +879,16 @@ export fn mtd_ioctl(_: *mtd_dev_s, cmd: c_int, rm_xipbase: ?*c_int) c_int {
 void main(int argc, char *argv[]) {
   puts(&quot;Hello, World!!\n&quot;);
   exit(0);
-}            </code></pre></div>
+}            
+</code></pre></div>
 <p>We implement <strong><code>puts</code></strong> by calling <strong><code>write</code></strong>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L18-L25">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print the string to Standard Output
 inline int puts(const char *s) {
   return
     write(1, s, strlen(s)) +
     write(1, &quot;\n&quot;, 1);
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Then we implement <strong><code>write</code></strong> the exact same way as NuttX, making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a> to NuttX Kernel (pic above): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L25-L36">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: NuttX System Call Number may change
 #define SYS_write 61
@@ -873,7 +902,8 @@ inline ssize_t write(int parm1, const void * parm2, size_t parm3) {
     (uintptr_t) parm2,         // Buffer to be written
     (uintptr_t) parm3          // Number of bytes to write
   );
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>System Call Numbers</strong> may change)</a></p>
 <p><strong><code>sys_call3</code></strong> is our hacked implementation of <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a>: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdio.h#L36-L84">stdio.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 3 parameters
@@ -933,7 +963,8 @@ inline uintptr_t sys_call3(
 
   // Return the result from Register A0
   return r0;
-} </code></pre></div>
+} 
+</code></pre></div>
 <p><em>Why so complicated?</em></p>
 <p>That’s because TCC <a href="https://lupyuen.github.io/articles/tcc#appendix-nuttx-system-call"><strong>won’t load the RISC-V Registers correctly</strong></a>. Thus we load the registers ourselves.</p>
 <p><em>Why not simply copy A0 to A2 minus the hokey pokey?</em></p>
@@ -941,7 +972,8 @@ inline uintptr_t sys_call3(
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
 // Copy Register A0 to A2
-asm volatile (&quot;addi a2, a0, 0&quot;);</code></pre></div>
+asm volatile (&quot;addi a2, a0, 0&quot;);
+</code></pre></div>
 <p>When we do that, Register A2 <strong>becomes negative</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>nsh&gt; a.out
 riscv_swint: Entry: regs: 0x8020be10
@@ -951,7 +983,8 @@ A0: 3d
 A1: 01 
 A2: ffffffffc0101000 
 A3: 0f
-[...Page Fault because A2 is an Invalid Address...]</code></pre></div>
+[...Page Fault because A2 is an Invalid Address...]
+</code></pre></div>
 <p>So we Shift Away the <strong>Negative Sign</strong> (<em>silly</em> + <em>seriously</em>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
@@ -962,7 +995,8 @@ asm volatile (&quot;slli a2, a0, 32&quot;);
 
 // Then shift 32 bits Right
 // to clear the top 32 bits
-asm volatile (&quot;srli a2, a2, 32&quot;);</code></pre></div>
+asm volatile (&quot;srli a2, a2, 32&quot;);
+</code></pre></div>
 <p>Then Register A2 becomes <strong>Positively OK</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>riscv_swint: Entry: regs: 0x8020be10
 cmd: 61
@@ -971,14 +1005,16 @@ A0: 3d
 A1: 01
 A2: c0101000
 A3: 0f
-Hello, World!!</code></pre></div>
+Hello, World!!
+</code></pre></div>
 <p>BTW <em>Andy</em> won’t work…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Load SysCall Parameter to Register A0
 register long r2 asm(&quot;a0&quot;) = (long)(parm2);
 
 // Logical AND with 0xFFFF_FFFF
 // then save to Register A2
-asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);</code></pre></div>
+asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);
+</code></pre></div>
 <p>Because <strong><code>0xFFFF_FFFF</code></strong> gets assembled to <strong><code>-1</code></strong>.</p>
 <p><em>Chotto matte</em> there’s more…</p>
 <h1 id="appendix-exit-via-nuttx-system-call"><a class="doc-anchor" href="#appendix-exit-via-nuttx-system-call">§</a>13 Appendix: Exit via NuttX System Call</h1>
@@ -991,7 +1027,8 @@ asm volatile (&quot;andi a2, a0, 0xffffffff&quot;);</code></pre></div>
 void main(int argc, char *argv[]) {
   puts(&quot;Hello, World!!\n&quot;);
   exit(0);
-}            </code></pre></div>
+}            
+</code></pre></div>
 <p>We implement <strong><code>exit</code></strong> the same way as NuttX, by making a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a> to NuttX Kernel: <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L1-L10">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Caution: NuttX System Call Number may change
 #define SYS__exit 8
@@ -1008,7 +1045,8 @@ inline void exit(int parm1) {
 
   // Loop Forever
   while(1);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/app#nuttx-kernel-handles-system-call">(<strong>System Call Numbers</strong> may change)</a></p>
 <p><strong><code>sys_call1</code></strong> makes a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>NuttX System Call (ECALL)</strong></a>, with our hand-crafted RISC-V Assembly (as a workaround): <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs/stdlib.h#L10-L48">stdlib.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Make a System Call with 1 parameter
@@ -1054,7 +1092,8 @@ inline uintptr_t sys_call1(
 
   // Return the result from Register A0
   return r0;
-} </code></pre></div>
+} 
+</code></pre></div>
 <p>This cumbersome workaround works OK with TCC Compiler and NuttX Apps!</p>
 <p><em>Wow this looks horribly painful… Are we doing any more of this?</em></p>
 <p>Nope sorry, we won’t do any more of this! Hand-crafting the NuttX System Calls in RISC-V Assembly was <a href="https://lupyuen.github.io/articles/romfs#appendix-print-via-nuttx-system-call"><strong>positively painful</strong></a>.</p>
@@ -1104,7 +1143,8 @@ Module.ccall(
     // We added these for our ELF Data
     elf_data, elf_len
   ]
-);</code></pre></div>
+);
+</code></pre></div>
 <p>Inside our <strong>TinyEMU WebAssembly</strong>: We receive <strong><code>elf_data</code></strong> and copy it locally, because it will be clobbered (why?): <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/jsemu.c#L182-L211">jsemu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Start the TinyEMU Emulator. Called by JavaScript.
 void vm_start(...) {
@@ -1116,7 +1156,8 @@ void vm_start(...) {
 
   // Copy ELF Data to Local Buffer because it will get clobbered
   if (elf_len &gt; 4096) { puts(&quot;elf_len exceeds 4096, increase elf_data and a.out size&quot;); }
-  memcpy(elf_data, elf_data0, elf_len);</code></pre></div>
+  memcpy(elf_data, elf_data0, elf_len);
+</code></pre></div>
 <p>Then we search for our <strong>Magic Pattern <code>22</code> <code>05</code> <code>69</code> <code>00</code></strong> in our Fake <strong><code>a.out</code></strong>: <a href="https://github.com/lupyuen/ox64-tinyemu/blob/tcc/riscv_machine.c#L1034-L1053">riscv_machine.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Patch the ELF Data to Fake `a.out` in Initial RAM Disk
   uint64_t elf_addr = 0;
@@ -1131,7 +1172,8 @@ void vm_start(...) {
       elf_addr = RAM_BASE_ADDR + i;
       break;
     }
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>And we overwrite the Fake <strong><code>a.out</code></strong> with the Real <strong><code>a.out</code></strong> from <strong><code>elf_data</code></strong>.</p>
 <p>This is perfectly OK because <a href="https://lupyuen.github.io/articles/romfs#appendix-rom-fs-filesystem"><strong>ROM FS Files are continuous</strong></a> and contiguous. (Though we ought to patch the <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>File Size</strong></a> and <a href="https://lupyuen.github.io/articles/romfs#inside-a-rom-fs-filesystem"><strong>Filesystem Header Checksum</strong></a>)</p>
 <p>That’s how we compile a NuttX App in the Web Browser, and run it with NuttX Emulator in the Web Browser! 🎉</p>
@@ -1151,32 +1193,37 @@ brew install px4/px4/genromfs
 genromfs \
   -f romfs.bin \
   -d romfs \
-  -V &quot;ROMFS&quot;</code></pre></div>
+  -V &quot;ROMFS&quot;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs">(<em>&lt;stdio.h&gt;</em> and <em>&lt;stdlib.h&gt;</em> are in the <strong>ROM FS Folder</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin">(Bundled into this <strong>ROM FS Filesystem</strong>)</a></p>
 <p>Based on the <a href="https://docs.kernel.org/filesystems/romfs.html"><strong>ROM FS Spec</strong></a>, we take a walk inside our <a href="https://github.com/lupyuen/tcc-riscv32-wasm/blob/romfs/zig/romfs.bin"><strong>ROM FS Filesystem <code>romfs.bin</code></strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump our ROM FS Filesystem
-hexdump -C romfs.bin </code></pre></div>
+hexdump -C romfs.bin 
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/837184772dd091a83f2c61ec357a3d1d">(See the <strong>Filesystem Dump</strong>)</a></p>
 <p>Everything begins with the <strong>ROM FS Filesystem Header</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>      [ Magic Number        ]  [ FS Size ] [ Checksm ]
 0000  2d 72 6f 6d 31 66 73 2d  00 00 0f 90 58 57 01 f8  |-rom1fs-....XW..|
       [ Volume Name: ROMFS                           ]
-0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|</code></pre></div>
+0010  52 4f 4d 46 53 00 00 00  00 00 00 00 00 00 00 00  |ROMFS...........|
+</code></pre></div>
 <p>Next comes the <strong>File Header</strong> for “<strong><code>.</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `.`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0020  00 00 00 49 00 00 00 20  00 00 00 00 d1 ff ff 97  |...I... ........|
       [ File Name: `.`                               ]
 0030  2e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-      (NextHdr &amp; 0xF = 9 means Executable Directory)</code></pre></div>
+      (NextHdr &amp; 0xF = 9 means Executable Directory)
+</code></pre></div>
 <p>Followed by the <strong>File Header</strong> for “<strong><code>..</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `..`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
 0040  00 00 00 60 00 00 00 20  00 00 00 00 d1 d1 ff 80  |...`... ........|
       [ File Name: `..`                              ]
 0050  2e 2e 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-      (NextHdr &amp; 0xF = 0 means Hard Link)</code></pre></div>
+      (NextHdr &amp; 0xF = 0 means Hard Link)
+</code></pre></div>
 <p>Then the <strong>File Header and Data</strong> for “<strong><code>stdio.h</code></strong>” (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdio.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
@@ -1189,7 +1236,8 @@ hexdump -C romfs.bin </code></pre></div>
 0080  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
 ....
 0a20  74 65 72 20 41 30 0a 20  20 72 65 74 75 72 6e 20  |ter A0.  return |
-0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|</code></pre></div>
+0a30  72 30 3b 0a 7d 20 0a 00  00 00 00 00 00 00 00 00  |r0;.} ..........|
+</code></pre></div>
 <p>Finally the <strong>File Header and Data</strong> for “<strong><code>stdlib.h</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>----  File Header for `stdlib.h`
       [ NextHdr ] [ Info    ]  [ Size    ] [ Checksm ]
@@ -1202,7 +1250,8 @@ hexdump -C romfs.bin </code></pre></div>
 0a60  2f 2f 20 43 61 75 74 69  6f 6e 3a 20 54 68 69 73  |// Caution: This|
 ....
 0f80  72 65 74 75 72 6e 20 72  30 3b 0a 7d 20 0a 00 00  |return r0;.} ...|
-0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</code></pre></div>
+0f90  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+</code></pre></div>
 <p>Zero fuss, ROM FS is remarkably easy to read!</p>
 <p><img src="https://lupyuen.github.io/images/romfs-format2.jpg" alt="ROM FS File Header and Data" /></p>
 

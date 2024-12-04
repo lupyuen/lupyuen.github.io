@@ -64,16 +64,16 @@
     
 
     <h1 class="title">Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#wait-forever-in-uart-transmit" title="Wait Forever in UART Transmit">1 Wait Forever in UART Transmit</a><ul></ul></li>
-<li><a href="#uart-registers-are-spaced-differently" title="UART Registers are Spaced Differently">2 UART Registers are Spaced Differently</a><ul></ul></li>
-<li><a href="#critical-section-doesnt-return" title="Critical Section Doesn’t Return">3 Critical Section Doesn’t Return</a><ul></ul></li>
-<li><a href="#risc-v-privilege-levels" title="RISC-V Privilege Levels">4 RISC-V Privilege Levels</a><ul></ul></li>
-<li><a href="#risc-v-machine-mode-becomes-supervisor-mode" title="RISC-V Machine Mode becomes Supervisor Mode">5 RISC-V Machine Mode becomes Supervisor Mode</a><ul></ul></li>
-<li><a href="#nuttx-flat-mode-becomes-kernel-mode" title="NuttX Flat Mode becomes Kernel Mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
-<li><a href="#initialise-risc-v-supervisor-mode" title="Initialise RISC-V Supervisor Mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
-<li><a href="#other-risc-v-ports-of-nuttx" title="Other RISC-V Ports of NuttX">8 Other RISC-V Ports of NuttX</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#wait-forever-in-uart-transmit">1 Wait Forever in UART Transmit</a><ul></ul></li>
+<li><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a><ul></ul></li>
+<li><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a><ul></ul></li>
+<li><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a><ul></ul></li>
+<li><a href="#risc-v-machine-mode-becomes-supervisor-mode">5 RISC-V Machine Mode becomes Supervisor Mode</a><ul></ul></li>
+<li><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
+<li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
+<li><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a>, the same SoC in VisionFive2)</p>
@@ -120,7 +120,8 @@ static void u16550_putc(
 
   // Write the character
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1696-L1712">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
 <p>It’s correct, actually. Previously we validated the <strong>16550 UART Base Address</strong> for JH7110…</p>
@@ -135,7 +136,8 @@ static void u16550_putc(
 <p>And we successfully printed to UART…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `A` to the UART Port at
 // Base Address 0x1000 0000
-*(volatile uint8_t *) 0x10000000 = &#39;A&#39;;</code></pre></div>
+*(volatile uint8_t *) 0x10000000 = &#39;A&#39;;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Previously here)</a></p>
 <p>But strangely it loops forever waiting for the UART Port to be ready!</p>
 <p><em>What’s inside u16550_serialin?</em></p>
@@ -143,11 +145,13 @@ static void u16550_putc(
 <div class="example-wrap"><pre class="language-c"><code>u16550_serialin(   // Read UART Register...
   priv,            // From UART Base Address...
   UART_LSR_OFFSET  // At offset of Line Status Register
-)</code></pre></div>
+)
+</code></pre></div>
 <p>Inside <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L604-L618"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)
   priv-&gt;uartbase +  // UART Base Address
-  offset);          // Offset of UART Register</code></pre></div>
+  offset);          // Offset of UART Register
+</code></pre></div>
 <p><em>What’s the UART Register Offset?</em></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200"><strong>UART_LSR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
 <div class="example-wrap"><pre class="language-c"><code>// UART Line Status Register
@@ -157,7 +161,8 @@ static void u16550_putc(
 // Offset of Line Status Register
 // is 16550_REGINCR * 5
 #define UART_LSR_OFFSET \
-  (CONFIG_16550_REGINCR * UART_LSR_INCR)</code></pre></div>
+  (CONFIG_16550_REGINCR * UART_LSR_INCR)
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
@@ -165,7 +170,8 @@ static void u16550_putc(
   ---help---
     The address increment between 16550 registers.
     Options are 1, 2, or 4.
-    Default: 1</code></pre></div>
+    Default: 1
+</code></pre></div>
 <p>Which we copied from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU Emulator</strong></a>.</p>
 <p><em>Ah but is 16550_REGINCR correct for Star64?</em></p>
 <p>Let’s find out…</p>
@@ -173,7 +179,8 @@ static void u16550_putc(
 <p>Earlier we talked about the Address Increment between 16550 UART Registers (<strong>16550_REGINCR</strong>), which defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
-  default 1</code></pre></div>
+  default 1
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/Kconfig-16550#L501-L520">(Source)</a></p>
 <p>Which means that the 16550 UART Registers are spaced <strong>1 byte apart</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: left">Register</th></tr></thead><tbody>
@@ -205,7 +212,8 @@ static void u16550_putc(
 <p>From the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Device Tree</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>reg = &lt;0x0 0x10000000 0x0 0xl0000&gt;;
 reg-io-width = &lt;4&gt;;
-reg-shift = &lt;2&gt;;</code></pre></div>
+reg-shift = &lt;2&gt;;
+</code></pre></div>
 <p>We see that <strong>regshift</strong> is 2.</p>
 <p><em>What’s regshift?</em></p>
 <p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>JH7110 UART Source Code</strong></a>, this is how we write to a UART Register: <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169">8250_dw.c</a></p>
@@ -217,7 +225,8 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
     value,                     // Register Value
     p-&gt;membase +               // UART Base Address plus...
       (offset &lt;&lt; p-&gt;regshift)  // Offset shifted by `regshift`
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/16550_UART">(<strong>8250 UART</strong> is compatible with 16550)</a></p>
 <p>We see that the UART Register Offset is shifted by 2 (<strong>regshift</strong>).</p>
 <p>Which means we <strong>multiply the UART Offset by 4!</strong></p>
@@ -238,7 +247,8 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
 </ul>
 <p>And change it from 1 to 4: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L10-L18">nsh/defconfig</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4
+</code></pre></div>
 <p>Now UART Transmit works perfectly yay! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123067DFHBC
@@ -248,7 +258,8 @@ qemu_rv_kernel_mappings: map kernel data
 qemu_rv_kernel_mappings: connect the L1 and L2 page tables
 qemu_rv_kernel_mappings: map the page pool
 qemu_rv_mm_init: mmu_enable: satp=1077956608
-nx_start: Entry</code></pre></div>
+nx_start: Entry
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) might work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>We move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
@@ -267,7 +278,8 @@ int up_putc(int ch) {
   u16550_putc(priv, ch);
 
   // Exit the Critical Section
-  leave_critical_section(flags);</code></pre></div>
+  leave_critical_section(flags);
+</code></pre></div>
 <p><em>What’s this Critical Section?</em></p>
 <p>To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
 <p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can print to UART at any time.</p>
@@ -283,11 +295,13 @@ nuttx/include/arch/irq.h:675
     4020459a: 3007b7f3  csrrc a5, mstatus, a5
 up_putc():
 nuttx/drivers/serial/uart_16550.c:1726
-  flags = enter_critical_section();</code></pre></div>
+  flags = enter_critical_section();
+</code></pre></div>
 <p>Which has this curious <strong>RISC-V Instruction</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
 // in `mstatus` Register
-csrrc a5, mstatus, a5</code></pre></div>
+csrrc a5, mstatus, a5
+</code></pre></div>
 <p>According to the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>RISC-V Spec</strong></a>, <strong><code>csrrc</code></strong> (Atomic Read and Clear Bits in CSR) will…</p>
 <ul>
 <li>
@@ -324,7 +338,8 @@ csrrc a5, mstatus, a5</code></pre></div>
 <p>Remember this?</p>
 <div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
 // in `mstatus` Register
-csrrc a5, mstatus, a5</code></pre></div>
+csrrc a5, mstatus, a5
+</code></pre></div>
 <p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
 <p>That’s why NuttX failed to modify the <strong><code>mstatus</code></strong>!</p>
 <p><em>What’s the equivalent of <code>mstatus</code> for Supervisor Mode?</em></p>
@@ -348,7 +363,8 @@ csrrc a5, mstatus, a5</code></pre></div>
 <p><em>From whence it came?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
 // in `mstatus` Register
-csrrc a5, mstatus, a5</code></pre></div>
+csrrc a5, mstatus, a5
+</code></pre></div>
 <p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/irq.h#L674-L703"><strong>up_irq_save</strong></a>, which is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts
@@ -362,7 +378,8 @@ static inline irqstate_t up_irq_save(void) {
     : &quot;=r&quot; (flags)
     : &quot;r&quot;(STATUS_IE)
     : &quot;memory&quot;
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p><em>Ah so CSR_STATUS maps to <code>mstatus</code>?</em></p>
 <p>Yes indeed, <strong>CSR_STATUS</strong> becomes <strong><code>mstatus</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/include/mode.h#L35-L103">mode.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
@@ -375,7 +392,8 @@ static inline irqstate_t up_irq_save(void) {
   // Use Global Status Register 
   // for Machine Mode 
   #define CSR_STATUS mstatus
-#endif</code></pre></div>
+#endif
+</code></pre></div>
 <p>…BUT only if NuttX Configuration <strong>ARCH_USE_S_MODE</strong> is disabled!</p>
 <p><em>So if ARCH_USE_S_MODE is enabled, NuttX will use <code>sstatus</code> instead?</em></p>
 <p>Yep! We need to enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will use <strong><code>sstatus</code></strong> (instead of <strong><code>mstatus</code></strong>)…</p>
@@ -394,10 +412,12 @@ static inline irqstate_t up_irq_save(void) {
   // Use Global Status Register 
   // for Machine Mode 
   #define CSR_STATUS mstatus
-#endif</code></pre></div>
+#endif
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 boots NuttX in Supervisor Mode)</a></p>
 <p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
+</code></pre></div>
 <p><em>Perfect! Exactly what we need!</em></p>
 <p>Thus we switch the NuttX Build Configuration from <strong>Flat Mode to Kernel Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for Kernel Mode and build NuttX
@@ -405,7 +425,8 @@ tools/configure.sh rv-virt:knsh64
 make
 
 ## Previously: Configure NuttX for Flat Mode
-## tools/configure.sh rv-virt:nsh64</code></pre></div>
+## tools/configure.sh rv-virt:nsh64
+</code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html">(Complete Steps for <strong>Kernel Mode</strong>)</a></p>
 <p><em>What’s this Kernel Mode?</em></p>
 <p>According to the <a href="https://cwiki.apache.org/confluence/display/NUTTX/Memory+Configurations"><strong>NuttX Docs on Kernel Mode</strong></a>…</p>
@@ -492,7 +513,8 @@ void jh7110_start(int mhartid) {
 
   // Added: Jump to S-Mode Init ourselves
   jh7110_start_s(mhartid);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129">(<strong>jh7110_start_s</strong> is defined here)</a></p>
 <p>We’re not sure if this is entirely correct… But it’s a good start!</p>
 <p>(Yeah we’re naively copying code again sigh)</p>
@@ -512,7 +534,8 @@ work_start_lowpri: Starting low-priority kernel worker thread(s)
 nx_start_application: Starting init task: /system/bin/init
 load_absmodule: Loading /system/bin/init
 elf_loadbinary: Loading file: /system/bin/init
-elf_init: filename: /system/bin/init loadinfo: 0x404069e8</code></pre></div>
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>But NuttX crashes due to a <a href="https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx"><strong>Semihosting Problem</strong></a>. (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
@@ -520,7 +543,8 @@ riscv_exception: PANIC!!! Exception = 0000000000000003
 _assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
 _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle Task 0x40200ce6
 up_dump_register: EPC: 0000000040200434
-up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001</code></pre></div>
+up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>We’ll find out why in the next article!</p>
 <ul>
