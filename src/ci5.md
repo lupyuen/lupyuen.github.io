@@ -243,6 +243,7 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __xtensa-02__ | [_esp32s3-devkit : <br> qemu\_debug_](https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
 | __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189) | _sed: invalid command code ._
 | __Clang Groups__ | [_Clang Targets_](https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544) | _clang++: configuration file cannot be found_
+| &nbsp;
 
 </span>
 
@@ -252,9 +253,11 @@ We'll come back to this. First we talk about NuttX Build Farm...
 
 # macOS Build Farm
 
-_What about the macOS Build Farm for NuttX?_
+_What's this macOS Build Farm?_
 
 Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile All NuttX Targets__... Non-Stop 24 by 7!
+
+This becomes our Community-Hosted __macOS Build Farm__ for NuttX.
 
 [(Why? So we can __Catch Build Errors__ without depending on GitHub Actions)](https://lupyuen.github.io/articles/ci4)
 
@@ -288,8 +291,9 @@ _How does it work?_
 macOS Build Farm shall run (nearly) __All NuttX CI Jobs__, forever and ever: [run-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139)
 
 ```bash
-## Run All NuttX CI Jobs on macOS, forever and ever
-## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
+## Run All NuttX CI Jobs on macOS, forever and ever.
+## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C).
+## So we stagger the jobs.
 ## risc-v-05: CI Test may hang, we move to the end
 for (( ; ; )); do
   for job in \
@@ -302,7 +306,7 @@ for (( ; ; )); do
     arm-04 risc-v-04 \
     arm-06 risc-v-05
   do
-    ## Run the CI Job and find errors / warnings
+    ## Run the CI Job and find Errors / Warnings
     run_job $job
     clean_log
     find_messages
@@ -313,7 +317,7 @@ for (( ; ; )); do
 done
 
 ## Run the NuttX CI Job (e.g. risc-v-01)
-## And capture the output
+## Capture the output
 function run_job {
   local job=$1
   pushd /tmp
@@ -338,7 +342,7 @@ function run_job {
 
 _What's inside run-job-macos.sh?_
 
-It will run one single __NuttX CI Job__, very similar to the [__NuttX Build Script__](https://lupyuen.github.io/articles/ci5#patch-the-ci-script) we saw earlier: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
+It will run one single __NuttX CI Job__. Similar to the [__NuttX Build Script__](https://lupyuen.github.io/articles/ci5#patch-the-ci-script) we saw earlier: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
 
 ```bash
 ## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
@@ -359,7 +363,8 @@ popd
 ## Then restore the original "nuttx" folder
 ...
 
-## Exclude clang Targets from macOS Build, because they will fail due to unknown arch
+## Exclude clang Targets from macOS Build
+## Because they will fail due to unknown arch
 ## "/arm/lpc54xx,CONFIG_ARM_TOOLCHAIN_CLANG"
 ## https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544
 tmp_file=$tmp_dir/rewrite-testlist.dat
@@ -391,11 +396,11 @@ Now we can cook some NuttX on macOS...
 
 _Anything we should worry about?_
 
-Yeah Mac Mini will get (nearly) __Boiling Hot__ (90 deg C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
+Yeah Mac Mini will get (nearly) __Boiling Hot__ (90°C) when running the NuttX Build Farm! All CPU Cores will be __100% Maxed Out__. (M2 Pro, pic above)
 
 I recommend [__TG Pro__](https://www.tunabellysoftware.com/tgpro/) for Fan Control. Set the __Fan Speed to Auto-Max__. (Pic below)
 
-Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)
+Which will trigger the fans at __70°C__ (red bar below), keeping things cooler. (Compare the green bars with above)
 
 Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci5#macos-build-farm)! 🙏
 
@@ -458,9 +463,11 @@ clang: error: invalid argument 'medium' to -mcmodel=
 
 # What's Next
 
-TODO: Rewind Build
+_Any more stories of NuttX CI?_
 
-TODO: CI Test
+Next Article: We chat about [__"Rewinding The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
+
+Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
