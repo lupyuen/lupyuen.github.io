@@ -62,32 +62,32 @@
     
 
     <h1 class="title">NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly</h1>
-    <nav id="TOC"><ul>
-<li><a href="#feature-phone-ui">1 Feature Phone UI</a><ul>
-<li><a href="#call-and-cancel-buttons">1.1 Call and Cancel Buttons</a><ul></ul></li>
-<li><a href="#digit-buttons">1.2 Digit Buttons</a><ul></ul></li>
-<li><a href="#label-and-button-containers">1.3 Label and Button Containers</a><ul></ul></li>
-<li><a href="#container-style">1.4 Container Style</a><ul></ul></li>
-<li><a href="#display-label">1.5 Display Label</a><ul></ul></li></ul></li>
-<li><a href="#run-lvgl-app-in-web-browser">2 Run LVGL App in Web Browser</a><ul></ul></li>
-<li><a href="#handle-lvgl-buttons">3 Handle LVGL Buttons</a><ul></ul></li>
-<li><a href="#works-on-webassembly-and-pinephone">4 Works on WebAssembly AND PinePhone!</a><ul>
-<li><a href="#lvgl-for-webassembly">4.1 LVGL for WebAssembly</a><ul></ul></li>
-<li><a href="#lvgl-for-nuttx">4.2 LVGL for NuttX</a><ul></ul></li></ul></li>
-<li><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li>
-<li><a href="#appendix-html-for-lvgl">8 Appendix: HTML for LVGL</a><ul></ul></li>
-<li><a href="#appendix-javascript-for-lvgl">9 Appendix: JavaScript for LVGL</a><ul>
-<li><a href="#load-webassembly-module">9.1 Load WebAssembly Module</a><ul></ul></li>
-<li><a href="#import-zig-functions-into-javascript">9.2 Import Zig Functions into JavaScript</a><ul></ul></li>
-<li><a href="#export-javascript-functions-to-zig">9.3 Export JavaScript Functions to Zig</a><ul></ul></li>
-<li><a href="#main-javascript-function">9.4 Main JavaScript Function</a><ul></ul></li></ul></li>
-<li><a href="#appendix-initialise-lvgl">10 Appendix: Initialise LVGL</a><ul></ul></li>
-<li><a href="#appendix-initialise-lvgl-input">11 Appendix: Initialise LVGL Input</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-input">12 Appendix: Handle LVGL Input</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-timer">13 Appendix: Handle LVGL Timer</a><ul></ul></li>
-<li><a href="#appendix-import-lvgl-library">14 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#feature-phone-ui" title="Feature Phone UI">1 Feature Phone UI</a><ul>
+<li><a href="#call-and-cancel-buttons" title="Call and Cancel Buttons">1.1 Call and Cancel Buttons</a><ul></ul></li>
+<li><a href="#digit-buttons" title="Digit Buttons">1.2 Digit Buttons</a><ul></ul></li>
+<li><a href="#label-and-button-containers" title="Label and Button Containers">1.3 Label and Button Containers</a><ul></ul></li>
+<li><a href="#container-style" title="Container Style">1.4 Container Style</a><ul></ul></li>
+<li><a href="#display-label" title="Display Label">1.5 Display Label</a><ul></ul></li></ul></li>
+<li><a href="#run-lvgl-app-in-web-browser" title="Run LVGL App in Web Browser">2 Run LVGL App in Web Browser</a><ul></ul></li>
+<li><a href="#handle-lvgl-buttons" title="Handle LVGL Buttons">3 Handle LVGL Buttons</a><ul></ul></li>
+<li><a href="#works-on-webassembly-and-pinephone" title="Works on WebAssembly AND PinePhone!">4 Works on WebAssembly AND PinePhone!</a><ul>
+<li><a href="#lvgl-for-webassembly" title="LVGL for WebAssembly">4.1 LVGL for WebAssembly</a><ul></ul></li>
+<li><a href="#lvgl-for-nuttx" title="LVGL for NuttX">4.2 LVGL for NuttX</a><ul></ul></li></ul></li>
+<li><a href="#run-lvgl-app-on-pinephone" title="Run LVGL App on PinePhone">5 Run LVGL App on PinePhone</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-html-for-lvgl" title="Appendix: HTML for LVGL">8 Appendix: HTML for LVGL</a><ul></ul></li>
+<li><a href="#appendix-javascript-for-lvgl" title="Appendix: JavaScript for LVGL">9 Appendix: JavaScript for LVGL</a><ul>
+<li><a href="#load-webassembly-module" title="Load WebAssembly Module">9.1 Load WebAssembly Module</a><ul></ul></li>
+<li><a href="#import-zig-functions-into-javascript" title="Import Zig Functions into JavaScript">9.2 Import Zig Functions into JavaScript</a><ul></ul></li>
+<li><a href="#export-javascript-functions-to-zig" title="Export JavaScript Functions to Zig">9.3 Export JavaScript Functions to Zig</a><ul></ul></li>
+<li><a href="#main-javascript-function" title="Main JavaScript Function">9.4 Main JavaScript Function</a><ul></ul></li></ul></li>
+<li><a href="#appendix-initialise-lvgl" title="Appendix: Initialise LVGL">10 Appendix: Initialise LVGL</a><ul></ul></li>
+<li><a href="#appendix-initialise-lvgl-input" title="Appendix: Initialise LVGL Input">11 Appendix: Initialise LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-input" title="Appendix: Handle LVGL Input">12 Appendix: Handle LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-timer" title="Appendix: Handle LVGL Timer">13 Appendix: Handle LVGL Timer</a><ul></ul></li>
+<li><a href="#appendix-import-lvgl-library" title="Appendix: Import LVGL Library">14 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
@@ -133,8 +133,7 @@
 const call_labels = [_][]const u8{
   &quot;Call&quot;,
   &quot;Cancel&quot; 
-};
-</code></pre></div>
+};</code></pre></div>
 <p>This is how we create the <strong>LVGL Buttons</strong> for “Call” and “Cancel”: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L116-L136">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the Call and Cancel Buttons
 /// https://docs.lvgl.io/8.3/examples.html#simple-buttons
@@ -167,8 +166,7 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
       data             // Callback Data (Button Text)
     );
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-import-lvgl-library">(We write “<strong>c.something</strong>” to call an LVGL Function)</a></p>
 <p><em>What’s lv_obj_add_event_cb?</em></p>
 <p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
@@ -185,8 +183,7 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
 const digit_labels = [_][]const u8{
   &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;,
   &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;*&quot;, &quot;0&quot;, &quot;#&quot;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>This is how we create the <strong>Digit Buttons</strong> in LVGL: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L136-L156">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the Digit Buttons
 /// https://docs.lvgl.io/8.3/examples.html#simple-buttons
@@ -219,8 +216,7 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
       data             // Callback Data (Button Text)
     );
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html">(Or use an LVGL <strong>Button Matrix</strong>)</a></p>
 <p>Again, LVGL will call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
 <p>(More about this in a while)</p>
@@ -242,8 +238,7 @@ fn createWidgets() !void {
   // Set the Container Size (700 x 150 pixels), Alignment and Style
   c.lv_obj_set_size(display_cont, 700, 150);
   c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
-  c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
-</code></pre></div>
+  c.lv_obj_add_style(display_cont, &amp;cont_style, 0);</code></pre></div>
 <p>In the code above, we create the <strong>LVGL Container</strong> for the Display.</p>
 <p>(We write “<strong><code>.?</code></strong>” to check for Null Pointers)</p>
 <p>(More about <strong>cont_style</strong> in the next section)</p>
@@ -258,8 +253,7 @@ fn createWidgets() !void {
   const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(digit_cont, 700, 800);
   c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-  c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
-</code></pre></div>
+  c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);</code></pre></div>
 <p><a href="https://docs.lvgl.io/8.3/overview/coords.html#align"><strong>lv_obj_align_to</strong></a> tells LVGL to space out the Containers, 10 pixels apart.</p>
 <p>Finally we pass the LVGL Containers when we <strong>create the Label and Buttons</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the Display Label
@@ -269,16 +263,14 @@ fn createWidgets() !void {
   try createCallButtons(call_cont);
 
   // Create the Digit Buttons
-  try createDigitButtons(digit_cont);
-</code></pre></div>
+  try createDigitButtons(digit_cont);</code></pre></div>
 <p>(We’ve seen <a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons"><strong>createCallButtons</strong></a> and <a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons"><strong>createDigitButtons</strong></a>)</p>
 <p>We’ll come back to <strong>createDisplayLabel</strong>. Let’s talk about the Container Style…</p>
 <h2 id="container-style"><a class="doc-anchor" href="#container-style">§</a>1.4 Container Style</h2>
 <p><em>What’s cont_style in the previous section?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
 c.lv_obj_add_style(call_cont,    &amp;cont_style, 0);
-c.lv_obj_add_style(digit_cont,   &amp;cont_style, 0);
-</code></pre></div>
+c.lv_obj_add_style(digit_cont,   &amp;cont_style, 0);</code></pre></div>
 <p><strong>cont_style</strong> is the LVGL Style for our Containers.</p>
 <p>The Style tells LVGL that our Containers will have <a href="https://docs.lvgl.io/8.3/layouts/flex.html#"><strong>Flex Layout</strong></a>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers
@@ -290,8 +282,7 @@ cont_style = std.mem.zeroes(c.lv_style_t);
 c.lv_style_init(&amp;cont_style);
 c.lv_style_set_flex_flow(&amp;cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
 c.lv_style_set_flex_main_place(&amp;cont_style, c.LV_FLEX_ALIGN_SPACE_EVENLY);
-c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
-</code></pre></div>
+c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/std/#A;std:mem.zeroes">(<strong>std.mem.zeroes</strong> populates the struct with zeroes)</a></p>
 <p>The code above says that the Buttons inside the Containers will be <strong>wrapped with equal spacing</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-ui1.jpg" alt="Display Label" /></p>
@@ -336,8 +327,7 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 
   // Align the label to the top middle
   display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>This code looks different from the rest?</em></p>
 <p>Yep this code calls our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig"><strong>Zig Wrapper for LVGL</strong></a>.</p>
 <p>Someday we might create a Zig Wrapper for the rest of the code.</p>
@@ -368,8 +358,7 @@ zig build-lib \
   lv_font_montserrat_14.o \
   lv_font_montserrat_20.o \
   lv_label.o \
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L292-L402">(See the <strong>Complete Command</strong>)</a></p>
 <p>This produces…</p>
 <ul>
@@ -383,8 +372,7 @@ zig build-lib \
 const result = await WebAssembly.instantiateStreaming(
   fetch(&quot;feature-phone.wasm&quot;),
   importObject
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-javascript-for-lvgl">(Explained here)</a></p>
 </li>
 <li>
@@ -395,8 +383,7 @@ const result = await WebAssembly.instantiateStreaming(
   &lt;canvas id=&quot;lvgl_canvas&quot; width=&quot;720&quot; height=&quot;1280&quot;&gt;&lt;/canvas&gt;
 &lt;/body&gt;
 &lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
-&lt;/html&gt;
-</code></pre></div>
+&lt;/html&gt;</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-html-for-lvgl">(Explained here)</a></p>
 </li>
 </ul>
@@ -429,8 +416,7 @@ for (call_labels) |text| {
     eventHandler,    // Callback Function
     c.LV_EVENT_ALL,  // Handle all events
     data             // Callback Data (Button Text)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons">(For <strong>Call and Cancel Buttons</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons">(And <strong>Digit Buttons</strong>)</a></p>
 <p><em>What’s lv_obj_add_event_cb?</em></p>
@@ -452,8 +438,7 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
     // Get the Button Text (from Callback Data)
     const data = c.lv_event_get_user_data(e);
     const text = @ptrCast([*:0]u8, data);
-    const span = std.mem.span(text);
-</code></pre></div>
+    const span = std.mem.span(text);</code></pre></div>
 <p>If it’s a <strong>Digit Button</strong>: We append the Digit to the Phone Number…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Handle the identified button...
   if (std.mem.eql(u8, span, &quot;Call&quot;)) {
@@ -470,8 +455,7 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
       display_label.obj,    // LVGL Label
       display_text[0.. :0]  // Get Null-Terminated String
     );
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>If it’s the <strong>Cancel Button</strong>: We erase the last digit of the Phone Number…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  } else if (std.mem.eql(u8, span, &quot;Cancel&quot;)) {
     // Handle Cancel Button:
@@ -482,15 +466,13 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
         display_label.obj,    // LVGL Label
         display_text[0.. :0]  // Get Null-Terminated String
       );
-    }
-</code></pre></div>
+    }</code></pre></div>
 <p>And for the <strong>Call Button</strong>: We dial the Phone Number (simulated for WebAssembly)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  if (std.mem.eql(u8, span, &quot;Call&quot;)) {
     // Handle Call Button:
     // Call the number
     const call_number = display_text[0..len :0];  // Get Null-Terminated String
-    debug(&quot;Call {s}&quot;, .{call_number});
-</code></pre></div>
+    debug(&quot;Call {s}&quot;, .{call_number});</code></pre></div>
 <p>When we compile our Zig LVGL App and run it in a Web Browser, the LVGL Buttons work correctly! (Pic below)</p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the <strong>Feature Phone Demo</strong>)</a></p>
 <p><a href="https://youtu.be/vBKhk5Q6rnE">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -514,8 +496,7 @@ pub usingnamespace
 
     // Or import NuttX-Specific Functions from `nuttx.zig`
     else =&gt; @import(&quot;nuttx.zig&quot;),
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p>Depending on the <strong>Target CPU Architecture</strong>, our Zig LVGL App imports either…</p>
 <ul>
 <li>
@@ -598,15 +579,13 @@ cp feature-phone.o \
 ## https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone
 ## https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone
 cd ../nuttx
-make
-</code></pre></div>
+make</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438">(See the <strong>Complete Command</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-app-in-zig">(Explained here)</a></p>
 <p>We copy the <strong>NuttX Image</strong> to a microSD Card, boot it on PinePhone.</p>
 <p>At the NuttX Prompt, enter this command to start our LVGL App…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
-nsh&gt; lvgldemo
-</code></pre></div>
+nsh&gt; lvgldemo</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the <strong>PinePhone Log</strong>)</a></p>
 <p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic above)</p>
 <p>The exact same Zig Source File runs on <strong>both WebAssembly and PinePhone</strong>, no changes needed!</p>
@@ -721,8 +700,7 @@ nsh&gt; lvgldemo
   &lt;/body&gt;
   &lt;!-- Load and execute the LVGL JavaScript --&gt;
   &lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
-&lt;/html&gt;
-</code></pre></div>
+&lt;/html&gt;</code></pre></div>
 <p>Then our HTML Page loads and executes our JavaScript…</p>
 <h1 id="appendix-javascript-for-lvgl"><a class="doc-anchor" href="#appendix-javascript-for-lvgl">§</a>9 Appendix: JavaScript for LVGL</h1>
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
@@ -767,8 +745,7 @@ async function bootstrap() {
 }
 
 // Start the loading of WebAssembly Module
-bootstrap();
-</code></pre></div>
+bootstrap();</code></pre></div>
 <p>Then our script <strong>imports the Zig Functions</strong> and calls the <strong>Main JavaScript Function</strong>. (See below)</p>
 <h2 id="import-zig-functions-into-javascript"><a class="doc-anchor" href="#import-zig-functions-into-javascript">§</a>9.2 Import Zig Functions into JavaScript</h2>
 <p>Our script defines the JavaScript Module <strong>wasm</strong> that will store the WebAssembly Functions and Memory imported from Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28">feature-phone.js</a></p>
@@ -795,8 +772,7 @@ const wasm = {
       new Uint8Array(memory.buffer, ptr, len)
     );
   },
-};
-</code></pre></div>
+};</code></pre></div>
 <p><strong>getString</strong> will be called by our Zig Logger for LVGL…</p>
 <ul>
 <li>
@@ -828,8 +804,7 @@ const importObject = {
       // Render the Image Data to the HTML Canvas
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.putImageData(imageData, 0, 0);
-    },
-</code></pre></div>
+    },</code></pre></div>
 <p><strong>render</strong> will be called by our Zig Function for LVGL Display…</p>
 <ul>
 <li>
@@ -851,8 +826,7 @@ const importObject = {
       console_log_buffer = &quot;&quot;;
     },
   }
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Which will be called by our Zig Logger for LVGL…</p>
 <ul>
 <li>
@@ -915,8 +889,7 @@ function main() {
 
   // Start the Render Loop
   loop();
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Next we talk about LVGL Initialisation, Input and Timer…</p>
 <ul>
 <li>
@@ -945,8 +918,7 @@ function main() {
   zig.initDisplay();
 
   // Render the LVGL Widgets in Zig
-  zig.lv_demo_widgets();
-</code></pre></div>
+  zig.lv_demo_widgets();</code></pre></div>
 <p><strong>initDisplay</strong> (in Zig) will…</p>
 <ol>
 <li>
@@ -1013,8 +985,7 @@ pub export fn initDisplay() void {
   indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
   _ = c.register_input(&amp;indev_drv);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Let’s talk about LVGL Input…</p>
 <h1 id="appendix-initialise-lvgl-input"><a class="doc-anchor" href="#appendix-initialise-lvgl-input">§</a>11 Appendix: Initialise LVGL Input</h1>
 <p><em>How does Zig initialise LVGL Input at startup?</em></p>
@@ -1040,8 +1011,7 @@ pub export fn initDisplay() void {
 
   // Register the Input Device
   _ = c.register_input(&amp;indev_drv);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://docs.lvgl.io/8.3/porting/indev.html">(<strong>lv_indev_drv_init</strong> initialises the LVGL Input Device Driver Struct)</a></p>
 <p>This tells LVGL to call our Zig Function <strong>readInput</strong> periodically to poll for Mouse and Touch Input.</p>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input">(More about <strong>readInput</strong>)</a></p>
@@ -1055,8 +1025,7 @@ void *register_input(lv_indev_drv_t *indev_drv) {
   lv_indev_t *indev = lv_indev_drv_register(indev_drv);
   LV_ASSERT(indev != NULL);
   return indev;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Now we can handle the LVGL Input in Zig and JavaScript…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-flow.jpg" alt="Handle LVGL Input" /></p>
 <p><a href="https://lupyuen.github.io/images/lvgl3-render.jpg">(“Render Diagram” is here)</a></p>
@@ -1080,8 +1049,7 @@ canvas.addEventListener(&quot;mouseup&quot;, (e) =&gt; {
   y = e.offsetY;
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
-});
-</code></pre></div>
+});</code></pre></div>
 <p>And call <strong>notifyInput</strong> (in Zig) to handle the events, passing the…</p>
 <ul>
 <li>
@@ -1118,8 +1086,7 @@ canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
   const y = touches[0].pageY;
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
-});
-</code></pre></div>
+});</code></pre></div>
 <p>Which will work on Touch Devices. (Like our Phones)</p>
 <p><em>What happens inside notifyInput?</em></p>
 <p><strong>notifyInput</strong> (in Zig) comes from our WebAssembly-Specific Module. It saves the <strong>Input State</strong> and <strong>Input Coordinates</strong> passed by our JavaScript: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L90-L110">wasm.zig</a></p>
@@ -1145,8 +1112,7 @@ var input_updated: bool = false;
 /// LVGL Input State and Coordinates
 var input_state: c.lv_indev_state_t = 0;
 var input_x: c.lv_coord_t = 0;
-var input_y: c.lv_coord_t = 0;
-</code></pre></div>
+var input_y: c.lv_coord_t = 0;</code></pre></div>
 <p><em>What happens to the saved Input State and Input Coordinates?</em></p>
 <p>From the previous section, we saw that Zig sets <strong>readInput</strong> as the Callback Function for our LVGL Input Device: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Init the LVGL Display and Input
@@ -1154,8 +1120,7 @@ pub export fn initDisplay() void {
   ...
   // Set the Input Driver Type and Callback Function
   indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
-  indev_drv.read_cb = readInput;
-</code></pre></div>
+  indev_drv.read_cb = readInput;</code></pre></div>
 <p>This tells LVGL to call our Zig Function <strong>readInput</strong> periodically to poll for Mouse and Touch Input.</p>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer">(Initiated by the <strong>LVGL Timer</strong>)</a></p>
 <p><strong>readInput</strong> (in Zig) comes from our WebAssembly-Specific Module: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L110-L120">wasm.zig</a></p>
@@ -1176,8 +1141,7 @@ export fn readInput(
       input_y       // Input Y
     );
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong>readInput</strong> simply returns the <strong>Input State</strong> and <strong>Input Coordinates</strong> to LVGL.</p>
 <p><em>What’s set_input_data?</em></p>
 <p>The LVGL Input Data Struct <strong>lv_indev_data_t</strong> is an <a href="https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display"><strong>Opaque Type</strong></a>, which is inaccessible in Zig.</p>
@@ -1194,8 +1158,7 @@ void set_input_data(
   data-&gt;state   = state;
   data-&gt;point.x = x;
   data-&gt;point.y = y;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm4.png" alt="Handle LVGL Input" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the <strong>LVGL Button Demo</strong>)</a></p>
@@ -1247,8 +1210,7 @@ function main() {
 
   // Start the Render Loop
   loop();
-};
-</code></pre></div>
+};</code></pre></div>
 <p>The above Render Loop (in JavaScript) calls <strong>handleTimer</strong> (in Zig) every few milliseconds.</p>
 <p><strong>handleTimer</strong> (in Zig) comes from our WebAssembly-Specific Module.</p>
 <p>It executes LVGL Tasks by calling <strong>lv_timer_handler</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L76-L90">wasm.zig</a></p>
@@ -1265,8 +1227,7 @@ export fn handleTimer(ms: i32) i32 {
   // Handle LVGL Tasks
   _ = c.lv_timer_handler();
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which will poll for LVGL Input and redraw the LVGL Display.</p>
 <p><em>What’s elapsed_ms?</em></p>
 <p><strong>elapsed_ms</strong> remembers the number of <strong>Elapsed Milliseconds</strong> (since startup): <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L131-L143">wasm.zig</a></p>
@@ -1278,8 +1239,7 @@ export fn millis() u32 {
 }
 
 /// Number of elapsed milliseconds
-var elapsed_ms: u32 = 0;
-</code></pre></div>
+var elapsed_ms: u32 = 0;</code></pre></div>
 <p>The Elapsed Milliseconds is returned by our Zig Function <strong>millis</strong>, which is called by LVGL periodically…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly"><strong>“LVGL Porting Layer for WebAssembly”</strong></a></li>
@@ -1315,19 +1275,16 @@ pub const c = @cImport({
 
   // LVGL Display Interface for Zig
   @cInclude(&quot;display.h&quot;);
-});
-</code></pre></div>
+});</code></pre></div>
 <p>Together with the NuttX Functions and other C Functions.</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.h">(<strong>display.h</strong> is the C Interface for our LVGL Display and Input Functions)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">(<strong>display.c</strong> is the C Implementation)</a></p>
 <p>According to the code above, we imported the LVGL Functions into the <strong>Namespace “c”</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Import into Namespace `c`
-pub const c = @cImport({ ... });
-</code></pre></div>
+pub const c = @cImport({ ... });</code></pre></div>
 <p>Which means that we’ll write “<strong>c.something</strong>” to call LVGL Functions from Zig…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Call LVGL Function imported from C into Zig
-const btn = c.lv_btn_create(cont);
-</code></pre></div>
+const btn = c.lv_btn_create(cont);</code></pre></div>
 <p>(Zig Compiler calls Clang Compiler to parse the C Header Files)</p>
 <p><em>But we call the LVGL Functions in two Zig Source Files: lvgl.zig AND feature-phone.zig…</em></p>
 <p>That’s why we import the LVGL Wrapper <strong>lvgl.zig</strong> into our LVGL App <strong>feature-phone.zig</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14">feature-phone.zig</a></p>
@@ -1335,8 +1292,7 @@ const btn = c.lv_btn_create(cont);
 const lvgl = @import(&quot;lvgl.zig&quot;);
 
 /// Import the C Namespace
-const c = lvgl.c;
-</code></pre></div>
+const c = lvgl.c;</code></pre></div>
 <p>And we import the C Namespace from <strong>lvgl.zig</strong>.</p>
 <p>Thus both Zig Source Files can call LVGL Functions.</p>
 <p><em>Why not import the LVGL Functions in feature-phone.zig?</em></p>

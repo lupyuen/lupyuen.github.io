@@ -60,22 +60,22 @@
     
 
     <h1 class="title">LoRaWAN on PineDio Stack BL604 RISC-V Board</h1>
-    <nav id="TOC"><ul>
-<li><a href="#lora-sx1262-transceiver">1 LoRa SX1262 Transceiver</a><ul></ul></li>
-<li><a href="#lorawan-firmware">2 LoRaWAN Firmware</a><ul>
-<li><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a><ul></ul></li>
-<li><a href="#swap-spi-pins">2.2 Swap SPI Pins</a><ul></ul></li></ul></li>
-<li><a href="#run-the-firmware">3 Run The Firmware</a><ul>
-<li><a href="#lorawan-commands">3.1 LoRaWAN Commands</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-gateway">4 LoRaWAN Gateway</a><ul></ul></li>
-<li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
-<li><a href="#spectrum-analyser">6 Spectrum Analyser</a><ul></ul></li>
-<li><a href="#security">7 Security</a><ul>
-<li><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a><ul></ul></li>
-<li><a href="#lorawan-alternatives">7.2 LoRaWAN Alternatives</a><ul></ul></li></ul></li>
-<li><a href="#seeking-volunteers">8 Seeking Volunteers!</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#lora-sx1262-transceiver" title="LoRa SX1262 Transceiver">1 LoRa SX1262 Transceiver</a><ul></ul></li>
+<li><a href="#lorawan-firmware" title="LoRaWAN Firmware">2 LoRaWAN Firmware</a><ul>
+<li><a href="#deselect-spi-peripherals" title="Deselect SPI Peripherals">2.1 Deselect SPI Peripherals</a><ul></ul></li>
+<li><a href="#swap-spi-pins" title="Swap SPI Pins">2.2 Swap SPI Pins</a><ul></ul></li></ul></li>
+<li><a href="#run-the-firmware" title="Run The Firmware">3 Run The Firmware</a><ul>
+<li><a href="#lorawan-commands" title="LoRaWAN Commands">3.1 LoRaWAN Commands</a><ul></ul></li></ul></li>
+<li><a href="#lorawan-gateway" title="LoRaWAN Gateway">4 LoRaWAN Gateway</a><ul></ul></li>
+<li><a href="#logic-analyser" title="Logic Analyser">5 Logic Analyser</a><ul></ul></li>
+<li><a href="#spectrum-analyser" title="Spectrum Analyser">6 Spectrum Analyser</a><ul></ul></li>
+<li><a href="#security" title="Security">7 Security</a><ul>
+<li><a href="#cryptographic-co-processor" title="Cryptographic Co-Processor">7.1 Cryptographic Co-Processor</a><ul></ul></li>
+<li><a href="#lorawan-alternatives" title="LoRaWAN Alternatives">7.2 LoRaWAN Alternatives</a><ul></ul></li></ul></li>
+<li><a href="#seeking-volunteers" title="Seeking Volunteers!">8 Seeking Volunteers!</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">10 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Tiny tasty treat… PineDio Stack BL604 RISC-V Board</em></p>
 <p>📝 <em>16 Sep 2021</em></p>
 <p>Previously I wrote about testing the prototype <strong>PineDio Stack BL604</strong> RISC-V Board…</p>
@@ -151,16 +151,14 @@
 #define SX126X_BUSY_PIN         10  //  Busy Pin
 #define SX126X_DEBUG_CS_PIN      5  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.
 #define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
-#define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
-</code></pre></div>
+#define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)</code></pre></div>
 <p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about the Debug CS Pin later)</p>
 <p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
 
 /// GPIO for ST7789 SPI Chip Select Pin. We must set this to High to deselect ST7789 Display.
-#define DISPLAY_CS_PIN   20
-</code></pre></div><h1 id="lorawan-firmware"><a class="doc-anchor" href="#lorawan-firmware">§</a>2 LoRaWAN Firmware</h1>
+#define DISPLAY_CS_PIN   20</code></pre></div><h1 id="lorawan-firmware"><a class="doc-anchor" href="#lorawan-firmware">§</a>2 LoRaWAN Firmware</h1>
 <p>To test LoRaWAN on PineDio Stack we shall run this <strong>LoRaWAN Firmware</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></li>
@@ -191,8 +189,7 @@ int deselect_spi(void) {
   rc = bl_gpio_enable_output(SX126X_SPI_CS_PIN, 0, 0);  assert(rc == 0);
   if (SX126X_DEBUG_CS_PIN &gt;= 0) {  //  Mirror SX126X_SPI_CS_PIN
     rc = bl_gpio_enable_output(SX126X_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>First we <strong>configure the Chip Select Pins</strong> for GPIO Output.</p>
 <p>Then we set the <strong>Chip Select Pins to High</strong>, to deselect the SPI Peripherals…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
@@ -203,8 +200,7 @@ int deselect_spi(void) {
     rc = bl_gpio_output_set(SX126X_DEBUG_CS_PIN, 1);  assert(rc == 0);
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(More about <code>SX126X_DEBUG_CS_PIN</code> when we talk about the Logic Analyser)</p>
 <p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
@@ -223,8 +219,7 @@ void SX126xIoInit( void ) {
   //  Note: We must swap SDI (MISO) and SDO (MOSI)
   //  to comply with the SPI Pin Definitions in 
   //  BL602 / BL604 Reference Manual
-  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
-</code></pre></div>
+  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(More about swapping SPI Pins)</a></p>
 <p>After swapping the SPI Pins we may <strong>initialise the SPI Port</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Configure the SPI Port
@@ -245,8 +240,7 @@ void SX126xIoInit( void ) {
     SX126X_SPI_SDI_PIN    //  SPI Serial Data In Pin  (formerly MISO)
   );
   assert(rc == 0);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Note that the <strong>SPI Polarity-Phase should be 1</strong> and not 0.</p>
 <p>This seems to be another quirk of the SPI implementation on BL602 and BL604…</p>
 <ul>
@@ -289,46 +283,38 @@ void SX126xIoInit( void ) {
 <ol>
 <li>
 <p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
-<div class="example-wrap"><pre class="language-bash"><code>create_task
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>create_task</code></pre></div></li>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>init_lorawan
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div></li>
 <li>
 <p>We set the <strong>Device EUI</strong> (Extended Unique Identifier)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</code></pre></div>
 <p>Change the above EUI to the one in our ChirpStack Gateway: <code>Applications → app → Device EUI</code></p>
 </li>
 <li>
 <p>Set the <strong>App EUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</code></pre></div>
 <p>This is not needed for ChirpStack, thus we set to default <code>0000000000000000</code>.</p>
 </li>
 <li>
 <p>Set the <strong>App Key</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</code></pre></div>
 <p>We get the App Key from ChirpStack at <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
 </li>
 <li>
 <p>We send a request to <strong>join the LoRaWAN Network</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_join 3
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_join 3</code></pre></div>
 <p>(Retry up to 3 times)</p>
 </li>
 <li>
 <p>After the ChirpStack LoRaWAN Gateway has accepted our Join Request, we open a <strong>LoRaWAN Application Port</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2</code></pre></div>
 <p>(2 is the Application Port Number)</p>
 </li>
 <li>
 <p>Finally we <strong>send a LoRaWAN Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to LoRaWAN Port 2…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0</code></pre></div>
 <p>(0 means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from the LoRaWAN Gateway)</p>
 </li>
 </ol>
@@ -363,8 +349,7 @@ void SX126xIoInit( void ) {
 </li>
 <li>
 <p>On PineDio Stack, run this command to send a Data Packet…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0</code></pre></div></li>
 <li>
 <p>Our Data Packet appears in ChirpStack.</p>
 <p><strong><code>DecodedDataHex</code></strong> shows 5 bytes of zero, which is what we sent…</p>

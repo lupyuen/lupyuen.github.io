@@ -64,19 +64,19 @@
     
 
     <h1 class="title">Booting RISC-V Linux on Star64 JH7110 SBC</h1>
-    <nav id="TOC"><ul>
-<li><a href="#serial-console-on-star64">1 Serial Console on Star64</a><ul></ul></li>
-<li><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a><ul></ul></li>
-<li><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a><ul></ul></li>
-<li><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a><ul></ul></li>
-<li><a href="#opensbi-supervisor-binary-interface">5 OpenSBI Supervisor Binary Interface</a><ul></ul></li>
-<li><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a><ul></ul></li>
-<li><a href="#boot-apache-nuttx-rtos-on-star64">7 Boot Apache NuttX RTOS on Star64</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a><ul></ul></li>
-<li><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a><ul>
-<li><a href="#u-boot-settings-for-star64">10.1 U-Boot Settings for Star64</a><ul></ul></li>
-<li><a href="#u-boot-commands-for-star64">10.2 U-Boot Commands for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>4 Jul 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#serial-console-on-star64" title="Serial Console on Star64">1 Serial Console on Star64</a><ul></ul></li>
+<li><a href="#boot-yocto-linux-on-star64" title="Boot Yocto Linux on Star64">2 Boot Yocto Linux on Star64</a><ul></ul></li>
+<li><a href="#yocto-linux-with-kde-plasma" title="Yocto Linux with KDE Plasma">3 Yocto Linux with KDE Plasma</a><ul></ul></li>
+<li><a href="#boot-armbian-linux-on-star64" title="Boot Armbian Linux on Star64">4 Boot Armbian Linux on Star64</a><ul></ul></li>
+<li><a href="#opensbi-supervisor-binary-interface" title="OpenSBI Supervisor Binary Interface">5 OpenSBI Supervisor Binary Interface</a><ul></ul></li>
+<li><a href="#u-boot-bootloader-for-star64" title="U-Boot Bootloader for Star64">6 U-Boot Bootloader for Star64</a><ul></ul></li>
+<li><a href="#boot-apache-nuttx-rtos-on-star64" title="Boot Apache NuttX RTOS on Star64">7 Boot Apache NuttX RTOS on Star64</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-opensbi-log-for-star64" title="Appendix: OpenSBI Log for Star64">9 Appendix: OpenSBI Log for Star64</a><ul></ul></li>
+<li><a href="#appendix-u-boot-bootloader-log-for-star64" title="Appendix: U-Boot Bootloader Log for Star64">10 Appendix: U-Boot Bootloader Log for Star64</a><ul>
+<li><a href="#u-boot-settings-for-star64" title="U-Boot Settings for Star64">10.1 U-Boot Settings for Star64</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-star64" title="U-Boot Commands for Star64">10.2 U-Boot Commands for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>4 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><em>Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter</em></a></p>
 <p>Previously we talked about the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a>, the same SoC in VisionFive2)</p>
@@ -122,8 +122,7 @@
 <p>On our USB Serial Adapter, set the Voltage Jumper to <strong>3V3</strong>. (Instead of 5V, pic below)</p>
 <p><img src="https://lupyuen.github.io/images/star64-uart3.jpg" alt="Pine64 Woodpecker Serial Adapter" /></p>
 <p>On our computer, connect to the USB Serial Port at <strong>115.2 kbps</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
 <p>Insert the <strong>microSD Card</strong> (from next section) and power up Star64.</p>
 <p>Verify that the <strong>DIP Switches</strong> for GPIO 0 and 1 are set to <strong>Low and Low</strong>. (Default setting, pic below)</p>
 <p>So Star64 should start the U-Boot Bootloader from <strong>Internal Flash Memory</strong>.</p>
@@ -153,16 +152,14 @@
   \____/| .__/ \___|_| |_|_____/|____/_____|
         | |
         |_|
-Platform Name: StarFive VisionFive V2
-</code></pre></div>
+Platform Name: StarFive VisionFive V2</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
 <p>(We’ll explain OpenSBI in a while)</p>
 <p>OpenSBI starts the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> (also loaded from Internal Flash Memory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
-DRAM:  8 GiB
-</code></pre></div>
+DRAM:  8 GiB</code></pre></div>
 <p>U-Boot Bootloader loads the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Kernel</strong></a>, <a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>Initial RAM Disk</strong></a> and <a href="https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html"><strong>Flattened Device Tree (FDT)</strong></a> from the microSD Card…</p>
 <div class="example-wrap"><pre class="language-text"><code>Loading kernel from FIT Image at a0000000 ...
   Load Address: 0x40200000
@@ -177,8 +174,7 @@ Loading fdt from FIT Image at a0000000 ...
 Booting kernel in
   Flattened Device Tree blob at 46000000
   Booting using the fdt blob at 0x46000000
-  Using Device Tree in place at 0000000046000000, end 000000004600efff
-</code></pre></div>
+  Using Device Tree in place at 0000000046000000, end 000000004600efff</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64">(Packed into a <strong>FIT: Flat Image Tree</strong>)</a></p>
 <p>And boots the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Kernel</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
@@ -186,8 +182,7 @@ clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 Linux version 5.15.107 (oe-user@oe-host) 
   (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) 
-  #1 SMP Mon May 15 17:57:25 UTC 2023
-</code></pre></div>
+  #1 SMP Mon May 15 17:57:25 UTC 2023</code></pre></div>
 <p>We log in with <strong>root</strong> or <strong>pine64</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Username</th><th style="text-align: left">Password</th></tr></thead><tbody>
 <tr><td style="text-align: left"><code>root</code></td><td style="text-align: left"><code>pine64</code></td></tr>
@@ -201,8 +196,7 @@ Password: pine64
 
 root@star64:~# uname -a
 Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
-  riscv64 riscv64 riscv64 GNU/Linux
-</code></pre></div>
+  riscv64 riscv64 riscv64 GNU/Linux</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
 <p>Yep the Yocto Minimal Image boots OK on Star64! Let’s do something more colourful…</p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Linux with KDE Plasma on Star64" /></p>
@@ -240,8 +234,7 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
 Retrieving file: /boot/Image
   22040576 bytes read in 936 ms (22.5 MiB/s)
 Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
-  Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
-</code></pre></div>
+  Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d73ace627318375fe20e90e4950f9c50">(Source)</a></p>
 <p>That’s because the <a href="https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html"><strong>Flattened Device Tree (FDT)</strong></a> is missing…</p>
 <ul>
@@ -281,8 +274,7 @@ Platform Reboot Device    : pm-reset
 Platform Shutdown Device  : pm-reset
 Firmware Base             : 0x40000000
 Firmware Size             : 288 KB
-Runtime SBI Version       : 1.0
-</code></pre></div>
+Runtime SBI Version       : 1.0</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(Source)</a></p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
 <p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
@@ -299,8 +291,7 @@ Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
 Domain0 Next Address      : 0x0000000040200000
 Domain0 Next Arg1         : 0x0000000042200000
 Domain0 Next Mode         : S-mode
-Domain0 SysReset          : yes
-</code></pre></div>
+Domain0 SysReset          : yes</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
 <p>(What’s <code>0x4220</code> <code>0000</code>?)</p>
 <p>And the <strong>RISC-V Hardware Thread</strong> (HART) will support <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">“<strong>rv64imafdcbx</strong>”</a>…</p>
@@ -314,8 +305,7 @@ Boot HART PMP Granularity : 4096
 Boot HART PMP Address Bits: 34
 Boot HART MHPM Count      : 2
 Boot HART MIDELEG         : 0x0000000000000222
-Boot HART MEDELEG         : 0x000000000000b109
-</code></pre></div>
+Boot HART MEDELEG         : 0x000000000000b109</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(A <strong>RISC-V HART</strong> is equivalent to a Single CPU Core)</a></p>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(More about <strong>OpenSBI for Star64</strong>)</a></p>
 <p>Let’s jump to U-Boot…</p>
@@ -331,8 +321,7 @@ MMC:   sdio0@16010000: 0, sdio1@16020000: 1
 Loading Environment from SPIFlash... 
 SF: Detected gd25lq128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 *** Warning - bad CRC, using default environment
-Hit any key to stop autoboot
-</code></pre></div>
+Hit any key to stop autoboot</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64">(Source)</a></p>
 <p>Normally U-Boot will boot our Operating System from microSD Card. (Or over the Network)</p>
 <p>Suppose there’s <strong>no microSD Card inserted</strong>. U-Boot tries to <strong>load the Linux Image</strong> from the microSD Card, but fails…</p>
@@ -347,8 +336,7 @@ Couldn&#39;t find partition mmc 1:2
 Can&#39;t set block device
 ## Warning: defaulting to text format
 ## Error: &quot;boot2&quot; not defined
-Card did not respond to voltage select! : -110
-</code></pre></div>
+Card did not respond to voltage select! : -110</code></pre></div>
 <p>Then it tries to load the Linux Image <strong>from the Network</strong>, but also fails…</p>
 <div class="example-wrap"><pre class="language-text"><code>ethernet@16030000 Waiting for PHY auto negotiation to complete.........
 TIMEOUT !
@@ -356,8 +344,7 @@ phy_startup() failed: -110
 FAILED: -110
 ethernet@16040000 Waiting for PHY auto negotiation to complete......... 
 TIMEOUT !
-StarFive # 
-</code></pre></div>
+StarFive # </code></pre></div>
 <p>And stops at the <strong>U-Boot Command Prompt</strong>.  Here’s our chance to experiment with U-Boot!</p>
 <p>Enter “<strong>printenv</strong>” to see the <strong>U-Boot Settings</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
@@ -369,8 +356,7 @@ kernel_addr_r=0x40200000
 memory_addr=40000000
 memory_size=200000000
 ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
-...
-</code></pre></div>
+...</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
 <p>U-Boot says that…</p>
 <ul>
@@ -394,8 +380,7 @@ bootm     - boot application image from memory
 bootp     - boot image via network using BOOTP/TFTP protocol
 setenv    - set environment variables
 printenv  - print environment variables
-...
-</code></pre></div>
+...</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64">(Source)</a></p>
 <p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64">(More about <strong>U-Boot for Star64</strong>)</a></p>
 <p>Finally let’s talk about NuttX…</p>
@@ -451,8 +436,7 @@ riscv64-unknown-elf-objcopy \
 rm /run/media/$USER/armbi_root/boot/Image
 
 ## Copy `nuttx.bin` to Armbian Kernel `/boot/Image`
-cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
-</code></pre></div>
+cp nuttx.bin /run/media/$USER/armbi_root/boot/Image</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64">(Source)</a></p>
 <p><em>What’s this NuttX ELF Image “nuttx”?</em></p>
 <p>We generate the <strong>NuttX ELF Image</strong> by compiling <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>NuttX for 64-bit RISC-V QEMU</strong></a> with these tweaks…</p>
@@ -478,8 +462,7 @@ cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-123
-</code></pre></div>
+123</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(See the <strong>Complete Log</strong>)</a></p>
 <p>But NuttX crashes right after that…</p>
 <div class="example-wrap"><pre class="language-text"><code>Unhandled exception: Illegal instruction
@@ -501,8 +484,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 resetting ...
 reset not supported yet
-### ERROR ### Please RESET the board ###
-</code></pre></div>
+### ERROR ### Please RESET the board ###</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Source)</a></p>
 <p>Why did NuttX crash at <strong><code>0x4020</code> <code>005C</code></strong>? All shall be revealed in the next article!</p>
 <ul>
@@ -619,8 +601,7 @@ Boot HART PMP Granularity : 4096
 Boot HART PMP Address Bits: 34
 Boot HART MHPM Count      : 2
 Boot HART MIDELEG         : 0x0000000000000222
-Boot HART MEDELEG         : 0x000000000000b109
-</code></pre></div>
+Boot HART MEDELEG         : 0x000000000000b109</code></pre></div>
 <p>After OpenSBI, Star64 runs U-Boot Bootloader…</p>
 <h1 id="appendix-u-boot-bootloader-log-for-star64"><a class="doc-anchor" href="#appendix-u-boot-bootloader-log-for-star64">§</a>10 Appendix: U-Boot Bootloader Log for Star64</h1>
 <p><a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> is loaded from Internal Flash Memory, runs right after OpenSBI, and starts the Linux Kernel for Star64, as documented here…</p>
@@ -689,8 +670,7 @@ phy_startup() failed: -110FAILED: -110ethernet@16040000 Waiting for PHY auto neg
 phy_startup() failed: -110FAILED: -110ethernet@16030000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
 phy_startup() failed: -110FAILED: -110ethernet@16040000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
 phy_startup() failed: -110FAILED: -110StarFive # 
-StarFive # 
-</code></pre></div>
+StarFive # </code></pre></div>
 <p>Which is OK because we haven’t inserted a microSD Card.</p>
 <h2 id="u-boot-settings-for-star64"><a class="doc-anchor" href="#u-boot-settings-for-star64">§</a>10.1 U-Boot Settings for Star64</h2>
 <p>Here are the <strong>U-Boot Settings</strong> for Star64…</p>
@@ -783,8 +763,7 @@ uboot_fdt_addr=0xfffc6aa0
 ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 visionfive2_mem_set=fdt memory ${memory_addr} ${memory_size};
 
-Environment size: 7246/65532 bytes
-</code></pre></div><h2 id="u-boot-commands-for-star64"><a class="doc-anchor" href="#u-boot-commands-for-star64">§</a>10.2 U-Boot Commands for Star64</h2>
+Environment size: 7246/65532 bytes</code></pre></div><h2 id="u-boot-commands-for-star64"><a class="doc-anchor" href="#u-boot-commands-for-star64">§</a>10.2 U-Boot Commands for Star64</h2>
 <p>Below are the <strong>U-Boot Commands</strong> for Star64.</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19">(Derived from the <strong>Build Settings</strong>)</a></p>
 <p>Some of the commands are explained here…</p>
@@ -893,8 +872,7 @@ tftpput   - TFTP put command, for uploading files to a server
 true      - do nothing, successfully
 unlz4     - lz4 uncompress a memory region
 unzip     - unzip a memory region
-version   - print monitor, compiler and linker version
-</code></pre></div>
+version   - print monitor, compiler and linker version</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

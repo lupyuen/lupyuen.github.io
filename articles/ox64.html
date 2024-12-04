@@ -64,17 +64,17 @@
     
 
     <h1 class="title">Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#flashing-uart-vs-serial-console">1 Flashing UART vs Serial Console</a><ul></ul></li>
-<li><a href="#test-the-usb-serial-adapter">2 Test the USB Serial Adapter</a><ul></ul></li>
-<li><a href="#flash-opensbi-and-u-boot">3 Flash OpenSBI and U-Boot</a><ul></ul></li>
-<li><a href="#verify-opensbi-and-u-boot">4 Verify OpenSBI and U-Boot</a><ul></ul></li>
-<li><a href="#boot-linux-on-ox64">5 Boot Linux on Ox64</a><ul></ul></li>
-<li><a href="#apache-nuttx-rtos-for-ox64">6 Apache NuttX RTOS for Ox64</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-linux-image-header">8 Appendix: Linux Image Header</a><ul></ul></li>
-<li><a href="#appendix-linux-device-tree">9 Appendix: Linux Device Tree</a><ul></ul></li>
-<li><a href="#appendix-peripheral-interrupts">10 Appendix: Peripheral Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>5 Nov 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#flashing-uart-vs-serial-console" title="Flashing UART vs Serial Console">1 Flashing UART vs Serial Console</a><ul></ul></li>
+<li><a href="#test-the-usb-serial-adapter" title="Test the USB Serial Adapter">2 Test the USB Serial Adapter</a><ul></ul></li>
+<li><a href="#flash-opensbi-and-u-boot" title="Flash OpenSBI and U-Boot">3 Flash OpenSBI and U-Boot</a><ul></ul></li>
+<li><a href="#verify-opensbi-and-u-boot" title="Verify OpenSBI and U-Boot">4 Verify OpenSBI and U-Boot</a><ul></ul></li>
+<li><a href="#boot-linux-on-ox64" title="Boot Linux on Ox64">5 Boot Linux on Ox64</a><ul></ul></li>
+<li><a href="#apache-nuttx-rtos-for-ox64" title="Apache NuttX RTOS for Ox64">6 Apache NuttX RTOS for Ox64</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-linux-image-header" title="Appendix: Linux Image Header">8 Appendix: Linux Image Header</a><ul></ul></li>
+<li><a href="#appendix-linux-device-tree" title="Appendix: Linux Device Tree">9 Appendix: Linux Device Tree</a><ul></ul></li>
+<li><a href="#appendix-peripheral-interrupts" title="Appendix: Peripheral Interrupts">10 Appendix: Peripheral Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>5 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox64-title.jpg" alt="Booting Linux on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p><a href="https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358">(Also on <strong>hackster.io</strong>)</a></p>
 <p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -236,8 +236,7 @@
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>. Use “<a href="https://www.putty.org/"><strong>putty</strong></a>” (Windows), “<a href="https://www.makeuseof.com/connect-to-serial-consoles-on-linux/"><strong>screen</strong></a>” (Linux) or “<a href="https://www.makeuseof.com/connect-to-serial-consoles-on-linux/"><strong>minicom</strong></a>” (Linux).</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> The “<a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos"><strong>screen</strong></a>” command might not support 2 Mbps. Use <a href="https://freeware.the-meiers.org/"><strong>CoolTerm</strong></a> instead.</p>
 </li>
 <li>
@@ -251,8 +250,7 @@
 sig1:ffff32ff
 sig2:0000ffff
 Pong!
-Ping!
-</code></pre></div>
+Ping!</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7a55d7ad358b9ed01bf1e78c50b3d27c">(Source)</a></p>
 <p><strong>If the text appears garbled:</strong> Try a different USB Serial Adapter. <a href="https://pine64.org/documentation/Ox64/Further_information/Compatible_UARTs/">(Like these)</a></p>
 <p><a href="https://gist.github.com/lupyuen/43676407bbced733e65566879e18732b">(<strong>Pre-Production Ox64</strong> looks different)</a></p>
@@ -267,8 +265,7 @@ Ping!
 <li>Ox64 Green LED should turn on</li>
 </ul>
 <p>In the USB Serial Terminal, we should see something totally different…</p>
-<div class="example-wrap"><pre class="language-text"><code>.
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>.</code></pre></div></li>
 </ol>
 <p>Ox64 is ready for flashing!</p>
 <p><a href="https://www.linkedin.com/feed/update/urn:li:activity:7125857280952037376?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7125857280952037376%2C7125884844219281408%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287125884844219281408%2Curn%3Ali%3Aactivity%3A7125857280952037376%29">(<strong>Paul S</strong> explains why some USB Serial Adapters won’t work)</a></p>
@@ -322,8 +319,7 @@ Ping!
    7340032  bl808-firmware.bin
      31360  d0_lowload_bl808_d0.bin
      65760  m0_lowload_bl808_m0.bin
-  43859444  sdcard-pine64_ox64_full_defconfig.img.xz    
-</code></pre></div></li>
+  43859444  sdcard-pine64_ox64_full_defconfig.img.xz    </code></pre></div></li>
 <li>
 <p>We’ll run <strong>Bouffalo Lab DevCube</strong> for Flashing Ox64.</p>
 <p>Which supports <strong>Ubuntu x64, macOS and Windows</strong> only.</p>
@@ -340,8 +336,7 @@ Ping!
 <p>We might need to <strong>Grant Execute Permission</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd BouffaloLabDevCube-v1.8.3
 chmod +x BLDevCube-macos-x86_64
-./BLDevCube-macos-x86_64
-</code></pre></div></li>
+./BLDevCube-macos-x86_64</code></pre></div></li>
 <li>
 <p>Click the “<strong>MCU</strong>” Tab</p>
 <p><img src="https://lupyuen.github.io/images/ox64-flash2.jpg" alt="Flash MCU in BL DevCube" /></p>
@@ -409,8 +404,7 @@ chmod +x BLDevCube-macos-x86_64
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.  Use “<a href="https://www.putty.org/"><strong>putty</strong></a>” (Windows), “<a href="https://www.makeuseof.com/connect-to-serial-consoles-on-linux/"><strong>screen</strong></a>” (Linux) or “<a href="https://www.makeuseof.com/connect-to-serial-consoles-on-linux/"><strong>minicom</strong></a>” (Linux).</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> The “<a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos"><strong>screen</strong></a>” command might not support 2 Mbps. Use <a href="https://freeware.the-meiers.org/"><strong>CoolTerm</strong></a> instead.</p>
 </li>
 <li>
@@ -426,8 +420,7 @@ Running...
 Mailbox IRQ Stats:
 .Peripheral SDH (33): 0
 .Peripheral GPIO (60): 0
-Unhandled Interupts: 0 Unhandled Signals 0
-</code></pre></div>
+Unhandled Interupts: 0 Unhandled Signals 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p>Yep we have flashed the OpenBouffalo Firmware successfully!</p>
 </li>
@@ -446,8 +439,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <li>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Serial Console</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div></li>
 <li>
 <p>Unplug and replug the <strong>Micro USB Port</strong>.</p>
 <p>(Don’t press the Boot Button!)</p>
@@ -457,8 +449,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
 Card did not respond to voltage select! : -110
 BOOTP broadcast
-Retry time exceeded; starting again
-</code></pre></div>
+Retry time exceeded; starting again</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
 <p>Which is OK because U-Boot Bootloader is waiting for our microSD Card.</p>
 </li>
@@ -478,11 +469,9 @@ Retry time exceeded; starting again
 <ol>
 <li>
 <p>Look for the <strong>microSD Image</strong> that we downloaded earlier…</p>
-<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img.xz
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img.xz</code></pre></div>
 <p>Uncompress the file to get…</p>
-<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>sdcard-pine64_ox64_full_defconfig.img</code></pre></div></li>
 <li>
 <p>Flash the <strong>Uncompressed Image</strong> to our microSD card.</p>
 <p>Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
@@ -501,8 +490,7 @@ Retry time exceeded; starting again
 </div>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Flashing UART</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p>Unplug and replug the <strong>Micro USB Port</strong>.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
@@ -515,8 +503,7 @@ Running...
 Mailbox IRQ Stats:
 .Peripheral SDH (33): 0
 .Peripheral GPIO (60): 0
-Unhandled Interupts: 0 Unhandled Signals 0
-</code></pre></div>
+Unhandled Interupts: 0 Unhandled Signals 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/ox64-pinout3.jpg" alt="Serial Console" /></p>
 </li>
@@ -530,8 +517,7 @@ Unhandled Interupts: 0 Unhandled Signals 0
 </div>
 <p>Start the <strong>USB Serial Terminal</strong> for <strong>Serial Console</strong>.</p>
 <p>Connect at <strong>2,000,000 bps</strong>. (2 Mbps)</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p>Unplug and replug the <strong>Micro USB Port</strong>.</p>
 <p>(Don’t press the Boot Button!)</p>
 </li>
@@ -542,8 +528,7 @@ low_load start...
 Copying DTB to 0x51ff8000...0x51ffb7ea
 Copying OpenSBI to 0x3ef80000...0x3ef9ad28
 Uncompressing Kernel to 0x50000000...
-Booting OpenSBI at 0x000000003ef80000 with DTB at 0x51ff8000
-</code></pre></div>
+Booting OpenSBI at 0x000000003ef80000 with DTB at 0x51ff8000</code></pre></div>
 <p>Which loads the <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI Supervisor Binary Interface</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.2
 Platform Name             : Pine64 Ox64 (D0)
@@ -554,16 +539,14 @@ Platform Timer Device     : aclint-mtimer @ 1000000Hz
 Platform Console Device   : bflb_uart
 Firmware Base             : 0x3ef80000
 Firmware Size             : 200 KB
-Runtime SBI Version       : 1.0
-</code></pre></div>
+Runtime SBI Version       : 1.0</code></pre></div>
 <p>Which starts the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
 DRAM:  64 MiB
 Core:  36 devices, 17 uclasses, devicetree: board
 MMC:   mmc@20060000: 0
 Loading Environment from FAT...
-Unable to read &quot;uboot.env&quot; from mmc0:2... 
-</code></pre></div>
+Unable to read &quot;uboot.env&quot; from mmc0:2... </code></pre></div>
 <p>Which starts <a href="https://github.com/bouffalolab/buildroot_bouffalo"><strong>Buildroot Linux</strong></a> (finally!)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 Linux version 6.2.0
@@ -572,8 +555,7 @@ Linux version 6.2.0
   (Xuantie-900 linux-5.10.4 glibc gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35) #1 Mon Mar  6 11:17:27 UTC 2023
 ...
 Welcome to Buildroot
-ox64 login: 
-</code></pre></div>
+ox64 login: </code></pre></div>
 <p>Yep Linux is running on Ox64 yay! (Pic below)</p>
 <p><a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://youtu.be/UJ_7DyHnfDA">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -591,8 +573,7 @@ ox64 login:
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2023.04-rc2 (Mar 06 2023 - 11:48:40 +0000)
 Card did not respond to voltage select! : -110
 BOOTP broadcast
-Retry time exceeded; starting again
-</code></pre></div>
+Retry time exceeded; starting again</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0b1a98781e86ba11c5538eb1e3058718">(Source)</a></p>
 <p>Check that our <strong>microSD Card</strong> is inserted correctly. (Pic above)</p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/issues/20">(Anyone with <strong>microSD Issues</strong>?)</a></p>
@@ -668,8 +649,7 @@ Retry time exceeded; starting again
 <li>
 <p><em>Will OpenSBI boot NuttX on the 32-bit RISC-V Core?</em></p>
 <p>Sadly nope. The 32-bit M0 Wireless Core <strong>isn’t controlled by OpenSBI</strong>, according to the <a href="https://gist.github.com/lupyuen/3035a70d52d2d1d529e96f5292f54210#file-ox64-linux-boot-log-L44"><strong>OpenSBI Log</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>Platform HART Count: 1
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Platform HART Count: 1</code></pre></div>
 <p>(That’s for the D0 Multimedia Core)</p>
 <p>So booting 32-bit NuttX with <a href="https://lupyuen.github.io/articles/sbi#query-the-risc-v-cpus"><strong>OpenSBI HSM</strong></a> simply won’t work.</p>
 <p>We’ll have to flash 32-bit NuttX to Ox64 with <a href="https://lupyuen.github.io/articles/ox64#flash-opensbi-and-u-boot"><strong>BL DevCube</strong></a>. (Ouch!)</p>
@@ -753,15 +733,13 @@ Retry time exceeded; starting again
 -         350  boot-m1s.scr
 -         352  boot-pine64.scr
 -         352  boot.scr
-d          96  extlinux
-</code></pre></div>
+d          96  extlinux</code></pre></div>
 <p>Dump the <strong><code>Image</code></strong> as hex…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ hexdump sdcard-pine64_ox64_full_defconfig/Image
 0000000 4d 5a 6f 10 20 08 01 00 00 00 20 00 00 00 00 00
 0000010 00 80 cd 00 00 00 00 00 00 00 00 00 00 00 00 00
 0000020 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-0000030 52 49 53 43 56 00 00 00 52 53 43 05 40 00 00 00
-</code></pre></div>
+0000030 52 49 53 43 56 00 00 00 52 53 43 05 40 00 00 00</code></pre></div>
 <p>The Linux Kernel Image begins with this <strong>RISC-V Linux Image Header</strong>…</p>
 <ul>
 <li><a href="https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html"><strong>“Boot Image Header in RISC-V Linux”</strong></a></li>
@@ -771,58 +749,47 @@ d          96  extlinux
 <li>
 <p><strong>code0</strong>: Executable code</p>
 <p>(4 bytes, offset <code>0x00</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>4d 5a 6f 10 
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>4d 5a 6f 10 </code></pre></div></li>
 <li>
 <p><strong>code1</strong>: Executable code</p>
 <p>(4 bytes, offset <code>0x04</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>20 08 01 00 
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>20 08 01 00 </code></pre></div></li>
 <li>
 <p><strong>text_offset</strong>: Image load offset, little endian</p>
 <p>(8 bytes, offset <code>0x08</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>00 00 20 00 00 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>00 00 20 00 00 00 00 00</code></pre></div></li>
 <li>
 <p><strong>image_size</strong>: Effective Image size, little endian</p>
 <p>(8 bytes, offset <code>0x10</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>00 80 cd 00 00 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>00 80 cd 00 00 00 00 00</code></pre></div></li>
 <li>
 <p><strong>flags</strong>: Kernel flags, little endian</p>
 <p>(8 bytes, offset <code>0x18</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00</code></pre></div></li>
 <li>
 <p><strong>version</strong>: Version of this header (<em>MinL</em> <em>MinM</em> <code>.</code> <em>MajL</em> <em>MajM</em>)</p>
 <p>(4 bytes, offset <code>0x20</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>02 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>02 00 00 00</code></pre></div></li>
 <li>
 <p><strong>res1</strong>: Reserved</p>
 <p>(4 bytes, offset <code>0x24</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>00 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00</code></pre></div></li>
 <li>
 <p><strong>res2</strong>: Reserved</p>
 <p>(8 bytes, offset <code>0x28</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>00 00 00 00 00 00 00 00</code></pre></div></li>
 <li>
 <p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00”</p>
 <p>(8 bytes, offset <code>0x30</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>52 49 53 43 56 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>52 49 53 43 56 00 00 00</code></pre></div></li>
 <li>
 <p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05”</p>
 <p>(4 bytes, offset <code>0x38</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>52 53 43 05
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>52 53 43 05</code></pre></div></li>
 <li>
 <p><strong>res3</strong>: Reserved for PE COFF offset</p>
 <p>(4 bytes, offset <code>0x3C</code>)</p>
-<div class="example-wrap"><pre class="language-text"><code>40 00 00 00
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>40 00 00 00</code></pre></div></li>
 </ol>
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
@@ -839,8 +806,7 @@ d          96  extlinux
   -o bl808-pine64-ox64.dts \
   -O dts \
   -I dtb \
-  bl808-pine64-ox64.dtb
-</code></pre></div>
+  bl808-pine64-ox64.dtb</code></pre></div>
 <p>Which produces the <strong>Decompiled Device Tree</strong>: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts">bl808-pine64-ox64.dts</a></p>
 <p><em>What’s inside the Decompiled Device Tree?</em></p>
 <p>This says the Ox64 Linux will <strong>transmit to UART3</strong> at Base Address <strong><code>0x3000</code> <code>2000</code></strong>…</p>
@@ -851,8 +817,7 @@ d          96  extlinux
   clocks = &lt;0x04&gt;;
   status = &quot;okay&quot;;
   phandle = &lt;0x0a&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L89-L96">(Source)</a></p>
 <p>We’ll do the same for NuttX and reuse the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_serial.c"><strong>NuttX UART Driver for BL602</strong></a>…</p>
 <ul>
@@ -873,8 +838,7 @@ d          96  extlinux
   #mbox-cells = &lt;0x02&gt;;
   status = &quot;okay&quot;;
   phandle = &lt;0x03&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L118-L127">(Source)</a></p>
 <p>NuttX will receive the <strong>Forwarded Peripheral Interrupts</strong> the same way, via the Mailbox.</p>
 <p>Let’s talk about the Forwarding of Peripheral Interrupts…</p>
@@ -889,8 +853,7 @@ Running...
 Mailbox IRQ Stats:
 .Peripheral SDH (33): 0
 .Peripheral GPIO (60): 0
-Unhandled Interupts: 0 Unhandled Signals 0
-</code></pre></div>
+Unhandled Interupts: 0 Unhandled Signals 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/52ccdf076ae294db26e837e6ffc4bafb">(Source)</a></p>
 <p>The log above says that…</p>
 <ul>

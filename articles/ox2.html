@@ -64,20 +64,20 @@
     
 
     <h1 class="title">RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System</h1>
-    <nav id="TOC"><ul>
-<li><a href="#begin-with-star64-nuttx">1 Begin with Star64 NuttX</a><ul></ul></li>
-<li><a href="#print-to-serial-console">2 Print to Serial Console</a><ul></ul></li>
-<li><a href="#update-the-boot-address">3 Update the Boot Address</a><ul></ul></li>
-<li><a href="#fix-the-uart-driver">4 Fix the UART Driver</a><ul></ul></li>
-<li><a href="#platform-level-interrupt-controller">5 Platform-Level Interrupt Controller</a><ul></ul></li>
-<li><a href="#handle-risc-v-exceptions">6 Handle RISC-V Exceptions</a><ul></ul></li>
-<li><a href="#add-plic-to-memory-map">7 Add PLIC to Memory Map</a><ul></ul></li>
-<li><a href="#initial-ram-disk-is-missing">8 Initial RAM Disk is Missing</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-nuttx-boot-flow">10 Appendix: NuttX Boot Flow</a><ul></ul></li>
-<li><a href="#appendix-memory-map-for-ox64">11 Appendix: Memory Map for Ox64</a><ul></ul></li>
-<li><a href="#appendix-uart-driver-for-ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
-<li><a href="#appendix-initial-ram-disk">13 Appendix: Initial RAM Disk</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#begin-with-star64-nuttx" title="Begin with Star64 NuttX">1 Begin with Star64 NuttX</a><ul></ul></li>
+<li><a href="#print-to-serial-console" title="Print to Serial Console">2 Print to Serial Console</a><ul></ul></li>
+<li><a href="#update-the-boot-address" title="Update the Boot Address">3 Update the Boot Address</a><ul></ul></li>
+<li><a href="#fix-the-uart-driver" title="Fix the UART Driver">4 Fix the UART Driver</a><ul></ul></li>
+<li><a href="#platform-level-interrupt-controller" title="Platform-Level Interrupt Controller">5 Platform-Level Interrupt Controller</a><ul></ul></li>
+<li><a href="#handle-risc-v-exceptions" title="Handle RISC-V Exceptions">6 Handle RISC-V Exceptions</a><ul></ul></li>
+<li><a href="#add-plic-to-memory-map" title="Add PLIC to Memory Map">7 Add PLIC to Memory Map</a><ul></ul></li>
+<li><a href="#initial-ram-disk-is-missing" title="Initial RAM Disk is Missing">8 Initial RAM Disk is Missing</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-nuttx-boot-flow" title="Appendix: NuttX Boot Flow">10 Appendix: NuttX Boot Flow</a><ul></ul></li>
+<li><a href="#appendix-memory-map-for-ox64" title="Appendix: Memory Map for Ox64">11 Appendix: Memory Map for Ox64</a><ul></ul></li>
+<li><a href="#appendix-uart-driver-for-ox64" title="Appendix: UART Driver for Ox64">12 Appendix: UART Driver for Ox64</a><ul></ul></li>
+<li><a href="#appendix-initial-ram-disk" title="Appendix: Initial RAM Disk">13 Appendix: Initial RAM Disk</a><ul></ul></li></ul></nav><p>📝 <em>12 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/ox2-title.png" alt="Booting Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC (Bouffalo Lab BL808)" /></p>
 <p>Last week we booted Linux on the <a href="https://pine64.org/documentation/Ox64/"><strong>Pine64 Ox64 64-bit RISC-V SBC</strong></a> (pic below), powered by <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL808_RM/en/BL808_RM_en_1.3.pdf"><strong>Bouffalo Lab BL808 SoC</strong></a>…</p>
 <ul>
@@ -138,8 +138,7 @@ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1
-</code></pre></div>
+  2&gt;&amp;1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
 <p>Next we prepare a <strong>Linux microSD</strong> for Ox64 as described <a href="https://lupyuen.github.io/articles/ox64"><strong>in the previous article</strong></a>.</p>
@@ -156,8 +155,7 @@ riscv64-unknown-elf-objcopy \
 ## on Ox64 microSD
 cp nuttx.bin \
   &quot;/Volumes/NO NAME/Image&quot;
-diskutil unmountDisk /dev/disk2
-</code></pre></div>
+diskutil unmountDisk /dev/disk2</code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong>.</p>
 <p>And we see… Absolutely Nothing!</p>
@@ -169,8 +167,7 @@ Retrieving file: /extlinux/../bl808-pine64-ox64.dtb
   Working FDT set to 51ff8000
   Loading Device Tree to 0000000053f22000, end 0000000053f25fab ... OK
   Working FDT set to 53f22000
-Starting kernel...
-</code></pre></div>
+Starting kernel...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8134f17502db733ce87d6fa8b00eab55#file-ox64-nuttx-log-L104-L114">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Shouldn’t we see a Crash Dump?</em></p>
 <p>Yeah we’re hoping that NuttX would crash and <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> could dump a meaningful Stack Trace. But nope!</p>
@@ -215,8 +212,7 @@ void bl602_send(struct uart_dev_s *dev, int ch) {
 
   // Write character to Output FIFO
   putreg32(ch, BL602_UART_FIFO_WDATA(uart_idx));
-}
-</code></pre></div>
+}</code></pre></div>
 <p>For BL808: We do the same. We simply write the character to…</p>
 <ul>
 <li>
@@ -245,15 +241,13 @@ sb  t1, 0x88(t0)
 /* Load `3` to Register t1 */
 li  t1, 0x33
 /* Store byte from Register t1 to UART3 Base Address, Offset 0x88 */
-sb  t1, 0x88(t0)
-</code></pre></div>
+sb  t1, 0x88(t0)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address Offset)</a></p>
 <p>We insert the code above into our <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L69-L87"><strong>NuttX Boot Code:</strong> jh7110_head.S</a></p>
 <p>And we see (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
-123
-</code></pre></div>
+123</code></pre></div>
 <p>Our hunch is 100% correct, <strong>NuttX is ALIVE on Ox64</strong> yay!</p>
 <p><a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L112-L115">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_head.S#L68-L70">(<strong>Boot Code</strong> has moved here)</a></p>
@@ -261,14 +255,12 @@ sb  t1, 0x88(t0)
 <p>OpenSBI boots on Ox64 with <a href="https://gist.github.com/lupyuen/1f895c9d57cb4e7294522ce27fea70fb#file-ox64-nuttx2-log-L57"><strong>Hart ID 0</strong></a> (instead of 1). Which means we remove this adjustment for Hart ID: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_head.S#L89-L93">jh7110_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register a0.
  * But NuttX expects Hart ID to start at 0, so we subtract 1.
- * Previously: addi a0, a0, -1 */
-</code></pre></div><h1 id="update-the-boot-address"><a class="doc-anchor" href="#update-the-boot-address">§</a>3 Update the Boot Address</h1>
+ * Previously: addi a0, a0, -1 */</code></pre></div><h1 id="update-the-boot-address"><a class="doc-anchor" href="#update-the-boot-address">§</a>3 Update the Boot Address</h1>
 <p><em>Surely Ox64 boots at a different RAM Address from Star64?</em></p>
 <p>Yep! Next we fix the <strong>NuttX Boot Address</strong> for Ox64.</p>
 <p>From the <a href="https://gist.github.com/lupyuen/30df5a965fabf719cc52bf733e945db7#file-ox64-uboot-log-L193-L220"><strong>U-Boot Bootloader</strong></a> we see that Ox64 boots Linux at this address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ printenv
-kernel_addr_r=0x50200000
-</code></pre></div>
+kernel_addr_r=0x50200000</code></pre></div>
 <p>Based on the Boot Address, we define these <strong>Memory Regions</strong> for NuttX…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L46-L51"><strong>I/O Region</strong></a></td><td style="text-align: center"><strong><code>0x0000</code> <code>0000</code></strong></td><td style="text-align: left"><strong><code>0x5000</code> <code>0000</code></strong></td></tr>
@@ -287,24 +279,21 @@ kernel_addr_r=0x50200000
   ksram (rwx) :   ORIGIN = 0x50400000, LENGTH = 2048K /* w/ cache */
   pgram (rwx) :   ORIGIN = 0x50600000, LENGTH = 4096K /* w/ cache */
   ramdisk (rwx) : ORIGIN = 0x50A00000, LENGTH = 16M   /* w/ cache */
-} /* TODO: Use up the entire 64 MB RAM */
-</code></pre></div>
+} /* TODO: Use up the entire 64 MB RAM */</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L20-L27">(Moved here)</a></p>
 <p>We make the same changes to the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/boards/risc-v/jh7110/star64/configs/nsh/defconfig#L31-L77">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_START=0x50200000
 CONFIG_RAM_SIZE=1048576
 CONFIG_ARCH_PGPOOL_PBASE=0x50600000
 CONFIG_ARCH_PGPOOL_VBASE=0x50600000
-CONFIG_ARCH_PGPOOL_SIZE=4194304
-</code></pre></div>
+CONFIG_ARCH_PGPOOL_SIZE=4194304</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L23-L70">(Moved here)</a></p>
 <p>And we update the <strong>NuttX Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">jh7110_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the whole I/O Memory
 // with Virtual Address = Physical Address
 // TODO: Interrupt Controller is missing!
 #define MMU_IO_BASE (0x00000000ul)
-#define MMU_IO_SIZE (0x50000000ul)
-</code></pre></div>
+#define MMU_IO_SIZE (0x50000000ul)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p><em>What’s this Memory Map?</em></p>
 <p>Inside the BL808 SoC is the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit (MMU)</strong></a>. (Same for Star64 JH7110)</p>
@@ -329,8 +318,7 @@ void u16550_putc(FAR struct u16550_s *priv, int ch) {
   // Previously:
   // while ((u16550_serialin(priv, UART_LSR_OFFSET) &amp; UART_LSR_THRE) == 0);
   // u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L594-L615">(Moved here)</a></p>
 <p>(Yeah the UART Buffer might overflow, we’ll fix later)</p>
 <p><strong>For Other UART Registers</strong>: We skip the reading and writing of the registers, because we’ll patch them later: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L604-L632">uart_16550.c</a></p>
@@ -343,16 +331,14 @@ uart_datawidth_t u16550_serialin(FAR struct u16550_s *priv, int offset) {
 // Write to UART Register
 void u16550_serialout(FAR struct u16550_s *priv, int offset, uart_datawidth_t value) {
   // Commented out the rest
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And we won’t wait for <strong>UART Ready</strong>, since we don’t access the Line Control Register: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/drivers/serial/uart_16550.c#L633-L670">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait until UART is not busy. This is needed before writing to Line Control Register.
 // Otherwise we will get spurious interrupts on Synopsys DesignWare 8250.
 int u16550_wait(FAR struct u16550_s *priv) {
   // Nopez! No waiting for now
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>After these fixes, NuttX prints our very first <strong>Crash Dump</strong> on Ox64 yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 123ABC
@@ -365,8 +351,7 @@ riscv_exception: PANIC!!! Exception = 0000000000000005
 _assert: Current Version: NuttX  12.0.3 93a92a7-dirty Nov  5 2023 11:27:46 risc-v
 _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle_Task process: Kernel 0x50200e28
 up_dump_register: EPC: 0000000050208086
-up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001 A3: 0000000000000003
-</code></pre></div>
+up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001 A3: 0000000000000003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/36b8c47abc2632063ca5cdebb958e3e8#file-ox64-nuttx3-log-L111-L149">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval"><strong>MTVAL (Machine Trap Value)</strong></a> says that NuttX has crashed while reading the <strong>Invalid Data Address <code>0x0C00</code> <code>2104</code></strong>. (Hence the “Load Access Fault”)</p>
 <p>Why is Data Address <strong><code>0x0C00</code> <code>2104</code></strong> causing unhappiness? First we learn about RISC-V Interrupts…</p>
@@ -380,14 +365,12 @@ up_dump_register: A0: 000000000c002104 A1: ffffffffffffffff A2: 0000000000000001
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Load access fault
 MCAUSE: 5
 EPC:    50208086
-MTVAL:  0c002104
-</code></pre></div>
+MTVAL:  0c002104</code></pre></div>
 <p>This says that NuttX crashed when it tried to access Invalid Data Address <strong><code>0x0C00</code> <code>2104</code></strong> from Code Address <strong><code>0x5020</code> <code>8086</code></strong>.</p>
 <p>We look up Code Address <strong><code>0x5020</code> <code>8086</code></strong> in our <strong>RISC-V Disassembly for NuttX Kernel</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_modifyreg32.c:52
   regval  = getreg32(addr);
-    50208086: 2701  sext.w a4,a4
-</code></pre></div>
+    50208086: 2701  sext.w a4,a4</code></pre></div>
 <p>Which points to this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57">riscv_modifyreg32.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Atomically modify the specified bits
 // in a Memory-Mapped Register
@@ -399,8 +382,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   regval |= setbits;
   putreg32(regval, addr);
   spin_unlock_irqrestore(NULL, flags);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Hence NuttX tried to modify a <strong>Memory-Mapped Register</strong> that doesn’t exist, and crashed.</p>
 <p><em>But what Memory-Mapped Register?</em></p>
 <p>The offending Data Address <strong><code>0x0C00</code> <code>2104</code></strong> actually comes from the <strong>Star64 PLIC</strong>! (Platform-Level Interrupt Controller)</p>
@@ -410,8 +392,7 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
 
 // Star64 S-Mode Interrupt Enable
 // From https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/hardware/jh7110_plic.h#L34-L49
-#define JH7110_PLIC_ENABLE2 (JH7110_PLIC_BASE + 0x002104)
-</code></pre></div>
+#define JH7110_PLIC_ENABLE2 (JH7110_PLIC_BASE + 0x002104)</code></pre></div>
 <p>PLIC for Ox64 is in a different place, let’s change it.</p>
 <p><em>What’s the PLIC Base Address for Ox64?</em></p>
 <p>For Ox64, PLIC Base Address is <strong><code>0xE000</code> <code>0000</code></strong>, according to the Linux Device Tree: <a href="https://github.com/lupyuen/nuttx-ox64/blob/main/bl808-pine64-ox64.dts#L129-L138">bl808-pine64-ox64.dts</a></p>
@@ -424,11 +405,9 @@ void modifyreg32(uintptr_t addr, uint32_t clearbits, uint32_t setbits) {
   #interrupt-cells = &lt;0x02&gt;;
   riscv,ndev = &lt;0x40&gt;;
   phandle = &lt;0x01&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Based on the above, we change the <strong>PLIC Base Address</strong> for Ox64: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/hardware/jh7110_memorymap.h#L30">jh7110_memorymap.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000ul
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define JH7110_PLIC_BASE 0xe0000000ul</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/hardware/bl808_memorymap.h#L27-L32">(Moved here)</a></p>
 <p><a href="https://occ-intl-prod.oss-ap-southeast-1.aliyuncs.com/resource/XuanTie-OpenC906-UserManual.pdf">(PLIC Offsets are in <strong>XuanTie OpenC906 User Manual</strong>, Page 77)</a></p>
 <p>NuttX now crashes at a different place, with IRQ 15 (pic below)…</p>
@@ -438,8 +417,7 @@ up_irqinitialize: a, b, c
 riscv_dispatch_irq: irq=15
 irq_unexpected_isr: ERROR irq: 15
 _assert: Current Version: NuttX  12.0.3 910bfca-dirty Nov  6 2023 15:23:11 risc-v
-_assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50
-</code></pre></div>
+_assert: Assertion failed panic: at file: irq/irq_unexpectedisr.c:54 task: Idle_Task process: Kernel 0x50200e50</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/11b8d4221a150f10afa3aa5ab5e50a4c#file-ox64-nuttx4-log-L111-L121">(See the <strong>Complete Log</strong>)</a></p>
 <p>But there’s something exceptional about IRQ 15…</p>
 <p><img src="https://lupyuen.github.io/images/ox2-irq.png" alt="NuttX crashes with IRQ 15" /></p>
@@ -472,8 +450,7 @@ void up_irqinitialize(void) {
   ...
   // Attach the RISC-V Exception Handlers
   _info(&quot;f\n&quot;);
-  riscv_exception_attach();
-</code></pre></div>
+  riscv_exception_attach();</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L42-L103">(Moved here)</a></p>
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah in the code above, we attach the RISC-V Exception Handlers (<strong>riscv_exception_attach</strong>)…</p>
@@ -494,16 +471,14 @@ void up_irqinitialize(void) {
   _info(&quot;c\n&quot;);
   // Crashes here!
   putreg32(0x0, JH7110_PLIC_ENABLE1);
-  putreg32(0x0, JH7110_PLIC_ENABLE2);
-</code></pre></div>
+  putreg32(0x0, JH7110_PLIC_ENABLE2);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L42-L103">(Moved here)</a></p>
 <p>Then <strong>riscv_exception_attach</strong> will handle all RISC-V Exceptions correctly, including IRQ 15: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_exception.c#L89-L142">riscv_exception.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach the RISC-V Exception Handlers
 void riscv_exception_attach(void) {
   ...
   // IRQ 15: Store / AMO Page Fault
-  irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);
-</code></pre></div>
+  irq_attach(RISCV_IRQ_STOREPF, riscv_exception, NULL);</code></pre></div>
 <p><em>Does it work?</em></p>
 <p>Yep we see the <strong>Store / AMO Page Fault Exception</strong>! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>up_irqinitialize: c
@@ -512,16 +487,14 @@ riscv_exception:
 EXCEPTION: Store/AMO page fault
 MCAUSE: f
 EPC:    50207e6a
-MTVAL:  e0002100
-</code></pre></div>
+MTVAL:  e0002100</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/85db0510712ba8c660e10f922d4564c9#file-ox64-nuttx5-log-L136-L161">(See the <strong>Complete Log</strong>)</a></p>
 <p>When we look up the NuttX Kernel Disassembly, the Exception Code Address <strong><code>0x5020</code> <code>7E6A</code></strong> (EPC) comes from our <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_irq.c#L58-L64"><strong>PLIC Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/jh7110_irq.c:62
   putreg32(0x0, JH7110_PLIC_ENABLE1);
     50207e64: 700017b7  lui  a5,0x70001
     50207e68: 0786      slli a5,a5,0x1
-    50207e6a: 1007a023  sw   zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;
-</code></pre></div>
+    50207e6a: 1007a023  sw   zero,256(a5) # 70001100 &lt;__ramdisk_end+0x1e601100&gt;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_irq.c#L57-L62">(Moved here)</a></p>
 <p>The offending Data Address (MTVAL) is <strong><code>0xE000</code> <code>2100</code></strong>.</p>
 <p>Which is our <strong>Ox64 PLIC</strong>! We scrutinise PLIC again…</p>
@@ -534,8 +507,7 @@ MTVAL:  e0002100
 // (Includes PLIC)
 // TODO: This is mapping too much memory!
 #define MMU_IO_BASE (0x00000000ul)
-#define MMU_IO_SIZE (0xf0000000ul)
-</code></pre></div>
+#define MMU_IO_SIZE (0xf0000000ul)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ox2#appendix-memory-map-for-ox64">(<strong>Memory Map</strong> doesn’t look right)</a></p>
 <p>NuttX boots even further. And tries to register IRQ 57 for the <strong>Star64 UART Interrupt</strong>…</p>
@@ -548,8 +520,7 @@ riscv_exception:
 EXCEPTION: Load access fault
 MCAUSE: 5
 EPC:    50208342
-MTVAL:  e0002104
-</code></pre></div>
+MTVAL:  e0002104</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ade5ff1433812fb675ff06f805f7339f#file-ox64-nuttx6-log-L135-L181">(See the <strong>Complete Log</strong>)</a></p>
 <p>But it crashes while accessing the PLIC at another <strong>Invalid Data Address: <code>0xE000</code> <code>2104</code></strong>. (Sigh)</p>
 <p><em>Ack! Enough with the PLIC already…</em></p>
@@ -563,8 +534,7 @@ int u16550_attach(struct uart_dev_s *dev) {
 
   // Don&#39;t enable the interrupt
   // Previously:
-  // up_enable_irq(priv-&gt;irq);
-</code></pre></div>
+  // up_enable_irq(priv-&gt;irq);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_serial.c#L275-L304">(Moved here)</a></p>
 <p>NuttX hits another roadblock…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="Initial RAM Disk for Star64 JH7110" /></p>
@@ -577,8 +547,7 @@ uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 _assert: Current Version: NuttX  12.0.3 b244f85-dirty Nov  6 2023 17:35:34 risc-v
-_assert: Assertion failed ret &gt;= 0: at file: init/nx_bringup.c:283 task: AppBringUp process: Kernel 0x5020107e
-</code></pre></div>
+_assert: Assertion failed ret &gt;= 0: at file: init/nx_bringup.c:283 task: AppBringUp process: Kernel 0x5020107e</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ab640bcb3ba3a19834bcaa29e43baddf#file-ox64-nuttx7-log-L136-L177">(See the <strong>Complete Log</strong>)</a></p>
 <p>That’s because NuttX couldn’t mount the <strong>Initial RAM Disk</strong>: <a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_bringup.c#L282-L291">nx_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Mount the File System containing
@@ -588,8 +557,7 @@ ret = nx_mount(CONFIG_INIT_MOUNT_SOURCE, CONFIG_INIT_MOUNT_TARGET,
   CONFIG_INIT_MOUNT_DATA);
 
 // Fails here
-DEBUGASSERT(ret &gt;= 0);
-</code></pre></div>
+DEBUGASSERT(ret &gt;= 0);</code></pre></div>
 <p>That contains the Executable Binaries for <strong>NuttX Shell</strong> (NSH) and the NuttX Apps.</p>
 <p><a href="https://lupyuen.github.io/articles/semihost">(More about <strong>Initial RAM Disk</strong>)</a></p>
 <p><em>Why is the Initial RAM Disk missing?</em></p>
@@ -791,8 +759,7 @@ DEBUGASSERT(ret &gt;= 0);
 // with Virtual Address = Physical Address
 // TODO: Interrupt Controller is missing!
 #define MMU_IO_BASE (0x00000000ul)
-#define MMU_IO_SIZE (0x50000000ul)
-</code></pre></div>
+#define MMU_IO_SIZE (0x50000000ul)</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/ba093f2477f011ec7c5351eaba0a3002add02d6b/arch/risc-v/src/jh7110/jh7110_mm_init.c#L47-L50">(Source)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p>Inside the BL808 SoC is the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39"><strong>Sv39 Memory Management Unit (MMU)</strong></a> with 128 / 256 / 512 TLB table entries. (Same for Star64 JH7110)</p>
@@ -808,8 +775,7 @@ DEBUGASSERT(ret &gt;= 0);
 // (Includes PLIC)
 // TODO: This is mapping too much memory!
 #define MMU_IO_BASE (0x00000000ul)
-#define MMU_IO_SIZE (0xf0000000ul)
-</code></pre></div>
+#define MMU_IO_SIZE (0xf0000000ul)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L49-L57">(Moved here)</a></p>
 <p><em>This doesn’t look right…</em></p>
 <p>Yeah when we substitute the above <strong>MMU_IO_BASE</strong> and <strong>MMU_IO_SIZE</strong> into the <strong>Memory Map</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/ox64/arch/risc-v/src/jh7110/jh7110_mm_init.c#L212-L259">jh7110_mm_init.c</a></p>
@@ -841,8 +807,7 @@ void jh7110_kernel_mappings(void) {
   // PGPOOL_START is 0x50600000
   // PGPOOL_SIZE  is 4 MB + 16 MB (including RAM Disk)
   mmu_ln_map_region(2, PGT_L2_VBASE, PGPOOL_START, PGPOOL_START, PGPOOL_SIZE, MMU_KDATA_FLAGS);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L220-L278">(Moved here)</a></p>
 <p>We see a problem with the <strong>Memory Map</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Memory Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
@@ -868,8 +833,7 @@ CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0xC0100000
 CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0xC0200000
-CONFIG_ARCH_HEAP_NPAGES=128
-</code></pre></div>
+CONFIG_ARCH_HEAP_NPAGES=128</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L17-L26">(Moved here)</a></p>
 <p>But our Kernel Memory Space already extends to <strong><code>0xF000</code> <code>0000</code></strong>!</p>
 <p>Thus we might introduce another Memory Region, just to <strong>map the PLIC</strong>.</p>
@@ -882,8 +846,7 @@ Domain0 Region01    : 0xe4000000-0xe4007fff (I)
 Domain0 Region02    : 0x3ef80000-0x3efbffff ()
 Domain0 Region03    : 0x00000000-0xffffffffffffffff (R,W,X)
 Domain0 Next Address: 0x50000000
-Domain0 Next Arg1   : 0x51ff8000
-</code></pre></div>
+Domain0 Next Arg1   : 0x51ff8000</code></pre></div>
 <p>(<strong><code>0x3EF8</code> <code>0000</code></strong> is probably protected because it contains the OpenSBI Firmware. What is “<strong><code>(I)</code></strong>”?)</p>
 <p>Here’s how we <strong>fixed the Memory Map</strong> for Ox64 NuttX…</p>
 <ul>
@@ -985,8 +948,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 cp Image &quot;/Volumes/NO NAME/&quot;
 
 ## U-Boot Bootloader will load NuttX Kernel and
-## Initial RAM Disk into RAM
-</code></pre></div>
+## Initial RAM Disk into RAM</code></pre></div>
 <p>Here’s how we implemented the Initial RAM Disk…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/app"><strong>“RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk”</strong></a></li>

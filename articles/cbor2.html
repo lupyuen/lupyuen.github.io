@@ -60,42 +60,41 @@
     
 
     <h1 class="title">Encode Sensor Data with CBOR on Apache NuttX OS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a><ul>
-<li><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a><ul></ul></li>
-<li><a href="#create-map-encoder">1.2 Create Map Encoder</a><ul></ul></li>
-<li><a href="#encode-key-and-value">1.3 Encode Key and Value</a><ul></ul></li>
-<li><a href="#close-map-encoder">1.4 Close Map Encoder</a><ul></ul></li>
-<li><a href="#get-encoded-output">1.5 Get Encoded Output</a><ul></ul></li>
-<li><a href="#download-source-code">1.6 Download Source Code</a><ul></ul></li>
-<li><a href="#build-the-firmware">1.7 Build The Firmware</a><ul></ul></li>
-<li><a href="#magic-happens">1.8 Magic Happens</a><ul></ul></li></ul></li>
-<li><a href="#add-another-field">2 Add Another Field</a><ul>
-<li><a href="#modify-map-encoder">2.1 Modify Map Encoder</a><ul></ul></li>
-<li><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a><ul></ul></li>
-<li><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a><ul></ul></li>
-<li><a href="#watch-the-magic">2.4 Watch the Magic</a><ul></ul></li></ul></li>
-<li><a href="#cbor-data-types">3 CBOR Data Types</a><ul>
-<li><a href="#numbers">3.1 Numbers</a><ul></ul></li>
-<li><a href="#strings">3.2 Strings</a><ul></ul></li>
-<li><a href="#other-types">3.3 Other Types</a><ul></ul></li></ul></li>
-<li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul>
-<li><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a><ul></ul></li>
-<li><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
-<li><a href="#decode-cbor">5 Decode CBOR</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">8 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">8.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">8.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">8.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-porting-tinycbor-to-nuttx">9 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>10 Jan 2022</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#encode-sensor-data-with-tinycbor" title="Encode Sensor Data with TinyCBOR">1 Encode Sensor Data with TinyCBOR</a><ul>
+<li><a href="#output-buffer-and-cbor-encoder" title="Output Buffer and CBOR Encoder">1.1 Output Buffer and CBOR Encoder</a><ul></ul></li>
+<li><a href="#create-map-encoder" title="Create Map Encoder">1.2 Create Map Encoder</a><ul></ul></li>
+<li><a href="#encode-key-and-value" title="Encode Key and Value">1.3 Encode Key and Value</a><ul></ul></li>
+<li><a href="#close-map-encoder" title="Close Map Encoder">1.4 Close Map Encoder</a><ul></ul></li>
+<li><a href="#get-encoded-output" title="Get Encoded Output">1.5 Get Encoded Output</a><ul></ul></li>
+<li><a href="#download-source-code" title="Download Source Code">1.6 Download Source Code</a><ul></ul></li>
+<li><a href="#build-the-firmware" title="Build The Firmware">1.7 Build The Firmware</a><ul></ul></li>
+<li><a href="#magic-happens" title="Magic Happens">1.8 Magic Happens</a><ul></ul></li></ul></li>
+<li><a href="#add-another-field" title="Add Another Field">2 Add Another Field</a><ul>
+<li><a href="#modify-map-encoder" title="Modify Map Encoder">2.1 Modify Map Encoder</a><ul></ul></li>
+<li><a href="#encode-first-key-and-value" title="Encode First Key and Value">2.2 Encode First Key and Value</a><ul></ul></li>
+<li><a href="#encode-second-key-and-value" title="Encode Second Key and Value">2.3 Encode Second Key and Value</a><ul></ul></li>
+<li><a href="#watch-the-magic" title="Watch the Magic">2.4 Watch the Magic</a><ul></ul></li></ul></li>
+<li><a href="#cbor-data-types" title="CBOR Data Types">3 CBOR Data Types</a><ul>
+<li><a href="#numbers" title="Numbers">3.1 Numbers</a><ul></ul></li>
+<li><a href="#strings" title="Strings">3.2 Strings</a><ul></ul></li>
+<li><a href="#other-types" title="Other Types">3.3 Other Types</a><ul></ul></li></ul></li>
+<li><a href="#floating-point-numbers" title="Floating-Point Numbers">4 Floating-Point Numbers</a><ul>
+<li><a href="#encode-floats-as-integers" title="Encode Floats as Integers">4.1 Encode Floats as Integers</a><ul></ul></li>
+<li><a href="#accuracy-and-precision" title="Accuracy and Precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
+<li><a href="#decode-cbor" title="Decode CBOR">5 Decode CBOR</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx" title="Appendix: Build, Flash and Run NuttX">8 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx" title="Build NuttX">8.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx" title="Flash NuttX">8.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx" title="Run NuttX">8.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-porting-tinycbor-to-nuttx" title="Appendix: Porting TinyCBOR to NuttX">9 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>10 Jan 2022</em></p>
 <p>Suppose we’re creating an IoT Gadget with <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> that transmits <strong>Sensor Data</strong> from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
   &quot;l&quot;: 2345 
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(Located in a Greenhouse perhaps)</p>
 <p>And we’re transmitting over a <strong>low-power wireless network</strong> like LoRa, Zigbee or Bluetooth LE.</p>
 <p>We could transmit <strong>19 bytes of JSON</strong>. But there’s a more compact way to do it….</p>
@@ -127,8 +126,7 @@
 <p>We begin by encoding one data field into CBOR…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We call this a <strong>CBOR Map</strong> that maps a <strong>Key</strong> (“<code>t</code>”) to a <strong>Value</strong> (<code>1234</code>)…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map.png" alt="CBOR Map with 1 Key-Value Pair" /></p>
@@ -145,14 +143,12 @@
 static void test_cbor(void) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
-  uint8_t output[50];
-</code></pre></div>
+  uint8_t output[50];</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(50 bytes is the max packet size for LoRaWAN AS923 Data Rate 2)</a></p>
 <p><strong>Output Buffer Size</strong> is important: Calls to the <strong>TinyCBOR library will fail</strong> if we run out of buffer space!</p>
 <p>Next we define the <strong>CBOR Encoder</strong> (from TinyCBOR) that will encode our data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
-  CborEncoder encoder, mapEncoder;
-</code></pre></div>
+  CborEncoder encoder, mapEncoder;</code></pre></div>
 <p>As well as the <strong>Map Encoder</strong> that will encode our CBOR Map.</p>
 <p>We <strong>initialise the CBOR Encoder</strong> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init our CBOR Encoder
@@ -161,8 +157,7 @@ static void test_cbor(void) {
     output,          //  Output Buffer
     sizeof(output),  //  Output Buffer Size
     0                //  Options (always 0)
-  );
-</code></pre></div><h2 id="create-map-encoder"><a class="doc-anchor" href="#create-map-encoder">§</a>1.2 Create Map Encoder</h2>
+  );</code></pre></div><h2 id="create-map-encoder"><a class="doc-anchor" href="#create-map-encoder">§</a>1.2 Create Map Encoder</h2>
 <p>Now we create the <strong>Map Encoder</strong> that will encode our CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
@@ -170,8 +165,7 @@ static void test_cbor(void) {
     &amp;mapEncoder,  //  Map Encoder
     1             //  Number of Key-Value Pairs
   );    
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>"t": 1234</code>) that we shall encode.</p>
 <h2 id="encode-key-and-value"><a class="doc-anchor" href="#encode-key-and-value">§</a>1.3 Encode Key and Value</h2>
 <p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
@@ -180,16 +174,14 @@ static void test_cbor(void) {
     &amp;mapEncoder,  //  Map Encoder
     &quot;t&quot;           //  Key
   );    
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>Followed by the <strong>Value</strong> (<code>1234</code>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Value
   res = cbor_encode_int(
     &amp;mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p><strong>cbor_encode_int</strong> encodes <strong>64-bit Signed Integers</strong>.</p>
 <p>(We’ll look at other data types in a while)</p>
 <h2 id="close-map-encoder"><a class="doc-anchor" href="#close-map-encoder">§</a>1.4 Close Map Encoder</h2>
@@ -199,8 +191,7 @@ static void test_cbor(void) {
     &amp;encoder,    //  CBOR Encoder
     &amp;mapEncoder  //  Map Encoder
   );
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>Our CBOR Encoding is complete!</p>
 <h2 id="get-encoded-output"><a class="doc-anchor" href="#get-encoded-output">§</a>1.5 Get Encoded Output</h2>
 <p>To work with the Encoded CBOR Output, we need to know <strong>how many bytes</strong> have been encoded…</p>
@@ -209,16 +200,14 @@ static void test_cbor(void) {
     &amp;encoder,  //  CBOR Encoder
     output     //  Output Buffer
   );
-  printf(&quot;CBOR Output: %d bytes\n&quot;, output_len);
-</code></pre></div>
+  printf(&quot;CBOR Output: %d bytes\n&quot;, output_len);</code></pre></div>
 <p>For the demo we <strong>dump the encoded CBOR data</strong> to the console…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Dump the encoded CBOR output (6 bytes):
   //  0xa1 0x61 0x74 0x19 0x04 0xd2
   for (int i = 0; i &lt; output_len; i++) {
     printf(&quot;  0x%02x\n&quot;, output[i]);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And that’s how we call the TinyCBOR Library to work with CBOR data!</p>
 <p>Let’s watch what happens when we run the firmware…</p>
 <blockquote>
@@ -229,8 +218,7 @@ static void test_cbor(void) {
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch cbor https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch cbor https://github.com/lupyuen/nuttx-apps apps
-</code></pre></div>
+git clone --recursive --branch cbor https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add TinyCBOR</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li>
@@ -267,8 +255,7 @@ git clone --recursive --branch cbor https://github.com/lupyuen/nuttx-apps apps
 ./tools/configure.sh esp32-devkitc:nsh
 
 ## Edit the Build Config
-make menuconfig 
-</code></pre></div></li>
+make menuconfig </code></pre></div></li>
 <li>
 <p>In menuconfig, check the box for…</p>
 <p><strong>“Library Routines”</strong> → <strong>“TinyCBOR Library”</strong></p>
@@ -288,8 +275,7 @@ make menuconfig
 </ol>
 <h2 id="magic-happens"><a class="doc-anchor" href="#magic-happens">§</a>1.8 Magic Happens</h2>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
 <p>We’ll see 6 bytes of <strong>Encoded CBOR Output</strong> for “test_cbor”…</p>
 <div class="example-wrap"><pre class="language-text"><code>test_cbor: Encoding { &quot;t&quot;: 1234 }
 CBOR Output: 6 bytes
@@ -298,13 +284,11 @@ CBOR Output: 6 bytes
   0x74
   0x19
   0x04
-  0xd2
-</code></pre></div>
+  0xd2</code></pre></div>
 <p>We have just compressed <strong>10 bytes of JSON</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Into <strong>6 bytes of CBOR</strong>.</p>
 <p>We have scrimped and saved <strong>4 bytes</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/cbor2-run3.png" alt="Encoded CBOR Output" /></p>
@@ -313,8 +297,7 @@ CBOR Output: 6 bytes
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
   &quot;l&quot;: 2345 
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And watch how our program changes to accommodate the second field.</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
@@ -331,8 +314,7 @@ static void test_cbor2(void) {
   CborEncoder encoder, mapEncoder;
 
   //  Init our CBOR Encoder
-  cbor_encoder_init( ... );
-</code></pre></div>
+  cbor_encoder_init( ... );</code></pre></div>
 <p>Now we <strong>create the Map Encoder</strong> with a tiny modification…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
@@ -340,8 +322,7 @@ static void test_cbor2(void) {
     &amp;mapEncoder,  //  Map Encoder
     2             //  Number of Key-Value Pairs
   );    
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>We changed the <strong>Number of Key-Value Pairs</strong> to <code>2</code>.</p>
 <p>(Previously it was <code>1</code>)</p>
 <h2 id="encode-first-key-and-value"><a class="doc-anchor" href="#encode-first-key-and-value">§</a>2.2 Encode First Key and Value</h2>
@@ -358,8 +339,7 @@ static void test_cbor2(void) {
     &amp;mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>(Yep no changes above)</p>
 <h2 id="encode-second-key-and-value"><a class="doc-anchor" href="#encode-second-key-and-value">§</a>2.3 Encode Second Key and Value</h2>
 <p>This part is new: We encode the <strong>Second Key and Value</strong> (“<code>l</code>” and <code>2345</code>)…</p>
@@ -375,8 +355,7 @@ static void test_cbor2(void) {
     &amp;mapEncoder,  //  Map Encoder 
     2345          //  Value
   );
-  assert(res == CborNoError);
-</code></pre></div>
+  assert(res == CborNoError);</code></pre></div>
 <p>And the rest of the code is the same…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container( ... );
@@ -389,8 +368,7 @@ static void test_cbor2(void) {
   for (int i = 0; i &lt; output_len; i++) {
     printf(&quot;  0x%02x\n&quot;, output[i]);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Recap: To add a data field to our CBOR Encoding, we…</p>
 <ol>
 <li>
@@ -406,8 +384,7 @@ static void test_cbor2(void) {
 </blockquote>
 <h2 id="watch-the-magic"><a class="doc-anchor" href="#watch-the-magic">§</a>2.4 Watch the Magic</h2>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
 <p>We’ll see 11 bytes of <strong>Encoded CBOR Output</strong> for “test_cbor2”…</p>
 <div class="example-wrap"><pre class="language-text"><code>test_cbor2: Encoding { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 CBOR Output: 11 bytes
@@ -421,8 +398,7 @@ CBOR Output: 11 bytes
   0x6c
   0x19
   0x09
-  0x29
-</code></pre></div>
+  0x29</code></pre></div>
 <p>We have just compressed <strong>19 bytes of JSON</strong> into <strong>11 bytes of CBOR</strong>.</p>
 <p><strong>8 bytes</strong> saved!</p>
 <p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
@@ -647,22 +623,19 @@ CBOR Output: 11 bytes
 </li>
 <li>
 <p>To build NuttX, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin
-</code></pre></div>
+CP: nuttx.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -746,8 +719,7 @@ blflash flash nuttx.bin \
   --baud-rate 230400
 
 ## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5
-</code></pre></div>
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -755,8 +727,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a class="doc-anchor" href="#run-nuttx">§</a>8.3 Run NuttX</h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -796,15 +767,13 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>

@@ -60,46 +60,46 @@
     
 
     <h1 class="title">Rust on Apache NuttX OS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a><ul></ul></li>
-<li><a href="#putting-things-neatly">2 Putting Things Neatly</a><ul></ul></li>
-<li><a href="#flipping-gpio">3 Flipping GPIO</a><ul></ul></li>
-<li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
-<li><a href="#rust-embedded-hal">5 Rust Embedded HAL</a><ul></ul></li>
-<li><a href="#spi-transfer">6 SPI Transfer</a><ul></ul></li>
-<li><a href="#rust-driver-for-lora-sx1262">7 Rust Driver for LoRa SX1262</a><ul></ul></li>
-<li><a href="#transmit-lora-message">8 Transmit LoRa Message</a><ul></ul></li>
-<li><a href="#download-source-code">9 Download Source Code</a><ul></ul></li>
-<li><a href="#build-the-firmware">10 Build The Firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">11 Run The Firmware</a><ul></ul></li>
-<li><a href="#verify-lora-message">12 Verify LoRa Message</a><ul>
-<li><a href="#spectrum-analyser">12.1 Spectrum Analyser</a><ul></ul></li>
-<li><a href="#lora-receiver">12.2 LoRa Receiver</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-support">13 LoRaWAN Support</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
-<li><a href="#notes">15 Notes</a><ul></ul></li>
-<li><a href="#appendix-rust-embedded-hal-for-nuttx">16 Appendix: Rust Embedded HAL for NuttX</a><ul>
-<li><a href="#gpio-hal">16.1 GPIO HAL</a><ul></ul></li>
-<li><a href="#spi-hal">16.2 SPI HAL</a><ul></ul></li>
-<li><a href="#i2c-hal">16.3 I2C HAL</a><ul></ul></li>
-<li><a href="#delay-hal">16.4 Delay HAL</a><ul></ul></li></ul></li>
-<li><a href="#appendix-fix-sx1262-driver-for-nuttx">17 Appendix: Fix SX1262 Driver for NuttX</a><ul>
-<li><a href="#merge-spi-requests">17.1 Merge SPI Requests</a><ul></ul></li>
-<li><a href="#read-register">17.2 Read Register</a><ul></ul></li>
-<li><a href="#set-registers">17.3 Set Registers</a><ul></ul></li>
-<li><a href="#adapt-for-risc-v">17.4 Adapt For RISC-V</a><ul></ul></li></ul></li>
-<li><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a><ul>
-<li><a href="#rust-target">18.1 Rust Target</a><ul></ul></li>
-<li><a href="#rust-build-options">18.2 Rust Build Options</a><ul></ul></li>
-<li><a href="#define-libraries">18.3 Define Libraries</a><ul></ul></li>
-<li><a href="#build-stub-library">18.4 Build Stub Library</a><ul></ul></li>
-<li><a href="#build-rust-library">18.5 Build Rust Library</a><ul></ul></li>
-<li><a href="#replace-stub-libary-by-rust-library">18.6 Replace Stub Libary by Rust Library</a><ul></ul></li>
-<li><a href="#link-rust-library-into-firmware">18.7 Link Rust Library into Firmware</a><ul></ul></li></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">19.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">19.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">19.3 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#rust-meets-nuttx" title="Rust Meets NuttX">1 Rust Meets NuttX</a><ul></ul></li>
+<li><a href="#putting-things-neatly" title="Putting Things Neatly">2 Putting Things Neatly</a><ul></ul></li>
+<li><a href="#flipping-gpio" title="Flipping GPIO">3 Flipping GPIO</a><ul></ul></li>
+<li><a href="#import-nuttx-functions" title="Import NuttX Functions">4 Import NuttX Functions</a><ul></ul></li>
+<li><a href="#rust-embedded-hal" title="Rust Embedded HAL">5 Rust Embedded HAL</a><ul></ul></li>
+<li><a href="#spi-transfer" title="SPI Transfer">6 SPI Transfer</a><ul></ul></li>
+<li><a href="#rust-driver-for-lora-sx1262" title="Rust Driver for LoRa SX1262">7 Rust Driver for LoRa SX1262</a><ul></ul></li>
+<li><a href="#transmit-lora-message" title="Transmit LoRa Message">8 Transmit LoRa Message</a><ul></ul></li>
+<li><a href="#download-source-code" title="Download Source Code">9 Download Source Code</a><ul></ul></li>
+<li><a href="#build-the-firmware" title="Build The Firmware">10 Build The Firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware" title="Run The Firmware">11 Run The Firmware</a><ul></ul></li>
+<li><a href="#verify-lora-message" title="Verify LoRa Message">12 Verify LoRa Message</a><ul>
+<li><a href="#spectrum-analyser" title="Spectrum Analyser">12.1 Spectrum Analyser</a><ul></ul></li>
+<li><a href="#lora-receiver" title="LoRa Receiver">12.2 LoRa Receiver</a><ul></ul></li></ul></li>
+<li><a href="#lorawan-support" title="LoRaWAN Support">13 LoRaWAN Support</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes" title="Notes">15 Notes</a><ul></ul></li>
+<li><a href="#appendix-rust-embedded-hal-for-nuttx" title="Appendix: Rust Embedded HAL for NuttX">16 Appendix: Rust Embedded HAL for NuttX</a><ul>
+<li><a href="#gpio-hal" title="GPIO HAL">16.1 GPIO HAL</a><ul></ul></li>
+<li><a href="#spi-hal" title="SPI HAL">16.2 SPI HAL</a><ul></ul></li>
+<li><a href="#i2c-hal" title="I2C HAL">16.3 I2C HAL</a><ul></ul></li>
+<li><a href="#delay-hal" title="Delay HAL">16.4 Delay HAL</a><ul></ul></li></ul></li>
+<li><a href="#appendix-fix-sx1262-driver-for-nuttx" title="Appendix: Fix SX1262 Driver for NuttX">17 Appendix: Fix SX1262 Driver for NuttX</a><ul>
+<li><a href="#merge-spi-requests" title="Merge SPI Requests">17.1 Merge SPI Requests</a><ul></ul></li>
+<li><a href="#read-register" title="Read Register">17.2 Read Register</a><ul></ul></li>
+<li><a href="#set-registers" title="Set Registers">17.3 Set Registers</a><ul></ul></li>
+<li><a href="#adapt-for-risc-v" title="Adapt For RISC-V">17.4 Adapt For RISC-V</a><ul></ul></li></ul></li>
+<li><a href="#appendix-rust-build-script-for-nuttx" title="Appendix: Rust Build Script for NuttX">18 Appendix: Rust Build Script for NuttX</a><ul>
+<li><a href="#rust-target" title="Rust Target">18.1 Rust Target</a><ul></ul></li>
+<li><a href="#rust-build-options" title="Rust Build Options">18.2 Rust Build Options</a><ul></ul></li>
+<li><a href="#define-libraries" title="Define Libraries">18.3 Define Libraries</a><ul></ul></li>
+<li><a href="#build-stub-library" title="Build Stub Library">18.4 Build Stub Library</a><ul></ul></li>
+<li><a href="#build-rust-library" title="Build Rust Library">18.5 Build Rust Library</a><ul></ul></li>
+<li><a href="#replace-stub-libary-by-rust-library" title="Replace Stub Libary by Rust Library">18.6 Replace Stub Libary by Rust Library</a><ul></ul></li>
+<li><a href="#link-rust-library-into-firmware" title="Link Rust Library into Firmware">18.7 Link Rust Library into Firmware</a><ul></ul></li></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx" title="Appendix: Build, Flash and Run NuttX">19 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx" title="Build NuttX">19.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx" title="Flash NuttX">19.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx" title="Run NuttX">19.3 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rust2-title.jpg" alt="PineDio Stack BL604 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX</strong></a> is an embedded operating system that’s portable across <strong>many platforms</strong> (8-bit to 64-bit) and works like a <strong>tiny version of Linux</strong> (because it’s POSIX Compliant).</p>
 <p><em>Can we create (safer) Embedded Apps with <strong>Rust on NuttX</strong>?</em></p>
@@ -203,8 +203,7 @@
 <p>Though it looks messy, the Rust code above runs perfectly fine from the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 
-Hello World!
-</code></pre></div>
+Hello World!</code></pre></div>
 <p>We’ll make it neater in the next chapter.</p>
 <p><em>Is there anything we missed?</em></p>
 <p>We need to define a <strong>Panic Handler</strong> that will be called when a Runtime Error or Assertion Failure occurs.</p>
@@ -239,8 +238,7 @@ int main(int argc, FAR char *argv[]) {
   //  Calls the Rust Function
   rust_main();
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Thus it’s indeed possible to call Rust from C… And C from Rust!</p>
 <p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx">(More about the Rust build script in the Appendix)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-gpio.png" alt="Rust opening GPIO Ports on NuttX" /></p>
@@ -330,8 +328,7 @@ embedded-hal = &quot;0.2.7&quot;
 nuttx-embedded-hal = &quot;1.0.10&quot;  
 
 ## SX126x LoRa Radio Driver fixed for NuttX
-sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  
-</code></pre></div>
+sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  </code></pre></div>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
 <p>(We’ll see the <strong>sx126x</strong> driver in a while)</p>
 <p>We import the <strong>Rust Embedded Traits</strong> (GPIO, SPI and Delay) that we’ll call from our app: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L12-L18">lib.rs</a></p>
@@ -407,8 +404,7 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
   </span>spi.transfer(<span class="kw-2">&amp;mut </span>data)
     .expect(<span class="string">"spi failed"</span>);</code></pre></div>
 <p>The data transmitted over SPI is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>  1D 00 08 00 00
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>  1D 00 08 00 00</code></pre></div>
 <p>We pass the data as a <strong>Mutable Reference</strong> “<code>&amp;mut</code>” because we expect the contents to be changed during the SPI Transfer.</p>
 <p>The value of SX1262 Register 8 is returned as the <strong>last byte</strong> of the SPI Response…</p>
 
@@ -421,8 +417,7 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }
 <p>And we’re done! Running this Rust code on NuttX shows…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
-test_hal: SX1262 Register 8 is 0x80
-</code></pre></div>
+test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
 <p>That’s the correct value of SX1262 Register 8: <strong><code>0x80</code></strong>!</p>
 <p>(Later we’ll talk about building and flashing the NuttX Firmware)</p>
@@ -515,8 +510,7 @@ test_hal: SX1262 Register 8 is 0x80
 <p>When we run the Rust code we’ll see…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
-test_sx1262: SX1262 Register 8 is 0x80
-</code></pre></div>
+test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
 <p>Which is the same result from the previous chapter. Yep the Rust Driver works OK with our NuttX Embedded HAL!</p>
 <p>Let’s test the Rust Driver to the limit… And send a LoRa Message over the airwaves!</p>
@@ -568,16 +562,14 @@ test_sx1262: SX1262 Register 8 is 0x80
     </span>packet::lora::LoRaCrcType::CrcOn,  <span class="comment">//  Enable CRC
   </span>).expect(<span class="string">"send failed"</span>);</code></pre></div>
 <p>Containing the <strong>Message Payload</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!</code></pre></div>
 <p>And we’re done! We’ll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.</p>
 <h1 id="download-source-code"><a class="doc-anchor" href="#download-source-code">§</a>9 Download Source Code</h1>
 <p>To run Rust on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps
-</code></pre></div>
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the Rust Library and App</strong> to our NuttX Project, follow these instructions…</p>
 <ol>
 <li>
@@ -608,8 +600,7 @@ git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps app
 nuttx/boards/risc-v/bl602/bl602evb/include/board.h
 
 ## For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
-</code></pre></div>
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
 <p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver"><strong>“Connect SX1262 Transceiver”</strong></a></p>
@@ -629,8 +620,7 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
 ./tools/configure.sh esp32-devkitc:nsh
 
 ## Edit the Build Config
-make menuconfig 
-</code></pre></div></li>
+make menuconfig </code></pre></div></li>
 <li>
 <p>Enable the <strong>GPIO Driver</strong> in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
@@ -667,8 +657,7 @@ make menuconfig
 <li>
 <p><strong>For ESP32:</strong> Edit the function <strong>esp32_bringup</strong> in this file…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Change &quot;esp32-devkitc&quot; to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
-</code></pre></div>
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p>And call <strong>spi_test_driver_register</strong> to register our SPI Test Driver.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
 </li>
@@ -687,8 +676,7 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
 </li>
 <li>
 <p>In the NuttX Shell, list the <strong>NuttX Devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
@@ -697,22 +685,19 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
   gpio2
   spi0
   spitest0
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
 <p>The SX1262 Pins for Busy, Chip Select and DIO1 should appear as <strong>“/dev/gpio0”</strong> (GPIO Input), <strong>“gpio1”</strong> (GPIO Output) and <strong>“gpio2”</strong> (GPIO Interrupt) respectively.</p>
 </li>
 <li>
 <p>In the NuttX Shell, run our <strong>Rust App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rust_test
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div></li>
 <li>
 <p>We should see Rust on NuttX <strong>transmitting our LoRa Message</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Sending LoRa message...
 Frequency: 923000000
 ...
-Done!
-</code></pre></div>
+Done!</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
 </li>
 </ol>
@@ -759,13 +744,11 @@ Done!
 <li><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56"><strong>LoRa Parameters for WisBlock Receiver</strong></a></li>
 </ul>
 <p>In the NuttX Shell, enter this to transmit a LoRa Message…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rust_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div>
 <p>On WisBlock we should see the received <strong>LoRa Message</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="RAKwireless WisBlock receives LoRa Message from Rust on NuttX" /></p>
 <p>Which is ASCII for…</p>
-<div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!</code></pre></div>
 <p>Our SX1262 Rust Driver has successfully transmitted a LoRa Message to RAKwireless WisBlock!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
@@ -1243,33 +1226,28 @@ rust_build_target_folder=riscv32imacf-unknown-none-elf
 
 ##  Rust target: Standard target
 ##  rust_build_target=riscv32imac-unknown-none-elf
-##  rust_build_target_folder=riscv32imac-unknown-none-elf
-</code></pre></div>
+##  rust_build_target_folder=riscv32imac-unknown-none-elf</code></pre></div>
 <p><strong>For BL602 and BL604:</strong> We’re using the <strong>Custom Rust Target</strong> at…</p>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">apps/examples/rust_test/riscv32imacf-unknown-none-elf.json</a></p>
 <p>This Custom Rust Target supports <strong>floating point</strong> on 32-bit RISC-V. (The standard 32-bit RISC-V target doesn’t support floating point)</p>
 <p><a href="https://lupyuen.github.io/articles/rust#rust-targets">(More about Custom Rust Targets)</a></p>
 <p><strong>For ESP32-C3 (RISC-V)</strong>: Set “rust_build_target” and “rust_build_target_folder” to the Standard Rust Target <strong>riscv32imc-unknown-none-elf</strong></p>
 <p>Then run this command to install the Rust Target…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf</code></pre></div>
 <p><a href="https://github.com/jessebraham/esp-hal/tree/main/esp32c3-hal">(See this)</a></p>
 <p><strong>For ESP32 (Xtensa)</strong>: Set “rust_build_target” and “rust_build_target_folder” to the ESP32 Rust Target <strong>xtensa-esp32-none-elf</strong></p>
 <p>We need to install the Rust compiler fork with Xtensa support. <a href="https://github.com/jessebraham/esp-hal/tree/main/esp32-hal">(See this)</a></p>
 <h2 id="rust-build-options"><a class="doc-anchor" href="#rust-build-options">§</a>18.2 Rust Build Options</h2>
 <p>Next we define the <strong>Rust Build Options</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Rust build options: Build the Rust Core Library for our custom target
-rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;
-</code></pre></div>
+rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;</code></pre></div>
 <p><strong>For BL602 and BL604:</strong> Since we’re using a Custom Rust Target, we need to build the Rust Core Library for our target. That’s why we need “-Z build-std=core” for the Rust Build Options…</p>
 <div class="example-wrap"><pre class="language-text"><code>--target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
-  -Z build-std=core
-</code></pre></div>
+  -Z build-std=core</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about building Rust Core Library)</a></p>
 <p><strong>For ESP32 and ESP32-C3:</strong> Since we’re using a Standard Rust Target, remove “-Z build-std=core” from “rust_build_options”.</p>
 <p>The Rust Build Options will look like…</p>
-<div class="example-wrap"><pre class="language-text"><code>--target riscv32imc-unknown-none-elf
-</code></pre></div><h2 id="define-libraries"><a class="doc-anchor" href="#define-libraries">§</a>18.3 Define Libraries</h2>
+<div class="example-wrap"><pre class="language-text"><code>--target riscv32imc-unknown-none-elf</code></pre></div><h2 id="define-libraries"><a class="doc-anchor" href="#define-libraries">§</a>18.3 Define Libraries</h2>
 <p>Next we define the <strong>libraries that will be modified</strong> during the build…</p>
 <ul>
 <li>
@@ -1286,21 +1264,18 @@ rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;
 <div class="example-wrap"><pre class="language-bash"><code>##  Location of the Stub Library.  We will replace this stub by the Rust Library
 ##  rust_app_dest will be set to ../../../nuttx/staging/librust.a
 rust_app_dir=$NUTTX_PATH/staging
-rust_app_dest=$rust_app_dir/librust.a
-</code></pre></div>
+rust_app_dest=$rust_app_dir/librust.a</code></pre></div>
 <p>The Rust Library is defined below: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L55-L58">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Location of the compiled Rust Library
 ##  rust_app_build will be set to rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
 rust_build_dir=$PWD/rust/target/$rust_build_target_folder/$rust_build_profile
-rust_app_build=$rust_build_dir/libapp.a
-</code></pre></div><h2 id="build-stub-library"><a class="doc-anchor" href="#build-stub-library">§</a>18.4 Build Stub Library</h2>
+rust_app_build=$rust_build_dir/libapp.a</code></pre></div><h2 id="build-stub-library"><a class="doc-anchor" href="#build-stub-library">§</a>18.4 Build Stub Library</h2>
 <p>Our script <strong>builds NuttX twice.</strong></p>
 <p>For the first build, we compile <strong>NuttX with the Stub Library</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L76-L83">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Build the firmware with the Stub Library, ignoring references to the Rust Library
 pushd $NUTTX_PATH
 make || echo &quot;----- Ignore undefined references to Rust Library&quot;
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p>Which fails to link because <strong>rust_main</strong> is undefined. Our script ignores the error and continues.</p>
 <h2 id="build-rust-library"><a class="doc-anchor" href="#build-rust-library">§</a>18.5 Build Rust Library</h2>
 <p>Now we build the Rust Library: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L89-L94">rust_test/run.sh</a></p>
@@ -1309,17 +1284,14 @@ pushd rust
 rustup default nightly
 cargo clippy $rust_build_options
 cargo build  $rust_build_options
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p>Which expands to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo build \
   --target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
-  -Z build-std=core
-</code></pre></div>
+  -Z build-std=core</code></pre></div>
 <p>(For BL602 and BL604)</p>
 <p>This generates a <strong>Static Library</strong> at…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/rust_test/rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/rust_test/rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a</code></pre></div>
 <p>The Rust Build looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal7.png" alt="Rust builds OK" /></p>
 <h2 id="replace-stub-libary-by-rust-library"><a class="doc-anchor" href="#replace-stub-libary-by-rust-library">§</a>18.6 Replace Stub Libary by Rust Library</h2>
@@ -1327,17 +1299,14 @@ popd
 <div class="example-wrap"><pre class="language-bash"><code>##  Replace the Stub Library by the compiled Rust Library
 ##  Stub Library: ../../../nuttx/staging/librust.a
 ##  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-cp $rust_app_build $rust_app_dest
-</code></pre></div>
+cp $rust_app_build $rust_app_dest</code></pre></div>
 <p>Which is located at…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/staging/librust.a
-</code></pre></div><h2 id="link-rust-library-into-firmware"><a class="doc-anchor" href="#link-rust-library-into-firmware">§</a>18.7 Link Rust Library into Firmware</h2>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/staging/librust.a</code></pre></div><h2 id="link-rust-library-into-firmware"><a class="doc-anchor" href="#link-rust-library-into-firmware">§</a>18.7 Link Rust Library into Firmware</h2>
 <p>Finally we do the <strong>second NuttX build</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L105-L108">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Link the Rust Library to the firmware
 pushd $NUTTX_PATH
 make
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p>Which links the Rust Static Library (and <strong>rust_main</strong>) into the NuttX Firmware.</p>
 <p>Our build for Rust on NuttX is complete! <strong>nuttx.bin</strong> contains our NuttX Firmware, with Rust embedded inside.</p>
 <h1 id="appendix-build-flash-and-run-nuttx"><a class="doc-anchor" href="#appendix-build-flash-and-run-nuttx">§</a>19 Appendix: Build, Flash and Run NuttX</h1>
@@ -1363,8 +1332,7 @@ popd
 </li>
 <li>
 <p>Edit the file…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/rust_test/rust/src/sx1262.rs
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/rust_test/rust/src/sx1262.rs</code></pre></div>
 <p>And set the <strong>LoRa Frequency</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/rust2#transmit-lora-message"><strong>“Transmit LoRa Message”</strong></a></p>
 </li>
@@ -1372,14 +1340,12 @@ popd
 <p>To build NuttX with Rust, enter this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pushd apps/examples/rust_test
 ./run.sh
-popd
-</code></pre></div></li>
+popd</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin
-</code></pre></div>
+CP: nuttx.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d">(See the complete log for BL602)</a></p>
 </li>
 <li>
@@ -1389,8 +1355,7 @@ CP: nuttx.bin
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1474,8 +1439,7 @@ blflash flash nuttx.bin \
   --baud-rate 230400
 
 ## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5
-</code></pre></div>
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1483,8 +1447,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a class="doc-anchor" href="#run-nuttx">§</a>19.3 Run NuttX</h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1524,15 +1487,13 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>

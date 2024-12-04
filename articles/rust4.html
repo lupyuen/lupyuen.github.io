@@ -64,16 +64,16 @@
     
 
     <h1 class="title">Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS</h1>
-    <nav id="TOC"><ul>
-<li><a href="#software-vs-hardware-floating-point">1 Software vs Hardware Floating-Point</a><ul></ul></li>
-<li><a href="#rust-wont-double-float">2 Rust Won’t Double-Float</a><ul></ul></li>
-<li><a href="#custom-target-for-rust">3 Custom Target for Rust</a><ul></ul></li>
-<li><a href="#build-the-rust-core-library">4 Build the Rust Core Library</a><ul></ul></li>
-<li><a href="#nuttx-links-ok-with-rust">5 NuttX Links OK with Rust</a><ul></ul></li>
-<li><a href="#rust-build-for-64-bit-risc-v">6 Rust Build for 64-bit RISC-V</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-qemu">8 Appendix: Build NuttX for QEMU</a><ul></ul></li>
-<li><a href="#appendix-rust-compiler-options">9 Appendix: Rust Compiler Options</a><ul></ul></li></ul></nav><p>📝 <em>21 Apr 2024</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#software-vs-hardware-floating-point" title="Software vs Hardware Floating-Point">1 Software vs Hardware Floating-Point</a><ul></ul></li>
+<li><a href="#rust-wont-double-float" title="Rust Won’t Double-Float">2 Rust Won’t Double-Float</a><ul></ul></li>
+<li><a href="#custom-target-for-rust" title="Custom Target for Rust">3 Custom Target for Rust</a><ul></ul></li>
+<li><a href="#build-the-rust-core-library" title="Build the Rust Core Library">4 Build the Rust Core Library</a><ul></ul></li>
+<li><a href="#nuttx-links-ok-with-rust" title="NuttX Links OK with Rust">5 NuttX Links OK with Rust</a><ul></ul></li>
+<li><a href="#rust-build-for-64-bit-risc-v" title="Rust Build for 64-bit RISC-V">6 Rust Build for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-qemu" title="Appendix: Build NuttX for QEMU">8 Appendix: Build NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-rust-compiler-options" title="Appendix: Rust Compiler Options">9 Appendix: Rust Compiler Options</a><ul></ul></li></ul></nav><p>📝 <em>21 Apr 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust4-title.jpg" alt="Rust Apps on Apache NuttX RTOS and QEMU RISC-V" /></p>
 <div style="text-align: center">
 <p><a href="https://github.com/Swordfish90/cool-retro-term"><em>Thanks to cool-retro-term!</em></a></p>
@@ -82,8 +82,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>$ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
-  can&#39;t link soft-float modules with double-float modules
-</code></pre></div>
+  can&#39;t link soft-float modules with double-float modules</code></pre></div>
 <p>Let’s solve the problem! We dive inside the internals of <strong>C-to-Rust Interop</strong>…</p>
 <ul>
 <li>
@@ -122,8 +121,7 @@ $ make menuconfig
 $ make
 riscv64-unknown-elf-ld: libapps.a
   hello_rust_1.o:
-  can&#39;t link soft-float modules with double-float modules
-</code></pre></div>
+  can&#39;t link soft-float modules with double-float modules</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust3#build-nuttx-for-qemu-risc-v">(See the <strong>Complete Steps</strong>)</a></p>
 <p><strong>GCC Linker</strong> failed because it couldn’t link the NuttX Binaries with the Rust Binaries.</p>
 <p>Here’s Why: NuttX Build calls <strong>GCC Compiler</strong> to compile our C Modules…</p>
@@ -138,8 +136,7 @@ riscv64-unknown-elf-gcc \
   -c \
   hello_main.c \
   -o ...hello.o \
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7e68b69d0d5879f77b1404ae2db6fb9d">(See the <strong>GCC Options</strong>)</a></p>
 <p>Then NuttX Build calls <strong>Rust Compiler</strong> to compile our Rust App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Firmware with Tracing Enabled
@@ -155,8 +152,7 @@ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o ...hello_rust.o
-</code></pre></div>
+  -o ...hello_rust.o</code></pre></div>
 <p>Which looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow2b.jpg" alt="Double-Float vs Soft-Float: GCC Linker won’t link the binaries" /></p>
 <p><em>Is there a problem?</em></p>
@@ -189,8 +185,7 @@ $ riscv64-unknown-elf-readelf \
 
 ## GCC Compiler Output is
 ## Double-Precision Hardware Floating-Point
-Flags: 0x5, RVC, double-float ABI
-</code></pre></div>
+Flags: 0x5, RVC, double-float ABI</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d8b4f793cd463230393326cef7dbedbe">(See the <strong>GCC ELF Header</strong>)</a></p>
 <p>And the ELF Header for <strong>Rust Compiler Output</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the ELF Header for Rust Compiler Output
@@ -200,8 +195,7 @@ $ riscv64-unknown-elf-readelf \
 
 ## Rust Compiler Output is
 ## Software Floating-Point
-Flags: 0x0
-</code></pre></div>
+Flags: 0x0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/413830fed9cdb2b02d5f9d0d062beb3e">(See the <strong>Rust ELF Header</strong>)</a></p>
 <p>Indeed we have a problem: Double-Float and Soft-Float won’t mix! Let’s fix this…</p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow3.jpg" alt="Rust Won’t Double-Float" /></p>
@@ -230,13 +224,11 @@ rustc \
   -C panic=abort \
   -O \
   hello_rust_main.rs \
-  -o hello_rust.o
-</code></pre></div>
+  -o hello_rust.o</code></pre></div>
 <p>Sorry nope it <strong>won’t work</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Error loading target specification: 
   Could not find specification for target &quot;riscv32gc-unknown-none-elf&quot;. 
-  Run `rustc --print target-list` for a list of built-in targets
-</code></pre></div>
+  Run `rustc --print target-list` for a list of built-in targets</code></pre></div>
 <p>That’s because <strong><code>riscv32gc</code></strong> isn’t a <strong>Built-In Rust Target</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## List the Built-In Rust Targets for RISC-V
 $ rustup target list | grep riscv
@@ -247,8 +239,7 @@ riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
 riscv64gc-unknown-linux-gnu
 riscv64gc-unknown-none-elf
-riscv64imac-unknown-none-elf
-</code></pre></div>
+riscv64imac-unknown-none-elf</code></pre></div>
 <p>But we can create a <a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html"><strong>Custom Rust Target</strong></a> for <strong><code>riscv32gc</code></strong>.</p>
 <p>(Coming up next section)</p>
 <p><em>Won’t GCC Compiler have the same problem with Double-Float?</em></p>
@@ -258,8 +249,7 @@ riscv64imac-unknown-none-elf
 $ riscv64-unknown-elf-gcc --target-help
 
 Supported ABIs (for use with the -mabi= option):
-  ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f
-</code></pre></div>
+  ilp32 ilp32d ilp32e ilp32f lp64 lp64d lp64f</code></pre></div>
 <p>We see that <strong>GCC supports Double-Float</strong>: <strong><code>ilp32d</code></strong></p>
 <ul>
 <li><strong><code>ilp32</code></strong>: <strong>32-bit</strong> Int, Long and Pointer</li>
@@ -270,8 +260,7 @@ Supported ABIs (for use with the -mabi= option):
 riscv64-unknown-elf-gcc \
   -march=rv32imafdc \
   -mabi=ilp32d \
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>We’ll make something similar for Rust Compiler…</p>
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html#index-mabi-5">(More about <strong>Application Binary Interface</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust4-flow1a.jpg" alt="Custom Target for Rust" /></p>
@@ -313,8 +302,7 @@ $ rustc \
   &quot;panic-strategy&quot;:       &quot;abort&quot;,
   &quot;relocation-model&quot;:     &quot;static&quot;,
   &quot;target-pointer-width&quot;: &quot;32&quot;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>That’s the Rust Definition of <a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833"><strong><code>riscv32i</code></strong></a>: <strong>32-bit</strong> RISC-V with <strong>Soft-Float</strong>.</p>
 <p>We do the same for <a href="https://gist.github.com/lupyuen/9f269598bda11215832bd91a592d00a2"><strong><code>riscv64gc</code></strong></a>: <strong>64-bit</strong> RISC-V with <strong>Double-Float</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the Built-In Rust Target:
@@ -343,8 +331,7 @@ $ rustc \
   &quot;relocation-model&quot;:     &quot;static&quot;,
   &quot;supported-sanitizers&quot;: [ &quot;kernel-address&quot; ],
   &quot;target-pointer-width&quot;: &quot;64&quot;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which has more goodies inside: features, llvm-abiname, …</p>
 <p><em>We’re mashing the Two Targets into a New Target?</em></p>
 <p>Exactly! Based on the above, we create our <strong>Rust Custom Target</strong>: <a href="https://github.com/lupyuen/nuttx-rust-app/blob/main/riscv32gc-unknown-none-elf.json"><em>riscv32gc-unknown-none-elf.json</em></a></p>
@@ -363,8 +350,7 @@ $ rustc \
   &quot;panic-strategy&quot;:       &quot;abort&quot;,
   &quot;relocation-model&quot;:     &quot;static&quot;,
   &quot;target-pointer-width&quot;: &quot;32&quot;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Which is <a href="https://gist.github.com/lupyuen/dd6a2ee58902e7925efd2a889bc0a833"><strong><code>riscv32i</code></strong></a> plus these changes…</p>
 <ul>
 <li>
@@ -418,8 +404,7 @@ $ rustc \
   -o hello_rust.o
 
 ## That&#39;s because Rust Core Library for `riscv32gc` is missing
-error[E0463]: can&#39;t find crate for `core`
-</code></pre></div>
+error[E0463]: can&#39;t find crate for `core`</code></pre></div>
 <p>Why? Remember…</p>
 <ul>
 <li>
@@ -458,8 +443,7 @@ cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json \
   || true
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p><strong>Rust Core Library</strong> for Double-Float <strong><code>riscv32gc</code></strong> is done!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Show the Rust Core Library for `riscv32gc`
@@ -477,8 +461,7 @@ libcore-ec2ec78e26b8c830.rlib
 libcore-ec2ec78e26b8c830.rmeta
 librustc_std_workspace_core-3cc5bcc9f701a6e7.rlib
 librustc_std_workspace_core-3cc5bcc9f701a6e7.rmeta
-rustc_std_workspace_core-3cc5bcc9f701a6e7.d
-</code></pre></div>
+rustc_std_workspace_core-3cc5bcc9f701a6e7.d</code></pre></div>
 <p>Now we <strong>rebuild our Rust App</strong> with the Custom Target (linked to our Rust Core Library)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile our Rust App with Rust Core Library for `riscv32gc`
 ## We changed the Target to `riscv32gc-unknown-none-elf.json`
@@ -499,8 +482,7 @@ rustc \
   --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
   --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
-  -Z unstable-options
-</code></pre></div>
+  -Z unstable-options</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p>(We’ll talk about the loooong options)</p>
 <p><em>Are we Double-Floating yet?</em></p>
@@ -512,8 +494,7 @@ $ riscv64-unknown-elf-readelf \
   ../apps/examples/hello_rust/*hello_rust.o
 
 ## We have Double-Float `riscv32gc` yay!
-Flags: 0x5, RVC, double-float ABI
-</code></pre></div>
+Flags: 0x5, RVC, double-float ABI</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/e7cdef603bdb16fbc82c2bf940b5d2d8">(See the <strong>ELF Header</strong>)</a></p>
 <p><em>How did we get the Rust Compiler Options?</em></p>
 <p>We copied the above options from <strong><code>cargo</code> <code>build</code> <code>-v</code></strong>…</p>
@@ -547,8 +528,7 @@ cp \
 ## TODO: Change `../nuttx` to the NuttX Kernel Folder
 pushd ../nuttx
 make
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust4#appendix-build-nuttx-for-qemu">(See the <strong>Build Script</strong>)</a></p>
 <p>We boot <strong>NuttX in QEMU Emulator</strong> for 32-bit RISC-V…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For macOS:
@@ -567,16 +547,14 @@ qemu-system-riscv32 \
   -bios none \
   -kernel nuttx \
   -nographic
-popd
-</code></pre></div>
+popd</code></pre></div>
 <p>Our <strong>Rust App</strong> works wonderfully on NuttX! (Pic below)</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0-RC0
 
 nsh&gt; hello_rust
 Hello, Rust!!
 
-## Exit QEMU: Press `Ctrl-A` then `x`
-</code></pre></div>
+## Exit QEMU: Press `Ctrl-A` then `x`</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/31c78de72ade71bbdf63372b44749cd4#file-rust-on-nuttx-build-log-L356-L384">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>Phew so much work to build a tiny Rust App?</em></p>
 <p>Yeah. And integrating this into the <strong>NuttX Makefiles</strong> will be challenging.</p>
@@ -593,8 +571,7 @@ $ make
 
 RUSTC:  hello_rust_main.rs error: Error loading target specification: 
   Could not find specification for target &quot;riscv64i-unknown-none-elf&quot;. 
-  Run `rustc --print target-list` for a list of built-in targets
-</code></pre></div>
+  Run `rustc --print target-list` for a list of built-in targets</code></pre></div>
 <p>But Rust Compiler says that <strong><code>riscv64i</code></strong> isn’t a valid Rust Target for 64-bit RISC-V.</p>
 <p><strong>Exercise for the Reader:</strong></p>
 <ol>
@@ -813,8 +790,7 @@ qemu-system-riscv32 \
   -cpu rv32 \
   -kernel nuttx \
   -nographic \
-  -bios none
-</code></pre></div>
+  -bios none</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/69da35a027cf780680944010b4a85fe7">(See the <strong>Build Script</strong>)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/rust4-flow1b.jpg" alt="Building our Rust App" /></p>
@@ -845,8 +821,7 @@ rustc \
   --extern noprelude:alloc=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-*.rlib` \
   --extern noprelude:compiler_builtins=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-*.rlib` \
   --extern noprelude:core=`ls app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-*.rlib` \
-  -Z unstable-options
-</code></pre></div>
+  -Z unstable-options</code></pre></div>
 <p>The above options were copied from <strong><code>cargo</code> <code>build</code> <code>-v</code></strong>, here’s how…</p>
 <p>Remember we ran <a href="https://lupyuen.github.io/articles/rust4#build-the-rust-core-library"><strong><code>cargo</code> <code>build</code></strong></a> to compile the <a href="https://lupyuen.github.io/articles/rust3#standard-vs-embedded-rust"><strong>Rust Core Library</strong></a>?</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Custom Target for `riscv32gc`
@@ -874,8 +849,7 @@ cargo build \
   -Zbuild-std=core,alloc \
   --target ../riscv32gc-unknown-none-elf.json \
   || true
-popd
-</code></pre></div>
+popd</code></pre></div>
 <ul>
 <li>
 <p><strong><code>cargo</code> <code>build</code></strong> will call <strong><code>rustc</code></strong> with a whole bunch of options.</p>
@@ -1076,8 +1050,7 @@ For more information about this error, try `rustc --explain E0463`.
 error: could not compile `app` (bin &quot;app&quot;) due to 3 previous errors
 
 Caused by:
-  process didn&#39;t exit successfully: `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern &#39;noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib&#39; --extern &#39;noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib&#39; --extern &#39;noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib&#39; -Z unstable-options` (exit status: 1)
-</code></pre></div>
+  process didn&#39;t exit successfully: `$HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/bin/rustc --crate-name app --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=94 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=1ff442e6481e1397 -C extra-filename=-1ff442e6481e1397 --out-dir $HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps --target $HOME/riscv/nuttx-rust-app/riscv32gc-unknown-none-elf.json -C incremental=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/incremental -L dependency=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps -L dependency=$HOME/riscv/nuttx-rust-app/app/target/debug/deps --extern &#39;noprelude:alloc=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/liballoc-5d7bc2e4f3c29e08.rlib&#39; --extern &#39;noprelude:compiler_builtins=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcompiler_builtins-cd0d33c2bd30ca51.rlib&#39; --extern &#39;noprelude:core=$HOME/riscv/nuttx-rust-app/app/target/riscv32gc-unknown-none-elf/debug/deps/libcore-d271c6ebb87f9b41.rlib&#39; -Z unstable-options` (exit status: 1)</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
