@@ -427,7 +427,7 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 
 - We have __Limited Skills__ (and machines) for maintaining NuttX CI on macOS
 
-- My Favourite Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](https://qoto.org/@lupyuen/113517788288458811) for [__Ubuntu Docker Builds__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group) (which will faithfully compile everything)
+- My Favourite Setup: [__VSCode on macOS__](https://youtu.be/gPNURDLBu70) controlling a [__Refurbished Xeon Workstation__](https://qoto.org/@lupyuen/113517788288458811) for [__Ubuntu Docker Builds__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group) (which will faithfully compile everything)
 
 - Shall we use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
@@ -435,7 +435,7 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 
 ![VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds](https://lupyuen.github.io/images/ci5-remote.jpg)
 
-[(Watch the __Video on YouTube__)](TODO)
+[(Watch the __Video on YouTube__)](https://youtu.be/gPNURDLBu70)
 
 Hopefully we'll find a reliable way to compile _sim:nsh_ on macOS...
 
