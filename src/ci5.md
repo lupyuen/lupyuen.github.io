@@ -19,11 +19,19 @@ cd nuttx-build-farm
 ## /tmp/run-build-macos/nuttx
 ```
 
-TODO
+In this article, we explain...
 
-- TODO: Thanks to the awesome work by [__Simbit18__](https://github.com/simbit18)!
+- How we __Build Anything__ on macOS
+
+- By patching the __NuttX CI Script__
+
+- Which also becomes our __macOS Build Farm__
+
+- Thanks to the awesome work by [__Simbit18__](https://github.com/simbit18)!
 
 - __Can macOS replace a PC?__ Not quite yet
+
+- Because some NuttX Targets __won't build__ correctly
 
 > ![GNU Coreutils and Binutils on PATH are also known to break build in MacOS](https://lupyuen.github.io/images/ci5-path.png)
 
@@ -31,11 +39,11 @@ TODO
 
 # Fix the PATH!
 
-__Super Important!__ NuttX won't build correctly on macOS unless we remove __Homebrew ar__ from __PATH__: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
+__Super Important!__ NuttX won't build correctly on macOS unless we remove __Homebrew `ar`__ from __PATH__: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh#L32-L46)
 
 ```bash
-## Remove Homebrew ar from PATH
-## Instead: We use /usr/bin/ar
+## Remove Homebrew `ar` from PATH
+## Instead: We use `/usr/bin/ar`
 ## https://github.com/pyenv/pyenv/issues/2862#issuecomment-1849198741
 export PATH=$(
   echo $PATH \
@@ -316,6 +324,8 @@ function run_job {
 }
 ```
 
+<span style="font-size:90%">
+
 [(__Some Target Groups__ won't compile)](https://lupyuen.github.io/articles/ci5#except-these-targets)
 
 [(__clean_log__ removes Control Chars)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55)
@@ -323,6 +333,8 @@ function run_job {
 [(__find_messages__ searches for Errors)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69)
 
 [(__upload_log__ uploads to GitHub Gist)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81)
+
+</span>
 
 _What's inside run-job-macos.sh?_
 
@@ -434,10 +446,13 @@ $ cd nuttx-build-farm
 $ ./run-build-macos.sh sim:nsh
 clang: error: invalid argument 'medium' to -mcmodel=
 ```
+<span style="font-size:90%">
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d)
 
 [(It was __Previously Working!__)](https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903)
+
+</span>
 
 ![Build Farm for Apache NuttX RTOS](https://lupyuen.github.io/images/ci4-flow.jpg)
 
