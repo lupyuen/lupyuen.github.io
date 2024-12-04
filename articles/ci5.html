@@ -167,6 +167,9 @@ cd nuttx-build-farm
 <li>
 <p><a href="https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin_arm64.sh"><strong>Plus more updates</strong></a></p>
 </li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/14691"><strong>How it started</strong></a></p>
+</li>
 </ul>
 <p>Just make sure we’ve installed <a href="https://brew.sh"><strong>brew</strong></a>, <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L1-L11"><strong>neofetch</strong></a> and <a href="https://www.makeuseof.com/install-xcode-command-line-tools/"><strong>Xcode Command-Line Tools</strong></a>.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L239-L251">(Yep the same script drives our <strong>GitHub Daily Builds</strong>)</a></p>
@@ -269,23 +272,23 @@ pushd nuttx-patched/tools/ci
 <p>Erm sorry not quite. These NuttX Targets <strong>won’t compile on macOS</strong>…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">Group</th><th style="text-align: left">Target</th><th style="text-align: left">Troubles</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>arm-05</strong></td><td style="text-align: left"><a href="TODO"><em>nrf5340-dk : <br> rpmsghci_nimble_cpuapp</em></a></td><td style="text-align: left"><em>ble_svc_gatt.c: rc set but not used</em></td></tr>
-<tr><td style="text-align: left"><strong>arm-07</strong></td><td style="text-align: left"><a href="TODO"><em>ucans32k146 : <br> se05x</em></a></td><td style="text-align: left"><em>mv: illegal option T</em></td></tr>
-<tr><td style="text-align: left"><strong>arm64-01</strong></td><td style="text-align: left"><a href="TODO"><em>imx93-evk : <br> bootloader</em></a></td><td style="text-align: left"><em>ld: library not found for -lcrt0.o</em></td></tr>
-<tr><td style="text-align: left"><strong>other</strong></td><td style="text-align: left"><a href="TODO"><em>micropendous3 : <br> hello</em></a></td><td style="text-align: left"><em>avr-objcopy: Bad CPU type in executable</em></td></tr>
+<tr><td style="text-align: left"><strong>arm-05</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/1ce979b38c32943545fdde6da144998d"><em>nrf5340-dk : <br> rpmsghci_nimble_cpuapp</em></a></td><td style="text-align: left"><em>ble_svc_gatt.c: rc set but not used</em></td></tr>
+<tr><td style="text-align: left"><strong>arm-07</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/e2129ba7aa707372be5c13d733b14044"><em>ucans32k146 : <br> se05x</em></a></td><td style="text-align: left"><em>mv: illegal option T</em></td></tr>
+<tr><td style="text-align: left"><strong>arm64-01</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/90d5825725c5abfe89805f104bfa8696"><em>imx93-evk : <br> bootloader</em></a></td><td style="text-align: left"><em>ld: library not found for -lcrt0.o</em></td></tr>
+<tr><td style="text-align: left"><strong>other</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/966ba9c1bafdfb4cc11625c68a66709b"><em>micropendous3 : <br> hello</em></a></td><td style="text-align: left"><em>avr-objcopy: Bad CPU type in executable</em></td></tr>
 <tr><td style="text-align: left"><strong>sim-01 to 03</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d"><em>sim : <br> nsh</em></a></td><td style="text-align: left"><em>clang: invalid argument ‘medium’ to -mcmodel=</em></td></tr>
 <tr><td style="text-align: left"><strong>x86_64-01</strong></td><td style="text-align: left"><a href="TODO"><em>TODO : <br> TODO</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
-<tr><td style="text-align: left"><strong>Any CMake</strong></td><td style="text-align: left"><a href="TODO"><em>Any CMake</em></a></td><td style="text-align: left"><em>TODO</em></td></tr>
+<tr><td style="text-align: left"><strong>Clang Targets</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544"><em>Clang Targets</em></a></td><td style="text-align: left"><em>clang++: configuration file cannot be found</em></td></tr>
 </tbody></table>
 </div></span>
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
-<p><img src="https://lupyuen.github.io/images/ci5-farm.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci5-farm.jpg" alt="macOS Build Farm" /></p>
 <h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
 <p><em>What about the macOS Build Farm for NuttX?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
-<p><a href="TODO">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! 🙏 Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS.
 ## Set the GitHub Token: (Should have Gist Permission)
@@ -308,7 +311,7 @@ cd nuttx-build-farm
 </code></pre></div>
 <p>(And please tell me your <strong>Gist User ID</strong>)</p>
 <p><em>How does it work?</em></p>
-<p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh">run-ci-macos.sh</a></p>
+<p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139">run-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS, forever and ever
 ## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
 ## risc-v-05: CI Test may hang, we move to the end
@@ -344,12 +347,12 @@ function run_job {
   popd
 }
 </code></pre></div>
-<p><a href="TODO">(<strong>Some Target Groups</strong> won’t compile)</a></p>
-<p><a href="TODO">(<strong>clean_log</strong> is here)</a></p>
-<p><a href="TODO">(<strong>find_messages</strong> is here)</a></p>
-<p><a href="TODO">(<strong>upload_log</strong> is here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets">(<strong>Some Target Groups</strong> won’t compile)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55">(<strong>clean_log</strong> removes Control Chars)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69">(<strong>find_messages</strong> searches for Errors)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81">(<strong>upload_log</strong> uploads to GitHub Gist)</a></p>
 <p><em>What’s inside run-job-macos.sh?</em></p>
-<p>It will run one single <strong>NuttX CI Job</strong>, very similar to the <a href="TODO"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
+<p>It will run one single <strong>NuttX CI Job</strong>, very similar to the <a href="https://lupyuen.github.io/articles/ci5#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
 ## Checkout the NuttX Repo and NuttX Apps
 tmp_dir=/tmp/run-job-macos
@@ -392,18 +395,17 @@ pushd nuttx-patched/tools/ci
 popd
 </code></pre></div>
 <p>Now we can cook some NuttX on macOS…</p>
-<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="Mac Mini will get (nearly) Boiling Hot (90 deg C) when running the NuttX Build Farm" /></p>
 <h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
 <p><em>Anything we should worry about?</em></p>
 <p>Yeah Mac Mini will get (nearly) <strong>Boiling Hot</strong> (90 deg C) when running the NuttX Build Farm! All CPU Cores will be <strong>100% Maxed Out</strong>. (M2 Pro, pic above)</p>
-<p>I recommend <a href="TODO"><strong>TG Pro</strong></a>. Set the <strong>Fan Speed to Auto-Max</strong>. (Pic below)</p>
+<p>I recommend <a href="https://www.tunabellysoftware.com/tgpro/"><strong>TG Pro</strong></a> for Fan Control. Set the <strong>Fan Speed to Auto-Max</strong>. (Pic below)</p>
 <p>Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)</p>
-<p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please test the <a href="TODO"><strong>NuttX Build Farm</strong></a>! 🙏</p>
+<p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please test the <a href="https://lupyuen.github.io/articles/ci5#macos-build-farm"><strong>NuttX Build Farm</strong></a>! 🙏</p>
 <p>(<a href="https://github.com/devMEremenko/XcodeBenchmark"><strong>Xcode Benchmark</strong></a> suggests Your Mac might be twice as fast as my M2 Pro)</p>
-<p><img src="https://lupyuen.github.io/images/ci5-fan.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci5-fan.png" alt="TG Pro will trigger the fans at 70 deg C" /></p>
 <p><em>Is macOS Arm64 faster than Intel PC? For compiling NuttX Arm32?</em></p>
-<p>Not really, Compiling Arm on Arm isn’t much faster. Strangely: macOS Arm64 seems to compile <a href="TODO"><strong>NuttX RISC-V</strong></a> quicker than <a href="TODO"><strong>NuttX Arm32</strong></a>!</p>
-<p>I still prefer Ubuntu PC for compiling NuttX, lemme explain…</p>
+<p>Not really, Compiling Arm on Arm isn’t much faster. I still prefer Ubuntu PC for compiling NuttX, lemme explain…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!" /></p>
 <span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!</em></a></p>
@@ -442,7 +444,8 @@ clang: error: invalid argument &#39;medium&#39; to -mcmodel=
 <p><a href="https://github.com/apache/nuttx/pull/14606#pullrequestreview-2425925903">(It was <strong>Previously Working!</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Build Farm for Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
-<p>TODO</p>
+<p>TODO: Rewind Build</p>
+<p>TODO: CI Test</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
