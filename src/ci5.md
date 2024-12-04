@@ -214,7 +214,7 @@ pushd nuttx-patched/tools/ci
 ...
 ```
 
-TODO: Pic of sim:nsh
+![macOS won't compile sim:nsh](https://lupyuen.github.io/images/ci5-simnsh.png)
 
 # Except These Targets
 
@@ -234,7 +234,7 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __x86_64-01__ | [_qemu-intel64 : <br> jumbo_](https://gist.github.com/lupyuen/2771ee11a07f0a33bf0c5d8ef2e5db5f) | _arg_rex.c: setjmp.h: No such file or directory_
 | __xtensa-02__ | [_esp32s3-devkit : <br> qemu\_debug_](https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
 | __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189) | _sed: invalid command code ._
-| __Clang Targets__ | [_Clang Targets_](https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544) | _clang++: configuration file cannot be found_
+| __Clang Groups__ | [_Clang Targets_](https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544) | _clang++: configuration file cannot be found_
 
 </span>
 
