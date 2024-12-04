@@ -285,13 +285,15 @@ pushd nuttx-patched/tools/ci
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
 <tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
 <tr><td style="text-align: left"><strong>Clang Groups</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544"><em>Clang Targets</em></a></td><td style="text-align: left"><em>clang++: configuration file cannot be found</em></td></tr>
+<tr><td style="text-align: left"> </td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div></span>
 <p>We’ll come back to this. First we talk about NuttX Build Farm…</p>
 <p><img src="https://lupyuen.github.io/images/ci5-farm.jpg" alt="macOS Build Farm" /></p>
 <h1 id="macos-build-farm"><a class="doc-anchor" href="#macos-build-farm">§</a>5 macOS Build Farm</h1>
-<p><em>What about the macOS Build Farm for NuttX?</em></p>
+<p><em>What’s this macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
+<p>This becomes our Community-Hosted <strong>macOS Build Farm</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/ci4">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! 🙏 Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS.
@@ -315,8 +317,9 @@ cd nuttx-build-farm
 <p>(And please tell me your <strong>Gist User ID</strong>)</p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139">run-ci-macos.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS, forever and ever
-## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C). So we stagger the jobs.
+<div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS, forever and ever.
+## Arm32 Jobs run hotter (80 deg C) than RISC-V Jobs (70 deg C).
+## So we stagger the jobs.
 ## risc-v-05: CI Test may hang, we move to the end
 for (( ; ; )); do
   for job in \
@@ -329,7 +332,7 @@ for (( ; ; )); do
     arm-04 risc-v-04 \
     arm-06 risc-v-05
   do
-    ## Run the CI Job and find errors / warnings
+    ## Run the CI Job and find Errors / Warnings
     run_job $job
     clean_log
     find_messages
@@ -340,7 +343,7 @@ for (( ; ; )); do
 done
 
 ## Run the NuttX CI Job (e.g. risc-v-01)
-## And capture the output
+## Capture the output
 function run_job {
   local job=$1
   pushd /tmp
@@ -355,7 +358,7 @@ function run_job {
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81">(<strong>upload_log</strong> uploads to GitHub Gist)</a></p>
 </span>
 <p><em>What’s inside run-job-macos.sh?</em></p>
-<p>It will run one single <strong>NuttX CI Job</strong>, very similar to the <a href="https://lupyuen.github.io/articles/ci5#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
+<p>It will run one single <strong>NuttX CI Job</strong>. Similar to the <a href="https://lupyuen.github.io/articles/ci5#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
 ## Checkout the NuttX Repo and NuttX Apps
 tmp_dir=/tmp/run-job-macos
@@ -374,7 +377,8 @@ popd
 ## Then restore the original &quot;nuttx&quot; folder
 ...
 
-## Exclude clang Targets from macOS Build, because they will fail due to unknown arch
+## Exclude clang Targets from macOS Build
+## Because they will fail due to unknown arch
 ## &quot;/arm/lpc54xx,CONFIG_ARM_TOOLCHAIN_CLANG&quot;
 ## https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544
 tmp_file=$tmp_dir/rewrite-testlist.dat
@@ -400,9 +404,9 @@ popd</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci5-title.png" alt="Mac Mini will get (nearly) Boiling Hot (90 deg C) when running the NuttX Build Farm" /></p>
 <h1 id="mac-gets-smokin-hot"><a class="doc-anchor" href="#mac-gets-smokin-hot">§</a>6 Mac Gets Smokin’ Hot</h1>
 <p><em>Anything we should worry about?</em></p>
-<p>Yeah Mac Mini will get (nearly) <strong>Boiling Hot</strong> (90 deg C) when running the NuttX Build Farm! All CPU Cores will be <strong>100% Maxed Out</strong>. (M2 Pro, pic above)</p>
+<p>Yeah Mac Mini will get (nearly) <strong>Boiling Hot</strong> (90°C) when running the NuttX Build Farm! All CPU Cores will be <strong>100% Maxed Out</strong>. (M2 Pro, pic above)</p>
 <p>I recommend <a href="https://www.tunabellysoftware.com/tgpro/"><strong>TG Pro</strong></a> for Fan Control. Set the <strong>Fan Speed to Auto-Max</strong>. (Pic below)</p>
-<p>Which will trigger the fans at 70 deg C (red bar below), keeping things cooler. (Compare the green bars with above)</p>
+<p>Which will trigger the fans at <strong>70°C</strong> (red bar below), keeping things cooler. (Compare the green bars with above)</p>
 <p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please test the <a href="https://lupyuen.github.io/articles/ci5#macos-build-farm"><strong>NuttX Build Farm</strong></a>! 🙏</p>
 <p>(<a href="https://github.com/devMEremenko/XcodeBenchmark"><strong>Xcode Benchmark</strong></a> suggests Your Mac might be twice as fast as my M2 Pro)</p>
 <p><img src="https://lupyuen.github.io/images/ci5-fan.png" alt="TG Pro will trigger the fans at 70 deg C" /></p>
@@ -446,8 +450,9 @@ clang: error: invalid argument &#39;medium&#39; to -mcmodel=</code></pre></div><
 </span>
 <p><img src="https://lupyuen.github.io/images/ci4-flow.jpg" alt="Build Farm for Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
-<p>TODO: Rewind Build</p>
-<p>TODO: CI Test</p>
+<p><em>Any more stories of NuttX CI?</em></p>
+<p>Next Article: We chat about <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>“Rewinding The Build”</strong></a> when something breaks the Daily Build.</p>
+<p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
