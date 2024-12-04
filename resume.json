@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "macOS Build Farm for Apache NuttX RTOS (Apple Silicon)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-12-08",
+      "website": "https://lupyuen.github.io/articles/ci5",
+      "summary": "Folks on macOS: Compiling Apache NuttX RTOS used to be so tiresome. Not any more! In this article, we explain how to build anything on macOS, by patching the NuttX CI Script. Which also becomes our macOS Build Farm."
+    },
+    {
       "name": "Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-11-24",
