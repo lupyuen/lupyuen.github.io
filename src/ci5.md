@@ -2,9 +2,9 @@
 
 📝 _24 Dec 2024_
 
-![TODO](https://lupyuen.github.io/images/ci5-title.png)
+![macOS Build Farm for Apache NuttX RTOS (Apple Silicon)](https://lupyuen.github.io/images/ci5-title.png)
 
-__Folks on macOS:__ Compiling [__Apache NuttX RTOS__](TODO) used to be so tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
+__Folks on macOS:__ Compiling [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) used to be so tiresome. Not any more! [run-build-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh)
 
 ```bash
 ## Build Anything on Apple Silicon macOS:
@@ -21,7 +21,9 @@ cd nuttx-build-farm
 
 TODO
 
-- TODO: Thanks to the awesome work by [__Simbit18__](TODO)!
+- TODO: Thanks to the awesome work by [__Simbit18__](https://github.com/simbit18)!
+
+- TODO: Though macOS isn't a perfect replacement for PC
 
 > ![GNU Coreutils and Binutils on PATH are also known to break build in MacOS](https://lupyuen.github.io/images/ci5-path.png)
 
@@ -90,7 +92,7 @@ And it works on __Apple Silicon__! M1, M2, M3, M4, ...
 
 _Huh what about the GCC Toolchains? Arm32, RISC-V, Xtensa..._
 
-__Toolchains are Auto-Downloaded__. Thanks to the brilliant Continuous Integration Script by [__Simbit18__](TODO)!
+__Toolchains are Auto-Downloaded__. Thanks to the brilliant Continuous Integration Script by [__Simbit18__](https://github.com/simbit18)!
 
 - [__NuttX CI for macOS Arm64__](https://github.com/apache/nuttx/pull/14723) _(darwin_arm64.sh)_
 
@@ -98,9 +100,9 @@ __Toolchains are Auto-Downloaded__. Thanks to the brilliant Continuous Integrati
 
 - [__Plus more updates__](https://github.com/apache/nuttx/commits/master/tools/ci/platforms/darwin_arm64.sh)
 
-Just make sure we've installed [__brew__](TODO), [__neofetch__](TODO) and [__Xcode Command-Line Tools__](TODO).
+Just make sure we've installed [__brew__](https://brew.sh), [__neofetch__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-build-macos.sh#L1-L11) and [__Xcode Command-Line Tools__](https://www.makeuseof.com/install-xcode-command-line-tools/).
 
-[(Yep the same script drives our __GitHub Daily Builds__)](TODO)
+[(Yep the same script drives our __GitHub Daily Builds__)](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L239-L251)
 
 > ![Toolchains are downloaded in __10 mins__, subsequent builds are quicker](https://lupyuen.github.io/images/ci5-toolchains.png)
 
@@ -155,13 +157,14 @@ popd
 
 _What is patch-ci-macos.sh?_
 
-__To run NuttX CI Locally:__ We made Minor Tweaks. Somehow this Python Environment runs OK at __GitHub Actions__: [TODO](TODO)
+__To run NuttX CI Locally:__ We made Minor Tweaks. Somehow this Python Environment runs OK at __GitHub Actions__: [darwin_arm64.sh](https://github.com/apache/nuttx/blob/master/tools/ci/platforms/darwin_arm64.sh#L209-L250)
 
 ```bash
 ## Original Python Environment:
 ## Works OK for GitHub Actions
 python_tools() { ...
-  python3 -m venv \
+  python3 \
+    -m venv \
     --system-site-packages /opt/homebrew ...
 ```
 
@@ -419,6 +422,8 @@ But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Build
 - By [__Modding the NuttX Dockerfile__](TODO)?
 
 ![VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds](https://lupyuen.github.io/images/ci5-remote.jpg)
+
+[(Watch the __Video on YouTube__)](TODO)
 
 Hopefully we'll find a reliable way to compile _sim:nsh_ on macOS...
 
