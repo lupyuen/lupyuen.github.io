@@ -232,8 +232,8 @@ Erm sorry not quite. These NuttX Targets __won't compile on macOS__...
 | __other__ | [_micropendous3 : <br> hello_](https://gist.github.com/lupyuen/966ba9c1bafdfb4cc11625c68a66709b) | _avr-objcopy: Bad CPU type in executable_
 | __sim-01 to 03__ | [_sim : <br> nsh_](https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d) | _clang: invalid argument 'medium' to -mcmodel=_
 | __x86_64-01__ | [_TODO : <br> TODO_](TODO) | _arg_rex.c: setjmp.h: No such file or directory_
-| __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](TODO) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
-| __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](TODO) | _sed: invalid command code ._
+| __xtensa-02__ | [_esp32s3-devkit : <br> qemu_debug_](https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3) | _xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared_
+| __xtensa-02__ | [_esp32s3-devkit : <br> knsh_](https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189) | _sed: invalid command code ._
 | __Clang Targets__ | [_Clang Targets_](https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544) | _clang++: configuration file cannot be found_
 
 </span>
@@ -411,15 +411,15 @@ If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Y
 
 But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Builds__ on macOS...
 
-- [__Some NuttX Targets__](TODO) won't compile for macOS
+- [__Some NuttX Targets__](https://lupyuen.github.io/articles/ci5#except-these-targets) won't compile for macOS
 
 - We have __Limited Skills__ (and machines) for maintaining NuttX CI on macOS
 
-- My Favourite Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](TODO) for [__Ubuntu Docker Builds__](TODO) (which will faithfully compile everything)
+- My Favourite Setup: [__VSCode on macOS__](TODO) controlling a [__Refurbished Xeon Workstation__](https://qoto.org/@lupyuen/113517788288458811) for [__Ubuntu Docker Builds__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group) (which will faithfully compile everything)
 
 - Shall we use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
-- By [__Modding the NuttX Dockerfile__](TODO)?
+- By [__Modding the NuttX Dockerfile__](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)?
 
 ![VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds](https://lupyuen.github.io/images/ci5-remote.jpg)
 
