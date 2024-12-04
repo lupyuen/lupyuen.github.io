@@ -278,8 +278,8 @@ pushd nuttx-patched/tools/ci
 <tr><td style="text-align: left"><strong>other</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/966ba9c1bafdfb4cc11625c68a66709b"><em>micropendous3 : <br> hello</em></a></td><td style="text-align: left"><em>avr-objcopy: Bad CPU type in executable</em></td></tr>
 <tr><td style="text-align: left"><strong>sim-01 to 03</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/41955b62a7620cd65e49c6202dc73e6d"><em>sim : <br> nsh</em></a></td><td style="text-align: left"><em>clang: invalid argument ‘medium’ to -mcmodel=</em></td></tr>
 <tr><td style="text-align: left"><strong>x86_64-01</strong></td><td style="text-align: left"><a href="TODO"><em>TODO : <br> TODO</em></a></td><td style="text-align: left"><em>arg_rex.c: setjmp.h: No such file or directory</em></td></tr>
-<tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
-<tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="TODO"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
+<tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/d3a45a1cb247649e83c0c240eb233fd3"><em>esp32s3-devkit : <br> qemu_debug</em></a></td><td style="text-align: left"><em>xtensa_hostfs.c: SIMCALL_O_NONBLOCK undeclared</em></td></tr>
+<tr><td style="text-align: left"><strong>xtensa-02</strong></td><td style="text-align: left"><a href="https://gist.github.com/lupyuen/122a9d572e486b43d3eb60edb44f2189"><em>esp32s3-devkit : <br> knsh</em></a></td><td style="text-align: left"><em>sed: invalid command code .</em></td></tr>
 <tr><td style="text-align: left"><strong>Clang Targets</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14691#issuecomment-2466518544"><em>Clang Targets</em></a></td><td style="text-align: left"><em>clang++: configuration file cannot be found</em></td></tr>
 </tbody></table>
 </div></span>
@@ -416,19 +416,19 @@ popd
 <p>But as NuttX Maintainer: I find it tough to reproduce <strong>All Possible NuttX Builds</strong> on macOS…</p>
 <ul>
 <li>
-<p><a href="TODO"><strong>Some NuttX Targets</strong></a> won’t compile for macOS</p>
+<p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets"><strong>Some NuttX Targets</strong></a> won’t compile for macOS</p>
 </li>
 <li>
 <p>We have <strong>Limited Skills</strong> (and machines) for maintaining NuttX CI on macOS</p>
 </li>
 <li>
-<p>My Favourite Setup: <a href="TODO"><strong>VSCode on macOS</strong></a> controlling a <a href="TODO"><strong>Refurbished Xeon Workstation</strong></a> for <a href="TODO"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
+<p>My Favourite Setup: <a href="TODO"><strong>VSCode on macOS</strong></a> controlling a <a href="https://qoto.org/@lupyuen/113517788288458811"><strong>Refurbished Xeon Workstation</strong></a> for <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
 </li>
 <li>
 <p>Shall we use <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>Docker for macOS Arm64</strong></a>?</p>
 </li>
 <li>
-<p>By <a href="TODO"><strong>Modding the NuttX Dockerfile</strong></a>?</p>
+<p>By <a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci"><strong>Modding the NuttX Dockerfile</strong></a>?</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci5-remote.jpg" alt="VSCode on macOS controlling a Refurbished Xeon Workstation for Ubuntu Docker Builds" /></p>
