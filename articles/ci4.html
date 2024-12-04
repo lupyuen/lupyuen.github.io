@@ -64,15 +64,15 @@
     
 
     <h1 class="title">Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#build-score" title="Build Score">1 Build Score</a><ul></ul></li>
-<li><a href="#grafana-dashboard" title="Grafana Dashboard">2 Grafana Dashboard</a><ul></ul></li>
-<li><a href="#prometheus-metrics" title="Prometheus Metrics">3 Prometheus Metrics</a><ul></ul></li>
-<li><a href="#ingest-the-build-logs" title="Ingest the Build Logs">4 Ingest the Build Logs</a><ul></ul></li>
-<li><a href="#ingest-from-github-actions" title="Ingest from GitHub Actions">5 Ingest from GitHub Actions</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-all-builds-dashboard" title="Appendix: All Builds Dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
-<li><a href="#appendix-build-history-dashboard" title="Appendix: Build History Dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>24 Nov 2024</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#build-score">1 Build Score</a><ul></ul></li>
+<li><a href="#grafana-dashboard">2 Grafana Dashboard</a><ul></ul></li>
+<li><a href="#prometheus-metrics">3 Prometheus Metrics</a><ul></ul></li>
+<li><a href="#ingest-the-build-logs">4 Ingest the Build Logs</a><ul></ul></li>
+<li><a href="#ingest-from-github-actions">5 Ingest from GitHub Actions</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-all-builds-dashboard">7 Appendix: All Builds Dashboard</a><ul></ul></li>
+<li><a href="#appendix-build-history-dashboard">8 Appendix: Build History Dashboard</a><ul></ul></li></ul></nav><p>📝 <em>24 Nov 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci4-dashboard.png" alt="Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)" /></p>
 <p>Last article we spoke about the <strong>(Twice) Daily Builds</strong> for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
@@ -166,7 +166,8 @@
 </li>
 </ul>
 <p>Which will fold neatly into this URL, as we’ll soon see…</p>
-<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+</code></pre></div>
 <p><em>Where do we store the Build Scores?</em></p>
 <p>Inside a special open-source <strong>Time Series Database</strong> called <a href="https://prometheus.io/"><strong>Prometheus</strong></a>.</p>
 <p>We’ll come back to Prometheus, first we study the Dashboard…</p>
@@ -185,7 +186,8 @@ brew install grafana
 brew services start grafana
 
 ## Browse to http://localhost:3000
-## Login as `admin` for username and password</code></pre></div>
+## Login as `admin` for username and password
+</code></pre></div>
 <ol>
 <li>
 <p>Inside Grafana: We create a <strong>New Dashboard</strong>…</p>
@@ -263,7 +265,8 @@ sudo systemctl restart prometheus ## Ubuntu
 brew services restart prometheus  ## macOS
 
 ## Check that Prometheus is up
-## http://localhost:9090</code></pre></div>
+## http://localhost:9090
+</code></pre></div>
 <p><strong>Prometheus</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-prometheus.png" alt="Prometheus User Interface" /></p>
 <p>Recall that we assign a <strong>Build Score</strong> for every build…</p>
@@ -293,7 +296,8 @@ cat &lt;&lt;EOF | curl --data-binary @- http://localhost:9091/metrics/job/nuttxp
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
 build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
-EOF</code></pre></div>
+EOF
+</code></pre></div>
 <p><strong>Pushgateway</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/ci4-pushgateway.png" alt="Pushgateway User Interface" /></p>
 <p><em>What’s this Pushgateway?</em></p>
@@ -303,7 +307,8 @@ EOF</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ci4-flow2.jpg" alt="Pushgateway and Prometheus for Build Scores" /></p>
 <p><em>How does it work?</em></p>
 <p>We post the Build Score over <strong>HTTP to Pushgateway</strong> at…</p>
-<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>localhost:9091/metrics/job/nuttxpr/instance/milkv_duos:nsh
+</code></pre></div>
 <ul>
 <li>
 <p><em>nuttxpr</em> is the name of our Ubuntu Build PC</p>
@@ -313,7 +318,8 @@ EOF</code></pre></div>
 </li>
 </ul>
 <p>The Body of the <strong>HTTP POST</strong> says…</p>
-<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>build_score{ timestamp=&quot;2024-11-24T00:00:00&quot;, url=&quot;http://gist.github.com/...&quot;, msg=&quot;test_pipe FAILED&quot; } 0.0
+</code></pre></div>
 <ul>
 <li>
 <p><em>gist.github.com</em> points to the Build Log for the NuttX Target (GitHub Gist)</p>
@@ -363,7 +369,8 @@ scrape_configs:
   ## from Pushgateway every 15 seconds
   - job_name: &quot;pushgateway&quot;
     static_configs:
-    - targets: [&quot;localhost:9091&quot;]</code></pre></div>
+    - targets: [&quot;localhost:9091&quot;]
+</code></pre></div>
 <p>And it’s perfectly OK to post the <strong>Latest Build Log</strong> twice to Pushgateway. Though we’re careful to <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L100-L109"><strong>Skip the Older Logs</strong></a> when posting to Pushgateway.</p>
 <p><a href="https://share.libbyapp.com/title/10565151">(Ask your Local Library for <strong>“Mastering Prometheus”</strong>. It’s an excellent book!)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-flow5.jpg" alt="Ingest the Build Logs" /></p>
@@ -393,7 +400,8 @@ cd ingest-nuttx-builds
 cargo run -- \
   --user nuttxpr \
   --defconfig /tmp/defconfig.txt \
-  | tr -d &#39;\033\007&#39;</code></pre></div>
+  | tr -d &#39;\033\007&#39;
+</code></pre></div>
 <p>Which will <strong>Identify Errors and Warnings</strong> in the logs: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L311-L353">main.rs</a></p>
 <span style="font-size:90%">
 
@@ -505,7 +513,8 @@ find nuttx \
 ## defconfig.txt contains:
 ## boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 ## boards/arm/rp2040/seeed-xiao-rp2040/configs/ws2812/defconfig
-## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig</code></pre></div>
+## boards/xtensa/esp32/esp32-devkitc/configs/knsh/defconfig
+</code></pre></div>
 <p>Suppose we’re ingesting a NuttX Target <em>milkv_duos:nsh</em>.</p>
 <p>To identify the Target’s <strong>Sub-Architecture</strong> <em>(sg2000)</em>, we search for <em>milkv_duos/…/nsh</em> in the <em>defconfig</em> pathnames: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L515-L538">main.rs</a></p>
 <span style="font-size:90%">
@@ -559,7 +568,8 @@ run_id=$(
     --status completed \
     --json databaseId,name,displayTitle,conclusion \
     --jq &#39;.[].databaseId&#39;
-)</code></pre></div>
+)
+</code></pre></div>
 <p>Then the <strong>GitHub Job ID</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L16-L40">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Jobs for the Run ID.
 ## Get the Job ID for the Job Name.
@@ -574,7 +584,8 @@ local job_id=$(
     -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
     https://api.github.com/repos/$user/$repo/actions/runs/$run_id/jobs?per_page=100 \
     | jq &quot;.jobs | map(select(.name == \&quot;$job_name\&quot;)) | .[].id&quot;
-)</code></pre></div>
+)
+</code></pre></div>
 <p>Now we can <strong>Download the Run Logs</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L144-L153">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Run Logs from GitHub
 ## https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
@@ -583,7 +594,8 @@ curl -L \
   -H &quot;Accept: application/vnd.github+json&quot; \
   -H &quot;Authorization: Bearer $GITHUB_TOKEN&quot; \
   -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
-  https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs</code></pre></div>
+  https://api.github.com/repos/$user/$repo/actions/runs/$run_id/logs
+</code></pre></div>
 <p><strong>For Each Target Group:</strong> We ingest the Log File: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L161-L185">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For All Target Groups
 ## TODO: Handle macOS when the warnings have been cleaned up
@@ -604,7 +616,8 @@ do
   else
     ingest_log &quot;Linux&quot; $linux_step $group
   fi
-done</code></pre></div>
+done
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L15-L73">(<strong>ingest_log</strong> is here)</a></p>
 <p>Which will be ingested like this: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L59-L73">github.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ingest the Log Files from GitHub Actions
@@ -629,7 +642,8 @@ cargo run -- \
 ## group=arm-01
 ## run_id=11603561928
 ## job_id=32310817851
-## step=7</code></pre></div>
+## step=7
+</code></pre></div>
 <p><em>How to run all this?</em></p>
 <p>We ingest the GitHub Logs right after the <a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Twice-Daily Build</strong></a> of NuttX. (00:00 UTC and 12:00 UTC)</p>
 <p>Thus it makes sense to bundle the <strong>Build and Ingest</strong> into One Single Script: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh">build-github-and-ingest.sh</a></p>
@@ -651,7 +665,8 @@ sleep 300
 ## Wait for the NuttX Build to complete
 ## Then ingest the GitHub Logs
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
-./github.sh</code></pre></div>
+./github.sh
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1c0c3ff584d083d59d4b2190ecee3f99">(See the <strong>Run Log</strong>)</a></p>
 <p>And that’s how we created our Continuous Integration Dashboard for NuttX!</p>
 <p><a href="https://github.com/apache/nuttx/issues/14558">(Please join our <strong>Build Farm</strong> 🙏)</a></p>
@@ -853,7 +868,8 @@ for (( ; ; )); do
   ## Restart the log display every 12 hours, due to Log Rotation
   sleep $(( 12 * 60 * 60 ))
   kill %1
-done</code></pre></div>
+done
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

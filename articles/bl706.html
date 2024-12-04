@@ -60,21 +60,21 @@
     
 
     <h1 class="title">RISC-V BL706 Audio Video Board</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#bl706-audio-video-board" title="BL706 Audio Video Board">1 BL706 Audio Video Board</a><ul></ul></li>
-<li><a href="#install-sdk-and-toolchain" title="Install SDK and Toolchain">2 Install SDK and Toolchain</a><ul>
-<li><a href="#windows-cdk-and-eclipse" title="Windows CDK and Eclipse">2.1 Windows CDK and Eclipse</a><ul></ul></li></ul></li>
-<li><a href="#build-firmware" title="Build Firmware">3 Build Firmware</a><ul></ul></li>
-<li><a href="#flash-firmware" title="Flash Firmware">4 Flash Firmware</a><ul>
-<li><a href="#enter-flashing-mode" title="Enter Flashing Mode">4.1 Enter Flashing Mode</a><ul></ul></li>
-<li><a href="#run-bl-dev-cube" title="Run BL Dev Cube">4.2 Run BL Dev Cube</a><ul></ul></li>
-<li><a href="#jtag-and-j-link" title="JTAG and J-Link">4.3 JTAG and J-Link</a><ul></ul></li>
-<li><a href="#flashing-without-bl-dev-cube" title="Flashing without BL Dev Cube">4.4 Flashing without BL Dev Cube</a><ul></ul></li></ul></li>
-<li><a href="#run-lvgl-firmware" title="Run LVGL Firmware">5 Run LVGL Firmware</a><ul></ul></li>
-<li><a href="#bl706-vs-bl602" title="BL706 vs BL602">6 BL706 vs BL602</a><ul>
-<li><a href="#mcu-sdk-vs-iot-sdk" title="MCU SDK vs IoT SDK">6.1 MCU SDK vs IoT SDK</a><ul></ul></li></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes" title="Notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 Jul 2021</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a><ul></ul></li>
+<li><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a><ul>
+<li><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a><ul></ul></li></ul></li>
+<li><a href="#build-firmware">3 Build Firmware</a><ul></ul></li>
+<li><a href="#flash-firmware">4 Flash Firmware</a><ul>
+<li><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a><ul></ul></li>
+<li><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a><ul></ul></li>
+<li><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a><ul></ul></li>
+<li><a href="#flashing-without-bl-dev-cube">4.4 Flashing without BL Dev Cube</a><ul></ul></li></ul></li>
+<li><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a><ul></ul></li>
+<li><a href="#bl706-vs-bl602">6 BL706 vs BL602</a><ul>
+<li><a href="#mcu-sdk-vs-iot-sdk">6.1 MCU SDK vs IoT SDK</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 Jul 2021</em></p>
 <p>The <strong>BL706 Audio Video Board</strong> by <a href="https://www.bouffalolab.com/"><strong>Bouffalo Lab</strong></a> has a delightful mix of features for Embedded Developers: <strong>Multimedia, Bluetooth LE / Zigbee Networking and USB Device Interface</strong>.</p>
 <p>And it runs on <strong>32-bit RISC-V</strong>!</p>
 <p>Today we look inside the BL706 Audio Video Board and learn why it’s great for creating <strong>Multimedia, RF Networking and USB Firmware</strong>.</p>
@@ -269,18 +269,22 @@ cd /mnt/c/bl_mcu_sdk
 ## Build the LVGL Firmware
 make APP=lvgl \
      BOARD=bl706_avb \
-     SUPPORT_LVGL=y</code></pre></div>
+     SUPPORT_LVGL=y
+</code></pre></div>
 <p>(Note that we’ve downloaded the MCU SDK to <code>C:\bl_mcu_sdk</code> in Windows <code>cmd</code>, so the WSL path becomes <code>/mnt/c/bl_mcu_sdk</code>)</p>
 <p>The firmware build begins…</p>
 <div class="example-wrap"><pre class="language-text"><code>make[1]: Entering directory &#39;/mnt/c/bl_mcu_sdk/build&#39;
-cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHELL=n -DSUPPORT_FREERTOS=n -DSSUPPORT_LVGL=y -DSUPPORT_BLE=n -DSUPPORT_XZ=n -DSUPPORT_LWIP=n -DSUPPORT_TFLITE=n -DAPP_DIR=examples -DAPP=lv</code></pre></div>
+cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHELL=n -DSUPPORT_FREERTOS=n -DSSUPPORT_LVGL=y -DSUPPORT_BLE=n -DSUPPORT_XZ=n -DSUPPORT_LWIP=n -DSUPPORT_TFLITE=n -DAPP_DIR=examples -DAPP=lv
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <p>And succeeds with…</p>
 <div class="example-wrap"><pre class="language-text"><code>[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
-Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
+Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/226cb7dc629b47daa8435339fcb17a1c">(See the complete log)</a></p>
 <p>The build is done! This is the <strong>BL706 Firmware File</strong> that we shall flash to BL706 AVB…</p>
-<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div><h1 id="flash-firmware"><a class="doc-anchor" href="#flash-firmware">§</a>4 Flash Firmware</h1>
+<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
+</code></pre></div><h1 id="flash-firmware"><a class="doc-anchor" href="#flash-firmware">§</a>4 Flash Firmware</h1>
 <p>We’re ready to <strong>flash our LVGL Demo Firmware</strong> to BL706 AVB!  We shall…</p>
 <ol>
 <li>
@@ -352,7 +356,8 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 </li>
 <li>
 <p><strong>Image File:</strong></p>
-<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
+</code></pre></div>
 <p>(Change this to the location of the <strong>BL706 Firmware File</strong> <code>lvgl_main.bin</code>)</p>
 </li>
 </ol>
@@ -365,7 +370,8 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 ...
 Verify success
 Program Finished
-[All Success]</code></pre></div>
+[All Success]
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">(See the complete log)</a></p>
 <p>Our firmware has been flashed to BL706 AVB!</p>
 <p>To learn more about BL Dev Cube…</p>
@@ -452,15 +458,18 @@ Program Finished
 <li>
 <p><strong>Hardware Adaptation Layer</strong> has been revamped.</p>
 <p>With BL602 IoT SDK we call this to set a GPIO Output…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl_gpio_output_set(pin, value);</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>bl_gpio_output_set(pin, value);
+</code></pre></div>
 <p>Now with BL706 MCU SDK we do this…</p>
-<div class="example-wrap"><pre class="language-text"><code>gpio_write(pin, value);</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>gpio_write(pin, value);
+</code></pre></div></li>
 <li>
 <p><strong>FreeRTOS</strong> is no longer included for firmware builds by default.</p>
 <p>To include FreeRTOS, we specify <code>SUPPORT_FREERTOS</code> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make APP=freertos_semaphore \
      BOARD=bl706_iot \
-     SUPPORT_FREERTOS=y</code></pre></div>
+     SUPPORT_FREERTOS=y
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/freertos/freertos_semaphore">(Source)</a></p>
 </li>
 <li>

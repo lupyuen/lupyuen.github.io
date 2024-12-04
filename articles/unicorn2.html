@@ -62,26 +62,26 @@
     
 
     <h1 class="title">(Clickable) Call Graph for Apache NuttX Real-Time Operating System</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#intercept-code-execution-in-unicorn" title="Intercept Code Execution in Unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
-<li><a href="#map-address-to-function" title="Map Address to Function">2 Map Address to Function</a><ul></ul></li>
-<li><a href="#dwarf-debug-symbols" title="DWARF Debug Symbols">3 DWARF Debug Symbols</a><ul></ul></li>
-<li><a href="#clickable-mermaid-flowchart" title="Clickable Mermaid Flowchart">4 Clickable Mermaid Flowchart</a><ul></ul></li>
-<li><a href="#generate-call-graph" title="Generate Call Graph">5 Generate Call Graph</a><ul></ul></li>
-<li><a href="#pinephone-boots-nuttx" title="PinePhone Boots NuttX">6 PinePhone Boots NuttX</a><ul>
-<li><a href="#arm64-header" title="Arm64 Header">6.1 Arm64 Header</a><ul></ul></li>
-<li><a href="#initialise-el1" title="Initialise EL1">6.2 Initialise EL1</a><ul></ul></li>
-<li><a href="#primary-routine" title="Primary Routine">6.3 Primary Routine</a><ul></ul></li>
-<li><a href="#boot-chip" title="Boot Chip">6.4 Boot Chip</a><ul></ul></li></ul></li>
-<li><a href="#pinephone-continues-booting-nuttx" title="PinePhone Continues Booting NuttX">7 PinePhone Continues Booting NuttX</a><ul>
-<li><a href="#after-boot-chip" title="After Boot Chip">7.1 After Boot Chip</a><ul></ul></li>
-<li><a href="#after-primary-routine" title="After Primary Routine">7.2 After Primary Routine</a><ul></ul></li>
-<li><a href="#pinephone-drivers" title="PinePhone Drivers">7.3 PinePhone Drivers</a><ul></ul></li></ul></li>
-<li><a href="#arm64-memory-management-fault" title="Arm64 Memory Management Fault">8 Arm64 Memory Management Fault</a><ul></ul></li>
-<li><a href="#automated-daily-build-and-test" title="Automated Daily Build and Test">9 Automated Daily Build and Test</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-start-nsh-shell" title="Appendix: Start NSH Shell">11 Appendix: Start NSH Shell</a><ul></ul></li>
-<li><a href="#appendix-parse-dwarf-debug-symbols" title="Appendix: Parse DWARF Debug Symbols">12 Appendix: Parse DWARF Debug Symbols</a><ul></ul></li></ul></nav><p>📝 <em>5 Mar 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
+<li><a href="#map-address-to-function">2 Map Address to Function</a><ul></ul></li>
+<li><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a><ul></ul></li>
+<li><a href="#clickable-mermaid-flowchart">4 Clickable Mermaid Flowchart</a><ul></ul></li>
+<li><a href="#generate-call-graph">5 Generate Call Graph</a><ul></ul></li>
+<li><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a><ul>
+<li><a href="#arm64-header">6.1 Arm64 Header</a><ul></ul></li>
+<li><a href="#initialise-el1">6.2 Initialise EL1</a><ul></ul></li>
+<li><a href="#primary-routine">6.3 Primary Routine</a><ul></ul></li>
+<li><a href="#boot-chip">6.4 Boot Chip</a><ul></ul></li></ul></li>
+<li><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a><ul>
+<li><a href="#after-boot-chip">7.1 After Boot Chip</a><ul></ul></li>
+<li><a href="#after-primary-routine">7.2 After Primary Routine</a><ul></ul></li>
+<li><a href="#pinephone-drivers">7.3 PinePhone Drivers</a><ul></ul></li></ul></li>
+<li><a href="#arm64-memory-management-fault">8 Arm64 Memory Management Fault</a><ul></ul></li>
+<li><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-start-nsh-shell">11 Appendix: Start NSH Shell</a><ul></ul></li>
+<li><a href="#appendix-parse-dwarf-debug-symbols">12 Appendix: Parse DWARF Debug Symbols</a><ul></ul></li></ul></nav><p>📝 <em>5 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
@@ -148,7 +148,8 @@
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
-- Boot to C runtime for OS Initialize</code></pre></div>
+- Boot to C runtime for OS Initialize
+</code></pre></div>
 <p><em>So Unicorn works like QEMU Emulator?</em></p>
 <p>Yes but with a fun new twist: Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code by attaching a <strong>Hook Function</strong>…</p>
 
@@ -194,7 +195,8 @@ hook_block:
 
 hook_block:  
   address=0x40080e50
-  arm64_mmu_init</code></pre></div>
+  arm64_mmu_init
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p><em>How will we map the Arm64 Address to the Function Name?</em></p>
 <p>Pretend we’re a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be…</p>
@@ -329,7 +331,8 @@ hook_block:
   address=0x40080e50
   size=28
   arm64_mmu_init
-  arch/arm64/src/common/arm64_mmu.c:584:1</code></pre></div>
+  arch/arm64/src/common/arm64_mmu.c:584:1
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p>Which are super helpful for figuring out what’s happening inside Unicorn Emulator!</p>
 <p><em>What’s ELF_CONTEXT?</em></p>
@@ -353,11 +356,13 @@ flowchart TD
 START --&gt; arm64_head
 arm64_head --&gt; a64_lowputc
 arm64_head --&gt; arm64_boot_primary_c_routine
-...</code></pre></div>
+...
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
 <p>(<strong>TD</strong> means Top-Down Flowchart)</p>
 <p>To make a <a href="https://mermaid.js.org/syntax/flowchart.html#interaction"><strong>Clickable Mermaid Flowchart</strong></a>, we print the URLs like so…</p>
-<div class="example-wrap"><pre class="language-text"><code>click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot; _blank</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot; _blank
+</code></pre></div>
 <p>This jumps to the <strong>NuttX Source Code</strong> when we click the Function Name.</p>
 <p>(Second part of <strong>href</strong> is the Mouseover Tooltip)</p>
 <p>To <strong>preview the flowchart</strong> and check the hyperlinks, we use this handy web tool…</p>
@@ -400,7 +405,8 @@ flowchart TD
 START --&gt; arm64_head
 arm64_head --&gt; a64_lowputc
 click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot; _blank
-...</code></pre></div>
+...
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
 <p>Our <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159"><strong>Hook Function</strong></a> calls <strong>call_graph</strong>, which prints the Mermaid Flowchart (line by line) like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265">main.rs</a></p>
 
@@ -462,7 +468,8 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>To <strong>generate the Call Graph</strong> (via Unicorn Emulator), we run this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo run \
   | grep call_graph \
-  | cut -c 12-</code></pre></div>
+  | cut -c 12-
+</code></pre></div>
 <p>(<strong>cut</strong> removes columns 1 to 11)</p>
 <p>Unicorn Emulator runs our Arm64 Machine Code, intercepts every Arm64 Instruction and generates the Call Graph.</p>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(See the output)</a></p>
@@ -668,7 +675,8 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 boardctl(BOARDIOC_INIT, 0);
 
 // Perform architecture-specific final-initialization (if configured)
-boardctl(BOARDIOC_FINALINIT, 0);</code></pre></div>
+boardctl(BOARDIOC_FINALINIT, 0);
+</code></pre></div>
 <ul>
 <li>
 <p>Which calls <a href="https://github.com/apache/nuttx/blob/master/boards/boardctl.c#L281-L353"><strong>boardctl</strong></a>…</p>
@@ -827,7 +835,8 @@ boardctl(BOARDIOC_FINALINIT, 0);</code></pre></div>
 <p>In “<strong>make menuconfig</strong> &gt; <strong>RTOS Features</strong> &gt; <strong>Tasks and Scheduling</strong>”…</p>
 <p>We normally set <strong>“Application Entry Name”</strong> to <strong><code>nsh_main</code></strong></p>
 <p>Which configures <strong>CONFIG_INIT_ENTRYNAME</strong> as…</p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;nsh_main&quot;</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;nsh_main&quot;
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85"><strong>nsh_main</strong></a> is the function that runs the NSH Shell.</p>
 <p>Eventually <a href="https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85"><strong>nsh_main</strong></a> will initialise the PinePhone Drivers…</p>
 <ul>
@@ -835,7 +844,8 @@ boardctl(BOARDIOC_FINALINIT, 0);</code></pre></div>
 </ul>
 <p><em>Can we configure NuttX to start another app?</em></p>
 <p>Yep we may set <strong>CONFIG_INIT_ENTRYNAME</strong> to another function like…</p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;lvgldemo_main&quot;</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;lvgldemo_main&quot;
+</code></pre></div>
 <p>NuttX will start our <a href="https://lupyuen.github.io/articles/lvgl2#boot-to-lvgl"><strong>LVGL Demo App</strong></a> when it boots.</p>
 <p>(<a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L208-L220"><strong>lvgldemo_main</strong></a> will also initialise the <a href="https://lupyuen.github.io/articles/unicorn2#pinephone-drivers"><strong>PinePhone Drivers</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-dwarf.png" alt="DWARF Debugging Format" /></p>
@@ -863,7 +873,8 @@ hook_block:
   address=0x40080e50
   size=28
   arm64_mmu_init
-  arch/arm64/src/common/arm64_mmu.c:584:1</code></pre></div>
+  arch/arm64/src/common/arm64_mmu.c:584:1
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p>Which we implemented like this: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L173-L220">main.rs</a></p>
 
@@ -884,7 +895,8 @@ hook_block:
 addr2line = &quot;0.19.0&quot;
 gimli = &quot;0.27.2&quot;
 once_cell = &quot;1.17.1&quot;
-unicorn-engine = &quot;2.0.0&quot;</code></pre></div>
+unicorn-engine = &quot;2.0.0&quot;
+</code></pre></div>
 <p>At startup, this is how we load the Debug Symbols from our <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L297-L346">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;

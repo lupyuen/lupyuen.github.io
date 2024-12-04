@@ -64,35 +64,35 @@
     
 
     <h1 class="title">Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#sophgo-sg2000-risc-v-soc" title="Sophgo SG2000 RISC-V SoC">1 Sophgo SG2000 RISC-V SoC</a><ul></ul></li>
-<li><a href="#boot-without-microsd" title="Boot Without MicroSD">2 Boot Without MicroSD</a><ul></ul></li>
-<li><a href="#download-the-linux-microsd" title="Download the Linux MicroSD">3 Download the Linux MicroSD</a><ul></ul></li>
-<li><a href="#boot-the-linux-microsd" title="Boot the Linux MicroSD">4 Boot the Linux MicroSD</a><ul></ul></li>
-<li><a href="#settings-for-u-boot-bootloader" title="Settings for U-Boot Bootloader">5 Settings for U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">6 Boot NuttX over TFTP</a><ul></ul></li>
-<li><a href="#uart-controller-for-sg2000" title="UART Controller for SG2000">7 UART Controller for SG2000</a><ul></ul></li>
-<li><a href="#print-to-uart-in-risc-v-assembly" title="Print to UART in RISC-V Assembly">8 Print to UART in RISC-V Assembly</a><ul></ul></li>
-<li><a href="#nuttx-boots-a-tiny-bit" title="NuttX Boots A Tiny Bit">9 NuttX Boots A Tiny Bit</a><ul></ul></li>
-<li><a href="#nuttx-kernel-boots-ok" title="NuttX Kernel Boots OK">10 NuttX Kernel Boots OK</a><ul></ul></li>
-<li><a href="#nuttx-shell-too" title="NuttX Shell Too!">11 NuttX Shell Too!</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc" title="Appendix: Apache NuttX RTOS for Pine64 Oz64 SBC">13 Appendix: Apache NuttX RTOS for Pine64 Oz64 SBC</a><ul>
-<li><a href="#connect-our-usb-uart-adapter" title="Connect our USB UART Adapter">13.1 Connect our USB UART Adapter</a><ul></ul></li>
-<li><a href="#download-the-linux-microsd-1" title="Download the Linux MicroSD">13.2 Download the Linux MicroSD</a><ul></ul></li>
-<li><a href="#download-the-nuttx-image" title="Download the NuttX Image">13.3 Download the NuttX Image</a><ul></ul></li>
-<li><a href="#boot-nuttx-over-tftp-1" title="Boot NuttX over TFTP">13.4 Boot NuttX over TFTP</a><ul></ul></li></ul></li>
-<li><a href="#appendix-nuttx-mainline-now-supports-sg2000" title="Appendix: NuttX Mainline now supports SG2000!">14 Appendix: NuttX Mainline now supports SG2000!</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-sg2000" title="Appendix: Build NuttX for SG2000">15 Appendix: Build NuttX for SG2000</a><ul></ul></li>
-<li><a href="#appendix-port-nuttx-to-sg2000" title="Appendix: Port NuttX to SG2000">16 Appendix: Port NuttX to SG2000</a><ul>
-<li><a href="#nuttx-memory-map" title="NuttX Memory Map">16.1 NuttX Memory Map</a><ul></ul></li>
-<li><a href="#select-the-16550-uart-driver" title="Select the 16550 UART Driver">16.2 Select the 16550 UART Driver</a><ul></ul></li>
-<li><a href="#disable-interrupt-controller" title="Disable Interrupt Controller">16.3 Disable Interrupt Controller</a><ul></ul></li>
-<li><a href="#dump-the-linux-device-tree" title="Dump the Linux Device Tree">16.4 Dump the Linux Device Tree</a><ul></ul></li>
-<li><a href="#interrupt-controller-for-sg2000" title="Interrupt Controller for SG2000">16.5 Interrupt Controller for SG2000</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-driver-for-plic" title="Fix the NuttX Driver for PLIC">16.6 Fix the NuttX Driver for PLIC</a><ul></ul></li>
-<li><a href="#enable-logging-for-scheduler" title="Enable Logging for Scheduler">16.7 Enable Logging for Scheduler</a><ul></ul></li>
-<li><a href="#nuttx-crash-dump" title="NuttX Crash Dump">16.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#sophgo-sg2000-risc-v-soc">1 Sophgo SG2000 RISC-V SoC</a><ul></ul></li>
+<li><a href="#boot-without-microsd">2 Boot Without MicroSD</a><ul></ul></li>
+<li><a href="#download-the-linux-microsd">3 Download the Linux MicroSD</a><ul></ul></li>
+<li><a href="#boot-the-linux-microsd">4 Boot the Linux MicroSD</a><ul></ul></li>
+<li><a href="#settings-for-u-boot-bootloader">5 Settings for U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#boot-nuttx-over-tftp">6 Boot NuttX over TFTP</a><ul></ul></li>
+<li><a href="#uart-controller-for-sg2000">7 UART Controller for SG2000</a><ul></ul></li>
+<li><a href="#print-to-uart-in-risc-v-assembly">8 Print to UART in RISC-V Assembly</a><ul></ul></li>
+<li><a href="#nuttx-boots-a-tiny-bit">9 NuttX Boots A Tiny Bit</a><ul></ul></li>
+<li><a href="#nuttx-kernel-boots-ok">10 NuttX Kernel Boots OK</a><ul></ul></li>
+<li><a href="#nuttx-shell-too">11 NuttX Shell Too!</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc">13 Appendix: Apache NuttX RTOS for Pine64 Oz64 SBC</a><ul>
+<li><a href="#connect-our-usb-uart-adapter">13.1 Connect our USB UART Adapter</a><ul></ul></li>
+<li><a href="#download-the-linux-microsd-1">13.2 Download the Linux MicroSD</a><ul></ul></li>
+<li><a href="#download-the-nuttx-image">13.3 Download the NuttX Image</a><ul></ul></li>
+<li><a href="#boot-nuttx-over-tftp-1">13.4 Boot NuttX over TFTP</a><ul></ul></li></ul></li>
+<li><a href="#appendix-nuttx-mainline-now-supports-sg2000">14 Appendix: NuttX Mainline now supports SG2000!</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-sg2000">15 Appendix: Build NuttX for SG2000</a><ul></ul></li>
+<li><a href="#appendix-port-nuttx-to-sg2000">16 Appendix: Port NuttX to SG2000</a><ul>
+<li><a href="#nuttx-memory-map">16.1 NuttX Memory Map</a><ul></ul></li>
+<li><a href="#select-the-16550-uart-driver">16.2 Select the 16550 UART Driver</a><ul></ul></li>
+<li><a href="#disable-interrupt-controller">16.3 Disable Interrupt Controller</a><ul></ul></li>
+<li><a href="#dump-the-linux-device-tree">16.4 Dump the Linux Device Tree</a><ul></ul></li>
+<li><a href="#interrupt-controller-for-sg2000">16.5 Interrupt Controller for SG2000</a><ul></ul></li>
+<li><a href="#fix-the-nuttx-driver-for-plic">16.6 Fix the NuttX Driver for PLIC</a><ul></ul></li>
+<li><a href="#enable-logging-for-scheduler">16.7 Enable Logging for Scheduler</a><ul></ul></li>
+<li><a href="#nuttx-crash-dump">16.8 NuttX Crash Dump</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 May 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-title.jpg" alt="Milk-V Duo S SBC with SG2000 RISC-V SoC" /></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000"><strong>UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!</strong></a></p>
 <p>Soon we’ll see many new <a href="https://lupyuen.github.io/articles/sg2000#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc"><strong>64-bit RISC-V SBCs</strong></a> based on the <a href="https://github.com/sophgo/sophgo-doc/releases"><strong>Sophgo SG2000 RISC-V SoC</strong></a>.</p>
@@ -160,16 +160,19 @@
 <p><img src="https://lupyuen.github.io/images/sg2000-switch.jpg" alt="Switch to “RV” (RISC-V) instead of “Arm”" /></p>
 <p>Flip the Switch so it’s set to “<strong><code>RV</code></strong>” (RISC-V) instead of “<strong><code>Arm</code></strong>”. (Pic above)</p>
 <p>Power up the board via the <strong>USB-C Port</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
+</code></pre></div>
 <p>Milk-V Duo S <a href="https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16"><strong>won’t boot</strong></a> because it doesn’t ship with <strong>U-Boot Bootloader</strong> in Flash Memory…</p>
 <div class="example-wrap"><pre class="language-bash"><code>C.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000. 
 E:eMMC initializing failed
 E:Boot failed
-E:RESET:plat/mars/platform.c:114</code></pre></div>
+E:RESET:plat/mars/platform.c:114
+</code></pre></div>
 <p>We’ll need U-Boot on MicroSD, in the next section.</p>
 <p><a href="https://github.com/milkv-duo/fsbl/blob/milkv/plat/sg200x/platform.c">(<strong>platform.c</strong> might be here)</a></p>
 <p>If we see <a href="https://gist.github.com/lupyuen/d55b77a51ee8b258d6d1c0799770742a">“<strong><code>B.SCS</code></strong>”</a> instead of “<strong><code>C.SCS</code></strong>”…</p>
-<div class="example-wrap"><pre class="language-bash"><code>B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
+</code></pre></div>
 <p>Nope we’re in Arm Mode… Flip the switch back to RISC-V!</p>
 <p><a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>If we use CH340</strong></a> (instead of CP2102): UART Output will be <a href="https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5"><strong>gloriously garbled</strong></a>.</p>
 <blockquote>
@@ -193,7 +196,8 @@ $ sudo apt install lz4
 $ brew install lz4
 
 ## Uncompress the download to get `duos_sd.img`
-$ lz4 duos_sd.img.lz4</code></pre></div>
+$ lz4 duos_sd.img.lz4
+</code></pre></div>
 <p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>We’ll see these <strong>MicroSD Files</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## MicroSD Root Folder
@@ -211,14 +215,16 @@ $ ls -l /Volumes/boot/extlinux
 
 ## Linux Device Tree for SG2000
 $ ls -l /Volumes/boot/fdt/linux-image-duos-5.10.4-20240329-1+
--rwx 21575 cv181x_milkv_duos_sd.dtb</code></pre></div>
+-rwx 21575 cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p>We peek at the <strong>U-Boot Bootloader Config</strong> (which will boot NuttX with a tiny tweak)</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat /Volumes/boot/extlinux/extlinux.conf
 ...
 menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
 linux  /vmlinuz-5.10.4-20240329-1+
 fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
-append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw</code></pre></div>
+append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
+</code></pre></div>
 <p>Watch what happens when we boot the MicroSD…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 <h1 id="boot-the-linux-microsd"><a class="doc-anchor" href="#boot-the-linux-microsd">§</a>4 Boot the Linux MicroSD</h1>
@@ -242,7 +248,8 @@ Boot HART MIDELEG  : 0x0222
 Boot HART MEDELEG  : 0xb109
 
 ## OpenSBI boots at 0x8000_0000.
-## 0x7400_0000 looks interesting! We&#39;ll come back to this</code></pre></div>
+## 0x7400_0000 looks interesting! We&#39;ll come back to this
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a">(See the <strong>Complete Log</strong>)</a></p>
 <p>Followed by the <a href="https://docs.u-boot.org/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## U-Boot Boots
@@ -259,13 +266,15 @@ Enter choice: 1
 ## U-Boot boots Debian Linux
 Retrieving file: /vmlinuz-5.10.4-20240329-1+
 Retrieving file: /fdt/linux-image-duos-5.10.4-20240329-1+/cv181x_milkv_duos_sd.dtb
-Booting using the fdt blob at 0x81200000</code></pre></div>
+Booting using the fdt blob at 0x81200000
+</code></pre></div>
 <p>Finally we see <strong>Debian Linux</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
 Linux version 5.10.4-20240329-1+ (root@3abcc283c6ba) (riscv64-unknown-linux-musl-gcc (Xuantie-900 linux-5.10.4 musl gcc Toolchain V2.6.1 B-20220906) 10.2.0, GNU ld (GNU Binutils) 2.35)
 ...
 Debian GNU/Linux trixie/sid duos ttyS0
-duos login: </code></pre></div>
+duos login: 
+</code></pre></div>
 <p>Linux works great, we hop over to NuttX…</p>
 <p><a href="https://en.sophgo.com/about-us/index.html">(<strong>Cvitek</strong> is the old name of Sophgo / Sophon)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-uboot.jpg" alt="U-Boot Bootloader" /></p>
@@ -276,7 +285,8 @@ duos login: </code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>U-Boot 2021.10-ga57aa1f2-dirty (May 07 2024 - 08:13:12 +0000) cvitek_cv181x
 Loading Environment from FAT... mmc1 : finished tuning, code:53
 Hit any key to stop autoboot:  0
-cv181x_c906# </code></pre></div>
+cv181x_c906# 
+</code></pre></div>
 <p>Enter <strong><code>printenv</code></strong> to dump the U-Boot Settings…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## U-Boot Settings
 $ printenv
@@ -285,14 +295,16 @@ kernel_comp_addr_r=0x81800000
 kernel_comp_size=0x1000000
 ramdisk_addr_r=0x84000000
 uImage_addr=0x81800000
-update_addr=0x9fe00000</code></pre></div>
+update_addr=0x9fe00000
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L189-L246">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><strong><code>kernel_addr_r</code></strong> says that U-Boot will load Linux Kernel into RAM at Address <strong><code>0x8020_0000</code></strong>. (We’ll set this in NuttX)</p>
 <p>And the <strong>Ethernet Driver</strong> is fully operational in U-Boot. Which means we can boot <strong>NuttX over the Network</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ net list
 eth0: ethernet@4070000
 00:00:00:00:00:00
-active</code></pre></div>
+active
+</code></pre></div>
 <p>Here’s how…</p>
 <p><a href="https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2#file-milkv-duo-s-uboot-log-L99-L188">(See the <strong>U-Boot Commands</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-tftp.jpg" alt="Boot NuttX over TFTP" /></p>
@@ -322,7 +334,8 @@ setenv tftp_server 192.168.31.10
 ## setenv ramdisk_size 0x1000000
 
 ## Save the U-Boot Config for future reboots
-saveenv</code></pre></div>
+saveenv
+</code></pre></div>
 <p>Then we load the <strong>NuttX Image</strong> into RAM over TFTP…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
@@ -342,7 +355,8 @@ fdt addr ${fdt_addr_r}
 ## If Initial RAM Disk is needed...
 ## Load the Intial RAM Disk from TFTP Server
 ## ramdisk_addr_r=0x81600000
-## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd</code></pre></div>
+## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+</code></pre></div>
 <p>And we boot <strong>NuttX from RAM</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot the NuttX Image with the Device Tree
 ## kernel_addr_r=0x80200000
@@ -353,7 +367,8 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 ## For Linux: We need the RAM Disk Address
 ## ramdisk_addr_r=0x81600000
 ## ramdisk_size=0x1000000
-## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}</code></pre></div>
+## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
 <p><em>What happens when we boot NuttX?</em></p>
 <p>Absolutely nothing…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX over TFTP, mashed up in a single line...
@@ -362,7 +377,8 @@ $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${t
 Booting using the fdt blob at 0x81200000
 Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
 Loading Device Tree to 9e26f000, end 9e27e43a ... OK
-Starting kernel ...</code></pre></div>
+Starting kernel ...
+</code></pre></div>
 <p>But that’s OK, we haven’t modified NuttX Kernel for SG2000. We’ll print something in a while.</p>
 <p><em>We type these commands EVERY TIME we boot?</em></p>
 <p>We can automate: Just do this once, and <strong>NuttX will Auto-Boot</strong> whenever we power up…</p>
@@ -382,7 +398,8 @@ setenv orig_boot_targets &quot;$boot_targets&quot;
 setenv boot_targets &quot;tftp $boot_targets&quot;
 
 ## Save it for future reboots
-saveenv</code></pre></div>
+saveenv
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-uart.jpg" alt="UART Controller for SG2000" /></p>
@@ -430,7 +447,8 @@ real_start:
   /* Load `3` to Register t1 */
   li  t1, 0x33
   /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)</code></pre></div>
+  sb  t1, 0(t0)
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/sg2000/sg2000_head.S#L69-L73">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
@@ -450,7 +468,8 @@ cp Image Image-sg2000
 scp Image-sg2000 \
   tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb \
-  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb</code></pre></div>
+  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb">(<strong>cv181x_milkv_duos_sd.dtb</strong> is here)</a></p>
 <p>To Boot NuttX: Run these commands at the <strong>U-Boot Command Prompt</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load NuttX Image and Device Tree into RAM
@@ -462,7 +481,8 @@ $ fdt addr ${fdt_addr_r}
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
 
 Starting kernel ...
-123</code></pre></div>
+123
+</code></pre></div>
 <p>See the “<strong><code>123</code></strong>”? That’s proof that our NuttX Boot Code <strong>is actually running</strong> on SG2000 and Milk-V Duo S. We port some more…</p>
 <p><a href="https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/sg2000-kernel.jpg" alt="NuttX Kernel Boots OK" /></p>
@@ -474,7 +494,8 @@ Starting kernel ...
 <p>We set the <a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map"><strong>NuttX Memory Map</strong></a> for SG2000: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078">nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Kernel RAM
 CONFIG_RAM_START=0x80200000
-CONFIG_RAM_SIZE=1048576</code></pre></div>
+CONFIG_RAM_SIZE=1048576
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L76-L77">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map">(Explained here)</a></p>
 </li>
@@ -484,7 +505,8 @@ CONFIG_RAM_SIZE=1048576</code></pre></div>
   kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
   ...
 SECTIONS {
-  . = 0x80200000;</code></pre></div>
+  . = 0x80200000;
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/scripts/ld.script#L20-L54">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#nuttx-memory-map">(Explained here)</a></p>
 </li>
@@ -496,7 +518,8 @@ CONFIG_16550_UART0_BASE=0x04140000
 CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
-CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
+CONFIG_SERIAL_UART_ARCH_MMIO=y
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#select-the-16550-uart-driver">(Explained here)</a></p>
 </li>
@@ -508,7 +531,8 @@ CONFIG_DEBUG_BINFMT_WARN=y
 CONFIG_DEBUG_SCHED=y
 CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
-CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
+CONFIG_DEBUG_SCHED_WARN=y
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#enable-logging-for-scheduler">(Explained here)</a></p>
 </li>
 <li>
@@ -537,7 +561,8 @@ elf_symname: Symbol has no name
 elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
 elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
-nxtask_exit: AppBringUp pid=2,TCB=0x80408740</code></pre></div>
+nxtask_exit: AppBringUp pid=2,TCB=0x80408740
+</code></pre></div>
 <p>One last thing and we’re done…</p>
 <p><a href="https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://www.youtube.com/watch?v=pPNDiC5NLqM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -555,7 +580,8 @@ dtc \
   -o cv181x_milkv_duos_sd.dts \
   -O dts \
   -I dtb \
-  cv181x_milkv_duos_sd.dtb</code></pre></div>
+  cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#dump-the-linux-device-tree">(Explained here)</a></p>
 </li>
 <li>
@@ -567,13 +593,15 @@ dtc \
   reg = &lt;0x00 0x70000000 0x00 0x4000000&gt;;
   interrupts-extended = &lt;0x16 0xffffffff 0x16 0x09&gt;;
   interrupt-controller;
-  compatible = &quot;riscv,plic0&quot;;</code></pre></div>
+  compatible = &quot;riscv,plic0&quot;;
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#interrupt-controller-for-sg2000">(Explained here)</a></p>
 </li>
 <li>
 <p>And fixed the <a href="https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic"><strong>NuttX Driver</strong></a> for PLIC Interrupts: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6#diff-8fffa570a48f8f10004d9da8d4c671d34336f6c4b8dcfc2bd72275d8cda4ac04">bl808_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Base Address of PLIC Interrupt Controller
-#define BL808_PLIC_BASE 0x70000000ul</code></pre></div>
+#define BL808_PLIC_BASE 0x70000000ul
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h#L27-L32">(Moved here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic">(Explained here)</a></p>
 </li>
@@ -605,7 +633,8 @@ nsh&gt; ls /dev
  null
  ram0
  ttyS0
- zero</code></pre></div>
+ zero
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>What about the rest of NuttX?</em></p>
 <p><a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>NuttX OSTest</strong></a> is the perfect way to test everything in NuttX…</p>
@@ -616,7 +645,8 @@ riscv_exception:
   MCAUSE:    5
   EPC:       802189ce
   MTVAL:     0000000000000000
-  Segmentation fault in PID 7: ostest</code></pre></div>
+  Segmentation fault in PID 7: ostest
+</code></pre></div>
 <p>Sadly we’re hitting a RISC-V Exception: <strong>Load Access Fault</strong>. Needs more troubleshooting alamak.</p>
 <p><a href="https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f">(See the <strong>Complete Log</strong>)</a></p>
 <blockquote>
@@ -737,7 +767,8 @@ $ sudo apt install lz4
 $ brew install lz4
 
 ## Uncompress the download to get `duos_sd.img`
-$ lz4 duos_sd.img.lz4</code></pre></div>
+$ lz4 duos_sd.img.lz4
+</code></pre></div>
 <p>And write <strong><code>duos_sd.img</code></strong> to a MicroSD Card. Use <a href="https://etcher.balena.io"><strong>Balena Etcher</strong></a>, <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a> or <a href="https://gist.github.com/lupyuen/aae995d942d5ec3ffa6629667bcc3ae6"><strong><code>dd</code></strong></a>.</p>
 <p>Insert the MicroSD Card into Oz64, but don’t power up yet…</p>
 <h2 id="download-the-nuttx-image"><a class="doc-anchor" href="#download-the-nuttx-image">§</a>13.3 Download the NuttX Image</h2>
@@ -763,9 +794,11 @@ cp Image Image-sg2000
 scp Image-sg2000 \
   tftpserver:/tftpboot/Image-sg2000
 scp cv181x_milkv_duos_sd.dtb \
-  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb</code></pre></div>
+  tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p>Power up the board via the <strong>Oz64 Power Adapter</strong>. Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
+</code></pre></div>
 <p>When Oz64 boots, press Enter to reveal the <strong>U-Boot Command Prompt</strong>.</p>
 <p>Enter these commands to configure U-Boot to <strong>Auto-Boot NuttX</strong> on Oz64…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the U-Boot TFTP Server
@@ -782,13 +815,15 @@ setenv orig_boot_targets &quot;$boot_targets&quot;
 setenv boot_targets &quot;tftp $boot_targets&quot;
 
 ## Save it for future reboots
-saveenv</code></pre></div>
+saveenv
+</code></pre></div>
 <p>Power-off and power-on our SBC. NuttX now <strong>auto-boots on Oz64</strong> whenever we power-on…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Starting kernel ...
 NuttShell (NSH) NuttX-12.4.0
 
 nsh&gt; uname -a
-NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64</code></pre></div>
+NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c0bf8178a1149461c750e9c71855d643">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
@@ -1007,7 +1042,8 @@ riscv-none-elf-objdump \
   --debugging \
   ../apps/bin/hello \
   &gt;hello.S \
-  2&gt;&amp;1</code></pre></div>
+  2&gt;&amp;1
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml#L25-L119">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2024-06-18">(See the <strong>Build Outputs</strong>)</a></p>
 <p>The steps above assume that we’ve installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a>.</p>
@@ -1049,7 +1085,8 @@ riscv-none-elf-objdump \
 <p>Let’s talk about the tweaks…</p>
 <h2 id="nuttx-memory-map"><a class="doc-anchor" href="#nuttx-memory-map">§</a>16.1 NuttX Memory Map</h2>
 <p>From <a href="https://lupyuen.github.io/articles/sg2000#settings-for-u-boot-bootloader"><strong>U-Boot Bootloader Settings</strong></a>: We see that SG2000 boots at this address…</p>
-<div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>kernel_addr_r=0x80200000
+</code></pre></div>
 <p>Thus we define the <strong>NuttX Memory Map</strong> for SG2000 like so…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2"><strong>Set the NuttX Memory Map for SG2000</strong></a></li>
@@ -1077,7 +1114,8 @@ CONFIG_ARCH_DATA_NPAGES=128
 
 ## Virtual Memory for NuttX App Heap
 CONFIG_ARCH_HEAP_VBASE=0xC0200000
-CONFIG_ARCH_HEAP_NPAGES=128</code></pre></div>
+CONFIG_ARCH_HEAP_NPAGES=128
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig">(Moved here)</a></p>
 <p>And here’s the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37">ld.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* TODO: Fix the size */
@@ -1089,7 +1127,8 @@ MEMORY {
 }
 ...
 SECTIONS {
-  . = 0x80200000;</code></pre></div>
+  . = 0x80200000;
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/scripts/ld.script#L20-L54">(Moved here)</a></p>
 <h2 id="select-the-16550-uart-driver"><a class="doc-anchor" href="#select-the-16550-uart-driver">§</a>16.2 Select the 16550 UART Driver</h2>
 <p>From <a href="https://lupyuen.github.io/articles/sg2000#settings-for-u-boot-bootloader"><strong>OpenSBI Log</strong></a>: We see that SG2000 runs with a <strong>8250 UART Controller</strong>.</p>
@@ -1106,14 +1145,16 @@ CONFIG_16550_UART0_CLOCK=23040000
 CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
-CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
+CONFIG_SERIAL_UART_ARCH_MMIO=y
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
 <p>Don’t update the NuttX Config File directly! We ran <strong><code>make menuconfig</code></strong> to generate the above file…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Update NuttX Config
 make menuconfig \
   &amp;&amp; make savedefconfig \
   &amp;&amp; grep -v CONFIG_HOST defconfig \
-  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig</code></pre></div>
+  &gt;boards/risc-v/bl808/ox64/configs/nsh/defconfig
+</code></pre></div>
 <p><strong>To Find Menuconfig Settings:</strong> Press “<strong><code>/</code></strong>” and enter the name of the setting, like <em>“16550_ADDRWIDTH”</em>. This ensures that the Kconfig Dependencies are correctly updated.</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-irq.jpg" alt="UART IRQ" /></p>
 <p><em>How did we get IRQ 69 for UART?</em></p>
@@ -1121,7 +1162,8 @@ make menuconfig \
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e"><strong>Set UART0 IRQ to 69 (25 + 44)</strong></a></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_IRQ=69
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig#L10-L18">(Moved here)</a></p>
 </li>
 </ul>
@@ -1145,7 +1187,8 @@ make menuconfig \
   status = &quot;okay&quot;;
   interrupts = &lt;0x2c 0x04&gt;;
   interrupt-parent = &lt;0x04&gt;;
-};</code></pre></div>
+};
+</code></pre></div>
 <p>Thus we compute <a href="https://lupyuen.github.io/articles/plic2#uart-interrupt"><strong>NuttX IRQ</strong></a> = 25 + RISC-V IRQ = 69</p>
 <p>(We should fix the UART Clock: <em>16550_UART0_CLOCK</em>)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-memory.jpg" alt="Whither PLIC?" /></p>
@@ -1173,7 +1216,8 @@ dtc \
   -o cv181x_milkv_duos_sd.dts \
   -O dts \
   -I dtb \
-  cv181x_milkv_duos_sd.dtb</code></pre></div>
+  cv181x_milkv_duos_sd.dtb
+</code></pre></div>
 <p>We go inside the Device Tree…</p>
 <h2 id="interrupt-controller-for-sg2000"><a class="doc-anchor" href="#interrupt-controller-for-sg2000">§</a>16.5 Interrupt Controller for SG2000</h2>
 <p>Earlier we dumped the <strong>Linux Device Tree</strong> for SG2000. We snoop inside to understand the Interrupt Controller: <a href="https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts#L1021-L1042">cv181x_milkv_duos_sd.dts</a></p>
@@ -1197,7 +1241,8 @@ clint@74000000 {
   reg = &lt;0x00 0x74000000 0x00 0x10000&gt;;
   compatible = &quot;riscv,clint0&quot;;
   clint,has-no-64bit-mmio;
-};</code></pre></div>
+};
+</code></pre></div>
 <p>We see that PLIC (External Interrupts) is at <strong><code>0x7000_0000</code></strong>, CLINT (Internal Interrupts) at <strong><code>0x7400_0000</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-plic.jpg" alt="Platform-Level Interrupt Controller" /></p>
 <h2 id="fix-the-nuttx-driver-for-plic"><a class="doc-anchor" href="#fix-the-nuttx-driver-for-plic">§</a>16.6 Fix the NuttX Driver for PLIC</h2>
@@ -1220,7 +1265,8 @@ elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
 nxtask_exit: AppBringUp pid=2,TCB=0x80409740
 
-Nuttnx_start: CPU0: Beginning Idle Loop</code></pre></div>
+Nuttnx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>Why did it stop?</em></p>
 <p>Duh we set the wrong UART0 IRQ! Here’s the fix…</p>
@@ -1239,7 +1285,8 @@ CONFIG_DEBUG_BINFMT_WARN=y
 CONFIG_DEBUG_SCHED=y
 CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
-CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
+CONFIG_DEBUG_SCHED_WARN=y
+</code></pre></div>
 <p>Remember: Always use <strong><code>make menuconfig</code></strong> to update the settings!</p>
 <h2 id="nuttx-crash-dump"><a class="doc-anchor" href="#nuttx-crash-dump">§</a>16.8 NuttX Crash Dump</h2>
 <p><em>What happens when something goes wrong in NuttX?</em></p>
@@ -1274,22 +1321,26 @@ up_dump_register: SP: 000000008040c330 FP: 0000000000000000 TP: 0000000000000000
 dump_stack: User Stack:
 dump_stack:   base: 0x8040c030
 dump_stack:   size: 00002000
-dump_stack:     sp: 0x8040c330</code></pre></div>
+dump_stack:     sp: 0x8040c330
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517">(See the <strong>Complete Log</strong>)</a></p>
 <p><em>What’s this Assertion Failure?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>_assert: Assertion failed 0x17 == (insn &amp; 0x7F):
 at file: machine/risc-v/arch_elf.c:494
-task: AppBringUp process: Kernel 0x80200f34</code></pre></div>
+task: AppBringUp process: Kernel 0x80200f34
+</code></pre></div>
 <p>Oops we goofed and used the <strong>Wrong U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! This won&#39;t work for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
 tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ;
-booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}</code></pre></div>
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
 <p>Which overwrites the NuttX Image in RAM. Here’s the <strong>Correct U-Boot Command</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## This works OK for NuttX. RAM Disk Address must be `-`!
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
 tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb ; fdt addr ${fdt_addr_r} ; 
-booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
+booti ${kernel_addr_r} - ${fdt_addr_r}
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

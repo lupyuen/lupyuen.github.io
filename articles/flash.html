@@ -60,44 +60,44 @@
     
 
     <h1 class="title">Flashing Firmware to PineCone BL602</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#flash-bl602-firmware-with-linux-macos-and-windows" title="Flash BL602 Firmware with Linux, macOS and Windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a><ul>
-<li><a href="#install-rustup" title="Install rustup">1.1 Install rustup</a><ul></ul></li>
-<li><a href="#download-and-build-blflash" title="Download and build blflash">1.2 Download and build blflash</a><ul></ul></li>
-<li><a href="#flash-the-firmware" title="Flash the firmware">1.3 Flash the firmware</a><ul></ul></li>
-<li><a href="#watch-the-firmware-run" title="Watch the firmware run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
-<li><a href="#what-else-gets-flashed-to-bl602" title="What Else Gets Flashed To BL602?">2 What Else Gets Flashed To BL602?</a><ul>
-<li><a href="#xip-flash-memory-vs-boot-rom" title="XIP Flash Memory vs Boot ROM">2.1 XIP Flash Memory vs Boot ROM</a><ul></ul></li></ul></li>
-<li><a href="#partition-table" title="Partition Table">3 Partition Table</a><ul>
-<li><a href="#partition-entry-for-firmware" title="Partition Entry for Firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
-<li><a href="#partition-entry-for-device-tree" title="Partition Entry for Device Tree">3.2 Partition Entry for Device Tree</a><ul></ul></li>
-<li><a href="#start-code-uses-partition-table" title="Start Code uses Partition Table">3.3 Start Code uses Partition Table</a><ul></ul></li></ul></li>
-<li><a href="#efuse-configuration" title="EFuse Configuration">4 EFuse Configuration</a><ul>
-<li><a href="#boot-header-configuration" title="Boot Header Configuration">4.1 Boot Header Configuration</a><ul></ul></li></ul></li>
-<li><a href="#boot2-bootloader" title="Boot2 Bootloader">5 Boot2 Bootloader</a><ul></ul></li>
-<li><a href="#firmware-image" title="Firmware Image">6 Firmware Image</a><ul></ul></li>
-<li><a href="#device-tree" title="Device Tree">7 Device Tree</a><ul>
-<li><a href="#gpio-led" title="GPIO LED">7.1 GPIO LED</a><ul></ul></li>
-<li><a href="#gpio-button" title="GPIO Button">7.2 GPIO Button</a><ul></ul></li>
-<li><a href="#uart" title="UART">7.3 UART</a><ul></ul></li>
-<li><a href="#pwm" title="PWM">7.4 PWM</a><ul></ul></li>
-<li><a href="#wifi" title="WiFi">7.5 WiFi</a><ul></ul></li>
-<li><a href="#bluetooth" title="Bluetooth">7.6 Bluetooth</a><ul></ul></li></ul></li>
-<li><a href="#flash-firmware-in-2-stages" title="Flash Firmware in 2 Stages">8 Flash Firmware in 2 Stages</a><ul>
-<li><a href="#flashing-stage-1" title="Flashing Stage 1">8.1 Flashing Stage 1</a><ul></ul></li>
-<li><a href="#flashing-stage-2" title="Flashing Stage 2">8.2 Flashing Stage 2</a><ul></ul></li></ul></li>
-<li><a href="#blflash-vs-blopenflasher" title="blflash vs BLOpenFlasher">9 blflash vs BLOpenFlasher</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes" title="Notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-grant-access-to-usb-uart" title="Appendix: Grant Access To USB UART">12 Appendix: Grant Access To USB UART</a><ul></ul></li>
-<li><a href="#appendix-bl602-flashing-screenshots" title="Appendix: BL602 Flashing Screenshots">13 Appendix: BL602 Flashing Screenshots</a><ul>
-<li><a href="#linux-arm64" title="Linux Arm64">13.1 Linux Arm64</a><ul></ul></li>
-<li><a href="#macos-catalina" title="macOS Catalina">13.2 macOS Catalina</a><ul></ul></li>
-<li><a href="#windows-10" title="Windows 10">13.3 Windows 10</a><ul></ul></li></ul></li>
-<li><a href="#appendix-bl602-partition-table" title="Appendix: BL602 Partition Table">14 Appendix: BL602 Partition Table</a><ul></ul></li>
-<li><a href="#appendix-bl602-device-tree" title="Appendix: BL602 Device Tree">15 Appendix: BL602 Device Tree</a><ul></ul></li>
-<li><a href="#appendix-bl602-efuse-configuration" title="Appendix: BL602 EFuse Configuration">16 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
-<li><a href="#appendix-bldevcube-flashing-log" title="Appendix: BLDevCube Flashing Log">17 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+    <nav id="TOC"><ul>
+<li><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a><ul>
+<li><a href="#install-rustup">1.1 Install rustup</a><ul></ul></li>
+<li><a href="#download-and-build-blflash">1.2 Download and build blflash</a><ul></ul></li>
+<li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
+<li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
+<li><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a><ul>
+<li><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a><ul></ul></li></ul></li>
+<li><a href="#partition-table">3 Partition Table</a><ul>
+<li><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
+<li><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a><ul></ul></li>
+<li><a href="#start-code-uses-partition-table">3.3 Start Code uses Partition Table</a><ul></ul></li></ul></li>
+<li><a href="#efuse-configuration">4 EFuse Configuration</a><ul>
+<li><a href="#boot-header-configuration">4.1 Boot Header Configuration</a><ul></ul></li></ul></li>
+<li><a href="#boot2-bootloader">5 Boot2 Bootloader</a><ul></ul></li>
+<li><a href="#firmware-image">6 Firmware Image</a><ul></ul></li>
+<li><a href="#device-tree">7 Device Tree</a><ul>
+<li><a href="#gpio-led">7.1 GPIO LED</a><ul></ul></li>
+<li><a href="#gpio-button">7.2 GPIO Button</a><ul></ul></li>
+<li><a href="#uart">7.3 UART</a><ul></ul></li>
+<li><a href="#pwm">7.4 PWM</a><ul></ul></li>
+<li><a href="#wifi">7.5 WiFi</a><ul></ul></li>
+<li><a href="#bluetooth">7.6 Bluetooth</a><ul></ul></li></ul></li>
+<li><a href="#flash-firmware-in-2-stages">8 Flash Firmware in 2 Stages</a><ul>
+<li><a href="#flashing-stage-1">8.1 Flashing Stage 1</a><ul></ul></li>
+<li><a href="#flashing-stage-2">8.2 Flashing Stage 2</a><ul></ul></li></ul></li>
+<li><a href="#blflash-vs-blopenflasher">9 blflash vs BLOpenFlasher</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-grant-access-to-usb-uart">12 Appendix: Grant Access To USB UART</a><ul></ul></li>
+<li><a href="#appendix-bl602-flashing-screenshots">13 Appendix: BL602 Flashing Screenshots</a><ul>
+<li><a href="#linux-arm64">13.1 Linux Arm64</a><ul></ul></li>
+<li><a href="#macos-catalina">13.2 macOS Catalina</a><ul></ul></li>
+<li><a href="#windows-10">13.3 Windows 10</a><ul></ul></li></ul></li>
+<li><a href="#appendix-bl602-partition-table">14 Appendix: BL602 Partition Table</a><ul></ul></li>
+<li><a href="#appendix-bl602-device-tree">15 Appendix: BL602 Device Tree</a><ul></ul></li>
+<li><a href="#appendix-bl602-efuse-configuration">16 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
+<li><a href="#appendix-bldevcube-flashing-log">17 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board</em></p>
 <p>📝 <em>1 Jan 2021</em></p>
 <p>2020 has been an awesome year for PineCone BL602!</p>
@@ -151,7 +151,8 @@
 </li>
 <li>
 <p><strong>For Linux and macOS:</strong> Add Rust to the PATH…</p>
-<div class="example-wrap"><pre class="language-bash"><code>source $HOME/.cargo/env</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>source $HOME/.cargo/env
+</code></pre></div></li>
 </ol>
 <h2 id="download-and-build-blflash"><a class="doc-anchor" href="#download-and-build-blflash">§</a>1.2 Download and build blflash</h2>
 <p>We’ll use <a href="https://github.com/spacemeowx2/blflash"><strong><code>blflash</code></strong></a>, the flashing tool created in Rust by <a href="https://github.com/spacemeowx2"><code>spacemeowx2</code></a>.</p>
@@ -159,13 +160,15 @@
 <ol>
 <li>
 <p>Install the <code>blflash</code> tool…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cargo install blflash</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>cargo install blflash
+</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Compiling blflash v0.3.3
 Finished release [optimized] target(s) in 4m 37s
 Installing ~/.cargo/bin/blflash
-Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li>
+Installed package `blflash v0.3.3` (executable `blflash`)
+</code></pre></div></li>
 <li>
 <p><strong>For Linux:</strong> Grant access to the USB UART port. <a href="https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart">(Here’s how)</a></p>
 </li>
@@ -231,17 +234,20 @@ Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li
 <p>Enter this to flash our firmware…</p>
 <p><strong>For Linux:</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin \
-  --port /dev/ttyUSB0 </code></pre></div>
+  --port /dev/ttyUSB0 
+</code></pre></div>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change the USB serial port <code>/dev/ttyUSB0</code> if necessary.)</p>
 <p><strong>For macOS:</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
-  --baud-rate 230400</code></pre></div>
+  --baud-rate 230400
+</code></pre></div>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to BL602)</p>
 <p>Note that we’re throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps. blflash won’t work on macOS at 1 Mbps (because it’s not a standard POSIX baud rate).</p>
 <p><strong>For Windows:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin --port COM5</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin --port COM5
+</code></pre></div>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>COM5</code> to the serial port assigned to BL602)</p>
 </li>
 <li>
@@ -249,7 +255,8 @@ Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li
 <div class="example-wrap"><pre class="language-text"><code>Start connection...
 5ms send count 55
 handshake sent elapsed 1.059862ms
-Connection Succeed</code></pre></div>
+Connection Succeed
+</code></pre></div>
 <p><code>blflash</code> has connected successfully to BL602 over the USB Serial port.</p>
 <div class="example-wrap"><pre class="language-text"><code>Bootrom version: 1
 Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
@@ -257,7 +264,8 @@ Sending eflash_loader...
 Finished 3.375522563s 8.47KB/s
 5ms send count 500
 handshake sent elapsed 6.51343ms
-Entered eflash_loader</code></pre></div>
+Entered eflash_loader
+</code></pre></div>
 <p><code>blflash</code> starts by sending the <strong>EFlash Loader</strong> program to BL602. Then EFlash Loader starts running on BL602.</p>
 <p>EFlash Loader receives our <strong>Flash Image</strong> from <code>blflash</code> and flashes our firmware to ROM…</p>
 <div class="example-wrap"><pre class="language-text"><code>Erase flash addr: 0 size: 47504
@@ -269,7 +277,8 @@ Erase flash addr: 10000 size: 25216
 Program flash... 86e0abb8907b99dfc8e7771f58aa9c5473fc2439b3aa38613d0ad895681d656e
 Program done 489.5002ms 50.36KB/s
 Skip segment addr: 1f8000 size: 5671 sha256 matches
-Success</code></pre></div>
+Success
+</code></pre></div>
 <p><code>blflash</code> (and EFlash Loader) has successfully erased and flashed 5 sections in BL602 ROM.</p>
 <p>The ROM sections were extracted from our Flash Image at offsets <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that’s our firmware) and <code>0x1f8000</code></p>
 <p>We’ll learn more about this.</p>
@@ -279,14 +288,16 @@ Success</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Start connection...
 5ms send count 115
 handshake sent elapsed 72.001µs
-Retry 1</code></pre></div>
+Retry 1
+</code></pre></div>
 <p>Or this…</p>
 <div class="example-wrap"><pre class="language-text"><code>Start connection...
 5ms send count 55
 handshake sent elapsed 850.287µs
 Connection Succeed
 Error: IO error: Operation timed out
-caused by: Operation timed out</code></pre></div>
+caused by: Operation timed out
+</code></pre></div>
 <p>Disconnect PineCone from the USB port. Check that the PineCone Jumper (IO 8) is set to <code>H</code>. Retry the flash command.</p>
 </li>
 <li>
@@ -294,16 +305,19 @@ caused by: Operation timed out</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Sending eflash_loader...
 Finished 2.988880532s 9.56KB/s
 Error: IO error while using serial port: Invalid argument
-caused by: Invalid argument</code></pre></div>
+caused by: Invalid argument
+</code></pre></div>
 <p>It probably means that the baud rate is too high. Try a lower baud rate like 115.2 kbps…</p>
 <div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 115200 \
-  --baud-rate 115200</code></pre></div></li>
+  --baud-rate 115200
+</code></pre></div></li>
 <li>
 <p>If we see this error…</p>
 <div class="example-wrap"><pre class="language-text"><code>Error: IO error while using serial port:
-Permission denied</code></pre></div>
+Permission denied
+</code></pre></div>
 <p>Check whether access has been granted for the USB UART port. <a href="https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart">(Here’s how)</a></p>
 </li>
 </ol>
@@ -354,7 +368,8 @@ Permission denied</code></pre></div>
 <li>
 <p>To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
+</code></pre></div>
 <p>(Change the USB serial port <code>/dev/ttyUSB0</code> if necessary)</p>
 <p><strong>For macOS:</strong></p>
 <ol>
@@ -394,11 +409,13 @@ Permission denied</code></pre></div>
 <p>Press the <strong><code>RST</code> Button</strong> on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware…</p>
 <p>For <a href="https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-26/nuttx.zip"><code>nuttx.bin</code></a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0
-nsh&gt;   </code></pre></div>
+nsh&gt;   
+</code></pre></div>
 <p>For <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin"><code>sdk_app_helloworld.bin</code></a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>[helloworld]   start
 [helloworld]   helloworld
-[helloworld]   end</code></pre></div>
+[helloworld]   end
+</code></pre></div>
 <p><strong>For Linux:</strong> To exit the <code>screen</code> console, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 <p><strong>For macOS:</strong> Close the CoolTerm window</p>
 <p><strong>For Windows:</strong> Close the <code>putty</code> window</p>
@@ -480,7 +497,8 @@ nsh&gt;   </code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>[pt_table]
 # Partition table is 4K in size (0x1000 bytes)
 address0 = 0xE000
-address1 = 0xF000</code></pre></div>
+address1 = 0xF000
+</code></pre></div>
 <p>This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: <code>0xE000</code> and <code>0xF000</code></p>
 <p>The second Partition Table might possibly be used in future to support a second CPU. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L475-L505">See this</a></p>
 <h2 id="partition-entry-for-firmware"><a class="doc-anchor" href="#partition-entry-for-firmware">§</a>3.1 Partition Entry for Firmware</h2>
@@ -493,7 +511,8 @@ address0 = 0x10000
 size0    = 0xC8000
 address1 = 0xD8000
 size1    = 0x88000
-len      = 0</code></pre></div>
+len      = 0
+</code></pre></div>
 <p>It says that our Firmware Image is located at offset <code>0x10000</code>.</p>
 <p><em>(But why two contiguous sections: <code>0x10000</code> and <code>0xD8000</code>?)</em></p>
 <h2 id="partition-entry-for-device-tree"><a class="doc-anchor" href="#partition-entry-for-device-tree">§</a>3.2 Partition Entry for Device Tree</h2><div class="example-wrap"><pre class="language-text"><code>[[pt_entry]]
@@ -504,7 +523,8 @@ address0 = 0x1F8000
 size0    = 0x7000
 address1 = 0
 size1    = 0
-len      = 0</code></pre></div>
+len      = 0
+</code></pre></div>
 <p>This is the Partition Entry for the Device Tree at offset <code>0x1F8000</code>. We’ll cover the Device Tree in a while.</p>
 <p><img src="https://lupyuen.github.io/images/flash-start.png" alt="BL602 Start Code refers to the Partition Table" /></p>
 <p><em>BL602 Start Code refers to the Partition Table</em></p>
@@ -544,7 +564,8 @@ ef_sboot_en        = 0
 ef_dbg_jtag_dis    = 0
 ef_dbg_mode        = 0
 ef_dbg_pwd_low     = 0
-ef_dbg_pwd_high    = 0</code></pre></div><h2 id="boot-header-configuration"><a class="doc-anchor" href="#boot-header-configuration">§</a>4.1 Boot Header Configuration</h2>
+ef_dbg_pwd_high    = 0
+</code></pre></div><h2 id="boot-header-configuration"><a class="doc-anchor" href="#boot-header-configuration">§</a>4.1 Boot Header Configuration</h2>
 <p>The EFuse Configuration also includes a <strong>Boot Header Configuration</strong> that specifies how the Boot2 Bootloader and Firmware Image should be flashed to ROM.</p>
 <p>Here’s a snippet from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>efuse_bootheader_cfg.conf</code></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>[BOOTHEADER_CFG]
@@ -574,7 +595,8 @@ chip_erase_cmd   = 0xc7
 sector_erase_cmd = 0x20
 blk32k_erase_cmd = 0x52
 blk64k_erase_cmd = 0xd8
-...</code></pre></div>
+...
+</code></pre></div>
 <p>JEDEC refers to the <a href="https://en.wikipedia.org/wiki/Common_Flash_Memory_Interface">Common Flash Memory Interface</a> that’s used to access Flash Memory.</p>
 <p><img src="https://lupyuen.github.io/images/flash-bootheader.png" alt="Boot Header at base of XIP Flash Memory 0x2300 0000" /></p>
 <p>Here we see that the Boot Header (in binary form) is located at the base of XIP Flash Memory (<code>0x2300 0000</code>).</p>
@@ -653,7 +675,8 @@ blk64k_erase_cmd = 0xd8
     feature = &quot;led&quot;;                     
     active  = &quot;Hi&quot;;     //  Hi or Lo
     mode    = &quot;blink&quot;;  //  blink or hearbeat
-    time    = &lt;100&gt;;    //  Duration for this mode</code></pre></div>
+    time    = &lt;100&gt;;    //  Duration for this mode
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L16-L23">Device Tree Source</a></p>
 <h2 id="gpio-button"><a class="doc-anchor" href="#gpio-button">§</a>7.2 GPIO Button</h2>
 <p>Here we configure GPIO 2 as a Button Input (note the debounce logic)…</p>
@@ -679,7 +702,8 @@ blk64k_erase_cmd = 0xd8
             start  = &lt;15000&gt;;
             kevent = &lt;4&gt;;
         };
-        trig_level = &quot;Hi&quot;;</code></pre></div>
+        trig_level = &quot;Hi&quot;;
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L32-L57">Device Tree Source</a></p>
 <h2 id="uart"><a class="doc-anchor" href="#uart">§</a>7.3 UART</h2>
 <p>This is the default UART setting for <code>/dev/ttyS0</code>, on GPIO 7 and 16 at 2 Mbps…</p>
@@ -703,7 +727,8 @@ blk64k_erase_cmd = 0xd8
         cts = &quot;disable&quot;;
         rts = &quot;disable&quot;;
     };
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L194-L214">Device Tree Source</a></p>
 <p>There is a second UART Port at <code>/dev/ttyS1</code>, on GPIO 3 and 4 at 115.2 kbps…</p>
 <div class="example-wrap"><pre class="language-text"><code>uart@4000A100 {
@@ -726,7 +751,8 @@ blk64k_erase_cmd = 0xd8
         cts = &quot;disable&quot;;
         rts = &quot;disable&quot;;
     };
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L215-L235">Device Tree Source</a></p>
 <h2 id="pwm"><a class="doc-anchor" href="#pwm">§</a>7.4 PWM</h2>
 <p>This PWM setting could be useful for turning PineCone’s onboard RGB LED into a Disco Light…</p>
@@ -742,7 +768,8 @@ blk64k_erase_cmd = 0xd8
         pin        = &lt;0&gt;;
         freq       = &lt;800000&gt;;
         duty       = &lt;50&gt;;
-    };</code></pre></div>
+    };
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L126-L135">Device Tree Source</a></p>
 <h2 id="wifi"><a class="doc-anchor" href="#wifi">§</a>7.5 WiFi</h2>
 <p>This complicated setting configures the WiFi stack (including SSID)…</p>
@@ -767,7 +794,8 @@ blk64k_erase_cmd = 0xd8
         pwd  = &quot;12345678&quot;;
         ap_channel       = &lt;11&gt;;
         auto_chan_detect = &quot;disable&quot;;
-    };</code></pre></div>
+    };
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L281-L333">Device Tree Source</a></p>
 <h2 id="bluetooth"><a class="doc-anchor" href="#bluetooth">§</a>7.6 Bluetooth</h2>
 <p>Bluetooth is configured in the Device Tree too…</p>
@@ -776,7 +804,8 @@ blk64k_erase_cmd = 0xd8
     #size-cells = &lt;1&gt;;
     brd_rf {
         pwr_table_ble = &lt;13&gt;;  //range:-3~15dbm; if set -3, please set 253 here
-    };</code></pre></div>
+    };
+</code></pre></div>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L334-L340">Device Tree Source</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree">More about BL602 Device Tree</a></p>
 <p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
@@ -846,7 +875,8 @@ blk64k_erase_cmd = 0xd8
 <div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
-  --baud-rate 230400</code></pre></div>
+  --baud-rate 230400
+</code></pre></div>
 <p>Note: blflash won’t work on macOS at 1 Mbps because it’s not a standard POSIX baud rate. That’s why we use a lower baud rate like 230.4 kbps.</p>
 </li>
 <li>
@@ -923,7 +953,8 @@ blk64k_erase_cmd = 0xd8
 <p><a href="https://codeberg.org/JF002"><strong>JF</strong></a> reported an interesting problem with his prototype PineDio Stack BL604 V2 board: It fails to flash any firmware.</p>
 <p>(My PineDio Stack V2 flashes OK)</p>
 <p>BLDevCube shows this error…</p>
-<div class="example-wrap"><pre class="language-text"><code>{&quot;ErrorCode&quot;: &quot;0036&quot;,&quot;ErrorMsg&quot;:&quot;BFLB FLASH WRITE FAIL&quot;}</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>{&quot;ErrorCode&quot;: &quot;0036&quot;,&quot;ErrorMsg&quot;:&quot;BFLB FLASH WRITE FAIL&quot;}
+</code></pre></div>
 <p>The engineers at Bouffalo Lab told us…</p>
 <p>“We judge that a hardware error caused XZ work fail, maybe the ram of the chip is faulty.”</p>
 <p>“We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/ eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool.”</p>
@@ -939,24 +970,31 @@ blk64k_erase_cmd = 0xd8
 <div class="example-wrap"><pre class="language-text"><code>$ blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
 
 Error: IO error while using serial port:
-Permission denied</code></pre></div>
+Permission denied
+</code></pre></div>
 <p>To fix this, we need to <strong>add our user to the Linux Group</strong> that has access to the USB UART Port.</p>
 <p>Enter this command to <strong>show the group</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls -g /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls -g /dev/ttyUSB0
+</code></pre></div>
 <p>For Debian and Ubuntu: The group is <strong><code>dialout</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 dialout 188, 0 Feb 16 19:50 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 dialout 188, 0 Feb 16 19:50 /dev/ttyUSB0
+</code></pre></div>
 <p>For Arch Linux and Manjaro: The group is <strong><code>uucp</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 uucp 188, 0 Feb 16 19:50 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 uucp 188, 0 Feb 16 19:50 /dev/ttyUSB0
+</code></pre></div>
 <p>Enter this command to <strong>add our user</strong> to the group…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  For Debian and Ubuntu:
 sudo usermod -a -G dialout $USER
 
 ##  For Arch Linux and Manjaro:
-sudo usermod -a -G uucp $USER</code></pre></div>
+sudo usermod -a -G uucp $USER
+</code></pre></div>
 <p><strong>Logout and login</strong> for the changes to take effect…</p>
-<div class="example-wrap"><pre class="language-bash"><code>logout</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>logout
+</code></pre></div>
 <p>Verify that our user is in the group…</p>
-<div class="example-wrap"><pre class="language-bash"><code>groups</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>groups
+</code></pre></div>
 <p>We should see <code>dialout</code> or <code>uucp</code></p>
 <p>We may now flash (<code>blflash</code>) or run (<code>screen</code>) BL602 firmware. (Without <code>sudo</code>)</p>
 <h1 id="appendix-bl602-flashing-screenshots"><a class="doc-anchor" href="#appendix-bl602-flashing-screenshots">§</a>13 Appendix: BL602 Flashing Screenshots</h1><h2 id="linux-arm64"><a class="doc-anchor" href="#linux-arm64">§</a>13.1 Linux Arm64</h2>
@@ -1072,7 +1110,8 @@ len = 0
 ##address1 = 0
 ##size1 = 0
 ## compressed image must set len,normal image can left it to 0
-##len = 0</code></pre></div><h1 id="appendix-bl602-device-tree"><a class="doc-anchor" href="#appendix-bl602-device-tree">§</a>15 Appendix: BL602 Device Tree</h1>
+##len = 0
+</code></pre></div><h1 id="appendix-bl602-device-tree"><a class="doc-anchor" href="#appendix-bl602-device-tree">§</a>15 Appendix: BL602 Device Tree</h1>
 <ul>
 <li>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts</code></a></p>
@@ -1423,7 +1462,8 @@ len = 0
             pwr_table_ble = &lt;13&gt;;  //range:-3~15dbm; if set -3, please set 253 here
         };
     };
-};</code></pre></div><h1 id="appendix-bl602-efuse-configuration"><a class="doc-anchor" href="#appendix-bl602-efuse-configuration">§</a>16 Appendix: BL602 EFuse Configuration</h1>
+};
+</code></pre></div><h1 id="appendix-bl602-efuse-configuration"><a class="doc-anchor" href="#appendix-bl602-efuse-configuration">§</a>16 Appendix: BL602 EFuse Configuration</h1>
 <ul>
 <li>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf</code></a></p>
@@ -1630,7 +1670,8 @@ hash_5 = 0
 hash_6 = 0
 hash_7 = 0
 
-crc32 = 0xdeadbeef</code></pre></div><h1 id="appendix-bldevcube-flashing-log"><a class="doc-anchor" href="#appendix-bldevcube-flashing-log">§</a>17 Appendix: BLDevCube Flashing Log</h1>
+crc32 = 0xdeadbeef
+</code></pre></div><h1 id="appendix-bldevcube-flashing-log"><a class="doc-anchor" href="#appendix-bldevcube-flashing-log">§</a>17 Appendix: BLDevCube Flashing Log</h1>
 <p>Sample flashing log emitted by <code>bl_iot_sdk/tools/ flash_tool/BLDevCube.exe</code> on Windows…</p>
 <div class="example-wrap"><pre class="language-text"><code>[23:01:59.398] - [param]
 interface_type = &quot;Uart&quot;
@@ -1861,7 +1902,8 @@ Load 4096/5671 {&quot;progress&quot;:72}
 [23:02:05.026] - Verify success
 [23:02:05.027] - Program Finished
 [23:02:05.028] - All time cost(ms): 4766.982421875
-[23:02:05.136] - [All Success]</code></pre></div>
+[23:02:05.136] - [All Success]
+</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

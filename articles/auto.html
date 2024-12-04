@@ -60,41 +60,41 @@
     
 
     <h1 class="title">Auto Flash and Test NuttX on RISC-V BL602</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#bl602-basics" title="BL602 Basics">1 BL602 Basics</a><ul></ul></li>
-<li><a href="#connect-bl602-to-single-board-computer" title="Connect BL602 to Single-Board Computer">2 Connect BL602 to Single-Board Computer</a><ul></ul></li>
-<li><a href="#control-gpio-with-linux" title="Control GPIO with Linux">3 Control GPIO with Linux</a><ul>
-<li><a href="#enable-gpio" title="Enable GPIO">3.1 Enable GPIO</a><ul></ul></li>
-<li><a href="#configure-gpio-output" title="Configure GPIO Output">3.2 Configure GPIO Output</a><ul></ul></li>
-<li><a href="#enter-flashing-mode" title="Enter Flashing Mode">3.3 Enter Flashing Mode</a><ul></ul></li>
-<li><a href="#reset-bl602" title="Reset BL602">3.4 Reset BL602</a><ul></ul></li>
-<li><a href="#flash-bl602" title="Flash BL602">3.5 Flash BL602</a><ul></ul></li>
-<li><a href="#exit-flashing-mode" title="Exit Flashing Mode">3.6 Exit Flashing Mode</a><ul></ul></li>
-<li><a href="#show-bl602-output" title="Show BL602 Output">3.7 Show BL602 Output</a><ul></ul></li></ul></li>
-<li><a href="#run-the-script" title="Run The Script">4 Run The Script</a><ul>
-<li><a href="#download-nuttx" title="Download NuttX">4.1 Download NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx" title="Flash NuttX">4.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#boot-nuttx" title="Boot NuttX">4.3 Boot NuttX</a><ul></ul></li>
-<li><a href="#test-nuttx" title="Test NuttX">4.4 Test NuttX</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-crash-analysis" title="NuttX Crash Analysis">5 NuttX Crash Analysis</a><ul>
-<li><a href="#decode-stack-trace" title="Decode Stack Trace">5.1 Decode Stack Trace</a><ul></ul></li>
-<li><a href="#disassemble-the-firmware" title="Disassemble The Firmware">5.2 Disassemble The Firmware</a><ul></ul></li>
-<li><a href="#decode-addresses" title="Decode Addresses">5.3 Decode Addresses</a><ul></ul></li>
-<li><a href="#auto-analysis" title="Auto Analysis">5.4 Auto Analysis</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-test" title="LoRaWAN Test">6 LoRaWAN Test</a><ul></ul></li>
-<li><a href="#merge-updates-from-nuttx" title="Merge Updates From NuttX">7 Merge Updates From NuttX</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes" title="Notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-with-github-actions" title="Appendix: Build NuttX with GitHub Actions">10 Appendix: Build NuttX with GitHub Actions</a><ul>
-<li><a href="#build-schedule" title="Build Schedule">10.1 Build Schedule</a><ul></ul></li>
-<li><a href="#install-build-tools" title="Install Build Tools">10.2 Install Build Tools</a><ul></ul></li>
-<li><a href="#install-toolchain" title="Install Toolchain">10.3 Install Toolchain</a><ul></ul></li>
-<li><a href="#checkout-source-files" title="Checkout Source Files">10.4 Checkout Source Files</a><ul></ul></li>
-<li><a href="#configure-build" title="Configure Build">10.5 Configure Build</a><ul></ul></li>
-<li><a href="#build-nuttx" title="Build NuttX">10.6 Build NuttX</a><ul></ul></li>
-<li><a href="#upload-build-outputs" title="Upload Build Outputs">10.7 Upload Build Outputs</a><ul></ul></li>
-<li><a href="#publish-release" title="Publish Release">10.8 Publish Release</a><ul></ul></li></ul></li>
-<li><a href="#appendix-fix-lorawan-nonce" title="Appendix: Fix LoRaWAN Nonce">11 Appendix: Fix LoRaWAN Nonce</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#bl602-basics">1 BL602 Basics</a><ul></ul></li>
+<li><a href="#connect-bl602-to-single-board-computer">2 Connect BL602 to Single-Board Computer</a><ul></ul></li>
+<li><a href="#control-gpio-with-linux">3 Control GPIO with Linux</a><ul>
+<li><a href="#enable-gpio">3.1 Enable GPIO</a><ul></ul></li>
+<li><a href="#configure-gpio-output">3.2 Configure GPIO Output</a><ul></ul></li>
+<li><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a><ul></ul></li>
+<li><a href="#reset-bl602">3.4 Reset BL602</a><ul></ul></li>
+<li><a href="#flash-bl602">3.5 Flash BL602</a><ul></ul></li>
+<li><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a><ul></ul></li>
+<li><a href="#show-bl602-output">3.7 Show BL602 Output</a><ul></ul></li></ul></li>
+<li><a href="#run-the-script">4 Run The Script</a><ul>
+<li><a href="#download-nuttx">4.1 Download NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">4.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#boot-nuttx">4.3 Boot NuttX</a><ul></ul></li>
+<li><a href="#test-nuttx">4.4 Test NuttX</a><ul></ul></li></ul></li>
+<li><a href="#nuttx-crash-analysis">5 NuttX Crash Analysis</a><ul>
+<li><a href="#decode-stack-trace">5.1 Decode Stack Trace</a><ul></ul></li>
+<li><a href="#disassemble-the-firmware">5.2 Disassemble The Firmware</a><ul></ul></li>
+<li><a href="#decode-addresses">5.3 Decode Addresses</a><ul></ul></li>
+<li><a href="#auto-analysis">5.4 Auto Analysis</a><ul></ul></li></ul></li>
+<li><a href="#lorawan-test">6 LoRaWAN Test</a><ul></ul></li>
+<li><a href="#merge-updates-from-nuttx">7 Merge Updates From NuttX</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a><ul>
+<li><a href="#build-schedule">10.1 Build Schedule</a><ul></ul></li>
+<li><a href="#install-build-tools">10.2 Install Build Tools</a><ul></ul></li>
+<li><a href="#install-toolchain">10.3 Install Toolchain</a><ul></ul></li>
+<li><a href="#checkout-source-files">10.4 Checkout Source Files</a><ul></ul></li>
+<li><a href="#configure-build">10.5 Configure Build</a><ul></ul></li>
+<li><a href="#build-nuttx">10.6 Build NuttX</a><ul></ul></li>
+<li><a href="#upload-build-outputs">10.7 Upload Build Outputs</a><ul></ul></li>
+<li><a href="#publish-release">10.8 Publish Release</a><ul></ul></li></ul></li>
+<li><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
 <p><a href="https://lupyuen.github.io/articles/auto2"><strong>UPDATE:</strong> Check out the new article on Automated Testing for PineDio Stack BL604</a></p>
@@ -168,7 +168,8 @@ Connection Succeed
 Sending eflash_loader...
 Program flash...
 ...
-Success</code></pre></div></li>
+Success
+</code></pre></div></li>
 <li>
 <p>Flip the <strong>GPIO 8 Jumper</strong> to  <strong>Low</strong> (pic below)</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="PineCone BL602 in Normal Mode with GPIO 8 set to Low" /></p>
@@ -229,7 +230,8 @@ fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
   echo  3 &gt;/sys/class/gpio/export
   sleep 1
-fi</code></pre></div>
+fi
+</code></pre></div>
 <p><a href="https://www.ics.com/blog/gpio-programming-using-sysfs-interface">(<strong>/sys/class/gpio</strong> comes from the Linux sysfs Interface)</a></p>
 <p>After enabling GPIO 2 and 3, these <strong>GPIO Interfaces</strong> will appear in Linux…</p>
 <ul>
@@ -245,13 +247,15 @@ fi</code></pre></div>
 <p>Our script configures GPIO 2 and 3 for <strong>GPIO Output</strong> (instead of GPIO Input): <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L50-L52">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set GPIO 2 and 3 as output
 echo out &gt;/sys/class/gpio/gpio2/direction
-echo out &gt;/sys/class/gpio/gpio3/direction</code></pre></div>
+echo out &gt;/sys/class/gpio/gpio3/direction
+</code></pre></div>
 <p>Now we’re ready to toggle GPIO 2 and 3 to flash and reset BL602!</p>
 <h2 id="enter-flashing-mode"><a class="doc-anchor" href="#enter-flashing-mode">§</a>3.3 Enter Flashing Mode</h2>
 <p>To enter <strong>Flashing Mode</strong>, our script sets GPIO 2 to <strong>High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L54-L55">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set GPIO 2 to High (BL602 Flashing Mode)
 echo  1 &gt;/sys/class/gpio/gpio2/value
-sleep 1</code></pre></div>
+sleep 1
+</code></pre></div>
 <p>But to make it happen we need to restart BL602, coming up next…</p>
 <h2 id="reset-bl602"><a class="doc-anchor" href="#reset-bl602">§</a>3.4 Reset BL602</h2>
 <p>To <strong>restart BL602</strong> (and actually enter Flashing Mode), our script toggles GPIO 3 <strong>High-Low-High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L57-L65">test.sh</a></p>
@@ -261,7 +265,8 @@ sleep 1
 echo  0 &gt;/sys/class/gpio/gpio3/value
 sleep 1
 echo  1 &gt;/sys/class/gpio/gpio3/value
-sleep 1</code></pre></div>
+sleep 1
+</code></pre></div>
 <p>BL602 is now in <strong>Flashing Mode</strong>!</p>
 <h2 id="flash-bl602"><a class="doc-anchor" href="#flash-bl602">§</a>3.5 Flash BL602</h2>
 <p>Our script runs <a href="https://github.com/spacemeowx2/blflash"><strong>blflash</strong></a> to flash BL602 over USB UART: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L67-L72">test.sh</a></p>
@@ -270,14 +275,16 @@ sleep 1</code></pre></div>
 blflash flash \
   /tmp/nuttx.bin \
   --port /dev/ttyUSB0
-sleep 1</code></pre></div>
+sleep 1
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(<strong>nuttx.bin</strong> is the Daily Upstream Build of NuttX OS, as explained in the Appendix)</a></p>
 <p>Our firmware has been flashed automagically!</p>
 <h2 id="exit-flashing-mode"><a class="doc-anchor" href="#exit-flashing-mode">§</a>3.6 Exit Flashing Mode</h2>
 <p>Now we return to <strong>Normal Mode</strong> (Non-Flashing) by setting GPIO 2 to <strong>Low</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L74-L80">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Set GPIO 2 to Low (BL602 Normal Mode)
 echo  0 &gt;/sys/class/gpio/gpio2/value
-sleep 1</code></pre></div>
+sleep 1
+</code></pre></div>
 <p>We effect the change by <strong>restarting BL602</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Toggle GPIO 3 High-Low-High (Reset BL602)
 echo  1 &gt;/sys/class/gpio/gpio3/value
@@ -285,7 +292,8 @@ sleep 1
 echo  0 &gt;/sys/class/gpio/gpio3/value
 sleep 1
 echo  1 &gt;/sys/class/gpio/gpio3/value
-sleep 1</code></pre></div>
+sleep 1
+</code></pre></div>
 <p>BL602 starts booting our firmware, but we need some prep…</p>
 <h2 id="show-bl602-output"><a class="doc-anchor" href="#show-bl602-output">§</a>3.7 Show BL602 Output</h2>
 <p>We’re ready to show the output from our BL602 Firmware (NuttX). Our script sets the USB UART’s Baud Rate to <strong>2 Mbps</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L82-L98">test.sh</a></p>
@@ -293,7 +301,8 @@ sleep 1</code></pre></div>
 ##  Set USB UART to 2 Mbps.
 stty \
   -F /dev/ttyUSB0 \
-  raw 2000000</code></pre></div>
+  raw 2000000
+</code></pre></div>
 <p>(Otherwise the output will be garbled)</p>
 <p>Then our script <strong>streams the output</strong> from BL602 over USB UART…</p>
 
@@ -315,11 +324,13 @@ echo  1 &gt;/sys/class/gpio/gpio3/value ; sleep 1
 sleep 1
 
 ##  Omitted: Send test command and analyse the BL602 output
-...</code></pre></div>
+...
+</code></pre></div>
 <p>(We’ll talk later about the output analysis)</p>
 <p>Remember that the BL602 output is still being streamed in a Background Task. Our script <strong>terminates the Background Task</strong> like so: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L196-L197">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  Kill the background task that captures the BL602 output
-kill %1</code></pre></div>
+kill %1
+</code></pre></div>
 <p>And we’re done!</p>
 <p><em>So this script totally replaces a human flipping the jumper and smashing the button on BL602?</em></p>
 <p>Yep our Linux Script totally controls the <strong>Flashing and Reset</strong> Functions on BL602… No more human intervention!</p>
@@ -356,7 +367,8 @@ git clone --recursive https://github.com/lupyuen/remote-bl602
 ##  export BUILD_DATE=2022-01-19
 
 ##  Run the script
-remote-bl602/scripts/test.sh</code></pre></div>
+remote-bl602/scripts/test.sh
+</code></pre></div>
 <p>(For Arch Linux and Manjaro: Change “dialout” to “uucp”)</p>
 <p>Our script flashes and runs NuttX on BL602 like so…</p>
 <ul>
@@ -371,7 +383,8 @@ remote-bl602/scripts/test.sh</code></pre></div>
 ----- Download the latest upstream NuttX build for 2022-01-21
 + wget -q \
   https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-21/nuttx.zip \
-  -O /tmp/nuttx.zip</code></pre></div>
+  -O /tmp/nuttx.zip
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(<strong>nuttx.zip</strong> is built daily by GitHub Actions, as explained in the Appendix)</a></p>
 <p>Our script unzips <strong>nuttx.zip</strong>, which includes the following files…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd /tmp
@@ -384,7 +397,8 @@ Archive:  nuttx.zip
   inflating: nuttx.hex
   inflating: nuttx.manifest
   inflating: nuttx.map
-+ popd</code></pre></div>
++ popd
+</code></pre></div>
 <ul>
 <li>
 <p><strong>nuttx</strong>: Firmware in ELF Format</p>
@@ -409,7 +423,8 @@ Set GPIO 2 and 3 as output
 Set GPIO 2 to High (BL602 Flashing Mode)
 Toggle GPIO 3 High-Low-High (Reset BL602)
 Toggle GPIO 3 High-Low-High (Reset BL602 again)
-BL602 is now in Flashing Mode</code></pre></div>
+BL602 is now in Flashing Mode
+</code></pre></div>
 <p>We flash the downloaded NuttX Firmware <strong>nuttx.bin</strong> to BL602 with <a href="https://github.com/spacemeowx2/blflash"><strong>blflash</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Flash BL602 over USB UART with blflash
 + blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
@@ -418,12 +433,14 @@ Connection Succeed
 Sending eflash_loader...
 Entered eflash_loader
 Program flash...
-Success</code></pre></div><h2 id="boot-nuttx"><a class="doc-anchor" href="#boot-nuttx">§</a>4.3 Boot NuttX</h2>
+Success
+</code></pre></div><h2 id="boot-nuttx"><a class="doc-anchor" href="#boot-nuttx">§</a>4.3 Boot NuttX</h2>
 <p>After flashing, we switch BL602 back to <strong>Normal Mode</strong> by flipping GPIO 2 and 3…</p>
 <div class="example-wrap"><pre class="language-text"><code>Set GPIO 2 to Low (BL602 Normal Mode)
 Toggle GPIO 3 High-Low-High (Reset BL602)
 BL602 is now in Normal Mode
-Toggle GPIO 3 High-Low-High (Reset BL602)</code></pre></div>
+Toggle GPIO 3 High-Low-High (Reset BL602)
+</code></pre></div>
 <p>BL602 boots the NuttX Firmware and starts the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Here is the BL602 Output...
 gpio_pin_register: Registering /dev/gpio0
@@ -435,15 +452,18 @@ bl602_spi_setbits: nbits=8
 bl602_spi_setmode: mode=0
 
 NuttShell (NSH) NuttX-10.2.0
-nsh&gt;</code></pre></div><h2 id="test-nuttx"><a class="doc-anchor" href="#test-nuttx">§</a>4.4 Test NuttX</h2>
+nsh&gt;
+</code></pre></div><h2 id="test-nuttx"><a class="doc-anchor" href="#test-nuttx">§</a>4.4 Test NuttX</h2>
 <p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L111"><strong>sends a Test Command</strong></a> to BL602 and the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lorawan_test
 lorawan_test
 nsh: lorawan_test: command not found
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p><strong>lorawan_test</strong> is missing because the Upstream Build doesn’t include the LoRaWAN Stack.</p>
 <p>But that’s OK, we’ll see LoRaWAN in action when we test the Release Build of NuttX.</p>
-<div class="example-wrap"><pre class="language-text"><code>===== Boot OK</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>===== Boot OK
+</code></pre></div>
 <p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134"><strong>analyses the output</strong></a> and determines that NuttX has booted successfully.</p>
 <p>We’re done with the <strong>simplest scenario</strong> for Auto Flash and Test! Now we have a quick and nifty way to discover if Today’s Upstream Build of NuttX boots OK on BL602.</p>
 <p><a href="https://github.com/lupyuen/nuttx/releases">(I run the script every day to check the stability of the BL602 build)</a></p>
@@ -457,7 +477,8 @@ nsh&gt;</code></pre></div>
 <h2 id="decode-stack-trace"><a class="doc-anchor" href="#decode-stack-trace">§</a>5.1 Decode Stack Trace</h2>
 <p>At the top is the <strong>Assertion Failure</strong> message…</p>
 <div class="example-wrap"><pre class="language-text"><code>irq_unexpected_isr: ERROR irq: 1
-up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task</code></pre></div>
+up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task
+</code></pre></div>
 <p><strong>Always enable Debug Assertions</strong> in our NuttX Build Configuration. They are super helpful for catching problems. <a href="https://lupyuen.github.io/articles/spi2#enable-logging">(Here’s how)</a></p>
 <p>Next we see the <strong>Register Dump</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_registerdump: EPC: deadbeee
@@ -468,28 +489,33 @@ riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48ae7e4
 riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
 riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
 riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
-riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 0c8a646d RA: deadbeef</code></pre></div>
+riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 0c8a646d RA: deadbeef
+</code></pre></div>
 <p>Followed by the <strong>Interrupt Stack</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dumpstate: sp:     420144b0
 riscv_dumpstate: IRQ stack:
 riscv_dumpstate:   base: 42012540
-riscv_dumpstate:   size: 00002000</code></pre></div>
+riscv_dumpstate:   size: 00002000
+</code></pre></div>
 <p>The <strong>Stack Dump</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
 riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
 riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
 riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
-riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04</code></pre></div>
+riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04
+</code></pre></div>
 <p>The <strong>User Stack</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_dumpstate: sp:     420126b0
 riscv_dumpstate: User stack:
 riscv_dumpstate:   base: 42010530
-riscv_dumpstate:   size: 00001fe0</code></pre></div>
+riscv_dumpstate:   size: 00001fe0
+</code></pre></div>
 <p>Finally the <strong>Task List</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
 riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
 riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
-riscv_dump_task:      1    100       516      8144     6.3%    nsh_main</code></pre></div>
+riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
+</code></pre></div>
 <p>(The Interrupt Stack <strong>irq</strong> seems to be overflowing, it might have caused NuttX to crash)</p>
 <p>In a while we’ll select the interesting addresses from above and decode them.</p>
 <p><img src="https://lupyuen.github.io/images/auto-crash2.png" alt="Stack Overflow?" /></p>
@@ -500,7 +526,8 @@ riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1</code></pre></div>
+  2&gt;&amp;1
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml#L109-L114">(Source)</a></p>
 <p>This generates the Disassembly File <strong>nuttx.S</strong>, which we’ll use in the next step.</p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-17/nuttx.zip">(Here’s a sample <strong>nuttx.S</strong>)</a></p>
@@ -520,12 +547,14 @@ riscv64-unknown-elf-objdump \
   --context=5 \
   --color=auto \
   &quot;230053a0:&quot; \
-  nuttx.S</code></pre></div>
+  nuttx.S
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L153-L166">(Source)</a></p>
 <p>Which shows…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_assert.c:364
   if (CURRENT_REGS)
-    sp = CURRENT_REGS[REG_SP];</code></pre></div>
+    sp = CURRENT_REGS[REG_SP];
+</code></pre></div>
 <p>This is the <strong>Source Code</strong> for address <strong><code>230053a0</code></strong>.</p>
 <p>(Which is in the Assertion Handler, doesn’t look helpful)</p>
 <p>Repeat this process for the <strong>other Code Addresses</strong>: <code>230042e2</code>, <code>23001cdc</code>, <code>23000db4</code>, <code>23000d04</code>, …</p>
@@ -538,10 +567,12 @@ riscv64-unknown-elf-objdump \
   --color=auto \
   &quot;^42012510&quot; \
   nuttx.S \
-  | grep -v &quot;noinit&quot;</code></pre></div>
+  | grep -v &quot;noinit&quot;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L177-L190">(Source)</a></p>
 <p>Which shows…</p>
-<div class="example-wrap"><pre class="language-text"><code>42012510 ... g_idleargv</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>42012510 ... g_idleargv
+</code></pre></div>
 <p>This says that <strong>g_idleargv</strong> is the name of the variable at address <strong><code>42012510</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack2.png" alt="Auto Crash Analysis" /></p>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L136-L194">(Source)</a></p>
@@ -629,7 +660,8 @@ export BUILD_PREFIX=release
 export BUILD_DATE=2022-01-19
 
 ##  Run the script
-remote-bl602/scripts/test.sh</code></pre></div>
+remote-bl602/scripts/test.sh
+</code></pre></div>
 <p>(Release Build includes the LoRaWAN Stack)</p>
 <p>After booting NuttX, our script sends the <strong>Test LoRaWAN</strong> command to the NuttX Shell: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L116">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>##  If BL602 has not crashed, send the test command to BL602
@@ -641,14 +673,17 @@ sleep 30
 ##  Check whether BL602 has joined the LoRaWAN Network
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;JOINED&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div>
+set -e  ##  Exit when any command fails
+</code></pre></div>
 <p>And it watches for this output message…</p>
 <div class="example-wrap"><pre class="language-text"><code>###### =========== MLME-Confirm ============ ######
 STATUS: OK
-###### ===========   JOINED     ============ ######</code></pre></div>
+###### ===========   JOINED     ============ ######
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
 <p>Which means that BL602 has successfully joined the <strong>LoRaWAN Network</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>===== All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>===== All OK! BL602 has successfully joined the LoRaWAN Network
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
 <p>And everything has tested OK on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/auto-lorawan2.png" alt="BL602 successfully joins the LoRaWAN Network" /></p>
@@ -720,7 +755,8 @@ export BUILD_PREFIX=downstream
 export BUILD_DATE=2022-01-19
 
 ##  Run the script
-remote-bl602/scripts/test.sh</code></pre></div>
+remote-bl602/scripts/test.sh
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/downstream-2022-01-19">(See the output)</a></p>
 <p><em>Can we solve this by merging the LoRaWAN Stack upstream?</em></p>
 <p>The LoRaWAN Stack is <strong>not ready to be upstreamed</strong> because it uses different Coding Conventions. <a href="https://lupyuen.github.io/articles/lorawan3#notes">(See this)</a></p>
@@ -797,7 +833,8 @@ remote-bl602/scripts/test.sh</code></pre></div>
 on:
   ## Run every day at 0:30 UTC, because 0:00 UTC seems too busy for the scheduler
   schedule:
-    - cron: &#39;30 0 * * *&#39;</code></pre></div>
+    - cron: &#39;30 0 * * *&#39;
+</code></pre></div>
 <p>(The build will actually start at around <strong>1:45 UTC</strong>, depending on the available server capacity at GitHub Actions)</p>
 <p>Note that the scheduled run is <strong>not guaranteed</strong>, it may be cancelled if GitHub Actions is too busy. <a href="https://github.community/t/no-assurance-on-scheduled-jobs/133753/2">(See this)</a></p>
 <h2 id="install-build-tools"><a class="doc-anchor" href="#install-build-tools">§</a>10.2 Install Build Tools</h2>
@@ -815,19 +852,22 @@ on:
           libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
           libexpat-dev gcc-multilib g++-multilib u-boot-tools util-linux \
           kconfig-frontends \
-          wget</code></pre></div><h2 id="install-toolchain"><a class="doc-anchor" href="#install-toolchain">§</a>10.3 Install Toolchain</h2>
+          wget
+</code></pre></div><h2 id="install-toolchain"><a class="doc-anchor" href="#install-toolchain">§</a>10.3 Install Toolchain</h2>
 <p>We download the <strong>RISC-V GCC Toolchain</strong> (riscv64-unknown-elf-gcc) hosted at SiFive…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Install Toolchain
       run:  |
         wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
-        tar -xf riscv64-unknown-elf-gcc*.tar.gz</code></pre></div><h2 id="checkout-source-files"><a class="doc-anchor" href="#checkout-source-files">§</a>10.4 Checkout Source Files</h2>
+        tar -xf riscv64-unknown-elf-gcc*.tar.gz
+</code></pre></div><h2 id="checkout-source-files"><a class="doc-anchor" href="#checkout-source-files">§</a>10.4 Checkout Source Files</h2>
 <p>We checkout the <strong>NuttX Source Files</strong> from the Apache repo…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Checkout Source Files
       run:  |
         mkdir nuttx
         cd nuttx
         git clone https://github.com/apache/nuttx nuttx
-        git clone https://github.com/apache/nuttx-apps apps</code></pre></div>
+        git clone https://github.com/apache/nuttx-apps apps
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42">(For Release and Downstream Builds we checkout from the repo <strong>lupyuen/nuttx</strong>)</a></p>
 <p>We’re almost ready to build NuttX, but first we configure the NuttX Build.</p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow2.png" alt="Enable errors, warnings, info messages and assertions" /></p>
@@ -841,7 +881,8 @@ on:
         cd nuttx/nuttx
         
         ## Configure the build
-        ./tools/configure.sh bl602evb:nsh</code></pre></div>
+        ./tools/configure.sh bl602evb:nsh
+</code></pre></div>
 <p>This creates the Build Config File <strong>.config</strong>.</p>
 <p>Then we tweak the Build Config to show <strong>Errors, Warnings, Info Messages and Assertions</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Enable errors, warnings, info messages and assertions
@@ -860,7 +901,8 @@ on:
         kconfig-tweak --enable CONFIG_DEBUG_SPI
         kconfig-tweak --enable CONFIG_DEBUG_SPI_ERROR
         kconfig-tweak --enable CONFIG_DEBUG_SPI_WARN
-        kconfig-tweak --enable CONFIG_DEBUG_SPI_INFO</code></pre></div>
+        kconfig-tweak --enable CONFIG_DEBUG_SPI_INFO
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-logging">(See this)</a></p>
 <p>We enable <strong>Floating Point, Stack Canaries</strong> and 2 commands: <strong>“help” and “ls”</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Enable Floating Point
@@ -871,7 +913,8 @@ on:
 
         ## Enable NuttX Shell commands: help, ls
         kconfig-tweak --disable CONFIG_NSH_DISABLE_HELP
-        kconfig-tweak --disable CONFIG_NSH_DISABLE_LS</code></pre></div>
+        kconfig-tweak --disable CONFIG_NSH_DISABLE_LS
+</code></pre></div>
 <p>We enable the <strong>GPIO Driver and Test App</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Enable GPIO
         kconfig-tweak --enable CONFIG_DEV_GPIO
@@ -881,18 +924,21 @@ on:
         kconfig-tweak --enable CONFIG_EXAMPLES_GPIO
         kconfig-tweak --set-str CONFIG_EXAMPLES_GPIO_PROGNAME &quot;gpio&quot;
         kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_PRIORITY 100
-        kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_STACKSIZE 2048</code></pre></div>
+        kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_STACKSIZE 2048
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver">(See this)</a></p>
 <p>We enable the <strong>BL602 SPI Driver</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Enable SPI
         kconfig-tweak --enable CONFIG_BL602_SPI0
         kconfig-tweak --enable CONFIG_SPI
         kconfig-tweak --enable CONFIG_SPI_EXCHANGE
-        kconfig-tweak --enable CONFIG_SPI_DRIVER</code></pre></div>
+        kconfig-tweak --enable CONFIG_SPI_DRIVER
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi">(See this)</a></p>
 <p>Finally we copy the Build Config to <strong>nuttx.config</strong> so that we may download and inspect later…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Preserve the build config
-        cp .config nuttx.config</code></pre></div>
+        cp .config nuttx.config
+</code></pre></div>
 <p>We’re ready to build NuttX!</p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(For Release and Downstream Builds we also enable the LoRaWAN Stack)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow3.jpg" alt="For the Release and Downstream Builds we also enable the LoRaWAN Stack" /></p>
@@ -900,7 +946,8 @@ on:
 <h2 id="build-nuttx"><a class="doc-anchor" href="#build-nuttx">§</a>10.6 Build NuttX</h2>
 <p>This builds the <strong>NuttX Firmware</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        ## Run the build
-        make</code></pre></div>
+        make
+</code></pre></div>
 <p>Which creates the Firmware Binary <strong>nuttx.bin</strong> (for flashing) and the Firmware ELF <strong>nuttx</strong>.</p>
 <p>(The build completes in under 3 minutes)</p>
 <p>We dump the <strong>RISC-V Disassembly</strong> of the Firmware ELF to <strong>nuttx.S</strong>…</p>
@@ -909,7 +956,8 @@ on:
           -t -S --demangle --line-numbers --wide \
           nuttx \
           &gt;nuttx.S \
-          2&gt;&amp;1</code></pre></div>
+          2&gt;&amp;1
+</code></pre></div>
 <p><strong>nuttx.S</strong> will be used by our Flash and Test Script to do Crash Analysis.</p>
 <h2 id="upload-build-outputs"><a class="doc-anchor" href="#upload-build-outputs">§</a>10.7 Upload Build Outputs</h2>
 <p>We upload all <strong>Build Outputs</strong> (including the Build Config <strong>nuttx.config</strong>) as Artifacts so that we may download later…</p>
@@ -917,7 +965,8 @@ on:
       uses: actions/upload-artifact@v2
       with:
         name: nuttx.zip
-        path: nuttx/nuttx/nuttx*</code></pre></div>
+        path: nuttx/nuttx/nuttx*
+</code></pre></div>
 <p>The NuttX Build Outputs are now available for downloading as Artifacts, but they are <strong>protected by GitHub Login</strong>.</p>
 <p>To allow our Flash and Test Script to access the files without GitHub Authentication, we publish the files as a <strong>GitHub Release</strong>…</p>
 <h2 id="publish-release"><a class="doc-anchor" href="#publish-release">§</a>10.8 Publish Release</h2>
@@ -931,11 +980,13 @@ on:
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Zip Build Outputs
       run: |
         cd nuttx/nuttx
-        zip nuttx.zip nuttx*</code></pre></div>
+        zip nuttx.zip nuttx*
+</code></pre></div>
 <p>Next we get the Current Date: <strong>2022-01-19</strong></p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Get Current Date
       id: date
-      run: echo &quot;::set-output name=date::$(date +&#39;%Y-%m-%d&#39;)&quot;</code></pre></div>
+      run: echo &quot;::set-output name=date::$(date +&#39;%Y-%m-%d&#39;)&quot;
+</code></pre></div>
 <p>We create a <strong>Draft Release</strong> tagged as <strong>upstream-2022-01-19</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Create Draft Release
       id: create_release
@@ -946,7 +997,8 @@ on:
         tag_name: upstream-${{ steps.date.outputs.date }}
         release_name: upstream-${{ steps.date.outputs.date }}
         draft: true
-        prerelease: false</code></pre></div>
+        prerelease: false
+</code></pre></div>
 <p>We upload <strong>nuttx.zip</strong> to the Draft Release…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Upload Release
       uses: actions/upload-release-asset@v1.0.1
@@ -956,14 +1008,16 @@ on:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: nuttx/nuttx/nuttx.zip
         asset_name: nuttx.zip
-        asset_content_type: application/zip</code></pre></div>
+        asset_content_type: application/zip
+</code></pre></div>
 <p>And <strong>publish the Release</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Publish Release
       uses: eregon/publish-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
+        release_id: ${{ steps.create_release.outputs.id }}
+</code></pre></div>
 <p>The end! That’s how we build Upstream NuttX every day and publish the Build Outputs.</p>
 <p>Check out the workflows for the <strong>Release and Downstream</strong> Builds…</p>
 <ul>
@@ -1033,7 +1087,8 @@ static void init_entropy_pool(void) {
 
   //  Force reseeding random number generator from entropy pool
   up_rngreseed();
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L706-L770">(<strong>get_tsen_adc</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_adc">(<strong>get_tsen_adc</strong> calls BL602 ADC Library, which will be replaced by BL602 ADC Driver when it’s available)</a></p>
 <p>This code adds 4 bytes of Temperature Sensor Data 4 times, adding a total of <strong>16 bytes to the Entropy Pool</strong>.</p>
@@ -1046,7 +1101,8 @@ init_entropy_pool
 temperature = 30.181866 Celsius
 temperature = 29.794918 Celsius
 temperature = 30.439829 Celsius
-temperature = 28.376112 Celsius</code></pre></div>
+temperature = 28.376112 Celsius
+</code></pre></div>
 <p>Our LoRaWAN Stack now generates <strong>different LoRaWAN Nonces</strong> for every Flash and Test. And the Join Network Request always succeeds! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce3.jpg" alt="Join Network Request always succeeds" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19">(Source)</a></p>

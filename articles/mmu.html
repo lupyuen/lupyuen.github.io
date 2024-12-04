@@ -64,22 +64,22 @@
     
 
     <h1 class="title">RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit</h1>
-    <nav id="rustdoc"><ul>
-<li><a href="#memory-protection" title="Memory Protection">1 Memory Protection</a><ul></ul></li>
-<li><a href="#huge-chunks-level-1" title="Huge Chunks: Level 1">2 Huge Chunks: Level 1</a><ul></ul></li>
-<li><a href="#medium-chunks-level-2" title="Medium Chunks: Level 2">3 Medium Chunks: Level 2</a><ul></ul></li>
-<li><a href="#connect-level-1-to-level-2" title="Connect Level 1 to Level 2">4 Connect Level 1 to Level 2</a><ul></ul></li>
-<li><a href="#smaller-chunks-level-3" title="Smaller Chunks: Level 3">5 Smaller Chunks: Level 3</a><ul></ul></li>
-<li><a href="#connect-level-2-to-level-3" title="Connect Level 2 to Level 3">6 Connect Level 2 to Level 3</a><ul></ul></li>
-<li><a href="#virtual-memory" title="Virtual Memory">7 Virtual Memory</a><ul></ul></li>
-<li><a href="#user-level-3" title="User Level 3">8 User Level 3</a><ul></ul></li>
-<li><a href="#user-levels-1-and-2" title="User Levels 1 and 2">9 User Levels 1 and 2</a><ul></ul></li>
-<li><a href="#swap-the-satp-register" title="Swap the SATP Register">10 Swap the SATP Register</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-flush-the-mmu-cache-for-t-head-c906" title="Appendix: Flush the MMU Cache for T-Head C906">12 Appendix: Flush the MMU Cache for T-Head C906</a><ul></ul></li>
-<li><a href="#appendix-address-translation" title="Appendix: Address Translation">13 Appendix: Address Translation</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-nuttx" title="Appendix: Build and Run NuttX">14 Appendix: Build and Run NuttX</a><ul></ul></li>
-<li><a href="#appendix-fix-the-interrupt-controller" title="Appendix: Fix the Interrupt Controller">15 Appendix: Fix the Interrupt Controller</a><ul></ul></li></ul></nav><p>📝 <em>19 Nov 2023</em></p>
+    <nav id="TOC"><ul>
+<li><a href="#memory-protection">1 Memory Protection</a><ul></ul></li>
+<li><a href="#huge-chunks-level-1">2 Huge Chunks: Level 1</a><ul></ul></li>
+<li><a href="#medium-chunks-level-2">3 Medium Chunks: Level 2</a><ul></ul></li>
+<li><a href="#connect-level-1-to-level-2">4 Connect Level 1 to Level 2</a><ul></ul></li>
+<li><a href="#smaller-chunks-level-3">5 Smaller Chunks: Level 3</a><ul></ul></li>
+<li><a href="#connect-level-2-to-level-3">6 Connect Level 2 to Level 3</a><ul></ul></li>
+<li><a href="#virtual-memory">7 Virtual Memory</a><ul></ul></li>
+<li><a href="#user-level-3">8 User Level 3</a><ul></ul></li>
+<li><a href="#user-levels-1-and-2">9 User Levels 1 and 2</a><ul></ul></li>
+<li><a href="#swap-the-satp-register">10 Swap the SATP Register</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-flush-the-mmu-cache-for-t-head-c906">12 Appendix: Flush the MMU Cache for T-Head C906</a><ul></ul></li>
+<li><a href="#appendix-address-translation">13 Appendix: Address Translation</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-nuttx">14 Appendix: Build and Run NuttX</a><ul></ul></li>
+<li><a href="#appendix-fix-the-interrupt-controller">15 Appendix: Fix the Interrupt Controller</a><ul></ul></li></ul></nav><p>📝 <em>19 Nov 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/mmu-title.jpg" alt="Sv39 Memory Management Unit" /></p>
 <p><em>What’s this MMU?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/Memory_management_unit"><strong>Memory Management Unit (MMU)</strong></a> is the hardware inside our Single-Board Computer (SBC) that does…</p>
@@ -225,13 +225,15 @@
 
 // Allocate Level 1 Page Table from `.pgtables` section
 static size_t m_l1_pgtable[PGT_L1_SIZE]
-  locate_data(&quot;.pgtables&quot;);</code></pre></div>
+  locate_data(&quot;.pgtables&quot;);
+</code></pre></div>
 <p><strong><code>.pgtables</code></strong> comes from the NuttX Linker Script: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L121-L127">ld.script</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>/* Page Tables (aligned to 4 KB boundary) */
 .pgtables (NOLOAD) : ALIGN(0x1000) {
     *(.pgtables)
     . = ALIGN(4);
-} &gt; ksram</code></pre></div>
+} &gt; ksram
+</code></pre></div>
 <p>Then GCC Linker helpfully allocates our Level 1 Page Table at RAM Address <strong><code>0x5040_7000</code></strong>.</p>
 </li>
 <li>
@@ -240,7 +242,8 @@ static size_t m_l1_pgtable[PGT_L1_SIZE]
 <p>To enable the MMU, we set SATP Register to the <strong>Physical Page Number (PPN)</strong> of our Level 1 Page Table…</p>
 <div class="example-wrap"><pre class="language-c"><code>PPN = Address / 4096
     = 0x50407000 / 4096
-    = 0x50407</code></pre></div>
+    = 0x50407
+</code></pre></div>
 <p>This is how we set the <strong>SATP Register</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L278-L298">bl808_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set the SATP Register to the
 // Physical Page Number of Level 1 Page Table.
@@ -248,7 +251,8 @@ static size_t m_l1_pgtable[PGT_L1_SIZE]
 mmu_enable(
   g_kernel_pgt_pbase,  // 0x5040 7000 (Page Table Address)
   0  // Set Address Space ID to 0
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L152-L176">(Which calls <strong>mmu_satp_reg</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906">(Remember to <strong>sfence</strong> and flush the <strong>MMU Cache</strong>)</a></p>
@@ -264,7 +268,8 @@ mmu_ln_map_region(
   MMU_IO_BASE,   // 0x0 (Virtual Address)
   MMU_IO_SIZE,   // 0x4000 0000 (Size is 1 GB)
   PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(<strong>STRONG_ORDER</strong> and <strong>SHAREABLE</strong> are here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
@@ -321,7 +326,8 @@ mmu_ln_map_region(
 
 // Allocate Level 2 Page Table from `.pgtables` section
 static size_t m_int_l2_pgtable[PGT_INT_L2_SIZE]
-  locate_data(&quot;.pgtables&quot;);</code></pre></div>
+  locate_data(&quot;.pgtables&quot;);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl808/ox64/scripts/ld.script#L121-L127">(<strong><code>.pgtables</code></strong> comes from the Linker Script)</a></p>
 <p>Then GCC Linker respectfully allocates our Level 2 Page Table at RAM Address <strong><code>0x5040</code> <code>3000</code></strong>.</p>
 <p><em>How to populate the 128 Page Table Entries?</em></p>
@@ -334,7 +340,8 @@ mmu_ln_map_region(
   0xE0000000,  // Virtual Address of Interrupt Controller
   0x10000000,  // 256 MB (Size)
   PTE_R | PTE_W | PTE_G | MMU_THEAD_STRONG_ORDER | MMU_THEAD_SHAREABLE // Read + Write + Global + Strong Order + Shareable
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/plic3#t-head-errata">(Why we need <strong>Strong-Ordering</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L42-L49">(<strong>STRONG_ORDER</strong> and <strong>SHAREABLE</strong> are here)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
@@ -380,7 +387,8 @@ mmu_ln_setentry(
   PGT_INT_L2_PBASE,  // 0x5040 3000 (L2 Page Table Address)
   0xE0000000,  // Virtual Address of Interrupt Controller
   PTE_G        // Global Only
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61C1-L107">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables-for-plic">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>We’re done protecting the Interrupt Controller with Level 1 AND Level 2 Page Tables!</p>
@@ -449,7 +457,8 @@ map_region(
   KSRAM_START,  // 0x5040 0000 (Virtual Address)
   KSRAM_SIZE,   // 0x20 0000 (Size is 2 MB)
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L158-L216">(<strong>map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-kernel-text-levels-2--3">(See the <strong>NuttX L2 and L3 Log</strong>)</a></p>
 <p>That’s because <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl808/bl808_mm_init.c#L158-L216"><strong>map_region</strong></a> calls a <a href="https://en.wikipedia.org/wiki/Slab_allocation"><strong>Slab Allocator</strong></a> to manage the Level 3 Page Table Entries.</p>
@@ -478,7 +487,8 @@ mmu_ln_map_region(
   PGPOOL_START,  // 0x5060 0000 (Virtual Address of Page Pool) 
   PGPOOL_SIZE,   // 0x0140_0000 (Size is 20 MB)
   PTE_R | PTE_W | PTE_G  // Read + Write + Global
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L137-L153">(<strong>mmu_ln_map_region</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#map-the-page-pool-level-2">(See the <strong>NuttX Page Pool Log</strong>)</a></p>
 <p><em>Did we forget something?</em></p>
@@ -491,7 +501,8 @@ mmu_ln_setentry(
   PGT_L2_PBASE,  // 0x5040 6000 (Level 2 Page Table)
   KFLASH_START,  // 0x5020 0000 (Kernel Code Address)
   PTE_G          // Global Only
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.c#L61-L107">(<strong>mmu_ln_setentry</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-ox64#connect-the-level-1-and-level-2-page-tables">(See the <strong>NuttX L1 and L2 Log</strong>)</a></p>
 <p>Our <strong>Level 1 Page Table</strong> becomes chock full of toppings…</p>
@@ -528,7 +539,8 @@ CONFIG_ARCH_TEXT_NPAGES=128
 CONFIG_ARCH_DATA_VBASE=0x80100000
 CONFIG_ARCH_DATA_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0x80200000
-CONFIG_ARCH_HEAP_NPAGES=128</code></pre></div>
+CONFIG_ARCH_HEAP_NPAGES=128
+</code></pre></div>
 <p>Which says…</p>
 <div><table><thead><tr><th style="text-align: left">Region</th><th style="text-align: center">Start Address</th><th style="text-align: left">Size</th></tr></thead><tbody>
 <tr><td style="text-align: left">User Code</td><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: left"><em>(Max 128 Pages)</em></td></tr>
@@ -607,7 +619,8 @@ CONFIG_ARCH_HEAP_NPAGES=128</code></pre></div>
 mmu_enable(
   g_kernel_pgt_pbase,  // Page Table Address
   0  // Set Address Space ID to 0
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_mmu.h#L268-L292">(<strong>mmu_enable</strong> is defined here)</a></p>
 <p>When we <strong>switch the context</strong> from Kernel to Application: We <strong>swap the value</strong> of the SATP Register… Which points to a <strong>Different Level 1</strong> Page Table!</p>
 <p>The <strong>Address Space ID</strong> (stored in SATP Register) can also change. It’s a handy shortcut that tells us which Level 1 Page Table (Address Space) is in effect.</p>
@@ -629,7 +642,8 @@ mmu_satp_reg:
 up_addrenv_select: 
   addrenv=0x5040d560, satp=0x8000000000050600
 mmu_write_satp: 
-  reg=0x8000000000050600</code></pre></div>
+  reg=0x8000000000050600
+</code></pre></div>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">(<strong>SATP Register</strong> begins with <strong><code>0x8</code></strong> to enable Sv39)</a></p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525#file-ox64-nuttx20-log-L271-L304">(See the <strong>NuttX SATP Log</strong>)</a></p>
 <p>Always remember to <strong>Flush the MMU Cache</strong> when swapping the SATP Register (and switching Page Tables)…</p>
@@ -708,7 +722,8 @@ nsh&gt; hello
 riscv_exception: EXCEPTION: Store/AMO page fault.
   MCAUSE: 0f,
   EPC:    50208fcc,
-  MTVAL:  80200000</code></pre></div>
+  MTVAL:  80200000
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/84ceeb5bd4eed98d9d1a3cd83d712dab">(See the <strong>Complete Log</strong>)</a></p>
 <p>The Invalid Address <code>0x8020_0000</code> is the Virtual Address of the <strong>Dynamic Heap</strong> (<code>malloc</code>) for the <code>hello</code> app: <a href="https://github.com/lupyuen2/wip-nuttx/blob/nuttx-12.4.0-RC0/boards/risc-v/bl808/ox64/configs/nsh/defconfig#L20">boards/risc-v/bl808/ox64/configs/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Config for Ox64
@@ -717,7 +732,8 @@ CONFIG_ARCH_DATA_VBASE=0x80100000
 CONFIG_ARCH_HEAP_NPAGES=128
 CONFIG_ARCH_HEAP_VBASE=0x80200000
 CONFIG_ARCH_TEXT_NPAGES=128
-CONFIG_ARCH_TEXT_VBASE=0x80000000</code></pre></div>
+CONFIG_ARCH_TEXT_VBASE=0x80000000
+</code></pre></div>
 <p>We discover that T-Head C906 MMU is incorrectly accessing the <strong>MMU Page Tables of the Previous Process</strong> (<code>getprime</code>) while starting the New Process (<code>hello</code>)…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Virtual Address 0x8020_0000 is OK for Previous Process
 nsh&gt; getprime
@@ -729,7 +745,8 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a6000
 nsh&gt; hello
 Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 *0x506a4000 is 0
-riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000005020c020, MTVAL: 0000000080200000</code></pre></div>
+riscv_exception: EXCEPTION: Load page fault. MCAUSE: 000000000000000d, EPC: 000000005020c020, MTVAL: 0000000080200000
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8d5fb67ef5e174cacbb55121d04e4b10">(See the <strong>Complete Log</strong>)</a></p>
 <p>Which means that the <strong>T-Head C906 MMU Cache</strong> needs to be flushed. This should be done right after we swap the <strong>MMU SATP Register</strong>.</p>
 <p>To fix the problem, we refer to the <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/errata/thead/errata.c#L38-L78"><strong>T-Head Errata for Linux Kernel</strong></a>…</p>
@@ -773,7 +790,8 @@ asm volatile( \
   : : &quot;r&quot;(_cachesize), \
       &quot;r&quot;((unsigned long)(_start) &amp; ~((_cachesize) - 1UL)), \
       &quot;r&quot;((unsigned long)(_start) + (_size)) \
-  : &quot;a0&quot;)</code></pre></div>
+  : &quot;a0&quot;)
+</code></pre></div>
 <p><strong>For NuttX:</strong> We flush the MMU Cache whenever we <strong>swap the MMU SATP Register</strong> to the New Page Tables.</p>
 <p>We execute 2 RISC-V Instructions that are <strong>specific to T-Head C906</strong>…</p>
 <ul>
@@ -800,7 +818,8 @@ void weak_function mmu_flush_cache(void) {
     // SYNC.S: Ensure that all Cache Operations are completed
     &quot;.long 0x0190000b\n&quot;
   );
-}</code></pre></div>
+}
+</code></pre></div>
 <p><code>mmu_flush_cache</code> is called by <code>mmu_write_satp</code>, whenever the <strong>MMU SATP Register is updated</strong> (and the MMU Page Tables are swapped): <a href="https://github.com/lupyuen2/wip-nuttx/blob/satp/arch/risc-v/src/common/riscv_mmu.h#L190-L221">arch/risc-v/src/common/riscv_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the MMU SATP Register for swapping MMU Page Tables
 static inline void mmu_write_satp(uintptr_t reg) {
@@ -818,7 +837,8 @@ static inline void mmu_write_satp(uintptr_t reg) {
   if (mmu_flush_cache != NULL) {
     mmu_flush_cache();
   }
-}</code></pre></div>
+}
+</code></pre></div>
 <p>With this fix, the <code>hello</code> app now accesses the Heap Memory correctly…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Virtual Address 0x8020_0000 is OK for Previous Process
 nsh&gt; getprime
@@ -830,7 +850,8 @@ Virtual Address 0x80200000 maps to Physical Address 0x506a6000
 nsh&gt; hello
 Virtual Address 0x80200000 maps to Physical Address 0x506a4000
 *0x506a4000 is 0
-*0x80200000 is 0</code></pre></div>
+*0x80200000 is 0
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ebf6c35f73132e99cedc2808e57d39e5">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/def8fb96245643c046e5f3ad6c4e3ed0">(See the <strong>Detailed Analysis</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/11585">(See the <strong>Pull Request</strong>)</a></p>
@@ -928,7 +949,8 @@ riscv64-unknown-elf-objdump \
   --debugging \
   nuttx \
   &gt;nuttx.S \
-  2&gt;&amp;1</code></pre></div>
+  2&gt;&amp;1
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/release#build-nuttx-for-star64">(Remember to install the <strong>Build Prerequisites and Toolchain</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">(And enable <strong>Scheduler Info Output</strong>)</a></p>
 <p>Then we build the <strong>Initial RAM Disk</strong> that contains NuttX Shell and NuttX Apps…</p>
@@ -953,7 +975,8 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append Padding and Initial RAM Disk to NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image</code></pre></div>
+  &gt;Image
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/ox64a-1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/app#pad-the-initial-ram-disk">(Why the <strong>64 KB Padding</strong>)</a></p>
@@ -964,7 +987,8 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 ## on Ox64 microSD
 cp Image \
   &quot;/Volumes/NO NAME/Image&quot;
-diskutil unmountDisk /dev/disk2</code></pre></div>
+diskutil unmountDisk /dev/disk2
+</code></pre></div>
 <p>Insert the <a href="https://lupyuen.github.io/images/ox64-sd.jpg"><strong>microSD into Ox64</strong></a> and power up Ox64.</p>
 <p>Ox64 boots <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>, which starts <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>, which starts <strong>NuttX Kernel</strong> and the NuttX Shell (NSH). (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/aa9b3e575ba4e0c233ab02c328221525">(See the <strong>NuttX Log</strong>)</a></p>
