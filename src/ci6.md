@@ -8,6 +8,20 @@ TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
 # TODO
 
+https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3
+
+```bash
+$ sudo sh -c '. ../github-token.sh && ./rewind-build.sh esp32c6-devkitc:gpio cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509'
+```
+
+https://gist.github.com/nuttxlinux/9a64f73bd87d553492a46d980fdf611e#file-ci-unknown-log-L425
+
+```text
+(Build OK for Previous Commit)
+***** BUILD FAILED FOR THIS COMMIT: nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
+***** BUILD FAILED FOR NEXT COMMIT: nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
+```
+
 TODO: ci6-dashboard1.png
 
 ![TODO](https://lupyuen.github.io/images/ci6-dashboard1.png)
