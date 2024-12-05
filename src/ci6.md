@@ -6,6 +6,10 @@
 
 TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
 
+2 Dec 2024: [__NuttX Dashboard__](TODO) turns into a Sea of Red...
+
+TODO: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
+
 # TODO
 
 https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3
