@@ -14,7 +14,7 @@ https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3
 $ sudo sh -c '. ../github-token.sh && ./rewind-build.sh esp32c6-devkitc:gpio cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509'
 ```
 
-https://gist.github.com/nuttxlinux/9a64f73bd87d553492a46d980fdf611e#file-ci-unknown-log-L425
+https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
 
 ```text
 (Build OK for Previous Commit)
