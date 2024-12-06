@@ -298,6 +298,8 @@ cd nuttx-build-farm
 
 (And please tell me your __Gist User ID__)
 
+(Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20))
+
 _How does it work?_
 
 macOS Build Farm shall run (nearly) __All NuttX CI Jobs__, forever and ever: [run-ci-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139)
@@ -323,7 +325,7 @@ for (( ; ; )); do
     clean_log
     find_messages
 
-    ## Upload the log to GitHub Gist
+    ## Upload the log to GitLab Snippet or GitHub Gist
     upload_log $job $nuttx_hash $apps_hash
   done
 done
@@ -348,7 +350,7 @@ function run_job {
 
 [(__find_messages__ searches for Errors)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69)
 
-[(__upload_log__ uploads to GitHub Gist)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81)
+[(__upload_log__ uploads to GitLab Snippet or GitHub Gist)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81)
 
 </span>
 
