@@ -324,6 +324,7 @@ cd nuttx-build-farm
 ## Run One Single NuttX CI Job on macOS
 ## ./run-job-macos.sh risc-v-01</code></pre></div>
 <p>(And please tell me your <strong>Gist User ID</strong>)</p>
+<p>(Also works for <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20"><strong>GitLab Snippets</strong></a>)</p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139">run-ci-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run All NuttX CI Jobs on macOS, forever and ever.
@@ -346,7 +347,7 @@ for (( ; ; )); do
     clean_log
     find_messages
 
-    ## Upload the log to GitHub Gist
+    ## Upload the log to GitLab Snippet or GitHub Gist
     upload_log $job $nuttx_hash $apps_hash
   done
 done
@@ -364,7 +365,7 @@ function run_job {
 <p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets">(<strong>Some Target Groups</strong> won’t compile)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55">(<strong>clean_log</strong> removes Control Chars)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69">(<strong>find_messages</strong> searches for Errors)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81">(<strong>upload_log</strong> uploads to GitHub Gist)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81">(<strong>upload_log</strong> uploads to GitLab Snippet or GitHub Gist)</a></p>
 </span>
 <p><em>What’s inside run-job-macos.sh?</em></p>
 <p>It will run one single <strong>NuttX CI Job</strong>. Similar to the <a href="https://lupyuen.github.io/articles/ci5#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
