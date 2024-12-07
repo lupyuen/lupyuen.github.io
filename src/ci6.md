@@ -21,14 +21,25 @@ $ sudo sh -c '. ../github-token.sh && ./rewind-build.sh esp32c6-devkitc:gpio cc9
 TODO: Summary
 
 ```text
+$ git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
+$ git log --format="%cd,%H" | more
+
+2024-12-02 12:05:05,cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509,xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para
+2024-12-02 11:59:02,dc8bde8dd565e12657042d55d86214af0e65e694,cmake(enhance):Enhance romfs so that RAWS files can be added in any location
+2024-12-02 11:49:22,208f31c27fe05fa054a459d3abd107b937f4e70f,boards/qemu64: Due to dependency changes, the test program of kasantest is deleted.
+2024-12-02 11:47:43,9fbb81e8a44bf9d249e6dbfed175c5a546eeb62c,samv7: fix bytes to words calculation in user signature read
+2024-12-02 11:14:22,140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8,drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)
+2024-12-02 09:41:16,400239877d55b3f63f72c96ca27d44220ae35a89,risc-v: remove g_running_tasks[this_cpu()] = NULL
+2024-12-02 09:23:25,19e42a8978179d23a49c9090c9a713206e6575d0,arch/tricore: migrate to SPDX identifier
+
 TODO
 ```
 
 https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
 
 ```text
-(Build OK for Previous Commit)
 ***** BUILD FAILED FOR THIS COMMIT: nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
+(Build OK for Previous Commit 19e42a8978179d23a49c9090c9a713206e6575d0)
 ***** BUILD FAILED FOR NEXT COMMIT: nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
 ```
 
