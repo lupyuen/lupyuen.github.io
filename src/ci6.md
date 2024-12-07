@@ -39,6 +39,21 @@ $ git log
 | __09:41__ | _40023987_ | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
 | __09:23__ | _19e42a89_ | _arch/tricore: migrate to SPDX identifier_
 
+```text
+## Build the Latest Commit: "xtensa syscall"
+$ git reset --hard cc96289e
+$ tools/configure.sh esp32c6-devkitc:gpio
+$ make
+
+## If Build Fails: Try the Previous Commit "Enhance romfs"
+$ make distclean
+$ git reset --hard dc8bde8d
+$ tools/configure.sh esp32c6-devkitc:gpio
+$ make
+
+## Repeat until the Build Succeeds
+```
+
 https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
 
 ```text
