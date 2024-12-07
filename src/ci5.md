@@ -296,9 +296,11 @@ cd nuttx-build-farm
 ## ./run-job-macos.sh risc-v-01
 ```
 
-(And please tell me your __Gist User ID__)
+And please tell me your __Gist User ID__. (Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20))
 
-(Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20))
+The Build Outcomes will appear in [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)...
+
+![macOS Build Farm for Apache NuttX RTOS (Apple Silicon)](https://lupyuen.github.io/images/ci5-dashboard.png)
 
 _How does it work?_
 
