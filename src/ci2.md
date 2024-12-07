@@ -360,7 +360,7 @@ sudo gh auth login
 sudo ./run-ci.sh
 ```
 
-[(__For Safety:__ Create a __New GitHub Account__ for posting the gists)](https://lists.apache.org/thread/dntkkb954oss4flcckqjgghzycplrdnf)
+(Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L1-L21))
 
 _How does it work?_
 

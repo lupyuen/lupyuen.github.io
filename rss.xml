@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>macOS Build Farm for Apache NuttX RTOS (Apple Silicon)</title>
+            <link>https://lupyuen.github.io/articles/ci5</link>
+            <description><![CDATA[Folks on macOS: Compiling Apache NuttX RTOS used to be so tiresome. Not any more! In this article, we explain how to build anything on macOS, by patching the NuttX CI Script. Which also becomes our macOS Build Farm.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci5</guid>
+            <pubDate>Sun, 08 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)</title>
             <link>https://lupyuen.github.io/articles/ci4</link>
             <description><![CDATA[Last article we spoke about the (Twice) Daily Builds for Apache NuttX RTOS. Today we talk about Monitoring the Daily Builds (also the NuttX Build Farm) with our new NuttX Dashboard.]]></description>
