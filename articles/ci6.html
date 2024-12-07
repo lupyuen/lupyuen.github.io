@@ -74,6 +74,8 @@
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
 <p>https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo sh -c &#39;. ../github-token.sh &amp;&amp; ./rewind-build.sh esp32c6-devkitc:gpio cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509&#39;</code></pre></div>
+<p>TODO: Summary</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
 <p>https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427</p>
 <div class="example-wrap"><pre class="language-text"><code>(Build OK for Previous Commit)
 ***** BUILD FAILED FOR THIS COMMIT: nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
@@ -94,7 +96,370 @@
 <p><img src="https://lupyuen.github.io/images/ci6-log1.png" alt="TODO" /></p>
 <p>TODO: ci6-log2.png</p>
 <p><img src="https://lupyuen.github.io/images/ci6-log2.png" alt="TODO" /></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh</p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+## Rewind the NuttX Build for a bunch of Commits.
+## Results will appear in the NuttX Dashboard &gt; NuttX Build History:
+##   brew install neofetch gh
+##   sudo sh -c &#39;. ../github-token.sh &amp;&amp; ./rewind-build.sh ox64:nsh&#39;
+##   sudo sh -c &#39;. ../github-token.sh &amp;&amp; ./rewind-build.sh rv-virt:citest 656883fec5561ca91502a26bf018473ca0229aa4 3c4ddd2802a189fccc802230ab946d50a97cb93c&#39;
+
+## Given a NuttX Target (ox64:nsh):
+##   Build the Target for the Latest Commit
+##   If it fails: Rebuild with Previous Commit and Next Commit
+##   Repeat with Previous 20 Commits
+##   Upload Every Build Log to GitHub Gist
+
+## github-token.sh contains `export GITHUB_TOKEN=...`
+## GitHub Token needs to have Gist Permission
+
+echo Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh $1
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+# First Parameter is Target, like &quot;ox64:nsh&quot;
+target=$1
+if [[ &quot;$target&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: Target Parameter is missing (e.g. ox64:nsh)&quot;
+  exit 1
+fi
+
+## (Optional) Second Parameter is the Starting Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
+nuttx_commit=$2
+
+## (Optional) Third Parameter is the Commit Hash of NuttX Apps Repo, like &quot;d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288&quot;
+apps_commit=$3
+
+## Get the Script Directory
+script_path=&quot;${BASH_SOURCE}&quot;
+script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
+
+## Get the `script` option
+if [ &quot;`uname`&quot; == &quot;Linux&quot; ]; then
+  script_option=-c
+else
+  script_option=
+fi
+
+## Build the NuttX Commit for the Target
+function build_commit {
+  local log=$1
+  local timestamp=$2
+  local apps_hash=$3
+  local nuttx_hash=$4
+  local prev_hash=$5
+  local next_hash=$6
+
+  ## Run the Build Job and find errors / warnings
+  run_job \
+    $log \
+    $timestamp \
+    $apps_hash \
+    $nuttx_hash \
+    $prev_hash \
+    $next_hash
+  clean_log $log
+  find_messages $log
+
+  ## Upload the log
+  local job=unknown
+  upload_log \
+    $log \
+    $job \
+    $nuttx_hash \
+    $apps_hash \
+    $timestamp
+}
+
+## Run the Build Job
+function run_job {
+  local log_file=$1
+  local timestamp=$2
+  local apps_hash=$3
+  local nuttx_hash=$4
+  local prev_hash=$5
+  local next_hash=$6
+  pushd /tmp
+  script $log_file \
+    $script_option \
+    &quot; \
+      $script_dir/rewind-commit.sh \
+        $target \
+        $nuttx_hash \
+        $apps_hash \
+        $timestamp \
+        $prev_hash \
+        $next_hash \
+    &quot;
+  popd
+}
+
+## Strip the control chars
+function clean_log {
+  local log_file=$1
+  local tmp_file=$log_file.tmp
+  cat $log_file \
+    | tr -d &#39;\r&#39; \
+    | tr -d &#39;\r&#39; \
+    | sed &#39;s/\x08/ /g&#39; \
+    | sed &#39;s/\x1B(B//g&#39; \
+    | sed &#39;s/\x1B\[K//g&#39; \
+    | sed &#39;s/\x1B[&lt;=&gt;]//g&#39; \
+    | sed &#39;s/\x1B\[[0-9:;&lt;=&gt;?]*[!]*[A-Za-z]//g&#39; \
+    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
+    | cat -v \
+    &gt;$tmp_file
+  mv $tmp_file $log_file
+  echo ----- &quot;Done! $log_file&quot;
+}
+
+## Search for Errors and Warnings
+function find_messages {
+  local log_file=$1
+  local tmp_file=$log_file.tmp
+  local msg_file=$log_file.msg
+  local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
+  grep &#39;^\*\*\*\*\*&#39; $log_file \
+    &gt; $msg_file || true
+  grep -P &quot;$pattern&quot; $log_file \
+    | uniq \
+    &gt;&gt; $msg_file || true
+  cat $msg_file $log_file &gt;$tmp_file
+  mv $tmp_file $log_file
+}
+
+## Upload to GitHub Gist
+function upload_log {
+  local log_file=$1
+  local job=$2
+  local nuttx_hash=$3
+  local apps_hash=$4
+  local timestamp=$5
+  cat $log_file | \
+    gh gist create \
+    --public \
+    --desc &quot;[$job] CI Log for $target @ $timestamp / nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot; \
+    --filename &quot;ci-$job.log&quot;
+}
+
+## Create the Temp Folder
+tmp_dir=/tmp/rewind-build/$target
+rm -rf $tmp_dir
+mkdir -p $tmp_dir
+cd $tmp_dir
+
+## Get the Latest NuttX Apps Commit (if not provided)
+if [[ &quot;$apps_commit&quot; != &quot;&quot; ]]; then
+  apps_hash=$apps_commit
+else
+  git clone https://github.com/apache/nuttx-apps apps
+  pushd apps
+  apps_hash=$(git rev-parse HEAD)
+  popd
+fi
+
+## If NuttX Commit is provided: Rewind to the commit
+git clone https://github.com/apache/nuttx
+cd nuttx
+if [[ &quot;$nuttx_commit&quot; != &quot;&quot; ]]; then
+  git reset --hard $nuttx_commit
+fi
+
+## Build the Latest 20 Commits
+num_commits=20
+count=1
+for commit in $(
+  TZ=UTC0 \
+  git log \
+  -$(( $num_commits + 1 )) \
+  --date=&#39;format-local:%Y-%m-%dT%H:%M:%S&#39; \
+  --format=&quot;%cd,%H&quot;
+); do
+  ## Commit looks like 2024-11-24T09:52:42,9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
+  prev_timestamp=$(echo $commit | cut -d &#39;,&#39; -f 1)  ## 2024-11-24T09:52:42
+  prev_hash=$(echo $commit | cut -d &#39;,&#39; -f 2)  ## 9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
+  if [[ &quot;$next_hash&quot; == &quot;&quot; ]]; then
+    next_hash=$prev_hash
+  fi;
+  if [[ &quot;$nuttx_hash&quot; == &quot;&quot; ]]; then
+    nuttx_hash=$prev_hash
+  fi;
+  if [[ &quot;$timestamp&quot; == &quot;&quot; ]]; then
+    timestamp=$prev_timestamp
+    continue  ## Shift the Previous into Present
+  fi;
+
+  set +x ; echo &quot;***** #$count of $num_commits: Building nuttx @ $nuttx_hash / nuttx_apps @ $apps_hash&quot; ; set -x ; sleep 10
+  build_commit \
+    $tmp_dir/$nuttx_hash.log \
+    $timestamp \
+    $apps_hash \
+    $nuttx_hash \
+    $prev_hash \
+    $next_hash
+
+  ## Shift the Commits
+  next_hash=$nuttx_hash
+  nuttx_hash=$prev_hash
+  timestamp=$prev_timestamp
+  ((count++))
+  date
+done
+
+## Wait for Background Tasks to complete
+fg || true
+
+## Free up the Docker disk space
+sudo docker system prune --force
+set +x ; echo &quot;***** Done!&quot; ; set -x</code></pre></div>
+<p>https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh</p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+## Rewind the NuttX Build for One Single Commit.
+## sudo ./rewind-commit.sh ox64:nsh 7f84a64109f94787d92c2f44465e43fde6f3d28f d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288 2024-11-24T00:00:00 7f84a64109f94787d92c2f44465e43fde6f3d28f 7f84a64109f94787d92c2f44465e43fde6f3d28f
+## sudo ./rewind-commit.sh rv-virt:citest 656883fec5561ca91502a26bf018473ca0229aa4 3c4ddd2802a189fccc802230ab946d50a97cb93c
+
+## Given a NuttX Target (ox64:nsh):
+## Build the Target for the Commit
+## If it fails: Rebuild with Previous Commit and Next Commit
+
+echo Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh $1 $2 $3 $4 $5 $6
+echo Called by https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+## First Parameter is Target, like &quot;ox64:nsh&quot;
+target=$1
+if [[ &quot;$target&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: Target is missing (e.g. ox64:nsh)&quot;
+  exit 1
+fi
+
+## Second Parameter is the Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
+nuttx_hash=$2
+if [[ &quot;$nuttx_hash&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: NuttX Hash is missing (e.g. 7f84a64109f94787d92c2f44465e43fde6f3d28f)&quot;
+  exit 1
+fi
+
+## Third Parameter is the Commit Hash of NuttX Apps Repo, like &quot;d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288&quot;
+apps_hash=$3
+if [[ &quot;$apps_hash&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: NuttX Apps Hash is missing (e.g. d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288)&quot;
+  exit 1
+fi
+
+## (Optional) Fourth Parameter is the Timestamp of the NuttX Commit, like &quot;2024-11-24T00:00:00&quot;
+timestamp=$4
+if [[ &quot;$timestamp&quot; == &quot;&quot; ]]; then
+  timestamp=$(date -u +&quot;%Y-%m-%dT%H:%M:%S&quot;)
+fi
+
+## (Optional) Fifth Parameter is the Previous Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
+prev_hash=$5
+if [[ &quot;$prev_hash&quot; == &quot;&quot; ]]; then
+  prev_hash=$nuttx_hash
+fi
+
+## (Optional) Sixth Parameter is the Next Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
+next_hash=$6
+if [[ &quot;$next_hash&quot; == &quot;&quot; ]]; then
+  next_hash=$nuttx_hash
+fi
+
+## Show the System Info
+set | grep TMUX || true
+neofetch
+
+## Download the Docker Image
+sudo docker pull \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest
+
+## Build NuttX in Docker Container
+## If CI Test Hangs: Kill it after 1 hour
+## We follow the CI Log Format, so that ingest-nuttx-builds will
+## ingest our log into NuttX Dashboard and appear in NuttX Build History
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs
+## ====================================================================================
+## Configuration/Tool: adafruit-kb2040/nshsram,
+## 2024-11-25 03:25:20
+## ------------------------------------------------------------------------------------
+function build_nuttx {
+  local nuttx_commit=$1
+  local apps_commit=$2
+  local target_slash=$(echo $target | tr &#39;:&#39; &#39;/&#39;)
+  local timestamp_space=$(echo $timestamp | tr &#39;T&#39; &#39; &#39;)
+
+  set +x  ## Disable Echo
+  echo &quot;====================================================================================&quot;
+  echo &quot;Configuration/Tool: $target_slash,&quot;
+  echo &quot;$timestamp_space&quot;
+  echo &quot;------------------------------------------------------------------------------------&quot;
+  set -x  ## Enable Echo
+
+  set +e  ## Ignore errors
+  sudo docker run -it \
+    ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+    /bin/bash -c &quot;
+    set -e ;
+    set -x ;
+    uname -a ;
+    cd ;
+    pwd ;
+    git clone https://github.com/apache/nuttx ;
+    git clone https://github.com/apache/nuttx-apps apps ;
+    echo Building nuttx @ $nuttx_commit / nuttx-apps @ $apps_commit ;
+    pushd nuttx ; git reset --hard $nuttx_commit ; popd ;
+    pushd apps  ; git reset --hard $apps_commit  ; popd ;
+    pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD)    ; popd ;
+    pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
+    cd nuttx ;
+    ( sleep 3600 ; echo Killing pytest after timeout... ; pkill -f pytest )&amp;
+    (
+      (./tools/configure.sh $target &amp;&amp; make -j) || (res=\$? ; echo &#39;***** BUILD FAILED&#39; ; exit \$res)
+    )
+  &quot;
+  res=$?
+  set -e  ## Exit when any command fails
+  set +x  ## Disable Echo
+  echo res=$res
+  echo &quot;====================================================================================&quot;
+  set -x  ## Enable Echo
+}
+
+## Build the Target for the Commit
+echo &quot;Building This Commit: nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot;
+build_nuttx $nuttx_hash $apps_hash
+echo res=$res
+
+## If it fails: Rebuild with Previous Commit and Next Commit
+if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
+  echo &quot;***** BUILD FAILED FOR THIS COMMIT: nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot;
+
+  if [[ &quot;$prev_hash&quot; != &quot;$nuttx_hash&quot; ]]; then
+    echo &quot;Building Previous Commit: nuttx @ $prev_hash / nuttx-apps @ $apps_hash&quot;
+    res=
+    build_nuttx $prev_hash $apps_hash
+    echo res=$res
+    if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
+      echo &quot;***** BUILD FAILED FOR PREVIOUS COMMIT: nuttx @ $prev_hash / nuttx-apps @ $apps_hash&quot;
+    fi
+  fi
+
+  if [[ &quot;$next_hash&quot; != &quot;$nuttx_hash&quot; ]]; then
+    echo &quot;Building Next Commit: nuttx @ $next_hash / nuttx-apps @ $apps_hash&quot;
+    res=
+    build_nuttx $next_hash $apps_hash
+    echo res=$res
+    if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
+      echo &quot;***** BUILD FAILED FOR NEXT COMMIT: nuttx @ $next_hash / nuttx-apps @ $apps_hash&quot;
+    fi
+  fi
+fi
+
+## Monitor the Disk Space (in case Docker takes too much)
+df -H</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
