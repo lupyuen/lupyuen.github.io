@@ -6,7 +6,11 @@
 
 TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
 
-__2 Dec 2024:__ 23 days to Xmas, but [__NuttX Dashboard__](TODO) is already a Wall of Red...
+__2 Dec 2024:__ 23 days to Xmas, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
+
+TODO: Pic
+
+Which say that ??? is failing to build. (We'll chat about CI Test next article)
 
 TODO: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
 
@@ -42,6 +46,8 @@ https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown
 (Build OK for Previous Commit 19e42a8978179d23a49c9090c9a713206e6575d0)
 ***** BUILD FAILED FOR NEXT COMMIT: nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
 ```
+
+TODO: Manually
 
 TODO: ci6-dashboard1.png
 
