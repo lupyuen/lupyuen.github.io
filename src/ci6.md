@@ -6,7 +6,7 @@
 
 TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
 
-2 Dec 2024: [__NuttX Dashboard__](TODO) turns into a Sea of Red...
+__2 Dec 2024:__ 23 days to Xmas, but [__NuttX Dashboard__](TODO) is already a Wall of Red...
 
 TODO: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
 
@@ -22,18 +22,18 @@ TODO: Summary
 
 ```text
 $ git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
-$ git log --format="%cd,%H" | more
-
-2024-12-02 12:05:05,cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509,xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para
-2024-12-02 11:59:02,dc8bde8dd565e12657042d55d86214af0e65e694,cmake(enhance):Enhance romfs so that RAWS files can be added in any location
-2024-12-02 11:49:22,208f31c27fe05fa054a459d3abd107b937f4e70f,boards/qemu64: Due to dependency changes, the test program of kasantest is deleted.
-2024-12-02 11:47:43,9fbb81e8a44bf9d249e6dbfed175c5a546eeb62c,samv7: fix bytes to words calculation in user signature read
-2024-12-02 11:14:22,140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8,drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)
-2024-12-02 09:41:16,400239877d55b3f63f72c96ca27d44220ae35a89,risc-v: remove g_running_tasks[this_cpu()] = NULL
-2024-12-02 09:23:25,19e42a8978179d23a49c9090c9a713206e6575d0,arch/tricore: migrate to SPDX identifier
-
-TODO
+$ git log
 ```
+
+| 2024-12-02 |    |     |
+|:-----------|:---|:----|
+| __12:05__ | _cc96289e_ | _xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para_
+| __11:59__ | _dc8bde8d_ | _cmake(enhance): Enhance romfs so that RAWS files can be added in any location_
+| __11:49__ | _208f31c2_ | _boards/qemu64: Due to dependency changes, the test program of kasantest is deleted_
+| __11:47__ | _9fbb81e8_ | _samv7: fix bytes to words calculation in user signature read_
+| __11:14__ | _140b3080_ | _drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)_
+| __09:41__ | _40023987_ | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
+| __09:23__ | _19e42a89_ | _arch/tricore: migrate to SPDX identifier_
 
 https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
 
