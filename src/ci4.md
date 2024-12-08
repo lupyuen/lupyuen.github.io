@@ -737,6 +737,8 @@ _Any more stories of NuttX CI?_
 
 Next Article: We chat about the updated __NuttX Build Farm__ that runs on __macOS for Apple Silicon__. (Great news for NuttX Devs on macOS)
 
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+
 Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So it will disappear sooner from NuttX Dashboard)
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.

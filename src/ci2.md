@@ -488,6 +488,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
 
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+
 _Huh? Aren't we making a Build Farm, not a Build Server?_
 
 Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we'll have a Build Farm!
