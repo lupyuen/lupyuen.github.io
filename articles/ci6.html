@@ -105,6 +105,7 @@ make
 <p><strong>But for Nuttx Maintainers:</strong> Compiling NuttX Locally might not always work, we might miss out some toolchains.</p>
 <p>Thus we run <strong>Docker to Compile NuttX</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
+## With the NuttX Docker Image
 sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
