@@ -69,7 +69,7 @@
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="TODO" /></p>
 <p>TODO: <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a></p>
-<p><strong>2 Dec 2024:</strong> 23 days to Xmas, but <a href="TODO"><strong>NuttX Dashboard</strong></a> is already <strong>Decked in Red</strong>…</p>
+<p><strong>2 Dec 2024:</strong> Chirstmas ain’t here yet, but <a href="TODO"><strong>NuttX Dashboard</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p>TODO: Pic</p>
 <p>Which say that ??? is failing to build. (We’ll chat about CI Test next article)</p>
 <p>TODO: We chat about a new tool to <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>“Rewind The Build”</strong></a> when something breaks the Daily Build.</p>
@@ -87,18 +87,46 @@ $ git log</code></pre></div><div><table><thead><tr><th style="text-align: left">
 <tr><td style="text-align: left"><strong>09:41</strong></td><td style="text-align: left"><em>40023987</em></td><td style="text-align: left"><em>risc-v: remove g_running_tasks[this_cpu()] = NULL</em></td></tr>
 <tr><td style="text-align: left"><strong>09:23</strong></td><td style="text-align: left"><em>19e42a89</em></td><td style="text-align: left"><em>arch/tricore: migrate to SPDX identifier</em></td></tr>
 </tbody></table>
-</div><div class="example-wrap"><pre class="language-text"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
-$ git reset --hard cc96289e
-$ tools/configure.sh esp32c6-devkitc:gpio
-$ make
+</div>
+<p>Normally we do this…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
+git reset --hard cc96289e
+tools/configure.sh esp32c6-devkitc:gpio
+make
 
 ## If Build Fails: Try the Previous Commit &quot;Enhance romfs&quot;
-$ make distclean
-$ git reset --hard dc8bde8d
-$ tools/configure.sh esp32c6-devkitc:gpio
-$ make
+make distclean
+git reset --hard dc8bde8d
+tools/configure.sh esp32c6-devkitc:gpio
+make
 
-## Repeat until the Build Succeeds</code></pre></div>
+## Repeat until the Build Succeeds
+## Record everything we&#39;ve done as evidence</code></pre></div>
+<p><strong>But for Nuttx Maintainers:</strong> Compiling NuttX Locally might not always work, we might miss out some toolchains.</p>
+<p>Thus we run <strong>Docker to Compile NuttX</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
+sudo docker run -it \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+  /bin/bash
+cd
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+git reset --hard cc96289e
+tools/configure.sh esp32c6-devkitc:gpio
+make -j
+exit
+
+## If Build Fails: Try the Previous Commit &quot;Enhance romfs&quot;
+sudo docker run ...
+git reset --hard dc8bde8d ...
+tools/configure.sh esp32c6-devkitc:gpio
+make -j ...
+
+## Repeat until the Build Succeeds
+## Record everything we&#39;ve done as evidence</code></pre></div>
+<p>Yep this gets tedious, we <strong>repeat all this 20 times</strong> to catch the Breaking Commit!</p>
+<p>That’s why we run a script to <strong>“Rewind the Build”</strong>, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit.</p>
 <p>https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427</p>
 <div class="example-wrap"><pre class="language-text"><code>***** BUILD FAILED FOR THIS COMMIT: nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
 (Build OK for Previous Commit 19e42a8978179d23a49c9090c9a713206e6575d0)
