@@ -6,7 +6,7 @@
 
 TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
 
-__2 Dec 2024:__ 23 days to Xmas, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
+__2 Dec 2024:__ Chirstmas ain't here yet, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
 
 TODO: Pic
 
@@ -39,20 +39,55 @@ $ git log
 | __09:41__ | _40023987_ | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
 | __09:23__ | _19e42a89_ | _arch/tricore: migrate to SPDX identifier_
 
+Normally we do this...
+
 ```text
 ## Build the Latest Commit: "xtensa syscall"
-$ git reset --hard cc96289e
-$ tools/configure.sh esp32c6-devkitc:gpio
-$ make
+git reset --hard cc96289e
+tools/configure.sh esp32c6-devkitc:gpio
+make
 
 ## If Build Fails: Try the Previous Commit "Enhance romfs"
-$ make distclean
-$ git reset --hard dc8bde8d
-$ tools/configure.sh esp32c6-devkitc:gpio
-$ make
+make distclean
+git reset --hard dc8bde8d
+tools/configure.sh esp32c6-devkitc:gpio
+make
 
 ## Repeat until the Build Succeeds
+## Record everything we've done as evidence
 ```
+
+__But for Nuttx Maintainers:__ Compiling NuttX Locally might not always work, we might miss out some toolchains.
+
+Thus we run __Docker to Compile NuttX__...
+
+```text
+## Build the Latest Commit: "xtensa syscall"
+sudo docker run -it \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+  /bin/bash
+cd
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+git reset --hard cc96289e
+tools/configure.sh esp32c6-devkitc:gpio
+make -j
+exit
+
+## If Build Fails: Try the Previous Commit "Enhance romfs"
+sudo docker run ...
+git reset --hard dc8bde8d ...
+tools/configure.sh esp32c6-devkitc:gpio
+make -j ...
+
+## Repeat until the Build Succeeds
+## Record everything we've done as evidence
+```
+
+Yep this gets tedious, we __repeat all this 20 times__ to catch the Breaking Commit!
+
+That's why we run a script to __"Rewind the Build"__, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit.
 
 https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
 
