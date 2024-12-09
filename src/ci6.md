@@ -63,6 +63,7 @@ Thus we run __Docker to Compile NuttX__...
 
 ```text
 ## Build the Latest Commit: "xtensa syscall"
+## With the NuttX Docker Image
 sudo docker run -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
