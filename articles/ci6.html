@@ -75,8 +75,11 @@
 <p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but <a href="TODO"><strong>NuttX Dashboard</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="TODO" /></p>
 <p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="TODO"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
+<blockquote>
+<p><a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><em>“riscv_exit.c: error: ‘tcb’ undeclared: g_running_tasks[this_cpu()] = tcb”</em></a></p>
+</blockquote>
 <p>Normally our NuttX Maintainers will scramble to identify the <strong>Breaking Commit</strong>. (Before it gets piled on by More Breaking Commits)</p>
-<p>But now we can go back in time and <strong>“Rewind The Build”</strong> when something breaks the Daily Build…</p>
+<p>But now we can go back in time and <strong>“Rewind The Build”</strong>, when something breaks the Daily Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
@@ -91,7 +94,7 @@ Build Failed for This Commit:
 Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
-## Aha! 40023987 is the Breaking Commit!</code></pre></div>
+## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
 <p>In this article, we look inside our new tool to <strong>Rewind The Build</strong>…</p>
 <ul>
 <li>TODO: Reveal the Breaking Commit (pic below)</li>
@@ -103,6 +106,7 @@ Build Failed for Next Commit:
 ## TODO: Install Docker Engine on Ubuntu x64
 ## https://docs.docker.com/engine/install/ubuntu/
 
+$ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
 $ sudo sh -c &#39;
@@ -118,7 +122,7 @@ Build Failed for This Commit:
 Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
-## Aha! 40023987 is the Breaking Commit!</code></pre></div>
+## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
 <p>We fly our DeLorean back to 2 Dec 2024. We inspect the <strong>NuttX Commits</strong> that might have broken our build…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Show the NuttX Commits on 2 Dec 2024
@@ -188,13 +192,15 @@ make -j ...
 <p>Yep this gets tedious, we <strong>repeat all this 20 times</strong> (or more) to catch the Breaking Commit!</p>
 <p>That’s why we run a script to <strong>“Rewind the Build”</strong>, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
-## Commit ID cc96289e is optional
+## TODO: Install Docker Engine on Ubuntu x64
+## https://docs.docker.com/engine/install/ubuntu/
+
+$ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
     ./rewind-build.sh esp32c6-devkitc:gpio
-      cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
   &#39;
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -205,13 +211,14 @@ Build Failed for This Commit:
 Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
-## Aha! 40023987 is the Breaking Commit!</code></pre></div>
+## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
-<p>The <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Resulting Log</strong></a> looks kinda messy. We have a better way to capture the evidence and reveal the Breaking Commit…</p>
+<p>The <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Resulting Log</strong></a> looks kinda messy. We have a better way to record the rewinding, and reveal the Breaking Commit…</p>
 <h1 id="nuttx-build-history"><a class="doc-anchor" href="#nuttx-build-history">§</a>4 NuttX Build History</h1>
 <p>Head over to <a href="TODO"><strong>NuttX Dashboard</strong></a> and click <strong>“NuttX Build History”</strong>.</p>
 <p>Set the <strong>Board</strong> and <strong>Config</strong> to <em>esp32c6-devkitc</em> and <em>gpio</em>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="TODO" /></p>
+<p>In reverse chronological order, <strong>NuttX Build History</strong> says that</p>
 <p>TODO: Breaking Commit</p>
 <p>TODO: After fixing</p>
 <p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="TODO" /></p>
