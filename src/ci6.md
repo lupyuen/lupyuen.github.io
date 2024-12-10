@@ -2,11 +2,9 @@
 
 📝 _24 Dec 2024_
 
-![TODO](https://lupyuen.github.io/images/ci6-title.jpg)
+!["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
-TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
-
-__2 Dec 2024:__ Christmas ain't here yet, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
+__2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX RTOS__](TODO) is already __Decked in Red__...
 
 ![TODO](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
@@ -50,10 +48,12 @@ _How does it work?_
 ## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
 ## TODO: Install Docker Engine on Ubuntu x64
 ## https://docs.docker.com/engine/install/ubuntu/
-
 $ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
+
+## github-token.sh contains a GitHub Token with Gist Permission:
+## export GITHUB_TOKEN=...
 $ sudo sh -c '
     . ../github-token.sh &&
     ./rewind-build.sh esp32c6-devkitc:gpio
@@ -69,6 +69,8 @@ Build Failed for Next Commit:
 
 ## A-ha! 40023987 is the Breaking Commit!
 ```
+
+[(Works also for __GitLab Snippets__)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
 
@@ -163,10 +165,12 @@ That's why we run a script to __"Rewind the Build"__, Step Back in Time 20 times
 ## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
 ## TODO: Install Docker Engine on Ubuntu x64
 ## https://docs.docker.com/engine/install/ubuntu/
-
 $ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
+
+## github-token.sh contains a GitHub Token with Gist Permission:
+## export GITHUB_TOKEN=...
 $ sudo sh -c '
     . ../github-token.sh &&
     ./rewind-build.sh esp32c6-devkitc:gpio
@@ -183,27 +187,43 @@ Build Failed for Next Commit:
 ## A-ha! 40023987 is the Breaking Commit!
 ```
 
+[(Works also for __GitLab Snippets__)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31)
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
 
 The [__Resulting Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3) looks kinda messy. We have a better way to record the rewinding, and reveal the Breaking Commit...
 
 # NuttX Build History
 
-Head over to [__NuttX Dashboard__](TODO) and click __"NuttX Build History"__.
+Head over to [__NuttX Dashboard__](TODO) and click __"NuttX Build History"__. (At the top)
 
 Set the __Board__ and __Config__ to _esp32c6-devkitc_ and _gpio_...
 
 ![TODO](https://lupyuen.github.io/images/ci6-history4a.png)
 
-In reverse chronological order, __NuttX Build History__ says that 
+In reverse chronological order, __NuttX Build History__ says that...
 
-TODO: Breaking Commit
+- NuttX Build is __currently failing__ (reported by NuttX Build Farm)
 
-TODO: After fixing
+- __Commit 40023987 Onwards:__ All Builds Failed
+
+- __Before Commit 40023987:__ NuttX Builds are Successful
+
+- Which means: Commit 40023987 is our __Breaking Commit!__
+
+- See the _"sudo docker"_ entries above? They were inserted by our __Rewind Build Script__
+
+After fixing the Breaking Commit, NuttX Build History shows that everything is hunky dory again...
 
 ![TODO](https://lupyuen.github.io/images/ci6-history4.png)
 
-TODO: How to import
+_How did our Rewind Build Script update the Build History?_
+
+Our __Rewind Build Script__ exports the Build Logs to __GitLab Snippets__. (Or GitHub Gists)
+
+The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your __GitLab or GitHub User ID__!
+
+TODO: [Build Log](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217)
 
 TODO: ci6-log1.png
 
