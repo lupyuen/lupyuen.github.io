@@ -24,7 +24,7 @@ $ sudo sh -c '
     . ../github-token.sh &&
     ./rewind-build.sh esp32c6-devkitc:gpio
   '
-Build Failed for this Commit:
+Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
 
 [Build OK for Previous Commit:
@@ -54,7 +54,7 @@ $ sudo sh -c '
     . ../github-token.sh &&
     ./rewind-build.sh esp32c6-devkitc:gpio
   '
-Build Failed for this Commit:
+Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
 
 [Build OK for Previous Commit:
@@ -159,7 +159,7 @@ $ sudo sh -c '
     ./rewind-build.sh esp32c6-devkitc:gpio
       cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
   '
-Build Failed for this Commit:
+Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
 
 [Build OK for Previous Commit:
