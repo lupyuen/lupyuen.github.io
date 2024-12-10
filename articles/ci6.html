@@ -71,15 +71,16 @@
 <li><a href="#nuttx-build-history" title="NuttX Build History">4 NuttX Build History</a><ul></ul></li>
 <li><a href="#rewind-build-script" title="Rewind Build Script">5 Rewind Build Script</a><ul></ul></li>
 <li><a href="#rewind-one-commit" title="Rewind One Commit">6 Rewind One Commit</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="TODO"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="TODO" /></p>
 <p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="TODO"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
+<span style="font-size:90%">
 <blockquote>
-<p><a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><em>“riscv_exit.c: error: ‘tcb’ undeclared: g_running_tasks[this_cpu()] = tcb”</em></a></p>
+<p><a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><em>“riscv_exit.c: error: ‘tcb’ undeclared: <br> g_running_tasks[this_cpu()] = tcb”</em></a></p>
 </blockquote>
+</span>
 <p>Normally our NuttX Maintainers will scramble to identify the <strong>Breaking Commit</strong>. (Before it gets piled on by More Breaking Commits)</p>
 <p>But now we can go back in time and <strong>“Rewind The Build”</strong>, when something breaks the Daily Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
@@ -395,11 +396,27 @@ function build_nuttx {
   res=$?
 }</code></pre></div>
 <p><a href="TODO">(How we <strong>Ingest Build Logs</strong>)</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
-<p>TODO: Rewind the test</p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<p><em>Phew that was quick for finding the Breaking Commit?</em></p>
+<p>Yeah our Rewind Build Script took <strong>only ??? minutes</strong> to find the Breaking Commit! But something else broke…</p>
+<ul>
+<li>
+<p>QEMU RISC-V crashed with an <a href="https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731"><strong>Instruction Page Fault</strong></a></p>
+</li>
+<li>
+<p>Which we tracked down by <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh.sh#L43-L59"><strong>Rewinding the Past 50 Commits</strong></a></p>
+</li>
+<li>
+<p>And testing <a href="https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414"><strong>Each Commit in QEMU RISC-V</strong></a></p>
+</li>
+<li>
+<p>Yep it’s the same idea as Rewinding a Build! Just that we’re locating a <strong>Runtime Fault</strong> instead of a Compile Error</p>
+</li>
+</ul>
+<p><em>Happy Holidays! Will we have more stories about NuttX CI?</em></p>
 <p>Next Article: We study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
+<p>Then we’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
