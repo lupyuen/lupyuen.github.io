@@ -172,6 +172,7 @@ Here are the steps for Ubuntu x64...
 
     ```bash
     ## Optional: Free up the Docker disk space
+    ## Warning: Will delete all Docker Containers currently NOT running!
     sudo docker system prune --force
     ```
 
