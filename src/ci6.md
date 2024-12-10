@@ -6,7 +6,7 @@
 
 TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) 
 
-__2 Dec 2024:__ Chirstmas ain't here yet, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
+__2 Dec 2024:__ Christmas ain't here yet, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
 
 ![TODO](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
@@ -14,12 +14,10 @@ Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX
 
 Normally our NuttX Maintainers will scramble to identify the __Breaking Commit__. (Before it gets piled on by More Breaking Commits)
 
-But now we can go back in time and __"Rewind The Build"__...
+But now we can go back in time and __"Rewind The Build"__ when something breaks the Daily Build...
 
 ```bash
 ## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
-$ git clone https://github.com/lupyuen/nuttx-build-farm
-$ cd nuttx-build-farm
 $ sudo sh -c '
     . ../github-token.sh &&
     ./rewind-build.sh esp32c6-devkitc:gpio
@@ -36,11 +34,11 @@ Build Failed for Next Commit:
 ## Aha! 40023987 is the Breaking Commit!
 ```
 
-Let's chat about our new tool to __"Rewind The Build"__ when something breaks the Daily Build...
+In this article, we look inside our new tool to __Rewind The Build__...
 
-- TODO: Highlight the Breaking Commit (pic below)
+- TODO: Reveal the Breaking Commit (pic below)
 
-![TODO](https://lupyuen.github.io/images/ci6-history4.png)
+![TODO](https://lupyuen.github.io/images/ci6-history4a.png)
 
 # Rewind The Build
 
@@ -48,6 +46,9 @@ _How does it work?_
 
 ```bash
 ## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+## TODO: Install Docker Engine on Ubuntu x64
+## https://docs.docker.com/engine/install/ubuntu/
+
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
 $ sudo sh -c '
@@ -89,7 +90,7 @@ git log
 | __09:23__ | [_19e42a89_](TODO) | _arch/tricore: migrate to SPDX identifier_
 | | | _(Many more commits!)_
 
-One of these is the __Breaking Commit__, but which one?
+One of these is the __Breaking Commit__. But which one?
 
 # The Manual Way
 
@@ -105,6 +106,12 @@ make
 ## If Build Fails: Try the Previous Commit "Enhance romfs"
 make distclean
 git reset --hard dc8bde8d
+tools/configure.sh esp32c6-devkitc:gpio
+make
+
+## If Build Fails: Try the Previous Commit "Test program of kasantest"
+make distclean
+git reset --hard 208f31c2
 tools/configure.sh esp32c6-devkitc:gpio
 make
 
@@ -173,15 +180,23 @@ Build Failed for Next Commit:
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
 
-The [__Resulting Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3) looks kinda messy. We have a better way to highlight the Breaking Commit...
+The [__Resulting Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3) looks kinda messy. We have a better way to capture the evidence and reveal the Breaking Commit...
 
-# TODO
+# NuttX Build History
 
-TODO: Manually
+Head over to [__NuttX Dashboard__](TODO) and click __"NuttX Build History"__.
 
-TODO: ci6-history4.png
+Set the __Board__ and __Config__ to _esp32c6-devkitc_ and _gpio_...
+
+![TODO](https://lupyuen.github.io/images/ci6-history4a.png)
+
+TODO: Breaking Commit
+
+TODO: After fixing
 
 ![TODO](https://lupyuen.github.io/images/ci6-history4.png)
+
+TODO: How to import
 
 TODO: ci6-log1.png
 
