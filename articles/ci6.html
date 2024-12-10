@@ -73,8 +73,8 @@
 <li><a href="#rewind-one-commit" title="Rewind One Commit">6 Rewind One Commit</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
-<p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="TODO"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="TODO" /></p>
+<p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="Dashboard for Apache NuttX RTOS is already Decked in Red" /></p>
 <p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="TODO"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
 <span style="font-size:90%">
 <blockquote>
@@ -102,7 +102,7 @@ Build Failed for Next Commit:
 <ul>
 <li>TODO: Reveal the Breaking Commit (pic below)</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="NuttX Build History" /></p>
 <h1 id="rewind-the-build"><a class="doc-anchor" href="#rewind-the-build">§</a>1 Rewind The Build</h1>
 <p><em>How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
@@ -127,9 +127,10 @@ Build Failed for This Commit:
 Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
-## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
+## A-ha! 40023987 is the Breaking Commit!</code></pre></div><span style="font-size:90%">
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31">(Works also for <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
+</span>
 <p>We fly our DeLorean back to 2 Dec 2024. We inspect the <strong>NuttX Commits</strong> that might have broken our build…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Show the NuttX Commits on 2 Dec 2024
 git clone https://github.com/apache/nuttx
@@ -222,14 +223,15 @@ Build Failed for This Commit:
 Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
-## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
+## A-ha! 40023987 is the Breaking Commit!</code></pre></div><span style="font-size:90%">
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31">(Works also for <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
+</span>
 <p>The <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Rewind Build Log</strong></a> looks kinda messy. We have a better way to record the rewinding, and reveal the Breaking Commit…</p>
 <h1 id="nuttx-build-history"><a class="doc-anchor" href="#nuttx-build-history">§</a>4 NuttX Build History</h1>
-<p>Head over to <a href="TODO"><strong>NuttX Dashboard</strong></a> and click <strong>“NuttX Build History”</strong>. (At the top)</p>
+<p>Head over to <a href="https://nuttx-dashboard.org"><strong>NuttX Dashboard</strong></a> and click <strong>“NuttX Build History”</strong>. (At the top)</p>
 <p>Set the <strong>Board</strong> and <strong>Config</strong> to <em>esp32c6-devkitc</em> and <em>gpio</em>…</p>
-<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="NuttX Build History before fixing" /></p>
 <p>In reverse chronological order, <strong>NuttX Build History</strong> says that…</p>
 <ul>
 <li>
@@ -252,11 +254,11 @@ Build Failed for Next Commit:
 </li>
 </ul>
 <p>After fixing the Breaking Commit, NuttX Build History shows that everything is <a href="TODO"><strong>hunky dory again</strong></a> (top row)…</p>
-<p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="NuttX Build History after fixing" /></p>
 <p><em>How did our Rewind Build Script update the Build History?</em></p>
 <p>Our <strong>Rewind Build Script</strong> exports the Build Logs to <a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><strong>GitLab Snippets</strong></a>. (Or GitHub Gists, pic below)</p>
 <p>The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your <strong>GitLab or GitHub User ID</strong>!</p>
-<p><img src="https://lupyuen.github.io/images/ci6-log2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci6-log2.png" alt="Our Rewind Build Script exports the Build Logs to GitLab Snippets or GitHub Gists" /></p>
 <h1 id="rewind-build-script"><a class="doc-anchor" href="#rewind-build-script">§</a>5 Rewind Build Script</h1>
 <p><em>What’s inside the Rewind Build Script?</em></p>
 <p>We fetch the <strong>Latest 20 Commits</strong> from NuttX Repo and Build Each Commit, latest one first: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L180-L248">rewind-build.sh</a></p>
@@ -391,7 +393,7 @@ function build_nuttx {
   &quot;
   res=$?
 }</code></pre></div>
-<p><a href="TODO">(How we <strong>Ingest Build Logs</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4#ingest-the-build-logs">(How we <strong>Ingest Build Logs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Phew that was quick for finding the Breaking Commit?</em></p>
