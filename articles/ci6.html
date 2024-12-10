@@ -68,18 +68,16 @@
 <li><a href="#rewind-the-build" title="Rewind The Build">1 Rewind The Build</a><ul></ul></li>
 <li><a href="#the-manual-way" title="The Manual Way">2 The Manual Way</a><ul></ul></li>
 <li><a href="#the-docker-way" title="The Docker Way">3 The Docker Way</a><ul></ul></li>
-<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
+<li><a href="#nuttx-build-history" title="NuttX Build History">4 NuttX Build History</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="TODO" /></p>
 <p>TODO: <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a></p>
-<p><strong>2 Dec 2024:</strong> Chirstmas ain’t here yet, but <a href="TODO"><strong>NuttX Dashboard</strong></a> is already <strong>Decked in Red</strong>…</p>
+<p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but <a href="TODO"><strong>NuttX Dashboard</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="TODO" /></p>
 <p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="TODO"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
 <p>Normally our NuttX Maintainers will scramble to identify the <strong>Breaking Commit</strong>. (Before it gets piled on by More Breaking Commits)</p>
-<p>But now we can go back in time and <strong>“Rewind The Build”</strong>…</p>
+<p>But now we can go back in time and <strong>“Rewind The Build”</strong> when something breaks the Daily Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
-$ git clone https://github.com/lupyuen/nuttx-build-farm
-$ cd nuttx-build-farm
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
     ./rewind-build.sh esp32c6-devkitc:gpio
@@ -94,14 +92,17 @@ Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
 ## Aha! 40023987 is the Breaking Commit!</code></pre></div>
-<p>Let’s chat about our new tool to <strong>“Rewind The Build”</strong> when something breaks the Daily Build…</p>
+<p>In this article, we look inside our new tool to <strong>Rewind The Build</strong>…</p>
 <ul>
-<li>TODO: Highlight the Breaking Commit (pic below)</li>
+<li>TODO: Reveal the Breaking Commit (pic below)</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="TODO" /></p>
 <h1 id="rewind-the-build"><a class="doc-anchor" href="#rewind-the-build">§</a>1 Rewind The Build</h1>
 <p><em>How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+## TODO: Install Docker Engine on Ubuntu x64
+## https://docs.docker.com/engine/install/ubuntu/
+
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
 $ sudo sh -c &#39;
@@ -135,7 +136,7 @@ git log</code></pre></div><div><table><thead><tr><th style="text-align: left">20
 <tr><td style="text-align: left"></td><td style="text-align: left"></td><td style="text-align: left"><em>(Many more commits!)</em></td></tr>
 </tbody></table>
 </div>
-<p>One of these is the <strong>Breaking Commit</strong>, but which one?</p>
+<p>One of these is the <strong>Breaking Commit</strong>. But which one?</p>
 <h1 id="the-manual-way"><a class="doc-anchor" href="#the-manual-way">§</a>2 The Manual Way</h1>
 <p>This is the <strong>Manual Way</strong> to find the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
@@ -147,6 +148,12 @@ make
 ## If Build Fails: Try the Previous Commit &quot;Enhance romfs&quot;
 make distclean
 git reset --hard dc8bde8d
+tools/configure.sh esp32c6-devkitc:gpio
+make
+
+## If Build Fails: Try the Previous Commit &quot;Test program of kasantest&quot;
+make distclean
+git reset --hard 208f31c2
 tools/configure.sh esp32c6-devkitc:gpio
 make
 
@@ -200,11 +207,15 @@ Build Failed for Next Commit:
 
 ## Aha! 40023987 is the Breaking Commit!</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
-<p>The <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Resulting Log</strong></a> looks kinda messy. We have a better way to highlight the Breaking Commit…</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
-<p>TODO: Manually</p>
-<p>TODO: ci6-history4.png</p>
+<p>The <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Resulting Log</strong></a> looks kinda messy. We have a better way to capture the evidence and reveal the Breaking Commit…</p>
+<h1 id="nuttx-build-history"><a class="doc-anchor" href="#nuttx-build-history">§</a>4 NuttX Build History</h1>
+<p>Head over to <a href="TODO"><strong>NuttX Dashboard</strong></a> and click <strong>“NuttX Build History”</strong>.</p>
+<p>Set the <strong>Board</strong> and <strong>Config</strong> to <em>esp32c6-devkitc</em> and <em>gpio</em>…</p>
+<p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="TODO" /></p>
+<p>TODO: Breaking Commit</p>
+<p>TODO: After fixing</p>
 <p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="TODO" /></p>
+<p>TODO: How to import</p>
 <p>TODO: ci6-log1.png</p>
 <p><img src="https://lupyuen.github.io/images/ci6-log1.png" alt="TODO" /></p>
 <p>TODO: ci6-log2.png</p>
