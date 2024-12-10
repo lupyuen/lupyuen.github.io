@@ -10,7 +10,11 @@ __2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX 
 
 Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](TODO). (More about CI Test next article)
 
-> [_"riscv_exit.c: error: 'tcb' undeclared: g_running_tasks[this_cpu()] = tcb"_](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217)
+<span style="font-size:90%">
+
+> [_"riscv_exit.c: error: 'tcb' undeclared: <br> g_running_tasks[this_cpu()] = tcb"_](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217)
+
+</span>
 
 Normally our NuttX Maintainers will scramble to identify the __Breaking Commit__. (Before it gets piled on by More Breaking Commits)
 
@@ -404,15 +408,27 @@ function build_nuttx {
 
 [(How we __Ingest Build Logs__)](TODO)
 
-# TODO
-
-TODO: Rewind the test
-
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
 # What's Next
 
+_Phew that was quick for finding the Breaking Commit?_
+
+Yeah our Rewind Build Script took __only ??? minutes__ to find the Breaking Commit! But something else broke...
+
+- QEMU RISC-V crashed with an [__Instruction Page Fault__](https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731)
+
+- Which we tracked down by [__Rewinding the Past 50 Commits__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh.sh#L43-L59)
+
+- And testing [__Each Commit in QEMU RISC-V__](https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414)
+
+- Yep it's the same idea as Rewinding a Build! Just that we're locating a __Runtime Fault__ instead of a Compile Error
+
+_Happy Holidays! Will we have more stories about NuttX CI?_
+
 Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
+
+Then we'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
