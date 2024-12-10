@@ -145,6 +145,7 @@ git log</code></pre></div><div><table><thead><tr><th style="text-align: left">20
 </tbody></table>
 </div>
 <p>One of these is the <strong>Breaking Commit</strong>. But which one?</p>
+<p>TODO: Pic of Breaking Commit</p>
 <h1 id="the-manual-way"><a class="doc-anchor" href="#the-manual-way">§</a>2 The Manual Way</h1>
 <p>This is the <strong>Manual Way</strong> to find the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
@@ -169,6 +170,7 @@ make
 ## Record everything we&#39;ve done as evidence</code></pre></div>
 <p><strong>But for Nuttx Maintainers:</strong> Compiling NuttX Locally might not always work!</p>
 <p>We might miss out some toolchains and fail the build: <strong>Arm, RISC-V, Xtensa, x86_64, …</strong></p>
+<p>TODO: Pic of Docker</p>
 <h1 id="the-docker-way"><a class="doc-anchor" href="#the-docker-way">§</a>3 The Docker Way</h1>
 <p>Thus we run <strong>Docker to Compile NuttX</strong>, which has all toolchains bundled inside…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
@@ -193,6 +195,7 @@ make -j ...
 
 ## Repeat until the Build Succeeds
 ## Record everything we&#39;ve done as evidence</code></pre></div>
+<p><a href="https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>NuttX Docker Build</strong>)</a></p>
 <p>Yep this gets tedious, we <strong>repeat all this 20 times</strong> (or more) to catch the Breaking Commit!</p>
 <p>That’s why we run a script to <strong>“Rewind the Build”</strong>, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
@@ -377,16 +380,11 @@ function build_nuttx {
     /bin/bash -c &quot;
     set -e ;
     set -x ;
-    uname -a ;
     cd ;
-    pwd ;
     git clone https://github.com/apache/nuttx ;
     git clone https://github.com/apache/nuttx-apps apps ;
-    echo Building nuttx @ $nuttx_commit / nuttx-apps @ $apps_commit ;
     pushd nuttx ; git reset --hard $nuttx_commit ; popd ;
     pushd apps  ; git reset --hard $apps_commit  ; popd ;
-    pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD)    ; popd ;
-    pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
     cd nuttx ;
     ( sleep 3600 ; echo Killing pytest after timeout... ; pkill -f pytest )&amp;
     (
@@ -395,9 +393,10 @@ function build_nuttx {
   &quot;
   res=$?
 }</code></pre></div>
+<p><a href="TODO">(How we <strong>Ingest Build Logs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
-<p>TODO</p>
+<p>Next Article: We study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
