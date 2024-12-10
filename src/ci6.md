@@ -225,23 +225,15 @@ In reverse chronological order, __NuttX Build History__ says that...
 
 - Much neater than the [__Rewind Build Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)!
 
-After fixing the Breaking Commit, NuttX Build History shows that everything is hunky dory again (top row)...
+After fixing the Breaking Commit, NuttX Build History shows that everything is [__hunky dory again__](TODO) (top row)...
 
 ![TODO](https://lupyuen.github.io/images/ci6-history4.png)
 
 _How did our Rewind Build Script update the Build History?_
 
-Our __Rewind Build Script__ exports the Build Logs to __GitLab Snippets__. (Or GitHub Gists)
+Our __Rewind Build Script__ exports the Build Logs to [__GitLab Snippets__](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217). (Or GitHub Gists, pic below)
 
 The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your __GitLab or GitHub User ID__!
-
-TODO: [Build Log](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217)
-
-TODO: ci6-log1.png
-
-![TODO](https://lupyuen.github.io/images/ci6-log1.png)
-
-TODO: ci6-log2.png
 
 ![TODO](https://lupyuen.github.io/images/ci6-log2.png)
 
