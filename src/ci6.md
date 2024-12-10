@@ -8,41 +8,96 @@ TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
 __2 Dec 2024:__ Chirstmas ain't here yet, but [__NuttX Dashboard__](TODO) is already __Decked in Red__...
 
-TODO: Pic
+![TODO](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
-Which say that ??? is failing to build. (We'll chat about CI Test next article)
+Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](TODO). (More about CI Test next article)
 
-TODO: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
+Normally our NuttX Maintainers will scramble to identify the __Breaking Commit__. (Before it gets piled on by More Breaking Commits)
 
-# TODO
-
-https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3
+But now we can go back in time and __"Rewind The Build"__...
 
 ```bash
-$ sudo sh -c '. ../github-token.sh && ./rewind-build.sh esp32c6-devkitc:gpio cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509'
+## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+$ git clone https://github.com/lupyuen/nuttx-build-farm
+$ cd nuttx-build-farm
+$ sudo sh -c '
+    . ../github-token.sh &&
+    ./rewind-build.sh esp32c6-devkitc:gpio
+  '
+Build Failed for this Commit:
+  nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
+
+[Build OK for Previous Commit:
+  nuttx @ 19e42a8978179d23a49c9090c9a713206e6575d0]
+
+Build Failed for Next Commit:
+  nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
+
+## Aha! 40023987 is the Breaking Commit!
 ```
 
-TODO: Summary
+Let's chat about our new tool to __"Rewind The Build"__ when something breaks the Daily Build...
+
+- TODO: Highlight the Breaking Commit (pic below)
+
+![TODO](https://lupyuen.github.io/images/ci6-history4.png)
+
+# Rewind The Build
+
+_How does it work?_
+
+```bash
+## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+$ git clone https://github.com/lupyuen/nuttx-build-farm
+$ cd nuttx-build-farm
+$ sudo sh -c '
+    . ../github-token.sh &&
+    ./rewind-build.sh esp32c6-devkitc:gpio
+  '
+Build Failed for this Commit:
+  nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
+
+[Build OK for Previous Commit:
+  nuttx @ 19e42a8978179d23a49c9090c9a713206e6575d0]
+
+Build Failed for Next Commit:
+  nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
+
+## Aha! 40023987 is the Breaking Commit!
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
+
+We fly our DeLorean back to 2 Dec 2024. We inspect the __NuttX Commits__ that might have broken our build...
 
 ```text
-$ git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
-$ git log
+## Show the NuttX Commits on 2 Dec 2024
+git clone https://github.com/apache/nuttx
+cd nuttx
+git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
+git log
 ```
 
-| 2024-12-02 |    |     |
+| 2024-12-02 | Commit | Message |
 |:-----------|:---|:----|
-| __12:05__ | _cc96289e_ | _xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para_
-| __11:59__ | _dc8bde8d_ | _cmake(enhance): Enhance romfs so that RAWS files can be added in any location_
-| __11:49__ | _208f31c2_ | _boards/qemu64: Due to dependency changes, the test program of kasantest is deleted_
-| __11:47__ | _9fbb81e8_ | _samv7: fix bytes to words calculation in user signature read_
-| __11:14__ | _140b3080_ | _drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)_
-| __09:41__ | _40023987_ | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
-| __09:23__ | _19e42a89_ | _arch/tricore: migrate to SPDX identifier_
+| __12:05__ | [_cc96289e_](TODO) | _xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para_
+| __11:59__ | [_dc8bde8d_](TODO) | _cmake(enhance): Enhance romfs so that RAWS files can be added in any location_
+| __11:49__ | [_208f31c2_](TODO) | _boards/qemu64: Due to dependency changes, the test program of kasantest is deleted_
+| __11:47__ | [_9fbb81e8_](TODO) | _samv7: fix bytes to words calculation in user signature read_
+| __11:14__ | [_140b3080_](TODO) | _drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)_
+| __09:41__ | [_40023987_](TODO) | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
+| __09:23__ | [_19e42a89_](TODO) | _arch/tricore: migrate to SPDX identifier_
+| | | _(Many more commits!)_
 
-Normally we do this...
+One of these is the __Breaking Commit__, but which one?
 
-```text
+# The Manual Way
+
+This is the __Manual Way__ to find the Breaking Commit...
+
+```bash
 ## Build the Latest Commit: "xtensa syscall"
+make distclean
 git reset --hard cc96289e
 tools/configure.sh esp32c6-devkitc:gpio
 make
@@ -57,11 +112,15 @@ make
 ## Record everything we've done as evidence
 ```
 
-__But for Nuttx Maintainers:__ Compiling NuttX Locally might not always work, we might miss out some toolchains.
+__But for Nuttx Maintainers:__ Compiling NuttX Locally might not always work!
 
-Thus we run __Docker to Compile NuttX__...
+We might miss out some toolchains and fail the build.
 
-```text
+# The Docker Way
+
+Thus we run __Docker to Compile NuttX__, which has all toolchains bundled inside...
+
+```bash
 ## Build the Latest Commit: "xtensa syscall"
 ## With the NuttX Docker Image
 sudo docker run -it \
@@ -86,39 +145,39 @@ make -j ...
 ## Record everything we've done as evidence
 ```
 
-Yep this gets tedious, we __repeat all this 20 times__ to catch the Breaking Commit!
+Yep this gets tedious, we __repeat all this 20 times__ (or more) to catch the Breaking Commit!
 
-That's why we run a script to __"Rewind the Build"__, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit.
+That's why we run a script to __"Rewind the Build"__, Step Back in Time 20 times (says Kylie), to discover the Breaking Commit...
 
-https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L427
+```bash
+## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+## Commit ID cc96289e is optional
+$ git clone https://github.com/lupyuen/nuttx-build-farm
+$ cd nuttx-build-farm
+$ sudo sh -c '
+    . ../github-token.sh &&
+    ./rewind-build.sh esp32c6-devkitc:gpio
+      cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
+  '
+Build Failed for this Commit:
+  nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
 
-```text
-***** BUILD FAILED FOR THIS COMMIT: nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
-(Build OK for Previous Commit 19e42a8978179d23a49c9090c9a713206e6575d0)
-***** BUILD FAILED FOR NEXT COMMIT: nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8 / nuttx-apps @ ce217b874437b2bd60ad2a2343442506cd8b50b8
+[Build OK for Previous Commit:
+  nuttx @ 19e42a8978179d23a49c9090c9a713206e6575d0]
+
+Build Failed for Next Commit:
+  nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
+
+## Aha! 40023987 is the Breaking Commit!
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
+
+The [__Resulting Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3) looks kinda messy. We have a better way to highlight the Breaking Commit...
+
+# TODO
+
 TODO: Manually
-
-TODO: ci6-dashboard1.png
-
-![TODO](https://lupyuen.github.io/images/ci6-dashboard1.png)
-
-TODO: ci6-dashboard2.png
-
-![TODO](https://lupyuen.github.io/images/ci6-dashboard2.png)
-
-TODO: ci6-history1.png
-
-![TODO](https://lupyuen.github.io/images/ci6-history1.png)
-
-TODO: ci6-history2.png
-
-![TODO](https://lupyuen.github.io/images/ci6-history2.png)
-
-TODO: ci6-history3.png
-
-![TODO](https://lupyuen.github.io/images/ci6-history3.png)
 
 TODO: ci6-history4.png
 
@@ -348,9 +407,9 @@ done
 ## Wait for Background Tasks to complete
 fg || true
 
-## Free up the Docker disk space
-sudo docker system prune --force
-set +x ; echo "***** Done!" ; set -x
+## Free up the Docker disk space:
+## (Warning: Will delete all Docker Containers currently NOT running!)
+## sudo docker system prune --force
 ```
 
 https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh
