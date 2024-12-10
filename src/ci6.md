@@ -4,9 +4,9 @@
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
-__2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX RTOS__](TODO) is already __Decked in Red__...
+__2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) is already __Decked in Red__...
 
-![TODO](https://lupyuen.github.io/images/ci6-dashboard2.png)
+![Dashboard for Apache NuttX RTOS is already Decked in Red](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
 Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](TODO). (More about CI Test next article)
 
@@ -42,7 +42,7 @@ In this article, we look inside our new tool to __Rewind The Build__...
 
 - TODO: Reveal the Breaking Commit (pic below)
 
-![TODO](https://lupyuen.github.io/images/ci6-history4a.png)
+![NuttX Build History](https://lupyuen.github.io/images/ci6-history4a.png)
 
 # Rewind The Build
 
@@ -74,9 +74,13 @@ Build Failed for Next Commit:
 ## A-ha! 40023987 is the Breaking Commit!
 ```
 
+<span style="font-size:90%">
+
 [(Works also for __GitLab Snippets__)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
+
+</span>
 
 We fly our DeLorean back to 2 Dec 2024. We inspect the __NuttX Commits__ that might have broken our build...
 
@@ -197,19 +201,23 @@ Build Failed for Next Commit:
 ## A-ha! 40023987 is the Breaking Commit!
 ```
 
+<span style="font-size:90%">
+
 [(Works also for __GitLab Snippets__)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)
+
+</span>
 
 The [__Rewind Build Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3) looks kinda messy. We have a better way to record the rewinding, and reveal the Breaking Commit...
 
 # NuttX Build History
 
-Head over to [__NuttX Dashboard__](TODO) and click __"NuttX Build History"__. (At the top)
+Head over to [__NuttX Dashboard__](https://nuttx-dashboard.org) and click __"NuttX Build History"__. (At the top)
 
 Set the __Board__ and __Config__ to _esp32c6-devkitc_ and _gpio_...
 
-![TODO](https://lupyuen.github.io/images/ci6-history4a.png)
+![NuttX Build History before fixing](https://lupyuen.github.io/images/ci6-history4a.png)
 
 In reverse chronological order, __NuttX Build History__ says that...
 
@@ -227,7 +235,7 @@ In reverse chronological order, __NuttX Build History__ says that...
 
 After fixing the Breaking Commit, NuttX Build History shows that everything is [__hunky dory again__](TODO) (top row)...
 
-![TODO](https://lupyuen.github.io/images/ci6-history4.png)
+![NuttX Build History after fixing](https://lupyuen.github.io/images/ci6-history4.png)
 
 _How did our Rewind Build Script update the Build History?_
 
@@ -235,7 +243,7 @@ Our __Rewind Build Script__ exports the Build Logs to [__GitLab Snippets__](http
 
 The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your __GitLab or GitHub User ID__!
 
-![TODO](https://lupyuen.github.io/images/ci6-log2.png)
+![Our Rewind Build Script exports the Build Logs to GitLab Snippets or GitHub Gists](https://lupyuen.github.io/images/ci6-log2.png)
 
 # Rewind Build Script
 
@@ -398,7 +406,7 @@ function build_nuttx {
 }
 ```
 
-[(How we __Ingest Build Logs__)](TODO)
+[(How we __Ingest Build Logs__)](https://lupyuen.github.io/articles/ci4#ingest-the-build-logs)
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
