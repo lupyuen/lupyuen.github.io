@@ -97,6 +97,8 @@ git log
 
 One of these is the __Breaking Commit__. But which one?
 
+TODO: Pic of Breaking Commit
+
 # The Manual Way
 
 This is the __Manual Way__ to find the Breaking Commit...
@@ -128,6 +130,8 @@ __But for Nuttx Maintainers:__ Compiling NuttX Locally might not always work!
 
 We might miss out some toolchains and fail the build: __Arm, RISC-V, Xtensa, x86_64, ...__
 
+TODO: Pic of Docker
+
 # The Docker Way
 
 Thus we run __Docker to Compile NuttX__, which has all toolchains bundled inside...
@@ -156,6 +160,8 @@ make -j ...
 ## Repeat until the Build Succeeds
 ## Record everything we've done as evidence
 ```
+
+[(More about __NuttX Docker Build__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
 
 Yep this gets tedious, we __repeat all this 20 times__ (or more) to catch the Breaking Commit!
 
@@ -381,16 +387,11 @@ function build_nuttx {
     /bin/bash -c "
     set -e ;
     set -x ;
-    uname -a ;
     cd ;
-    pwd ;
     git clone https://github.com/apache/nuttx ;
     git clone https://github.com/apache/nuttx-apps apps ;
-    echo Building nuttx @ $nuttx_commit / nuttx-apps @ $apps_commit ;
     pushd nuttx ; git reset --hard $nuttx_commit ; popd ;
     pushd apps  ; git reset --hard $apps_commit  ; popd ;
-    pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD)    ; popd ;
-    pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
     cd nuttx ;
     ( sleep 3600 ; echo Killing pytest after timeout... ; pkill -f pytest )&
     (
@@ -401,11 +402,13 @@ function build_nuttx {
 }
 ```
 
+[(How we __Ingest Build Logs__)](TODO)
+
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
 # What's Next
 
-TODO
+Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
