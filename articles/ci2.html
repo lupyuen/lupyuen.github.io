@@ -194,6 +194,7 @@ CMake,arduino-nano-33ble:nsh
 <p>Wait for <em>arm-01</em> to complete, then clean up</p>
 <p>(About 1.5 hours. That’s 15 mins slower than GitHub Actions)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Optional: Free up the Docker disk space
+## Warning: Will delete all Docker Containers currently NOT running!
 sudo docker system prune --force</code></pre></div></li>
 </ol>
 <p>Put everything together: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-job.sh">run-job.sh</a></p>
