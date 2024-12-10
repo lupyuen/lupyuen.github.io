@@ -406,7 +406,7 @@ function build_nuttx {
 
 _Phew that was quick for finding the Breaking Commit?_
 
-Yeah our Rewind Build Script took __only ??? minutes__ to find the Breaking Commit! But something else broke...
+Yeah our Rewind Build Script took __only ??? minutes__ to find the Breaking Commit! Though fixing it took longer...
 
 - QEMU RISC-V crashed with an [__Instruction Page Fault__](https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731)
 
@@ -414,7 +414,7 @@ Yeah our Rewind Build Script took __only ??? minutes__ to find the Breaking Comm
 
 - And testing [__Each Commit in QEMU RISC-V__](https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414)
 
-- Yep it's the same idea as Rewinding a Build! Just that we're locating a __Runtime Fault__ instead of a Compile Error
+- Yep it's the same idea as Rewinding a Build! Just that we're (slowly) locating a __Runtime Fault__ instead of a (quicker) Compile Error
 
 _Happy Holidays! Will we have more stories about NuttX CI?_
 
