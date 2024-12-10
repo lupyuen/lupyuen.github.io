@@ -395,7 +395,7 @@ function build_nuttx {
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Phew that was quick for finding the Breaking Commit?</em></p>
-<p>Yeah our Rewind Build Script took <strong>only ??? minutes</strong> to find the Breaking Commit! But something else broke…</p>
+<p>Yeah our Rewind Build Script took <strong>only ??? minutes</strong> to find the Breaking Commit! Though fixing it took longer…</p>
 <ul>
 <li>
 <p>QEMU RISC-V crashed with an <a href="https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731"><strong>Instruction Page Fault</strong></a></p>
@@ -407,7 +407,7 @@ function build_nuttx {
 <p>And testing <a href="https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414"><strong>Each Commit in QEMU RISC-V</strong></a></p>
 </li>
 <li>
-<p>Yep it’s the same idea as Rewinding a Build! Just that we’re locating a <strong>Runtime Fault</strong> instead of a Compile Error</p>
+<p>Yep it’s the same idea as Rewinding a Build! Just that we’re (slowly) locating a <strong>Runtime Fault</strong> instead of a (quicker) Compile Error</p>
 </li>
 </ul>
 <p><em>Happy Holidays! Will we have more stories about NuttX CI?</em></p>
