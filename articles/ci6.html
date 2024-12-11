@@ -75,18 +75,20 @@
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="Dashboard for Apache NuttX RTOS is already Decked in Red" /></p>
-<p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="TODO"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
+<p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="https://lupyuen.github.io/articles/ci2"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
 <span style="font-size:90%">
 <blockquote>
 <p><a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><em>“riscv_exit.c: error: ‘tcb’ undeclared: <br> g_running_tasks[this_cpu()] = tcb”</em></a></p>
 </blockquote>
 </span>
 <p>Normally our NuttX Maintainers will scramble to identify the <strong>Breaking Commit</strong>. (Before it gets piled on by More Breaking Commits)</p>
-<p>But now we can go back in time and <strong>“Rewind The Build”</strong>, when something breaks the Daily Build…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+<p>Not any more! Now we can go back in time and <strong>“Rewind The Build”</strong>, when something breaks the Daily Build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for
+## NuttX Target esp32c6-devkitc:gpio
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   &#39;
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -98,7 +100,7 @@ Build Failed for Next Commit:
   nuttx @ 140b3080c5f6921e0f9cec0a56ebdb72ca51d1d8
 
 ## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
-<p>In this article, we look inside our new tool to <strong>Rewind The Build</strong>…</p>
+<p>In this article, we look inside our new tool to <strong>Rewind The NuttX Build</strong>…</p>
 <ul>
 <li>TODO: Reveal the Breaking Commit (pic below)</li>
 </ul>
@@ -116,7 +118,8 @@ $ cd nuttx-build-farm
 ## export GITHUB_TOKEN=...
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   &#39;
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -131,26 +134,28 @@ Build Failed for Next Commit:
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L1-L31">(Works also for <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3">(See the <strong>Complete Log</strong>)</a></p>
 </span>
-<p>We fly our DeLorean back to 2 Dec 2024. We inspect the <strong>NuttX Commits</strong> that might have broken our build…</p>
+<p>We fly our DeLorean back to 2 Dec 2024. And inspect the <strong>NuttX Commits</strong> that might have broken our build…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Show the NuttX Commits on 2 Dec 2024
 git clone https://github.com/apache/nuttx
 cd nuttx
 git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
-git log</code></pre></div><div><table><thead><tr><th style="text-align: left">2024-12-02</th><th style="text-align: left">Commit</th><th style="text-align: left">Message</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>12:05</strong></td><td style="text-align: left"><a href="TODO"><em>cc96289e</em></a></td><td style="text-align: left"><em>xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para</em></td></tr>
-<tr><td style="text-align: left"><strong>11:59</strong></td><td style="text-align: left"><a href="TODO"><em>dc8bde8d</em></a></td><td style="text-align: left"><em>cmake(enhance): Enhance romfs so that RAWS files can be added in any location</em></td></tr>
-<tr><td style="text-align: left"><strong>11:49</strong></td><td style="text-align: left"><a href="TODO"><em>208f31c2</em></a></td><td style="text-align: left"><em>boards/qemu64: Due to dependency changes, the test program of kasantest is deleted</em></td></tr>
-<tr><td style="text-align: left"><strong>11:47</strong></td><td style="text-align: left"><a href="TODO"><em>9fbb81e8</em></a></td><td style="text-align: left"><em>samv7: fix bytes to words calculation in user signature read</em></td></tr>
-<tr><td style="text-align: left"><strong>11:14</strong></td><td style="text-align: left"><a href="TODO"><em>140b3080</em></a></td><td style="text-align: left"><em>drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)</em></td></tr>
-<tr><td style="text-align: left"><strong>09:41</strong></td><td style="text-align: left"><a href="TODO"><em>40023987</em></a></td><td style="text-align: left"><em>risc-v: remove g_running_tasks[this_cpu()] = NULL</em></td></tr>
-<tr><td style="text-align: left"><strong>09:23</strong></td><td style="text-align: left"><a href="TODO"><em>19e42a89</em></a></td><td style="text-align: left"><em>arch/tricore: migrate to SPDX identifier</em></td></tr>
+git log</code></pre></div><div><table><thead><tr><th style="text-align: left">2 Dec</th><th style="text-align: left">Commit</th><th style="text-align: left">Title</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>12:05</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/15010"><em>cc96289e</em></a></td><td style="text-align: left"><em>xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para</em></td></tr>
+<tr><td style="text-align: left"><strong>11:59</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/15009"><em>dc8bde8d</em></a></td><td style="text-align: left"><em>cmake(enhance): Enhance romfs so that RAWS files can be added in any location</em></td></tr>
+<tr><td style="text-align: left"><strong>11:49</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/15012"><em>208f31c2</em></a></td><td style="text-align: left"><em>boards/qemu64: Due to dependency changes, the test program of kasantest is deleted</em></td></tr>
+<tr><td style="text-align: left"><strong>11:47</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/15013"><em>9fbb81e8</em></a></td><td style="text-align: left"><em>samv7: fix bytes to words calculation in user signature read</em></td></tr>
+<tr><td style="text-align: left"><strong>11:14</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/15011"><em>140b3080</em></a></td><td style="text-align: left"><em>drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)</em></td></tr>
+<tr><td style="text-align: left"><strong>09:41</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14984"><em>40023987</em></a></td><td style="text-align: left"><em>risc-v: remove g_running_tasks[this_cpu()] = NULL</em></td></tr>
+<tr><td style="text-align: left"><strong>09:23</strong></td><td style="text-align: left"><a href="https://github.com/apache/nuttx/pull/14996"><em>19e42a89</em></a></td><td style="text-align: left"><em>arch/tricore: migrate to SPDX identifier</em></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"></td><td style="text-align: left"><em>(Many more commits!)</em></td></tr>
 </tbody></table>
 </div>
-<p>One of these is the <strong>Breaking Commit</strong>. But which one?</p>
-<p>TODO: Pic of Breaking Commit</p>
+<p>One of these is the <strong>Breaking Commit</strong>. Which one?</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ci6-title2.jpg" alt="Rewinding a Build the Manual Way" /></p>
+</blockquote>
 <h1 id="the-manual-way"><a class="doc-anchor" href="#the-manual-way">§</a>2 The Manual Way</h1>
-<p>This is the <strong>Manual Way</strong> to find the Breaking Commit…</p>
+<p>This is the <strong>Manual Way</strong> to find the Breaking Commit (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
 make distclean
 git reset --hard cc96289e
@@ -173,9 +178,11 @@ make
 ## Record everything we&#39;ve done as evidence</code></pre></div>
 <p><strong>But for Nuttx Maintainers:</strong> Compiling NuttX Locally might not always work!</p>
 <p>We might miss out some toolchains and fail the build: <strong>Arm, RISC-V, Xtensa, x86_64, …</strong></p>
-<p>TODO: Pic of Docker</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ci6-title3.jpg" alt="Rewinding a Build with Docker" /></p>
+</blockquote>
 <h1 id="the-docker-way"><a class="doc-anchor" href="#the-docker-way">§</a>3 The Docker Way</h1>
-<p>Thus we run <strong>Docker to Compile NuttX</strong>, which has all toolchains bundled inside…</p>
+<p>Thus we run <strong>Docker to Compile NuttX</strong>. Which has <strong>All Toolchains</strong> bundled inside (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the Latest Commit: &quot;xtensa syscall&quot;
 ## With the NuttX Docker Image
 sudo docker run -it \
@@ -212,7 +219,8 @@ $ cd nuttx-build-farm
 ## export GITHUB_TOKEN=...
 $ sudo sh -c &#39;
     . ../github-token.sh &amp;&amp;
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   &#39;
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -244,20 +252,20 @@ Build Failed for Next Commit:
 <p><strong>Before Commit 40023987:</strong> NuttX Builds are Successful</p>
 </li>
 <li>
-<p>Which means: Commit 40023987 is our <strong>Breaking Commit!</strong></p>
+<p>Which means: Commit 40023987 is our <a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L1-L7"><strong>Breaking Commit!</strong></a></p>
 </li>
 <li>
-<p>See the <em>“sudo docker”</em> entries above? They were inserted by our <strong>Rewind Build Script</strong></p>
+<p>See the <em>“sudo docker”</em> entries above? They were helpfully inserted by our <a href="https://lupyuen.github.io/articles/ci6#rewind-build-script"><strong>Rewind Build Script</strong></a></p>
 </li>
 <li>
 <p>Much neater than the <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Rewind Build Log</strong></a>!</p>
 </li>
 </ul>
-<p>After fixing the Breaking Commit, NuttX Build History shows that everything is <a href="TODO"><strong>hunky dory again</strong></a> (top row)…</p>
+<p>After fixing the Breaking Commit, NuttX Build History shows that everything is <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=esp32c6-devkitc&amp;var-config=gpio&amp;var-group=$__all&amp;var-Filters="><strong>hunky dory again</strong></a> (top row)</p>
 <p><img src="https://lupyuen.github.io/images/ci6-history4.png" alt="NuttX Build History after fixing" /></p>
 <p><em>How did our Rewind Build Script update the Build History?</em></p>
 <p>Our <strong>Rewind Build Script</strong> exports the Build Logs to <a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><strong>GitLab Snippets</strong></a>. (Or GitHub Gists, pic below)</p>
-<p>The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your <strong>GitLab or GitHub User ID</strong>!</p>
+<p>The Build Logs are then ingested into our <strong>NuttX Build History</strong> by a Scheduled Task. So when you run the Rewind Build Script, please tell me your <strong>GitLab or GitHub User ID</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ci6-log2.png" alt="Our Rewind Build Script exports the Build Logs to GitLab Snippets or GitHub Gists" /></p>
 <h1 id="rewind-build-script"><a class="doc-anchor" href="#rewind-build-script">§</a>5 Rewind Build Script</h1>
 <p><em>What’s inside the Rewind Build Script?</em></p>
@@ -307,7 +315,7 @@ for commit in $(
   nuttx_hash=$prev_hash
   timestamp=$prev_timestamp
 done</code></pre></div>
-<p><strong>build_commit</strong> will compile a NuttX Commit and upload the Build Log: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L60-L113">rewind-build.sh</a></p>
+<p><strong>build_commit</strong> will compile a NuttX Commit (pic below) and upload the <strong>Build Log</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L60-L113">rewind-build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build the NuttX Commit for the Target
 function build_commit {
   ...
@@ -344,9 +352,9 @@ function run_job {
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L132-L147">(<strong>find_messages</strong> searches for Errors)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L147-L180">(<strong>upload_log</strong> uploads to GitLab Snippet or GitHub Gist)</a></p>
 </span>
-<p>TODO: Pic of ???</p>
+<p><img src="https://lupyuen.github.io/images/ci6-title3.jpg" alt="Rewind Build Script" /></p>
 <h1 id="rewind-one-commit"><a class="doc-anchor" href="#rewind-one-commit">§</a>6 Rewind One Commit</h1>
-<p>Earlier we saw our <a href="TODO"><strong>Rewind Build Script</strong></a> compiling the Latest 20 Commits.</p>
+<p>Earlier we saw our <a href="https://lupyuen.github.io/articles/ci6#rewind-build-script"><strong>Rewind Build Script</strong></a> compiling the Latest 20 Commits. (Pic above)</p>
 <p>This is how we compile <strong>One Single Commit</strong> for NuttX: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L114-L146">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>target=$1      ## NuttX Target, like &quot;ox64:nsh&quot;
 nuttx_hash=$2  ## Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
@@ -397,7 +405,7 @@ function build_nuttx {
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Phew that was quick for finding the Breaking Commit?</em></p>
-<p>Yeah our Rewind Build Script took <strong>only ??? minutes</strong> to find the Breaking Commit! Though fixing it took longer…</p>
+<p>Yeah our Rewind Build Script took <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070"><strong>only one hour</strong></a> to find the Breaking Commit! Though fixing it took longer…</p>
 <ul>
 <li>
 <p>QEMU RISC-V crashed with an <a href="https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731"><strong>Instruction Page Fault</strong></a></p>
