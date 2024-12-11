@@ -65,9 +65,13 @@
 
     <h1 class="title">Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">3 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
+<li><a href="#run-the-ci-test" title="Run the CI Test">1 Run the CI Test</a><ul></ul></li>
+<li><a href="#snoop-the-ci-test" title="Snoop the CI Test">2 Snoop the CI Test</a><ul></ul></li>
+<li><a href="#dump-the-ci-log-file" title="Dump the CI Log File">3 Dump the CI Log File</a><ul></ul></li>
+<li><a href="#test-nuttx-on-qemu-risc-v" title="Test NuttX on QEMU RISC-V">4 Test NuttX on QEMU RISC-V</a><ul></ul></li>
+<li><a href="#todo" title="TODO">5 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="TODO" /></p>
 <p>TODO: Bothersome bug flagged by NuttX Dashboard every day since a month ago</p>
 <p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="TODO" /></p>
@@ -80,38 +84,96 @@ test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
 <p><a href="https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88">(See the <strong>Complete Log</strong>)</a></p>
 <p>Reported one month ago: <a href="https://github.com/apache/nuttx/issues/14808">“[BUG] rv-virt/citest: test_hello or test_pipe failed”</a></p>
-<p>The bug stops here! (Eventually)</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
-<p>TODO: Run risc-v-05</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo docker run \
+<p>The bug stops here! (OK maybe not today)</p>
+<h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
+<p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC…</p>
+<p><a href="TODO">(Steps for <strong>macOS Arm64</strong>)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
+## Name the Docker Container as `nuttx`
+sudo docker run \
   -it \
   --name nuttx \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
+
+## Inside Docker: Checkout the NuttX Repo and NuttX Apps
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
 pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
 pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
+
+## Run CI Test risc-v-05 inside Docker Container
 cd nuttx/tools/ci
-./cibuild.sh -c -A -N -R testlist/risc-v-05.dat </code></pre></div>
+./cibuild.sh \
+  -c -A -N -R \
+  testlist/risc-v-05.dat </code></pre></div>
+<p>Docker will build <em>rv-virt:citest</em> and start the CI Test…</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
+python3 -m pytest -m &#39;qemu or rv_virt&#39; ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+test_cmocka      PASSED
+test_hello       PASSED
+test_helloxx     FAILED
+test_pipe        FAILED
+test_usrsocktest FAILED
+[...Failing all the way...]</code></pre></div>
+<p>Which is totally unhelpful. Why is it failing?</p>
 <p><a href="https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: Run QEMU</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo docker exec \
+<h1 id="snoop-the-ci-test"><a class="doc-anchor" href="#snoop-the-ci-test">§</a>2 Snoop the CI Test</h1>
+<p>To find out what went wrong: We connect to the Docker Container and snoop the <strong>Background Processes</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Connect to the Running Docker Container
+sudo docker exec \
   -it \
   nuttx \
   /bin/bash
-cd
-ps aux | more
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
-cd /root/nuttx
-ls -l
-[In the CI Test Session: Press Ctrl-C a few times to stop it]
+
+## What&#39;s running now?
+ps aux | more</code></pre></div>
+<p>A-ha! We see NuttX running on QEMU RISC-V…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## We started this...
+cibuild.sh -c -A -N -R testlist/risc-v-05.dat
+
+## Which calls testbuild.sh...
+/root/nuttx/tools/testbuild.sh -A -N -R -j 24 -e -W
+
+## Which calls citest/run...
+/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/run
+
+## Which calls pytest...
+python3 -m pytest -m &#39;qemu or rv_virt&#39; ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+
+## Which boots NuttX on QEMU RISC-V...
 qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata
-ps</code></pre></div>
+  | tee /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241211_063532.log
+
+## And tees the output to the above Log File</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: Build citest ourselves and run QEMU</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo docker run \
+<h1 id="dump-the-ci-log-file"><a class="doc-anchor" href="#dump-the-ci-log-file">§</a>3 Dump the CI Log File</h1>
+<p>From above: We see that everything goes into this <strong>CI Test Log File</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
+$ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; cmocka --skip test_case_posix_timer|test_case_oneshot|write_default|read_defaulCmocka Test Start.
+Cmocka Test Completed.
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001952 0000844  43.2%  Idle_Task
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001904 0000524  27.5%  hpwork 0x8014b1f4 0x8014b220
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000508  26.7%  lpwork 0x8014b1b0 0x8014b1dc
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 80008bfe, MTVAL: 01473e00
+riscv_exception: PANIC!!! Exception = 00000005
+dump_assert_info: Current Version: NuttX  12.7.0 5607eece84 Dec 11 2024 06:34:00 risc-v
+dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a806
+up_dump_register: EPC: 80008bfe</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
+<p>Hmmm this looks super interesting… NuttX “<strong><code>ps</code></strong>” crashes inside QEMU!</p>
+<h1 id="test-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#test-nuttx-on-qemu-risc-v">§</a>4 Test NuttX on QEMU RISC-V</h1>
+<p><em>What if we test rv-virt:citest ourselves on QEMU?</em></p>
+<p>This is how we compile <em>rv-virt:citest</em> inside Docker…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile rv-virt:citest inside Docker
+sudo docker run \
   -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
@@ -122,13 +184,33 @@ pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-
 pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
 cd nuttx
 tools/configure.sh rv-virt:citest
-make -j
-ls -l
-qemu-system-riscv32 -M virt -bios ./nuttx -nographic
-uname -a
-ps</code></pre></div>
+make -j</code></pre></div>
+<p>Now we boot <strong>NuttX on QEMU</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv32 -M virt -bios ./nuttx -nographic
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; uname -a
+NuttX  12.7.0 5607eece84 Dec 11 2024 07:05:48 risc-v rv-virt
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001952 0000908  46.5%  Idle_Task
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001904 0000508  26.6%  hpwork 0x8014b1e4 0x8014b210
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000508  26.7%  lpwork 0x8014b1a0 0x8014b1cc
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 80008bfe, MTVAL: 01473e00
+riscv_exception: PANIC!!! Exception = 00000005
+dump_assert_info: Current Version: NuttX  12.7.0 5607eece84 Dec 11 2024 07:05:48 risc-v
+dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a806
+up_dump_register: EPC: 80008bfe</code></pre></div>
+<p>Yep we can reproduce the bug using plain old <strong>Make and QEMU</strong>. No need for CI Test Script!</p>
 <p><a href="https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
+<p>Filipe Cavalcanti wrote an excellent article on Pytest in NuttX: <a href="https://developer.espressif.com/blog/pytest-testing-with-nuttx/">“Testing applications with Pytest and NuttX”</a></p>
+<p>pytest</p>
+<p>expect</p>
+<p>Pytest to plain expect script</p>
+<p>TDD</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Next Article: We’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
@@ -157,7 +239,7 @@ ps</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci7.md"><strong>lupyuen.github.io/src/ci7.md</strong></a></p>
-<h1 id="appendix-ci-test-on-macos-arm64"><a class="doc-anchor" href="#appendix-ci-test-on-macos-arm64">§</a>3 Appendix: CI Test on macOS Arm64</h1>
+<h1 id="appendix-ci-test-on-macos-arm64"><a class="doc-anchor" href="#appendix-ci-test-on-macos-arm64">§</a>7 Appendix: CI Test on macOS Arm64</h1>
 <p>TODO: This is how we replicate CI Test on macOS Apple Silicon</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Pytest
 cd $HOME/nuttx-build-farm
