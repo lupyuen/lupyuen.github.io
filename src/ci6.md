@@ -350,7 +350,7 @@ Which will call _rewind_commit.sh_ to compile One Single Commit...
 
 </span>
 
-![Rewind Build Script](https://lupyuen.github.io/images/ci6-title3.jpg)
+![Rewind Build Script](https://lupyuen.github.io/images/ci6-title4.jpg)
 
 # Rewind One Commit
 
