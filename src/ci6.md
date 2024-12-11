@@ -1,6 +1,6 @@
 # "Rewinding a Build" for Apache NuttX RTOS (Docker)
 
-📝 _24 Dec 2024_
+📝 _15 Dec 2024_
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
@@ -42,7 +42,15 @@ Build Failed for Next Commit:
 
 In this article, we look inside our new tool to __Rewind The NuttX Build__...
 
-- TODO: Reveal the Breaking Commit (pic below)
+- How we run the __Rewind Build Script__
+
+- How the Breaking Commit appears in __NuttX Build History__ (pic below)
+
+- What's __inside our Rewind Script__
+
+- How we used to __Rewind Builds Manually__
+
+- Why we build __NuttX in Docker__
 
 ![NuttX Build History](https://lupyuen.github.io/images/ci6-history4a.png)
 
@@ -420,13 +428,13 @@ Finally we see the full picture, closing the loop with NuttX Repo, NuttX Build F
 
 _Phew that was quick for finding the Breaking Commit?_
 
-Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070) to find the Breaking Commit! Though fixing it took longer...
+Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070) to rewind 20 commits and isolate the Breaking Commit! Though fixing it took longer...
 
 - QEMU RISC-V crashed with an [__Instruction Page Fault__](https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731)
 
 - Which we tracked down by [__Rewinding the Past 50 Commits__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh.sh#L43-L59)
 
-- And testing [__Each Commit in QEMU RISC-V__](https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414)
+- And auto-testing [__Each Commit in QEMU RISC-V__](https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414)
 
 - Yep it's the same idea as Rewinding a Build! Just that we're (slowly) locating a __Runtime Fault__ instead of a (quicker) Compile Error
 

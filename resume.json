@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Rewinding a Build for Apache NuttX RTOS (Docker)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-12-15",
+      "website": "https://lupyuen.github.io/articles/ci6",
+      "summary": "When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build."
+    },
+    {
       "name": "macOS Build Farm for Apache NuttX RTOS (Apple Silicon)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-08",
