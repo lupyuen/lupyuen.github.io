@@ -22,51 +22,129 @@ test_usrsocktest FAILED
 
 Reported one month ago: ["[BUG] rv-virt/citest: test_hello or test_pipe failed"](https://github.com/apache/nuttx/issues/14808)
 
-The bug stops here! (Eventually)
+The bug stops here! (OK maybe not today)
 
-# TODO
+# Run the CI Test
 
-TODO: Run risc-v-05
+__Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC...
+
+[(Steps for __macOS Arm64__)](TODO)
 
 ```bash
+## Start the NuttX Docker Image
+## Name the Docker Container as `nuttx`
 sudo docker run \
   -it \
   --name nuttx \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
+
+## Inside Docker: Checkout the NuttX Repo and NuttX Apps
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
 pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
 pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
+
+## Run CI Test risc-v-05 inside Docker Container
 cd nuttx/tools/ci
-./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
+./cibuild.sh \
+  -c -A -N -R \
+  testlist/risc-v-05.dat 
 ```
+
+Docker will build _rv-virt:citest_ and start the CI Test...
+
+```text
+Configuration/Tool: rv-virt/citest
+python3 -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+test_cmocka      PASSED
+test_hello       PASSED
+test_helloxx     FAILED
+test_pipe        FAILED
+test_usrsocktest FAILED
+[...Failing all the way...]
+```
+
+Which is totally unhelpful. Why is it failing?
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d)
 
-TODO: Run QEMU
+# Snoop the CI Test
+
+To find out what went wrong: We connect to the Docker Container and snoop the __Background Processes__...
 
 ```bash
+## Connect to the Running Docker Container
 sudo docker exec \
   -it \
   nuttx \
   /bin/bash
-cd
+
+## What's running now?
 ps aux | more
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
-cd /root/nuttx
-ls -l
-[In the CI Test Session: Press Ctrl-C a few times to stop it]
+```
+
+A-ha! We see NuttX running on QEMU RISC-V...
+
+```bash
+## We started this...
+cibuild.sh -c -A -N -R testlist/risc-v-05.dat
+
+## Which calls testbuild.sh...
+/root/nuttx/tools/testbuild.sh -A -N -R -j 24 -e -W
+
+## Which calls citest/run...
+/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/run
+
+## Which calls pytest...
+python3 -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+
+## Which boots NuttX on QEMU RISC-V...
 qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata
-ps
+  | tee /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241211_063532.log
+
+## And tees the output to the above Log File
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
-TODO: Build citest ourselves and run QEMU
+# Dump the CI Log File
+
+From above: We see that everything goes into this __CI Test Log File__...
 
 ```bash
+## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
+$ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> cmocka --skip test_case_posix_timer|test_case_oneshot|write_default|read_defaulCmocka Test Start.
+Cmocka Test Completed.
+
+nsh> ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001952 0000844  43.2%  Idle_Task
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001904 0000524  27.5%  hpwork 0x8014b1f4 0x8014b220
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000508  26.7%  lpwork 0x8014b1b0 0x8014b1dc
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 80008bfe, MTVAL: 01473e00
+riscv_exception: PANIC!!! Exception = 00000005
+dump_assert_info: Current Version: NuttX  12.7.0 5607eece84 Dec 11 2024 06:34:00 risc-v
+dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a806
+up_dump_register: EPC: 80008bfe
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
+
+Hmmm this looks super interesting... NuttX "__`ps`__" crashes inside QEMU!
+
+# Test NuttX on QEMU RISC-V
+
+_What if we test rv-virt:citest ourselves on QEMU?_
+
+This is how we compile _rv-virt:citest_ inside Docker...
+
+```bash
+## Compile rv-virt:citest inside Docker
 sudo docker run \
   -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
@@ -79,13 +157,44 @@ pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git r
 cd nuttx
 tools/configure.sh rv-virt:citest
 make -j
-ls -l
-qemu-system-riscv32 -M virt -bios ./nuttx -nographic
-uname -a
-ps
 ```
 
+Now we boot __NuttX on QEMU__...
+
+```bash
+$ qemu-system-riscv32 -M virt -bios ./nuttx -nographic
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> uname -a
+NuttX  12.7.0 5607eece84 Dec 11 2024 07:05:48 risc-v rv-virt
+
+nsh> ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001952 0000908  46.5%  Idle_Task
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001904 0000508  26.6%  hpwork 0x8014b1e4 0x8014b210
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000508  26.7%  lpwork 0x8014b1a0 0x8014b1cc
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 80008bfe, MTVAL: 01473e00
+riscv_exception: PANIC!!! Exception = 00000005
+dump_assert_info: Current Version: NuttX  12.7.0 5607eece84 Dec 11 2024 07:05:48 risc-v
+dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a806
+up_dump_register: EPC: 80008bfe
+```
+
+Yep we can reproduce the bug using plain old __Make and QEMU__. No need for CI Test Script!
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
+
+# TODO
+
+Filipe Cavalcanti wrote an excellent article on Pytest in NuttX: ["Testing applications with Pytest and NuttX"](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
+
+pytest
+
+expect
+
+Pytest to plain expect script 
+
+TDD 
 
 # What's Next
 
