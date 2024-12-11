@@ -12,10 +12,10 @@
     content="Rewinding a Build for Apache NuttX RTOS (Docker)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build.">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/ci6-title.jpg">
 <meta property="og:type" 
@@ -71,7 +71,7 @@
 <li><a href="#nuttx-build-history" title="NuttX Build History">4 NuttX Build History</a><ul></ul></li>
 <li><a href="#rewind-build-script" title="Rewind Build Script">5 Rewind Build Script</a><ul></ul></li>
 <li><a href="#rewind-one-commit" title="Rewind One Commit">6 Rewind One Commit</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Dec 2024</em></p>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="Dashboard for Apache NuttX RTOS is already Decked in Red" /></p>
@@ -102,7 +102,21 @@ Build Failed for Next Commit:
 ## A-ha! 40023987 is the Breaking Commit!</code></pre></div>
 <p>In this article, we look inside our new tool to <strong>Rewind The NuttX Build</strong>…</p>
 <ul>
-<li>TODO: Reveal the Breaking Commit (pic below)</li>
+<li>
+<p>How we run the <strong>Rewind Build Script</strong></p>
+</li>
+<li>
+<p>How the Breaking Commit appears in <strong>NuttX Build History</strong> (pic below)</p>
+</li>
+<li>
+<p>What’s <strong>inside our Rewind Script</strong></p>
+</li>
+<li>
+<p>How we used to <strong>Rewind Builds Manually</strong></p>
+</li>
+<li>
+<p>Why we build <strong>NuttX in Docker</strong></p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci6-history4a.png" alt="NuttX Build History" /></p>
 <h1 id="rewind-the-build"><a class="doc-anchor" href="#rewind-the-build">§</a>1 Rewind The Build</h1>
@@ -406,7 +420,7 @@ function build_nuttx {
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Phew that was quick for finding the Breaking Commit?</em></p>
-<p>Yeah our Rewind Build Script took <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070"><strong>only one hour</strong></a> to find the Breaking Commit! Though fixing it took longer…</p>
+<p>Yeah our Rewind Build Script took <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070"><strong>only one hour</strong></a> to rewind 20 commits and isolate the Breaking Commit! Though fixing it took longer…</p>
 <ul>
 <li>
 <p>QEMU RISC-V crashed with an <a href="https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731"><strong>Instruction Page Fault</strong></a></p>
@@ -415,7 +429,7 @@ function build_nuttx {
 <p>Which we tracked down by <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh.sh#L43-L59"><strong>Rewinding the Past 50 Commits</strong></a></p>
 </li>
 <li>
-<p>And testing <a href="https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414"><strong>Each Commit in QEMU RISC-V</strong></a></p>
+<p>And auto-testing <a href="https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414"><strong>Each Commit in QEMU RISC-V</strong></a></p>
 </li>
 <li>
 <p>Yep it’s the same idea as Rewinding a Build! Just that we’re (slowly) locating a <strong>Runtime Fault</strong> instead of a (quicker) Compile Error</p>
