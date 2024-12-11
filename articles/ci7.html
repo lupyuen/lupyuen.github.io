@@ -69,7 +69,7 @@
 <li><a href="#snoop-the-ci-test" title="Snoop the CI Test">2 Snoop the CI Test</a><ul></ul></li>
 <li><a href="#dump-the-ci-log-file" title="Dump the CI Log File">3 Dump the CI Log File</a><ul></ul></li>
 <li><a href="#test-nuttx-on-qemu-risc-v" title="Test NuttX on QEMU RISC-V">4 Test NuttX on QEMU RISC-V</a><ul></ul></li>
-<li><a href="#todo" title="TODO">5 TODO</a><ul></ul></li>
+<li><a href="#why-so-difficult" title="Why So Difficult?">5 Why So Difficult?</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="TODO" /></p>
@@ -207,12 +207,15 @@ dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 
 up_dump_register: EPC: 80008bfe</code></pre></div>
 <p>Yep we can reproduce the bug using plain old <strong>Make and QEMU</strong>. No need for CI Test Script!</p>
 <p><a href="https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
+<h1 id="why-so-difficult"><a class="doc-anchor" href="#why-so-difficult">§</a>5 Why So Difficult?</h1>
 <p>Filipe Cavalcanti wrote an excellent article on Pytest in NuttX: <a href="https://developer.espressif.com/blog/pytest-testing-with-nuttx/">“Testing applications with Pytest and NuttX”</a></p>
+<p>needs better way to troubleshoot CI Test</p>
 <p>pytest</p>
 <p>expect</p>
 <p>Pytest to plain expect script</p>
 <p>TDD</p>
+<p>Pytest log becomes Build Artifact</p>
+<p>Render in NuttX Dashboard</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Next Article: We’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
