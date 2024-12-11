@@ -227,11 +227,15 @@ Remember [__test_helloxx__](TODO) that failed earlier? It calls...
 
 _What's Pexpect?_
 
-_"[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."_
-
 That's how our CI Test spawns the QEMU Process and controls it!
 
+> "[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."
+
 _What about Don Libes’ Expect?_
+
+TODO: Testing Ox64 and SG2000. Simpler, won't hang forever
+
+[one-hour timeout](https://github.com/apache/nuttx/issues/14680)
 
 TODO: needs better way to troubleshoot CI Test
 
