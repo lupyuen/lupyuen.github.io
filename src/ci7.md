@@ -4,9 +4,11 @@
 
 ![TODO](https://lupyuen.github.io/images/ci7-title.jpg)
 
-TODO: Bothersome bug flagged by NuttX Dashboard every day since a month ago
+Every Day: Our [__Dashboard for Apache NuttX RTOS__](TODO) flags this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
 
 ![TODO](https://lupyuen.github.io/images/ci7-dashboard.png)
+
+Which says that __NuttX on QEMU RISC-V Emulator__ (32-bit) has failed our __Continuous Integration Test__. Again and again (like Groundhog Day)
 
 ```text
 Configuration/Tool: rv-virt/citest
@@ -20,13 +22,13 @@ test_usrsocktest FAILED
 
 [(See the __Complete Log__)](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88)
 
-Reported one month ago: ["[BUG] rv-virt/citest: test_hello or test_pipe failed"](https://github.com/apache/nuttx/issues/14808)
+The bug stops here! (OK maybe not today) In this article, we study the internals of a __NuttX CI Test__ (Continuous Integration)
 
-The bug stops here! (OK maybe not today)
+- TODO
 
 # Run the CI Test
 
-__Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC...
+__Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC and figure out why it fails _rv-virt:citest_...
 
 [(Steps for __macOS Arm64__)](TODO)
 
@@ -39,7 +41,8 @@ sudo docker run \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
 
-## Inside Docker: Checkout the NuttX Repo and NuttX Apps
+## Inside our Docker Container:
+## Checkout the NuttX Repo and NuttX Apps
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -55,7 +58,7 @@ cd nuttx/tools/ci
 
 [(Based on this)](TODO)
 
-Docker will build _rv-virt:citest_ and start the CI Test...
+Docker will build _rv-virt:citest_ and start the __CI Test__...
 
 ```text
 Configuration/Tool: rv-virt/citest
@@ -74,7 +77,7 @@ Which is totally unhelpful. Why is it failing?
 
 # Snoop the CI Test
 
-To find out what went wrong: We connect to the Docker Container and snoop the __Background Processes__...
+To understand what went wrong: We connect to the __Docker Container__. And snoop the __Background Processes__...
 
 ```bash
 ## Connect to our Running Docker Container
@@ -87,7 +90,7 @@ sudo docker exec \
 ps aux | more
 ```
 
-A-ha! We see NuttX running on QEMU RISC-V...
+A-ha! We see NuttX running on (32-bit) __QEMU RISC-V Emulator__...
 
 ```bash
 ## We started this...
@@ -121,7 +124,7 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 ## And tees the output to the above Log File
 ```
 
-We inspect the Log File...
+Let's inspect the Log File...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
@@ -153,20 +156,23 @@ up_dump_register: EPC: 80008bfe
 
 Hmmm this looks super interesting... NuttX "__`ps`__" crashes inside QEMU!
 
+That's why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!
+
 # Test NuttX on QEMU RISC-V
 
-_What if we test rv-virt:citest ourselves on QEMU?_
+_What if we test rv-virt:citest on QEMU?_
 
-This is how we compile _rv-virt:citest_ inside Docker...
+For simpler troubleshooting: This is how we compile _rv-virt:citest_ inside Docker...
 
 ```bash
-## Compile rv-virt:citest inside Docker
+## Start Docker Container for NuttX
 sudo docker run \
   -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
 
-## Inside Docker...
+## Inside Docker:
+## We compile rv-virt:citest
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -201,7 +207,7 @@ dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 
 up_dump_register: EPC: 80008bfe
 ```
 
-Yep we can reproduce the "__`ps`__" crash using plain old __Make and QEMU__. No need for CI Test Script!
+Yep we can easily reproduce (and fix) the "__`ps`__" crash using plain old __Make and QEMU__. No need for CI Test Script!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
 
@@ -233,22 +239,17 @@ Yep we can reproduce the "__`ps`__" crash using plain old __Make and QEMU__. No 
 
 1.  _What about Don Libes’ Expect?_
 
-    Yep we actually use Plain Old Expect for daily-testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
+    Oh yes we actually use Plain Old Expect for daily-testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
 
+1.  _Why is it so hard to extract the CI Test Log?_
 
-TODO: needs better way to troubleshoot CI Test
+    Yeah we should probably add the CI Test Log to __GitHub Actions Artifacts__ for easier downloading. Then NuttX Dashboard can __ingest the CI Test Log__ and display it sensibly.
 
-Pytest to plain expect script 
+1.  _Can we do more with Pytest?_
 
-TDD 
-
-Pytest log becomes Build Artifact
-
-Render in NuttX Dashboard
+    Someday we could call Pytest to do [__Test-Driven Development__](https://en.wikipedia.org/wiki/Test-driven_development) of NuttX Apps and NuttX Drivers. Which means we can write the Test Cases in Pytest, before writing a Single Line of NuttX Code!
 
 # What's Next
-
-TODO
 
 Next Article: We'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 
