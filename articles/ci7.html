@@ -72,10 +72,10 @@
 <li><a href="#why-so-difficult" title="Why So Difficult?">5 Why So Difficult?</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
-<p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="TODO" /></p>
-<p>Every Day: Our <a href="TODO"><strong>Dashboard for Apache NuttX RTOS</strong></a> flags this bothersome bug, <a href="https://github.com/apache/nuttx/issues/14808"><strong>since a month ago</strong></a>…</p>
-<p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="TODO" /></p>
-<p>Which says that <strong>NuttX on QEMU RISC-V Emulator</strong> (32-bit) has failed our <strong>Continuous Integration Test</strong>. Again and again (like Groundhog Day)</p>
+<p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)" /></p>
+<p>Every Day: Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> flags this bothersome bug, <a href="https://github.com/apache/nuttx/issues/14808"><strong>since a month ago</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
+<p>Which says that <strong>NuttX on QEMU RISC-V Emulator</strong> (32-bit) has failed our <a href="https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88"><strong>Continuous Integration Test</strong></a>. Again and again (like Groundhog Day)</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
 test_cmocka      PASSED
 test_hello       PASSED
@@ -83,13 +83,12 @@ test_helloxx     FAILED
 test_pipe        FAILED
 test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
-<p><a href="https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88">(See the <strong>Complete Log</strong>)</a></p>
-<p>The bug stops here! (OK maybe not today) In this article, we study the internals of a <strong>NuttX CI Test</strong> (Continuous Integration)</p>
+<p>The Bug Stops Here! (OK maybe not today) In this article, we study the internals of a <strong>NuttX CI Test</strong> (Continuous Integration)</p>
 <ul>
 <li>TODO</li>
 </ul>
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
-<p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC and figure out why it fails <em>rv-virt:citest</em>…</p>
+<p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
 <p><a href="TODO">(Steps for <strong>macOS Arm64</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
 ## Name the Docker Container as `nuttx`
@@ -112,7 +111,7 @@ cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
   testlist/risc-v-05.dat </code></pre></div>
-<p><a href="TODO">(Based on this)</a></p>
+<p><a href="https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>NuttX Docker Build</strong>)</a></p>
 <p>Docker will build <em>rv-virt:citest</em> and start the <strong>CI Test</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
 python3 -m pytest -m &#39;qemu or rv_virt&#39; ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
@@ -257,7 +256,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </li>
 <li>
 <p><em>What about Don Libes’ Expect?</em></p>
-<p>Oh yes we actually use Plain Old Expect for daily-testing <a href="https://lupyuen.github.io/articles/sg2000a#automated-test-script"><strong>SG2000 NuttX</strong></a> and <a href="https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected"><strong>Ox64 NuttX</strong></a>. It terminates reliably, and it won’t hang forever, <a href="https://github.com/apache/nuttx/issues/14680"><strong>unlike Pexpect</strong></a>.</p>
+<p>Oh yes we use Plain Old Expect for Daily-Testing <a href="https://lupyuen.github.io/articles/sg2000a#automated-test-script"><strong>SG2000 NuttX</strong></a> and <a href="https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected"><strong>Ox64 NuttX</strong></a>. It terminates reliably, and it won’t hang forever, <a href="https://github.com/apache/nuttx/issues/14680"><strong>unlike Pexpect</strong></a>.</p>
 </li>
 <li>
 <p><em>Why is it so hard to extract the CI Test Log?</em></p>
