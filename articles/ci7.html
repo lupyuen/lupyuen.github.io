@@ -224,13 +224,15 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p>Yep we can reproduce the “<strong><code>ps</code></strong>” crash using plain old <strong>Make and QEMU</strong>. No need for CI Test Script!</p>
 <p><a href="https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="why-so-difficult"><a class="doc-anchor" href="#why-so-difficult">§</a>5 Why So Difficult?</h1>
+<ol>
+<li>
 <p><em>What’s this Pytest we saw earlier?</em></p>
 <p>Filipe Cavalcanti wrote an excellent article on Pytest in NuttX…</p>
-<ul>
-<li><a href="https://developer.espressif.com/blog/pytest-testing-with-nuttx/"><strong>“Testing applications with Pytest and NuttX”</strong></a></li>
-</ul>
+<p><a href="https://developer.espressif.com/blog/pytest-testing-with-nuttx/"><strong>“Testing applications with Pytest and NuttX”</strong></a></p>
 <p>Pytest is a <a href="https://docs.pytest.org/en/stable/"><strong>Python Testing Framework</strong></a>. Though it gets messy because NuttX CI isn’t actually testing Python Code with Pytest…</p>
 <p>It’s testing <strong>External Programs in QEMU</strong>. (Because NuttX boots inside QEMU)</p>
+</li>
+<li>
 <p><em>How does Pytest control QEMU?</em></p>
 <p>Remember <a href="TODO"><strong>test_helloxx</strong></a> that failed earlier? It calls…</p>
 <ul>
@@ -241,14 +243,17 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testrun/utils/common.py#L229-L288"><strong>Pexpect</strong></a> to talk to QEMU</p>
 </li>
 </ul>
+</li>
+<li>
 <p><em>What’s Pexpect?</em></p>
-<p>That’s how our CI Test spawns the QEMU Process and controls it!</p>
-<blockquote>
+<p>That’s how our CI Test spawns the QEMU Process and controls it…</p>
 <p>“<a href="https://pexpect.readthedocs.io/en/stable/"><strong>Pexpect</strong></a> is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands.”</p>
-</blockquote>
+</li>
+<li>
 <p><em>What about Don Libes’ Expect?</em></p>
-<p>TODO: Testing Ox64 and SG2000. Simpler, won’t hang forever</p>
-<p><a href="https://github.com/apache/nuttx/issues/14680">one-hour timeout</a></p>
+<p>Yep we actually use Plain Old Expect for daily-testing <a href="https://lupyuen.github.io/articles/sg2000a#automated-test-script"><strong>SG2000 NuttX</strong></a> and <a href="https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected"><strong>Ox64 NuttX</strong></a>. It terminates reliably, and it won’t hang forever, <a href="https://github.com/apache/nuttx/issues/14680"><strong>unlike Pexpect</strong></a>.</p>
+</li>
+</ol>
 <p>TODO: needs better way to troubleshoot CI Test</p>
 <p>Pytest to plain expect script</p>
 <p>TDD</p>
