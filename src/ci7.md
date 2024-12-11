@@ -46,12 +46,14 @@ git clone https://github.com/apache/nuttx-apps apps
 pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
 pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
 
-## Run CI Test risc-v-05 inside Docker Container
+## Run CI Test risc-v-05 inside our Docker Container
 cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
   testlist/risc-v-05.dat 
 ```
+
+[(Based on this)](TODO)
 
 Docker will build _rv-virt:citest_ and start the CI Test...
 
@@ -75,7 +77,7 @@ Which is totally unhelpful. Why is it failing?
 To find out what went wrong: We connect to the Docker Container and snoop the __Background Processes__...
 
 ```bash
-## Connect to the Running Docker Container
+## Connect to our Running Docker Container
 sudo docker exec \
   -it \
   nuttx \
@@ -89,16 +91,28 @@ A-ha! We see NuttX running on QEMU RISC-V...
 
 ```bash
 ## We started this...
-cibuild.sh -c -A -N -R testlist/risc-v-05.dat
+## https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh
+/root/nuttx/tools/ci/cibuild.sh -c -A -N -R testlist/risc-v-05.dat
 
 ## Which calls testbuild.sh...
+## https://github.com/apache/nuttx/blob/master/tools/testbuild.sh
 /root/nuttx/tools/testbuild.sh -A -N -R -j 24 -e -W
 
 ## Which calls citest/run...
+## https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/citest/run
 /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/run
 
+## Which is sym-linked to cirun.sh...
+## https://github.com/apache/nuttx/blob/master/tools/ci/cirun.sh
+/root/nuttx/tools/ci/cirun.sh
+
 ## Which calls pytest...
+## python3 -m pytest -m "${mark}" ./ -B ${BOARD} -P ${path} -L ${logs}/${BOARD}/${core} -R ${target} -C --json=${logs}/${BOARD}/${core}/pytest.json
 python3 -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+
+## Which (probably) calls testrun...
+## https://github.com/apache/nuttx/blob/master/tools/ci/testrun
+/root/nuttx/tree/master/tools/ci/testrun
 
 ## Which boots NuttX on QEMU RISC-V...
 qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata
@@ -106,6 +120,8 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 
 ## And tees the output to the above Log File
 ```
+
+We inspect the Log File...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
@@ -149,6 +165,8 @@ sudo docker run \
   -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
+
+## Inside Docker...
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -183,19 +201,39 @@ dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 
 up_dump_register: EPC: 80008bfe
 ```
 
-Yep we can reproduce the bug using plain old __Make and QEMU__. No need for CI Test Script!
+Yep we can reproduce the "__`ps`__" crash using plain old __Make and QEMU__. No need for CI Test Script!
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
 
 # Why So Difficult?
 
-Filipe Cavalcanti wrote an excellent article on Pytest in NuttX: ["Testing applications with Pytest and NuttX"](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
+_What's this Pytest we saw earlier?_
 
-needs better way to troubleshoot CI Test
+Filipe Cavalcanti wrote an excellent article on Pytest in NuttX...
 
-pytest
+- [__"Testing applications with Pytest and NuttX"__](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
 
-expect
+Pytest is a [__Python Testing Framework__](https://docs.pytest.org/en/stable/). Though it gets messy because NuttX CI isn't actually testing Python Code with Pytest...
+
+It's testing __External Programs in QEMU__. (Because NuttX boots inside QEMU)
+
+_How does Pytest control QEMU?_
+
+Remember [__test_helloxx__](TODO) that failed earlier? It calls...
+
+- [__send_command__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38) to send an NSH Command, which calls...
+
+- [__Pexpect__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/utils/common.py#L229-L288) to talk to QEMU
+
+_What's Pexpect?_
+
+_"[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."_
+
+That's how our CI Test spawns the QEMU Process and controls it!
+
+_What about Don Libes’ Expect?_
+
+TODO: needs better way to troubleshoot CI Test
 
 Pytest to plain expect script 
 
