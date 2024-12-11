@@ -69,7 +69,18 @@
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">3 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
+<p>TODO: Bothersome bug flagged by NuttX Dashboard every day since a month ago</p>
+<p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="TODO" /></p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
+test_cmocka      PASSED
+test_hello       PASSED
+test_helloxx     FAILED
+test_pipe        FAILED
+test_usrsocktest FAILED
+[...Failing all the way...]</code></pre></div>
+<p><a href="https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88">(See the <strong>Complete Log</strong>)</a></p>
+<p>Reported one month ago: <a href="https://github.com/apache/nuttx/issues/14808">“[BUG] rv-virt/citest: test_hello or test_pipe failed”</a></p>
+<p>The bug stops here! (Eventually)</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
 <p>TODO: Run risc-v-05</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker run \
