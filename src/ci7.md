@@ -162,7 +162,10 @@ make -j
 Now we boot __NuttX on QEMU__...
 
 ```bash
-$ qemu-system-riscv32 -M virt -bios ./nuttx -nographic
+$ qemu-system-riscv32 \
+    -M virt \
+    -bios ./nuttx \
+    -nographic
 
 NuttShell (NSH) NuttX-12.7.0
 nsh> uname -a

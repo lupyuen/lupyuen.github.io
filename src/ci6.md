@@ -237,7 +237,7 @@ In reverse chronological order, __NuttX Build History__ says that...
 
 - __Commit 40023987 Onwards:__ All Builds Failed
 
-- __Before Commit 40023987:__ NuttX Builds are Successful
+- __Before Commit 40023987:__ NuttX Builds were Successful
 
 - Which means: Commit 40023987 is our [__Breaking Commit!__](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L1-L7)
 
