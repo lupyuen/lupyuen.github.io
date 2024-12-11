@@ -207,35 +207,34 @@ Yep we can reproduce the "__`ps`__" crash using plain old __Make and QEMU__. No 
 
 # Why So Difficult?
 
-_What's this Pytest we saw earlier?_
+1.  _What's this Pytest we saw earlier?_
 
-Filipe Cavalcanti wrote an excellent article on Pytest in NuttX...
+    Filipe Cavalcanti wrote an excellent article on Pytest in NuttX...
 
-- [__"Testing applications with Pytest and NuttX"__](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
+    [__"Testing applications with Pytest and NuttX"__](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
 
-Pytest is a [__Python Testing Framework__](https://docs.pytest.org/en/stable/). Though it gets messy because NuttX CI isn't actually testing Python Code with Pytest...
+    Pytest is a [__Python Testing Framework__](https://docs.pytest.org/en/stable/). Though it gets messy because NuttX CI isn't actually testing Python Code with Pytest...
 
-It's testing __External Programs in QEMU__. (Because NuttX boots inside QEMU)
+    It's testing __External Programs in QEMU__. (Because NuttX boots inside QEMU)
 
-_How does Pytest control QEMU?_
+1.  _How does Pytest control QEMU?_
 
-Remember [__test_helloxx__](TODO) that failed earlier? It calls...
+    Remember [__test_helloxx__](TODO) that failed earlier? It calls...
 
-- [__send_command__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38) to send an NSH Command, which calls...
+    - [__send_command__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38) to send an NSH Command, which calls...
 
-- [__Pexpect__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/utils/common.py#L229-L288) to talk to QEMU
+    - [__Pexpect__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/utils/common.py#L229-L288) to talk to QEMU
 
-_What's Pexpect?_
+1.  _What's Pexpect?_
 
-That's how our CI Test spawns the QEMU Process and controls it!
+    That's how our CI Test spawns the QEMU Process and controls it...
 
-> "[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."
+    "[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."
 
-_What about Don Libes’ Expect?_
+1.  _What about Don Libes’ Expect?_
 
-TODO: Testing Ox64 and SG2000. Simpler, won't hang forever
+    Yep we actually use Plain Old Expect for daily-testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
 
-[one-hour timeout](https://github.com/apache/nuttx/issues/14680)
 
 TODO: needs better way to troubleshoot CI Test
 
