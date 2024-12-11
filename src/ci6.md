@@ -410,6 +410,8 @@ function build_nuttx {
 }
 ```
 
+Finally we see the full picture, closing the loop with NuttX Repo, NuttX Build Farm, NuttX Dashboard and NuttX Build History!
+
 [(How we __Ingest Build Logs__)](https://lupyuen.github.io/articles/ci4#ingest-the-build-logs)
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
