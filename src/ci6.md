@@ -8,7 +8,7 @@ __2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX 
 
 ![Dashboard for Apache NuttX RTOS is already Decked in Red](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
-Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](TODO). (More about CI Test next article)
+Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2). (More about CI Test next article)
 
 <span style="font-size:90%">
 
@@ -18,13 +18,15 @@ Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX
 
 Normally our NuttX Maintainers will scramble to identify the __Breaking Commit__. (Before it gets piled on by More Breaking Commits)
 
-But now we can go back in time and __"Rewind The Build"__, when something breaks the Daily Build...
+Not any more! Now we can go back in time and __"Rewind The Build"__, when something breaks the Daily Build...
 
 ```bash
-## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
+## Rewind The Build for
+## NuttX Target esp32c6-devkitc:gpio
 $ sudo sh -c '
     . ../github-token.sh &&
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   '
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -38,7 +40,7 @@ Build Failed for Next Commit:
 ## A-ha! 40023987 is the Breaking Commit!
 ```
 
-In this article, we look inside our new tool to __Rewind The Build__...
+In this article, we look inside our new tool to __Rewind The NuttX Build__...
 
 - TODO: Reveal the Breaking Commit (pic below)
 
@@ -60,7 +62,8 @@ $ cd nuttx-build-farm
 ## export GITHUB_TOKEN=...
 $ sudo sh -c '
     . ../github-token.sh &&
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   '
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -82,7 +85,7 @@ Build Failed for Next Commit:
 
 </span>
 
-We fly our DeLorean back to 2 Dec 2024. We inspect the __NuttX Commits__ that might have broken our build...
+We fly our DeLorean back to 2 Dec 2024. And inspect the __NuttX Commits__ that might have broken our build...
 
 ```text
 ## Show the NuttX Commits on 2 Dec 2024
@@ -92,24 +95,24 @@ git reset --hard cc96289e2d88a9cdd5a9bedf0be2d72bf5b0e509
 git log
 ```
 
-| 2024-12-02 | Commit | Message |
+| 2 Dec | Commit | Title |
 |:-----------|:---|:----|
-| __12:05__ | [_cc96289e_](TODO) | _xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para_
-| __11:59__ | [_dc8bde8d_](TODO) | _cmake(enhance): Enhance romfs so that RAWS files can be added in any location_
-| __11:49__ | [_208f31c2_](TODO) | _boards/qemu64: Due to dependency changes, the test program of kasantest is deleted_
-| __11:47__ | [_9fbb81e8_](TODO) | _samv7: fix bytes to words calculation in user signature read_
-| __11:14__ | [_140b3080_](TODO) | _drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)_
-| __09:41__ | [_40023987_](TODO) | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
-| __09:23__ | [_19e42a89_](TODO) | _arch/tricore: migrate to SPDX identifier_
+| __12:05__ | [_cc96289e_](https://github.com/apache/nuttx/pull/15010) | _xtensa: syscall SYS_switch_context and SYS_restore_context use 0 para_
+| __11:59__ | [_dc8bde8d_](https://github.com/apache/nuttx/pull/15009) | _cmake(enhance): Enhance romfs so that RAWS files can be added in any location_
+| __11:49__ | [_208f31c2_](https://github.com/apache/nuttx/pull/15012) | _boards/qemu64: Due to dependency changes, the test program of kasantest is deleted_
+| __11:47__ | [_9fbb81e8_](https://github.com/apache/nuttx/pull/15013) | _samv7: fix bytes to words calculation in user signature read_
+| __11:14__ | [_140b3080_](https://github.com/apache/nuttx/pull/15011) | _drivers/audio/wm8994.c: Include nuttx/arch.h to fix compilation (up_mdelay prototype)_
+| __09:41__ | [_40023987_](https://github.com/apache/nuttx/pull/14984) | _risc-v: remove g_running_tasks[this_cpu()] = NULL_
+| __09:23__ | [_19e42a89_](https://github.com/apache/nuttx/pull/14996) | _arch/tricore: migrate to SPDX identifier_
 | | | _(Many more commits!)_
 
-One of these is the __Breaking Commit__. But which one?
+One of these is the __Breaking Commit__. Which one?
 
-TODO: Pic of Breaking Commit
+> ![Rewinding a Build the Manual Way](https://lupyuen.github.io/images/ci6-title2.jpg)
 
 # The Manual Way
 
-This is the __Manual Way__ to find the Breaking Commit...
+This is the __Manual Way__ to find the Breaking Commit (pic above)...
 
 ```bash
 ## Build the Latest Commit: "xtensa syscall"
@@ -138,11 +141,11 @@ __But for Nuttx Maintainers:__ Compiling NuttX Locally might not always work!
 
 We might miss out some toolchains and fail the build: __Arm, RISC-V, Xtensa, x86_64, ...__
 
-TODO: Pic of Docker
+> ![Rewinding a Build with Docker](https://lupyuen.github.io/images/ci6-title3.jpg)
 
 # The Docker Way
 
-Thus we run __Docker to Compile NuttX__, which has all toolchains bundled inside...
+Thus we run __Docker to Compile NuttX__. Which has __All Toolchains__ bundled inside (pic above)...
 
 ```bash
 ## Build the Latest Commit: "xtensa syscall"
@@ -187,7 +190,8 @@ $ cd nuttx-build-farm
 ## export GITHUB_TOKEN=...
 $ sudo sh -c '
     . ../github-token.sh &&
-    ./rewind-build.sh esp32c6-devkitc:gpio
+    ./rewind-build.sh
+      esp32c6-devkitc:gpio
   '
 Build Failed for This Commit:
   nuttx @ 400239877d55b3f63f72c96ca27d44220ae35a89
@@ -227,13 +231,13 @@ In reverse chronological order, __NuttX Build History__ says that...
 
 - __Before Commit 40023987:__ NuttX Builds are Successful
 
-- Which means: Commit 40023987 is our __Breaking Commit!__
+- Which means: Commit 40023987 is our [__Breaking Commit!__](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L1-L7)
 
-- See the _"sudo docker"_ entries above? They were inserted by our __Rewind Build Script__
+- See the _"sudo docker"_ entries above? They were helpfully inserted by our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6#rewind-build-script)
 
 - Much neater than the [__Rewind Build Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)!
 
-After fixing the Breaking Commit, NuttX Build History shows that everything is [__hunky dory again__](TODO) (top row)...
+After fixing the Breaking Commit, NuttX Build History shows that everything is [__hunky dory again__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=esp32c6-devkitc&var-config=gpio&var-group=$__all&var-Filters=) (top row)
 
 ![NuttX Build History after fixing](https://lupyuen.github.io/images/ci6-history4.png)
 
@@ -241,7 +245,7 @@ _How did our Rewind Build Script update the Build History?_
 
 Our __Rewind Build Script__ exports the Build Logs to [__GitLab Snippets__](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217). (Or GitHub Gists, pic below)
 
-The Build Logs are then ingested into our NuttX Build History by a Scheduled Task. So when you run the Rewind Build Script, please lemme know your __GitLab or GitHub User ID__!
+The Build Logs are then ingested into our __NuttX Build History__ by a Scheduled Task. So when you run the Rewind Build Script, please tell me your __GitLab or GitHub User ID__.
 
 ![Our Rewind Build Script exports the Build Logs to GitLab Snippets or GitHub Gists](https://lupyuen.github.io/images/ci6-log2.png)
 
@@ -299,7 +303,7 @@ for commit in $(
 done
 ```
 
-__build_commit__ will compile a NuttX Commit and upload the Build Log: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L60-L113)
+__build_commit__ will compile a NuttX Commit (pic below) and upload the __Build Log__: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L60-L113)
 
 ```bash
 ## Build the NuttX Commit for the Target
@@ -346,11 +350,11 @@ Which will call _rewind_commit.sh_ to compile One Single Commit...
 
 </span>
 
-TODO: Pic of ???
+![Rewind Build Script](https://lupyuen.github.io/images/ci6-title3.jpg)
 
 # Rewind One Commit
 
-Earlier we saw our [__Rewind Build Script__](TODO) compiling the Latest 20 Commits.
+Earlier we saw our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6#rewind-build-script) compiling the Latest 20 Commits. (Pic above)
 
 This is how we compile __One Single Commit__ for NuttX: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L114-L146)
 
@@ -414,7 +418,7 @@ function build_nuttx {
 
 _Phew that was quick for finding the Breaking Commit?_
 
-Yeah our Rewind Build Script took __only ??? minutes__ to find the Breaking Commit! Though fixing it took longer...
+Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3#file-gistfile1-txt-L540-L8070) to find the Breaking Commit! Though fixing it took longer...
 
 - QEMU RISC-V crashed with an [__Instruction Page Fault__](https://github.com/apache/nuttx/pull/15014#issuecomment-2513466731)
 
