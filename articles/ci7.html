@@ -186,7 +186,10 @@ cd nuttx
 tools/configure.sh rv-virt:citest
 make -j</code></pre></div>
 <p>Now we boot <strong>NuttX on QEMU</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv32 -M virt -bios ./nuttx -nographic
+<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv32 \
+    -M virt \
+    -bios ./nuttx \
+    -nographic
 
 NuttShell (NSH) NuttX-12.7.0
 nsh&gt; uname -a
