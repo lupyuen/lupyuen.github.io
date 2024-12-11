@@ -227,17 +227,21 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 1.  _How does Pytest control QEMU?_
 
-    Remember [__test_helloxx__](TODO) that failed earlier? It calls...
+    Remember [__test_helloxx__](https://lupyuen.github.io/articles/ci7#run-the-ci-test) that failed earlier? It calls...
 
     - [__send_command__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38) to send an NSH Command, which calls...
 
     - [__Pexpect__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/utils/common.py#L229-L288) to talk to QEMU
 
-1.  _What's Pexpect?_
+1.  _Why Pexpect?_
 
     That's how our CI Test spawns the QEMU Process and controls it...
 
+    <span style="font-size:90%">
+
     "[__Pexpect__](https://pexpect.readthedocs.io/en/stable/) is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands."
+
+    </span>
 
 1.  _What about Don Libes’ Expect?_
 
