@@ -205,9 +205,13 @@ dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 
 up_dump_register: EPC: 80008bfe
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
+
 Yep we can easily reproduce (and fix) the "__`ps`__" crash using plain old __Make and QEMU__. No need for CI Test Script!
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
+_How will we fix the bug?_
+
+We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#whats-next) and retest _rv-virt:citest_ on QEMU RISC-V.
 
 # Why So Difficult?
 
