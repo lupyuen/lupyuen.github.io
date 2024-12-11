@@ -4,7 +4,7 @@
 
 ![Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
 
-Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) flags this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
+Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) will flag this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
 
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
