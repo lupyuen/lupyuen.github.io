@@ -2,13 +2,13 @@
 
 📝 _30 Dec 2024_
 
-![TODO](https://lupyuen.github.io/images/ci7-title.jpg)
+![Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
 
-Every Day: Our [__Dashboard for Apache NuttX RTOS__](TODO) flags this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
+Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) flags this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
 
-![TODO](https://lupyuen.github.io/images/ci7-dashboard.png)
+![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
-Which says that __NuttX on QEMU RISC-V Emulator__ (32-bit) has failed our __Continuous Integration Test__. Again and again (like Groundhog Day)
+Which says that __NuttX on QEMU RISC-V Emulator__ (32-bit) has failed our [__Continuous Integration Test__](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88). Again and again (like Groundhog Day)
 
 ```text
 Configuration/Tool: rv-virt/citest
@@ -20,15 +20,13 @@ test_usrsocktest FAILED
 [...Failing all the way...]
 ```
 
-[(See the __Complete Log__)](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88)
-
-The bug stops here! (OK maybe not today) In this article, we study the internals of a __NuttX CI Test__ (Continuous Integration)
+The Bug Stops Here! (OK maybe not today) In this article, we study the internals of a __NuttX CI Test__ (Continuous Integration)
 
 - TODO
 
 # Run the CI Test
 
-__Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC and figure out why it fails _rv-virt:citest_...
+__Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And figure out why it fails _rv-virt:citest_...
 
 [(Steps for __macOS Arm64__)](TODO)
 
@@ -56,7 +54,7 @@ cd nuttx/tools/ci
   testlist/risc-v-05.dat 
 ```
 
-[(Based on this)](TODO)
+[(More about __NuttX Docker Build__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
 
 Docker will build _rv-virt:citest_ and start the __CI Test__...
 
@@ -239,7 +237,7 @@ Yep we can easily reproduce (and fix) the "__`ps`__" crash using plain old __Mak
 
 1.  _What about Don Libes’ Expect?_
 
-    Oh yes we actually use Plain Old Expect for daily-testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
+    Oh yes we use Plain Old Expect for Daily-Testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
 
 1.  _Why is it so hard to extract the CI Test Log?_
 
