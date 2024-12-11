@@ -187,9 +187,11 @@ Yep we can reproduce the bug using plain old __Make and QEMU__. No need for CI T
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940)
 
-# TODO
+# Why So Difficult?
 
 Filipe Cavalcanti wrote an excellent article on Pytest in NuttX: ["Testing applications with Pytest and NuttX"](https://developer.espressif.com/blog/pytest-testing-with-nuttx/)
+
+needs better way to troubleshoot CI Test
 
 pytest
 
@@ -198,6 +200,10 @@ expect
 Pytest to plain expect script 
 
 TDD 
+
+Pytest log becomes Build Artifact
+
+Render in NuttX Dashboard
 
 # What's Next
 
