@@ -241,7 +241,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </li>
 <li>
 <p><em>How does Pytest control QEMU?</em></p>
-<p>Remember <a href="TODO"><strong>test_helloxx</strong></a> that failed earlier? It calls…</p>
+<p>Remember <a href="https://lupyuen.github.io/articles/ci7#run-the-ci-test"><strong>test_helloxx</strong></a> that failed earlier? It calls…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38"><strong>send_command</strong></a> to send an NSH Command, which calls…</p>
@@ -252,9 +252,11 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </ul>
 </li>
 <li>
-<p><em>What’s Pexpect?</em></p>
+<p><em>Why Pexpect?</em></p>
 <p>That’s how our CI Test spawns the QEMU Process and controls it…</p>
+<span style="font-size:90%">
 <p>“<a href="https://pexpect.readthedocs.io/en/stable/"><strong>Pexpect</strong></a> is a pure Python module for spawning child applications; controlling them; and responding to expected patterns in their output. Pexpect works like Don Libes’ Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands.”</p>
+</span>
 </li>
 <li>
 <p><em>What about Don Libes’ Expect?</em></p>
