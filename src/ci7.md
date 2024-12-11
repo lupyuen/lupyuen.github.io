@@ -4,7 +4,25 @@
 
 ![TODO](https://lupyuen.github.io/images/ci7-title.jpg)
 
-TODO
+TODO: Bothersome bug flagged by NuttX Dashboard every day since a month ago
+
+![TODO](https://lupyuen.github.io/images/ci7-dashboard.png)
+
+```text
+Configuration/Tool: rv-virt/citest
+test_cmocka      PASSED
+test_hello       PASSED
+test_helloxx     FAILED
+test_pipe        FAILED
+test_usrsocktest FAILED
+[...Failing all the way...]
+```
+
+[(See the __Complete Log__)](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88)
+
+Reported one month ago: ["[BUG] rv-virt/citest: test_hello or test_pipe failed"](https://github.com/apache/nuttx/issues/14808)
+
+The bug stops here! (Eventually)
 
 # TODO
 
