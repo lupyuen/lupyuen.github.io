@@ -341,12 +341,14 @@ Backing up Mastodon:
 https://docs.joinmastodon.org/admin/backups/
 Postgres:
 docker exec -it mastodon-db-1 /bin/bash -c "exec su-exec postgres pg_dumpall" >mastodon.sql
+head -50 mastodon.sql
 
 Redis:
 docker cp mastodon-redis-1:/data/dump.rdb .
+strings dump.rdb | tail -50
 
 User-uploaded files:
-tar cvf mastodon-public-system.tar public/system
+tar cvf mastodon-public-system.tar mastodon/public/system
 
 -----------------
 
