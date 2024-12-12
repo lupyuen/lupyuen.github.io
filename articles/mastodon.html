@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)" 
+    data-rh="true">
+<meta property="og:description" 
+    content=""
+    data-rh="true">
+<meta name="description" 
+    content="">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/mastodon-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<link rel="canonical"
+    href="https://lupyuen.github.io/articles/mastodon" />
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+    <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)</h1>
+    <nav id="rustdoc"><ul>
+<li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-title.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Create Our App: https://docs.joinmastodon.org/client/token/#app
+curl -X POST \
+	-F &#39;client_name=NuttX Dashboard&#39; \
+	-F &#39;redirect_uris=urn:ietf:wg:oauth:2.0:oob&#39; \
+	-F &#39;scopes=read write push&#39; \
+	-F &#39;website=https://nuttx-dashboard.org&#39; \
+	https://nuttx-feed.org/api/v1/apps
+
+{&quot;id&quot;:&quot;3&quot;,
+&quot;name&quot;:&quot;NuttX Dashboard&quot;,
+&quot;website&quot;:&quot;https://nuttx-dashboard.org&quot;,
+&quot;scopes&quot;:[&quot;read&quot;,&quot;write&quot;,&quot;push&quot;],
+&quot;redirect_uris&quot;:[&quot;urn:ietf:wg:oauth:2.0:oob&quot;],
+&quot;vapid_key&quot;:&quot;...&quot;,
+&quot;redirect_uri&quot;:&quot;urn:ietf:wg:oauth:2.0:oob&quot;,
+&quot;client_id&quot;:&quot;...&quot;,
+&quot;client_secret&quot;:&quot;...&quot;,
+&quot;client_secret_expires_at&quot;:0}
+
+Login to Account: https://docs.joinmastodon.org/client/authorized/
+Authorise the User: https://docs.joinmastodon.org/client/authorized/#login
+In a web browser:
+https://nuttx-feed.org/oauth/authorize
+?client_id=YOUR_CLIENT_ID
+&amp;scope=read+write+push
+&amp;redirect_uri=urn:ietf:wg:oauth:2.0:oob
+&amp;response_type=code
+
+&lt;&lt; Copy this authorization code and paste it to the application. &gt;&gt;
+
+Obtain the token: https://docs.joinmastodon.org/client/authorized/#token
+export CLIENT_ID=...
+export CLIENT_SECRET=...
+export AUTH_CODE=...
+curl -X POST \
+	-F &quot;client_id=$CLIENT_ID&quot; \
+	-F &quot;client_secret=$CLIENT_SECRET&quot; \
+	-F &quot;redirect_uri=urn:ietf:wg:oauth:2.0:oob&quot; \
+	-F &quot;grant_type=authorization_code&quot; \
+	-F &quot;code=$AUTH_CODE&quot; \
+	-F &quot;scope=read write push&quot; \
+	https://nuttx-feed.org/oauth/token
+
+{&quot;access_token&quot;:&quot;...&quot;,
+&quot;token_type&quot;:&quot;Bearer&quot;,
+&quot;scope&quot;:&quot;read write push&quot;,
+&quot;created_at&quot;:1733966892}
+
+export ACCESS_TOKEN=...
+curl \
+	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+	https://nuttx-feed.org/api/v1/accounts/verify_credentials
+
+{
+  &quot;id&quot;: &quot;...&quot;,
+  &quot;username&quot;: &quot;lupyuen&quot;,
+  &quot;acct&quot;: &quot;lupyuen&quot;,
+  &quot;display_name&quot;: &quot;&quot;,
+  &quot;locked&quot;: false,
+  &quot;bot&quot;: false,
+  &quot;discoverable&quot;: null,
+  &quot;indexable&quot;: false,
+  &quot;group&quot;: false,
+  &quot;created_at&quot;: &quot;2024-12-08T00:00:00.000Z&quot;,
+  &quot;note&quot;: &quot;&quot;,
+  &quot;url&quot;: &quot;https://nuttx-feed.org/@lupyuen&quot;,
+  &quot;uri&quot;: &quot;https://nuttx-feed.org/users/lupyuen&quot;,
+  &quot;avatar&quot;: &quot;https://nuttx-feed.org/avatars/original/missing.png&quot;,
+  &quot;avatar_static&quot;: &quot;https://nuttx-feed.org/avatars/original/missing.png&quot;,
+  &quot;header&quot;: &quot;https://nuttx-feed.org/headers/original/missing.png&quot;,
+  &quot;header_static&quot;: &quot;https://nuttx-feed.org/headers/original/missing.png&quot;,
+  &quot;followers_count&quot;: 1,
+  &quot;following_count&quot;: 1,
+  &quot;statuses_count&quot;: 4,
+  &quot;last_status_at&quot;: &quot;2024-12-11&quot;,
+  &quot;hide_collections&quot;: null,
+  &quot;noindex&quot;: false,
+  &quot;source&quot;: {
+    &quot;privacy&quot;: &quot;public&quot;,
+    &quot;sensitive&quot;: false,
+    &quot;language&quot;: null,
+    &quot;note&quot;: &quot;&quot;,
+    &quot;fields&quot;: [],
+    &quot;follow_requests_count&quot;: 0,
+    &quot;hide_collections&quot;: null,
+    &quot;discoverable&quot;: null,
+    &quot;indexable&quot;: false
+  },
+  &quot;emojis&quot;: [],
+  &quot;roles&quot;: [
+    {
+      &quot;id&quot;: &quot;3&quot;,
+      &quot;name&quot;: &quot;Owner&quot;,
+      &quot;color&quot;: &quot;&quot;
+    }
+  ],
+  &quot;fields&quot;: [],
+  &quot;role&quot;: {
+    &quot;id&quot;: &quot;3&quot;,
+    &quot;name&quot;: &quot;Owner&quot;,
+    &quot;permissions&quot;: &quot;1048575&quot;,
+    &quot;color&quot;: &quot;&quot;,
+    &quot;highlighted&quot;: true
+  }
+}
+
+Create Status: https://docs.joinmastodon.org/methods/statuses/#create
+
+curl -X POST \
+	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+	-F &quot;status=Posting a status from curl&quot; \
+	https://nuttx-feed.org/api/v1/statuses
+
+{&quot;id&quot;:&quot;113637285862132341&quot;,
+&quot;created_at&quot;:&quot;2024-12-12T01:36:14.606Z&quot;,
+&quot;in_reply_to_id&quot;:null,
+&quot;in_reply_to_account_id&quot;:null,
+&quot;sensitive&quot;:false,
+&quot;spoiler_text&quot;:&quot;&quot;,
+&quot;visibility&quot;:&quot;public&quot;,
+&quot;language&quot;:&quot;en&quot;,
+&quot;uri&quot;:&quot;https://nuttx-feed.org/users/lupyuen/statuses/113637285862132341&quot;,
+&quot;url&quot;:&quot;https://nuttx-feed.org/@lupyuen/113637285862132341&quot;,
+&quot;replies_count&quot;:0,
+&quot;reblogs_count&quot;:0,
+&quot;favourites_count&quot;:0,
+&quot;edited_at&quot;:null,
+&quot;favourited&quot;:false,
+&quot;reblogged&quot;:false,
+&quot;muted&quot;:false,
+&quot;bookmarked&quot;:false,
+&quot;pinned&quot;:false,
+&quot;content&quot;:&quot;\u003cp\u003ePosting a status from curl\u003c/p\u003e&quot;,
+&quot;filtered&quot;:[],
+&quot;reblog&quot;:null,
+&quot;application&quot;:{&quot;name&quot;:&quot;NuttX Dashboard&quot;,&quot;website&quot;:&quot;https://nuttx-dashboard.org&quot;},
+&quot;account&quot;:{&quot;id&quot;:&quot;...&quot;,&quot;username&quot;:&quot;lupyuen&quot;,&quot;acct&quot;:&quot;lupyuen&quot;,&quot;display_name&quot;:&quot;&quot;,&quot;locked&quot;:false,&quot;bot&quot;:false,&quot;discoverable&quot;:null,&quot;indexable&quot;:false,&quot;group&quot;:false,&quot;created_at&quot;:&quot;2024-12-08T00:00:00.000Z&quot;,&quot;note&quot;:&quot;&quot;,&quot;url&quot;:&quot;https://nuttx-feed.org/@lupyuen&quot;,&quot;uri&quot;:&quot;https://nuttx-feed.org/users/lupyuen&quot;,&quot;avatar&quot;:&quot;https://nuttx-feed.org/avatars/original/missing.png&quot;,&quot;avatar_static&quot;:&quot;https://nuttx-feed.org/avatars/original/missing.png&quot;,&quot;header&quot;:&quot;https://nuttx-feed.org/headers/original/missing.png&quot;,&quot;header_static&quot;:&quot;https://nuttx-feed.org/headers/original/missing.png&quot;,&quot;followers_count&quot;:1,&quot;following_count&quot;:1,&quot;statuses_count&quot;:5,&quot;last_status_at&quot;:&quot;2024-12-12&quot;,&quot;hide_collections&quot;:null,&quot;noindex&quot;:false,&quot;emojis&quot;:[],&quot;roles&quot;:[{&quot;id&quot;:&quot;3&quot;,&quot;name&quot;:&quot;Owner&quot;,&quot;color&quot;:&quot;&quot;}],&quot;fields&quot;:[]},&quot;media_attachments&quot;:[],&quot;mentions&quot;:[],&quot;tags&quot;:[],&quot;emojis&quot;:[],&quot;card&quot;:null,&quot;poll&quot;:null}
+
+https://github.com/h3poteto/megalodon-rs
+
+Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs
+
+-----------------
+
+Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
+curl https://nuttx-feed.org/api/v1/timelines/public | jq
+ 
+-----------------
+
+https://gist.github.com/lupyuen/f01da036fd0299abc5c874ace8fd1b22
+
+git clone https://github.com/mastodon/mastodon --branch v4.3.2
+code mastodon
+echo &gt;mastodon/.env.production
+
+docker-compose.yml
+&lt;&lt;
+  db:
+    volumes:
+      -  postgres-data:/var/lib/postgresql/data
+
+  redis:
+    volumes:
+      - redis-data:/data
+
+  web:
+    ports:
+      - &#39;127.0.0.1:3001:3000&#39;
+    #### TODO: command: bundle exec puma -C config/puma.rb
+    command: sleep infinity #### TODO
+
+  sidekiq:
+    volumes:
+      - lt-data:/mastodon/public/system
+
+volumes:
+  postgres-data:
+  redis-data:
+  es-data:
+  lt-data:
+&gt;&gt;
+
+docker volume rm postgres-data
+docker volume rm redis-data
+docker volume rm es-data
+docker volume rm lt-data
+
+To Init The Database:
+cd mastodon
+set docker-compose.yml to &quot;command: sleep infinity&quot;
+sudo docker compose up # Error response from daemon: error while creating mount source path &#39;/Users/luppy/mastodon/public/system&#39;: chown /Users/luppy/mastodon/public/system: permission denied
+docker compose logs -f
+Ctrl-C
+sudo docker compose up # Works OK
+docker compose logs -f
+Ignore Redis and Streaming:
+&lt;&lt;
+redis-1      | 1:C 08 Dec 2024 23:16:32.034 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add &#39;vm.overcommit_memory = 1&#39; to /etc/sysctl.conf and then reboot or run the command &#39;sysctl vm.overcommit_memory=1&#39; for this to take effect.
+streaming-1  | {&quot;level&quot;:&quot;error&quot;,&quot;time&quot;:1733699834202,&quot;pid&quot;:1,&quot;hostname&quot;:&quot;738ede3870fb&quot;,&quot;name&quot;:&quot;streaming&quot;,&quot;err&quot;:{&quot;type&quot;:&quot;Error&quot;,&quot;message&quot;:&quot;connect ECONNREFUSED 127.0.0.1:6379&quot;,&quot;stack&quot;:&quot;Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)&quot;,&quot;errno&quot;:-111,&quot;code&quot;:&quot;ECONNREFUSED&quot;,&quot;syscall&quot;:&quot;connect&quot;,&quot;address&quot;:&quot;127.0.0.1&quot;,&quot;port&quot;:6379},&quot;msg&quot;:&quot;Redis Client Error!&quot;}
+&gt;&gt;
+
+https://docs.joinmastodon.org/admin/install/#creating-a-user
+docker exec -it mastodon-db-1 /bin/bash
+exec su-exec postgres psql
+CREATE USER mastodon CREATEDB;
+\q
+
+https://docs.joinmastodon.org/admin/install/#generating-a-configuration
+docker exec -it mastodon-web-1 /bin/bash
+RAILS_ENV=production bin/rails mastodon:setup
+exit
+Copy the settings to .env.production
+&lt;&lt;
+# Generated with mastodon:setup on 2024-12-08 23:40:38 UTC
+...
+&gt;&gt;
+
+restore docker-compose.yml to &quot;command: bundle exec puma -C config/puma.rb&quot;
+sudo docker compose down
+sudo docker compose up
+docker compose logs -f
+https://nuttx-feed.org/home
+
+Administration &gt; Settings
+  &gt; Branding
+  &gt; About
+  &gt; Registrations &gt; Who can sign up &gt; Approval Required for Sign up &gt; Require a Reason to Join
+
+Ignore SMTP, need to approve manually
+&lt;&lt;
+sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
+sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot;:&quot;Job raised exception&quot;,&quot;job&quot;:{&quot;retry&quot;:true,&quot;queue&quot;:&quot;mailers&quot;,&quot;wrapped&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;args&quot;:[{&quot;job_class&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;job_id&quot;:&quot;a7c8ac28-83bd-42b8-a4de-554f533a01f8&quot;,&quot;provider_job_id&quot;:null,&quot;queue_name&quot;:&quot;mailers&quot;,&quot;priority&quot;:null,&quot;arguments&quot;:[&quot;UserMailer&quot;,&quot;password_change&quot;,&quot;deliver_now&quot;,{&quot;args&quot;:[{&quot;_aj_globalid&quot;:&quot;gid://mastodon/User/1&quot;}],&quot;_aj_ruby2_keywords&quot;:[&quot;args&quot;]}],&quot;executions&quot;:0,&quot;exception_executions&quot;:{},&quot;locale&quot;:&quot;en&quot;,&quot;timezone&quot;:&quot;UTC&quot;,&quot;enqueued_at&quot;:&quot;2024-12-09T00:00:54.250576360Z&quot;,&quot;scheduled_at&quot;:null}],&quot;class&quot;:&quot;ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper&quot;,&quot;jid&quot;:&quot;8b52310d0afc7d27b0af3d4b&quot;,&quot;created_at&quot;:1733702454.2507422,&quot;enqueued_at&quot;:1733702694.9922712,&quot;error_message&quot;:&quot;Connection refused - connect(2) for \&quot;localhost\&quot; port 25&quot;,&quot;error_class&quot;:&quot;Errno::ECONNREFUSED&quot;,&quot;failed_at&quot;:1733702454.3886917,&quot;retry_count&quot;:3,&quot;retried_at&quot;:1733702562.7745714}}
+sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
+sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;
+&gt;&gt;
+
+Create Account:
+https://docs.joinmastodon.org/admin/setup/#admin-cli
+docker exec -it mastodon-web-1 /bin/bash
+bin/tootctl accounts create \
+  lupyuen \
+  --email luppy@appkaki.com \
+  --confirmed \
+  --role Owner
+
+Approve Account:
+https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+docker exec -it mastodon-web-1 /bin/bash
+bin/tootctl accounts approve lupyuen
+
+curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
+
+curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
+
+curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
+
+docker-compose.yml
+https://github.com/lupyuen/mastodon/commit/278987886e67fdd8b76d65938f3308071c3cd5c2
+
+Docker Logs:
+https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
+https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
+https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
+https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
+https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
+https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
+
+CloudFlare: Security &gt; Settings &gt; High
+
+Administration &gt; Dashboard
+Could not connect to Elasticsearch. Please check that it is running, or disable full-text search
+
+Enable Elastisearch:
+https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347
+.env.production
+&lt;&lt;
+ES_ENABLED=true
+ES_HOST=es
+ES_PORT=9200
+&gt;&gt;
+docker-compose.yml: Uncomment section for es
+&lt;&lt;
+  es:
+    volumes:
+       - es-data:/usr/share/elasticsearch/data
+  web:
+    depends_on:
+      - db
+      - redis
+      - es
+&gt;&gt;
+docker compose down
+docker compose build
+docker compose up
+docker compose logs -f
+&lt;&lt;
+es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+&gt;&gt;
+
+Increase max_map_count:
+https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/
+Restart Docker Desktop
+
+docker exec -it mastodon-es-1 /bin/bash -c &quot;sysctl vm.max_map_count&quot;
+&lt;&lt;
+vm.max_map_count = 262144
+&gt;&gt;
+
+Administration &gt; Dashboard
+&lt;&lt;
+Elasticsearch index mappings are outdated
+&gt;&gt;
+
+docker exec -it mastodon-web-1 /bin/bash
+bin/tootctl search deploy --only=instances accounts tags statuses public_statuses
+
+Backing up Mastodon:
+https://docs.joinmastodon.org/admin/backups/
+Postgres:
+docker exec -it mastodon-db-1 /bin/bash -c &quot;exec su-exec postgres pg_dumpall&quot; &gt;mastodon.sql
+
+Redis:
+docker cp mastodon-redis-1:/data/dump.rdb .
+
+User-uploaded files:
+tar cvf mastodon-public-system.tar public/system
+
+-----------------
+
+Previously:
+git clone https://github.com/mastodon/mastodon --branch v4.3.2
+code mastodon
+
+.devcontainer/compose.yaml:
+&lt;&lt;
+    ports:
+      - &#39;127.0.0.1:3001:3000&#39;
+&gt;&gt;
+
+.env.development
+&lt;&lt;
+LOCAL_DOMAIN=nuttx-feed.org
+&gt;&gt;
+
+cd mastodon
+docker compose -f .devcontainer/compose.yaml up -d
+docker compose -f .devcontainer/compose.yaml exec app bin/setup
+docker compose -f .devcontainer/compose.yaml exec app bin/dev
+http://localhost:3001/home
+docker compose -f .devcontainer/compose.yaml down
+
+https://docs.joinmastodon.org/admin/setup/#admin-cli
+docker exec -it devcontainer-app-1 /bin/bash
+bin/tootctl accounts create \
+  lupyuen \
+  --email luppy@appkaki.com \
+  --confirmed \
+  --role Owner
+
+https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+bin/tootctl accounts approve lupyuen
+
+docker exec -it devcontainer-app-1 /bin/bash
+bin/tootctl search deploy --only=tags</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<p>TODO</p>
+<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.github.io/src/mastodon.md</strong></a></p>
+
+    
+    <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker and Prism Theme -->
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker and Prism Theme -->
+
+    <!-- End scripts/rustdoc-after.html -->
+    
+
+</body>
+</html>
