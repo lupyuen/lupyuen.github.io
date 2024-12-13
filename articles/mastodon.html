@@ -111,6 +111,8 @@ https://nuttx-feed.org/oauth/authorize
 
 &lt;&lt; Copy this authorization code and paste it to the application. &gt;&gt;
 
+It will expire. Do it right away!
+
 Obtain the token: https://docs.joinmastodon.org/client/authorized/#token
 export CLIENT_ID=...
 export CLIENT_SECRET=...
@@ -308,6 +310,13 @@ Administration &gt; Settings
   &gt; Branding
   &gt; About
   &gt; Registrations &gt; Who can sign up &gt; Approval Required for Sign up &gt; Require a Reason to Join
+
+Moderation &gt; Accounts &gt; Approve
+
+Approve Account:
+https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+docker exec -it mastodon-web-1 /bin/bash
+bin/tootctl accounts modify nuttx_build --confirm
 
 Ignore SMTP, need to approve manually
 &lt;&lt;
