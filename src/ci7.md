@@ -8,7 +8,7 @@ Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/a
 
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
-Which says that __NuttX on QEMU RISC-V Emulator__ (32-bit) has failed our [__Continuous Integration Test__](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88). Again and again (like Groundhog Day)
+Which says that __NuttX on QEMU RISC-V Emulator__ (32-bit) has failed our [__Continuous Integration Test__](https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88). Again and again (like Kafka on Groundhog Day)
 
 ```text
 Configuration/Tool: rv-virt/citest
