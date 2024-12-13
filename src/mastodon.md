@@ -8,6 +8,78 @@ TODO
 
 # TODO
 
+TODO: mastodon-grafana.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-grafana.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
+
+TODO: mastodon-mobile1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile1.png)
+
+TODO: mastodon-mobile2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile2.png)
+
+TODO: mastodon-mobile3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
+
+TODO: mastodon-mobile4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
+
+TODO: mastodon-prometheus.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-prometheus.png)
+
+TODO: mastodon-register1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register1.png)
+
+TODO: mastodon-register2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register2.png)
+
+TODO: mastodon-register3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register3.png)
+
+TODO: mastodon-register4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register4.png)
+
+TODO: mastodon-register5.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
+
+TODO: mastodon-register6.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register6.png)
+
+TODO: mastodon-register7.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
+
+TODO: mastodon-web1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
+
+TODO: mastodon-web2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
+
+TODO: mastodon-web3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
+
+TODO: mastodon-web4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
 ```text
 Query Prometheus for Build Failures
 http://localhost:9090
