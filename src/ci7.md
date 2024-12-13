@@ -215,7 +215,7 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 [UPDATE: __Tiago Medicci Serrano__ has just fixed the "__`ps`__" crash yay!](https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218)
 
-[(But __another bug__ appears. Exactly like Kafka on Groundhog Day!)](TODO)
+[(But __another bug__ appears. Exactly like Kafka on Groundhog Day!)](https://github.com/apache/nuttx/issues/15170)
 
 # Why So Difficult?
 
