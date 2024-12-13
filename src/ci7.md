@@ -20,7 +20,7 @@ test_usrsocktest FAILED
 [...Failing all the way...]
 ```
 
-The Bug Stops Here! (OK maybe not today) In this article, we study the internals of a __NuttX CI Test__ (Continuous Integration)
+The Bug Stops Here! In this article, we study the internals of the __NuttX CI Test__ (Continuous Integration) as we stomp the bug...
 
 - TODO
 
