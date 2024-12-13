@@ -213,6 +213,8 @@ _How will we fix the bug?_
 
 We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#whats-next) and retest _rv-virt:citest_ on QEMU RISC-V.
 
+[UPDATE: __Tiago Medicci Serrano__ has just fixed the "__`ps`__" crash yay!](https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218)
+
 # Why So Difficult?
 
 1.  _What's this Pytest we saw earlier?_
