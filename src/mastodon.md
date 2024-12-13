@@ -288,6 +288,8 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 }
 ```
 
+TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
+
 ```text
 Query Prometheus for Build Failures
 http://localhost:9090
