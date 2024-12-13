@@ -106,6 +106,207 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-web3.png" alt="TODO" /></p>
 <p>TODO: mastodon-web4.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/run.sh">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+## Post the Failed Jobs from Prometheus to Mastodon
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+## Set the Access Token for Mastodon
+## https://docs.joinmastodon.org/client/authorized/#token
+## export MASTODON_TOKEN=...
+set +x  ## Disable Echo
+. ../mastodon-token.sh
+set -x  ## Echo commands
+
+set -e  ## Ignore errors
+for (( ; ; )); do
+    ## Post the Failed Jobs from Prometheus to Mastodon
+    cargo run
+
+    ## Wait a while
+    date ; sleep 900
+done</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//! (1) Fetch the Failed NuttX Builds from Prometheus
+//! (2) Post to Mastodon
+
+</span><span class="kw">use </span>std::{
+    fs::File,
+    io::{BufReader, Write},
+    thread::sleep,
+    time::Duration,
+};
+<span class="kw">use </span>clap::Parser;
+<span class="kw">use </span>serde_json::{
+    json,
+    to_string_pretty,
+    Value,
+};
+
+<span class="comment">// Remembers the Mastodon Posts for All Builds:
+// {
+//   "rv-virt:citest" : {
+//     status_id: "12345",
+//     users: ["nuttxpr", "NuttX", "lupyuen"]
+//   }
+//   "rv-virt:citest64" : ...
+// }
+</span><span class="kw">const </span>ALL_BUILDS_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">"/tmp/nuttx-prometheus-to-mastodon.json"</span>;
+
+<span class="doccomment">/// Command-Line Arguments
+</span><span class="attr">#[derive(Parser, Debug)]
+#[command(version, about, long_about = <span class="prelude-val">None</span>)]
+</span><span class="kw">struct </span>Args {
+}
+
+<span class="attr">#[tokio::main]
+</span><span class="kw">async fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+    <span class="comment">// Init the Logger and Command-Line Args
+    </span>env_logger::init();
+    <span class="comment">// let args = Args::parse();
+
+    // Fetch the Failed Builds from Prometheus
+    </span><span class="kw">let </span>query = <span class="string">r##"
+        build_score{
+            config!="leds64_zig",
+            user!="rewind",
+            user!="nuttxlinux",
+            user!="nuttxmacos",
+            user!="jerpelea"
+        } &lt; 0.5
+    "##</span>;
+    <span class="macro">println!</span>(<span class="string">"query={query}"</span>);
+    <span class="kw">let </span>params = [(<span class="string">"query"</span>, query)];
+    <span class="kw">let </span>client = reqwest::Client::new();
+    <span class="kw">let </span>prometheus = <span class="string">"http://localhost:9090/api/v1/query"</span>;
+    <span class="kw">let </span>res = client
+        .post(prometheus)
+        .form(<span class="kw-2">&amp;</span>params)
+        .send()
+        .<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="macro">println!</span>(<span class="string">"res={res:?}"</span>);
+    <span class="kw">if </span>!res.status().is_success() {
+        <span class="macro">println!</span>(<span class="string">"*** Prometheus Failed"</span>);
+        sleep(Duration::from_secs(<span class="number">1</span>));
+    }
+    <span class="macro">println!</span>(<span class="string">"Status: {}"</span>, res.status());
+    <span class="macro">println!</span>(<span class="string">"Headers:\n{:#?}"</span>, res.headers());
+    <span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="macro">println!</span>(<span class="string">"Body: {body}"</span>);
+    <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
+    <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];
+    <span class="macro">println!</span>(<span class="string">"\n\nbuilds={builds:?}"</span>);
+
+    <span class="comment">// Load the Mastodon Posts for All Builds
+    </span><span class="kw">let </span><span class="kw-2">mut </span>all_builds = <span class="macro">json!</span>({});
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(file) = File::open(ALL_BUILDS_FILENAME) {
+        <span class="kw">let </span>reader = BufReader::new(file);
+        all_builds = serde_json::from_reader(reader).unwrap();    
+    }
+
+    <span class="comment">// For Each Failed Build...
+    </span><span class="kw">for </span>build <span class="kw">in </span>builds.as_array().unwrap() {
+        <span class="macro">println!</span>(<span class="string">"\n\nbuild={build:?}"</span>);
+        <span class="kw">let </span>metric = <span class="kw-2">&amp;</span>build[<span class="string">"metric"</span>];
+        <span class="macro">println!</span>(<span class="string">"\n\nmetric={metric:?}"</span>);
+        <span class="kw">let </span>board = metric[<span class="string">"board"</span>].as_str().unwrap();
+        <span class="kw">let </span>config = metric[<span class="string">"config"</span>].as_str().unwrap();
+        <span class="kw">let </span>user = metric[<span class="string">"user"</span>].as_str().unwrap();
+        <span class="kw">let </span>msg = metric[<span class="string">"msg"</span>].as_str().unwrap();
+        <span class="kw">let </span>config_upper = config.to_uppercase();
+        <span class="kw">let </span>target = <span class="macro">format!</span>(<span class="string">"{board}:{config}"</span>);
+        <span class="macro">println!</span>(<span class="string">"\n\nboard={board}"</span>);
+        <span class="macro">println!</span>(<span class="string">"config={config}"</span>);
+        <span class="macro">println!</span>(<span class="string">"user={user}"</span>);
+        <span class="macro">println!</span>(<span class="string">"msg={msg}"</span>);
+
+        <span class="comment">// Compose the Mastodon Post as...
+        // rv-virt : CITEST - Build Failed (NuttX)
+        // NuttX Dashboard: ...
+        // Build History: ...
+        // [Error Message]
+        </span><span class="kw">let </span>status = <span class="kw-2">&amp;</span><span class="macro">format!</span>(
+            <span class="string">r##"
+{board} : {config_upper} - Build Failed ({user})
+NuttX Dashboard: https://nuttx-dashboard.org
+Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board={board}&amp;var-config={config}
+
+{msg}
+            "##</span>)
+            [..<span class="number">450</span>];  <span class="comment">// Mastodon allows only 500 chars
+        </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
+        params.push((<span class="string">"status"</span>, status));
+
+        <span class="comment">// If the Mastodon Post already exists for Board and Config:
+        // Reply to the Mastodon Post
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(status_id) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_id"</span>].as_str() {
+            params.push((<span class="string">"in_reply_to_id"</span>, status_id));
+
+            <span class="comment">// If the User already exists for the Board and Config:
+            // Skip the Mastodon Post
+            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(users) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>].as_array() {
+                <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) {
+                    <span class="macro">println!</span>(<span class="string">"Skipping {user} @ {target}, already exists"</span>);
+                    <span class="kw">continue</span>;
+                }
+            }
+        }
+
+        <span class="comment">// Post to Mastodon
+        </span><span class="kw">let </span>token = std::env::var(<span class="string">"MASTODON_TOKEN"</span>)
+            .expect(<span class="string">"MASTODON_TOKEN env variable is required"</span>);
+        <span class="kw">let </span>client = reqwest::Client::new();
+        <span class="kw">let </span>mastodon = <span class="string">"https://nuttx-feed.org/api/v1/statuses"</span>;
+        <span class="kw">let </span>res = client
+            .post(mastodon)
+            .header(<span class="string">"Authorization"</span>, <span class="macro">format!</span>(<span class="string">"Bearer {token}"</span>))
+            .form(<span class="kw-2">&amp;</span>params)
+            .send()
+            .<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="macro">println!</span>(<span class="string">"res={res:?}"</span>);
+        <span class="kw">if </span>!res.status().is_success() {
+            <span class="macro">println!</span>(<span class="string">"*** Mastodon Failed: {user} @ {target}"</span>);
+            sleep(Duration::from_secs(<span class="number">30</span>));
+            <span class="kw">continue</span>;
+        }
+        <span class="macro">println!</span>(<span class="string">"Status: {}"</span>, res.status());
+        <span class="macro">println!</span>(<span class="string">"Headers:\n{:#?}"</span>, res.headers());
+        <span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="macro">println!</span>(<span class="string">"Body: {body}"</span>);
+
+        <span class="comment">// Remember the Mastodon Post ID (Status ID)
+        </span><span class="kw">let </span>status: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
+        <span class="kw">let </span>status_id = status[<span class="string">"id"</span>].as_str().unwrap();
+        <span class="macro">println!</span>(<span class="string">"status_id={status_id}"</span>);
+        all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_id"</span>] = status_id.into();
+
+        <span class="comment">// Append the User to All Builds
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(users) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>].as_array() {
+            <span class="kw">if </span>!users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) {
+                <span class="kw">let </span><span class="kw-2">mut </span>users = users.clone();
+                users.push(<span class="macro">json!</span>(user));
+                all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>] = <span class="macro">json!</span>(users);
+            }
+        } <span class="kw">else </span>{
+            all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>] = <span class="macro">json!</span>([user]);
+        }
+
+        <span class="comment">// Save the Mastodon Posts for All Builds
+        </span><span class="kw">let </span>json = to_string_pretty(<span class="kw-2">&amp;</span>all_builds).unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(ALL_BUILDS_FILENAME).unwrap();
+        file.write_all(json.as_bytes()).unwrap();
+        <span class="macro">println!</span>(<span class="string">"\n\nall_builds=\n{json}"</span>);
+
+        <span class="comment">// Wait a while
+        </span>sleep(Duration::from_secs(<span class="number">30</span>));
+    }
+
+    <span class="comment">// Return OK
+    </span><span class="prelude-val">Ok</span>(())
+}</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Query Prometheus for Build Failures
 http://localhost:9090
 build_score{user!=&quot;rewind&quot;, user!=&quot;nuttxlinux&quot;, user!=&quot;nuttxmacos&quot;, user!=&quot;jerpelea&quot;} &lt; 0.5
