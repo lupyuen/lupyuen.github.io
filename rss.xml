@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rewinding a Build for Apache NuttX RTOS (Docker)</title>
+            <link>https://lupyuen.github.io/articles/ci6</link>
+            <description><![CDATA[When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci6</guid>
+            <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>macOS Build Farm for Apache NuttX RTOS (Apple Silicon)</title>
             <link>https://lupyuen.github.io/articles/ci5</link>
             <description><![CDATA[Folks on macOS: Compiling Apache NuttX RTOS used to be so tiresome. Not any more! In this article, we explain how to build anything on macOS, by patching the NuttX CI Script. Which also becomes our macOS Build Farm.]]></description>
