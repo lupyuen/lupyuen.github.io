@@ -69,6 +69,8 @@
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
+<p>We’re out for an <a href="TODO"><strong>overnight hike</strong></a>, city to airport. Our <a href="TODO"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop. Continuously compiling 1,000 NuttX Targets.</p>
+<p>Can we be really sure that NuttX is OK? Without getting spammed by alert emails all night?</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
 <p>TODO: mastodon-grafana.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-grafana.png" alt="TODO" /></p>
@@ -120,7 +122,7 @@ set +x  ## Disable Echo
 . ../mastodon-token.sh
 set -x  ## Echo commands
 
-set -e  ## Ignore errors
+set +e  ## Ignore errors
 for (( ; ; )); do
     ## Post the Failed Jobs from Prometheus to Mastodon
     cargo run
@@ -215,7 +217,7 @@ done</code></pre></div>
         <span class="kw">let </span>board = metric[<span class="string">"board"</span>].as_str().unwrap();
         <span class="kw">let </span>config = metric[<span class="string">"config"</span>].as_str().unwrap();
         <span class="kw">let </span>user = metric[<span class="string">"user"</span>].as_str().unwrap();
-        <span class="kw">let </span>msg = metric[<span class="string">"msg"</span>].as_str().unwrap();
+        <span class="kw">let </span>msg = metric[<span class="string">"msg"</span>].as_str().unwrap_or(<span class="string">""</span>);
         <span class="kw">let </span>config_upper = config.to_uppercase();
         <span class="kw">let </span>target = <span class="macro">format!</span>(<span class="string">"{board}:{config}"</span>);
         <span class="macro">println!</span>(<span class="string">"\n\nboard={board}"</span>);
