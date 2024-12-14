@@ -10,6 +10,16 @@ We’re out for an [__overnight hike__](TODO), city to airport. Our [__Build Far
 
 Can we be really sure that NuttX is OK? Without getting spammed by alert emails all night?
 
+(Sorry we got zero budget for _"paging duty"_ services)
+
+TODO: Pic of mobile 
+
+in this article we talk about Mastodon 
+
+moderation 
+
+fediverse
+
 # TODO
 
 TODO: mastodon-grafana.png
