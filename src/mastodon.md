@@ -211,22 +211,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         // NuttX Dashboard: ...
         // Build History: ...
         // [Error Message]
-        let status = &format!(
+        let mut status = format!(
             r##"
 {board} : {config_upper} - Build Failed ({user})
 NuttX Dashboard: https://nuttx-dashboard.org
 Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board={board}&var-config={config}
 
 {msg}
-            "##)
-            [..450];  // Mastodon allows only 500 chars
+            "##);
+        status.truncate(512);  // Mastodon allows only 500 chars
         let mut params = Vec::new();
         params.push(("status", status));
 
         // If the Mastodon Post already exists for Board and Config:
         // Reply to the Mastodon Post
         if let Some(status_id) = all_builds[&target]["status_id"].as_str() {
-            params.push(("in_reply_to_id", status_id));
+            params.push(("in_reply_to_id", status_id.to_string()));
 
             // If the User already exists for the Board and Config:
             // Skip the Mastodon Post
