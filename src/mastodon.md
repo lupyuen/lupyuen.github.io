@@ -20,6 +20,10 @@ moderation
 
 fediverse
 
+qoto home
+
+discussion 
+
 # TODO
 
 TODO: mastodon-grafana.png
