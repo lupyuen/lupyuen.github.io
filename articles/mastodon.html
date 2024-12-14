@@ -230,22 +230,22 @@ done</code></pre></div>
         // NuttX Dashboard: ...
         // Build History: ...
         // [Error Message]
-        </span><span class="kw">let </span>status = <span class="kw-2">&amp;</span><span class="macro">format!</span>(
+        </span><span class="kw">let </span><span class="kw-2">mut </span>status = <span class="macro">format!</span>(
             <span class="string">r##"
 {board} : {config_upper} - Build Failed ({user})
 NuttX Dashboard: https://nuttx-dashboard.org
 Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board={board}&amp;var-config={config}
 
 {msg}
-            "##</span>)
-            [..<span class="number">450</span>];  <span class="comment">// Mastodon allows only 500 chars
+            "##</span>);
+        status.truncate(<span class="number">512</span>);  <span class="comment">// Mastodon allows only 500 chars
         </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
         params.push((<span class="string">"status"</span>, status));
 
         <span class="comment">// If the Mastodon Post already exists for Board and Config:
         // Reply to the Mastodon Post
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(status_id) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_id"</span>].as_str() {
-            params.push((<span class="string">"in_reply_to_id"</span>, status_id));
+            params.push((<span class="string">"in_reply_to_id"</span>, status_id.to_string()));
 
             <span class="comment">// If the User already exists for the Board and Config:
             // Skip the Mastodon Post
