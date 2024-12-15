@@ -563,23 +563,18 @@ volumes:
     - &#39;127.0.0.1:3001:3000&#39;</code></pre></div><h1 id="appendix-test-our-mastodon-server"><a class="doc-anchor" href="#appendix-test-our-mastodon-server">§</a>10 Appendix: Test our Mastodon Server</h1>
 <p>We’re ready to <strong>Test Mastodon</strong>!</p>
 <ol>
-<li>SSH / Service Provider</li>
+<li>
+<p>Talk to our <strong>Web Hosting Provider</strong> (or Tunnel Provider).</p>
+<p>Channel all Incoming Requests for <em>https://nuttx-feed.org</em></p>
+<p>To <em>http://YOUR_DOCKER_MACHINE:3001</em></p>
+<p>(Change <em>nuttx-feed.org</em> to Your Domain Name)</p>
+</li>
+<li>
+<p>Browse to <em>https://nuttx-feed.org</em>. <strong>Mastodon is Up!</strong></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web5.png" alt="TODO" /></p>
+</li>
 </ol>
-<p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
-<div class="example-wrap"><pre class="language-yaml"><code>web:
-  ports:
-    - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
 <p>TODO</p>
-<p>TODO: mastodon-web1.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web1.png" alt="TODO" /></p>
-<p>TODO: mastodon-web2.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web2.png" alt="TODO" /></p>
-<p>TODO: mastodon-web3.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web3.png" alt="TODO" /></p>
-<p>TODO: mastodon-web4.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
-<p>TODO: mastodon-log.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-text"><code>https://nuttx-feed.org/home
 
 Administration &gt; Settings
@@ -600,7 +595,18 @@ sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailD
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot;:&quot;Job raised exception&quot;,&quot;job&quot;:{&quot;retry&quot;:true,&quot;queue&quot;:&quot;mailers&quot;,&quot;wrapped&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;args&quot;:[{&quot;job_class&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;job_id&quot;:&quot;a7c8ac28-83bd-42b8-a4de-554f533a01f8&quot;,&quot;provider_job_id&quot;:null,&quot;queue_name&quot;:&quot;mailers&quot;,&quot;priority&quot;:null,&quot;arguments&quot;:[&quot;UserMailer&quot;,&quot;password_change&quot;,&quot;deliver_now&quot;,{&quot;args&quot;:[{&quot;_aj_globalid&quot;:&quot;gid://mastodon/User/1&quot;}],&quot;_aj_ruby2_keywords&quot;:[&quot;args&quot;]}],&quot;executions&quot;:0,&quot;exception_executions&quot;:{},&quot;locale&quot;:&quot;en&quot;,&quot;timezone&quot;:&quot;UTC&quot;,&quot;enqueued_at&quot;:&quot;2024-12-09T00:00:54.250576360Z&quot;,&quot;scheduled_at&quot;:null}],&quot;class&quot;:&quot;ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper&quot;,&quot;jid&quot;:&quot;8b52310d0afc7d27b0af3d4b&quot;,&quot;created_at&quot;:1733702454.2507422,&quot;enqueued_at&quot;:1733702694.9922712,&quot;error_message&quot;:&quot;Connection refused - connect(2) for \&quot;localhost\&quot; port 25&quot;,&quot;error_class&quot;:&quot;Errno::ECONNREFUSED&quot;,&quot;failed_at&quot;:1733702454.3886917,&quot;retry_count&quot;:3,&quot;retried_at&quot;:1733702562.7745714}}
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;
-&gt;&gt;</code></pre></div><h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>11 Appendix: Create our Mastodon Account</h1>
+&gt;&gt;</code></pre></div>
+<p>TODO: mastodon-web1.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web1.png" alt="TODO" /></p>
+<p>TODO: mastodon-web2.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web2.png" alt="TODO" /></p>
+<p>TODO: mastodon-web3.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web3.png" alt="TODO" /></p>
+<p>TODO: mastodon-web4.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
+<p>TODO: mastodon-log.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
+<h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>11 Appendix: Create our Mastodon Account</h1>
 <p>TODO</p>
 <p>TODO: mastodon-register1.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="TODO" /></p>
