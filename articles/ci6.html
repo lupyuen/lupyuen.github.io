@@ -365,6 +365,7 @@ function run_job {
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L113-L132">(<strong>clean_log</strong> removes Control Chars)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L132-L147">(<strong>find_messages</strong> searches for Errors)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L147-L180">(<strong>upload_log</strong> uploads to GitLab Snippet or GitHub Gist)</a></p>
+<p><a href="https://lists.apache.org/thread/n882xpo087gdxwfbbszh8lod5mrm1ttr">(<strong>Simon Filgis</strong> suggests that we could use <em>“git bisect”</em> to replace the loop that walks through all commits, making it even faster!)</a></p>
 </span>
 <p><img src="https://lupyuen.github.io/images/ci6-title4.jpg" alt="Rewind Build Script" /></p>
 <h1 id="rewind-one-commit"><a class="doc-anchor" href="#rewind-one-commit">§</a>6 Rewind One Commit</h1>
@@ -435,7 +436,6 @@ function build_nuttx {
 <p>Yep it’s the same idea as Rewinding a Build! Just that we’re (slowly) locating a <strong>Runtime Fault</strong> instead of a (quicker) Compile Error</p>
 </li>
 </ul>
-<p><a href="https://lists.apache.org/thread/syvzc64knnbr3zt96dryox5h0o9nq3qc">(<strong>Simon Filgis</strong> suggests that we could use <em>“git bisect”</em> to replace the loop that walks through all commits, making it even faster!)</a></p>
 <p><em>Happy Holidays! Will we have more stories about NuttX CI?</em></p>
 <p>Next Article: We study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
 <p>Then we’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
