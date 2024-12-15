@@ -523,12 +523,14 @@ web-1:       GET /health</code></pre></div>
 </ol>
 <p><em>Why the tweaks to docker-compose.yml?</em></p>
 <p>Somehow Rancher Desktop doesn’t like to <strong>Mount the Local Filesystem</strong>, failing with a permission error…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>services:
+<div class="example-wrap"><pre class="language-yaml"><code>## Local Filesystem will fail on macOS Rancher Desktop
+services:
   db:
     volumes:
       - ./postgres14:/var/lib/postgresql/data</code></pre></div>
 <p>Thus we <strong>Mount the Docker Volumes</strong> instead: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
-<div class="example-wrap"><pre class="language-yaml"><code>services:
+<div class="example-wrap"><pre class="language-yaml"><code>## Docker Volumes will mount OK on macOS Rancher Desktop
+services:
   db:
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -537,21 +539,28 @@ web-1:       GET /health</code></pre></div>
     volumes:
       - redis-data:/data
 
-  web:
-    ports:
-      - &#39;127.0.0.1:3001:3000&#39;
-    #### TODO: command: bundle exec puma -C config/puma.rb
-    command: sleep infinity #### TODO
-
   sidekiq:
     volumes:
       - lt-data:/mastodon/public/system
 
+## Declare the Docker Volumes
 volumes:
   postgres-data:
   redis-data:
   es-data:
-  lt-data:</code></pre></div><h1 id="appendix-test-our-mastodon-server"><a class="doc-anchor" href="#appendix-test-our-mastodon-server">§</a>10 Appendix: Test our Mastodon Server</h1>
+  lt-data:</code></pre></div>
+<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>web:
+  ports:
+    - &#39;127.0.0.1:3001:3000&#39;</code></pre></div><h1 id="appendix-test-our-mastodon-server"><a class="doc-anchor" href="#appendix-test-our-mastodon-server">§</a>10 Appendix: Test our Mastodon Server</h1>
+<p>We’re ready to <strong>Test Mastodon</strong>!</p>
+<ol>
+<li>SSH / Service Provider</li>
+</ol>
+<p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>web:
+  ports:
+    - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
 <p>TODO</p>
 <p>TODO: mastodon-web1.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web1.png" alt="TODO" /></p>
