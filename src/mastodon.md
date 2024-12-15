@@ -894,6 +894,10 @@ User-uploaded files:
 tar cvf mastodon-public-system.tar mastodon/public/system
 ```
 
+TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM
+
+Might be a little different for macOS Rancher Desktop
+
 # Appendix: Enable Elasticsearch for Mastodon
 
 TODO
