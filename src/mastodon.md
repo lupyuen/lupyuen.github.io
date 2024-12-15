@@ -622,22 +622,60 @@ We're ready to __Test Mastodon__!
 
 # Appendix: Create our Mastodon Account
 
-TODO
+Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastodon Updates? This is how we create the Mastodon User...
 
-```bash
-Approve Account:
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts modify nuttx_build --confirm
+1.  Browse to _https://YOUR_DOMAIN_NAME.org_. Click __"Create Account"__ and fill in the info
 
-Ignore SMTP, need to approve manually
-<<
-sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
-sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {"context":"Job raised exception","job":{"retry":true,"queue":"mailers","wrapped":"ActionMailer::MailDeliveryJob","args":[{"job_class":"ActionMailer::MailDeliveryJob","job_id":"a7c8ac28-83bd-42b8-a4de-554f533a01f8","provider_job_id":null,"queue_name":"mailers","priority":null,"arguments":["UserMailer","password_change","deliver_now",{"args":[{"_aj_globalid":"gid://mastodon/User/1"}],"_aj_ruby2_keywords":["args"]}],"executions":0,"exception_executions":{},"locale":"en","timezone":"UTC","enqueued_at":"2024-12-09T00:00:54.250576360Z","scheduled_at":null}],"class":"ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper","jid":"8b52310d0afc7d27b0af3d4b","created_at":1733702454.2507422,"enqueued_at":1733702694.9922712,"error_message":"Connection refused - connect(2) for \"localhost\" port 25","error_class":"Errno::ECONNREFUSED","failed_at":1733702454.3886917,"retry_count":3,"retried_at":1733702562.7745714}}
-sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for "localhost" port 25
-sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
->>
-```
+    TODO: Pics of Register
+
+1.  Normally we'll approve New Accounts at __Moderation > Accounts > Approve__
+
+    TODO: Pic of Approve
+
+    But we don't have an __Outgoing Mail Server__ to validate the email address!
+
+1.  Instead we do this...
+
+    ```bash
+    ## Approve and Confirm the Email Address
+    ## From https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+    docker exec -it \
+      mastodon-web-1 \
+      /bin/bash
+    bin/tootctl accounts \
+      approve nuttx_build
+    bin/tootctl accounts \
+      modify nuttx_build \
+      --confirm
+    exit
+    ```
+
+    (Change _nuttx_build_ to the new username)
+
+1.  FYI for a new __Owner Account__, do this...
+
+    ```bash
+    ## From https://docs.joinmastodon.org/admin/setup/#admin-cli
+    docker exec -it mastodon-web-1 /bin/bash
+    bin/tootctl accounts \
+      create YOUR_OWNER_USERNAME \
+      --email YOUR_OWNER_EMAIL \
+      --confirmed \
+      --role Owner
+    bin/tootctl accounts \
+      approve YOUR_OWNER_NAME
+    exit
+    ```
+
+1.  That's why it's OK to ignore the __Sidekiq Errors__ for sending email...
+
+    ```text
+    TODO
+    sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
+    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {"context":"Job raised exception","job":{"retry":true,"queue":"mailers","wrapped":"ActionMailer::MailDeliveryJob","args":[{"job_class":"ActionMailer::MailDeliveryJob","job_id":"a7c8ac28-83bd-42b8-a4de-554f533a01f8","provider_job_id":null,"queue_name":"mailers","priority":null,"arguments":["UserMailer","password_change","deliver_now",{"args":[{"_aj_globalid":"gid://mastodon/User/1"}],"_aj_ruby2_keywords":["args"]}],"executions":0,"exception_executions":{},"locale":"en","timezone":"UTC","enqueued_at":"2024-12-09T00:00:54.250576360Z","scheduled_at":null}],"class":"ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper","jid":"8b52310d0afc7d27b0af3d4b","created_at":1733702454.2507422,"enqueued_at":1733702694.9922712,"error_message":"Connection refused - connect(2) for \"localhost\" port 25","error_class":"Errno::ECONNREFUSED","failed_at":1733702454.3886917,"retry_count":3,"retried_at":1733702562.7745714}}
+    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for "localhost" port 25
+    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
+    ```
 
 TODO: mastodon-register1.png
 
@@ -668,28 +706,11 @@ TODO: mastodon-register7.png
 ![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
 
 ```text
-Create Account:
-https://docs.joinmastodon.org/admin/setup/#admin-cli
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts create \
-  lupyuen \
-  --email luppy@appkaki.com \
-  --confirmed \
-  --role Owner
-
-Approve Account:
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts approve lupyuen
-
 curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
 
 curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
 
 curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
-
-docker-compose.yml
-https://github.com/lupyuen/mastodon/commit/278987886e67fdd8b76d65938f3308071c3cd5c2
 
 Docker Logs:
 https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
