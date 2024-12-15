@@ -771,8 +771,8 @@ TODO
 1.  To test our Access Token...
 
     ```bash
-    $ export ACCESS_TOKEN=[ From Above ]
-    $ curl \
+    export ACCESS_TOKEN=[ From Above ]
+    curl \
       -H "Authorization: Bearer $ACCESS_TOKEN" \
       https://YOUR_DOMAIN_NAME.org/api/v1/accounts/verify_credentials
     ```
@@ -802,49 +802,48 @@ TODO: mastodon-register6.png
 
 # Appendix: Create a Mastodon Post
 
-TODO
+Our Regular Mastondon User is up! Let's post something as the user...
 
 ```text
-Create Status: https://docs.joinmastodon.org/methods/statuses/#create
-
+## Create Status: https://docs.joinmastodon.org/methods/statuses/#create
+export ACCESS_TOKEN=[ From Above ]
 curl -X POST \
 	-H "Authorization: Bearer $ACCESS_TOKEN" \
 	-F "status=Posting a status from curl" \
 	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
+```
 
-{"id":"113637285862132341",
-"created_at":"2024-12-12T01:36:14.606Z",
-"in_reply_to_id":null,
-"in_reply_to_account_id":null,
-"sensitive":false,
-"spoiler_text":"",
-"visibility":"public",
-"language":"en",
-"uri":"https://nuttx-feed.org/users/lupyuen/statuses/113637285862132341",
-"url":"https://nuttx-feed.org/@lupyuen/113637285862132341",
-"replies_count":0,
-"reblogs_count":0,
-"favourites_count":0,
-"edited_at":null,
-"favourited":false,
-"reblogged":false,
-"muted":false,
-"bookmarked":false,
-"pinned":false,
-"content":"\u003cp\u003ePosting a status from curl\u003c/p\u003e",
-"filtered":[],
-"reblog":null,
-"application":{"name":"NuttX Dashboard","website":"https://nuttx-dashboard.org"},
-"account":{"id":"...","username":"lupyuen","acct":"lupyuen","display_name":"","locked":false,"bot":false,"discoverable":null,"indexable":false,"group":false,"created_at":"2024-12-08T00:00:00.000Z","note":"","url":"https://nuttx-feed.org/@lupyuen","uri":"https://nuttx-feed.org/users/lupyuen","avatar":"https://nuttx-feed.org/avatars/original/missing.png","avatar_static":"https://nuttx-feed.org/avatars/original/missing.png","header":"https://nuttx-feed.org/headers/original/missing.png","header_static":"https://nuttx-feed.org/headers/original/missing.png","followers_count":1,"following_count":1,"statuses_count":5,"last_status_at":"2024-12-12","hide_collections":null,"noindex":false,"emojis":[],"roles":[{"id":"3","name":"Owner","color":""}],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":null}
+And our __Mastodon Post__ appears!
 
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+```bash
+## Install `jq` for easier JSON Browsing
+brew install jq      ## For macOS
+sudo apt install jq  ## For Ubuntu
+
+curl \
+  -H 'Accept: application/activity+json' \
+  https://nuttx-feed.org/@nuttx_build \
+  | jq
+
+curl -H 'Accept: application/activity+json' \
+  https://nuttx-feed.org/@nuttx_build/TODO \
+  | jq
+
+curl \
+  https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
+  | jq
+```
+
+TODO
+
+```text
+TODO
 https://github.com/h3poteto/megalodon-rs
 
 Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs
 ```
-
-TODO: mastodon-web4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
 
 TODO: mastodon-register7.png
 
@@ -855,12 +854,6 @@ TODO: mastodon-log.png
 ![TODO](https://lupyuen.github.io/images/mastodon-log.png)
 
 ```text
-curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
-
-curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
-
-curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
-
 Docker Logs:
 https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
 https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
