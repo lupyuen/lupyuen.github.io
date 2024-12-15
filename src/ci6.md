@@ -438,6 +438,8 @@ Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lu
 
 - Yep it's the same idea as Rewinding a Build! Just that we're (slowly) locating a __Runtime Fault__ instead of a (quicker) Compile Error
 
+[(__Simon Filgis__ suggests that we could use _"git bisect"_ to replace the loop that walks through all commits, making it even faster!)](https://lists.apache.org/thread/syvzc64knnbr3zt96dryox5h0o9nq3qc)
+
 _Happy Holidays! Will we have more stories about NuttX CI?_
 
 Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
