@@ -543,6 +543,7 @@ _Why the tweaks to docker-compose.yml?_
 Somehow Rancher Desktop doesn't like to __Mount the Local Filesystem__, failing with a permission error...
 
 ```yaml
+## Local Filesystem will fail on macOS Rancher Desktop
 services:
   db:
     volumes:
@@ -552,6 +553,7 @@ services:
 Thus we __Mount the Docker Volumes__ instead: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
 
 ```yaml
+## Docker Volumes will mount OK on macOS Rancher Desktop
 services:
   db:
     volumes:
@@ -561,16 +563,11 @@ services:
     volumes:
       - redis-data:/data
 
-  web:
-    ports:
-      - '127.0.0.1:3001:3000'
-    #### TODO: command: bundle exec puma -C config/puma.rb
-    command: sleep infinity #### TODO
-
   sidekiq:
     volumes:
       - lt-data:/mastodon/public/system
 
+## Declare the Docker Volumes
 volumes:
   postgres-data:
   redis-data:
@@ -578,7 +575,27 @@ volumes:
   lt-data:
 ```
 
+Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+```yaml
+web:
+  ports:
+    - '127.0.0.1:3001:3000'
+```
+
 # Appendix: Test our Mastodon Server
+
+We're ready to __Test Mastodon__!
+
+1.  SSH / Service Provider
+
+[docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+```yaml
+web:
+  ports:
+    - '127.0.0.1:3001:3000'
+```
 
 TODO
 
