@@ -706,7 +706,7 @@ TODO
       -F 'redirect_uris=urn:ietf:wg:oauth:2.0:oob' \
       -F 'scopes=read write push' \
       -F 'website=https://nuttx-dashboard.org' \
-      https://nuttx-feed.org/api/v1/apps
+      https://YOUR_DOMAIN_NAME.org/api/v1/apps
     ```
 
 1.  We'll see the __Client ID__ and __Client Secret__. Please save them and keep them secret! (Change _nuttx-dashboard_ to your App Name)
@@ -724,12 +724,14 @@ TODO
     "client_secret_expires_at":0}
     ```
 
-1.  Open a Web Browser. Log in as Your New User _(nuttx_build)_
+1.  Open a Web Browser. Browse to _https://YOUR_DOMAIN_NAME.org_
 
-1.  Paste this URL into the Same Web Browser (change _nuttx-feed_)
+    Log in as Your New User _(nuttx_build)_
+
+1.  Paste this URL into the Same Web Browser
 
     ```text
-    https://nuttx-feed.org/oauth/authorize
+    https://YOUR_DOMAIN_NAME.org/oauth/authorize
       ?client_id=YOUR_CLIENT_ID
       &scope=read+write+push
       &redirect_uri=urn:ietf:wg:oauth:2.0:oob
@@ -740,7 +742,7 @@ TODO
 
 1.  Copy the __Authorization Code__. (It will expire soon!)
 
-1.  We transform the Authorization Code into an __Access Token__  (change _nuttx-feed_)
+1.  We transform the Authorization Code into an __Access Token__ 
 
     ```bash
     ## From https://docs.joinmastodon.org/client/authorized/#token
@@ -754,10 +756,10 @@ TODO
       -F "grant_type=authorization_code" \
       -F "code=$AUTH_CODE" \
       -F "scope=read write push" \
-      https://nuttx-feed.org/oauth/token
+      https://YOUR_DOMAIN_NAME.org/oauth/token
     ```
 
-1.  We'll see the __Access Token__. Please save it and secret!
+1.  We'll see the __Access Token__. Please save it and keep secret!
 
     ```json
     {"access_token":"...",
@@ -773,8 +775,8 @@ TODO
     ```bash
     $ export ACCESS_TOKEN=[ From Above ]
     $ curl \
-        -H "Authorization: Bearer $ACCESS_TOKEN" \
-        https://nuttx-feed.org/api/v1/accounts/verify_credentials
+      -H "Authorization: Bearer $ACCESS_TOKEN" \
+      https://YOUR_DOMAIN_NAME.org/api/v1/accounts/verify_credentials
 
     "username": "nuttx_build",
     "acct": "nuttx_build",
@@ -845,7 +847,7 @@ Create Status: https://docs.joinmastodon.org/methods/statuses/#create
 curl -X POST \
 	-H "Authorization: Bearer $ACCESS_TOKEN" \
 	-F "status=Posting a status from curl" \
-	https://nuttx-feed.org/api/v1/statuses
+	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
 
 {"id":"113637285862132341",
 "created_at":"2024-12-12T01:36:14.606Z",
