@@ -587,37 +587,19 @@ web:
 
 We're ready to __Test Mastodon__!
 
-1.  SSH / Service Provider
+1.  Talk to our __Web Hosting Provider__ (or Tunnel Provider).
 
-[docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+    Channel all Incoming Requests for _https://nuttx-feed.org_
+    
+    To _http://YOUR\_DOCKER\_MACHINE:3001_
 
-```yaml
-web:
-  ports:
-    - '127.0.0.1:3001:3000'
-```
+    (Change _nuttx-feed.org_ to Your Domain Name)
+
+1.  Browse to _https://nuttx-feed.org_. __Mastodon is Up!__
+
+    ![TODO](https://lupyuen.github.io/images/mastodon-web5.png)
 
 TODO
-
-TODO: mastodon-web1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
-
-TODO: mastodon-web2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
-
-TODO: mastodon-web3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
-
-TODO: mastodon-web4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
-
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
 
 ```text
 https://nuttx-feed.org/home
@@ -642,6 +624,27 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
 >>
 ```
+
+TODO: mastodon-web1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
+
+TODO: mastodon-web2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
+
+TODO: mastodon-web3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
+
+TODO: mastodon-web4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
+
 
 # Appendix: Create our Mastodon Account
 
