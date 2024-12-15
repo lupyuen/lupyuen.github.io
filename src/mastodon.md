@@ -351,7 +351,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macOS / Windows
 
-TODO: Explain each section of compose.yml
+[(__docker-compose.yml__ is explained here)](TODO)
 
 1.  Download the __Mastodon Source Code__ and init the Environment Config
 
@@ -913,75 +913,95 @@ Might be a little different for macOS Rancher Desktop
 
 # Appendix: Enable Elasticsearch for Mastodon
 
-TODO: Administration > Dashboard
+Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's why we saved it for last.
 
-"Could not connect to Elasticsearch. Please check that it is running, or disable full-text search"
+1.  In Mastodon Web: Head over to __Administration > Dashboard__. It should say...
 
-Enable Elasticsearch:
+    _"Could not connect to Elasticsearch. Please check that it is running, or disable full-text search"_
 
-https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347
+1.  To Enable Elasticsearch: Edit __`.env.production`__ and add these lines...
 
-.env.production
+    ```bash
+    ES_ENABLED=true
+    ES_HOST=es
+    ES_PORT=9200
+    ```
 
-```bash
-ES_ENABLED=true
-ES_HOST=es
-ES_PORT=9200
-```
+1.  Edit [__docker-compose.yml__](TODO).
 
-docker-compose.yml: Uncomment section for es
+    Uncomment the Section for __"`es`"__
 
-```yaml
-  es:
-    volumes:
-       - es-data:/usr/share/elasticsearch/data
-  web:
-    depends_on:
-      - db
-      - redis
-      - es
-```
+    Map the Docker Volume __es-data__ for Elasticsearch
+    
+    Web Container should depend on __"`es`"__
 
-TODO
+    ```yaml
+      es:
+        volumes:
+          - es-data:/usr/share/elasticsearch/data
+      web:
+        depends_on:
+          - db
+          - redis
+          - es
+    ```
 
-```bash
-docker compose down
-docker compose up
-```
+1.  Restart the Docker Containers
 
-"es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]"
+    ```bash
+    docker compose down
+    docker compose up
+    ```
 
-Increase max_map_count:
+1.  We'll see...
 
-https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/
+    _"es-1: bootstrap check failure: max virtual memory areas vm.max_map_count 65530 is too low, increase to at least 262144"_
 
-Restart Docker Desktop
+1.  Here comes the tricky part: __max_map_count__ is configured here!
 
-```bash
-## Print the Max Virtual Memory Areas
-$ docker exec \
-  -it \
-  mastodon-es-1 \
-  /bin/bash -c \
-  "sysctl vm.max_map_count"
+    ```text
+    ~/Library/Application\ Support/rancher-desktop/lima/_config/override.yaml
+    ```
 
-vm.max_map_count = 262144
-```
+    [__Follow the Instructions__](https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/) and set...
 
-TODO: Administration > Dashboard
+    ```bash
+    sysctl -w vm.max_map_count=262144
+    ```
 
-"Elasticsearch index mappings are outdated"
+1.  Restart Docker Desktop
 
-```bash
-docker exec \
-  -it \
-  mastodon-web-1 \
-  /bin/bash
-bin/tootctl search \
-  deploy --only=instances \
-  accounts tags statuses public_statuses
-exit
-```
+1.  Verify that __max_map_count__ has increased
+
+    ```bash
+    ## Print the Max Virtual Memory Areas
+    $ docker exec \
+      -it \
+      mastodon-es-1 \
+      /bin/bash -c \
+      "sysctl vm.max_map_count"
+
+    vm.max_map_count = 262144
+    ```
+
+1.  Head back to Mastodon Web. Click __Administration > Dashboard__. We should see...
+
+    _"Elasticsearch index mappings are outdated"_
+
+1.  Finally we __Reindex Elasticsearch__
+
+    ```bash
+    docker exec \
+      -it \
+      mastodon-web-1 \
+      /bin/bash
+    bin/tootctl search \
+      deploy --only=instances \
+      accounts tags statuses public_statuses
+    exit
+    ```
+
+1.  At __Administration > Dashboard__: Mastodon complains no more!
 
 # Appendix: Docker Compose for Mastodon
 
