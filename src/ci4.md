@@ -731,7 +731,9 @@ _Can we automate this?_
 
 Yeah someday our NuttX Build Farm shall [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks...
 
-Automatically [__Backtrack the Commits__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh), Compile each Commit and discover the Breaking Commit. [(Like this)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
+Automatically [__Backtrack the Commits__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh), Compile each Commit and discover the Breaking Commit.
+
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
 
 _Any more stories of NuttX CI?_
 

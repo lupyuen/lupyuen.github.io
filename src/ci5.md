@@ -481,6 +481,8 @@ clang: error: invalid argument 'medium' to -mcmodel=
 
 Next Article: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
 
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+
 Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.

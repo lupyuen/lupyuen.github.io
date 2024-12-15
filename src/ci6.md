@@ -356,6 +356,8 @@ Which will call _rewind_commit.sh_ to compile One Single Commit...
 
 [(__upload_log__ uploads to GitLab Snippet or GitHub Gist)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L147-L180)
 
+[(__Simon Filgis__ suggests that we could use _"git bisect"_ to replace the loop that walks through all commits, making it even faster!)](https://lists.apache.org/thread/n882xpo087gdxwfbbszh8lod5mrm1ttr)
+
 </span>
 
 ![Rewind Build Script](https://lupyuen.github.io/images/ci6-title4.jpg)
@@ -437,8 +439,6 @@ Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lu
 - And auto-testing [__Each Commit in QEMU RISC-V__](https://gist.github.com/lupyuen/74c74050683721f1bbbedb21e026ac6f#file-special-qemu-riscv-knsh-log-L1414)
 
 - Yep it's the same idea as Rewinding a Build! Just that we're (slowly) locating a __Runtime Fault__ instead of a (quicker) Compile Error
-
-[(__Simon Filgis__ suggests that we could use _"git bisect"_ to replace the loop that walks through all commits, making it even faster!)](https://lists.apache.org/thread/syvzc64knnbr3zt96dryox5h0o9nq3qc)
 
 _Happy Holidays! Will we have more stories about NuttX CI?_
 

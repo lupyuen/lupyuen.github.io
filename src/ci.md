@@ -379,6 +379,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
 
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+
 According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.html): We should reduce to __15 Concurrent GitHub Runners__  (we're now at 24 concurrent runners). How?
 
 1.  We could review the [__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) and decide which targets should be excluded. Or reprioritised to run earlier / later.
