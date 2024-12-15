@@ -595,19 +595,52 @@ volumes:
 </li>
 </ol>
 <h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>11 Appendix: Create our Mastodon Account</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>Approve Account:
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+<p>Remember that we’ll pretend to be a Regular User <em>(nuttx_build)</em> and post Mastodon Updates? This is how we create the Mastodon User…</p>
+<ol>
+<li>
+<p>Browse to <em>https://YOUR_DOMAIN_NAME.org</em>. Click <strong>“Create Account”</strong> and fill in the info</p>
+<p>TODO: Pics of Register</p>
+</li>
+<li>
+<p>Normally we’ll approve New Accounts at <strong>Moderation &gt; Accounts &gt; Approve</strong></p>
+<p>TODO: Pic of Approve</p>
+<p>But we don’t have an <strong>Outgoing Mail Server</strong> to validate the email address!</p>
+</li>
+<li>
+<p>Instead we do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Approve and Confirm the Email Address
+## From https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+docker exec -it \
+  mastodon-web-1 \
+  /bin/bash
+bin/tootctl accounts \
+  approve nuttx_build
+bin/tootctl accounts \
+  modify nuttx_build \
+  --confirm
+exit</code></pre></div>
+<p>(Change <em>nuttx_build</em> to the new username)</p>
+</li>
+<li>
+<p>FYI for a new <strong>Owner Account</strong>, do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/setup/#admin-cli
 docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts modify nuttx_build --confirm
-
-Ignore SMTP, need to approve manually
-&lt;&lt;
+bin/tootctl accounts \
+  create YOUR_OWNER_USERNAME \
+  --email YOUR_OWNER_EMAIL \
+  --confirmed \
+  --role Owner
+bin/tootctl accounts \
+  approve YOUR_OWNER_NAME
+exit</code></pre></div></li>
+<li>
+<p>That’s why it’s OK to ignore the <strong>Sidekiq Errors</strong> for sending email…</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO
 sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot;:&quot;Job raised exception&quot;,&quot;job&quot;:{&quot;retry&quot;:true,&quot;queue&quot;:&quot;mailers&quot;,&quot;wrapped&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;args&quot;:[{&quot;job_class&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;job_id&quot;:&quot;a7c8ac28-83bd-42b8-a4de-554f533a01f8&quot;,&quot;provider_job_id&quot;:null,&quot;queue_name&quot;:&quot;mailers&quot;,&quot;priority&quot;:null,&quot;arguments&quot;:[&quot;UserMailer&quot;,&quot;password_change&quot;,&quot;deliver_now&quot;,{&quot;args&quot;:[{&quot;_aj_globalid&quot;:&quot;gid://mastodon/User/1&quot;}],&quot;_aj_ruby2_keywords&quot;:[&quot;args&quot;]}],&quot;executions&quot;:0,&quot;exception_executions&quot;:{},&quot;locale&quot;:&quot;en&quot;,&quot;timezone&quot;:&quot;UTC&quot;,&quot;enqueued_at&quot;:&quot;2024-12-09T00:00:54.250576360Z&quot;,&quot;scheduled_at&quot;:null}],&quot;class&quot;:&quot;ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper&quot;,&quot;jid&quot;:&quot;8b52310d0afc7d27b0af3d4b&quot;,&quot;created_at&quot;:1733702454.2507422,&quot;enqueued_at&quot;:1733702694.9922712,&quot;error_message&quot;:&quot;Connection refused - connect(2) for \&quot;localhost\&quot; port 25&quot;,&quot;error_class&quot;:&quot;Errno::ECONNREFUSED&quot;,&quot;failed_at&quot;:1733702454.3886917,&quot;retry_count&quot;:3,&quot;retried_at&quot;:1733702562.7745714}}
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
-sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;
-&gt;&gt;</code></pre></div>
+sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;</code></pre></div></li>
+</ol>
 <p>TODO: mastodon-register1.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="TODO" /></p>
 <p>TODO: mastodon-register2.png</p>
@@ -622,28 +655,11 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/g
 <p><img src="https://lupyuen.github.io/images/mastodon-register6.png" alt="TODO" /></p>
 <p>TODO: mastodon-register7.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="TODO" /></p>
-<div class="example-wrap"><pre class="language-text"><code>Create Account:
-https://docs.joinmastodon.org/admin/setup/#admin-cli
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts create \
-  lupyuen \
-  --email luppy@appkaki.com \
-  --confirmed \
-  --role Owner
-
-Approve Account:
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl accounts approve lupyuen
-
-curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
+<div class="example-wrap"><pre class="language-text"><code>curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
 
 curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
 
 curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
-
-docker-compose.yml
-https://github.com/lupyuen/mastodon/commit/278987886e67fdd8b76d65938f3308071c3cd5c2
 
 Docker Logs:
 https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
