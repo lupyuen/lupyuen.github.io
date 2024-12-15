@@ -347,20 +347,215 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 # Appendix: Install our Mastodon Server
 
+TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macOS / Windows
+
 TODO: Explain each section of compose.yml
 
-```text
-https://gist.github.com/lupyuen/f01da036fd0299abc5c874ace8fd1b22
+1.  Download the __Mastodon Source Code__ and init the Environment Config
 
-git clone https://github.com/mastodon/mastodon --branch v4.3.2
-code mastodon
-echo >mastodon/.env.production
+    ```bash
+    git clone \
+      https://github.com/mastodon/mastodon \
+      --branch v4.3.2
+    cd mastodon
+    echo >.env.production
+    ```
 
-docker-compose.yml
-<<
+1.  Replace __docker-compose.yml__ with our slightly-tweaked version
+
+    ```bash
+    rm docker-compose.yml
+    wget https://raw.githubusercontent.com/lupyuen/mastodon/refs/heads/main/docker-compose.yml
+    ```
+
+    [(See the __Minor Tweaks__)](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+1.  Purge the __Docker Volumes__, if they already exist (see below)
+
+    ```bash
+    docker volume rm postgres-data
+    docker volume rm redis-data
+    docker volume rm es-data
+    docker volume rm lt-data
+    ```
+
+1.  Edit [__docker-compose.yml__](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L58-L67). Set "__web > command__" to "__sleep infinity__"
+
+    ```yaml
+    web:
+      command: sleep infinity
+    ```
+
+    (Why? Because we'll start the Web Container to Configure Mastodon)
+
+1.  Start the __Docker Containers for Mastodon__: Database, Web, Redis (Memory Cache), Streaming (WebSocket), Sidekiq (Batch Jobs), Elasticsearch (Search Engine)
+
+    ```bash
+    ## TODO: Is `sudo` needed?
+    sudo docker compose up
+
+    ## Ignore the Redis, Streaming, Elasticsearch errors
+    ## redis-1: Memory overcommit must be enabled
+    ## streaming-1: connect ECONNREFUSED 127.0.0.1:6379
+    ## es-1: max virtual memory areas vm.max_map_count is too low
+
+    ## Press Ctrl-C to quit the log
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328#file-gistfile1-txt-L226-L789)
+
+1.  __Init the Postgres Database:__ We create the Mastodon User
+
+    ```bash
+    ## From https://docs.joinmastodon.org/admin/install/#creating-a-user
+    docker exec \
+      -it \
+      mastodon-db-1 \
+      /bin/bash
+    exec su-exec \
+      postgres \
+      psql
+    CREATE USER mastodon CREATEDB;
+    \q
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L1-L11)
+
+1.  __Generate the Mastodon Config:__ We connect to Web Container and prep the Mastodon Config
+
+    ```bash
+    ## From https://docs.joinmastodon.org/admin/install/#generating-a-configuration
+    docker exec \
+      -it \
+      mastodon-web-1 \
+      /bin/bash
+    RAILS_ENV=production \
+      bin/rails \
+      mastodon:setup
+    exit
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L11-L95)
+
+1.  Mastodon has __Many Questions__, we answer them
+
+    (Change _nuttx-feed.org_ to Your Domain Name)
+
+    ```yaml
+    Domain name: nuttx-feed.org
+    Enable single user mode?      No
+    Using Docker to run Mastodon? Yes
+
+    PostgreSQL host:     db
+    PostgreSQL port:     5432
+    PostgreSQL database: mastodon_production
+    PostgreSQL user:     mastodon
+    Password of user:    [ blank ]
+
+    Redis host:     redis
+    Redis port:     6379
+    Redis password: [ blank ]
+
+    Store uploaded files on the cloud? No
+    Send e-mails from localhost?       Yes
+    E-mail address: Mastodon <notifications@nuttx-feed.org>
+    Send a test e-mail? No
+
+    Check for important updates? Yes
+    Save configuration?          Yes
+    Save it to .env.production outside Docker:
+    # Generated with mastodon:setup on 2024-12-08 23:40:38 UTC
+    [ TODO: Please Save Mastodon Config! ]
+
+    Prepare the database now?           Yes
+    Create an admin user straight away? Yes
+    Username: [ Your Admin Username ]
+    E-mail:   [ Your Email Address ]
+    Login with the password:
+    [ TODO: Please Save Admin Password! ]
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L11-L95)
+
+1.  Copy the Mastodon Config from above to __`.env.production`__
+
+    ```text
+    # Generated with mastodon:setup on 2024-12-08 23:40:38 UTC
+    LOCAL_DOMAIN=nuttx-feed.org
+    SINGLE_USER_MODE=false
+    SECRET_KEY_BASE=...
+    OTP_SECRET=...
+    ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY=...
+    ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT=...
+    ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY=...
+    VAPID_PRIVATE_KEY=...
+    VAPID_PUBLIC_KEY=...
+    DB_HOST=db
+    DB_PORT=5432
+    DB_NAME=mastodon_production
+    DB_USER=mastodon
+    DB_PASS=
+    REDIS_HOST=redis
+    REDIS_PORT=6379
+    REDIS_PASSWORD=
+    SMTP_SERVER=localhost
+    SMTP_PORT=25
+    SMTP_AUTH_METHOD=none
+    SMTP_OPENSSL_VERIFY_MODE=none
+    SMTP_ENABLE_STARTTLS=auto
+    SMTP_FROM_ADDRESS=Mastodon <notifications@nuttx-feed.org>
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L46-L75)
+
+1.  Edit [__docker-compose.yml__](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L58-L67). Set "__web > command__" to this...
+
+    ```yaml
+    web:
+      command: bundle exec puma -C config/puma.rb
+    ```
+
+    (Why? Because we're done Configuring Mastodon!)
+
+1.  Restart the __Docker Containers__ for Mastodon
+
+    ```bash
+    ## TODO: Is `sudo` needed?
+    sudo docker compose down
+    sudo docker compose up
+    ```
+
+1.  And __Mastodon is Up__!
+
+    ```bash
+    redis-1:     Ready to accept connections tcp
+    db-1:        database system is ready to accept connections
+    streaming-1: request completed
+    web-1:       GET /health
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742)
+
+    (Sidekiq will have errors, we'll explain why)
+
+_Why the tweaks to docker-compose.yml?_
+
+Somehow Rancher Desktop doesn't like to __Mount the Local Filesystem__, failing with a permission error...
+
+```yaml
+services:
   db:
     volumes:
-      -  postgres-data:/var/lib/postgresql/data
+      - ./postgres14:/var/lib/postgresql/data
+```
+
+Thus we __Mount the Docker Volumes__ instead: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+```yaml
+services:
+  db:
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   redis:
     volumes:
@@ -381,49 +576,6 @@ volumes:
   redis-data:
   es-data:
   lt-data:
->>
-
-docker volume rm postgres-data
-docker volume rm redis-data
-docker volume rm es-data
-docker volume rm lt-data
-```
-
-TODO: To Init The Database
-
-```text
-cd mastodon
-set docker-compose.yml to "command: sleep infinity"
-sudo docker compose up # Error response from daemon: error while creating mount source path '/Users/luppy/mastodon/public/system': chown /Users/luppy/mastodon/public/system: permission denied
-docker compose logs -f
-Ctrl-C
-sudo docker compose up # Works OK
-docker compose logs -f
-Ignore Redis and Streaming:
-<<
-redis-1      | 1:C 08 Dec 2024 23:16:32.034 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
-streaming-1  | {"level":"error","time":1733699834202,"pid":1,"hostname":"738ede3870fb","name":"streaming","err":{"type":"Error","message":"connect ECONNREFUSED 127.0.0.1:6379","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)","errno":-111,"code":"ECONNREFUSED","syscall":"connect","address":"127.0.0.1","port":6379},"msg":"Redis Client Error!"}
->>
-
-https://docs.joinmastodon.org/admin/install/#creating-a-user
-docker exec -it mastodon-db-1 /bin/bash
-exec su-exec postgres psql
-CREATE USER mastodon CREATEDB;
-\q
-
-https://docs.joinmastodon.org/admin/install/#generating-a-configuration
-docker exec -it mastodon-web-1 /bin/bash
-RAILS_ENV=production bin/rails mastodon:setup
-exit
-Copy the settings to .env.production
-<<
-# Generated with mastodon:setup on 2024-12-08 23:40:38 UTC
-...
->>
-
-restore docker-compose.yml to "command: bundle exec puma -C config/puma.rb"
-sudo docker compose down
-sudo docker compose up
 ```
 
 # Appendix: Test our Mastodon Server
@@ -714,7 +866,7 @@ User-uploaded files:
 tar cvf mastodon-public-system.tar mastodon/public/system
 ```
 
-# Appendix: Install Elasticsearch
+# Appendix: Enable Elasticsearch for Mastodon
 
 TODO
 
