@@ -664,8 +664,7 @@ sleep 300
 <p>Right now we scramble to identify the <a href="https://github.com/apache/nuttx/issues/14808"><strong>Breaking Commit</strong></a>. And prevent more Broken Commits from piling on.</p>
 <p>Yes NuttX Dashboard will tell us the <a href="https://lupyuen.github.io/articles/ci4#build-score"><strong>Commit Hashes</strong></a> for the <a href="https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard"><strong>Build History</strong></a>. But the Batched Commits aren’t <strong>Temporally Precise</strong>, and we race against time to inspect and recompile each Past Commit.</p>
 <p><em>Can we automate this?</em></p>
-<p>Yeah someday our NuttX Build Farm shall <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>“Rewind The Build”</strong></a> when something breaks…</p>
-<p>Automatically <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>Backtrack the Commits</strong></a>, Compile each Commit and discover the Breaking Commit.</p>
+<p>Yeah someday our NuttX Build Farm shall <strong>“Rewind The Build”</strong> when something breaks. Automatically <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>Backtrack the Commits</strong></a>, Compile each Commit and discover the Breaking Commit…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ci6"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></li>
 </ul>
