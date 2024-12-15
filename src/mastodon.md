@@ -6,13 +6,19 @@
 
 TODO
 
-We’re out for an [__overnight hike__](TODO), city to airport. Our [__Build Farm for Apache NuttX RTOS__](TODO) runs non-stop. Continuously compiling 1,000 NuttX Targets. 
+We’re out for an [__overnight hike__](TODO), city to airport. Our [__Build Farm for Apache NuttX RTOS__](TODO) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](TODO). 
 
-Can we be really sure that NuttX is OK? Without getting spammed by alert emails all night?
-
-(Sorry we got zero budget for _"paging duty"_ services)
+Can we be really sure that NuttX is OK? Without getting spammed by alert emails all night? (Sorry we got zero budget for _"paging duty"_ services)
 
 TODO: Pic of mobile 
+
+TODO: mastodon-mobile3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
+
+TODO: mastodon-mobile4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
 
 in this article we talk about Mastodon 
 
@@ -24,15 +30,11 @@ qoto home
 
 discussion 
 
-# TODO
+NuttX Load: Running Jobs and Cost of GitHub Actions
 
-TODO: mastodon-grafana.png
+# Mastodon for NuttX CI
 
-![TODO](https://lupyuen.github.io/images/mastodon-grafana.png)
-
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
+TODO
 
 TODO: mastodon-mobile1.png
 
@@ -49,6 +51,16 @@ TODO: mastodon-mobile3.png
 TODO: mastodon-mobile4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
+
+# TODO
+
+TODO: mastodon-grafana.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-grafana.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
 
 TODO: mastodon-prometheus.png
 
