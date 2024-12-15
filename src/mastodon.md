@@ -410,7 +410,7 @@ TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macO
 
     ```bash
     ## From https://docs.joinmastodon.org/admin/install/#creating-a-user
-    docker exec \
+    sudo docker exec \
       -it \
       mastodon-db-1 \
       /bin/bash
@@ -427,7 +427,7 @@ TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macO
 
     ```bash
     ## From https://docs.joinmastodon.org/admin/install/#generating-a-configuration
-    docker exec \
+    sudo docker exec \
       -it \
       mastodon-web-1 \
       /bin/bash
@@ -641,7 +641,8 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
     ```bash
     ## Approve and Confirm the Email Address
     ## From https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-    docker exec -it \
+    sudo docker exec \
+      -it \
       mastodon-web-1 \
       /bin/bash
     bin/tootctl accounts \
@@ -658,7 +659,10 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
 
     ```bash
     ## From https://docs.joinmastodon.org/admin/setup/#admin-cli
-    docker exec -it mastodon-web-1 /bin/bash
+    sudo docker exec \
+      -it \
+      mastodon-web-1 \
+      /bin/bash
     bin/tootctl accounts \
       create YOUR_OWNER_USERNAME \
       --email YOUR_OWNER_EMAIL \
@@ -886,7 +890,7 @@ TODO
 ```bash
 ## From https://docs.joinmastodon.org/admin/backups/
 ## Backup Postgres Database (and check for sensible data)
-docker exec \
+sudo docker exec \
   -it \
   mastodon-db-1 \
   /bin/bash -c \
@@ -895,7 +899,7 @@ docker exec \
 head -50 mastodon.sql
 
 ## Backup Redis (and check for sensible data)
-docker cp \
+sudo docker cp \
   mastodon-redis-1:/data/dump.rdb \
   .
 strings dump.rdb \
@@ -949,8 +953,8 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 1.  Restart the Docker Containers
 
     ```bash
-    docker compose down
-    docker compose up
+    sudo docker compose down
+    sudo docker compose up
     ```
 
 1.  We'll see...
@@ -975,7 +979,7 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 
     ```bash
     ## Print the Max Virtual Memory Areas
-    $ docker exec \
+    $ sudo docker exec \
       -it \
       mastodon-es-1 \
       /bin/bash -c \
@@ -991,7 +995,7 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 1.  Finally we __Reindex Elasticsearch__
 
     ```bash
-    docker exec \
+    sudo docker exec \
       -it \
       mastodon-web-1 \
       /bin/bash
@@ -1239,40 +1243,53 @@ There's a simpler way
 
 TODO: Not recommended for internet hosting!
 
-```text
-Previously:
+```bash
 git clone https://github.com/mastodon/mastodon --branch v4.3.2
-code mastodon
-
-.devcontainer/compose.yaml:
-<<
-    ports:
-      - '127.0.0.1:3001:3000'
->>
-
-.env.development
-<<
-LOCAL_DOMAIN=nuttx-feed.org
->>
-
 cd mastodon
-docker compose -f .devcontainer/compose.yaml up -d
-docker compose -f .devcontainer/compose.yaml exec app bin/setup
-docker compose -f .devcontainer/compose.yaml exec app bin/dev
-http://localhost:3001/home
-docker compose -f .devcontainer/compose.yaml down
+sudo docker compose -f .devcontainer/compose.yaml up -d
+sudo docker compose -f .devcontainer/compose.yaml exec app bin/setup
+sudo docker compose -f .devcontainer/compose.yaml exec app bin/dev
 
-https://docs.joinmastodon.org/admin/setup/#admin-cli
-docker exec -it devcontainer-app-1 /bin/bash
+## Browse to Mastodon Web at http://localhost:3000
+
+## TODO: Default Admin ID
+
+## From https://docs.joinmastodon.org/admin/setup/#admin-cli
+## And https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+sudo docker exec \
+  -it \
+  devcontainer-app-1 \
+  /bin/bash
 bin/tootctl accounts create \
-  lupyuen \
-  --email luppy@appkaki.com \
+  YOUR_OWNER_USERNAME \
+  --email YOUR_OWNER_EMAIL \
   --confirmed \
   --role Owner
+bin/tootctl accounts \
+  approve YOUR_OWNER_USERNAME
+exit
 
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-bin/tootctl accounts approve lupyuen
+## Reindex Elasticsearch
+sudo docker exec \
+  -it \
+  devcontainer-app-1 \
+  /bin/bash
+bin/tootctl search \
+  deploy --only=tags
+exit
+```
 
-docker exec -it devcontainer-app-1 /bin/bash
-bin/tootctl search deploy --only=tags
+Optional: 
+
+.devcontainer/compose.yaml:
+
+```yaml
+    ports:
+      - '127.0.0.1:3001:3000'
+```
+
+.env.development:
+
+```bash
+LOCAL_DOMAIN=nuttx-feed.org
 ```
