@@ -770,15 +770,17 @@ TODO
 
 1.  To test our Access Token...
 
-    TODO: Yep looks hunky dory!
-
     ```bash
     $ export ACCESS_TOKEN=[ From Above ]
     $ curl \
       -H "Authorization: Bearer $ACCESS_TOKEN" \
       https://YOUR_DOMAIN_NAME.org/api/v1/accounts/verify_credentials
+    ```
 
-    "username": "nuttx_build",
+1.  We'll see...
+
+    ```json
+    {"username": "nuttx_build",
     "acct": "nuttx_build",
     "display_name": "NuttX Build",
     "locked": false,
@@ -788,6 +790,8 @@ TODO
     ...
     ```
 
+    Yep looks hunky dory!
+
 TODO: mastodon-register5.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
@@ -795,47 +799,6 @@ TODO: mastodon-register5.png
 TODO: mastodon-register6.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-register6.png)
-
-TODO: mastodon-register7.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
-
-```text
-curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
-
-curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
-
-curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
-
-Docker Logs:
-https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
-https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
-https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
-https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
-https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
-https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
-
-```
-
-TODO: mastodon-web1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
-
-TODO: mastodon-web2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
-
-TODO: mastodon-web3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
-
-TODO: mastodon-web4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
-
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
 
 # Appendix: Create a Mastodon Post
 
@@ -877,6 +840,34 @@ curl -X POST \
 https://github.com/h3poteto/megalodon-rs
 
 Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs
+```
+
+TODO: mastodon-web4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+TODO: mastodon-register7.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
+
+```text
+curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
+
+curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen/113619922496625622 | jq
+
+curl https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:lupyuen@nuttx-feed.org | jq
+
+Docker Logs:
+https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
+https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
+https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
+https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
+https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
+https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 ```
 
 # Appendix: Backup our Mastodon Server
