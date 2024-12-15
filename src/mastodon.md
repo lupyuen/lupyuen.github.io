@@ -52,6 +52,20 @@ TODO: mastodon-mobile4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
 
+# Install our Mastodon Server
+
+TODO: SSL / Hosting Provider
+
+We use port 3001 because 3000 is already used by Grafana
+
+# Test our Mastodon Server
+
+TODO: Working without email
+
+# Push NuttX Builds to Mastodon
+
+TODO: Prometheus to Mastodon
+
 # TODO
 
 TODO: mastodon-grafana.png
