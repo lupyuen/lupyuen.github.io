@@ -660,7 +660,7 @@ curl -X POST \
   -F &#39;redirect_uris=urn:ietf:wg:oauth:2.0:oob&#39; \
   -F &#39;scopes=read write push&#39; \
   -F &#39;website=https://nuttx-dashboard.org&#39; \
-  https://nuttx-feed.org/api/v1/apps</code></pre></div></li>
+  https://YOUR_DOMAIN_NAME.org/api/v1/apps</code></pre></div></li>
 <li>
 <p>We’ll see the <strong>Client ID</strong> and <strong>Client Secret</strong>. Please save them and keep them secret! (Change <em>nuttx-dashboard</em> to your App Name)</p>
 <div class="example-wrap"><pre class="language-json"><code>{&quot;id&quot;:&quot;3&quot;,
@@ -674,11 +674,12 @@ curl -X POST \
 &quot;client_secret&quot;:&quot;...&quot;,
 &quot;client_secret_expires_at&quot;:0}</code></pre></div></li>
 <li>
-<p>Open a Web Browser. Log in as Your New User <em>(nuttx_build)</em></p>
+<p>Open a Web Browser. Browse to <em>https://YOUR_DOMAIN_NAME.org</em></p>
+<p>Log in as Your New User <em>(nuttx_build)</em></p>
 </li>
 <li>
-<p>Paste this URL into the Same Web Browser (change <em>nuttx-feed</em>)</p>
-<div class="example-wrap"><pre class="language-text"><code>https://nuttx-feed.org/oauth/authorize
+<p>Paste this URL into the Same Web Browser</p>
+<div class="example-wrap"><pre class="language-text"><code>https://YOUR_DOMAIN_NAME.org/oauth/authorize
   ?client_id=YOUR_CLIENT_ID
   &amp;scope=read+write+push
   &amp;redirect_uri=urn:ietf:wg:oauth:2.0:oob
@@ -689,7 +690,7 @@ curl -X POST \
 <p>Copy the <strong>Authorization Code</strong>. (It will expire soon!)</p>
 </li>
 <li>
-<p>We transform the Authorization Code into an <strong>Access Token</strong>  (change <em>nuttx-feed</em>)</p>
+<p>We transform the Authorization Code into an <strong>Access Token</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/client/authorized/#token
 export CLIENT_ID=[ From Above ]
 export CLIENT_SECRET=[ From Above ]
@@ -701,9 +702,9 @@ curl -X POST \
   -F &quot;grant_type=authorization_code&quot; \
   -F &quot;code=$AUTH_CODE&quot; \
   -F &quot;scope=read write push&quot; \
-  https://nuttx-feed.org/oauth/token</code></pre></div></li>
+  https://YOUR_DOMAIN_NAME.org/oauth/token</code></pre></div></li>
 <li>
-<p>We’ll see the <strong>Access Token</strong>. Please save it and secret!</p>
+<p>We’ll see the <strong>Access Token</strong>. Please save it and keep secret!</p>
 <div class="example-wrap"><pre class="language-json"><code>{&quot;access_token&quot;:&quot;...&quot;,
 &quot;token_type&quot;:&quot;Bearer&quot;,
 &quot;scope&quot;:&quot;read write push&quot;,
@@ -713,8 +714,8 @@ curl -X POST \
 <p>TODO: Yep looks hunky dory!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ export ACCESS_TOKEN=[ From Above ]
 $ curl \
-    -H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
-    https://nuttx-feed.org/api/v1/accounts/verify_credentials
+  -H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+  https://YOUR_DOMAIN_NAME.org/api/v1/accounts/verify_credentials
 
 &quot;username&quot;: &quot;nuttx_build&quot;,
 &quot;acct&quot;: &quot;nuttx_build&quot;,
@@ -762,7 +763,7 @@ https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 curl -X POST \
 	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
 	-F &quot;status=Posting a status from curl&quot; \
-	https://nuttx-feed.org/api/v1/statuses
+	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
 
 {&quot;id&quot;:&quot;113637285862132341&quot;,
 &quot;created_at&quot;:&quot;2024-12-12T01:36:14.606Z&quot;,
