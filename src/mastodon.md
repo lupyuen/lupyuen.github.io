@@ -22,16 +22,6 @@ TODO: mastodon-mobile4.png
 
 in this article we talk about Mastodon 
 
-moderation 
-
-fediverse
-
-qoto home
-
-discussion 
-
-NuttX Load: Running Jobs and Cost of GitHub Actions
-
 # Mastodon for NuttX CI
 
 TODO
@@ -54,6 +44,8 @@ TODO: mastodon-mobile4.png
 
 # Install our Mastodon Server
 
+TODO: Straightforwrd, thanks to the excellent Mastodon Docs
+
 TODO: SSL / Hosting Provider
 
 We use port 3001 because 3000 is already used by Grafana
@@ -69,6 +61,8 @@ Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
 curl https://nuttx-feed.org/api/v1/timelines/public | jq
 ```
 
+TODO: Federation
+
 # Post NuttX Builds to Mastodon
 
 TODO: Prometheus to Mastodon
@@ -76,6 +70,22 @@ TODO: Prometheus to Mastodon
 TODO: [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
 TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
+
+# TODO
+
+Need moderation?
+
+discussion only
+
+fediverse
+
+Register on qoto home
+
+NuttX Load: Running Jobs and Cost of GitHub Actions
+
+Alert for long-running jobs
+
+Monitor sync-build-ingest
 
 # What's Next
 
