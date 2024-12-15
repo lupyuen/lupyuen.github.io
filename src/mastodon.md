@@ -746,9 +746,9 @@ TODO
 
     ```bash
     ## From https://docs.joinmastodon.org/client/authorized/#token
-    export CLIENT_ID=[ From Above ]
-    export CLIENT_SECRET=[ From Above ]
-    export AUTH_CODE=[ From Above ]
+    export CLIENT_ID=...     ## From Above
+    export CLIENT_SECRET=... ## From Above
+    export AUTH_CODE=...     ## From Above
     curl -X POST \
       -F "client_id=$CLIENT_ID" \
       -F "client_secret=$CLIENT_SECRET" \
@@ -771,7 +771,7 @@ TODO
 1.  To test our Access Token...
 
     ```bash
-    export ACCESS_TOKEN=[ From Above ]
+    export ACCESS_TOKEN=...  ## From Above
     curl \
       -H "Authorization: Bearer $ACCESS_TOKEN" \
       https://YOUR_DOMAIN_NAME.org/api/v1/accounts/verify_credentials
@@ -804,9 +804,9 @@ TODO: mastodon-register6.png
 
 Our Regular Mastondon User is up! Let's post something as the user...
 
-```text
+```bash
 ## Create Status: https://docs.joinmastodon.org/methods/statuses/#create
-export ACCESS_TOKEN=[ From Above ]
+export ACCESS_TOKEN=...  ## From Above
 curl -X POST \
 	-H "Authorization: Bearer $ACCESS_TOKEN" \
 	-F "status=Posting a status from curl" \
@@ -817,24 +817,38 @@ And our __Mastodon Post__ appears!
 
 ![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
 
-```bash
-## Install `jq` for easier JSON Browsing
-brew install jq      ## For macOS
-sudo apt install jq  ## For Ubuntu
+__ActivityPub__ is the Main API for Mastodon and Fediverse. Let's make sure that it works on our server...
 
-curl \
+```bash
+## Install `jq` for Browsing JSON
+$ brew install jq      ## For macOS
+$ sudo apt install jq  ## For Ubuntu
+
+## Fetch the TODO Activity Feed for nuttx_build at nuttx-feed.org
+$ curl \
   -H 'Accept: application/activity+json' \
   https://nuttx-feed.org/@nuttx_build \
   | jq
 
-curl -H 'Accept: application/activity+json' \
+{ ... TODO ... }
+
+## Fetch the above Activity (Post)
+$ curl -H \
+  'Accept: application/activity+json' \
   https://nuttx-feed.org/@nuttx_build/TODO \
   | jq
 
-curl \
+{ ... TODO ... }
+
+## Fetch the User nuttx_build at nuttx-feed.org
+$ curl \
   https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
   | jq
+
+{ ... ""acct:nuttx_build@nuttx-feed.org" ... }
 ```
+
+__WebFinger__ is particularly important, it locates Users within the Fediverse. It should always work!
 
 TODO
 
