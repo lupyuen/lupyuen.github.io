@@ -479,6 +479,7 @@ E-mail:   [ Your Email Address ]
 Login with the password:
 [ TODO: Please Save Admin Password! ]</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L11-L95">(See the <strong>Complete Log</strong>)</a></p>
+<p>(No Email Server? Read on for our workaround)</p>
 </li>
 <li>
 <p>Copy the Mastodon Config from above to <strong><code>.env.production</code></strong></p>
@@ -567,24 +568,35 @@ volumes:
 <p>Talk to our <strong>Web Hosting Provider</strong> (or Tunnel Provider).</p>
 <p>Channel all Incoming Requests for <em>https://nuttx-feed.org</em></p>
 <p>To <em>http://YOUR_DOCKER_MACHINE:3001</em></p>
+<p>(<strong>HTTPS Port 443</strong> connects to <strong>HTTP Port 3001</strong> via Reverse Proxy)</p>
+<p>(For CloudFlare Tunnel: Set <strong>Security &gt; Settings &gt; High</strong>)</p>
 <p>(Change <em>nuttx-feed.org</em> to Your Domain Name)</p>
 </li>
 <li>
 <p>Browse to <em>https://nuttx-feed.org</em>. <strong>Mastodon is Up!</strong></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web5.png" alt="TODO" /></p>
 </li>
+<li>
+<p>Log in with the <strong>Admin User and Password</strong></p>
+<p>(From previous section)</p>
+</li>
+<li>
+<p>Browse to <strong>Administration &gt; Settings</strong> and fill in…</p>
+<ul>
+<li><strong>Branding</strong></li>
+<li><strong>About</strong></li>
+<li><strong>Registrations &gt; Who Can Sign Up <br> &gt; Approval Required &gt; Require A Reason</strong></li>
+</ul>
+</li>
+<li>
+<p>Normally we’ll approve New Accounts at <strong>Moderation &gt; Accounts &gt; Approve</strong></p>
+<p>But we don’t have an <strong>Outgoing Mail Server</strong> to validate the email address!</p>
+<p>Let’s work around this…</p>
+</li>
 </ol>
+<h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>11 Appendix: Create our Mastodon Account</h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>https://nuttx-feed.org/home
-
-Administration &gt; Settings
-  &gt; Branding
-  &gt; About
-  &gt; Registrations &gt; Who can sign up &gt; Approval Required for Sign up &gt; Require a Reason to Join
-
-Moderation &gt; Accounts &gt; Approve
-
-Approve Account:
+<div class="example-wrap"><pre class="language-bash"><code>Approve Account:
 https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
 docker exec -it mastodon-web-1 /bin/bash
 bin/tootctl accounts modify nuttx_build --confirm
@@ -596,18 +608,6 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;
 &gt;&gt;</code></pre></div>
-<p>TODO: mastodon-web1.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web1.png" alt="TODO" /></p>
-<p>TODO: mastodon-web2.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web2.png" alt="TODO" /></p>
-<p>TODO: mastodon-web3.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web3.png" alt="TODO" /></p>
-<p>TODO: mastodon-web4.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
-<p>TODO: mastodon-log.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
-<h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>11 Appendix: Create our Mastodon Account</h1>
-<p>TODO</p>
 <p>TODO: mastodon-register1.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="TODO" /></p>
 <p>TODO: mastodon-register2.png</p>
@@ -652,8 +652,18 @@ https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
 https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
 https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
 https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
-
-CloudFlare: Security &gt; Settings &gt; High</code></pre></div><h1 id="appendix-create-our-mastodon-app"><a class="doc-anchor" href="#appendix-create-our-mastodon-app">§</a>12 Appendix: Create our Mastodon App</h1>
+</code></pre></div>
+<p>TODO: mastodon-web1.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web1.png" alt="TODO" /></p>
+<p>TODO: mastodon-web2.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web2.png" alt="TODO" /></p>
+<p>TODO: mastodon-web3.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web3.png" alt="TODO" /></p>
+<p>TODO: mastodon-web4.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
+<p>TODO: mastodon-log.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
+<h1 id="appendix-create-our-mastodon-app"><a class="doc-anchor" href="#appendix-create-our-mastodon-app">§</a>12 Appendix: Create our Mastodon App</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Create Our App: https://docs.joinmastodon.org/client/token/#app
 curl -X POST \
