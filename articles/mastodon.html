@@ -378,7 +378,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 }</code></pre></div>
 <h1 id="appendix-install-our-mastodon-server"><a class="doc-anchor" href="#appendix-install-our-mastodon-server">§</a>9 Appendix: Install our Mastodon Server</h1>
 <p>TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macOS / Windows</p>
-<p>TODO: Explain each section of compose.yml</p>
+<p><a href="TODO">(<strong>docker-compose.yml</strong> is explained here)</a></p>
 <ol>
 <li>
 <p>Download the <strong>Mastodon Source Code</strong> and init the Environment Config</p>
@@ -812,30 +812,48 @@ tar cvf \
 <p>TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM</p>
 <p>Might be a little different for macOS Rancher Desktop</p>
 <h1 id="appendix-enable-elasticsearch-for-mastodon"><a class="doc-anchor" href="#appendix-enable-elasticsearch-for-mastodon">§</a>15 Appendix: Enable Elasticsearch for Mastodon</h1>
-<p>TODO: Administration &gt; Dashboard</p>
-<p>“Could not connect to Elasticsearch. Please check that it is running, or disable full-text search”</p>
-<p>Enable Elasticsearch:</p>
-<p>https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347</p>
-<p>.env.production</p>
+<p>Enabling <strong>Elasticsearch</strong> for macOS Rancher Desktop is a little tricky. That’s why we saved it for last.</p>
+<ol>
+<li>
+<p>In Mastodon Web: Head over to <strong>Administration &gt; Dashboard</strong>. It should say…</p>
+<p><em>“Could not connect to Elasticsearch. Please check that it is running, or disable full-text search”</em></p>
+</li>
+<li>
+<p>To Enable Elasticsearch: Edit <strong><code>.env.production</code></strong> and add these lines…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ES_ENABLED=true
 ES_HOST=es
-ES_PORT=9200</code></pre></div>
-<p>docker-compose.yml: Uncomment section for es</p>
+ES_PORT=9200</code></pre></div></li>
+<li>
+<p>Edit <a href="TODO"><strong>docker-compose.yml</strong></a>.</p>
+<p>Uncomment the Section for <strong>“<code>es</code>”</strong></p>
+<p>Map the Docker Volume <strong>es-data</strong> for Elasticsearch</p>
+<p>Web Container should depend on <strong>“<code>es</code>”</strong></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  es:
     volumes:
-       - es-data:/usr/share/elasticsearch/data
+      - es-data:/usr/share/elasticsearch/data
   web:
     depends_on:
       - db
       - redis
-      - es</code></pre></div>
-<p>TODO</p>
+      - es</code></pre></div></li>
+<li>
+<p>Restart the Docker Containers</p>
 <div class="example-wrap"><pre class="language-bash"><code>docker compose down
-docker compose up</code></pre></div>
-<p>“es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]”</p>
-<p>Increase max_map_count:</p>
-<p>https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/</p>
+docker compose up</code></pre></div></li>
+<li>
+<p>We’ll see…</p>
+<p><em>“es-1: bootstrap check failure: max virtual memory areas vm.max_map_count 65530 is too low, increase to at least 262144”</em></p>
+</li>
+<li>
+<p>Here comes the tricky part: <strong>max_map_count</strong> is configured here!</p>
+<div class="example-wrap"><pre class="language-text"><code>~/Library/Application\ Support/rancher-desktop/lima/_config/override.yaml</code></pre></div>
+<p><a href="https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/"><strong>Follow the Instructions</strong></a> and set…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sysctl -w vm.max_map_count=262144</code></pre></div></li>
+<li>
 <p>Restart Docker Desktop</p>
+</li>
+<li>
+<p>Verify that <strong>max_map_count</strong> has increased</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Print the Max Virtual Memory Areas
 $ docker exec \
   -it \
@@ -843,9 +861,13 @@ $ docker exec \
   /bin/bash -c \
   &quot;sysctl vm.max_map_count&quot;
 
-vm.max_map_count = 262144</code></pre></div>
-<p>TODO: Administration &gt; Dashboard</p>
-<p>“Elasticsearch index mappings are outdated”</p>
+vm.max_map_count = 262144</code></pre></div></li>
+<li>
+<p>Head back to Mastodon Web. Click <strong>Administration &gt; Dashboard</strong>. We should see…</p>
+<p><em>“Elasticsearch index mappings are outdated”</em></p>
+</li>
+<li>
+<p>Finally we <strong>Reindex Elasticsearch</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>docker exec \
   -it \
   mastodon-web-1 \
@@ -853,7 +875,12 @@ vm.max_map_count = 262144</code></pre></div>
 bin/tootctl search \
   deploy --only=instances \
   accounts tags statuses public_statuses
-exit</code></pre></div><h1 id="appendix-docker-compose-for-mastodon"><a class="doc-anchor" href="#appendix-docker-compose-for-mastodon">§</a>16 Appendix: Docker Compose for Mastodon</h1>
+exit</code></pre></div></li>
+<li>
+<p>At <strong>Administration &gt; Dashboard</strong>: Mastodon complains no more!</p>
+</li>
+</ol>
+<h1 id="appendix-docker-compose-for-mastodon"><a class="doc-anchor" href="#appendix-docker-compose-for-mastodon">§</a>16 Appendix: Docker Compose for Mastodon</h1>
 <p><em>What’s this Docker Compose? Why use it for Mastodon?</em></p>
 <p>TODO: Minor Tweaks</p>
 <p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">(See the <strong>Minor Tweaks</strong>)</a></p>
