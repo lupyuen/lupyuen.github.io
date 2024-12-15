@@ -421,7 +421,7 @@ sudo docker compose up
 <li>
 <p><strong>Init the Postgres Database:</strong> We create the Mastodon User</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/install/#creating-a-user
-docker exec \
+sudo docker exec \
   -it \
   mastodon-db-1 \
   /bin/bash
@@ -435,7 +435,7 @@ CREATE USER mastodon CREATEDB;
 <li>
 <p><strong>Generate the Mastodon Config:</strong> We connect to Web Container and prep the Mastodon Config</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/install/#generating-a-configuration
-docker exec \
+sudo docker exec \
   -it \
   mastodon-web-1 \
   /bin/bash
@@ -611,7 +611,8 @@ volumes:
 <p>Instead we do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Approve and Confirm the Email Address
 ## From https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-docker exec -it \
+sudo docker exec \
+  -it \
   mastodon-web-1 \
   /bin/bash
 bin/tootctl accounts \
@@ -625,7 +626,10 @@ exit</code></pre></div>
 <li>
 <p>FYI for a new <strong>Owner Account</strong>, do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/setup/#admin-cli
-docker exec -it mastodon-web-1 /bin/bash
+sudo docker exec \
+  -it \
+  mastodon-web-1 \
+  /bin/bash
 bin/tootctl accounts \
   create YOUR_OWNER_USERNAME \
   --email YOUR_OWNER_EMAIL \
@@ -790,7 +794,7 @@ https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f</code></pre></d
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/backups/
 ## Backup Postgres Database (and check for sensible data)
-docker exec \
+sudo docker exec \
   -it \
   mastodon-db-1 \
   /bin/bash -c \
@@ -799,7 +803,7 @@ docker exec \
 head -50 mastodon.sql
 
 ## Backup Redis (and check for sensible data)
-docker cp \
+sudo docker cp \
   mastodon-redis-1:/data/dump.rdb \
   .
 strings dump.rdb \
@@ -838,8 +842,8 @@ ES_PORT=9200</code></pre></div></li>
       - es</code></pre></div></li>
 <li>
 <p>Restart the Docker Containers</p>
-<div class="example-wrap"><pre class="language-bash"><code>docker compose down
-docker compose up</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker compose down
+sudo docker compose up</code></pre></div></li>
 <li>
 <p>We’ll see…</p>
 <p><em>“es-1: bootstrap check failure: max virtual memory areas vm.max_map_count 65530 is too low, increase to at least 262144”</em></p>
@@ -855,7 +859,7 @@ docker compose up</code></pre></div></li>
 <li>
 <p>Verify that <strong>max_map_count</strong> has increased</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Print the Max Virtual Memory Areas
-$ docker exec \
+$ sudo docker exec \
   -it \
   mastodon-es-1 \
   /bin/bash -c \
@@ -868,7 +872,7 @@ vm.max_map_count = 262144</code></pre></div></li>
 </li>
 <li>
 <p>Finally we <strong>Reindex Elasticsearch</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>docker exec \
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker exec \
   -it \
   mastodon-web-1 \
   /bin/bash
@@ -1063,41 +1067,45 @@ networks:
 <p><em>Phew that looks might complicated!</em></p>
 <p>There’s a simpler way</p>
 <p>TODO: Not recommended for internet hosting!</p>
-<div class="example-wrap"><pre class="language-text"><code>Previously:
-git clone https://github.com/mastodon/mastodon --branch v4.3.2
-code mastodon
-
-.devcontainer/compose.yaml:
-&lt;&lt;
-    ports:
-      - &#39;127.0.0.1:3001:3000&#39;
-&gt;&gt;
-
-.env.development
-&lt;&lt;
-LOCAL_DOMAIN=nuttx-feed.org
-&gt;&gt;
-
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/mastodon/mastodon --branch v4.3.2
 cd mastodon
-docker compose -f .devcontainer/compose.yaml up -d
-docker compose -f .devcontainer/compose.yaml exec app bin/setup
-docker compose -f .devcontainer/compose.yaml exec app bin/dev
-http://localhost:3001/home
-docker compose -f .devcontainer/compose.yaml down
+sudo docker compose -f .devcontainer/compose.yaml up -d
+sudo docker compose -f .devcontainer/compose.yaml exec app bin/setup
+sudo docker compose -f .devcontainer/compose.yaml exec app bin/dev
 
-https://docs.joinmastodon.org/admin/setup/#admin-cli
-docker exec -it devcontainer-app-1 /bin/bash
+## Browse to Mastodon Web at http://localhost:3000
+
+## TODO: Default Admin ID
+
+## From https://docs.joinmastodon.org/admin/setup/#admin-cli
+## And https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+sudo docker exec \
+  -it \
+  devcontainer-app-1 \
+  /bin/bash
 bin/tootctl accounts create \
-  lupyuen \
-  --email luppy@appkaki.com \
+  YOUR_OWNER_USERNAME \
+  --email YOUR_OWNER_EMAIL \
   --confirmed \
   --role Owner
+bin/tootctl accounts \
+  approve YOUR_OWNER_USERNAME
+exit
 
-https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
-bin/tootctl accounts approve lupyuen
-
-docker exec -it devcontainer-app-1 /bin/bash
-bin/tootctl search deploy --only=tags</code></pre></div>
+## Reindex Elasticsearch
+sudo docker exec \
+  -it \
+  devcontainer-app-1 \
+  /bin/bash
+bin/tootctl search \
+  deploy --only=tags
+exit</code></pre></div>
+<p>Optional:</p>
+<p>.devcontainer/compose.yaml:</p>
+<div class="example-wrap"><pre class="language-yaml"><code>    ports:
+      - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
+<p>.env.development:</p>
+<div class="example-wrap"><pre class="language-bash"><code>LOCAL_DOMAIN=nuttx-feed.org</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
