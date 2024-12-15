@@ -936,7 +936,239 @@ docker exec -it mastodon-web-1 /bin/bash
 bin/tootctl search deploy --only=instances accounts tags statuses public_statuses
 ```
 
-# Appendix: Simplest Server for Mastodon
+# Appendix: Docker Compose for Mastodon
+
+_What's this Docker Compose? Why use it for Mastodon?_
+
+TODO: Minor Tweaks
+
+[(See the __Minor Tweaks__)](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+## Database Server
+
+[__PostgreSQL__](TODO) is our Database Server for Mastodon: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+services:
+  db:
+    restart: always
+    image: postgres:14-alpine
+    shm_size: 256mb
+
+    ## Map the Docker Volume "postgres-data"
+    ## because macOS Rancher Desktop won't work correctly with a Local Filesystem
+    volumes:
+      -  postgres-data:/var/lib/postgresql/data
+    
+    ## Allow auto-login by all connections from localhost
+    environment:
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+
+    ## Database Server is not exposed outside Docker
+    networks:
+      - internal_network
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+```
+
+Note the last line for _POSTGRES_HOST_AUTH_METHOD_. It says that our Database Server will allow auto-login by __all connections from localhost__. Even without PostgreSQL Password!
+
+This is probably OK for us, since our Database Server runs in its own Docker Container.
+
+We map the __Docker Volume__ _postgres-data_, because macOS Rancher Desktop won't work correctly with a Local Filesystem like _./postgres14_.
+
+## Web Server 
+
+Powered by Ruby-on-Rails, __Puma__ is our Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+  web:
+    ## You can uncomment the following line if you want to not use the prebuilt image, for example if you have local code changes
+    ## build: .
+    image: ghcr.io/mastodon/mastodon:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Puma Web Server
+    command: bundle exec puma -C config/puma.rb
+    ## When Configuring Mastodon: Change to...
+    ## command: sleep infinity
+
+    ## HTTP Port 3000 should always return OK
+    healthcheck:
+      # prettier-ignore
+      test: ['CMD-SHELL',"curl -s --noproxy localhost localhost:3000/health | grep -q 'OK' || exit 1"]
+
+    ## Mastodon will appear outside Docker at HTTP Port 3001
+    ## because Port 3000 is already taken by Grafana
+    ports:
+      - '127.0.0.1:3001:3000'
+    networks:
+      - external_network
+      - internal_network
+    depends_on:
+      - db
+      - redis
+      - es
+    volumes:
+      - ./public/system:/mastodon/public/system
+```
+
+Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+## Redis Server
+
+Web Server fetching data directly from Database Server will be awfully slow. That's why we use Redis as an __In-Memory Caching Database__: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+  redis:
+    restart: always
+    image: redis:7-alpine
+
+    ## Map the Docker Volume "redis-data"
+    ## because macOS Rancher Desktop won't work correctly with a Local Filesystem
+    volumes:
+      - redis-data:/data
+
+    ## Redis Server is not exposed outside Docker
+    networks:
+      - internal_network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+```
+
+## Sidekiq Server
+
+Remember that Emails that Mastodon will send upon User Registration? Mastodon does this with __Sidekiq__ for running Background Batch Jobs, so it won't hold up the Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+  sidekiq:
+    build: .
+    image: ghcr.io/mastodon/mastodon:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Sidekiq Batch Job Server
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+    ## Sidekiq Server is exposed outside Docker
+    ## for Outgoing Connections, to deliver emails
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+```
+
+## Streaming Server
+
+__Optional:__ Mastodon (and Fediverse) uses [__ActivityPub__](TODO) for exchanging lots of info about Users and Posts. Our Web Server supports the __HTTP Rest API__, but there's a more efficient way: __WebSocket API__.
+
+WebSocket is __totally optional__, Mastodon works fine without it, probably a little less efficient: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+  streaming:
+    ## You can uncomment the following lines if you want to not use the prebuilt image, for example if you have local code changes
+    ## build:
+    ##   dockerfile: ./streaming/Dockerfile
+    ##   context: .
+    image: ghcr.io/mastodon/mastodon-streaming:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Streaming Server (Node.js!)
+    command: node ./streaming/index.js
+    depends_on:
+      - db
+      - redis
+
+    ## WebSocket will listen on HTTP Port 4000
+    ## for Incoming Connections (totally optional!)
+    ports:
+      - '127.0.0.1:4000:4000'
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      # prettier-ignore
+      test: ['CMD-SHELL', "curl -s --noproxy localhost localhost:4000/api/v1/streaming/health | grep -q 'OK' || exit 1"]
+```
+
+## Elasticsearch Server
+
+__Optional:__ Elasticsearch is for __Full-Text Search__. Also totally optional, unless we require Full-Text Search for Users and Posts: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+  es:
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true"
+      - "xpack.license.self_generated.type=basic"
+      - "xpack.security.enabled=false"
+      - "xpack.watcher.enabled=false"
+      - "xpack.graph.enabled=false"
+      - "xpack.ml.enabled=false"
+      - "bootstrap.memory_lock=true"
+      - "cluster.name=es-mastodon"
+      - "discovery.type=single-node"
+      - "thread_pool.write.queue_size=1000"
+
+    ## Elasticsearch is exposed externally at HTTP Port 9200. (Why?)
+    ports:
+      - '127.0.0.1:9200:9200'
+    networks:
+       - external_network
+       - internal_network
+    healthcheck:
+       test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+
+    ## Map the Docker Volume "es-data"
+    ## because macOS Rancher Desktop won't work correctly with a Local Filesystem
+    volumes:
+       - es-data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+```
+
+## Volumes and Networks
+
+Finally we declare the __Volumes and Networks__ used by our Docker Containers: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+
+```yaml
+volumes:
+  postgres-data:
+  redis-data:
+  es-data:
+  lt-data:
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
+```
+
+## Simplest Server for Mastodon
+
+_Phew that looks might complicated!_
+
+There's a simpler way
 
 TODO: Not recommended for internet hosting!
 
