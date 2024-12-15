@@ -6,9 +6,9 @@
 
 TODO
 
-We’re out for an [__overnight hike__](TODO), city to airport. Our [__Build Farm for Apache NuttX RTOS__](TODO) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](TODO). 
+We're out for an [__overnight hike__](TODO), city to airport. Our [__Build Farm for Apache NuttX RTOS__](TODO) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](TODO). 
 
-Can we be really sure that NuttX is OK? Without getting spammed by alert emails all night? (Sorry we got zero budget for _"paging duty"_ services)
+Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
 TODO: Pic of mobile 
 
@@ -75,63 +75,57 @@ TODO: Prometheus to Mastodon
 
 TODO: [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
-# TODO
+TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
+
+# What's Next
+
+TODO
+
+Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
+
+-   [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+
+-   [__Older Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__Olderer Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
+
+# Appendix: Query Prometheus for Failed Build
+
+TODO
 
 TODO: mastodon-grafana.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-grafana.png)
 
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
-
 TODO: mastodon-prometheus.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-prometheus.png)
 
-TODO: mastodon-register1.png
+```text
+Query Prometheus for Build Failures
+http://localhost:9090
+build_score{user!="rewind", user!="nuttxlinux", user!="nuttxmacos", user!="jerpelea"} < 0.5
 
-![TODO](https://lupyuen.github.io/images/mastodon-register1.png)
+curl -X POST \
+        -F 'query=build_score{config!="leds64_zig", user!="rewind", user!="nuttxlinux", user!="nuttxmacos", user!="jerpelea"} < 0.5' \
+        http://localhost:9090/api/v1/query
 
-TODO: mastodon-register2.png
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"build_score","apps_hash":"b08c29617bbf1f2c6227f74e23ffdd7706997e0c","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"nuttxpr","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"virtio/virtio-mmio.c: In function 'virtio_mmio_config_virtqueue': \n virtio/virtio-mmio.c:346:14: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast] \n 346 |       addr = (uint64_t)kasan_reset_tag((FAR void *)vq->vq_ring.desc); \n |              ^ \n virtio/virtio-mmio.c:350:14: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast] \n 350 |       addr = (uint64_t)kasan_reset_tag((FAR void *)vq->vq_ring.avail); \n |              ^ \n virtio/virti","nuttx_hash":"04815338334e63cd82c38ee12244e54829766e88","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-06T06:14:54","url":"https://gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L169","url_display":"gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L169","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"b08c29617bbf1f2c6227f74e23ffdd7706997e0c","arch":"risc-v","board":"rv-virt","config":"citest64","exported_instance":"rv-virt:citest64","exported_job":"nuttxpr","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_popen FAILED                                  [ 30%] \n test_example/test_example.py::test_usrsocktest FAILED                            [ 38%] \n test_os/test_os.py::test_ostest FAILED                                           [ 46%]","nuttx_hash":"04815338334e63cd82c38ee12244e54829766e88","subarch":"qemu-rv","target":"rv-virt:citest64","timestamp":"2024-12-06T06:19:39","url":"https://gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L236","url_display":"gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L236","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"37acd5e6712bc91e6c5fd3b9cdde06ff9a3cada3","arch":"xtensa","board":"esp32-devkitc","config":"nxdiag","exported_instance":"esp32-devkitc:nxdiag","exported_job":"nuttxmacos2","group":"xtensa-01","instance":"localhost:9091","job":"pushgateway","msg":"./nxdiag.c:34:10: fatal error: sysinfo.h: No such file or directory \n 34 | #include \"sysinfo.h\" \n |          ^~~~~~~~~~~ \n compilation terminated. \n ERROR: xtensa-esp32-elf-gcc failed: 1 \n command: xtensa-esp32-elf-gcc -MT ./nxdiag.c.private.tmp.run-job-macos.apps.system.nxdiag.o  -M '-fno-common' '-Wall' '-Wstrict-prototypes' '-Wshadow' '-Wundef' '-Wno-attributes' '-Wno-unknown-pragmas' '-Wno-psabi' '-Os' '-fno-strict-aliasing' '-fomit-frame-pointer' '-ffunction-sections' '-fdata-sections' '-mlongca","nuttx_hash":"fd20684a7b65b45a8e1e4e52ea8a4bd4b47cb11a","subarch":"esp32","target":"esp32-devkitc:nxdiag","timestamp":"2024-12-09T23:07:00","url":"https://gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4778616#L1075","url_display":"gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4778616#L1075","user":"nuttxmacos2","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"1f8b9aa74c38460fe8fe47646f70e85e79bcc21f","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"nuttxmacos2","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_helloxx FAILED                                            [  0%] \n test_example/test_example.py::test_pipe FAILED                                               [  0%] \n test_example/test_example.py::test_popen FAILED                                              [  0%] \n test_example/test_example.py::test_usrsocktest FAILED                                        [  0%] \n test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_send_4_2 FAILED                   [  0%] ","nuttx_hash":"5607eece841346ae807f1474ea36e422d6dfc97d","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-10T19:48:36","url":"https://gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4779209#L824","url_display":"gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4779209#L824","user":"nuttxmacos2","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"1f8b9aa74c38460fe8fe47646f70e85e79bcc21f","arch":"xtensa","board":"esp32s3-devkit","config":"timer","exported_instance":"esp32s3-devkit:timer","exported_job":"nuttxpr","group":"xtensa-02","instance":"localhost:9091","job":"pushgateway","msg":"In file included from chip/esp32s3_libc_stubs.c:25: \n chip/esp32s3_libc_stubs.c: In function 'esp_setup_syscall_table': \n chip/esp32s3_libc_stubs.c:418:3: error: static assertion failed: \"Invalid size of struct __lock\" \n 418 |   static_assert(sizeof(struct __lock) >= sizeof(mutex_t), \n |   ^~~~~~~~~~~~~ \n make[1]: *** [Makefile:146: esp32s3_libc_stubs.o] Error 1 \n make[1]: Target 'libarch.a' not remade because of errors. \n make: *** [tools/LibTargets.mk:170: arch/xtensa/src/libarch.a] Error 2 \n ma","nuttx_hash":"5607eece841346ae807f1474ea36e422d6dfc97d","subarch":"esp32s3","target":"esp32s3-devkit:timer","timestamp":"2024-12-10T23:09:05","url":"https://gist.github.com/nuttxpr/108ce53648bac75a85e8be288351b939#file-ci-xtensa-02-log-L769","url_display":"gist.github.com/nuttxpr/108ce53648bac75a85e8be288351b939#file-ci-xtensa-02-log-L769","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"e861ea8b53e6c86b28274e3651036761d17d88ea","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"NuttX","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_hello FAILED                          [  0%] \n test_example/test_example.py::test_helloxx FAILED                        [  0%] \n test_example/test_example.py::test_pipe FAILED                           [  0%] \n test_example/test_example.py::test_popen FAILED                          [  0%] \n test_example/test_example.py::test_usrsocktest FAILED                    [  0%] \n test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_send_4_2 FAILED [  0%] \n test_open_po","nuttx_hash":"b99e7617aa2fa70f8724a2a7db4b08e723a09bb4","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-11T22:09:43","url":"https://github.com/NuttX/nuttx/actions/runs/12285244144/job/34282901789#step:7:88","url_display":"github.com/NuttX/nuttx/actions/runs/12285244144/job/34282901789#step:7:88","user":"NuttX","version":"3"},"value":[1733974316.308,"0"]}]}}
+```
 
-![TODO](https://lupyuen.github.io/images/mastodon-register2.png)
-
-TODO: mastodon-register3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register3.png)
-
-TODO: mastodon-register4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register4.png)
-
-TODO: mastodon-register5.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
-
-TODO: mastodon-register6.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register6.png)
-
-TODO: mastodon-register7.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
-
-TODO: mastodon-web1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
-
-TODO: mastodon-web2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
-
-TODO: mastodon-web3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
-
-TODO: mastodon-web4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+# Appendix: Post NuttX Builds to Mastodon
 
 TODO: [run.sh](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/run.sh)
 
@@ -341,51 +335,9 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 }
 ```
 
-TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
-
-# What's Next
-
-TODO
-
-Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
-
--   [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
-
--   [__Older Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__Olderer Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
-
-# Appendix: Query Prometheus for Build Failures
-
-TODO
-
-```text
-Query Prometheus for Build Failures
-http://localhost:9090
-build_score{user!="rewind", user!="nuttxlinux", user!="nuttxmacos", user!="jerpelea"} < 0.5
-
-curl -X POST \
-        -F 'query=build_score{config!="leds64_zig", user!="rewind", user!="nuttxlinux", user!="nuttxmacos", user!="jerpelea"} < 0.5' \
-        http://localhost:9090/api/v1/query
-
-{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"build_score","apps_hash":"b08c29617bbf1f2c6227f74e23ffdd7706997e0c","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"nuttxpr","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"virtio/virtio-mmio.c: In function 'virtio_mmio_config_virtqueue': \n virtio/virtio-mmio.c:346:14: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast] \n 346 |       addr = (uint64_t)kasan_reset_tag((FAR void *)vq->vq_ring.desc); \n |              ^ \n virtio/virtio-mmio.c:350:14: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast] \n 350 |       addr = (uint64_t)kasan_reset_tag((FAR void *)vq->vq_ring.avail); \n |              ^ \n virtio/virti","nuttx_hash":"04815338334e63cd82c38ee12244e54829766e88","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-06T06:14:54","url":"https://gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L169","url_display":"gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L169","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"b08c29617bbf1f2c6227f74e23ffdd7706997e0c","arch":"risc-v","board":"rv-virt","config":"citest64","exported_instance":"rv-virt:citest64","exported_job":"nuttxpr","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_popen FAILED                                  [ 30%] \n test_example/test_example.py::test_usrsocktest FAILED                            [ 38%] \n test_os/test_os.py::test_ostest FAILED                                           [ 46%]","nuttx_hash":"04815338334e63cd82c38ee12244e54829766e88","subarch":"qemu-rv","target":"rv-virt:citest64","timestamp":"2024-12-06T06:19:39","url":"https://gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L236","url_display":"gist.github.com/nuttxpr/7bec636a5f7b23ea8c845923025f2406#file-ci-risc-v-05-log-L236","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"37acd5e6712bc91e6c5fd3b9cdde06ff9a3cada3","arch":"xtensa","board":"esp32-devkitc","config":"nxdiag","exported_instance":"esp32-devkitc:nxdiag","exported_job":"nuttxmacos2","group":"xtensa-01","instance":"localhost:9091","job":"pushgateway","msg":"./nxdiag.c:34:10: fatal error: sysinfo.h: No such file or directory \n 34 | #include \"sysinfo.h\" \n |          ^~~~~~~~~~~ \n compilation terminated. \n ERROR: xtensa-esp32-elf-gcc failed: 1 \n command: xtensa-esp32-elf-gcc -MT ./nxdiag.c.private.tmp.run-job-macos.apps.system.nxdiag.o  -M '-fno-common' '-Wall' '-Wstrict-prototypes' '-Wshadow' '-Wundef' '-Wno-attributes' '-Wno-unknown-pragmas' '-Wno-psabi' '-Os' '-fno-strict-aliasing' '-fomit-frame-pointer' '-ffunction-sections' '-fdata-sections' '-mlongca","nuttx_hash":"fd20684a7b65b45a8e1e4e52ea8a4bd4b47cb11a","subarch":"esp32","target":"esp32-devkitc:nxdiag","timestamp":"2024-12-09T23:07:00","url":"https://gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4778616#L1075","url_display":"gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4778616#L1075","user":"nuttxmacos2","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"1f8b9aa74c38460fe8fe47646f70e85e79bcc21f","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"nuttxmacos2","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_helloxx FAILED                                            [  0%] \n test_example/test_example.py::test_pipe FAILED                                               [  0%] \n test_example/test_example.py::test_popen FAILED                                              [  0%] \n test_example/test_example.py::test_usrsocktest FAILED                                        [  0%] \n test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_send_4_2 FAILED                   [  0%] ","nuttx_hash":"5607eece841346ae807f1474ea36e422d6dfc97d","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-10T19:48:36","url":"https://gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4779209#L824","url_display":"gitlab.com/nuttxmacos2/nuttx-build-log/-/snippets/4779209#L824","user":"nuttxmacos2","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"1f8b9aa74c38460fe8fe47646f70e85e79bcc21f","arch":"xtensa","board":"esp32s3-devkit","config":"timer","exported_instance":"esp32s3-devkit:timer","exported_job":"nuttxpr","group":"xtensa-02","instance":"localhost:9091","job":"pushgateway","msg":"In file included from chip/esp32s3_libc_stubs.c:25: \n chip/esp32s3_libc_stubs.c: In function 'esp_setup_syscall_table': \n chip/esp32s3_libc_stubs.c:418:3: error: static assertion failed: \"Invalid size of struct __lock\" \n 418 |   static_assert(sizeof(struct __lock) >= sizeof(mutex_t), \n |   ^~~~~~~~~~~~~ \n make[1]: *** [Makefile:146: esp32s3_libc_stubs.o] Error 1 \n make[1]: Target 'libarch.a' not remade because of errors. \n make: *** [tools/LibTargets.mk:170: arch/xtensa/src/libarch.a] Error 2 \n ma","nuttx_hash":"5607eece841346ae807f1474ea36e422d6dfc97d","subarch":"esp32s3","target":"esp32s3-devkit:timer","timestamp":"2024-12-10T23:09:05","url":"https://gist.github.com/nuttxpr/108ce53648bac75a85e8be288351b939#file-ci-xtensa-02-log-L769","url_display":"gist.github.com/nuttxpr/108ce53648bac75a85e8be288351b939#file-ci-xtensa-02-log-L769","user":"nuttxpr","version":"3"},"value":[1733974316.308,"0"]},{"metric":{"__name__":"build_score","apps_hash":"e861ea8b53e6c86b28274e3651036761d17d88ea","arch":"risc-v","board":"rv-virt","config":"citest","exported_instance":"rv-virt:citest","exported_job":"NuttX","group":"risc-v-05","instance":"localhost:9091","job":"pushgateway","msg":"test_example/test_example.py::test_hello FAILED                          [  0%] \n test_example/test_example.py::test_helloxx FAILED                        [  0%] \n test_example/test_example.py::test_pipe FAILED                           [  0%] \n test_example/test_example.py::test_popen FAILED                          [  0%] \n test_example/test_example.py::test_usrsocktest FAILED                    [  0%] \n test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_send_4_2 FAILED [  0%] \n test_open_po","nuttx_hash":"b99e7617aa2fa70f8724a2a7db4b08e723a09bb4","subarch":"qemu-rv","target":"rv-virt:citest","timestamp":"2024-12-11T22:09:43","url":"https://github.com/NuttX/nuttx/actions/runs/12285244144/job/34282901789#step:7:88","url_display":"github.com/NuttX/nuttx/actions/runs/12285244144/job/34282901789#step:7:88","user":"NuttX","version":"3"},"value":[1733974316.308,"0"]}]}}
-```
-
 # Appendix: Install our Mastodon Server
 
-TODO
+TODO: Explain each section of compose.yml
 
 ```text
 https://gist.github.com/lupyuen/f01da036fd0299abc5c874ace8fd1b22
@@ -483,9 +435,62 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/g
 >>
 ```
 
+# Appendix: Test our Mastodon Server
+
+TODO
+
+TODO: mastodon-web1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
+
+TODO: mastodon-web2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
+
+TODO: mastodon-web3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
+
+TODO: mastodon-web4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
+
 # Appendix: Create our Mastodon Account
 
 TODO
+
+TODO: mastodon-register1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register1.png)
+
+TODO: mastodon-register2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register2.png)
+
+TODO: mastodon-register3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register3.png)
+
+TODO: mastodon-register4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register4.png)
+
+TODO: mastodon-register5.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
+
+TODO: mastodon-register6.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register6.png)
+
+TODO: mastodon-register7.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
+
 
 ```text
 Create Account:
@@ -520,76 +525,6 @@ https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
 https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 
 CloudFlare: Security > Settings > High
-```
-
-# Appendix: Install Elasticsearch
-
-TODO
-
-```text
-Administration > Dashboard
-Could not connect to Elasticsearch. Please check that it is running, or disable full-text search
-
-Enable Elasticsearch:
-https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347
-.env.production
-<<
-ES_ENABLED=true
-ES_HOST=es
-ES_PORT=9200
->>
-docker-compose.yml: Uncomment section for es
-<<
-  es:
-    volumes:
-       - es-data:/usr/share/elasticsearch/data
-  web:
-    depends_on:
-      - db
-      - redis
-      - es
->>
-docker compose down
-docker compose build
-docker compose up
-docker compose logs -f
-<<
-es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
->>
-
-Increase max_map_count:
-https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/
-Restart Docker Desktop
-
-docker exec -it mastodon-es-1 /bin/bash -c "sysctl vm.max_map_count"
-<<
-vm.max_map_count = 262144
->>
-
-Administration > Dashboard
-<<
-Elasticsearch index mappings are outdated
->>
-
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl search deploy --only=instances accounts tags statuses public_statuses
-```
-
-# Appendix: Backup our Mastodon Server
-
-```text
-Backing up Mastodon:
-https://docs.joinmastodon.org/admin/backups/
-Postgres:
-docker exec -it mastodon-db-1 /bin/bash -c "exec su-exec postgres pg_dumpall" >mastodon.sql
-head -50 mastodon.sql
-
-Redis:
-docker cp mastodon-redis-1:/data/dump.rdb .
-strings dump.rdb | tail -50
-
-User-uploaded files:
-tar cvf mastodon-public-system.tar mastodon/public/system
 ```
 
 # Appendix: Create our Mastodon App
@@ -748,9 +683,79 @@ https://github.com/h3poteto/megalodon-rs
 Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs
 ```
 
-# Appendix: Simplest Server for Mastodon
+# Appendix: Backup our Mastodon Server
+
+```text
+Backing up Mastodon:
+https://docs.joinmastodon.org/admin/backups/
+Postgres:
+docker exec -it mastodon-db-1 /bin/bash -c "exec su-exec postgres pg_dumpall" >mastodon.sql
+head -50 mastodon.sql
+
+Redis:
+docker cp mastodon-redis-1:/data/dump.rdb .
+strings dump.rdb | tail -50
+
+User-uploaded files:
+tar cvf mastodon-public-system.tar mastodon/public/system
+```
+
+# Appendix: Install Elasticsearch
 
 TODO
+
+```text
+Administration > Dashboard
+Could not connect to Elasticsearch. Please check that it is running, or disable full-text search
+
+Enable Elasticsearch:
+https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347
+.env.production
+<<
+ES_ENABLED=true
+ES_HOST=es
+ES_PORT=9200
+>>
+docker-compose.yml: Uncomment section for es
+<<
+  es:
+    volumes:
+       - es-data:/usr/share/elasticsearch/data
+  web:
+    depends_on:
+      - db
+      - redis
+      - es
+>>
+docker compose down
+docker compose build
+docker compose up
+docker compose logs -f
+<<
+es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+>>
+
+Increase max_map_count:
+https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/
+Restart Docker Desktop
+
+docker exec -it mastodon-es-1 /bin/bash -c "sysctl vm.max_map_count"
+<<
+vm.max_map_count = 262144
+>>
+
+Administration > Dashboard
+<<
+Elasticsearch index mappings are outdated
+>>
+
+docker exec -it mastodon-web-1 /bin/bash
+bin/tootctl search deploy --only=instances accounts tags statuses public_statuses
+```
+
+# Appendix: Simplest Server for Mastodon
+
+TODO: Not recommended for internet hosting!
 
 ```text
 Previously:
