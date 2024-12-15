@@ -80,7 +80,15 @@
 <li><a href="#appendix-create-a-mastodon-post" title="Appendix: Create a Mastodon Post">13 Appendix: Create a Mastodon Post</a><ul></ul></li>
 <li><a href="#appendix-backup-our-mastodon-server" title="Appendix: Backup our Mastodon Server">14 Appendix: Backup our Mastodon Server</a><ul></ul></li>
 <li><a href="#appendix-enable-elasticsearch-for-mastodon" title="Appendix: Enable Elasticsearch for Mastodon">15 Appendix: Enable Elasticsearch for Mastodon</a><ul></ul></li>
-<li><a href="#appendix-simplest-server-for-mastodon" title="Appendix: Simplest Server for Mastodon">16 Appendix: Simplest Server for Mastodon</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
+<li><a href="#appendix-docker-compose-for-mastodon" title="Appendix: Docker Compose for Mastodon">16 Appendix: Docker Compose for Mastodon</a><ul>
+<li><a href="#database-server" title="Database Server">16.1 Database Server</a><ul></ul></li>
+<li><a href="#web-server" title="Web Server">16.2 Web Server</a><ul></ul></li>
+<li><a href="#redis-server" title="Redis Server">16.3 Redis Server</a><ul></ul></li>
+<li><a href="#sidekiq-server" title="Sidekiq Server">16.4 Sidekiq Server</a><ul></ul></li>
+<li><a href="#streaming-server" title="Streaming Server">16.5 Streaming Server</a><ul></ul></li>
+<li><a href="#elasticsearch-server" title="Elasticsearch Server">16.6 Elasticsearch Server</a><ul></ul></li>
+<li><a href="#volumes-and-networks" title="Volumes and Networks">16.7 Volumes and Networks</a><ul></ul></li>
+<li><a href="#simplest-server-for-mastodon" title="Simplest Server for Mastodon">16.8 Simplest Server for Mastodon</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>We’re out for an <a href="TODO"><strong>overnight hike</strong></a>, city to airport. Our <a href="TODO"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="TODO"><strong>1,000 NuttX Targets</strong></a>.</p>
@@ -841,7 +849,188 @@ Elasticsearch index mappings are outdated
 &gt;&gt;
 
 docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl search deploy --only=instances accounts tags statuses public_statuses</code></pre></div><h1 id="appendix-simplest-server-for-mastodon"><a class="doc-anchor" href="#appendix-simplest-server-for-mastodon">§</a>16 Appendix: Simplest Server for Mastodon</h1>
+bin/tootctl search deploy --only=instances accounts tags statuses public_statuses</code></pre></div><h1 id="appendix-docker-compose-for-mastodon"><a class="doc-anchor" href="#appendix-docker-compose-for-mastodon">§</a>16 Appendix: Docker Compose for Mastodon</h1>
+<p><em>What’s this Docker Compose? Why use it for Mastodon?</em></p>
+<p>TODO: Minor Tweaks</p>
+<p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">(See the <strong>Minor Tweaks</strong>)</a></p>
+<h2 id="database-server"><a class="doc-anchor" href="#database-server">§</a>16.1 Database Server</h2>
+<p><a href="TODO"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>services:
+  db:
+    restart: always
+    image: postgres:14-alpine
+    shm_size: 256mb
+
+    ## Map the Docker Volume &quot;postgres-data&quot;
+    ## because macOS Rancher Desktop won&#39;t work correctly with a Local Filesystem
+    volumes:
+      -  postgres-data:/var/lib/postgresql/data
+    
+    ## Allow auto-login by all connections from localhost
+    environment:
+      - &#39;POSTGRES_HOST_AUTH_METHOD=trust&#39;
+
+    ## Database Server is not exposed outside Docker
+    networks:
+      - internal_network
+    healthcheck:
+      test: [&#39;CMD&#39;, &#39;pg_isready&#39;, &#39;-U&#39;, &#39;postgres&#39;]</code></pre></div>
+<p>Note the last line for <em>POSTGRES_HOST_AUTH_METHOD</em>. It says that our Database Server will allow auto-login by <strong>all connections from localhost</strong>. Even without PostgreSQL Password!</p>
+<p>This is probably OK for us, since our Database Server runs in its own Docker Container.</p>
+<p>We map the <strong>Docker Volume</strong> <em>postgres-data</em>, because macOS Rancher Desktop won’t work correctly with a Local Filesystem like <em>./postgres14</em>.</p>
+<h2 id="web-server"><a class="doc-anchor" href="#web-server">§</a>16.2 Web Server</h2>
+<p>Powered by Ruby-on-Rails, <strong>Puma</strong> is our Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>  web:
+    ## You can uncomment the following line if you want to not use the prebuilt image, for example if you have local code changes
+    ## build: .
+    image: ghcr.io/mastodon/mastodon:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Puma Web Server
+    command: bundle exec puma -C config/puma.rb
+    ## When Configuring Mastodon: Change to...
+    ## command: sleep infinity
+
+    ## HTTP Port 3000 should always return OK
+    healthcheck:
+      # prettier-ignore
+      test: [&#39;CMD-SHELL&#39;,&quot;curl -s --noproxy localhost localhost:3000/health | grep -q &#39;OK&#39; || exit 1&quot;]
+
+    ## Mastodon will appear outside Docker at HTTP Port 3001
+    ## because Port 3000 is already taken by Grafana
+    ports:
+      - &#39;127.0.0.1:3001:3000&#39;
+    networks:
+      - external_network
+      - internal_network
+    depends_on:
+      - db
+      - redis
+      - es
+    volumes:
+      - ./public/system:/mastodon/public/system</code></pre></div>
+<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<h2 id="redis-server"><a class="doc-anchor" href="#redis-server">§</a>16.3 Redis Server</h2>
+<p>Web Server fetching data directly from Database Server will be awfully slow. That’s why we use Redis as an <strong>In-Memory Caching Database</strong>: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>  redis:
+    restart: always
+    image: redis:7-alpine
+
+    ## Map the Docker Volume &quot;redis-data&quot;
+    ## because macOS Rancher Desktop won&#39;t work correctly with a Local Filesystem
+    volumes:
+      - redis-data:/data
+
+    ## Redis Server is not exposed outside Docker
+    networks:
+      - internal_network
+    healthcheck:
+      test: [&#39;CMD&#39;, &#39;redis-cli&#39;, &#39;ping&#39;]</code></pre></div><h2 id="sidekiq-server"><a class="doc-anchor" href="#sidekiq-server">§</a>16.4 Sidekiq Server</h2>
+<p>Remember that Emails that Mastodon will send upon User Registration? Mastodon does this with <strong>Sidekiq</strong> for running Background Batch Jobs, so it won’t hold up the Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>  sidekiq:
+    build: .
+    image: ghcr.io/mastodon/mastodon:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Sidekiq Batch Job Server
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+    ## Sidekiq Server is exposed outside Docker
+    ## for Outgoing Connections, to deliver emails
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      test: [&#39;CMD-SHELL&#39;, &quot;ps aux | grep &#39;[s]idekiq\ 6&#39; || false&quot;]</code></pre></div><h2 id="streaming-server"><a class="doc-anchor" href="#streaming-server">§</a>16.5 Streaming Server</h2>
+<p><strong>Optional:</strong> Mastodon (and Fediverse) uses <a href="TODO"><strong>ActivityPub</strong></a> for exchanging lots of info about Users and Posts. Our Web Server supports the <strong>HTTP Rest API</strong>, but there’s a more efficient way: <strong>WebSocket API</strong>.</p>
+<p>WebSocket is <strong>totally optional</strong>, Mastodon works fine without it, probably a little less efficient: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>  streaming:
+    ## You can uncomment the following lines if you want to not use the prebuilt image, for example if you have local code changes
+    ## build:
+    ##   dockerfile: ./streaming/Dockerfile
+    ##   context: .
+    image: ghcr.io/mastodon/mastodon-streaming:v4.3.2
+    restart: always
+
+    ## Read the Mastondon Config from Docker Host
+    env_file: .env.production
+
+    ## Start the Streaming Server (Node.js!)
+    command: node ./streaming/index.js
+    depends_on:
+      - db
+      - redis
+
+    ## WebSocket will listen on HTTP Port 4000
+    ## for Incoming Connections (totally optional!)
+    ports:
+      - &#39;127.0.0.1:4000:4000&#39;
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      # prettier-ignore
+      test: [&#39;CMD-SHELL&#39;, &quot;curl -s --noproxy localhost localhost:4000/api/v1/streaming/health | grep -q &#39;OK&#39; || exit 1&quot;]</code></pre></div><h2 id="elasticsearch-server"><a class="doc-anchor" href="#elasticsearch-server">§</a>16.6 Elasticsearch Server</h2>
+<p><strong>Optional:</strong> Elasticsearch is for <strong>Full-Text Search</strong>. Also totally optional, unless we require Full-Text Search for Users and Posts: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>  es:
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    environment:
+      - &quot;ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true&quot;
+      - &quot;xpack.license.self_generated.type=basic&quot;
+      - &quot;xpack.security.enabled=false&quot;
+      - &quot;xpack.watcher.enabled=false&quot;
+      - &quot;xpack.graph.enabled=false&quot;
+      - &quot;xpack.ml.enabled=false&quot;
+      - &quot;bootstrap.memory_lock=true&quot;
+      - &quot;cluster.name=es-mastodon&quot;
+      - &quot;discovery.type=single-node&quot;
+      - &quot;thread_pool.write.queue_size=1000&quot;
+
+    ## Elasticsearch is exposed externally at HTTP Port 9200. (Why?)
+    ports:
+      - &#39;127.0.0.1:9200:9200&#39;
+    networks:
+       - external_network
+       - internal_network
+    healthcheck:
+       test: [&quot;CMD-SHELL&quot;, &quot;curl --silent --fail localhost:9200/_cluster/health || exit 1&quot;]
+
+    ## Map the Docker Volume &quot;es-data&quot;
+    ## because macOS Rancher Desktop won&#39;t work correctly with a Local Filesystem
+    volumes:
+       - es-data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536</code></pre></div><h2 id="volumes-and-networks"><a class="doc-anchor" href="#volumes-and-networks">§</a>16.7 Volumes and Networks</h2>
+<p>Finally we declare the <strong>Volumes and Networks</strong> used by our Docker Containers: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>volumes:
+  postgres-data:
+  redis-data:
+  es-data:
+  lt-data:
+
+networks:
+  external_network:
+  internal_network:
+    internal: true</code></pre></div><h2 id="simplest-server-for-mastodon"><a class="doc-anchor" href="#simplest-server-for-mastodon">§</a>16.8 Simplest Server for Mastodon</h2>
+<p><em>Phew that looks might complicated!</em></p>
+<p>There’s a simpler way</p>
 <p>TODO: Not recommended for internet hosting!</p>
 <div class="example-wrap"><pre class="language-text"><code>Previously:
 git clone https://github.com/mastodon/mastodon --branch v4.3.2
