@@ -87,6 +87,8 @@ Alert for long-running jobs
 
 Monitor sync-build-ingest
 
+Mastodon could link Failed Builds / Failed Tests to NuttX Issue?
+
 # What's Next
 
 TODO
@@ -879,19 +881,30 @@ https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 
 # Appendix: Backup our Mastodon Server
 
-```text
-Backing up Mastodon:
-https://docs.joinmastodon.org/admin/backups/
-Postgres:
-docker exec -it mastodon-db-1 /bin/bash -c "exec su-exec postgres pg_dumpall" >mastodon.sql
+TODO
+
+```bash
+## From https://docs.joinmastodon.org/admin/backups/
+## Backup Postgres Database (and check for sensible data)
+docker exec \
+  -it \
+  mastodon-db-1 \
+  /bin/bash -c \
+  "exec su-exec postgres pg_dumpall" \
+  >mastodon.sql
 head -50 mastodon.sql
 
-Redis:
-docker cp mastodon-redis-1:/data/dump.rdb .
-strings dump.rdb | tail -50
+## Backup Redis (and check for sensible data)
+docker cp \
+  mastodon-redis-1:/data/dump.rdb \
+  .
+strings dump.rdb \
+  | tail -50
 
-User-uploaded files:
-tar cvf mastodon-public-system.tar mastodon/public/system
+## Backup User-Uploaded Files
+tar cvf \
+  mastodon-public-system.tar \
+  mastodon/public/system
 ```
 
 TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM
@@ -900,22 +913,25 @@ Might be a little different for macOS Rancher Desktop
 
 # Appendix: Enable Elasticsearch for Mastodon
 
-TODO
+TODO: Administration > Dashboard
 
-```text
-Administration > Dashboard
-Could not connect to Elasticsearch. Please check that it is running, or disable full-text search
+"Could not connect to Elasticsearch. Please check that it is running, or disable full-text search"
 
 Enable Elasticsearch:
+
 https://github.com/lupyuen/mastodon/commit/b7d147d1e4928013ae789d783cf96b5b2628e347
+
 .env.production
-<<
+
+```bash
 ES_ENABLED=true
 ES_HOST=es
 ES_PORT=9200
->>
+```
+
 docker-compose.yml: Uncomment section for es
-<<
+
+```yaml
   es:
     volumes:
        - es-data:/usr/share/elasticsearch/data
@@ -924,31 +940,47 @@ docker-compose.yml: Uncomment section for es
       - db
       - redis
       - es
->>
+```
+
+TODO
+
+```bash
 docker compose down
-docker compose build
 docker compose up
-docker compose logs -f
-<<
-es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
->>
+```
+
+"es-1         | bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]"
 
 Increase max_map_count:
+
 https://docs.rancherdesktop.io/how-to-guides/increasing-open-file-limit/
+
 Restart Docker Desktop
 
-docker exec -it mastodon-es-1 /bin/bash -c "sysctl vm.max_map_count"
-<<
+```bash
+## Print the Max Virtual Memory Areas
+$ docker exec \
+  -it \
+  mastodon-es-1 \
+  /bin/bash -c \
+  "sysctl vm.max_map_count"
+
 vm.max_map_count = 262144
->>
+```
 
-Administration > Dashboard
-<<
-Elasticsearch index mappings are outdated
->>
+TODO: Administration > Dashboard
 
-docker exec -it mastodon-web-1 /bin/bash
-bin/tootctl search deploy --only=instances accounts tags statuses public_statuses
+"Elasticsearch index mappings are outdated"
+
+```bash
+docker exec \
+  -it \
+  mastodon-web-1 \
+  /bin/bash
+bin/tootctl search \
+  deploy --only=instances \
+  accounts tags statuses public_statuses
+exit
 ```
 
 # Appendix: Docker Compose for Mastodon
