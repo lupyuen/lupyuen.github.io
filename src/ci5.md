@@ -479,7 +479,7 @@ clang: error: invalid argument 'medium' to -mcmodel=
 
 # What's Next
 
-Next Article: We chat about a new tool to [__"Rewind The Build"__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) when something breaks the Daily Build.
+Next Article: We chat about a new tool to __"Rewind The Build"__ when something breaks the Daily Build...
 
 - [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
 
