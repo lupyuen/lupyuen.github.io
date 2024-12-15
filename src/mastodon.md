@@ -477,6 +477,8 @@ TODO: Explain each section of compose.yml
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b#file-gistfile1-txt-L11-L95)
 
+    (No Email Server? Read on for our workaround)
+
 1.  Copy the Mastodon Config from above to __`.env.production`__
 
     ```text
@@ -593,24 +595,36 @@ We're ready to __Test Mastodon__!
     
     To _http://YOUR\_DOCKER\_MACHINE:3001_
 
+    (__HTTPS Port 443__ connects to __HTTP Port 3001__ via Reverse Proxy)
+
+    (For CloudFlare Tunnel: Set __Security > Settings > High__)
+
     (Change _nuttx-feed.org_ to Your Domain Name)
 
 1.  Browse to _https://nuttx-feed.org_. __Mastodon is Up!__
 
     ![TODO](https://lupyuen.github.io/images/mastodon-web5.png)
 
+1.  Log in with the __Admin User and Password__
+
+    (From previous section)
+
+1.  Browse to __Administration > Settings__ and fill in...
+    - __Branding__
+    - __About__
+    - __Registrations > Who Can Sign Up <br> > Approval Required > Require A Reason__
+
+1.  Normally we'll approve New Accounts at __Moderation > Accounts > Approve__
+
+    But we don't have an __Outgoing Mail Server__ to validate the email address!
+    
+    Let's work around this...
+
+# Appendix: Create our Mastodon Account
+
 TODO
 
-```text
-https://nuttx-feed.org/home
-
-Administration > Settings
-  > Branding
-  > About
-  > Registrations > Who can sign up > Approval Required for Sign up > Require a Reason to Join
-
-Moderation > Accounts > Approve
-
+```bash
 Approve Account:
 https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
 docker exec -it mastodon-web-1 /bin/bash
@@ -624,31 +638,6 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
 >>
 ```
-
-TODO: mastodon-web1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
-
-TODO: mastodon-web2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
-
-TODO: mastodon-web3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
-
-TODO: mastodon-web4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
-
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
-
-
-# Appendix: Create our Mastodon Account
-
-TODO
 
 TODO: mastodon-register1.png
 
@@ -710,8 +699,27 @@ https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
 https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
 https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 
-CloudFlare: Security > Settings > High
 ```
+
+TODO: mastodon-web1.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web1.png)
+
+TODO: mastodon-web2.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web2.png)
+
+TODO: mastodon-web3.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web3.png)
+
+TODO: mastodon-web4.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+TODO: mastodon-log.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-log.png)
 
 # Appendix: Create our Mastodon App
 
