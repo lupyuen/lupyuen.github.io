@@ -693,6 +693,99 @@ TODO: mastodon-register4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-register4.png)
 
+# Appendix: Create our Mastodon App
+
+TODO
+
+1.  This is how we create a __Mastodon App__...
+
+    ```text
+    ## Create Our App: https://docs.joinmastodon.org/client/token/#app
+    curl -X POST \
+      -F 'client_name=NuttX Dashboard' \
+      -F 'redirect_uris=urn:ietf:wg:oauth:2.0:oob' \
+      -F 'scopes=read write push' \
+      -F 'website=https://nuttx-dashboard.org' \
+      https://nuttx-feed.org/api/v1/apps
+    ```
+
+1.  We'll see the __Client ID__ and __Client Secret__. Please save them and keep them secret! (Change _nuttx-dashboard_ to your App Name)
+
+    ```json
+    {"id":"3",
+    "name":"NuttX Dashboard",
+    "website":"https://nuttx-dashboard.org",
+    "scopes":["read","write","push"],
+    "redirect_uris":["urn:ietf:wg:oauth:2.0:oob"],
+    "vapid_key":"...",
+    "redirect_uri":"urn:ietf:wg:oauth:2.0:oob",
+    "client_id":"...",
+    "client_secret":"...",
+    "client_secret_expires_at":0}
+    ```
+
+1.  Open a Web Browser. Log in as Your New User _(nuttx_build)_
+
+1.  Paste this URL into the Same Web Browser (change _nuttx-feed_)
+
+    ```text
+    https://nuttx-feed.org/oauth/authorize
+      ?client_id=YOUR_CLIENT_ID
+      &scope=read+write+push
+      &redirect_uri=urn:ietf:wg:oauth:2.0:oob
+      &response_type=code
+    ```
+
+    [(Explained here)](https://docs.joinmastodon.org/client/authorized/)
+
+1.  Copy the __Authorization Code__. (It will expire soon!)
+
+1.  We transform the Authorization Code into an __Access Token__  (change _nuttx-feed_)
+
+    ```bash
+    ## From https://docs.joinmastodon.org/client/authorized/#token
+    export CLIENT_ID=[ From Above ]
+    export CLIENT_SECRET=[ From Above ]
+    export AUTH_CODE=[ From Above ]
+    curl -X POST \
+      -F "client_id=$CLIENT_ID" \
+      -F "client_secret=$CLIENT_SECRET" \
+      -F "redirect_uri=urn:ietf:wg:oauth:2.0:oob" \
+      -F "grant_type=authorization_code" \
+      -F "code=$AUTH_CODE" \
+      -F "scope=read write push" \
+      https://nuttx-feed.org/oauth/token
+    ```
+
+1.  We'll see the __Access Token__. Please save it and secret!
+
+    ```json
+    {"access_token":"...",
+    "token_type":"Bearer",
+    "scope":"read write push",
+    "created_at":1733966892}
+    ```
+
+1.  To test our Access Token...
+
+    TODO: Yep looks hunky dory!
+
+    ```bash
+    $ export ACCESS_TOKEN=[ From Above ]
+    $ curl \
+        -H "Authorization: Bearer $ACCESS_TOKEN" \
+        https://nuttx-feed.org/api/v1/accounts/verify_credentials
+
+    "username": "nuttx_build",
+    "acct": "nuttx_build",
+    "display_name": "NuttX Build",
+    "locked": false,
+    "bot": false,
+    "discoverable": null,
+    "indexable": false,
+    ...
+    ```
+
 TODO: mastodon-register5.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
@@ -741,120 +834,6 @@ TODO: mastodon-web4.png
 TODO: mastodon-log.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-log.png)
-
-# Appendix: Create our Mastodon App
-
-TODO
-
-```text
-Create Our App: https://docs.joinmastodon.org/client/token/#app
-curl -X POST \
-	-F 'client_name=NuttX Dashboard' \
-	-F 'redirect_uris=urn:ietf:wg:oauth:2.0:oob' \
-	-F 'scopes=read write push' \
-	-F 'website=https://nuttx-dashboard.org' \
-	https://nuttx-feed.org/api/v1/apps
-
-{"id":"3",
-"name":"NuttX Dashboard",
-"website":"https://nuttx-dashboard.org",
-"scopes":["read","write","push"],
-"redirect_uris":["urn:ietf:wg:oauth:2.0:oob"],
-"vapid_key":"...",
-"redirect_uri":"urn:ietf:wg:oauth:2.0:oob",
-"client_id":"...",
-"client_secret":"...",
-"client_secret_expires_at":0}
-
-Login to Account: https://docs.joinmastodon.org/client/authorized/
-Authorise the User: https://docs.joinmastodon.org/client/authorized/#login
-In a web browser:
-https://nuttx-feed.org/oauth/authorize
-?client_id=YOUR_CLIENT_ID
-&scope=read+write+push
-&redirect_uri=urn:ietf:wg:oauth:2.0:oob
-&response_type=code
-
-<< Copy this authorization code and paste it to the application. >>
-
-It will expire. Do it right away!
-
-Obtain the token: https://docs.joinmastodon.org/client/authorized/#token
-export CLIENT_ID=...
-export CLIENT_SECRET=...
-export AUTH_CODE=...
-curl -X POST \
-	-F "client_id=$CLIENT_ID" \
-	-F "client_secret=$CLIENT_SECRET" \
-	-F "redirect_uri=urn:ietf:wg:oauth:2.0:oob" \
-	-F "grant_type=authorization_code" \
-	-F "code=$AUTH_CODE" \
-	-F "scope=read write push" \
-	https://nuttx-feed.org/oauth/token
-
-{"access_token":"...",
-"token_type":"Bearer",
-"scope":"read write push",
-"created_at":1733966892}
-
-export ACCESS_TOKEN=...
-curl \
-	-H "Authorization: Bearer $ACCESS_TOKEN" \
-	https://nuttx-feed.org/api/v1/accounts/verify_credentials
-
-{
-  "id": "...",
-  "username": "lupyuen",
-  "acct": "lupyuen",
-  "display_name": "",
-  "locked": false,
-  "bot": false,
-  "discoverable": null,
-  "indexable": false,
-  "group": false,
-  "created_at": "2024-12-08T00:00:00.000Z",
-  "note": "",
-  "url": "https://nuttx-feed.org/@lupyuen",
-  "uri": "https://nuttx-feed.org/users/lupyuen",
-  "avatar": "https://nuttx-feed.org/avatars/original/missing.png",
-  "avatar_static": "https://nuttx-feed.org/avatars/original/missing.png",
-  "header": "https://nuttx-feed.org/headers/original/missing.png",
-  "header_static": "https://nuttx-feed.org/headers/original/missing.png",
-  "followers_count": 1,
-  "following_count": 1,
-  "statuses_count": 4,
-  "last_status_at": "2024-12-11",
-  "hide_collections": null,
-  "noindex": false,
-  "source": {
-    "privacy": "public",
-    "sensitive": false,
-    "language": null,
-    "note": "",
-    "fields": [],
-    "follow_requests_count": 0,
-    "hide_collections": null,
-    "discoverable": null,
-    "indexable": false
-  },
-  "emojis": [],
-  "roles": [
-    {
-      "id": "3",
-      "name": "Owner",
-      "color": ""
-    }
-  ],
-  "fields": [],
-  "role": {
-    "id": "3",
-    "name": "Owner",
-    "permissions": "1048575",
-    "color": "",
-    "highlighted": true
-  }
-}
-```
 
 # Appendix: Create a Mastodon Post
 
