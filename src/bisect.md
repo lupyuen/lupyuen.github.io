@@ -24,7 +24,16 @@ $ git bisect visualize --stat
 $ git bisect log
 ```
 
+https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh
+
+https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh
+
+[git bisect run my-test-script.sh](https://gist.github.com/lupyuen/e822323378e09ae3c24a41c5f42abfd0)
+
+https://git-scm.com/docs/git-bisect#_bisect_run
+
 Bisect run
+
 If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:
 
 $ git bisect run my_script arguments
