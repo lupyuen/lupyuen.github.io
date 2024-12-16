@@ -123,9 +123,62 @@ sudo docker cp nuttx:/root/nuttx/nuttx.S .
 https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S
 ```
 
-https://git-scm.com/docs/git-bisect#_bisect_run
+TODO: Search disassembly for ltp_interfaces_pthread_barrierattr_init_2_1
 
-Bisect run
+```text
+8006642c <ltp_interfaces_pthread_barrierattr_init_2_1_main>:
+ltp_interfaces_pthread_barrierattr_init_2_1_main():
+/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:27
+#include "posixtest.h"
+
+#define BARRIER_NUM 100
+
+int main(void)
+{
+8006642c:	7149                	add	sp,sp,-368
+8006642e:	72fd                	lui	t0,0xfffff
+/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:34
+	pthread_barrierattr_t ba;
+	pthread_barrier_t barriers[BARRIER_NUM];
+	int cnt;
+```
+
+Which points to https://github.com/apache/nuttx-apps/tree/master/testing/ltp
+
+```text
+sudo docker cp nuttx:/root/apps/testing/ltp/Kconfig /tmp
+nano /tmp/Kconfig
+sudo docker cp /tmp/Kconfig nuttx:/root/apps/testing/ltp/Kconfig
+```
+
+Change:
+```text
+config TESTING_LTP_STACKSIZE
+	int "Linux Test Project stack size"
+	default 4096
+```
+To:
+```text
+config TESTING_LTP_STACKSIZE
+	int "Linux Test Project stack size"
+	default 8192
+```
+And copy to docker.
+
+Re-run:
+
+```text
+cd /root/nuttx
+make distclean
+cd tools/ci
+./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
+[ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
+```
+
+# Bisect Run
+
+https://git-scm.com/docs/git-bisect#_bisect_run
 
 If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:
 
