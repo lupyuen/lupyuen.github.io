@@ -82,8 +82,12 @@ https://git-scm.com/docs/git-bisect
 $ git bisect visualize
 $ git bisect visualize --stat
 $ git bisect log</code></pre></div>
-<p>Bisect run
-If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
+<p>https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh</p>
+<p>https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh</p>
+<p><a href="https://gist.github.com/lupyuen/e822323378e09ae3c24a41c5f42abfd0">git bisect run my-test-script.sh</a></p>
+<p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
+<p>Bisect run</p>
+<p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
 <p>$ git bisect run my_script arguments</p>
 <p>Note that the script (my_script in the above example) should exit with code 0 if the current source code is good/old, and exit with a code between 1 and 127 (inclusive), except 125, if the current source code is bad/new.</p>
 <p>Any other exit code will abort the bisect process. It should be noted that a program that terminates via exit(-1) leaves $? = 255, (see the exit(3) manual page), as the value is chopped with &amp; 0377.</p>
