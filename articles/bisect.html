@@ -198,6 +198,12 @@ make distclean
 cd tools/ci
 ./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
 [ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+  -it \
+  nuttx \
+  /bin/bash
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div><h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>2 Bisect Run</h1>
 <p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
 <p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
