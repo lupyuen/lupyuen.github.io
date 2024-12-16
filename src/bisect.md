@@ -176,6 +176,16 @@ cd tools/ci
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 ```
 
+Or:
+
+```text
+sudo docker exec \
+  -it \
+  nuttx \
+  /bin/bash
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
+```
+
 # Bisect Run
 
 https://git-scm.com/docs/git-bisect#_bisect_run
