@@ -186,6 +186,8 @@ sudo docker exec \
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 ```
 
+Fixed yay! [testing/ltp: Increase Stack Size](https://github.com/apache/nuttx-apps/pull/2888)
+
 # Bisect Run
 
 https://git-scm.com/docs/git-bisect#_bisect_run
