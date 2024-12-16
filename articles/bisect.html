@@ -66,7 +66,8 @@
     <h1 class="title">TODO (Git Bisect)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#bisect-run" title="Bisect Run">2 Bisect Run</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
@@ -162,8 +163,43 @@ riscv-none-elf-objdump \
 sudo docker cp nuttx:/root/nuttx/nuttx.S .
 
 https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S</code></pre></div>
+<p>TODO: Search disassembly for ltp_interfaces_pthread_barrierattr_init_2_1</p>
+<div class="example-wrap"><pre class="language-text"><code>8006642c &lt;ltp_interfaces_pthread_barrierattr_init_2_1_main&gt;:
+ltp_interfaces_pthread_barrierattr_init_2_1_main():
+/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:27
+#include &quot;posixtest.h&quot;
+
+#define BARRIER_NUM 100
+
+int main(void)
+{
+8006642c:	7149                	add	sp,sp,-368
+8006642e:	72fd                	lui	t0,0xfffff
+/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:34
+	pthread_barrierattr_t ba;
+	pthread_barrier_t barriers[BARRIER_NUM];
+	int cnt;</code></pre></div>
+<p>Which points to https://github.com/apache/nuttx-apps/tree/master/testing/ltp</p>
+<div class="example-wrap"><pre class="language-text"><code>sudo docker cp nuttx:/root/apps/testing/ltp/Kconfig /tmp
+nano /tmp/Kconfig
+sudo docker cp /tmp/Kconfig nuttx:/root/apps/testing/ltp/Kconfig</code></pre></div>
+<p>Change:</p>
+<div class="example-wrap"><pre class="language-text"><code>config TESTING_LTP_STACKSIZE
+	int &quot;Linux Test Project stack size&quot;
+	default 4096</code></pre></div>
+<p>To:</p>
+<div class="example-wrap"><pre class="language-text"><code>config TESTING_LTP_STACKSIZE
+	int &quot;Linux Test Project stack size&quot;
+	default 8192</code></pre></div>
+<p>And copy to docker.</p>
+<p>Re-run:</p>
+<div class="example-wrap"><pre class="language-text"><code>cd /root/nuttx
+make distclean
+cd tools/ci
+./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
+[ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div><h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>2 Bisect Run</h1>
 <p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
-<p>Bisect run</p>
 <p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
 <p>$ git bisect run my_script arguments</p>
 <p>Note that the script (my_script in the above example) should exit with code 0 if the current source code is good/old, and exit with a code between 1 and 127 (inclusive), except 125, if the current source code is bad/new.</p>
@@ -171,7 +207,7 @@ https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S</code><
 <p>The special exit code 125 should be used when the current source code cannot be tested. If the script exits with this code, the current revision will be skipped (see git bisect skip above). 125 was chosen as the highest sensible value to use for this purpose, because 126 and 127 are used by POSIX shells to signal specific error status (127 is for command not found, 126 is for command found but not executable—​these details do not matter, as they are normal errors in the script, as far as bisect run is concerned).</p>
 <p>You may often find that during a bisect session you want to have temporary modifications (e.g. s/#define DEBUG 0/#define DEBUG 1/ in a header file, or “revision that does not have this commit needs this patch applied to work around another problem this bisection is not interested in”) applied to the revision being tested.</p>
 <p>To cope with such a situation, after the inner git bisect finds the next revision to test, the script can apply the patch before compiling, run the real test, and afterwards decide if the revision (possibly with the needed patch) passed the test and then rewind the tree to the pristine state. Finally the script should exit with the status of the real test to let the git bisect run command loop determine the eventual outcome of the bisect session.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
