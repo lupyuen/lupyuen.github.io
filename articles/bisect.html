@@ -69,7 +69,13 @@
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1>
+<p>Current Failure: <a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
+<p>Previous Failure: <a href="https://github.com/apache/nuttx/issues/14808">rv-virt/citest: test_hello or test_pipe failed</a></p>
+<p>Due to: <a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
+<p>Fixed by: <a href="https://github.com/apache/nuttx/pull/15165">rv-virt/citest: Increase init task stack size to 3072</a></p>
+<p>TODO: Test Git Bisect</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
 cd nuttx
 
@@ -85,6 +91,62 @@ $ git bisect log</code></pre></div>
 <p>https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh</p>
 <p>https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh</p>
 <p><a href="https://gist.github.com/lupyuen/e822323378e09ae3c24a41c5f42abfd0">git bisect run my-test-script.sh</a></p>
+<p>TODO: With Docker</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker run \
+  -it \
+  --name nuttx \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+  /bin/bash
+cd
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
+pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
+cd nuttx/tools/ci
+./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
+[ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
+<p>TODO: Check size</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code># https:<span class="comment">//github.com/google/bloaty
+</span>$ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
+    FILE SIZE        VM SIZE    
+ --------------  -------------- 
+  <span class="number">46.1</span>%  <span class="number">6.80Mi   0.0</span>%       <span class="number">0    </span>.debug_info
+  <span class="number">17.1</span>%  <span class="number">2.53Mi   0.0</span>%       <span class="number">0    </span>.debug_line
+   <span class="number">8.6</span>%  <span class="number">1.26Mi   0.0</span>%       <span class="number">0    </span>.debug_abbrev
+   <span class="number">6.6</span>%  <span class="number">1000Ki   0.0</span>%       <span class="number">0    </span>.debug_loclists
+   <span class="number">6.2</span>%   <span class="number">941Ki  64.9</span>%   <span class="number">941Ki    </span>.text
+   <span class="number">5.1</span>%   <span class="number">772Ki   0.0</span>%       <span class="number">0    </span>.debug_str
+   <span class="number">2.5</span>%   <span class="number">381Ki  26.3</span>%   <span class="number">381Ki    </span>.rodata
+   <span class="number">1.8</span>%   <span class="number">277Ki   0.0</span>%       <span class="number">0    </span>.debug_frame
+   <span class="number">1.7</span>%   <span class="number">254Ki   0.0</span>%       <span class="number">0    </span>.symtab
+   <span class="number">1.2</span>%   <span class="number">174Ki   0.0</span>%       <span class="number">0    </span>.strtab
+   <span class="number">1.1</span>%   <span class="number">166Ki   0.0</span>%       <span class="number">0    </span>.debug_rnglists
+   <span class="number">1.1</span>%   <span class="number">164Ki   0.0</span>%       <span class="number">0    </span>.debug_line_str
+   <span class="number">0.0</span>%       <span class="number">0   8.1</span>%   <span class="number">118Ki    </span>.bss
+   <span class="number">0.8</span>%   <span class="number">114Ki   0.0</span>%       <span class="number">0    </span>.debug_aranges
+   <span class="number">0.1</span>%  <span class="number">8.31Ki   0.6</span>%  <span class="number">8.27Ki    </span>.data
+   <span class="number">0.0</span>%  <span class="number">5.00Ki   0.1</span>%     <span class="number">858    </span>[<span class="number">104 </span>Others]
+   <span class="number">0.0</span>%  <span class="number">3.89Ki   0.0</span>%       <span class="number">0    </span>[Unmapped]
+   <span class="number">0.0</span>%  <span class="number">2.97Ki   0.0</span>%       <span class="number">0    </span>.shstrtab
+   <span class="number">0.0</span>%     <span class="number">296   0.0</span>%     <span class="number">256    </span>.srodata.cst8
+   <span class="number">0.0</span>%     <span class="number">196   0.0</span>%       <span class="number">0    </span>[ELF Headers]
+   <span class="number">0.0</span>%     <span class="number">144   0.0</span>%     <span class="number">104    </span>.sdata.called
+ <span class="number">100.0</span>%  <span class="number">14.8Mi 100.0</span>%  <span class="number">1.42Mi    </span>TOTAL
+
+$ /tools/bloaty/bin/bloaty /root/nuttx/nuttx -d compileunits
+bloaty: Unknown ELF machine value: <span class="number">243</span><span class="string">'
+
+</span>Fuchsia supports it:
+https:<span class="comment">//fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/
+
+</span>cd
+git clone https:<span class="comment">//fuchsia.googlesource.com/third_party/bloaty
+</span>cd bloaty
+cmake -B build -G Ninja -S .
+cmake --build build
+/root/bloaty/bin/bloaty /root/nuttx/nuttx -d compileunits</code></pre></div>
 <p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
 <p>Bisect run</p>
 <p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
@@ -94,8 +156,6 @@ $ git bisect log</code></pre></div>
 <p>The special exit code 125 should be used when the current source code cannot be tested. If the script exits with this code, the current revision will be skipped (see git bisect skip above). 125 was chosen as the highest sensible value to use for this purpose, because 126 and 127 are used by POSIX shells to signal specific error status (127 is for command not found, 126 is for command found but not executable—​these details do not matter, as they are normal errors in the script, as far as bisect run is concerned).</p>
 <p>You may often find that during a bisect session you want to have temporary modifications (e.g. s/#define DEBUG 0/#define DEBUG 1/ in a header file, or “revision that does not have this commit needs this patch applied to work around another problem this bisection is not interested in”) applied to the revision being tested.</p>
 <p>To cope with such a situation, after the inner git bisect finds the next revision to test, the script can apply the patch before compiling, run the real test, and afterwards decide if the revision (possibly with the needed patch) passed the test and then rewind the tree to the pristine state. Finally the script should exit with the status of the real test to let the git bisect run command loop determine the eventual outcome of the bisect session.</p>
-<p><a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
