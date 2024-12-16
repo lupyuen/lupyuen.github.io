@@ -6,7 +6,7 @@
 
 TODO
 
-We're out for an [__overnight hike__](TODO), city to airport. Our [__Build Farm for Apache NuttX RTOS__](TODO) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](TODO). 
+We're out for an [__overnight hike__](https://www.strava.com/activities/13055019749), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
