@@ -101,7 +101,26 @@ git clone https://fuchsia.googlesource.com/third_party/bloaty
 cd bloaty
 cmake -B build -G Ninja -S .
 cmake --build build
-/root/bloaty/bin/bloaty /root/nuttx/nuttx -d compileunits
+cd /root/nuttx
+/root/bloaty/build/bloaty nuttx -d compileunits,segments,sections,symbols
+
+https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log
+```
+
+TODO: Dump the disassembly
+
+```text
+## Dump the disassembly to nuttx.S
+cd /root/nuttx
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+sudo docker cp nuttx:/root/nuttx/nuttx.S .
+
+https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S
 ```
 
 https://git-scm.com/docs/git-bisect#_bisect_run
