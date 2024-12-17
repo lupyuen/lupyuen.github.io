@@ -80,7 +80,15 @@ Mastodon is mostly used for Global Social Networking [__(Fediverse)__](TODO). Th
 
 (Think "Social Network for NuttX Maintainers")
 
-_That's a weird flex. How to get started?_
+TODO: Pic of Mastodon
+
+_OK weird flex. How to get started?_
+
+We begin by installing our __Mastodon Server with Docker__...
+
+- TODO
+
+Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus we tweaked the steps a bit.
 
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
 
