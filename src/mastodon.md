@@ -92,9 +92,21 @@ Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus
 
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
 
-# Test our Mastodon Server
+_Will we have Users in our Mastodon Server?_
+
+Surprisingly, Nope! Our Mastodon Server shall be a tad Anti-Social...
+
+- TODO: Bot User
+
+- TODO: Federated ActivityPub
+
+TODO: Screenshot of user
+
+TODO: Approve user
 
 TODO: Working without email
+
+# Test our Mastodon Server
 
 Monitor the logs
 
