@@ -287,86 +287,50 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: CI Test on macOS Arm64
 
-TODO: This is how we replicate CI Test on macOS Apple Silicon
+This is how we replicate the CI Test on __macOS Apple Silicon__...
 
 ```bash
-## Pytest
-cd $HOME/nuttx-build-farm
+## From https://lupyuen.github.io/articles/ci5
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+
+## Set the GitHub Token: (Should have Gist Permission)
+## export GITHUB_TOKEN=...
+. $HOME/github-token.sh
+brew install neofetch gh glab
+
+## Run One Single NuttX CI Job on macOS
 ./run-job-macos.sh risc-v-05
-exit
-
-# run-job-macos.sh risc-v-05
-# https://gist.github.com/lupyuen/210b6a33d6c51293ad985247ecfc47a0
-
-# run-job-macos.sh risc-v-05: rv-virt_20241210_190204.log
-# https://gist.github.com/lupyuen/6bd3b60a93ddac13e20c825f8a171ed6
-
-# ps works OK on nsh 32-bit
-# https://gist.github.com/lupyuen/4d69faccde982ad236f45f93d6fb1f17#file-special-qemu-riscv-nsh-log-L257
-
-# $ ps aux | grep qemu
-# qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata
-# tee /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241210_184405.log
-# /bin/bash -c qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata | tee /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241210_184405.log
-# /opt/homebrew/Cellar/python@3.13/3.13.0_1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python -m pytest -m qemu or rv_virt ./ -B rv-virt -P /private/tmp/run-job-macos/nuttx -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-# bash /private/tmp/run-job-macos/nuttx/../nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/run
-
-## ls -l /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu
-## cp /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/* .
-## rv-virt_20241210_175024.log
-## python3 -m pytest -m qemu or rv_virt ./ -B rv-virt -P /private/tmp/run-job-macos/nuttx -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-## python3 \
-##   -m pytest \
-##   -m qemu or rv_virt ./ \
-##   -B rv-virt \
-##   -P /private/tmp/run-job-macos/nuttx \
-##   -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu \
-##   -R qemu \
-##   -C \
-##   --json=/private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-## cd /private/tmp/run-job-macos/nuttx/tools/ci/testrun/script
-## python3 -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /private/tmp/run-job-macos/nuttx -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-cd tools/ci/testrun/script
-python3 -m venv .venv
-source .venv/bin/activate
-pip3 install pytest pexpect serial
-
-cd /private/tmp/run-job-macos/nuttx/tools/ci/testrun/script
-python3 -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /private/tmp/run-job-macos/nuttx -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C
-exit
-
-python3 \
-  -m pytest \
-  -m 'qemu or rv_virt' ./ \
-  -B rv-virt \
-  -P /private/tmp/run-job-macos/nuttx \
-  -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu \
-  -R qemu \
-  -C
-exit
-
-python3 \
-  -m pytest \
-  -m 'qemu or rv_virt' ./ \
-  -B rv-virt \
-  -P $HOME/riscv/nuttx \
-  -L $HOME/riscv/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu \
-  -R qemu \
-  -C \
-  --json=$HOME/riscv/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-exit
-
-python3 -m venv .venv
-source .venv/bin/activate
-pip3 install pytest
-python3 \
-  -m pytest \
-  -m 'qemu or rv_virt' ./ \
-  -B rv-virt \
-  -P . \
-  -L boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu \
-  -R qemu \
-  -C \
-  --json=boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
-exit
 ```
+
+(Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20))
+
+We wait for the CI Test to fail. Then we snoop the __Background Processes__...
+
+```bash
+$ ps aux | grep qemu
+
+## citest/run calls pytest...
+## python3 -m pytest -m "${mark}" ./ -B ${BOARD} -P ${path} -L ${logs}/${BOARD}/${core} -R ${target} -C --json=${logs}/${BOARD}/${core}/pytest.json
+Python -m pytest -m 'qemu or rv_virt' ./ -B rv-virt -P /private/tmp/run-job-macos/nuttx -L /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
+
+## Which boots NuttX on QEMU RISC-V...
+qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,if=none,format=raw,file=./fatfs.img -device virtio-blk-device,bus=virtio-mmio-bus.0,drive=userdata
+
+## And tees the output to this Log File
+tee /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241210_184405.log
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/210b6a33d6c51293ad985247ecfc47a0)
+
+Thus we extract the CI Test Logs here...
+
+```bash
+$ cat /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/* 
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> cmocka --list
+Cmocka Test Start ...
+```
+
+[(See the __CI Test Log__)](https://gist.github.com/lupyuen/6bd3b60a93ddac13e20c825f8a171ed6)

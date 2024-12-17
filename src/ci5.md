@@ -280,7 +280,7 @@ If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! 🙏 Lik
 ## Set the GitHub Token: (Should have Gist Permission)
 ## export GITHUB_TOKEN=...
 . $HOME/github-token.sh
-brew install neofetch gh
+brew install neofetch gh glab
 
 ## Run All NuttX CI Jobs on macOS
 ## Will repeat forever
