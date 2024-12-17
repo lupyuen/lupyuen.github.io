@@ -185,7 +185,18 @@ dump_assert_info: Current Version: NuttX  12.7.0 5607eece84 Dec 11 2024 06:34:00
 dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a806
 up_dump_register: EPC: 80008bfe</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
-<p>Hmmm this looks super interesting… NuttX “<strong><code>ps</code></strong>” crashes inside QEMU!</p>
+<p>Hmmm this looks super interesting…</p>
+<ul>
+<li>
+<p>CI Test sends <strong>NSH Commands</strong> to NuttX</p>
+</li>
+<li>
+<p>CI Test validates the <strong>NSH Response</strong></p>
+</li>
+<li>
+<p>But NuttX “<strong><code>ps</code></strong>” crashes inside QEMU!</p>
+</li>
+</ul>
 <p>That’s why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!</p>
 <h1 id="test-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#test-nuttx-on-qemu-risc-v">§</a>4 Test NuttX on QEMU RISC-V</h1>
 <p><em>What if we test rv-virt:citest on QEMU?</em></p>
