@@ -229,7 +229,7 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 [UPDATE: __Tiago Medicci Serrano__ has just fixed the "__`ps`__" crash yay!](https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218)
 
-[(But __another bug__ appears. Exactly like Kafka on Groundhog Day!)](https://github.com/apache/nuttx/issues/15170)
+[(But __another bug__ appears. Exactly like Kafka on Groundhog Day sigh)](https://github.com/apache/nuttx/issues/15170)
 
 ![Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
 
@@ -287,7 +287,9 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 Next Article: We'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 
-Maybe Later: Let's chat about __Git Bisect__ and how we discover Breaking Commits in NuttX.
+Then Later: Let's talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
+
+After That: What would NuttX Life be like without GitHub? We try out (self-hosted) __Forgejo Software Forge__ with NuttX.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
