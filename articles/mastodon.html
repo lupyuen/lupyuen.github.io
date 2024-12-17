@@ -66,7 +66,7 @@
     <h1 class="title">(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#mastodon-for-nuttx-ci" title="Mastodon for NuttX CI">1 Mastodon for NuttX CI</a><ul></ul></li>
-<li><a href="#install-our-mastodon-server" title="Install our Mastodon Server">2 Install our Mastodon Server</a><ul></ul></li>
+<li><a href="#our-mastodon-server" title="Our Mastodon Server">2 Our Mastodon Server</a><ul></ul></li>
 <li><a href="#test-our-mastodon-server" title="Test our Mastodon Server">3 Test our Mastodon Server</a><ul></ul></li>
 <li><a href="#post-nuttx-builds-to-mastodon" title="Post NuttX Builds to Mastodon">4 Post NuttX Builds to Mastodon</a><ul></ul></li>
 <li><a href="#todo" title="TODO">5 TODO</a><ul></ul></li>
@@ -121,8 +121,11 @@
 </li>
 </ol>
 <p>TODO: Pic of notification</p>
-<p><em>Where do the Failed Builds come from?</em></p>
-<p>TODO: NuttX Dashboard</p>
+<p><em>How did we get the Failed NuttX Builds?</em></p>
+<p>Thanks to the NuttX Community: We have a (self-hosted) <a href="TODO"><strong>NuttX Build Farm</strong></a> that continously compiles All NuttX Targets. (Roughly TODO)</p>
+<p>Failed Builds are auto-escalated to the <a href="TODO"><strong>NuttX Dashboard</strong></a>. (Grafana + Prometheus)</p>
+<p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
+<p>First we talk about Mastodon…</p>
 <p>TODO: mastodon-mobile1.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile1.png" alt="TODO" /></p>
 <p>TODO: mastodon-mobile2.png</p>
@@ -131,7 +134,8 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="TODO" /></p>
 <p>TODO: mastodon-mobile4.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile4.png" alt="TODO" /></p>
-<h1 id="install-our-mastodon-server"><a class="doc-anchor" href="#install-our-mastodon-server">§</a>2 Install our Mastodon Server</h1>
+<h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
+<p><em>What kind of an animal is Mastodon?</em></p>
 <p>TODO: Straightforwrd, thanks to the excellent Mastodon Docs</p>
 <p>TODO: SSL / Hosting Provider</p>
 <p>We use port 3001 because 3000 is already used by Grafana</p>
