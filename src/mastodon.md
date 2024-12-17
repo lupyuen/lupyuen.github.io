@@ -26,7 +26,7 @@ TODO: Pic of search
 
 # Mastodon for NuttX CI
 
-1.  Register for a Mastodon Account on any Fediverse Server (I got mine at [__`qoto.org`__](TODO))
+1.  Register for a __Mastodon Account__ on any Fediverse Server (I got mine at [__`qoto.org`__](TODO))
 
 1.  __On Our Mobile Device:__ Install a Mastodon App (like [__Tusky__](TODO)) and log in
 
@@ -40,10 +40,13 @@ TODO: Pic of search
 
 1.  Tap the __Follow__ button. And the __Notify__ button beside it.
 
-1.  That's all! When a NuttX Build Fails, we'll see a Notification in the Mastodon App...
+1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__...
 
 TODO: Pic of notification
 
+_Where do the Failed Builds come from?_
+
+TODO: NuttX Dashboard
 
 TODO: mastodon-mobile1.png
 
