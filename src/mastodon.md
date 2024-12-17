@@ -78,7 +78,9 @@ Think Twitter... But __Open-Source__ and __Self-Hosted__!
 
 Mastodon is mostly used for Global Social Networking [__(Fediverse)__](TODO). Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of __Failed NuttX Builds__.
 
-_(Think "Social Network for NuttX Maintainers")_
+(Think "Social Network for NuttX Maintainers")
+
+_That's a weird flex. How to get started?_
 
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
 
