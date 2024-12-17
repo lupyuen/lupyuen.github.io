@@ -44,9 +44,15 @@ TODO: Pic of search
 
 TODO: Pic of notification
 
-_Where do the Failed Builds come from?_
+_How did we get the Failed NuttX Builds?_
 
-TODO: NuttX Dashboard
+Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](TODO) that continously compiles All NuttX Targets. (Roughly TODO)
+
+Failed Builds are auto-escalated to the [__NuttX Dashboard__](TODO). (Grafana + Prometheus)
+
+In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboard into __Mastodon Posts__.
+
+First we talk about Mastodon...
 
 TODO: mastodon-mobile1.png
 
@@ -64,7 +70,9 @@ TODO: mastodon-mobile4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
 
-# Install our Mastodon Server
+# Our Mastodon Server
+
+_What kind of an animal is Mastodon?_
 
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
 
