@@ -299,7 +299,7 @@ Next Article: We'll chat about an __Experimental Mastodon Server__ for NuttX Con
 
 Then Later: Let's talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
 
-After That: What would NuttX Life be like without GitHub? We try out (self-hosted) __Forgejo Software Forge__ with NuttX.
+After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Software Forge__ with NuttX.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
