@@ -74,11 +74,11 @@ TODO: mastodon-mobile4.png
 
 _What kind of an animal is Mastodon?_
 
+Think Twitter... But __Open-Source__ and __Self-Hosted__!
+
+Mastodon is mostly used for Global Social Networking [__(Fediverse)__](TODO). Though today we're implementing Mastodon for something more creative TODO
+
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
-
-TODO: SSL / Hosting Provider
-
-We use port 3001 because 3000 is already used by Grafana
 
 # Test our Mastodon Server
 
