@@ -24,6 +24,8 @@ The Bug Stops Here! In this article, we study the internals of the __NuttX CI Te
 
 - TODO
 
+![TODO](https://lupyuen.github.io/images/ci7-title2.jpg)
+
 # Run the CI Test
 
 __Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And figure out why it fails _rv-virt:citest_...
@@ -72,6 +74,8 @@ test_usrsocktest FAILED
 Which is totally unhelpful. Why is it failing?
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d)
+
+![TODO](https://lupyuen.github.io/images/ci7-title3.jpg)
 
 # Snoop the CI Test
 
@@ -126,6 +130,8 @@ Let's inspect the Log File...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
+![TODO](https://lupyuen.github.io/images/ci7-title4.jpg)
+
 # Dump the CI Log File
 
 From above: We see that everything goes into this __CI Test Log File__...
@@ -161,6 +167,8 @@ Hmmm this looks super interesting...
 - But NuttX "__`ps`__" crashes inside QEMU!
 
 That's why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!
+
+![TODO](https://lupyuen.github.io/images/ci7-title5.jpg)
 
 # Test NuttX on QEMU RISC-V
 
@@ -223,6 +231,8 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 [(But __another bug__ appears. Exactly like Kafka on Groundhog Day!)](https://github.com/apache/nuttx/issues/15170)
 
+![Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
+
 # Why So Difficult?
 
 1.  _What's this Pytest we saw earlier?_
@@ -269,9 +279,15 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
     Someday we could call Pytest to do [__Test-Driven Development__](https://en.wikipedia.org/wiki/Test-driven_development) of NuttX Apps and NuttX Drivers. Which means we can write the Test Cases in Pytest, before writing a Single Line of NuttX Code!
 
+![No more CI Test errors yay!](https://lupyuen.github.io/images/ci7-dashboard2.png)
+
+[_No more CI Test errors yay!_](https://nuttx-dashboard.org)
+
 # What's Next
 
 Next Article: We'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
+
+Maybe Later: Let's chat about __Git Bisect__ and how we discover Breaking Commits in NuttX.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
