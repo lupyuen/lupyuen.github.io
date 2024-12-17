@@ -315,7 +315,8 @@ brew install neofetch gh glab
 
 ## Run One Single NuttX CI Job on macOS
 ./run-job-macos.sh risc-v-05</code></pre></div>
-<p>(Also works for <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20"><strong>GitLab Snippets</strong></a>)</p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20">(Also works for <strong>GitLab Snippets</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/210b6a33d6c51293ad985247ecfc47a0">(See the <strong>Complete Log</strong>)</a></p>
 <p>We wait for the CI Test to fail. Then we snoop the <strong>Background Processes</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ps aux | grep qemu
 
@@ -328,8 +329,8 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 
 ## And tees the output to this Log File
 tee /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/rv-virt_20241210_184405.log</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/210b6a33d6c51293ad985247ecfc47a0">(See the <strong>Complete Log</strong>)</a></p>
-<p>Thus we extract the CI Test Logs here…</p>
+<p><a href="https://gist.github.com/lupyuen/b39d4d3f0627ed0a140ba154c8cac7eb#file-gistfile1-txt-L1-L11">(See the <strong>Complete Log</strong>)</a></p>
+<p>Which says that the CI Test Logs are here…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/* 
 
 NuttShell (NSH) NuttX-12.7.0
