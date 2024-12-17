@@ -1,6 +1,6 @@
 # Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)
 
-📝 _30 Dec 2024_
+📝 _22 Dec 2024_
 
 ![Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
 
@@ -28,7 +28,7 @@ The Bug Stops Here! In this article, we study the internals of the __NuttX CI Te
 
 __Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And figure out why it fails _rv-virt:citest_...
 
-[(Steps for __macOS Arm64__)](TODO)
+[(Steps for __macOS Arm64__)](https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64)
 
 ```bash
 ## Start the NuttX Docker Image
