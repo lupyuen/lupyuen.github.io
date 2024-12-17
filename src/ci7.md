@@ -313,7 +313,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: CI Test on macOS Arm64
 
-This is how we replicate the CI Test on __macOS Apple Silicon__...
+In the previous article we spoke about Compiling Everything NuttX on macOS Arm64...
+
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+
+Today we apply the above steps to replicate the CI Test on __macOS Apple Silicon__...
 
 ```bash
 ## From https://lupyuen.github.io/articles/ci5
