@@ -71,7 +71,7 @@
 <li><a href="#test-nuttx-on-qemu-risc-v" title="Test NuttX on QEMU RISC-V">4 Test NuttX on QEMU RISC-V</a><ul></ul></li>
 <li><a href="#why-so-difficult" title="Why So Difficult?">5 Why So Difficult?</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
+<li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)" /></p>
 <p>Every Day: Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> will flag this bothersome bug, <a href="https://github.com/apache/nuttx/issues/14808"><strong>since a month ago</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
@@ -89,7 +89,7 @@ test_usrsocktest FAILED
 </ul>
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
-<p><a href="TODO">(Steps for <strong>macOS Arm64</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
 ## Name the Docker Container as `nuttx`
 sudo docker run \
