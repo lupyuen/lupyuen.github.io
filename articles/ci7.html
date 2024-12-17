@@ -83,11 +83,28 @@ test_helloxx     FAILED
 test_pipe        FAILED
 test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
-<p>The Bug Stops Here! In this article, we study the internals of the <strong>NuttX CI Test</strong> (Continuous Integration) as we stomp the bug…</p>
+<p>The Bug Stops Here! In this article: We study the internals of the <strong>NuttX CI Test</strong> (for Continuous Integration) as we stomp the bug…</p>
 <ul>
-<li>TODO</li>
+<li>
+<p>We run the <strong>CI Test on Docker</strong></p>
+</li>
+<li>
+<p>Snoop and Learn the <strong>CI Test Internals</strong></p>
+</li>
+<li>
+<p>Locate and Dump the <strong>CI Log File</strong></p>
+</li>
+<li>
+<p>Isolate the <strong>NuttX Crash</strong> with QEMU RISC-V</p>
+</li>
+<li>
+<p>Maybe <strong>CI Troubleshooting</strong> could be simpler?</p>
+</li>
+<li>
+<p>Everything above works on <strong>macOS Arm64</strong> too!</p>
+</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/ci7-title2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title2.jpg" alt="Running the CI Test with Docker" /></p>
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
 <p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
@@ -124,7 +141,7 @@ test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
 <p>Which is totally unhelpful. Why is it failing?</p>
 <p><a href="https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d">(See the <strong>Complete Log</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/ci7-title3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title3.jpg" alt="Inside a CI Test" /></p>
 <h1 id="snoop-the-ci-test"><a class="doc-anchor" href="#snoop-the-ci-test">§</a>2 Snoop the CI Test</h1>
 <p>To understand what went wrong: We connect to the <strong>Docker Container</strong>. And snoop the <strong>Background Processes</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Connect to our Running Docker Container
@@ -167,7 +184,7 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 ## And tees the output to the above Log File</code></pre></div>
 <p>Let’s inspect the Log File…</p>
 <p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/ci7-title4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title4.jpg" alt="Dumping the CI Log File" /></p>
 <h1 id="dump-the-ci-log-file"><a class="doc-anchor" href="#dump-the-ci-log-file">§</a>3 Dump the CI Log File</h1>
 <p>From above: We see that everything goes into this <strong>CI Test Log File</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
@@ -201,7 +218,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </li>
 </ul>
 <p>That’s why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!</p>
-<p><img src="https://lupyuen.github.io/images/ci7-title5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title5.jpg" alt="Isolating the bug with QEMU RISC-V" /></p>
 <h1 id="test-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#test-nuttx-on-qemu-risc-v">§</a>4 Test NuttX on QEMU RISC-V</h1>
 <p><em>What if we test rv-virt:citest on QEMU?</em></p>
 <p>For simpler troubleshooting: This is how we compile <em>rv-virt:citest</em> inside Docker…</p>
@@ -323,6 +340,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci7.md"><strong>lupyuen.github.io/src/ci7.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title2.jpg" alt="Running the CI Test with macOS Arm64" /></p>
 <h1 id="appendix-ci-test-on-macos-arm64"><a class="doc-anchor" href="#appendix-ci-test-on-macos-arm64">§</a>7 Appendix: CI Test on macOS Arm64</h1>
 <p>In the previous article we spoke about Compiling Everything NuttX on macOS Arm64…</p>
 <ul>
