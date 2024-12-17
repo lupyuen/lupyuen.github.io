@@ -251,6 +251,8 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
     Oh yes we use Plain Old Expect for Daily-Testing [__SG2000 NuttX__](https://lupyuen.github.io/articles/sg2000a#automated-test-script) and [__Ox64 NuttX__](https://lupyuen.github.io/articles/tinyemu3#scripting-the-expected). It terminates reliably, and it won't hang forever, [__unlike Pexpect__](https://github.com/apache/nuttx/issues/14680).
 
+    [(Hence this __Horrible Hack__)](https://github.com/apache/nuttx/pull/14849)
+
 1.  _Why so hard to extract the CI Test Log?_
 
     Yeah we should probably add the CI Test Log to __GitHub Actions Artifacts__ for easier downloading. Then NuttX Dashboard can __ingest the CI Test Log__ and render it sensibly.
