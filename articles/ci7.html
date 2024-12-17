@@ -87,6 +87,7 @@ test_usrsocktest FAILED
 <ul>
 <li>TODO</li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/ci7-title2.jpg" alt="TODO" /></p>
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
 <p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
@@ -123,6 +124,7 @@ test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
 <p>Which is totally unhelpful. Why is it failing?</p>
 <p><a href="https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title3.jpg" alt="TODO" /></p>
 <h1 id="snoop-the-ci-test"><a class="doc-anchor" href="#snoop-the-ci-test">§</a>2 Snoop the CI Test</h1>
 <p>To understand what went wrong: We connect to the <strong>Docker Container</strong>. And snoop the <strong>Background Processes</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Connect to our Running Docker Container
@@ -165,6 +167,7 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 ## And tees the output to the above Log File</code></pre></div>
 <p>Let’s inspect the Log File…</p>
 <p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title4.jpg" alt="TODO" /></p>
 <h1 id="dump-the-ci-log-file"><a class="doc-anchor" href="#dump-the-ci-log-file">§</a>3 Dump the CI Log File</h1>
 <p>From above: We see that everything goes into this <strong>CI Test Log File</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
@@ -198,6 +201,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </li>
 </ul>
 <p>That’s why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!</p>
+<p><img src="https://lupyuen.github.io/images/ci7-title5.jpg" alt="TODO" /></p>
 <h1 id="test-nuttx-on-qemu-risc-v"><a class="doc-anchor" href="#test-nuttx-on-qemu-risc-v">§</a>4 Test NuttX on QEMU RISC-V</h1>
 <p><em>What if we test rv-virt:citest on QEMU?</em></p>
 <p>For simpler troubleshooting: This is how we compile <em>rv-virt:citest</em> inside Docker…</p>
@@ -243,6 +247,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p>We’ll probably <a href="https://lupyuen.github.io/articles/ci6#whats-next"><strong>Rewind The Build</strong></a> and retest <em>rv-virt:citest</em> on QEMU RISC-V.</p>
 <p><a href="https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218">UPDATE: <strong>Tiago Medicci Serrano</strong> has just fixed the “<strong><code>ps</code></strong>” crash yay!</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/15170">(But <strong>another bug</strong> appears. Exactly like Kafka on Groundhog Day!)</a></p>
+<p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)" /></p>
 <h1 id="why-so-difficult"><a class="doc-anchor" href="#why-so-difficult">§</a>5 Why So Difficult?</h1>
 <ol>
 <li>
@@ -286,8 +291,11 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p>Someday we could call Pytest to do <a href="https://en.wikipedia.org/wiki/Test-driven_development"><strong>Test-Driven Development</strong></a> of NuttX Apps and NuttX Drivers. Which means we can write the Test Cases in Pytest, before writing a Single Line of NuttX Code!</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/ci7-dashboard2.png" alt="No more CI Test errors yay!" /></p>
+<p><a href="https://nuttx-dashboard.org"><em>No more CI Test errors yay!</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>Next Article: We’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
+<p>Maybe Later: Let’s chat about <strong>Git Bisect</strong> and how we discover Breaking Commits in NuttX.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
