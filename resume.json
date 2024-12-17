@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-12-22",
+      "website": "https://lupyuen.github.io/articles/ci7",
+      "summary": "Every Day: Apache NuttX RTOS on QEMU RISC-V Emulator fails our Continuous Integration Test. The Bug Stops Here! In this article, we study the internals of a NuttX CI Test (Continuous Integration) as we fix the bug."
+    },
+    {
       "name": "Rewinding a Build for Apache NuttX RTOS (Docker)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-15",

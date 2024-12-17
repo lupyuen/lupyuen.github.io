@@ -20,11 +20,21 @@ test_usrsocktest FAILED
 [...Failing all the way...]
 ```
 
-The Bug Stops Here! In this article, we study the internals of the __NuttX CI Test__ (Continuous Integration) as we stomp the bug...
+The Bug Stops Here! In this article: We study the internals of the __NuttX CI Test__ (for Continuous Integration) as we stomp the bug...
 
-- TODO
+- We run the __CI Test on Docker__
 
-![TODO](https://lupyuen.github.io/images/ci7-title2.jpg)
+- Snoop and Learn the __CI Test Internals__
+
+- Locate and Dump the __CI Log File__
+
+- Isolate the __NuttX Crash__ with QEMU RISC-V
+
+- Maybe __CI Troubleshooting__ could be simpler?
+
+- Everything above works on __macOS Arm64__ too!
+
+![Running the CI Test with Docker](https://lupyuen.github.io/images/ci7-title2.jpg)
 
 # Run the CI Test
 
@@ -75,7 +85,7 @@ Which is totally unhelpful. Why is it failing?
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c59a642a3f3c5934ec53d5d72dd6e01d)
 
-![TODO](https://lupyuen.github.io/images/ci7-title3.jpg)
+![Inside a CI Test](https://lupyuen.github.io/images/ci7-title3.jpg)
 
 # Snoop the CI Test
 
@@ -130,7 +140,7 @@ Let's inspect the Log File...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
-![TODO](https://lupyuen.github.io/images/ci7-title4.jpg)
+![Dumping the CI Log File](https://lupyuen.github.io/images/ci7-title4.jpg)
 
 # Dump the CI Log File
 
@@ -168,7 +178,7 @@ Hmmm this looks super interesting...
 
 That's why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!
 
-![TODO](https://lupyuen.github.io/images/ci7-title5.jpg)
+![Isolating the bug with QEMU RISC-V](https://lupyuen.github.io/images/ci7-title5.jpg)
 
 # Test NuttX on QEMU RISC-V
 
@@ -310,6 +320,8 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci7.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci7.md)
+
+![Running the CI Test with macOS Arm64](https://lupyuen.github.io/images/ci7-title2.jpg)
 
 # Appendix: CI Test on macOS Arm64
 
