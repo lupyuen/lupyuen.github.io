@@ -22,9 +22,28 @@ TODO: mastodon-mobile4.png
 
 in this article we talk about Mastodon 
 
+TODO: Pic of search
+
 # Mastodon for NuttX CI
 
-TODO
+1.  Register for a Mastodon Account on any Fediverse Server (I got mine at [__`qoto.org`__](TODO))
+
+1.  __On Our Mobile Device:__ Install a Mastodon App (like [__Tusky__](TODO)) and log in
+
+1.  Tap the __Search__ button. Enter...
+
+    ```text
+    @nuttx_build@nuttx-feed.org
+    ```
+
+    Tap the __Accounts__ tab, then tap the account that appears. (Pic above)
+
+1.  Tap the __Follow__ button. And the __Notify__ button beside it.
+
+1.  That's all! When a NuttX Build Fails, we'll see a Notification in the Mastodon App...
+
+TODO: Pic of notification
+
 
 TODO: mastodon-mobile1.png
 
