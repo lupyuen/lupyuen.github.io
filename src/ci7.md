@@ -152,7 +152,13 @@ up_dump_register: EPC: 80008bfe
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e)
 
-Hmmm this looks super interesting... NuttX "__`ps`__" crashes inside QEMU!
+Hmmm this looks super interesting...
+
+- CI Test sends __NSH Commands__ to NuttX
+
+- CI Test validates the __NSH Response__
+
+- But NuttX "__`ps`__" crashes inside QEMU!
 
 That's why CI Test hangs, refuses to accept NSH Test Commands, and fails all subsequent tests!
 
