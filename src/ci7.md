@@ -255,6 +255,8 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
     Yeah we should probably add the CI Test Log to __GitHub Actions Artifacts__ for easier downloading. Then NuttX Dashboard can __ingest the CI Test Log__ and render it sensibly.
 
+    [(Also: Extract the __Leftover Files__ that fail the defconfig check)](https://github.com/apache/nuttx/pull/15188#issuecomment-2547281097)
+
 1.  _Can we do more with Pytest?_
 
     Someday we could call Pytest to do [__Test-Driven Development__](https://en.wikipedia.org/wiki/Test-driven_development) of NuttX Apps and NuttX Drivers. Which means we can write the Test Cases in Pytest, before writing a Single Line of NuttX Code!
