@@ -1,4 +1,4 @@
-# TODO (Git Bisect)
+# Bisecting a Bug in Apache NuttX RTOS (Git Bisect)
 
 📝 _31 Jan 2024_
 
@@ -61,6 +61,8 @@ sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash
 [NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1. nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/27cb7f5359bc0a8176db9815ba8b162a)
 
 Assume will terminate in 1 hour! Actually terminates in 30 mins. Change this for your machine!
+
+Press Ctrl-C very carefully, don't crash Docker!
 
 How many commits between 14 Nov and 4 Dec?
 
