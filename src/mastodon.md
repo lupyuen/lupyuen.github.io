@@ -112,7 +112,7 @@ This is how we create our __Bot User for Mastodon__...
 
 TODO: Pic of Create User
 
-Details are here...
+Details in the Appendix...
 
 - TODO: Create User
 
@@ -173,6 +173,70 @@ See the steps here...
 - TODO: Access Token
 
 # Prometheus to Mastodon
+
+Now comes the tricky bit. How to transmogrify __NuttX Dashboard__...
+
+TODO: Pic of NuttX Dashboard
+
+Into __Mastodon Posts__?
+
+TODO: Pic of posts
+
+This is our grand plan...
+
+1.  __Outcomes of NuttX Builds__ are already recorded...
+
+1.  Inside our __Prometheus Time-Series Database__ (open-source)
+
+1.  Thus we __Query the Failed Builds__ from Prometheus Database
+
+1.  Reformat them as __Mastodon Posts__
+
+1.  Submit to Mastodon via __ActivityPub API__
+
+TODO: Pic of flow
+
+__Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from Prometheus...
+
+TODO: Query
+
+Prometheus returns a huge bunch of fields...
+
+TODO: Pic of Prometheus
+
+[(Explained here)](TODO)
+
+__Query the Failed Builds:__ Now we do it in Rust...
+
+```rust
+TODO
+```
+
+[(Explained here)](TODO)
+
+__Reformat as Mastodon Posts:__ From JSON into Plain Text...
+
+```rust
+TODO
+```
+
+[(Explained here)](TODO)
+
+__Submit to Mastodon via ActivityPub:__ By posting JSON over HTTPS...
+
+```rust
+TODO
+```
+
+[(Explained here)](TODO)
+
+__Skip Duplicates:__ Remember everything in a JSON File, so we won't notify the same thing twice...
+
+```rust
+TODO
+```
+
+[(Explained here)](TODO)
 
 TODO
 
