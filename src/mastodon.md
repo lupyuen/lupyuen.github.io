@@ -86,29 +86,63 @@ _OK weird flex. How to get started?_
 
 We begin by installing our __Mastodon Server with Docker__...
 
-- TODO
+- TODO: Install Server
 
 Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus we tweaked the steps a bit.
 
 TODO: Straightforwrd, thanks to the excellent Mastodon Docs
 
+# Bot User for Mastodon
+
 _Will we have Users in our Mastodon Server?_
 
-Surprisingly, Nope! Our Mastodon Server shall be a tad Anti-Social...
+Surprisingly, Nope! Our Mastodon Server shall be a tad __Anti-Social__...
 
-- TODO: Bot User
+- We'll make __One Bot User__ _(nuttx_build)_ for posting NuttX Builds
 
-- TODO: Federated ActivityPub
+- __No Other Users__ on our server, since we're not really a Social Network
 
-TODO: Screenshot of user
+- But __Users on Other Servers__ _(like qoto.org)_ can follow our Bot User!
 
-TODO: Approve user
+- And receive __Notifications of Failed Builds__ through their accounts
 
-TODO: Working without email
+- That's the power of [__Federated ActivityPub__](TODO)!
+
+This is how we create our __Bot User for Mastodon__...
+
+TODO: Pic of Create User
+
+Details are here...
+
+- TODO: Create User
+
+We have a slight hiccup...
+
+# Email-Less Mastodon
+
+_How to verify the Email Address of our Bot User?_
+
+Remember we said our Mastodon Server has __Zero Budget__? That means we won't have an __Outgoing Email Server__. (SMTP)
+
+That's perfectly OK! Mastodon provides __Command-Line Tools__ to manage our users...
+
+```bash
+## TODO: Create User
+
+## TODO: Approve and verify user
+```
+
+The detailed steps are here...
+
+- TODO: Approve user
+
+# Post NuttX Builds to Mastodon
+
+TODO: Prometheus to Mastodon
 
 # Test our Mastodon Server
 
-Monitor the logs
+TODO
 
 ```text
 Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
@@ -117,15 +151,11 @@ curl https://nuttx-feed.org/api/v1/timelines/public | jq
 
 TODO: Federation
 
-# Post NuttX Builds to Mastodon
-
-TODO: Prometheus to Mastodon
+# TODO
 
 TODO: [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
 TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
-
-# TODO
 
 Need moderation?
 
