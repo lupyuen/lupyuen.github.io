@@ -66,6 +66,14 @@ Press Ctrl-C very carefully, don't crash Docker!
 
 How many commits between 14 Nov and 4 Dec?
 
+Now that we can bisect automatically: Shall we do this for All Failed Builds?
+
+NuttX Hash vs Apps Hash
+
+Inconsistent?
+
+[run-job-bisect.sh risc-v-05 94a2ce3641213cc702abc5c17b0f81a50c714a2e 1c7a7f7529475b0d535e2088a9c4e1532c487156 / fails at test_ltp_interfaces_sigaction_12_35](https://gist.github.com/lupyuen/7c9fa7d30fed3fe73ffeb7e7f1ddd0fb)
+
 # TODO
 
 Current Failure: [rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)](https://github.com/apache/nuttx/issues/15170)
