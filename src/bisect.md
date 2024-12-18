@@ -70,7 +70,11 @@ Now that we can bisect automatically: Shall we do this for All Failed Builds?
 
 NuttX Hash vs Apps Hash
 
-Inconsistent?
+But NuttX Commit might not compile with Apps Commit, must be compatible
+
+Maybe return special exit code 125 if can't compile
+
+Inconsistent CI Test?
 
 [run-job-bisect.sh risc-v-05 94a2ce3641213cc702abc5c17b0f81a50c714a2e 1c7a7f7529475b0d535e2088a9c4e1532c487156 / fails at test_ltp_interfaces_sigaction_12_35](https://gist.github.com/lupyuen/7c9fa7d30fed3fe73ffeb7e7f1ddd0fb)
 
