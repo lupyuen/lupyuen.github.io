@@ -102,7 +102,7 @@ Surprisingly, Nope! Our Mastodon Server shall be a tad __Anti-Social__...
 
 - __No Other Users__ on our server, since we're not really a Social Network
 
-- But __Users on Other Servers__ _(like qoto.org)_ can follow our Bot User!
+- But __Users on Other Servers__ _(like qoto.org)_ can Follow our Bot User!
 
 - And receive __Notifications of Failed Builds__ through their accounts
 
@@ -122,7 +122,7 @@ We have a slight hiccup...
 
 _How to verify the Email Address of our Bot User?_
 
-Remember our Mastodon Server has __Zero Budget__? That means we won't have an __Outgoing Email Server__. (SMTP)
+Remember our Mastodon Server has __Zero Budget__? This means we won't have an __Outgoing Email Server__. (SMTP)
 
 That's perfectly OK! Mastodon provides __Command-Line Tools__ to manage our users...
 
@@ -172,10 +172,11 @@ See the steps here...
 
 - TODO: Access Token
 
-TODO: Prometheus to Mastodon
+# Prometheus to Mastodon
+
+TODO
 
 # TODO
-
 
 ```text
 Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
