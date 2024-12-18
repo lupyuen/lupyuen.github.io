@@ -10,23 +10,13 @@ We're out for an [__overnight hike__](https://www.strava.com/activities/13055019
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
-TODO: Pic of mobile 
-
-TODO: mastodon-mobile3.png
-
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
-TODO: mastodon-mobile4.png
+TODO: In this article we talk about Mastodon 
 
-![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
+- TODO
 
-TODO: mastodon-mobile5.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile5.png)
-
-in this article we talk about Mastodon 
-
-TODO: Pic of search
+![TODO](https://lupyuen.github.io/images/mastodon-mobile1.png)
 
 # Mastodon for NuttX CI
 
@@ -44,9 +34,9 @@ TODO: Pic of search
 
 1.  Tap the __Follow__ button. And the __Notify__ button beside it.
 
-1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__ (linking to NuttX Build History)...
+1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__ (linking to NuttX Build History)
 
-TODO: Pic of notification
+![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
 _How did we get the Failed NuttX Builds?_
 
@@ -57,26 +47,6 @@ Failed Builds are auto-escalated to the [__NuttX Dashboard__](TODO). (Grafana + 
 In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboard into __Mastodon Posts__.
 
 First we talk about Mastodon...
-
-TODO: mastodon-mobile1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile1.png)
-
-TODO: mastodon-mobile2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile2.png)
-
-TODO: mastodon-mobile3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
-
-TODO: mastodon-mobile4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
-
-TODO: mastodon-mobile5.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-mobile5.png)
 
 # Our Mastodon Server
 
