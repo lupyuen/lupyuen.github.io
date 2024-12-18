@@ -30,13 +30,13 @@ Belated NuttX Apps Commits were ???
 ## TODO: Bisect CI Job
 job=risc-v-05
 
-## NuttX Commit #1: Runs OK
+## NuttX Commit #1 (14 Nov 2024): Runs OK
 ## nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
 
 ## NuttX Commit #2: Runs OK
 ## nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4
 
-## NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1
+## NuttX Commit #3 (4 Dec 2024): Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1
 ## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
 ## test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED   [ 17%]
 nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b
@@ -59,6 +59,10 @@ sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash
 [NuttX Commit #2: Runs OK. nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4](https://gist.github.com/lupyuen/e22cd208bd9ed3e36e59de2b44bb85ef)
 
 [NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1. nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/27cb7f5359bc0a8176db9815ba8b162a)
+
+Assume will terminate in 1 hour! Actually terminates in 30 mins. Change this for your machine!
+
+How many commits between 14 Nov and 4 Dec?
 
 # TODO
 
