@@ -175,7 +175,7 @@
 </ul>
 <p>This is how we create our <strong>Bot User for Mastodon</strong>…</p>
 <p>TODO: Pic of Create User</p>
-<p>Details are here…</p>
+<p>Details in the Appendix…</p>
 <ul>
 <li>TODO: Create User</li>
 </ul>
@@ -209,6 +209,50 @@
 <li>TODO: Access Token</li>
 </ul>
 <h1 id="prometheus-to-mastodon"><a class="doc-anchor" href="#prometheus-to-mastodon">§</a>6 Prometheus to Mastodon</h1>
+<p>Now comes the tricky bit. How to transmogrify <strong>NuttX Dashboard</strong>…</p>
+<p>TODO: Pic of NuttX Dashboard</p>
+<p>Into <strong>Mastodon Posts</strong>?</p>
+<p>TODO: Pic of posts</p>
+<p>This is our grand plan…</p>
+<ol>
+<li>
+<p><strong>Outcomes of NuttX Builds</strong> are already recorded…</p>
+</li>
+<li>
+<p>Inside our <strong>Prometheus Time-Series Database</strong> (open-source)</p>
+</li>
+<li>
+<p>Thus we <strong>Query the Failed Builds</strong> from Prometheus Database</p>
+</li>
+<li>
+<p>Reformat them as <strong>Mastodon Posts</strong></p>
+</li>
+<li>
+<p>Submit to Mastodon via <strong>ActivityPub API</strong></p>
+</li>
+</ol>
+<p>TODO: Pic of flow</p>
+<p><strong>Prometheus Time-Series Database:</strong> This is how we fetch the Failed Builds from Prometheus…</p>
+<p>TODO: Query</p>
+<p>Prometheus returns a huge bunch of fields…</p>
+<p>TODO: Pic of Prometheus</p>
+<p><a href="TODO">(Explained here)</a></p>
+<p><strong>Query the Failed Builds:</strong> Now we do it in Rust…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p><strong>Submit to Mastodon via ActivityPub:</strong> By posting JSON over HTTPS…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p><strong>Skip Duplicates:</strong> Remember everything in a JSON File, so we won’t notify the same thing twice…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
 curl https://nuttx-feed.org/api/v1/timelines/public | jq</code></pre></div>
