@@ -244,7 +244,7 @@ TODO
 
     [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
 
-    [__Overruning GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our devs won't wait forever for their CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
+    [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
 
 TODO
 
