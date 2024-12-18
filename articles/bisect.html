@@ -65,21 +65,52 @@
 
     <h1 class="title">TODO (Git Bisect)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#git-bisect-on-original-bug" title="Git Bisect on Original Bug">1 Git Bisect on Original Bug</a><ul></ul></li>
+<li><a href="#git-bisect-on-original-bug" title="Git Bisect on Original Bug">1 Git Bisect on Original Bug</a><ul>
+<li><a href="#nuttx-commits" title="NuttX Commits">1.1 NuttX Commits</a><ul></ul></li>
+<li><a href="#apps-commits" title="Apps Commits">1.2 Apps Commits</a><ul></ul></li></ul></li>
 <li><a href="#todo" title="TODO">2 TODO</a><ul></ul></li>
 <li><a href="#bisect-run" title="Bisect Run">3 Bisect Run</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>1 Git Bisect on Original Bug</h1>
+<h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>1 Git Bisect on Original Bug</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>1.1 NuttX Commits</h2>
 <p>https://github.com/apache/nuttx/issues/14808</p>
-<p>Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</p>
+<p>NuttX Commit #1: Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</p>
+<p>NuttX Commit #2: Later NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/656883fec5561ca91502a26bf018473ca0229aa4</p>
+<p>NuttX Commit #3: Belated Commits fail at test_ltp_interfaces_pthread_barrierattr_init_2_1: https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367</p>
+<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>1.2 Apps Commits</h2>
 <p>Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156</p>
+<p>Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4ddd2802a189fccc802230ab946d50a97cb93c</p>
+<p>Belated NuttX Apps Commits were ???</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Bisect CI Job
 job=risc-v-05
-nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+## NuttX Commit #1: Runs OK
+## nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+## NuttX Commit #2: Runs OK
+## nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4
+
+## NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1
+## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
+## test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED   [ 17%]
+nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b
+
+## Apps Commit #1: Runs OK
 apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
-sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1>
+
+## Apps Commit #2: ???
+## apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+## Apps Commit #3: ???
+## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
+## apps_hash=ce217b874437b2bd60ad2a2343442506cd8b50b8
+
+sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/89759c53accbf6caa717b39fd5e69bae">NuttX Commit #1: Runs OK. nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</a></p>
+<p><a href="https://gist.github.com/lupyuen/e22cd208bd9ed3e36e59de2b44bb85ef">NuttX Commit #2: Runs OK. nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4</a></p>
+<p><a href="https://gist.github.com/lupyuen/27cb7f5359bc0a8176db9815ba8b162a">NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1. nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b</a></p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1>
 <p>Current Failure: <a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
 <p>Previous Failure: <a href="https://github.com/apache/nuttx/issues/14808">rv-virt/citest: test_hello or test_pipe failed</a></p>
 <p>Due to: <a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
