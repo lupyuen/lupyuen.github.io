@@ -20,6 +20,10 @@ TODO: mastodon-mobile4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
 
+TODO: mastodon-mobile5.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile5.png)
+
 in this article we talk about Mastodon 
 
 TODO: Pic of search
@@ -40,7 +44,7 @@ TODO: Pic of search
 
 1.  Tap the __Follow__ button. And the __Notify__ button beside it.
 
-1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__...
+1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__ (linking to NuttX Build History)...
 
 TODO: Pic of notification
 
@@ -69,6 +73,10 @@ TODO: mastodon-mobile3.png
 TODO: mastodon-mobile4.png
 
 ![TODO](https://lupyuen.github.io/images/mastodon-mobile4.png)
+
+TODO: mastodon-mobile5.png
+
+![TODO](https://lupyuen.github.io/images/mastodon-mobile5.png)
 
 # Our Mastodon Server
 
@@ -240,36 +248,40 @@ TODO
 
 TODO
 
-# TODO
+# All Things Considered
+
+1.  _Will we accept Regular Users on our Mastodon Server?_
+
+    Probably not? We have __Zero Budget for User Moderation__. We'll ask folks to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.
+
+1.  _But any Fediverse User can reply to our Mastodon Posts?_
+
+    Yeah this could be useful! We might use this to discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](TODO) that was created for the Failed Build.
+
+1.  _How will we know when a Failed Build recovers?_
+
+    This gets tricky. Should we pester folks with an __Extra Push Notification__ whenever a Failed Build recovers?
+
+    For Complex Notifications: We might need to integrate [__Prometheus Alertmanager__](https://prometheus.io/docs/alerting/latest/alertmanager/) with Mastodon.
+
+1.  _Suppose I'm interested in only rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?_
+
+    Good question! We're still trying to figure out.
+
+1.  _Anything else we should monitor with Mastodon?_
+
+    [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) is a critical NuttX Job that needs to run regularly, without fail. We should post a Mastodon Notification if something fails to run.
+
+    [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
+
+    [__Overruning GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our devs won't wait forever for their CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
+
+TODO
 
 ```text
 Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
 curl https://nuttx-feed.org/api/v1/timelines/public | jq
 ```
-
-TODO: Federation
-
-TODO: [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
-
-TODO: Suppose I'm interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?
-
-Need moderation?
-
-discussion only
-
-fediverse
-
-Register on qoto home
-
-NuttX Load: Running Jobs and Cost of GitHub Actions
-
-Alert for long-running jobs
-
-Monitor sync-build-ingest
-
-Mastodon could link Failed Builds / Failed Tests to NuttX Issue?
-
-Failed Build Recovers
 
 # What's Next
 
