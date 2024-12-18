@@ -6,8 +6,23 @@
 
 TODO
 
-# TODO
+# Git Bisect on Original Bug
 
+https://github.com/apache/nuttx/issues/14808
+
+Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+```bash
+## TODO: Bisect CI Job
+job=risc-v-05
+nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash
+```
+
+# TODO
 
 Current Failure: [rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)](https://github.com/apache/nuttx/issues/15170)
 
@@ -46,7 +61,6 @@ TODO: With Docker
 ```bash
 sudo docker run \
   -it \
-  --name nuttx \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
 cd
