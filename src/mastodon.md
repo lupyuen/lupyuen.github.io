@@ -74,11 +74,11 @@ TODO: mastodon-mobile4.png
 
 _What kind of animal is Mastodon?_
 
-Think Twitter... But __Open-Source__ and __Self-Hosted__! Mastodon is mostly used for Global Social Networking [__(Fediverse)__](TODO).
+Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ Mastodon is mostly used for Global Social Networking on [__The Fediverse__](TODO).
 
 Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of __Failed NuttX Builds__.
 
-(Think "Social Network for NuttX Maintainers")
+_(Think "Social Network for NuttX Maintainers")_
 
 TODO: Pic of Mastodon
 
@@ -88,9 +88,9 @@ We begin by installing our __Mastodon Server with Docker__...
 
 - TODO: Install Server
 
-Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus we tweaked the steps a bit.
+- Based on the excellent [__Mastodon Docs__](TODO)
 
-TODO: Straightforwrd, thanks to the excellent Mastodon Docs
+Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus we tweaked the steps a bit.
 
 # Bot User for Mastodon
 
@@ -122,7 +122,7 @@ We have a slight hiccup...
 
 _How to verify the Email Address of our Bot User?_
 
-Remember we said our Mastodon Server has __Zero Budget__? That means we won't have an __Outgoing Email Server__. (SMTP)
+Remember our Mastodon Server has __Zero Budget__? That means we won't have an __Outgoing Email Server__. (SMTP)
 
 That's perfectly OK! Mastodon provides __Command-Line Tools__ to manage our users...
 
@@ -136,13 +136,46 @@ The detailed steps are here...
 
 - TODO: Approve user
 
-# Post NuttX Builds to Mastodon
+# Post to Mastodon
+
+_How will our Bot post a message to Mastodon?_
+
+__With curl:__ This is how we post a __Status Update__ to Mastodon...
+
+```bash
+## TODO: Post a message to Mastodon (Status Update)
+```
+
+It appears like this...
+
+TODO: Pic of Status Update
+
+_What's this Access Token?_
+
+We pass an Access Token to __Authenticate our Bot User__ with Mastodon...
+
+```bash
+## TODO: Create an Access Token
+```
+
+TODO
+
+_What about the Client ID and Secret?_
+
+__Client ID and Secret__ will select the Mastodon App for our Bot User...
+
+```bash
+## TODO: Create the Client ID and Secret
+```
+
+See the steps here...
+
+- TODO: Access Token
 
 TODO: Prometheus to Mastodon
 
-# Test our Mastodon Server
+# TODO
 
-TODO
 
 ```text
 Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
@@ -150,8 +183,6 @@ curl https://nuttx-feed.org/api/v1/timelines/public | jq
 ```
 
 TODO: Federation
-
-# TODO
 
 TODO: [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
