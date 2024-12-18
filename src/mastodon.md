@@ -248,7 +248,7 @@ TODO
 
 TODO
 
-# All Things Considered
+# All Toots Considered
 
 1.  _Will we accept Regular Users on our Mastodon Server?_
 
@@ -256,7 +256,7 @@ TODO
 
 1.  _But any Fediverse User can reply to our Mastodon Posts?_
 
-    Yeah this could be useful! We might use this to discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](TODO) that was created for the Failed Build.
+    Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](TODO) that was created for the Failed Build.
 
 1.  _How will we know when a Failed Build recovers?_
 
@@ -264,13 +264,13 @@ TODO
 
     For Complex Notifications: We might need to integrate [__Prometheus Alertmanager__](https://prometheus.io/docs/alerting/latest/alertmanager/) with Mastodon.
 
-1.  _Suppose I'm interested in only rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?_
+1.  _Suppose I'm interested only in rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?_
 
     Good question! We're still trying to figure out.
 
 1.  _Anything else we should monitor with Mastodon?_
 
-    [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) is a critical NuttX Job that needs to run regularly, without fail. We should post a Mastodon Notification if something fails to run.
+    [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.
 
     [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
 
