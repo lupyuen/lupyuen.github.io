@@ -8,19 +8,57 @@ TODO
 
 # Git Bisect on Original Bug
 
+## NuttX Commits
+
 https://github.com/apache/nuttx/issues/14808
 
-Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+NuttX Commit #1: Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+NuttX Commit #2: Later NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/656883fec5561ca91502a26bf018473ca0229aa4
+
+NuttX Commit #3: Belated Commits fail at test_ltp_interfaces_pthread_barrierattr_init_2_1: https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
+
+## Apps Commits
 
 Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4ddd2802a189fccc802230ab946d50a97cb93c
+
+Belated NuttX Apps Commits were ???
 
 ```bash
 ## TODO: Bisect CI Job
 job=risc-v-05
-nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+## NuttX Commit #1: Runs OK
+## nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
+
+## NuttX Commit #2: Runs OK
+## nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4
+
+## NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1
+## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
+## test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED   [ 17%]
+nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b
+
+## Apps Commit #1: Runs OK
 apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+## Apps Commit #2: ???
+## apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+## Apps Commit #3: ???
+## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
+## apps_hash=ce217b874437b2bd60ad2a2343442506cd8b50b8
+
 sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash
 ```
+
+[NuttX Commit #1: Runs OK. nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c](https://gist.github.com/lupyuen/89759c53accbf6caa717b39fd5e69bae)
+
+[NuttX Commit #2: Runs OK. nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4](https://gist.github.com/lupyuen/e22cd208bd9ed3e36e59de2b44bb85ef)
+
+[NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1. nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/27cb7f5359bc0a8176db9815ba8b162a)
 
 # TODO
 
