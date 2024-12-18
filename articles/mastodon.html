@@ -175,9 +175,19 @@
 <p><em>How to verify the Email Address of our Bot User?</em></p>
 <p>Remember our Mastodon Server has <strong>Zero Budget</strong>? This means we won’t have an <strong>Outgoing Email Server</strong>. (SMTP)</p>
 <p>That’s perfectly OK! Mastodon provides <strong>Command-Line Tools</strong> to manage our users…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Create User
+<div class="example-wrap"><pre class="language-bash"><code>## Connect to Mastodon Web (Docker Container)
+sudo docker exec \
+  -it \
+  mastodon-web-1 \
+  /bin/bash
 
-## TODO: Approve and verify user</code></pre></div>
+## Approve and Confirm the Email Address
+## https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+bin/tootctl accounts \
+  approve nuttx_build
+bin/tootctl accounts \
+  modify nuttx_build \
+  --confirm</code></pre></div>
 <p>The detailed steps are here…</p>
 <ul>
 <li>TODO: Approve user</li>
@@ -185,20 +195,56 @@
 <h1 id="post-to-mastodon"><a class="doc-anchor" href="#post-to-mastodon">§</a>5 Post to Mastodon</h1>
 <p><em>How will our Bot post a message to Mastodon?</em></p>
 <p><strong>With curl:</strong> This is how we post a <strong>Status Update</strong> to Mastodon…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Post a message to Mastodon (Status Update)</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Post a message to Mastodon (Status Update)
+export ACCESS_TOKEN=...  ## Coming up
+curl -X POST \
+	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+	-F &quot;status=Posting a status from curl&quot; \
+	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
+</code></pre></div>
 <p>It appears like this…</p>
-<p>TODO: Pic of Status Update</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
+<p><a href="TODO">(Explained here)</a></p>
 <p><em>What’s this Access Token?</em></p>
-<p>We pass an Access Token to <strong>Authenticate our Bot User</strong> with Mastodon…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Create an Access Token</code></pre></div>
-<p>TODO</p>
-<p><em>What about the Client ID and Secret?</em></p>
+<p>We pass an <strong>Access Token</strong> to Authenticate our Bot User with Mastodon. This is how we create the Access Token…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create an Access Token
+export CLIENT_ID=...     ## Coming up
+export CLIENT_SECRET=... ## Coming up
+export AUTH_CODE=...     ## Coming up
+curl -X POST \
+  -F &quot;client_id=$CLIENT_ID&quot; \
+  -F &quot;client_secret=$CLIENT_SECRET&quot; \
+  -F &quot;redirect_uri=urn:ietf:wg:oauth:2.0:oob&quot; \
+  -F &quot;grant_type=authorization_code&quot; \
+  -F &quot;code=$AUTH_CODE&quot; \
+  -F &quot;scope=read write push&quot; \
+  https://YOUR_DOMAIN_NAME.org/oauth/token</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p><em>What about the Client ID, Secret and Authorization Code?</em></p>
 <p><strong>Client ID and Secret</strong> will select the Mastodon App for our Bot User…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Create the Client ID and Secret</code></pre></div>
-<p>See the steps here…</p>
-<ul>
-<li>TODO: Access Token</li>
-</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Create Our Mastodon App
+curl -X POST \
+  -F &#39;client_name=NuttX Dashboard&#39; \
+  -F &#39;redirect_uris=urn:ietf:wg:oauth:2.0:oob&#39; \
+  -F &#39;scopes=read write push&#39; \
+  -F &#39;website=https://nuttx-dashboard.org&#39; \
+  https://YOUR_DOMAIN_NAME.org/api/v1/apps
+
+## Returns { &quot;client_id&quot; : &quot;...&quot;, &quot;client_secret&quot; : &quot;...&quot; }
+## We save the Client ID and Secret</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p>Which we use to create the <strong>Authorization Code</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Open a Web Browser. Browse to https://YOUR_DOMAIN_NAME.org
+## Log in as Your New User (nuttx_build)
+## Paste this URL into the Same Web Browser
+https://YOUR_DOMAIN_NAME.org/oauth/authorize
+  ?client_id=YOUR_CLIENT_ID
+  &amp;scope=read+write+push
+  &amp;redirect_uri=urn:ietf:wg:oauth:2.0:oob
+  &amp;response_type=code
+
+## Copy the Authorization Code. It will expire soon!</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
 <h1 id="prometheus-to-mastodon"><a class="doc-anchor" href="#prometheus-to-mastodon">§</a>6 Prometheus to Mastodon</h1>
 <p>Now comes the tricky bit. How to transmogrify <strong>NuttX Dashboard</strong>…</p>
 <p>TODO: Pic of NuttX Dashboard</p>
@@ -224,27 +270,88 @@
 </ol>
 <p>TODO: Pic of flow</p>
 <p><strong>Prometheus Time-Series Database:</strong> This is how we fetch the Failed Builds from Prometheus…</p>
-<p>TODO: Query</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
+build_score &lt; 0.5</code></pre></div>
 <p>Prometheus returns a huge bunch of fields…</p>
 <p>TODO: Pic of Prometheus</p>
 <p><a href="TODO">(Explained here)</a></p>
 <p><strong>Query the Failed Builds:</strong> Now we do it in Rust…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
+</span><span class="kw">let </span>query = <span class="string">r##"
+  build_score &lt; 0.5
+"##</span>;
+<span class="kw">let </span>params = [(<span class="string">"query"</span>, query)];
+<span class="kw">let </span>client = reqwest::Client::new();
+<span class="kw">let </span>prometheus = <span class="string">"http://localhost:9090/api/v1/query"</span>;
+<span class="kw">let </span>res = client
+  .post(prometheus)
+  .form(<span class="kw-2">&amp;</span>params)
+  .send()
+  .<span class="kw">await</span><span class="question-mark">?</span>;
+<span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
+<span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
+<span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 <p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
-<p><strong>Submit to Mastodon via ActivityPub:</strong> By posting JSON over HTTPS…</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
+</span><span class="kw">for </span>build <span class="kw">in </span>builds.as_array().unwrap() {
+  ...
+  <span class="comment">// Compose the Mastodon Post as...
+  // rv-virt : CITEST - Build Failed (NuttX)
+  // NuttX Dashboard: ...
+  // Build History: ...
+  // [Error Message]
+  </span><span class="kw">let </span><span class="kw-2">mut </span>status = <span class="macro">format!</span>(
+    <span class="string">r##"
+{board} : {config_upper} - Build Failed ({user})
+NuttX Dashboard: https://nuttx-dashboard.org
+Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board={board}&amp;var-config={config}
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+{msg}
+    "##</span>);
+  status.truncate(<span class="number">512</span>);  <span class="comment">// Mastodon allows only 500 chars
+  </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
+  params.push((<span class="string">"status"</span>, status));</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p><strong>Submit to Mastodon via ActivityPub:</strong> By posting over HTTPS…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
+  </span><span class="kw">let </span>token = std::env::var(<span class="string">"MASTODON_TOKEN"</span>)
+    .expect(<span class="string">"MASTODON_TOKEN env variable is required"</span>);
+  <span class="kw">let </span>client = reqwest::Client::new();
+  <span class="kw">let </span>mastodon = <span class="string">"https://nuttx-feed.org/api/v1/statuses"</span>;
+  <span class="kw">let </span>res = client
+    .post(mastodon)
+    .header(<span class="string">"Authorization"</span>, <span class="macro">format!</span>(<span class="string">"Bearer {token}"</span>))
+    .form(<span class="kw-2">&amp;</span>params)
+    .send()
+    .<span class="kw">await</span><span class="question-mark">?</span>;
+  <span class="kw">if </span>!res.status().is_success() { <span class="kw">continue</span>; }
+  <span class="comment">// Omitted: Remember the Mastodon Posts for All Builds
+</span>}</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 <p><strong>Skip Duplicates:</strong> Remember everything in a JSON File, so we won’t notify the same thing twice…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This JSON File remembers the Mastodon Posts for All Builds:
+// {
+//   "rv-virt:citest" : {
+//     status_id: "12345",
+//     users: ["nuttxpr", "NuttX", "lupyuen"]
+//   }
+//   "rv-virt:citest64" : ...
+// }
+</span><span class="kw">const </span>ALL_BUILDS_FILENAME: <span class="kw-2">&amp;</span>str =
+  <span class="string">"/tmp/nuttx-prometheus-to-mastodon.json"</span>; ...
+<span class="kw">let </span><span class="kw-2">mut </span>all_builds = serde_json::from_reader(reader).unwrap();    
+...
+<span class="comment">// If the User already exists for the Board and Config:
+// Skip the Mastodon Post
+</span><span class="kw">if let </span><span class="prelude-val">Some</span>(users) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>].as_array() {
+  <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
+}</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
-<p>TODO</p>
 <h1 id="all-toots-considered"><a class="doc-anchor" href="#all-toots-considered">§</a>7 All Toots Considered</h1>
 <ol>
 <li>
@@ -450,9 +557,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="comment">// If the User already exists for the Board and Config:
   // Skip the Mastodon Post
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(users) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>].as_array() {
-    <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) {
-      <span class="kw">continue</span>;
-    }
+    <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
   }
 }</code></pre></div>
 <p>And if the Mastodon Post already exists for the Board and Config: We <strong>Reply to the Mastodon Post</strong>. (To keep the Failed Builds threaded neatly)</p>
