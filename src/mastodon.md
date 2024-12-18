@@ -105,9 +105,19 @@ Remember our Mastodon Server has __Zero Budget__? This means we won't have an __
 That's perfectly OK! Mastodon provides __Command-Line Tools__ to manage our users...
 
 ```bash
-## TODO: Create User
+## Connect to Mastodon Web (Docker Container)
+sudo docker exec \
+  -it \
+  mastodon-web-1 \
+  /bin/bash
 
-## TODO: Approve and verify user
+## Approve and Confirm the Email Address
+## https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
+bin/tootctl accounts \
+  approve nuttx_build
+bin/tootctl accounts \
+  modify nuttx_build \
+  --confirm
 ```
 
 The detailed steps are here...
@@ -121,34 +131,77 @@ _How will our Bot post a message to Mastodon?_
 __With curl:__ This is how we post a __Status Update__ to Mastodon...
 
 ```bash
-## TODO: Post a message to Mastodon (Status Update)
+## Post a message to Mastodon (Status Update)
+export ACCESS_TOKEN=...  ## Coming up
+curl -X POST \
+	-H "Authorization: Bearer $ACCESS_TOKEN" \
+	-F "status=Posting a status from curl" \
+	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
+
 ```
 
 It appears like this...
 
-TODO: Pic of Status Update
+![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+
+[(Explained here)](TODO)
 
 _What's this Access Token?_
 
-We pass an Access Token to __Authenticate our Bot User__ with Mastodon...
+We pass an __Access Token__ to Authenticate our Bot User with Mastodon. This is how we create the Access Token...
 
 ```bash
-## TODO: Create an Access Token
+## Create an Access Token
+export CLIENT_ID=...     ## Coming up
+export CLIENT_SECRET=... ## Coming up
+export AUTH_CODE=...     ## Coming up
+curl -X POST \
+  -F "client_id=$CLIENT_ID" \
+  -F "client_secret=$CLIENT_SECRET" \
+  -F "redirect_uri=urn:ietf:wg:oauth:2.0:oob" \
+  -F "grant_type=authorization_code" \
+  -F "code=$AUTH_CODE" \
+  -F "scope=read write push" \
+  https://YOUR_DOMAIN_NAME.org/oauth/token
 ```
 
-TODO
+[(Explained here)](TODO)
 
-_What about the Client ID and Secret?_
+_What about the Client ID, Secret and Authorization Code?_
 
 __Client ID and Secret__ will select the Mastodon App for our Bot User...
 
 ```bash
-## TODO: Create the Client ID and Secret
+## Create Our Mastodon App
+curl -X POST \
+  -F 'client_name=NuttX Dashboard' \
+  -F 'redirect_uris=urn:ietf:wg:oauth:2.0:oob' \
+  -F 'scopes=read write push' \
+  -F 'website=https://nuttx-dashboard.org' \
+  https://YOUR_DOMAIN_NAME.org/api/v1/apps
+
+## Returns { "client_id" : "...", "client_secret" : "..." }
+## We save the Client ID and Secret
 ```
 
-See the steps here...
+[(Explained here)](TODO)
 
-- TODO: Access Token
+Which we use to create the __Authorization Code__...
+
+```bash
+## Open a Web Browser. Browse to https://YOUR_DOMAIN_NAME.org
+## Log in as Your New User (nuttx_build)
+## Paste this URL into the Same Web Browser
+https://YOUR_DOMAIN_NAME.org/oauth/authorize
+  ?client_id=YOUR_CLIENT_ID
+  &scope=read+write+push
+  &redirect_uri=urn:ietf:wg:oauth:2.0:oob
+  &response_type=code
+
+## Copy the Authorization Code. It will expire soon!
+```
+
+[(Explained here)](TODO)
 
 # Prometheus to Mastodon
 
@@ -176,7 +229,10 @@ TODO: Pic of flow
 
 __Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from Prometheus...
 
-TODO: Query
+```bash
+## Find all Build Scores < 0.5
+build_score < 0.5
+```
 
 Prometheus returns a huge bunch of fields...
 
@@ -187,7 +243,21 @@ TODO: Pic of Prometheus
 __Query the Failed Builds:__ Now we do it in Rust...
 
 ```rust
-TODO
+// Fetch the Failed Builds from Prometheus
+let query = r##"
+  build_score < 0.5
+"##;
+let params = [("query", query)];
+let client = reqwest::Client::new();
+let prometheus = "http://localhost:9090/api/v1/query";
+let res = client
+  .post(prometheus)
+  .form(&params)
+  .send()
+  .await?;
+let body = res.text().await?;
+let data: Value = serde_json::from_str(&body).unwrap();
+let builds = &data["data"]["result"];
 ```
 
 [(Explained here)](TODO)
@@ -195,15 +265,46 @@ TODO
 __Reformat as Mastodon Posts:__ From JSON into Plain Text...
 
 ```rust
-TODO
+// For Each Failed Build...
+for build in builds.as_array().unwrap() {
+  ...
+  // Compose the Mastodon Post as...
+  // rv-virt : CITEST - Build Failed (NuttX)
+  // NuttX Dashboard: ...
+  // Build History: ...
+  // [Error Message]
+  let mut status = format!(
+    r##"
+{board} : {config_upper} - Build Failed ({user})
+NuttX Dashboard: https://nuttx-dashboard.org
+Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board={board}&var-config={config}
+
+{msg}
+    "##);
+  status.truncate(512);  // Mastodon allows only 500 chars
+  let mut params = Vec::new();
+  params.push(("status", status));
 ```
 
 [(Explained here)](TODO)
 
-__Submit to Mastodon via ActivityPub:__ By posting JSON over HTTPS...
+__Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 
 ```rust
-TODO
+  // Post to Mastodon
+  let token = std::env::var("MASTODON_TOKEN")
+    .expect("MASTODON_TOKEN env variable is required");
+  let client = reqwest::Client::new();
+  let mastodon = "https://nuttx-feed.org/api/v1/statuses";
+  let res = client
+    .post(mastodon)
+    .header("Authorization", format!("Bearer {token}"))
+    .form(&params)
+    .send()
+    .await?;
+  if !res.status().is_success() { continue; }
+  // Omitted: Remember the Mastodon Posts for All Builds
+}
 ```
 
 [(Explained here)](TODO)
@@ -211,12 +312,26 @@ TODO
 __Skip Duplicates:__ Remember everything in a JSON File, so we won't notify the same thing twice...
 
 ```rust
-TODO
+// This JSON File remembers the Mastodon Posts for All Builds:
+// {
+//   "rv-virt:citest" : {
+//     status_id: "12345",
+//     users: ["nuttxpr", "NuttX", "lupyuen"]
+//   }
+//   "rv-virt:citest64" : ...
+// }
+const ALL_BUILDS_FILENAME: &str =
+  "/tmp/nuttx-prometheus-to-mastodon.json"; ...
+let mut all_builds = serde_json::from_reader(reader).unwrap();    
+...
+// If the User already exists for the Board and Config:
+// Skip the Mastodon Post
+if let Some(users) = all_builds[&target]["users"].as_array() {
+  if users.contains(&json!(user)) { continue; }
+}
 ```
 
 [(Explained here)](TODO)
-
-TODO
 
 # All Toots Considered
 
@@ -466,9 +581,7 @@ if let Some(status_id) = all_builds[&target]["status_id"].as_str() {
   // If the User already exists for the Board and Config:
   // Skip the Mastodon Post
   if let Some(users) = all_builds[&target]["users"].as_array() {
-    if users.contains(&json!(user)) {
-      continue;
-    }
+    if users.contains(&json!(user)) { continue; }
   }
 }
 ```
