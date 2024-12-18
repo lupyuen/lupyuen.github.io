@@ -71,7 +71,7 @@
 <li><a href="#email-less-mastodon" title="Email-Less Mastodon">4 Email-Less Mastodon</a><ul></ul></li>
 <li><a href="#post-to-mastodon" title="Post to Mastodon">5 Post to Mastodon</a><ul></ul></li>
 <li><a href="#prometheus-to-mastodon" title="Prometheus to Mastodon">6 Prometheus to Mastodon</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
+<li><a href="#all-things-considered" title="All Things Considered">7 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-query-prometheus-for-failed-builds" title="Appendix: Query Prometheus for Failed Builds">9 Appendix: Query Prometheus for Failed Builds</a><ul></ul></li>
 <li><a href="#appendix-post-nuttx-builds-to-mastodon" title="Appendix: Post NuttX Builds to Mastodon">10 Appendix: Post NuttX Builds to Mastodon</a><ul></ul></li>
@@ -100,6 +100,8 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="TODO" /></p>
 <p>TODO: mastodon-mobile4.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile4.png" alt="TODO" /></p>
+<p>TODO: mastodon-mobile5.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-mobile5.png" alt="TODO" /></p>
 <p>in this article we talk about Mastodon</p>
 <p>TODO: Pic of search</p>
 <h1 id="mastodon-for-nuttx-ci"><a class="doc-anchor" href="#mastodon-for-nuttx-ci">§</a>1 Mastodon for NuttX CI</h1>
@@ -119,7 +121,7 @@
 <p>Tap the <strong>Follow</strong> button. And the <strong>Notify</strong> button beside it.</p>
 </li>
 <li>
-<p>That’s all! When a NuttX Build Fails, we’ll see a <strong>Notification in the Mastodon App</strong>…</p>
+<p>That’s all! When a NuttX Build Fails, we’ll see a <strong>Notification in the Mastodon App</strong> (linking to NuttX Build History)…</p>
 </li>
 </ol>
 <p>TODO: Pic of notification</p>
@@ -136,6 +138,8 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="TODO" /></p>
 <p>TODO: mastodon-mobile4.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile4.png" alt="TODO" /></p>
+<p>TODO: mastodon-mobile5.png</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-mobile5.png" alt="TODO" /></p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
 <p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="TODO"><strong>The Fediverse</strong></a>.</p>
@@ -254,21 +258,35 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
-curl https://nuttx-feed.org/api/v1/timelines/public | jq</code></pre></div>
-<p>TODO: Federation</p>
-<p>TODO: <a href="https://prometheus.io/docs/alerting/latest/alertmanager/">Alertmanager</a></p>
-<p>TODO: Suppose I’m interested in only rv-virt:python. Can I subscribe to the alerts via Mastodon / Fediverse / ActivityPub?</p>
-<p>Need moderation?</p>
-<p>discussion only</p>
-<p>fediverse</p>
-<p>Register on qoto home</p>
-<p>NuttX Load: Running Jobs and Cost of GitHub Actions</p>
-<p>Alert for long-running jobs</p>
-<p>Monitor sync-build-ingest</p>
-<p>Mastodon could link Failed Builds / Failed Tests to NuttX Issue?</p>
-<p>Failed Build Recovers</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="all-things-considered"><a class="doc-anchor" href="#all-things-considered">§</a>7 All Things Considered</h1>
+<ol>
+<li>
+<p><em>Will we accept Regular Users on our Mastodon Server?</em></p>
+<p>Probably not? We have <strong>Zero Budget for User Moderation</strong>. We’ll ask folks to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.</p>
+</li>
+<li>
+<p><em>But any Fediverse User can reply to our Mastodon Posts?</em></p>
+<p>Yeah this could be useful! We might use this to discuss a specific Failed Build. Or hyperlink to the <a href="TODO"><strong>NuttX Issue</strong></a> that was created for the Failed Build.</p>
+</li>
+<li>
+<p><em>How will we know when a Failed Build recovers?</em></p>
+<p>This gets tricky. Should we pester folks with an <strong>Extra Push Notification</strong> whenever a Failed Build recovers?</p>
+<p>For Complex Notifications: We might need to integrate <a href="https://prometheus.io/docs/alerting/latest/alertmanager/"><strong>Prometheus Alertmanager</strong></a> with Mastodon.</p>
+</li>
+<li>
+<p><em>Suppose I’m interested in only rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?</em></p>
+<p>Good question! We’re still trying to figure out.</p>
+</li>
+<li>
+<p><em>Anything else we should monitor with Mastodon?</em></p>
+<p><a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Sync-Build-Ingest</strong></a> is a critical NuttX Job that needs to run regularly, without fail. We should post a Mastodon Notification if something fails to run.</p>
+<p><a href="https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners"><strong>Cost of GitHub Runners</strong></a> shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)</p>
+<p><a href="https://lupyuen.github.io/articles/ci3#present-pains"><strong>Overruning GitHub Jobs</strong></a> shall also be monitored, so our devs won’t wait forever for their CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍</p>
+</li>
+</ol>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
+curl https://nuttx-feed.org/api/v1/timelines/public | jq</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
