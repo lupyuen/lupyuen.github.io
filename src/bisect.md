@@ -12,6 +12,7 @@ Commit #`123`
 
 Commit #`456`
 
+Why Git Bisect? Because each test runs for 1 hour!
 
 TODO
 
@@ -75,7 +76,7 @@ Press Ctrl-C very carefully, don't crash Docker!
 
 How many commits between 14 Nov and 4 Dec?
 
-Now that we can bisect automatically: Shall we do this for All Failed Builds?
+Now that we can bisect reliably and automatically: Shall we do this for All Failed Builds?
 
 NuttX Hash vs Apps Hash
 
