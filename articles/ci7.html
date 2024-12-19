@@ -110,6 +110,7 @@ test_usrsocktest FAILED
 <p>We begin with Docker…</p>
 <p><img src="https://lupyuen.github.io/images/ci7-title2.jpg" alt="Running the CI Test with Docker" /></p>
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
+<p><em>CI Test runs a bunch of Test Apps and fails. Why?</em></p>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
 <p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
@@ -155,7 +156,7 @@ sudo docker exec \
   /bin/bash
 
 ## What&#39;s running now?
-ps aux | more</code></pre></div>
+ps aux</code></pre></div>
 <p>A-ha! We see NuttX running on (32-bit) <strong>QEMU RISC-V Emulator</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## We started this...
 ## https://github.com/apache/nuttx/blob/master/tools/ci/cibuild.sh
@@ -190,7 +191,7 @@ qemu-system-riscv32 -M virt -bios ./nuttx -nographic -drive index=0,id=userdata,
 <p><a href="https://gist.github.com/lupyuen/399d2ba7d964ba88cdbeb97f64778a0e">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title4.jpg" alt="Dumping the CI Log File" /></p>
 <h1 id="dump-the-ci-log-file"><a class="doc-anchor" href="#dump-the-ci-log-file">§</a>3 Dump the CI Log File</h1>
-<p>From above: We see that everything goes into this <strong>CI Test Log File</strong>…</p>
+<p>From the Background Processes: We see that everything goes into this <strong>CI Test Log File</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
 $ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 
