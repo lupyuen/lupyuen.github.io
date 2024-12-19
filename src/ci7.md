@@ -42,6 +42,8 @@ We begin with Docker...
 
 # Run the CI Test
 
+_CI Test runs a bunch of Test Apps and fails. Why?_
+
 __Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And figure out why it fails _rv-virt:citest_...
 
 [(Steps for __macOS Arm64__)](https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64)
@@ -103,7 +105,7 @@ sudo docker exec \
   /bin/bash
 
 ## What's running now?
-ps aux | more
+ps aux
 ```
 
 A-ha! We see NuttX running on (32-bit) __QEMU RISC-V Emulator__...
@@ -148,7 +150,7 @@ Let's inspect the Log File...
 
 # Dump the CI Log File
 
-From above: We see that everything goes into this __CI Test Log File__...
+From the Background Processes: We see that everything goes into this __CI Test Log File__...
 
 ```bash
 ## Dump the CI Test Log File (e.g. rv-virt_20241211_063532.log)
