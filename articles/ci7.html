@@ -113,7 +113,13 @@ test_usrsocktest FAILED
 <p><em>CI Test runs a bunch of Test Apps and fails. Why?</em></p>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
 <p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
+
+## TODO: For WSL, we may need to install Docker on Native Windows
+## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
+
+## Start the NuttX Docker Image
 ## Name the Docker Container as `nuttx`
 sudo docker run \
   -it \

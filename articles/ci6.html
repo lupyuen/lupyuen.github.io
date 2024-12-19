@@ -122,8 +122,12 @@ Build Failed for Next Commit:
 <h1 id="rewind-the-build"><a class="doc-anchor" href="#rewind-the-build">§</a>1 Rewind The Build</h1>
 <p><em>How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
-## TODO: Install Docker Engine on Ubuntu x64
+## TODO: Install Docker Engine
 ## https://docs.docker.com/engine/install/ubuntu/
+
+## TODO: For WSL, we may need to install Docker on Native Windows
+## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
+
 $ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm
