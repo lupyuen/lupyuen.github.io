@@ -76,6 +76,7 @@
 <p>Number the commits</p>
 <p>Commit #<code>123</code></p>
 <p>Commit #<code>456</code></p>
+<p>Why Git Bisect? Because each test runs for 1 hour!</p>
 <p>TODO</p>
 <h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>1 Git Bisect on Original Bug</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>1.1 NuttX Commits</h2>
 <p>https://github.com/apache/nuttx/issues/14808</p>
@@ -117,7 +118,7 @@ sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash</code></pre></div>
 <p>Assume will terminate in 1 hour! Actually terminates in 30 mins. Change this for your machine!</p>
 <p>Press Ctrl-C very carefully, don’t crash Docker!</p>
 <p>How many commits between 14 Nov and 4 Dec?</p>
-<p>Now that we can bisect automatically: Shall we do this for All Failed Builds?</p>
+<p>Now that we can bisect reliably and automatically: Shall we do this for All Failed Builds?</p>
 <p>NuttX Hash vs Apps Hash</p>
 <p>But NuttX Commit might not compile with Apps Commit, must be compatible</p>
 <p>Maybe return special exit code 125 if can’t compile</p>
