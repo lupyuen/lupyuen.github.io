@@ -102,6 +102,22 @@ good: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back 
 vs
 bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
 
+Let it simmer overnight (probably 7 hours, like my Bean Stew)
+
+Locoroco merging into big bubbles
+
+Did git bisect find the breaking commit? 
+
+Erm not quite.
+
+Always run twice 
+
+That's 2 bean stews!
+
+_So it's like travelling back in time, changing something in history, and the future changes?
+
+Um.somegthing like thst
+
 # TODO
 
 Current Failure: [rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)](https://github.com/apache/nuttx/issues/15170)

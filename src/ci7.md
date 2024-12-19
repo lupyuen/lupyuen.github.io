@@ -111,7 +111,8 @@ sudo docker exec \
   /bin/bash
 
 ## What's running now?
-ps aux
+## `more` will show the Entire Command-Line
+ps aux | more
 ```
 
 A-ha! We see NuttX running on (32-bit) __QEMU RISC-V Emulator__...
