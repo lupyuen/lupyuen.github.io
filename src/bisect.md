@@ -37,6 +37,12 @@ Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4
 Belated NuttX Apps Commits were ???
 
 ```bash
+## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
+
+## TODO: For WSL, we may need to install Docker on Native Windows
+## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
+
 ## TODO: Bisect CI Job
 job=risc-v-05
 

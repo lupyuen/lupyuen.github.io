@@ -60,8 +60,12 @@ _How does it work?_
 
 ```bash
 ## Rewind The Build for NuttX Target esp32c6-devkitc:gpio
-## TODO: Install Docker Engine on Ubuntu x64
+## TODO: Install Docker Engine
 ## https://docs.docker.com/engine/install/ubuntu/
+
+## TODO: For WSL, we may need to install Docker on Native Windows
+## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
+
 $ sudo apt install neofetch glab gh
 $ git clone https://github.com/lupyuen/nuttx-build-farm
 $ cd nuttx-build-farm

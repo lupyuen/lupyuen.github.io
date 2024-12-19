@@ -49,6 +49,12 @@ __Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And f
 [(Steps for __macOS Arm64__)](https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64)
 
 ```bash
+## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
+
+## TODO: For WSL, we may need to install Docker on Native Windows
+## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
+
 ## Start the NuttX Docker Image
 ## Name the Docker Container as `nuttx`
 sudo docker run \
