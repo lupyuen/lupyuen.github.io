@@ -90,6 +90,9 @@ Inconsistent CI Test?
 
 [git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
 
+[second run of git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b
+](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
+
 # TODO
 
 Current Failure: [rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)](https://github.com/apache/nuttx/issues/15170)
