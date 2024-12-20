@@ -4,6 +4,12 @@
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
 
+__Life without GitHub:__ What's it like?
+
+_Why are we doing this?_
+
+Blocked in some parts of the world.
+
 TODO
 
 # TODO
@@ -17,16 +23,33 @@ git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
 sudo docker compose up
+again: sudo docker compose up
+to down: sudo docker compose down
 https://gist.github.com/lupyuen/8438ef716f428606d3913f7bc8efc0b7
 
 Will auto create `forgejo` folder
 Browse to http://localhost:3002/
+Create admin user: nuttx
 
 (For CloudFlare Tunnel: Set __Security > Settings > High__)
 
++ > New Migration > GitHub > This repo will be a mirror
+nuttx-mirror
+Migrate Repo
+
 Settings > Repository > Mirror Settings
 Mirror interval
-8h0m0s
+1h
+Update Mirror Settings
+
++ > New Migration > GitHub > This repo will be a mirror
+select issues, PR, labels, milestones, releases
+nuttx-update
+Migrate Repo
+
+Create Issue
+Actions: No Runner
+View Commit
 ```
 
 # What's Next
