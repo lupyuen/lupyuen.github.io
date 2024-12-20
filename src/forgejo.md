@@ -67,7 +67,8 @@ Migrate Repo
 How long?
 2pm to ???
 ??? hours
-At least 2 hours!
+At least 6 hours!
+(1 hour for GitHub Issues, 5 hours for Pull Requests)
 
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
 ignore
