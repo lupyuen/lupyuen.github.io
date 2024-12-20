@@ -24,7 +24,7 @@ The Bug Stops Here! In this article: We study the internals of the __NuttX CI Te
 
 - We run the __CI Test on Docker__
 
-- Snoop and Learn the __CI Test Internals__
+- Snoop and Study the __CI Test Internals__
 
 - Locate and Dump the __CI Log File__
 
