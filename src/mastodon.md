@@ -8,7 +8,7 @@ We're out for an [__overnight hike__](https://www.strava.com/activities/13055019
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
-![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
+![NuttX Failed Builds appear as Mastodon Alerts](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
 TODO: In this article we talk about Mastodon 
 
@@ -370,11 +370,6 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
     [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
 
     [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
-
-```text
-TODO: Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
-curl https://nuttx-feed.org/api/v1/timelines/public | jq
-```
 
 # What's Next
 
@@ -987,12 +982,12 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
 1.  That's why it's OK to ignore the __Sidekiq Errors__ for sending email...
 
     ```text
-    TODO: Sidekiq Errors
-    sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
-    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {"context":"Job raised exception","job":{"retry":true,"queue":"mailers","wrapped":"ActionMailer::MailDeliveryJob","args":[{"job_class":"ActionMailer::MailDeliveryJob","job_id":"a7c8ac28-83bd-42b8-a4de-554f533a01f8","provider_job_id":null,"queue_name":"mailers","priority":null,"arguments":["UserMailer","password_change","deliver_now",{"args":[{"_aj_globalid":"gid://mastodon/User/1"}],"_aj_ruby2_keywords":["args"]}],"executions":0,"exception_executions":{},"locale":"en","timezone":"UTC","enqueued_at":"2024-12-09T00:00:54.250576360Z","scheduled_at":null}],"class":"ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper","jid":"8b52310d0afc7d27b0af3d4b","created_at":1733702454.2507422,"enqueued_at":1733702694.9922712,"error_message":"Connection refused - connect(2) for \"localhost\" port 25","error_class":"Errno::ECONNREFUSED","failed_at":1733702454.3886917,"retry_count":3,"retried_at":1733702562.7745714}}
-    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for "localhost" port 25
-    sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
+    sidekiq-1 ...
+      Connection refused
+      connect(2) for localhost port 25
     ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742#file-gistfile1-txt-L333-L338)
 
 # Appendix: Create our Mastodon App
 
@@ -1121,36 +1116,37 @@ And our __Mastodon Post__ appears!
 $ brew install jq      ## For macOS
 $ sudo apt install jq  ## For Ubuntu
 
-## Fetch the TODO Activity Feed for nuttx_build at nuttx-feed.org
-$ curl \
-  -H 'Accept: application/activity+json' \
-  https://nuttx-feed.org/@nuttx_build \
+## Fetch the Public Timeline for nuttx-feed.org
+## https://docs.joinmastodon.org/client/public/#timelines
+$ curl https://nuttx-feed.org/api/v1/timelines/public \
   | jq
 
-{ ... TODO ... }
-
-## Fetch the above Activity (Post)
-$ curl -H \
-  'Accept: application/activity+json' \
-  https://nuttx-feed.org/@nuttx_build/TODO \
-  | jq
-
-{ ... TODO ... }
+{ ... "teensy-4.x : PIKRON-BB - Build Failed" ... }
 
 ## Fetch the User nuttx_build at nuttx-feed.org
 $ curl \
   https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
   | jq
 
-{ ... ""acct:nuttx_build@nuttx-feed.org" ... }
+{ ... "acct:nuttx_build@nuttx-feed.org" ... }
 ```
 
-__WebFinger__ is particularly important, it locates Users within the Fediverse. It should always work!
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/c31c426b28f32341301fa28f16a1251e)
 
-```text
-TODO: $ curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
-https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
+[__WebFinger__](https://webfinger.net/) is particularly important, it locates Users within the Fediverse. It should always work at the __Root of our Mastodon Server__!
+
+```bash
+## WebFinger: Fetch the User nuttx_build at nuttx-feed.org
+$ curl \
+  -H 'Accept: application/activity+json' \
+  https://nuttx-feed.org/@nuttx_build \
+  | jq
+
+{ "name": "nuttx_build",
+  "url" : "https://nuttx-feed.org/@nuttx_build" ... }
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/209d711d6cd7096a422da55f209d7745)
 
 # Appendix: Backup our Mastodon Server
 
@@ -1182,7 +1178,7 @@ tar cvf \
 
 _Is it safe to host Mastodon in Docker?_
 
-TODO: Docker Isolation vs VM
+Docker Engine on Linux is [__not quite as secure__](https://www.opensourceforu.com/2024/12/analysing-linus-torvalds-critique-of-docker/) compared with a Full VM or QEMU. So be very careful!
 
 [(macOS Rancher Desktop runs Docker with __Lima VM__ and __QEMU Arm64__)](https://rancherdesktop.io/)
 
@@ -1288,9 +1284,11 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 
 _What's this Docker Compose? Why use it for Mastodon?_
 
-TODO: What is Docker Compose
+We could install manually __Multiple Docker Containers__ for Mastodon: Ruby-on-Rails + PostgreSQL + Redis + Sidekiq + Streaming + Elasticsearch...
 
-In this section we explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config.
+But there's an easier way: [__Docker Compose__](https://docs.docker.com/compose/) will create all the Docker Containers with a Single Command: __docker up__
+
+In this section we study the __Docker Containers__ for Mastodon. And explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config.
 
 [(See the __Minor Tweaks__)](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
 
@@ -1522,11 +1520,12 @@ networks:
 
 _Phew that looks might complicated!_
 
-There's a simpler way
+There's a simpler way: Mastodon provides a Docker Compose Config for __Mastodon Development__.
 
-TODO: Not recommended for internet hosting!
+It's good for Local Experimentation. But __Not Recommended for Internet Hosting!__
 
 ```bash
+## Based on https://github.com/mastodon/mastodon#docker
 git clone https://github.com/mastodon/mastodon --branch v4.3.2
 cd mastodon
 sudo docker compose -f .devcontainer/compose.yaml up -d
@@ -1534,9 +1533,9 @@ sudo docker compose -f .devcontainer/compose.yaml exec app bin/setup
 sudo docker compose -f .devcontainer/compose.yaml exec app bin/dev
 
 ## Browse to Mastodon Web at http://localhost:3000
+## TODO: What's the Default Admin ID and Password?
 
-## TODO: What's the Default Admin ID
-
+## Create our own Mastodon Owner Account:
 ## From https://docs.joinmastodon.org/admin/setup/#admin-cli
 ## And https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
 sudo docker exec \
@@ -1562,16 +1561,16 @@ bin/tootctl search \
 exit
 ```
 
-TODO: Optional ports and domain
-
-.devcontainer/compose.yaml:
+__Optional:__ Configure Mastodon Web to listen at __HTTP Port 3001__ (since 3000 is used by Grafana). We edit _.devcontainer/compose.yaml_
 
 ```yaml
+services:
+  app:
     ports:
       - '127.0.0.1:3001:3000'
 ```
 
-.env.development:
+__Optional:__ Configure the Mastodon Domain. We edit _.env.development_
 
 ```bash
 LOCAL_DOMAIN=nuttx-feed.org
