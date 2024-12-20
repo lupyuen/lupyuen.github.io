@@ -131,7 +131,7 @@
 <p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
 <p>Though today we’re making something unexpected, unconventional with Mastodon: Pushing Notifications of <strong>Failed NuttX Builds</strong>.</p>
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
-<p>TODO: Pic of Mastodon</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="Mastodon Server for NuttX" /></p>
 <p><em>OK weird flex. How to get started?</em></p>
 <p>We begin by installing our <strong>Mastodon Server with Docker</strong> (pic above)…</p>
 <ul>
@@ -260,9 +260,9 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <h1 id="prometheus-to-mastodon"><a class="doc-anchor" href="#prometheus-to-mastodon">§</a>6 Prometheus to Mastodon</h1>
 <p>Now comes the tricky bit. How to transmogrify <strong>NuttX Dashboard</strong>…</p>
-<p>TODO: Pic of NuttX Dashboard</p>
+<p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
 <p>Into <strong>Mastodon Posts</strong>?</p>
-<p>TODO: Pic of posts</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds in Mastodon" /></p>
 <p>This is our grand plan…</p>
 <ol>
 <li>
@@ -285,9 +285,9 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 <p><strong>Prometheus Time-Series Database:</strong> This is how we fetch the Failed Builds from Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 build_score &lt; 0.5</code></pre></div>
-<p>Prometheus returns a huge bunch of fields…</p>
-<p>TODO: Pic of Prometheus</p>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
+<p>Prometheus returns a huge bunch of fields…</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <p><strong>Query the Failed Builds:</strong> We query Prometheus and extract the fields in Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
@@ -393,10 +393,10 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><a href="https://lupyuen.github.io/articles/ci3#present-pains"><strong>Over-Running GitHub Jobs</strong></a> shall also be monitored, so our (beloved and respected) NuttX Devs won’t wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍</p>
 </li>
 </ol>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
+<div class="example-wrap"><pre class="language-text"><code>TODO: Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
 curl https://nuttx-feed.org/api/v1/timelines/public | jq</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
-<p>TODO</p>
+<p>TODO: Next Article: We talk about <strong>Git Bisect</strong> and how we auto-magically discover a Breaking Commit in NuttX.</p>
+<p>After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) <strong>Forgejo Git Forge</strong> with NuttX.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -435,12 +435,34 @@ build_score{
 <p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <p><em>Why 0.5?</em></p>
 <p>Build Score is 1.0 for Successful Builds, 0.5 for Warnings, 0.0 for Errors. Thus we search for Build Scores &lt; 0.5.</p>
-<p>TODO: Table of Build Scores</p>
+<div><table><thead><tr><th style="text-align: center">Score</th><th style="text-align: left">Status</th><th style="text-align: left">Example</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0.0</code></strong></td><td style="text-align: left">Error</td><td style="text-align: left"><em>undefined reference to atomic_fetch_add_2</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.5</code></strong></td><td style="text-align: left">Warning</td><td style="text-align: left"> <em>nuttx has a LOAD segment with RWX permission</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0.8</code></strong></td><td style="text-align: left">Unknown</td><td style="text-align: left"><em>STM32_USE_LEGACY_PINMAP will be deprecated</em></td></tr>
+<tr><td style="text-align: center"><strong><code>1.0</code></strong></td><td style="text-align: left">Success</td><td style="text-align: left"><em>(No Errors and Warnings)</em></td></tr>
+</tbody></table>
+</div>
 <p><em>What’s returned by Prometheus?</em></p>
-<p>Plenty of fields, describing every Failed Build in detail…</p>
-<p>TODO: Table of Fields</p>
+<p>Plenty of fields, describing <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Every Failed Build</strong></a> in detail…</p>
+<span style="font-size:90%">
+<div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>timestamp</strong></td><td style="text-align: left">Timestamp <em>(2024-12-06T06:14:54)</em></td></tr>
+<tr><td style="text-align: left"><strong>version</strong></td><td style="text-align: left">Always 3</td></tr>
+<tr><td style="text-align: left"><strong>user</strong></td><td style="text-align: left">Which Build PC <em>(nuttxmacos)</em></td></tr>
+<tr><td style="text-align: left"><strong>arch</strong></td><td style="text-align: left">Architecture <em>(risc-v)</em></td></tr>
+<tr><td style="text-align: left"><strong>group</strong></td><td style="text-align: left">Target Group <em>(risc-v-01)</em></td></tr>
+<tr><td style="text-align: left"><strong>board</strong></td><td style="text-align: left">Board <em>(ox64)</em></td></tr>
+<tr><td style="text-align: left"><strong>config</strong></td><td style="text-align: left">Config <em>(nsh)</em></td></tr>
+<tr><td style="text-align: left"><strong>target</strong></td><td style="text-align: left">Board:Config <em>(ox64:nsh)</em></td></tr>
+<tr><td style="text-align: left"><strong>subarch</strong></td><td style="text-align: left">Sub-Architecture <em>(bl808)</em></td></tr>
+<tr><td style="text-align: left"><strong>url</strong></td><td style="text-align: left">Full URL of Build Log</td></tr>
+<tr><td style="text-align: left"><strong>url_display</strong></td><td style="text-align: left">Short URL of Build Log</td></tr>
+<tr><td style="text-align: left"><strong>nuttx_hash</strong></td><td style="text-align: left">Commit Hash of NuttX Repo <em>(7f84a64109f94787d92c2f44465e43fde6f3d28f)</em></td></tr>
+<tr><td style="text-align: left"><strong>apps_hash</strong></td><td style="text-align: left">Commit Hash of NuttX Apps <em>(d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288)</em></td></tr>
+<tr><td style="text-align: left"><strong>msg</strong></td><td style="text-align: left">Error or Warning Message</td></tr>
+</tbody></table>
+</div></span>
 <p>We can do the same with curl and <strong>HTTP POST</strong>…</p>
-<p>TODO: nuttx_hash</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ curl -X POST \
   -F &#39;query=
     build_score{
@@ -871,17 +893,17 @@ bin/tootctl accounts \
 exit</code></pre></div></li>
 <li>
 <p>That’s why it’s OK to ignore the <strong>Sidekiq Errors</strong> for sending email…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
+<div class="example-wrap"><pre class="language-text"><code>TODO: Sidekiq Errors
 sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot;:&quot;Job raised exception&quot;,&quot;job&quot;:{&quot;retry&quot;:true,&quot;queue&quot;:&quot;mailers&quot;,&quot;wrapped&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;args&quot;:[{&quot;job_class&quot;:&quot;ActionMailer::MailDeliveryJob&quot;,&quot;job_id&quot;:&quot;a7c8ac28-83bd-42b8-a4de-554f533a01f8&quot;,&quot;provider_job_id&quot;:null,&quot;queue_name&quot;:&quot;mailers&quot;,&quot;priority&quot;:null,&quot;arguments&quot;:[&quot;UserMailer&quot;,&quot;password_change&quot;,&quot;deliver_now&quot;,{&quot;args&quot;:[{&quot;_aj_globalid&quot;:&quot;gid://mastodon/User/1&quot;}],&quot;_aj_ruby2_keywords&quot;:[&quot;args&quot;]}],&quot;executions&quot;:0,&quot;exception_executions&quot;:{},&quot;locale&quot;:&quot;en&quot;,&quot;timezone&quot;:&quot;UTC&quot;,&quot;enqueued_at&quot;:&quot;2024-12-09T00:00:54.250576360Z&quot;,&quot;scheduled_at&quot;:null}],&quot;class&quot;:&quot;ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper&quot;,&quot;jid&quot;:&quot;8b52310d0afc7d27b0af3d4b&quot;,&quot;created_at&quot;:1733702454.2507422,&quot;enqueued_at&quot;:1733702694.9922712,&quot;error_message&quot;:&quot;Connection refused - connect(2) for \&quot;localhost\&quot; port 25&quot;,&quot;error_class&quot;:&quot;Errno::ECONNREFUSED&quot;,&quot;failed_at&quot;:1733702454.3886917,&quot;retry_count&quot;:3,&quot;retried_at&quot;:1733702562.7745714}}
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;</code></pre></div></li>
 </ol>
 <h1 id="appendix-create-our-mastodon-app"><a class="doc-anchor" href="#appendix-create-our-mastodon-app">§</a>14 Appendix: Create our Mastodon App</h1>
-<p>TODO</p>
+<p>Let’s create a <strong>Mastodon App</strong> and an <strong>Access Token</strong> for posting to our Mastodon…</p>
 <ol>
 <li>
-<p>This is how we create a <strong>Mastodon App</strong>…</p>
+<p>We create a <strong>Mastodon App</strong> for NuttX Dashboard…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Create Our App: https://docs.joinmastodon.org/client/token/#app
 curl -X POST \
   -F &#39;client_name=NuttX Dashboard&#39; \
@@ -998,10 +1020,9 @@ $ curl \
 
 { ... &quot;&quot;acct:nuttx_build@nuttx-feed.org&quot; ... }</code></pre></div>
 <p><strong>WebFinger</strong> is particularly important, it locates Users within the Fediverse. It should always work!</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
-➜  ~ $ curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
+<div class="example-wrap"><pre class="language-text"><code>TODO: $ curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
 https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c</code></pre></div><h1 id="appendix-backup-our-mastodon-server"><a class="doc-anchor" href="#appendix-backup-our-mastodon-server">§</a>16 Appendix: Backup our Mastodon Server</h1>
-<p>TODO</p>
+<p>Here are the steps to <strong>Backup our Mastodon Server</strong>: PostgreSQL Database, Redis Database and User-Uploaded Files…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/backups/
 ## Backup Postgres Database (and check for sensible data)
 sudo docker exec \
@@ -1023,10 +1044,11 @@ strings dump.rdb \
 tar cvf \
   mastodon-public-system.tar \
   mastodon/public/system</code></pre></div>
-<p>Remember to watch our Mastodon Server for <strong>Dubious Web Requests</strong>! Like these pesky WordPress Malware Bots…</p>
+<p><em>Is it safe to host Mastodon in Docker?</em></p>
+<p>TODO: Docker Isolation vs VM</p>
+<p><a href="https://rancherdesktop.io/">(macOS Rancher Desktop runs Docker with <strong>Lima VM</strong> and <strong>QEMU Arm64</strong>)</a></p>
+<p>Remember to watch our Mastodon Server for <strong>Dubious Web Requests</strong>! Like these pesky WordPress Malware Bots (sigh)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="WordPress Malware Bots" /></p>
-<p>TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM</p>
-<p>TODO: Might be a little different for macOS Rancher Desktop</p>
 <h1 id="appendix-enable-elasticsearch-for-mastodon"><a class="doc-anchor" href="#appendix-enable-elasticsearch-for-mastodon">§</a>17 Appendix: Enable Elasticsearch for Mastodon</h1>
 <p>Enabling <strong>Elasticsearch</strong> for macOS Rancher Desktop is a little tricky. That’s why we saved it for last.</p>
 <ol>
@@ -1099,7 +1121,8 @@ exit</code></pre></div></li>
 </ol>
 <h1 id="appendix-docker-compose-for-mastodon"><a class="doc-anchor" href="#appendix-docker-compose-for-mastodon">§</a>18 Appendix: Docker Compose for Mastodon</h1>
 <p><em>What’s this Docker Compose? Why use it for Mastodon?</em></p>
-<p>TODO: Minor Tweaks</p>
+<p>TODO: What is Docker Compose</p>
+<p>In this section we explain the <strong>Minor Tweaks</strong> we made to Mastodon’s Official Docker Compose Config.</p>
 <p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">(See the <strong>Minor Tweaks</strong>)</a></p>
 <h2 id="database-server"><a class="doc-anchor" href="#database-server">§</a>18.1 Database Server</h2>
 <p><a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
@@ -1290,7 +1313,7 @@ sudo docker compose -f .devcontainer/compose.yaml exec app bin/dev
 
 ## Browse to Mastodon Web at http://localhost:3000
 
-## TODO: Default Admin ID
+## TODO: What&#39;s the Default Admin ID
 
 ## From https://docs.joinmastodon.org/admin/setup/#admin-cli
 ## And https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
@@ -1315,7 +1338,7 @@ sudo docker exec \
 bin/tootctl search \
   deploy --only=tags
 exit</code></pre></div>
-<p>TODO: Optional:</p>
+<p>TODO: Optional ports and domain</p>
 <p>.devcontainer/compose.yaml:</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    ports:
       - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
