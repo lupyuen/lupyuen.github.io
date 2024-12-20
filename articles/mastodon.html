@@ -99,14 +99,14 @@
 <ul>
 <li>TODO</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/mastodon-mobile1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-mobile1.png" alt="Following the NuttX Feed on Mastodon" /></p>
 <h1 id="mastodon-for-nuttx-ci"><a class="doc-anchor" href="#mastodon-for-nuttx-ci">§</a>1 Mastodon for NuttX CI</h1>
 <ol>
 <li>
-<p>Register for a <strong>Mastodon Account</strong> on any Fediverse Server (I got mine at <a href="TODO"><strong><code>qoto.org</code></strong></a>)</p>
+<p>Register for a <a href="https://joinmastodon.org"><strong>Mastodon Account</strong></a> on any Fediverse Server (I got mine at <a href="qoto.org"><strong><code>qoto.org</code></strong></a>)</p>
 </li>
 <li>
-<p><strong>On Our Mobile Device:</strong> Install a Mastodon App (like <a href="TODO"><strong>Tusky</strong></a>) and log in</p>
+<p><strong>On Our Mobile Device:</strong> Install a Mastodon App (like <a href="https://tusky.app/"><strong>Tusky</strong></a>) and log in</p>
 </li>
 <li>
 <p>Tap the <strong>Search</strong> button. Enter…</p>
@@ -114,21 +114,21 @@
 <p>Tap the <strong>Accounts</strong> tab, then tap the account that appears. (Pic above)</p>
 </li>
 <li>
-<p>Tap the <strong>Follow</strong> button. And the <strong>Notify</strong> button beside it.</p>
+<p>Tap the <strong>Follow</strong> button. And the <strong>Notify</strong> button beside it. (Pic above)</p>
 </li>
 <li>
 <p>That’s all! When a NuttX Build Fails, we’ll see a <strong>Notification in the Mastodon App</strong> (linking to NuttX Build History)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="Notification in the Mastodon App links to NuttX Build History" /></p>
 <p><em>How did we get the Failed NuttX Builds?</em></p>
-<p>Thanks to the NuttX Community: We have a (self-hosted) <a href="TODO"><strong>NuttX Build Farm</strong></a> that continously compiles All NuttX Targets. (Roughly TODO)</p>
-<p>Failed Builds are auto-escalated to the <a href="TODO"><strong>NuttX Dashboard</strong></a>. (Grafana + Prometheus)</p>
+<p>Thanks to the NuttX Community: We have a (self-hosted) <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> that continously compiles All NuttX Targets. <em>(1,600 Targets!)</em></p>
+<p>Failed Builds are auto-escalated to the <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Grafana + Prometheus)</p>
 <p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
 <p>First we talk about Mastodon…</p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
-<p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="TODO"><strong>The Fediverse</strong></a>.</p>
+<p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
 <p>Though today we’re making something unexpected, unconventional with Mastodon: Pushing Notifications of <strong>Failed NuttX Builds</strong>.</p>
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
 <p>TODO: Pic of Mastodon</p>
@@ -136,13 +136,22 @@
 <p>We begin by installing our <strong>Mastodon Server with Docker</strong>…</p>
 <ul>
 <li>
-<p>TODO: Install Server</p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server"><strong>“Install our Mastodon Server”</strong></a></p>
 </li>
 <li>
-<p>Based on the excellent <a href="TODO"><strong>Mastodon Docs</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-test-our-mastodon-server"><strong>“Test our Mastodon Server”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-enable-elasticsearch-for-mastodon"><strong>“Enable Elasticsearch for Mastodon”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-docker-compose-for-mastodon"><strong>“Docker Compose for Mastodon”</strong></a></p>
+</li>
+<li>
+<p>Based on the excellent <a href="https://docs.joinmastodon.org/admin/prerequisites/"><strong>Mastodon Docs</strong></a></p>
 </li>
 </ul>
-<p>Right now we’re testing on (open-source) <a href="TODO"><strong>macOS Rancher Desktop</strong></a>, thus we tweaked the steps a bit.</p>
+<p>Right now we’re testing on (open-source) <a href="https://rancherdesktop.io/"><strong>macOS Rancher Desktop</strong></a>, thus we tweaked the steps a bit.</p>
 <h1 id="bot-user-for-mastodon"><a class="doc-anchor" href="#bot-user-for-mastodon">§</a>3 Bot User for Mastodon</h1>
 <p><em>Will we have Users in our Mastodon Server?</em></p>
 <p>Surprisingly, Nope! Our Mastodon Server shall be a tad <strong>Anti-Social</strong>…</p>
@@ -160,14 +169,19 @@
 <p>And receive <strong>Notifications of Failed Builds</strong> through their accounts</p>
 </li>
 <li>
-<p>That’s the power of <a href="TODO"><strong>Federated ActivityPub</strong></a>!</p>
+<p>That’s the power of <a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>Federated ActivityPub</strong></a>!</p>
 </li>
 </ul>
 <p>This is how we create our <strong>Bot User for Mastodon</strong>…</p>
 <p>TODO: Pic of Create User</p>
 <p>Details in the Appendix…</p>
 <ul>
-<li>TODO: Create User</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-test-our-mastodon-server"><strong>“Test our Mastodon Server”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account"><strong>“Create our Mastodon Account”</strong></a></p>
+</li>
 </ul>
 <p>We have a slight hiccup…</p>
 <h1 id="email-less-mastodon"><a class="doc-anchor" href="#email-less-mastodon">§</a>4 Email-Less Mastodon</h1>
@@ -189,7 +203,7 @@ bin/tootctl accounts \
   --confirm</code></pre></div>
 <p>The detailed steps are here…</p>
 <ul>
-<li>TODO: Approve user</li>
+<li><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account"><strong>“Create our Mastodon Account”</strong></a></li>
 </ul>
 <h1 id="post-to-mastodon"><a class="doc-anchor" href="#post-to-mastodon">§</a>5 Post to Mastodon</h1>
 <p><em>How will our Bot post a message to Mastodon?</em></p>
@@ -202,8 +216,8 @@ curl -X POST \
 	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
 </code></pre></div>
 <p>It appears like this…</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Post a message to Mastodon (Status Update)" /></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-a-mastodon-post">(Explained here)</a></p>
 <p><em>What’s this Access Token?</em></p>
 <p>We pass an <strong>Access Token</strong> to Authenticate our Bot User with Mastodon. This is how we create the Access Token…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create an Access Token
@@ -218,7 +232,7 @@ curl -X POST \
   -F &quot;code=$AUTH_CODE&quot; \
   -F &quot;scope=read write push&quot; \
   https://YOUR_DOMAIN_NAME.org/oauth/token</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <p><em>What about the Client ID, Secret and Authorization Code?</em></p>
 <p><strong>Client ID and Secret</strong> will select the Mastodon App for our Bot User…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create Our Mastodon App
@@ -231,7 +245,7 @@ curl -X POST \
 
 ## Returns { &quot;client_id&quot; : &quot;...&quot;, &quot;client_secret&quot; : &quot;...&quot; }
 ## We save the Client ID and Secret</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <p>Which we use to create the <strong>Authorization Code</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Open a Web Browser. Browse to https://YOUR_DOMAIN_NAME.org
 ## Log in as Your New User (nuttx_build)
@@ -243,7 +257,7 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
   &amp;response_type=code
 
 ## Copy the Authorization Code. It will expire soon!</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <h1 id="prometheus-to-mastodon"><a class="doc-anchor" href="#prometheus-to-mastodon">§</a>6 Prometheus to Mastodon</h1>
 <p>Now comes the tricky bit. How to transmogrify <strong>NuttX Dashboard</strong>…</p>
 <p>TODO: Pic of NuttX Dashboard</p>
@@ -273,8 +287,8 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 build_score &lt; 0.5</code></pre></div>
 <p>Prometheus returns a huge bunch of fields…</p>
 <p>TODO: Pic of Prometheus</p>
-<p><a href="TODO">(Explained here)</a></p>
-<p><strong>Query the Failed Builds:</strong> Now we do it in Rust…</p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
+<p><strong>Query the Failed Builds:</strong> We query Prometheus and extract the fields in Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
 </span><span class="kw">let </span>query = <span class="string">r##"
@@ -291,7 +305,7 @@ build_score &lt; 0.5</code></pre></div>
 <span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
 <p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
@@ -313,7 +327,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   status.truncate(<span class="number">512</span>);  <span class="comment">// Mastodon allows only 500 chars
   </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
   params.push((<span class="string">"status"</span>, status));</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <p><strong>Submit to Mastodon via ActivityPub:</strong> By posting over HTTPS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
@@ -330,7 +344,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="kw">if </span>!res.status().is_success() { <span class="kw">continue</span>; }
   <span class="comment">// Omitted: Remember the Mastodon Posts for All Builds
 </span>}</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <p><strong>Skip Duplicates:</strong> Remember everything in a JSON File, so we won’t notify the same thing twice…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This JSON File remembers the Mastodon Posts for All Builds:
@@ -350,7 +364,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(users) = all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"users"</span>].as_array() {
   <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
 }</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <h1 id="all-toots-considered"><a class="doc-anchor" href="#all-toots-considered">§</a>7 All Toots Considered</h1>
 <ol>
 <li>
@@ -359,7 +373,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </li>
 <li>
 <p><em>But any Fediverse User can reply to our Mastodon Posts?</em></p>
-<p>Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the <a href="TODO"><strong>NuttX Issue</strong></a> that was created for the Failed Build.</p>
+<p>Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the <a href="https://github.com/apache/nuttx/issues"><strong>NuttX Issue</strong></a> that someone has created for the Failed Build.</p>
 </li>
 <li>
 <p><em>How will we know when a Failed Build recovers?</em></p>
@@ -416,7 +430,7 @@ build_score{
   user != &quot;nuttxlinux&quot;, ## Retired (Blocked by GitHub)
   user != &quot;nuttxmacos&quot;  ## Retired (Blocked by GitHub)
 } &lt; 0.5</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <p><em>Why 0.5?</em></p>
 <p>Build Score is 1.0 for Successful Builds, 0.5 for Warnings, 0.0 for Errors. Thus we search for Build Scores &lt; 0.5.</p>
 <p>TODO: Table of Build Scores</p>
@@ -450,8 +464,8 @@ build_score{
     error: cast from pointer to integer of different size ...</code></pre></div>
 <p>In the next section: We’ll replicate this with Rust.</p>
 <p><em>How did we get the above Prometheus Query?</em></p>
-<p>We copied and pasted from our <a href="TODO"><strong>NuttX Dashboard in Grafana</strong></a>…</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-grafana.png" alt="TODO" /></p>
+<p>We copied and pasted from our <a href="https://lupyuen.github.io/articles/ci4#grafana-dashboard"><strong>NuttX Dashboard in Grafana</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-grafana.png" alt="Prometheus Query from our NuttX Dashboard in Grafana" /></p>
 <h1 id="appendix-post-nuttx-builds-to-mastodon"><a class="doc-anchor" href="#appendix-post-nuttx-builds-to-mastodon">§</a>10 Appendix: Post NuttX Builds to Mastodon</h1>
 <p>In the previous section: We fetched the <strong>Failed NuttX Builds</strong> from Prometheus. Now we post them to <strong>Mastodon</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the Access Token for Mastodon
@@ -585,8 +599,8 @@ all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_i
 file.write_all(json.as_bytes()).unwrap();</code></pre></div>
 <p>Which gets saved into a <strong>JSON File</strong>.</p>
 <h1 id="appendix-install-our-mastodon-server"><a class="doc-anchor" href="#appendix-install-our-mastodon-server">§</a>11 Appendix: Install our Mastodon Server</h1>
-<p>TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macOS / Windows</p>
-<p><a href="TODO">(<strong>docker-compose.yml</strong> is explained here)</a></p>
+<p>Here are the steps to install Mastodon Server with Docker Compose. We tested with <a href="https://rancherdesktop.io/"><strong>Rancher Desktop on macOS</strong></a>, the same steps will probably work on <a href="https://docs.docker.com/engine/install/ubuntu/"><strong>Docker Desktop</strong></a> for Linux / macOS / Windows.</p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-docker-compose-for-mastodon">(<strong>docker-compose.yml</strong> is explained here)</a></p>
 <ol>
 <li>
 <p>Download the <strong>Mastodon Source Code</strong> and init the Environment Config</p>
@@ -787,7 +801,7 @@ volumes:
 </li>
 <li>
 <p>Browse to <em>https://nuttx-feed.org</em>. <strong>Mastodon is Up!</strong></p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web5.png" alt="Mastodon Web UI" /></p>
 </li>
 <li>
 <p>Log in with the <strong>Admin User and Password</strong></p>
