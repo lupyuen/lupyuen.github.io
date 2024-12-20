@@ -70,7 +70,20 @@
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p><strong>Life without GitHub:</strong> What’s it like?</p>
 <p><em>Why are we doing this?</em></p>
-<p>Blocked in some parts of the world.</p>
+<ul>
+<li>
+<p>We’re hitting some Budget Limits at GitHub</p>
+</li>
+<li>
+<p>GitHub is blocked in some parts of the world</p>
+</li>
+<li>
+<p>Some devs prefer not to collaborate on GitHub (for ethical / other reasons)</p>
+</li>
+<li>
+<p>Can we make our NuttX Community a little more inclusive, by hosting our Git Forge outside GitHub?</p>
+</li>
+</ul>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://forgejo.org/docs/latest/admin/installation-docker/
 
@@ -79,13 +92,20 @@ cd $HOME
 git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
+## TODO: Is `sudo` needed?
 sudo docker compose up
-again: sudo docker compose up
+
+## If It Quits To Command-Line:
+## Run a second time to get it up
+sudo docker compose up
+
 to down: sudo docker compose down
 https://gist.github.com/lupyuen/8438ef716f428606d3913f7bc8efc0b7
 
 Will auto create `forgejo` folder
 Browse to http://localhost:3002/
+SQLite, upgrade to PostgreSQL later
+Domain: nuttx-forge.org
 Create admin user: nuttx
 
 (For CloudFlare Tunnel: Set __Security &gt; Settings &gt; High__)
@@ -103,6 +123,10 @@ Update Mirror Settings
 select issues, PR, labels, milestones, releases
 nuttx-update
 Migrate Repo
+
+How long?
+2pm to ???
+??? hours
 
 Create Issue
 Actions: No Runner
