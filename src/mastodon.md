@@ -56,7 +56,7 @@ Though today we're making something unexpected, unconventional with Mastodon: Pu
 
 _(Think "Social Network for NuttX Maintainers")_
 
-TODO: Pic of Mastodon
+![Mastodon Server for NuttX](https://lupyuen.github.io/images/mastodon-register7.png)
 
 _OK weird flex. How to get started?_
 
@@ -213,11 +213,11 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 
 Now comes the tricky bit. How to transmogrify __NuttX Dashboard__...
 
-TODO: Pic of NuttX Dashboard
+![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
 Into __Mastodon Posts__?
 
-TODO: Pic of posts
+![NuttX Builds in Mastodon](https://lupyuen.github.io/images/mastodon-register7.png)
 
 This is our grand plan...
 
@@ -240,11 +240,11 @@ __Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from
 build_score < 0.5
 ```
 
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
+
 Prometheus returns a huge bunch of fields...
 
-TODO: Pic of Prometheus
-
-[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
+![Fetching the Failed NuttX Builds from Prometheus](https://lupyuen.github.io/images/mastodon-prometheus.png)
 
 __Query the Failed Builds:__ We query Prometheus and extract the fields in Rust...
 
@@ -371,16 +371,16 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 
     [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
 
-TODO
-
 ```text
-Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
+TODO: Public Timeline: https://docs.joinmastodon.org/client/public/#timelines
 curl https://nuttx-feed.org/api/v1/timelines/public | jq
 ```
 
 # What's Next
 
-TODO
+TODO: Next Article: We talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
+
+After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
@@ -422,17 +422,39 @@ _Why 0.5?_
 
 Build Score is 1.0 for Successful Builds, 0.5 for Warnings, 0.0 for Errors. Thus we search for Build Scores < 0.5.
 
-TODO: Table of Build Scores
+| Score | Status | Example |
+|:-----:|:-------|:--------|
+| __`0.0`__ | Error | _undefined reference to atomic\_fetch\_add\_2_
+| __`0.5`__ | Warning | _nuttx has a LOAD segment with RWX permission_
+| __`0.8`__ | Unknown | _STM32_USE_LEGACY_PINMAP will be deprecated_
+| __`1.0`__ | Success | _(No Errors and Warnings)_
 
 _What's returned by Prometheus?_
 
-Plenty of fields, describing every Failed Build in detail...
+Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) in detail...
 
-TODO: Table of Fields
+<span style="font-size:90%">
+
+| Field | Value |
+|:------|:------|
+| __timestamp__ | Timestamp _(2024-12-06T06:14:54)_
+| __version__ | Always 3
+| __user__ | Which Build PC _(nuttxmacos)_
+| __arch__ | Architecture _(risc-v)_
+| __group__ | Target Group _(risc-v-01)_
+| __board__ | Board _(ox64)_
+| __config__ | Config _(nsh)_
+| __target__ | Board:Config _(ox64:nsh)_
+| __subarch__ | Sub-Architecture _(bl808)_
+| __url__ | Full URL of Build Log
+| __url_display__ | Short URL of Build Log
+| __nuttx_hash__ | Commit Hash of NuttX Repo _(7f84a64109f94787d92c2f44465e43fde6f3d28f)_
+| __apps_hash__ | Commit Hash of NuttX Apps _(d6edbd0cec72cb44ceb9d0f5b932cbd7a2b96288)_
+| __msg__ | Error or Warning Message
+
+</span>
 
 We can do the same with curl and __HTTP POST__...
-
-TODO: nuttx_hash
 
 ```bash
 $ curl -X POST \
@@ -965,7 +987,7 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
 1.  That's why it's OK to ignore the __Sidekiq Errors__ for sending email...
 
     ```text
-    TODO
+    TODO: Sidekiq Errors
     sidekiq-1    | 2024-12-09T00:04:55.035Z pid=6 tid=2ppy class=ActionMailer::MailDeliveryJob jid=8b52310d0afc7d27b0af3d4b elapsed=0.043 INFO: fail
     sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {"context":"Job raised exception","job":{"retry":true,"queue":"mailers","wrapped":"ActionMailer::MailDeliveryJob","args":[{"job_class":"ActionMailer::MailDeliveryJob","job_id":"a7c8ac28-83bd-42b8-a4de-554f533a01f8","provider_job_id":null,"queue_name":"mailers","priority":null,"arguments":["UserMailer","password_change","deliver_now",{"args":[{"_aj_globalid":"gid://mastodon/User/1"}],"_aj_ruby2_keywords":["args"]}],"executions":0,"exception_executions":{},"locale":"en","timezone":"UTC","enqueued_at":"2024-12-09T00:00:54.250576360Z","scheduled_at":null}],"class":"ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper","jid":"8b52310d0afc7d27b0af3d4b","created_at":1733702454.2507422,"enqueued_at":1733702694.9922712,"error_message":"Connection refused - connect(2) for \"localhost\" port 25","error_class":"Errno::ECONNREFUSED","failed_at":1733702454.3886917,"retry_count":3,"retried_at":1733702562.7745714}}
     sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for "localhost" port 25
@@ -974,9 +996,9 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
 
 # Appendix: Create our Mastodon App
 
-TODO
+Let's create a __Mastodon App__ and an __Access Token__ for posting to our Mastodon...
 
-1.  This is how we create a __Mastodon App__...
+1.  We create a __Mastodon App__ for NuttX Dashboard...
 
     ```text
     ## Create Our App: https://docs.joinmastodon.org/client/token/#app
@@ -1126,14 +1148,13 @@ $ curl \
 __WebFinger__ is particularly important, it locates Users within the Fediverse. It should always work!
 
 ```text
-TODO
-➜  ~ $ curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
+TODO: $ curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
 https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
 ```
 
 # Appendix: Backup our Mastodon Server
 
-TODO
+Here are the steps to __Backup our Mastodon Server__: PostgreSQL Database, Redis Database and User-Uploaded Files...
 
 ```bash
 ## From https://docs.joinmastodon.org/admin/backups/
@@ -1159,13 +1180,15 @@ tar cvf \
   mastodon/public/system
 ```
 
-Remember to watch our Mastodon Server for __Dubious Web Requests__! Like these pesky WordPress Malware Bots...
+_Is it safe to host Mastodon in Docker?_
+
+TODO: Docker Isolation vs VM
+
+[(macOS Rancher Desktop runs Docker with __Lima VM__ and __QEMU Arm64__)](https://rancherdesktop.io/)
+
+Remember to watch our Mastodon Server for __Dubious Web Requests__! Like these pesky WordPress Malware Bots (sigh)
 
 ![WordPress Malware Bots](https://lupyuen.github.io/images/mastodon-log.png)
-
-TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM
-
-TODO: Might be a little different for macOS Rancher Desktop
 
 # Appendix: Enable Elasticsearch for Mastodon
 
@@ -1265,7 +1288,9 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 
 _What's this Docker Compose? Why use it for Mastodon?_
 
-TODO: Minor Tweaks
+TODO: What is Docker Compose
+
+In this section we explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config.
 
 [(See the __Minor Tweaks__)](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
 
@@ -1510,7 +1535,7 @@ sudo docker compose -f .devcontainer/compose.yaml exec app bin/dev
 
 ## Browse to Mastodon Web at http://localhost:3000
 
-## TODO: Default Admin ID
+## TODO: What's the Default Admin ID
 
 ## From https://docs.joinmastodon.org/admin/setup/#admin-cli
 ## And https://docs.joinmastodon.org/admin/tootctl/#accounts-approve
@@ -1537,7 +1562,7 @@ bin/tootctl search \
 exit
 ```
 
-TODO: Optional: 
+TODO: Optional ports and domain
 
 .devcontainer/compose.yaml:
 
