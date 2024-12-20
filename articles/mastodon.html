@@ -757,6 +757,7 @@ db-1:        database system is ready to accept connections
 streaming-1: request completed
 web-1:       GET /health</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8">(See <strong>Another Log</strong>)</a></p>
 <p>(Sidekiq will have errors, we’ll explain why)</p>
 </li>
 </ol>
@@ -969,7 +970,7 @@ curl -X POST \
 	https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
 <p>And our <strong>Mastodon Post</strong> appears!</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Creating a Mastodon Post" /></p>
-<p><strong>ActivityPub</strong> is the Main API for Mastodon and Fediverse. Let’s make sure that it works on our server…</p>
+<p><a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>ActivityPub</strong></a> is the Main API for Mastodon and Fediverse. Let’s make sure that it works on our server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `jq` for Browsing JSON
 $ brew install jq      ## For macOS
 $ sudo apt install jq  ## For Ubuntu
@@ -997,15 +998,9 @@ $ curl \
 
 { ... &quot;&quot;acct:nuttx_build@nuttx-feed.org&quot; ... }</code></pre></div>
 <p><strong>WebFinger</strong> is particularly important, it locates Users within the Fediverse. It should always work!</p>
-<p>TODO: mastodon-log.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
-<div class="example-wrap"><pre class="language-text"><code>Docker Logs:
-https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
-https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
-https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
-https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
-https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
-https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f</code></pre></div><h1 id="appendix-backup-our-mastodon-server"><a class="doc-anchor" href="#appendix-backup-our-mastodon-server">§</a>16 Appendix: Backup our Mastodon Server</h1>
+<div class="example-wrap"><pre class="language-text"><code>TODO
+➜  ~ $ curl -H &#39;Accept: application/activity+json&#39; https://nuttx-feed.org/@lupyuen | jq
+https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c</code></pre></div><h1 id="appendix-backup-our-mastodon-server"><a class="doc-anchor" href="#appendix-backup-our-mastodon-server">§</a>16 Appendix: Backup our Mastodon Server</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.joinmastodon.org/admin/backups/
 ## Backup Postgres Database (and check for sensible data)
@@ -1028,8 +1023,10 @@ strings dump.rdb \
 tar cvf \
   mastodon-public-system.tar \
   mastodon/public/system</code></pre></div>
+<p>Remember to watch our Mastodon Server for <strong>Dubious Web Requests</strong>! Like these pesky WordPress Malware Bots…</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="WordPress Malware Bots" /></p>
 <p>TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM</p>
-<p>Might be a little different for macOS Rancher Desktop</p>
+<p>TODO: Might be a little different for macOS Rancher Desktop</p>
 <h1 id="appendix-enable-elasticsearch-for-mastodon"><a class="doc-anchor" href="#appendix-enable-elasticsearch-for-mastodon">§</a>17 Appendix: Enable Elasticsearch for Mastodon</h1>
 <p>Enabling <strong>Elasticsearch</strong> for macOS Rancher Desktop is a little tricky. That’s why we saved it for last.</p>
 <ol>
@@ -1043,7 +1040,7 @@ tar cvf \
 ES_HOST=es
 ES_PORT=9200</code></pre></div></li>
 <li>
-<p>Edit <a href="TODO"><strong>docker-compose.yml</strong></a>.</p>
+<p>Edit <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml"><strong>docker-compose.yml</strong></a>.</p>
 <p>Uncomment the Section for <strong>“<code>es</code>”</strong></p>
 <p>Map the Docker Volume <strong>es-data</strong> for Elasticsearch</p>
 <p>Web Container should depend on <strong>“<code>es</code>”</strong></p>
@@ -1097,6 +1094,7 @@ bin/tootctl search \
 exit</code></pre></div></li>
 <li>
 <p>At <strong>Administration &gt; Dashboard</strong>: Mastodon complains no more!</p>
+<p><a href="https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
 <h1 id="appendix-docker-compose-for-mastodon"><a class="doc-anchor" href="#appendix-docker-compose-for-mastodon">§</a>18 Appendix: Docker Compose for Mastodon</h1>
@@ -1104,7 +1102,7 @@ exit</code></pre></div></li>
 <p>TODO: Minor Tweaks</p>
 <p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">(See the <strong>Minor Tweaks</strong>)</a></p>
 <h2 id="database-server"><a class="doc-anchor" href="#database-server">§</a>18.1 Database Server</h2>
-<p><a href="TODO"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p><a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>services:
   db:
     restart: always
@@ -1203,7 +1201,8 @@ exit</code></pre></div></li>
       - internal_network
     healthcheck:
       test: [&#39;CMD-SHELL&#39;, &quot;ps aux | grep &#39;[s]idekiq\ 6&#39; || false&quot;]</code></pre></div><h2 id="streaming-server"><a class="doc-anchor" href="#streaming-server">§</a>18.5 Streaming Server</h2>
-<p><strong>Optional:</strong> Mastodon (and Fediverse) uses <a href="TODO"><strong>ActivityPub</strong></a> for exchanging lots of info about Users and Posts. Our Web Server supports the <strong>HTTP Rest API</strong>, but there’s a more efficient way: <strong>WebSocket API</strong>.</p>
+<p><em>(Streaming Server is Optional)</em></p>
+<p>Mastodon (and Fediverse) uses <a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>ActivityPub</strong></a> for exchanging lots of info about Users and Posts. Our Web Server supports the <strong>HTTP Rest API</strong>, but there’s a more efficient way: <strong>WebSocket API</strong>.</p>
 <p>WebSocket is <strong>totally optional</strong>, Mastodon works fine without it, probably a little less efficient: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  streaming:
     ## You can uncomment the following lines if you want to not use the prebuilt image, for example if you have local code changes
@@ -1232,7 +1231,8 @@ exit</code></pre></div></li>
     healthcheck:
       # prettier-ignore
       test: [&#39;CMD-SHELL&#39;, &quot;curl -s --noproxy localhost localhost:4000/api/v1/streaming/health | grep -q &#39;OK&#39; || exit 1&quot;]</code></pre></div><h2 id="elasticsearch-server"><a class="doc-anchor" href="#elasticsearch-server">§</a>18.6 Elasticsearch Server</h2>
-<p><strong>Optional:</strong> Elasticsearch is for <strong>Full-Text Search</strong>. Also totally optional, unless we require Full-Text Search for Users and Posts: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p><em>(Elasticsearch is optional)</em></p>
+<p>Elasticsearch is for <strong>Full-Text Search</strong>. Also totally optional, unless we require Full-Text Search for Users and Posts: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  es:
     restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
@@ -1315,7 +1315,7 @@ sudo docker exec \
 bin/tootctl search \
   deploy --only=tags
 exit</code></pre></div>
-<p>Optional:</p>
+<p>TODO: Optional:</p>
 <p>.devcontainer/compose.yaml:</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    ports:
       - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
