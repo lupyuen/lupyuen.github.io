@@ -14,13 +14,13 @@ TODO: In this article we talk about Mastodon
 
 - TODO
 
-![TODO](https://lupyuen.github.io/images/mastodon-mobile1.png)
+![Following the NuttX Feed on Mastodon](https://lupyuen.github.io/images/mastodon-mobile1.png)
 
 # Mastodon for NuttX CI
 
-1.  Register for a __Mastodon Account__ on any Fediverse Server (I got mine at [__`qoto.org`__](TODO))
+1.  Register for a [__Mastodon Account__](https://joinmastodon.org) on any Fediverse Server (I got mine at [__`qoto.org`__](qoto.org))
 
-1.  __On Our Mobile Device:__ Install a Mastodon App (like [__Tusky__](TODO)) and log in
+1.  __On Our Mobile Device:__ Install a Mastodon App (like [__Tusky__](https://tusky.app/)) and log in
 
 1.  Tap the __Search__ button. Enter...
 
@@ -30,17 +30,17 @@ TODO: In this article we talk about Mastodon
 
     Tap the __Accounts__ tab, then tap the account that appears. (Pic above)
 
-1.  Tap the __Follow__ button. And the __Notify__ button beside it.
+1.  Tap the __Follow__ button. And the __Notify__ button beside it. (Pic above)
 
 1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__ (linking to NuttX Build History)
 
-![TODO](https://lupyuen.github.io/images/mastodon-mobile3.png)
+![Notification in the Mastodon App links to NuttX Build History](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
 _How did we get the Failed NuttX Builds?_
 
-Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](TODO) that continously compiles All NuttX Targets. (Roughly TODO)
+Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) that continously compiles All NuttX Targets. _(1,600 Targets!)_
 
-Failed Builds are auto-escalated to the [__NuttX Dashboard__](TODO). (Grafana + Prometheus)
+Failed Builds are auto-escalated to the [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (Grafana + Prometheus)
 
 In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboard into __Mastodon Posts__.
 
@@ -50,7 +50,7 @@ First we talk about Mastodon...
 
 _What kind of animal is Mastodon?_
 
-Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ Mastodon is mostly used for Global Social Networking on [__The Fediverse__](TODO).
+Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ Mastodon is mostly used for Global Social Networking on [__The Fediverse__](https://en.wikipedia.org/wiki/Fediverse).
 
 Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of __Failed NuttX Builds__.
 
@@ -62,11 +62,17 @@ _OK weird flex. How to get started?_
 
 We begin by installing our __Mastodon Server with Docker__...
 
-- TODO: Install Server
+- [__"Install our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server)
 
-- Based on the excellent [__Mastodon Docs__](TODO)
+- [__"Test our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-test-our-mastodon-server)
 
-Right now we're testing on (open-source) [__macOS Rancher Desktop__](TODO), thus we tweaked the steps a bit.
+- [__"Enable Elasticsearch for Mastodon"__](https://lupyuen.github.io/articles/mastodon#appendix-enable-elasticsearch-for-mastodon)
+
+- [__"Docker Compose for Mastodon"__](https://lupyuen.github.io/articles/mastodon#appendix-docker-compose-for-mastodon)
+
+- Based on the excellent [__Mastodon Docs__](https://docs.joinmastodon.org/admin/prerequisites/)
+
+Right now we're testing on (open-source) [__macOS Rancher Desktop__](https://rancherdesktop.io/), thus we tweaked the steps a bit.
 
 # Bot User for Mastodon
 
@@ -82,7 +88,7 @@ Surprisingly, Nope! Our Mastodon Server shall be a tad __Anti-Social__...
 
 - And receive __Notifications of Failed Builds__ through their accounts
 
-- That's the power of [__Federated ActivityPub__](TODO)!
+- That's the power of [__Federated ActivityPub__](https://docs.joinmastodon.org/spec/activitypub/)!
 
 This is how we create our __Bot User for Mastodon__...
 
@@ -90,7 +96,9 @@ TODO: Pic of Create User
 
 Details in the Appendix...
 
-- TODO: Create User
+- [__"Test our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-test-our-mastodon-server)
+
+- [__"Create our Mastodon Account"__](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
 
 We have a slight hiccup...
 
@@ -120,7 +128,7 @@ bin/tootctl accounts \
 
 The detailed steps are here...
 
-- TODO: Approve user
+- [__"Create our Mastodon Account"__](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
 
 # Post to Mastodon
 
@@ -140,9 +148,9 @@ curl -X POST \
 
 It appears like this...
 
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+![Post a message to Mastodon (Status Update)](https://lupyuen.github.io/images/mastodon-web4.png)
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-create-a-mastodon-post)
 
 _What's this Access Token?_
 
@@ -163,7 +171,7 @@ curl -X POST \
   https://YOUR_DOMAIN_NAME.org/oauth/token
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app)
 
 _What about the Client ID, Secret and Authorization Code?_
 
@@ -182,7 +190,7 @@ curl -X POST \
 ## We save the Client ID and Secret
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app)
 
 Which we use to create the __Authorization Code__...
 
@@ -199,7 +207,7 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 ## Copy the Authorization Code. It will expire soon!
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app)
 
 # Prometheus to Mastodon
 
@@ -236,9 +244,9 @@ Prometheus returns a huge bunch of fields...
 
 TODO: Pic of Prometheus
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
 
-__Query the Failed Builds:__ Now we do it in Rust...
+__Query the Failed Builds:__ We query Prometheus and extract the fields in Rust...
 
 ```rust
 // Fetch the Failed Builds from Prometheus
@@ -258,7 +266,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
 
 __Reformat as Mastodon Posts:__ From JSON into Plain Text...
 
@@ -284,7 +292,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   params.push(("status", status));
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
 
 __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 
@@ -305,7 +313,7 @@ __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 }
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
 
 __Skip Duplicates:__ Remember everything in a JSON File, so we won't notify the same thing twice...
 
@@ -329,7 +337,7 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 }
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
 
 # All Toots Considered
 
@@ -339,7 +347,7 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 
 1.  _But any Fediverse User can reply to our Mastodon Posts?_
 
-    Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](TODO) that was created for the Failed Build.
+    Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](https://github.com/apache/nuttx/issues) that someone has created for the Failed Build.
 
 1.  _How will we know when a Failed Build recovers?_
 
@@ -404,7 +412,7 @@ build_score{
 } < 0.5
 ```
 
-![TODO](https://lupyuen.github.io/images/mastodon-prometheus.png)
+![Fetching the Failed NuttX Builds from Prometheus](https://lupyuen.github.io/images/mastodon-prometheus.png)
 
 _Why 0.5?_
 
@@ -452,9 +460,9 @@ In the next section: We'll replicate this with Rust.
 
 _How did we get the above Prometheus Query?_
 
-We copied and pasted from our [__NuttX Dashboard in Grafana__](TODO)...
+We copied and pasted from our [__NuttX Dashboard in Grafana__](https://lupyuen.github.io/articles/ci4#grafana-dashboard)...
 
-![TODO](https://lupyuen.github.io/images/mastodon-grafana.png)
+![Prometheus Query from our NuttX Dashboard in Grafana](https://lupyuen.github.io/images/mastodon-grafana.png)
 
 # Appendix: Post NuttX Builds to Mastodon
 
@@ -616,9 +624,9 @@ Which gets saved into a __JSON File__.
 
 # Appendix: Install our Mastodon Server
 
-TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macOS / Windows
+Here are the steps to install Mastodon Server with Docker Compose. We tested with [__Rancher Desktop on macOS__](https://rancherdesktop.io/), the same steps will probably work on [__Docker Desktop__](https://docs.docker.com/engine/install/ubuntu/) for Linux / macOS / Windows.
 
-[(__docker-compose.yml__ is explained here)](TODO)
+[(__docker-compose.yml__ is explained here)](https://lupyuen.github.io/articles/mastodon#appendix-docker-compose-for-mastodon)
 
 1.  Download the __Mastodon Source Code__ and init the Environment Config
 
@@ -876,7 +884,7 @@ We're ready to __Test Mastodon__!
 
 1.  Browse to _https://nuttx-feed.org_. __Mastodon is Up!__
 
-    ![TODO](https://lupyuen.github.io/images/mastodon-web5.png)
+    ![Mastodon Web UI](https://lupyuen.github.io/images/mastodon-web5.png)
 
 1.  Log in with the __Admin User and Password__
 
