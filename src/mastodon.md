@@ -52,7 +52,7 @@ _What kind of animal is Mastodon?_
 
 Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ Mastodon is mostly used for Global Social Networking on [__The Fediverse__](https://en.wikipedia.org/wiki/Fediverse).
 
-Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of __Failed NuttX Builds__.
+Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of [__Failed NuttX Builds__](https://nuttx-feed.org/@nuttx_build).
 
 _(Think "Social Network for NuttX Maintainers")_
 
@@ -137,16 +137,17 @@ _How will our Bot post a message to Mastodon?_
 __With curl:__ This is how we post a __Status Update__ to Mastodon...
 
 ```bash
-## Post a message to Mastodon (Status Update)
-export ACCESS_TOKEN=...  ## Coming up
-curl -X POST \
-	-H "Authorization: Bearer $ACCESS_TOKEN" \
-	-F "status=Posting a status from curl" \
-	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
+## Set the Mastodon Access Token (see below)
+ACCESS_TOKEN=...
 
+## Post a message to Mastodon (Status Update)
+curl -X POST \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "status=Posting a status from curl" \
+  https://YOUR_DOMAIN_NAME.org/api/v1/statuses
 ```
 
-It appears like this...
+It appears like so...
 
 ![Post a message to Mastodon (Status Update)](https://lupyuen.github.io/images/mastodon-web4.png)
 
@@ -154,13 +155,15 @@ It appears like this...
 
 _What's this Access Token?_
 
-We pass an __Access Token__ to Authenticate our Bot User with Mastodon. This is how we create the Access Token...
+We pass an __Access Token__ to Authenticate our Bot User with Mastodon API. This is how we create the Access Token...
 
 ```bash
+## Set the Client ID, Secret and Authorization Code (see below)
+CLIENT_ID=...
+CLIENT_SECRET=...
+AUTH_CODE=...
+
 ## Create an Access Token
-export CLIENT_ID=...     ## Coming up
-export CLIENT_SECRET=... ## Coming up
-export AUTH_CODE=...     ## Coming up
 curl -X POST \
   -F "client_id=$CLIENT_ID" \
   -F "client_secret=$CLIENT_SECRET" \
@@ -175,7 +178,7 @@ curl -X POST \
 
 _What about the Client ID, Secret and Authorization Code?_
 
-__Client ID and Secret__ will select the Mastodon App for our Bot User...
+__Client ID and Secret__ will select the Mastodon App for our Bot User. Here's how we create our __Mastodon App__ for NuttX Dashboard...
 
 ```bash
 ## Create Our Mastodon App
@@ -211,11 +214,11 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 
 # Prometheus to Mastodon
 
-Now comes the tricky bit. How to transmogrify __NuttX Dashboard__...
+Now comes the tricky bit. How to transmogrify [__NuttX Dashboard__](https://nuttx-dashboard.org)...
 
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
-Into __Mastodon Posts__?
+Into [__Mastodon Posts__](https://nuttx-feed.org/@nuttx_build)?
 
 ![NuttX Builds in Mastodon](https://lupyuen.github.io/images/mastodon-register7.png)
 
