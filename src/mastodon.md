@@ -60,7 +60,7 @@ TODO: Pic of Mastodon
 
 _OK weird flex. How to get started?_
 
-We begin by installing our __Mastodon Server with Docker__...
+We begin by installing our __Mastodon Server with Docker__ (pic above)...
 
 - [__"Install our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server)
 
@@ -92,7 +92,7 @@ Surprisingly, Nope! Our Mastodon Server shall be a tad __Anti-Social__...
 
 This is how we create our __Bot User for Mastodon__...
 
-TODO: Pic of Create User
+![Create our Mastodon Account](https://lupyuen.github.io/images/mastodon-register1.png)
 
 Details in the Appendix...
 
@@ -338,6 +338,10 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 ```
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
+
+[__The Appendix__](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon) explains how we thread the Mastodon Posts neatly by __NuttX Target__. (Board + Config)
+
+![NuttX Builds threaded neatly](https://lupyuen.github.io/images/mastodon-register7.png)
 
 # All Toots Considered
 
@@ -592,7 +596,7 @@ if let Some(status_id) = all_builds[&target]["status_id"].as_str() {
 }
 ```
 
-And if the Mastodon Post already exists for the Board and Config: We __Reply to the Mastodon Post__. (To keep the Failed Builds threaded neatly)
+And if the Mastodon Post already exists for the Board and Config: We __Reply to the Mastodon Post__. (To keep the Failed Builds threaded neatly, pic below)
 
 This is how we __Remember the Mastodon Post ID__ (Status ID): [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
 
@@ -621,6 +625,8 @@ file.write_all(json.as_bytes()).unwrap();
 ```
 
 Which gets saved into a __JSON File__.
+
+![NuttX Builds threaded neatly](https://lupyuen.github.io/images/mastodon-register7.png)
 
 # Appendix: Install our Mastodon Server
 
@@ -901,19 +907,21 @@ We're ready to __Test Mastodon__!
     
     Let's work around this...
 
+![Create our Mastodon Account](https://lupyuen.github.io/images/mastodon-register1.png)
+
 # Appendix: Create our Mastodon Account
 
 Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastodon Updates? This is how we create the Mastodon User...
 
-1.  Browse to _https://YOUR_DOMAIN_NAME.org_. Click __"Create Account"__ and fill in the info
-
-    TODO: Pics of Register
+1.  Browse to _https://YOUR_DOMAIN_NAME.org_. Click __"Create Account"__ and fill in the info (pic above)
 
 1.  Normally we'll approve New Accounts at __Moderation > Accounts > Approve__
 
-    TODO: Pic of Approve
+    ![Approving New Accounts at Moderation > Accounts > Approve](https://lupyuen.github.io/images/mastodon-register3.png)
 
-    But we don't have an __Outgoing Mail Server__ to validate the email address!
+    But we don't have an __Outgoing Mail Server__ to validate the Email Address!
+
+    ![We don't have an Outgoing Mail Server to validate the email address](https://lupyuen.github.io/images/mastodon-register4.png)
 
 1.  Instead we do this...
 
@@ -962,22 +970,6 @@ Remember that we'll pretend to be a Regular User _(nuttx_build)_ and post Mastod
     sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize'
     ```
 
-TODO: mastodon-register1.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register1.png)
-
-TODO: mastodon-register2.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register2.png)
-
-TODO: mastodon-register3.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register3.png)
-
-TODO: mastodon-register4.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register4.png)
-
 # Appendix: Create our Mastodon App
 
 TODO
@@ -1025,7 +1017,9 @@ TODO
 
     [(Explained here)](https://docs.joinmastodon.org/client/authorized/)
 
-1.  Copy the __Authorization Code__. (It will expire soon!)
+1.  Click __Authorize__. (Pic below)
+
+1.  Copy the __Authorization Code__. (Pic below. It will expire soon!)
 
 1.  We transform the Authorization Code into an __Access Token__ 
 
@@ -1077,13 +1071,7 @@ TODO
 
     Yep looks hunky dory!
 
-TODO: mastodon-register5.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register5.png)
-
-TODO: mastodon-register6.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register6.png)
+![Getting a Mastodon Authorization Code](https://lupyuen.github.io/images/mastodon-register5.png)
 
 # Appendix: Create a Mastodon Post
 
@@ -1100,7 +1088,7 @@ curl -X POST \
 
 And our __Mastodon Post__ appears!
 
-![TODO](https://lupyuen.github.io/images/mastodon-web4.png)
+![Creating a Mastodon Post](https://lupyuen.github.io/images/mastodon-web4.png)
 
 __ActivityPub__ is the Main API for Mastodon and Fediverse. Let's make sure that it works on our server...
 
@@ -1134,19 +1122,6 @@ $ curl \
 ```
 
 __WebFinger__ is particularly important, it locates Users within the Fediverse. It should always work!
-
-TODO
-
-```text
-TODO
-https://github.com/h3poteto/megalodon-rs
-
-Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs
-```
-
-TODO: mastodon-register7.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-register7.png)
 
 TODO: mastodon-log.png
 
