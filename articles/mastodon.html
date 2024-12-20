@@ -129,7 +129,7 @@
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
 <p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
-<p>Though today we’re making something unexpected, unconventional with Mastodon: Pushing Notifications of <strong>Failed NuttX Builds</strong>.</p>
+<p>Though today we’re making something unexpected, unconventional with Mastodon: Pushing Notifications of <a href="https://nuttx-feed.org/@nuttx_build"><strong>Failed NuttX Builds</strong></a>.</p>
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="Mastodon Server for NuttX" /></p>
 <p><em>OK weird flex. How to get started?</em></p>
@@ -208,22 +208,25 @@ bin/tootctl accounts \
 <h1 id="post-to-mastodon"><a class="doc-anchor" href="#post-to-mastodon">§</a>5 Post to Mastodon</h1>
 <p><em>How will our Bot post a message to Mastodon?</em></p>
 <p><strong>With curl:</strong> This is how we post a <strong>Status Update</strong> to Mastodon…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Post a message to Mastodon (Status Update)
-export ACCESS_TOKEN=...  ## Coming up
+<div class="example-wrap"><pre class="language-bash"><code>## Set the Mastodon Access Token (see below)
+ACCESS_TOKEN=...
+
+## Post a message to Mastodon (Status Update)
 curl -X POST \
-	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
-	-F &quot;status=Posting a status from curl&quot; \
-	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
-</code></pre></div>
-<p>It appears like this…</p>
+  -H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+  -F &quot;status=Posting a status from curl&quot; \
+  https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
+<p>It appears like so…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Post a message to Mastodon (Status Update)" /></p>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-a-mastodon-post">(Explained here)</a></p>
 <p><em>What’s this Access Token?</em></p>
-<p>We pass an <strong>Access Token</strong> to Authenticate our Bot User with Mastodon. This is how we create the Access Token…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Create an Access Token
-export CLIENT_ID=...     ## Coming up
-export CLIENT_SECRET=... ## Coming up
-export AUTH_CODE=...     ## Coming up
+<p>We pass an <strong>Access Token</strong> to Authenticate our Bot User with Mastodon API. This is how we create the Access Token…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the Client ID, Secret and Authorization Code (see below)
+CLIENT_ID=...
+CLIENT_SECRET=...
+AUTH_CODE=...
+
+## Create an Access Token
 curl -X POST \
   -F &quot;client_id=$CLIENT_ID&quot; \
   -F &quot;client_secret=$CLIENT_SECRET&quot; \
@@ -234,7 +237,7 @@ curl -X POST \
   https://YOUR_DOMAIN_NAME.org/oauth/token</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <p><em>What about the Client ID, Secret and Authorization Code?</em></p>
-<p><strong>Client ID and Secret</strong> will select the Mastodon App for our Bot User…</p>
+<p><strong>Client ID and Secret</strong> will select the Mastodon App for our Bot User. Here’s how we create our <strong>Mastodon App</strong> for NuttX Dashboard…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create Our Mastodon App
 curl -X POST \
   -F &#39;client_name=NuttX Dashboard&#39; \
@@ -259,9 +262,9 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 ## Copy the Authorization Code. It will expire soon!</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <h1 id="prometheus-to-mastodon"><a class="doc-anchor" href="#prometheus-to-mastodon">§</a>6 Prometheus to Mastodon</h1>
-<p>Now comes the tricky bit. How to transmogrify <strong>NuttX Dashboard</strong>…</p>
+<p>Now comes the tricky bit. How to transmogrify <a href="https://nuttx-dashboard.org"><strong>NuttX Dashboard</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
-<p>Into <strong>Mastodon Posts</strong>?</p>
+<p>Into <a href="https://nuttx-feed.org/@nuttx_build"><strong>Mastodon Posts</strong></a>?</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds in Mastodon" /></p>
 <p>This is our grand plan…</p>
 <ol>
