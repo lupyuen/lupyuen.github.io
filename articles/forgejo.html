@@ -68,6 +68,9 @@
 <li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
+<p><strong>Life without GitHub:</strong> What’s it like?</p>
+<p><em>Why are we doing this?</em></p>
+<p>Blocked in some parts of the world.</p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://forgejo.org/docs/latest/admin/installation-docker/
 
@@ -77,16 +80,33 @@ git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
 sudo docker compose up
+again: sudo docker compose up
+to down: sudo docker compose down
 https://gist.github.com/lupyuen/8438ef716f428606d3913f7bc8efc0b7
 
 Will auto create `forgejo` folder
 Browse to http://localhost:3002/
+Create admin user: nuttx
 
 (For CloudFlare Tunnel: Set __Security &gt; Settings &gt; High__)
 
++ &gt; New Migration &gt; GitHub &gt; This repo will be a mirror
+nuttx-mirror
+Migrate Repo
+
 Settings &gt; Repository &gt; Mirror Settings
 Mirror interval
-8h0m0s</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+1h
+Update Mirror Settings
+
++ &gt; New Migration &gt; GitHub &gt; This repo will be a mirror
+select issues, PR, labels, milestones, releases
+nuttx-update
+Migrate Repo
+
+Create Issue
+Actions: No Runner
+View Commit</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
