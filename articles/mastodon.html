@@ -73,7 +73,7 @@
 <li><a href="#prometheus-to-mastodon" title="Prometheus to Mastodon">6 Prometheus to Mastodon</a><ul></ul></li>
 <li><a href="#all-toots-considered" title="All Toots Considered">7 All Toots Considered</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-query-prometheus-for-failed-builds" title="Appendix: Query Prometheus for Failed Builds">9 Appendix: Query Prometheus for Failed Builds</a><ul></ul></li>
+<li><a href="#appendix-query-prometheus-for-nuttx-builds" title="Appendix: Query Prometheus for NuttX Builds">9 Appendix: Query Prometheus for NuttX Builds</a><ul></ul></li>
 <li><a href="#appendix-post-nuttx-builds-to-mastodon" title="Appendix: Post NuttX Builds to Mastodon">10 Appendix: Post NuttX Builds to Mastodon</a><ul></ul></li>
 <li><a href="#appendix-install-our-mastodon-server" title="Appendix: Install our Mastodon Server">11 Appendix: Install our Mastodon Server</a><ul></ul></li>
 <li><a href="#appendix-test-our-mastodon-server" title="Appendix: Test our Mastodon Server">12 Appendix: Test our Mastodon Server</a><ul></ul></li>
@@ -92,7 +92,6 @@
 <li><a href="#volumes-and-networks" title="Volumes and Networks">18.7 Volumes and Networks</a><ul></ul></li>
 <li><a href="#simplest-server-for-mastodon" title="Simplest Server for Mastodon">18.8 Simplest Server for Mastodon</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
 <p>We’re out for an <a href="https://www.strava.com/activities/13055019749"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
 <p>Can we be 100% sure that <strong>NuttX is OK?</strong> Without getting spammed by <strong>alert emails</strong> all night? (Sorry we got zero budget for <em>“paging duty”</em> services)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="TODO" /></p>
@@ -408,7 +407,7 @@ curl https://nuttx-feed.org/api/v1/timelines/public | jq</code></pre></div><h1 i
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.github.io/src/mastodon.md</strong></a></p>
-<h1 id="appendix-query-prometheus-for-failed-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-failed-builds">§</a>9 Appendix: Query Prometheus for Failed Builds</h1>
+<h1 id="appendix-query-prometheus-for-nuttx-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-nuttx-builds">§</a>9 Appendix: Query Prometheus for NuttX Builds</h1>
 <p>We’re fetching the <strong>Failed NuttX Builds</strong> from Prometheus. We browse to Prometheus at <em>http://localhost:9090</em> and enter this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 ## But skip these users...
