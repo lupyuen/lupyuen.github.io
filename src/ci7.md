@@ -382,7 +382,7 @@ tee /private/tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/cites
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/b39d4d3f0627ed0a140ba154c8cac7eb#file-gistfile1-txt-L1-L11)
 
-Which says that the CI Test Logs are here...
+Which says that the CI Test Logs are here (revealing the NuttX __`ps`__ crash)
 
 ```bash
 $ cat /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/* 
@@ -390,6 +390,17 @@ $ cat /tmp/run-job-macos/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs
 NuttShell (NSH) NuttX-12.7.0
 nsh> cmocka --list
 Cmocka Test Start ...
+
+nsh> ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001952 0000828  42.4%  Idle_Task
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000524  27.6%  hpwork 0x8014b258 0x8014b27c
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001896 0000508  26.7%  lpwork 0x8014b220 0x8014b244
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 80022d50, MTVAL: 00000048
+riscv_exception: PANIC!!! Exception = 00000005
+dump_assert_info: Current Version: NuttX  12.7.0 1c7d81881c Dec 10 2024 19:01:06 risc-v
+dump_assert_info: Assertion failed panic: at file: common/riscv_exception.c:131 task: nsh_main process: nsh_main 0x8000a7a0
+up_dump_register: EPC: 80022d50
 ```
 
 [(See the __CI Test Log__)](https://gist.github.com/lupyuen/6bd3b60a93ddac13e20c825f8a171ed6)
