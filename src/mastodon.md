@@ -4,8 +4,6 @@
 
 ![TODO](https://lupyuen.github.io/images/mastodon-title.jpg)
 
-TODO
-
 We're out for an [__overnight hike__](https://www.strava.com/activities/13055019749), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
@@ -392,7 +390,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
 
-# Appendix: Query Prometheus for Failed Builds
+# Appendix: Query Prometheus for NuttX Builds
 
 We're fetching the __Failed NuttX Builds__ from Prometheus. We browse to Prometheus at _http://localhost:9090_ and enter this __Prometheus Query__...
 

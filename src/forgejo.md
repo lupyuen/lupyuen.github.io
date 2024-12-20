@@ -4,17 +4,17 @@
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
 
-__Life without GitHub:__ What's it like?
+__Life Without GitHub:__ What's it like?
 
 _Why are we doing this?_
 
-- We're hitting some Budget Limits at GitHub
+- __GitHub is Blocked__ in some parts of the world
 
-- GitHub is blocked in some parts of the world
+- Some devs prefer not to __collaborate on GitHub__ _(ethical / other reasons)_
 
-- Some devs prefer not to collaborate on GitHub (for ethical / other reasons)
+- Can we make NuttX Community a little more inclusive? By hosting our __Git Forge outside GitHub__?
 
-- Can we make our NuttX Community a little more inclusive, by hosting our Git Forge outside GitHub?
+- Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
 TODO
 
@@ -55,6 +55,10 @@ Mirror interval
 1h
 Update Mirror Settings
 
+Create Issue
+Actions: No Runner
+View Commit
+
 + > New Migration > GitHub > This repo will be a mirror
 select issues, PR, labels, milestones, releases
 nuttx-update
@@ -63,10 +67,13 @@ Migrate Repo
 How long?
 2pm to ???
 ??? hours
+At least 2 hours!
 
-Create Issue
-Actions: No Runner
-View Commit
+JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
+ignore
+
+Fun to watch the sync from nuttx
+
 ```
 
 # What's Next
