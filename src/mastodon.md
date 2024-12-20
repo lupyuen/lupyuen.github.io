@@ -825,6 +825,8 @@ Here are the steps to install Mastodon Server with Docker Compose. We tested wit
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742)
 
+    [(See __Another Log__)](https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8)
+
     (Sidekiq will have errors, we'll explain why)
 
 _Why the tweaks to docker-compose.yml?_
@@ -1090,7 +1092,7 @@ And our __Mastodon Post__ appears!
 
 ![Creating a Mastodon Post](https://lupyuen.github.io/images/mastodon-web4.png)
 
-__ActivityPub__ is the Main API for Mastodon and Fediverse. Let's make sure that it works on our server...
+[__ActivityPub__](https://docs.joinmastodon.org/spec/activitypub/) is the Main API for Mastodon and Fediverse. Let's make sure that it works on our server...
 
 ```bash
 ## Install `jq` for Browsing JSON
@@ -1123,18 +1125,10 @@ $ curl \
 
 __WebFinger__ is particularly important, it locates Users within the Fediverse. It should always work!
 
-TODO: mastodon-log.png
-
-![TODO](https://lupyuen.github.io/images/mastodon-log.png)
-
 ```text
-Docker Logs:
-https://gist.github.com/lupyuen/fb086d6f5fe84044c6c8dae1093b0328
-https://gist.github.com/lupyuen/f4f887ccf4ecfda0d5103b834044bd7b
-https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8
-https://gist.github.com/lupyuen/420540f9157f2702c14944fc47743742
+TODO
+➜  ~ $ curl -H 'Accept: application/activity+json' https://nuttx-feed.org/@lupyuen | jq
 https://gist.github.com/lupyuen/89eb8fc76ac9342209bb9c0553298d4c
-https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f
 ```
 
 # Appendix: Backup our Mastodon Server
@@ -1165,9 +1159,13 @@ tar cvf \
   mastodon/public/system
 ```
 
+Remember to watch our Mastodon Server for __Dubious Web Requests__! Like these pesky WordPress Malware Bots...
+
+![WordPress Malware Bots](https://lupyuen.github.io/images/mastodon-log.png)
+
 TODO: Is it safe to run Mastodon as Docker? Docker Isolation vs VM
 
-Might be a little different for macOS Rancher Desktop
+TODO: Might be a little different for macOS Rancher Desktop
 
 # Appendix: Enable Elasticsearch for Mastodon
 
@@ -1185,7 +1183,7 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
     ES_PORT=9200
     ```
 
-1.  Edit [__docker-compose.yml__](TODO).
+1.  Edit [__docker-compose.yml__](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml).
 
     Uncomment the Section for __"`es`"__
 
@@ -1261,6 +1259,8 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 
 1.  At __Administration > Dashboard__: Mastodon complains no more!
 
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f)
+
 # Appendix: Docker Compose for Mastodon
 
 _What's this Docker Compose? Why use it for Mastodon?_
@@ -1271,7 +1271,7 @@ TODO: Minor Tweaks
 
 ## Database Server
 
-[__PostgreSQL__](TODO) is our Database Server for Mastodon: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+[__PostgreSQL__](https://www.postgresql.org/) is our Database Server for Mastodon: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
 
 ```yaml
 services:
@@ -1396,7 +1396,9 @@ Remember that Emails that Mastodon will send upon User Registration? Mastodon do
 
 ## Streaming Server
 
-__Optional:__ Mastodon (and Fediverse) uses [__ActivityPub__](TODO) for exchanging lots of info about Users and Posts. Our Web Server supports the __HTTP Rest API__, but there's a more efficient way: __WebSocket API__.
+_(Streaming Server is Optional)_
+
+Mastodon (and Fediverse) uses [__ActivityPub__](https://docs.joinmastodon.org/spec/activitypub/) for exchanging lots of info about Users and Posts. Our Web Server supports the __HTTP Rest API__, but there's a more efficient way: __WebSocket API__.
 
 WebSocket is __totally optional__, Mastodon works fine without it, probably a little less efficient: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
 
@@ -1432,7 +1434,9 @@ WebSocket is __totally optional__, Mastodon works fine without it, probably a li
 
 ## Elasticsearch Server
 
-__Optional:__ Elasticsearch is for __Full-Text Search__. Also totally optional, unless we require Full-Text Search for Users and Posts: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+_(Elasticsearch is optional)_
+
+Elasticsearch is for __Full-Text Search__. Also totally optional, unless we require Full-Text Search for Users and Posts: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
 
 ```yaml
   es:
@@ -1533,7 +1537,7 @@ bin/tootctl search \
 exit
 ```
 
-Optional: 
+TODO: Optional: 
 
 .devcontainer/compose.yaml:
 
