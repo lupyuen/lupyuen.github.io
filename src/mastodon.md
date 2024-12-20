@@ -665,7 +665,8 @@ TODO: Rancher Desktop on macOS, probably work on Docker Desktop for Linux / macO
     ## TODO: Is `sudo` needed?
     sudo docker compose up
 
-    ## Somehow need a second time to get it up
+    ## If It Quits To Command-Line:
+    ## Run a second time to get it up
     sudo docker compose up
 
     ## Ignore the Redis, Streaming, Elasticsearch errors

@@ -8,7 +8,13 @@ __Life without GitHub:__ What's it like?
 
 _Why are we doing this?_
 
-Blocked in some parts of the world.
+- We're hitting some Budget Limits at GitHub
+
+- GitHub is blocked in some parts of the world
+
+- Some devs prefer not to collaborate on GitHub (for ethical / other reasons)
+
+- Can we make our NuttX Community a little more inclusive, by hosting our Git Forge outside GitHub?
 
 TODO
 
@@ -22,13 +28,20 @@ cd $HOME
 git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
+## TODO: Is `sudo` needed?
 sudo docker compose up
-again: sudo docker compose up
+
+## If It Quits To Command-Line:
+## Run a second time to get it up
+sudo docker compose up
+
 to down: sudo docker compose down
 https://gist.github.com/lupyuen/8438ef716f428606d3913f7bc8efc0b7
 
 Will auto create `forgejo` folder
 Browse to http://localhost:3002/
+SQLite, upgrade to PostgreSQL later
+Domain: nuttx-forge.org
 Create admin user: nuttx
 
 (For CloudFlare Tunnel: Set __Security > Settings > High__)
@@ -46,6 +59,10 @@ Update Mirror Settings
 select issues, PR, labels, milestones, releases
 nuttx-update
 Migrate Repo
+
+How long?
+2pm to ???
+??? hours
 
 Create Issue
 Actions: No Runner
