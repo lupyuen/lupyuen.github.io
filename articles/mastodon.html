@@ -133,7 +133,7 @@
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
 <p>TODO: Pic of Mastodon</p>
 <p><em>OK weird flex. How to get started?</em></p>
-<p>We begin by installing our <strong>Mastodon Server with Docker</strong>…</p>
+<p>We begin by installing our <strong>Mastodon Server with Docker</strong> (pic above)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server"><strong>“Install our Mastodon Server”</strong></a></p>
@@ -173,7 +173,7 @@
 </li>
 </ul>
 <p>This is how we create our <strong>Bot User for Mastodon</strong>…</p>
-<p>TODO: Pic of Create User</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="Create our Mastodon Account" /></p>
 <p>Details in the Appendix…</p>
 <ul>
 <li>
@@ -365,6 +365,8 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon"><strong>The Appendix</strong></a> explains how we thread the Mastodon Posts neatly by <strong>NuttX Target</strong>. (Board + Config)</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds threaded neatly" /></p>
 <h1 id="all-toots-considered"><a class="doc-anchor" href="#all-toots-considered">§</a>7 All Toots Considered</h1>
 <ol>
 <li>
@@ -573,7 +575,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
     <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
   }
 }</code></pre></div>
-<p>And if the Mastodon Post already exists for the Board and Config: We <strong>Reply to the Mastodon Post</strong>. (To keep the Failed Builds threaded neatly)</p>
+<p>And if the Mastodon Post already exists for the Board and Config: We <strong>Reply to the Mastodon Post</strong>. (To keep the Failed Builds threaded neatly, pic below)</p>
 <p>This is how we <strong>Remember the Mastodon Post ID</strong> (Status ID): <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Remember the Mastodon Post ID (Status ID)
@@ -598,6 +600,7 @@ all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_i
 <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(ALL_BUILDS_FILENAME).unwrap();
 file.write_all(json.as_bytes()).unwrap();</code></pre></div>
 <p>Which gets saved into a <strong>JSON File</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds threaded neatly" /></p>
 <h1 id="appendix-install-our-mastodon-server"><a class="doc-anchor" href="#appendix-install-our-mastodon-server">§</a>11 Appendix: Install our Mastodon Server</h1>
 <p>Here are the steps to install Mastodon Server with Docker Compose. We tested with <a href="https://rancherdesktop.io/"><strong>Rancher Desktop on macOS</strong></a>, the same steps will probably work on <a href="https://docs.docker.com/engine/install/ubuntu/"><strong>Docker Desktop</strong></a> for Linux / macOS / Windows.</p>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-docker-compose-for-mastodon">(<strong>docker-compose.yml</strong> is explained here)</a></p>
@@ -821,17 +824,18 @@ volumes:
 <p>Let’s work around this…</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="Create our Mastodon Account" /></p>
 <h1 id="appendix-create-our-mastodon-account"><a class="doc-anchor" href="#appendix-create-our-mastodon-account">§</a>13 Appendix: Create our Mastodon Account</h1>
 <p>Remember that we’ll pretend to be a Regular User <em>(nuttx_build)</em> and post Mastodon Updates? This is how we create the Mastodon User…</p>
 <ol>
 <li>
-<p>Browse to <em>https://YOUR_DOMAIN_NAME.org</em>. Click <strong>“Create Account”</strong> and fill in the info</p>
-<p>TODO: Pics of Register</p>
+<p>Browse to <em>https://YOUR_DOMAIN_NAME.org</em>. Click <strong>“Create Account”</strong> and fill in the info (pic above)</p>
 </li>
 <li>
 <p>Normally we’ll approve New Accounts at <strong>Moderation &gt; Accounts &gt; Approve</strong></p>
-<p>TODO: Pic of Approve</p>
-<p>But we don’t have an <strong>Outgoing Mail Server</strong> to validate the email address!</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register3.png" alt="Approving New Accounts at Moderation &gt; Accounts &gt; Approve" /></p>
+<p>But we don’t have an <strong>Outgoing Mail Server</strong> to validate the Email Address!</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register4.png" alt="We don’t have an Outgoing Mail Server to validate the email address" /></p>
 </li>
 <li>
 <p>Instead we do this…</p>
@@ -872,14 +876,6 @@ sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: {&quot;context&quot
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: Errno::ECONNREFUSED: Connection refused - connect(2) for &quot;localhost&quot; port 25
 sidekiq-1    | 2024-12-09T00:04:55.036Z pid=6 tid=2ppy WARN: /usr/local/bundle/gems/net-smtp-0.5.0/lib/net/smtp.rb:663:in `initialize&#39;</code></pre></div></li>
 </ol>
-<p>TODO: mastodon-register1.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register1.png" alt="TODO" /></p>
-<p>TODO: mastodon-register2.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register2.png" alt="TODO" /></p>
-<p>TODO: mastodon-register3.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register3.png" alt="TODO" /></p>
-<p>TODO: mastodon-register4.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register4.png" alt="TODO" /></p>
 <h1 id="appendix-create-our-mastodon-app"><a class="doc-anchor" href="#appendix-create-our-mastodon-app">§</a>14 Appendix: Create our Mastodon App</h1>
 <p>TODO</p>
 <ol>
@@ -918,7 +914,10 @@ curl -X POST \
 <p><a href="https://docs.joinmastodon.org/client/authorized/">(Explained here)</a></p>
 </li>
 <li>
-<p>Copy the <strong>Authorization Code</strong>. (It will expire soon!)</p>
+<p>Click <strong>Authorize</strong>. (Pic below)</p>
+</li>
+<li>
+<p>Copy the <strong>Authorization Code</strong>. (Pic below. It will expire soon!)</p>
 </li>
 <li>
 <p>We transform the Authorization Code into an <strong>Access Token</strong></p>
@@ -959,10 +958,7 @@ curl \
 <p>Yep looks hunky dory!</p>
 </li>
 </ol>
-<p>TODO: mastodon-register5.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register5.png" alt="TODO" /></p>
-<p>TODO: mastodon-register6.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-register5.png" alt="Getting a Mastodon Authorization Code" /></p>
 <h1 id="appendix-create-a-mastodon-post"><a class="doc-anchor" href="#appendix-create-a-mastodon-post">§</a>15 Appendix: Create a Mastodon Post</h1>
 <p>Our Regular Mastondon User is up! Let’s post something as the user…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create Status: https://docs.joinmastodon.org/methods/statuses/#create
@@ -972,7 +968,7 @@ curl -X POST \
 	-F &quot;status=Posting a status from curl&quot; \
 	https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
 <p>And our <strong>Mastodon Post</strong> appears!</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Creating a Mastodon Post" /></p>
 <p><strong>ActivityPub</strong> is the Main API for Mastodon and Fediverse. Let’s make sure that it works on our server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `jq` for Browsing JSON
 $ brew install jq      ## For macOS
@@ -1001,13 +997,6 @@ $ curl \
 
 { ... &quot;&quot;acct:nuttx_build@nuttx-feed.org&quot; ... }</code></pre></div>
 <p><strong>WebFinger</strong> is particularly important, it locates Users within the Fediverse. It should always work!</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
-https://github.com/h3poteto/megalodon-rs
-
-Post With Status: https://github.com/h3poteto/megalodon-rs/blob/master/examples/mastodon_post_with_schedule.rs</code></pre></div>
-<p>TODO: mastodon-register7.png</p>
-<p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="TODO" /></p>
 <p>TODO: mastodon-log.png</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-log.png" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-text"><code>Docker Logs:
