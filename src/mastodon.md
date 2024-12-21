@@ -62,6 +62,23 @@ _OK weird flex. How to get started?_
 
 We begin by installing our __Mastodon Server with Docker__ (pic above)...
 
+```bash
+## Download the Mastodon Repo
+git clone \
+  https://github.com/mastodon/mastodon \
+  --branch v4.3.2
+cd mastodon
+echo >.env.production
+
+## Patch the Docker Compose Config
+rm docker-compose.yml
+wget https://raw.githubusercontent.com/lupyuen/mastodon/refs/heads/main/docker-compose.yml
+
+## Bring Up the Docker Compose (Maybe twice)
+sudo docker compose up
+sudo docker compose up
+```
+
 - [__"Install our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server)
 
 - [__"Test our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-test-our-mastodon-server)
@@ -1128,25 +1145,47 @@ $ curl https://nuttx-feed.org/api/v1/timelines/public \
 
 ## Fetch the User nuttx_build at nuttx-feed.org
 $ curl \
-  https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
-  | jq
-
-{ ... "acct:nuttx_build@nuttx-feed.org" ... }
-```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/c31c426b28f32341301fa28f16a1251e)
-
-[__WebFinger__](https://webfinger.net/) is particularly important, it locates Users within the Fediverse. It should always work at the __Root of our Mastodon Server__!
-
-```bash
-## WebFinger: Fetch the User nuttx_build at nuttx-feed.org
-$ curl \
   -H 'Accept: application/activity+json' \
   https://nuttx-feed.org/@nuttx_build \
   | jq
 
 { "name": "nuttx_build",
   "url" : "https://nuttx-feed.org/@nuttx_build" ... }
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/c31c426b28f32341301fa28f16a1251e)
+
+[__WebFinger__](https://docs.joinmastodon.org/spec/webfinger/) is particularly important, it locates Users within the Fediverse. It should always work at the [__Root of our Mastodon Server__](https://docs.joinmastodon.org/admin/config/#web_domain)!
+
+```bash
+## WebFinger: Fetch the User nuttx_build at nuttx-feed.org
+$ curl \
+  https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
+  | jq
+
+{
+  "subject": "acct:nuttx_build@nuttx-feed.org",
+  "aliases": [
+    "https://nuttx-feed.org/@nuttx_build",
+    "https://nuttx-feed.org/users/nuttx_build"
+  ],
+  "links": [
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://nuttx-feed.org/@nuttx_build"
+    },
+    {
+      "rel": "self",
+      "type": "application/activity+json",
+      "href": "https://nuttx-feed.org/users/nuttx_build"
+    },
+    {
+      "rel": "http://ostatus.org/schema/1.0/subscribe",
+      "template": "https://nuttx-feed.org/authorize_interaction?uri={uri}"
+    }
+  ]
+}
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/209d711d6cd7096a422da55f209d7745)
