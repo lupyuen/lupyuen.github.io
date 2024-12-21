@@ -201,7 +201,9 @@ git commit --all --message=&quot;Test Commit&quot;
 git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a class="doc-anchor" href="#sync-mirror-to-update">§</a>5 Sync Mirror to Update</h1>
 <p>TODO: Requires SSH Access, to work around the password</p>
 <p>https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh</p>
-<div class="example-wrap"><pre class="language-text"><code>./sync-mirror-to-update.sh</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+<div class="example-wrap"><pre class="language-text"><code>./sync-mirror-to-update.sh</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
   -it \
   forgejo \
   /bin/bash -c \
