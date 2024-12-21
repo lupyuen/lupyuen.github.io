@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)</title>
+            <link>https://lupyuen.github.io/articles/ci7</link>
+            <description><![CDATA[Every Day: Apache NuttX RTOS on QEMU RISC-V Emulator fails our Continuous Integration Test. The Bug Stops Here! In this article, we study the internals of a NuttX CI Test (Continuous Integration) as we fix the bug.]]></description>
+            <guid>https://lupyuen.github.io/articles/ci7</guid>
+            <pubDate>Sun, 22 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rewinding a Build for Apache NuttX RTOS (Docker)</title>
             <link>https://lupyuen.github.io/articles/ci6</link>
             <description><![CDATA[When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build.]]></description>
