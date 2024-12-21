@@ -159,6 +159,8 @@ https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh
 ./sync-mirror-to-update.sh
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
+
 # Backup Forgejo
 
 ```text
