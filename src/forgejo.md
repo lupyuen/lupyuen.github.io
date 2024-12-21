@@ -161,6 +161,15 @@ https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
 
+If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo
+
+```bash
+## Repeat for all conflicting commits
+git reset --hard HEAD~1
+git status
+git push -f
+```
+
 # Backup Forgejo
 
 ```text
