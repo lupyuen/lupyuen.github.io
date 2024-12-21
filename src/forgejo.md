@@ -46,7 +46,9 @@ Create admin user: nuttx
 
 (For CloudFlare Tunnel: Set __Security > Settings > High__)
 
-+ > New Migration > GitHub > This repo will be a mirror
++ > New Migration > GitHub
+This repo will be a mirror
+access token
 nuttx-mirror
 Migrate Repo
 
@@ -59,16 +61,13 @@ Create Issue
 Actions: No Runner
 View Commit
 
-+ > New Migration > GitHub > This repo will be a mirror
-select issues, PR, labels, milestones, releases
++ > New Migration > GitHub
+access token
+select labels, milestones, releases
+don't select PR, it will run forever!
+don't select issues: "comment references non existent Issuelndex 1"
 nuttx-update
 Migrate Repo
-
-How long?
-2pm to ???
-??? hours
-At least 6 hours!
-(1 hour for GitHub Issues, 5 hours for Pull Requests)
 
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
 ignore
