@@ -86,6 +86,31 @@ ignore
 Fun to watch the sync from nuttx
 ```
 
+# Change the Default Page
+
+```text
+/data/gitea/conf/app.ini
+
+sudo docker cp \
+  forgejo:/data/gitea/conf/app.ini \
+  .
+
+Edit app.init
+https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server
+<<
+[server]
+LANDING_PAGE = explore
+>>
+
+sudo docker cp \
+  app.ini \
+  forgejo:/data/gitea/conf/app.ini
+sudo docker compose down
+sudo docker compose up
+```
+
+Looks more sensible
+
 # Test SSH Key
 
 TODO: SSH Port not exposed for security reasons
