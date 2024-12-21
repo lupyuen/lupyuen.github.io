@@ -203,7 +203,11 @@ git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a clas
 <p>https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh</p>
 <div class="example-wrap"><pre class="language-text"><code>./sync-mirror-to-update.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+<p>If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Repeat for all conflicting commits
+git reset --hard HEAD~1
+git status
+git push -f</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
   -it \
   forgejo \
   /bin/bash -c \
