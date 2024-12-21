@@ -134,6 +134,20 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="Mastodon Server for NuttX" /></p>
 <p><em>OK weird flex. How to get started?</em></p>
 <p>We begin by installing our <strong>Mastodon Server with Docker</strong> (pic above)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Mastodon Repo
+git clone \
+  https://github.com/mastodon/mastodon \
+  --branch v4.3.2
+cd mastodon
+echo &gt;.env.production
+
+## Patch the Docker Compose Config
+rm docker-compose.yml
+wget https://raw.githubusercontent.com/lupyuen/mastodon/refs/heads/main/docker-compose.yml
+
+## Bring Up the Docker Compose (Maybe twice)
+sudo docker compose up
+sudo docker compose up</code></pre></div>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server"><strong>“Install our Mastodon Server”</strong></a></p>
@@ -1008,20 +1022,42 @@ $ curl https://nuttx-feed.org/api/v1/timelines/public \
 
 ## Fetch the User nuttx_build at nuttx-feed.org
 $ curl \
-  https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
-  | jq
-
-{ ... &quot;acct:nuttx_build@nuttx-feed.org&quot; ... }</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c31c426b28f32341301fa28f16a1251e">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="https://webfinger.net/"><strong>WebFinger</strong></a> is particularly important, it locates Users within the Fediverse. It should always work at the <strong>Root of our Mastodon Server</strong>!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## WebFinger: Fetch the User nuttx_build at nuttx-feed.org
-$ curl \
   -H &#39;Accept: application/activity+json&#39; \
   https://nuttx-feed.org/@nuttx_build \
   | jq
 
 { &quot;name&quot;: &quot;nuttx_build&quot;,
   &quot;url&quot; : &quot;https://nuttx-feed.org/@nuttx_build&quot; ... }</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c31c426b28f32341301fa28f16a1251e">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://docs.joinmastodon.org/spec/webfinger/"><strong>WebFinger</strong></a> is particularly important, it locates Users within the Fediverse. It should always work at the <a href="https://docs.joinmastodon.org/admin/config/#web_domain"><strong>Root of our Mastodon Server</strong></a>!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## WebFinger: Fetch the User nuttx_build at nuttx-feed.org
+$ curl \
+  https://nuttx-feed.org/.well-known/webfinger\?resource\=acct:nuttx_build@nuttx-feed.org \
+  | jq
+
+{
+  &quot;subject&quot;: &quot;acct:nuttx_build@nuttx-feed.org&quot;,
+  &quot;aliases&quot;: [
+    &quot;https://nuttx-feed.org/@nuttx_build&quot;,
+    &quot;https://nuttx-feed.org/users/nuttx_build&quot;
+  ],
+  &quot;links&quot;: [
+    {
+      &quot;rel&quot;: &quot;http://webfinger.net/rel/profile-page&quot;,
+      &quot;type&quot;: &quot;text/html&quot;,
+      &quot;href&quot;: &quot;https://nuttx-feed.org/@nuttx_build&quot;
+    },
+    {
+      &quot;rel&quot;: &quot;self&quot;,
+      &quot;type&quot;: &quot;application/activity+json&quot;,
+      &quot;href&quot;: &quot;https://nuttx-feed.org/users/nuttx_build&quot;
+    },
+    {
+      &quot;rel&quot;: &quot;http://ostatus.org/schema/1.0/subscribe&quot;,
+      &quot;template&quot;: &quot;https://nuttx-feed.org/authorize_interaction?uri={uri}&quot;
+    }
+  ]
+}</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/209d711d6cd7096a422da55f209d7745">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="appendix-backup-our-mastodon-server"><a class="doc-anchor" href="#appendix-backup-our-mastodon-server">§</a>16 Appendix: Backup our Mastodon Server</h1>
 <p>Here are the steps to <strong>Backup our Mastodon Server</strong>: PostgreSQL Database, Redis Database and User-Uploaded Files…</p>
