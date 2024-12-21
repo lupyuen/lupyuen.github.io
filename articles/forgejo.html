@@ -68,8 +68,10 @@
 <li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
 <li><a href="#test-ssh-key" title="Test SSH Key">2 Test SSH Key</a><ul></ul></li>
 <li><a href="#use-ssh-key" title="Use SSH Key">3 Use SSH Key</a><ul></ul></li>
-<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">4 SSH Fails with Local Filesystem</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#sync-mirror-to-update" title="Sync Mirror to Update">4 Sync Mirror to Update</a><ul></ul></li>
+<li><a href="#backup-forgejo" title="Backup Forgejo">5 Backup Forgejo</a><ul></ul></li>
+<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">6 SSH Fails with Local Filesystem</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like?</p>
 <p><em>Why are we doing this?</em></p>
@@ -150,14 +152,24 @@ Migrate Repo
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
 ignore
 
-Fun to watch the sync from nuttx</code></pre></div><h1 id="test-ssh-key"><a class="doc-anchor" href="#test-ssh-key">§</a>2 Test SSH Key</h1><div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
+Fun to watch the sync from nuttx</code></pre></div><h1 id="test-ssh-key"><a class="doc-anchor" href="#test-ssh-key">§</a>2 Test SSH Key</h1>
+<p>TODO: SSH Port not exposed for security reasons</p>
+<div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
+Call it ~/.ssh/nuttx-forge
+
 Edit $HOME/.ssh/config
 &lt;&lt;
 Host nuttx-forge
-    HostName localhost
-    Port 222
-    IdentityFile ~/.ssh/nuttx-forge
+  HostName localhost
+  Port 222
+  IdentityFile ~/.ssh/nuttx-forge
 &gt;&gt;
+(localhost will change to the future external IP)
+
+Settings &gt; SSH Keys
+Paste ~/.ssh/nuttx-forge.pub
+Click Add Key
+
 $ ssh -T git@nuttx-forge  
 
 Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
@@ -166,7 +178,20 @@ cd test
 echo Testing &gt;test.txt
 git add .
 git commit --all --message=&quot;Test Commit&quot;
-git push -u origin main</code></pre></div><h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>4 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
+git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a class="doc-anchor" href="#sync-mirror-to-update">§</a>4 Sync Mirror to Update</h1>
+<p>TODO: Requires SSH Access, to work around the password</p>
+<p>https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh</p>
+<div class="example-wrap"><pre class="language-text"><code>./sync-mirror-to-update.sh</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>5 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+  -it \
+  forgejo \
+  /bin/bash -c \
+  &quot;tar cvf /tmp/data.tar /data&quot;
+
+sudo docker cp \
+  forgejo:/tmp/data.tar \
+  .</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>6 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
 
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
@@ -186,13 +211,15 @@ sudo docker exec \
   forgejo \
   /bin/bash
 
+User ID should be git, not 501! (Some kinda jeans?)
 5473c234c7eb:/data/git# ls -ld /data/git/.ssh
 drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
 5473c234c7eb:/data/git# ls -l /data/git/.ssh/authorized_keys
 -rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
 5473c234c7eb:/data/git#
 
-exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+Won&#39;t work:
+exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
