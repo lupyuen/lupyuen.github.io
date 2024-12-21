@@ -28,6 +28,17 @@ cd $HOME
 git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
+docker-compose.yml:
+<<
+services:
+  server:
+    volumes:
+      - forgejo-data:/data
+
+volumes:
+  forgejo-data:
+>>
+
 ## TODO: Is `sudo` needed?
 sudo docker compose up
 
@@ -36,7 +47,7 @@ sudo docker compose up
 sudo docker compose up
 
 to down: sudo docker compose down
-https://gist.github.com/lupyuen/8438ef716f428606d3913f7bc8efc0b7
+https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846
 
 Will auto create `forgejo` folder
 Browse to http://localhost:3002/
@@ -73,7 +84,66 @@ JavaScript promise rejection: Failed to fetch. Open browser console to see more 
 ignore
 
 Fun to watch the sync from nuttx
+```
 
+# Test SSH Key
+
+```text
+ssh-keygen -t ed25519 -a 100
+Edit $HOME/.ssh/config
+<<
+Host nuttx-forge
+    HostName localhost
+    Port 222
+    IdentityFile ~/.ssh/nuttx-forge
+>>
+$ ssh -T git@nuttx-forge  
+
+Hi there, nuttx! You've successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
+If this is unexpected, please log in with password and setup Forgejo under another user.
+```
+
+# Use SSH Key
+
+```text
+git clone git@nuttx-forge:nuttx/test.git
+cd test
+echo Testing >test.txt
+git add .
+git commit --all --message="Test Commit"
+git push -u origin main
+```
+
+# SSH Fails with Local Filesystem
+
+```text
+ssh -T -p 222 git@localhost
+
+forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
+forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
+forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
+forgejo  | Connection closed by authenticating user git 172.22.0.1 port 40328 [preauth]
+forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
+forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]
+
+ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
+drwx------@ 4 luppy  staff  128 Dec 20 13:45 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh
+
+$ ls -l $HOME/nuttx-forgejo/forgejo/git/.ssh/authorized_keys 
+-rw-------@ 1 luppy  staff  279 Dec 21 11:13 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh/authorized_keys
+
+sudo docker exec \
+  -it \
+  forgejo \
+  /bin/bash
+
+5473c234c7eb:/data/git# ls -ld /data/git/.ssh
+drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
+5473c234c7eb:/data/git# ls -l /data/git/.ssh/authorized_keys
+-rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
+5473c234c7eb:/data/git#
+
+exec su-exec root chown -R git /data/git/.ssh
 ```
 
 # What's Next
