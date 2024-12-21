@@ -2,7 +2,7 @@
 
 📝 _30 Dec 2024_
 
-![TODO](https://lupyuen.github.io/images/mastodon-title.jpg)
+![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-title.jpg)
 
 We're out for an [__overnight hike__](https://www.strava.com/activities/13055019749), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
 
@@ -77,6 +77,8 @@ wget https://raw.githubusercontent.com/lupyuen/mastodon/refs/heads/main/docker-c
 ## Bring Up the Docker Compose (Maybe twice)
 sudo docker compose up
 sudo docker compose up
+
+## Omitted: sleep infinity, psql, mastodon:setup, puma, ...
 ```
 
 - [__"Install our Mastodon Server"__](https://lupyuen.github.io/articles/mastodon#appendix-install-our-mastodon-server)
