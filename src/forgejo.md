@@ -88,15 +88,25 @@ Fun to watch the sync from nuttx
 
 # Test SSH Key
 
+TODO: SSH Port not exposed for security reasons
+
 ```text
 ssh-keygen -t ed25519 -a 100
+Call it ~/.ssh/nuttx-forge
+
 Edit $HOME/.ssh/config
 <<
 Host nuttx-forge
-    HostName localhost
-    Port 222
-    IdentityFile ~/.ssh/nuttx-forge
+  HostName localhost
+  Port 222
+  IdentityFile ~/.ssh/nuttx-forge
 >>
+(localhost will change to the future external IP)
+
+Settings > SSH Keys
+Paste ~/.ssh/nuttx-forge.pub
+Click Add Key
+
 $ ssh -T git@nuttx-forge  
 
 Hi there, nuttx! You've successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
@@ -113,6 +123,32 @@ git add .
 git commit --all --message="Test Commit"
 git push -u origin main
 ```
+
+# Sync Mirror to Update
+
+TODO: Requires SSH Access, to work around the password
+
+https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh
+
+```text
+./sync-mirror-to-update.sh
+```
+
+# Backup Forgejo
+
+```text
+sudo docker exec \
+  -it \
+  forgejo \
+  /bin/bash -c \
+  "tar cvf /tmp/data.tar /data"
+
+sudo docker cp \
+  forgejo:/tmp/data.tar \
+  .
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb)
 
 # SSH Fails with Local Filesystem
 
@@ -137,12 +173,14 @@ sudo docker exec \
   forgejo \
   /bin/bash
 
+User ID should be git, not 501! (Some kinda jeans?)
 5473c234c7eb:/data/git# ls -ld /data/git/.ssh
 drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
 5473c234c7eb:/data/git# ls -l /data/git/.ssh/authorized_keys
 -rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
 5473c234c7eb:/data/git#
 
+Won't work:
 exec su-exec root chown -R git /data/git/.ssh
 ```
 
