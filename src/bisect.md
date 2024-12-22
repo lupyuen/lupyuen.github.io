@@ -7,6 +7,7 @@
 2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these __"Good" and "Bad" Commits__...
 
 ```text
+TODO: table
 Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
 Bad Commit: NuttX fails on DD MMM YYYY (1234abcd) TODO
 Breaking Commit is in the range above
@@ -106,9 +107,11 @@ _What just happened in Git Bisect?_
 
 TODO
 
-# Redo The Git Bisect
+# Git Bisect Gets Quirky
 
-_Did Git Bisect really find the Breaking Commit?_
+_Did Git Bisect find the correct Breaking Commit?_
+
+To be absolutely sure: We run Git Bisect __one more time__...
 
 TODO
 
