@@ -4,7 +4,25 @@
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
 
-We're tracking a bug in Apache NuttX RTOS, finding the Breaking Commit. We know that this NuttX Commit works OK, but this NuttX Commit fails. There are xxx commits in between. Which is the Breaking Commit?
+We're tracking a Runtime Bug in [__Apache NuttX RTOS__](TODO), finding the __Breaking Commit__.
+
+We think that the Breaking Commit falls inside this range of __"Good" and "Bad" Commits__...
+
+```text
+Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
+Bad Commit: NuttX fails on DD MMM YYYY (1234abcd) TODO
+Breaking Commit is in the range above
+```
+
+There are TODO commits in between. Which is the Breaking Commit?
+
+_We could Rewind Each Commit and test?_
+
+This works OK for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__.
+
+We have a quicker way: __Git Bisect__!
+
+TODO
 
 Number the commits
 
