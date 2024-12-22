@@ -4,22 +4,21 @@
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
 
-2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these __"Good" and "Bad" Commits__...
+2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
 | | |
-|:------------|:---------|
-| __Good Commit__ <br> _DD MMM YYYY_ | NuttX runs OK  <br> _1234abcd_ TODO
-| __Bad Commit__ <br> _DD MMM YYYY_ | NuttX fails to run <br> _1234abcd_ TODO
+|:-----------:|:---------|
+| [__#1: Good Commit__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
+| ... | _(Breaking Commit)_
+| [__#468: Bad Commit__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
 
-That's [__TODO Commits__](TODO). Which is the Breaking Commit?
+That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0). Which one is the Breaking Commit?
 
-_We could Rewind Each Commit and test?_
+_Maybe we Rewind Each Commit and test?_
 
-We could rewind and retest TODO Commits for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__.
+With a script, we could rewind and retest 468 Commits for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__. _(Rewind + recompile + rerun)_
 
 We have a quicker way: __Git Bisect__!
-
-TODO
 
 # Automated Bisect
 
@@ -27,15 +26,15 @@ _What's this Git Bisect?_
 
 Remember [__Binary Chop__](TODO)?
 
-> _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to TODO <br> Ask me TODO Yes-No Questions"_
+> _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to 468 <br> Ask me 9 Yes-No Questions"_
 
 [__Git Bisect__](TODO) works the same way, but for __Git Commits__...
 
-- Our __Breaking Commit__ is one of ??? Commits
+- Our __Breaking Commit__ is one of 468 Commits
 
 - Git Bisect shall __Pick the Middle Commit__ and ask: "Is this a Good Commit or Bad Commit?"
 
-- Repeat until we discover the __Breaking Commit__
+- Repeat until we discover the __Breaking Commit__ (in 9 steps)
 
 _Is it automated?_
 
@@ -93,13 +92,51 @@ TODO: Pic of Git Bisect #1
 
 _What just happened in Git Bisect?_
 
-- We told Git Bisect that Commit #`TODO` is Good and Commit #`TODO` is Bad
+- We told Git Bisect that Commit #`1` is Good and Commit #`468` is Bad
 
-- Git Bisect picked the __Middle Commit__ #`TODO`
+  ```bash
+  git clone https://github.com/apache/nuttx
+  cd nuttx
+  git bisect start
+  git bisect good 6554ed4d  ## Commit #1
+  git bisect bad  79a1ebb   ## Commit #468
+  git bisect run  $HOME/nuttx-bisect/start-job-bisect.sh
+  ```
 
-- And discovered that __Commit #`TODO` is TODO__ (via our script)
+- Git Bisect picked the [__Middle Commit #`234`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L42-L74)
+
+  ```bash
+  ## Testing Commit #234 (94a2ce3)
+  ## For CI Job risc-v-05 (CI Test for RISC-V QEMU)
+  ## With NuttX Apps (1c7a7f7)
+  $HOME/nuttx-bisect/run-job-bisect.sh \
+    risc-v-05 \
+    94a2ce3 \
+    1c7a7f7
+  ```
+
+- And discovered that [__Commit #`234` is OK__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1370-L1379) (via our script)
+
+  ```bash
+  ## Commit #234: Completed CI Test successfully
+  Configuration/Tool: rv-virt/citest
+  test_ostest PASSED
+  exit 0
+  ```
 
 - Then it continued bisecting. Assessing Commit #`TODO` (TODO), #`TODO`(TODO), #`TODO` (TODO)...
+
+```text
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420
+
+Testing Commit 1cfaff011ea5178ba3faffc10a33d9f52de80bfc
+Now running https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh risc-v-05 1cfaff011ea5178ba3faffc10a33d9f52de80bfc 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1858-L1869
+
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
+```
 
 - Finally deducing that Commit #`TODO` is the __Breaking Commit__
 
