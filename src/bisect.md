@@ -27,7 +27,7 @@ _What's this Git Bisect?_
 
 Remember [__Binary Chop__](TODO)?
 
-> "I'm thinking of a number from 1 to TODO <br> To guess my number: <br> Ask me TODO yes-no questions"
+> _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to TODO <br> Ask me TODO Yes-No Questions"_
 
 [__Git Bisect__](TODO) works the same way, but for __Git Commits__...
 
