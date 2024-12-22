@@ -205,9 +205,21 @@ git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a clas
 <p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
 <p>If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Repeat for all conflicting commits
-git reset --hard HEAD~1
-git status
-git push -f</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+$ git reset --hard HEAD~1
+
+HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
+➜  downstream git:(master) $ git status
+
+On branch master
+Your branch is behind &#39;origin/master&#39; by 1 commit, and can be fast-forwarded.
+  (use &quot;git pull&quot; to update your local branch)
+
+nothing to commit, working tree clean
+➜  downstream git:(master) $ git push -f
+
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To nuttx-forge:nuttx/nuttx-update
+ + e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>6 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
   -it \
   forgejo \
   /bin/bash -c \
