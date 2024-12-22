@@ -54,7 +54,7 @@ Let's study the outcome...
 
 TODO: Pic of Simulated Git Bisect
 
-# Inside the Bisect
+# Simulate The Git Bisect
 
 _What just happened in Git Bisect?_
 
@@ -87,6 +87,30 @@ Thus this becomes our Git Bisect Script (that assesses "Goodness" vs "Badness")
 TODO: Git Bisect Script
 
 We run this...
+
+TODO: Pic of Git Bisect #1
+
+# Git Bisect For Real
+
+_What just happened in Git Bisect?_
+
+- We told Git Bisect that Commit #`TODO` is Good and Commit #`TODO` is Bad
+
+- Git Bisect picked the __Middle Commit__ #`TODO`
+
+- And discovered that __Commit #`TODO` is TODO__ (via our script)
+
+- Then it continued bisecting. Assessing Commit #`TODO` (TODO), #`TODO`(TODO), #`TODO` (TODO)...
+
+- Finally deducing that Commit #`TODO` is the __Breaking Commit__
+
+TODO
+
+# Redo The Git Bisect
+
+_Did Git Bisect really find the Breaking Commit?_
+
+TODO
 
 # TODO
 
