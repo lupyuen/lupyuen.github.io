@@ -72,7 +72,16 @@
 <li><a href="#bisect-run" title="Bisect Run">3 Bisect Run</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
-<p>We’re tracking a bug in Apache NuttX RTOS, finding the Breaking Commit. We know that this NuttX Commit works OK, but this NuttX Commit fails. There are xxx commits in between. Which is the Breaking Commit?</p>
+<p>We’re tracking a Runtime Bug in <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, finding the <strong>Breaking Commit</strong>.</p>
+<p>We think that the Breaking Commit falls inside this range of <strong>“Good” and “Bad” Commits</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
+Bad Commit: NuttX fails on DD MMM YYYY (1234abcd) TODO
+Breaking Commit is in the range above</code></pre></div>
+<p>There are TODO commits in between. Which is the Breaking Commit?</p>
+<p><em>We could Rewind Each Commit and test?</em></p>
+<p>This works OK for <a href="TODO"><strong>Compile Errors</strong></a>. But it’s probably too slow for <strong>Runtime Errors</strong>.</p>
+<p>We have a quicker way: <strong>Git Bisect</strong>!</p>
+<p>TODO</p>
 <p>Number the commits</p>
 <p>Commit #<code>123</code></p>
 <p>Commit #<code>456</code></p>
