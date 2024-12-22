@@ -165,9 +165,21 @@ If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror 
 
 ```bash
 ## Repeat for all conflicting commits
-git reset --hard HEAD~1
-git status
-git push -f
+$ git reset --hard HEAD~1
+
+HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
+➜  downstream git:(master) $ git status
+
+On branch master
+Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+➜  downstream git:(master) $ git push -f
+
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To nuttx-forge:nuttx/nuttx-update
+ + e26e8bda0e9...7d6b2e48044 master -> master (forced update)
 ```
 
 # Backup Forgejo
