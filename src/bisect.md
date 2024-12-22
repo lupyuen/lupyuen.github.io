@@ -24,6 +24,12 @@ We have a quicker way: __Git Bisect__!
 
 TODO
 
+# Automated Bisect
+
+
+
+TODO
+
 Number the commits
 
 Commit #`123`
