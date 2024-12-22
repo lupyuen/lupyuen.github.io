@@ -4,9 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
 
-We're tracking a Runtime Bug in [__Apache NuttX RTOS__](TODO), finding the __Breaking Commit__.
-
-We think that the Breaking Commit falls inside this range of __"Good" and "Bad" Commits__...
+2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these __"Good" and "Bad" Commits__...
 
 ```text
 Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
@@ -14,11 +12,11 @@ Bad Commit: NuttX fails on DD MMM YYYY (1234abcd) TODO
 Breaking Commit is in the range above
 ```
 
-There are TODO commits in between. Which is the Breaking Commit?
+That's [__TODO Commits__](TODO). Which is the Breaking Commit?
 
 _We could Rewind Each Commit and test?_
 
-This works OK for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__.
+We could rewind and retest TODO Commits for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__.
 
 We have a quicker way: __Git Bisect__!
 
@@ -26,9 +24,35 @@ TODO
 
 # Automated Bisect
 
+_What's this Git Bisect?_
 
+Remember [__Binary Chop__](TODO)?
+
+> "I'm thinking of a number from 1 to TODO <br> To guess my number: <br> Ask me TODO yes-no questions"
+
+__Git Bisect__ works the same way, but for __Git Commits__...
+
+- Our __Breaking Commit__ is one of ??? Commits
+
+- Git Bisect shall __Choose the Middle Commit__ and ask: "Is this a Good Commit or Bad Commit?"
+
+- Repeat until we discover the __Breaking Commit__
+
+_Is it automated?_
+
+Yep Git Bisect will joyously seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit...
+
+TODO: Simple Script
+
+This is how we start Git Bisect...
+
+TODO: Git Bisect Script
+
+# Inside the Bisect
 
 TODO
+
+# TODO
 
 Number the commits
 
