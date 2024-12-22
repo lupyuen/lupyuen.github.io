@@ -66,15 +66,17 @@
     <h1 class="title">Bisecting a Bug in Apache NuttX RTOS (Git Bisect)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#automated-bisect" title="Automated Bisect">1 Automated Bisect</a><ul></ul></li>
-<li><a href="#inside-the-bisect" title="Inside the Bisect">2 Inside the Bisect</a><ul></ul></li>
+<li><a href="#simulate-the-git-bisect" title="Simulate The Git Bisect">2 Simulate The Git Bisect</a><ul></ul></li>
 <li><a href="#continuous-integration-test" title="Continuous Integration Test">3 Continuous Integration Test</a><ul></ul></li>
-<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
-<li><a href="#git-bisect-on-original-bug" title="Git Bisect on Original Bug">5 Git Bisect on Original Bug</a><ul>
-<li><a href="#nuttx-commits" title="NuttX Commits">5.1 NuttX Commits</a><ul></ul></li>
-<li><a href="#apps-commits" title="Apps Commits">5.2 Apps Commits</a><ul></ul></li></ul></li>
-<li><a href="#todo-1" title="TODO">6 TODO</a><ul></ul></li>
-<li><a href="#bisect-run" title="Bisect Run">7 Bisect Run</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#git-bisect-for-real" title="Git Bisect For Real">4 Git Bisect For Real</a><ul></ul></li>
+<li><a href="#redo-the-git-bisect" title="Redo The Git Bisect">5 Redo The Git Bisect</a><ul></ul></li>
+<li><a href="#todo" title="TODO">6 TODO</a><ul></ul></li>
+<li><a href="#git-bisect-on-original-bug" title="Git Bisect on Original Bug">7 Git Bisect on Original Bug</a><ul>
+<li><a href="#nuttx-commits" title="NuttX Commits">7.1 NuttX Commits</a><ul></ul></li>
+<li><a href="#apps-commits" title="Apps Commits">7.2 Apps Commits</a><ul></ul></li></ul></li>
+<li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#bisect-run" title="Bisect Run">9 Bisect Run</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <strong>“Good” and “Bad” Commits</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
@@ -111,7 +113,7 @@ Breaking Commit is in the range above</code></pre></div>
 <p>TODO: Git Bisect Script</p>
 <p>Let’s study the outcome…</p>
 <p>TODO: Pic of Simulated Git Bisect</p>
-<h1 id="inside-the-bisect"><a class="doc-anchor" href="#inside-the-bisect">§</a>2 Inside the Bisect</h1>
+<h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
 <p><em>What just happened in Git Bisect?</em></p>
 <ul>
 <li>
@@ -140,18 +142,42 @@ Breaking Commit is in the range above</code></pre></div>
 <p>Thus this becomes our Git Bisect Script (that assesses “Goodness” vs “Badness”)</p>
 <p>TODO: Git Bisect Script</p>
 <p>We run this…</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
+<p>TODO: Pic of Git Bisect #1</p>
+<h1 id="git-bisect-for-real"><a class="doc-anchor" href="#git-bisect-for-real">§</a>4 Git Bisect For Real</h1>
+<p><em>What just happened in Git Bisect?</em></p>
+<ul>
+<li>
+<p>We told Git Bisect that Commit #<code>TODO</code> is Good and Commit #<code>TODO</code> is Bad</p>
+</li>
+<li>
+<p>Git Bisect picked the <strong>Middle Commit</strong> #<code>TODO</code></p>
+</li>
+<li>
+<p>And discovered that <strong>Commit #<code>TODO</code> is TODO</strong> (via our script)</p>
+</li>
+<li>
+<p>Then it continued bisecting. Assessing Commit #<code>TODO</code> (TODO), #<code>TODO</code>(TODO), #<code>TODO</code> (TODO)…</p>
+</li>
+<li>
+<p>Finally deducing that Commit #<code>TODO</code> is the <strong>Breaking Commit</strong></p>
+</li>
+</ul>
+<p>TODO</p>
+<h1 id="redo-the-git-bisect"><a class="doc-anchor" href="#redo-the-git-bisect">§</a>5 Redo The Git Bisect</h1>
+<p><em>Did Git Bisect really find the Breaking Commit?</em></p>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
 <p>Number the commits</p>
 <p>Commit #<code>123</code></p>
 <p>Commit #<code>456</code></p>
 <p>Why Git Bisect? Because each test runs for 1 hour!</p>
 <p>TODO</p>
-<h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>5 Git Bisect on Original Bug</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>5.1 NuttX Commits</h2>
+<h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>7 Git Bisect on Original Bug</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>7.1 NuttX Commits</h2>
 <p>https://github.com/apache/nuttx/issues/14808</p>
 <p>NuttX Commit #1: Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</p>
 <p>NuttX Commit #2: Later NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/656883fec5561ca91502a26bf018473ca0229aa4</p>
 <p>NuttX Commit #3: Belated Commits fail at test_ltp_interfaces_pthread_barrierattr_init_2_1: https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367</p>
-<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>5.2 Apps Commits</h2>
+<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>7.2 Apps Commits</h2>
 <p>Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156</p>
 <p>Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4ddd2802a189fccc802230ab946d50a97cb93c</p>
 <p>Belated NuttX Apps Commits were ???</p>
@@ -211,7 +237,7 @@ bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back t
 <p>That’s 2 bean stews!</p>
 <p>_So it’s like travelling back in time, changing something in history, and the future changes?</p>
 <p>Um.somegthing like thst</p>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>6 TODO</h1>
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>8 TODO</h1>
 <p>Current Failure: <a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
 <p>Previous Failure: <a href="https://github.com/apache/nuttx/issues/14808">rv-virt/citest: test_hello or test_pipe failed</a></p>
 <p>Due to: <a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
@@ -346,7 +372,7 @@ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
   /bin/bash
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
 <p>Fixed yay! <a href="https://github.com/apache/nuttx-apps/pull/2888">testing/ltp: Increase Stack Size</a></p>
-<h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>7 Bisect Run</h1>
+<h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>9 Bisect Run</h1>
 <p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
 <p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
 <p>$ git bisect run my_script arguments</p>
@@ -355,7 +381,7 @@ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 <p>The special exit code 125 should be used when the current source code cannot be tested. If the script exits with this code, the current revision will be skipped (see git bisect skip above). 125 was chosen as the highest sensible value to use for this purpose, because 126 and 127 are used by POSIX shells to signal specific error status (127 is for command not found, 126 is for command found but not executable—​these details do not matter, as they are normal errors in the script, as far as bisect run is concerned).</p>
 <p>You may often find that during a bisect session you want to have temporary modifications (e.g. s/#define DEBUG 0/#define DEBUG 1/ in a header file, or “revision that does not have this commit needs this patch applied to work around another problem this bisection is not interested in”) applied to the revision being tested.</p>
 <p>To cope with such a situation, after the inner git bisect finds the next revision to test, the script can apply the patch before compiling, run the real test, and afterwards decide if the revision (possibly with the needed patch) passed the test and then rewind the tree to the pristine state. Finally the script should exit with the status of the real test to let the git bisect run command loop determine the eventual outcome of the bisect session.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
