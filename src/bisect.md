@@ -6,12 +6,10 @@
 
 2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these __"Good" and "Bad" Commits__...
 
-```text
-TODO: table
-Good Commit: NuttX runs OK on DD MMM YYYY (1234abcd) TODO
-Bad Commit: NuttX fails on DD MMM YYYY (1234abcd) TODO
-Breaking Commit is in the range above
-```
+| | |
+|:------------|:---------|
+| __Good Commit__ <br> _DD MMM YYYY_ | NuttX runs OK  <br> _1234abcd_ TODO
+| __Bad Commit__ <br> _DD MMM YYYY_ | NuttX fails to run <br> _1234abcd_ TODO
 
 That's [__TODO Commits__](TODO). Which is the Breaking Commit?
 
