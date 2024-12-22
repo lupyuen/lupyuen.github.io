@@ -136,6 +136,81 @@ https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-
 
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912
+
+Testing Commit 65a93e972cdc224bae1b47ee329727f51d18679b
+Now running https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh risc-v-05 65a93e972cdc224bae1b47ee329727f51d18679b 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2281-L2360
+
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED 
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405
+
+Testing Commit 1e265af8ebc90ed3353614300640abeda08a80b6
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 1e265af8ebc90ed3353614300640abeda08a80b6 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2949-L3021
+
+test_open_posix/test_openposix_.py::test_ltp_interfaces_sigrelse_1_1 FAILED                        [ 35%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068
+
+Testing Commit c70f3e3f984f1e837d03bca5444373d6ff94e96d
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 c70f3e3f984f1e837d03bca5444373d6ff94e96d 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3437-L3517
+
+test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED             [ 17%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566
+
+Testing Commit 5d86bee5c7102b90a4376e630bd7c3cdf5e8395e
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 5d86bee5c7102b90a4376e630bd7c3cdf5e8395e 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3845-L3928
+
+test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_open_7_3 FAILED                              [  8%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979
+
+Testing Commit e7c2e7c5760bc3166192473347ecc71d16255d94
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 e7c2e7c5760bc3166192473347ecc71d16255d94 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4235-L4318
+
+test_open_posix/test_openposix_.py::test_ltp_interfaces_sigaction_23_7 FAILED                           [  6%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371
+
+Testing Commit 68d47ee8473bad7461e3ce53194afde089f8a033
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 68d47ee8473bad7461e3ce53194afde089f8a033 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4591-L4676
+
+
+test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_getcpuclockid_1_1 FAILED                [  2%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731
+
+Testing Commit 74bac565397dea37ebfc3ac0b7b7532737738279
++ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 74bac565397dea37ebfc3ac0b7b7532737738279 1c7a7f7529475b0d535e2088a9c4e1532c487156
+
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5087-L5166
+test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_detach_1_1 FAILED                       [ 16%]
++ exit 1
+
+https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210
+
+74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
 ```
 
 - Finally deducing that Commit #`TODO` is the __Breaking Commit__
