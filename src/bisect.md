@@ -30,27 +30,63 @@ Remember [__Binary Chop__](TODO)?
 
 > "I'm thinking of a number from 1 to TODO <br> To guess my number: <br> Ask me TODO yes-no questions"
 
-__Git Bisect__ works the same way, but for __Git Commits__...
+[__Git Bisect__](TODO) works the same way, but for __Git Commits__...
 
 - Our __Breaking Commit__ is one of ??? Commits
 
-- Git Bisect shall __Choose the Middle Commit__ and ask: "Is this a Good Commit or Bad Commit?"
+- Git Bisect shall __Pick the Middle Commit__ and ask: "Is this a Good Commit or Bad Commit?"
 
 - Repeat until we discover the __Breaking Commit__
 
 _Is it automated?_
 
-Yep Git Bisect will joyously seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit...
+Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit...
 
 TODO: Simple Script
+
+[(Or do it manually)](TODO)
 
 This is how we start Git Bisect...
 
 TODO: Git Bisect Script
 
+Let's study the outcome...
+
+TODO: Pic of Simulated Git Bisect
+
 # Inside the Bisect
 
-TODO
+_What just happened in Git Bisect?_
+
+- We told Git Bisect that Commit #`TODO` is Good and Commit #`TODO` is Bad
+
+- Git Bisect picked the __Middle Commit__ #`TODO`
+
+- And discovered that __Commit #`TODO` is TODO__ (via our script)
+
+- Then it continued bisecting. Assessing Commit #`TODO` (TODO), #`TODO`(TODO), #`TODO` (TODO)...
+
+- Finally deducing that Commit #`TODO` is the __Breaking Commit__
+
+This works fine for our (randomised) __Simulated Git Bisect__. Now we do it for real...
+
+# Continuous Integration Test
+
+_Will Git Bisect work for Real-Life NuttX?_
+
+From our [__Bug Report__](TODO): NuttX fails the __Continuous Integration Test__ (CI Test) for RISC-V QEMU.
+
+TODO: CI Test Log
+
+This happens inside the CI Job risc-v-TODO, which we can run with __Docker Engine__...
+
+TODO: Run CI Test with Docker
+
+Thus this becomes our Git Bisect Script (that assesses "Goodness" vs "Badness")
+
+TODO: Git Bisect Script
+
+We run this...
 
 # TODO
 
