@@ -2,7 +2,7 @@
 
 📝 _30 Dec 2024_
 
-![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-title.jpg)
+![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-register7.png)
 
 We're out for an [__overnight hike__](https://www.strava.com/activities/13055019749), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
 
