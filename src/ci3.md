@@ -463,6 +463,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
 
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)

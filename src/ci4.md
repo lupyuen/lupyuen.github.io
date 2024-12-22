@@ -741,6 +741,8 @@ Next Article: We chat about the updated __NuttX Build Farm__ that runs on __macO
 
 Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So it will disappear sooner from NuttX Dashboard)
 
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)

@@ -483,16 +483,6 @@ We might need to tweak the Regex Pattern and catch more errors.
 
 # What's Next
 
-We have more stories about __NuttX Continuous Integration__ in these articles...
-
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
-
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
-
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
-
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
-
 _Huh? Aren't we making a Build Farm, not a Build Server?_
 
 Just add a second Ubuntu PC, partition the Target Groups across the PCs. And we'll have a Build Farm!
@@ -506,6 +496,18 @@ BUT... GitHub charges a [__10x Premium for macOS Runners__](https://docs.github.
 Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX Jobs all day?
 
 [(Seeking help to port NuttX Jobs to __M1 Mac__)](https://github.com/apache/nuttx/issues/14526)
+
+We have more stories about __NuttX Continuous Integration__ in these articles...
+
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 

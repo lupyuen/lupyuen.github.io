@@ -369,18 +369,6 @@ We'll chat about this in [__NuttX Discord Channel__](https://discord.com/channel
 
 # What's Next
 
-We have more stories about __NuttX Continuous Integration__ in these articles...
-
-- [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
-
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
-
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
-
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
-
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
-
 According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.html): We should reduce to __15 Concurrent GitHub Runners__  (we're now at 24 concurrent runners). How?
 
 1.  We could review the [__1,594 Build Targets__](https://docs.google.com/spreadsheets/d/1OdBxe30Sw3yhH0PyZtgmefelOL56fA6p26vMgHV0MRY/edit?gid=0#gid=0) and decide which targets should be excluded. Or reprioritised to run earlier / later.
@@ -395,7 +383,19 @@ According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.htm
 
    (Maybe we dump the __NuttX ELF Disassembly__ and figure out which Source Files are used for which NuttX Targets?)
 
-Let's discuss!
+Check out the updates for __NuttX Continuous Integration__ in these articles...
+
+- [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
+
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

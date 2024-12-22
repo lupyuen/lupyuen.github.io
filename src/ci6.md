@@ -446,7 +446,9 @@ Yeah our Rewind Build Script took [__only one hour__](https://gist.github.com/lu
 
 _Happy Holidays! Will we have more stories about NuttX CI?_
 
-Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
+Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__...
+
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
 Then we'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 
