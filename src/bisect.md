@@ -105,6 +105,10 @@ _What just happened in Git Bisect?_
 
 TODO
 
+[git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
+
+TODO: Pic of Git Bisect #2
+
 # Git Bisect Gets Quirky
 
 _Did Git Bisect find the correct Breaking Commit?_
@@ -112,6 +116,18 @@ _Did Git Bisect find the correct Breaking Commit?_
 To be absolutely sure: We run Git Bisect __one more time__...
 
 TODO
+
+[second run of git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
+
+# Why?
+
+TODO
+
+good: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
+
+vs
+
+bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
 
 # TODO
 
@@ -202,14 +218,6 @@ Maybe return special exit code 125 if can't compile
 Inconsistent CI Test?
 
 [run-job-bisect.sh risc-v-05 94a2ce3641213cc702abc5c17b0f81a50c714a2e 1c7a7f7529475b0d535e2088a9c4e1532c487156 / fails at test_ltp_interfaces_sigaction_12_35](https://gist.github.com/lupyuen/7c9fa7d30fed3fe73ffeb7e7f1ddd0fb)
-
-[git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
-
-[second run of git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
-
-good: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
-vs
-bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
 
 Let it simmer overnight (probably 7 hours, like my Bean Stew)
 
