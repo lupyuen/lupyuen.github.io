@@ -1,8 +1,14 @@
-# Bisecting a Bug in Apache NuttX RTOS (Git Bisect)
+# Git Bisecting a Bug in Apache NuttX RTOS
 
 📝 _31 Jan 2024_
 
 ![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
+
+> _"Because I'm bad, I'm bad, shamone (bad, bad, really, really bad) <br>
+You know I'm bad, I'm bad (bad, bad) ... <br>
+And the whole world has to answer right now <br>
+Just to tell you once again <br>
+Who's bad?"_
 
 2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
