@@ -28,7 +28,7 @@ Remember [__Binary Chop__](TODO)?
 
 > _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to 468 <br> Ask me 9 Yes-No Questions"_
 
-To solve this we Divide-And-Conquer: "Is 234 Too High?", TODO
+To solve this, we __Divide And Conquer__: Is 234 too high? _(no)_ Is 351 too high? _(yes)_ Is 292 too high _(yes)_...
 
 TODO: Pic of Divide-And-Conquer
 
@@ -46,13 +46,28 @@ Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming th
 
 TODO: Simple Script
 
+https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh
+
 [(Or do it manually)](TODO)
 
-This is how we start Git Bisect...
+This is how we start our (simulated) Git Bisect...
 
-TODO: Git Bisect Script
+```bash
+git clone https://github.com/apache/nuttx
+cd nuttx
+git bisect start
+git bisect good 6554ed4d  ## Commit #1 is Good
+git bisect bad  79a1ebb   ## Commit #468 is Bad
+git bisect run \
+  $HOME/nuttx-bisect/my-test-script.sh
+...
+## Commit #235 is the Breaking Commit
+74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+```
 
-Let's study the outcome...
+[(See the __Complete Log__)](TODO)
+
+That was quick! We break it down...
 
 TODO: Pic of Simulated Git Bisect
 
@@ -60,15 +75,73 @@ TODO: Pic of Simulated Git Bisect
 
 _What just happened in Git Bisect?_
 
-- We told Git Bisect that Commit #`TODO` is Good and Commit #`TODO` is Bad
+1.  Git Bisect picked the __Middle Commit #`234`__...
 
-- Git Bisect picked the __Middle Commit__ #`TODO`
+    ```bash
+    TODO
+    ## Testing Commit #234 (94a2ce3)
+    $HOME/nuttx-bisect/my-test-script.sh
+    nuttx_hash=94a2ce3
 
-- And discovered that __Commit #`TODO` is TODO__ (via our script)
+    ## Our Script simulates a successful test
+    Simluate OK
+    exit 0
+    ```
+    
+    And discovered that __Commit #`234` is Good__. (Via our Simulated Script)
 
-- Then it continued bisecting. Assessing Commit #`TODO` (TODO), #`TODO`(TODO), #`TODO` (TODO)...
+1.  Then it continued the simulated bisecting...
 
-- Finally deducing that Commit #`TODO` is the __Breaking Commit__
+    ```bash
+    ## Commit #351 is Bad
+    nuttx_hash=1cfaff011ea5178ba3faffc10a33d9f52de80bfc
+    Simluate Error
+    exit 1
+
+    ## Commit #292 is Bad
+    nuttx_hash=65a93e972cdc224bae1b47ee329727f51d18679b
+    Simluate Error
+    exit 1
+
+    ## Commit #263 is Bad
+    nuttx_hash=1e265af8ebc90ed3353614300640abeda08a80b6
+    Simluate Error
+    exit 1
+
+    ## Commit #248 is Bad
+    nuttx_hash=c70f3e3f984f1e837d03bca5444373d6ff94e96d
+    Simluate Error
+    exit 1
+
+    ## Commit #241 is Bad
+    nuttx_hash=5d86bee5c7102b90a4376e630bd7c3cdf5e8395e
+    Simluate Error
+    exit 1
+
+    ## Commit #237 is Bad
+    nuttx_hash=e7c2e7c5760bc3166192473347ecc71d16255d94
+    Simluate Error
+    exit 1
+
+    ## Commit #236 is Bad
+    nuttx_hash=68d47ee8473bad7461e3ce53194afde089f8a033
+    Simluate Error
+    exit 1
+
+    ## Commit #235 is Bad
+    nuttx_hash=74bac565397dea37ebfc3ac0b7b7532737738279
+    Simluate Error
+    exit 1
+    ```
+
+    [(See the __Complete Log__)](TODO)
+
+1.  Finally deducing that __Commit #`235`__ is the __Breaking Commit__
+
+    ```bash
+    ## Commit #235 is the Breaking Commit
+    74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+    ```
 
 This works fine for our (randomised) __Simulated Git Bisect__. Now we do it for real...
 
