@@ -128,17 +128,22 @@ else
 fi</code></pre></div>
 <p><a href="TODO">(Or something <strong>more predictable</strong>)</a></p>
 <p><a href="TODO">(Or do it <strong>manually</strong>)</a></p>
-<p>This is how we start our <strong>Simulated Git Bisect</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
+<p>This is how we start our <strong>Simulated Git Bisect</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Repo
+git clone https://github.com/apache/nuttx
 cd nuttx
+
+## Tell Git Bisect the Good and Bad Commits
 git bisect start
 git bisect good 6554ed4d  ## Commit #1 is Good
 git bisect bad  79a1ebb   ## Commit #468 is Bad
+
+## Bisect with our Simulated Test Script
 git bisect run \
   $HOME/nuttx-bisect/my-test-script.sh
 ...
-## Commit #235 is the Breaking Commit
-74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
+## Commit #235 is the Breaking Commit:
+## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
 <p>That was quick! We break it down…</p>
 <p>TODO: Pic of Simulated Git Bisect</p>
@@ -146,9 +151,8 @@ git bisect run \
 <p><em>What just happened in Git Bisect?</em></p>
 <ol>
 <li>
-<p>Git Bisect picked the <strong>Middle Commit #<code>234</code></strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO
-## Testing Commit #234 (94a2ce3)
+<p>Git Bisect picked the <a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f#file-gistfile1-txt-L38-L69"><strong>Middle Commit #<code>234</code></strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Testing Commit #234 (94a2ce3)
 $HOME/nuttx-bisect/my-test-script.sh
 nuttx_hash=94a2ce3
 
