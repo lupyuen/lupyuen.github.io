@@ -8,9 +8,9 @@
 
 | | |
 |:-----------:|:---------|
-| [__#1: Good Commit__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
-| ... | _(Breaking Commit)_
-| [__#468: Bad Commit__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
+| [__Commit #1 is Good__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
+| _(many many commits)_ | _..._
+| [__Commit #468 is Bad__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
 
 That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0). Which one is the Breaking Commit?
 
@@ -42,15 +42,27 @@ TODO: Pic of Divide-And-Conquer
 
 _Is it automated?_
 
-Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit...
+Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit: [my-test-script.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh)
 
-TODO: Simple Script
+```bash
+## Get the NuttX Hash (Commit ID)
+nuttx_hash=$(git rev-parse HEAD)
 
-https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh
+## For the NuttX Commit:
+## We randomly simulate OK or Error
+random_0_or_1=$(( $RANDOM % 2 ))
+if (( "$random_0_or_1" == "0" )); then
+  exit 0  ## Simulate OK
+else
+  exit 1  ## Simulate Error
+fi
+```
 
-[(Or do it manually)](TODO)
+[(Or something __more predictable__)](TODO)
 
-This is how we start our (simulated) Git Bisect...
+[(Or do it __manually__)](TODO)
+
+This is how we start our __Simulated Git Bisect__...
 
 ```bash
 git clone https://github.com/apache/nuttx
@@ -65,7 +77,7 @@ git bisect run \
 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
 ```
 
-[(See the __Complete Log__)](TODO)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f)
 
 That was quick! We break it down...
 
