@@ -91,7 +91,9 @@ sudo docker compose up
 
 - Based on the excellent [__Mastodon Docs__](https://docs.joinmastodon.org/admin/prerequisites/)
 
-Right now we're testing on (open-source) [__macOS Rancher Desktop__](https://rancherdesktop.io/), thus we tweaked the steps a bit.
+Right now we're testing on (open-source) [__macOS Rancher Desktop__](https://rancherdesktop.io/). (Pic below) Thus we tweaked the steps a bit.
+
+![Mastodon Containers in Rancher Desktop](https://lupyuen.github.io/images/mastodon-containers.png)
 
 # Bot User for Mastodon
 
