@@ -84,9 +84,9 @@
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
-<tr><td style="text-align: center"><a href="TODO"><strong>#1: Good Commit</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: left">NuttX runs OK <br> <a href="TODO"><em>6554ed4</em></a></td></tr>
-<tr><td style="text-align: center">…</td><td style="text-align: left"><em>(Breaking Commit)</em></td></tr>
-<tr><td style="text-align: center"><a href="TODO"><strong>#468: Bad Commit</strong></a> <br> <em>2024-12-04</em></td><td style="text-align: left">NuttX won’t run <br> <a href="TODO"><em>79a1ebb</em></a></td></tr>
+<tr><td style="text-align: center"><a href="TODO"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: left">NuttX runs OK <br> <a href="TODO"><em>6554ed4</em></a></td></tr>
+<tr><td style="text-align: center"><em>(many many commits)</em></td><td style="text-align: left"><em>…</em></td></tr>
+<tr><td style="text-align: center"><a href="TODO"><strong>Commit #468 is Bad</strong></a> <br> <em>2024-12-04</em></td><td style="text-align: left">NuttX won’t run <br> <a href="TODO"><em>79a1ebb</em></a></td></tr>
 </tbody></table>
 </div>
 <p>That’s <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>468 Commits</strong></a>. Which one is the Breaking Commit?</p>
@@ -114,11 +114,21 @@
 </li>
 </ul>
 <p><em>Is it automated?</em></p>
-<p>Yep Git Bisect will gleefully seek the Breaking Commit on its own… Assuming that we provide a Script to <strong>Assess the Goodness / Badness</strong> of a NuttX Commit…</p>
-<p>TODO: Simple Script</p>
-<p>https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh</p>
-<p><a href="TODO">(Or do it manually)</a></p>
-<p>This is how we start our (simulated) Git Bisect…</p>
+<p>Yep Git Bisect will gleefully seek the Breaking Commit on its own… Assuming that we provide a Script to <strong>Assess the Goodness / Badness</strong> of a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh">my-test-script.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Get the NuttX Hash (Commit ID)
+nuttx_hash=$(git rev-parse HEAD)
+
+## For the NuttX Commit:
+## We randomly simulate OK or Error
+random_0_or_1=$(( $RANDOM % 2 ))
+if (( &quot;$random_0_or_1&quot; == &quot;0&quot; )); then
+  exit 0  ## Simulate OK
+else
+  exit 1  ## Simulate Error
+fi</code></pre></div>
+<p><a href="TODO">(Or something <strong>more predictable</strong>)</a></p>
+<p><a href="TODO">(Or do it <strong>manually</strong>)</a></p>
+<p>This is how we start our <strong>Simulated Git Bisect</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
 cd nuttx
 git bisect start
@@ -129,7 +139,7 @@ git bisect run \
 ...
 ## Commit #235 is the Breaking Commit
 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
-<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
 <p>That was quick! We break it down…</p>
 <p>TODO: Pic of Simulated Git Bisect</p>
 <h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
