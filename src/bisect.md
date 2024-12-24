@@ -7,7 +7,7 @@
 2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
 | | |
-|:-----------:|:---------|
+|:-----------:|:--------:|
 | [__Commit #1 is Good__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
 | _(many many commits)_ | _..._
 | [__Commit #468 is Bad__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
