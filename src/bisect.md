@@ -15,7 +15,7 @@ Who's bad?"_
 | | |
 |:-----------:|:--------:|
 | [__Commit #1 is Good__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
-| _(many many commits)_ | _..._
+| _...many many commits..._ | _..._
 | [__Commit #468 is Bad__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
 
 That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0). Which one is the Breaking Commit?
@@ -51,11 +51,13 @@ _Is it automated?_
 Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit: [my-test-script.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh)
 
 ```bash
+## This script will be called by Git Bisect...
 ## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
 ## For the NuttX Commit:
-## We randomly simulate OK or Error
+## We Build, Run and Test the NuttX Commit
+## But for now: We randomly simulate OK or Error
 random_0_or_1=$(( $RANDOM % 2 ))
 if (( "$random_0_or_1" == "0" )); then
   exit 0  ## Simulate OK
@@ -372,7 +374,7 @@ Hmmm something below has changed. Why?
 | [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
 | [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the __Breaking Commit__
 
-# Breaking Commit Got Changed
+# Good Commit Goes Bad
 
 _Why is Git Bisect telling us a different Breaking Commit?_
 
@@ -393,6 +395,8 @@ run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1
 ```
+
+After this, everything changed. Concluding with a __Different Breaking Commit__. (Think "alternate timeline")
 
 _Huh? How did Commit #234 change?_
 
