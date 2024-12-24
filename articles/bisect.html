@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Bisecting a Bug in Apache NuttX RTOS (Git Bisect)</title>
+    <title>Git Bisecting a Bug in Apache NuttX RTOS</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Bisecting a Bug in Apache NuttX RTOS (Git Bisect)" 
+    content="Git Bisecting a Bug in Apache NuttX RTOS" 
     data-rh="true">
 <meta property="og:description" 
     content=""
@@ -63,7 +63,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Bisecting a Bug in Apache NuttX RTOS (Git Bisect)</h1>
+    <h1 class="title">Git Bisecting a Bug in Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#automated-bisect" title="Automated Bisect">1 Automated Bisect</a><ul></ul></li>
 <li><a href="#simulate-the-git-bisect" title="Simulate The Git Bisect">2 Simulate The Git Bisect</a><ul></ul></li>
@@ -82,6 +82,13 @@
 <li><a href="#bisect-run" title="Bisect Run">13 Bisect Run</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
+<blockquote>
+<p><em>“Because I’m bad, I’m bad, shamone (bad, bad, really, really bad) <br>
+You know I’m bad, I’m bad (bad, bad) … <br>
+And the whole world has to answer right now <br>
+Just to tell you once again <br>
+Who’s bad?”</em></p>
+</blockquote>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="TODO"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="TODO"><em>6554ed4</em></a></td></tr>
