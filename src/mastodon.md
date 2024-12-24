@@ -10,17 +10,37 @@ Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert ema
 
 ![NuttX Failed Builds appear as Mastodon Alerts](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
-TODO: In this article we talk about Mastodon 
+In this article: We talk about __Mastodon__ as a fun new way to broadcast NuttX Alerts in real time. We shall...
 
-- TODO
+- Install our __Mastodon Server__ with Docker Compose
+
+  (Or Rancher Desktop)
+
+- Create a __Bot User__ for pushing Mastodon Alerts
+
+- Which will work __Without Outgoing Email__
+
+- We fetch the NuttX Builds from __Prometheus Database__
+
+- Post to Mastodon via __ActivityPub API__
+
+- Our Mastodon Server will have __No Local Users__
+
+- But will gladly accept all __Fediverse Users__!
 
 ![Following the NuttX Feed on Mastodon](https://lupyuen.github.io/images/mastodon-mobile1.png)
 
 # Mastodon for NuttX CI
 
-1.  Register for a [__Mastodon Account__](https://joinmastodon.org) on any Fediverse Server (I got mine at [__`qoto.org`__](qoto.org))
+_How to get Mastodon Alerts for NuttX Builds and Continuous Integration? (CI)_
 
-1.  __On Our Mobile Device:__ Install a Mastodon App (like [__Tusky__](https://tusky.app/)) and log in
+1.  Register for a [__Mastodon Account__](https://joinmastodon.org) on any Fediverse Server
+
+    (I got mine at [__`qoto.org`__](qoto.org))
+
+1.  On Our Mobile Device: Install a __Mastodon App__ and log in
+
+    (Like [__Tusky__](https://tusky.app/)) 
 
 1.  Tap the __Search__ button. Enter...
 
@@ -28,19 +48,25 @@ TODO: In this article we talk about Mastodon
     @nuttx_build@nuttx-feed.org
     ```
 
-    Tap the __Accounts__ tab, then tap the account that appears. (Pic above)
+1.  Tap the __Accounts__ tab. (Pic above)
+    
+    Tap the __NuttX Build__ account that appears.
 
-1.  Tap the __Follow__ button. And the __Notify__ button beside it. (Pic above)
+1.  Tap the __Follow__ button. (Pic above)
 
-1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__ (linking to NuttX Build History)
+    And the __Notify__ button beside it.
+
+1.  That's all! When a NuttX Build Fails, we'll see a __Notification in the Mastodon App__
+
+    (Which links to NuttX Build History)
 
 ![Notification in the Mastodon App links to NuttX Build History](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
-_How did we get the Failed NuttX Builds?_
+_How did Mastodon get the Failed Builds?_
 
 Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) that continously compiles All NuttX Targets. _(1,600 Targets!)_
 
-Failed Builds are auto-escalated to the [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (Grafana + Prometheus)
+Failed Builds are auto-escalated to our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (Open-source Grafana + Prometheus)
 
 In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboard into __Mastodon Posts__.
 
@@ -60,7 +86,7 @@ _(Think "Social Network for NuttX Maintainers")_
 
 _OK weird flex. How to get started?_
 
-We begin by installing our __Mastodon Server with Docker__ (pic above)...
+We begin by installing our __Mastodon Server with Docker Compose__ (pic above)...
 
 ```bash
 ## Download the Mastodon Repo
@@ -91,7 +117,7 @@ sudo docker compose up
 
 - Based on the excellent [__Mastodon Docs__](https://docs.joinmastodon.org/admin/prerequisites/)
 
-Right now we're testing on (open-source) [__macOS Rancher Desktop__](https://rancherdesktop.io/). (Pic below) Thus we tweaked the steps a bit.
+Right now we're testing on (open-source) [__macOS Rancher Desktop__](https://rancherdesktop.io/). Thus we tweaked the steps a bit.
 
 ![Mastodon Containers in Rancher Desktop](https://lupyuen.github.io/images/mastodon-containers.png)
 
@@ -121,7 +147,7 @@ Details in the Appendix...
 
 - [__"Create our Mastodon Account"__](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
 
-We have a slight hiccup...
+It gets interesting when we verify our Bot User...
 
 # Email-Less Mastodon
 
@@ -147,9 +173,7 @@ bin/tootctl accounts \
   --confirm
 ```
 
-The detailed steps are here...
-
-- [__"Create our Mastodon Account"__](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
+[(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
 
 # Post to Mastodon
 
@@ -176,7 +200,7 @@ It appears like so...
 
 _What's this Access Token?_
 
-We pass an __Access Token__ to Authenticate our Bot User with Mastodon API. This is how we create the Access Token...
+To Authenticate our Bot User with Mastodon API, we pass an __Access Token__. This is how we create the Access Token...
 
 ```bash
 ## Set the Client ID, Secret and Authorization Code (see below)
@@ -199,7 +223,7 @@ curl -X POST \
 
 _What about the Client ID, Secret and Authorization Code?_
 
-__Client ID and Secret__ will select the Mastodon App for our Bot User. Here's how we create our __Mastodon App__ for NuttX Dashboard...
+__Client ID and Secret__ will specify the Mastodon App for our Bot User. Here's how we create our __Mastodon App__ for NuttX Dashboard...
 
 ```bash
 ## Create Our Mastodon App
