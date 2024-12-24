@@ -99,7 +99,7 @@
 <blockquote>
 <p><em>“I’m thining of A Number <br> Guess My Number! <br> It’s from 1 to 468 <br> Ask me 9 Yes-No Questions”</em></p>
 </blockquote>
-<p>To solve this we Divide-And-Conquer: “Is 234 Too High?”, TODO</p>
+<p>To solve this, we <strong>Divide And Conquer</strong>: Is 234 too high? <em>(no)</em> Is 351 too high? <em>(yes)</em> Is 292 too high <em>(yes)</em>…</p>
 <p>TODO: Pic of Divide-And-Conquer</p>
 <p><a href="TODO"><strong>Git Bisect</strong></a> works the same way, but for <strong>Git Commits</strong>…</p>
 <ul>
@@ -116,30 +116,85 @@
 <p><em>Is it automated?</em></p>
 <p>Yep Git Bisect will gleefully seek the Breaking Commit on its own… Assuming that we provide a Script to <strong>Assess the Goodness / Badness</strong> of a NuttX Commit…</p>
 <p>TODO: Simple Script</p>
+<p>https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh</p>
 <p><a href="TODO">(Or do it manually)</a></p>
-<p>This is how we start Git Bisect…</p>
-<p>TODO: Git Bisect Script</p>
-<p>Let’s study the outcome…</p>
+<p>This is how we start our (simulated) Git Bisect…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
+cd nuttx
+git bisect start
+git bisect good 6554ed4d  ## Commit #1 is Good
+git bisect bad  79a1ebb   ## Commit #468 is Bad
+git bisect run \
+  $HOME/nuttx-bisect/my-test-script.sh
+...
+## Commit #235 is the Breaking Commit
+74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
+<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+<p>That was quick! We break it down…</p>
 <p>TODO: Pic of Simulated Git Bisect</p>
 <h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
 <p><em>What just happened in Git Bisect?</em></p>
-<ul>
+<ol>
 <li>
-<p>We told Git Bisect that Commit #<code>TODO</code> is Good and Commit #<code>TODO</code> is Bad</p>
+<p>Git Bisect picked the <strong>Middle Commit #<code>234</code></strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO
+## Testing Commit #234 (94a2ce3)
+$HOME/nuttx-bisect/my-test-script.sh
+nuttx_hash=94a2ce3
+
+## Our Script simulates a successful test
+Simluate OK
+exit 0</code></pre></div>
+<p>And discovered that <strong>Commit #<code>234</code> is Good</strong>. (Via our Simulated Script)</p>
 </li>
 <li>
-<p>Git Bisect picked the <strong>Middle Commit</strong> #<code>TODO</code></p>
+<p>Then it continued the simulated bisecting…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
+nuttx_hash=1cfaff011ea5178ba3faffc10a33d9f52de80bfc
+Simluate Error
+exit 1
+
+## Commit #292 is Bad
+nuttx_hash=65a93e972cdc224bae1b47ee329727f51d18679b
+Simluate Error
+exit 1
+
+## Commit #263 is Bad
+nuttx_hash=1e265af8ebc90ed3353614300640abeda08a80b6
+Simluate Error
+exit 1
+
+## Commit #248 is Bad
+nuttx_hash=c70f3e3f984f1e837d03bca5444373d6ff94e96d
+Simluate Error
+exit 1
+
+## Commit #241 is Bad
+nuttx_hash=5d86bee5c7102b90a4376e630bd7c3cdf5e8395e
+Simluate Error
+exit 1
+
+## Commit #237 is Bad
+nuttx_hash=e7c2e7c5760bc3166192473347ecc71d16255d94
+Simluate Error
+exit 1
+
+## Commit #236 is Bad
+nuttx_hash=68d47ee8473bad7461e3ce53194afde089f8a033
+Simluate Error
+exit 1
+
+## Commit #235 is Bad
+nuttx_hash=74bac565397dea37ebfc3ac0b7b7532737738279
+Simluate Error
+exit 1</code></pre></div>
+<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
-<p>And discovered that <strong>Commit #<code>TODO</code> is TODO</strong> (via our script)</p>
-</li>
-<li>
-<p>Then it continued bisecting. Assessing Commit #<code>TODO</code> (TODO), #<code>TODO</code>(TODO), #<code>TODO</code> (TODO)…</p>
-</li>
-<li>
-<p>Finally deducing that Commit #<code>TODO</code> is the <strong>Breaking Commit</strong></p>
-</li>
-</ul>
+<p>Finally deducing that <strong>Commit #<code>235</code></strong> is the <strong>Breaking Commit</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Commit #235 is the Breaking Commit
+74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div></li>
+</ol>
 <p>This works fine for our (randomised) <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
