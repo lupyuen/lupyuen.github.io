@@ -190,7 +190,7 @@ _What just happened in Git Bisect?_
 
 1.  Finally deducing that [__Commit #`235`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731) is the [__Breaking Commit__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210)
 
-    ```text
+    ```bash
     ## Commit #235 is the Breaking Commit
     74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
     ```
@@ -203,123 +203,85 @@ TODO: Pic of Git Bisect #2
 
 _Did Git Bisect find the correct Breaking Commit?_
 
-To be absolutely sure: We run Git Bisect __one more time__...
+To be absolutely sure: We run Git Bisect [__one more time__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)...
 
-TODO
+```bash
+## Commit #234 is Bad
+run-job-bisect.sh ... 94a2ce3641213cc702abc5c17b0f81a50c714a2e ...
+test_ltp_interfaces_mq_close_3_2 FAILED
+exit 1
 
-[second run of git bisect: good 6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c / bad 79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
+## Commit #117 is Good
+run-job-bisect.sh ... 96a3bc2b5c6e4efdea7a4890d327199d2fdea9d9 ...
+test_ostest PASSED
+exit 0
 
-```text
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78
+## Commit #138 is Bad
+run-job-bisect.sh ... 3a46b6e6afeb9e434f27776b4117f0e7b946a1f7 ...
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
 
-#234
-Testing Commit 94a2ce3641213cc702abc5c17b0f81a50c714a2e
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 94a2ce3641213cc702abc5c17b0f81a50c714a2e 1c7a7f7529475b0d535e2088a9c4e1532c487156
+## Commit #146 is Bad
+run-job-bisect.sh ... dac3f315a11cead82a5f630d4ae1c3eb45a80377 ...
+test_ltp_interfaces_sigaction_6_3 FAILED
+exit 1
 
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421
+## Commit #131 is Good
+run-job-bisect.sh ... 4c3ae2ed4f878d195261359cc3eacefda031a01b ...
+test_ostest PASSED
+exit 0
 
-test_open_posix/test_openposix_.py::test_ltp_interfaces_mq_close_3_2 FAILED                             [  6%]
-+ exit 1
+## Commit #138 is Bad
+run-job-bisect.sh ... 3b50bf178203cde3c1568c46fa7901a1f2a1bb0d ...
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
 
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462
+## Commit #134 is Bad
+run-job-bisect.sh ... 5ff98f65a8a11ebe095f0bb08a0792541540677b ...
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
 
-#117
-Testing Commit 96a3bc2b5c6e4efdea7a4890d327199d2fdea9d9
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 96a3bc2b5c6e4efdea7a4890d327199d2fdea9d9 1c7a7f7529475b0d535e2088a9c4e1532c487156
+## Commit #133 is Bad
+run-job-bisect.sh ... b4d8ac862e5fa5fb30fe0c6a3247beec648f8713 ...
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
 
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767
+## Commit #132 is Bad
+run-job-bisect.sh ... fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a ...
+test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+exit 1
 
-test_os/test_os.py::test_ostest PASSED                                                                  [ 99%]
-+ exit 0
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810
-
-#138
-Testing Commit 3a46b6e6afeb9e434f27776b4117f0e7b946a1f7
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 3a46b6e6afeb9e434f27776b4117f0e7b946a1f7 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED             [ 17%]
-+ exit 1
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304
-
-#146
-Testing Commit dac3f315a11cead82a5f630d4ae1c3eb45a80377
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 dac3f315a11cead82a5f630d4ae1c3eb45a80377 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_sigaction_6_3 FAILED                                      [ 14%]
-+ exit 1
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773
-
-#131
-Testing Commit 4c3ae2ed4f878d195261359cc3eacefda031a01b
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 4c3ae2ed4f878d195261359cc3eacefda031a01b 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078
-
-
-test_os/test_os.py::test_ostest PASSED                                                                            [ 99%]
-+ exit 0
-
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127
-
-#138
-Testing Commit 3b50bf178203cde3c1568c46fa7901a1f2a1bb0d
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 3b50bf178203cde3c1568c46fa7901a1f2a1bb0d 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED                       [ 17%]
-+ exit 1
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626
-
-#134
-Testing Commit 5ff98f65a8a11ebe095f0bb08a0792541540677b
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 5ff98f65a8a11ebe095f0bb08a0792541540677b 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED     [ 17%]
-+ exit 1
-
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127
-
-#133
-Testing Commit b4d8ac862e5fa5fb30fe0c6a3247beec648f8713
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 b4d8ac862e5fa5fb30fe0c6a3247beec648f8713 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED     [ 17%]
-+ exit 1
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630
-
-#132
-Testing Commit fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a
-+ /home/luppy/nuttx-bisect/run-job-bisect.sh risc-v-05 fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a 1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078
-
-test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED     [ 17%]
-+ exit 1
-
-https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123
-
-#132
+## Commit #132 is the Breaking Commit
 fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 
+## Previously: Commit #235 is the Breaking Commit!
+## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
 ```
 
-# Why?
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
+
+__Commit #`132`__ is now the Breaking Commit, not Commit #`235`!
+
+Hmmm something looks different...
+
+|||
+|:---:|:---:|
+| [__Commit #`234`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421)
+| [__Commit #`117`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462) | [Is Good](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767)
+| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259)
+| [__Commit #`146`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726)
+| [__Commit #`131`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773) | [Is Good](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078)
+| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575)
+| [__Commit #`134`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074)
+| [__Commit #`133`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575)
+| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
+| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the Breaking Commit
+
+# Breaking Commit Got Changed
+
+_Why?_
+
+It's like taking a Time Machine to the past, changing something in history, and the future changes...
 
 TODO
 
