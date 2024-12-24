@@ -370,9 +370,9 @@ Hmmm something below has changed. Why?
 
 _Why is Git Bisect telling us a different Breaking Commit?_
 
-It's like taking a Time Machine to the past, changing something in history, and the future changes...
+In The Movies: Somebody travels in a Time Machine to the past, changing something in history, and the future changes.
 
-__Commit #`234`__ has changed in history, altering our future!
+In Real Life: __Commit #`234`__ has changed in history. Altering our future!
 
 ```bash
 ## Previously...
