@@ -351,7 +351,7 @@ fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 
 __Commit #`132`__ is now the Breaking Commit, not Commit #`235`!
 
-Hmmm something has changed...
+Hmmm something below has changed. Why?
 
 |||
 |:---:|:---:|
