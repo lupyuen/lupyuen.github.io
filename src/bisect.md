@@ -262,34 +262,54 @@ fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 
 __Commit #`132`__ is now the Breaking Commit, not Commit #`235`!
 
-Hmmm something looks different...
+Hmmm something has changed...
 
 |||
 |:---:|:---:|
-| [__Commit #`234`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421)
-| [__Commit #`117`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462) | [Is Good](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767)
-| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259)
-| [__Commit #`146`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726)
-| [__Commit #`131`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773) | [Is Good](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078)
-| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575)
-| [__Commit #`134`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074)
-| [__Commit #`133`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575)
-| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [Is Bad](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
-| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the Breaking Commit
+| [__Commit #`234`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421)
+| [__Commit #`117`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462) | [__Is Good__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767)
+| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259)
+| [__Commit #`146`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726)
+| [__Commit #`131`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773) | [__Is Good__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078)
+| [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575)
+| [__Commit #`134`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074)
+| [__Commit #`133`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575)
+| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
+| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the __Breaking Commit__
 
 # Breaking Commit Got Changed
 
-_Why?_
+_Why is Git Bisect telling us a different Breaking Commit?_
 
 It's like taking a Time Machine to the past, changing something in history, and the future changes...
 
-TODO
+__Commit #`234`__ has changed in history, altering our future!
 
-good: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
+```bash
+## Previously...
+## Commit #234 is Good
+run-job-bisect.sh ... 94a2ce3 ...
+test_ostest PASSED
+exit 0
 
-vs
+## But Now...
+## Commit #234 is Bad
+run-job-bisect.sh ... 94a2ce3 ...
+test_ltp_interfaces_mq_close_3_2 FAILED
+exit 1
+```
 
-bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1
+_Huh? How did Commit #234 change?_
+
+This CI Test looks more complicated that we thought. CI Test appears to be __failing with the slightest change__ in QEMU Memory. For a Specific Commit: Our bug isn't reliably reproducible.
+
+__Lesson Learnt:__ Git Bisect works best for bugs that are __reliably reproducible__ for a specified commit!
+
+# Fixing The Bug
+
+_OK so Git Bisect wasn't 100% successful for this bug. How did we fix the bug?_
+
+TODO: 2 bugs
 
 # TODO
 
@@ -303,7 +323,7 @@ Why Git Bisect? Because each test runs for 1 hour!
 
 TODO
 
-# Git Bisect on Original Bug
+# TODO
 
 ## NuttX Commits
 
@@ -449,9 +469,9 @@ cd nuttx/tools/ci
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 ```
 
-TODO: Check size
+# Check Size
 
-```
+```text
 ## https://github.com/google/bloaty
 $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
     FILE SIZE        VM SIZE    
@@ -496,7 +516,7 @@ cd /root/nuttx
 https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log
 ```
 
-TODO: Dump the disassembly
+# Dump the disassembly
 
 ```text
 ## Dump the disassembly to nuttx.S
