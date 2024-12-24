@@ -70,7 +70,7 @@
 <li><a href="#continuous-integration-test" title="Continuous Integration Test">3 Continuous Integration Test</a><ul></ul></li>
 <li><a href="#git-bisect-for-real" title="Git Bisect For Real">4 Git Bisect For Real</a><ul></ul></li>
 <li><a href="#git-bisect-gets-quirky" title="Git Bisect Gets Quirky">5 Git Bisect Gets Quirky</a><ul></ul></li>
-<li><a href="#breaking-commit-got-changed" title="Breaking Commit Got Changed">6 Breaking Commit Got Changed</a><ul></ul></li>
+<li><a href="#good-commit-goes-bad" title="Good Commit Goes Bad">6 Good Commit Goes Bad</a><ul></ul></li>
 <li><a href="#fixing-the-bug" title="Fixing The Bug">7 Fixing The Bug</a><ul></ul></li>
 <li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
 <li><a href="#todo-1" title="TODO">9 TODO</a><ul>
@@ -92,7 +92,7 @@ Who’s bad?”</em></p>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="TODO"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="TODO"><em>6554ed4</em></a></td></tr>
-<tr><td style="text-align: center"><em>(many many commits)</em></td><td style="text-align: center"><em>…</em></td></tr>
+<tr><td style="text-align: center"><em>…many many commits…</em></td><td style="text-align: center"><em>…</em></td></tr>
 <tr><td style="text-align: center"><a href="TODO"><strong>Commit #468 is Bad</strong></a> <br> <em>2024-12-04</em></td><td style="text-align: center">NuttX won’t run <br> <a href="TODO"><em>79a1ebb</em></a></td></tr>
 </tbody></table>
 </div>
@@ -122,11 +122,13 @@ Who’s bad?”</em></p>
 </ul>
 <p><em>Is it automated?</em></p>
 <p>Yep Git Bisect will gleefully seek the Breaking Commit on its own… Assuming that we provide a Script to <strong>Assess the Goodness / Badness</strong> of a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh">my-test-script.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Get the NuttX Hash (Commit ID)
+<div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect...
+## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
 ## For the NuttX Commit:
-## We randomly simulate OK or Error
+## We Build, Run and Test the NuttX Commit
+## But for now: We randomly simulate OK or Error
 random_0_or_1=$(( $RANDOM % 2 ))
 if (( &quot;$random_0_or_1&quot; == &quot;0&quot; )); then
   exit 0  ## Simulate OK
@@ -386,7 +388,7 @@ fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 <tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078"><em>Is Bad</em></a></td></tr>
 <tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center">Is the <strong>Breaking Commit</strong></td></tr>
 </tbody></table>
-</div><h1 id="breaking-commit-got-changed"><a class="doc-anchor" href="#breaking-commit-got-changed">§</a>6 Breaking Commit Got Changed</h1>
+</div><h1 id="good-commit-goes-bad"><a class="doc-anchor" href="#good-commit-goes-bad">§</a>6 Good Commit Goes Bad</h1>
 <p><em>Why is Git Bisect telling us a different Breaking Commit?</em></p>
 <p>In The Movies: Somebody travels in a Time Machine to the past, changing something in history, and the future changes.</p>
 <p>In Real Life: <strong>Commit #<code>234</code></strong> has changed in history. Altering our future!</p>
@@ -401,6 +403,7 @@ exit 0
 run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1</code></pre></div>
+<p>After this, everything changed. Concluding with a <strong>Different Breaking Commit</strong>. (Think “alternate timeline”)</p>
 <p><em>Huh? How did Commit #234 change?</em></p>
 <p>This CI Test looks more complicated that we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
 <p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
