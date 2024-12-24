@@ -95,35 +95,63 @@
 <p>We’re out for an <a href="https://strava.app.link/DDm6627hzPb"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
 <p>Can we be 100% sure that <strong>NuttX is OK?</strong> Without getting spammed by <strong>alert emails</strong> all night? (Sorry we got zero budget for <em>“paging duty”</em> services)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="NuttX Failed Builds appear as Mastodon Alerts" /></p>
-<p>TODO: In this article we talk about Mastodon</p>
+<p>In this article: We talk about <strong>Mastodon</strong> as a fun new way to broadcast NuttX Alerts in real time. We shall…</p>
 <ul>
-<li>TODO</li>
+<li>
+<p>Install our <strong>Mastodon Server</strong> with Docker Compose</p>
+<p>(Or Rancher Desktop)</p>
+</li>
+<li>
+<p>Create a <strong>Bot User</strong> for pushing Mastodon Alerts</p>
+</li>
+<li>
+<p>Which will work <strong>Without Outgoing Email</strong></p>
+</li>
+<li>
+<p>We fetch the NuttX Builds from <strong>Prometheus Database</strong></p>
+</li>
+<li>
+<p>Post to Mastodon via <strong>ActivityPub API</strong></p>
+</li>
+<li>
+<p>Our Mastodon Server will have <strong>No Local Users</strong></p>
+</li>
+<li>
+<p>But will gladly accept all <strong>Fediverse Users</strong>!</p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile1.png" alt="Following the NuttX Feed on Mastodon" /></p>
 <h1 id="mastodon-for-nuttx-ci"><a class="doc-anchor" href="#mastodon-for-nuttx-ci">§</a>1 Mastodon for NuttX CI</h1>
+<p><em>How to get Mastodon Alerts for NuttX Builds and Continuous Integration? (CI)</em></p>
 <ol>
 <li>
-<p>Register for a <a href="https://joinmastodon.org"><strong>Mastodon Account</strong></a> on any Fediverse Server (I got mine at <a href="qoto.org"><strong><code>qoto.org</code></strong></a>)</p>
+<p>Register for a <a href="https://joinmastodon.org"><strong>Mastodon Account</strong></a> on any Fediverse Server</p>
+<p>(I got mine at <a href="qoto.org"><strong><code>qoto.org</code></strong></a>)</p>
 </li>
 <li>
-<p><strong>On Our Mobile Device:</strong> Install a Mastodon App (like <a href="https://tusky.app/"><strong>Tusky</strong></a>) and log in</p>
+<p>On Our Mobile Device: Install a <strong>Mastodon App</strong> and log in</p>
+<p>(Like <a href="https://tusky.app/"><strong>Tusky</strong></a>)</p>
 </li>
 <li>
 <p>Tap the <strong>Search</strong> button. Enter…</p>
-<div class="example-wrap"><pre class="language-text"><code>@nuttx_build@nuttx-feed.org</code></pre></div>
-<p>Tap the <strong>Accounts</strong> tab, then tap the account that appears. (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>@nuttx_build@nuttx-feed.org</code></pre></div></li>
+<li>
+<p>Tap the <strong>Accounts</strong> tab. (Pic above)</p>
+<p>Tap the <strong>NuttX Build</strong> account that appears.</p>
 </li>
 <li>
-<p>Tap the <strong>Follow</strong> button. And the <strong>Notify</strong> button beside it. (Pic above)</p>
+<p>Tap the <strong>Follow</strong> button. (Pic above)</p>
+<p>And the <strong>Notify</strong> button beside it.</p>
 </li>
 <li>
-<p>That’s all! When a NuttX Build Fails, we’ll see a <strong>Notification in the Mastodon App</strong> (linking to NuttX Build History)</p>
+<p>That’s all! When a NuttX Build Fails, we’ll see a <strong>Notification in the Mastodon App</strong></p>
+<p>(Which links to NuttX Build History)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="Notification in the Mastodon App links to NuttX Build History" /></p>
-<p><em>How did we get the Failed NuttX Builds?</em></p>
+<p><em>How did Mastodon get the Failed Builds?</em></p>
 <p>Thanks to the NuttX Community: We have a (self-hosted) <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> that continously compiles All NuttX Targets. <em>(1,600 Targets!)</em></p>
-<p>Failed Builds are auto-escalated to the <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Grafana + Prometheus)</p>
+<p>Failed Builds are auto-escalated to our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Open-source Grafana + Prometheus)</p>
 <p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
 <p>First we talk about Mastodon…</p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
@@ -133,7 +161,7 @@
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="Mastodon Server for NuttX" /></p>
 <p><em>OK weird flex. How to get started?</em></p>
-<p>We begin by installing our <strong>Mastodon Server with Docker</strong> (pic above)…</p>
+<p>We begin by installing our <strong>Mastodon Server with Docker Compose</strong> (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Mastodon Repo
 git clone \
   https://github.com/mastodon/mastodon \
@@ -167,7 +195,7 @@ sudo docker compose up
 <p>Based on the excellent <a href="https://docs.joinmastodon.org/admin/prerequisites/"><strong>Mastodon Docs</strong></a></p>
 </li>
 </ul>
-<p>Right now we’re testing on (open-source) <a href="https://rancherdesktop.io/"><strong>macOS Rancher Desktop</strong></a>. (Pic below) Thus we tweaked the steps a bit.</p>
+<p>Right now we’re testing on (open-source) <a href="https://rancherdesktop.io/"><strong>macOS Rancher Desktop</strong></a>. Thus we tweaked the steps a bit.</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-containers.png" alt="Mastodon Containers in Rancher Desktop" /></p>
 <h1 id="bot-user-for-mastodon"><a class="doc-anchor" href="#bot-user-for-mastodon">§</a>3 Bot User for Mastodon</h1>
 <p><em>Will we have Users in our Mastodon Server?</em></p>
@@ -200,7 +228,7 @@ sudo docker compose up
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account"><strong>“Create our Mastodon Account”</strong></a></p>
 </li>
 </ul>
-<p>We have a slight hiccup…</p>
+<p>It gets interesting when we verify our Bot User…</p>
 <h1 id="email-less-mastodon"><a class="doc-anchor" href="#email-less-mastodon">§</a>4 Email-Less Mastodon</h1>
 <p><em>How to verify the Email Address of our Bot User?</em></p>
 <p>Remember our Mastodon Server has <strong>Zero Budget</strong>? This means we won’t have an <strong>Outgoing Email Server</strong>. (SMTP)</p>
@@ -218,10 +246,7 @@ bin/tootctl accounts \
 bin/tootctl accounts \
   modify nuttx_build \
   --confirm</code></pre></div>
-<p>The detailed steps are here…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account"><strong>“Create our Mastodon Account”</strong></a></li>
-</ul>
+<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account">(Explained here)</a></p>
 <h1 id="post-to-mastodon"><a class="doc-anchor" href="#post-to-mastodon">§</a>5 Post to Mastodon</h1>
 <p><em>How will our Bot post a message to Mastodon?</em></p>
 <p><strong>With curl:</strong> This is how we post a <strong>Status Update</strong> to Mastodon…</p>
@@ -237,7 +262,7 @@ curl -X POST \
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Post a message to Mastodon (Status Update)" /></p>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-a-mastodon-post">(Explained here)</a></p>
 <p><em>What’s this Access Token?</em></p>
-<p>We pass an <strong>Access Token</strong> to Authenticate our Bot User with Mastodon API. This is how we create the Access Token…</p>
+<p>To Authenticate our Bot User with Mastodon API, we pass an <strong>Access Token</strong>. This is how we create the Access Token…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the Client ID, Secret and Authorization Code (see below)
 CLIENT_ID=...
 CLIENT_SECRET=...
@@ -254,7 +279,7 @@ curl -X POST \
   https://YOUR_DOMAIN_NAME.org/oauth/token</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-app">(Explained here)</a></p>
 <p><em>What about the Client ID, Secret and Authorization Code?</em></p>
-<p><strong>Client ID and Secret</strong> will select the Mastodon App for our Bot User. Here’s how we create our <strong>Mastodon App</strong> for NuttX Dashboard…</p>
+<p><strong>Client ID and Secret</strong> will specify the Mastodon App for our Bot User. Here’s how we create our <strong>Mastodon App</strong> for NuttX Dashboard…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create Our Mastodon App
 curl -X POST \
   -F &#39;client_name=NuttX Dashboard&#39; \
