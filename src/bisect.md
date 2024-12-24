@@ -62,19 +62,24 @@ fi
 
 [(Or do it __manually__)](TODO)
 
-This is how we start our __Simulated Git Bisect__...
+This is how we start our __Simulated Git Bisect__: [run.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh)
 
 ```bash
+## Download the NuttX Repo
 git clone https://github.com/apache/nuttx
 cd nuttx
+
+## Tell Git Bisect the Good and Bad Commits
 git bisect start
 git bisect good 6554ed4d  ## Commit #1 is Good
 git bisect bad  79a1ebb   ## Commit #468 is Bad
+
+## Bisect with our Simulated Test Script
 git bisect run \
   $HOME/nuttx-bisect/my-test-script.sh
 ...
-## Commit #235 is the Breaking Commit
-74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+## Commit #235 is the Breaking Commit:
+## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f)
@@ -87,10 +92,9 @@ TODO: Pic of Simulated Git Bisect
 
 _What just happened in Git Bisect?_
 
-1.  Git Bisect picked the __Middle Commit #`234`__...
+1.  Git Bisect picked the [__Middle Commit #`234`__](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f#file-gistfile1-txt-L38-L69)...
 
     ```bash
-    TODO
     ## Testing Commit #234 (94a2ce3)
     $HOME/nuttx-bisect/my-test-script.sh
     nuttx_hash=94a2ce3
