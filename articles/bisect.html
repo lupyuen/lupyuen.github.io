@@ -71,13 +71,16 @@
 <li><a href="#git-bisect-for-real" title="Git Bisect For Real">4 Git Bisect For Real</a><ul></ul></li>
 <li><a href="#git-bisect-gets-quirky" title="Git Bisect Gets Quirky">5 Git Bisect Gets Quirky</a><ul></ul></li>
 <li><a href="#breaking-commit-got-changed" title="Breaking Commit Got Changed">6 Breaking Commit Got Changed</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#git-bisect-on-original-bug" title="Git Bisect on Original Bug">8 Git Bisect on Original Bug</a><ul>
-<li><a href="#nuttx-commits" title="NuttX Commits">8.1 NuttX Commits</a><ul></ul></li>
-<li><a href="#apps-commits" title="Apps Commits">8.2 Apps Commits</a><ul></ul></li></ul></li>
-<li><a href="#todo-1" title="TODO">9 TODO</a><ul></ul></li>
-<li><a href="#bisect-run" title="Bisect Run">10 Bisect Run</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#fixing-the-bug" title="Fixing The Bug">7 Fixing The Bug</a><ul></ul></li>
+<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">9 TODO</a><ul>
+<li><a href="#nuttx-commits" title="NuttX Commits">9.1 NuttX Commits</a><ul></ul></li>
+<li><a href="#apps-commits" title="Apps Commits">9.2 Apps Commits</a><ul></ul></li></ul></li>
+<li><a href="#todo-2" title="TODO">10 TODO</a><ul></ul></li>
+<li><a href="#check-size" title="Check Size">11 Check Size</a><ul></ul></li>
+<li><a href="#dump-the-disassembly" title="Dump the disassembly">12 Dump the disassembly</a><ul></ul></li>
+<li><a href="#bisect-run" title="Bisect Run">13 Bisect Run</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
@@ -294,38 +297,52 @@ fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 ## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493">(See the <strong>Complete Log</strong>)</a></p>
 <p><strong>Commit #<code>132</code></strong> is now the Breaking Commit, not Commit #<code>235</code>!</p>
-<p>Hmmm something looks different…</p>
+<p>Hmmm something has changed…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78"><strong>Commit #<code>234</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462"><strong>Commit #<code>117</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767">Is Good</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810"><strong>Commit #<code>138</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304"><strong>Commit #<code>146</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773"><strong>Commit #<code>131</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078">Is Good</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127"><strong>Commit #<code>138</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626"><strong>Commit #<code>134</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127"><strong>Commit #<code>133</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078">Is Bad</a></td></tr>
-<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center">Is the Breaking Commit</td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78"><strong>Commit #<code>234</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462"><strong>Commit #<code>117</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767"><strong>Is Good</strong></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810"><strong>Commit #<code>138</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2266-L2304"><strong>Commit #<code>146</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2646-L2726"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2733-L2773"><strong>Commit #<code>131</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L3959-L4078"><strong>Is Good</strong></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4085-L4127"><strong>Commit #<code>138</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4496-L4575"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626"><strong>Commit #<code>134</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127"><strong>Commit #<code>133</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078"><em>Is Bad</em></a></td></tr>
+<tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center">Is the <strong>Breaking Commit</strong></td></tr>
 </tbody></table>
 </div><h1 id="breaking-commit-got-changed"><a class="doc-anchor" href="#breaking-commit-got-changed">§</a>6 Breaking Commit Got Changed</h1>
-<p><em>Why?</em></p>
+<p><em>Why is Git Bisect telling us a different Breaking Commit?</em></p>
 <p>It’s like taking a Time Machine to the past, changing something in history, and the future changes…</p>
-<p>TODO</p>
-<p>good: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1</p>
-<p>vs</p>
-<p>bad: [94a2ce3641213cc702abc5c17b0f81a50c714a2e] tools/gdb: need to switch back to inferior 1</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
+<p><strong>Commit #<code>234</code></strong> has changed in history, altering our future!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Previously...
+## Commit #234 is Good
+run-job-bisect.sh ... 94a2ce3 ...
+test_ostest PASSED
+exit 0
+
+## But Now...
+## Commit #234 is Bad
+run-job-bisect.sh ... 94a2ce3 ...
+test_ltp_interfaces_mq_close_3_2 FAILED
+exit 1</code></pre></div>
+<p><em>Huh? How did Commit #234 change?</em></p>
+<p>This CI Test looks more complicated that we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
+<p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
+<h1 id="fixing-the-bug"><a class="doc-anchor" href="#fixing-the-bug">§</a>7 Fixing The Bug</h1>
+<p><em>OK so Git Bisect wasn’t 100% successful for this bug. How did we fix the bug?</em></p>
+<p>TODO: 2 bugs</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
 <p>Number the commits</p>
 <p>Commit #<code>123</code></p>
 <p>Commit #<code>456</code></p>
 <p>Why Git Bisect? Because each test runs for 1 hour!</p>
 <p>TODO</p>
-<h1 id="git-bisect-on-original-bug"><a class="doc-anchor" href="#git-bisect-on-original-bug">§</a>8 Git Bisect on Original Bug</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>8.1 NuttX Commits</h2>
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>9 TODO</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>9.1 NuttX Commits</h2>
 <p>https://github.com/apache/nuttx/issues/14808</p>
 <p>NuttX Commit #1: Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</p>
 <p>NuttX Commit #2: Later NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/656883fec5561ca91502a26bf018473ca0229aa4</p>
 <p>NuttX Commit #3: Belated Commits fail at test_ltp_interfaces_pthread_barrierattr_init_2_1: https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367</p>
-<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>8.2 Apps Commits</h2>
+<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>9.2 Apps Commits</h2>
 <p>Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156</p>
 <p>Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4ddd2802a189fccc802230ab946d50a97cb93c</p>
 <p>Belated NuttX Apps Commits were ???</p>
@@ -380,7 +397,7 @@ sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash</code></pre></div>
 <p>That’s 2 bean stews!</p>
 <p>_So it’s like travelling back in time, changing something in history, and the future changes?</p>
 <p>Um.somegthing like thst</p>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>9 TODO</h1>
+<h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>10 TODO</h1>
 <p>Current Failure: <a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
 <p>Previous Failure: <a href="https://github.com/apache/nuttx/issues/14808">rv-virt/citest: test_hello or test_pipe failed</a></p>
 <p>Due to: <a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
@@ -415,53 +432,48 @@ pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git r
 cd nuttx/tools/ci
 ./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
 [ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
-<p>TODO: Check size</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code># https:<span class="comment">//github.com/google/bloaty
-</span>$ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div><h1 id="check-size"><a class="doc-anchor" href="#check-size">§</a>11 Check Size</h1><div class="example-wrap"><pre class="language-text"><code>## https://github.com/google/bloaty
+$ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
     FILE SIZE        VM SIZE    
  --------------  -------------- 
-  <span class="number">46.1</span>%  <span class="number">6.80Mi   0.0</span>%       <span class="number">0    </span>.debug_info
-  <span class="number">17.1</span>%  <span class="number">2.53Mi   0.0</span>%       <span class="number">0    </span>.debug_line
-   <span class="number">8.6</span>%  <span class="number">1.26Mi   0.0</span>%       <span class="number">0    </span>.debug_abbrev
-   <span class="number">6.6</span>%  <span class="number">1000Ki   0.0</span>%       <span class="number">0    </span>.debug_loclists
-   <span class="number">6.2</span>%   <span class="number">941Ki  64.9</span>%   <span class="number">941Ki    </span>.text
-   <span class="number">5.1</span>%   <span class="number">772Ki   0.0</span>%       <span class="number">0    </span>.debug_str
-   <span class="number">2.5</span>%   <span class="number">381Ki  26.3</span>%   <span class="number">381Ki    </span>.rodata
-   <span class="number">1.8</span>%   <span class="number">277Ki   0.0</span>%       <span class="number">0    </span>.debug_frame
-   <span class="number">1.7</span>%   <span class="number">254Ki   0.0</span>%       <span class="number">0    </span>.symtab
-   <span class="number">1.2</span>%   <span class="number">174Ki   0.0</span>%       <span class="number">0    </span>.strtab
-   <span class="number">1.1</span>%   <span class="number">166Ki   0.0</span>%       <span class="number">0    </span>.debug_rnglists
-   <span class="number">1.1</span>%   <span class="number">164Ki   0.0</span>%       <span class="number">0    </span>.debug_line_str
-   <span class="number">0.0</span>%       <span class="number">0   8.1</span>%   <span class="number">118Ki    </span>.bss
-   <span class="number">0.8</span>%   <span class="number">114Ki   0.0</span>%       <span class="number">0    </span>.debug_aranges
-   <span class="number">0.1</span>%  <span class="number">8.31Ki   0.6</span>%  <span class="number">8.27Ki    </span>.data
-   <span class="number">0.0</span>%  <span class="number">5.00Ki   0.1</span>%     <span class="number">858    </span>[<span class="number">104 </span>Others]
-   <span class="number">0.0</span>%  <span class="number">3.89Ki   0.0</span>%       <span class="number">0    </span>[Unmapped]
-   <span class="number">0.0</span>%  <span class="number">2.97Ki   0.0</span>%       <span class="number">0    </span>.shstrtab
-   <span class="number">0.0</span>%     <span class="number">296   0.0</span>%     <span class="number">256    </span>.srodata.cst8
-   <span class="number">0.0</span>%     <span class="number">196   0.0</span>%       <span class="number">0    </span>[ELF Headers]
-   <span class="number">0.0</span>%     <span class="number">144   0.0</span>%     <span class="number">104    </span>.sdata.called
- <span class="number">100.0</span>%  <span class="number">14.8Mi 100.0</span>%  <span class="number">1.42Mi    </span>TOTAL
+  46.1%  6.80Mi   0.0%       0    .debug_info
+  17.1%  2.53Mi   0.0%       0    .debug_line
+   8.6%  1.26Mi   0.0%       0    .debug_abbrev
+   6.6%  1000Ki   0.0%       0    .debug_loclists
+   6.2%   941Ki  64.9%   941Ki    .text
+   5.1%   772Ki   0.0%       0    .debug_str
+   2.5%   381Ki  26.3%   381Ki    .rodata
+   1.8%   277Ki   0.0%       0    .debug_frame
+   1.7%   254Ki   0.0%       0    .symtab
+   1.2%   174Ki   0.0%       0    .strtab
+   1.1%   166Ki   0.0%       0    .debug_rnglists
+   1.1%   164Ki   0.0%       0    .debug_line_str
+   0.0%       0   8.1%   118Ki    .bss
+   0.8%   114Ki   0.0%       0    .debug_aranges
+   0.1%  8.31Ki   0.6%  8.27Ki    .data
+   0.0%  5.00Ki   0.1%     858    [104 Others]
+   0.0%  3.89Ki   0.0%       0    [Unmapped]
+   0.0%  2.97Ki   0.0%       0    .shstrtab
+   0.0%     296   0.0%     256    .srodata.cst8
+   0.0%     196   0.0%       0    [ELF Headers]
+   0.0%     144   0.0%     104    .sdata.called
+ 100.0%  14.8Mi 100.0%  1.42Mi    TOTAL
 
 $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx -d compileunits
-bloaty: Unknown ELF machine value: <span class="number">243</span><span class="string">'
+bloaty: Unknown ELF machine value: 243&#39;
 
-</span>Fuchsia supports it:
-https:<span class="comment">//fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/
+Fuchsia supports it:
+https://fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/
 
-</span>cd
-git clone https:<span class="comment">//fuchsia.googlesource.com/third_party/bloaty
-</span>cd bloaty
+cd
+git clone https://fuchsia.googlesource.com/third_party/bloaty
+cd bloaty
 cmake -B build -G Ninja -S .
 cmake --build build
 cd /root/nuttx
 /root/bloaty/build/bloaty nuttx -d compileunits,segments,sections,symbols
 
-https:<span class="comment">//github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log</span></code></pre></div>
-<p>TODO: Dump the disassembly</p>
-<div class="example-wrap"><pre class="language-text"><code>## Dump the disassembly to nuttx.S
+https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log</code></pre></div><h1 id="dump-the-disassembly"><a class="doc-anchor" href="#dump-the-disassembly">§</a>12 Dump the disassembly</h1><div class="example-wrap"><pre class="language-text"><code>## Dump the disassembly to nuttx.S
 cd /root/nuttx
 riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -515,7 +527,7 @@ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
   /bin/bash
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
 <p>Fixed yay! <a href="https://github.com/apache/nuttx-apps/pull/2888">testing/ltp: Increase Stack Size</a></p>
-<h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>10 Bisect Run</h1>
+<h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>13 Bisect Run</h1>
 <p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
 <p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
 <p>$ git bisect run my_script arguments</p>
@@ -524,7 +536,7 @@ cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 <p>The special exit code 125 should be used when the current source code cannot be tested. If the script exits with this code, the current revision will be skipped (see git bisect skip above). 125 was chosen as the highest sensible value to use for this purpose, because 126 and 127 are used by POSIX shells to signal specific error status (127 is for command not found, 126 is for command found but not executable—​these details do not matter, as they are normal errors in the script, as far as bisect run is concerned).</p>
 <p>You may often find that during a bisect session you want to have temporary modifications (e.g. s/#define DEBUG 0/#define DEBUG 1/ in a header file, or “revision that does not have this commit needs this patch applied to work around another problem this bisection is not interested in”) applied to the revision being tested.</p>
 <p>To cope with such a situation, after the inner git bisect finds the next revision to test, the script can apply the patch before compiling, run the real test, and afterwards decide if the revision (possibly with the needed patch) passed the test and then rewind the tree to the pristine state. Finally the script should exit with the status of the real test to let the git bisect run command loop determine the eventual outcome of the bisect session.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
