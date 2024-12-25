@@ -72,6 +72,8 @@ In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboa
 
 First we talk about Mastodon...
 
+TODO: Pic of Mastodon Server
+
 # Our Mastodon Server
 
 _What kind of animal is Mastodon?_
@@ -147,7 +149,7 @@ Details in the Appendix...
 
 - [__"Create our Mastodon Account"__](https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account)
 
-It gets interesting when we verify our Bot User...
+Things get interesting when we verify our Bot User...
 
 # Email-Less Mastodon
 
@@ -281,6 +283,8 @@ This is our grand plan...
 
 ![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
 
+<hr>
+
 __Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from Prometheus...
 
 ```bash
@@ -293,6 +297,8 @@ build_score < 0.5
 Prometheus returns a huge bunch of fields...
 
 ![Fetching the Failed NuttX Builds from Prometheus](https://lupyuen.github.io/images/mastodon-prometheus.png)
+
+<hr>
 
 __Query the Failed Builds:__ We query Prometheus and extract the fields in Rust...
 
@@ -315,6 +321,8 @@ let builds = &data["data"]["result"];
 ```
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
+
+<hr>
 
 __Reformat as Mastodon Posts:__ From JSON into Plain Text...
 
@@ -342,6 +350,10 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
 
+<hr>
+
+TODO: Pic of ActivityPub
+
 __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 
 ```rust
@@ -362,6 +374,8 @@ __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 ```
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
+
+<hr>
 
 __Skip Duplicates:__ Remember everything in a JSON File, so we won't notify the same thing twice...
 
@@ -447,7 +461,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
 
+![Hefty Ubuntu Xeon Workstation for NuttX Build Farm](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+
+[_Hefty Ubuntu Xeon Workstation for NuttX Build Farm_](https://qoto.org/@lupyuen/113517788288458811)
+
 # Appendix: Query Prometheus for NuttX Builds
+
+[__NuttX Build Farm__](TODO) (pic above) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
+
+Outcomes of NuttX Builds are recorded inside our __Prometheus Time-Series Database__...
+
+TODO: Pic of prometheus
 
 We're fetching the __Failed NuttX Builds__ from Prometheus. We browse to Prometheus at _http://localhost:9090_ and enter this __Prometheus Query__...
 
