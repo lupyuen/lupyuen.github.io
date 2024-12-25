@@ -1686,6 +1686,6 @@ __Optional:__ Configure the Mastodon Domain. We edit _.env.development_
 LOCAL_DOMAIN=nuttx-feed.org
 ```
 
-![50 km Overnight Hike: City to Changi Airport to Changi Village](https://lupyuen.github.io/images/mastodon-hike.png)
+![50 km Overnight Hike: City to Changi Airport to Changi Village](https://lupyuen.github.io/images/mastodon-hike.jpg)
 
 [_50 km Overnight Hike: City to Changi Airport to Changi Village_](https://www.strava.com/activities/13176081611)
