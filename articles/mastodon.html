@@ -110,7 +110,7 @@
 <p>We fetch the NuttX Builds from <strong>Prometheus Database</strong></p>
 </li>
 <li>
-<p>Post to Mastodon via <strong>ActivityPub API</strong></p>
+<p>Post the NuttX Build via <strong>Mastodon API</strong></p>
 </li>
 <li>
 <p>Our Mastodon Server will have <strong>No Local Users</strong></p>
@@ -323,7 +323,7 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 <p>Reformat them as <strong>Mastodon Posts</strong></p>
 </li>
 <li>
-<p>Submit to Mastodon via <strong>ActivityPub API</strong></p>
+<p>Post the Failed Builds via <strong>Mastodon API</strong></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
@@ -378,7 +378,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <hr>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
-<p><strong>Submit to Mastodon via ActivityPub:</strong> By posting over HTTPS…</p>
+<p><strong>Post via Mastodon API:</strong> By creating a Status Update…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
   </span><span class="kw">let </span>token = std::env::var(<span class="string">"MASTODON_TOKEN"</span>)
@@ -1054,7 +1054,7 @@ curl -X POST \
   https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
 <p>And our <strong>Mastodon Post</strong> appears!</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Creating a Mastodon Post" /></p>
-<p><a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>ActivityPub</strong></a> is the Main API for Mastodon and Fediverse. Let’s make sure that it works on our server…</p>
+<p>Let’s make sure that <strong>Mastodon API</strong> works on our server…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `jq` for Browsing JSON
 $ brew install jq      ## For macOS
 $ sudo apt install jq  ## For Ubuntu
