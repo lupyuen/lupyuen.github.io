@@ -873,7 +873,9 @@ volumes:
 <p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>web:
   ports:
-    - &#39;127.0.0.1:3001:3000&#39;</code></pre></div><h1 id="appendix-test-our-mastodon-server"><a class="doc-anchor" href="#appendix-test-our-mastodon-server">§</a>12 Appendix: Test our Mastodon Server</h1>
+    - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
+<h1 id="appendix-test-our-mastodon-server"><a class="doc-anchor" href="#appendix-test-our-mastodon-server">§</a>12 Appendix: Test our Mastodon Server</h1>
 <p>We’re ready to <strong>Test Mastodon</strong>!</p>
 <ol>
 <li>
@@ -1268,6 +1270,7 @@ exit</code></pre></div></li>
     volumes:
       - ./public/system:/mastodon/public/system</code></pre></div>
 <p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <h2 id="redis-server"><a class="doc-anchor" href="#redis-server">§</a>18.3 Redis Server</h2>
 <p>Web Server fetching data directly from Database Server will be awfully slow. That’s why we use Redis as an <strong>In-Memory Caching Database</strong>: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  redis:
