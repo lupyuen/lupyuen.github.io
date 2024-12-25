@@ -1252,7 +1252,7 @@ _Is it safe to host Mastodon in Docker?_
 
 Docker Engine on Linux is [__not quite as secure__](https://www.opensourceforu.com/2024/12/analysing-linus-torvalds-critique-of-docker/) compared with a Full VM or QEMU. So be very careful!
 
-[(macOS Rancher Desktop runs Docker with __Lima VM__ and __QEMU Arm64__)](https://rancherdesktop.io/)
+[(macOS Rancher Desktop runs Docker with __Lima VM__ and __QEMU Arm64__)](https://docs.rancherdesktop.io/references/architecture)
 
 Remember to watch our Mastodon Server for __Dubious Web Requests__! Like these pesky WordPress Malware Bots (sigh)
 
