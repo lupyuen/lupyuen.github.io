@@ -437,7 +437,7 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 
 # What's Next
 
-TODO: Next Article: We talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
+Next Article: We talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
 
 After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
 
@@ -467,13 +467,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Query Prometheus for NuttX Builds
 
-[__NuttX Build Farm__](TODO) (pic above) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
+[__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) (pic above) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
 
 Outcomes of NuttX Builds are recorded inside our __Prometheus Time-Series Database__...
 
-TODO: Pic of prometheus
+![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
-We're fetching the __Failed NuttX Builds__ from Prometheus. We browse to Prometheus at _http://localhost:9090_ and enter this __Prometheus Query__...
+To fetch the __Failed NuttX Builds__ from Prometheus: We browse to Prometheus at _http://localhost:9090_ and enter this __Prometheus Query__...
 
 ```bash
 ## Find all Build Scores < 0.5
@@ -500,7 +500,7 @@ Build Score is 1.0 for Successful Builds, 0.5 for Warnings, 0.0 for Errors. Thus
 
 _What's returned by Prometheus?_
 
-Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) in detail...
+Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) in detail (pic above)...
 
 <span style="font-size:90%">
 
