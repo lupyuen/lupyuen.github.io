@@ -1,6 +1,6 @@
 # (Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)
 
-📝 _30 Dec 2024_
+📝 _29 Dec 2024_
 
 ![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-register7.png)
 
