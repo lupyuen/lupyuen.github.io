@@ -72,7 +72,7 @@ In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboa
 
 First we talk about Mastodon...
 
-TODO: Pic of Mastodon Server
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow2.jpg)
 
 # Our Mastodon Server
 
@@ -352,7 +352,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 <hr>
 
-TODO: Pic of ActivityPub
+![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
 __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 
@@ -579,6 +579,8 @@ for (( ; ; )); do
   date ; sleep 900
 done
 ```
+
+![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
 Inside our Rust App, this is how we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
 
