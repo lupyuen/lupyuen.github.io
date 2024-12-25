@@ -419,6 +419,8 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 
     [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
 
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
+
 # What's Next
 
 TODO: Next Article: We talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
