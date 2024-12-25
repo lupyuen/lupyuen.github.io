@@ -154,7 +154,7 @@
 <p>Failed Builds are auto-escalated to our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Open-source Grafana + Prometheus)</p>
 <p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
 <p>First we talk about Mastodon…</p>
-<p>TODO: Pic of Mastodon Server</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
 <p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
@@ -378,7 +378,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   params.push((<span class="string">"status"</span>, status));</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <hr>
-<p>TODO: Pic of ActivityPub</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
 <p><strong>Submit to Mastodon via ActivityPub:</strong> By posting over HTTPS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
@@ -563,6 +563,7 @@ for (( ; ; )); do
   ## Wait a while
   date ; sleep 900
 done</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
 <p>Inside our Rust App, this is how we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
