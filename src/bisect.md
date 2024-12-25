@@ -251,7 +251,7 @@ nuttx_hash=$(git rev-parse HEAD)
 
 ## Run the CI Job for the NuttX Commit
 ## Passing the Job Name, NuttX Hash and Apps Hash
-## (Or set Apps Hash to HEAD for the Latest Version)
+## (Or set Apps Hash to HEAD for the Latest Commit)
 job=risc-v-05
 apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
 $HOME/nuttx-bisect/run-job-bisect.sh \
