@@ -139,9 +139,10 @@ git clone https://github.com/apache/nuttx
 cd nuttx
 
 ## Tell Git Bisect the Good and Bad Commits
+## (Or specify HEAD for the Latest Commit)
 git bisect start
-git bisect good 6554ed4d  ## Commit #1 is Good
-git bisect bad  79a1ebb   ## Commit #468 is Bad
+git bisect good 6554ed4  ## Commit #1 is Good
+git bisect bad  79a1ebb  ## Commit #468 is Bad
 
 ## Bisect with our Simulated Test Script
 git bisect run \
@@ -259,7 +260,7 @@ sudo docker run -it \
 <p>Everything above becomes our <strong>Git Bisect Script</strong> that assesses “Goodness” vs “Badness” for a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73">run-job-bisect.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect Wrapper...
 ## We run the CI Job in Docker Container
-## (Same as above)
+## (Copy from above)
 sudo docker run -it ...
 
 ## Result the result to the caller
@@ -276,10 +277,14 @@ nuttx_hash=$(git rev-parse HEAD)
 
 ## Run the CI Job for the NuttX Commit
 ## Passing the Job Name, NuttX Hash and Apps Hash
+## (Or set Apps Hash to HEAD for the Latest Version)
 job=risc-v-05
 apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
-$script_dir/run-job-bisect.sh \
-  $job $nuttx_hash $apps_hash</code></pre></div>
+$HOME/nuttx-bisect/run-job-bisect.sh \
+  $job $nuttx_hash $apps_hash
+
+## This Git Bisect script will work for any CI Job!
+## Just change `job=risc-v-05` to the CI Job Name (like arm-01)</code></pre></div>
 <p>We’re ready to run this!</p>
 <h1 id="git-bisect-for-real"><a class="doc-anchor" href="#git-bisect-for-real">§</a>4 Git Bisect For Real</h1>
 <p><em>What happens in Git Bisect?</em></p>
@@ -371,6 +376,7 @@ exit 1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
+<p>Here comes the twist…</p>
 <p>TODO: Pic of Git Bisect #2</p>
 <h1 id="git-bisect-gets-quirky"><a class="doc-anchor" href="#git-bisect-gets-quirky">§</a>5 Git Bisect Gets Quirky</h1>
 <p><em>Did Git Bisect find the correct Breaking Commit?</em></p>
@@ -442,7 +448,7 @@ fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
 </tbody></table>
 </div><h1 id="good-commit-goes-bad"><a class="doc-anchor" href="#good-commit-goes-bad">§</a>6 Good Commit Goes Bad</h1>
 <p><em>Why is Git Bisect telling us a different Breaking Commit?</em></p>
-<p>In The Movies: Somebody travels in a Time Machine to the past, changing something in history, and the future changes.</p>
+<p>In The Movies: Somebody travels to the past <em>(in a Time Machine)</em>, changing something in history, and the future changes.</p>
 <p>In Real Life: <strong>Commit #<code>234</code></strong> has changed in history. Altering our future!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Previously...
 ## Commit #234 is Good
@@ -456,11 +462,11 @@ run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1</code></pre></div>
 <p>After this, everything changed. Concluding with a <strong>Different Breaking Commit</strong>. (Think “alternate timeline”)</p>
-<p><em>Huh? How did Commit #234 change?</em></p>
+<p><em>Huh! How did Commit #234 change?</em></p>
 <p>This CI Test looks more complicated than we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
 <p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
 <h1 id="fixing-the-bug"><a class="doc-anchor" href="#fixing-the-bug">§</a>7 Fixing The Bug</h1>
-<p><em>OK so Git Bisect wasn’t 100% successful for this bug. How did we fix the bug?</em></p>
+<p><em>OK so Git Bisect wasn’t 100% successful. How did we fix the bug?</em></p>
 <p>Actually we have <strong>Two Bugs</strong> stacked together…</p>
 <ul>
 <li>
@@ -490,7 +496,8 @@ pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git r
 cd nuttx/tools/ci
 ./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
 
-## Wait for it to fail. Press Ctrl-C a few times to stop it.
+## Wait for it to fail
+## Press Ctrl-C a few times to stop it
 ## Then dump the log
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 
@@ -535,7 +542,7 @@ config TESTING_LTP_STACKSIZE
 <li><a href="https://github.com/apache/nuttx-apps/pull/2888"><strong>“testing/ltp: Increase Stack Size”</strong></a></li>
 </ul>
 <p><em>But why did we run out of Stack Space? Has something grown too big?</em></p>
-<p>We could run <strong>Bloaty</strong> to do detailed analysis of the code and data size…</p>
+<p>We could run <strong>Bloaty</strong> to do detailed analysis of the <strong>Code and Data Size</strong>…</p>
 <ul>
 <li>TODO</li>
 </ul>
