@@ -98,8 +98,7 @@
 <p>In this article: We talk about <strong>Mastodon</strong> as a fun new way to broadcast NuttX Alerts in real time. We shall…</p>
 <ul>
 <li>
-<p>Install our <strong>Mastodon Server</strong> with Docker Compose</p>
-<p>(Or Rancher Desktop)</p>
+<p>Install our <strong>Mastodon Server</strong> with Docker Compose (or Rancher Desktop)</p>
 </li>
 <li>
 <p>Create a <strong>Bot User</strong> for pushing Mastodon Alerts</p>
@@ -336,7 +335,7 @@ build_score &lt; 0.5</code></pre></div>
 <p>Prometheus returns a huge bunch of fields…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <hr>
-<p><strong>Query the Failed Builds:</strong> We query Prometheus and extract the fields in Rust…</p>
+<p><strong>Query the Failed Builds:</strong> We repeat the above, but in Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
 </span><span class="kw">let </span>query = <span class="string">r##"
@@ -397,7 +396,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </span>}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <hr>
-<p><strong>Skip Duplicates:</strong> Remember everything in a JSON File, so we won’t notify the same thing twice…</p>
+<p><strong>Skip Duplicates:</strong> We remember everything in a JSON File, so we won’t notify the same thing twice…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This JSON File remembers the Mastodon Posts for All Builds:
 // {
@@ -476,7 +475,9 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.github.io/src/mastodon.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Hefty Ubuntu Xeon Workstation for NuttX Build Farm" /></p>
+<span style="font-size:90%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Hefty Ubuntu Xeon Workstation for NuttX Build Farm</em></a></p>
+</span>
 <h1 id="appendix-query-prometheus-for-nuttx-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-nuttx-builds">§</a>9 Appendix: Query Prometheus for NuttX Builds</h1>
 <p><a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
 <p>Outcomes of NuttX Builds are recorded inside our <strong>Prometheus Time-Series Database</strong>…</p>
@@ -1048,9 +1049,9 @@ curl \
 <div class="example-wrap"><pre class="language-bash"><code>## Create Status: https://docs.joinmastodon.org/methods/statuses/#create
 export ACCESS_TOKEN=...  ## From Above
 curl -X POST \
-	-H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
-	-F &quot;status=Posting a status from curl&quot; \
-	https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
+  -H &quot;Authorization: Bearer $ACCESS_TOKEN&quot; \
+  -F &quot;status=Posting a status from curl&quot; \
+  https://YOUR_DOMAIN_NAME.org/api/v1/statuses</code></pre></div>
 <p>And our <strong>Mastodon Post</strong> appears!</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-web4.png" alt="Creating a Mastodon Post" /></p>
 <p><a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>ActivityPub</strong></a> is the Main API for Mastodon and Fediverse. Let’s make sure that it works on our server…</p>

@@ -72,16 +72,12 @@
 <li><a href="#git-bisect-gets-quirky" title="Git Bisect Gets Quirky">5 Git Bisect Gets Quirky</a><ul></ul></li>
 <li><a href="#good-commit-goes-bad" title="Good Commit Goes Bad">6 Good Commit Goes Bad</a><ul></ul></li>
 <li><a href="#fixing-the-bug" title="Fixing The Bug">7 Fixing The Bug</a><ul></ul></li>
-<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">9 TODO</a><ul>
-<li><a href="#nuttx-commits" title="NuttX Commits">9.1 NuttX Commits</a><ul></ul></li>
-<li><a href="#apps-commits" title="Apps Commits">9.2 Apps Commits</a><ul></ul></li></ul></li>
-<li><a href="#todo-2" title="TODO">10 TODO</a><ul></ul></li>
-<li><a href="#check-size" title="Check Size">11 Check Size</a><ul></ul></li>
-<li><a href="#dump-the-disassembly" title="Dump the disassembly">12 Dump the disassembly</a><ul></ul></li>
-<li><a href="#bisect-run" title="Bisect Run">13 Bisect Run</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#increase-the-stack" title="Increase The Stack">8 Increase The Stack</a><ul></ul></li>
+<li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-check-executable-size-with-bloaty" title="Appendix: Check Executable Size with Bloaty">11 Appendix: Check Executable Size with Bloaty</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
+<span style="font-size:90%">
 <blockquote>
 <p><em>“Because I’m bad, I’m bad, shamone (bad, bad, really, really bad) <br>
 You know I’m bad, I’m bad (bad, bad) … <br>
@@ -89,6 +85,7 @@ And the whole world has to answer right now <br>
 Just to tell you once again <br>
 Who’s bad?”</em></p>
 </blockquote>
+</span>
 <p>2 Weeks Ago: We spoke of a <a href="TODO"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="TODO"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="TODO"><em>6554ed4</em></a></td></tr>
@@ -225,7 +222,7 @@ exit 1</code></pre></div>
 <p>TODO: CI Test Log</p>
 <p>This happens inside the CI Job risc-v-TODO, which we can run with <strong>Docker Engine</strong>…</p>
 <p>TODO: Run CI Test with Docker</p>
-<p>Thus this becomes our Git Bisect Script (that assesses “Goodness” vs “Badness”)</p>
+<p>Everything above becomes our <strong>Git Bisect Script</strong> (that assesses “Goodness” vs “Badness”)</p>
 <p>TODO: Git Bisect Script</p>
 <p>We run this…</p>
 <p>TODO: Pic of Git Bisect #1</p>
@@ -405,104 +402,31 @@ test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1</code></pre></div>
 <p>After this, everything changed. Concluding with a <strong>Different Breaking Commit</strong>. (Think “alternate timeline”)</p>
 <p><em>Huh? How did Commit #234 change?</em></p>
-<p>This CI Test looks more complicated that we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
+<p>This CI Test looks more complicated than we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
 <p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
 <h1 id="fixing-the-bug"><a class="doc-anchor" href="#fixing-the-bug">§</a>7 Fixing The Bug</h1>
 <p><em>OK so Git Bisect wasn’t 100% successful for this bug. How did we fix the bug?</em></p>
-<p>TODO: 2 bugs</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
-<p>Number the commits</p>
-<p>Commit #<code>123</code></p>
-<p>Commit #<code>456</code></p>
-<p>Why Git Bisect? Because each test runs for 1 hour!</p>
-<p>TODO</p>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>9 TODO</h1><h2 id="nuttx-commits"><a class="doc-anchor" href="#nuttx-commits">§</a>9.1 NuttX Commits</h2>
-<p>https://github.com/apache/nuttx/issues/14808</p>
-<p>NuttX Commit #1: Earlier NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</p>
-<p>NuttX Commit #2: Later NuttX Repo Commits were OK: https://github.com/apache/nuttx/tree/656883fec5561ca91502a26bf018473ca0229aa4</p>
-<p>NuttX Commit #3: Belated Commits fail at test_ltp_interfaces_pthread_barrierattr_init_2_1: https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367</p>
-<h2 id="apps-commits"><a class="doc-anchor" href="#apps-commits">§</a>9.2 Apps Commits</h2>
-<p>Earlier NuttX Apps Commits were OK: https://github.com/apache/nuttx-apps/tree/1c7a7f7529475b0d535e2088a9c4e1532c487156</p>
-<p>Later NuttX Apps Commits were ???: https://github.com/apache/nuttx-apps/tree/3c4ddd2802a189fccc802230ab946d50a97cb93c</p>
-<p>Belated NuttX Apps Commits were ???</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine
-## https://docs.docker.com/engine/install/ubuntu/
-
-## TODO: For WSL, we may need to install Docker on Native Windows
-## https://github.com/apache/nuttx/issues/14601#issuecomment-2453595402
-
-## TODO: Bisect CI Job
-job=risc-v-05
-
-## NuttX Commit #1 (14 Nov 2024): Runs OK
-## nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c
-
-## NuttX Commit #2: Runs OK
-## nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4
-
-## NuttX Commit #3 (4 Dec 2024): Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1
-## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
-## test_open_posix/test_openposix_.py::test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED   [ 17%]
-nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b
-
-## Apps Commit #1: Runs OK
-apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-## Apps Commit #2: ???
-## apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
-
-## Apps Commit #3: ???
-## https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367
-## apps_hash=ce217b874437b2bd60ad2a2343442506cd8b50b8
-
-sudo ./run-job-bisect.sh $job $nuttx_hash $apps_hash</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/89759c53accbf6caa717b39fd5e69bae">NuttX Commit #1: Runs OK. nuttx_hash=6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c</a></p>
-<p><a href="https://gist.github.com/lupyuen/e22cd208bd9ed3e36e59de2b44bb85ef">NuttX Commit #2: Runs OK. nuttx_hash=656883fec5561ca91502a26bf018473ca0229aa4</a></p>
-<p><a href="https://gist.github.com/lupyuen/27cb7f5359bc0a8176db9815ba8b162a">NuttX Commit #3: Fails at test_ltp_interfaces_pthread_barrierattr_init_2_1. nuttx_hash=79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b</a></p>
-<p>Assume will terminate in 1 hour! Actually terminates in 30 mins. Change this for your machine!</p>
-<p>Press Ctrl-C very carefully, don’t crash Docker!</p>
-<p>How many commits between 14 Nov and 4 Dec?</p>
-<p>Now that we can bisect reliably and automatically: Shall we do this for All Failed Builds?</p>
-<p>NuttX Hash vs Apps Hash</p>
-<p>But NuttX Commit might not compile with Apps Commit, must be compatible</p>
-<p>Maybe return special exit code 125 if can’t compile</p>
-<p>Inconsistent CI Test?</p>
-<p><a href="https://gist.github.com/lupyuen/7c9fa7d30fed3fe73ffeb7e7f1ddd0fb">run-job-bisect.sh risc-v-05 94a2ce3641213cc702abc5c17b0f81a50c714a2e 1c7a7f7529475b0d535e2088a9c4e1532c487156 / fails at test_ltp_interfaces_sigaction_12_35</a></p>
-<p>Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
-<p>Locoroco merging into big bubbles</p>
-<p>Did git bisect find the breaking commit?</p>
-<p>Erm not quite.</p>
-<p>Always run twice</p>
-<p>That’s 2 bean stews!</p>
-<p>_So it’s like travelling back in time, changing something in history, and the future changes?</p>
-<p>Um.somegthing like thst</p>
-<h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>10 TODO</h1>
-<p>Current Failure: <a href="https://github.com/apache/nuttx/issues/15170">rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)</a></p>
-<p>Previous Failure: <a href="https://github.com/apache/nuttx/issues/14808">rv-virt/citest: test_hello or test_pipe failed</a></p>
-<p>Due to: <a href="https://github.com/apache/nuttx/pull/14779">arch/toolchain: Add toolchain gcc</a></p>
-<p>Fixed by: <a href="https://github.com/apache/nuttx/pull/15165">rv-virt/citest: Increase init task stack size to 3072</a></p>
-<p>TODO: Test Git Bisect</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
-git clone https://github.com/apache/nuttx-apps apps
-cd nuttx
-
-git bisect start
-git bisect bad HEAD
-git bisect good 656883fec5561ca91502a26bf018473ca0229aa4
-git bisect run my_test_script.sh
-
-https://git-scm.com/docs/git-bisect
-$ git bisect visualize
-$ git bisect visualize --stat
-$ git bisect log</code></pre></div>
-<p>https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh</p>
-<p>https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh</p>
-<p><a href="https://gist.github.com/lupyuen/e822323378e09ae3c24a41c5f42abfd0">git bisect run my-test-script.sh</a></p>
-<p>TODO: With Docker</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo docker run \
+<p>Actually we have <strong>Two Bugs</strong> stacked together…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/issues/14808"><strong>“rv-virt/citest: test_hello or test_pipe failed”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/issues/15170"><strong>“rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)”</strong></a></p>
+</li>
+</ul>
+<p>The First Bug was a Stack Overflow that <strong>Tiago Medicci Serrano</strong> kindly fixed by increasing the <strong>Init Task Stack Size</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/pull/15165"><strong>“rv-virt/citest: Increase init task stack size to 3072”</strong></a></li>
+</ul>
+<p>The Second Bug? Not so obvious which Stack Overflowed…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start the NuttX Docker Image
+sudo docker run \
   -it \
   ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
   /bin/bash
+
+## Run the CI Test in Docker
 cd
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -510,8 +434,85 @@ pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-
 pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
 cd nuttx/tools/ci
 ./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
-[ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div><h1 id="check-size"><a class="doc-anchor" href="#check-size">§</a>11 Check Size</h1><div class="example-wrap"><pre class="language-text"><code>## https://github.com/google/bloaty
+
+## Wait for it to fail. Press Ctrl-C a few times to stop it.
+## Then dump the log
+cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
+
+## Output shows: Stack Overflow for ltp_interfaces_pthread_barrierattr_init_2_1
+nsh&gt; ltp_interfaces_pthread_barrierattr_init_2_1
+riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 800074c6, MTVAL: 000002a4
+STACKSIZE  USED  FILLED   COMMAND
+ 3936      3936  100.0%!  ltp_interfaces_pthread_barriera</code></pre></div>
+<p>Needs more probing…</p>
+<p><a href="https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="increase-the-stack"><a class="doc-anchor" href="#increase-the-stack">§</a>8 Increase The Stack</h1>
+<p><em>What’s ltp_interfaces_pthread_barrierattr_init_2_1?</em></p>
+<p>We search the <strong>NuttX Disassembly</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the disassembly to nuttx.S
+cd /root/nuttx
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+## Search the disassembly for ltp_interfaces_pthread_barrierattr_init_2_1
+grep nuttx.S \
+  ltp_interfaces_pthread_barrierattr_init_2_1</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S">(See the <strong>NuttX Disassembly</strong>)</a></p>
+<p>And we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>8006642c &lt;ltp_interfaces_pthread_barrierattr_init_2_1_main&gt;:
+  ltp_interfaces_pthread_barrierattr_init_2_1_main():
+    apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init</code></pre></div>
+<p>Aha! It points to <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp"><em>nuttx-apps/testing/ltp</em></a>. Thus we edit the <strong>Stack Configuration</strong>: <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp/Kconfig">testing/ltp/Kconfig</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>## Before: Stack Size is 4 KB
+config TESTING_LTP_STACKSIZE
+  int &quot;Linux Test Project stack size&quot;
+  default 4096</code></pre></div>
+<p>We double the <strong>Stack Size to 8 KB</strong>…</p>
+<div class="example-wrap"><pre class="language-yml"><code>  ## After: Stack Size is 8 KB
+  default 8192</code></pre></div>
+<p>We retest in Docker. And our <a href="https://gist.github.com/lupyuen/3688826ed676971536249509ceefe834"><strong>CI Test succeeds</strong></a> yay!</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx-apps/pull/2888"><strong>“testing/ltp: Increase Stack Size”</strong></a></li>
+</ul>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
+<p>Why Git Bisect? Because each test runs for 1 hour!</p>
+<p>Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
+<p>Locoroco merging into big bubbles</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<p>TODO</p>
+<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md"><strong>lupyuen.github.io/src/bisect.md</strong></a></p>
+<h1 id="appendix-check-executable-size-with-bloaty"><a class="doc-anchor" href="#appendix-check-executable-size-with-bloaty">§</a>11 Appendix: Check Executable Size with Bloaty</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>## https://github.com/google/bloaty
 $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
     FILE SIZE        VM SIZE    
  --------------  -------------- 
@@ -552,98 +553,7 @@ cmake --build build
 cd /root/nuttx
 /root/bloaty/build/bloaty nuttx -d compileunits,segments,sections,symbols
 
-https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log</code></pre></div><h1 id="dump-the-disassembly"><a class="doc-anchor" href="#dump-the-disassembly">§</a>12 Dump the disassembly</h1><div class="example-wrap"><pre class="language-text"><code>## Dump the disassembly to nuttx.S
-cd /root/nuttx
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  &gt;nuttx.S \
-  2&gt;&amp;1
-sudo docker cp nuttx:/root/nuttx/nuttx.S .
-
-https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/nuttx.S</code></pre></div>
-<p>TODO: Search disassembly for ltp_interfaces_pthread_barrierattr_init_2_1</p>
-<div class="example-wrap"><pre class="language-text"><code>8006642c &lt;ltp_interfaces_pthread_barrierattr_init_2_1_main&gt;:
-ltp_interfaces_pthread_barrierattr_init_2_1_main():
-/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:27
-#include &quot;posixtest.h&quot;
-
-#define BARRIER_NUM 100
-
-int main(void)
-{
-8006642c:	7149                	add	sp,sp,-368
-8006642e:	72fd                	lui	t0,0xfffff
-/root/apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init/2-1.c:34
-	pthread_barrierattr_t ba;
-	pthread_barrier_t barriers[BARRIER_NUM];
-	int cnt;</code></pre></div>
-<p>Which points to https://github.com/apache/nuttx-apps/tree/master/testing/ltp</p>
-<div class="example-wrap"><pre class="language-text"><code>sudo docker cp nuttx:/root/apps/testing/ltp/Kconfig /tmp
-nano /tmp/Kconfig
-sudo docker cp /tmp/Kconfig nuttx:/root/apps/testing/ltp/Kconfig</code></pre></div>
-<p>Change:</p>
-<div class="example-wrap"><pre class="language-text"><code>config TESTING_LTP_STACKSIZE
-	int &quot;Linux Test Project stack size&quot;
-	default 4096</code></pre></div>
-<p>To:</p>
-<div class="example-wrap"><pre class="language-text"><code>config TESTING_LTP_STACKSIZE
-	int &quot;Linux Test Project stack size&quot;
-	default 8192</code></pre></div>
-<p>And copy to docker.</p>
-<p>Re-run:</p>
-<div class="example-wrap"><pre class="language-text"><code>cd /root/nuttx
-make distclean
-cd tools/ci
-./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
-[ Wait for it to fail. Then press Ctrl-C a few times to stop it ]
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
-<p>Or:</p>
-<div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
-  -it \
-  nuttx \
-  /bin/bash
-cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*</code></pre></div>
-<p>Fixed yay! <a href="https://github.com/apache/nuttx-apps/pull/2888">testing/ltp: Increase Stack Size</a></p>
-<h1 id="bisect-run"><a class="doc-anchor" href="#bisect-run">§</a>13 Bisect Run</h1>
-<p>https://git-scm.com/docs/git-bisect#_bisect_run</p>
-<p>If you have a script that can tell if the current source code is good or bad, you can bisect by issuing the command:</p>
-<p>$ git bisect run my_script arguments</p>
-<p>Note that the script (my_script in the above example) should exit with code 0 if the current source code is good/old, and exit with a code between 1 and 127 (inclusive), except 125, if the current source code is bad/new.</p>
-<p>Any other exit code will abort the bisect process. It should be noted that a program that terminates via exit(-1) leaves $? = 255, (see the exit(3) manual page), as the value is chopped with &amp; 0377.</p>
-<p>The special exit code 125 should be used when the current source code cannot be tested. If the script exits with this code, the current revision will be skipped (see git bisect skip above). 125 was chosen as the highest sensible value to use for this purpose, because 126 and 127 are used by POSIX shells to signal specific error status (127 is for command not found, 126 is for command found but not executable—​these details do not matter, as they are normal errors in the script, as far as bisect run is concerned).</p>
-<p>You may often find that during a bisect session you want to have temporary modifications (e.g. s/#define DEBUG 0/#define DEBUG 1/ in a header file, or “revision that does not have this commit needs this patch applied to work around another problem this bisection is not interested in”) applied to the revision being tested.</p>
-<p>To cope with such a situation, after the inner git bisect finds the next revision to test, the script can apply the patch before compiling, run the real test, and afterwards decide if the revision (possibly with the needed patch) passed the test and then rewind the tree to the pristine state. Finally the script should exit with the status of the real test to let the git bisect run command loop determine the eventual outcome of the bisect session.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
-<p>TODO</p>
-<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md"><strong>lupyuen.github.io/src/bisect.md</strong></a></p>
-
+https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
