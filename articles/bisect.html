@@ -73,9 +73,8 @@
 <li><a href="#good-commit-goes-bad" title="Good Commit Goes Bad">6 Good Commit Goes Bad</a><ul></ul></li>
 <li><a href="#fixing-the-bug" title="Fixing The Bug">7 Fixing The Bug</a><ul></ul></li>
 <li><a href="#increase-the-stack" title="Increase The Stack">8 Increase The Stack</a><ul></ul></li>
-<li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-check-executable-size-with-bloaty" title="Appendix: Check Executable Size with Bloaty">11 Appendix: Check Executable Size with Bloaty</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-check-executable-size-with-bloaty" title="Appendix: Check Executable Size with Bloaty">10 Appendix: Check Executable Size with Bloaty</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="TODO" /></p>
 <span style="font-size:90%">
 <blockquote>
@@ -218,19 +217,75 @@ exit 1</code></pre></div>
 <p>This works fine for our (randomised) <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
-<p>From our <a href="TODO"><strong>Bug Report</strong></a>: NuttX fails the <strong>Continuous Integration Test</strong> (CI Test) for RISC-V QEMU.</p>
-<p>TODO: CI Test Log</p>
-<p>This happens inside the CI Job risc-v-TODO, which we can run with <strong>Docker Engine</strong>…</p>
-<p>TODO: Run CI Test with Docker</p>
-<p>Everything above becomes our <strong>Git Bisect Script</strong> (that assesses “Goodness” vs “Badness”)</p>
-<p>TODO: Git Bisect Script</p>
-<p>We run this…</p>
-<p>TODO: Pic of Git Bisect #1</p>
+<p>From our <a href="https://github.com/apache/nuttx/issues/14808"><strong>Bug Report</strong></a>: NuttX fails the <strong>Continuous Integration Test</strong> (CI Test) for RISC-V QEMU.</p>
+<div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
+test_cmocka      PASSED
+test_hello       PASSED
+test_helloxx     FAILED
+test_pipe        FAILED
+test_usrsocktest FAILED
+[...Failing all the way...]</code></pre></div>
+<p>This happens inside the <strong>CI Job <em>risc-v-05</em></strong>. Which we can reproduce with <strong>Docker Engine</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L61">run-job-bisect.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Assume we&#39;re running risc-v-05 with
+## Latest NuttX Repo and NuttX Apps
+job=risc-v-05
+nuttx_hash=HEAD
+apps_hash=HEAD
+
+## Run the CI Job in Docker Container
+## If CI Test Hangs: Kill it after 1 hour
+sudo docker run -it \
+  ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest \
+  /bin/bash -c &quot;
+  set -e ;
+  set -x ;
+  uname -a ;
+  cd ;
+  pwd ;
+  git clone https://github.com/apache/nuttx ;
+  git clone https://github.com/apache/nuttx-apps apps ;
+  echo Building nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash ;
+  pushd nuttx ; git reset --hard $nuttx_hash ; popd ;
+  pushd apps  ; git reset --hard $apps_hash  ; popd ;
+  pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/\$(git rev-parse HEAD)    ; popd ;
+  pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/\$(git rev-parse HEAD) ; popd ;
+  sleep 10 ;
+  cd nuttx/tools/ci ;
+  ( sleep 3600 ; echo Killing pytest after timeout... ; pkill -f pytest )&amp;
+  (
+    (./cibuild.sh -c -A -N -R testlist/$job.dat) || (res=\$? ; echo &#39;***** JOB FAILED&#39; ; exit \$res)
+  )
+&quot;</code></pre></div>
+<p>Everything above becomes our <strong>Git Bisect Script</strong> that assesses “Goodness” vs “Badness” for a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73">run-job-bisect.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect Wrapper...
+## We run the CI Job in Docker Container
+## (Same as above)
+sudo docker run -it ...
+
+## Result the result to the caller
+res=$?
+if [[ &quot;$res&quot; == &quot;0&quot; ]] ; then
+  exit 0  ## Return OK
+else
+  exit 1  ## Return Error
+fi</code></pre></div>
+<p>Which is called by our <strong>Git Bisect Wrapper</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/start-job-bisect.sh">start-job-bisect.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## This wrapper script will be called by Git Bisect...
+## Get the NuttX Hash (Commit ID)
+nuttx_hash=$(git rev-parse HEAD)
+
+## Run the CI Job for the NuttX Commit
+## Passing the Job Name, NuttX Hash and Apps Hash
+job=risc-v-05
+apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+$script_dir/run-job-bisect.sh \
+  $job $nuttx_hash $apps_hash</code></pre></div>
+<p>We’re ready to run this!</p>
 <h1 id="git-bisect-for-real"><a class="doc-anchor" href="#git-bisect-for-real">§</a>4 Git Bisect For Real</h1>
-<p><em>What just happened in Git Bisect?</em></p>
+<p><em>What happens in Git Bisect?</em></p>
 <ol>
 <li>
-<p>We started Git Bisect, telling it that Commit #<code>1</code> is Good and Commit #<code>468</code> is Bad</p>
+<p>We start Git Bisect, telling it that Commit #<code>1</code> is Good and Commit #<code>468</code> is Bad</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
 cd nuttx
 git bisect start
@@ -239,7 +294,7 @@ git bisect bad  79a1ebb   ## Commit #468
 git bisect run \
   $HOME/nuttx-bisect/start-job-bisect.sh</code></pre></div></li>
 <li>
-<p>Git Bisect picked the <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L42-L74"><strong>Middle Commit #<code>234</code></strong></a> and ran our script</p>
+<p>Git Bisect picks the <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L42-L74"><strong>Middle Commit #<code>234</code></strong></a> and runs our script</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Testing Commit #234 (94a2ce3)
 ## For CI Job risc-v-05 (CI Test for RISC-V QEMU)
 ## With NuttX Apps (1c7a7f7)
@@ -248,13 +303,13 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
   94a2ce3 \
   1c7a7f7</code></pre></div></li>
 <li>
-<p>And discovered that <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1260-L1379"><strong>Commit #<code>234</code> is Good</strong></a> (via our script)</p>
+<p>And discovers that <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1260-L1379"><strong>Commit #<code>234</code> is Good</strong></a> (via our script)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #234: Completed CI Test successfully
 Configuration/Tool: rv-virt/citest
 test_ostest PASSED
 exit 0</code></pre></div></li>
 <li>
-<p>Then it continued bisecting. Assessing Commits <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420">#<code>351</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912">#<code>292</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405">#<code>263</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068">#<code>248</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566">#<code>241</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979">#<code>237</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371">#<code>236</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731">#<code>235</code></a></p>
+<p>Then it continues bisecting. Assessing Commits <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420">#<code>351</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912">#<code>292</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405">#<code>263</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068">#<code>248</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566">#<code>241</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979">#<code>237</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371">#<code>236</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731">#<code>235</code></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
 run-job-bisect.sh ... 1cfaff011ea5178ba3faffc10a33d9f52de80bfc ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
@@ -447,7 +502,7 @@ STACKSIZE  USED  FILLED   COMMAND
 <p>Needs more probing…</p>
 <p><a href="https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7">(See the <strong>Complete Log</strong>)</a></p>
 <h1 id="increase-the-stack"><a class="doc-anchor" href="#increase-the-stack">§</a>8 Increase The Stack</h1>
-<p><em>What’s ltp_interfaces_pthread_barrierattr_init_2_1?</em></p>
+<p><em>What’s ltp_interfaces_pthread_barrierattr_init_2_1? Why is the Stack Overflowing?</em></p>
 <p>We search the <strong>NuttX Disassembly</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the disassembly to nuttx.S
 cd /root/nuttx
@@ -466,7 +521,8 @@ grep nuttx.S \
 <div class="example-wrap"><pre class="language-text"><code>8006642c &lt;ltp_interfaces_pthread_barrierattr_init_2_1_main&gt;:
   ltp_interfaces_pthread_barrierattr_init_2_1_main():
     apps/testing/ltp/ltp/testcases/open_posix_testsuite/conformance/interfaces/pthread_barrierattr_init</code></pre></div>
-<p>Aha! It points to <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp"><em>nuttx-apps/testing/ltp</em></a>. Thus we edit the <strong>Stack Configuration</strong>: <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp/Kconfig">testing/ltp/Kconfig</a></p>
+<p>Aha! It points to a <strong>NuttX Test App</strong>: <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp">nuttx-apps/testing/ltp</a></p>
+<p>Thus we edit the <strong>Stack Configuration</strong>: <a href="https://github.com/apache/nuttx-apps/tree/master/testing/ltp/Kconfig">testing/ltp/Kconfig</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Before: Stack Size is 4 KB
 config TESTING_LTP_STACKSIZE
   int &quot;Linux Test Project stack size&quot;
@@ -478,12 +534,16 @@ config TESTING_LTP_STACKSIZE
 <ul>
 <li><a href="https://github.com/apache/nuttx-apps/pull/2888"><strong>“testing/ltp: Increase Stack Size”</strong></a></li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
-<p>Why Git Bisect? Because each test runs for 1 hour!</p>
-<p>Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
-<p>Locoroco merging into big bubbles</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
-<p>TODO</p>
+<p><em>But why did we run out of Stack Space? Has something grown too big?</em></p>
+<p>We could run <strong>Bloaty</strong> to do detailed analysis of the code and data size…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<p>TODO: Why Git Bisect? Because each test runs for 1 hour!</p>
+<p>TODO: Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
+<p>TODO: Locoroco merging into big bubbles</p>
+<p>Next Article: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) <strong>Forgejo Git Forge</strong> with NuttX.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -510,9 +570,14 @@ config TESTING_LTP_STACKSIZE
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md"><strong>lupyuen.github.io/src/bisect.md</strong></a></p>
-<h1 id="appendix-check-executable-size-with-bloaty"><a class="doc-anchor" href="#appendix-check-executable-size-with-bloaty">§</a>11 Appendix: Check Executable Size with Bloaty</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>## https://github.com/google/bloaty
+<h1 id="appendix-check-executable-size-with-bloaty"><a class="doc-anchor" href="#appendix-check-executable-size-with-bloaty">§</a>10 Appendix: Check Executable Size with Bloaty</h1>
+<p><em>Earlier we ran out of Stack Space. Has something grown too big?</em></p>
+<p>We could run <strong>Bloaty</strong> to do detailed analysis of the <strong>Code and Data Size</strong>…</p>
+<ul>
+<li>TODO https://github.com/google/bloaty</li>
+</ul>
+<p>NuttX Docker Image is bundled with Bloaty for quick experimentation…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Inside NuttX Docker: Assume we compiled NuttX at /root/nuttx/nuttx
 $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
     FILE SIZE        VM SIZE    
  --------------  -------------- 
@@ -539,21 +604,42 @@ $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx
    0.0%     144   0.0%     104    .sdata.called
  100.0%  14.8Mi 100.0%  1.42Mi    TOTAL
 
-$ /tools/bloaty/bin/bloaty /root/nuttx/nuttx -d compileunits
-bloaty: Unknown ELF machine value: 243&#39;
+## Let&#39;s dump the details
+$ /tools/bloaty/bin/bloaty \
+  /root/nuttx/nuttx \
+  -d compileunits
+bloaty: Unknown ELF machine value: 243
 
-Fuchsia supports it:
-https://fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/
-
-cd
+## Oops doesn&#39;t work for RISC-V Executable!</code></pre></div>
+<p>Standard Bloaty won’t support RISC-V. But <a href="https://fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/"><strong>Fuchsia Bloaty</strong></a> supports it.</p>
+<p>We compile and run <strong>Fuchsia Bloaty</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile Fuchsia Bloaty for RISC-V Support
 git clone https://fuchsia.googlesource.com/third_party/bloaty
 cd bloaty
 cmake -B build -G Ninja -S .
 cmake --build build
-cd /root/nuttx
-/root/bloaty/build/bloaty nuttx -d compileunits,segments,sections,symbols
 
-https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log</code></pre></div>
+## Run Fuchsia Bloaty on NuttX QEMU RISC-V
+## Dump all the details
+cd /root/nuttx
+/root/bloaty/build/bloaty nuttx \
+  -d compileunits,segments,sections,symbols</code></pre></div>
+<p>Now we see everything in our NuttX RISC-V Executable…</p>
+<div class="example-wrap"><pre class="language-text"><code>    FILE SIZE        VM SIZE    
+ --------------  -------------- 
+  62.7%  9.26Mi  66.2%   960Ki    [2505 Others]
+   7.5%  1.11Mi   4.8%  69.2Ki    EEE6secondB8un170006Ev
+    94.1%  1.04Mi   0.0%       0    [Unmapped]
+      55.6%   594Ki   NAN%       0    .debug_info
+      21.3%   227Ki   NAN%       0    .debug_line
+      17.4%   185Ki   NAN%       0    .debug_str
+       3.1%  33.7Ki   NAN%       0    .strtab
+        54.6%  18.4Ki   NAN%       0    [160 Others]
+         7.8%  2.61Ki   NAN%       0    std::__1::(anonymous namespace)::make&lt;&gt;()::buf
+         6.5%  2.20Ki   NAN%       0    std::__1::num_get&lt;&gt;::do_get()
+         4.5%  1.52Ki   NAN%       0    std::__1::num_put&lt;&gt;::do_put()</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-bisect/releases/download/main-1/bloaty.log">(See the <strong>Complete Log</strong>)</a></p>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
