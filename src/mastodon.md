@@ -279,7 +279,7 @@ This is our grand plan...
 
 1.  Submit to Mastodon via __ActivityPub API__
 
-TODO: Pic of flow
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
 
 __Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from Prometheus...
 
