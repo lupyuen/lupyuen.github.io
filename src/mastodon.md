@@ -12,9 +12,7 @@ Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert ema
 
 In this article: We talk about __Mastodon__ as a fun new way to broadcast NuttX Alerts in real time. We shall...
 
-- Install our __Mastodon Server__ with Docker Compose
-
-  (Or Rancher Desktop)
+- Install our __Mastodon Server__ with Docker Compose (or Rancher Desktop)
 
 - Create a __Bot User__ for pushing Mastodon Alerts
 
@@ -300,7 +298,7 @@ Prometheus returns a huge bunch of fields...
 
 <hr>
 
-__Query the Failed Builds:__ We query Prometheus and extract the fields in Rust...
+__Query the Failed Builds:__ We repeat the above, but in Rust...
 
 ```rust
 // Fetch the Failed Builds from Prometheus
@@ -377,7 +375,7 @@ __Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
 
 <hr>
 
-__Skip Duplicates:__ Remember everything in a JSON File, so we won't notify the same thing twice...
+__Skip Duplicates:__ We remember everything in a JSON File, so we won't notify the same thing twice...
 
 ```rust
 // This JSON File remembers the Mastodon Posts for All Builds:
@@ -463,7 +461,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![Hefty Ubuntu Xeon Workstation for NuttX Build Farm](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 
+<span style="font-size:90%">
+
 [_Hefty Ubuntu Xeon Workstation for NuttX Build Farm_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
 
 # Appendix: Query Prometheus for NuttX Builds
 
@@ -1180,9 +1182,9 @@ Our Regular Mastondon User is up! Let's post something as the user...
 ## Create Status: https://docs.joinmastodon.org/methods/statuses/#create
 export ACCESS_TOKEN=...  ## From Above
 curl -X POST \
-	-H "Authorization: Bearer $ACCESS_TOKEN" \
-	-F "status=Posting a status from curl" \
-	https://YOUR_DOMAIN_NAME.org/api/v1/statuses
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "status=Posting a status from curl" \
+  https://YOUR_DOMAIN_NAME.org/api/v1/statuses
 ```
 
 And our __Mastodon Post__ appears!
