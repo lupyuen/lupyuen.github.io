@@ -82,9 +82,10 @@ git clone https://github.com/apache/nuttx
 cd nuttx
 
 ## Tell Git Bisect the Good and Bad Commits
+## (Or specify HEAD for the Latest Commit)
 git bisect start
-git bisect good 6554ed4d  ## Commit #1 is Good
-git bisect bad  79a1ebb   ## Commit #468 is Bad
+git bisect good 6554ed4  ## Commit #1 is Good
+git bisect bad  79a1ebb  ## Commit #468 is Bad
 
 ## Bisect with our Simulated Test Script
 git bisect run \
@@ -229,7 +230,7 @@ Everything above becomes our __Git Bisect Script__ that assesses "Goodness" vs "
 ```bash
 ## This script will be called by Git Bisect Wrapper...
 ## We run the CI Job in Docker Container
-## (Same as above)
+## (Copy from above)
 sudo docker run -it ...
 
 ## Result the result to the caller
@@ -250,10 +251,14 @@ nuttx_hash=$(git rev-parse HEAD)
 
 ## Run the CI Job for the NuttX Commit
 ## Passing the Job Name, NuttX Hash and Apps Hash
+## (Or set Apps Hash to HEAD for the Latest Version)
 job=risc-v-05
 apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
-$script_dir/run-job-bisect.sh \
+$HOME/nuttx-bisect/run-job-bisect.sh \
   $job $nuttx_hash $apps_hash
+
+## This Git Bisect script will work for any CI Job!
+## Just change `job=risc-v-05` to the CI Job Name (like arm-01)
 ```
 
 We're ready to run this!
@@ -363,6 +368,8 @@ _What happens in Git Bisect?_
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
 
+Here comes the twist...
+
 TODO: Pic of Git Bisect #2
 
 # Git Bisect Gets Quirky
@@ -447,7 +454,7 @@ Hmmm something below has changed. Why?
 
 _Why is Git Bisect telling us a different Breaking Commit?_
 
-In The Movies: Somebody travels in a Time Machine to the past, changing something in history, and the future changes.
+In The Movies: Somebody travels to the past _(in a Time Machine)_, changing something in history, and the future changes.
 
 In Real Life: __Commit #`234`__ has changed in history. Altering our future!
 
@@ -467,7 +474,7 @@ exit 1
 
 After this, everything changed. Concluding with a __Different Breaking Commit__. (Think "alternate timeline")
 
-_Huh? How did Commit #234 change?_
+_Huh! How did Commit #234 change?_
 
 This CI Test looks more complicated than we thought. CI Test appears to be __failing with the slightest change__ in QEMU Memory. For a Specific Commit: Our bug isn't reliably reproducible.
 
@@ -475,7 +482,7 @@ __Lesson Learnt:__ Git Bisect works best for bugs that are __reliably reproducib
 
 # Fixing The Bug
 
-_OK so Git Bisect wasn't 100% successful for this bug. How did we fix the bug?_
+_OK so Git Bisect wasn't 100% successful. How did we fix the bug?_
 
 Actually we have __Two Bugs__ stacked together...
 
@@ -505,7 +512,8 @@ pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git r
 cd nuttx/tools/ci
 ./cibuild.sh -c -A -N -R testlist/risc-v-05.dat 
 
-## Wait for it to fail. Press Ctrl-C a few times to stop it.
+## Wait for it to fail
+## Press Ctrl-C a few times to stop it
 ## Then dump the log
 cat /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/*
 
@@ -575,7 +583,7 @@ We retest in Docker. And our [__CI Test succeeds__](https://gist.github.com/lupy
 
 _But why did we run out of Stack Space? Has something grown too big?_
 
-We could run __Bloaty__ to do detailed analysis of the code and data size...
+We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
 - TODO
 
