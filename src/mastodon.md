@@ -179,7 +179,7 @@ bin/tootctl accounts \
 
 _How will our Bot post a message to Mastodon?_
 
-__With curl:__ This is how we post a __Status Update__ to Mastodon...
+__With curl:__ Here's how we post a __Status Update__ to Mastodon...
 
 ```bash
 ## Set the Mastodon Access Token (see below)
@@ -267,7 +267,7 @@ Into [__Mastodon Posts__](https://nuttx-feed.org/@nuttx_build)?
 
 ![NuttX Builds in Mastodon](https://lupyuen.github.io/images/mastodon-register7.png)
 
-This is our grand plan...
+Here comes our Grand Plan...
 
 1.  __Outcomes of NuttX Builds__ are already recorded...
 
@@ -283,7 +283,7 @@ This is our grand plan...
 
 <hr>
 
-__Prometheus Time-Series Database:__ This is how we fetch the Failed Builds from Prometheus...
+__Prometheus Time-Series Database:__ This query will fetch the Failed Builds from Prometheus...
 
 ```bash
 ## Find all Build Scores < 0.5
@@ -292,7 +292,7 @@ build_score < 0.5
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds)
 
-Prometheus returns a huge bunch of fields...
+Prometheus returns a huge bunch of fields, we'll tweak this...
 
 ![Fetching the Failed NuttX Builds from Prometheus](https://lupyuen.github.io/images/mastodon-prometheus.png)
 
@@ -584,7 +584,7 @@ done
 
 ![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
-Inside our Rust App, this is how we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+Inside our Rust App, we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
 
 ```rust
 // Fetch the Failed Builds from Prometheus
