@@ -447,7 +447,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
-<p>TODO: Next Article: We talk about <strong>Git Bisect</strong> and how we auto-magically discover a Breaking Commit in NuttX.</p>
+<p>Next Article: We talk about <strong>Git Bisect</strong> and how we auto-magically discover a Breaking Commit in NuttX.</p>
 <p>After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) <strong>Forgejo Git Forge</strong> with NuttX.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
@@ -478,10 +478,10 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Hefty Ubuntu Xeon Workstation for NuttX Build Farm" /></p>
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Hefty Ubuntu Xeon Workstation for NuttX Build Farm</em></a></p>
 <h1 id="appendix-query-prometheus-for-nuttx-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-nuttx-builds">§</a>9 Appendix: Query Prometheus for NuttX Builds</h1>
-<p><a href="TODO"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
 <p>Outcomes of NuttX Builds are recorded inside our <strong>Prometheus Time-Series Database</strong>…</p>
-<p>TODO: Pic of prometheus</p>
-<p>We’re fetching the <strong>Failed NuttX Builds</strong> from Prometheus. We browse to Prometheus at <em>http://localhost:9090</em> and enter this <strong>Prometheus Query</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
+<p>To fetch the <strong>Failed NuttX Builds</strong> from Prometheus: We browse to Prometheus at <em>http://localhost:9090</em> and enter this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 ## But skip these users...
 build_score{
@@ -500,7 +500,7 @@ build_score{
 </tbody></table>
 </div>
 <p><em>What’s returned by Prometheus?</em></p>
-<p>Plenty of fields, describing <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Every Failed Build</strong></a> in detail…</p>
+<p>Plenty of fields, describing <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Every Failed Build</strong></a> in detail (pic above)…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>timestamp</strong></td><td style="text-align: left">Timestamp <em>(2024-12-06T06:14:54)</em></td></tr>
