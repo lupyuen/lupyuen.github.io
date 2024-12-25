@@ -2,9 +2,9 @@
 
 📝 _31 Jan 2024_
 
-![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
+![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
-<span style="font-size:90%">
+<span style="font-size:80%">
 
 > _"Because I'm bad, I'm bad, shamone (bad, bad, really, really bad) <br>
 You know I'm bad, I'm bad (bad, bad) ... <br>
@@ -14,19 +14,19 @@ Who's bad?"_
 
 </span>
 
-2 Weeks Ago: We spoke of a [__Runtime Bug__](TODO) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
+2 Weeks Ago: We spoke of a [__Runtime Bug__](https://lupyuen.github.io/articles/ci7) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
 | | |
 |:-----------:|:--------:|
-| [__Commit #1 is Good__](TODO) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](TODO)
+| [__Commit #1 is Good__](https://github.com/apache/nuttx/issues/14808#issue-2661180633) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c)
 | _...many many commits..._ | _..._
-| [__Commit #468 is Bad__](TODO) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](TODO)
+| [__Commit #468 is Bad__](https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](https://github.com/apache/nuttx/tree/79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b)
 
 That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0). Which one is the Breaking Commit?
 
 _Maybe we Rewind Each Commit and test?_
 
-With a script, we could rewind and retest 468 Commits for [__Compile Errors__](TODO). But it's probably too slow for __Runtime Errors__. _(Rewind + recompile + rerun)_
+With a script, we could rewind and retest 468 Commits for [__Compile Errors__](https://lupyuen.github.io/articles/ci6). But it's probably too slow for __Runtime Errors__. _(Rewind + recompile + rerun)_
 
 We have a quicker way: __Git Bisect__!
 
@@ -34,7 +34,7 @@ We have a quicker way: __Git Bisect__!
 
 _What's this Git Bisect?_
 
-Remember [__Binary Chop__](TODO)?
+Remember [__Binary Chop__](https://en.wikipedia.org/wiki/Binary_search)?
 
 > _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to 468 <br> Ask me 9 Yes-No Questions"_
 
@@ -42,7 +42,7 @@ To solve this, we __Divide And Conquer__: Is 234 too high? _(no)_ Is 351 too hig
 
 TODO: Pic of Divide-And-Conquer
 
-[__Git Bisect__](TODO) works the same way, but for __Git Commits__...
+[__Git Bisect__](https://git-scm.com/docs/git-bisect) works the same way, but for __Git Commits__...
 
 - Our __Breaking Commit__ is one of 468 Commits
 
@@ -70,9 +70,9 @@ else
 fi
 ```
 
-[(Or something __more predictable__)](TODO)
+[(Or something __more predictable__)](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh#L34-L76)
 
-[(Or do it __manually__)](TODO)
+[(Or do it __manually__)](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good)
 
 This is how we start our __Simulated Git Bisect__: [run.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh)
 
@@ -163,7 +163,7 @@ _What just happened in Git Bisect?_
     exit 1
     ```
 
-    [(See the __Complete Log__)](TODO)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f)
 
 1.  Finally deducing that __Commit #`235`__ is the __Breaking Commit__
 
@@ -585,7 +585,7 @@ _But why did we run out of Stack Space? Has something grown too big?_
 
 We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
-- TODO
+- [__"Inspect Executable Size with Bloaty"__](https://lupyuen.github.io/articles/bisect#appendix-inspect-executable-size-with-bloaty)
 
 # What's Next
 
@@ -623,12 +623,13 @@ _Earlier we ran out of Stack Space. Has something grown too big?_
 
 We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
-- TODO https://github.com/google/bloaty
+- [__github.com/google/bloaty__](https://github.com/google/bloaty)
 
-NuttX Docker Image is bundled with Bloaty for quick experimentation...
+For quick experimentation: Bloaty is bundled inside our __NuttX Docker Image__...
 
 ```bash
-## Inside NuttX Docker: Assume we compiled NuttX at /root/nuttx/nuttx
+## Inside NuttX Docker:
+## Assume we compiled NuttX at /root/nuttx/nuttx
 $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx 
     FILE SIZE        VM SIZE    
  --------------  -------------- 
@@ -656,12 +657,13 @@ $ /tools/bloaty/bin/bloaty /root/nuttx/nuttx
  100.0%  14.8Mi 100.0%  1.42Mi    TOTAL
 
 ## Let's dump the details
+## For NuttX QEMU RISC-V
 $ /tools/bloaty/bin/bloaty \
   /root/nuttx/nuttx \
   -d compileunits
 bloaty: Unknown ELF machine value: 243
 
-## Oops doesn't work for RISC-V Executable!
+## Oops Bloaty won't work for RISC-V Executable!
 ```
 
 Standard Bloaty won't support RISC-V. But [__Fuchsia Bloaty__](https://fuchsia.googlesource.com/third_party/bloaty/+/53360fd9826a417671a92386306745bfd5755f21%5E1..53360fd9826a417671a92386306745bfd5755f21/) supports it.
