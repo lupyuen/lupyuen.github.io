@@ -969,6 +969,8 @@ web:
     - '127.0.0.1:3001:3000'
 ```
 
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow2.jpg)
+
 # Appendix: Test our Mastodon Server
 
 We're ready to __Test Mastodon__!
@@ -1469,6 +1471,8 @@ Powered by Ruby-on-Rails, __Puma__ is our Web Server: [docker-compose.yml](https
 ```
 
 Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow2.jpg)
 
 ## Redis Server
 
