@@ -609,7 +609,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/bisect.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md)
 
-# Appendix: Check Executable Size with Bloaty
+# Appendix: Inspect Executable Size with Bloaty
 
 _Earlier we ran out of Stack Space. Has something grown too big?_
 
