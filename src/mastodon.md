@@ -871,7 +871,7 @@ Here are the steps to install Mastodon Server with Docker Compose. We tested wit
 
     (Why? Because we're done Configuring Mastodon!)
 
-1.  Restart the __Docker Containers__ for Mastodon
+1.  Restart the __Docker Containers__ for Mastodon (pic below)
 
     ```bash
     ## TODO: Is `sudo` needed?
@@ -893,6 +893,8 @@ Here are the steps to install Mastodon Server with Docker Compose. We tested wit
     [(See __Another Log__)](https://gist.github.com/lupyuen/edbf045433189bebd4ad843608772ce8)
 
     (Sidekiq will have errors, we'll explain why)
+
+![Mastodon Containers in Rancher Desktop](https://lupyuen.github.io/images/mastodon-containers.png)
 
 _Why the tweaks to docker-compose.yml?_
 
@@ -1350,6 +1352,8 @@ Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's 
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/21ad4e38fa00796d132e63d41e4a339f)
 
+![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
+
 # Appendix: Docker Compose for Mastodon
 
 _What's this Docker Compose? Why use it for Mastodon?_
@@ -1358,9 +1362,11 @@ We could install manually __Multiple Docker Containers__ for Mastodon: Ruby-on-R
 
 But there's an easier way: [__Docker Compose__](https://docs.docker.com/compose/) will create all the Docker Containers with a Single Command: __docker up__
 
-In this section we study the __Docker Containers__ for Mastodon. And explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config.
+In this section we study the __Docker Containers__ for Mastodon. And explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config. (Pic above)
 
 [(See the __Minor Tweaks__)](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+
+![Mastodon Containers in Rancher Desktop](https://lupyuen.github.io/images/mastodon-containers.png)
 
 ## Database Server
 
@@ -1645,3 +1651,7 @@ __Optional:__ Configure the Mastodon Domain. We edit _.env.development_
 ```bash
 LOCAL_DOMAIN=nuttx-feed.org
 ```
+
+![50 km Overnight Hike: City to Changi Airport to Changi Village](https://lupyuen.github.io/images/mastodon-hike.png)
+
+[_50 km Overnight Hike: City to Changi Airport to Changi Village_](https://www.strava.com/activities/13176081611)
