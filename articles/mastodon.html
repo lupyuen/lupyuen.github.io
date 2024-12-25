@@ -154,6 +154,7 @@
 <p>Failed Builds are auto-escalated to our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Open-source Grafana + Prometheus)</p>
 <p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
 <p>First we talk about Mastodon…</p>
+<p>TODO: Pic of Mastodon Server</p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
 <p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
@@ -228,7 +229,7 @@ sudo docker compose up
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account"><strong>“Create our Mastodon Account”</strong></a></p>
 </li>
 </ul>
-<p>It gets interesting when we verify our Bot User…</p>
+<p>Things get interesting when we verify our Bot User…</p>
 <h1 id="email-less-mastodon"><a class="doc-anchor" href="#email-less-mastodon">§</a>4 Email-Less Mastodon</h1>
 <p><em>How to verify the Email Address of our Bot User?</em></p>
 <p>Remember our Mastodon Server has <strong>Zero Budget</strong>? This means we won’t have an <strong>Outgoing Email Server</strong>. (SMTP)</p>
@@ -327,12 +328,14 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
+<hr>
 <p><strong>Prometheus Time-Series Database:</strong> This is how we fetch the Failed Builds from Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 build_score &lt; 0.5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
 <p>Prometheus returns a huge bunch of fields…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
+<hr>
 <p><strong>Query the Failed Builds:</strong> We query Prometheus and extract the fields in Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
@@ -351,6 +354,7 @@ build_score &lt; 0.5</code></pre></div>
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
+<hr>
 <p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
@@ -373,6 +377,8 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
   params.push((<span class="string">"status"</span>, status));</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
+<hr>
+<p>TODO: Pic of ActivityPub</p>
 <p><strong>Submit to Mastodon via ActivityPub:</strong> By posting over HTTPS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
@@ -390,6 +396,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="comment">// Omitted: Remember the Mastodon Posts for All Builds
 </span>}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
+<hr>
 <p><strong>Skip Duplicates:</strong> Remember everything in a JSON File, so we won’t notify the same thing twice…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This JSON File remembers the Mastodon Posts for All Builds:
@@ -468,7 +475,12 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.github.io/src/mastodon.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Hefty Ubuntu Xeon Workstation for NuttX Build Farm" /></p>
+<p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Hefty Ubuntu Xeon Workstation for NuttX Build Farm</em></a></p>
 <h1 id="appendix-query-prometheus-for-nuttx-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-nuttx-builds">§</a>9 Appendix: Query Prometheus for NuttX Builds</h1>
+<p><a href="TODO"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
+<p>Outcomes of NuttX Builds are recorded inside our <strong>Prometheus Time-Series Database</strong>…</p>
+<p>TODO: Pic of prometheus</p>
 <p>We’re fetching the <strong>Failed NuttX Builds</strong> from Prometheus. We browse to Prometheus at <em>http://localhost:9090</em> and enter this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 ## But skip these users...
