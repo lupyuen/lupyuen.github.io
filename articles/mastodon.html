@@ -249,7 +249,7 @@ bin/tootctl accounts \
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-create-our-mastodon-account">(Explained here)</a></p>
 <h1 id="post-to-mastodon"><a class="doc-anchor" href="#post-to-mastodon">§</a>5 Post to Mastodon</h1>
 <p><em>How will our Bot post a message to Mastodon?</em></p>
-<p><strong>With curl:</strong> This is how we post a <strong>Status Update</strong> to Mastodon…</p>
+<p><strong>With curl:</strong> Here’s how we post a <strong>Status Update</strong> to Mastodon…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the Mastodon Access Token (see below)
 ACCESS_TOKEN=...
 
@@ -308,7 +308,7 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 <p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
 <p>Into <a href="https://nuttx-feed.org/@nuttx_build"><strong>Mastodon Posts</strong></a>?</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds in Mastodon" /></p>
-<p>This is our grand plan…</p>
+<p>Here comes our Grand Plan…</p>
 <ol>
 <li>
 <p><strong>Outcomes of NuttX Builds</strong> are already recorded…</p>
@@ -328,11 +328,11 @@ https://YOUR_DOMAIN_NAME.org/oauth/authorize
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <hr>
-<p><strong>Prometheus Time-Series Database:</strong> This is how we fetch the Failed Builds from Prometheus…</p>
+<p><strong>Prometheus Time-Series Database:</strong> This query will fetch the Failed Builds from Prometheus…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Find all Build Scores &lt; 0.5
 build_score &lt; 0.5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
-<p>Prometheus returns a huge bunch of fields…</p>
+<p>Prometheus returns a huge bunch of fields, we’ll tweak this…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <hr>
 <p><strong>Query the Failed Builds:</strong> We repeat the above, but in Rust…</p>
@@ -565,7 +565,7 @@ for (( ; ; )); do
   date ; sleep 900
 done</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
-<p>Inside our Rust App, this is how we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>Inside our Rust App, we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
 </span><span class="kw">let </span>query = <span class="string">r##"
