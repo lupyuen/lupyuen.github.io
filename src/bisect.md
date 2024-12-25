@@ -19,7 +19,7 @@ Who's bad?"_
 | | |
 |:-----------:|:--------:|
 | [__Commit #1 is Good__](https://github.com/apache/nuttx/issues/14808#issue-2661180633) <br> _2024-11-14_ | NuttX runs OK <br> [_6554ed4_](https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c)
-| _...many many commits..._ | _..._
+| _... many many commits ..._ | _..._
 | [__Commit #468 is Bad__](https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367) <br> _2024-12-04_ | NuttX won't run <br> [_79a1ebb_](https://github.com/apache/nuttx/tree/79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b)
 
 That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0). Which one is the Breaking Commit?
