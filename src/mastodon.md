@@ -20,7 +20,7 @@ In this article: We talk about __Mastodon__ as a fun new way to broadcast NuttX 
 
 - We fetch the NuttX Builds from __Prometheus Database__
 
-- Post to Mastodon via __ActivityPub API__
+- Post the NuttX Build via __Mastodon API__
 
 - Our Mastodon Server will have __No Local Users__
 
@@ -277,7 +277,7 @@ This is our grand plan...
 
 1.  Reformat them as __Mastodon Posts__
 
-1.  Submit to Mastodon via __ActivityPub API__
+1.  Post the Failed Builds via __Mastodon API__
 
 ![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
 
@@ -352,7 +352,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 ![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
-__Submit to Mastodon via ActivityPub:__ By posting over HTTPS...
+__Post via Mastodon API:__ By creating a Status Update...
 
 ```rust
   // Post to Mastodon
@@ -1191,7 +1191,7 @@ And our __Mastodon Post__ appears!
 
 ![Creating a Mastodon Post](https://lupyuen.github.io/images/mastodon-web4.png)
 
-[__ActivityPub__](https://docs.joinmastodon.org/spec/activitypub/) is the Main API for Mastodon and Fediverse. Let's make sure that it works on our server...
+Let's make sure that __Mastodon API__ works on our server...
 
 ```bash
 ## Install `jq` for Browsing JSON
