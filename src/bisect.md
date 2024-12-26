@@ -454,7 +454,7 @@ Hmmm something below has changed. Why?
 
 _Why is Git Bisect telling us a different Breaking Commit?_
 
-In The Movies: Somebody travels to the past _(in a Time Machine)_, changing something in history, and the future changes.
+In The Movies: Arnold travels to the past _(in a Time Machine)_, changing something in history, and the future changes.
 
 In Real Life: __Commit #`234`__ has changed in history. Altering our future!
 
