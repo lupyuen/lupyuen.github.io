@@ -448,7 +448,7 @@ Hmmm something below has changed. Why?
 | [__Commit #`134`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4582-L4626) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L4995-L5074)
 | [__Commit #`133`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5081-L5127) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5496-L5575)
 | [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
-| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the __Breaking Commit__
+| [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the __Breaking Commit__ <br> _(really really?)_
 
 # Good Commit Goes Bad
 
