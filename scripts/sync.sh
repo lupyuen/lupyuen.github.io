@@ -104,9 +104,11 @@ function sync_folder() {
     if [[ "$sync" == *"lupyuen.org" ]]; then
       local src=$HOME/lupyuen.org
       local dest=lupyuen:/usr/local/apache2/htdocs
+      set +x  #  Disable Echo.
       for filename in $src/*; do
         docker cp $filename $dest
       done
+      set -x  #  Echo all commands.
     else
       git pull
       git status
