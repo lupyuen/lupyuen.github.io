@@ -1396,7 +1396,7 @@ _What's this Docker Compose? Why use it for Mastodon?_
 
 We could install manually __Multiple Docker Containers__ for Mastodon: Ruby-on-Rails + PostgreSQL + Redis + Sidekiq + Streaming + Elasticsearch...
 
-But there's an easier way: [__Docker Compose__](https://docs.docker.com/compose/) will create all the Docker Containers with a Single Command: __docker up__
+But there's an easier way: [__Docker Compose__](https://docs.docker.com/compose/) will create all the Docker Containers with a Single Command: __docker compose up__
 
 In this section we study the __Docker Containers__ for Mastodon. And explain the __Minor Tweaks__ we made to Mastodon's Official Docker Compose Config. (Pic above)
 
