@@ -335,7 +335,7 @@ build_score &lt; 0.5</code></pre></div>
 <p>Prometheus returns a huge bunch of fields, we’ll tweak this…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-prometheus.png" alt="Fetching the Failed NuttX Builds from Prometheus" /></p>
 <hr>
-<p><strong>Query the Failed Builds:</strong> We repeat the above, but in Rust…</p>
+<p><strong>Query the Failed Builds:</strong> We repeat the above, but in Rust: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
 </span><span class="kw">let </span>query = <span class="string">r##"
@@ -354,7 +354,7 @@ build_score &lt; 0.5</code></pre></div>
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
 <hr>
-<p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text…</p>
+<p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
 </span><span class="kw">for </span>build <span class="kw">in </span>builds.as_array().unwrap() {
@@ -378,7 +378,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <hr>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
-<p><strong>Post via Mastodon API:</strong> By creating a Status Update…</p>
+<p><strong>Post via Mastodon API:</strong> By creating a Status Update: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L126-L148">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
   </span><span class="kw">let </span>token = std::env::var(<span class="string">"MASTODON_TOKEN"</span>)
@@ -396,7 +396,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </span>}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
 <hr>
-<p><strong>Skip Duplicates:</strong> We remember everything in a JSON File, so we won’t notify the same thing twice…</p>
+<p><strong>Skip Duplicates:</strong> We remember everything in a JSON File, so we won’t notify the same thing twice: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L111-L126">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This JSON File remembers the Mastodon Posts for All Builds:
 // {
@@ -440,6 +440,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <li>
 <p><em>Anything else we should monitor with Mastodon?</em></p>
 <p><a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Sync-Build-Ingest</strong></a> is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.</p>
+<p><a href="https://lupyuen.github.io/articles/mastodon#prometheus-to-mastodon"><strong>Watching the Watchmen:</strong></a> How to be sure that our Rust App runs forever, always pushing Mastodon Alerts?</p>
 <p><a href="https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners"><strong>Cost of GitHub Runners</strong></a> shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)</p>
 <p><a href="https://lupyuen.github.io/articles/ci3#present-pains"><strong>Over-Running GitHub Jobs</strong></a> shall also be monitored, so our (beloved and respected) NuttX Devs won’t wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍</p>
 </li>
@@ -566,7 +567,7 @@ for (( ; ; )); do
   date ; sleep 900
 done</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
-<p>Inside our Rust App, we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>Inside our Rust App, we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Failed Builds from Prometheus
 </span><span class="kw">let </span>query = <span class="string">r##"
@@ -587,7 +588,7 @@ done</code></pre></div>
 <span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
-<p><strong>For Every Failed Build:</strong> We compose the <strong>Mastodon Post</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p><strong>For Every Failed Build:</strong> We compose the <strong>Mastodon Post</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
 </span><span class="kw">for </span>build <span class="kw">in </span>builds.as_array().unwrap() {
@@ -608,7 +609,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   status.truncate(<span class="number">512</span>);  <span class="comment">// Mastodon allows only 500 chars
   </span><span class="kw">let </span><span class="kw-2">mut </span>params = Vec::new();
   params.push((<span class="string">"status"</span>, status));</code></pre></div>
-<p>And we <strong>post to Mastodon</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>And we <strong>post to Mastodon</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L126-L148">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Post to Mastodon
   </span><span class="kw">let </span>token = std::env::var(<span class="string">"MASTODON_TOKEN"</span>)
@@ -625,7 +626,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="comment">// Omitted: Remember the Mastodon Posts for All Builds
 </span>}</code></pre></div>
 <p><em>Won’t we see repeated Mastodon Posts?</em></p>
-<p>That’s why we <strong>Remember the Mastodon Posts</strong> for All Builds, in a JSON File: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>That’s why we <strong>Remember the Mastodon Posts</strong> for All Builds, in a JSON File: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L16-L78">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Remembers the Mastodon Posts for All Builds:
 // {
@@ -644,7 +645,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="kw">let </span>reader = BufReader::new(file);
   all_builds = serde_json::from_reader(reader).unwrap();    
 }</code></pre></div>
-<p>If the User already exists for the Board and Config: We <strong>Skip the Mastodon Post</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>If the User already exists for the Board and Config: We <strong>Skip the Mastodon Post</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L111-L126">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// If the Mastodon Post already exists for Board and Config:
 // Reply to the Mastodon Post
@@ -658,7 +659,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   }
 }</code></pre></div>
 <p>And if the Mastodon Post already exists for the Board and Config: We <strong>Reply to the Mastodon Post</strong>. (To keep the Failed Builds threaded neatly, pic below)</p>
-<p>This is how we <strong>Remember the Mastodon Post ID</strong> (Status ID): <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs">main.rs</a></p>
+<p>This is how we <strong>Remember the Mastodon Post ID</strong> (Status ID): <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L148-L171">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Remember the Mastodon Post ID (Status ID)
 </span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
