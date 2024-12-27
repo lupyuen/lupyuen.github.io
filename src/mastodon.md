@@ -34,7 +34,7 @@ _How to get Mastodon Alerts for NuttX Builds and Continuous Integration? (CI)_
 
 1.  Register for a [__Mastodon Account__](https://joinmastodon.org) on any Fediverse Server
 
-    (I got mine at [__`qoto.org`__](qoto.org))
+    (I got mine at [__`qoto.org`__](https://qoto.org))
 
 1.  On Our Mobile Device: Install a __Mastodon App__ and log in
 
@@ -76,7 +76,7 @@ First we talk about Mastodon...
 
 _What kind of animal is Mastodon?_
 
-Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ Mastodon is mostly used for Global Social Networking on [__The Fediverse__](https://en.wikipedia.org/wiki/Fediverse).
+Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)_ [__Mastodon__](https://docs.joinmastodon.org/) is mostly used for Global Social Networking on [__The Fediverse__](https://en.wikipedia.org/wiki/Fediverse).
 
 Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of [__Failed NuttX Builds__](https://nuttx-feed.org/@nuttx_build).
 
@@ -399,7 +399,7 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 
 [(Explained here)](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon)
 
-[__The Appendix__](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon) explains how we thread the Mastodon Posts neatly by __NuttX Target__. (Board + Config)
+And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon) explains how we thread the Mastodon Posts neatly by __NuttX Target__. (Board + Config)
 
 ![NuttX Builds threaded neatly](https://lupyuen.github.io/images/mastodon-register7.png)
 
@@ -942,7 +942,7 @@ services:
       - ./postgres14:/var/lib/postgresql/data
 ```
 
-Thus we __Mount the Docker Volumes__ instead: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+Thus we __Mount the Docker Volumes__ instead: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L3-L58)
 
 ```yaml
 ## Docker Volumes will mount OK on macOS Rancher Desktop
@@ -967,7 +967,7 @@ volumes:
   lt-data:
 ```
 
-Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana
 
 ```yaml
 web:
@@ -1406,7 +1406,7 @@ In this section we study the __Docker Containers__ for Mastodon. And explain the
 
 ## Database Server
 
-[__PostgreSQL__](https://www.postgresql.org/) is our Database Server for Mastodon: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+[__PostgreSQL__](https://www.postgresql.org/) is our Database Server for Mastodon: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L3-L17)
 
 ```yaml
 services:
@@ -1439,7 +1439,7 @@ We map the __Docker Volume__ _postgres-data_, because macOS Rancher Desktop won'
 
 ## Web Server 
 
-Powered by Ruby-on-Rails, __Puma__ is our Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+Powered by Ruby-on-Rails, __Puma__ is our Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L58-L81)
 
 ```yaml
   web:
@@ -1476,13 +1476,13 @@ Powered by Ruby-on-Rails, __Puma__ is our Web Server: [docker-compose.yml](https
       - ./public/system:/mastodon/public/system
 ```
 
-Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana: [docker-compose.yml](https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main)
+Note that Mastodon will appear at __HTTP Port 3001__, because Port 3000 is already taken by Grafana.
 
 ![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow2.jpg)
 
 ## Redis Server
 
-Web Server fetching data directly from Database Server will be awfully slow. That's why we use Redis as an __In-Memory Caching Database__: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+Web Server fetching data directly from Database Server will be awfully slow. That's why we use Redis as an [__In-Memory Caching Database__](https://github.com/redis/redis): [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L17-L27)
 
 ```yaml
   redis:
@@ -1503,7 +1503,7 @@ Web Server fetching data directly from Database Server will be awfully slow. Tha
 
 ## Sidekiq Server
 
-Remember that Emails that Mastodon will send upon User Registration? Mastodon does this with __Sidekiq__ for running Background Batch Jobs, so it won't hold up the Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+Remember the Emails that Mastodon will send upon User Registration? Mastodon calls [__Sidekiq__](https://github.com/sidekiq/sidekiq) to run Background Jobs, so they won't hold up the Web Server: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L102-L119)
 
 ```yaml
   sidekiq:
@@ -1537,7 +1537,7 @@ _(Streaming Server is Optional)_
 
 Mastodon (and Fediverse) uses [__ActivityPub__](https://docs.joinmastodon.org/spec/activitypub/) for exchanging lots of info about Users and Posts. Our Web Server supports the __HTTP Rest API__, but there's a more efficient way: __WebSocket API__.
 
-WebSocket is __totally optional__, Mastodon works fine without it, probably a little less efficient: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+WebSocket is __totally optional__, Mastodon works fine without it, probably a little less efficient: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L81-L102)
 
 ```yaml
   streaming:
@@ -1573,7 +1573,7 @@ WebSocket is __totally optional__, Mastodon works fine without it, probably a li
 
 _(Elasticsearch is optional)_
 
-Elasticsearch is for __Full-Text Search__. Also totally optional, unless we require Full-Text Search for Users and Posts: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+Elasticsearch is for __Full-Text Search__. Also totally optional, unless we require Full-Text Search for Users and Posts: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L27-L58)
 
 ```yaml
   es:
@@ -1615,7 +1615,7 @@ Elasticsearch is for __Full-Text Search__. Also totally optional, unless we requ
 
 ## Volumes and Networks
 
-Finally we declare the __Volumes and Networks__ used by our Docker Containers: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml)
+Finally we declare the __Volumes and Networks__ used by our Docker Containers: [docker-compose.yml](https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L136-L146)
 
 ```yaml
 volumes:
@@ -1632,11 +1632,11 @@ networks:
 
 ## Simplest Server for Mastodon
 
-_Phew that looks might complicated!_
+_Phew that looks mighty complicated!_
 
-There's a simpler way: Mastodon provides a Docker Compose Config for __Mastodon Development__.
+There's a simpler way: Mastodon provides a Docker Compose Config for [__Mastodon Development__](https://github.com/mastodon/mastodon#docker).
 
-It's good for Local Experimentation. But __Not Recommended for Internet Hosting!__
+It's good for Local Experimentation. But __Not Safe for Internet Hosting!__
 
 ```bash
 ## Based on https://github.com/mastodon/mastodon#docker
