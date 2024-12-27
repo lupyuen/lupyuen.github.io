@@ -80,13 +80,13 @@ Think Twitter... But __Open-Source__ and __Self-Hosted__! _(Ruby-on-Rails + Post
 
 Though today we're making something unexpected, unconventional with Mastodon: Pushing Notifications of [__Failed NuttX Builds__](https://nuttx-feed.org/@nuttx_build).
 
-_(Think "Social Network for NuttX Maintainers")_
+(Think: "Social Network for _NuttX Maintainers_")
 
 ![Mastodon Server for NuttX](https://lupyuen.github.io/images/mastodon-register7.png)
 
 _OK weird flex. How to get started?_
 
-We begin by installing our __Mastodon Server with Docker Compose__ (pic above)...
+We begin by installing our __Mastodon Server with Docker Compose__...
 
 ```bash
 ## Download the Mastodon Repo
