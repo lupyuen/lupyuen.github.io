@@ -2,7 +2,7 @@
 
 📝 _31 Jan 2024_
 
-![TODO](https://lupyuen.github.io/images/bisect-title.jpg)
+![TODO](https://lupyuen.github.io/images/forgejo-title.jpg)
 
 __Life Without GitHub:__ What's it like?
 
@@ -17,6 +17,157 @@ _Why are we doing this?_
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
 TODO
+
+# TODO
+
+TODO: forgejo-actions1.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-actions1.png)
+
+TODO: forgejo-commits.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-commits.png)
+
+TODO: forgejo-home.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-home.png)
+
+TODO: forgejo-home2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-home2.png)
+
+TODO: forgejo-install1.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-install1.png)
+
+TODO: forgejo-install2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-install2.png)
+
+TODO: forgejo-install3.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-install3.png)
+
+TODO: forgejo-mirror1.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror1.png)
+
+TODO: forgejo-mirror2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror2.png)
+
+TODO: forgejo-mirror3.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror3.png)
+
+TODO: forgejo-mirror4.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror4.png)
+
+TODO: forgejo-mirror5.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror5.png)
+
+TODO: forgejo-mirror6.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror6.png)
+
+TODO: forgejo-mirror7.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror7.png)
+
+TODO: forgejo-mirror8.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror8.png)
+
+TODO: forgejo-mirror9.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror9.png)
+
+TODO: forgejo-mirror10.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror10.png)
+
+TODO: forgejo-mirror11.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror11.png)
+
+TODO: forgejo-mirror12.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-mirror12.png)
+
+TODO: forgejo-pr1.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr1.png)
+
+TODO: forgejo-pr2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr2.png)
+
+TODO: forgejo-pr3.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr3.png)
+
+TODO: forgejo-pr4.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr4.png)
+
+TODO: forgejo-pr5.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr5.png)
+
+TODO: forgejo-pr6.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr6.png)
+
+TODO: forgejo-pr7.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-pr7.png)
+
+TODO: forgejo-ssh.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-ssh.png)
+
+TODO: forgejo-ssh2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-ssh2.png)
+
+TODO: forgejo-update1.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update1.png)
+
+TODO: forgejo-update2.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update2.png)
+
+TODO: forgejo-update3.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update3.png)
+
+TODO: forgejo-update4.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update4.png)
+
+TODO: forgejo-update5.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update5.png)
+
+TODO: forgejo-update6.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update6.png)
+
+TODO: forgejo-update7.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update7.png)
+
+TODO: forgejo-update8.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update8.png)
+
+TODO: forgejo-update9.png
+
+![TODO](https://lupyuen.github.io/images/images/forgejo-update9.png)
+
 
 # TODO
 
