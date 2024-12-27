@@ -125,7 +125,7 @@
 <ol>
 <li>
 <p>Register for a <a href="https://joinmastodon.org"><strong>Mastodon Account</strong></a> on any Fediverse Server</p>
-<p>(I got mine at <a href="qoto.org"><strong><code>qoto.org</code></strong></a>)</p>
+<p>(I got mine at <a href="https://qoto.org"><strong><code>qoto.org</code></strong></a>)</p>
 </li>
 <li>
 <p>On Our Mobile Device: Install a <strong>Mastodon App</strong> and log in</p>
@@ -156,7 +156,7 @@
 <p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <h1 id="our-mastodon-server"><a class="doc-anchor" href="#our-mastodon-server">§</a>2 Our Mastodon Server</h1>
 <p><em>What kind of animal is Mastodon?</em></p>
-<p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> Mastodon is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
+<p>Think Twitter… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(Ruby-on-Rails + PostgreSQL + Redis + Elasticsearch)</em> <a href="https://docs.joinmastodon.org/"><strong>Mastodon</strong></a> is mostly used for Global Social Networking on <a href="https://en.wikipedia.org/wiki/Fediverse"><strong>The Fediverse</strong></a>.</p>
 <p>Though today we’re making something unexpected, unconventional with Mastodon: Pushing Notifications of <a href="https://nuttx-feed.org/@nuttx_build"><strong>Failed NuttX Builds</strong></a>.</p>
 <p><em>(Think “Social Network for NuttX Maintainers”)</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="Mastodon Server for NuttX" /></p>
@@ -416,7 +416,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   <span class="kw">if </span>users.contains(<span class="kw-2">&amp;</span><span class="macro">json!</span>(user)) { <span class="kw">continue</span>; }
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon">(Explained here)</a></p>
-<p><a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon"><strong>The Appendix</strong></a> explains how we thread the Mastodon Posts neatly by <strong>NuttX Target</strong>. (Board + Config)</p>
+<p>And we’re done! <a href="https://lupyuen.github.io/articles/mastodon#appendix-post-nuttx-builds-to-mastodon"><strong>The Appendix</strong></a> explains how we thread the Mastodon Posts neatly by <strong>NuttX Target</strong>. (Board + Config)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds threaded neatly" /></p>
 <h1 id="all-toots-considered"><a class="doc-anchor" href="#all-toots-considered">§</a>7 All Toots Considered</h1>
 <ol>
@@ -852,7 +852,7 @@ services:
   db:
     volumes:
       - ./postgres14:/var/lib/postgresql/data</code></pre></div>
-<p>Thus we <strong>Mount the Docker Volumes</strong> instead: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<p>Thus we <strong>Mount the Docker Volumes</strong> instead: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L3-L58">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Docker Volumes will mount OK on macOS Rancher Desktop
 services:
   db:
@@ -873,7 +873,7 @@ volumes:
   redis-data:
   es-data:
   lt-data:</code></pre></div>
-<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana</p>
 <div class="example-wrap"><pre class="language-yaml"><code>web:
   ports:
     - &#39;127.0.0.1:3001:3000&#39;</code></pre></div>
@@ -1214,7 +1214,7 @@ exit</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">(See the <strong>Minor Tweaks</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-containers.png" alt="Mastodon Containers in Rancher Desktop" /></p>
 <h2 id="database-server"><a class="doc-anchor" href="#database-server">§</a>18.1 Database Server</h2>
-<p><a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p><a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a> is our Database Server for Mastodon: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L3-L17">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>services:
   db:
     restart: always
@@ -1239,7 +1239,7 @@ exit</code></pre></div></li>
 <p>This is probably OK for us, since our Database Server runs in its own Docker Container.</p>
 <p>We map the <strong>Docker Volume</strong> <em>postgres-data</em>, because macOS Rancher Desktop won’t work correctly with a Local Filesystem like <em>./postgres14</em>.</p>
 <h2 id="web-server"><a class="doc-anchor" href="#web-server">§</a>18.2 Web Server</h2>
-<p>Powered by Ruby-on-Rails, <strong>Puma</strong> is our Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>Powered by Ruby-on-Rails, <strong>Puma</strong> is our Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L58-L81">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  web:
     ## You can uncomment the following line if you want to not use the prebuilt image, for example if you have local code changes
     ## build: .
@@ -1272,10 +1272,10 @@ exit</code></pre></div></li>
       - es
     volumes:
       - ./public/system:/mastodon/public/system</code></pre></div>
-<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana: <a href="https://github.com/lupyuen/mastodon/compare/upstream...lupyuen:mastodon:main">docker-compose.yml</a></p>
+<p>Note that Mastodon will appear at <strong>HTTP Port 3001</strong>, because Port 3000 is already taken by Grafana.</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
 <h2 id="redis-server"><a class="doc-anchor" href="#redis-server">§</a>18.3 Redis Server</h2>
-<p>Web Server fetching data directly from Database Server will be awfully slow. That’s why we use Redis as an <strong>In-Memory Caching Database</strong>: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>Web Server fetching data directly from Database Server will be awfully slow. That’s why we use Redis as an <a href="https://github.com/redis/redis"><strong>In-Memory Caching Database</strong></a>: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L17-L27">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  redis:
     restart: always
     image: redis:7-alpine
@@ -1290,7 +1290,7 @@ exit</code></pre></div></li>
       - internal_network
     healthcheck:
       test: [&#39;CMD&#39;, &#39;redis-cli&#39;, &#39;ping&#39;]</code></pre></div><h2 id="sidekiq-server"><a class="doc-anchor" href="#sidekiq-server">§</a>18.4 Sidekiq Server</h2>
-<p>Remember that Emails that Mastodon will send upon User Registration? Mastodon does this with <strong>Sidekiq</strong> for running Background Batch Jobs, so it won’t hold up the Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>Remember the Emails that Mastodon will send upon User Registration? Mastodon calls <a href="https://github.com/sidekiq/sidekiq"><strong>Sidekiq</strong></a> to run Background Jobs, so they won’t hold up the Web Server: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L102-L119">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  sidekiq:
     build: .
     image: ghcr.io/mastodon/mastodon:v4.3.2
@@ -1316,7 +1316,7 @@ exit</code></pre></div></li>
       test: [&#39;CMD-SHELL&#39;, &quot;ps aux | grep &#39;[s]idekiq\ 6&#39; || false&quot;]</code></pre></div><h2 id="streaming-server"><a class="doc-anchor" href="#streaming-server">§</a>18.5 Streaming Server</h2>
 <p><em>(Streaming Server is Optional)</em></p>
 <p>Mastodon (and Fediverse) uses <a href="https://docs.joinmastodon.org/spec/activitypub/"><strong>ActivityPub</strong></a> for exchanging lots of info about Users and Posts. Our Web Server supports the <strong>HTTP Rest API</strong>, but there’s a more efficient way: <strong>WebSocket API</strong>.</p>
-<p>WebSocket is <strong>totally optional</strong>, Mastodon works fine without it, probably a little less efficient: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>WebSocket is <strong>totally optional</strong>, Mastodon works fine without it, probably a little less efficient: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L81-L102">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  streaming:
     ## You can uncomment the following lines if you want to not use the prebuilt image, for example if you have local code changes
     ## build:
@@ -1345,7 +1345,7 @@ exit</code></pre></div></li>
       # prettier-ignore
       test: [&#39;CMD-SHELL&#39;, &quot;curl -s --noproxy localhost localhost:4000/api/v1/streaming/health | grep -q &#39;OK&#39; || exit 1&quot;]</code></pre></div><h2 id="elasticsearch-server"><a class="doc-anchor" href="#elasticsearch-server">§</a>18.6 Elasticsearch Server</h2>
 <p><em>(Elasticsearch is optional)</em></p>
-<p>Elasticsearch is for <strong>Full-Text Search</strong>. Also totally optional, unless we require Full-Text Search for Users and Posts: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>Elasticsearch is for <strong>Full-Text Search</strong>. Also totally optional, unless we require Full-Text Search for Users and Posts: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L27-L58">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>  es:
     restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
@@ -1381,7 +1381,7 @@ exit</code></pre></div></li>
       nofile:
         soft: 65536
         hard: 65536</code></pre></div><h2 id="volumes-and-networks"><a class="doc-anchor" href="#volumes-and-networks">§</a>18.7 Volumes and Networks</h2>
-<p>Finally we declare the <strong>Volumes and Networks</strong> used by our Docker Containers: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml">docker-compose.yml</a></p>
+<p>Finally we declare the <strong>Volumes and Networks</strong> used by our Docker Containers: <a href="https://github.com/lupyuen/mastodon/blob/main/docker-compose.yml#L136-L146">docker-compose.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>volumes:
   postgres-data:
   redis-data:
@@ -1392,9 +1392,9 @@ networks:
   external_network:
   internal_network:
     internal: true</code></pre></div><h2 id="simplest-server-for-mastodon"><a class="doc-anchor" href="#simplest-server-for-mastodon">§</a>18.8 Simplest Server for Mastodon</h2>
-<p><em>Phew that looks might complicated!</em></p>
-<p>There’s a simpler way: Mastodon provides a Docker Compose Config for <strong>Mastodon Development</strong>.</p>
-<p>It’s good for Local Experimentation. But <strong>Not Recommended for Internet Hosting!</strong></p>
+<p><em>Phew that looks mighty complicated!</em></p>
+<p>There’s a simpler way: Mastodon provides a Docker Compose Config for <a href="https://github.com/mastodon/mastodon#docker"><strong>Mastodon Development</strong></a>.</p>
+<p>It’s good for Local Experimentation. But <strong>Not Safe for Internet Hosting!</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Based on https://github.com/mastodon/mastodon#docker
 git clone https://github.com/mastodon/mastodon --branch v4.3.2
 cd mastodon
