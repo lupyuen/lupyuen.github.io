@@ -150,6 +150,9 @@ docker run \
 docker cp \
   lupyuen:/usr/local/apache2/conf/httpd.conf \
   .
+docker cp \
+  httpd.conf \
+  lupyuen:/usr/local/apache2/conf/httpd.conf
 
 ## List HTML Files
 docker exec \
