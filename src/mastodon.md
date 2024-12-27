@@ -298,7 +298,7 @@ Prometheus returns a huge bunch of fields, we'll tweak this...
 
 <hr>
 
-__Query the Failed Builds:__ We repeat the above, but in Rust...
+__Query the Failed Builds:__ We repeat the above, but in Rust: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70)
 
 ```rust
 // Fetch the Failed Builds from Prometheus
@@ -322,7 +322,7 @@ let builds = &data["data"]["result"];
 
 <hr>
 
-__Reformat as Mastodon Posts:__ From JSON into Plain Text...
+__Reformat as Mastodon Posts:__ From JSON into Plain Text: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111)
 
 ```rust
 // For Each Failed Build...
@@ -352,7 +352,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 ![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
-__Post via Mastodon API:__ By creating a Status Update...
+__Post via Mastodon API:__ By creating a Status Update: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L126-L148)
 
 ```rust
   // Post to Mastodon
@@ -375,7 +375,7 @@ __Post via Mastodon API:__ By creating a Status Update...
 
 <hr>
 
-__Skip Duplicates:__ We remember everything in a JSON File, so we won't notify the same thing twice...
+__Skip Duplicates:__ We remember everything in a JSON File, so we won't notify the same thing twice: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L111-L126)
 
 ```rust
 // This JSON File remembers the Mastodon Posts for All Builds:
@@ -426,6 +426,8 @@ if let Some(users) = all_builds[&target]["users"].as_array() {
 1.  _Anything else we should monitor with Mastodon?_
 
     [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.
+
+    [__Watching the Watchmen:__](https://lupyuen.github.io/articles/mastodon#prometheus-to-mastodon) How to be sure that our Rust App runs forever, always pushing Mastodon Alerts?
 
     [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
 
@@ -586,7 +588,7 @@ done
 
 ![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
-Inside our Rust App, we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+Inside our Rust App, we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70)
 
 ```rust
 // Fetch the Failed Builds from Prometheus
@@ -610,7 +612,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-__For Every Failed Build:__ We compose the __Mastodon Post__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+__For Every Failed Build:__ We compose the __Mastodon Post__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111)
 
 ```rust
 // For Each Failed Build...
@@ -634,7 +636,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
   params.push(("status", status));
 ```
 
-And we __post to Mastodon__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+And we __post to Mastodon__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L126-L148)
 
 ```rust
   // Post to Mastodon
@@ -655,7 +657,7 @@ And we __post to Mastodon__: [main.rs](https://github.com/lupyuen/nuttx-promethe
 
 _Won't we see repeated Mastodon Posts?_
 
-That's why we __Remember the Mastodon Posts__ for All Builds, in a JSON File: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+That's why we __Remember the Mastodon Posts__ for All Builds, in a JSON File: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L16-L78)
 
 ```rust
 // Remembers the Mastodon Posts for All Builds:
@@ -677,7 +679,7 @@ if let Ok(file) = File::open(ALL_BUILDS_FILENAME) {
 }
 ```
 
-If the User already exists for the Board and Config: We __Skip the Mastodon Post__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+If the User already exists for the Board and Config: We __Skip the Mastodon Post__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L111-L126)
 
 ```rust
 // If the Mastodon Post already exists for Board and Config:
@@ -695,7 +697,7 @@ if let Some(status_id) = all_builds[&target]["status_id"].as_str() {
 
 And if the Mastodon Post already exists for the Board and Config: We __Reply to the Mastodon Post__. (To keep the Failed Builds threaded neatly, pic below)
 
-This is how we __Remember the Mastodon Post ID__ (Status ID): [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs)
+This is how we __Remember the Mastodon Post ID__ (Status ID): [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L148-L171)
 
 ```rust
 // Remember the Mastodon Post ID (Status ID)
