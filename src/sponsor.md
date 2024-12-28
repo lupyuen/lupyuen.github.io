@@ -6,4 +6,4 @@ Please sponsor my open-source writing and projects. Thank you so much! 🙏
 
 - [__PayPal__ <br> `paypal.me/lupyuen`](https://paypal.me/lupyuen)
 
-- [__GitHub Sponsors__ <br> `github.com/sponsors/lupyuen`](https://lupyuen.github.io/articles/sponsor)
+- [__GitHub Sponsors__ <br> `github.com/sponsors/lupyuen`](https://github.com/sponsors/lupyuen)
