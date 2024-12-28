@@ -586,6 +586,8 @@ for (( ; ; )); do
 done
 ```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40)
+
 ![Prometheus to Mastodon](https://lupyuen.github.io/images/mastodon-flow3.jpg)
 
 Inside our Rust App, we fetch the __Failed Builds from Prometheus__: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70)
@@ -724,6 +726,8 @@ file.write_all(json.as_bytes()).unwrap();
 ```
 
 Which gets saved into a __JSON File__.
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40)
 
 ![NuttX Builds threaded neatly](https://lupyuen.github.io/images/mastodon-register7.png)
 
