@@ -18,6 +18,16 @@ _Why are we doing this?_
 
 TODO
 
+# GitHub Migration: 2 Ways
+
+- __NuttX Mirror__: Auto-sync by Forgejo (e.g. every hour)
+
+  No migration of PRs and Issues
+
+- __NuttX Update__: Manual-sync by our script
+
+  Possible to migrate PRs and Issues (but ran into problems)
+
 # Install
 
 TODO: forgejo-install1.png
