@@ -307,7 +307,66 @@ nothing to commit, working tree clean
 
 Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
 To nuttx-forge:nuttx/nuttx-update
- + e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>13 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+ + e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+## Sync the Git Commits from NuttX Mirror Repo to NuttX Update Repo
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+## Checkout the Upstream and Downstream Repos
+tmp_dir=/tmp/sync-mirror-to-update
+rm -rf $tmp_dir
+mkdir $tmp_dir
+cd $tmp_dir
+git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
+git clone git@nuttx-forge:nuttx/nuttx-update downstream
+
+## Find the First Commit to Sync
+set +x ; echo &quot;**** Last Upstream Commit&quot; ; set -x
+pushd upstream
+upstream_commit=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+set +x ; echo &quot;**** Last Downstream Commit&quot; ; set -x
+pushd downstream
+downstream_commit=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+
+## If no new Commits to Sync: Quit
+if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
+  set +x ; echo &quot;**** No New Commits to Sync&quot; ; set -x
+  exit
+fi
+
+## Apply the Upstream Commits to Downstream Repo
+pushd downstream
+git pull git@nuttx-forge:nuttx/nuttx-mirror master
+git status
+popd
+
+## Commit the Patched Downstream Repo
+pushd downstream
+git push -f
+popd
+
+## Verify that Upstream and Downstream Commits are identical
+set +x ; echo &quot;**** Updated Downstream Commit&quot; ; set -x
+pushd downstream
+git pull
+downstream_commit2=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+
+## If Not Identical: We have a problem
+if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
+  set +x ; echo &quot;**** Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; set -x
+  exit 1
+fi
+
+set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>13 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
   -it \
   forgejo \
   /bin/bash -c \
