@@ -186,6 +186,7 @@ tar xvf GeoLite2-City_*.tar.gz
 tar xvf GeoLite2-Country_*.tar.gz
 cp GeoLite2-City_*/*.mmdb .
 cp GeoLite2-Country_*/*.mmdb .
+docker cp lupyuen:/usr/local/apache2/logs/access_log .
 goaccess access_log -o report.html --log-format=COMBINED --real-time-html --geoip-database=GeoLite2-City.mmdb &
-for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
 open report.html
+for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
