@@ -1,4 +1,4 @@
-# TODO Forgejo
+# (Experimental) Forgejo Git Forge for Apache NuttX RTOS
 
 📝 _31 Jan 2024_
 
@@ -16,7 +16,7 @@ _Why are we doing this?_
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
-TODO
+TODO: Live Site
 
 # GitHub Migration: 2 Ways
 
@@ -24,9 +24,13 @@ TODO
 
   No migration of PRs and Issues
 
+  Can't create PRs
+
 - __NuttX Update__: Manual-sync by our script
 
   Possible to migrate PRs and Issues (but ran into problems)
+
+  Can create PRs
 
 # Install
 
