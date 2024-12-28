@@ -4,7 +4,7 @@
 
 ![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-register7.png)
 
-We're out for an [__overnight hike__](https://strava.app.link/DDm6627hzPb), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
+We're out for an [__overnight hike__](https://strava.app.link/DDm6627hzPb), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets): _Arm, RISC-V, Xtensa, x64, ..._
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
