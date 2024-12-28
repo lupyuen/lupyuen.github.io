@@ -395,7 +395,7 @@ Some of the firmware samples [are documented here](https://pine64.github.io/bl60
 
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
@@ -429,7 +429,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
 
-    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples (of gadgets, not coffee) for evaluation and experimentation.
+    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://lupyuen.github.io/articles/sponsor)) and they send me samples (of gadgets, not coffee) for evaluation and experimentation.
 
     (I'm not connected to Bouffalo Lab either)
 

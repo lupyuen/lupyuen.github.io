@@ -530,7 +530,7 @@ Alternatively we may access BL602 GPIO Functions through another embedded operat
 
 Stay tuned for more NuttX!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/krkm6g/control_pinecone_bl602_rgb_led_with_gpio_and_pwm/?utm_source=share&utm_medium=web2x&context=3)
 

@@ -800,9 +800,9 @@ In the next article we shall head back to [__PineDio Stack BL604__](https://lupy
 
 -   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss the article on Reddit](https://www.reddit.com/r/grafana/comments/pw9hnz/grafana_data_source_for_the_things_network/)
 

@@ -427,9 +427,9 @@ I had lots of fun running Rust on NuttX, I hope you'll enjoy it too!
 
 If you're keen to make __Rust on NuttX__ better, or if there's something I should port to Rust on NuttX, please lemme know! 🙏
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/rust/comments/tj9a2s/rust_talks_i2c_on_apache_nuttx_rtos/)
 

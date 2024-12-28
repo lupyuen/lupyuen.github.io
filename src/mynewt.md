@@ -816,7 +816,7 @@ The port of Mynewt to PineCone BL602 continues here...
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Check out my articles](https://lupyuen.github.io)
 

@@ -1003,7 +1003,7 @@ Check out the new article on __Rust Wrapper for BL602 IoT SDK__...
 
 Please drop me a note if you would like to see more __Rust on BL602 IoT SDK__!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/mv83jl/run_rust_riscv_firmware_with_bl602_iot_sdk/)
 

@@ -1388,9 +1388,9 @@ Also we might __Simulate BL602 Rust Firmware__ in a Web Browser with __WebAssemb
 
     ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/owr2xp/rust_on_riscv_bl602_is_it_sunny/)
 

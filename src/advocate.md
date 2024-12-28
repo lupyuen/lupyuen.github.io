@@ -72,11 +72,11 @@ I still don't feel fully productive right now. Hopefully my health will improve 
 
 2020 was full of surprises... Can't wait to see what happens in 2021 😉
 
-I must thank [My Sponsors](https://github.com/sponsors/lupyuen) for supporting my Open Source work. It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
+I must thank [My Sponsors](https://lupyuen.github.io/articles/sponsor) for supporting my Open Source work. It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
 
 Happy Holidays Everyone! Stay Healthy, Have A Great 2021! 😀
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 

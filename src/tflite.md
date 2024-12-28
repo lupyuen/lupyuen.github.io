@@ -805,7 +805,7 @@ For the next article I shall head back to [__Rust on BL602__](https://lupyuen.gi
 
 Stay Tuned!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/o4u9e7/machine_learning_on_riscv_bl602_with_tensorflow/)
 

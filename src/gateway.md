@@ -588,9 +588,9 @@ __UPDATE:__ See these excellent articles by JF...
 
 -   [__"A driver for the LoRa backplate for the PinePhone"__](https://codingfield.com/blog/2021-11/a-driver-for-the-pinephone-lora-backplate/)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/PINE64official/comments/qrh81r/pinedio_lora_gateway_testing_the_prototype/)
 

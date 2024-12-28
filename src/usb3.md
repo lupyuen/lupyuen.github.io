@@ -1106,11 +1106,11 @@ Meanwhile please check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
 Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apache-software-foundation-announced-apache-nuttx12-0) for the inspiring and invigorating chat! 🙂
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/11zn3zx/nuttx_rtos_for_pinephone_simpler_usb_with_ehci/)
 

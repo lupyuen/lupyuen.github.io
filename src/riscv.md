@@ -553,9 +553,9 @@ As we've seen, NuttX is a tiny operating system that's perfect for experimenting
 
 [(We welcome __your contribution__ to Apache NuttX RTOS)](https://lupyuen.github.io/articles/pr)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36453810)
 

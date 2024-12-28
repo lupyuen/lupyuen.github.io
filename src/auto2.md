@@ -1315,9 +1315,9 @@ I hope Alice, Bob and Chow will have a great time creating NuttX Drivers and App
 
 Lemme know what you're building with PineDio Stack!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/RISCV/comments/uv2kzb/mostly_automated_testing_of_apache_nuttx_rtos_on/)
 

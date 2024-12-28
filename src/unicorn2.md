@@ -825,9 +825,9 @@ We've done so much today...
 
 I hope you'll join me in the next article as we implement the __Automated Daily Build and Test__ of NuttX for PinePhone.
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/rust/comments/11in9qe/clickable_call_graph_for_apache_nuttx_realtime/)
 

@@ -563,9 +563,9 @@ Please join me in the next article as we talk about Apache NuttX RTOS for Star64
 
 -   [__"Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/nuttx2)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36579963)
 

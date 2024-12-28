@@ -1366,7 +1366,7 @@ In the next article we shall check out the __BL706 Audio Video Board__...
 
 Stay tuned for more articles on BL602, BL604 and BL706!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/ofj34x/reverse_engineering_wifi_on_riscv_bl602/?utm_source=share&utm_medium=web2x&context=3)
 

@@ -505,9 +505,9 @@ Imagine connecting a community of Air Quality Sensors miles apart (because of Lo
 
 Stay Tuned!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/sptmad/connect_ikea_air_quality_sensor_to_apache_nuttx_os/?utm_source=share&utm_medium=web2x&context=3)
 

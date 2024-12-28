@@ -1043,9 +1043,9 @@ And then back to __Zig on Apache NuttX RTOS__...
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/vbvj9e/build_an_iot_app_with_zig_and_lorawan/)
 
@@ -1063,7 +1063,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1533595486577258496)
 
-1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
+1.  This article was inspired by a question from my [__GitHub Sponsor__](https://lupyuen.github.io/articles/sponsor): "Can we run Zig on BL602 with Apache NuttX RTOS?"
 
 1.  These articles were super helpful for __Zig-to-C Interoperability__...
 

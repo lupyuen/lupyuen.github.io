@@ -1013,9 +1013,9 @@ Today we have explored the Bestest Outcome for __learners to code and test Rhai 
 
 Soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://lupyuen.github.io/articles/pinedio2)... As we explore whether it's feasible to teach __Rhai (and Rust) as a Safer Way__ to create firmware for BL602 and BL604.
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/rust/comments/phm2a5/rust_on_riscv_bl602_rhai_scripting/)
 

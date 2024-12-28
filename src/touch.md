@@ -1115,9 +1115,9 @@ In the next article we shall tackle the (happy) problem of __too many GPIOs__ on
 
 Stay Tuned!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/RISCV/comments/u7rnyt/nuttx_touch_panel_driver_for_pinedio_stack_bl604/)
 

@@ -652,9 +652,9 @@ Check out the updates here...
 
 (Spoiler: It really works!)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/v2zgvh/zig_on_riscv_bl602_quick_peek_with_apache_nuttx/)
 
@@ -672,7 +672,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
 
-1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
+1.  This article was inspired by a question from my [__GitHub Sponsor__](https://lupyuen.github.io/articles/sponsor): "Can we run Zig on BL602 with Apache NuttX RTOS?"
 
 1.  For Embedded Platforms (like Apache NuttX RTOS), we need to implement our own __Panic Handler__...
 

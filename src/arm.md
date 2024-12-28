@@ -961,9 +961,9 @@ But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/wwz1ep/apache_nuttx_rtos_on_arm_cortexa53_how_it_might/)
 

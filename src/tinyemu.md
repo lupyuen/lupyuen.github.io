@@ -720,9 +720,9 @@ Today we've built some cool things that might __Emulate NuttX Gadgets__ in the W
 
 How will you use __NuttX in a Web Browser__? Please lemme know 🙏
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=38985760)
 

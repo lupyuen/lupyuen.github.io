@@ -1293,7 +1293,7 @@ Could this be the better way to learn Embedded Programming on modern microcontro
 
 Let's build it and find out! 🙏 👍 😀
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/nm6zd1/simulate_riscv_bl602_with_webassembly_ulisp_and/)
 

@@ -463,7 +463,7 @@ Actually ChatGPT has taught me the value of Authenticity and __Real-Life Experie
 
     Because ChatGPT will become the perfect Copypasta Teacher!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

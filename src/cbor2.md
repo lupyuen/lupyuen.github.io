@@ -624,9 +624,9 @@ But first we'll take a short detour to explore [__Rust on NuttX__](https://lupyu
 
 Stay Tuned!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/embedded_oc/comments/s0507e/encode_sensor_data_with_cbor_on_apache_nuttx_os/)
 

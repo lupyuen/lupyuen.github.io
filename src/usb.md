@@ -1582,9 +1582,9 @@ Now that we have a __Basic LoRa Driver for PineDio USB__, we can explore all kin
 
 Lemme know what you would like to see!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/PINE64official/comments/qhiuer/build_a_linux_driver_for_pinedio_lora_sx1262_usb/)
 

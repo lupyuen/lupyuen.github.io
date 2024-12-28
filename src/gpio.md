@@ -921,7 +921,7 @@ And __Timers__ so that we can poll for GPIO Inputs.
 
 Stay Tuned!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/embedded_oc/comments/kxhlg0/mynewt_gpio_ported_to_pinecone_bl602_riscv_board/?utm_source=share&utm_medium=web2x&context=3)
 

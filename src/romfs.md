@@ -686,9 +686,9 @@ Today we solved a hefty headache in our port of TCC Compiler to WebAssembly: __M
 
 _(NuttX becomes a Triple Treat: In the C Compiler, in the Apps and in the Emulator!)_
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX and Zig Communities) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=39331107)
 

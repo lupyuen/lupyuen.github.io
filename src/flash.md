@@ -974,7 +974,7 @@ I had fun reverse-engineering the BL602 source code... And I'm delighted that th
 
 I hope to uncover more BL602 goodies in 2021. Stay tuned!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 

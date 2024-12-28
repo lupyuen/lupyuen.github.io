@@ -863,9 +863,9 @@ After 14 months of flipping the jumper and smashing the button on BL602, I'm so 
 
 I hope the Flash and Test Script will make your NuttX Development more productive on BL602... Possibly on other microcontrollers too!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/sbzwon/auto_flash_and_test_nuttx_on_riscv_bl602/)
 

@@ -509,9 +509,9 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=41958051)
 

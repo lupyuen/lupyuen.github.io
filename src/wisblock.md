@@ -692,7 +692,7 @@ We have come a loooong way since I first [__experimented with LoRa in 2016__](ht
 
 Now is the __right time to build LoRa gadgets.__ Stay tuned for more LoRa Adventures!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/embedded_oc/comments/m2m5mx/rakwireless_wisblock_talks_lora_with_pinecone/?utm_source=share&utm_medium=web2x&context=3)
 

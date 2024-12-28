@@ -585,7 +585,7 @@ And we shall __visualise the Sensor Data__ with __Prometheus and Grafana__...
 
 Stay Tuned!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/ps9l4w/the_things_network_on_pinedio_stack_bl604_riscv/)
 

@@ -596,7 +596,7 @@ In the next article, PineDio Stack shall transmit data to the cloud via the publ
 
 (Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄)
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/pp5btu/lorawan_on_pinedio_stack_bl604_riscv_board/)
 

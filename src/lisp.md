@@ -1464,7 +1464,7 @@ Could this be the better way to learn Embedded Programming on modern microcontro
 
 Let's build it and find out! 🙏 👍 😀
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/nc7gce/ulisp_and_blockly_on_pinecone_bl602_riscv_board/)
 

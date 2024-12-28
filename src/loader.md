@@ -656,9 +656,9 @@ I had fun reverse enginnering the BL602 EFlash Loader... My first time using Ghi
 
 And I hope you found this article useful for real-world reverse engineering with Ghidra.
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/ReverseEngineering/comments/sht2hj/bl602_eflash_loader_reverse_engineered_with_ghidra/)
 

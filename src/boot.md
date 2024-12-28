@@ -1094,7 +1094,7 @@ For my 21st article I shall explore Machine Learning with __TensorFlow Lite on B
 
 Stay Tuned!
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss the article on Reddit](https://www.reddit.com/r/RISCV/comments/nvli0k/bl602_bootloader/)
 

@@ -22,7 +22,7 @@ The programs in these articles have been tested on __PineDio Stack BL604__ and _
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
-If you find this book useful... [__please sponsor me a coffee__](https://github.com/sponsors/lupyuen). Thank you! 🙏 😀
+If you find this book useful... [__please sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor). Thank you! 🙏 😀
 
 ![Introduction to BL602](https://lupyuen.github.io/images/book-pinecone.jpg)
 
@@ -588,7 +588,7 @@ Check this book again for future updates...
 
 -   [__"Better Open Source Advocate"__](https://lupyuen.github.io/articles/advocate)
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this book on Reddit__](https://www.reddit.com/r/RISCV/comments/lnumsv/the_riscv_bl602_book/?utm_source=share&utm_medium=web2x&context=3)
 

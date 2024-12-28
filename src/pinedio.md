@@ -840,7 +840,7 @@ I hope you will join JF and me as we continue our testing of PineDio Stack.
 
 (Maybe real soon we'll create toasters, microwave ovens and pressure cookers with PineDio Stack!)
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/pdrepw/pinedio_stack_bl604_riscv_board_testing_the/)
 

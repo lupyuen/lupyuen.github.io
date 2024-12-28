@@ -739,9 +739,9 @@ In the next article I'll head back to [__PineDio Stack BL604__](https://lupyuen.
 
 (Thankfully we now have a proper platform for Sensor Data visualisation and analysis: Prometheus + Grafana!)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/TheThingsNetwork/comments/qclqxg/monitor_iot_devices_in_the_things_network_with/)
 

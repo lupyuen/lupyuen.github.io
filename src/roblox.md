@@ -1130,9 +1130,9 @@ In the next article we shall head back to PineDio Stack coding, as we read and t
 
 -   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss the article on Reddit](https://www.reddit.com/r/robloxgamedev/comments/q3utea/iot_digital_twin_with_roblox_and_the_things/)
 

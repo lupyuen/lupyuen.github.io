@@ -1010,7 +1010,7 @@ There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalol
 
 🙏 👍 😀
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/lehhrv/pinecone_bl602_talks_spi_too/?utm_source=share&utm_medium=web2x&context=3)
 

@@ -2,8 +2,8 @@
 
 Please sponsor my open-source writing and projects. Thank you so much! 🙏
 
-- [__Revolut:__ `revolut.me/lupyuen`](https://revolut.me/lupyuen)
+- [__Revolut__ <br> `revolut.me/lupyuen`](https://revolut.me/lupyuen)
 
-- [__PayPal:__ `paypal.me/lupyuen`](https://paypal.me/lupyuen)
+- [__PayPal__ <br> `paypal.me/lupyuen`](https://paypal.me/lupyuen)
 
-- [__GitHub Sponsors:__ `github.com/sponsors/lupyuen`](https://github.com/sponsors/lupyuen)
+- [__GitHub Sponsors__ <br> `github.com/sponsors/lupyuen`](https://lupyuen.github.io/articles/sponsor)

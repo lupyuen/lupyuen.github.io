@@ -923,9 +923,9 @@ In the next article we'll talk about __Rust and I2C__ on NuttX...
 
 If you're keen to make __Rust on NuttX__ better, please lemme know! 🙏
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [Sponsor me a coffee](https://lupyuen.github.io/articles/sponsor)
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/rust/comments/s1qojy/rust_on_apache_nuttx_os/)
 

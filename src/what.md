@@ -104,7 +104,7 @@ _Is Apache paying you to do this?_
 
 I'm proud to volunteer as a member of the Apache NuttX __Project Management Committee__.
 
-I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work on PinePhone Education!
+I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work on PinePhone Education!
 
 If we're keen to boot NuttX on our PinePhone, please read on...
 
@@ -161,7 +161,7 @@ For developers who prefer to run NuttX Commands over a __Command-Line Interface_
 
 [_NuttX Command-Line Interface for Developers_](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX for PinePhone wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! NuttX for PinePhone wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

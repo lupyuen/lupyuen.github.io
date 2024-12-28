@@ -467,11 +467,11 @@ These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about.
 
   (With our __Updated Docker Image__ for Continuous Integration)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have done better, I'm grateful for your patience and understanding 🙏
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=41289120)
 

@@ -493,9 +493,9 @@ I hope this article has provided everything you need to get started on creating 
 
 Lemme know what you're building with PineDio Stack!
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) for supporting my work! This article wouldn't have been possible without your support.
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/RISCV/comments/u0wwez/pinedio_stack_bl604_runs_apache_nuttx_rtos/)
 
