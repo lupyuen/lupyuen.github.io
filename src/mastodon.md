@@ -10,7 +10,7 @@ Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert ema
 
 ![NuttX Failed Builds appear as Mastodon Alerts](https://lupyuen.github.io/images/mastodon-mobile3.png)
 
-In this article: __Mastodon__ becomes a fun new way to broadcast NuttX Alerts in real time. We shall...
+In this article: __Mastodon__ (pic above) becomes a fun new way to broadcast NuttX Alerts in real time. We shall...
 
 - Install our __Mastodon Server__ with Docker Compose (or Rancher Desktop)
 
