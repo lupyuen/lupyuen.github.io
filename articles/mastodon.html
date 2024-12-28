@@ -92,7 +92,7 @@
 <li><a href="#volumes-and-networks" title="Volumes and Networks">18.7 Volumes and Networks</a><ul></ul></li>
 <li><a href="#simplest-server-for-mastodon" title="Simplest Server for Mastodon">18.8 Simplest Server for Mastodon</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>29 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)" /></p>
-<p>We’re out for an <a href="https://strava.app.link/DDm6627hzPb"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
+<p>We’re out for an <a href="https://strava.app.link/DDm6627hzPb"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>: <em>Arm, RISC-V, Xtensa, x64, …</em></p>
 <p>Can we be 100% sure that <strong>NuttX is OK?</strong> Without getting spammed by <strong>alert emails</strong> all night? (Sorry we got zero budget for <em>“paging duty”</em> services)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="NuttX Failed Builds appear as Mastodon Alerts" /></p>
 <p>In this article: <strong>Mastodon</strong> becomes a fun new way to broadcast NuttX Alerts in real time. We shall…</p>
@@ -566,6 +566,7 @@ for (( ; ; )); do
   ## Wait a while
   date ; sleep 900
 done</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
 <p>Inside our Rust App, we fetch the <strong>Failed Builds from Prometheus</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L32-L70">main.rs</a></p>
 
@@ -683,6 +684,7 @@ all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_i
 <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(ALL_BUILDS_FILENAME).unwrap();
 file.write_all(json.as_bytes()).unwrap();</code></pre></div>
 <p>Which gets saved into a <strong>JSON File</strong>.</p>
+<p><a href="https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds threaded neatly" /></p>
 <h1 id="appendix-install-our-mastodon-server"><a class="doc-anchor" href="#appendix-install-our-mastodon-server">§</a>11 Appendix: Install our Mastodon Server</h1>
 <p>Here are the steps to install Mastodon Server with Docker Compose. We tested with <a href="https://rancherdesktop.io/"><strong>Rancher Desktop on macOS</strong></a>, the same steps will probably work on <a href="https://docs.docker.com/engine/install/ubuntu/"><strong>Docker Desktop</strong></a> for Linux / macOS / Windows.</p>
