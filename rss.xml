@@ -4,6 +4,20 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)</title>
+            <link>https://lupyuen.github.io/articles/mastodon</link>
+            <description><![CDATA[We're out for a 50 km overnight hike. Our Build Farm for Apache NuttX RTOS runs non-stop all day, all night. Continuously compiling over 1,000 NuttX Targets. Can we be 100% sure that NuttX is OK? Without getting spammed by alert emails all night? In this article: We talk about Mastodon as a fun new way to broadcast NuttX Alerts in real time.]]></description>
+            <guid>https://lupyuen.github.io/articles/mastodon</guid>
+            <pubDate>Sun, 29 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Buy a Coffee for Lup Yuen Lee</title>
+            <link>https://lupyuen.github.io/articles/sponsor</link>
+            <description><![CDATA[Please sponsor my open-source writing and projects. Thank you so much!]]></description>
+            <guid>https://lupyuen.github.io/articles/sponsor</guid>
+            <pubDate>Sat, 28 Dec 2024 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)</title>
             <link>https://lupyuen.github.io/articles/ci7</link>
             <description><![CDATA[Every Day: Apache NuttX RTOS on QEMU RISC-V Emulator fails our Continuous Integration Test. The Bug Stops Here! In this article, we study the internals of a NuttX CI Test (Continuous Integration) as we fix the bug.]]></description>
