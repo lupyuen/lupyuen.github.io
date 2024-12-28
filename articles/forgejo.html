@@ -65,21 +65,22 @@
 
     <h1 class="title">TODO Forgejo</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#install" title="Install">1 Install</a><ul></ul></li>
-<li><a href="#mirror" title="Mirror">2 Mirror</a><ul></ul></li>
-<li><a href="#update" title="Update">3 Update</a><ul></ul></li>
-<li><a href="#home" title="Home">4 Home</a><ul></ul></li>
-<li><a href="#pr" title="PR">5 PR</a><ul></ul></li>
-<li><a href="#actions" title="Actions">6 Actions</a><ul></ul></li>
-<li><a href="#ssh" title="SSH">7 SSH</a><ul></ul></li>
-<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
-<li><a href="#change-the-default-page" title="Change the Default Page">9 Change the Default Page</a><ul></ul></li>
-<li><a href="#test-ssh-key" title="Test SSH Key">10 Test SSH Key</a><ul></ul></li>
-<li><a href="#use-ssh-key" title="Use SSH Key">11 Use SSH Key</a><ul></ul></li>
-<li><a href="#sync-mirror-to-update" title="Sync Mirror to Update">12 Sync Mirror to Update</a><ul></ul></li>
-<li><a href="#backup-forgejo" title="Backup Forgejo">13 Backup Forgejo</a><ul></ul></li>
-<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">14 SSH Fails with Local Filesystem</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#github-migration-2-ways" title="GitHub Migration: 2 Ways">1 GitHub Migration: 2 Ways</a><ul></ul></li>
+<li><a href="#install" title="Install">2 Install</a><ul></ul></li>
+<li><a href="#mirror" title="Mirror">3 Mirror</a><ul></ul></li>
+<li><a href="#update" title="Update">4 Update</a><ul></ul></li>
+<li><a href="#home" title="Home">5 Home</a><ul></ul></li>
+<li><a href="#pr" title="PR">6 PR</a><ul></ul></li>
+<li><a href="#actions" title="Actions">7 Actions</a><ul></ul></li>
+<li><a href="#ssh" title="SSH">8 SSH</a><ul></ul></li>
+<li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
+<li><a href="#change-the-default-page" title="Change the Default Page">10 Change the Default Page</a><ul></ul></li>
+<li><a href="#test-ssh-key" title="Test SSH Key">11 Test SSH Key</a><ul></ul></li>
+<li><a href="#use-ssh-key" title="Use SSH Key">12 Use SSH Key</a><ul></ul></li>
+<li><a href="#sync-mirror-to-update" title="Sync Mirror to Update">13 Sync Mirror to Update</a><ul></ul></li>
+<li><a href="#backup-forgejo" title="Backup Forgejo">14 Backup Forgejo</a><ul></ul></li>
+<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">15 SSH Fails with Local Filesystem</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">16 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like?</p>
 <p><em>Why are we doing this?</em></p>
@@ -98,14 +99,25 @@
 </li>
 </ul>
 <p>TODO</p>
-<h1 id="install"><a class="doc-anchor" href="#install">§</a>1 Install</h1>
+<h1 id="github-migration-2-ways"><a class="doc-anchor" href="#github-migration-2-ways">§</a>1 GitHub Migration: 2 Ways</h1>
+<ul>
+<li>
+<p><strong>NuttX Mirror</strong>: Auto-sync by Forgejo (e.g. every hour)</p>
+<p>No migration of PRs and Issues</p>
+</li>
+<li>
+<p><strong>NuttX Update</strong>: Manual-sync by our script</p>
+<p>Possible to migrate PRs and Issues (but ran into problems)</p>
+</li>
+</ul>
+<h1 id="install"><a class="doc-anchor" href="#install">§</a>2 Install</h1>
 <p>TODO: forgejo-install1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="TODO" /></p>
 <p>TODO: forgejo-install2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install2.png" alt="TODO" /></p>
 <p>TODO: forgejo-install3.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
-<h1 id="mirror"><a class="doc-anchor" href="#mirror">§</a>2 Mirror</h1>
+<h1 id="mirror"><a class="doc-anchor" href="#mirror">§</a>3 Mirror</h1>
 <p>TODO: forgejo-mirror1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="TODO" /></p>
 <p>TODO: forgejo-mirror2.png</p>
@@ -129,7 +141,7 @@
 <p>TODO: forgejo-mirror11.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror11.png" alt="TODO" /></p>
 <p>TODO: forgejo-mirror12.png</p>
-<h1 id="update"><a class="doc-anchor" href="#update">§</a>3 Update</h1>
+<h1 id="update"><a class="doc-anchor" href="#update">§</a>4 Update</h1>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="TODO" /></p>
 <p>TODO: forgejo-update1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="TODO" /></p>
@@ -149,12 +161,12 @@
 <p><img src="https://lupyuen.github.io/images/forgejo-update8.png" alt="TODO" /></p>
 <p>TODO: forgejo-update9.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="TODO" /></p>
-<h1 id="home"><a class="doc-anchor" href="#home">§</a>4 Home</h1>
+<h1 id="home"><a class="doc-anchor" href="#home">§</a>5 Home</h1>
 <p>TODO: forgejo-home.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="TODO" /></p>
 <p>TODO: forgejo-home2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
-<h1 id="pr"><a class="doc-anchor" href="#pr">§</a>5 PR</h1>
+<h1 id="pr"><a class="doc-anchor" href="#pr">§</a>6 PR</h1>
 <p>TODO: forgejo-pr1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr1.png" alt="TODO" /></p>
 <p>TODO: forgejo-pr2.png</p>
@@ -169,17 +181,17 @@
 <p><img src="https://lupyuen.github.io/images/forgejo-pr6.png" alt="TODO" /></p>
 <p>TODO: forgejo-pr7.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr7.png" alt="TODO" /></p>
-<h1 id="actions"><a class="doc-anchor" href="#actions">§</a>6 Actions</h1>
+<h1 id="actions"><a class="doc-anchor" href="#actions">§</a>7 Actions</h1>
 <p>TODO: forgejo-actions1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="TODO" /></p>
 <p>TODO: forgejo-commits.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
-<h1 id="ssh"><a class="doc-anchor" href="#ssh">§</a>7 SSH</h1>
+<h1 id="ssh"><a class="doc-anchor" href="#ssh">§</a>8 SSH</h1>
 <p>TODO: forgejo-ssh.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
 <p>TODO: forgejo-ssh2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://forgejo.org/docs/latest/admin/installation-docker/
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://forgejo.org/docs/latest/admin/installation-docker/
 
 docker pull codeberg.org/forgejo/forgejo:9
 cd $HOME
@@ -241,7 +253,7 @@ Migrate Repo
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
 ignore
 
-Fun to watch the sync from nuttx</code></pre></div><h1 id="change-the-default-page"><a class="doc-anchor" href="#change-the-default-page">§</a>9 Change the Default Page</h1><div class="example-wrap"><pre class="language-text"><code>/data/gitea/conf/app.ini
+Fun to watch the sync from nuttx</code></pre></div><h1 id="change-the-default-page"><a class="doc-anchor" href="#change-the-default-page">§</a>10 Change the Default Page</h1><div class="example-wrap"><pre class="language-text"><code>/data/gitea/conf/app.ini
 
 sudo docker cp \
   forgejo:/data/gitea/conf/app.ini \
@@ -260,7 +272,7 @@ sudo docker cp \
 sudo docker compose down
 sudo docker compose up</code></pre></div>
 <p>Looks more sensible</p>
-<h1 id="test-ssh-key"><a class="doc-anchor" href="#test-ssh-key">§</a>10 Test SSH Key</h1>
+<h1 id="test-ssh-key"><a class="doc-anchor" href="#test-ssh-key">§</a>11 Test SSH Key</h1>
 <p>TODO: SSH Port not exposed for security reasons</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
 Call it ~/.ssh/nuttx-forge
@@ -281,12 +293,12 @@ Click Add Key
 $ ssh -T git@nuttx-forge  
 
 Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
-If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div><h1 id="use-ssh-key"><a class="doc-anchor" href="#use-ssh-key">§</a>11 Use SSH Key</h1><div class="example-wrap"><pre class="language-text"><code>git clone git@nuttx-forge:nuttx/test.git
+If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div><h1 id="use-ssh-key"><a class="doc-anchor" href="#use-ssh-key">§</a>12 Use SSH Key</h1><div class="example-wrap"><pre class="language-text"><code>git clone git@nuttx-forge:nuttx/test.git
 cd test
 echo Testing &gt;test.txt
 git add .
 git commit --all --message=&quot;Test Commit&quot;
-git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a class="doc-anchor" href="#sync-mirror-to-update">§</a>12 Sync Mirror to Update</h1>
+git push -u origin main</code></pre></div><h1 id="sync-mirror-to-update"><a class="doc-anchor" href="#sync-mirror-to-update">§</a>13 Sync Mirror to Update</h1>
 <p>TODO: Requires SSH Access, to work around the password</p>
 <p>https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh</p>
 <div class="example-wrap"><pre class="language-text"><code>./sync-mirror-to-update.sh</code></pre></div>
@@ -366,7 +378,7 @@ if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   exit 1
 fi
 
-set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>13 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
+set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>14 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
   -it \
   forgejo \
   /bin/bash -c \
@@ -376,7 +388,7 @@ sudo docker cp \
   forgejo:/tmp/data.tar \
   .</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>14 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
+<h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>15 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
 
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
@@ -404,7 +416,7 @@ drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
 5473c234c7eb:/data/git#
 
 Won&#39;t work:
-exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>16 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
