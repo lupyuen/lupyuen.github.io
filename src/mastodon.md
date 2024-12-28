@@ -322,7 +322,7 @@ let builds = &data["data"]["result"];
 
 <hr>
 
-__Reformat as Mastodon Posts:__ From JSON into Plain Text: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111)
+__Reformat as Mastodon Posts:__ We turn JSON into Plain Text: [main.rs](https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111)
 
 ```rust
 // For Each Failed Build...
@@ -407,17 +407,17 @@ And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#a
 
 1.  _Will we accept Regular Users on our Mastodon Server?_
 
-    Probably not? We have __Zero Budget for User Moderation__. We'll ask folks to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.
+    Probably not? We have __Zero Budget for User Moderation__. Instead we'll ask NuttX Devs to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.
 
 1.  _But any Fediverse User can reply to our Mastodon Posts?_
 
-    Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](https://github.com/apache/nuttx/issues) that someone has created for the Failed Build.
+    Yeah this might be helpful! NuttX Devs can discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](https://github.com/apache/nuttx/issues) that was created for the Failed Build.
 
 1.  _How will we know when a Failed Build recovers?_
 
     This gets tricky. Should we pester folks with an __Extra Push Notification__ whenever a Failed Build recovers?
 
-    For Complex Notifications: We might need to integrate [__Prometheus Alertmanager__](https://prometheus.io/docs/alerting/latest/alertmanager/) with Mastodon.
+    For Complex Notifications: We might integrate [__Prometheus Alertmanager__](https://prometheus.io/docs/alerting/latest/alertmanager/) with Mastodon.
 
 1.  _Suppose I'm interested only in rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?_
 
@@ -461,7 +461,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[__lupyuen.github.io/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
+[__lupyuen.org/src/mastodon.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md)
 
 ![Hefty Ubuntu Xeon Workstation for NuttX Build Farm](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 

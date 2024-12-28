@@ -617,7 +617,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[__lupyuen.github.io/src/bisect.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md)
+[__lupyuen.org/src/bisect.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bisect.md)
 
 # Appendix: Inspect Executable Size with Bloaty
 
