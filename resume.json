@@ -164,6 +164,13 @@
       "summary": "We're out for a 50 km overnight hike. Our Build Farm for Apache NuttX RTOS runs non-stop all day, all night. Continuously compiling over 1,000 NuttX Targets. Can we be 100% sure that NuttX is OK? Without getting spammed by alert emails all night? In this article: We talk about Mastodon as a fun new way to broadcast NuttX Alerts in real time."
     },
     {
+      "name": "Buy a Coffee for Lup Yuen Lee",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2024-12-28",
+      "website": "https://lupyuen.github.io/articles/sponsor",
+      "summary": "Please sponsor my open-source writing and projects. Thank you so much!"
+    },
+    {
       "name": "Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-22",
