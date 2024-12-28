@@ -150,6 +150,12 @@ docker restart lupyuen
 ## Copy HTTPD Config. Redirect /articles/ci7 to https://lupyuen.org/articles/ci7.html
 ## <IfModule alias_module>
 ##     RedirectMatch /articles/([^.]+)$ https://lupyuen.org/articles/$1.html
+## <IfModule log_config_module>
+##     CustomLog "logs/access_log" combined
+## ErrorLog "logs/error_log"
+## LoadModule remoteip_module modules/mod_remoteip.so
+## RemoteIPHeader X-Forwarded-For
+
 docker cp \
   lupyuen:/usr/local/apache2/conf/httpd.conf \
   .
@@ -168,3 +174,7 @@ dest=lupyuen:/usr/local/apache2/htdocs
 for filename in $src/*; do
   docker cp $filename $dest
 done
+
+## Show the logs
+docker exec lupyuen tail -f logs/access_log
+docker exec lupyuen tail -f logs/error_log
