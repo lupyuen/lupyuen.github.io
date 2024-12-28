@@ -354,7 +354,7 @@ build_score &lt; 0.5</code></pre></div>
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/mastodon#appendix-query-prometheus-for-nuttx-builds">(Explained here)</a></p>
 <hr>
-<p><strong>Reformat as Mastodon Posts:</strong> From JSON into Plain Text: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111">main.rs</a></p>
+<p><strong>Reformat as Mastodon Posts:</strong> We turn JSON into Plain Text: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/src/main.rs#L78-L111">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// For Each Failed Build...
 </span><span class="kw">for </span>build <span class="kw">in </span>builds.as_array().unwrap() {
@@ -422,16 +422,16 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <ol>
 <li>
 <p><em>Will we accept Regular Users on our Mastodon Server?</em></p>
-<p>Probably not? We have <strong>Zero Budget for User Moderation</strong>. We’ll ask folks to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.</p>
+<p>Probably not? We have <strong>Zero Budget for User Moderation</strong>. Instead we’ll ask NuttX Devs to register for an account on any Fediverse Server. The Push Notifications for Failed Builds will work fine with any server.</p>
 </li>
 <li>
 <p><em>But any Fediverse User can reply to our Mastodon Posts?</em></p>
-<p>Yeah this could be useful! We could discuss a specific Failed Build. Or hyperlink to the <a href="https://github.com/apache/nuttx/issues"><strong>NuttX Issue</strong></a> that someone has created for the Failed Build.</p>
+<p>Yeah this might be helpful! NuttX Devs can discuss a specific Failed Build. Or hyperlink to the <a href="https://github.com/apache/nuttx/issues"><strong>NuttX Issue</strong></a> that was created for the Failed Build.</p>
 </li>
 <li>
 <p><em>How will we know when a Failed Build recovers?</em></p>
 <p>This gets tricky. Should we pester folks with an <strong>Extra Push Notification</strong> whenever a Failed Build recovers?</p>
-<p>For Complex Notifications: We might need to integrate <a href="https://prometheus.io/docs/alerting/latest/alertmanager/"><strong>Prometheus Alertmanager</strong></a> with Mastodon.</p>
+<p>For Complex Notifications: We might integrate <a href="https://prometheus.io/docs/alerting/latest/alertmanager/"><strong>Prometheus Alertmanager</strong></a> with Mastodon.</p>
 </li>
 <li>
 <p><em>Suppose I’m interested only in rv-virt:python. Can I subscribe to the Specific Alert via Mastodon / Fediverse / ActivityPub?</em></p>
@@ -475,7 +475,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </li>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.github.io/src/mastodon.md</strong></a></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mastodon.md"><strong>lupyuen.org/src/mastodon.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Hefty Ubuntu Xeon Workstation for NuttX Build Farm" /></p>
 <span style="font-size:90%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Hefty Ubuntu Xeon Workstation for NuttX Build Farm</em></a></p>
