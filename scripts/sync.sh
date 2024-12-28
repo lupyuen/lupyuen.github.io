@@ -137,16 +137,19 @@ fi
 
 exit
 
-# Setup for lupyuen.org
-# Based on https://hub.docker.com/_/httpd
+## Setup for lupyuen.org
+## Based on https://hub.docker.com/_/httpd
 docker run \
   -dit \
   --name lupyuen \
   -p 3003:80 \
   -v "$PWD":/usr/local/apache2/htdocs/ \
   httpd:2.4-alpine
+docker restart lupyuen
 
-## Copy HTTPD Config
+## Copy HTTPD Config. Redirect /articles/ci7 to https://lupyuen.org/articles/ci7.html
+## <IfModule alias_module>
+##     RedirectMatch /articles/([^.]+)$ https://lupyuen.org/articles/$1.html
 docker cp \
   lupyuen:/usr/local/apache2/conf/httpd.conf \
   .
