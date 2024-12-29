@@ -844,6 +844,12 @@ sleep 300
 <p><strong>For macOS:</strong> Copy to <em>/opt/homebrew/etc/grafana/grafana.ini</em></p>
 </li>
 </ul>
+<p>To log in locally as <strong>Grafana Administrator</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Edit grafana.ini set these entries, restart Grafana
+[auth]
+disable_login = false
+disable_login_form = false
+## Then undo the above changes and restart Grafana</code></pre></div>
 <p>Watch out for the pesky <strong>WordPress Malware Bots</strong>! This might help: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/show-log.sh">show-log.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Show Logs from Grafana
 log_file=/var/log/grafana/grafana.log ## For Ubuntu
