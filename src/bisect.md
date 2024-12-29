@@ -480,6 +480,16 @@ This CI Test looks more complicated than we thought. CI Test appears to be __fai
 
 __Lesson Learnt:__ Git Bisect works best for bugs that are __reliably reproducible__ for a specified commit!
 
+_Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?_
+
+Yep sure Git Bisect will work with any NuttX Device that be __controlled by a script__! For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)
+
+- [__"Daily Automated Testing for Milk-V Duo S RISC-V SBC"__](https://lupyuen.github.io/articles/sg2000a)
+
+Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) for Git Bisect...
+
+- [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
+
 # Fixing The Bug
 
 _OK so Git Bisect wasn't 100% successful. How did we fix the bug?_
@@ -588,16 +598,6 @@ We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 - [__"Inspect Executable Size with Bloaty"__](https://lupyuen.github.io/articles/bisect#appendix-inspect-executable-size-with-bloaty)
 
 # What's Next
-
-_Can we use Git Bisect with Real Hardware? On an Actual Hardware Device?_
-
-Yep sure Git Bisect will work with any NuttX Device that be __controlled by a script__! For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which will work with Git Bisect)
-
-- [__"Daily Automated Testing for Milk-V Duo S RISC-V SBC"__](https://lupyuen.github.io/articles/sg2000a)
-
-Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) for Git Bisect...
-
-- [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
 
 TODO: Why Git Bisect? Because each test runs for 1 hour!
 
