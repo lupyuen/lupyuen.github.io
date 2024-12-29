@@ -6,7 +6,7 @@
 
 <span style="font-size:80%">
 
-> _"Because I'm bad, I'm bad, shamone (bad, bad, really, really bad) <br>
+> _"Because I'm bad, I'm bad, shamone <br> (bad, bad, really, really bad) <br>
 You know I'm bad, I'm bad (bad, bad) ... <br>
 And the whole world has to answer right now <br>
 Just to tell you once again <br>
