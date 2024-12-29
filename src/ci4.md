@@ -909,6 +909,16 @@ Use this (safer) __Grafana Configuration__: [grafana.ini](https://github.com/lup
 
 - __For macOS:__ Copy to _/opt/homebrew/etc/grafana/grafana.ini_
 
+To log in locally as __Grafana Administrator__...
+
+```bash
+## Edit grafana.ini set these entries, restart Grafana
+[auth]
+disable_login = false
+disable_login_form = false
+## Then undo the above changes and restart Grafana
+```
+
 Watch out for the pesky __WordPress Malware Bots__! This might help: [show-log.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/show-log.sh)
 
 ```bash
