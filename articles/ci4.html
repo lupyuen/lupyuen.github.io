@@ -867,6 +867,14 @@ for (( ; ; )); do
   sleep $(( 12 * 60 * 60 ))
   kill %1
 done</code></pre></div>
+<p>Remember to <strong>Backup our Grafana Server</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Backup Grafana to /tmp/grafana.tar
+cd /opt/homebrew
+tar cvf /tmp/grafana.tar \
+  etc/grafana \
+  var/lib/grafana \
+  var/log/grafana \
+  Cellar/grafana</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
