@@ -589,6 +589,16 @@ We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
 # What's Next
 
+_Can we use Git Bisect with Real Hardware? On an Actual Hardware Device?_
+
+Yep sure Git Bisect will work with any NuttX Device that be __controlled by a script__! For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which will work with Git Bisect)
+
+- [__"Daily Automated Testing for Milk-V Duo S RISC-V SBC"__](https://lupyuen.github.io/articles/sg2000a)
+
+Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) for Git Bisect...
+
+- [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
+
 TODO: Why Git Bisect? Because each test runs for 1 hour!
 
 TODO: Let it simmer overnight (probably 7 hours, like my Bean Stew)
