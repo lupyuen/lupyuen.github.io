@@ -509,6 +509,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
+- [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

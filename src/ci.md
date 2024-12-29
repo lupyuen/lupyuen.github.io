@@ -397,6 +397,8 @@ Check out the updates for __NuttX Continuous Integration__ in these articles...
 
 - [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
+- [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
+
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md)

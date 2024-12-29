@@ -743,6 +743,8 @@ Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/
 
 - [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
 
+- [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

@@ -310,6 +310,8 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 Next Article: We'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 
+- [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
+
 Then Later: Let's talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
 
 After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
