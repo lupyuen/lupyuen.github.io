@@ -964,6 +964,17 @@ etctmp.c
 
 [(NuttX CI validates the Config Files by calling __cibuild.sh__)](https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci)
 
+__Don't leave any extra files__ lying around after the NuttX Build! Or we'll see this error...
+
+```text
+HEAD detached at pull/15188/merge
+Ignored files:
+  (use "git add -f <file>..." to include in what will be committed)
+  config.txt
+```
+
+[(See the fix)](https://github.com/apache/nuttx/pull/15188#issuecomment-2547281097)
+
 # Appendix: Validate NuttX Release
 
 _For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, ..._
