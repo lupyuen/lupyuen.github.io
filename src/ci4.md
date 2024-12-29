@@ -935,3 +935,15 @@ for (( ; ; )); do
   kill %1
 done
 ```
+
+Remember to __Backup our Grafana Server__...
+
+```bash
+## Backup Grafana to /tmp/grafana.tar
+cd /opt/homebrew
+tar cvf /tmp/grafana.tar \
+  etc/grafana \
+  var/lib/grafana \
+  var/log/grafana \
+  Cellar/grafana
+```
