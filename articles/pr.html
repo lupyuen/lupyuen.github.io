@@ -855,6 +855,12 @@ boards/risc-v/k230/canmv230/src/etctmp/</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>etctmp
 etctmp.c</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pr#appendix-building-the-docker-image-for-nuttx-ci">(NuttX CI validates the Config Files by calling <strong>cibuild.sh</strong>)</a></p>
+<p><strong>Don’t leave any extra files</strong> lying around after the NuttX Build! Or we’ll see this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>HEAD detached at pull/15188/merge
+Ignored files:
+  (use &quot;git add -f &lt;file&gt;...&quot; to include in what will be committed)
+  config.txt</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/15188#issuecomment-2547281097">(See the fix)</a></p>
 <h1 id="appendix-validate-nuttx-release"><a class="doc-anchor" href="#appendix-validate-nuttx-release">§</a>13 Appendix: Validate NuttX Release</h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, …</em></p>
 <p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
