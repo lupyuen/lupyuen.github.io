@@ -118,7 +118,7 @@ Which needs __24 GitHub Runners__ per Pull Request. And [__they ain't cheap__](h
 
 # Self-Hosted Runners
 
-We experiment with [__Self-Hosted Runners__](https://docs.github.com/en/actions/hosting-your-own-runners) to understand what happens inside NuttX Continous Integration. We run them on two computers...
+We experiment with [__Self-Hosted Runners__](https://docs.github.com/en/actions/hosting-your-own-runners) to understand what happens inside NuttX Continuous Integration. We run them on two computers...
 
 - __Older PC__ on Ubuntu x64 (Intel i7, 3.7 GHz)
 

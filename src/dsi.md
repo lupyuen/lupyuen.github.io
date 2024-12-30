@@ -72,7 +72,7 @@ A quick recap of __PineTime's ST7789 Display__...
 
     [__"Draw A Line"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line)
 
-    (PinePhone will refresh its entire display continously)
+    (PinePhone will refresh its entire display continuously)
 
 If we're not familiar with PineTime's ST7789 Display, please read the docs above!
 

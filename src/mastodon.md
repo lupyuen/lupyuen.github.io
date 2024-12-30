@@ -62,7 +62,7 @@ _How to get Mastodon Alerts for NuttX Builds and Continuous Integration? (CI)_
 
 _How did Mastodon get the Failed Builds?_
 
-Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) that continously compiles All NuttX Targets. _(1,600 Targets!)_
+Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) that continuously compiles All NuttX Targets. _(1,600 Targets!)_
 
 Failed Builds are auto-escalated to our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (Open-source Grafana + Prometheus)
 
