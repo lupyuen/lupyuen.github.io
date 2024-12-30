@@ -190,3 +190,33 @@ docker cp lupyuen:/usr/local/apache2/logs/access_log .
 function run { for (( ;; )); do; goaccess access_log -o report.html --log-format=COMBINED --real-time-html --geoip-database=GeoLite2-City.mmdb ; date; sleep 10; done; } ; run &
 open report.html
 for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
+
+## Update the Canonical Header
+## <link rel="canonical" href="https://lupyuen.org/articles/TODO.html" />
+## <!-- End scripts/articles/*-header.html -->
+function update_header {
+  local article=$1
+  local file=$HOME/lupyuen.github.io/scripts/articles/$article-header.html
+  local tmp_file=/tmp/canonical-header.html
+
+  local search='<!-- End scripts'
+  local replace='<link rel="canonical" href="https:\/\/lupyuen.org\/articles\/TODO.html" \/>\n<!-- End scripts'
+  cat $file \
+    | sed "s/$search/$replace/g" \
+    >$tmp_file
+  mv $tmp_file $file
+
+  local search='TODO.html'
+  local replace="$article.html"
+  cat $file \
+    | sed "s/$search/$replace/g" \
+    >$tmp_file
+  mv $tmp_file $file
+}
+
+for article in adc advocate arm auto auto2 bl706 blockly bme280 book boot cbor cbor2 chatgpt de de2 de3 debug display dsi dsi2 dsi3 expander fb flash gateway gpio grafana i2c ikea interrupt iot lcd led lisp loader lora lora2 lorawan lorawan2 lorawan3 lte lte2 lvgl lvgl2 lvgl3 lvgl4 mynewt nuttx openocd payload pinecone pinedio pinedio2 pinephone pinephone2 pio plic pr prometheus release rhai roblox rust rust2 rusti2c rustsim semihost sensor serial sourdough spi spi2 st7789 sx1262 terminal tflite tftp2 touch touch2 tsen ttn uart uboot unicorn unicorn2 usb usb2 usb3 visual wasm what wifi wisblock wisgate zig 
+do
+  echo article=$article
+  update_header article
+  exit ####
+done
