@@ -217,6 +217,6 @@ function update_header {
 for article in adc advocate arm auto auto2 bl706 blockly bme280 book boot cbor cbor2 chatgpt de de2 de3 debug display dsi dsi2 dsi3 expander fb flash gateway gpio grafana i2c ikea interrupt iot lcd led lisp loader lora lora2 lorawan lorawan2 lorawan3 lte lte2 lvgl lvgl2 lvgl3 lvgl4 mynewt nuttx openocd payload pinecone pinedio pinedio2 pinephone pinephone2 pio plic pr prometheus release rhai roblox rust rust2 rusti2c rustsim semihost sensor serial sourdough spi spi2 st7789 sx1262 terminal tflite tftp2 touch touch2 tsen ttn uart uboot unicorn unicorn2 usb usb2 usb3 visual wasm what wifi wisblock wisgate zig 
 do
   echo article=$article
-  update_header article
-  exit ####
+  update_header $article
+  break
 done
