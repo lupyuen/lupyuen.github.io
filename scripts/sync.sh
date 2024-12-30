@@ -218,5 +218,4 @@ for article in adc advocate arm auto auto2 bl706 blockly bme280 book boot cbor c
 do
   echo article=$article
   update_header $article
-  break
 done
