@@ -349,6 +349,7 @@ _What happens in Git Bisect?_
 
     |||
     |:---:|:---:|
+    | _Commit #468_ | _Is Bad_
     | [__Commit #`234`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L42-L74) | [__Is Good__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1260-L1379)
     | [__Commit #`351`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420) | [_Is Bad_](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1789-L1869)
     | [__Commit #`292`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912) | [_Is Bad_](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2281-L2360)
@@ -439,6 +440,7 @@ Hmmm something below has changed. Why?
 
 |||
 |:---:|:---:|
+| _Commit #468_ | _Is Bad_
 | [__Commit #`234`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L46-L78) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L337-L421)
 | [__Commit #`117`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L428-L462) | [__Is Good__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1648-L1767)
 | [__Commit #`138`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L1774-L1810) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L2179-L2259)
