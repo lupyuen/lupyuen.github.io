@@ -1300,6 +1300,16 @@ Remember to watch our Mastodon Server for __Dubious Web Requests__! Like these p
 
 ![WordPress Malware Bots](https://lupyuen.github.io/images/mastodon-log.png)
 
+These __Firewall Rules__ might help...
+
+- Block all __URI Paths__ matching __`/wordpress/*`__
+
+- Or matching __`/wp-admin/*`__
+
+- Or matching __`//*`__
+
+![Firewall Rules for Mastodon Server](https://lupyuen.github.io/images/mastodon-firewall.png)
+
 # Appendix: Enable Elasticsearch for Mastodon
 
 Enabling __Elasticsearch__ for macOS Rancher Desktop is a little tricky. That's why we saved it for last.
