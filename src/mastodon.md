@@ -585,6 +585,9 @@ for (( ; ; )); do
 
   ## Wait a while
   date ; sleep 900
+
+  ## Omitted: Copy the Failed Builds to
+  ## https://lupyuen.org/nuttx-prometheus-to-mastodon.json
 done
 ```
 
@@ -727,7 +730,7 @@ let mut file = File::create(ALL_BUILDS_FILENAME).unwrap();
 file.write_all(json.as_bytes()).unwrap();
 ```
 
-Which gets saved into a __JSON File__.
+Which gets saved into a __JSON File of Failed Builds__, published here every 15 mins: [_lupyuen.org/nuttx-prometheus-to-mastodon.json_](https://lupyuen.org/nuttx-prometheus-to-mastodon.json)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40)
 
