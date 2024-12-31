@@ -60,7 +60,11 @@ Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming th
 nuttx_hash=$(git rev-parse HEAD)
 
 ## For the NuttX Commit:
-## We Build, Run and Test the NuttX Commit
+## We Build, Run and Test the NuttX Commit...
+## make distclean || true
+## tools/configure.sh ox64:nsh
+## make -j
+
 ## But for now: We randomly simulate OK or Error
 random_0_or_1=$(( $RANDOM % 2 ))
 if (( "$random_0_or_1" == "0" )); then
