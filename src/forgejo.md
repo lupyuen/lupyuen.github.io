@@ -16,7 +16,7 @@ _Why are we doing this?_
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
-TODO: If GitHub stops working someday: What's our Contingency Plan?
+TODO: If GitHub breaks someday: What's our Contingency Plan?
 
 TODO: Live Site
 
