@@ -123,7 +123,11 @@ Just to tell you once again <br>
 nuttx_hash=$(git rev-parse HEAD)
 
 ## For the NuttX Commit:
-## We Build, Run and Test the NuttX Commit
+## We Build, Run and Test the NuttX Commit...
+## make distclean || true
+## tools/configure.sh ox64:nsh
+## make -j
+
 ## But for now: We randomly simulate OK or Error
 random_0_or_1=$(( $RANDOM % 2 ))
 if (( &quot;$random_0_or_1&quot; == &quot;0&quot; )); then
