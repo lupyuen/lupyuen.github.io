@@ -568,6 +568,9 @@ for (( ; ; )); do
 
   ## Wait a while
   date ; sleep 900
+
+  ## Omitted: Copy the Failed Builds to
+  ## https://lupyuen.org/nuttx-prometheus-to-mastodon.json
 done</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
@@ -686,7 +689,7 @@ all_builds[<span class="kw-2">&amp;</span>target][<span class="string">"status_i
 </span><span class="kw">let </span>json = to_string_pretty(<span class="kw-2">&amp;</span>all_builds).unwrap();
 <span class="kw">let </span><span class="kw-2">mut </span>file = File::create(ALL_BUILDS_FILENAME).unwrap();
 file.write_all(json.as_bytes()).unwrap();</code></pre></div>
-<p>Which gets saved into a <strong>JSON File</strong>.</p>
+<p>Which gets saved into a <strong>JSON File of Failed Builds</strong>, published here every 15 mins: <a href="https://lupyuen.org/nuttx-prometheus-to-mastodon.json"><em>lupyuen.org/nuttx-prometheus-to-mastodon.json</em></a></p>
 <p><a href="https://gist.github.com/lupyuen/37afa9feed4e6eb983845a8c3d500d40">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="NuttX Builds threaded neatly" /></p>
 <h1 id="appendix-install-our-mastodon-server"><a class="doc-anchor" href="#appendix-install-our-mastodon-server">§</a>11 Appendix: Install our Mastodon Server</h1>
