@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Git Bisecting a Bug in Apache NuttX RTOS</title>
+    <title>Git Bisecting a Bug (Apache NuttX RTOS)</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Git Bisecting a Bug in Apache NuttX RTOS" 
+    content="Git Bisecting a Bug (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
     content=""
@@ -63,7 +63,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Git Bisecting a Bug in Apache NuttX RTOS</h1>
+    <h1 class="title">Git Bisecting a Bug (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#automated-bisect" title="Automated Bisect">1 Automated Bisect</a><ul></ul></li>
 <li><a href="#simulate-the-git-bisect" title="Simulate The Git Bisect">2 Simulate The Git Bisect</a><ul></ul></li>
@@ -88,7 +88,7 @@ Just to tell you once again <br>
 <p>2 Weeks Ago: We spoke of a <a href="https://lupyuen.github.io/articles/ci7"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="https://github.com/apache/nuttx/issues/14808#issue-2661180633"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c"><em>6554ed4</em></a></td></tr>
-<tr><td style="text-align: center"><em>… many many commits …</em></td><td style="text-align: center"><em>…</em></td></tr>
+<tr><td style="text-align: center"><em>[ many many commits ]</em></td><td style="text-align: center"><em>…</em></td></tr>
 <tr><td style="text-align: center"><a href="https://github.com/apache/nuttx/issues/14808#issuecomment-2518119367"><strong>Commit #468 is Bad</strong></a> <br> <em>2024-12-04</em></td><td style="text-align: center">NuttX won’t run <br> <a href="https://github.com/apache/nuttx/tree/79a1ebb9cd0c13f48a57413fa4bc3950b2cd5e0b"><em>79a1ebb</em></a></td></tr>
 </tbody></table>
 </div>
