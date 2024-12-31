@@ -119,6 +119,9 @@ Just to tell you once again <br>
 <p><em>Is it automated?</em></p>
 <p>Yep Git Bisect will gleefully seek the Breaking Commit on its own… Assuming that we provide a Script to <strong>Assess the Goodness / Badness</strong> of a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh">my-test-script.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect...
+## In Case of Error: Return the error to Git Bisect
+set -e
+
 ## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
