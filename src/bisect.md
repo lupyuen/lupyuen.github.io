@@ -56,6 +56,9 @@ Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming th
 
 ```bash
 ## This script will be called by Git Bisect...
+## In Case of Error: Return the error to Git Bisect
+set -e
+
 ## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
