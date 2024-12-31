@@ -411,7 +411,7 @@ And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#a
 
 1.  _But any Fediverse User can reply to our Mastodon Posts?_
 
-    Yeah this might be helpful! NuttX Devs can discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](https://github.com/apache/nuttx/issues) that was created for the Failed Build.
+    Yeah this might be helpful! NuttX Devs can discuss a specific Failed Build. Or hyperlink to the [__NuttX Issue__](https://github.com/apache/nuttx/issues) that was created for the Failed Build. Which might prevent [__Conflicting PRs__](https://github.com/apache/nuttx/pull/15382). [(And another)](https://github.com/apache/nuttx/pull/15388)
 
 1.  _How will we know when a Failed Build recovers?_
 
