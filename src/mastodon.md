@@ -1,4 +1,4 @@
-# (Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)
+# Mastodon Server for Continuous Integration (Apache NuttX RTOS)
 
 📝 _29 Dec 2024_
 

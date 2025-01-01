@@ -1,4 +1,4 @@
-# (Experimental) Forgejo Git Forge for Apache NuttX RTOS
+# Forgejo Git Forge for Apache NuttX RTOS (Experimental)
 
 📝 _31 Jan 2024_
 
