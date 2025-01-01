@@ -235,7 +235,10 @@ test_pipe        FAILED
 test_usrsocktest FAILED
 [...Failing all the way...]</code></pre></div>
 <p>This happens inside the <strong>CI Job <em>risc-v-05</em></strong>. Which we can reproduce with <strong>Docker Engine</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L61">run-job-bisect.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Assume we&#39;re running risc-v-05 with
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
+
+## Assume we&#39;re running risc-v-05 with
 ## Latest NuttX Repo and NuttX Apps
 job=risc-v-05
 nuttx_hash=HEAD
@@ -458,10 +461,12 @@ fb92b60 is the first bad commit
 <tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078"><em>Is Bad</em></a></td></tr>
 <tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123"><strong>Commit #<code>132</code></strong></a></td><td style="text-align: center">Is the <strong>Breaking Commit</strong> <br> <em>(really really?)</em></td></tr>
 </tbody></table>
-</div><h1 id="good-commit-goes-bad"><a class="doc-anchor" href="#good-commit-goes-bad">§</a>6 Good Commit Goes Bad</h1>
+</div>
+<p><img src="https://lupyuen.github.io/images/bisect-screen4.png" alt="Good Commit #234 Goes Bad" /></p>
+<h1 id="good-commit-goes-bad"><a class="doc-anchor" href="#good-commit-goes-bad">§</a>6 Good Commit Goes Bad</h1>
 <p><em>Why is Git Bisect telling us a different Breaking Commit?</em></p>
 <p>In The Movies: Arnold travels to the past <em>(in a Time Machine)</em>, changing something in history, and the future changes.</p>
-<p>In Real Life: <strong>Commit #<code>234</code></strong> has changed in history. Altering our future!</p>
+<p>In Real Life: <strong>Commit #<code>234</code></strong> has changed in history. Altering our future! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Previously...
 ## Commit #234 is Good
 run-job-bisect.sh ... 94a2ce3 ...
