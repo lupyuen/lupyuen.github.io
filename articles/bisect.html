@@ -12,10 +12,10 @@
     content="Git Bisecting a Bug (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Suppose we hit a Runtime Bug in Apache NuttX RTOS. We think that the Breaking Commit (causing the bug) is somewhere inside these hundreds of NuttX Commits. But which one? In this article: We run Git Bisect to discover the Breaking Commit."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Suppose we hit a Runtime Bug in Apache NuttX RTOS. We think that the Breaking Commit (causing the bug) is somewhere inside these hundreds of NuttX Commits. But which one? In this article: We run Git Bisect to discover the Breaking Commit.">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/bisect-title.jpg">
 <meta property="og:type" 
@@ -74,7 +74,7 @@
 <li><a href="#fixing-the-bug" title="Fixing The Bug">7 Fixing The Bug</a><ul></ul></li>
 <li><a href="#increase-the-stack" title="Increase The Stack">8 Increase The Stack</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-inspect-executable-size-with-bloaty" title="Appendix: Inspect Executable Size with Bloaty">10 Appendix: Inspect Executable Size with Bloaty</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2024</em></p>
+<li><a href="#appendix-inspect-executable-size-with-bloaty" title="Appendix: Inspect Executable Size with Bloaty">10 Appendix: Inspect Executable Size with Bloaty</a><ul></ul></li></ul></nav><p>📝 <em>5 Jan 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <span style="font-size:80%">
 <blockquote>
@@ -85,7 +85,7 @@ Just to tell you once again <br>
 <a href="https://en.wikipedia.org/wiki/Bad_(Michael_Jackson_song)">Who’s bad?</a>”</em></p>
 </blockquote>
 </span>
-<p>2 Weeks Ago: We spoke of a <a href="https://lupyuen.github.io/articles/ci7"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
+<p>2 Weeks Ago: We saw a <a href="https://lupyuen.github.io/articles/ci7"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> (causing the bug) falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="https://github.com/apache/nuttx/issues/14808#issue-2661180633"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c"><em>6554ed4</em></a></td></tr>
 <tr><td style="text-align: center"><em>[ many many commits ]</em></td><td style="text-align: center"><em>…</em></td></tr>
@@ -94,8 +94,8 @@ Just to tell you once again <br>
 </div>
 <p>That’s <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>468 Commits</strong></a>. Which one is the Breaking Commit?</p>
 <p><em>Maybe we Rewind Each Commit and test?</em></p>
-<p>With a script, we could rewind and retest 468 Commits for <a href="https://lupyuen.github.io/articles/ci6"><strong>Compile Errors</strong></a>. But it’s probably too slow for <strong>Runtime Errors</strong>. <em>(Rewind + recompile + rerun)</em></p>
-<p>We have a quicker way: <strong>Git Bisect</strong>!</p>
+<p>With a script, we could rewind and retest 468 Commits for <a href="https://lupyuen.github.io/articles/ci6"><strong>Compile Errors</strong></a>. But it’s probably too slow for <strong>Runtime Errors</strong>. <em>(Rewind + Recompile + Rerun)</em></p>
+<p>We have a quicker way: <strong>Git Bisect</strong>! (Pic above)</p>
 <h1 id="automated-bisect"><a class="doc-anchor" href="#automated-bisect">§</a>1 Automated Bisect</h1>
 <p><em>What’s this Git Bisect?</em></p>
 <p>Remember <a href="https://en.wikipedia.org/wiki/Binary_search"><strong>Binary Chop</strong></a>?</p>
@@ -170,51 +170,42 @@ $HOME/nuttx-bisect/my-test-script.sh
 nuttx_hash=94a2ce3
 
 ## Our Script simulates a successful test
-Simulate OK
-exit 0</code></pre></div>
+exit 0  ## Simulate OK</code></pre></div>
 <p>And discovered that <strong>Commit #<code>234</code> is Good</strong>. (Via our Simulated Script)</p>
 </li>
 <li>
-<p>Then it continued the simulated bisecting…</p>
+<p>Then it continued the <strong>Simulated Bisecting</strong> (coincidentally, all bad)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
 nuttx_hash=1cfaff0
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #292 is Bad
 nuttx_hash=65a93e9
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #263 is Bad
 nuttx_hash=1e265af
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #248 is Bad
 nuttx_hash=c70f3e3
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #241 is Bad
 nuttx_hash=5d86bee
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #237 is Bad
 nuttx_hash=e7c2e7c
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #236 is Bad
 nuttx_hash=68d47ee
-Simulate Error
-exit 1
+exit 1  ## Simulate Error
 
 ## Commit #235 is Bad
 nuttx_hash=74bac56
-Simulate Error
-exit 1</code></pre></div>
+exit 1  ## Simulate Error</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
@@ -222,7 +213,7 @@ exit 1</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #235 is the Breaking Commit
 74bac56 is the first bad commit</code></pre></div></li>
 </ol>
-<p>This works fine for our (randomised) <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
+<p>This works fine for our <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
 <p><img src="https://lupyuen.github.io/images/bisect-screen2.png" alt="Docker running CI Test in CI Job risc-v-05" /></p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
@@ -327,6 +318,10 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 Configuration/Tool: rv-virt/citest
 test_ostest PASSED
 exit 0</code></pre></div></li>
+<li>
+<p>Beware: This will be <strong>Super Slow</strong>! CI Test will hang the CI Job if anything fails.</p>
+<p>(Our script will kill CI Test after 1 hour)</p>
+</li>
 <li>
 <p>Then it continues bisecting. Assessing Commits <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420">#<code>351</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912">#<code>292</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405">#<code>263</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068">#<code>248</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566">#<code>241</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979">#<code>237</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371">#<code>236</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731">#<code>235</code></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
