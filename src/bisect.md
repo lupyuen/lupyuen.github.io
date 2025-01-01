@@ -553,7 +553,7 @@ Needs more probing...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7)
 
-TODO: Screenshot of Disassembly
+![Searching the NuttX Disassembly for ltp_interfaces_pthread_barrierattr_init_2_1](https://lupyuen.github.io/images/bisect-disassembly.png)
 
 # Increase The Stack
 
