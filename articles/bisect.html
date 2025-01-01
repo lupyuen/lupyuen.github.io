@@ -308,8 +308,8 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 git clone https://github.com/apache/nuttx
 cd nuttx
 git bisect start
-git bisect good 6554ed4d  ## Commit #1
-git bisect bad  79a1ebb   ## Commit #468
+git bisect good 6554ed4  ## Commit #1
+git bisect bad  79a1ebb  ## Commit #468
 git bisect run \
   $HOME/nuttx-bisect/start-job-bisect.sh</code></pre></div></li>
 <li>
@@ -394,7 +394,15 @@ exit 1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <h1 id="git-bisect-gets-quirky"><a class="doc-anchor" href="#git-bisect-gets-quirky">§</a>5 Git Bisect Gets Quirky</h1>
 <p><em>Did Git Bisect find the correct Breaking Commit?</em></p>
-<p>To be absolutely sure: We run Git Bisect <a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493"><strong>one more time</strong></a>…</p>
+<p>To be <em>really really</em> sure: We run Git Bisect <a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493"><strong>one more time</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Restart the Git Bisect (`sudo` is needed by Docker)
+sudo --shell
+git bisect start
+git bisect good 6554ed4  ## Commit #1
+git bisect bad  79a1ebb  ## Commit #468
+git bisect run \
+  $HOME/nuttx-bisect/start-job-bisect.sh</code></pre></div>
+<p>Here comes the twist, watch carefully…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #234 is Bad
 run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
@@ -438,14 +446,14 @@ exit 1
 ## Commit #132 is Bad
 run-job-bisect.sh ... fb92b60 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
-exit 1
-
-## Commit #132 is the Breaking Commit
+exit 1</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493">(See the <strong>Complete Log</strong>)</a></p>
+<p>Which deduces…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Commit #132 is the Breaking Commit
 fb92b60 is the first bad commit
 
 ## Previously: Commit #235 is the Breaking Commit!
 ## 74bac56 is the first bad commit</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493">(See the <strong>Complete Log</strong>)</a></p>
 <p><strong>Commit #<code>132</code></strong> is now the Breaking Commit, not Commit #<code>235</code>!</p>
 <p>Hmmm something below has changed. Why?</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
@@ -538,7 +546,7 @@ STACKSIZE  USED  FILLED   COMMAND
 <p><img src="https://lupyuen.github.io/images/bisect-disassembly.png" alt="Searching the NuttX Disassembly for ltp_interfaces_pthread_barrierattr_init_2_1" /></p>
 <h1 id="increase-the-stack"><a class="doc-anchor" href="#increase-the-stack">§</a>8 Increase The Stack</h1>
 <p><em>What’s ltp_interfaces_pthread_barrierattr_init_2_1? Why is the Stack Overflowing?</em></p>
-<p>We search the <strong>NuttX Disassembly</strong>…</p>
+<p>We search the <strong>NuttX Disassembly</strong> (pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the disassembly to nuttx.S
 cd /root/nuttx
 riscv-none-elf-objdump \
