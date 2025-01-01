@@ -159,7 +159,7 @@ git bisect run \
 ## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
 <p>That was quick! We break it down…</p>
-<p>TODO: Pic of Simulated Git Bisect</p>
+<p>TODO: Screenshot of Simulated Git Bisect</p>
 <h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
 <p><em>What just happened in Git Bisect?</em></p>
 <ol>
@@ -177,42 +177,42 @@ exit 0</code></pre></div>
 <li>
 <p>Then it continued the simulated bisecting…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
-nuttx_hash=1cfaff011ea5178ba3faffc10a33d9f52de80bfc
+nuttx_hash=1cfaff0
 Simulate Error
 exit 1
 
 ## Commit #292 is Bad
-nuttx_hash=65a93e972cdc224bae1b47ee329727f51d18679b
+nuttx_hash=65a93e9
 Simulate Error
 exit 1
 
 ## Commit #263 is Bad
-nuttx_hash=1e265af8ebc90ed3353614300640abeda08a80b6
+nuttx_hash=1e265af
 Simulate Error
 exit 1
 
 ## Commit #248 is Bad
-nuttx_hash=c70f3e3f984f1e837d03bca5444373d6ff94e96d
+nuttx_hash=c70f3e3
 Simulate Error
 exit 1
 
 ## Commit #241 is Bad
-nuttx_hash=5d86bee5c7102b90a4376e630bd7c3cdf5e8395e
+nuttx_hash=5d86bee
 Simulate Error
 exit 1
 
 ## Commit #237 is Bad
-nuttx_hash=e7c2e7c5760bc3166192473347ecc71d16255d94
+nuttx_hash=e7c2e7c
 Simulate Error
 exit 1
 
 ## Commit #236 is Bad
-nuttx_hash=68d47ee8473bad7461e3ce53194afde089f8a033
+nuttx_hash=68d47ee
 Simulate Error
 exit 1
 
 ## Commit #235 is Bad
-nuttx_hash=74bac565397dea37ebfc3ac0b7b7532737738279
+nuttx_hash=74bac56
 Simulate Error
 exit 1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
@@ -220,9 +220,10 @@ exit 1</code></pre></div>
 <li>
 <p>Finally deducing that <strong>Commit #<code>235</code></strong> is the <strong>Breaking Commit</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #235 is the Breaking Commit
-74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div></li>
+74bac56 is the first bad commit</code></pre></div></li>
 </ol>
 <p>This works fine for our (randomised) <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
+<p>TODO: Screenshot of CI Job risc-v-05</p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
 <p>From our <a href="https://github.com/apache/nuttx/issues/14808"><strong>Bug Report</strong></a>: NuttX fails the <strong>Continuous Integration Test</strong> (CI Test) for RISC-V QEMU.</p>
@@ -293,6 +294,7 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 ## This Git Bisect script will work for any CI Job!
 ## Just change `job=risc-v-05` to the CI Job Name (like arm-01)</code></pre></div>
 <p>We’re ready to run this!</p>
+<p>TODO: Screenshot of Git Bisect</p>
 <h1 id="git-bisect-for-real"><a class="doc-anchor" href="#git-bisect-for-real">§</a>4 Git Bisect For Real</h1>
 <p><em>What happens in Git Bisect?</em></p>
 <ol>
@@ -323,47 +325,47 @@ exit 0</code></pre></div></li>
 <li>
 <p>Then it continues bisecting. Assessing Commits <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420">#<code>351</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912">#<code>292</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405">#<code>263</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068">#<code>248</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566">#<code>241</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979">#<code>237</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371">#<code>236</code></a>, <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731">#<code>235</code></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #351 is Bad
-run-job-bisect.sh ... 1cfaff011ea5178ba3faffc10a33d9f52de80bfc ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+run-job-bisect.sh ... 1cfaff0 ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #292 is Bad
-run-job-bisect.sh ... 65a93e972cdc224bae1b47ee329727f51d18679b ...
+run-job-bisect.sh ... 65a93e9 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED 
 exit 1
 
 ## Commit #263 is Bad
-run-job-bisect.sh ... 1e265af8ebc90ed3353614300640abeda08a80b6 ...
+run-job-bisect.sh ... 1e265af ...
 test_ltp_interfaces_sigrelse_1_1 FAILED
 exit 1
 
 ## Commit #248 is Bad
-run-job-bisect.sh ... c70f3e3f984f1e837d03bca5444373d6ff94e96d ...
+run-job-bisect.sh ... c70f3e3 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #241 is Bad
-run-job-bisect.sh ... 5d86bee5c7102b90a4376e630bd7c3cdf5e8395e ...
+run-job-bisect.sh ... 5d86bee ...
 test_ltp_interfaces_mq_open_7_3 FAILED
 exit 1
 
 ## Commit #237 is Bad
-run-job-bisect.sh ... e7c2e7c5760bc3166192473347ecc71d16255d94 ...
+run-job-bisect.sh ... e7c2e7c ...
 test_ltp_interfaces_sigaction_23_7 FAILED
 exit 1
 
 ## Commit #236 is Bad
-run-job-bisect.sh ... 68d47ee8473bad7461e3ce53194afde089f8a033 ...
+run-job-bisect.sh ... 68d47ee ...
 test_ltp_interfaces_pthread_getcpuclockid_1_1 FAILED
 exit 1
 
 ## Commit #235 is Bad
-run-job-bisect.sh ... 74bac565397dea37ebfc3ac0b7b7532737738279 ...
+run-job-bisect.sh ... 74bac56 ...
 test_ltp_interfaces_pthread_detach_1_1 FAILED
 exit 1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
-<p>Which says in 9 steps…</p>
+<p>Which says in 9 steps (pic below)</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><em>Commit #468</em></td><td style="text-align: center"><em>Is Bad</em></td></tr>
 <tr><td style="text-align: center"><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L42-L74"><strong>Commit #<code>234</code></strong></a></td><td style="text-align: center"><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1260-L1379"><strong>Is Good</strong></a></td></tr>
@@ -378,67 +380,66 @@ exit 1</code></pre></div>
 </tbody></table>
 </div></li>
 <li>
-<p>Finally deducing that <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731"><strong>Commit #<code>235</code></strong></a> is the <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210"><strong>Breaking Commit</strong></a></p>
+<p>Finally deducing that <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731"><strong>Commit #<code>235</code></strong></a> is the <a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210"><strong>Breaking Commit</strong></a> (pic below)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #235 is the Breaking Commit
-74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
+74bac56 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
-<p>Here comes the twist…</p>
-<p>TODO: Pic of Git Bisect #2</p>
+<p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <h1 id="git-bisect-gets-quirky"><a class="doc-anchor" href="#git-bisect-gets-quirky">§</a>5 Git Bisect Gets Quirky</h1>
 <p><em>Did Git Bisect find the correct Breaking Commit?</em></p>
 <p>To be absolutely sure: We run Git Bisect <a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493"><strong>one more time</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit #234 is Bad
-run-job-bisect.sh ... 94a2ce3641213cc702abc5c17b0f81a50c714a2e ...
+run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1
 
 ## Commit #117 is Good
-run-job-bisect.sh ... 96a3bc2b5c6e4efdea7a4890d327199d2fdea9d9 ...
+run-job-bisect.sh ... 96a3bc2 ...
 test_ostest PASSED
 exit 0
 
 ## Commit #138 is Bad
-run-job-bisect.sh ... 3a46b6e6afeb9e434f27776b4117f0e7b946a1f7 ...
+run-job-bisect.sh ... 3a46b6e ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #146 is Bad
-run-job-bisect.sh ... dac3f315a11cead82a5f630d4ae1c3eb45a80377 ...
+run-job-bisect.sh ... dac3f31 ...
 test_ltp_interfaces_sigaction_6_3 FAILED
 exit 1
 
 ## Commit #131 is Good
-run-job-bisect.sh ... 4c3ae2ed4f878d195261359cc3eacefda031a01b ...
+run-job-bisect.sh ... 4c3ae2e ...
 test_ostest PASSED
 exit 0
 
 ## Commit #138 is Bad
-run-job-bisect.sh ... 3b50bf178203cde3c1568c46fa7901a1f2a1bb0d ...
+run-job-bisect.sh ... 3b50bf1 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #134 is Bad
-run-job-bisect.sh ... 5ff98f65a8a11ebe095f0bb08a0792541540677b ...
+run-job-bisect.sh ... 5ff98f6 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #133 is Bad
-run-job-bisect.sh ... b4d8ac862e5fa5fb30fe0c6a3247beec648f8713 ...
+run-job-bisect.sh ... b4d8ac8 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #132 is Bad
-run-job-bisect.sh ... fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a ...
+run-job-bisect.sh ... fb92b60 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #132 is the Breaking Commit
-fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
+fb92b60 is the first bad commit
 
 ## Previously: Commit #235 is the Breaking Commit!
-## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
+## 74bac56 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493">(See the <strong>Complete Log</strong>)</a></p>
 <p><strong>Commit #<code>132</code></strong> is now the Breaking Commit, not Commit #<code>235</code>!</p>
 <p>Hmmm something below has changed. Why?</p>
@@ -483,6 +484,7 @@ exit 1</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000b"><strong>RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)</strong></a></li>
 </ul>
+<p>TODO: Screenshot of Issue</p>
 <h1 id="fixing-the-bug"><a class="doc-anchor" href="#fixing-the-bug">§</a>7 Fixing The Bug</h1>
 <p><em>OK so Git Bisect wasn’t 100% successful. How did we fix the bug?</em></p>
 <p>Actually we have <strong>Two Bugs</strong> stacked together…</p>
@@ -526,6 +528,7 @@ STACKSIZE  USED  FILLED   COMMAND
  3936      3936  100.0%!  ltp_interfaces_pthread_barriera</code></pre></div>
 <p>Needs more probing…</p>
 <p><a href="https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO: Screenshot of Disassembly</p>
 <h1 id="increase-the-stack"><a class="doc-anchor" href="#increase-the-stack">§</a>8 Increase The Stack</h1>
 <p><em>What’s ltp_interfaces_pthread_barrierattr_init_2_1? Why is the Stack Overflowing?</em></p>
 <p>We search the <strong>NuttX Disassembly</strong>…</p>
@@ -564,6 +567,7 @@ config TESTING_LTP_STACKSIZE
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bisect#appendix-inspect-executable-size-with-bloaty"><strong>“Inspect Executable Size with Bloaty”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>TODO: Why Git Bisect? Because each test runs for 1 hour!</p>
 <p>TODO: Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
