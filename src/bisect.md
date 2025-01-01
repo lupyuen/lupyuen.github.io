@@ -106,7 +106,7 @@ git bisect run \
 
 That was quick! We break it down...
 
-TODO: Screenshot of Simulated Git Bisect
+![Simulating The Git Bisect](https://lupyuen.github.io/images/bisect-screen1.png)
 
 # Simulate The Git Bisect
 
@@ -181,7 +181,7 @@ _What just happened in Git Bisect?_
 
 This works fine for our (randomised) __Simulated Git Bisect__. Now we do it for real...
 
-TODO: Screenshot of CI Job risc-v-05
+![Docker running CI Test in CI Job risc-v-05](https://lupyuen.github.io/images/bisect-screen2.png)
 
 # Continuous Integration Test
 
@@ -254,7 +254,8 @@ fi
 Which is called by our __Git Bisect Wrapper__: [start-job-bisect.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/start-job-bisect.sh)
 
 ```bash
-## This wrapper script will be called by Git Bisect...
+## This wrapper script will be called by Git Bisect
+## Must be run as `sudo`! (Because of Docker)
 ## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
@@ -272,15 +273,16 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 
 We're ready to run this!
 
-TODO: Screenshot of Git Bisect
+![Running Git Bisect on Real NuttX Commits](https://lupyuen.github.io/images/bisect-screen3.png)
 
 # Git Bisect For Real
 
 _What happens in Git Bisect?_
 
-1.  We start Git Bisect, telling it that Commit #`1` is Good and Commit #`468` is Bad
+1.  We start Git Bisect, telling it that Commit #`1` is Good and Commit #`468` is Bad: [run2.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run2.sh)
 
     ```bash
+    sudo --shell  ## Needed by Docker
     git clone https://github.com/apache/nuttx
     cd nuttx
     git bisect start
