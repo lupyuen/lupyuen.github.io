@@ -503,7 +503,7 @@ Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) f
 
 - [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
 
-TODO: Screenshot of Issue
+![We have Two Bugs stacked together](https://lupyuen.github.io/images/bisect-issues.jpg)
 
 # Fixing The Bug
 
