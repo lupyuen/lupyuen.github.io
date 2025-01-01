@@ -289,8 +289,8 @@ _What happens in Git Bisect?_
     git clone https://github.com/apache/nuttx
     cd nuttx
     git bisect start
-    git bisect good 6554ed4d  ## Commit #1
-    git bisect bad  79a1ebb   ## Commit #468
+    git bisect good 6554ed4  ## Commit #1
+    git bisect bad  79a1ebb  ## Commit #468
     git bisect run \
       $HOME/nuttx-bisect/start-job-bisect.sh
     ```
@@ -391,7 +391,19 @@ _What happens in Git Bisect?_
 
 _Did Git Bisect find the correct Breaking Commit?_
 
-To be absolutely sure: We run Git Bisect [__one more time__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)...
+To be _really really_ sure: We run Git Bisect [__one more time__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)...
+
+```bash
+## Restart the Git Bisect (`sudo` is needed by Docker)
+sudo --shell
+git bisect start
+git bisect good 6554ed4  ## Commit #1
+git bisect bad  79a1ebb  ## Commit #468
+git bisect run \
+  $HOME/nuttx-bisect/start-job-bisect.sh
+```
+
+Here comes the twist, watch carefully...
 
 ```bash
 ## Commit #234 is Bad
@@ -438,15 +450,19 @@ exit 1
 run-job-bisect.sh ... fb92b60 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
+```
 
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
+
+Which deduces...
+
+```bash
 ## Commit #132 is the Breaking Commit
 fb92b60 is the first bad commit
 
 ## Previously: Commit #235 is the Breaking Commit!
 ## 74bac56 is the first bad commit
 ```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
 
 __Commit #`132`__ is now the Breaking Commit, not Commit #`235`!
 
@@ -564,7 +580,7 @@ Needs more probing...
 
 _What's ltp_interfaces_pthread_barrierattr_init_2_1? Why is the Stack Overflowing?_
 
-We search the __NuttX Disassembly__...
+We search the __NuttX Disassembly__ (pic above)
 
 ```bash
 ## Dump the disassembly to nuttx.S
