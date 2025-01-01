@@ -106,7 +106,7 @@ git bisect run \
 
 That was quick! We break it down...
 
-TODO: Pic of Simulated Git Bisect
+TODO: Screenshot of Simulated Git Bisect
 
 # Simulate The Git Bisect
 
@@ -130,42 +130,42 @@ _What just happened in Git Bisect?_
 
     ```bash
     ## Commit #351 is Bad
-    nuttx_hash=1cfaff011ea5178ba3faffc10a33d9f52de80bfc
+    nuttx_hash=1cfaff0
     Simulate Error
     exit 1
 
     ## Commit #292 is Bad
-    nuttx_hash=65a93e972cdc224bae1b47ee329727f51d18679b
+    nuttx_hash=65a93e9
     Simulate Error
     exit 1
 
     ## Commit #263 is Bad
-    nuttx_hash=1e265af8ebc90ed3353614300640abeda08a80b6
+    nuttx_hash=1e265af
     Simulate Error
     exit 1
 
     ## Commit #248 is Bad
-    nuttx_hash=c70f3e3f984f1e837d03bca5444373d6ff94e96d
+    nuttx_hash=c70f3e3
     Simulate Error
     exit 1
 
     ## Commit #241 is Bad
-    nuttx_hash=5d86bee5c7102b90a4376e630bd7c3cdf5e8395e
+    nuttx_hash=5d86bee
     Simulate Error
     exit 1
 
     ## Commit #237 is Bad
-    nuttx_hash=e7c2e7c5760bc3166192473347ecc71d16255d94
+    nuttx_hash=e7c2e7c
     Simulate Error
     exit 1
 
     ## Commit #236 is Bad
-    nuttx_hash=68d47ee8473bad7461e3ce53194afde089f8a033
+    nuttx_hash=68d47ee
     Simulate Error
     exit 1
 
     ## Commit #235 is Bad
-    nuttx_hash=74bac565397dea37ebfc3ac0b7b7532737738279
+    nuttx_hash=74bac56
     Simulate Error
     exit 1
     ```
@@ -176,10 +176,12 @@ _What just happened in Git Bisect?_
 
     ```bash
     ## Commit #235 is the Breaking Commit
-    74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+    74bac56 is the first bad commit
     ```
 
 This works fine for our (randomised) __Simulated Git Bisect__. Now we do it for real...
+
+TODO: Screenshot of CI Job risc-v-05
 
 # Continuous Integration Test
 
@@ -270,6 +272,8 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 
 We're ready to run this!
 
+TODO: Screenshot of Git Bisect
+
 # Git Bisect For Real
 
 _What happens in Git Bisect?_
@@ -311,48 +315,48 @@ _What happens in Git Bisect?_
 
     ```bash
     ## Commit #351 is Bad
-    run-job-bisect.sh ... 1cfaff011ea5178ba3faffc10a33d9f52de80bfc ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+    run-job-bisect.sh ... 1cfaff0 ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
     exit 1
 
     ## Commit #292 is Bad
-    run-job-bisect.sh ... 65a93e972cdc224bae1b47ee329727f51d18679b ...
+    run-job-bisect.sh ... 65a93e9 ...
     test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED 
     exit 1
 
     ## Commit #263 is Bad
-    run-job-bisect.sh ... 1e265af8ebc90ed3353614300640abeda08a80b6 ...
+    run-job-bisect.sh ... 1e265af ...
     test_ltp_interfaces_sigrelse_1_1 FAILED
     exit 1
 
     ## Commit #248 is Bad
-    run-job-bisect.sh ... c70f3e3f984f1e837d03bca5444373d6ff94e96d ...
+    run-job-bisect.sh ... c70f3e3 ...
     test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
     exit 1
 
     ## Commit #241 is Bad
-    run-job-bisect.sh ... 5d86bee5c7102b90a4376e630bd7c3cdf5e8395e ...
+    run-job-bisect.sh ... 5d86bee ...
     test_ltp_interfaces_mq_open_7_3 FAILED
     exit 1
 
     ## Commit #237 is Bad
-    run-job-bisect.sh ... e7c2e7c5760bc3166192473347ecc71d16255d94 ...
+    run-job-bisect.sh ... e7c2e7c ...
     test_ltp_interfaces_sigaction_23_7 FAILED
     exit 1
 
     ## Commit #236 is Bad
-    run-job-bisect.sh ... 68d47ee8473bad7461e3ce53194afde089f8a033 ...
+    run-job-bisect.sh ... 68d47ee ...
     test_ltp_interfaces_pthread_getcpuclockid_1_1 FAILED
     exit 1
 
     ## Commit #235 is Bad
-    run-job-bisect.sh ... 74bac565397dea37ebfc3ac0b7b7532737738279 ...
+    run-job-bisect.sh ... 74bac56 ...
     test_ltp_interfaces_pthread_detach_1_1 FAILED
     exit 1
     ```
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
 
-1.  Which says in 9 steps...
+1.  Which says in 9 steps (pic below)
 
     |||
     |:---:|:---:|
@@ -367,18 +371,16 @@ _What happens in Git Bisect?_
     | [__Commit #`236`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371) | [_Is Bad_](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4591-L4676)
     | [__Commit #`235`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731) | [_Is Bad_](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5087-L5166) <br> _(really really)_
 
-1.  Finally deducing that [__Commit #`235`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731) is the [__Breaking Commit__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210)
+1.  Finally deducing that [__Commit #`235`__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731) is the [__Breaking Commit__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L5167-L5210) (pic below)
 
     ```bash
     ## Commit #235 is the Breaking Commit
-    74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+    74bac56 is the first bad commit
     ```
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
 
-Here comes the twist...
-
-TODO: Pic of Git Bisect #2
+![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
 # Git Bisect Gets Quirky
 
@@ -388,55 +390,55 @@ To be absolutely sure: We run Git Bisect [__one more time__](https://gist.github
 
 ```bash
 ## Commit #234 is Bad
-run-job-bisect.sh ... 94a2ce3641213cc702abc5c17b0f81a50c714a2e ...
+run-job-bisect.sh ... 94a2ce3 ...
 test_ltp_interfaces_mq_close_3_2 FAILED
 exit 1
 
 ## Commit #117 is Good
-run-job-bisect.sh ... 96a3bc2b5c6e4efdea7a4890d327199d2fdea9d9 ...
+run-job-bisect.sh ... 96a3bc2 ...
 test_ostest PASSED
 exit 0
 
 ## Commit #138 is Bad
-run-job-bisect.sh ... 3a46b6e6afeb9e434f27776b4117f0e7b946a1f7 ...
+run-job-bisect.sh ... 3a46b6e ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #146 is Bad
-run-job-bisect.sh ... dac3f315a11cead82a5f630d4ae1c3eb45a80377 ...
+run-job-bisect.sh ... dac3f31 ...
 test_ltp_interfaces_sigaction_6_3 FAILED
 exit 1
 
 ## Commit #131 is Good
-run-job-bisect.sh ... 4c3ae2ed4f878d195261359cc3eacefda031a01b ...
+run-job-bisect.sh ... 4c3ae2e ...
 test_ostest PASSED
 exit 0
 
 ## Commit #138 is Bad
-run-job-bisect.sh ... 3b50bf178203cde3c1568c46fa7901a1f2a1bb0d ...
+run-job-bisect.sh ... 3b50bf1 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #134 is Bad
-run-job-bisect.sh ... 5ff98f65a8a11ebe095f0bb08a0792541540677b ...
+run-job-bisect.sh ... 5ff98f6 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #133 is Bad
-run-job-bisect.sh ... b4d8ac862e5fa5fb30fe0c6a3247beec648f8713 ...
+run-job-bisect.sh ... b4d8ac8 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #132 is Bad
-run-job-bisect.sh ... fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a ...
+run-job-bisect.sh ... fb92b60 ...
 test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
 exit 1
 
 ## Commit #132 is the Breaking Commit
-fb92b60000eb6f3d90470d01bee5aafcb2f1cc9a is the first bad commit
+fb92b60 is the first bad commit
 
 ## Previously: Commit #235 is the Breaking Commit!
-## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+## 74bac56 is the first bad commit
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493)
@@ -499,6 +501,8 @@ Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) f
 
 - [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
 
+TODO: Screenshot of Issue
+
 # Fixing The Bug
 
 _OK so Git Bisect wasn't 100% successful. How did we fix the bug?_
@@ -546,6 +550,8 @@ STACKSIZE  USED  FILLED   COMMAND
 Needs more probing...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7)
+
+TODO: Screenshot of Disassembly
 
 # Increase The Stack
 
@@ -605,6 +611,8 @@ _But why did we run out of Stack Space? Has something grown too big?_
 We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
 - [__"Inspect Executable Size with Bloaty"__](https://lupyuen.github.io/articles/bisect#appendix-inspect-executable-size-with-bloaty)
+
+![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
 # What's Next
 
