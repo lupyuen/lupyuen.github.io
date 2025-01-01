@@ -159,7 +159,7 @@ git bisect run \
 ## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f">(See the <strong>Complete Log</strong>)</a></p>
 <p>That was quick! We break it down…</p>
-<p>TODO: Screenshot of Simulated Git Bisect</p>
+<p><img src="https://lupyuen.github.io/images/bisect-screen1.png" alt="Simulating The Git Bisect" /></p>
 <h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
 <p><em>What just happened in Git Bisect?</em></p>
 <ol>
@@ -223,7 +223,7 @@ exit 1</code></pre></div>
 74bac56 is the first bad commit</code></pre></div></li>
 </ol>
 <p>This works fine for our (randomised) <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
-<p>TODO: Screenshot of CI Job risc-v-05</p>
+<p><img src="https://lupyuen.github.io/images/bisect-screen2.png" alt="Docker running CI Test in CI Job risc-v-05" /></p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
 <p>From our <a href="https://github.com/apache/nuttx/issues/14808"><strong>Bug Report</strong></a>: NuttX fails the <strong>Continuous Integration Test</strong> (CI Test) for RISC-V QEMU.</p>
@@ -279,7 +279,8 @@ else
   exit 1  ## Return Error
 fi</code></pre></div>
 <p>Which is called by our <strong>Git Bisect Wrapper</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/start-job-bisect.sh">start-job-bisect.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## This wrapper script will be called by Git Bisect...
+<div class="example-wrap"><pre class="language-bash"><code>## This wrapper script will be called by Git Bisect
+## Must be run as `sudo`! (Because of Docker)
 ## Get the NuttX Hash (Commit ID)
 nuttx_hash=$(git rev-parse HEAD)
 
@@ -294,13 +295,14 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 ## This Git Bisect script will work for any CI Job!
 ## Just change `job=risc-v-05` to the CI Job Name (like arm-01)</code></pre></div>
 <p>We’re ready to run this!</p>
-<p>TODO: Screenshot of Git Bisect</p>
+<p><img src="https://lupyuen.github.io/images/bisect-screen3.png" alt="Running Git Bisect on Real NuttX Commits" /></p>
 <h1 id="git-bisect-for-real"><a class="doc-anchor" href="#git-bisect-for-real">§</a>4 Git Bisect For Real</h1>
 <p><em>What happens in Git Bisect?</em></p>
 <ol>
 <li>
-<p>We start Git Bisect, telling it that Commit #<code>1</code> is Good and Commit #<code>468</code> is Bad</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
+<p>We start Git Bisect, telling it that Commit #<code>1</code> is Good and Commit #<code>468</code> is Bad: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run2.sh">run2.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo --shell  ## Needed by Docker
+git clone https://github.com/apache/nuttx
 cd nuttx
 git bisect start
 git bisect good 6554ed4d  ## Commit #1
