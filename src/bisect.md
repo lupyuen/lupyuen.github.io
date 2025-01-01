@@ -202,6 +202,9 @@ test_usrsocktest FAILED
 This happens inside the __CI Job _risc-v-05___. Which we can reproduce with __Docker Engine__: [run-job-bisect.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L61)
 
 ```bash
+## TODO: Install Docker Engine
+## https://docs.docker.com/engine/install/ubuntu/
+
 ## Assume we're running risc-v-05 with
 ## Latest NuttX Repo and NuttX Apps
 job=risc-v-05
@@ -463,13 +466,15 @@ Hmmm something below has changed. Why?
 | [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5582-L5630) | [_Is Bad_](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L5999-L6078)
 | [__Commit #`132`__](https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493#file-gistfile1-txt-L6079-L6123) | Is the __Breaking Commit__ <br> _(really really?)_
 
+![Good Commit #234 Goes Bad](https://lupyuen.github.io/images/bisect-screen4.png)
+
 # Good Commit Goes Bad
 
 _Why is Git Bisect telling us a different Breaking Commit?_
 
 In The Movies: Arnold travels to the past _(in a Time Machine)_, changing something in history, and the future changes.
 
-In Real Life: __Commit #`234`__ has changed in history. Altering our future!
+In Real Life: __Commit #`234`__ has changed in history. Altering our future! (Pic above)
 
 ```bash
 ## Previously...
