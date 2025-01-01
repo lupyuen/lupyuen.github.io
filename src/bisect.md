@@ -1,6 +1,6 @@
 # Git Bisecting a Bug (Apache NuttX RTOS)
 
-📝 _31 Jan 2024_
+📝 _5 Jan 2024_
 
 ![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
@@ -14,7 +14,7 @@ Just to tell you once again <br>
 
 </span>
 
-2 Weeks Ago: We spoke of a [__Runtime Bug__](https://lupyuen.github.io/articles/ci7) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
+2 Weeks Ago: We saw a [__Runtime Bug__](https://lupyuen.github.io/articles/ci7) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ (causing the bug) falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
 | | |
 |:-----------:|:--------:|
@@ -26,9 +26,9 @@ That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1E
 
 _Maybe we Rewind Each Commit and test?_
 
-With a script, we could rewind and retest 468 Commits for [__Compile Errors__](https://lupyuen.github.io/articles/ci6). But it's probably too slow for __Runtime Errors__. _(Rewind + recompile + rerun)_
+With a script, we could rewind and retest 468 Commits for [__Compile Errors__](https://lupyuen.github.io/articles/ci6). But it's probably too slow for __Runtime Errors__. _(Rewind + Recompile + Rerun)_
 
-We have a quicker way: __Git Bisect__!
+We have a quicker way: __Git Bisect__! (Pic above)
 
 # Automated Bisect
 
@@ -120,54 +120,45 @@ _What just happened in Git Bisect?_
     nuttx_hash=94a2ce3
 
     ## Our Script simulates a successful test
-    Simulate OK
-    exit 0
+    exit 0  ## Simulate OK
     ```
     
     And discovered that __Commit #`234` is Good__. (Via our Simulated Script)
 
-1.  Then it continued the simulated bisecting...
+1.  Then it continued the __Simulated Bisecting__ (coincidentally, all bad)
 
     ```bash
     ## Commit #351 is Bad
     nuttx_hash=1cfaff0
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #292 is Bad
     nuttx_hash=65a93e9
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #263 is Bad
     nuttx_hash=1e265af
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #248 is Bad
     nuttx_hash=c70f3e3
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #241 is Bad
     nuttx_hash=5d86bee
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #237 is Bad
     nuttx_hash=e7c2e7c
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #236 is Bad
     nuttx_hash=68d47ee
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
 
     ## Commit #235 is Bad
     nuttx_hash=74bac56
-    Simulate Error
-    exit 1
+    exit 1  ## Simulate Error
     ```
 
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f)
@@ -179,7 +170,7 @@ _What just happened in Git Bisect?_
     74bac56 is the first bad commit
     ```
 
-This works fine for our (randomised) __Simulated Git Bisect__. Now we do it for real...
+This works fine for our __Simulated Git Bisect__. Now we do it for real...
 
 ![Docker running CI Test in CI Job risc-v-05](https://lupyuen.github.io/images/bisect-screen2.png)
 
@@ -315,6 +306,10 @@ _What happens in Git Bisect?_
     test_ostest PASSED
     exit 0
     ```
+
+1.  Beware: This will be __Super Slow__! CI Test will hang the CI Job if anything fails.
+
+    (Our script will kill CI Test after 1 hour)
 
 1.  Then it continues bisecting. Assessing Commits [#`351`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1386-L1420), [#`292`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L1876-L1912), [#`263`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L2367-L2405), [#`248`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3028-L3068), [#`241`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3524-L3566), [#`237`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L3935-L3979), [#`236`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4325-L4371), [#`235`](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L4683-L4731)
 
