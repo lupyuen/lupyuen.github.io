@@ -396,7 +396,7 @@ _How long did Git Bisect run?_
 
 [__8 Hours!__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L216-L4873) I left it simmering overnight. (Just like my Bean Stew)
 
-Remember that Every Bisect takes __1 Hour__ to Recompile + Rerun. That's why Git Bisect is super efficient for slow jobs.
+Remember that Every Bisect takes __1 Hour to Recompile + Rerun__, because of the Stuck CI Test. That's why Git Bisect works especially well for slower jobs.
 
 # Git Bisect Gets Quirky
 
