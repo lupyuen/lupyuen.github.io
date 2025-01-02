@@ -36,11 +36,11 @@ _What's this Git Bisect?_
 
 Remember [__Binary Chop__](https://en.wikipedia.org/wiki/Binary_search)?
 
-> _"I'm thining of A Number <br> Guess My Number! <br> It's from 1 to 468 <br> Ask me 9 Yes-No Questions"_
+> _"I'm thinking of A Number <br> Guess My Number! <br> It's from 1 to 468 <br> Ask me 9 Yes-No Questions"_
 
 To solve this, we __Divide And Conquer__: Is 234 too high? _(no)_ Is 351 too high? _(yes)_ Is 292 too high _(yes)_...
 
-TODO: Pic of Divide-And-Conquer
+![Binary Chop guessing my number](https://lupyuen.github.io/images/bisect-guess.jpg)
 
 [__Git Bisect__](https://git-scm.com/docs/git-bisect) works the same way, but for __Git Commits__...
 
@@ -307,7 +307,7 @@ _What happens in Git Bisect?_
     exit 0
     ```
 
-1.  Beware: This will be __Super Slow__! CI Test will hang the CI Job if anything fails.
+1.  Beware: Every Bisect will be __Super Slow__! Whenever something fails: CI Test will hang the CI Job.
 
     (Our script will kill CI Test after 1 hour)
 
@@ -381,6 +381,12 @@ _What happens in Git Bisect?_
     [(See the __Complete Log__)](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d)
 
 ![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
+
+_How long did Git Bisect run?_
+
+[__8 Hours!__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L216-L4873) I left it simmering overnight. (Just like my Bean Stew)
+
+Remember that Every Bisect takes __1 Hour__ to Recompile + Rerun. That's why Git Bisect is super helpful for slow jobs.
 
 # Git Bisect Gets Quirky
 
