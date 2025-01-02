@@ -433,6 +433,12 @@ And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#a
 
     [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
 
+1.  _How is Mastodon working out so far?_
+
+    I'm trying to do the least possible work to get meaningful NuttX CI Alerts (since I'm doing this in my spare time). Mastodon works great for me right now!
+    
+    I'm not sure if anyone else will use it, so I'll stick with this setup for now. (I might disconnect from the Fediverse if I hear any complaints)
+
 ![Mastodon Server for Apache NuttX Continuous Integration](https://lupyuen.github.io/images/mastodon-flow.jpg)
 
 # What's Next
