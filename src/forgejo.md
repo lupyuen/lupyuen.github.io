@@ -8,15 +8,15 @@ __Life Without GitHub:__ What's it like?
 
 _Why are we doing this?_
 
-- __GitHub is Blocked__ in some parts of the world
-
-- Some devs prefer not to __collaborate on GitHub__ _(ethical / other reasons)_
+- Suppose GitHub breaks someday: What's our __Contingency Plan__?
 
 - Can we make NuttX Community a little more inclusive? By hosting our __Git Forge outside GitHub__?
 
-- Also: We're hitting some [__Budget Limits__](TODO) at GitHub
+  (__GitHub is Blocked__ in some parts of the world)
 
-TODO: If GitHub breaks someday: What's our Contingency Plan?
+  (Some devs prefer not to __collaborate on GitHub__ due to ethical / other reasons)
+
+- Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
 TODO: Live Site
 

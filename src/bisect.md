@@ -307,7 +307,7 @@ _What happens in Git Bisect?_
     exit 0
     ```
 
-1.  Beware: Every Bisect will be __Super Slow__! Whenever something fails: CI Test will hang the CI Job.
+1.  Beware: Every Bisect will be __Super Slow__! Whenever something fails: CI Test will [__hang the CI Job__](https://lupyuen.github.io/articles/ci7#dump-the-ci-log-file).
 
     (Our script will kill CI Test after 1 hour)
 
@@ -639,12 +639,6 @@ We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 ![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
 # What's Next
-
-TODO: Why Git Bisect? Because each test runs for 1 hour!
-
-TODO: Let it simmer overnight (probably 7 hours, like my Bean Stew)
-
-TODO: Locoroco merging into big bubbles
 
 Next Article: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
 
