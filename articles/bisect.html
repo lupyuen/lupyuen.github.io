@@ -137,7 +137,10 @@ if [[ &quot;$random_0_or_1&quot; == &quot;0&quot; ]]; then
   exit 0  ## Simulate OK
 else
   exit 1  ## Simulate Error
-fi</code></pre></div>
+fi
+
+## Beware: Don&#39;t return Exit Codes above 124!
+## https://git-scm.com/docs/git-bisect#_bisect_run</code></pre></div>
 <p><a href="https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good">(Or we <strong>Bisect Manually</strong>)</a></p>
 <p>This is how we start our <strong>Simulated Git Bisect</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Repo and NuttX Apps
@@ -273,7 +276,10 @@ if [[ &quot;$res&quot; == &quot;0&quot; ]]; then
   exit 0  ## Return OK
 else
   exit 1  ## Return Error
-fi</code></pre></div>
+fi
+
+## Beware: Don&#39;t return Exit Codes above 124!
+## https://git-scm.com/docs/git-bisect#_bisect_run</code></pre></div>
 <p>Which is called by our <strong>Git Bisect Wrapper</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/start-job-bisect.sh">start-job-bisect.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## This wrapper script will be called by Git Bisect
 ## Must be run as `sudo`! (Because of Docker)
