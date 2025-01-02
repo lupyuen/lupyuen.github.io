@@ -55,7 +55,7 @@ _Is it automated?_
 Yep Git Bisect will gleefully seek the Breaking Commit on its own... Assuming that we provide a Script to __Assess the Goodness / Badness__ of a NuttX Commit: [my-test-script.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh)
 
 ```bash
-## This script will be called by Git Bisect...
+## This script will be called by Git Bisect
 ## In Case of Error: Return the error to Git Bisect
 set -e
 
@@ -70,20 +70,21 @@ nuttx_hash=$(git rev-parse HEAD)
 
 ## But for now: We randomly simulate OK or Error
 random_0_or_1=$(( $RANDOM % 2 ))
-if (( "$random_0_or_1" == "0" )); then
+if [[ "$random_0_or_1" == "0" ]]; then
   exit 0  ## Simulate OK
 else
   exit 1  ## Simulate Error
 fi
 ```
 
-[(Or do it __manually__)](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good)
+[(Or we __Bisect Manually__)](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good)
 
 This is how we start our __Simulated Git Bisect__: [run.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh)
 
 ```bash
-## Download the NuttX Repo
+## Download the NuttX Repo and NuttX Apps
 git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
 cd nuttx
 
 ## Tell Git Bisect the Good and Bad Commits
@@ -178,7 +179,7 @@ This works fine for our __Simulated Git Bisect__. Now we do it for real...
 
 _Will Git Bisect work for Real-Life NuttX?_
 
-From our [__Bug Report__](https://github.com/apache/nuttx/issues/14808): NuttX fails the __Continuous Integration Test__ (CI Test) for RISC-V QEMU.
+From our [__Bug Report__](https://github.com/apache/nuttx/issues/14808): NuttX fails the __Continuous Integration Test__ (CI Test) for RISC-V QEMU...
 
 ```text
 Configuration/Tool: rv-virt/citest
@@ -257,7 +258,7 @@ nuttx_hash=$(git rev-parse HEAD)
 ## Passing the Job Name, NuttX Hash and Apps Hash
 ## (Or set Apps Hash to HEAD for the Latest Commit)
 job=risc-v-05
-apps_hash=1c7a7f7529475b0d535e2088a9c4e1532c487156
+apps_hash=1c7a7f7
 $HOME/nuttx-bisect/run-job-bisect.sh \
   $job $nuttx_hash $apps_hash
 
@@ -315,7 +316,8 @@ _What happens in Git Bisect?_
 
     ```bash
     ## Commit #351 is Bad
-    run-job-bisect.sh ... 1cfaff0 ...test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
+    run-job-bisect.sh ... 1cfaff0 ...
+    test_ltp_interfaces_pthread_barrierattr_init_2_1 FAILED
     exit 1
 
     ## Commit #292 is Bad
@@ -467,7 +469,7 @@ fb92b60 is the first bad commit
 
 __Commit #`132`__ is now the Breaking Commit, not Commit #`235`!
 
-Hmmm something below has changed. Why?
+Hmmm something has changed. Why?
 
 |||
 |:---:|:---:|
@@ -517,7 +519,7 @@ __Lesson Learnt:__ Git Bisect works best for bugs that are __reliably reproducib
 
 _Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?_
 
-Yep sure Git Bisect will work with any NuttX Device that can be __controlled by a script__!
+Yep sure Git Bisect will work with any NuttX Device that can be __controlled by a script__.
 
 For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)
 
@@ -525,7 +527,7 @@ For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting v
 
 Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) for Git Bisect...
 
-- [__RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)__](https://lupyuen.github.io/articles/sg2000b)
+- [__"RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)"__](https://lupyuen.github.io/articles/sg2000b)
 
 ![We have Two Bugs stacked together](https://lupyuen.github.io/images/bisect-issues.jpg)
 
@@ -537,7 +539,7 @@ Actually we have __Two Bugs__ stacked together...
 
 - [__"rv-virt/citest: test_hello or test_pipe failed"__](https://github.com/apache/nuttx/issues/14808)
 
-- [__"rv-virt:citest fails with Load Access Fault at ltp_interfaces_pthread_barrierattr_init_2_1 (risc-v-05)"__](https://github.com/apache/nuttx/issues/15170)
+- [__"rv-virt/citest fails at ltp_interfaces_pthread_barrierattr_init_2_1"__](https://github.com/apache/nuttx/issues/15170)
 
 The First Bug was a Stack Overflow that __Tiago Medicci Serrano__ kindly fixed by increasing the __Init Task Stack Size__...
 
@@ -619,7 +621,7 @@ config TESTING_LTP_STACKSIZE
   default 4096
 ```
 
-We double the __Stack Size to 8 KB__...
+And we double the __Stack Size to 8 KB__...
 
 ```yml
   ## After: Stack Size is 8 KB
@@ -672,7 +674,7 @@ We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
 - [__github.com/google/bloaty__](https://github.com/google/bloaty)
 
-For quick experimentation: Bloaty is bundled inside our __NuttX Docker Image__...
+For quick experimenting: Bloaty is bundled inside our __NuttX Docker Image__...
 
 ```bash
 ## Inside NuttX Docker:
