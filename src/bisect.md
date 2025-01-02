@@ -75,6 +75,9 @@ if [[ "$random_0_or_1" == "0" ]]; then
 else
   exit 1  ## Simulate Error
 fi
+
+## Beware: Don't return Exit Codes above 124!
+## https://git-scm.com/docs/git-bisect#_bisect_run
 ```
 
 [(Or we __Bisect Manually__)](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good)
@@ -246,6 +249,9 @@ if [[ "$res" == "0" ]]; then
 else
   exit 1  ## Return Error
 fi
+
+## Beware: Don't return Exit Codes above 124!
+## https://git-scm.com/docs/git-bisect#_bisect_run
 ```
 
 Which is called by our __Git Bisect Wrapper__: [start-job-bisect.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/start-job-bisect.sh)
