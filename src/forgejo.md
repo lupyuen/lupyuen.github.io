@@ -20,6 +20,8 @@ TODO: Live Site
 
 Gitty-Hubby Gut-Hippy
 
+https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
+
 # GitHub Migration: 2 Ways
 
 - __NuttX Mirror__: Auto-sync by Forgejo (e.g. every hour)
