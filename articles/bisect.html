@@ -260,6 +260,7 @@ sudo docker run -it \
     (./cibuild.sh -c -A -N -R testlist/$job.dat) || (res=\$? ; echo &#39;***** JOB FAILED&#39; ; exit \$res)
   )
 &quot;</code></pre></div>
+<p><a href="https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>Docker Builds for NuttX</strong>)</a></p>
 <p>Everything above becomes our <strong>Git Bisect Script</strong> that assesses “Goodness” vs “Badness” for a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73">run-job-bisect.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect Wrapper...
 ## We run the CI Job in Docker Container
@@ -268,7 +269,7 @@ sudo docker run -it ...
 
 ## Result the result to the caller
 res=$?
-if [[ &quot;$res&quot; == &quot;0&quot; ]] ; then
+if [[ &quot;$res&quot; == &quot;0&quot; ]]; then
   exit 0  ## Return OK
 else
   exit 1  ## Return Error
@@ -391,7 +392,7 @@ exit 1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <p><em>How long did Git Bisect run?</em></p>
 <p><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L216-L4873"><strong>8 Hours!</strong></a> I left it simmering overnight. (Just like my Bean Stew)</p>
-<p>Remember that Every Bisect takes <strong>1 Hour</strong> to Recompile + Rerun. That’s why Git Bisect is super helpful for slow jobs.</p>
+<p>Remember that Every Bisect takes <strong>1 Hour</strong> to Recompile + Rerun. That’s why Git Bisect is super efficient for slow jobs.</p>
 <h1 id="git-bisect-gets-quirky"><a class="doc-anchor" href="#git-bisect-gets-quirky">§</a>5 Git Bisect Gets Quirky</h1>
 <p><em>Did Git Bisect find the correct Breaking Commit?</em></p>
 <p>To be <em>really really</em> sure: We run Git Bisect <a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493"><strong>one more time</strong></a>…</p>
@@ -492,13 +493,16 @@ exit 1</code></pre></div>
 <p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
 <p><em>Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?</em></p>
 <p>Yep sure Git Bisect will work with any NuttX Device that can be <strong>controlled by a script</strong>.</p>
-<p>For Example: <strong>SG2000 RISC-V SBC</strong> has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)</p>
+<p>For Example: <strong>SG2000 RISC-V SBC</strong> has a script for Building NuttX and Booting via TFTP (which can be controlled by Git Bisect)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000a"><strong>“Daily Automated Testing for Milk-V Duo S RISC-V SBC”</strong></a></li>
 </ul>
 <p>Though Honestly: <strong>SG2000 Emulator</strong> would be much quicker (and more reliable) for Git Bisect…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/sg2000b"><strong>“RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sg2000b"><strong>“RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)”</strong></a></p>
+<p>(No script? Try <a href="https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good"><strong>Manual Git Bisect</strong></a>)</p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/bisect-issues.jpg" alt="We have Two Bugs stacked together" /></p>
 <h1 id="fixing-the-bug"><a class="doc-anchor" href="#fixing-the-bug">§</a>7 Fixing The Bug</h1>
