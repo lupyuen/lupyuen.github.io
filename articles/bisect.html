@@ -319,7 +319,7 @@ Configuration/Tool: rv-virt/citest
 test_ostest PASSED
 exit 0</code></pre></div></li>
 <li>
-<p>Beware: Every Bisect will be <strong>Super Slow</strong>! Whenever something fails: CI Test will hang the CI Job.</p>
+<p>Beware: Every Bisect will be <strong>Super Slow</strong>! Whenever something fails: CI Test will <a href="https://lupyuen.github.io/articles/ci7#dump-the-ci-log-file"><strong>hang the CI Job</strong></a>.</p>
 <p>(Our script will kill CI Test after 1 hour)</p>
 </li>
 <li>
@@ -582,9 +582,6 @@ config TESTING_LTP_STACKSIZE
 </ul>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
-<p>TODO: Why Git Bisect? Because each test runs for 1 hour!</p>
-<p>TODO: Let it simmer overnight (probably 7 hours, like my Bean Stew)</p>
-<p>TODO: Locoroco merging into big bubbles</p>
 <p>Next Article: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) <strong>Forgejo Git Forge</strong> with NuttX.</p>
 <p>After That: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
