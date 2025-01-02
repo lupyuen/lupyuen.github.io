@@ -100,10 +100,10 @@ Just to tell you once again <br>
 <p><em>What’s this Git Bisect?</em></p>
 <p>Remember <a href="https://en.wikipedia.org/wiki/Binary_search"><strong>Binary Chop</strong></a>?</p>
 <blockquote>
-<p><em>“I’m thining of A Number <br> Guess My Number! <br> It’s from 1 to 468 <br> Ask me 9 Yes-No Questions”</em></p>
+<p><em>“I’m thinking of A Number <br> Guess My Number! <br> It’s from 1 to 468 <br> Ask me 9 Yes-No Questions”</em></p>
 </blockquote>
 <p>To solve this, we <strong>Divide And Conquer</strong>: Is 234 too high? <em>(no)</em> Is 351 too high? <em>(yes)</em> Is 292 too high <em>(yes)</em>…</p>
-<p>TODO: Pic of Divide-And-Conquer</p>
+<p><img src="https://lupyuen.github.io/images/bisect-guess.jpg" alt="Binary Chop guessing my number" /></p>
 <p><a href="https://git-scm.com/docs/git-bisect"><strong>Git Bisect</strong></a> works the same way, but for <strong>Git Commits</strong>…</p>
 <ul>
 <li>
@@ -319,7 +319,7 @@ Configuration/Tool: rv-virt/citest
 test_ostest PASSED
 exit 0</code></pre></div></li>
 <li>
-<p>Beware: This will be <strong>Super Slow</strong>! CI Test will hang the CI Job if anything fails.</p>
+<p>Beware: Every Bisect will be <strong>Super Slow</strong>! Whenever something fails: CI Test will hang the CI Job.</p>
 <p>(Our script will kill CI Test after 1 hour)</p>
 </li>
 <li>
@@ -387,6 +387,9 @@ exit 1</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bisect-title.jpg" alt="Git Bisecting a Bug in Apache NuttX RTOS" /></p>
+<p><em>How long did Git Bisect run?</em></p>
+<p><a href="https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L216-L4873"><strong>8 Hours!</strong></a> I left it simmering overnight. (Just like my Bean Stew)</p>
+<p>Remember that Every Bisect takes <strong>1 Hour</strong> to Recompile + Rerun. That’s why Git Bisect is super helpful for slow jobs.</p>
 <h1 id="git-bisect-gets-quirky"><a class="doc-anchor" href="#git-bisect-gets-quirky">§</a>5 Git Bisect Gets Quirky</h1>
 <p><em>Did Git Bisect find the correct Breaking Commit?</em></p>
 <p>To be <em>really really</em> sure: We run Git Bisect <a href="https://gist.github.com/lupyuen/5a92fb9ea76751a54d2a82ba0341c493"><strong>one more time</strong></a>…</p>
