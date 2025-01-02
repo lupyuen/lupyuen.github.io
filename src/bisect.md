@@ -229,6 +229,8 @@ sudo docker run -it \
 "
 ```
 
+[(More about __Docker Builds for NuttX__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
+
 Everything above becomes our __Git Bisect Script__ that assesses "Goodness" vs "Badness" for a NuttX Commit: [run-job-bisect.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73)
 
 ```bash
@@ -239,7 +241,7 @@ sudo docker run -it ...
 
 ## Result the result to the caller
 res=$?
-if [[ "$res" == "0" ]] ; then
+if [[ "$res" == "0" ]]; then
   exit 0  ## Return OK
 else
   exit 1  ## Return Error
@@ -388,7 +390,7 @@ _How long did Git Bisect run?_
 
 [__8 Hours!__](https://gist.github.com/lupyuen/39cdb916d30625388974e00d5daa676d#file-gistfile1-txt-L216-L4873) I left it simmering overnight. (Just like my Bean Stew)
 
-Remember that Every Bisect takes __1 Hour__ to Recompile + Rerun. That's why Git Bisect is super helpful for slow jobs.
+Remember that Every Bisect takes __1 Hour__ to Recompile + Rerun. That's why Git Bisect is super efficient for slow jobs.
 
 # Git Bisect Gets Quirky
 
@@ -521,13 +523,15 @@ _Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?_
 
 Yep sure Git Bisect will work with any NuttX Device that can be __controlled by a script__.
 
-For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)
+For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can be controlled by Git Bisect)
 
 - [__"Daily Automated Testing for Milk-V Duo S RISC-V SBC"__](https://lupyuen.github.io/articles/sg2000a)
 
 Though Honestly: __SG2000 Emulator__ would be much quicker (and more reliable) for Git Bisect...
 
 - [__"RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)"__](https://lupyuen.github.io/articles/sg2000b)
+
+  (No script? Try [__Manual Git Bisect__](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good))
 
 ![We have Two Bugs stacked together](https://lupyuen.github.io/images/bisect-issues.jpg)
 
