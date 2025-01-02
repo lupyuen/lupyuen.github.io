@@ -77,8 +77,6 @@ else
 fi
 ```
 
-[(Or something __more predictable__)](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh#L34-L76)
-
 [(Or do it __manually__)](https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good)
 
 This is how we start our __Simulated Git Bisect__: [run.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh)
@@ -110,7 +108,7 @@ That was quick! We break it down...
 
 # Simulate The Git Bisect
 
-_What just happened in Git Bisect?_
+_What just happened in our Simulated Git Bisect?_
 
 1.  Git Bisect picked the [__Middle Commit #`234`__](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f#file-gistfile1-txt-L38-L69)...
 
@@ -171,6 +169,8 @@ _What just happened in Git Bisect?_
     ```
 
 This works fine for our __Simulated Git Bisect__. Now we do it for real...
+
+[(OK maybe it's __no coincidence__)](https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh#L34-L76)
 
 ![Docker running CI Test in CI Job risc-v-05](https://lupyuen.github.io/images/bisect-screen2.png)
 
@@ -517,7 +517,9 @@ __Lesson Learnt:__ Git Bisect works best for bugs that are __reliably reproducib
 
 _Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?_
 
-Yep sure Git Bisect will work with any NuttX Device that be __controlled by a script__! For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)
+Yep sure Git Bisect will work with any NuttX Device that can be __controlled by a script__!
+
+For Example: __SG2000 RISC-V SBC__ has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)
 
 - [__"Daily Automated Testing for Milk-V Duo S RISC-V SBC"__](https://lupyuen.github.io/articles/sg2000a)
 
@@ -570,8 +572,6 @@ riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 800074c6, 
 STACKSIZE  USED  FILLED   COMMAND
  3936      3936  100.0%!  ltp_interfaces_pthread_barriera
 ```
-
-Needs more probing...
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7)
 
