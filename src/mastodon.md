@@ -449,6 +449,8 @@ After That: What would NuttX Life be like without GitHub? We try out (self-hoste
 
 After After That? Why __Sync-Build-Ingest__ is super important for NuttX CI. And how we monitor it with our __Magic Disco Light__.
 
+Also: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fish the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks via Mastodon?
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 - [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
