@@ -96,9 +96,9 @@ git bisect bad  79a1ebb  ## Commit #468 is Bad
 ## Bisect with our Simulated Test Script
 git bisect run \
   $HOME/nuttx-bisect/my-test-script.sh
-...
+
 ## Commit #235 is the Breaking Commit:
-## 74bac565397dea37ebfc3ac0b7b7532737738279 is the first bad commit
+## 74bac56 is the first bad commit
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f)
