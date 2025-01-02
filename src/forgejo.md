@@ -36,20 +36,6 @@ https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
 
   Can create PRs
 
-# Install
-
-TODO: forgejo-install1.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
-
-TODO: forgejo-install2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-install2.png)
-
-TODO: forgejo-install3.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
-
 # Mirror
 
 TODO: forgejo-mirror1.png
@@ -502,3 +488,17 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/forgejo.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md)
+
+# Appendix: Install our Forgejo Server
+
+TODO: forgejo-install1.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
+
+TODO: forgejo-install2.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-install2.png)
+
+TODO: forgejo-install3.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
