@@ -10,11 +10,9 @@ _Why are we doing this?_
 
 - Suppose GitHub breaks someday: What's our __Contingency Plan__?
 
+- __GitHub is Blocked__ in some parts of the world...
+
 - Can we make NuttX Community a little more inclusive? By hosting our __Git Forge outside GitHub__?
-
-  (__GitHub is Blocked__ in some parts of the world)
-
-  (Some devs prefer not to __collaborate on GitHub__ due to ethical / other reasons)
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
