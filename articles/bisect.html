@@ -138,7 +138,6 @@ if (( &quot;$random_0_or_1&quot; == &quot;0&quot; )); then
 else
   exit 1  ## Simulate Error
 fi</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh#L34-L76">(Or something <strong>more predictable</strong>)</a></p>
 <p><a href="https://git-scm.com/docs/git-bisect#_basic_bisect_commands_start_bad_good">(Or do it <strong>manually</strong>)</a></p>
 <p>This is how we start our <strong>Simulated Git Bisect</strong>: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Repo
@@ -161,7 +160,7 @@ git bisect run \
 <p>That was quick! We break it down…</p>
 <p><img src="https://lupyuen.github.io/images/bisect-screen1.png" alt="Simulating The Git Bisect" /></p>
 <h1 id="simulate-the-git-bisect"><a class="doc-anchor" href="#simulate-the-git-bisect">§</a>2 Simulate The Git Bisect</h1>
-<p><em>What just happened in Git Bisect?</em></p>
+<p><em>What just happened in our Simulated Git Bisect?</em></p>
 <ol>
 <li>
 <p>Git Bisect picked the <a href="https://gist.github.com/lupyuen/160613f2b68f1ab81f1c46146c189b9f#file-gistfile1-txt-L38-L69"><strong>Middle Commit #<code>234</code></strong></a>…</p>
@@ -214,6 +213,7 @@ exit 1  ## Simulate Error</code></pre></div>
 74bac56 is the first bad commit</code></pre></div></li>
 </ol>
 <p>This works fine for our <strong>Simulated Git Bisect</strong>. Now we do it for real…</p>
+<p><a href="https://github.com/lupyuen/nuttx-bisect/blob/main/my-test-script.sh#L34-L76">(OK maybe it’s <strong>no coincidence</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/bisect-screen2.png" alt="Docker running CI Test in CI Job risc-v-05" /></p>
 <h1 id="continuous-integration-test"><a class="doc-anchor" href="#continuous-integration-test">§</a>3 Continuous Integration Test</h1>
 <p><em>Will Git Bisect work for Real-Life NuttX?</em></p>
@@ -489,7 +489,8 @@ exit 1</code></pre></div>
 <p>This CI Test looks more complicated than we thought. CI Test appears to be <strong>failing with the slightest change</strong> in QEMU Memory. For a Specific Commit: Our bug isn’t reliably reproducible.</p>
 <p><strong>Lesson Learnt:</strong> Git Bisect works best for bugs that are <strong>reliably reproducible</strong> for a specified commit!</p>
 <p><em>Can we use Git Bisect with Real Hardware? On an Actual NuttX Device?</em></p>
-<p>Yep sure Git Bisect will work with any NuttX Device that be <strong>controlled by a script</strong>! For Example: <strong>SG2000 RISC-V SBC</strong> has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)</p>
+<p>Yep sure Git Bisect will work with any NuttX Device that can be <strong>controlled by a script</strong>!</p>
+<p>For Example: <strong>SG2000 RISC-V SBC</strong> has a script for Building NuttX and Booting via TFTP (which can talk to Git Bisect)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sg2000a"><strong>“Daily Automated Testing for Milk-V Duo S RISC-V SBC”</strong></a></li>
 </ul>
@@ -539,7 +540,6 @@ nsh&gt; ltp_interfaces_pthread_barrierattr_init_2_1
 riscv_exception: EXCEPTION: Load access fault. MCAUSE: 00000005, EPC: 800074c6, MTVAL: 000002a4
 STACKSIZE  USED  FILLED   COMMAND
  3936      3936  100.0%!  ltp_interfaces_pthread_barriera</code></pre></div>
-<p>Needs more probing…</p>
 <p><a href="https://gist.github.com/lupyuen/4ec372cea171b99ae5bc5603aa75a6a7">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/bisect-disassembly.png" alt="Searching the NuttX Disassembly for ltp_interfaces_pthread_barrierattr_init_2_1" /></p>
 <h1 id="increase-the-stack"><a class="doc-anchor" href="#increase-the-stack">§</a>8 Increase The Stack</h1>
