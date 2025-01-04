@@ -86,7 +86,15 @@ _Haven't we seen this somewhere?_
 
 _Will our Git Forge coexist with GitHub?_
 
-Ah now it gets tricky.
+Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Forge, synced both ways...
+
+- __NuttX Repo__ at GitHub shall __sync down regularly__ to Our Git Forge
+
+  (So NuttX Devs can continue coding if GitHub breaks)
+
+- __Pull Requests__ at our Git Forge shall be __pushed up to NuttX Repo__ at GitHub
+
+  (So Local Changes in our Git Forge can be synced back)
 
 TODO: mirror
 
