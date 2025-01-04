@@ -16,6 +16,20 @@ _Why are we doing this?_
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
+Is it easy to install?
+Yes especially on Docker 
+Db can be sqlite 
+
+Easy to use?
+Git clone https mirror
+Ssl requires more security 
+
+Pr
+Issue
+
+Coexist with GitHub?
+mirror
+
 TODO: Live Site
 
 TODO: Gitea
