@@ -1331,7 +1331,33 @@ OpenSBI v%d.%d
 <p><a href="https://gist.github.com/lupyuen/0d3f790f0b34cb2d1329a0130e13039c">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 <li>
-<p><strong><code>fip.bin</code></strong> probably also contains U-Boot Bootloader, since <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>U-Boot is started by OpenSBI</strong></a></p>
+<p><strong><code>fip.bin</code></strong> probably also contains U-Boot Bootloader, since <a href="https://lupyuen.github.io/articles/sg2000#download-the-linux-microsd"><strong>U-Boot is started by OpenSBI</strong></a> (pic below)</p>
+</li>
+<li>
+<p>Then U-Boot Bootloader boots the NuttX <strong><code>Image</code></strong> over TFTP (pic below). This <strong><code>Image</code></strong> file comes from the <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>SG2000 Daily Build</strong></a>. (Please don’t burn <strong><code>Image</code></strong> into a MicroSD!)</p>
+</li>
+<li>
+<p>What’s inside the NuttX <strong><code>Image</code></strong> file? It contains the <strong>NuttX Kernel Image</strong> (which will run in RAM as-is) plus an Initial RAM Disk that contains the <strong>NuttX Apps</strong> (e.g. NuttX Shell).</p>
+<p>Definitely not meant to be burned into a MicroSD. And it won’t have a Bootloader inside! <a href="https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000"><strong>As explained above…</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run the build
+make
+
+## Build the Apps Filesystem
+make export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+
+## Append the Padding and Initial RAM Disk to the NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 </li>
 </ol>
