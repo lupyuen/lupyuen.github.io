@@ -16,19 +16,7 @@ _Why are we doing this?_
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
-Is it easy to install?
-Yes especially on Docker 
-Db can be sqlite 
 
-Easy to use?
-Git clone https mirror
-Ssl requires more security 
-
-Pr
-Issue
-
-Coexist with GitHub?
-mirror
 
 TODO: Live Site
 
@@ -41,6 +29,58 @@ Gitty-Hubby Gut-Hippy
 Gittish-Hubbish
 
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
+
+TODO: Pic of NuttX on Forgejo
+
+# NuttX On Forgejo
+
+_Is it easy to install our own Git Forge?_
+
+Yep! We're experimenting with __NuttX on Forgejo__...
+
+```text
+https://nuttx-forge.org
+```
+
+Installing our own Git Forge was plain-sailing (especially on Docker)...
+
+- TODO: Appendix
+
+Our Git Forge is running on [__Plain Old SQLite__](TODO). Later we might [__Upgrade to PostgreSQL__](TODO).
+
+# Works Like GitHub
+
+_Is it easy to use our own Git Forge?_
+
+Yep Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__ and __Issues__ look familiar...
+
+TODO: Pic of Pull Requests and Issues
+
+[(About Forgejo __Pull Requests__)](TODO)
+
+[(About Forgejo __Issues__)](TODO)
+
+Forgejo is fully compatible with our __Git Command-Line Tools__ (and VSCode)
+
+```bash
+## Download the NuttX Mirror Repo
+## From our Forgejo Server
+git clone \
+  https://nuttx-forge.org/nuttx/nuttx-mirror
+
+## Also works for SSH (instead of HTTPS)
+## But SSH isn't enabled yet
+git clone \
+  git@nuttx-forge.org:nuttx/nuttx-mirror
+```
+
+# Coexist With GitHub
+
+_Will our Git Forge coexist with GitHub?_
+
+Ah now it gets tricky.
+
+TODO: mirror
 
 # GitHub Migration: 2 Ways
 
