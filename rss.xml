@@ -4,7 +4,14 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
-            <title>(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)</title>
+            <title>Git Bisecting a Bug (Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/bisect</link>
+            <description><![CDATA[Suppose we hit a Runtime Bug in Apache NuttX RTOS. We think that the Breaking Commit (causing the bug) is somewhere inside these hundreds of NuttX Commits. But which one? In this article: We run Git Bisect to discover the Breaking Commit.]]></description>
+            <guid>https://lupyuen.github.io/articles/bisect</guid>
+            <pubDate>Sun, 05 Jan 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Mastodon Server for Continuous Integration (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/mastodon</link>
             <description><![CDATA[We're out for a 50 km overnight hike. Our Build Farm for Apache NuttX RTOS runs non-stop all day, all night. Continuously compiling over 1,000 NuttX Targets. Can we be 100% sure that NuttX is OK? Without getting spammed by alert emails all night? In this article: We talk about Mastodon as a fun new way to broadcast NuttX Alerts in real time.]]></description>
             <guid>https://lupyuen.github.io/articles/mastodon</guid>
@@ -137,7 +144,7 @@
             <pubDate>Tue, 13 Jun 2023 00:00:00 +0000</pubDate>
         </item>
         <item>
-            <title>Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)</title>
+            <title>Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S / Oz64 SBC)</title>
             <link>https://lupyuen.github.io/articles/sg2000</link>
             <description><![CDATA[Soon we'll see many new 64-bit RISC-V SBCs based on the Sophgo SG2000 RISC-V SoC. Will they work with Apache NuttX RTOS? Let's find out!]]></description>
             <guid>https://lupyuen.github.io/articles/sg2000</guid>
