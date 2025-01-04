@@ -90,7 +90,7 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
 - __NuttX Repo__ at GitHub shall __sync down regularly__ to Our Git Forge
 
-  (So NuttX Devs can continue coding if GitHub breaks)
+  (So NuttX Devs can pull updates if GitHub breaks)
 
 - __Pull Requests__ at our Git Forge shall be __pushed up to NuttX Repo__ at GitHub
 
