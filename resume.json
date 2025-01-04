@@ -297,7 +297,7 @@
       "summary": "Today we can get Real-Time NuttX Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser? Let’s do it with PureScript, the Functional Language that compiles to JavaScript. We’ll also support Online Scripting of PureScript for Log Parsing. Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like PINE64 Ox64 SBC and Sophgo SG2000 / Milk-V Duo S? Let’s chat about this."
     },
     {
-      "name": "Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)",
+      "name": "Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S / Oz64 SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-05-19",
       "website": "https://lupyuen.github.io/articles/sg2000",
