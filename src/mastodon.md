@@ -445,6 +445,8 @@ And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#a
 
 Next Article: We talk about __Git Bisect__ and how we auto-magically discover a Breaking Commit in NuttX.
 
+- [__"Git Bisecting a Bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/bisect.html)
+
 After That: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
 
 After After That? Why __Sync-Build-Ingest__ is super important for NuttX CI. And how we monitor it with our __Magic Disco Light__.
