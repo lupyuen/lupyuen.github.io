@@ -1379,6 +1379,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p>(This <strong><code>Image</code></strong> file won’t burn to MicroSD!)</p>
 </li>
 </ol>
+<p><em>So fip.bin sounds super important for booting SG2000?</em></p>
+<p>Yeah we could possibly replace <strong><code>fip.bin</code></strong> by <a href="https://github.com/apache/nuttx/tree/master/arch/risc-v/src/nuttsbi"><strong>NuttX SBI</strong></a>. (Which will start NuttX in RISC-V Supervisor Mode)</p>
+<p>Or we could replace <strong><code>fip.bin</code></strong> by <strong>NuttX Kernel</strong>, executing in <strong>RISC-V Machine Mode</strong>. (Assuming we don’t need RISC-V Supervisor Mode)</p>
 <p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 
     
