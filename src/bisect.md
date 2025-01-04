@@ -1,6 +1,6 @@
 # Git Bisecting a Bug (Apache NuttX RTOS)
 
-📝 _5 Jan 2024_
+📝 _5 Jan 2025_
 
 ![Git Bisecting a Bug in Apache NuttX RTOS](https://lupyuen.github.io/images/bisect-title.jpg)
 
