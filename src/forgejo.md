@@ -52,7 +52,7 @@ Our Git Forge is running on [__Plain Old SQLite__](TODO). Later we might [__Upgr
 
 _Is it easy to use our own Git Forge?_
 
-Yep Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__ and __Issues__ look familiar...
+Yes Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__ and __Issues__ look familiar...
 
 TODO: Pic of Pull Requests and Issues
 
@@ -69,10 +69,18 @@ git clone \
   https://nuttx-forge.org/nuttx/nuttx-mirror
 
 ## Also works for SSH (instead of HTTPS)
-## But SSH isn't enabled yet
+## But SSH isn't enabled on our server
 git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror
 ```
+
+_Haven't we seen this somewhere?_
+
+[__Codeberg__](TODO) is powered by Forgejo.
+
+[__GitLab__](TODO) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/).
+
+[(__FreeBSD Project__ is switching to Forgejo)](TODO)
 
 # Coexist With GitHub
 
