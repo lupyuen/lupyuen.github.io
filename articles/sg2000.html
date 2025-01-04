@@ -1357,10 +1357,29 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 
 ## Append the Padding and Initial RAM Disk to the NuttX Kernel
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
+  &gt;Image</code></pre></div></li>
+</ol>
+<p><em>Once Again: How exactly does NuttX boot on SG2000?</em></p>
+<ol>
+<li>
+<p>SG2000 powers up</p>
+</li>
+<li>
+<p>SG2000 Onboard Firmware (Flash Memory) looks for <strong><code>fip.bin</code></strong> in <strong><code>boot</code></strong> partition of MicroSD Card</p>
+<p>(Which we burned from <a href="https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4"><em>sophgo-sg200x-debian/duos_sd.img.lz4</em></a>)</p>
+</li>
+<li>
+<p>SG2000 starts OpenSBI (from <strong><code>fip.bin</code></strong>)</p>
+</li>
+<li>
+<p>OpenSBI starts U-Boot Bootloader (from <strong><code>fip.bin</code></strong>)</p>
+</li>
+<li>
+<p>U-Boot loads NuttX over TFTP. This is the <strong><code>Image</code></strong> file from <a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>SG2000 Daily Build</strong></a></p>
+<p>(This <strong><code>Image</code></strong> file won’t burn to MicroSD!)</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/sg2000-sbi.jpg" alt="OpenSBI and U-Boot Bootloader" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
