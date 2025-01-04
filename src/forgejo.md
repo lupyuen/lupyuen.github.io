@@ -18,7 +18,13 @@ _Why are we doing this?_
 
 TODO: Live Site
 
+TODO: Gitea
+
+TODO: FreeBSD
+
 Gitty-Hubby Gut-Hippy
+
+Gittish-Hubbish
 
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
 
