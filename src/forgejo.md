@@ -16,19 +16,9 @@ _Why are we doing this?_
 
 - Also: We're hitting some [__Budget Limits__](TODO) at GitHub
 
-
-
-TODO: Live Site
-
-TODO: Gitea
-
-TODO: FreeBSD
-
-Gitty-Hubby Gut-Hippy
-
-Gittish-Hubbish
-
+```text
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
+```
 
 TODO: Pic of NuttX on Forgejo
 
