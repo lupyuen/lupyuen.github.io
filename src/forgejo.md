@@ -8,13 +8,13 @@ __Life Without GitHub:__ What's it like?
 
 _Why are we doing this?_
 
-- Suppose GitHub breaks someday: What's our __Contingency Plan__?
+- Suppose GitHub breaks someday. What's our __Contingency Plan__?
 
 - __GitHub is Blocked__ in some parts of the world...
 
 - Can we make NuttX Community a little more inclusive? By hosting our __Git Forge outside GitHub__?
 
-- Also: We're hitting some [__Budget Limits__](TODO) at GitHub
+- Also: We're hitting some [__Budget Limits__](TODO) at GitHub. We might need to consider alternatives.
 
 ```text
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
