@@ -88,6 +88,12 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
 TODO: mirror
 
+# Continuous Integration
+
+Secure server
+
+Arch.yml not recognised
+
 # GitHub Migration: 2 Ways
 
 - __NuttX Mirror__: Auto-sync by Forgejo (e.g. every hour)
