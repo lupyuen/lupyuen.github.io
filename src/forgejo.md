@@ -10,15 +10,15 @@ _What's this Forgejo? And why is it a "Git Forge"?_
 
 Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreSQL Database)_
 
-[__Forgejo__](TODO) is a __Git Forge__, the server app that will publicly host and share a Git Repo. _(Including our NuttX Repo)_
+[__Forgejo__](TODO) is a __Git Forge__, the server code that will publicly host and share a Git Repo. _(Including our NuttX Repo)_
 
-_Why are we exploring Forgejo for NuttX?_
+_Why explore Forgejo for NuttX?_
 
 - Suppose GitHub breaks someday. What's our __Contingency Plan__?
 
 - __GitHub is Blocked__ in some parts of the world...
 
-- Can we __Mirror NuttX Repo__ outside GitHub? And make NuttX Community a little more inclusive?
+- Can we __Mirror NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
 
 - Also: We're hitting [__Budget Limits__](TODO) at GitHub, might need alternatives
 
