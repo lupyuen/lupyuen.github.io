@@ -150,14 +150,17 @@ git clone \
 </li>
 </ul>
 <p>Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to <strong>auto-sync from GitHub every hour</strong>…</p>
-<p>TODO: Pic of sync from GitHub</p>
+<p>TODO: Pic of repo sync from GitHub</p>
 <p>TODO: Pic of commits</p>
 <p>But this creates a <a href="TODO"><strong>Read-Only Mirror</strong></a> that won’t allow <strong>Pull Requests</strong>!</p>
 <p>TODO: Pic of read-only mirror</p>
 <p>Thus we created our own <a href="TODO"><strong>Read-Write Mirror</strong></a> of NuttX Repo. Forgejo won’t auto-sync this repo, hence we wrote our own <strong>Syncing Script</strong> (that works without GitHub)…</p>
 <p>TODO: Pic of read-write mirror</p>
 <p>TODO: Sync script</p>
-<p>TODO: PR</p>
+<p>TODO: Pic of PR sync</p>
+<p><em>But Pull Requests shall be synced back to GitHub?</em></p>
+<p>Indeed, we’ll probably call GitHub API to send the <strong>Pull Requests back to GitHub</strong>.</p>
+<p>With this setup, we can’t allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be <strong>merged at GitHub</strong>. Then Forgejo shall auto-sync the updates into our Git Forge.</p>
 <h1 id="continuous-integration"><a class="doc-anchor" href="#continuous-integration">§</a>4 Continuous Integration</h1>
 <p><em>Will our Git Forge run CI Checks on Pull Requests?</em></p>
 <p><strong>GitHub Actions CI</strong> (Continuous Integration) becomes a Sticky Issue with Forgejo…</p>
