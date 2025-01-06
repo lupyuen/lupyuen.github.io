@@ -66,7 +66,7 @@
     <h1 class="title">Forgejo Git Forge for Apache NuttX RTOS (Experimental)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#nuttx-on-forgejo" title="NuttX On Forgejo">1 NuttX On Forgejo</a><ul></ul></li>
-<li><a href="#works-like-github" title="Works Like GitHub">2 Works Like GitHub</a><ul></ul></li>
+<li><a href="#works-the-same" title="Works The Same">2 Works The Same</a><ul></ul></li>
 <li><a href="#coexist-with-github" title="Coexist With GitHub">3 Coexist With GitHub</a><ul></ul></li>
 <li><a href="#continuous-integration" title="Continuous Integration">4 Continuous Integration</a><ul></ul></li>
 <li><a href="#github-migration-2-ways" title="GitHub Migration: 2 Ways">5 GitHub Migration: 2 Ways</a><ul></ul></li>
@@ -86,8 +86,11 @@
 <li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-install-our-forgejo-server" title="Appendix: Install our Forgejo Server">20 Appendix: Install our Forgejo Server</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
-<p><strong>Life Without GitHub:</strong> What’s it like?</p>
-<p><em>Why are we doing this?</em></p>
+<p><strong>Life Without GitHub:</strong> What’s it like? In this article, we assess the feasibility of switching <a href="TODO"><strong>Apache NuttX RTOS</strong></a> from GitHub to <strong>Forgejo Git Forge</strong>.</p>
+<p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
+<p>Think GitHub… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(GoLang Web + PostgreSQL Database)</em></p>
+<p><a href="TODO"><strong>Forgejo</strong></a> is a <strong>Git Forge</strong>, the server app that will publicly host and share a Git Repo. <em>(Including our NuttX Repo)</em></p>
+<p><em>Why are we exploring Forgejo for NuttX?</em></p>
 <ul>
 <li>
 <p>Suppose GitHub breaks someday. What’s our <strong>Contingency Plan</strong>?</p>
@@ -96,10 +99,10 @@
 <p><strong>GitHub is Blocked</strong> in some parts of the world…</p>
 </li>
 <li>
-<p>Can we make NuttX Community a little more inclusive? By hosting our <strong>Git Forge outside GitHub</strong>?</p>
+<p>Can we <strong>Mirror NuttX Repo</strong> outside GitHub? And make NuttX Community a little more inclusive?</p>
 </li>
 <li>
-<p>Also: We’re hitting some <a href="TODO"><strong>Budget Limits</strong></a> at GitHub. We might need to consider alternatives.</p>
+<p>Also: We’re hitting <a href="TODO"><strong>Budget Limits</strong></a> at GitHub. (Might need alternatives)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>https://nuttx-forge.org/explore/repos?q=&amp;only_show_relevant=false&amp;sort=moststars</code></pre></div>
@@ -113,7 +116,7 @@
 <li>TODO: Appendix</li>
 </ul>
 <p>Our Git Forge is running on <a href="TODO"><strong>Plain Old SQLite</strong></a>. Later we might <a href="TODO"><strong>Upgrade to PostgreSQL</strong></a>.</p>
-<h1 id="works-like-github"><a class="doc-anchor" href="#works-like-github">§</a>2 Works Like GitHub</h1>
+<h1 id="works-the-same"><a class="doc-anchor" href="#works-the-same">§</a>2 Works The Same</h1>
 <p><em>Is it easy to use our own Git Forge?</em></p>
 <p>Yes Forgejo is pleasantly <strong>Gittish-Hubbish</strong>. Inside Forgejo: <strong>Pull Requests</strong> and <strong>Issues</strong> look familiar…</p>
 <p>TODO: Pic of Pull Requests and Issues</p>
@@ -491,6 +494,7 @@ exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-ne
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md"><strong>lupyuen.org/src/forgejo.md</strong></a></p>
 <h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>20 Appendix: Install our Forgejo Server</h1>
+<p>Security Level: Low</p>
 <p>TODO: forgejo-install1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="TODO" /></p>
 <p>TODO: forgejo-install2.png</p>
