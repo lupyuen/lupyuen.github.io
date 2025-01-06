@@ -109,7 +109,7 @@
 <p>TODO: Pic of NuttX on Forgejo</p>
 <h1 id="nuttx-on-forgejo"><a class="doc-anchor" href="#nuttx-on-forgejo">§</a>1 NuttX On Forgejo</h1>
 <p><em>Installing our own Git Forge: Is it easy?</em></p>
-<p>Yep! We’re experimenting with <strong>NuttX on Forgejo</strong>…</p>
+<p>Yep! Here’s our experiment of <strong>NuttX on Forgejo</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>https://nuttx-forge.org</code></pre></div>
 <p>Installing our <strong>Forgejo Server</strong> was plain-sailing (especially on Docker)</p>
 <ul>
@@ -149,7 +149,15 @@ git clone \
 <p>(So Local Changes in our Git Forge can be synced back)</p>
 </li>
 </ul>
-<p>TODO: mirror</p>
+<p>Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to <strong>auto-sync from GitHub every hour</strong>…</p>
+<p>TODO: Pic of sync from GitHub</p>
+<p>TODO: Pic of commits</p>
+<p>But this creates a <a href="TODO"><strong>Read-Only Mirror</strong></a> that won’t allow <strong>Pull Requests</strong>!</p>
+<p>TODO: Pic of read-only mirror</p>
+<p>Thus we created our own <a href="TODO"><strong>Read-Write Mirror</strong></a> of NuttX Repo. Forgejo won’t auto-sync this repo, hence we created our own <strong>Syncing Script</strong> (that works without GitHub)…</p>
+<p>TODO: Pic of read-write mirror</p>
+<p>TODO: Sync script</p>
+<p>TODO: PR</p>
 <h1 id="continuous-integration"><a class="doc-anchor" href="#continuous-integration">§</a>4 Continuous Integration</h1>
 <p><em>Will our Git Forge run CI Checks on Pull Requests?</em></p>
 <p><strong>GitHub Actions CI</strong> (Continuous Integration) becomes a Sticky Issue with Forgejo…</p>
