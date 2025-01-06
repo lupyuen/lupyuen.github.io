@@ -22,10 +22,6 @@ _Why explore Forgejo for NuttX?_
 
 - Also: We're hitting [__Budget Limits__](TODO) at GitHub, might need alternatives
 
-```text
-https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
-```
-
 TODO: Pic of NuttX on Forgejo
 
 # NuttX On Forgejo
@@ -34,9 +30,7 @@ _Installing our own Git Forge: Is it easy?_
 
 Yep! Here's our experiment of __NuttX on Forgejo__...
 
-```text
-https://nuttx-forge.org
-```
+- [__`https://nuttx-forge.org`__](https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars)
 
 Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
 
