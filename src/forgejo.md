@@ -94,7 +94,7 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
 Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __auto-sync from GitHub every hour__...
 
-TODO: Pic of sync from GitHub
+TODO: Pic of repo sync from GitHub
 
 TODO: Pic of commits
 
@@ -108,7 +108,13 @@ TODO: Pic of read-write mirror
 
 TODO: Sync script
 
-TODO: PR
+TODO: Pic of PR sync
+
+_But Pull Requests shall be synced back to GitHub?_
+
+Indeed, we'll probably call GitHub API to send the __Pull Requests back to GitHub__.
+
+With this setup, we can't allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be __merged at GitHub__. Then Forgejo shall auto-sync the updates into our Git Forge.
 
 # Continuous Integration
 
