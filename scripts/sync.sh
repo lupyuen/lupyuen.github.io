@@ -145,6 +145,7 @@ docker run \
   -p 3003:80 \
   -v "$PWD":/usr/local/apache2/htdocs/ \
   httpd:2.4-alpine
+docker update --restart always lupyuen
 docker restart lupyuen
 
 ## Copy HTTPD Config. Redirect /articles/ci7 to https://lupyuen.org/articles/ci7.html
