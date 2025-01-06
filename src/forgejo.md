@@ -30,7 +30,7 @@ TODO: Pic of NuttX on Forgejo
 
 # NuttX On Forgejo
 
-_Is it easy to install our own Git Forge?_
+_Installing our own Git Forge: Is it easy?_
 
 Yep! We're experimenting with __NuttX on Forgejo__...
 
@@ -38,7 +38,7 @@ Yep! We're experimenting with __NuttX on Forgejo__...
 https://nuttx-forge.org
 ```
 
-Installing our own Git Forge was plain-sailing (especially on Docker)...
+Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
 
 - TODO: Appendix
 
