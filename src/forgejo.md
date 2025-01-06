@@ -128,7 +128,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - But we don't have a __Secure CI Server__ to execute the CI Workflow!
 
-- Some GitHub Workflows are __Not Supported__: arch.yml (NuttX Build Rules)
+- Some GitHub Workflows are [__Not Supported__](TODO): arch.yml (NuttX Build Rules)
 
 _Why do we need a Secure CI Server?_
 
