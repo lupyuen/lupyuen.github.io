@@ -4,17 +4,23 @@
 
 ![TODO](https://lupyuen.github.io/images/forgejo-title.jpg)
 
-__Life Without GitHub:__ What's it like?
+__Life Without GitHub:__ What's it like? In this article, we assess the feasibility of switching [__Apache NuttX RTOS__](TODO) from GitHub to __Forgejo Git Forge__.
 
-_Why are we doing this?_
+_What's this Forgejo? And why is it a "Git Forge"?_
+
+Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreSQL Database)_
+
+[__Forgejo__](TODO) is a __Git Forge__, the server app that will publicly host and share a Git Repo. _(Including our NuttX Repo)_
+
+_Why are we exploring Forgejo for NuttX?_
 
 - Suppose GitHub breaks someday. What's our __Contingency Plan__?
 
 - __GitHub is Blocked__ in some parts of the world...
 
-- Can we make NuttX Community a little more inclusive? By hosting our __Git Forge outside GitHub__?
+- Can we __Mirror NuttX Repo__ outside GitHub? And make NuttX Community a little more inclusive?
 
-- Also: We're hitting some [__Budget Limits__](TODO) at GitHub. We might need to consider alternatives.
+- Also: We're hitting [__Budget Limits__](TODO) at GitHub. (Might need alternatives)
 
 ```text
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
@@ -38,7 +44,7 @@ Installing our own Git Forge was plain-sailing (especially on Docker)...
 
 Our Git Forge is running on [__Plain Old SQLite__](TODO). Later we might [__Upgrade to PostgreSQL__](TODO).
 
-# Works Like GitHub
+# Works The Same
 
 _Is it easy to use our own Git Forge?_
 
@@ -562,6 +568,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 [__lupyuen.org/src/forgejo.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md)
 
 # Appendix: Install our Forgejo Server
+
+Security Level: Low
 
 TODO: forgejo-install1.png
 
