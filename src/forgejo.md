@@ -32,7 +32,7 @@ TODO: Pic of NuttX on Forgejo
 
 _Installing our own Git Forge: Is it easy?_
 
-Yep! We're experimenting with __NuttX on Forgejo__...
+Yep! Here's our experiment of __NuttX on Forgejo__...
 
 ```text
 https://nuttx-forge.org
@@ -92,7 +92,23 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
   (So Local Changes in our Git Forge can be synced back)
 
-TODO: mirror
+Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __auto-sync from GitHub every hour__...
+
+TODO: Pic of sync from GitHub
+
+TODO: Pic of commits
+
+But this creates a [__Read-Only Mirror__](TODO) that won't allow __Pull Requests__!
+
+TODO: Pic of read-only mirror
+
+Thus we created our own [__Read-Write Mirror__](TODO) of NuttX Repo. Forgejo won't auto-sync this repo, hence we created our own __Syncing Script__ (that works without GitHub)...
+
+TODO: Pic of read-write mirror
+
+TODO: Sync script
+
+TODO: PR
 
 # Continuous Integration
 
