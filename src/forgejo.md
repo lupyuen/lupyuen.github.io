@@ -42,7 +42,7 @@ Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
 
 - TODO: Appendix
 
-Our Git Forge is running on [__Plain Old SQLite__](TODO). Later we might [__Upgrade to PostgreSQL__](TODO).
+Our Git Forge is running on [__Plain Old SQLite__](TODO) database. Later we might [__Upgrade to PostgreSQL__](TODO).
 
 # Works The Same
 
