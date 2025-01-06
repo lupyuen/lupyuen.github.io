@@ -102,7 +102,7 @@ But this creates a [__Read-Only Mirror__](TODO) that won't allow __Pull Requests
 
 TODO: Pic of read-only mirror
 
-Thus we created our own [__Read-Write Mirror__](TODO) of NuttX Repo. Forgejo won't auto-sync this repo, hence we created our own __Syncing Script__ (that works without GitHub)...
+Thus we created our own [__Read-Write Mirror__](TODO) of NuttX Repo. Forgejo won't auto-sync this repo, hence we wrote our own __Syncing Script__ (that works without GitHub)...
 
 TODO: Pic of read-write mirror
 
