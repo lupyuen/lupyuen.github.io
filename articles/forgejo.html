@@ -93,7 +93,7 @@
 <p><em>Why explore Forgejo for NuttX?</em></p>
 <ul>
 <li>
-<p>Suppose GitHub breaks someday. What’s our <strong>Contingency Plan</strong>?</p>
+<p>If GitHub breaks: What’s our <strong>Contingency Plan</strong>?</p>
 </li>
 <li>
 <p><strong>GitHub is Blocked</strong> in some parts of the world…</p>
@@ -151,8 +151,24 @@ git clone \
 </ul>
 <p>TODO: mirror</p>
 <h1 id="continuous-integration"><a class="doc-anchor" href="#continuous-integration">§</a>4 Continuous Integration</h1>
-<p>Secure server</p>
-<p>Arch.yml not recognised</p>
+<p><em>Will our Git Forge run CI Checks on Pull Requests?</em></p>
+<p><strong>GitHub Actions CI</strong> (Continuous Integration) becomes a Sticky Issue with Forgejo…</p>
+<ul>
+<li>
+<p>Forgejo will import <strong>GitHub Actions Workflows</strong> and execute them</p>
+<p>TODO: Pic of Forgejo with GitHub Actions Workflow</p>
+</li>
+<li>
+<p>But we don’t have a <strong>Secure CI Server</strong> to execute the CI Workflow!</p>
+</li>
+<li>
+<p>Some GitHub Workflows are <strong>Not Supported</strong>: arch.yml (NuttX Build Rules)</p>
+</li>
+</ul>
+<p><em>Why do we need a Secure CI Server?</em></p>
+<p>During PR Submission: Our CI Workflow might need to execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
+<p>If we don’t secure our CI Server, we might create <a href="TODO"><strong>Security Problems</strong></a> in our server.</p>
+<p>Securing our CI Server is probably the toughest part of our Git Forge Migration. (That’s why GitHub is so expensive!)</p>
 <h1 id="github-migration-2-ways"><a class="doc-anchor" href="#github-migration-2-ways">§</a>5 GitHub Migration: 2 Ways</h1>
 <ul>
 <li>
