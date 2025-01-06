@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/forgejo-title.jpg)
 
-__Life Without GitHub:__ What's it like? In this article, we assess the feasibility of switching [__Apache NuttX RTOS__](TODO) from GitHub to __Forgejo Git Forge__.
+__Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](TODO), and whether [__Apache NuttX RTOS__](TODO) could possibly switch from GitHub to our own Git Forge.
 
 _What's this Forgejo? And why is it a "Git Forge"?_
 
@@ -20,7 +20,7 @@ _Why are we exploring Forgejo for NuttX?_
 
 - Can we __Mirror NuttX Repo__ outside GitHub? And make NuttX Community a little more inclusive?
 
-- Also: We're hitting [__Budget Limits__](TODO) at GitHub. (Might need alternatives)
+- Also: We're hitting [__Budget Limits__](TODO) at GitHub, might need alternatives
 
 ```text
 https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars
