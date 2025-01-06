@@ -14,7 +14,7 @@ Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreS
 
 _Why explore Forgejo for NuttX?_
 
-- Suppose GitHub breaks someday. What's our __Contingency Plan__?
+- If GitHub breaks: What's our __Contingency Plan__?
 
 - __GitHub is Blocked__ in some parts of the world...
 
@@ -96,9 +96,25 @@ TODO: mirror
 
 # Continuous Integration
 
-Secure server
+_Will our Git Forge run CI Checks on Pull Requests?_
 
-Arch.yml not recognised
+__GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forgejo...
+
+- Forgejo will import __GitHub Actions Workflows__ and execute them
+
+  TODO: Pic of Forgejo with GitHub Actions Workflow
+
+- But we don't have a __Secure CI Server__ to execute the CI Workflow!
+
+- Some GitHub Workflows are __Not Supported__: arch.yml (NuttX Build Rules)
+
+_Why do we need a Secure CI Server?_
+
+During PR Submission: Our CI Workflow might need to execute the __scripts and code submitted__ by NuttX Devs.
+
+If we don't secure our CI Server, we might create [__Security Problems__](TODO) in our server.
+
+Securing our CI Server is probably the toughest part of our Git Forge Migration. (That's why GitHub is so expensive!)
 
 # GitHub Migration: 2 Ways
 
