@@ -679,38 +679,71 @@ TODO: forgejo-ssh2.png
 
 # Appendix: SSH vs Docker Filesystem
 
-_Why did we change TODO?_
+_Why did we change the Docker Filesystem for Forgejo?_
+
+Based on the [__Official Docs__](TODO): Forgejo should be configured to use a __Local Docker Filesystem__...
 
 TODO
 
-```text
-ssh -T -p 222 git@localhost
+Let's try it on [__macOS Rancher Desktop__](TODO) and watch what happens...
 
+```bash
+ssh -T -p 222 git@localhost
+```
+
+__Forgejo Server Log__ says...
+
+```text
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 40328 [preauth]
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]
+```
 
-ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
+We check the __SSH Filesystem in macOS__...
+
+```bash
+$ ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
 drwx------@ 4 luppy  staff  128 Dec 20 13:45 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh
 
 $ ls -l $HOME/nuttx-forgejo/forgejo/git/.ssh/authorized_keys 
 -rw-------@ 1 luppy  staff  279 Dec 21 11:13 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh/authorized_keys
+```
 
-sudo docker exec \
+Do the same __Inside Docker__...
+
+```bash
+$ sudo docker exec \
   -it \
   forgejo \
   /bin/bash
 
-User ID should be git, not 501! (Some kinda jeans?)
-5473c234c7eb:/data/git# ls -ld /data/git/.ssh
+$ ls -ld /data/git/.ssh
 drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
-5473c234c7eb:/data/git# ls -l /data/git/.ssh/authorized_keys
+$ ls -l /data/git/.ssh/authorized_keys
 -rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
-5473c234c7eb:/data/git#
+```
 
-Won't work:
+Aha! User ID should be __git__, not __501__! (Some kinda jeans?)
+
+Too bad __chown__ won't work...
+
+```bash
+## Nope! Won't work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh
+```
+
+(Because Rancher Desktop won't set permissions correctly for Local Filesystem) 
+
+And that's why our [__docker-compose.yml__](TODO) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
+
+```yaml
+services:
+  server:
+    volumes:
+      - forgejo-data:/data
+volumes:
+  forgejo-data:
 ```
