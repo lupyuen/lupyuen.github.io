@@ -160,6 +160,9 @@ TODO: forgejo-home2.png
 
 # PR
 
+TODO: forgejo-update4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
 
 TODO: forgejo-pr1.png
 
@@ -632,25 +635,47 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
 # Appendix: Read-Write Mirror of GitHub Repo
 
-TODO: forgejo-update8.png
+Earlier we created a Read-Only Mirror. But it doesn't allow Pull Requests!
 
-![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
+Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo __won't auto-sync__ our repo, instead we'll run a script to sync the repo...
 
-TODO: forgejo-update1.png
+1.  At Top Right: Select __`+` > New Migration__
 
-![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
 
-TODO: forgejo-update7.png
+1.  Select __GitHub__
 
-![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
 
-TODO: forgejo-update2.png
+1.  Enter the __GitHub URL__ of NuttX Repo
 
-![TODO](https://lupyuen.github.io/images/forgejo-update2.png)
+    Fill in the __Access Token__
 
-TODO: forgejo-update3.png
+    Uncheck __"This Repo Will Be A Mirror"__
+    
+    Check __Migrate LFS Files__, __Wiki__, __Labels__, __Milestones__, __Releases__
 
-![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
+    Set the __Repo Name__ to __`nuttx-update`__
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
+
+1.  This will create a __Read-Write Mirror__...
+
+    Forgejo __won't auto-sync__ our repo. But it will migrate the other items: Labels, Milestones, Releases (pic above)
+
+    Don't select __Issues and Pull Requests__! Forgejo will hang forever, hitting errors. (Probably due to the sheer volume)
+
+    TODO: Combine pics
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
+
+1.  In a while, Forgejo creates our __Read-Write Mirror__
+
+    [(Live Site)](TODO)
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
 
 TODO: forgejo-update5.png
 
@@ -664,6 +689,3 @@ TODO: forgejo-update9.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
 
-TODO: forgejo-update4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
