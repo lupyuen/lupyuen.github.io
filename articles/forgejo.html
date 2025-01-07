@@ -76,8 +76,8 @@
 <li><a href="#appendix-pr" title="Appendix: PR">9 Appendix: PR</a><ul></ul></li>
 <li><a href="#appendix-actions" title="Appendix: Actions">10 Appendix: Actions</a><ul></ul></li>
 <li><a href="#appendix-change-the-default-page" title="Appendix: Change the Default Page">11 Appendix: Change the Default Page</a><ul></ul></li>
-<li><a href="#appendix-read-only-mirror-of-github-repo" title="Appendix: Read-Only Mirror of GitHub Repo">12 Appendix: Read-Only Mirror of GitHub Repo</a><ul></ul></li>
-<li><a href="#appendix-read-write-mirror-of-github-repo" title="Appendix: Read-Write Mirror of GitHub Repo">13 Appendix: Read-Write Mirror of GitHub Repo</a><ul></ul></li>
+<li><a href="#appendix-read-only-mirror" title="Appendix: Read-Only Mirror">12 Appendix: Read-Only Mirror</a><ul></ul></li>
+<li><a href="#appendix-read-write-mirror" title="Appendix: Read-Write Mirror">13 Appendix: Read-Write Mirror</a><ul></ul></li>
 <li><a href="#appendix-test-ssh-key" title="Appendix: Test SSH Key">14 Appendix: Test SSH Key</a><ul></ul></li>
 <li><a href="#appendix-use-ssh-key" title="Appendix: Use SSH Key">15 Appendix: Use SSH Key</a><ul></ul></li>
 <li><a href="#appendix-sync-our-read-write-mirror" title="Appendix: Sync our Read-Write Mirror">16 Appendix: Sync our Read-Write Mirror</a><ul></ul></li>
@@ -347,7 +347,7 @@ sudo docker cp \
 sudo docker compose down
 sudo docker compose up</code></pre></div>
 <p>Looks more sensible</p>
-<h1 id="appendix-read-only-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-only-mirror-of-github-repo">§</a>12 Appendix: Read-Only Mirror of GitHub Repo</h1>
+<h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>12 Appendix: Read-Only Mirror</h1>
 <p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
 <p>Forgejo shall <strong>auto-sync our repo</strong> (every hour), but it <strong>won’t allow Pull Requests</strong> in our Read-Only Mirror…</p>
 <ol>
@@ -438,7 +438,7 @@ nuttx-update
 Migrate Repo
 
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
-ignore</code></pre></div><h1 id="appendix-read-write-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-write-mirror-of-github-repo">§</a>13 Appendix: Read-Write Mirror of GitHub Repo</h1>
+ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>13 Appendix: Read-Write Mirror</h1>
 <p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
 <p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
 <ol>
