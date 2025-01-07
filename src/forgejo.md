@@ -584,33 +584,51 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
 
+    [(Live Site)](TODO)
+
 1.  By Default: Forgejo __syncs every 8 hours__. We change to __1 hour__ (under Repo Settings)
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
+
+    [(Live Site)](TODO)
 
 1.  Forgejo has helpfully migrated our __Template for NuttX Issues__
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
+    [(Live Site)](TODO)
+
 1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu.
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
 
+    [(Live Site)](TODO)
+
 1.  __NuttX Commits__ look very familiar in Forgejo
 
+    (__Commit Hashes__ are identical to GitHub)
+
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
+
+    [(Live Site)](TODO)
 
 1.  So cool to watch Forgejo __Auto-Sync our GitHub Repo__
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
 
+    [(Live Site)](TODO)
+
 1.  Auto-Sync may trigger __CI Workflows__. But we don't have CI Servers to run them (yet).
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
 
+    [(Live Site)](TODO)
+
 1.  That's why the __CI Jobs will wait forever__
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+
+    [(Live Site)](TODO)
 
 # Appendix: Read-Write Mirror of GitHub Repo
 
