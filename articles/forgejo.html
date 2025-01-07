@@ -76,10 +76,8 @@
 <li><a href="#appendix-read-only-mirror" title="Appendix: Read-Only Mirror">9 Appendix: Read-Only Mirror</a><ul></ul></li>
 <li><a href="#appendix-read-write-mirror" title="Appendix: Read-Write Mirror">10 Appendix: Read-Write Mirror</a><ul></ul></li>
 <li><a href="#appendix-pull-request-in-forgejo" title="Appendix: Pull Request in Forgejo">11 Appendix: Pull Request in Forgejo</a><ul></ul></li>
-<li><a href="#appendix-actions" title="Appendix: Actions">12 Appendix: Actions</a><ul></ul></li>
-<li><a href="#appendix-test-ssh-key" title="Appendix: Test SSH Key">13 Appendix: Test SSH Key</a><ul></ul></li>
-<li><a href="#appendix-use-ssh-key" title="Appendix: Use SSH Key">14 Appendix: Use SSH Key</a><ul></ul></li>
-<li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">15 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
+<li><a href="#appendix-ssh-key-in-forgejo" title="Appendix: SSH Key in Forgejo">12 Appendix: SSH Key in Forgejo</a><ul></ul></li>
+<li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">13 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="TODO"><strong>Forgejo Git Forge</strong></a>, and whether <a href="TODO"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
 <p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
@@ -528,7 +526,7 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p>Enter the <strong>GitHub URL</strong> of NuttX Repo</p>
 <p>Fill in the <strong>Access Token</strong></p>
 <p>Uncheck <strong>“This Repo Will Be A Mirror”</strong></p>
-<p>Check <strong>Migrate LFS Files</strong>, <strong>Wiki</strong>, <strong>Labels</strong>, <strong>Milestones</strong>, <strong>Releases</strong></p>
+<p>Check the following: <strong>Migrate LFS Files</strong>, <strong>Wiki</strong>, <strong>Labels</strong>, <strong>Milestones</strong>, <strong>Releases</strong></p>
 <p>Set the <strong>Repo Name</strong> to <strong><code>nuttx-update</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update8.png" alt="TODO" /></p>
 </li>
@@ -547,41 +545,59 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="TODO" /></p>
 </li>
 <li>
-<p>Yep our Read-Write Mirror will <strong>allow updates</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update5.png" alt="TODO" /></p>
-</li>
-<li>
-<p>Everything looks <strong>super familiar</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update6.png" alt="TODO" /></p>
-</li>
-<li>
 <p>How will we <strong>sync the Read-Write Mirror</strong>? By running this script…</p>
 <p>TODO: Sync script</p>
 </li>
 </ol>
 <h1 id="appendix-pull-request-in-forgejo"><a class="doc-anchor" href="#appendix-pull-request-in-forgejo">§</a>11 Appendix: Pull Request in Forgejo</h1>
-<p>TODO: forgejo-update4.png</p>
+<p><em>How different are Forgejo Pull Requests from GitHub?</em></p>
+<p>Let’s find out!</p>
+<ol>
+<li>
+<p>We create a Fork of our <a href="TODO"><strong>Read-Write NuttX Mirror</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr1.png</p>
+</li>
+<li>
+<p>Create a new branch: <a href="TODO"><strong><code>test-branch</code></strong></a>. <strong>Edit a file</strong> in our new branch.</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update5.png" alt="TODO" /></p>
+</li>
+<li>
+<p><strong>Save the file</strong> to our new branch</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“New Pull Request”</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr1.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr2.png</p>
+</li>
+<li>
+<p>Again click <strong>“New Pull Request”</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr2.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr3.png</p>
+</li>
+<li>
+<p>Remember the <strong>NuttX Template for Pull Requests</strong>? It appears in Forgejo</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr3.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr4.png</p>
+</li>
+<li>
+<p>Click <strong>“Create Pull Request”</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr4.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr5.png</p>
+</li>
+<li>
+<p>And we’ll see our <strong>New Pull Request</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr5.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr6.png</p>
+</li>
+<li>
+<p>Indeed, no surprises! Everything works the same.</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr6.png" alt="TODO" /></p>
-<p>TODO: forgejo-pr7.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr7.png" alt="TODO" /></p>
-<h1 id="appendix-actions"><a class="doc-anchor" href="#appendix-actions">§</a>12 Appendix: Actions</h1>
-<p>TODO: forgejo-actions1.png</p>
+</li>
+<li>
+<p><strong>Merging a Pull Request</strong> will trigger the exact same CI Workflow. Which won’t run because we haven’t configured the CI Servers.</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="TODO" /></p>
+</li>
+</ol>
+<p>TODO: Sync to GitHub</p>
 <p>TODO: forgejo-commits.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
-<h1 id="appendix-test-ssh-key"><a class="doc-anchor" href="#appendix-test-ssh-key">§</a>13 Appendix: Test SSH Key</h1>
+<h1 id="appendix-ssh-key-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-key-in-forgejo">§</a>12 Appendix: SSH Key in Forgejo</h1>
 <p>TODO: SSH Port not exposed for security reasons</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
 Call it ~/.ssh/nuttx-forge
@@ -602,7 +618,9 @@ Click Add Key
 $ ssh -T git@nuttx-forge  
 
 Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
-If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div><h1 id="appendix-use-ssh-key"><a class="doc-anchor" href="#appendix-use-ssh-key">§</a>14 Appendix: Use SSH Key</h1><div class="example-wrap"><pre class="language-text"><code>git clone git@nuttx-forge:nuttx/test.git
+If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div>
+<p>TODO: Use SSH Key</p>
+<div class="example-wrap"><pre class="language-text"><code>git clone git@nuttx-forge:nuttx/test.git
 cd test
 echo Testing &gt;test.txt
 git add .
@@ -612,7 +630,8 @@ git push -u origin main</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
 <p>TODO: forgejo-ssh2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
-<h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>15 Appendix: SSH vs Docker Filesystem</h1>
+<h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>13 Appendix: SSH vs Docker Filesystem</h1>
+<p><em>Why did we change TODO?</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
 
