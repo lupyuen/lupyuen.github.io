@@ -114,7 +114,12 @@
 </ul>
 <p>Installing our <strong>Forgejo Server</strong> was plain-sailing (especially on Docker)</p>
 <ul>
-<li>TODO: Appendix</li>
+<li>
+<p>TODO: Appendix</p>
+</li>
+<li>
+<p>Thanks to the excellent <a href="TODO"><strong>Forejo Docs</strong></a></p>
+</li>
 </ul>
 <p>Our Git Forge is running on <a href="TODO"><strong>Plain Old SQLite</strong></a> database. Later we might <a href="TODO"><strong>Upgrade to PostgreSQL</strong></a>.</p>
 <h1 id="works-the-same"><a class="doc-anchor" href="#works-the-same">§</a>2 Works The Same</h1>
@@ -268,43 +273,7 @@ git clone \
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
 <p>TODO: forgejo-ssh2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://forgejo.org/docs/latest/admin/installation-docker/
-
-docker pull codeberg.org/forgejo/forgejo:9
-cd $HOME
-git clone https://github.com/lupyuen/nuttx-forgejo
-cd nuttx-forgejo
-
-docker-compose.yml:
-&lt;&lt;
-services:
-  server:
-    volumes:
-      - forgejo-data:/data
-
-volumes:
-  forgejo-data:
-&gt;&gt;
-
-## TODO: Is `sudo` needed?
-sudo docker compose up
-
-## If It Quits To Command-Line:
-## Run a second time to get it up
-sudo docker compose up
-
-to down: sudo docker compose down
-https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846
-
-Will auto create `forgejo` folder
-Browse to http://localhost:3002/
-SQLite, upgrade to PostgreSQL later
-Domain: nuttx-forge.org
-Create admin user: nuttx
-
-(For CloudFlare Tunnel: Set __Security &gt; Settings &gt; High__)
-
-+ &gt; New Migration &gt; GitHub
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-text"><code>+ &gt; New Migration &gt; GitHub
 This repo will be a mirror
 access token
 nuttx-mirror
@@ -522,12 +491,58 @@ exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-ne
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md"><strong>lupyuen.org/src/forgejo.md</strong></a></p>
 <h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>20 Appendix: Install our Forgejo Server</h1>
-<p>Security Level: Low</p>
-<p>TODO: forgejo-install1.png</p>
+<p>Here are the steps to install our own <strong>Forgejo Server</strong> on <strong>Docker Engine</strong> based on the <a href="https://forgejo.org/docs/latest/admin/installation-docker/"><strong>official docs</strong></a>…</p>
+<p><a href="TODO">(Tested on <strong>macOS Rancher Desktop</strong>)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Forgejo Docker Image
+## And our Modified Docker Compose Config
+docker pull codeberg.org/forgejo/forgejo:9
+cd $HOME
+git clone https://github.com/lupyuen/nuttx-forgejo
+cd nuttx-forgejo
+
+## docker-compose.yml: Points to `forgejo-data` as the Data Volume (instead of Local Filesystem)
+## Because Rancher Desktop won&#39;t set permissions correctly for Local Filesystem (see secton below)
+## services:
+##   server:
+##     volumes:
+##       - forgejo-data:/data
+## volumes:
+##   forgejo-data:
+
+## Up the Forgejo Server
+## (Is `sudo` needed?)
+sudo docker compose up
+
+## If It Quits To Command-Line:
+## Run a second time to get it up
+sudo docker compose up
+
+## If we need to down the Forgejo Server:
+## sudo docker compose down</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846">(See the <strong>Install Log</strong>)</a></p>
+<p>(For CloudFlare Tunnel: Set <strong>Security &gt; Settings &gt; Low</strong>)</p>
+<ul>
+<li>
+<p>This will auto-create the <strong><code>forgejo</code></strong> folder for Forgejo Data</p>
+</li>
+<li>
+<p>We browse to <strong><code>http://localhost:3002</code></strong></p>
+</li>
+<li>
+<p>Select <strong>SQLite</strong> as the database (we upgrade to PostgreSQL later)</p>
+</li>
+<li>
+<p>Set <strong>Domain</strong> to <strong><code>nuttx-forge.org</code></strong> (or your domain)</p>
+</li>
+<li>
+<p>Create an <strong>Admin User</strong> named <strong><code>nuttx</code></strong> (or your preference)</p>
+</li>
+</ul>
+<p>This is how we specify the <strong>Forgejo Database</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="TODO" /></p>
-<p>TODO: forgejo-install2.png</p>
+<p>And the <strong>Server Domain</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install2.png" alt="TODO" /></p>
-<p>TODO: forgejo-install3.png</p>
+<p>Finally our <strong>Admin User</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
 
     
