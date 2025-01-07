@@ -401,22 +401,6 @@ fi
 set +x ; echo "**** Done!" ; set -x
 ```
 
-# Backup Forgejo
-
-```text
-sudo docker exec \
-  -it \
-  forgejo \
-  /bin/bash -c \
-  "tar cvf /tmp/data.tar /data"
-
-sudo docker cp \
-  forgejo:/tmp/data.tar \
-  .
-```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb)
-
 # SSH Fails with Local Filesystem
 
 ```text
@@ -477,7 +461,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Install our Forgejo Server
 
-Here are the steps to install our own __Forgejo Server__ on __Docker Engine__ based on the [__official docs__](https://forgejo.org/docs/latest/admin/installation-docker/)...
+Here are the steps to install our own __Forgejo Server__ on __Docker Engine__...
+
+[(Derived from __Official Docs__)](https://forgejo.org/docs/latest/admin/installation-docker/)
 
 [(Tested on __macOS Rancher Desktop__)](TODO)
 
@@ -534,7 +520,25 @@ sudo docker compose up
 
   (Change _nuttx-forge.org_ to Your Domain Name)
 
-Back to the Forgejo Configuration: This is how we specify the __Forgejo Database__...
+- Remember to __Backup Forgejo__ regularly!
+
+  ```text
+  ## Inside Docker: Amalgamate the `/data` folder into `/tmp/data.tar`
+  sudo docker exec \
+    -it \
+    forgejo \
+    /bin/bash -c \
+    "tar cvf /tmp/data.tar /data"
+
+  ## Copy `/tmp/data.tar` out from Docker
+  sudo docker cp \
+    forgejo:/tmp/data.tar \
+    .
+  ```
+
+  [(See the __Backup Log__)](https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb)
+
+Back to the __Forgejo Configuration__: This is how we specify the __Forgejo Database__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
 
@@ -548,25 +552,39 @@ Finally our __Admin User__...
 
 # Appendix: Read-Only Mirror of GitHub Repo
 
-TODO: forgejo-mirror1.png
+Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub...
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
+1.  At Top Right: Select __`+` > New Migration__
 
-TODO: forgejo-mirror2.png
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
+1.  Select __GitHub__
 
-TODO: forgejo-mirror3.png
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror3.png)
+1.  Enter the __GitHub URL__ of NuttX Repo
 
-TODO: forgejo-mirror4.png
+    Fill in the __Access Token__
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
+    Check __"This Repo Will Be A Mirror"__, __Migrate LFS Files__ and __Wiki__
 
-TODO: forgejo-mirror5.png
+    Set the __Repo Name__ to __`nuttx-mirror`__
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror3.png)
+
+1.  This will create a __Read-Only Mirror__...
+
+    We __won't be able to migrate__ the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)
+
+    (Read-Write Mirror will be more useful, see the next section)
+
+1.  And Forgejo dutifully creates our __Read-Only Mirror__!
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
+
+1.  By Default: Forgejo __syncs every 8 hours__. We change to __1 hour__ (under Repo Settings)
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
 
 TODO: forgejo-mirror6.png
 
