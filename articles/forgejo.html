@@ -513,7 +513,8 @@ sudo docker cp \
 <p>Finally our <strong>Admin User</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
 <h1 id="appendix-read-only-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-only-mirror-of-github-repo">§</a>18 Appendix: Read-Only Mirror of GitHub Repo</h1>
-<p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub…</p>
+<p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
+<p>Forgejo shall <strong>auto-sync our repo</strong> (every hour), but it <strong>won’t allow Pull Requests</strong> in our Read-Only Mirror…</p>
 <ol>
 <li>
 <p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
@@ -532,7 +533,7 @@ sudo docker cp \
 </li>
 <li>
 <p>This will create a <strong>Read-Only Mirror</strong>…</p>
-<p>We <strong>won’t be able to migrate</strong> the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)</p>
+<p>Forgejo <strong>won’t migrate</strong> the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)</p>
 <p>(Read-Write Mirror will be more useful, see the next section)</p>
 </li>
 <li>
@@ -543,21 +544,29 @@ sudo docker cp \
 <p>By Default: Forgejo <strong>syncs every 8 hours</strong>. We change to <strong>1 hour</strong> (under Repo Settings)</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror5.png" alt="TODO" /></p>
 </li>
-</ol>
-<p>TODO: forgejo-mirror6.png</p>
+<li>
+<p>Forgejo has helpfully migrated our <strong>Template for NuttX Issues</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror6.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror7.png</p>
+</li>
+<li>
+<p>Forgejo has ported over our <strong>GitHub Actions Workflows</strong>. But they won’t run because we don’t have a <strong>CI Server</strong> for Ubuntu.</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror7.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror8.png</p>
+</li>
+<li>
+<p><strong>NuttX Commits</strong> look very familiar in Forgejo</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror8.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror9.png</p>
+</li>
+<li>
+<p>So cool to watch Forgejo <strong>Auto-Sync our GitHub Repo</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror9.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror10.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror10.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror11.png</p>
+</li>
+<li>
+<p>Auto-Sync may trigger <strong>CI Workflows</strong>. But we don’t have CI Servers to run them (yet).</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror11.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror12.png</p>
+</li>
+</ol>
 <h1 id="appendix-read-write-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-write-mirror-of-github-repo">§</a>19 Appendix: Read-Write Mirror of GitHub Repo</h1>
+<p>TODO: forgejo-mirror12.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="TODO" /></p>
 <p>TODO: forgejo-update1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="TODO" /></p>
