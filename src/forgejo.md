@@ -68,11 +68,11 @@ git clone \
 
 _Haven't we seen this somewhere?_
 
-[__Codeberg__](TODO) is powered by Forgejo.
+- [__Codeberg__](TODO) is powered by Forgejo
 
-[__GitLab__](TODO) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/).
+- [__GitLab__](TODO) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/)
 
-[(__FreeBSD Project__ is switching to Forgejo)](TODO)
+- BTW: __FreeBSD Project__ is [__moving to Forgejo__](TODO)
 
 # Coexist With GitHub
 
