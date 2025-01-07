@@ -204,6 +204,8 @@ git clone \
 <p>TODO: forgejo-home2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
 <h1 id="pr"><a class="doc-anchor" href="#pr">§</a>7 PR</h1>
+<p>TODO: forgejo-update4.png</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="TODO" /></p>
 <p>TODO: forgejo-pr1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-pr1.png" alt="TODO" /></p>
 <p>TODO: forgejo-pr2.png</p>
@@ -579,24 +581,45 @@ sudo docker cp \
 </li>
 </ol>
 <h1 id="appendix-read-write-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-write-mirror-of-github-repo">§</a>19 Appendix: Read-Write Mirror of GitHub Repo</h1>
-<p>TODO: forgejo-update8.png</p>
+<p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
+<p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
+<ol>
+<li>
+<p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Select <strong>GitHub</strong></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Enter the <strong>GitHub URL</strong> of NuttX Repo</p>
+<p>Fill in the <strong>Access Token</strong></p>
+<p>Uncheck <strong>“This Repo Will Be A Mirror”</strong></p>
+<p>Check <strong>Migrate LFS Files</strong>, <strong>Wiki</strong>, <strong>Labels</strong>, <strong>Milestones</strong>, <strong>Releases</strong></p>
+<p>Set the <strong>Repo Name</strong> to <strong><code>nuttx-update</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update8.png" alt="TODO" /></p>
-<p>TODO: forgejo-update1.png</p>
+</li>
+<li>
+<p>This will create a <strong>Read-Write Mirror</strong>…</p>
+<p>Forgejo <strong>won’t auto-sync</strong> our repo. But it will migrate the other items: Labels, Milestones, Releases (pic above)</p>
+<p>Don’t select <strong>Issues and Pull Requests</strong>! Forgejo will hang forever, hitting errors. (Probably due to the sheer volume)</p>
+<p>TODO: Combine pics</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="TODO" /></p>
-<p>TODO: forgejo-update7.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update7.png" alt="TODO" /></p>
-<p>TODO: forgejo-update2.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update2.png" alt="TODO" /></p>
-<p>TODO: forgejo-update3.png</p>
+</li>
+<li>
+<p>In a while, Forgejo creates our <strong>Read-Write Mirror</strong></p>
+<p><a href="TODO">(Live Site)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update3.png" alt="TODO" /></p>
+</li>
+</ol>
 <p>TODO: forgejo-update5.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update5.png" alt="TODO" /></p>
 <p>TODO: forgejo-update6.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update6.png" alt="TODO" /></p>
 <p>TODO: forgejo-update9.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="TODO" /></p>
-<p>TODO: forgejo-update4.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="TODO" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
