@@ -94,7 +94,7 @@ TODO: Pic of repo sync from GitHub
 
 TODO: Pic of commits
 
-But this creates a [__Read-Only Mirror__](TODO) that won't allow __Pull Requests__!
+Oops this creates a [__Read-Only Mirror__](TODO) that won't allow __Pull Requests__!
 
 TODO: Pic of read-only mirror
 
@@ -134,7 +134,110 @@ If we don't secure our CI Server, we might create [__Security Problems__](TODO) 
 
 Securing our CI Server is probably the toughest part of our Git Forge Migration. (That's why GitHub is so expensive!)
 
-# GitHub Migration: 2 Ways
+# Sync our Read-Write Mirror
+
+TODO: Requires SSH Access, to work around the password
+
+https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh
+
+```bash
+git clone https://github.com/lupyuen/nuttx-forgejo
+cd nuttx-forgejo
+./sync-mirror-to-update.sh
+
+## Or to sync periodically
+## ./run.sh
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
+
+If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo
+
+```bash
+## Repeat for all conflicting commits
+$ git reset --hard HEAD~1
+
+HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
+➜  downstream git:(master) $ git status
+
+On branch master
+Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+➜  downstream git:(master) $ git push -f
+
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To nuttx-forge:nuttx/nuttx-update
+ + e26e8bda0e9...7d6b2e48044 master -> master (forced update)
+```
+
+TODO: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
+
+```bash
+#!/usr/bin/env bash
+## Sync the Git Commits from NuttX Mirror Repo to NuttX Update Repo
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+## Checkout the Upstream and Downstream Repos
+tmp_dir=/tmp/sync-mirror-to-update
+rm -rf $tmp_dir
+mkdir $tmp_dir
+cd $tmp_dir
+git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
+git clone git@nuttx-forge:nuttx/nuttx-update downstream
+
+## Find the First Commit to Sync
+set +x ; echo "**** Last Upstream Commit" ; set -x
+pushd upstream
+upstream_commit=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+set +x ; echo "**** Last Downstream Commit" ; set -x
+pushd downstream
+downstream_commit=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+
+## If no new Commits to Sync: Quit
+if [[ "$downstream_commit" == "$upstream_commit" ]]; then
+  set +x ; echo "**** No New Commits to Sync" ; set -x
+  exit
+fi
+
+## Apply the Upstream Commits to Downstream Repo
+pushd downstream
+git pull git@nuttx-forge:nuttx/nuttx-mirror master
+git status
+popd
+
+## Commit the Patched Downstream Repo
+pushd downstream
+git push -f
+popd
+
+## Verify that Upstream and Downstream Commits are identical
+set +x ; echo "**** Updated Downstream Commit" ; set -x
+pushd downstream
+git pull
+downstream_commit2=$(git rev-parse HEAD)
+git --no-pager log -1
+popd
+
+## If Not Identical: We have a problem
+if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
+  set +x ; echo "**** Sync Failed: Upstream and Downstream Commits don't match!" ; set -x
+  exit 1
+fi
+
+set +x ; echo "**** Done!" ; set -x
+```
+
+# TODO
+
+GitHub Migration: 2 Ways
 
 - __NuttX Mirror__: Auto-sync by Forgejo (e.g. every hour)
 
@@ -263,61 +366,9 @@ Finally our __Admin User__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
 
-# Appendix: Home
+_Forgejo's Default Page: How to change it?_
 
-TODO: forgejo-home.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-home.png)
-
-TODO: forgejo-home2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
-
-# Appendix: PR
-
-TODO: forgejo-update4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
-
-TODO: forgejo-pr1.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr1.png)
-
-TODO: forgejo-pr2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr2.png)
-
-TODO: forgejo-pr3.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr3.png)
-
-TODO: forgejo-pr4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr4.png)
-
-TODO: forgejo-pr5.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
-
-TODO: forgejo-pr6.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr6.png)
-
-TODO: forgejo-pr7.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-pr7.png)
-
-# Appendix: Actions
-
-TODO: forgejo-actions1.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
-
-TODO: forgejo-commits.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
-
-# Appendix: Change the Default Page
+TODO: Change the Default Page
 
 ```text
 /data/gitea/conf/app.ini
@@ -341,6 +392,14 @@ sudo docker compose up
 ```
 
 Looks more sensible
+
+TODO: forgejo-home.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-home.png)
+
+TODO: forgejo-home2.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
 
 # Appendix: Read-Only Mirror
 
@@ -421,6 +480,20 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
     [(Live Site)](TODO)
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+
+1.  __Git Command-Line Tools__ will work great with our Forgejo Server
+
+    ```bash
+    ## Download the NuttX Mirror Repo
+    ## From our Forgejo Server
+    git clone \
+      https://nuttx-forge.org/nuttx/nuttx-mirror
+
+    ## Also works for SSH (instead of HTTPS)
+    ## But SSH isn't enabled on our server
+    git clone \
+      git@nuttx-forge.org:nuttx/nuttx-mirror
+    ```
 
 TODO
 
@@ -510,6 +583,50 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     TODO: Sync script
 
+# Appendix: Pull Request in Forgejo
+
+TODO: forgejo-update4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
+
+TODO: forgejo-pr1.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr1.png)
+
+TODO: forgejo-pr2.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr2.png)
+
+TODO: forgejo-pr3.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr3.png)
+
+TODO: forgejo-pr4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr4.png)
+
+TODO: forgejo-pr5.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
+
+TODO: forgejo-pr6.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr6.png)
+
+TODO: forgejo-pr7.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-pr7.png)
+
+# Appendix: Actions
+
+TODO: forgejo-actions1.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
+
+TODO: forgejo-commits.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
+
 # Appendix: Test SSH Key
 
 TODO: SSH Port not exposed for security reasons
@@ -556,103 +673,9 @@ TODO: forgejo-ssh2.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-ssh2.png)
 
-# Appendix: Sync our Read-Write Mirror
+# Appendix: SSH vs Docker Filesystem
 
-TODO: Requires SSH Access, to work around the password
-
-https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh
-
-```text
-./sync-mirror-to-update.sh
-```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
-
-If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo
-
-```bash
-## Repeat for all conflicting commits
-$ git reset --hard HEAD~1
-
-HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
-➜  downstream git:(master) $ git status
-
-On branch master
-Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
-  (use "git pull" to update your local branch)
-
-nothing to commit, working tree clean
-➜  downstream git:(master) $ git push -f
-
-Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
-To nuttx-forge:nuttx/nuttx-update
- + e26e8bda0e9...7d6b2e48044 master -> master (forced update)
-```
-
-TODO: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
-
-```bash
-#!/usr/bin/env bash
-## Sync the Git Commits from NuttX Mirror Repo to NuttX Update Repo
-
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-
-## Checkout the Upstream and Downstream Repos
-tmp_dir=/tmp/sync-mirror-to-update
-rm -rf $tmp_dir
-mkdir $tmp_dir
-cd $tmp_dir
-git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
-git clone git@nuttx-forge:nuttx/nuttx-update downstream
-
-## Find the First Commit to Sync
-set +x ; echo "**** Last Upstream Commit" ; set -x
-pushd upstream
-upstream_commit=$(git rev-parse HEAD)
-git --no-pager log -1
-popd
-set +x ; echo "**** Last Downstream Commit" ; set -x
-pushd downstream
-downstream_commit=$(git rev-parse HEAD)
-git --no-pager log -1
-popd
-
-## If no new Commits to Sync: Quit
-if [[ "$downstream_commit" == "$upstream_commit" ]]; then
-  set +x ; echo "**** No New Commits to Sync" ; set -x
-  exit
-fi
-
-## Apply the Upstream Commits to Downstream Repo
-pushd downstream
-git pull git@nuttx-forge:nuttx/nuttx-mirror master
-git status
-popd
-
-## Commit the Patched Downstream Repo
-pushd downstream
-git push -f
-popd
-
-## Verify that Upstream and Downstream Commits are identical
-set +x ; echo "**** Updated Downstream Commit" ; set -x
-pushd downstream
-git pull
-downstream_commit2=$(git rev-parse HEAD)
-git --no-pager log -1
-popd
-
-## If Not Identical: We have a problem
-if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
-  set +x ; echo "**** Sync Failed: Upstream and Downstream Commits don't match!" ; set -x
-  exit 1
-fi
-
-set +x ; echo "**** Done!" ; set -x
-```
-
-# Appendix: SSH Fails with Docker Local Filesystem
+TODO
 
 ```text
 ssh -T -p 222 git@localhost
