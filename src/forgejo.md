@@ -36,6 +36,8 @@ Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
 
 - TODO: Appendix
 
+- Thanks to the excellent [__Forejo Docs__](TODO)
+
 Our Git Forge is running on [__Plain Old SQLite__](TODO) database. Later we might [__Upgrade to PostgreSQL__](TODO).
 
 # Works The Same
@@ -301,42 +303,6 @@ TODO: forgejo-ssh2.png
 # TODO
 
 ```text
-https://forgejo.org/docs/latest/admin/installation-docker/
-
-docker pull codeberg.org/forgejo/forgejo:9
-cd $HOME
-git clone https://github.com/lupyuen/nuttx-forgejo
-cd nuttx-forgejo
-
-docker-compose.yml:
-<<
-services:
-  server:
-    volumes:
-      - forgejo-data:/data
-
-volumes:
-  forgejo-data:
->>
-
-## TODO: Is `sudo` needed?
-sudo docker compose up
-
-## If It Quits To Command-Line:
-## Run a second time to get it up
-sudo docker compose up
-
-to down: sudo docker compose down
-https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846
-
-Will auto create `forgejo` folder
-Browse to http://localhost:3002/
-SQLite, upgrade to PostgreSQL later
-Domain: nuttx-forge.org
-Create admin user: nuttx
-
-(For CloudFlare Tunnel: Set __Security > Settings > High__)
-
 + > New Migration > GitHub
 This repo will be a mirror
 access token
@@ -601,16 +567,61 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Install our Forgejo Server
 
-Security Level: Low
+Here are the steps to install our own __Forgejo Server__ on __Docker Engine__ based on the [__official docs__](https://forgejo.org/docs/latest/admin/installation-docker/)...
 
-TODO: forgejo-install1.png
+[(Tested on __macOS Rancher Desktop__)](TODO)
+
+```bash
+## Download the Forgejo Docker Image
+## And our Modified Docker Compose Config
+docker pull codeberg.org/forgejo/forgejo:9
+cd $HOME
+git clone https://github.com/lupyuen/nuttx-forgejo
+cd nuttx-forgejo
+
+## docker-compose.yml: Points to `forgejo-data` as the Data Volume (instead of Local Filesystem)
+## Because Rancher Desktop won't set permissions correctly for Local Filesystem (see secton below)
+## services:
+##   server:
+##     volumes:
+##       - forgejo-data:/data
+## volumes:
+##   forgejo-data:
+
+## Up the Forgejo Server
+## (Is `sudo` needed?)
+sudo docker compose up
+
+## If It Quits To Command-Line:
+## Run a second time to get it up
+sudo docker compose up
+
+## If we need to down the Forgejo Server:
+## sudo docker compose down
+```
+
+[(See the __Install Log__)](https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846)
+
+(For CloudFlare Tunnel: Set __Security > Settings > Low__)
+
+- This will auto-create the __`forgejo`__ folder for Forgejo Data
+
+- We browse to __`http://localhost:3002`__
+
+- Select __SQLite__ as the database (we upgrade to PostgreSQL later)
+
+- Set __Domain__ to __`nuttx-forge.org`__ (or your domain)
+
+- Create an __Admin User__ named __`nuttx`__ (or your preference)
+
+This is how we specify the __Forgejo Database__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
 
-TODO: forgejo-install2.png
+And the __Server Domain__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install2.png)
 
-TODO: forgejo-install3.png
+Finally our __Admin User__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
