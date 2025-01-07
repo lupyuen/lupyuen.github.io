@@ -75,7 +75,7 @@
 <li><a href="#appendix-read-only-mirror" title="Appendix: Read-Only Mirror">8 Appendix: Read-Only Mirror</a><ul></ul></li>
 <li><a href="#appendix-read-write-mirror" title="Appendix: Read-Write Mirror">9 Appendix: Read-Write Mirror</a><ul></ul></li>
 <li><a href="#appendix-pull-request-in-forgejo" title="Appendix: Pull Request in Forgejo">10 Appendix: Pull Request in Forgejo</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-in-forgejo" title="Appendix: SSH Key in Forgejo">11 Appendix: SSH Key in Forgejo</a><ul></ul></li>
+<li><a href="#appendix-ssh-access-in-forgejo" title="Appendix: SSH Access in Forgejo">11 Appendix: SSH Access in Forgejo</a><ul></ul></li>
 <li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">12 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="TODO"><strong>Forgejo Git Forge</strong></a>, and whether <a href="TODO"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
@@ -606,39 +606,40 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 </li>
 </ol>
 <p>TODO: Sync to GitHub</p>
-<h1 id="appendix-ssh-key-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-key-in-forgejo">§</a>11 Appendix: SSH Key in Forgejo</h1>
-<p>TODO: SSH Port not exposed for security reasons</p>
-<div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
-Call it ~/.ssh/nuttx-forge
-
-Edit $HOME/.ssh/config
-&lt;&lt;
-Host nuttx-forge
+<h1 id="appendix-ssh-access-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-access-in-forgejo">§</a>11 Appendix: SSH Access in Forgejo</h1>
+<p>This section explains how we tested <strong>SSH Access</strong> in our Forgejo Server.</p>
+<p>Note: SSH Port for our Forgejo Server is <strong>not exposed to the internet</strong> (for security reasons).</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ ssh-keygen -t ed25519 -a 100
+## Save it to ~/.ssh/nuttx-forge</code></pre></div>
+<p>Edit <strong>~/.ssh/config</strong> and add…</p>
+<div class="example-wrap"><pre class="language-text"><code>Host nuttx-forge
   HostName localhost
   Port 222
-  IdentityFile ~/.ssh/nuttx-forge
-&gt;&gt;
-(localhost will change to the future external IP)
+  IdentityFile ~/.ssh/nuttx-forge</code></pre></div>
+<p>(<strong>localhost</strong> will change to the External IP of our Forgejo Server)</p>
+<p>In Forgejo Web:</p>
+<ul>
+<li>Click <strong>Settings &gt; SSH Keys</strong></li>
+<li>Paste the contents of <strong>~/.ssh/nuttx-forge.pub</strong></li>
+<li>Click <strong>Add Key</strong></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
+<p>Finally we test the <strong>SSH Access</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ ssh -T git@nuttx-forge  
 
-Settings &gt; SSH Keys
-Paste ~/.ssh/nuttx-forge.pub
-Click Add Key
-
-$ ssh -T git@nuttx-forge  
-
-Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
+Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@localhost), but Forgejo does not provide shell access.
 If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div>
-<p>TODO: Use SSH Key</p>
-<div class="example-wrap"><pre class="language-text"><code>git clone git@nuttx-forge:nuttx/test.git
+<p>We create a <strong>Test Repo</strong> in our Forgejo Server…</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
+<p>And we <strong>Commit over SSH</strong> to the Test Repo…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone git@nuttx-forge:nuttx/test.git
 cd test
 echo Testing &gt;test.txt
 git add .
 git commit --all --message=&quot;Test Commit&quot;
 git push -u origin main</code></pre></div>
-<p>TODO: forgejo-ssh.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
-<p>TODO: forgejo-ssh2.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
+<p>We should see the <strong>Test Commit</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh3.png" alt="TODO" /></p>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
 <p>Based on the <a href="TODO"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>…</p>
