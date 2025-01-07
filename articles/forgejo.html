@@ -70,14 +70,13 @@
 <li><a href="#coexist-with-github" title="Coexist With GitHub">3 Coexist With GitHub</a><ul></ul></li>
 <li><a href="#continuous-integration" title="Continuous Integration">4 Continuous Integration</a><ul></ul></li>
 <li><a href="#sync-our-read-write-mirror" title="Sync our Read-Write Mirror">5 Sync our Read-Write Mirror</a><ul></ul></li>
-<li><a href="#todo" title="TODO">6 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-install-our-forgejo-server" title="Appendix: Install our Forgejo Server">8 Appendix: Install our Forgejo Server</a><ul></ul></li>
-<li><a href="#appendix-read-only-mirror" title="Appendix: Read-Only Mirror">9 Appendix: Read-Only Mirror</a><ul></ul></li>
-<li><a href="#appendix-read-write-mirror" title="Appendix: Read-Write Mirror">10 Appendix: Read-Write Mirror</a><ul></ul></li>
-<li><a href="#appendix-pull-request-in-forgejo" title="Appendix: Pull Request in Forgejo">11 Appendix: Pull Request in Forgejo</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-in-forgejo" title="Appendix: SSH Key in Forgejo">12 Appendix: SSH Key in Forgejo</a><ul></ul></li>
-<li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">13 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-install-our-forgejo-server" title="Appendix: Install our Forgejo Server">7 Appendix: Install our Forgejo Server</a><ul></ul></li>
+<li><a href="#appendix-read-only-mirror" title="Appendix: Read-Only Mirror">8 Appendix: Read-Only Mirror</a><ul></ul></li>
+<li><a href="#appendix-read-write-mirror" title="Appendix: Read-Write Mirror">9 Appendix: Read-Write Mirror</a><ul></ul></li>
+<li><a href="#appendix-pull-request-in-forgejo" title="Appendix: Pull Request in Forgejo">10 Appendix: Pull Request in Forgejo</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-in-forgejo" title="Appendix: SSH Key in Forgejo">11 Appendix: SSH Key in Forgejo</a><ul></ul></li>
+<li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">12 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="TODO"><strong>Forgejo Git Forge</strong></a>, and whether <a href="TODO"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
 <p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
@@ -272,21 +271,16 @@ if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   exit 1
 fi
 
-set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
-<p>GitHub Migration: 2 Ways</p>
-<ul>
-<li>
-<p><strong>NuttX Mirror</strong>: Auto-sync by Forgejo (e.g. every hour)</p>
-<p>No migration of PRs and Issues</p>
-<p>Can’t create PRs</p>
-</li>
-<li>
-<p><strong>NuttX Update</strong>: Manual-sync by our script</p>
-<p>Possible to migrate PRs and Issues (but ran into problems)</p>
-<p>Can create PRs</p>
-</li>
-</ul>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div>
+<p>TODO</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><a href="TODO"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: center"><a href="TODO"><strong><code>nuttx-update</code></strong></a></td></tr>
+<tr><td style="text-align: center"><strong>Read-Only Mirror</strong></td><td style="text-align: center"><strong>Read-Write Mirror</strong></td></tr>
+<tr><td style="text-align: center">Auto-Sync by Forgejo <br> (every hour)</td><td style="text-align: center">Manual-Sync by our script</td></tr>
+<tr><td style="text-align: center">Can’t migrate PRs and Issues</td><td style="text-align: center">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
+<tr><td style="text-align: center">Can’t create PRs</td><td style="text-align: center">Can create PRs</td></tr>
+</tbody></table>
+</div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
@@ -314,7 +308,7 @@ set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="todo"><a
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md"><strong>lupyuen.org/src/forgejo.md</strong></a></p>
-<h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>8 Appendix: Install our Forgejo Server</h1>
+<h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>7 Appendix: Install our Forgejo Server</h1>
 <p>Here are the steps to install our own <strong>Forgejo Server</strong> on <strong>Docker Engine</strong>…</p>
 <p><a href="https://forgejo.org/docs/latest/admin/installation-docker/">(Derived from <strong>Official Docs</strong>)</a></p>
 <p><a href="TODO">(Tested on <strong>macOS Rancher Desktop</strong>)</a></p>
@@ -416,7 +410,7 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="TODO" /></p>
 <p>TODO: forgejo-home2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
-<h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>9 Appendix: Read-Only Mirror</h1>
+<h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
 <p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
 <p>Forgejo shall <strong>auto-sync our repo</strong> (every hour), but it <strong>won’t allow Pull Requests</strong> in our Read-Only Mirror…</p>
 <ol>
@@ -518,7 +512,7 @@ nuttx-update
 Migrate Repo
 
 JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
-ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>10 Appendix: Read-Write Mirror</h1>
+ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
 <p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
 <p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
 <ol>
@@ -557,7 +551,7 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p>TODO: Sync script</p>
 </li>
 </ol>
-<h1 id="appendix-pull-request-in-forgejo"><a class="doc-anchor" href="#appendix-pull-request-in-forgejo">§</a>11 Appendix: Pull Request in Forgejo</h1>
+<h1 id="appendix-pull-request-in-forgejo"><a class="doc-anchor" href="#appendix-pull-request-in-forgejo">§</a>10 Appendix: Pull Request in Forgejo</h1>
 <p><em>How different are Forgejo Pull Requests from GitHub?</em></p>
 <p>Let’s find out!</p>
 <ol>
@@ -612,7 +606,7 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 </li>
 </ol>
 <p>TODO: Sync to GitHub</p>
-<h1 id="appendix-ssh-key-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-key-in-forgejo">§</a>12 Appendix: SSH Key in Forgejo</h1>
+<h1 id="appendix-ssh-key-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-key-in-forgejo">§</a>11 Appendix: SSH Key in Forgejo</h1>
 <p>TODO: SSH Port not exposed for security reasons</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
 Call it ~/.ssh/nuttx-forge
@@ -645,7 +639,7 @@ git push -u origin main</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
 <p>TODO: forgejo-ssh2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
-<h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>13 Appendix: SSH vs Docker Filesystem</h1>
+<h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change TODO?</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
