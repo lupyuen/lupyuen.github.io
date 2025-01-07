@@ -342,7 +342,7 @@ sudo docker compose up
 
 Looks more sensible
 
-# Appendix: Read-Only Mirror of GitHub Repo
+# Appendix: Read-Only Mirror
 
 Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub. 
 
@@ -452,7 +452,7 @@ JavaScript promise rejection: Failed to fetch. Open browser console to see more 
 ignore
 ```
 
-# Appendix: Read-Write Mirror of GitHub Repo
+# Appendix: Read-Write Mirror
 
 Earlier we created a Read-Only Mirror. But it doesn't allow Pull Requests!
 
