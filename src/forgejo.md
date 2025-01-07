@@ -545,7 +545,7 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     Uncheck __"This Repo Will Be A Mirror"__
     
-    Check __Migrate LFS Files__, __Wiki__, __Labels__, __Milestones__, __Releases__
+    Check the following: __Migrate LFS Files__, __Wiki__, __Labels__, __Milestones__, __Releases__
 
     Set the __Repo Name__ to __`nuttx-update`__
 
@@ -571,63 +571,63 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     ![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
 
-1.  Yep our Read-Write Mirror will __allow updates__
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
-
-1.  Everything looks __super familiar__
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
-
 1.  How will we __sync the Read-Write Mirror__? By running this script...
 
     TODO: Sync script
 
 # Appendix: Pull Request in Forgejo
 
-TODO: forgejo-update4.png
+_How different are Forgejo Pull Requests from GitHub?_
 
-![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
+Let's find out!
 
-TODO: forgejo-pr1.png
+1.  We create a Fork of our [__Read-Write NuttX Mirror__](TODO)
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr1.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
 
-TODO: forgejo-pr2.png
+1.  Create a new branch: [__`test-branch`__](TODO). __Edit a file__ in our new branch.
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr2.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
 
-TODO: forgejo-pr3.png
+1.  __Save the file__ to our new branch
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr3.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
 
-TODO: forgejo-pr4.png
+1.  Click __"New Pull Request"__
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr4.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr1.png)
 
-TODO: forgejo-pr5.png
+1.  Again click __"New Pull Request"__
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr2.png)
 
-TODO: forgejo-pr6.png
+1.  Remember the __NuttX Template for Pull Requests__? It appears in Forgejo
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr6.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr3.png)
 
-TODO: forgejo-pr7.png
+1.  Click __"Create Pull Request"__
 
-![TODO](https://lupyuen.github.io/images/forgejo-pr7.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr4.png)
 
-# Appendix: Actions
+1.  And we'll see our __New Pull Request__
 
-TODO: forgejo-actions1.png
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
 
-![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
+1.  Indeed, no surprises! Everything works the same.
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-pr6.png)
+
+1.  __Merging a Pull Request__ will trigger the exact same CI Workflow. Which won't run because we haven't configured the CI Servers.
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
+
+TODO: Sync to GitHub
 
 TODO: forgejo-commits.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
 
-# Appendix: Test SSH Key
+# Appendix: SSH Key in Forgejo
 
 TODO: SSH Port not exposed for security reasons
 
@@ -654,7 +654,7 @@ Hi there, nuttx! You've successfully authenticated with the key named nuttx-forg
 If this is unexpected, please log in with password and setup Forgejo under another user.
 ```
 
-# Appendix: Use SSH Key
+TODO: Use SSH Key
 
 ```text
 git clone git@nuttx-forge:nuttx/test.git
@@ -674,6 +674,8 @@ TODO: forgejo-ssh2.png
 ![TODO](https://lupyuen.github.io/images/forgejo-ssh2.png)
 
 # Appendix: SSH vs Docker Filesystem
+
+_Why did we change TODO?_
 
 TODO
 
