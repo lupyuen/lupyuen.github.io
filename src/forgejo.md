@@ -602,8 +602,6 @@ sudo docker compose up
 
 [(See the __Install Log__)](https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846)
 
-(For CloudFlare Tunnel: Set __Security > Settings > Low__)
-
 - This will auto-create the __`forgejo`__ folder for Forgejo Data
 
 - We browse to __`http://localhost:3002`__
@@ -614,7 +612,19 @@ sudo docker compose up
 
 - Create an __Admin User__ named __`nuttx`__ (or your preference)
 
-This is how we specify the __Forgejo Database__...
+- Talk to our __Web Hosting Provider__ (or Tunnel Provider).
+
+  Channel all Incoming Requests for _https://nuttx-forge.org_
+    
+  To _http://YOUR\_DOCKER\_MACHINE:3002_
+
+  (__HTTPS Port 443__ connects to __HTTP Port 3002__ via Reverse Proxy)
+
+  (For CloudFlare Tunnel: Set __Security > Settings > Low__)
+
+  (Change _nuttx-forge.org_ to Your Domain Name)
+
+Back to the Forgejo Configuration: This is how we specify the __Forgejo Database__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
 
