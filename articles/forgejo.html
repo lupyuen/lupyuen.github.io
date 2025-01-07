@@ -640,37 +640,46 @@ git push -u origin main</code></pre></div>
 <p>TODO: forgejo-ssh2.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
-<p><em>Why did we change TODO?</em></p>
+<p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
+<p>Based on the <a href="TODO"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>…</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
-
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
+<p>Let’s try it on <a href="TODO"><strong>macOS Rancher Desktop</strong></a> and watch what happens…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -T -p 222 git@localhost</code></pre></div>
+<p><strong>Forgejo Server Log</strong> says…</p>
+<div class="example-wrap"><pre class="language-text"><code>forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 40328 [preauth]
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]
-
-ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
+forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]</code></pre></div>
+<p>We check the <strong>SSH Filesystem in macOS</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
 drwx------@ 4 luppy  staff  128 Dec 20 13:45 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh
 
 $ ls -l $HOME/nuttx-forgejo/forgejo/git/.ssh/authorized_keys 
--rw-------@ 1 luppy  staff  279 Dec 21 11:13 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh/authorized_keys
-
-sudo docker exec \
+-rw-------@ 1 luppy  staff  279 Dec 21 11:13 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh/authorized_keys</code></pre></div>
+<p>Do the same <strong>Inside Docker</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo docker exec \
   -it \
   forgejo \
   /bin/bash
 
-User ID should be git, not 501! (Some kinda jeans?)
-5473c234c7eb:/data/git# ls -ld /data/git/.ssh
+$ ls -ld /data/git/.ssh
 drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
-5473c234c7eb:/data/git# ls -l /data/git/.ssh/authorized_keys
--rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
-5473c234c7eb:/data/git#
-
-Won&#39;t work:
+$ ls -l /data/git/.ssh/authorized_keys
+-rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys</code></pre></div>
+<p>Aha! User ID should be <strong>git</strong>, not <strong>501</strong>! (Some kinda jeans?)</p>
+<p>Too bad <strong>chown</strong> won’t work…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
+<p>(Because Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
+<p>And that’s why our <a href="TODO"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
+<div class="example-wrap"><pre class="language-yaml"><code>services:
+  server:
+    volumes:
+      - forgejo-data:/data
+volumes:
+  forgejo-data:</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
