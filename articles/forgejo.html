@@ -187,38 +187,33 @@ git clone \
 <p>If we don’t secure our CI Server, we might create <a href="TODO"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. (That’s why GitHub is so expensive!)</p>
 <h1 id="sync-our-read-write-mirror"><a class="doc-anchor" href="#sync-our-read-write-mirror">§</a>5 Sync our Read-Write Mirror</h1>
-<p>TODO: Requires SSH Access, to work around the password</p>
-<p>https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/nuttx-forgejo
+<p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How do we sync it?</em></p>
+<p>We run a script to <strong>Sync the Git Commits</strong>…</p>
+<ul>
+<li>
+<p>From our <strong>Read-Only Mirror</strong> <a href="TODO"><strong><code>nuttx-mirror</code></strong></a></p>
+</li>
+<li>
+<p>To the <strong>Read-Write Mirror</strong> <a href="TODO"><strong><code>nuttx-update</code></strong></a></p>
+</li>
+<li>
+<p>So it will work even when GitHub breaks</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Sync Once: From Read-Only Mirror to Read-Write Mirror
+git clone https://github.com/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 ./sync-mirror-to-update.sh
 
-## Or to sync periodically
+## Or to Sync Periodically
 ## ./run.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
-<p>If they go out of sync: Hard-Revert the Downstream Commits in Read-Write Mirror of NuttX Repo</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Repeat for all conflicting commits
-$ git reset --hard HEAD~1
-
-HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
-➜  downstream git:(master) $ git status
-
-On branch master
-Your branch is behind &#39;origin/master&#39; by 1 commit, and can be fast-forwarded.
-  (use &quot;git pull&quot; to update your local branch)
-
-nothing to commit, working tree clean
-➜  downstream git:(master) $ git push -f
-
-Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
-To nuttx-forge:nuttx/nuttx-update
- + e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Sync the Git Commits from NuttX Mirror Repo to NuttX Update Repo
-
+<p><strong>Commit History</strong> shall be 100% identical. Including the <strong>Commit Hashes</strong>!</p>
+<p>Our script works like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Sync the Git Commits
+## From our Read-Only Mirror Repo (nuttx-mirror)
+## To the Read-Write Mirror Repo (nuttx-update)
 set -e  ## Exit when any command fails
-set -x  ## Echo commands
 
 ## Checkout the Upstream and Downstream Repos
 tmp_dir=/tmp/sync-mirror-to-update
@@ -229,12 +224,10 @@ git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
 git clone git@nuttx-forge:nuttx/nuttx-update downstream
 
 ## Find the First Commit to Sync
-set +x ; echo &quot;**** Last Upstream Commit&quot; ; set -x
 pushd upstream
 upstream_commit=$(git rev-parse HEAD)
 git --no-pager log -1
 popd
-set +x ; echo &quot;**** Last Downstream Commit&quot; ; set -x
 pushd downstream
 downstream_commit=$(git rev-parse HEAD)
 git --no-pager log -1
@@ -242,8 +235,7 @@ popd
 
 ## If no new Commits to Sync: Quit
 if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
-  set +x ; echo &quot;**** No New Commits to Sync&quot; ; set -x
-  exit
+  echo &quot;No New Commits to Sync&quot; ; exit
 fi
 
 ## Apply the Upstream Commits to Downstream Repo
@@ -258,7 +250,7 @@ git push -f
 popd
 
 ## Verify that Upstream and Downstream Commits are identical
-set +x ; echo &quot;**** Updated Downstream Commit&quot; ; set -x
+echo &quot;Updated Downstream Commit&quot;
 pushd downstream
 git pull
 downstream_commit2=$(git rev-parse HEAD)
@@ -267,11 +259,23 @@ popd
 
 ## If Not Identical: We have a problem
 if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
-  set +x ; echo &quot;**** Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; set -x
-  exit 1
-fi
+  echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
+fi</code></pre></div>
+<p><em>What if we accidentally Merge a PR? And our Read-Write Mirror goes out of sync?</em></p>
+<p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in the Read-Write Mirror. To keep it in sync with the Read-Only Mirror again…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Repeat for all conflicting commits...
+$ git reset --hard HEAD~1
+HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
 
-set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div>
+## We have reverted one commit
+$ git status
+Your branch is behind &#39;origin/master&#39; by 1 commit, and can be fast-forwarded.
+
+## Push it to the repo
+$ git push -f
+To nuttx-forge:nuttx/nuttx-update
+e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
+<p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
 <p>TODO</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="TODO"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: center"><a href="TODO"><strong><code>nuttx-update</code></strong></a></td></tr>
@@ -440,7 +444,8 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror4.png" alt="TODO" /></p>
 </li>
 <li>
-<p>By Default: Forgejo <strong>syncs every 8 hours</strong>. We change to <strong>1 hour</strong> (under Repo Settings)</p>
+<p>By Default: Forgejo <strong>syncs every 8 hours</strong>. We change the Mirror Interval to <strong>1 hour</strong></p>
+<p>(Settings &gt; Repository &gt; Mirror Settings)</p>
 <p><a href="TODO">(Live Site)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror5.png" alt="TODO" /></p>
 </li>
@@ -487,32 +492,7 @@ git clone \
 git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror</code></pre></div></li>
 </ol>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>+ &gt; New Migration &gt; GitHub
-This repo will be a mirror
-access token
-nuttx-mirror
-Migrate Repo
-
-Settings &gt; Repository &gt; Mirror Settings
-Mirror interval
-1h
-Update Mirror Settings
-
-Create Issue
-Actions: No Runner
-View Commit
-
-+ &gt; New Migration &gt; GitHub
-access token
-select labels, milestones, releases
-don&#39;t select PR, it will run forever!
-don&#39;t select issues: &quot;comment references non existent Issuelndex 1&quot;
-nuttx-update
-Migrate Repo
-
-JavaScript promise rejection: Failed to fetch. Open browser console to see more details. (2)
-ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
+<h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
 <p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
 <p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
 <ol>
@@ -604,8 +584,11 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p><a href="TODO">(Live Site)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
 </li>
-</ol>
+<li>
+<p>Let’s try not to <strong>Merge any Pull Request</strong> into our Read-Write Mirror. We should keep it in sync with our Read-Only Mirror!</p>
 <p>TODO: Sync to GitHub</p>
+</li>
+</ol>
 <h1 id="appendix-ssh-access-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-access-in-forgejo">§</a>11 Appendix: SSH Access in Forgejo</h1>
 <p>This section explains how we tested <strong>SSH Access</strong> in our Forgejo Server.</p>
 <p>Note: SSH Port for our Forgejo Server is <strong>not exposed to the internet</strong> (for security reasons).</p>
@@ -638,14 +621,19 @@ echo Testing &gt;test.txt
 git add .
 git commit --all --message=&quot;Test Commit&quot;
 git push -u origin main</code></pre></div>
-<p>We should see the <strong>Test Commit</strong>…</p>
+<p>We should see the <strong>Test Commit</strong>. Yay!</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh3.png" alt="TODO" /></p>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
 <p>Based on the <a href="TODO"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>…</p>
-<p>TODO</p>
+<div class="example-wrap"><pre class="language-yaml"><code>services:
+  server:
+    volumes:
+      - forgejo-data:/data
+TODO</code></pre></div>
 <p>Let’s try it on <a href="TODO"><strong>macOS Rancher Desktop</strong></a> and watch what happens…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -T -p 222 git@localhost</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Connect to Forgejo Server over SSH
+ssh -T -p 222 git@localhost</code></pre></div>
 <p><strong>Forgejo Server Log</strong> says…</p>
 <div class="example-wrap"><pre class="language-text"><code>forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
@@ -673,7 +661,7 @@ $ ls -l /data/git/.ssh/authorized_keys
 <p>Too bad <strong>chown</strong> won’t work…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
-<p>(Because Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
+<p>(Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
 <p>And that’s why our <a href="TODO"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>services:
   server:
