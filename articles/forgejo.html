@@ -554,7 +554,7 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p>Let’s find out!</p>
 <ol>
 <li>
-<p>We create a Fork of our <a href="TODO"><strong>Read-Write NuttX Mirror</strong></a></p>
+<p>We create a Fork of our NuttX <a href="TODO"><strong>Read-Write Mirror</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="TODO" /></p>
 </li>
 <li>
@@ -593,10 +593,12 @@ ignore</code></pre></div><h1 id="appendix-read-write-mirror"><a class="doc-ancho
 <p><strong>Merging a Pull Request</strong> will trigger the exact same CI Workflow. Which won’t run because we haven’t configured the CI Servers.</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="TODO" /></p>
 </li>
+<li>
+<p>Will Forgejo handle <strong>Large Pull Requests</strong>? Yep here’s a Pull Request with 217 NuttX Commits</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
+</li>
 </ol>
 <p>TODO: Sync to GitHub</p>
-<p>TODO: forgejo-commits.png</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
 <h1 id="appendix-ssh-key-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-key-in-forgejo">§</a>12 Appendix: SSH Key in Forgejo</h1>
 <p>TODO: SSH Port not exposed for security reasons</p>
 <div class="example-wrap"><pre class="language-text"><code>ssh-keygen -t ed25519 -a 100
