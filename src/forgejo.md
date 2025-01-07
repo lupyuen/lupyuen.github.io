@@ -583,9 +583,13 @@ Let's find out!
 
 1.  We create a Fork of our NuttX [__Read-Write Mirror__](TODO)
 
+    [(Live Site)](TODO)
+
     ![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
 
 1.  Create a new branch: [__`test-branch`__](TODO). __Edit a file__ in our new branch.
+
+    [(Live Site)](TODO)
 
     ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
 
@@ -611,6 +615,8 @@ Let's find out!
 
 1.  And we'll see our __New Pull Request__
 
+    [(Live Site)](TODO)
+
     ![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
 
 1.  Indeed, no surprises! Everything works the same.
@@ -619,9 +625,13 @@ Let's find out!
 
 1.  __Merging a Pull Request__ will trigger the exact same CI Workflow. Which won't run because we haven't configured the CI Servers.
 
+    [(Live Site)](TODO)
+
     ![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
 
 1.  Will Forgejo handle __Large Pull Requests__? Yep here's a Pull Request with 217 NuttX Commits
+
+    [(Live Site)](TODO)
 
     ![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
 
