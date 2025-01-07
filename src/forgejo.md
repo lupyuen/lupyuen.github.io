@@ -235,21 +235,15 @@ fi
 set +x ; echo "**** Done!" ; set -x
 ```
 
-# TODO
+TODO
 
-GitHub Migration: 2 Ways
-
-- __NuttX Mirror__: Auto-sync by Forgejo (e.g. every hour)
-
-  No migration of PRs and Issues
-
-  Can't create PRs
-
-- __NuttX Update__: Manual-sync by our script
-
-  Possible to migrate PRs and Issues (but ran into problems)
-
-  Can create PRs
+| | |
+|:---:|:---:|
+| [__`nuttx-mirror`__](TODO) | [__`nuttx-update`__](TODO)
+| __Read-Only Mirror__ |  __Read-Write Mirror__
+| Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
+| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| Can't create PRs | Can create PRs
 
 # What's Next
 
