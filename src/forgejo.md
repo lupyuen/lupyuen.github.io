@@ -608,15 +608,23 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
 
+1.  That's why the __CI Jobs will wait forever__
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+
 # Appendix: Read-Write Mirror of GitHub Repo
 
-TODO: forgejo-mirror12.png
+TODO: forgejo-update8.png
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
 
 TODO: forgejo-update1.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
+
+TODO: forgejo-update7.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
 
 TODO: forgejo-update2.png
 
@@ -626,10 +634,6 @@ TODO: forgejo-update3.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
 
-TODO: forgejo-update4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
-
 TODO: forgejo-update5.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
@@ -638,15 +642,10 @@ TODO: forgejo-update6.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
 
-TODO: forgejo-update7.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
-
-TODO: forgejo-update8.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
-
 TODO: forgejo-update9.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
 
+TODO: forgejo-update4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
