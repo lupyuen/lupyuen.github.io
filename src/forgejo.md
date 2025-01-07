@@ -631,36 +631,51 @@ Let's find out!
 
 TODO: Sync to GitHub
 
-# Appendix: SSH Key in Forgejo
+# Appendix: SSH Access in Forgejo
 
-TODO: SSH Port not exposed for security reasons
+This section explains how we tested __SSH Access__ in our Forgejo Server.
+
+Note: SSH Port for our Forgejo Server is __not exposed to the internet__ (for security reasons).
+
+```bash
+$ ssh-keygen -t ed25519 -a 100
+## Save it to ~/.ssh/nuttx-forge
+```
+
+Edit __~/.ssh/config__ and add...
 
 ```text
-ssh-keygen -t ed25519 -a 100
-Call it ~/.ssh/nuttx-forge
-
-Edit $HOME/.ssh/config
-<<
 Host nuttx-forge
   HostName localhost
   Port 222
   IdentityFile ~/.ssh/nuttx-forge
->>
-(localhost will change to the future external IP)
+```
 
-Settings > SSH Keys
-Paste ~/.ssh/nuttx-forge.pub
-Click Add Key
+(__localhost__ will change to the External IP of our Forgejo Server)
 
+In Forgejo Web:
+- Click __Settings > SSH Keys__
+- Paste the contents of __~/.ssh/nuttx-forge.pub__
+- Click __Add Key__
+
+![TODO](https://lupyuen.github.io/images/forgejo-ssh.png)
+
+Finally we test the __SSH Access__...
+
+```bash
 $ ssh -T git@nuttx-forge  
 
-Hi there, nuttx! You've successfully authenticated with the key named nuttx-forge (luppy@5ce91ef07f94), but Forgejo does not provide shell access.
+Hi there, nuttx! You've successfully authenticated with the key named nuttx-forge (luppy@localhost), but Forgejo does not provide shell access.
 If this is unexpected, please log in with password and setup Forgejo under another user.
 ```
 
-TODO: Use SSH Key
+We create a __Test Repo__ in our Forgejo Server...
 
-```text
+![TODO](https://lupyuen.github.io/images/forgejo-ssh2.png)
+
+And we __Commit over SSH__ to the Test Repo...
+
+```bash
 git clone git@nuttx-forge:nuttx/test.git
 cd test
 echo Testing >test.txt
@@ -669,13 +684,9 @@ git commit --all --message="Test Commit"
 git push -u origin main
 ```
 
-TODO: forgejo-ssh.png
+We should see the __Test Commit__...
 
-![TODO](https://lupyuen.github.io/images/forgejo-ssh.png)
-
-TODO: forgejo-ssh2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-ssh2.png)
+![TODO](https://lupyuen.github.io/images/forgejo-ssh3.png)
 
 # Appendix: SSH vs Docker Filesystem
 
