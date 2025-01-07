@@ -552,7 +552,9 @@ Finally our __Admin User__...
 
 # Appendix: Read-Only Mirror of GitHub Repo
 
-Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub...
+Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub. 
+
+Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Requests__ in our Read-Only Mirror...
 
 1.  At Top Right: Select __`+` > New Migration__
 
@@ -574,7 +576,7 @@ Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at
 
 1.  This will create a __Read-Only Mirror__...
 
-    We __won't be able to migrate__ the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)
+    Forgejo __won't migrate__ the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)
 
     (Read-Write Mirror will be more useful, see the next section)
 
@@ -586,33 +588,29 @@ Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
 
-TODO: forgejo-mirror6.png
+1.  Forgejo has helpfully migrated our __Template for NuttX Issues__
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
-TODO: forgejo-mirror7.png
+1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu.
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
 
-TODO: forgejo-mirror8.png
+1.  __NuttX Commits__ look very familiar in Forgejo
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
 
-TODO: forgejo-mirror9.png
+1.  So cool to watch Forgejo __Auto-Sync our GitHub Repo__
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
 
-TODO: forgejo-mirror10.png
+1.  Auto-Sync may trigger __CI Workflows__. But we don't have CI Servers to run them (yet).
 
-![TODO](https://lupyuen.github.io/images/forgejo-mirror10.png)
-
-TODO: forgejo-mirror11.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
-
-TODO: forgejo-mirror12.png
+    ![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
 
 # Appendix: Read-Write Mirror of GitHub Repo
+
+TODO: forgejo-mirror12.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
 
