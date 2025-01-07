@@ -148,96 +148,6 @@ Securing our CI Server is probably the toughest part of our Git Forge Migration.
 
   Can create PRs
 
-# Mirror
-
-TODO: forgejo-mirror1.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
-
-TODO: forgejo-mirror2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
-
-TODO: forgejo-mirror3.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror3.png)
-
-TODO: forgejo-mirror4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
-
-TODO: forgejo-mirror5.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
-
-TODO: forgejo-mirror6.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
-
-TODO: forgejo-mirror7.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
-
-TODO: forgejo-mirror8.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
-
-TODO: forgejo-mirror9.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
-
-TODO: forgejo-mirror10.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror10.png)
-
-TODO: forgejo-mirror11.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
-
-TODO: forgejo-mirror12.png
-
-
-# Update
-
-![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
-
-TODO: forgejo-update1.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
-
-TODO: forgejo-update2.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update2.png)
-
-TODO: forgejo-update3.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
-
-TODO: forgejo-update4.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
-
-TODO: forgejo-update5.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
-
-TODO: forgejo-update6.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
-
-TODO: forgejo-update7.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
-
-TODO: forgejo-update8.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
-
-TODO: forgejo-update9.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
-
-
 # Home
 
 TODO: forgejo-home.png
@@ -635,3 +545,92 @@ And the __Server Domain__...
 Finally our __Admin User__...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
+
+# Appendix: Read-Only Mirror of GitHub Repo
+
+TODO: forgejo-mirror1.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
+
+TODO: forgejo-mirror2.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
+
+TODO: forgejo-mirror3.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror3.png)
+
+TODO: forgejo-mirror4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
+
+TODO: forgejo-mirror5.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
+
+TODO: forgejo-mirror6.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
+
+TODO: forgejo-mirror7.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
+
+TODO: forgejo-mirror8.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
+
+TODO: forgejo-mirror9.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
+
+TODO: forgejo-mirror10.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror10.png)
+
+TODO: forgejo-mirror11.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
+
+TODO: forgejo-mirror12.png
+
+# Appendix: Read-Write Mirror of GitHub Repo
+
+![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+
+TODO: forgejo-update1.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
+
+TODO: forgejo-update2.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update2.png)
+
+TODO: forgejo-update3.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
+
+TODO: forgejo-update4.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
+
+TODO: forgejo-update5.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
+
+TODO: forgejo-update6.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
+
+TODO: forgejo-update7.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
+
+TODO: forgejo-update8.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
+
+TODO: forgejo-update9.png
+
+![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
+
