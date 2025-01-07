@@ -581,7 +581,7 @@ _How different are Forgejo Pull Requests from GitHub?_
 
 Let's find out!
 
-1.  We create a Fork of our [__Read-Write NuttX Mirror__](TODO)
+1.  We create a Fork of our NuttX [__Read-Write Mirror__](TODO)
 
     ![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
 
@@ -621,11 +621,11 @@ Let's find out!
 
     ![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
 
+1.  Will Forgejo handle __Large Pull Requests__? Yep here's a Pull Request with 217 NuttX Commits
+
+    ![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
+
 TODO: Sync to GitHub
-
-TODO: forgejo-commits.png
-
-![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
 
 # Appendix: SSH Key in Forgejo
 
@@ -710,4 +710,3 @@ drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
 Won't work:
 exec su-exec root chown -R git /data/git/.ssh
 ```
-
