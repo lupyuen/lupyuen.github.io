@@ -671,21 +671,22 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     ![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
 
-1.  In a while, Forgejo creates our __Read-Write Mirror__
+1.  Assuming we didn't select Issues and Pull Requests...
+
+    Forgejo creates our __Read-Write Mirror__
 
     [(Live Site)](TODO)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update3.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
 
-TODO: forgejo-update5.png
+1.  Yep our Read-Write Mirror will __allow updates__
 
-![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
 
-TODO: forgejo-update6.png
+1.  Everything looks __super familiar__
 
-![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
+    ![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
 
-TODO: forgejo-update9.png
+1.  How will we __sync the Read-Write Mirror__? By running this script...
 
-![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
-
+    TODO: Sync script
