@@ -79,12 +79,11 @@
 <li><a href="#test-ssh-key" title="Test SSH Key">12 Test SSH Key</a><ul></ul></li>
 <li><a href="#use-ssh-key" title="Use SSH Key">13 Use SSH Key</a><ul></ul></li>
 <li><a href="#sync-mirror-to-update" title="Sync Mirror to Update">14 Sync Mirror to Update</a><ul></ul></li>
-<li><a href="#backup-forgejo" title="Backup Forgejo">15 Backup Forgejo</a><ul></ul></li>
-<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">16 SSH Fails with Local Filesystem</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">17 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-install-our-forgejo-server" title="Appendix: Install our Forgejo Server">18 Appendix: Install our Forgejo Server</a><ul></ul></li>
-<li><a href="#appendix-read-only-mirror-of-github-repo" title="Appendix: Read-Only Mirror of GitHub Repo">19 Appendix: Read-Only Mirror of GitHub Repo</a><ul></ul></li>
-<li><a href="#appendix-read-write-mirror-of-github-repo" title="Appendix: Read-Write Mirror of GitHub Repo">20 Appendix: Read-Write Mirror of GitHub Repo</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
+<li><a href="#ssh-fails-with-local-filesystem" title="SSH Fails with Local Filesystem">15 SSH Fails with Local Filesystem</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">16 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-install-our-forgejo-server" title="Appendix: Install our Forgejo Server">17 Appendix: Install our Forgejo Server</a><ul></ul></li>
+<li><a href="#appendix-read-only-mirror-of-github-repo" title="Appendix: Read-Only Mirror of GitHub Repo">18 Appendix: Read-Only Mirror of GitHub Repo</a><ul></ul></li>
+<li><a href="#appendix-read-write-mirror-of-github-repo" title="Appendix: Read-Write Mirror of GitHub Repo">19 Appendix: Read-Write Mirror of GitHub Repo</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.jpg" alt="TODO" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="TODO"><strong>Forgejo Git Forge</strong></a>, and whether <a href="TODO"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
 <p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
@@ -380,17 +379,7 @@ if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   exit 1
 fi
 
-set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="backup-forgejo"><a class="doc-anchor" href="#backup-forgejo">§</a>15 Backup Forgejo</h1><div class="example-wrap"><pre class="language-text"><code>sudo docker exec \
-  -it \
-  forgejo \
-  /bin/bash -c \
-  &quot;tar cvf /tmp/data.tar /data&quot;
-
-sudo docker cp \
-  forgejo:/tmp/data.tar \
-  .</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>16 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
+set +x ; echo &quot;**** Done!&quot; ; set -x</code></pre></div><h1 id="ssh-fails-with-local-filesystem"><a class="doc-anchor" href="#ssh-fails-with-local-filesystem">§</a>15 SSH Fails with Local Filesystem</h1><div class="example-wrap"><pre class="language-text"><code>ssh -T -p 222 git@localhost
 
 forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
 forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
@@ -418,7 +407,7 @@ drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
 5473c234c7eb:/data/git#
 
 Won&#39;t work:
-exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>17 What’s Next</h1>
+exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>16 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
@@ -446,8 +435,9 @@ exec su-exec root chown -R git /data/git/.ssh</code></pre></div><h1 id="whats-ne
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md"><strong>lupyuen.org/src/forgejo.md</strong></a></p>
-<h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>18 Appendix: Install our Forgejo Server</h1>
-<p>Here are the steps to install our own <strong>Forgejo Server</strong> on <strong>Docker Engine</strong> based on the <a href="https://forgejo.org/docs/latest/admin/installation-docker/"><strong>official docs</strong></a>…</p>
+<h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>17 Appendix: Install our Forgejo Server</h1>
+<p>Here are the steps to install our own <strong>Forgejo Server</strong> on <strong>Docker Engine</strong>…</p>
+<p><a href="https://forgejo.org/docs/latest/admin/installation-docker/">(Derived from <strong>Official Docs</strong>)</a></p>
 <p><a href="TODO">(Tested on <strong>macOS Rancher Desktop</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Forgejo Docker Image
 ## And our Modified Docker Compose Config
@@ -500,24 +490,60 @@ sudo docker compose up
 <p>(For CloudFlare Tunnel: Set <strong>Security &gt; Settings &gt; Low</strong>)</p>
 <p>(Change <em>nuttx-forge.org</em> to Your Domain Name)</p>
 </li>
+<li>
+<p>Remember to <strong>Backup Forgejo</strong> regularly!</p>
+<div class="example-wrap"><pre class="language-text"><code>## Inside Docker: Amalgamate the `/data` folder into `/tmp/data.tar`
+sudo docker exec \
+  -it \
+  forgejo \
+  /bin/bash -c \
+  &quot;tar cvf /tmp/data.tar /data&quot;
+
+## Copy `/tmp/data.tar` out from Docker
+sudo docker cp \
+  forgejo:/tmp/data.tar \
+  .</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb">(See the <strong>Backup Log</strong>)</a></p>
+</li>
 </ul>
-<p>Back to the Forgejo Configuration: This is how we specify the <strong>Forgejo Database</strong>…</p>
+<p>Back to the <strong>Forgejo Configuration</strong>: This is how we specify the <strong>Forgejo Database</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="TODO" /></p>
 <p>And the <strong>Server Domain</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install2.png" alt="TODO" /></p>
 <p>Finally our <strong>Admin User</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
-<h1 id="appendix-read-only-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-only-mirror-of-github-repo">§</a>19 Appendix: Read-Only Mirror of GitHub Repo</h1>
-<p>TODO: forgejo-mirror1.png</p>
+<h1 id="appendix-read-only-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-only-mirror-of-github-repo">§</a>18 Appendix: Read-Only Mirror of GitHub Repo</h1>
+<p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub…</p>
+<ol>
+<li>
+<p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror2.png</p>
+</li>
+<li>
+<p>Select <strong>GitHub</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror3.png</p>
+</li>
+<li>
+<p>Enter the <strong>GitHub URL</strong> of NuttX Repo</p>
+<p>Fill in the <strong>Access Token</strong></p>
+<p>Check <strong>“This Repo Will Be A Mirror”</strong>, <strong>Migrate LFS Files</strong> and <strong>Wiki</strong></p>
+<p>Set the <strong>Repo Name</strong> to <strong><code>nuttx-mirror</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror3.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror4.png</p>
+</li>
+<li>
+<p>This will create a <strong>Read-Only Mirror</strong>…</p>
+<p>We <strong>won’t be able to migrate</strong> the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)</p>
+<p>(Read-Write Mirror will be more useful, see the next section)</p>
+</li>
+<li>
+<p>And Forgejo dutifully creates our <strong>Read-Only Mirror</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror4.png" alt="TODO" /></p>
-<p>TODO: forgejo-mirror5.png</p>
+</li>
+<li>
+<p>By Default: Forgejo <strong>syncs every 8 hours</strong>. We change to <strong>1 hour</strong> (under Repo Settings)</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror5.png" alt="TODO" /></p>
+</li>
+</ol>
 <p>TODO: forgejo-mirror6.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror6.png" alt="TODO" /></p>
 <p>TODO: forgejo-mirror7.png</p>
@@ -531,7 +557,7 @@ sudo docker compose up
 <p>TODO: forgejo-mirror11.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror11.png" alt="TODO" /></p>
 <p>TODO: forgejo-mirror12.png</p>
-<h1 id="appendix-read-write-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-write-mirror-of-github-repo">§</a>20 Appendix: Read-Write Mirror of GitHub Repo</h1>
+<h1 id="appendix-read-write-mirror-of-github-repo"><a class="doc-anchor" href="#appendix-read-write-mirror-of-github-repo">§</a>19 Appendix: Read-Write Mirror of GitHub Repo</h1>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="TODO" /></p>
 <p>TODO: forgejo-update1.png</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="TODO" /></p>
