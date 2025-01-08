@@ -397,29 +397,22 @@ sudo docker cp \
 <p>Finally our <strong>Admin User</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
 <p><em>Forgejo’s Default Page: How to change it?</em></p>
-<p>TODO: Change the Default Page</p>
-<div class="example-wrap"><pre class="language-text"><code>/data/gitea/conf/app.ini
-
-sudo docker cp \
+<p>We copy out the <strong>Forgejo Configuration</strong> from Docker…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker cp \
   forgejo:/data/gitea/conf/app.ini \
-  .
-
-Edit app.init
-https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server
-&lt;&lt;
-[server]
-LANDING_PAGE = explore
-&gt;&gt;
-
-sudo docker cp \
+  .</code></pre></div>
+<p>Edit <a href="https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server"><strong>app.init</strong></a> and set…</p>
+<div class="example-wrap"><pre class="language-bash"><code>[server]
+LANDING_PAGE = explore</code></pre></div>
+<p>Then copy it back to Docker…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo docker cp \
   app.ini \
   forgejo:/data/gitea/conf/app.ini
 sudo docker compose down
 sudo docker compose up</code></pre></div>
-<p>Looks more sensible</p>
-<p>TODO: forgejo-home.png</p>
+<p>The <strong>Default Page</strong> for our Forgejo Server…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="TODO" /></p>
-<p>TODO: forgejo-home2.png</p>
+<p>Now become a little more helpful…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
 <h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
