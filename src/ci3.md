@@ -238,6 +238,8 @@ Yeah that's why we need a [__NuttX Build Farm__](https://lupyuen.github.io/artic
 
 # Halve the CI Checks
 
+[(__Update:__ Right now we run __100% of CI Jobs__ for Complex PRs)](https://github.com/apache/nuttx/issues/15451#issuecomment-2576576664)
+
 _One-Thirds of our GitHub Runner Minutes were spent on Merge Jobs. What about the rest?_
 
 [__Two-Thirds__](https://github.com/apache/nuttx/issues/14376#issuecomment-2423563132) of our GitHub Runner Minutes were spent on validating __New and Updated PRs__.
