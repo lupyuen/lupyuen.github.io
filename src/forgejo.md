@@ -1,6 +1,6 @@
 # Forgejo Git Forge for Apache NuttX RTOS (Experimental)
 
-📝 _31 Jan 2025_
+📝 _12 Jan 2025_
 
 ![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 

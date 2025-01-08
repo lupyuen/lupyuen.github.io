@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Forgejo Git Forge for Apache NuttX RTOS (Experimental)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2025-01-12",
+      "website": "https://lupyuen.github.io/articles/forgejo",
+      "summary": "Life Without GitHub: What's it like? Today we talk about Forgejo Git Forge, and whether Apache NuttX RTOS could possibly switch from GitHub to our own Git Forge."
+    },
+    {
       "name": "Git Bisecting a Bug (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-05",
