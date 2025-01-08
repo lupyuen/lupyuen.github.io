@@ -461,7 +461,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
-1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu.
+1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu x64.
 
     [(Live Site)](TODO)
 
