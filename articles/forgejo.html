@@ -176,13 +176,14 @@ git clone \
 <p>TODO: Pic of Forgejo with GitHub Actions Workflow</p>
 </li>
 <li>
-<p>But we don’t have a <strong>Secure CI Server</strong> to execute the CI Workflow!</p>
+<p>But we don’t have a <strong>CI Server</strong> to execute the CI Workflow (yet)</p>
 </li>
 <li>
 <p>Some GitHub Workflows are <a href="TODO"><strong>Not Supported</strong></a>: arch.yml (NuttX Build Rules)</p>
 </li>
 </ul>
-<p><em>Why do we need a Secure CI Server?</em></p>
+<p><em>Any special requirement for CI Server?</em></p>
+<p>Our CI Server needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
 <p>During PR Submission: Our CI Workflow might need to execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
 <p>If we don’t secure our CI Server, we might create <a href="TODO"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. (That’s why GitHub is so expensive!)</p>
