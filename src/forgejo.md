@@ -72,7 +72,9 @@ _Haven't we seen this somewhere?_
 
 - [__GitLab__](TODO) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/)
 
-- BTW: __FreeBSD Project__ is [__moving to Forgejo__](TODO)
+- BTW: [__FreeBSD Project__](TODO) is moving to Forgejo
+
+![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Coexist With GitHub
 
