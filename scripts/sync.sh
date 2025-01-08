@@ -150,7 +150,7 @@ docker restart lupyuen
 
 ## Copy HTTPD Config. Redirect /articles/ci7 to https://lupyuen.org/articles/ci7.html
 ## <IfModule alias_module>
-##     RedirectMatch /articles/([^.]+)$ https://lupyuen.org/articles/$1.html
+##     RedirectMatch permanent /articles/([^.]+)$ https://lupyuen.org/articles/$1.html
 ## <IfModule log_config_module>
 ##     CustomLog "logs/access_log" combined
 ## ErrorLog "logs/error_log"
