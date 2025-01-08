@@ -122,11 +122,13 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
   TODO: Pic of Forgejo with GitHub Actions Workflow
 
-- But we don't have a __Secure CI Server__ to execute the CI Workflow!
+- But we don't have a __CI Server__ to execute the CI Workflow (yet)
 
 - Some GitHub Workflows are [__Not Supported__](TODO): arch.yml (NuttX Build Rules)
 
-_Why do we need a Secure CI Server?_
+_Any special requirement for CI Server?_
+
+Our CI Server needs to be Ubuntu x64, __hardened for security__.
 
 During PR Submission: Our CI Workflow might need to execute the __scripts and code submitted__ by NuttX Devs.
 
