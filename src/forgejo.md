@@ -4,13 +4,13 @@
 
 ![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 
-__Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](TODO), and whether [__Apache NuttX RTOS__](TODO) could possibly switch from GitHub to our own Git Forge.
+__Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](https://forgejo.org/), and whether [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) could possibly switch from GitHub to our own Git Forge.
 
 _What's this Forgejo? And why is it a "Git Forge"?_
 
 Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreSQL Database)_
 
-[__Forgejo__](TODO) is a __Git Forge__, the server code that will publicly host and share a Git Repo. _(Including our NuttX Repo)_
+[__Forgejo__](https://forgejo.org/) is a __Git Forge__, the server code that will publicly host and share a Git Repo. _(Including our NuttX Repo)_
 
 _Why explore Forgejo for NuttX?_
 
@@ -20,15 +20,15 @@ _Why explore Forgejo for NuttX?_
 
 - Can we __Mirror NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
 
-- Also: We're hitting [__Budget Limits__](TODO) at GitHub, might need alternatives
+- Also: We're hitting [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need alternatives
 
-TODO: Pic of NuttX on Forgejo
+TODO: Pic of NuttX Repos on Forgejo
 
 # NuttX On Forgejo
 
 _Installing our own Git Forge: Is it easy?_
 
-Yep! Here's our experiment of __NuttX on Forgejo__...
+Yep! Here's our experiment of __NuttX on Forgejo__ (pic below)
 
 - [__`https://nuttx-forge.org`__](https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars)
 
@@ -36,9 +36,11 @@ Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
 
 - TODO: Appendix
 
-- Thanks to the excellent [__Forejo Docs__](TODO)
+- Based on the excellent [__Forejo Docs__](https://forgejo.org/docs/latest/)
 
-Our Git Forge is running on [__Plain Old SQLite__](TODO) database. Later we might [__Upgrade to PostgreSQL__](TODO).
+Our Git Forge is running on [__Plain Old SQLite__](https://forgejo.org/docs/latest/admin/database-preparation/#sqlite) database. Later we might [__Upgrade to PostgreSQL__](https://forgejo.org/docs/latest/admin/database-preparation/#postgresql).
+
+![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 
 # Works The Same
 
@@ -68,11 +70,11 @@ git clone \
 
 _Haven't we seen this somewhere?_
 
-- [__Codeberg__](TODO) is powered by Forgejo
+- [__Codeberg__](https://codeberg.org/) is powered by Forgejo
 
-- [__GitLab__](TODO) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/)
+- [__GitLab__](https://about.gitlab.com/) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/)
 
-- BTW: [__FreeBSD Project__](TODO) is moving to Forgejo
+- [__Fedora Linux Project__](https://fedoramagazine.org/fedora-moves-towards-forgejo-a-unified-decision/) is moving to Forgejo
 
 ![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
@@ -96,11 +98,11 @@ TODO: Pic of repo sync from GitHub
 
 TODO: Pic of commits
 
-Oops this creates a [__Read-Only Mirror__](TODO) that won't allow __Pull Requests__!
+Oops this creates a [__Read-Only Mirror__](https://nuttx-forge.org/nuttx/nuttx-mirror) that won't allow __Pull Requests__!
 
 TODO: Pic of read-only mirror
 
-Thus we created our own [__Read-Write Mirror__](TODO) of NuttX Repo. Forgejo won't auto-sync this repo, hence we wrote our own __Syncing Script__ (that works without GitHub)...
+Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo. Forgejo won't auto-sync this repo, hence we wrote our own __Syncing Script__ (that works without GitHub)...
 
 TODO: Pic of read-write mirror
 
@@ -150,9 +152,9 @@ _Forgejo won't Auto-Sync our Read-Write Mirror. How do we sync it?_
 
 We run a script to __Sync the Git Commits__...
 
-- From our __Read-Only Mirror__ [__`nuttx-mirror`__](TODO)
+- From our __Read-Only Mirror__ [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror)
 
-- To the __Read-Write Mirror__ [__`nuttx-update`__](TODO)
+- To the __Read-Write Mirror__ [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 
 - So it will work even when GitHub breaks
 
@@ -251,7 +253,7 @@ TODO
 
 | | |
 |:---:|:---:|
-| [__`nuttx-mirror`__](TODO) | [__`nuttx-update`__](TODO)
+| [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 | __Read-Only Mirror__ |  __Read-Write Mirror__
 | Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
 | Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
@@ -283,13 +285,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/forgejo.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md)
 
+![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
+
 # Appendix: Install our Forgejo Server
 
-Here are the steps to install our own __Forgejo Server__ on __Docker Engine__...
+Here are the steps to install our own __Forgejo Server__ (pic above) on __Docker Engine__...
 
 [(Derived from __Official Docs__)](https://forgejo.org/docs/latest/admin/installation-docker/)
 
-[(Tested on __macOS Rancher Desktop__)](TODO)
+[(Tested on __macOS Rancher Desktop__)](https://rancherdesktop.io/)
 
 ```bash
 ## Download the Forgejo Docker Image
@@ -408,6 +412,8 @@ The __Default Page__ for our Forgejo Server...
 Now becomes a little more helpful...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
+
+TODO: [More Tips](https://snac2.popolon.org/Popolon/p/1736341198.612691)
 
 ![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
@@ -684,17 +690,16 @@ We should see the __Test Commit__. Yay!
 
 _Why did we change the Docker Filesystem for Forgejo?_
 
-Based on the [__Official Docs__](TODO): Forgejo should be configured to use a __Local Docker Filesystem__...
+Based on the [__Official Docs__](https://forgejo.org/docs/latest/admin/installation-docker/#docker): Forgejo should be configured to use a __Local Docker Filesystem__, `./forgejo`
 
 ```yaml
 services:
   server:
     volumes:
-      - forgejo-data:/data
-TODO
+      - ./forgejo:/data
 ```
 
-Let's try it on [__macOS Rancher Desktop__](TODO) and watch what happens...
+Let's try it on [__macOS Rancher Desktop__](https://rancherdesktop.io/) and watch what happens...
 
 ```bash
 ## Connect to Forgejo Server over SSH
