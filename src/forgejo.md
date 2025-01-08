@@ -376,22 +376,24 @@ Finally our __Admin User__...
 
 _Forgejo's Default Page: How to change it?_
 
-TODO: Change the Default Page
+We copy out the __Forgejo Configuration__ from Docker...
 
-```text
-/data/gitea/conf/app.ini
-
+```bash
 sudo docker cp \
   forgejo:/data/gitea/conf/app.ini \
   .
+```
 
-Edit app.init
-https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server
-<<
+Edit [__app.init__](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server) and set...
+
+```bash
 [server]
 LANDING_PAGE = explore
->>
+```
 
+Then copy it back to Docker...
+
+```bash
 sudo docker cp \
   app.ini \
   forgejo:/data/gitea/conf/app.ini
@@ -399,13 +401,11 @@ sudo docker compose down
 sudo docker compose up
 ```
 
-Looks more sensible
-
-TODO: forgejo-home.png
+The __Default Page__ for our Forgejo Server...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-home.png)
 
-TODO: forgejo-home2.png
+Now become a little more helpful...
 
 ![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
 
