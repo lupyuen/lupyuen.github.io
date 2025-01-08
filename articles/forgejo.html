@@ -78,10 +78,10 @@
 <li><a href="#appendix-ssh-access-in-forgejo" title="Appendix: SSH Access in Forgejo">11 Appendix: SSH Access in Forgejo</a><ul></ul></li>
 <li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">12 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>31 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.png" alt="Forgejo Git Forge for Apache NuttX RTOS (Experimental)" /></p>
-<p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="TODO"><strong>Forgejo Git Forge</strong></a>, and whether <a href="TODO"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
+<p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="https://forgejo.org/"><strong>Forgejo Git Forge</strong></a>, and whether <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
 <p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
 <p>Think GitHub… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(GoLang Web + PostgreSQL Database)</em></p>
-<p><a href="TODO"><strong>Forgejo</strong></a> is a <strong>Git Forge</strong>, the server code that will publicly host and share a Git Repo. <em>(Including our NuttX Repo)</em></p>
+<p><a href="https://forgejo.org/"><strong>Forgejo</strong></a> is a <strong>Git Forge</strong>, the server code that will publicly host and share a Git Repo. <em>(Including our NuttX Repo)</em></p>
 <p><em>Why explore Forgejo for NuttX?</em></p>
 <ul>
 <li>
@@ -94,13 +94,13 @@
 <p>Can we <strong>Mirror NuttX Repo</strong> outside GitHub? So NuttX Community becomes more inclusive?</p>
 </li>
 <li>
-<p>Also: We’re hitting <a href="TODO"><strong>Budget Limits</strong></a> at GitHub, might need alternatives</p>
+<p>Also: We’re hitting <a href="https://lupyuen.github.io/articles/ci3#rescue-plan"><strong>Budget Limits</strong></a> at GitHub, might need alternatives</p>
 </li>
 </ul>
-<p>TODO: Pic of NuttX on Forgejo</p>
+<p>TODO: Pic of NuttX Repos on Forgejo</p>
 <h1 id="nuttx-on-forgejo"><a class="doc-anchor" href="#nuttx-on-forgejo">§</a>1 NuttX On Forgejo</h1>
 <p><em>Installing our own Git Forge: Is it easy?</em></p>
-<p>Yep! Here’s our experiment of <strong>NuttX on Forgejo</strong>…</p>
+<p>Yep! Here’s our experiment of <strong>NuttX on Forgejo</strong> (pic below)</p>
 <ul>
 <li><a href="https://nuttx-forge.org/explore/repos?q=&amp;only_show_relevant=false&amp;sort=moststars"><strong><code>https://nuttx-forge.org</code></strong></a></li>
 </ul>
@@ -110,10 +110,11 @@
 <p>TODO: Appendix</p>
 </li>
 <li>
-<p>Thanks to the excellent <a href="TODO"><strong>Forejo Docs</strong></a></p>
+<p>Based on the excellent <a href="https://forgejo.org/docs/latest/"><strong>Forejo Docs</strong></a></p>
 </li>
 </ul>
-<p>Our Git Forge is running on <a href="TODO"><strong>Plain Old SQLite</strong></a> database. Later we might <a href="TODO"><strong>Upgrade to PostgreSQL</strong></a>.</p>
+<p>Our Git Forge is running on <a href="https://forgejo.org/docs/latest/admin/database-preparation/#sqlite"><strong>Plain Old SQLite</strong></a> database. Later we might <a href="https://forgejo.org/docs/latest/admin/database-preparation/#postgresql"><strong>Upgrade to PostgreSQL</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-title.png" alt="Forgejo Git Forge for Apache NuttX RTOS (Experimental)" /></p>
 <h1 id="works-the-same"><a class="doc-anchor" href="#works-the-same">§</a>2 Works The Same</h1>
 <p><em>Is it easy to use our own Git Forge?</em></p>
 <p>Yes Forgejo is pleasantly <strong>Gittish-Hubbish</strong>. Inside Forgejo: <strong>Pull Requests</strong> and <strong>Issues</strong> look familiar…</p>
@@ -133,13 +134,13 @@ git clone \
 <p><em>Haven’t we seen this somewhere?</em></p>
 <ul>
 <li>
-<p><a href="TODO"><strong>Codeberg</strong></a> is powered by Forgejo</p>
+<p><a href="https://codeberg.org/"><strong>Codeberg</strong></a> is powered by Forgejo</p>
 </li>
 <li>
-<p><a href="TODO"><strong>GitLab</strong></a> runs on Gitea, which is the <a href="https://forgejo.org/compare-to-gitea/"><strong>predecessor of Forgejo</strong></a></p>
+<p><a href="https://about.gitlab.com/"><strong>GitLab</strong></a> runs on Gitea, which is the <a href="https://forgejo.org/compare-to-gitea/"><strong>predecessor of Forgejo</strong></a></p>
 </li>
 <li>
-<p>BTW: <a href="TODO"><strong>FreeBSD Project</strong></a> is moving to Forgejo</p>
+<p><a href="https://fedoramagazine.org/fedora-moves-towards-forgejo-a-unified-decision/"><strong>Fedora Linux Project</strong></a> is moving to Forgejo</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
@@ -159,9 +160,9 @@ git clone \
 <p>Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to <strong>auto-sync from GitHub every hour</strong>…</p>
 <p>TODO: Pic of repo sync from GitHub</p>
 <p>TODO: Pic of commits</p>
-<p>Oops this creates a <a href="TODO"><strong>Read-Only Mirror</strong></a> that won’t allow <strong>Pull Requests</strong>!</p>
+<p>Oops this creates a <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong>Read-Only Mirror</strong></a> that won’t allow <strong>Pull Requests</strong>!</p>
 <p>TODO: Pic of read-only mirror</p>
-<p>Thus we created our own <a href="TODO"><strong>Read-Write Mirror</strong></a> of NuttX Repo. Forgejo won’t auto-sync this repo, hence we wrote our own <strong>Syncing Script</strong> (that works without GitHub)…</p>
+<p>Thus we created our own <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong>Read-Write Mirror</strong></a> of NuttX Repo. Forgejo won’t auto-sync this repo, hence we wrote our own <strong>Syncing Script</strong> (that works without GitHub)…</p>
 <p>TODO: Pic of read-write mirror</p>
 <p>TODO: Sync script</p>
 <p>TODO: Pic of PR sync</p>
@@ -196,10 +197,10 @@ git clone \
 <p>We run a script to <strong>Sync the Git Commits</strong>…</p>
 <ul>
 <li>
-<p>From our <strong>Read-Only Mirror</strong> <a href="TODO"><strong><code>nuttx-mirror</code></strong></a></p>
+<p>From our <strong>Read-Only Mirror</strong> <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></p>
 </li>
 <li>
-<p>To the <strong>Read-Write Mirror</strong> <a href="TODO"><strong><code>nuttx-update</code></strong></a></p>
+<p>To the <strong>Read-Write Mirror</strong> <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></p>
 </li>
 <li>
 <p>So it will work even when GitHub breaks</p>
@@ -283,7 +284,7 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
 <p>TODO</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
-<tr><td style="text-align: center"><a href="TODO"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: center"><a href="TODO"><strong><code>nuttx-update</code></strong></a></td></tr>
+<tr><td style="text-align: center"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: center"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
 <tr><td style="text-align: center"><strong>Read-Only Mirror</strong></td><td style="text-align: center"><strong>Read-Write Mirror</strong></td></tr>
 <tr><td style="text-align: center">Auto-Sync by Forgejo <br> (every hour)</td><td style="text-align: center">Manual-Sync by our script</td></tr>
 <tr><td style="text-align: center">Can’t migrate PRs and Issues</td><td style="text-align: center">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
@@ -319,10 +320,11 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md"><strong>lupyuen.org/src/forgejo.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-title.png" alt="Forgejo Git Forge for Apache NuttX RTOS (Experimental)" /></p>
 <h1 id="appendix-install-our-forgejo-server"><a class="doc-anchor" href="#appendix-install-our-forgejo-server">§</a>7 Appendix: Install our Forgejo Server</h1>
-<p>Here are the steps to install our own <strong>Forgejo Server</strong> on <strong>Docker Engine</strong>…</p>
+<p>Here are the steps to install our own <strong>Forgejo Server</strong> (pic above) on <strong>Docker Engine</strong>…</p>
 <p><a href="https://forgejo.org/docs/latest/admin/installation-docker/">(Derived from <strong>Official Docs</strong>)</a></p>
-<p><a href="TODO">(Tested on <strong>macOS Rancher Desktop</strong>)</a></p>
+<p><a href="https://rancherdesktop.io/">(Tested on <strong>macOS Rancher Desktop</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Forgejo Docker Image
 ## And our Modified Docker Compose Config
 docker pull codeberg.org/forgejo/forgejo:9
@@ -414,6 +416,7 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="TODO" /></p>
 <p>Now becomes a little more helpful…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
+<p>TODO: <a href="https://snac2.popolon.org/Popolon/p/1736341198.612691">More Tips</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
 <h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
 <p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
@@ -627,13 +630,12 @@ git push -u origin main</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-ssh3.png" alt="TODO" /></p>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
-<p>Based on the <a href="TODO"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>…</p>
+<p>Based on the <a href="https://forgejo.org/docs/latest/admin/installation-docker/#docker"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>, <code>./forgejo</code></p>
 <div class="example-wrap"><pre class="language-yaml"><code>services:
   server:
     volumes:
-      - forgejo-data:/data
-TODO</code></pre></div>
-<p>Let’s try it on <a href="TODO"><strong>macOS Rancher Desktop</strong></a> and watch what happens…</p>
+      - ./forgejo:/data</code></pre></div>
+<p>Let’s try it on <a href="https://rancherdesktop.io/"><strong>macOS Rancher Desktop</strong></a> and watch what happens…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Connect to Forgejo Server over SSH
 ssh -T -p 222 git@localhost</code></pre></div>
 <p><strong>Forgejo Server Log</strong> says…</p>
