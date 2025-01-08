@@ -128,6 +128,8 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - Some GitHub Workflows are [__Not Supported__](TODO): arch.yml (NuttX Build Rules)
 
+TODO: Pic of CI Servers
+
 _Any special requirement for CI Server?_
 
 Our CI Server needs to be Ubuntu x64, __hardened for security__.
@@ -139,6 +141,8 @@ If we don't secure our CI Server, we might create [__Security Problems__](TODO) 
 Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is so expensive!
 
 (Maybe we move NuttX Scripts into a __More Secure Repo__?)
+
+TODO: Pic of Sync Script, GitHub Breaks
 
 # Sync our Read-Write Mirror
 
@@ -252,6 +256,8 @@ TODO
 | Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
 | Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
 | Can't create PRs | Can create PRs
+
+![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # What's Next
 
@@ -403,6 +409,8 @@ TODO: forgejo-home2.png
 
 ![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
 
+![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
+
 # Appendix: Read-Only Mirror
 
 Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub. 
@@ -498,6 +506,8 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
     git clone \
       git@nuttx-forge.org:nuttx/nuttx-mirror
     ```
+
+![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Appendix: Read-Write Mirror
 
