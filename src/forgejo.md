@@ -134,7 +134,9 @@ During PR Submission: Our CI Workflow might need to execute the __scripts and co
 
 If we don't secure our CI Server, we might create [__Security Problems__](TODO) in our server.
 
-Securing our CI Server is probably the toughest part of our Git Forge Migration. (That's why GitHub is so expensive!)
+Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is so expensive!
+
+(Maybe we move NuttX Scripts into a __More Secure Repo__?)
 
 # Sync our Read-Write Mirror
 
