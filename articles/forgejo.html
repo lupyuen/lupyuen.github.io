@@ -393,11 +393,11 @@ sudo docker cp \
 </li>
 </ul>
 <p>Back to the <strong>Forgejo Configuration</strong>: This is how we specify the <strong>Forgejo Database</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="Forgejo Configuration: Database" /></p>
 <p>And the <strong>Server Domain</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-install2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-install2.png" alt="Forgejo Configuration: Server Domain" /></p>
 <p>Finally our <strong>Admin User</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-install3.png" alt="Forgejo Configuration: Admin User" /></p>
 <p><em>Forgejo’s Default Page: How to change it?</em></p>
 <p>We copy out the <strong>Forgejo Configuration</strong> from Docker…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker cp \
@@ -413,9 +413,9 @@ LANDING_PAGE = explore</code></pre></div>
 sudo docker compose down
 sudo docker compose up</code></pre></div>
 <p>The <strong>Default Page</strong> for our Forgejo Server…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="Original Default Page" /></p>
 <p>Now becomes a little more helpful…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="Default Page becomes Explore" /></p>
 <p>TODO: <a href="https://snac2.popolon.org/Popolon/p/1736341198.612691">More Tips</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
 <h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
@@ -424,65 +424,63 @@ sudo docker compose up</code></pre></div>
 <ol>
 <li>
 <p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="New Migration" /></p>
 </li>
 <li>
 <p>Select <strong>GitHub</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="GitHub Migration" /></p>
 </li>
 <li>
 <p>Enter the <strong>GitHub URL</strong> of NuttX Repo</p>
 <p>Fill in the <strong>Access Token</strong></p>
 <p>Check <strong>“This Repo Will Be A Mirror”</strong>, <strong>Migrate LFS Files</strong> and <strong>Wiki</strong></p>
 <p>Set the <strong>Repo Name</strong> to <strong><code>nuttx-mirror</code></strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror3.png" alt="Repo Name" /></p>
 </li>
 <li>
-<p>This will create a <strong>Read-Only Mirror</strong>…</p>
+<p>This will create a <strong>Read-Only Mirror</strong>: <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></p>
 <p>Forgejo <strong>won’t migrate</strong> the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)</p>
 <p>(Read-Write Mirror will be more useful, see the next section)</p>
 </li>
 <li>
 <p>And Forgejo dutifully creates our <strong>Read-Only Mirror</strong>!</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror4.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror4.png" alt="Read-Only Mirror" /></p>
 </li>
 <li>
 <p>By Default: Forgejo <strong>syncs every 8 hours</strong>. We change the Mirror Interval to <strong>1 hour</strong></p>
-<p>(Settings &gt; Repository &gt; Mirror Settings)</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror5.png" alt="TODO" /></p>
+<p>That’s under <strong>Settings &gt; Repository &gt; Mirror Settings</strong></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror5.png" alt="Mirror Interval" /></p>
 </li>
 <li>
 <p>Forgejo has helpfully migrated our <strong>Template for NuttX Issues</strong></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror6.png" alt="Template for NuttX Issues" /></p>
 </li>
 <li>
 <p>Forgejo has ported over our <strong>GitHub Actions Workflows</strong>. But they won’t run because we don’t have a <strong>CI Server</strong> for Ubuntu x64.</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror7.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror/actions">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror7.png" alt="CI Workflow" /></p>
 </li>
 <li>
 <p><strong>NuttX Commits</strong> look very familiar in Forgejo</p>
 <p><strong>Commit Hashes</strong> are identical to GitHub</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror8.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror/commits/branch/master">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror8.png" alt="NuttX Commits" /></p>
 </li>
 <li>
 <p>So cool to watch Forgejo <strong>Auto-Sync our GitHub Repo</strong></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror9.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx?tab=activity">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror9.png" alt="Auto-Sync our NuttX Repo" /></p>
 </li>
 <li>
 <p>Auto-Sync may trigger <strong>CI Workflows</strong>. But we don’t have CI Servers to run them (yet).</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror11.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror/actions">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror11.png" alt="No CI Servers in Forgejo" /></p>
 </li>
 <li>
 <p>That’s why the <strong>CI Jobs will wait forever</strong></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror/actions/runs/13">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="CI Jobs waiting for CI Server" /></p>
 </li>
 <li>
 <p><strong>Git Command-Line Tools</strong> will work great with our Forgejo Server</p>
@@ -503,11 +501,11 @@ git clone \
 <ol>
 <li>
 <p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror1.png" alt="New Migration" /></p>
 </li>
 <li>
 <p>Select <strong>GitHub</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-mirror2.png" alt="GitHub Migration" /></p>
 </li>
 <li>
 <p>Enter the <strong>GitHub URL</strong> of NuttX Repo</p>
@@ -515,10 +513,10 @@ git clone \
 <p>Uncheck <strong>“This Repo Will Be A Mirror”</strong></p>
 <p>Check the following: <strong>Migrate LFS Files</strong>, <strong>Wiki</strong>, <strong>Labels</strong>, <strong>Milestones</strong>, <strong>Releases</strong></p>
 <p>Set the <strong>Repo Name</strong> to <strong><code>nuttx-update</code></strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update8.png" alt="Repo Name" /></p>
 </li>
 <li>
-<p>This will create a <strong>Read-Write Mirror</strong>…</p>
+<p>This will create a <strong>Read-Write Mirror</strong>: <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></p>
 <p>Forgejo <strong>won’t auto-sync</strong> our repo. But it will migrate the other items: Labels, Milestones, Releases (pic above)</p>
 <p>Don’t select <strong>Issues and Pull Requests</strong>! Forgejo will hang forever, hitting errors. (Probably due to the sheer volume)</p>
 <p>TODO: Combine pics</p>
@@ -528,8 +526,8 @@ git clone \
 <li>
 <p>Assuming we didn’t select Issues and Pull Requests…</p>
 <p>Forgejo creates our <strong>Read-Write Mirror</strong></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-update">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="Read-Write Mirror" /></p>
 </li>
 <li>
 <p>How will we <strong>sync the Read-Write Mirror</strong>? By running this script…</p>
@@ -541,53 +539,52 @@ git clone \
 <p>Let’s find out!</p>
 <ol>
 <li>
-<p>We create a Fork of our NuttX <a href="TODO"><strong>Read-Write Mirror</strong></a></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="TODO" /></p>
+<p>We create a Fork of our NuttX <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong>Read-Write Mirror</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/local-nuttx-update">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update4.png" alt="Fork our Read-Write Mirror" /></p>
 </li>
 <li>
-<p>Create a new branch: <a href="TODO"><strong><code>test-branch</code></strong></a>. <strong>Edit a file</strong> in our new branch.</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update5.png" alt="TODO" /></p>
+<p>Create a new branch: <a href="https://nuttx-forge.org/lupyuen/local-nuttx-update/src/branch/test-branch"><strong><code>test-branch</code></strong></a>. <strong>Edit a file</strong> in our new branch.</p>
+<p><a href="https://nuttx-forge.org/lupyuen/local-nuttx-update/src/branch/test-branch">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update5.png" alt="Edit A File" /></p>
 </li>
 <li>
 <p><strong>Save the file</strong> to our new branch</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update6.png" alt="Save The File" /></p>
 </li>
 <li>
 <p>Click <strong>“New Pull Request”</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr1.png" alt="New Pull Request" /></p>
 </li>
 <li>
 <p>Again click <strong>“New Pull Request”</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr2.png" alt="New Pull Request Again" /></p>
 </li>
 <li>
 <p>Remember the <strong>NuttX Template for Pull Requests</strong>? It appears in Forgejo</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr3.png" alt="NuttX Template for Pull Requests" /></p>
 </li>
 <li>
 <p>Click <strong>“Create Pull Request”</strong></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr4.png" alt="Create Pull Request" /></p>
 </li>
 <li>
 <p>And we’ll see our <strong>New Pull Request</strong></p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr5.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-update/pulls/1">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr5.png" alt="New Pull Request" /></p>
 </li>
 <li>
 <p>Indeed, no surprises! Everything works the same.</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-pr6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-pr6.png" alt="Everything works the same" /></p>
 </li>
 <li>
 <p><strong>Merging a Pull Request</strong> will trigger the exact same CI Workflow. Which won’t run because we haven’t configured the CI Servers.</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="TODO" /></p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-update/actions">(Live Site)</a></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="Merging a Pull Request will trigger CI Workflow" /></p>
 </li>
 <li>
 <p>Will Forgejo handle <strong>Large Pull Requests</strong>? Yep here’s a Pull Request with 217 NuttX Commits</p>
-<p><a href="TODO">(Live Site)</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="217 NuttX Commits" /></p>
 </li>
 <li>
 <p>Let’s try not to <strong>Merge any Pull Request</strong> into our Read-Write Mirror. We should keep it in sync with our Read-Only Mirror!</p>
@@ -611,14 +608,14 @@ git clone \
 <li>Paste the contents of <strong>~/.ssh/nuttx-forge.pub</strong></li>
 <li>Click <strong>Add Key</strong></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh.png" alt="Manage SSH Keys" /></p>
 <p>Finally we test the <strong>SSH Access</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ssh -T git@nuttx-forge  
 
 Hi there, nuttx! You&#39;ve successfully authenticated with the key named nuttx-forge (luppy@localhost), but Forgejo does not provide shell access.
 If this is unexpected, please log in with password and setup Forgejo under another user.</code></pre></div>
 <p>We create a <strong>Test Repo</strong> in our Forgejo Server…</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh2.png" alt="Test Repo" /></p>
 <p>And we <strong>Commit over SSH</strong> to the Test Repo…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone git@nuttx-forge:nuttx/test.git
 cd test
@@ -627,7 +624,7 @@ git add .
 git commit --all --message=&quot;Test Commit&quot;
 git push -u origin main</code></pre></div>
 <p>We should see the <strong>Test Commit</strong>. Yay!</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-ssh3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-ssh3.png" alt="Test Repo with Test Commit" /></p>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
 <p>Based on the <a href="https://forgejo.org/docs/latest/admin/installation-docker/#docker"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>, <code>./forgejo</code></p>
@@ -666,7 +663,7 @@ $ ls -l /data/git/.ssh/authorized_keys
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
 <p>(Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
-<p>And that’s why our <a href="TODO"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
+<p>And that’s why our <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>services:
   server:
     volumes:
