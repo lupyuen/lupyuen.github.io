@@ -2,7 +2,7 @@
 
 📝 _31 Jan 2025_
 
-![TODO](https://lupyuen.github.io/images/forgejo-title.jpg)
+![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 
 __Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](TODO), and whether [__Apache NuttX RTOS__](TODO) could possibly switch from GitHub to our own Git Forge.
 
