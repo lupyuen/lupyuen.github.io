@@ -368,15 +368,15 @@ sudo docker compose up
 
 Back to the __Forgejo Configuration__: This is how we specify the __Forgejo Database__...
 
-![TODO](https://lupyuen.github.io/images/forgejo-install1.png)
+![Forgejo Configuration: Database](https://lupyuen.github.io/images/forgejo-install1.png)
 
 And the __Server Domain__...
 
-![TODO](https://lupyuen.github.io/images/forgejo-install2.png)
+![Forgejo Configuration: Server Domain](https://lupyuen.github.io/images/forgejo-install2.png)
 
 Finally our __Admin User__...
 
-![TODO](https://lupyuen.github.io/images/forgejo-install3.png)
+![Forgejo Configuration: Admin User](https://lupyuen.github.io/images/forgejo-install3.png)
 
 _Forgejo's Default Page: How to change it?_
 
@@ -407,11 +407,11 @@ sudo docker compose up
 
 The __Default Page__ for our Forgejo Server...
 
-![TODO](https://lupyuen.github.io/images/forgejo-home.png)
+![Original Default Page](https://lupyuen.github.io/images/forgejo-home.png)
 
 Now becomes a little more helpful...
 
-![TODO](https://lupyuen.github.io/images/forgejo-home2.png)
+![Default Page becomes Explore](https://lupyuen.github.io/images/forgejo-home2.png)
 
 TODO: [More Tips](https://snac2.popolon.org/Popolon/p/1736341198.612691)
 
@@ -425,11 +425,11 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
 1.  At Top Right: Select __`+` > New Migration__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
+    ![New Migration](https://lupyuen.github.io/images/forgejo-mirror1.png)
 
 1.  Select __GitHub__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
+    ![GitHub Migration](https://lupyuen.github.io/images/forgejo-mirror2.png)
 
 1.  Enter the __GitHub URL__ of NuttX Repo
 
@@ -439,9 +439,9 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     Set the __Repo Name__ to __`nuttx-mirror`__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror3.png)
+    ![Repo Name](https://lupyuen.github.io/images/forgejo-mirror3.png)
 
-1.  This will create a __Read-Only Mirror__...
+1.  This will create a __Read-Only Mirror__: [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror)
 
     Forgejo __won't migrate__ the other items: Issues, Pull Requests, Labels, Milestones, Releases (pic above)
 
@@ -449,55 +449,51 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
 1.  And Forgejo dutifully creates our __Read-Only Mirror__!
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror4.png)
+    ![Read-Only Mirror](https://lupyuen.github.io/images/forgejo-mirror4.png)
 
 1.  By Default: Forgejo __syncs every 8 hours__. We change the Mirror Interval to __1 hour__
 
-    (Settings > Repository > Mirror Settings)
+    That's under __Settings > Repository > Mirror Settings__
 
-    [(Live Site)](TODO)
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror5.png)
+    ![Mirror Interval](https://lupyuen.github.io/images/forgejo-mirror5.png)
 
 1.  Forgejo has helpfully migrated our __Template for NuttX Issues__
 
-    [(Live Site)](TODO)
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror6.png)
+    ![Template for NuttX Issues](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
 1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu x64.
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/actions)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror7.png)
+    ![CI Workflow](https://lupyuen.github.io/images/forgejo-mirror7.png)
 
 1.  __NuttX Commits__ look very familiar in Forgejo
 
     __Commit Hashes__ are identical to GitHub
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/commits/branch/master)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror8.png)
+    ![NuttX Commits](https://lupyuen.github.io/images/forgejo-mirror8.png)
 
 1.  So cool to watch Forgejo __Auto-Sync our GitHub Repo__
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx?tab=activity)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror9.png)
+    ![Auto-Sync our NuttX Repo](https://lupyuen.github.io/images/forgejo-mirror9.png)
 
 1.  Auto-Sync may trigger __CI Workflows__. But we don't have CI Servers to run them (yet).
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/actions)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror11.png)
+    ![No CI Servers in Forgejo](https://lupyuen.github.io/images/forgejo-mirror11.png)
 
 1.  That's why the __CI Jobs will wait forever__
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/actions/runs/13)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror12.png)
+    ![CI Jobs waiting for CI Server](https://lupyuen.github.io/images/forgejo-mirror12.png)
 
 1.  __Git Command-Line Tools__ will work great with our Forgejo Server
 
@@ -523,11 +519,11 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
 1.  At Top Right: Select __`+` > New Migration__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror1.png)
+    ![New Migration](https://lupyuen.github.io/images/forgejo-mirror1.png)
 
 1.  Select __GitHub__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-mirror2.png)
+    ![GitHub Migration](https://lupyuen.github.io/images/forgejo-mirror2.png)
 
 1.  Enter the __GitHub URL__ of NuttX Repo
 
@@ -539,9 +535,9 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     Set the __Repo Name__ to __`nuttx-update`__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update8.png)
+    ![Repo Name](https://lupyuen.github.io/images/forgejo-update8.png)
 
-1.  This will create a __Read-Write Mirror__...
+1.  This will create a __Read-Write Mirror__: [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 
     Forgejo __won't auto-sync__ our repo. But it will migrate the other items: Labels, Milestones, Releases (pic above)
 
@@ -557,9 +553,9 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     Forgejo creates our __Read-Write Mirror__
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update9.png)
+    ![Read-Write Mirror](https://lupyuen.github.io/images/forgejo-update9.png)
 
 1.  How will we __sync the Read-Write Mirror__? By running this script...
 
@@ -571,59 +567,57 @@ _How different are Forgejo Pull Requests from GitHub?_
 
 Let's find out!
 
-1.  We create a Fork of our NuttX [__Read-Write Mirror__](TODO)
+1.  We create a Fork of our NuttX [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-mirror)
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/lupyuen/local-nuttx-update)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update4.png)
+    ![Fork our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-update4.png)
 
-1.  Create a new branch: [__`test-branch`__](TODO). __Edit a file__ in our new branch.
+1.  Create a new branch: [__`test-branch`__](https://nuttx-forge.org/lupyuen/local-nuttx-update/src/branch/test-branch). __Edit a file__ in our new branch.
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/lupyuen/local-nuttx-update/src/branch/test-branch)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update5.png)
+    ![Edit A File](https://lupyuen.github.io/images/forgejo-update5.png)
 
 1.  __Save the file__ to our new branch
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-update6.png)
+    ![Save The File](https://lupyuen.github.io/images/forgejo-update6.png)
 
 1.  Click __"New Pull Request"__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr1.png)
+    ![New Pull Request](https://lupyuen.github.io/images/forgejo-pr1.png)
 
 1.  Again click __"New Pull Request"__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr2.png)
+    ![New Pull Request Again](https://lupyuen.github.io/images/forgejo-pr2.png)
 
 1.  Remember the __NuttX Template for Pull Requests__? It appears in Forgejo
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr3.png)
+    ![NuttX Template for Pull Requests](https://lupyuen.github.io/images/forgejo-pr3.png)
 
 1.  Click __"Create Pull Request"__
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr4.png)
+    ![Create Pull Request](https://lupyuen.github.io/images/forgejo-pr4.png)
 
 1.  And we'll see our __New Pull Request__
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update/pulls/1)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr5.png)
+    ![New Pull Request](https://lupyuen.github.io/images/forgejo-pr5.png)
 
 1.  Indeed, no surprises! Everything works the same.
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-pr6.png)
+    ![Everything works the same](https://lupyuen.github.io/images/forgejo-pr6.png)
 
 1.  __Merging a Pull Request__ will trigger the exact same CI Workflow. Which won't run because we haven't configured the CI Servers.
 
-    [(Live Site)](TODO)
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update/actions)
 
-    ![TODO](https://lupyuen.github.io/images/forgejo-actions1.png)
+    ![Merging a Pull Request will trigger CI Workflow](https://lupyuen.github.io/images/forgejo-actions1.png)
 
 1.  Will Forgejo handle __Large Pull Requests__? Yep here's a Pull Request with 217 NuttX Commits
 
-    [(Live Site)](TODO)
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-commits.png)
+    ![217 NuttX Commits](https://lupyuen.github.io/images/forgejo-commits.png)
 
 1.  Let's try not to __Merge any Pull Request__ into our Read-Write Mirror. We should keep it in sync with our Read-Only Mirror!
 
@@ -656,7 +650,7 @@ In Forgejo Web:
 - Paste the contents of __~/.ssh/nuttx-forge.pub__
 - Click __Add Key__
 
-![TODO](https://lupyuen.github.io/images/forgejo-ssh.png)
+![Manage SSH Keys](https://lupyuen.github.io/images/forgejo-ssh.png)
 
 Finally we test the __SSH Access__...
 
@@ -669,7 +663,7 @@ If this is unexpected, please log in with password and setup Forgejo under anoth
 
 We create a __Test Repo__ in our Forgejo Server...
 
-![TODO](https://lupyuen.github.io/images/forgejo-ssh2.png)
+![Test Repo](https://lupyuen.github.io/images/forgejo-ssh2.png)
 
 And we __Commit over SSH__ to the Test Repo...
 
@@ -684,7 +678,7 @@ git push -u origin main
 
 We should see the __Test Commit__. Yay!
 
-![TODO](https://lupyuen.github.io/images/forgejo-ssh3.png)
+![Test Repo with Test Commit](https://lupyuen.github.io/images/forgejo-ssh3.png)
 
 # Appendix: SSH vs Docker Filesystem
 
@@ -752,7 +746,7 @@ exec su-exec root chown -R git /data/git/.ssh
 
 (Rancher Desktop won't set permissions correctly for Local Filesystem) 
 
-And that's why our [__docker-compose.yml__](TODO) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
+And that's why our [__docker-compose.yml__](https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
 
 ```yaml
 services:
