@@ -162,7 +162,7 @@ git clone \
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror.png" alt="Read-Only Mirror won’t allow Pull Requests" /></p>
 <p>Thus we created our own <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong>Read-Write Mirror</strong></a> of NuttX Repo…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-update.png" alt="Read-Write Mirror OK with Pull Requests" /></p>
-<p>Forgejo won’t auto-sync our repo. We wrote our own <strong>Syncing Script</strong>, that works without GitHub.</p>
+<p>Forgejo won’t auto-sync our Read-Write Repo. We wrote our own <strong>Syncing Script</strong>, that works without GitHub.</p>
 <p>(More about the Sync Script in a while)</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow3.jpg" alt="Pull Requests shall be synced back to GitHub" /></p>
 <p><em>But Pull Requests shall be synced back to GitHub?</em></p>
@@ -190,7 +190,7 @@ git clone \
 <p>But we don’t have a <strong>CI Server</strong> to execute the CI Workflow (yet)</p>
 </li>
 <li>
-<p>Some GitHub Workflows are <a href="TODO"><strong>Not Supported</strong></a> (arch.yml / NuttX Build Rules)</p>
+<p>Some GitHub Workflows are <a href="https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror"><strong>Not Supported</strong></a> (NuttX Build Rules <em>arch.yml</em>)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow4.jpg" alt="CI Server needs to be Ubuntu x64, hardened for security" /></p>
@@ -201,7 +201,7 @@ git clone \
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is expensive!</p>
 <p>(Shall we move NuttX Scripts to a <strong>More Secure Repo</strong>?)</p>
 <h1 id="sync-our-read-write-mirror"><a class="doc-anchor" href="#sync-our-read-write-mirror">§</a>5 Sync our Read-Write Mirror</h1>
-<p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How do we sync it?</em></p>
+<p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How to sync it?</em></p>
 <p>We run a script to <strong>Sync the Git Commits</strong>…</p>
 <ul>
 <li>
@@ -309,7 +309,9 @@ $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
-<p>TODO: Accept Pull Requests in our Read-Write Mirror?</p>
+<p>We’ll probably call GitHub API to ship the <strong>Pull Requests back to GitHub</strong>. (Pic below)</p>
+<p>Right now we can’t allow Pull Requests to be locally merged at Forgejo. Instead, we’ll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.</p>
+<p>Which explains why we need <strong>Two Mirror Repos</strong>: Read-Only Mirror and Read-Write Mirror.</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
 <tr><td style="text-align: left"><strong>Read-Only Mirror</strong></td><td style="text-align: left"><strong>Read-Write Mirror</strong></td></tr>
@@ -444,11 +446,19 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-home.png" alt="Original Default Page" /></p>
 <p>Now becomes a little more helpful…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="Default Page becomes Explore" /></p>
-<p>TODO: <a href="https://snac2.popolon.org/Popolon/p/1736341198.612691">More Tips</a></p>
+<p><a href="https://snac2.popolon.org/Popolon/p/1736341198.612691">(<strong>Popolon</strong> has plenty more tips for Forgejo Server)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="Read-Only Mirror" /></p>
 <h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
 <p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
 <p>Forgejo shall <strong>auto-sync our repo</strong> (every hour), but it <strong>won’t allow Pull Requests</strong> in our Read-Only Mirror…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><em><code>nuttx-update</code></em></a></td></tr>
+<tr><td style="text-align: left"><strong>Read-Only Mirror</strong></td><td style="text-align: left"><em>Read-Write Mirror</em></td></tr>
+<tr><td style="text-align: left">Auto-Sync by Forgejo</td><td style="text-align: left"><em>Manual-Sync by Our Script</em></td></tr>
+<tr><td style="text-align: left">Can’t create PRs</td><td style="text-align: left"><em>Can create PRs</em></td></tr>
+<tr><td style="text-align: left">Can’t migrate PRs and Issues</td><td style="text-align: left"><em>Can migrate PRs and Issues <br> (but ran into problems)</em></td></tr>
+</tbody></table>
+</div>
 <ol>
 <li>
 <p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
@@ -511,6 +521,10 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror12.png" alt="CI Jobs waiting for CI Server" /></p>
 </li>
 <li>
+<p><strong>GitHub Reusable Workflows</strong> are <a href="https://code.forgejo.org/forgejo/runner/issues/63"><strong>Not Supported</strong></a> in Forgejo.</p>
+<p>This means the <a href="https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow"><strong>NuttX Build Rules (arch.yml)</strong></a> probably won’t run on Forgejo.</p>
+</li>
+<li>
 <p><strong>Git Command-Line Tools</strong> will work great with our Forgejo Server</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Mirror Repo
 ## From our Forgejo Server
@@ -526,6 +540,14 @@ git clone \
 <h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
 <p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
 <p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><em><code>nuttx-mirror</code></em></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
+<tr><td style="text-align: left"><em>Read-Only Mirror</em></td><td style="text-align: left"><strong>Read-Write Mirror</strong></td></tr>
+<tr><td style="text-align: left"><em>Auto-Sync by Forgejo</em></td><td style="text-align: left">Manual-Sync by Our Script</td></tr>
+<tr><td style="text-align: left"><em>Can’t create PRs</em></td><td style="text-align: left">Can create PRs</td></tr>
+<tr><td style="text-align: left"><em>Can’t migrate PRs and Issues</em></td><td style="text-align: left">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
+</tbody></table>
+</div>
 <ol>
 <li>
 <p>At Top Right: Select <strong><code>+</code> &gt; New Migration</strong></p>
@@ -556,8 +578,8 @@ git clone \
 <p><img src="https://lupyuen.github.io/images/forgejo-update9.png" alt="Read-Write Mirror" /></p>
 </li>
 <li>
-<p>How will we <strong>sync the Read-Write Mirror</strong>? By running this script…</p>
-<p>TODO: Sync script</p>
+<p>How to <strong>sync the Read-Write Mirror</strong>? We run this script…</p>
+<p><a href="https://lupyuen.github.io/articles/forgejo#sync-our-read-write-mirror"><strong>sync-mirror-to-update.sh</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-pull-request-in-forgejo"><a class="doc-anchor" href="#appendix-pull-request-in-forgejo">§</a>10 Appendix: Pull Request in Forgejo</h1>
@@ -614,7 +636,7 @@ git clone \
 </li>
 <li>
 <p>Let’s try not to <strong>Merge any Pull Request</strong> into our Read-Write Mirror. We should keep it in sync with our Read-Only Mirror!</p>
-<p>TODO: Sync to GitHub</p>
+<p><a href="https://lupyuen.github.io/articles/forgejo#sync-our-read-write-mirror"><strong>“Sync our Read-Write Mirror”</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-ssh-access-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-access-in-forgejo">§</a>11 Appendix: SSH Access in Forgejo</h1>
