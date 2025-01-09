@@ -191,7 +191,7 @@ Our script works like this: [sync-mirror-to-update.sh](https://github.com/lupyue
 set -e  ## Exit when any command fails
 
 ## Checkout the Upstream and Downstream Repos
-## Upstream is Read-Only Mirroe
+## Upstream is Read-Only Mirror
 ## Downstream is Read-Write Mirror
 tmp_dir=/tmp/sync-mirror-to-update
 rm -rf $tmp_dir ; mkdir $tmp_dir ; cd $tmp_dir
