@@ -102,7 +102,7 @@ Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nu
 
 ![Read-Write Mirror OK with Pull Requests](https://lupyuen.github.io/images/forgejo-update.png)
 
-Forgejo won't auto-sync our repo. We wrote our own __Syncing Script__, that works without GitHub.
+Forgejo won't auto-sync our Read-Write Repo. We wrote our own __Syncing Script__, that works without GitHub.
 
 (More about the Sync Script in a while)
 
@@ -138,7 +138,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - But we don't have a __CI Server__ to execute the CI Workflow (yet)
 
-- Some GitHub Workflows are [__Not Supported__](TODO) (arch.yml / NuttX Build Rules)
+- Some GitHub Workflows are [__Not Supported__](https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror) (NuttX Build Rules _arch.yml_)
 
 ![CI Server needs to be Ubuntu x64, hardened for security](https://lupyuen.github.io/images/forgejo-flow4.jpg)
 
@@ -156,7 +156,7 @@ Securing our CI Server is probably the toughest part of our Git Forge Migration.
 
 # Sync our Read-Write Mirror
 
-_Forgejo won't Auto-Sync our Read-Write Mirror. How do we sync it?_
+_Forgejo won't Auto-Sync our Read-Write Mirror. How to sync it?_
 
 We run a script to __Sync the Git Commits__...
 
@@ -281,7 +281,11 @@ e26e8bda0e9...7d6b2e48044 master -> master (forced update)
 
 _What if we really need to Accept Pull Requests in our Read-Write Mirror?_
 
-TODO: Accept Pull Requests in our Read-Write Mirror?
+We'll probably call GitHub API to ship the __Pull Requests back to GitHub__. (Pic below)
+
+Right now we can't allow Pull Requests to be locally merged at Forgejo. Instead, we'll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.
+
+Which explains why we need __Two Mirror Repos__: Read-Only Mirror and Read-Write Mirror.
 
 | | |
 |:---|:---|
@@ -447,7 +451,7 @@ Now becomes a little more helpful...
 
 ![Default Page becomes Explore](https://lupyuen.github.io/images/forgejo-home2.png)
 
-TODO: [More Tips](https://snac2.popolon.org/Popolon/p/1736341198.612691)
+[(__Popolon__ has plenty more tips for Forgejo Server)](https://snac2.popolon.org/Popolon/p/1736341198.612691)
 
 ![Read-Only Mirror](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
@@ -456,6 +460,14 @@ TODO: [More Tips](https://snac2.popolon.org/Popolon/p/1736341198.612691)
 Now that Forgejo is up: Let's create a __Read-Only Mirror__ of the NuttX Repo at GitHub. 
 
 Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Requests__ in our Read-Only Mirror...
+
+| | |
+|:---|:---|
+| [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [_`nuttx-update`_](https://nuttx-forge.org/nuttx/nuttx-update)
+| __Read-Only Mirror__ |  _Read-Write Mirror_
+| Auto-Sync by Forgejo | _Manual-Sync by Our Script_
+| Can't create PRs | _Can create PRs_
+| Can't migrate PRs and Issues | _Can migrate PRs and Issues <br> (but ran into problems)_
 
 1.  At Top Right: Select __`+` > New Migration__
 
@@ -529,6 +541,10 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![CI Jobs waiting for CI Server](https://lupyuen.github.io/images/forgejo-mirror12.png)
 
+1.  __GitHub Reusable Workflows__ are [__Not Supported__](https://code.forgejo.org/forgejo/runner/issues/63) in Forgejo.
+
+    This means the [__NuttX Build Rules (arch.yml)__](https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow) probably won't run on Forgejo.
+
 1.  __Git Command-Line Tools__ will work great with our Forgejo Server
 
     ```bash
@@ -550,6 +566,14 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 Earlier we created a Read-Only Mirror. But it doesn't allow Pull Requests!
 
 Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo __won't auto-sync__ our repo, instead we'll run a script to sync the repo...
+
+| | |
+|:---|:---|
+| [_`nuttx-mirror`_](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
+| _Read-Only Mirror_ |  __Read-Write Mirror__
+| _Auto-Sync by Forgejo_ | Manual-Sync by Our Script
+| _Can't create PRs_ | Can create PRs
+| _Can't migrate PRs and Issues_ | Can migrate PRs and Issues <br> (but ran into problems)
 
 1.  At Top Right: Select __`+` > New Migration__
 
@@ -587,9 +611,9 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     ![Read-Write Mirror](https://lupyuen.github.io/images/forgejo-update9.png)
 
-1.  How will we __sync the Read-Write Mirror__? By running this script...
+1.  How to __sync the Read-Write Mirror__? We run this script...
 
-    TODO: Sync script
+    [__sync-mirror-to-update.sh__](https://lupyuen.github.io/articles/forgejo#sync-our-read-write-mirror)
 
 # Appendix: Pull Request in Forgejo
 
@@ -651,7 +675,7 @@ Let's find out!
 
 1.  Let's try not to __Merge any Pull Request__ into our Read-Write Mirror. We should keep it in sync with our Read-Only Mirror!
 
-    TODO: Sync to GitHub
+    [__"Sync our Read-Write Mirror"__](https://lupyuen.github.io/articles/forgejo#sync-our-read-write-mirror)
 
 # Appendix: SSH Access in Forgejo
 
