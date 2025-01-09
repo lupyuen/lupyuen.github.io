@@ -213,6 +213,10 @@ git clone \
 <li>
 <p>So it will work even when GitHub breaks</p>
 </li>
+<li>
+<p><strong>Commit History</strong> shall be 100% identical with GitHub</p>
+<p>(Including the <strong>Commit Hashes</strong>)</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync Once: From Read-Only Mirror to Read-Write Mirror
 git clone https://github.com/lupyuen/nuttx-forgejo
@@ -222,7 +226,6 @@ cd nuttx-forgejo
 ## Or to Sync Periodically
 ## ./run.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
-<p><strong>Commit History</strong> shall be 100% identical. Including the <strong>Commit Hashes</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
 <p>Our script works like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync the Git Commits
