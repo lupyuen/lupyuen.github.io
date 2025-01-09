@@ -6,7 +6,7 @@
 
 __Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](https://forgejo.org/), and whether [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) could possibly switch from GitHub to our own Git Forge.
 
-_What's this Forgejo? And why is it a "Git Forge"?_
+_What's this Forgejo? Why is it a "Git Forge"?_
 
 Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreSQL Database)_
 
@@ -180,11 +180,11 @@ cd nuttx-forgejo
 ## ./run.sh
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
+[(See the __Sync Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
 
 ![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
 
-Our script works like this: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
+Our script begins like this: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
 
 ```bash
 ## Sync the Git Commits
@@ -251,6 +251,8 @@ if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
   echo "Sync Failed: Upstream and Downstream Commits don't match!" ; exit 1
 fi
 ```
+
+[(See the __Sync Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
 
 _What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?_
 
