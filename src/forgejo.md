@@ -61,7 +61,7 @@ git clone \
   https://nuttx-forge.org/nuttx/nuttx-mirror
 
 ## Also works for SSH (instead of HTTPS)
-## But SSH isn't enabled on our server
+## But SSH isn't enabled on our server yet
 git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror
 ```
