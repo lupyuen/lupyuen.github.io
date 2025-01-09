@@ -92,15 +92,15 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
 Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __Auto-Sync from GitHub every hour__...
 
-TODO: Screenshot of sync settings
+![Auto-Sync from GitHub every hour](https://lupyuen.github.io/images/forgejo-sync.png)
 
 Oops Forgejo creates a [__Read-Only Mirror__](https://nuttx-forge.org/nuttx/nuttx-mirror). That won't allow __Pull Requests__!
 
-TODO: Screenshot of read-only mirror
+![Read-Only Mirror won't allow Pull Requests](https://lupyuen.github.io/images/forgejo-mirror.png)
 
 Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo...
 
-TODO: Screenshot of read-write mirror
+![Read-Write Mirror OK with Pull Requests](https://lupyuen.github.io/images/forgejo-update.png)
 
 Forgejo won't auto-sync our repo. We wrote our own __Syncing Script__, that works without GitHub.
 
