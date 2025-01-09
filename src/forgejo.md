@@ -140,7 +140,7 @@ Our CI Server needs to be Ubuntu x64, __hardened for security__.
 
 During PR Submission: Our CI Workflow might need to execute the __scripts and code submitted__ by NuttX Devs.
 
-If we don't secure our CI Server, we might create [__Security Problems__](TODO) in our server.
+If we don't secure our CI Server, we might create [__Security Problems__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security) in our server.
 
 Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is so expensive!
 
@@ -261,7 +261,7 @@ TODO
 | Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
 | Can't create PRs | Can create PRs
 
-![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
+![What's Next](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # What's Next
 
@@ -417,7 +417,7 @@ Now becomes a little more helpful...
 
 TODO: [More Tips](https://snac2.popolon.org/Popolon/p/1736341198.612691)
 
-![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
+![Read-Only Mirror](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Appendix: Read-Only Mirror
 
@@ -511,7 +511,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
       git@nuttx-forge.org:nuttx/nuttx-mirror
     ```
 
-![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
+![Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Appendix: Read-Write Mirror
 
