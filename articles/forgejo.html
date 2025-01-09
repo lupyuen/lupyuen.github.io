@@ -156,18 +156,27 @@ git clone \
 <p>(So Local Changes in our Git Forge can be synced back)</p>
 </li>
 </ul>
-<p>Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to <strong>auto-sync from GitHub every hour</strong>…</p>
-<p>TODO: Pic of repo sync from GitHub</p>
-<p>TODO: Pic of commits</p>
-<p>Oops this creates a <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong>Read-Only Mirror</strong></a> that won’t allow <strong>Pull Requests</strong>!</p>
-<p>TODO: Pic of read-only mirror</p>
-<p>Thus we created our own <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong>Read-Write Mirror</strong></a> of NuttX Repo. Forgejo won’t auto-sync this repo, hence we wrote our own <strong>Syncing Script</strong> (that works without GitHub)…</p>
-<p>TODO: Pic of read-write mirror</p>
-<p>TODO: Sync script</p>
+<p>Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to <strong>Auto-Sync from GitHub every hour</strong>…</p>
+<p>TODO: Screenshot of sync settings</p>
+<p>Oops Forgejo creates a <a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong>Read-Only Mirror</strong></a>. That won’t allow <strong>Pull Requests</strong>!</p>
+<p>TODO: Screenshot of read-only mirror</p>
+<p>Thus we created our own <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong>Read-Write Mirror</strong></a> of NuttX Repo…</p>
+<p>TODO: Screenshot of read-write mirror</p>
+<p>Forgejo won’t auto-sync our repo. Hence we wrote our own <strong>Syncing Script</strong>. that works without GitHub.</p>
+<p>(More about the Sync Script in a while)</p>
 <p>TODO: Pic of PR sync</p>
 <p><em>But Pull Requests shall be synced back to GitHub?</em></p>
-<p>Indeed, we’ll probably call GitHub API to send the <strong>Pull Requests back to GitHub</strong>.</p>
+<p>Indeed, we’ll probably call GitHub API to send the <strong>Pull Requests back to GitHub</strong>. (Pic above)</p>
 <p>With this setup, we can’t allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be <strong>merged at GitHub</strong>. Then Forgejo shall auto-sync the updates into our Git Forge.</p>
+<p>That’s why we need <strong>Two Mirror Repos</strong>: Read-Only and Read-Write…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
+<tr><td style="text-align: left"><strong>Read-Only Mirror</strong></td><td style="text-align: left"><strong>Read-Write Mirror</strong></td></tr>
+<tr><td style="text-align: left">Auto-Sync by Forgejo <br> (every hour)</td><td style="text-align: left">Manual-Sync by our script</td></tr>
+<tr><td style="text-align: left">Can’t migrate PRs and Issues</td><td style="text-align: left">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
+<tr><td style="text-align: left">Can’t create PRs</td><td style="text-align: left">Can create PRs</td></tr>
+</tbody></table>
+</div>
 <p><a href="https://stackoverflow.com/a/12884254">(Blocked by <strong>Corporate Firewall</strong>? Git Mirroring might help!)</a></p>
 <p>TODO: Pic of Forgejo with GitHub Actions Workflow</p>
 <h1 id="continuous-integration"><a class="doc-anchor" href="#continuous-integration">§</a>4 Continuous Integration</h1>
