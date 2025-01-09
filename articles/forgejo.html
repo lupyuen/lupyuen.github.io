@@ -200,7 +200,6 @@ git clone \
 <p>If we don’t secure our CI Server, we might create <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is so expensive!</p>
 <p>(Maybe we move NuttX Scripts into a <strong>More Secure Repo</strong>?)</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
 <h1 id="sync-our-read-write-mirror"><a class="doc-anchor" href="#sync-our-read-write-mirror">§</a>5 Sync our Read-Write Mirror</h1>
 <p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How do we sync it?</em></p>
 <p>We run a script to <strong>Sync the Git Commits</strong>…</p>
@@ -224,6 +223,7 @@ cd nuttx-forgejo
 ## ./run.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
 <p><strong>Commit History</strong> shall be 100% identical. Including the <strong>Commit Hashes</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
 <p>Our script works like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync the Git Commits
 ## From our Read-Only Mirror Repo (nuttx-mirror)
@@ -258,7 +258,7 @@ if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
 fi
 
 ## Up Next: Sync Downstream Repo with Upstream</code></pre></div>
-<p>How we sync the two repos? <strong>Git Pull</strong> will do! <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
+<p>How to Sync the Two Repos? <strong>Git Pull</strong> will do! <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Apply the Upstream Commits to Downstream Repo
 pushd downstream
 git pull \
@@ -284,7 +284,7 @@ popd
 if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
 fi</code></pre></div>
-<p><em>What if we accidentally Merge a PR? And our Read-Write Mirror goes out of sync?</em></p>
+<p><em>What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?</em></p>
 <p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Read-Write Mirror
 ## Which contains Conflicting Commits
