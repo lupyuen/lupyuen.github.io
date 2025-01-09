@@ -676,7 +676,9 @@ git push -u origin main</code></pre></div>
 <h1 id="appendix-ssh-vs-docker-filesystem"><a class="doc-anchor" href="#appendix-ssh-vs-docker-filesystem">§</a>12 Appendix: SSH vs Docker Filesystem</h1>
 <p><em>Why did we change the Docker Filesystem for Forgejo?</em></p>
 <p>Based on the <a href="https://forgejo.org/docs/latest/admin/installation-docker/#docker"><strong>Official Docs</strong></a>: Forgejo should be configured to use a <strong>Local Docker Filesystem</strong>, <code>./forgejo</code></p>
-<div class="example-wrap"><pre class="language-yaml"><code>services:
+<div class="example-wrap"><pre class="language-yaml"><code>## Officially: Docker mounts Local Filesystem
+## `./forgejo` as `/data`
+services:
   server:
     volumes:
       - ./forgejo:/data</code></pre></div>
@@ -684,12 +686,12 @@ git push -u origin main</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## Connect to Forgejo Server over SSH
 ssh -T -p 222 git@localhost</code></pre></div>
 <p><strong>Forgejo Server Log</strong> says…</p>
-<div class="example-wrap"><pre class="language-text"><code>forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 40328 [preauth]
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Authentication refused: 
+  bad ownership or modes for 
+  file /data/git/.ssh/authorized_keys
+
+Connection closed by authenticating
+  user git 172.22.0.1 port 47768 [preauth]</code></pre></div>
 <p>We check the <strong>SSH Filesystem in macOS</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls -ld $HOME/nuttx-forgejo/forgejo/git/.ssh                
 drwx------@ 4 luppy  staff  128 Dec 20 13:45 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh
@@ -697,25 +699,32 @@ drwx------@ 4 luppy  staff  128 Dec 20 13:45 /Users/luppy/nuttx-forgejo/forgejo/
 $ ls -l $HOME/nuttx-forgejo/forgejo/git/.ssh/authorized_keys 
 -rw-------@ 1 luppy  staff  279 Dec 21 11:13 /Users/luppy/nuttx-forgejo/forgejo/git/.ssh/authorized_keys</code></pre></div>
 <p>Do the same <strong>Inside Docker</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sudo docker exec \
+<div class="example-wrap"><pre class="language-bash"><code>## Connect to the Docker Console
+$ sudo docker exec \
   -it \
   forgejo \
   /bin/bash
 
+## Check the SSH Filesystem inside Docker
 $ ls -ld /data/git/.ssh
-drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
+drwx------    1 501  dialout  128 Dec 20 13:45 /data/git/.ssh
+
 $ ls -l /data/git/.ssh/authorized_keys
--rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys</code></pre></div>
+-rw-------    1 501  dialout  279 Dec 21 11:13 /data/git/.ssh/authorized_keys</code></pre></div>
 <p>Aha! User ID should be <strong>git</strong>, not <strong>501</strong>! (Some kinda jeans?)</p>
 <p>Too bad <strong>chown</strong> won’t work…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
 <p>(Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
 <p>And that’s why our <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
-<div class="example-wrap"><pre class="language-yaml"><code>services:
+<div class="example-wrap"><pre class="language-yaml"><code>## Our Tweak: Docker mounts Data Volume
+## `forgejo-data` as `/data`
+services:
   server:
     volumes:
       - forgejo-data:/data
+
+## Declare the Data Volume `forgejo-data`
 volumes:
   forgejo-data:</code></pre></div>
     
