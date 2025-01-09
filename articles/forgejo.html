@@ -222,12 +222,16 @@ cd nuttx-forgejo
 set -e  ## Exit when any command fails
 
 ## Checkout the Upstream and Downstream Repos
+## Upstream is Read-Only Mirroe
+## Downstream is Read-Write Mirror
 tmp_dir=/tmp/sync-mirror-to-update
-rm -rf $tmp_dir
-mkdir $tmp_dir
-cd $tmp_dir
-git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
-git clone git@nuttx-forge:nuttx/nuttx-update downstream
+rm -rf $tmp_dir ; mkdir $tmp_dir ; cd $tmp_dir
+git clone \
+  git@nuttx-forge:nuttx/nuttx-mirror \
+  upstream
+git clone \
+  git@nuttx-forge:nuttx/nuttx-update \
+  downstream
 
 ## Find the First Commit to Sync
 pushd upstream
@@ -242,15 +246,19 @@ popd
 ## If no new Commits to Sync: Quit
 if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
   echo &quot;No New Commits to Sync&quot; ; exit
-fi</code></pre></div>
+fi
+
+## Up Next: Sync Downstream Repo with Upstream</code></pre></div>
 <p>How we sync the two repos? <strong>Git Pull</strong> will do! <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Apply the Upstream Commits to Downstream Repo
 pushd downstream
-git pull git@nuttx-forge:nuttx/nuttx-mirror master
+git pull \
+  git@nuttx-forge:nuttx/nuttx-mirror \
+  master
 git status
 popd
 
-## Commit the Patched Downstream Repo
+## Commit the Downstream Repo
 pushd downstream
 git push -f
 popd
@@ -263,7 +271,7 @@ downstream_commit2=$(git rev-parse HEAD)
 git --no-pager log -1
 popd
 
-## If Not Identical: We have a problem
+## If Not Identical: We have a problem, need to Hard-Revert the Commits
 if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
 fi</code></pre></div>
@@ -289,12 +297,12 @@ To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
 <p>TODO</p>
-<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
-<tr><td style="text-align: center"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: center"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
-<tr><td style="text-align: center"><strong>Read-Only Mirror</strong></td><td style="text-align: center"><strong>Read-Write Mirror</strong></td></tr>
-<tr><td style="text-align: center">Auto-Sync by Forgejo <br> (every hour)</td><td style="text-align: center">Manual-Sync by our script</td></tr>
-<tr><td style="text-align: center">Can’t migrate PRs and Issues</td><td style="text-align: center">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
-<tr><td style="text-align: center">Can’t create PRs</td><td style="text-align: center">Can create PRs</td></tr>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
+<tr><td style="text-align: left"><strong>Read-Only Mirror</strong></td><td style="text-align: left"><strong>Read-Write Mirror</strong></td></tr>
+<tr><td style="text-align: left">Auto-Sync by Forgejo <br> (every hour)</td><td style="text-align: left">Manual-Sync by our script</td></tr>
+<tr><td style="text-align: left">Can’t migrate PRs and Issues</td><td style="text-align: left">Can migrate PRs and Issues <br> (but ran into problems)</td></tr>
+<tr><td style="text-align: left">Can’t create PRs</td><td style="text-align: left">Can create PRs</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="What’s Next" /></p>
