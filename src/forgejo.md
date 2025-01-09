@@ -90,29 +90,39 @@ Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Fo
 
   (So Local Changes in our Git Forge can be synced back)
 
-Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __auto-sync from GitHub every hour__...
+Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __Auto-Sync from GitHub every hour__...
 
-TODO: Pic of repo sync from GitHub
+TODO: Screenshot of sync settings
 
-TODO: Pic of commits
+Oops Forgejo creates a [__Read-Only Mirror__](https://nuttx-forge.org/nuttx/nuttx-mirror). That won't allow __Pull Requests__!
 
-Oops this creates a [__Read-Only Mirror__](https://nuttx-forge.org/nuttx/nuttx-mirror) that won't allow __Pull Requests__!
+TODO: Screenshot of read-only mirror
 
-TODO: Pic of read-only mirror
+Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo...
 
-Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo. Forgejo won't auto-sync this repo, hence we wrote our own __Syncing Script__ (that works without GitHub)...
+TODO: Screenshot of read-write mirror
 
-TODO: Pic of read-write mirror
+Forgejo won't auto-sync our repo. Hence we wrote our own __Syncing Script__. that works without GitHub.
 
-TODO: Sync script
+(More about the Sync Script in a while)
 
 TODO: Pic of PR sync
 
 _But Pull Requests shall be synced back to GitHub?_
 
-Indeed, we'll probably call GitHub API to send the __Pull Requests back to GitHub__.
+Indeed, we'll probably call GitHub API to send the __Pull Requests back to GitHub__. (Pic above)
 
 With this setup, we can't allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be __merged at GitHub__. Then Forgejo shall auto-sync the updates into our Git Forge.
+
+That's why we need __Two Mirror Repos__: Read-Only and Read-Write...
+
+| | |
+|:---|:---|
+| [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
+| __Read-Only Mirror__ |  __Read-Write Mirror__
+| Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
+| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| Can't create PRs | Can create PRs
 
 [(Blocked by __Corporate Firewall__? Git Mirroring might help!)](https://stackoverflow.com/a/12884254)
 
