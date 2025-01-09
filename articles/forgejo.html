@@ -189,7 +189,7 @@ git clone \
 <p><em>Any special requirement for CI Server?</em></p>
 <p>Our CI Server needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
 <p>During PR Submission: Our CI Workflow might need to execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
-<p>If we don’t secure our CI Server, we might create <a href="TODO"><strong>Security Problems</strong></a> in our server.</p>
+<p>If we don’t secure our CI Server, we might create <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is so expensive!</p>
 <p>(Maybe we move NuttX Scripts into a <strong>More Secure Repo</strong>?)</p>
 <p>TODO: Pic of Sync Script, GitHub Breaks</p>
@@ -292,7 +292,7 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <tr><td style="text-align: center">Can’t create PRs</td><td style="text-align: center">Can create PRs</td></tr>
 </tbody></table>
 </div>
-<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="What’s Next" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
@@ -418,7 +418,7 @@ sudo docker compose up</code></pre></div>
 <p>Now becomes a little more helpful…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-home2.png" alt="Default Page becomes Explore" /></p>
 <p>TODO: <a href="https://snac2.popolon.org/Popolon/p/1736341198.612691">More Tips</a></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="Read-Only Mirror" /></p>
 <h1 id="appendix-read-only-mirror"><a class="doc-anchor" href="#appendix-read-only-mirror">§</a>8 Appendix: Read-Only Mirror</h1>
 <p>Now that Forgejo is up: Let’s create a <strong>Read-Only Mirror</strong> of the NuttX Repo at GitHub.</p>
 <p>Forgejo shall <strong>auto-sync our repo</strong> (every hour), but it <strong>won’t allow Pull Requests</strong> in our Read-Only Mirror…</p>
@@ -495,7 +495,7 @@ git clone \
 git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror</code></pre></div></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="Read-Write Mirror" /></p>
 <h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
 <p>Earlier we created a Read-Only Mirror. But it doesn’t allow Pull Requests!</p>
 <p>Now we create a <strong>Read-Write Mirror</strong> of the NuttX Repo at GitHub, which will allow Pull Requests. Forgejo <strong>won’t auto-sync</strong> our repo, instead we’ll run a script to sync the repo…</p>
