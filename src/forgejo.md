@@ -152,7 +152,7 @@ If we don't secure our CI Server, we might create [__Security Problems__](https:
 
 Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is so expensive!
 
-(Maybe we move NuttX Scripts into a __More Secure Repo__?)
+(Shall we move NuttX Scripts to a __More Secure Repo__?)
 
 # Sync our Read-Write Mirror
 
