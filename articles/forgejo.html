@@ -79,7 +79,7 @@
 <li><a href="#appendix-ssh-vs-docker-filesystem" title="Appendix: SSH vs Docker Filesystem">12 Appendix: SSH vs Docker Filesystem</a><ul></ul></li></ul></nav><p>📝 <em>12 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-title.png" alt="Forgejo Git Forge for Apache NuttX RTOS (Experimental)" /></p>
 <p><strong>Life Without GitHub:</strong> What’s it like? Today we talk about <a href="https://forgejo.org/"><strong>Forgejo Git Forge</strong></a>, and whether <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> could possibly switch from GitHub to our own Git Forge.</p>
-<p><em>What’s this Forgejo? And why is it a “Git Forge”?</em></p>
+<p><em>What’s this Forgejo? Why is it a “Git Forge”?</em></p>
 <p>Think GitHub… But <strong>Open-Source</strong> and <strong>Self-Hosted</strong>! <em>(GoLang Web + PostgreSQL Database)</em></p>
 <p><a href="https://forgejo.org/"><strong>Forgejo</strong></a> is a <strong>Git Forge</strong>, the server code that will publicly host and share a Git Repo. <em>(Including our NuttX Repo)</em></p>
 <p><em>Why explore Forgejo for NuttX?</em></p>
@@ -225,9 +225,9 @@ cd nuttx-forgejo
 
 ## Or to Sync Periodically
 ## ./run.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Sync Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
-<p>Our script works like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
+<p>Our script begins like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync the Git Commits
 ## From our Read-Only Mirror Repo (nuttx-mirror)
 ## To the Read-Write Mirror Repo (nuttx-update)
@@ -287,6 +287,7 @@ popd
 if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
 fi</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Sync Log</strong>)</a></p>
 <p><em>What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?</em></p>
 <p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Read-Write Mirror
