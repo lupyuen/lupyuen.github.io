@@ -202,7 +202,11 @@ popd
 if [[ "$downstream_commit" == "$upstream_commit" ]]; then
   echo "No New Commits to Sync" ; exit
 fi
+```
 
+How we sync the two repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58)
+
+```bash
 ## Apply the Upstream Commits to Downstream Repo
 pushd downstream
 git pull git@nuttx-forge:nuttx/nuttx-mirror master
@@ -230,18 +234,24 @@ fi
 
 _What if we accidentally Merge a PR? And our Read-Write Mirror goes out of sync?_
 
-If our Read-Write Mirror goes out of sync: We __Hard-Revert the Commits__ in the Read-Write Mirror. To keep it in sync with the Read-Only Mirror again...
+If our Read-Write Mirror goes out of sync: We __Hard-Revert the Commits__ in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again...
 
 ```bash
-## Repeat for all conflicting commits...
+## Download our Read-Write Mirror
+## Which contains Conflicting Commits
+$ git clone git@nuttx-forge:nuttx/nuttx-update
+$ cd nuttx-update
+
+## Repeat for all Conflicting Commits:
+## Revert the Commit
 $ git reset --hard HEAD~1
 HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
 
-## We have reverted one commit
+## We have reverted One Conflicting Commit
 $ git status
 Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
 
-## Push it to the repo
+## Push it to our Read-Write Mirror
 $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -> master (forced update)
