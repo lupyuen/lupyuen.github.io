@@ -154,8 +154,6 @@ Securing our CI Server is probably the toughest part of our Git Forge Migration.
 
 (Maybe we move NuttX Scripts into a __More Secure Repo__?)
 
-![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
-
 # Sync our Read-Write Mirror
 
 _Forgejo won't Auto-Sync our Read-Write Mirror. How do we sync it?_
@@ -181,6 +179,8 @@ cd nuttx-forgejo
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
 
 __Commit History__ shall be 100% identical. Including the __Commit Hashes__!
+
+![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
 
 Our script works like this: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
 
@@ -220,7 +220,7 @@ fi
 ## Up Next: Sync Downstream Repo with Upstream
 ```
 
-How we sync the two repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58)
+How to Sync the Two Repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58)
 
 ```bash
 ## Apply the Upstream Commits to Downstream Repo
@@ -250,7 +250,7 @@ if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
 fi
 ```
 
-_What if we accidentally Merge a PR? And our Read-Write Mirror goes out of sync?_
+_What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?_
 
 If our Read-Write Mirror goes out of sync: We __Hard-Revert the Commits__ in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again...
 
