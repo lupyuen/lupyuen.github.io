@@ -741,6 +741,8 @@ _Why did we change the Docker Filesystem for Forgejo?_
 Based on the [__Official Docs__](https://forgejo.org/docs/latest/admin/installation-docker/#docker): Forgejo should be configured to use a __Local Docker Filesystem__, `./forgejo`
 
 ```yaml
+## Officially: Docker mounts Local Filesystem
+## `./forgejo` as `/data`
 services:
   server:
     volumes:
@@ -757,12 +759,12 @@ ssh -T -p 222 git@localhost
 __Forgejo Server Log__ says...
 
 ```text
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 47768 [preauth]
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 40328 [preauth]
-forgejo  | Authentication refused: bad ownership or modes for file /data/git/.ssh/authorized_keys
-forgejo  | Connection closed by authenticating user git 172.22.0.1 port 39114 [preauth]
+Authentication refused: 
+  bad ownership or modes for 
+  file /data/git/.ssh/authorized_keys
+
+Connection closed by authenticating
+  user git 172.22.0.1 port 47768 [preauth]
 ```
 
 We check the __SSH Filesystem in macOS__...
@@ -778,15 +780,18 @@ $ ls -l $HOME/nuttx-forgejo/forgejo/git/.ssh/authorized_keys
 Do the same __Inside Docker__...
 
 ```bash
+## Connect to the Docker Console
 $ sudo docker exec \
   -it \
   forgejo \
   /bin/bash
 
+## Check the SSH Filesystem inside Docker
 $ ls -ld /data/git/.ssh
-drwx------    1 501      dialout        128 Dec 20 13:45 /data/git/.ssh
+drwx------    1 501  dialout  128 Dec 20 13:45 /data/git/.ssh
+
 $ ls -l /data/git/.ssh/authorized_keys
--rw-------    1 501      dialout        279 Dec 21 11:13 /data/git/.ssh/authorized_keys
+-rw-------    1 501  dialout  279 Dec 21 11:13 /data/git/.ssh/authorized_keys
 ```
 
 Aha! User ID should be __git__, not __501__! (Some kinda jeans?)
@@ -803,10 +808,14 @@ exec su-exec root chown -R git /data/git/.ssh
 And that's why our [__docker-compose.yml__](https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
 
 ```yaml
+## Our Tweak: Docker mounts Data Volume
+## `forgejo-data` as `/data`
 services:
   server:
     volumes:
       - forgejo-data:/data
+
+## Declare the Data Volume `forgejo-data`
 volumes:
   forgejo-data:
 ```
