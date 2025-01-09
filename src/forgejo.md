@@ -138,7 +138,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - But we don't have a __CI Server__ to execute the CI Workflow (yet)
 
-- Some GitHub Workflows are [__Not Supported__](TODO): arch.yml (NuttX Build Rules)
+- Some GitHub Workflows are [__Not Supported__](TODO) (arch.yml / NuttX Build Rules)
 
 ![CI Server needs to be Ubuntu x64, hardened for security](https://lupyuen.github.io/images/forgejo-flow4.jpg)
 
@@ -146,11 +146,11 @@ _Any special requirement for CI Server?_
 
 Our CI Server needs to be Ubuntu x64, __hardened for security__.
 
-During PR Submission: Our CI Workflow might need to execute the __scripts and code submitted__ by NuttX Devs.
+Why? During PR Submission: Our CI Workflow might execute the __scripts and code submitted__ by NuttX Devs.
 
 If we don't secure our CI Server, we might create [__Security Problems__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security) in our server.
 
-Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is so expensive!
+Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is expensive!
 
 (Shall we move NuttX Scripts to a __More Secure Repo__?)
 
