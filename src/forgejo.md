@@ -14,13 +14,13 @@ Think GitHub... But __Open-Source__ and __Self-Hosted__! _(GoLang Web + PostgreS
 
 _Why explore Forgejo for NuttX?_
 
-- If GitHub breaks: What's our __Contingency Plan__?
+- If GitHub Breaks: What's our __Contingency Plan__?
 
 - __GitHub is Blocked__ in some parts of the world...
 
 - Can we __Mirror NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
 
-- Also: We're hitting [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need alternatives
+- Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need to move out
 
 TODO: Pic of NuttX Repos on Forgejo
 
@@ -32,9 +32,9 @@ Yep! Here's our experiment of __NuttX on Forgejo__ (pic below)
 
 - [__`https://nuttx-forge.org`__](https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars)
 
-Installing our __Forgejo Server__ was plain-sailing (especially on Docker)
+Bringing up our __Forgejo Server__ was plain-sailing (especially on Docker)
 
-- TODO: Appendix
+- [__"Install our Forgejo Server"__](https://lupyuen.github.io/articles/forgejo#appendix-install-our-forgejo-server)
 
 - Based on the excellent [__Forejo Docs__](https://forgejo.org/docs/latest/)
 
@@ -50,9 +50,9 @@ Yes Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__
 
 TODO: Pic of Pull Requests and Issues
 
-[(About Forgejo __Pull Requests__)](TODO)
+[(About Forgejo __Pull Requests__)](https://lupyuen.github.io/articles/forgejo#appendix-pull-request-in-forgejo)
 
-[(About Forgejo __Issues__)](TODO)
+[(About Forgejo __Issues__)](https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror)
 
 Forgejo is fully compatible with our __Git Command-Line Tools__ (and VSCode)
 
@@ -76,7 +76,7 @@ _Haven't we seen this somewhere?_
 
 - [__Fedora Linux Project__](https://fedoramagazine.org/fedora-moves-towards-forgejo-a-unified-decision/) is moving to Forgejo
 
-![TODO](https://lupyuen.github.io/images/forgejo-flow.jpg)
+![Coexist With GitHub](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Coexist With GitHub
 
@@ -116,15 +116,17 @@ Indeed, we'll probably call GitHub API to send the __Pull Requests back to GitHu
 
 With this setup, we can't allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be __merged at GitHub__. Then Forgejo shall auto-sync the updates into our Git Forge.
 
+[(Blocked by __Corporate Firewall__? Git Mirroring might help!)](https://stackoverflow.com/a/12884254)
+
+TODO: Pic of Forgejo with GitHub Actions Workflow
+
 # Continuous Integration
 
 _Will our Git Forge run CI Checks on Pull Requests?_
 
 __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forgejo...
 
-- Forgejo will import __GitHub Actions Workflows__ and execute them
-
-  TODO: Pic of Forgejo with GitHub Actions Workflow
+- Forgejo will import __GitHub Actions Workflows__ and execute them (pic above)
 
 - But we don't have a __CI Server__ to execute the CI Workflow (yet)
 
@@ -504,7 +506,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
       https://nuttx-forge.org/nuttx/nuttx-mirror
 
     ## Also works for SSH (instead of HTTPS)
-    ## But SSH isn't enabled on our server
+    ## But SSH isn't enabled on our server yet
     git clone \
       git@nuttx-forge.org:nuttx/nuttx-mirror
     ```
