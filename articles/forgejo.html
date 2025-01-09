@@ -97,7 +97,7 @@
 <p>Also: We’re outgrowing our <a href="https://lupyuen.github.io/articles/ci3#rescue-plan"><strong>Budget Limits</strong></a> at GitHub, might need to move out</p>
 </li>
 </ul>
-<p>TODO: Pic of NuttX Repos on Forgejo</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow2.jpg" alt="NuttX On Forgejo" /></p>
 <h1 id="nuttx-on-forgejo"><a class="doc-anchor" href="#nuttx-on-forgejo">§</a>1 NuttX On Forgejo</h1>
 <p><em>Installing our own Git Forge: Is it easy?</em></p>
 <p>Yep! Here’s our experiment of <strong>NuttX on Forgejo</strong> (pic below)</p>
@@ -164,7 +164,7 @@ git clone \
 <p><img src="https://lupyuen.github.io/images/forgejo-update.png" alt="Read-Write Mirror OK with Pull Requests" /></p>
 <p>Forgejo won’t auto-sync our repo. We wrote our own <strong>Syncing Script</strong>, that works without GitHub.</p>
 <p>(More about the Sync Script in a while)</p>
-<p>TODO: Pic of PR sync</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow3.jpg" alt="Pull Requests shall be synced back to GitHub" /></p>
 <p><em>But Pull Requests shall be synced back to GitHub?</em></p>
 <p>Indeed, we’ll probably call GitHub API to send the <strong>Pull Requests back to GitHub</strong>. (Pic above)</p>
 <p>With this setup, we can’t allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be <strong>merged at GitHub</strong>. Then Forgejo shall auto-sync the updates into our Git Forge.</p>
@@ -178,7 +178,7 @@ git clone \
 </tbody></table>
 </div>
 <p><a href="https://stackoverflow.com/a/12884254">(Blocked by <strong>Corporate Firewall</strong>? Git Mirroring might help)</a></p>
-<p>TODO: Pic of Forgejo with GitHub Actions Workflow</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-workflow.png" alt="Forgejo will import GitHub Actions Workflows and execute them" /></p>
 <h1 id="continuous-integration"><a class="doc-anchor" href="#continuous-integration">§</a>4 Continuous Integration</h1>
 <p><em>Will our Git Forge run CI Checks on Pull Requests?</em></p>
 <p><strong>GitHub Actions CI</strong> (Continuous Integration) becomes a Sticky Issue with Forgejo…</p>
@@ -193,14 +193,14 @@ git clone \
 <p>Some GitHub Workflows are <a href="TODO"><strong>Not Supported</strong></a>: arch.yml (NuttX Build Rules)</p>
 </li>
 </ul>
-<p>TODO: Pic of CI Servers</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow4.jpg" alt="CI Server needs to be Ubuntu x64, hardened for security" /></p>
 <p><em>Any special requirement for CI Server?</em></p>
 <p>Our CI Server needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
 <p>During PR Submission: Our CI Workflow might need to execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
 <p>If we don’t secure our CI Server, we might create <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is so expensive!</p>
 <p>(Maybe we move NuttX Scripts into a <strong>More Secure Repo</strong>?)</p>
-<p>TODO: Pic of Sync Script, GitHub Breaks</p>
+<p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
 <h1 id="sync-our-read-write-mirror"><a class="doc-anchor" href="#sync-our-read-write-mirror">§</a>5 Sync our Read-Write Mirror</h1>
 <p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How do we sync it?</em></p>
 <p>We run a script to <strong>Sync the Git Commits</strong>…</p>
@@ -305,7 +305,7 @@ $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
-<p>TODO</p>
+<p>TODO: Accept Pull Requests in our Read-Write Mirror?</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
 <tr><td style="text-align: left"><strong>Read-Only Mirror</strong></td><td style="text-align: left"><strong>Read-Write Mirror</strong></td></tr>
@@ -316,7 +316,8 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 </div>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="What’s Next" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>TODO</p>
+<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
+<p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -542,9 +543,7 @@ git clone \
 <p>This will create a <strong>Read-Write Mirror</strong>: <a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></p>
 <p>Forgejo <strong>won’t auto-sync</strong> our repo. But it will migrate the other items: Labels, Milestones, Releases (pic above)</p>
 <p>Don’t select <strong>Issues and Pull Requests</strong>! Forgejo will hang forever, hitting errors. (Probably due to the sheer volume)</p>
-<p>TODO: Combine pics</p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.github.io/images/forgejo-update7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-update1.png" alt="Don’t select Issues and Pull Requests! Forgejo will hang forever, hitting errors" /></p>
 </li>
 <li>
 <p>Assuming we didn’t select Issues and Pull Requests…</p>
