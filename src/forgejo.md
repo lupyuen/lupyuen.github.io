@@ -48,11 +48,9 @@ _Is it easy to use our own Git Forge?_
 
 Yes Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__ and __Issues__ look familiar...
 
-TODO: Pic of Pull Requests and Issues
+![Forgejo Pull Request and Issue](https://lupyuen.github.io/images/forgejo-pr-issue.png)
 
-[(About Forgejo __Pull Requests__)](https://lupyuen.github.io/articles/forgejo#appendix-pull-request-in-forgejo)
-
-[(About Forgejo __Issues__)](https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror)
+(More on [__Pull Requests__](https://lupyuen.github.io/articles/forgejo#appendix-pull-request-in-forgejo) and [__Issues__](https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror))
 
 Forgejo is fully compatible with our __Git Command-Line Tools__ (and VSCode)
 
