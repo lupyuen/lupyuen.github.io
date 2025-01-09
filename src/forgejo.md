@@ -80,7 +80,7 @@ _Haven't we seen this somewhere?_
 
 _Will our Git Forge coexist with GitHub?_
 
-Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Forge, synced both ways...
+Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Forge, synced both ways (pic above)
 
 - __NuttX Repo__ at GitHub shall __sync down regularly__ to Our Git Forge
 
@@ -102,7 +102,7 @@ Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nu
 
 TODO: Screenshot of read-write mirror
 
-Forgejo won't auto-sync our repo. Hence we wrote our own __Syncing Script__. that works without GitHub.
+Forgejo won't auto-sync our repo. We wrote our own __Syncing Script__, that works without GitHub.
 
 (More about the Sync Script in a while)
 
@@ -120,11 +120,11 @@ That's why we need __Two Mirror Repos__: Read-Only and Read-Write...
 |:---|:---|
 | [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 | __Read-Only Mirror__ |  __Read-Write Mirror__
-| Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
-| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| Auto-Sync by Forgejo | Manual-Sync by Our Script
 | Can't create PRs | Can create PRs
+| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
 
-[(Blocked by __Corporate Firewall__? Git Mirroring might help!)](https://stackoverflow.com/a/12884254)
+[(Blocked by __Corporate Firewall__? Git Mirroring might help)](https://stackoverflow.com/a/12884254)
 
 TODO: Pic of Forgejo with GitHub Actions Workflow
 
@@ -283,9 +283,9 @@ TODO
 |:---|:---|
 | [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 | __Read-Only Mirror__ |  __Read-Write Mirror__
-| Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
-| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| Auto-Sync by Forgejo | Manual-Sync by Our Script
 | Can't create PRs | Can create PRs
+| Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
 
 ![What's Next](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
