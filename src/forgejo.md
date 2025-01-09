@@ -22,7 +22,7 @@ _Why explore Forgejo for NuttX?_
 
 - Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need to move out
 
-TODO: Pic of NuttX Repos on Forgejo
+![NuttX On Forgejo](https://lupyuen.github.io/images/forgejo-flow2.jpg)
 
 # NuttX On Forgejo
 
@@ -106,7 +106,7 @@ Forgejo won't auto-sync our repo. We wrote our own __Syncing Script__, that work
 
 (More about the Sync Script in a while)
 
-TODO: Pic of PR sync
+![Pull Requests shall be synced back to GitHub](https://lupyuen.github.io/images/forgejo-flow3.jpg)
 
 _But Pull Requests shall be synced back to GitHub?_
 
@@ -126,7 +126,7 @@ That's why we need __Two Mirror Repos__: Read-Only and Read-Write...
 
 [(Blocked by __Corporate Firewall__? Git Mirroring might help)](https://stackoverflow.com/a/12884254)
 
-TODO: Pic of Forgejo with GitHub Actions Workflow
+![Forgejo will import GitHub Actions Workflows and execute them](https://lupyuen.github.io/images/forgejo-workflow.png)
 
 # Continuous Integration
 
@@ -140,7 +140,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - Some GitHub Workflows are [__Not Supported__](TODO): arch.yml (NuttX Build Rules)
 
-TODO: Pic of CI Servers
+![CI Server needs to be Ubuntu x64, hardened for security](https://lupyuen.github.io/images/forgejo-flow4.jpg)
 
 _Any special requirement for CI Server?_
 
@@ -154,7 +154,7 @@ Securing our CI Server is probably the toughest part of our Git Forge Migration.
 
 (Maybe we move NuttX Scripts into a __More Secure Repo__?)
 
-TODO: Pic of Sync Script, GitHub Breaks
+![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
 
 # Sync our Read-Write Mirror
 
@@ -277,7 +277,7 @@ e26e8bda0e9...7d6b2e48044 master -> master (forced update)
 
 _What if we really need to Accept Pull Requests in our Read-Write Mirror?_
 
-TODO
+TODO: Accept Pull Requests in our Read-Write Mirror?
 
 | | |
 |:---|:---|
@@ -291,7 +291,9 @@ TODO
 
 # What's Next
 
-TODO
+Next Article: Why __Sync-Build-Ingest__ is super important for NuttX CI. And how we monitor it with our __Magic Disco Light__.
+
+After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fetch the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks?
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
@@ -571,11 +573,7 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 
     Don't select __Issues and Pull Requests__! Forgejo will hang forever, hitting errors. (Probably due to the sheer volume)
 
-    TODO: Combine pics
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-update1.png)
-
-    ![TODO](https://lupyuen.github.io/images/forgejo-update7.png)
+    ![Don't select Issues and Pull Requests! Forgejo will hang forever, hitting errors](https://lupyuen.github.io/images/forgejo-update1.png)
 
 1.  Assuming we didn't select Issues and Pull Requests...
 
