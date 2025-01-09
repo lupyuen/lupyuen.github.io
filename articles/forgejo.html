@@ -190,15 +190,15 @@ git clone \
 <p>But we don’t have a <strong>CI Server</strong> to execute the CI Workflow (yet)</p>
 </li>
 <li>
-<p>Some GitHub Workflows are <a href="TODO"><strong>Not Supported</strong></a>: arch.yml (NuttX Build Rules)</p>
+<p>Some GitHub Workflows are <a href="TODO"><strong>Not Supported</strong></a> (arch.yml / NuttX Build Rules)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow4.jpg" alt="CI Server needs to be Ubuntu x64, hardened for security" /></p>
 <p><em>Any special requirement for CI Server?</em></p>
 <p>Our CI Server needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
-<p>During PR Submission: Our CI Workflow might need to execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
+<p>Why? During PR Submission: Our CI Workflow might execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
 <p>If we don’t secure our CI Server, we might create <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Problems</strong></a> in our server.</p>
-<p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is so expensive!</p>
+<p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is expensive!</p>
 <p>(Shall we move NuttX Scripts to a <strong>More Secure Repo</strong>?)</p>
 <h1 id="sync-our-read-write-mirror"><a class="doc-anchor" href="#sync-our-read-write-mirror">§</a>5 Sync our Read-Write Mirror</h1>
 <p><em>Forgejo won’t Auto-Sync our Read-Write Mirror. How do we sync it?</em></p>
