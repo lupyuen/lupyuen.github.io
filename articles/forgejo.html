@@ -242,9 +242,9 @@ popd
 ## If no new Commits to Sync: Quit
 if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
   echo &quot;No New Commits to Sync&quot; ; exit
-fi
-
-## Apply the Upstream Commits to Downstream Repo
+fi</code></pre></div>
+<p>How we sync the two repos? <strong>Git Pull</strong> will do! <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Apply the Upstream Commits to Downstream Repo
 pushd downstream
 git pull git@nuttx-forge:nuttx/nuttx-mirror master
 git status
@@ -268,16 +268,22 @@ if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
 fi</code></pre></div>
 <p><em>What if we accidentally Merge a PR? And our Read-Write Mirror goes out of sync?</em></p>
-<p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in the Read-Write Mirror. To keep it in sync with the Read-Only Mirror again…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Repeat for all conflicting commits...
+<p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download our Read-Write Mirror
+## Which contains Conflicting Commits
+$ git clone git@nuttx-forge:nuttx/nuttx-update
+$ cd nuttx-update
+
+## Repeat for all Conflicting Commits:
+## Revert the Commit
 $ git reset --hard HEAD~1
 HEAD is now at 7d6b2e48044 gcov/script: gcov.sh is implemented using Python
 
-## We have reverted one commit
+## We have reverted One Conflicting Commit
 $ git status
 Your branch is behind &#39;origin/master&#39; by 1 commit, and can be fast-forwarded.
 
-## Push it to the repo
+## Push it to our Read-Write Mirror
 $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
