@@ -66,7 +66,7 @@ git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror
 ```
 
-_Looks super familiar. Have we seen this somewhere?_
+_Have we seen this somewhere?_
 
 - [__Codeberg__](https://codeberg.org/) is powered by Forgejo
 
