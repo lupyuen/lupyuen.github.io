@@ -388,7 +388,7 @@ sudo docker compose up
 
 - Remember to __Backup Forgejo__ regularly!
 
-  ```text
+  ```bash
   ## Inside Docker: Amalgamate the `/data` folder into `/tmp/data.tar`
   sudo docker exec \
     -it \
