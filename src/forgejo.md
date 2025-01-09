@@ -181,12 +181,16 @@ Our script works like this: [sync-mirror-to-update.sh](https://github.com/lupyue
 set -e  ## Exit when any command fails
 
 ## Checkout the Upstream and Downstream Repos
+## Upstream is Read-Only Mirroe
+## Downstream is Read-Write Mirror
 tmp_dir=/tmp/sync-mirror-to-update
-rm -rf $tmp_dir
-mkdir $tmp_dir
-cd $tmp_dir
-git clone git@nuttx-forge:nuttx/nuttx-mirror upstream
-git clone git@nuttx-forge:nuttx/nuttx-update downstream
+rm -rf $tmp_dir ; mkdir $tmp_dir ; cd $tmp_dir
+git clone \
+  git@nuttx-forge:nuttx/nuttx-mirror \
+  upstream
+git clone \
+  git@nuttx-forge:nuttx/nuttx-update \
+  downstream
 
 ## Find the First Commit to Sync
 pushd upstream
@@ -202,6 +206,8 @@ popd
 if [[ "$downstream_commit" == "$upstream_commit" ]]; then
   echo "No New Commits to Sync" ; exit
 fi
+
+## Up Next: Sync Downstream Repo with Upstream
 ```
 
 How we sync the two repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58)
@@ -209,11 +215,13 @@ How we sync the two repos? __Git Pull__ will do! [sync-mirror-to-update.sh](http
 ```bash
 ## Apply the Upstream Commits to Downstream Repo
 pushd downstream
-git pull git@nuttx-forge:nuttx/nuttx-mirror master
+git pull \
+  git@nuttx-forge:nuttx/nuttx-mirror \
+  master
 git status
 popd
 
-## Commit the Patched Downstream Repo
+## Commit the Downstream Repo
 pushd downstream
 git push -f
 popd
@@ -226,7 +234,7 @@ downstream_commit2=$(git rev-parse HEAD)
 git --no-pager log -1
 popd
 
-## If Not Identical: We have a problem
+## If Not Identical: We have a problem, need to Hard-Revert the Commits
 if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
   echo "Sync Failed: Upstream and Downstream Commits don't match!" ; exit 1
 fi
@@ -262,7 +270,7 @@ _What if we really need to Accept Pull Requests in our Read-Write Mirror?_
 TODO
 
 | | |
-|:---:|:---:|
+|:---|:---|
 | [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
 | __Read-Only Mirror__ |  __Read-Write Mirror__
 | Auto-Sync by Forgejo <br> (every hour) | Manual-Sync by our script
