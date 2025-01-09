@@ -166,6 +166,10 @@ We run a script to __Sync the Git Commits__...
 
 - So it will work even when GitHub breaks
 
+- __Commit History__ shall be 100% identical with GitHub
+
+  (Including the __Commit Hashes__)
+
 ```bash
 ## Sync Once: From Read-Only Mirror to Read-Write Mirror
 git clone https://github.com/lupyuen/nuttx-forgejo
@@ -177,8 +181,6 @@ cd nuttx-forgejo
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
-
-__Commit History__ shall be 100% identical. Including the __Commit Hashes__!
 
 ![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
 
