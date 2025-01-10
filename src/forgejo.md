@@ -176,7 +176,7 @@ We run a script to __Sync the Git Commits__...
 
 ```bash
 ## Sync Once: From Read-Only Mirror to Read-Write Mirror
-git clone https://github.com/lupyuen/nuttx-forgejo
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 ./sync-mirror-to-update.sh
 
@@ -184,11 +184,11 @@ cd nuttx-forgejo
 ## ./run.sh
 ```
 
-[(See the __Sync Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
+[(See the __Sync Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/sync.log)
 
 ![Sync our Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow5.jpg)
 
-Our script begins like this: [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh)
+Our script begins like this: [sync-mirror-to-update.sh](https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/sync-mirror-to-update.sh)
 
 ```bash
 ## Sync the Git Commits
@@ -226,7 +226,7 @@ fi
 ## Up Next: Sync Downstream Repo with Upstream
 ```
 
-How to Sync the Two Repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58)
+How to Sync the Two Repos? __Git Pull__ will do! [sync-mirror-to-update.sh](https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/sync-mirror-to-update.sh#L32-L58)
 
 ```bash
 ## Apply the Upstream Commits to Downstream Repo
@@ -256,7 +256,7 @@ if [[ "$downstream_commit2" != "$upstream_commit" ]]; then
 fi
 ```
 
-[(See the __Sync Log__)](https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d)
+[(See the __Sync Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/sync.log)
 
 _What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?_
 
@@ -311,13 +311,13 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 - [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
-- [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://github.com/lupyuen/nuttx-sg2000)
+- [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
-- [__My Other Project: "NuttX for Ox64 BL808"__](https://github.com/lupyuen/nuttx-ox64)
+- [__My Other Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
 
-- [__Older Project: "NuttX for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+- [__Older Project: "NuttX for Star64 JH7110"__](https://nuttx-forge.org/lupyuen/nuttx-star64)
 
-- [__Olderer Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+- [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
 
 - [__Check out my articles__](https://lupyuen.github.io)
 
@@ -342,7 +342,7 @@ Here are the steps to install our own __Forgejo Server__ (pic above) on __Docker
 ## And our Modified Docker Compose Config
 docker pull codeberg.org/forgejo/forgejo:9
 cd $HOME
-git clone https://github.com/lupyuen/nuttx-forgejo
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
 ## docker-compose.yml: Points to `forgejo-data` as the Data Volume (instead of Local Filesystem)
@@ -366,7 +366,7 @@ sudo docker compose up
 ## sudo docker compose down
 ```
 
-[(See the __Install Log__)](https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846)
+[(See the __Install Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/install.log)
 
 - This will auto-create the __`forgejo`__ folder for Forgejo Data
 
@@ -406,7 +406,7 @@ sudo docker compose up
     .
   ```
 
-  [(See the __Backup Log__)](https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb)
+  [(See the __Backup Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/backup.log)
 
 Back to the __Forgejo Configuration__: This is how we specify the __Forgejo Database__...
 
@@ -809,7 +809,7 @@ exec su-exec root chown -R git /data/git/.ssh
 
 (Rancher Desktop won't set permissions correctly for Local Filesystem) 
 
-And that's why our [__docker-compose.yml__](https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
+And that's why our [__docker-compose.yml__](https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
 
 ```yaml
 ## Our Tweak: Docker mounts Data Volume
