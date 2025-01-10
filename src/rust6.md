@@ -542,6 +542,8 @@ Earlier I [wrote this](https://lupyuen.github.io/articles/rust6#handle-errors-sa
 > _Can we auto-close the File Descriptor when it goes out of scope?_
 > Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html). But that's way beyond the size, scope and scale of GSoC.
 
+[(More discussion here)](https://github.com/apache/nuttx-apps/pull/2487)
+
 ![Testing Rust Blinky on QEMU Emulator](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
 # Appendix: Daily Test of Rust Blinky
