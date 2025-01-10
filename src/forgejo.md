@@ -396,6 +396,8 @@ sudo docker update --restart always forgejo
 
 [(See the __Install Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/install.log)
 
+[(Fixing the __Docker Compose Config__)](https://lupyuen.github.io/articles/forgejo#appendix-ssh-vs-docker-filesystem)
+
 - This will auto-create the __`forgejo`__ folder for Forgejo Data
 
 - We browse to __`http://localhost:3002`__
