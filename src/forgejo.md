@@ -162,6 +162,14 @@ Securing our CI Server is probably the toughest part of our Git Forge Migration.
 
 _Forgejo won't Auto-Sync our Read-Write Mirror. How to sync it?_
 
+| | |
+|:---|:---|
+| [_`nuttx-mirror`_](https://nuttx-forge.org/nuttx/nuttx-mirror) | [__`nuttx-update`__](https://nuttx-forge.org/nuttx/nuttx-update)
+| _Read-Only Mirror_ |  __Read-Write Mirror__
+| _Auto-Sync by Forgejo_ | Manual-Sync by Our Script
+| _Can't create PRs_ | Can create PRs
+| _Can't migrate PRs and Issues_ | Can migrate PRs and Issues <br> (but ran into problems)
+
 We run a script to __Sync the Git Commits__...
 
 - From our __Read-Only Mirror__ [__`nuttx-mirror`__](https://nuttx-forge.org/nuttx/nuttx-mirror)
