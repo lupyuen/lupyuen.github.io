@@ -34,6 +34,19 @@ Yep! Here's our experiment of __NuttX on Forgejo__ (pic below)
 
 Bringing up our __Forgejo Server__ was plain-sailing (especially on Docker)
 
+```bash
+## Download the Forgejo Docker Image
+## And our Docker Compose Config
+docker pull codeberg.org/forgejo/forgejo:9
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
+
+## Up the Forgejo Server
+cd nuttx-forgejo
+sudo docker compose up
+
+## To Configure: Browse to http://localhost:3002
+```
+
 - [__"Install our Forgejo Server"__](https://lupyuen.github.io/articles/forgejo#appendix-install-our-forgejo-server)
 
 - Based on the excellent [__Forejo Docs__](https://forgejo.org/docs/latest/)
