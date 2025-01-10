@@ -105,6 +105,16 @@
 <li><a href="https://nuttx-forge.org/explore/repos?q=&amp;only_show_relevant=false&amp;sort=moststars"><strong><code>https://nuttx-forge.org</code></strong></a></li>
 </ul>
 <p>Bringing up our <strong>Forgejo Server</strong> was plain-sailing (especially on Docker)</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Forgejo Docker Image
+## And our Docker Compose Config
+docker pull codeberg.org/forgejo/forgejo:9
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
+
+## Up the Forgejo Server
+cd nuttx-forgejo
+sudo docker compose up
+
+## To Configure: Browse to http://localhost:3002</code></pre></div>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/forgejo#appendix-install-our-forgejo-server"><strong>“Install our Forgejo Server”</strong></a></p>
