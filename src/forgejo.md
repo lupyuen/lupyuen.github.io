@@ -49,7 +49,7 @@ sudo docker compose up
 
 - [__"Install our Forgejo Server"__](https://lupyuen.github.io/articles/forgejo#appendix-install-our-forgejo-server)
 
-- Based on the excellent [__Forejo Docs__](https://forgejo.org/docs/latest/)
+- Based on the excellent [__Forgejo Docs__](https://forgejo.org/docs/latest/)
 
 Our Git Forge is running on [__Plain Old SQLite__](https://forgejo.org/docs/latest/admin/database-preparation/#sqlite) database. Later we might [__Upgrade to PostgreSQL__](https://forgejo.org/docs/latest/admin/database-preparation/#postgresql).
 
@@ -332,6 +332,8 @@ After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect_
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 - [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
+
+- [__Discuss this article on Hacker News__](TODO)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
