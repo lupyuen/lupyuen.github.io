@@ -76,9 +76,10 @@
 <li><a href="#daily-build-and-test" title="Daily Build and Test">9 Daily Build and Test</a><ul></ul></li>
 <li><a href="#all-things-considered" title="All Things Considered">10 All Things Considered</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-rust-blinky" title="Appendix: Daily Test of Rust Blinky">12 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
-<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v" title="Appendix: Daily Test of NuttX QEMU RISC-V">13 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li>
-<li><a href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions" title="Appendix: NuttX QEMU RISC-V fails on GitHub Actions">14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
+<li><a href="#appendix-nuttx-vs-rust-embedded-hal" title="Appendix: NuttX vs Rust Embedded HAL">12 Appendix: NuttX vs Rust Embedded HAL</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-rust-blinky" title="Appendix: Daily Test of Rust Blinky">13 Appendix: Daily Test of Rust Blinky</a><ul></ul></li>
+<li><a href="#appendix-daily-test-of-nuttx-qemu-risc-v" title="Appendix: Daily Test of NuttX QEMU RISC-V">14 Appendix: Daily Test of NuttX QEMU RISC-V</a><ul></ul></li>
+<li><a href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions" title="Appendix: NuttX QEMU RISC-V fails on GitHub Actions">15 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</a><ul></ul></li></ul></nav><p>📝 <em>19 Aug 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/rust6-title.jpg" alt="Blinking the NuttX LED in Rust" /></p>
 <p>My student <a href="https://github.com/rushabhvg"><strong>Rushabh Gala</strong></a> has just completed his project for <a href="https://summerofcode.withgoogle.com/"><strong>Google Summer of Code</strong></a>. Rushabh has created <strong>Safer Rust Apps</strong> for <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>…</p>
 <ul>
@@ -332,6 +333,7 @@ ERROR: rust_main() failed with error -1</code></pre></div>
 <p>(Sorry <strong>cfg</strong> won’t work for <strong>no_main</strong> and <strong>no_std</strong>)</p>
 <p><img src="https://lupyuen.github.io/images/rust6-flow5.jpg" alt="No Crates allowed in NuttX" /></p>
 <h1 id="no-crates-in-nuttx"><a class="doc-anchor" href="#no-crates-in-nuttx">§</a>7 No Crates in NuttX</h1>
+<p><a href="https://github.com/apache/nuttx-apps/pull/2487">(<strong>Update:</strong> NuttX now supports <strong>Cargo</strong> and <strong>Tokio</strong>!)</a></p>
 <p><em>We’re coding Rust in a strange way. Why not use crates and cargo?</em></p>
 <p>Ah that’s because NuttX <a href="https://github.com/apache/nuttx/pull/5566#issuecomment-1046963430"><strong>doesn’t support Rust Crates</strong></a>! We can’t use <strong>cargo</strong> either, NuttX Build will call <strong>rustc</strong> directly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure the NuttX Project
@@ -488,8 +490,47 @@ $ make</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md"><strong>lupyuen.github.io/src/rust6.md</strong></a></p>
+<h1 id="appendix-nuttx-vs-rust-embedded-hal"><a class="doc-anchor" href="#appendix-nuttx-vs-rust-embedded-hal">§</a>12 Appendix: NuttX vs Rust Embedded HAL</h1>
+<p><a href="https://github.com/apache/nuttx-apps/pull/2487">(<strong>Update:</strong> NuttX now supports <strong>Cargo</strong> and <strong>Tokio</strong>!)</a></p>
+<p><em>Shall we implement Rust Embedded HAL on NuttX?</em></p>
+<p>Actually I’m not too clear if we should stick to the Official Rust Embedded HAL for NuttX. Here’s why…</p>
+<p>To blink an LED in <strong>Rust Embedded HAL</strong>: We fetch the GPIO, then switch it off and on…</p>
+<ul>
+<li><a href="https://docs.rust-embedded.org/discovery/microbit/05-led-roulette/light-it-up.html"><strong>Rust Embedded HAL: Blink the LED</strong></a></li>
+</ul>
+<p>But there’s no need to do this in NuttX! We simply open the LED Device <strong>/dev/userleds</strong>. And control it via <strong>ioctl</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust6#blink-the-led"><strong>Blink the LED (NuttX)</strong></a></li>
+</ul>
+<p>Rust Embedded HAL feels strange when we force-fit it into NuttX. I2C will have similar issues…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rusti2c#nuttx-embedded-hal"><strong>NuttX Embedded HAL (I2C)</strong></a></li>
+</ul>
+<p>If we look at <strong>Rust on Zephyr</strong>: They propose to call a Native Zephyr API to <a href="https://github.com/zephyrproject-rtos/zephyr/issues/65837"><strong>blink the LED</strong></a>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Proposed Rust on Zephyr
+</span><span class="attr">#![no_std]
+#![no_main]
+
+#[zephyr::entry]
+</span><span class="kw">fn </span>main() {
+  <span class="kw">let </span>dt = zephyr::devicetree::take().unwrap();
+  <span class="kw">let </span>led = dt.chosen.led0;
+  <span class="kw">loop </span>{
+    led.toggle().unwrap();
+    zephyr::sys::sleep(<span class="number">1000</span>);
+  }
+}</code></pre></div>
+<p>My gut feel is that we should do it the Zephyr way. But make it POSIX-like. Thus we should drop <strong>nuttx-embedded-hal</strong> altogether :-)</p>
+<p><em>What about rustix?</em></p>
+<p>rustix is kinda heavy I think? It does Managed File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?</p>
+<p>Earlier I <a href="https://lupyuen.github.io/articles/rust6#handle-errors-safely">wrote this</a>…</p>
+<blockquote>
+<p><em>Can we auto-close the File Descriptor when it goes out of scope?</em>
+Probably, if we do <a href="https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html"><strong>Managed File Descriptors</strong></a>. But that’s way beyond the size, scope and scale of GSoC.</p>
+</blockquote>
 <p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="Testing Rust Blinky on QEMU Emulator" /></p>
-<h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>12 Appendix: Daily Test of Rust Blinky</h1>
+<h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>13 Appendix: Daily Test of Rust Blinky</h1>
 <p>Earlier we said that our Rust Blinky App might someday <a href="https://lupyuen.github.io/articles/rust6#daily-build-and-test"><strong>fail to build or execute</strong></a> correctly. That’s why we…</p>
 <ul>
 <li>
@@ -595,7 +636,7 @@ puts &quot;\n===== Test OK\n&quot;
 exit 0 </code></pre></div>
 <p>But our test is incomplete: We need to know if NuttX on QEMU is really OK…</p>
 <p><img src="https://lupyuen.github.io/images/rust6-daily.png" alt="Daily Build and Test of Rust Blinky App at GitHub Actions" /></p>
-<h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>13 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
+<h1 id="appendix-daily-test-of-nuttx-qemu-risc-v"><a class="doc-anchor" href="#appendix-daily-test-of-nuttx-qemu-risc-v">§</a>14 Appendix: Daily Test of NuttX QEMU RISC-V</h1>
 <p>If something goes wrong with <strong>Rust Blinky</strong>: We need to be clear whether it’s our Rust App Failing vs <strong>NuttX QEMU Failing</strong>. That’s why we also test NuttX QEMU every day at GitHub Actions. (Pic above)</p>
 <p><strong>NuttX for QEMU RISC-V</strong> comes in Multiple Flavours, we test four of the popular flavours every day…</p>
 <ul>
@@ -696,7 +737,7 @@ expect {
 }</code></pre></div>
 <p>But there’s a problem: OSTest for <strong>64-bit QEMU RISC-V</strong> fails on GitHub Actions…</p>
 <p><img src="https://lupyuen.github.io/images/rust6-task.jpg" alt="Running a script on my Home Computer to download the 64-bit Daily Builds and run OSTest locally" /></p>
-<h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>14 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
+<h1 id="appendix-nuttx-qemu-risc-v-fails-on-github-actions"><a class="doc-anchor" href="#appendix-nuttx-qemu-risc-v-fails-on-github-actions">§</a>15 Appendix: NuttX QEMU RISC-V fails on GitHub Actions</h1>
 <p><strong>Every day at GitHub Actions:</strong> We boot NuttX on <strong>QEMU RISC-V Emulator</strong> (32-bit and 64-bit) and test it with <a href="https://lupyuen.github.io/articles/tinyemu3#daily-automated-testing"><strong>OSTest</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v"><strong>“Daily Test of NuttX QEMU RISC-V”</strong></a></li>
