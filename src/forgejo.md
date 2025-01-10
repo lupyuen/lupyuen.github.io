@@ -545,7 +545,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![Auto-Sync our NuttX Repo](https://lupyuen.github.io/images/forgejo-mirror9.png)
 
-1.  Auto-Sync may trigger __CI Workflows__. But we don't have CI Servers to run them (yet).
+1.  Auto-Sync may trigger __CI Workflows__. But we don't have [__CI Servers__](https://forgejo.org/docs/latest/admin/runner-installation/) to run them (yet).
 
     [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/actions)
 
@@ -679,7 +679,7 @@ Let's find out!
 
     ![Everything works the same](https://lupyuen.github.io/images/forgejo-pr6.png)
 
-1.  __Merging a Pull Request__ will trigger the exact same CI Workflow. Which won't run because we haven't configured the CI Servers.
+1.  __Merging a Pull Request__ will trigger the exact same CI Workflow. Which won't run because we haven't configured the [__CI Servers__](https://forgejo.org/docs/latest/admin/runner-installation/).
 
     [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update/actions)
 
