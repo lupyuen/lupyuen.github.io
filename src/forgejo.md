@@ -152,7 +152,7 @@ Our [__CI Server__](https://forgejo.org/docs/latest/admin/runner-installation/) 
 
 Why? During PR Submission: Our CI Workflow might execute the __scripts and code submitted__ by NuttX Devs.
 
-If we don't secure our CI Server, we might create [__Security Problems__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security) in our server.
+If we don't secure our CI Server, we might create [__Security Problems__](https://stackoverflow.com/questions/77179987/is-it-really-unsafe-to-use-a-github-self-hosted-runner-on-a-own-public-repositor) in our server.
 
 Securing our CI Server is probably the toughest part of our Git Forge Migration. That's why GitHub is expensive!
 
