@@ -178,7 +178,7 @@ We run a script to __Sync the Git Commits__...
 
 - So it will work even when GitHub breaks
 
-- __Commit History__ shall be 100% identical with GitHub
+- __Commit History__ shall be 100% identical to GitHub
 
   (Including the __Commit Hashes__)
 
