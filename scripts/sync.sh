@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sync from lupyuen.github.io to lupyuen.codeberg.pages
+# Sync from lupyuen.org to lupyuen.codeberg.pages
 
 set -e  #  Exit when any command fails.
 set -x  #  Echo all commands.
@@ -113,7 +113,7 @@ function sync_folder() {
       git pull
       git status
       git add .
-      git commit --all --message="Sync from lupyuen.github.io"
+      git commit --all --message="Sync from lupyuen.org"
       git push
     fi
 
