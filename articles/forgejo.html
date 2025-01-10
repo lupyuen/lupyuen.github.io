@@ -646,7 +646,8 @@ git clone \
 <p><img src="https://lupyuen.github.io/images/forgejo-actions1.png" alt="Merging a Pull Request will trigger CI Workflow" /></p>
 </li>
 <li>
-<p>Will Forgejo handle <strong>Large Pull Requests</strong>? Yep here’s a Pull Request with 217 NuttX Commits</p>
+<p>Will Forgejo handle <strong>Large Pull Requests</strong>? Yep here’s a (potential) Pull Request with 217 NuttX Commits</p>
+<p><a href="https://nuttx-forge.org/nuttx/nuttx-update/compare/master...releases/12.8">(Live Site)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-commits.png" alt="217 NuttX Commits" /></p>
 </li>
 <li>
@@ -657,6 +658,7 @@ git clone \
 <h1 id="appendix-ssh-access-in-forgejo"><a class="doc-anchor" href="#appendix-ssh-access-in-forgejo">§</a>11 Appendix: SSH Access in Forgejo</h1>
 <p>This section explains how we tested <strong>SSH Access</strong> in our Forgejo Server.</p>
 <p>Note: SSH Port for our Forgejo Server is <strong>not exposed to the internet</strong> (for security reasons).</p>
+<p>We generate the <strong>SSH Key</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ssh-keygen -t ed25519 -a 100
 ## Save it to ~/.ssh/nuttx-forge</code></pre></div>
 <p>Edit <strong>~/.ssh/config</strong> and add…</p>
@@ -667,7 +669,7 @@ git clone \
 <p>(<strong>localhost</strong> will change to the External IP of our Forgejo Server)</p>
 <p>In Forgejo Web:</p>
 <ul>
-<li>Click <strong>Settings &gt; SSH Keys</strong></li>
+<li>Click <strong>User &gt; Settings &gt; SSH Keys</strong></li>
 <li>Paste the contents of <strong>~/.ssh/nuttx-forge.pub</strong></li>
 <li>Click <strong>Add Key</strong></li>
 </ul>
@@ -730,10 +732,11 @@ $ ls -l /data/git/.ssh/authorized_keys
 <p>Too bad <strong>chown</strong> won’t work…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
-<p>(Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
-<p>And that’s why our <a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
+<p>Sadly, macOS Rancher Desktop won’t set permissions correctly for the Local Filesystem.</p>
+<p>And that’s why our <a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to Data Volume <strong>forgejo-data</strong> (instead of Local Filesystem)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Our Tweak: Docker mounts Data Volume
 ## `forgejo-data` as `/data`
+## (Instead of Local Filesystem `./forgejo`)
 services:
   server:
     volumes:
