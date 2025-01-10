@@ -325,7 +325,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[__lupyuen.org/src/forgejo.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/forgejo.md)
+[__lupyuen.org/src/forgejo.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/forgejo.md)
 
 ![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 
