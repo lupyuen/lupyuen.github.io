@@ -140,7 +140,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 - Forgejo will import __GitHub Actions Workflows__ and execute them (pic above)
 
-- But we don't have a __CI Server__ to execute the CI Workflow (yet)
+- But we don't have a [__CI Server__](https://forgejo.org/docs/latest/admin/runner-installation/) to execute the CI Workflow (yet)
 
 - Some GitHub Workflows are [__Not Supported__](https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror) (NuttX Build Rules _arch.yml_)
 
@@ -148,7 +148,7 @@ __GitHub Actions CI__ (Continuous Integration) becomes a Sticky Issue with Forge
 
 _Any special requirement for CI Server?_
 
-Our CI Server needs to be Ubuntu x64, __hardened for security__.
+Our [__CI Server__](https://forgejo.org/docs/latest/admin/runner-installation/) needs to be Ubuntu x64, __hardened for security__.
 
 Why? During PR Submission: Our CI Workflow might execute the __scripts and code submitted__ by NuttX Devs.
 
@@ -513,7 +513,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
     ![Template for NuttX Issues](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
-1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a __CI Server__ for Ubuntu x64.
+1.  Forgejo has ported over our __GitHub Actions Workflows__. But they won't run because we don't have a [__CI Server__](https://forgejo.org/docs/latest/admin/runner-installation/) for Ubuntu x64.
 
     [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-mirror/actions)
 
