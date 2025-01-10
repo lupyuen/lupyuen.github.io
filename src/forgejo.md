@@ -438,6 +438,10 @@ sudo docker update --restart always forgejo
 
   [(See the __Backup Log__)](https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/backup.log)
 
+- Inside the Backup: __SQLite Database__ is at __data/gitea/gitea.db__
+
+  ![SQLite Database is at data/gitea/gitea.db](https://lupyuen.github.io/images/forgejo-db.png)
+
 Back to the __Forgejo Configuration__: This is how we specify the __Forgejo Database__...
 
 ![Forgejo Configuration: Database](https://lupyuen.github.io/images/forgejo-install1.png)
