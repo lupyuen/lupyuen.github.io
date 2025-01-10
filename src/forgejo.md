@@ -59,7 +59,7 @@ Our Git Forge is running on [__Plain Old SQLite__](https://forgejo.org/docs/late
 
 _Is it easy to use our own Git Forge?_
 
-Yes Forgejo is pleasantly __Gittish-Hubbish__. Inside Forgejo: __Pull Requests__ and __Issues__ look familiar...
+Yes Forgejo is pleasantly [__Gittish-Hubbish__](https://nuttx-forge.org/nuttx/nuttx-update). Inside Forgejo: [__Pull Requests__](https://nuttx-forge.org/nuttx/nuttx-update/pulls/1) and [__Issues__](https://nuttx-forge.org/nuttx/nuttx-update/issues/2) look familiar...
 
 ![Forgejo Pull Request and Issue](https://lupyuen.github.io/images/forgejo-pr-issue.png)
 
@@ -540,6 +540,8 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
     ![Mirror Interval](https://lupyuen.github.io/images/forgejo-mirror5.png)
 
 1.  Forgejo has helpfully migrated our __Template for NuttX Issues__
+
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update/issues/2)
 
     ![Template for NuttX Issues](https://lupyuen.github.io/images/forgejo-mirror6.png)
 
