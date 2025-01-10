@@ -18,7 +18,7 @@ _Why explore Forgejo for NuttX?_
 
 - __GitHub is Blocked__ in some parts of the world...
 
-- Can we __Mirror NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
+- Can we __Mirror our NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
 
 - Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need to move out
 
