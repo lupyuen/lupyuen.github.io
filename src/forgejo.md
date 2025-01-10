@@ -362,6 +362,10 @@ sudo docker compose up
 ## Run a second time to get it up
 sudo docker compose up
 
+## Always restart Forgejo Server
+## Whenever it crashes
+sudo docker update --restart always forgejo
+
 ## If we need to down the Forgejo Server:
 ## sudo docker compose down
 ```
