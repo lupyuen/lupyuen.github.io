@@ -268,7 +268,7 @@ fi
 
 _What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?_
 
-If our Read-Write Mirror goes out of sync: We __Hard-Revert the Commits__ in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again...
+If our Read-Write Mirror goes out of sync: We __Hard-Revert the Commits__ in our Read-Write Mirror. Which will keep it in sync again with the Read-Only Mirror...
 
 ```bash
 ## Download our Read-Write Mirror
@@ -286,6 +286,7 @@ $ git status
 Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
 
 ## Push it to our Read-Write Mirror
+## Our Read-Write Mirror is now back in sync with Read-Only Mirror!
 $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -> master (forced update)
