@@ -385,7 +385,7 @@ sudo docker update --restart always forgejo
 
 - We browse to __`http://localhost:3002`__
 
-- Select __SQLite__ as the database (we upgrade to PostgreSQL later)
+- Select [__SQLite__](https://forgejo.org/docs/latest/admin/database-preparation/#sqlite) as the database (we upgrade to [__PostgreSQL__](https://forgejo.org/docs/latest/admin/database-preparation/#postgresql) later)
 
 - Set __Domain__ to __`nuttx-forge.org`__ (or your domain)
 
