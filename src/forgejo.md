@@ -4,7 +4,7 @@
 
 ![Forgejo Git Forge for Apache NuttX RTOS (Experimental)](https://lupyuen.github.io/images/forgejo-title.png)
 
-__Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](https://forgejo.org/), and whether [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) could possibly switch from GitHub to our own Git Forge.
+__Life Without GitHub:__ What's it like? Today we talk about [__Forgejo Git Forge__](https://forgejo.org/), and whether [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) could possibly switch from GitHub to a self-hosted Git Forge.
 
 _What's this Forgejo? Why is it a "Git Forge"?_
 
