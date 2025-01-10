@@ -686,7 +686,9 @@ Let's find out!
 
     ![Merging a Pull Request will trigger CI Workflow](https://lupyuen.github.io/images/forgejo-actions1.png)
 
-1.  Will Forgejo handle __Large Pull Requests__? Yep here's a Pull Request with 217 NuttX Commits
+1.  Will Forgejo handle __Large Pull Requests__? Yep here's a (potential) Pull Request with 217 NuttX Commits
+
+    [(Live Site)](https://nuttx-forge.org/nuttx/nuttx-update/compare/master...releases/12.8)
 
     ![217 NuttX Commits](https://lupyuen.github.io/images/forgejo-commits.png)
 
@@ -699,6 +701,8 @@ Let's find out!
 This section explains how we tested __SSH Access__ in our Forgejo Server.
 
 Note: SSH Port for our Forgejo Server is __not exposed to the internet__ (for security reasons).
+
+We generate the __SSH Key__...
 
 ```bash
 $ ssh-keygen -t ed25519 -a 100
@@ -717,7 +721,7 @@ Host nuttx-forge
 (__localhost__ will change to the External IP of our Forgejo Server)
 
 In Forgejo Web:
-- Click __Settings > SSH Keys__
+- Click __User > Settings > SSH Keys__
 - Paste the contents of __~/.ssh/nuttx-forge.pub__
 - Click __Add Key__
 
@@ -820,13 +824,14 @@ Too bad __chown__ won't work...
 exec su-exec root chown -R git /data/git/.ssh
 ```
 
-(Rancher Desktop won't set permissions correctly for Local Filesystem) 
+Sadly, macOS Rancher Desktop won't set permissions correctly for the Local Filesystem.
 
-And that's why our [__docker-compose.yml__](https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml) points to __forgejo-data__ as the Data Volume (instead of Local Filesystem)
+And that's why our [__docker-compose.yml__](https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml) points to Data Volume __forgejo-data__ (instead of Local Filesystem)
 
 ```yaml
 ## Our Tweak: Docker mounts Data Volume
 ## `forgejo-data` as `/data`
+## (Instead of Local Filesystem `./forgejo`)
 services:
   server:
     volumes:
