@@ -189,7 +189,7 @@ git clone \
 <p>Forgejo will import <strong>GitHub Actions Workflows</strong> and execute them (pic above)</p>
 </li>
 <li>
-<p>But we don’t have a <strong>CI Server</strong> to execute the CI Workflow (yet)</p>
+<p>But we don’t have a <a href="https://forgejo.org/docs/latest/admin/runner-installation/"><strong>CI Server</strong></a> to execute the CI Workflow (yet)</p>
 </li>
 <li>
 <p>Some GitHub Workflows are <a href="https://lupyuen.github.io/articles/forgejo#appendix-read-only-mirror"><strong>Not Supported</strong></a> (NuttX Build Rules <em>arch.yml</em>)</p>
@@ -197,7 +197,7 @@ git clone \
 </ul>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow4.jpg" alt="CI Server needs to be Ubuntu x64, hardened for security" /></p>
 <p><em>Any special requirement for CI Server?</em></p>
-<p>Our CI Server needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
+<p>Our <a href="https://forgejo.org/docs/latest/admin/runner-installation/"><strong>CI Server</strong></a> needs to be Ubuntu x64, <strong>hardened for security</strong>.</p>
 <p>Why? During PR Submission: Our CI Workflow might execute the <strong>scripts and code submitted</strong> by NuttX Devs.</p>
 <p>If we don’t secure our CI Server, we might create <a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security"><strong>Security Problems</strong></a> in our server.</p>
 <p>Securing our CI Server is probably the toughest part of our Git Forge Migration. That’s why GitHub is expensive!</p>
@@ -497,7 +497,7 @@ sudo docker compose up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror6.png" alt="Template for NuttX Issues" /></p>
 </li>
 <li>
-<p>Forgejo has ported over our <strong>GitHub Actions Workflows</strong>. But they won’t run because we don’t have a <strong>CI Server</strong> for Ubuntu x64.</p>
+<p>Forgejo has ported over our <strong>GitHub Actions Workflows</strong>. But they won’t run because we don’t have a <a href="https://forgejo.org/docs/latest/admin/runner-installation/"><strong>CI Server</strong></a> for Ubuntu x64.</p>
 <p><a href="https://nuttx-forge.org/nuttx/nuttx-mirror/actions">(Live Site)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-mirror7.png" alt="CI Workflow" /></p>
 </li>
