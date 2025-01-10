@@ -30,7 +30,7 @@ _Installing our own Git Forge: Is it easy?_
 
 Yep! Here's our experiment of __NuttX on Forgejo__ (pic below)
 
-- [__`https://nuttx-forge.org`__](https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars)
+> [__`https://nuttx-forge.org`__](https://nuttx-forge.org/explore/repos?q=&only_show_relevant=false&sort=moststars)
 
 Bringing up our __Forgejo Server__ was plain-sailing (especially on Docker)
 
