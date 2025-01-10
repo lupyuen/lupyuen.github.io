@@ -80,15 +80,19 @@ _Have we seen this somewhere?_
 
 _Will our Git Forge coexist with GitHub?_
 
-Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Forge, synced both ways (pic above)
+Ah now it gets tricky. Ideally we should allow GitHub to coexist with our Git Forge, __synced both ways__ (pic above)
 
-- __NuttX Repo__ at GitHub shall __sync down regularly__ to Our Git Forge
+- _GitHub → Our Git Forge_
 
-  (So NuttX Devs can pull updates if GitHub breaks)
+  __NuttX Repo__ at GitHub shall __sync down regularly__ to Our Git Forge
 
-- __Pull Requests__ at our Git Forge shall be __pushed up to NuttX Repo__ at GitHub
+  _(So NuttX Devs can pull updates if GitHub breaks)_
 
-  (So Local Changes in our Git Forge can be synced back)
+- _Our Git Forge → GitHub_
+
+  __Pull Requests__ at our Git Forge shall be __pushed up to NuttX Repo__ at GitHub
+
+  _(Allow Local Changes in our Git Forge to be synced back)_
 
 Forgejo works great for syncing NuttX Repo from GitHub. We configured Forgejo to __Auto-Sync from GitHub every hour__...
 
@@ -98,7 +102,7 @@ Oops Forgejo creates a [__Read-Only Mirror__](https://nuttx-forge.org/nuttx/nutt
 
 ![Read-Only Mirror won't allow Pull Requests](https://lupyuen.github.io/images/forgejo-mirror.png)
 
-Thus we created our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo...
+Thus we create our own [__Read-Write Mirror__](https://nuttx-forge.org/nuttx/nuttx-update) of NuttX Repo...
 
 ![Read-Write Mirror OK with Pull Requests](https://lupyuen.github.io/images/forgejo-update.png)
 
