@@ -221,15 +221,15 @@ git clone \
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync Once: From Read-Only Mirror to Read-Write Mirror
-git clone https://github.com/lupyuen/nuttx-forgejo
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 ./sync-mirror-to-update.sh
 
 ## Or to Sync Periodically
 ## ./run.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Sync Log</strong>)</a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/sync.log">(See the <strong>Sync Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow5.jpg" alt="Sync our Read-Write Mirror" /></p>
-<p>Our script begins like this: <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
+<p>Our script begins like this: <a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/sync-mirror-to-update.sh">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Sync the Git Commits
 ## From our Read-Only Mirror Repo (nuttx-mirror)
 ## To the Read-Write Mirror Repo (nuttx-update)
@@ -263,7 +263,7 @@ if [[ &quot;$downstream_commit&quot; == &quot;$upstream_commit&quot; ]]; then
 fi
 
 ## Up Next: Sync Downstream Repo with Upstream</code></pre></div>
-<p>How to Sync the Two Repos? <strong>Git Pull</strong> will do! <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
+<p>How to Sync the Two Repos? <strong>Git Pull</strong> will do! <a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/sync-mirror-to-update.sh#L32-L58">sync-mirror-to-update.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Apply the Upstream Commits to Downstream Repo
 pushd downstream
 git pull \
@@ -289,7 +289,7 @@ popd
 if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
   echo &quot;Sync Failed: Upstream and Downstream Commits don&#39;t match!&quot; ; exit 1
 fi</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3afe37d47933d17b8646b3c9de12f17d">(See the <strong>Sync Log</strong>)</a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/sync.log">(See the <strong>Sync Log</strong>)</a></p>
 <p><em>What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?</em></p>
 <p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Read-Write Mirror
@@ -332,16 +332,16 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
@@ -361,7 +361,7 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 ## And our Modified Docker Compose Config
 docker pull codeberg.org/forgejo/forgejo:9
 cd $HOME
-git clone https://github.com/lupyuen/nuttx-forgejo
+git clone https://nuttx-forge.org/lupyuen/nuttx-forgejo
 cd nuttx-forgejo
 
 ## docker-compose.yml: Points to `forgejo-data` as the Data Volume (instead of Local Filesystem)
@@ -383,7 +383,7 @@ sudo docker compose up
 
 ## If we need to down the Forgejo Server:
 ## sudo docker compose down</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/efdd2db49e2d333bc7058194d78cd846">(See the <strong>Install Log</strong>)</a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/install.log">(See the <strong>Install Log</strong>)</a></p>
 <ul>
 <li>
 <p>This will auto-create the <strong><code>forgejo</code></strong> folder for Forgejo Data</p>
@@ -421,7 +421,7 @@ sudo docker exec \
 sudo docker cp \
   forgejo:/tmp/data.tar \
   .</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/d151537dc79dc9b2ecafc4c2620b28bb">(See the <strong>Backup Log</strong>)</a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/backup.log">(See the <strong>Backup Log</strong>)</a></p>
 </li>
 </ul>
 <p>Back to the <strong>Forgejo Configuration</strong>: This is how we specify the <strong>Forgejo Database</strong>…</p>
@@ -718,7 +718,7 @@ $ ls -l /data/git/.ssh/authorized_keys
 <div class="example-wrap"><pre class="language-bash"><code>## Nope! Won&#39;t work in Rancher Desktop
 exec su-exec root chown -R git /data/git/.ssh</code></pre></div>
 <p>(Rancher Desktop won’t set permissions correctly for Local Filesystem)</p>
-<p>And that’s why our <a href="https://github.com/lupyuen/nuttx-forgejo/blob/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
+<p>And that’s why our <a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/src/branch/main/docker-compose.yml"><strong>docker-compose.yml</strong></a> points to <strong>forgejo-data</strong> as the Data Volume (instead of Local Filesystem)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Our Tweak: Docker mounts Data Volume
 ## `forgejo-data` as `/data`
 services:
