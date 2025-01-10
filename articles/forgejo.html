@@ -299,7 +299,7 @@ if [[ &quot;$downstream_commit2&quot; != &quot;$upstream_commit&quot; ]]; then
 fi</code></pre></div>
 <p><a href="https://nuttx-forge.org/lupyuen/nuttx-forgejo/releases/download/v1.0.1/sync.log">(See the <strong>Sync Log</strong>)</a></p>
 <p><em>What if we accidentally Merge a PR downstream? And our Read-Write Mirror goes out of sync?</em></p>
-<p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will sync it with the Read-Only Mirror again…</p>
+<p>If our Read-Write Mirror goes out of sync: We <strong>Hard-Revert the Commits</strong> in our Read-Write Mirror. Which will keep it in sync again with the Read-Only Mirror…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download our Read-Write Mirror
 ## Which contains Conflicting Commits
 $ git clone git@nuttx-forge:nuttx/nuttx-update
@@ -315,6 +315,7 @@ $ git status
 Your branch is behind &#39;origin/master&#39; by 1 commit, and can be fast-forwarded.
 
 ## Push it to our Read-Write Mirror
+## Our Read-Write Mirror is now back in sync with Read-Only Mirror!
 $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
