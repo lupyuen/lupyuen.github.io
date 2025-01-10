@@ -319,6 +319,8 @@ fn panic(_panic: &PanicInfo<'_>) -> ! {
 
 # No Crates in NuttX
 
+[(__Update:__ NuttX now supports __Cargo__ and __Tokio__!)](https://github.com/apache/nuttx-apps/pull/2487)
+
 _We're coding Rust in a strange way. Why not use crates and cargo?_
 
 Ah that's because NuttX [__doesn't support Rust Crates__](https://github.com/apache/nuttx/pull/5566#issuecomment-1046963430)! We can't use __cargo__ either, NuttX Build will call __rustc__ directly...
@@ -490,6 +492,55 @@ Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/rust6.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust6.md)
+
+# Appendix: NuttX vs Rust Embedded HAL
+
+[(__Update:__ NuttX now supports __Cargo__ and __Tokio__!)](https://github.com/apache/nuttx-apps/pull/2487)
+
+_Shall we implement Rust Embedded HAL on NuttX?_
+
+Actually I'm not too clear if we should stick to the Official Rust Embedded HAL for NuttX. Here's why...
+
+To blink an LED in __Rust Embedded HAL__: We fetch the GPIO, then switch it off and on...
+
+- [__Rust Embedded HAL: Blink the LED__](https://docs.rust-embedded.org/discovery/microbit/05-led-roulette/light-it-up.html)
+
+But there's no need to do this in NuttX! We simply open the LED Device __/dev/userleds__. And control it via __ioctl__...
+
+- [__Blink the LED (NuttX)__](https://lupyuen.github.io/articles/rust6#blink-the-led)
+
+Rust Embedded HAL feels strange when we force-fit it into NuttX. I2C will have similar issues...
+
+- [__NuttX Embedded HAL (I2C)__](https://lupyuen.github.io/articles/rusti2c#nuttx-embedded-hal)
+
+If we look at __Rust on Zephyr__: They propose to call a Native Zephyr API to [__blink the LED__](https://github.com/zephyrproject-rtos/zephyr/issues/65837)...
+
+```rust
+// Proposed Rust on Zephyr
+#![no_std]
+#![no_main]
+
+#[zephyr::entry]
+fn main() {
+  let dt = zephyr::devicetree::take().unwrap();
+  let led = dt.chosen.led0;
+  loop {
+    led.toggle().unwrap();
+    zephyr::sys::sleep(1000);
+  }
+}
+```
+
+My gut feel is that we should do it the Zephyr way. But make it POSIX-like. Thus we should drop __nuttx-embedded-hal__ altogether :-)
+
+_What about rustix?_
+
+rustix is kinda heavy I think? It does Managed File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?
+
+Earlier I [wrote this](https://lupyuen.github.io/articles/rust6#handle-errors-safely)...
+
+> _Can we auto-close the File Descriptor when it goes out of scope?_
+> Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html). But that's way beyond the size, scope and scale of GSoC.
 
 ![Testing Rust Blinky on QEMU Emulator](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
