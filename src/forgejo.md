@@ -83,8 +83,6 @@ _Have we seen this somewhere?_
 
 - [__Codeberg__](https://codeberg.org/) is powered by Forgejo
 
-- [__GitLab__](https://about.gitlab.com/) runs on Gitea, which is the [__predecessor of Forgejo__](https://forgejo.org/compare-to-gitea/)
-
 - [__Fedora Linux Project__](https://fedoramagazine.org/fedora-moves-towards-forgejo-a-unified-decision/) is moving to Forgejo
 
 ![Coexist With GitHub](https://lupyuen.github.io/images/forgejo-flow.jpg)
