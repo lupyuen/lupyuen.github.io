@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Forgejo Git Forge for Apache NuttX RTOS (Experimental)</title>
+            <link>https://lupyuen.github.io/articles/forgejo</link>
+            <description><![CDATA[Life Without GitHub: What's it like? Today we talk about Forgejo Git Forge, and whether Apache NuttX RTOS could possibly switch from GitHub to our own Git Forge.]]></description>
+            <guid>https://lupyuen.github.io/articles/forgejo</guid>
+            <pubDate>Sun, 12 Jan 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Git Bisecting a Bug (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/bisect</link>
             <description><![CDATA[Suppose we hit a Runtime Bug in Apache NuttX RTOS. We think that the Breaking Commit (causing the bug) is somewhere inside these hundreds of NuttX Commits. But which one? In this article: We run Git Bisect to discover the Breaking Commit.]]></description>

@@ -140,6 +140,7 @@ That's why we need __Two Mirror Repos__: Read-Only and Read-Write...
 | Auto-Sync by Forgejo | Manual-Sync by Our Script
 | Can't create PRs | Can create PRs
 | Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| [_(Explained here)_](https://lupyuen.org/articles/forgejo.html#appendix-read-only-mirror) | [_(Explained here)_](https://lupyuen.github.io/articles/forgejo#appendix-read-write-mirror)
 
 [(Blocked by __Corporate Firewall__? Git Mirroring might help)](https://stackoverflow.com/a/12884254)
 
@@ -182,6 +183,7 @@ _Forgejo won't Auto-Sync our Read-Write Mirror. How to sync it?_
 | _Auto-Sync by Forgejo_ | Manual-Sync by Our Script
 | _Can't create PRs_ | Can create PRs
 | _Can't migrate PRs and Issues_ | Can migrate PRs and Issues <br> (but ran into problems)
+| [_(Explained here)_](https://lupyuen.org/articles/forgejo.html#appendix-read-only-mirror) | [_(Explained here)_](https://lupyuen.github.io/articles/forgejo#appendix-read-write-mirror)
 
 We run a script to __Sync the Git Commits__...
 
@@ -320,6 +322,7 @@ Which explains why we need __Two Mirror Repos__: Read-Only Mirror and Read-Write
 | Auto-Sync by Forgejo | Manual-Sync by Our Script
 | Can't create PRs | Can create PRs
 | Can't migrate PRs and Issues | Can migrate PRs and Issues <br> (but ran into problems)
+| [_(Explained here)_](https://lupyuen.org/articles/forgejo.html#appendix-read-only-mirror) | [_(Explained here)_](https://lupyuen.github.io/articles/forgejo#appendix-read-write-mirror)
 
 ![What's Next](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
@@ -333,7 +336,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 - [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=42669242)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
@@ -506,6 +509,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 | Auto-Sync by Forgejo | _Manual-Sync by Our Script_
 | Can't create PRs | _Can create PRs_
 | Can't migrate PRs and Issues | _Can migrate PRs and Issues <br> (but ran into problems)_
+| [_(Explained here)_](https://lupyuen.org/articles/forgejo.html#appendix-read-only-mirror) | [_(Explained here)_](https://lupyuen.github.io/articles/forgejo#appendix-read-write-mirror)
 
 1.  At Top Right: Select __`+` > New Migration__
 
@@ -614,6 +618,7 @@ Now we create a __Read-Write Mirror__ of the NuttX Repo at GitHub, which will al
 | _Auto-Sync by Forgejo_ | Manual-Sync by Our Script
 | _Can't create PRs_ | Can create PRs
 | _Can't migrate PRs and Issues_ | Can migrate PRs and Issues <br> (but ran into problems)
+| [_(Explained here)_](https://lupyuen.org/articles/forgejo.html#appendix-read-only-mirror) | [_(Explained here)_](https://lupyuen.github.io/articles/forgejo#appendix-read-write-mirror)
 
 1.  At Top Right: Select __`+` > New Migration__
 
