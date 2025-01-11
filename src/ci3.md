@@ -471,6 +471,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Git Bisecting a Bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/bisect.html)
 
+- [__"Forgejo Git Forge for Apache NuttX RTOS (Experimental)"__](https://lupyuen.org/articles/forgejo.html)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

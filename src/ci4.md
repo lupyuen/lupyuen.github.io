@@ -747,6 +747,8 @@ Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/
 
 - [__"Git Bisecting a Bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/bisect.html)
 
+- [__"Forgejo Git Forge for Apache NuttX RTOS (Experimental)"__](https://lupyuen.org/articles/forgejo.html)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

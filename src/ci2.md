@@ -513,6 +513,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Git Bisecting a Bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/bisect.html)
 
+- [__"Forgejo Git Forge for Apache NuttX RTOS (Experimental)"__](https://lupyuen.org/articles/forgejo.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

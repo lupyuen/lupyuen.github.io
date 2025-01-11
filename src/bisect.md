@@ -654,6 +654,8 @@ We could run __Bloaty__ to do detailed analysis of the __Code and Data Size__...
 
 Next Article: What would NuttX Life be like without GitHub? We try out (self-hosted open-source) __Forgejo Git Forge__ with NuttX.
 
+- [__"Forgejo Git Forge for Apache NuttX RTOS (Experimental)"__](https://lupyuen.org/articles/forgejo.html)
+
 After That: Why __Sync-Build-Ingest__ is super important for NuttX CI. And how we monitor it with our __Magic Disco Light__.
 
 After After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fetch the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks?
