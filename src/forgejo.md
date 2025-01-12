@@ -22,6 +22,8 @@ _Why explore Forgejo for NuttX?_
 
 - Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need to move out
 
+  [(Though __ASF Policy__ might not allow it)](https://infra.apache.org/project-repo-policy.html)
+
 ![NuttX On Forgejo](https://lupyuen.github.io/images/forgejo-flow2.jpg)
 
 # NuttX On Forgejo
