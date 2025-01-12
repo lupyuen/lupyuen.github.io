@@ -346,6 +346,8 @@ _How do we fetch the Pull Request? And post the Review Comment?_
 
 We call GitHub API with [__Octocrab Crate__](https://github.com/XAMPPRocky/octocrab). (Pic above)
 
+[(More about __GitHub API for Pull Requests__)](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28)
+
 Here we fetch the __20 Newest Pull Requests__ that are Open: [main.rs](https://github.com/lupyuen/nuttx-pr-bot/blob/main/src/main.rs#L97-L115)
 
 ```rust
