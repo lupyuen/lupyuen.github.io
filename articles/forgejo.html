@@ -178,6 +178,7 @@ git clone \
 <p><em>But Pull Requests shall be synced back to GitHub?</em></p>
 <p>Indeed, we’ll probably call <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>GitHub API</strong></a> to send the <strong>Pull Requests back to GitHub</strong>. (Pic above)</p>
 <p>With this setup, we can’t allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be <strong>merged at GitHub</strong>. Then Forgejo shall auto-sync the updates into our Git Forge.</p>
+<p><a href="https://lists.apache.org/thread/mphcf71f9xywgd1rvcsllp2klv606m87">(Discussion on <strong>GitHub Coexistence</strong>)</a></p>
 <p>That’s why we need <strong>Two Mirror Repos</strong>: Read-Only and Read-Write…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
@@ -332,6 +333,7 @@ e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
 <p>We’ll probably call <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>GitHub API</strong></a> to ship the <strong>Pull Requests back to GitHub</strong>. (Pic below)</p>
 <p>Right now we can’t allow Pull Requests to be locally merged at Forgejo. Instead, we’ll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.</p>
+<p><a href="https://lists.apache.org/thread/mphcf71f9xywgd1rvcsllp2klv606m87">(Discussion on <strong>GitHub Coexistence</strong>)</a></p>
 <p>Which explains why we need <strong>Two Mirror Repos</strong>: Read-Only Mirror and Read-Write Mirror.</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-mirror"><strong><code>nuttx-mirror</code></strong></a></td><td style="text-align: left"><a href="https://nuttx-forge.org/nuttx/nuttx-update"><strong><code>nuttx-update</code></strong></a></td></tr>
