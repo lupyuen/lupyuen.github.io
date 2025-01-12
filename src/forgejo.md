@@ -131,6 +131,8 @@ Indeed, we'll probably call [__GitHub API__](https://lupyuen.github.io/articles/
 
 With this setup, we can't allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be __merged at GitHub__. Then Forgejo shall auto-sync the updates into our Git Forge.
 
+[(Discussion on __GitHub Coexistence__)](https://lists.apache.org/thread/mphcf71f9xywgd1rvcsllp2klv606m87)
+
 That's why we need __Two Mirror Repos__: Read-Only and Read-Write...
 
 | | |
@@ -312,6 +314,8 @@ _What if we really need to Accept Pull Requests in our Read-Write Mirror?_
 We'll probably call [__GitHub API__](https://lupyuen.github.io/articles/llm#call-the-github-api) to ship the __Pull Requests back to GitHub__. (Pic below)
 
 Right now we can't allow Pull Requests to be locally merged at Forgejo. Instead, we'll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.
+
+[(Discussion on __GitHub Coexistence__)](https://lists.apache.org/thread/mphcf71f9xywgd1rvcsllp2klv606m87)
 
 Which explains why we need __Two Mirror Repos__: Read-Only Mirror and Read-Write Mirror.
 
