@@ -176,7 +176,7 @@ git clone \
 <p>(More about the Sync Script in a while)</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow3.jpg" alt="Pull Requests shall be synced back to GitHub" /></p>
 <p><em>But Pull Requests shall be synced back to GitHub?</em></p>
-<p>Indeed, we’ll probably call GitHub API to send the <strong>Pull Requests back to GitHub</strong>. (Pic above)</p>
+<p>Indeed, we’ll probably call <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>GitHub API</strong></a> to send the <strong>Pull Requests back to GitHub</strong>. (Pic above)</p>
 <p>With this setup, we can’t allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be <strong>merged at GitHub</strong>. Then Forgejo shall auto-sync the updates into our Git Forge.</p>
 <p>That’s why we need <strong>Two Mirror Repos</strong>: Read-Only and Read-Write…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
@@ -330,7 +330,7 @@ $ git push -f
 To nuttx-forge:nuttx/nuttx-update
 e26e8bda0e9...7d6b2e48044 master -&gt; master (forced update)</code></pre></div>
 <p><em>What if we really need to Accept Pull Requests in our Read-Write Mirror?</em></p>
-<p>We’ll probably call GitHub API to ship the <strong>Pull Requests back to GitHub</strong>. (Pic below)</p>
+<p>We’ll probably call <a href="https://lupyuen.github.io/articles/llm#call-the-github-api"><strong>GitHub API</strong></a> to ship the <strong>Pull Requests back to GitHub</strong>. (Pic below)</p>
 <p>Right now we can’t allow Pull Requests to be locally merged at Forgejo. Instead, we’ll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.</p>
 <p>Which explains why we need <strong>Two Mirror Repos</strong>: Read-Only Mirror and Read-Write Mirror.</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
