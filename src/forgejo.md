@@ -127,7 +127,7 @@ Forgejo won't auto-sync our Read-Write Repo. We wrote our own __Syncing Script__
 
 _But Pull Requests shall be synced back to GitHub?_
 
-Indeed, we'll probably call GitHub API to send the __Pull Requests back to GitHub__. (Pic above)
+Indeed, we'll probably call [__GitHub API__](https://lupyuen.github.io/articles/llm#call-the-github-api) to send the __Pull Requests back to GitHub__. (Pic above)
 
 With this setup, we can't allow Pull Requests to be locally merged at Forgejo. Instead, Pull Requests shall be __merged at GitHub__. Then Forgejo shall auto-sync the updates into our Git Forge.
 
@@ -309,7 +309,7 @@ e26e8bda0e9...7d6b2e48044 master -> master (forced update)
 
 _What if we really need to Accept Pull Requests in our Read-Write Mirror?_
 
-We'll probably call GitHub API to ship the __Pull Requests back to GitHub__. (Pic below)
+We'll probably call [__GitHub API__](https://lupyuen.github.io/articles/llm#call-the-github-api) to ship the __Pull Requests back to GitHub__. (Pic below)
 
 Right now we can't allow Pull Requests to be locally merged at Forgejo. Instead, we'll merge Pull Requests at GitHub. Then wait for Forgejo to auto-sync the updates back into our Git Forge.
 
