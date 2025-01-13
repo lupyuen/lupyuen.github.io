@@ -7,6 +7,7 @@
 [__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
+## Hmmm something is missing
 NuttShell (NSH) NuttX-12.8.0
 nsh> uname -a
 NuttX 12.8.0  risc-v rv-virt
@@ -24,7 +25,7 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
 
 _Can we ignore it? Maybe nobody will notice?_
 
-Noooooo! We use it to identify the __Exact Commit of NuttX__ (pic above) that was used in the build. _(Apps Hash would be helpful too)_
+Noooooo! Commit Hash identifies the __Exact Commit of NuttX__ (pic above) that was used to produce the NuttX Build. _(Apps Hash would be helpful too)_
 
 Watch as we stomp this seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
 
