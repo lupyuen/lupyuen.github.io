@@ -101,7 +101,7 @@ function sync_folder() {
     # generate_article lte2 ; exit
 
     # Commit the modified files to Docker or lupyuen.codeberg.page
-    if [[ "$sync" == *"lupyuen.org" ]]; then
+    if [[ "$sync" == "../lupyuen.org" ]]; then
       local src=$HOME/lupyuen.org
       local dest=lupyuen:/usr/local/apache2/htdocs
       set +x  #  Disable Echo.
@@ -113,7 +113,7 @@ function sync_folder() {
       git pull
       git status
       git add .
-      git commit --all --message="Sync from lupyuen.org"
+      git commit --all --message="$commit_msg"
       git push
     fi
 
@@ -121,7 +121,8 @@ function sync_folder() {
     popd
 }
 
-# Update the current folder
+# Update the current folder and fetch the Commit Title
+commit_msg=$(git --no-pager log -1 --format="%s")
 git pull
 
 # Sync to lupyuen.org
@@ -132,7 +133,7 @@ sync_folder ../lupyuen.codeberg.page
 
 # Sync to Codeberg Mirror roughly every 8th time
 if [[ $(($RANDOM % 8)) == 0 ]]; then
-    sync_folder ../codeberg.lupyuen.github.io
+    sync_folder ../codeberg.lupyuen.org
 fi
 
 exit
