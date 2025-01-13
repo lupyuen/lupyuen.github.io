@@ -4,7 +4,17 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
-Earlier this week TODO
+__`uname`__ looks odd on [__Apache NuttX RTOS__](TODO)...
+
+```bash
+TODO
+```
+
+See the subtle bug? The Commit Hash is missing!
+
+```bash
+TODO
+```
 
 _Can we ignore it? Maybe nobody will notice?_
 
