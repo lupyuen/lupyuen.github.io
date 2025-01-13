@@ -20,13 +20,9 @@ TODO
 
 _Can we ignore it? Maybe nobody will notice?_
 
-Noooooo! We use it to TODO
+Noooooo! We use it to TODO _(Apps Hash would be helpful too)_
 
-(App Hash would be helpful too)
-
-Watch as we stomp the seemingly simple bug... Thanks turns out to be __something seriously sinister__!
-
-_(Spoiler: Static Vars are broken)_
+Watch as we stomp this seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
 
 # TODO
 
