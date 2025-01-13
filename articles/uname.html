@@ -69,7 +69,8 @@
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title.png" alt="TODO" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong><code>uname</code></strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
+<div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
+NuttShell (NSH) NuttX-12.8.0
 nsh&gt; uname -a
 NuttX 12.8.0  risc-v rv-virt</code></pre></div>
 <p>See the subtle bug? The <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-13"><strong>Commit Hash</strong></a> is missing!</p>
@@ -78,7 +79,7 @@ nsh&gt; uname -a
 NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/uname-commit.png" alt="TODO" /></p>
 <p><em>Can we ignore it? Maybe nobody will notice?</em></p>
-<p>Noooooo! We use it to identify the <strong>Exact Commit of NuttX</strong> (pic above) that was used in the build. <em>(Apps Hash would be helpful too)</em></p>
+<p>Noooooo! Commit Hash identifies the <strong>Exact Commit of NuttX</strong> (pic above) that was used to produce the NuttX Build. <em>(Apps Hash would be helpful too)</em></p>
 <p>Watch as we stomp this seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx/pull/15501
 riscv/Toolchain.defs: guard -r use #15501
