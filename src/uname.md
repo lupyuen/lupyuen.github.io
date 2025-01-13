@@ -7,12 +7,14 @@
 [__`uname`__](TODO) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
+## Hmmm something is missing...
 TODO
 ```
 
 See the subtle bug? The [__Commit Hash__](TODO) is missing!
 
 ```bash
+## Commit Hash should appear like this...
 TODO
 ```
 
@@ -21,6 +23,8 @@ _Can we ignore it? Maybe nobody will notice?_
 Noooooo! We use it to TODO
 
 (App Hash would be helpful too)
+
+Watch as we track down this seemingly tiny bug... Which turns out to be __something seriously sinister__!
 
 # TODO
 
