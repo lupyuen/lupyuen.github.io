@@ -4,23 +4,27 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
-[__`uname`__](TODO) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
+[__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
-## Hmmm something is missing
-TODO
+NuttShell (NSH) NuttX-12.8.0
+nsh> uname -a
+NuttX 12.8.0  risc-v rv-virt
 ```
 
-See the subtle bug? The [__Commit Hash__](TODO) is missing!
+See the subtle bug? The [__Commit Hash__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-13) is missing!
 
 ```bash
 ## Commit Hash should always appear
-TODO
+nsh> uname -a
+NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
 ```
+
+![TODO](https://lupyuen.github.io/images/uname-commit.png)
 
 _Can we ignore it? Maybe nobody will notice?_
 
-Noooooo! We use it to TODO _(Apps Hash would be helpful too)_
+Noooooo! We use it to identify the __Exact Commit of NuttX__ (pic above) that was used in the build. _(Apps Hash would be helpful too)_
 
 Watch as we stomp this seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
 
@@ -33,15 +37,6 @@ riscv/Toolchain.defs: guard -r use #15501
 https://github.com/apache/nuttx/pull/15444
 modlib: preprocess gnu-elf.ld for executable ELF #15444
 
-what;s missing?
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-13
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13
-NuttShell (NSH) NuttX-12.8.0
-nsh> uname -a
-NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
-NuttShell (NSH) NuttX-12.8.0
-nsh> uname -a
-NuttX 12.8.0  risc-v rv-virt
 
 But not sg2000
 https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-01-13
@@ -373,6 +368,14 @@ Why this PR?
 Because uname was working before:
 https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399
 ```
+
+TODO: uname-hex1
+
+![TODO](https://lupyuen.github.io/images/uname-hex1.png)
+
+TODO: uname-hex2
+
+![TODO](https://lupyuen.github.io/images/uname-hex2.png)
 
 # What's Next
 
