@@ -7,14 +7,14 @@
 [__`uname`__](TODO) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
-## Hmmm something is missing...
+## Hmmm something is missing
 TODO
 ```
 
 See the subtle bug? The [__Commit Hash__](TODO) is missing!
 
 ```bash
-## Commit Hash should appear like this...
+## Commit Hash should always appear
 TODO
 ```
 
@@ -24,10 +24,13 @@ Noooooo! We use it to TODO
 
 (App Hash would be helpful too)
 
-Watch as we track down this seemingly tiny bug... Which turns out to be __something seriously sinister__!
+Watch as we stomp the seemingly simple bug... Thanks turns out to be __something seriously sinister__!
+
+_(Spoiler: Static Vars are broken)_
 
 # TODO
 
+```text
 https://github.com/apache/nuttx/pull/15501
 riscv/Toolchain.defs: guard -r use #15501
 
@@ -373,6 +376,7 @@ https://github.com/apache/nuttx/pull/15444#issuecomment-2586160111
 Why this PR?
 Because uname was working before:
 https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399
+```
 
 # What's Next
 
