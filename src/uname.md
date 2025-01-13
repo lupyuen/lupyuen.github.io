@@ -4,13 +4,13 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
-__`uname`__ looks odd on [__Apache NuttX RTOS__](TODO)...
+[__`uname`__](TODO) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
 TODO
 ```
 
-See the subtle bug? The Commit Hash is missing!
+See the subtle bug? The [__Commit Hash__](TODO) is missing!
 
 ```bash
 TODO
