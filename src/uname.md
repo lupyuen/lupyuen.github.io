@@ -4,6 +4,14 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
+Earlier this week TODO
+
+_Can we ignore it? Maybe nobody will notice?_
+
+Noooooo! We use it to TODO
+
+(App Hash would be helpful too)
+
 # TODO
 
 https://github.com/apache/nuttx/pull/15501
