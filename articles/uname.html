@@ -68,14 +68,17 @@
 <li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title.png" alt="TODO" /></p>
-<p><a href="TODO"><strong><code>uname</code></strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
-TODO</code></pre></div>
-<p>See the subtle bug? The <a href="TODO"><strong>Commit Hash</strong></a> is missing!</p>
+<p><a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong><code>uname</code></strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
+nsh&gt; uname -a
+NuttX 12.8.0  risc-v rv-virt</code></pre></div>
+<p>See the subtle bug? The <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-13"><strong>Commit Hash</strong></a> is missing!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit Hash should always appear
-TODO</code></pre></div>
+nsh&gt; uname -a
+NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/uname-commit.png" alt="TODO" /></p>
 <p><em>Can we ignore it? Maybe nobody will notice?</em></p>
-<p>Noooooo! We use it to TODO <em>(Apps Hash would be helpful too)</em></p>
+<p>Noooooo! We use it to identify the <strong>Exact Commit of NuttX</strong> (pic above) that was used in the build. <em>(Apps Hash would be helpful too)</em></p>
 <p>Watch as we stomp this seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx/pull/15501
 riscv/Toolchain.defs: guard -r use #15501
@@ -83,15 +86,6 @@ riscv/Toolchain.defs: guard -r use #15501
 https://github.com/apache/nuttx/pull/15444
 modlib: preprocess gnu-elf.ld for executable ELF #15444
 
-what;s missing?
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-13
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13
-NuttShell (NSH) NuttX-12.8.0
-nsh&gt; uname -a
-NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
-NuttShell (NSH) NuttX-12.8.0
-nsh&gt; uname -a
-NuttX 12.8.0  risc-v rv-virt
 
 But not sg2000
 https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-01-13
@@ -421,7 +415,12 @@ https://github.com/apache/nuttx/pull/15444#issuecomment-2586160111
 
 Why this PR?
 Because uname was working before:
-https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399</code></pre></div>
+<p>TODO: uname-hex1</p>
+<p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="TODO" /></p>
+<p>TODO: uname-hex2</p>
+<p><img src="https://lupyuen.github.io/images/uname-hex2.png" alt="TODO" /></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
