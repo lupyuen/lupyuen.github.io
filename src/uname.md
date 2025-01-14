@@ -39,7 +39,7 @@ Our bug happens in __NuttX Shell__. Thus we search the [__NuttX Apps Repo__](TOD
 
 TODO: Pic of uname search
 
-[__Our search for `uname`__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/a6b9e718460a56722205c2a84a9b07b94ca664aa/nshlib/nsh_syscmds.c#L771)
+[__Our search for `uname`__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771)
 
 ```c
 TODO
@@ -51,7 +51,7 @@ We search the [__NuttX Kernel Repo__](TODO) for __`uname`__...
 
 TODO: Pic of uname search
 
-[__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/a2d4d74af75ffab527ac2422798c3368101da5f3/libs/libc/misc/lib_utsname.c#L93)
+[__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93)
 
 ```c
 TODO
@@ -63,7 +63,7 @@ But is __uname__ a __Kernel Function__? We'll find out in a bit!
 
 _What's this CONFIG_VERSION_BUILD?_
 
-We saw earlier that __`uname`__ function returns __CONFIG_VERSION_BUILD__: [lib_utsname.c](https://github.com/apache/nuttx/blob/a2d4d74af75ffab527ac2422798c3368101da5f3/libs/libc/misc/lib_utsname.c#L93)
+We saw earlier that __`uname`__ function returns __CONFIG_VERSION_BUILD__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93)
 
 ```c
 TODO
@@ -83,13 +83,13 @@ $ grep CONFIG_VERSION_BUILD .config
 ## Nope it's not!
 ```
 
-We head back to NuttX Kernel Repo and [__search for CONFIG_VERSION_BUILD__](https://github.com/apache/nuttx/blob/a2d4d74af75ffab527ac2422798c3368101da5f3/Documentation/guides/versioning_and_task_names.rst#L57)...
+We head back to NuttX Kernel Repo and [__search for CONFIG_VERSION_BUILD__](https://github.com/apache/nuttx/blob/master/Documentation/guides/versioning_and_task_names.rst#L57)...
 
 > _The Version Number you are looking at comes from the Header File __nuttx/include/nuttx/version.h__._ 
 
 > _That Header File was created at build time from a Hidden File that you can find in the top-level nuttx directory called __.version__._
 
-Aha! __CONFIG_VERSION_BUILD__ comes from __version.h__!
+Aha! __CONFIG_VERSION_BUILD__ comes from __version.h__...
 
 ```bash
 $ cat include/nuttx/version.h 
@@ -97,40 +97,62 @@ $ cat include/nuttx/version.h
 ...
 ```
 
-[(Thanks to TODO!)](TODO)
+[(Thanks to TODO for porting the docs!)](TODO)
+
+# Static Variable g_version
+
+_CONFIG_VERSION_BUILD looks OK. But is it compiled correctly into the NuttX Image?_
+
+Let's snoop the __NuttX Kernel Image__ to be sure that __CONFIG_VERSION_BUILD__ is correct.
+
+We see that __CONFIG_VERSION_BUILD__ is stored in a Static Variable __g_version__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
+
+```c
+// CONFIG_VERSION_BUILD goes inside Static Var g_version
+static char g_version[] = CONFIG_VERSION_BUILD;
+
+// g_version goes into uname output
+int uname(FAR struct utsname *name) { ...
+  strlcpy(name->version, g_version, sizeof(name->version));
+```
+
+According to __NuttX Linker Map__: The address of __g_version__ is __`0x8040` `03B8`__...
+
+```bash
+## Search for g_version in Linker Map, show 1 line after
+$ grep \
+  --after-context=1 \
+  g_version \
+  nuttx.map
+
+.data.g_version
+  0x804003b8  0x21  staging/libkc.a(lib_utsname.o)
+```
+
+What's the value inside __g_version__? We dump the __Binary Image__ of NuttX Kernel...
+
+```bash
+## Export the NuttX Binary Image to nuttx.bin
+riscv-none-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+```
+
+Remember __g_version__ is at __`0x8040` `03B8`__?
+
+We open __nuttx.bin__ in [__VSCode Hex Viewer__](TODO), press __Ctrl-G__ and jump to __`0x2003B8`__...
+
+(Because NuttX Kernel loads at [__`0x8020` `0000`__](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26))
+
+![TODO](https://lupyuen.github.io/images/uname-hex1.png)
+
+And that's our __CONFIG_VERSION_BUILD__! Looks hunky dory, why wasn't it returned correctly to __uname__ and NuttX Shell?
 
 # TODO
 
 ```text
-        ## Export the Binary Image to nuttx.bin
-        riscv-none-elf-objcopy \
-          -O binary \
-          nuttx \
-          nuttx.bin
-
-#if defined(__DATE__) && defined(__TIME__) && \
-    !defined(CONFIG_LIBC_UNAME_DISABLE_TIMESTAMP)
-static char g_version[] = CONFIG_VERSION_BUILD " " __DATE__ " " __TIME__;
-#else
-static char g_version[] = CONFIG_VERSION_BUILD;
-#endif
-
-knsh64:
-/private/tmp/special-qemu-riscv-knsh64/nuttx/nuttx/libs/libc/misc/lib_utsname.c:108
-
-  strlcpy(name->version,  g_version, sizeof(name->version));
-    80216790:	03300613          	li	a2,51
-    80216794:	001ea597          	auipc	a1,0x1ea
-    80216798:	c2458593          	add	a1,a1,-988 # 804003b8 <g_version>
-    8021679c:	04a40513          	add	a0,s0,74
-    802167a0:	8b9f10ef          	jal	80208058 <strlcpy>
-
-VSCode Hex Viewer
-nsh64: go to 2d360
-knsh64: go to 2003b8 (kernel loads at 80200000)
-looks identical
-
-Call uname like https://github.com/apache/nuttx-apps/blob/a6b9e718460a56722205c2a84a9b07b94ca664aa/nshlib/nsh_syscmds.c#L771
+Call uname like https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771
 #include <sys/utsname.h>
   struct utsname info;
   ret = uname(&info);
@@ -343,6 +365,8 @@ https://github.com/apache/nuttx/issues/15526
 modlib:gnu-elf.ld.in load exe elf data section mismatch #15527
 https://github.com/apache/nuttx/pull/15527
 
+Lesson Learnt: Please pay attention to the slightest disturbances, like the `uname` output. It might be hiding something seriously sinister!
+
 https://github.com/apache/nuttx/pull/15501
 riscv/Toolchain.defs: guard -r use #15501
 
@@ -354,16 +378,8 @@ But not sg2000
 https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-01-13
 nsh> uname -a
 NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:17:37 risc-v milkv_duos
-
 ```
 
-TODO: uname-hex1
-
-![TODO](https://lupyuen.github.io/images/uname-hex1.png)
-
-TODO: uname-hex2
-
-![TODO](https://lupyuen.github.io/images/uname-hex2.png)
 
 # What's Next
 
