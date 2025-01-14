@@ -66,10 +66,14 @@
     <h1 class="title">Fixing a uname bug (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#inside-uname" title="Inside uname">1 Inside uname</a><ul></ul></li>
-<li><a href="#config_version_build" title="CONFIG_VERSION_BUILD">2 CONFIG_VERSION_BUILD</a><ul></ul></li>
+<li><a href="#commit-hash-aka-config_version_build" title="Commit Hash a.k.a. CONFIG_VERSION_BUILD">2 Commit Hash a.k.a. CONFIG_VERSION_BUILD</a><ul></ul></li>
 <li><a href="#static-variable-g_version" title="Static Variable g_version">3 Static Variable g_version</a><ul></ul></li>
-<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
+<li><a href="#call-uname-in-nuttx-kernel" title="Call uname in NuttX Kernel">4 Call uname in NuttX Kernel</a><ul></ul></li>
+<li><a href="#call-uname-in-nuttx-app" title="Call uname in NuttX App">5 Call uname in NuttX App</a><ul></ul></li>
+<li><a href="#dump-the-nuttx-app-disassembly" title="Dump the NuttX App Disassembly">6 Dump the NuttX App Disassembly</a><ul></ul></li>
+<li><a href="#snoop-uname-in-nuttx-app" title="Snoop uname in NuttX App">7 Snoop uname in NuttX App</a><ul></ul></li>
+<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title.png" alt="TODO" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong><code>uname</code></strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
@@ -97,7 +101,7 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
 <p>But is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll find out in a bit!</p>
-<h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
+<h1 id="commit-hash-aka-config_version_build"><a class="doc-anchor" href="#commit-hash-aka-config_version_build">§</a>2 Commit Hash a.k.a. CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
 <p>We saw earlier that <strong><code>uname</code></strong> function returns <strong>CONFIG_VERSION_BUILD</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
@@ -146,119 +150,84 @@ riscv-none-elf-objcopy \
   nuttx.bin</code></pre></div>
 <p>Remember <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>?</p>
 <p>We open <strong>nuttx.bin</strong> in <a href="TODO"><strong>VSCode Hex Viewer</strong></a>, press <strong>Ctrl-G</strong> and jump to <strong><code>0x2003B8</code></strong>…</p>
-<p>(Because NuttX Kernel loads at <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26"><strong><code>0x8020</code> <code>0000</code></strong></a>)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="TODO" /></p>
-<p>And that’s our <strong>CONFIG_VERSION_BUILD</strong>! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Call uname like https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771
-#include &lt;sys/utsname.h&gt;
-  struct utsname info;
-  ret = uname(&amp;info);
-
-Call uname
-https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53
-
-knsh64:
-https://gist.github.com/lupyuen/ee3eee9752165bee8f3e60d57c224372#file-special-qemu-riscv-knsh64-log-L1410
-NuttShell (NSH) NuttX-12.8.0
-nsh&gt; hello
-Hello, World!!
-ret=0
-sysname=NuttX
-nodename=
-release=12.8.0
-version=
-machine=risc-v
-
-print in kernel:
-https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121
-https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109
-
+<p>And that’s our <strong>CONFIG_VERSION_BUILD</strong> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
+<h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
+<p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
+<p>We tweak the NuttX Kernel and call <strong><code>uname</code></strong> at startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121">qemu_rv_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>And inside the <strong><code>uname</code></strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109">lib_utsname.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>(Why twice? We’ll see in a while)</p>
+<p>We boot NuttX on <strong>QEMU RISC-V 64-bit</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO: qemu
 ABC
-uname: From _info: g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
-From printf: g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
-board_app_initialize: version=c3330b17c7e-dirty Jan 13 2025 11:49:41
-
-NuttShell (NSH) NuttX-12.7.0
+From _info:
+  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+From printf:
+  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+board_app_initialize:
+  version=c3330b17c7e-dirty Jan 13 2025 11:49:41</code></pre></div>
+<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+<p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <strong>CONFIG_VERSION_BUILD</strong> a.k.a. Commit Hash. No Kernel Corruption! (Phew)</p>
+<h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
+<p><em>Maybe something got corrupted in our NuttX App?</em></p>
+<p>Wow that’s so diabolical, let’s find out. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53">hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>Indeed something is messed up with <strong>g_version</strong> a.k.a. <strong>CONFIG_VERSION_BUILD</strong> a.k.a. Commit Hash…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
 nsh&gt; hello
-Hello, World!!
-From printf: g_version=
-ret=0
-sysname=NuttX
-nodename=
-release=12.7.0
-version=
-machine=risc-v
-nsh&gt; 
+version=</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ee3eee9752165bee8f3e60d57c224372#file-special-qemu-riscv-knsh64-log-L1410">(See the <strong>Complete Log</strong>)</a></p>
+<p>Inside our NuttX App: Why is <strong>g_version</strong> empty? Wasn’t it OK in NuttX Kernel?</p>
+<h1 id="dump-the-nuttx-app-disassembly"><a class="doc-anchor" href="#dump-the-nuttx-app-disassembly">§</a>6 Dump the NuttX App Disassembly</h1>
+<p><em>Why did uname work differently in NuttX Kernel vs NuttX Apps?</em></p>
+<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin_debug/hello \
+  &gt;hello.S \
+  2&gt;&amp;1
 
-nuttx/hello.S
+TODO: grep</code></pre></div>
+<p>But ugh NuttX Build has unhelpfully <strong>Discarded the Debug Symbols</strong> from our NuttX App, making it hard to digest.</p>
+<p><em>How to recover the Debug Symbols?</em></p>
+<p>We snoop around the <strong>NuttX Build</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Update our Hello App
+$ cd ../apps
+$ touch examples/hello/hello_main.c
 
-➜  apps git:(uname) $ touch examples/hello/hello_main.c
-➜  apps git:(uname) $ make import V=1
-LD:  /Users/luppy/riscv/apps/bin/hello 
-riscv-none-elf-ld -e main --oformat elf64-littleriscv -T /Users/luppy/riscv/nuttx/libs/libc/modlib/gnu-elf.ld -e __start -Bstatic -T/Users/luppy/riscv/apps/import/scripts/gnu-elf.ld  -L/Users/luppy/riscv/apps/import/libs -L &quot;/Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d&quot; /Users/luppy/riscv/apps/import/startup/crt0.o  hello_main.c.Users.luppy.riscv.apps.examples.hello.o --start-group -lmm -lc -lproxies -lgcc /Users/luppy/riscv/apps/libapps.a /Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a --end-group -o  /Users/luppy/riscv/apps/bin/hello
+## Trace the NuttX Build for Hello App
+$ make import V=1
+LD:  apps/bin/hello 
+riscv-none-elf-ld -e main --oformat elf64-littleriscv -T nuttx/libs/libc/modlib/gnu-elf.ld -e __start -Bstatic -Tapps/import/scripts/gnu-elf.ld  -Lapps/import/libs -L &quot;xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d&quot; apps/import/startup/crt0.o  hello_main.c...apps.examples.hello.o --start-group -lmm -lc -lproxies -lgcc apps/libapps.a xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a --end-group -o  apps/bin/hello
+cp apps/bin/hello apps/bin_debug
+riscv-none-elf-strip --strip-unneeded apps/bin/hello
 
-chmod +x /Users/luppy/riscv/apps/bin/hello
-mkdir -p /Users/luppy/riscv/apps/bin_debug
-cp /Users/luppy/riscv/apps/bin/hello /Users/luppy/riscv/apps/bin_debug
-riscv-none-elf-strip --strip-unneeded /Users/luppy/riscv/apps/bin/hello
-
-LD:  /Users/luppy/riscv/apps/bin/hello 
-riscv-none-elf-ld \
-  -e main \
-  --oformat elf64-littleriscv \
-  -T /Users/luppy/riscv/nuttx/libs/libc/modlib/gnu-elf.ld \
-  -e __start \
-  -Bstatic \
-  -T/Users/luppy/riscv/apps/import/scripts/gnu-elf.ld  \
-  -L/Users/luppy/riscv/apps/import/libs \
-  -L &quot;/Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d&quot; /Users/luppy/riscv/apps/import/startup/crt0.o  hello_main.c.Users.luppy.riscv.apps.examples.hello.o \
-  --start-group \
-  -lmm \
-  -lc \
-  -lproxies \
-  -lgcc /Users/luppy/riscv/apps/libapps.a /Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a \
-  --end-group \
-  -o  /Users/luppy/riscv/apps/bin/hello
-
-➜  apps git:(uname) $ ls -l /Users/luppy/riscv/apps/bin/hello
--rwxr-xr-x  1 luppy  staff  14048 Jan 13 11:32 /Users/luppy/riscv/apps/bin/hello
-➜  apps git:(uname) $ 
-cd examples/hello
- hello git:(uname) $ riscv-none-elf-ld \
-  -e main \
-  --oformat elf64-littleriscv \
-  -T /Users/luppy/riscv/nuttx/libs/libc/modlib/gnu-elf.ld \
-  -e __start \
-  -Bstatic \
-  -T/Users/luppy/riscv/apps/import/scripts/gnu-elf.ld  \
-  -L/Users/luppy/riscv/apps/import/libs \
-  -L &quot;/Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d&quot; /Users/luppy/riscv/apps/import/startup/crt0.o  hello_main.c.Users.luppy.riscv.apps.examples.hello.o \
-  --start-group \
-  -lmm \
-  -lc \
-  -lproxies \
-  -lgcc /Users/luppy/riscv/apps/libapps.a /Users/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imafdc_zicsr/lp64d/libgcc.a \
-  --end-group \
-  -o  /Users/luppy/riscv/apps/bin/hello
-➜  hello git:(uname) $ ls -l /Users/luppy/riscv/apps/bin/hello
--rwxr-xr-x  1 luppy  staff  170928 Jan 13 11:35 /Users/luppy/riscv/apps/bin/hello
-➜  hello git:(uname) $ 
-cd nuttx
-  riscv-none-elf-objdump \
-    --syms --source --reloc --demangle --line-numbers --wide \
-    --debugging \
-    ../apps/bin/hello \
-    &gt;hello.S \
-    2&gt;&amp;1
-
-/Users/luppy/riscv/nuttx/hello.S
+## apps/bin/hello is missing the Debug Symbols
+## apps/bin_debug/hello retains the Debug Symbols!</code></pre></div>
+<p>Ah NuttX Build has squirrelled away the <strong>Debug Version</strong> of our app into <strong>apps/bin_debug</strong>. We dump the <strong>RISC-V Disassembly</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin_debug/hello
+cd ../nuttx
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin_debug/hello \
+  &gt;hello.S \
+  2&gt;&amp;1</code></pre></div><h1 id="snoop-uname-in-nuttx-app"><a class="doc-anchor" href="#snoop-uname-in-nuttx-app">§</a>7 Snoop uname in NuttX App</h1>
+<p>TODO</p>
+<p><a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06">hello.S</a></p>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>nuttx/hello.S
 https://gist.github.com/lupyuen/f65565ba2fd825ae4226d2aee8a63c94
 
 https://gist.github.com/lupyuen/877498cf437618b3b70ba57e59860cfe#file-hello-s-L356-L430
 
 00000000c00000ba &lt;uname&gt;:
 uname():
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:95
+nuttx/libs/libc/misc/lib_utsname.c:95
  *   Otherwise, -1 will be returned and errno set to indicate the error.
  *
  ****************************************************************************/
@@ -266,7 +235,7 @@ uname():
 int uname(FAR struct utsname *name)
 {
     c00000ba:	1101                	add	sp,sp,-32
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:100
+nuttx/libs/libc/misc/lib_utsname.c:100
   int ret = 0;
 
   /* Copy the strings.  Assure that each is NUL terminated. */
@@ -275,16 +244,16 @@ int uname(FAR struct utsname *name)
     c00000bc:	4655                	li	a2,21
     c00000be:	00002597          	auipc	a1,0x2
     c00000c2:	c5a58593          	add	a1,a1,-934 # c0001d18 &lt;_einit+0x74&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:95
+nuttx/libs/libc/misc/lib_utsname.c:95
 {
     c00000c6:	ec06                	sd	ra,24(sp)
     c00000c8:	e822                	sd	s0,16(sp)
     c00000ca:	e426                	sd	s1,8(sp)
     c00000cc:	842a                	mv	s0,a0
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:100
+nuttx/libs/libc/misc/lib_utsname.c:100
   strlcpy(name-&gt;sysname, &quot;NuttX&quot;, sizeof(name-&gt;sysname));
     c00000ce:	5ee000ef          	jal	c00006bc &lt;strlcpy&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:104
+nuttx/libs/libc/misc/lib_utsname.c:104
 
   /* Get the hostname */
 
@@ -293,10 +262,10 @@ int uname(FAR struct utsname *name)
     c00000d6:	01540513          	add	a0,s0,21
     c00000da:	30b010ef          	jal	c0001be4 &lt;gethostname&gt;
     c00000de:	84aa                	mv	s1,a0
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:105
+nuttx/libs/libc/misc/lib_utsname.c:105
   name-&gt;nodename[HOST_NAME_MAX - 1] = &#39;\0&#39;;
     c00000e0:	02040a23          	sb	zero,52(s0)
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:107
+nuttx/libs/libc/misc/lib_utsname.c:107
 
   strlcpy(name-&gt;release,  CONFIG_VERSION_STRING, sizeof(name-&gt;release));
     c00000e4:	4655                	li	a2,21
@@ -304,7 +273,7 @@ int uname(FAR struct utsname *name)
     c00000ea:	c3a58593          	add	a1,a1,-966 # c0001d20 &lt;_einit+0x7c&gt;
     c00000ee:	03540513          	add	a0,s0,53
     c00000f2:	5ca000ef          	jal	c00006bc &lt;strlcpy&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:109
+nuttx/libs/libc/misc/lib_utsname.c:109
 
   _info(&quot;From _info: g_version=%s\n&quot;, g_version); //// TODO
     c00000f6:	00100697          	auipc	a3,0x100
@@ -315,21 +284,21 @@ int uname(FAR struct utsname *name)
     c000010a:	c2258593          	add	a1,a1,-990 # c0001d28 &lt;_einit+0x84&gt;
     c000010e:	4519                	li	a0,6
     c0000110:	62c000ef          	jal	c000073c &lt;syslog&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:110
+nuttx/libs/libc/misc/lib_utsname.c:110
   printf(&quot;From printf: g_version=%s\n&quot;, g_version); //// TODO
     c0000114:	00100597          	auipc	a1,0x100
     c0000118:	0ec58593          	add	a1,a1,236 # c0100200 &lt;g_version&gt;
     c000011c:	00002517          	auipc	a0,0x2
     c0000120:	c2c50513          	add	a0,a0,-980 # c0001d48 &lt;_einit+0xa4&gt;
     c0000124:	036000ef          	jal	c000015a &lt;printf&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:111
+nuttx/libs/libc/misc/lib_utsname.c:111
   strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
     c0000128:	03300613          	li	a2,51
     c000012c:	00100597          	auipc	a1,0x100
     c0000130:	0d458593          	add	a1,a1,212 # c0100200 &lt;g_version&gt;
     c0000134:	04a40513          	add	a0,s0,74
     c0000138:	584000ef          	jal	c00006bc &lt;strlcpy&gt;
-/Users/luppy/riscv/nuttx/libs/libc/misc/lib_utsname.c:113
+nuttx/libs/libc/misc/lib_utsname.c:113
 
 
   nuttx git:(uname) ✗ $ make distclean
@@ -374,7 +343,7 @@ modlib: preprocess gnu-elf.ld for executable ELF #15444
 But not sg2000
 https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-01-13
 nsh&gt; uname -a
-NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:17:37 risc-v milkv_duos</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:17:37 risc-v milkv_duos</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
