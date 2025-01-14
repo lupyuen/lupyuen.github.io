@@ -402,7 +402,7 @@ We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiah
 
 - [__modlib: gnu-elf.ld.in load exe elf data section mismatch__](https://github.com/apache/nuttx/pull/15527)
 
-__Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __`uname`__ output. It might be hiding something seriously sinister!
+__Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __`uname`__ output. It might be a sign of something seriously sinister simmering under the surface!
 
 # What's Next
 
