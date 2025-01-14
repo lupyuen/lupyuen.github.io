@@ -33,7 +33,7 @@ Watch as we stomp this seemingly simple bug... That turns out to be __something 
 
 _uname command: How does it work?_
 
-To solve our mystery: First we understand what's inside the __`uname`__ command.
+Use the Source, Luke! First we understand what's inside the __`uname`__ command.
 
 Our bug happens in __NuttX Shell__. Thus we search the [__NuttX Apps Repo__](TODO) for __`uname`__...
 
@@ -111,9 +111,13 @@ We see that __CONFIG_VERSION_BUILD__ is stored in a Static Variable __g_version_
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
 static char g_version[] = CONFIG_VERSION_BUILD;
 
-// g_version goes into uname output
-int uname(FAR struct utsname *name) { ...
-  strlcpy(name->version, g_version, sizeof(name->version));
+// g_version goes into the uname output
+int uname(FAR struct utsname *output) { ...
+  strlcpy(
+    output->version,         // Copy into the Output Version
+    g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
+    sizeof(output->version)  // Making sure we don't overflow
+  );
 ```
 
 According to __NuttX Linker Map__: The address of __g_version__ is __`0x8040` `03B8`__...
@@ -258,143 +262,121 @@ riscv-none-elf-objdump \
   2>&1
 ```
 
+[(See __RISC-V Disassembly hello.S__)](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
+
 # Snoop uname in NuttX App
 
-TODO
+_Once Again: How is uname different from NuttX Kernel vs NuttX App?_
 
-[hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
+Earlier we dumped the __RISC-V Disassembly__ for our modded Hello App: [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
 
-TODO
-
-# TODO
+We browse [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06) and search for __`uname`__. This appears: [hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496)
 
 ```text
-nuttx/hello.S
-https://gist.github.com/lupyuen/f65565ba2fd825ae4226d2aee8a63c94
+int uname(FAR struct utsname *name) { ...
 
-https://gist.github.com/lupyuen/877498cf437618b3b70ba57e59860cfe#file-hello-s-L356-L430
+_info("From _info: g_version=%s\n", g_version);
+  c000016e: 00100697           auipc a3,0x100
+  c0000172: 0aa68693           add a3,a3,170 # c0100218 <g_version>
+  c0000176: 00002617           auipc a2,0x2
+  c000017a: ef260613           add a2,a2,-270 # c0002068 <__FUNCTION__.0>
+  c000017e: 00002597           auipc a1,0x2
+  c0000182: cd258593           add a1,a1,-814 # c0001e50 <_einit+0x120>
+  c0000186: 4519               li a0,6
+  c0000188: 640000ef           jal c00007c8 <syslog>
 
-00000000c00000ba <uname>:
-uname():
-nuttx/libs/libc/misc/lib_utsname.c:95
- *   Otherwise, -1 will be returned and errno set to indicate the error.
- *
- ****************************************************************************/
+printf("From printf: g_version=%s\n", g_version);
+  c000018c: 00100597           auipc a1,0x100
+  c0000190: 08c58593           add a1,a1,140 # c0100218 <g_version>
+  c0000194: 00002517           auipc a0,0x2
+  c0000198: cdc50513           add a0,a0,-804 # c0001e70 <_einit+0x140>
+  c000019c: 04a000ef           jal c00001e6 <printf>
 
-int uname(FAR struct utsname *name)
-{
-    c00000ba:	1101                	add	sp,sp,-32
-nuttx/libs/libc/misc/lib_utsname.c:100
-  int ret = 0;
+printf("Address of g_version=%p\n", g_version);
+  c00001a0: 00100597           auipc a1,0x100
+  c00001a4: 07858593           add a1,a1,120 # c0100218 <g_version>
+  c00001a8: 00002517           auipc a0,0x2
+  c00001ac: ce850513           add a0,a0,-792 # c0001e90 <_einit+0x160>
+  c00001b0: 036000ef           jal c00001e6 <printf>
 
-  /* Copy the strings.  Assure that each is NUL terminated. */
-
-  strlcpy(name->sysname, "NuttX", sizeof(name->sysname));
-    c00000bc:	4655                	li	a2,21
-    c00000be:	00002597          	auipc	a1,0x2
-    c00000c2:	c5a58593          	add	a1,a1,-934 # c0001d18 <_einit+0x74>
-nuttx/libs/libc/misc/lib_utsname.c:95
-{
-    c00000c6:	ec06                	sd	ra,24(sp)
-    c00000c8:	e822                	sd	s0,16(sp)
-    c00000ca:	e426                	sd	s1,8(sp)
-    c00000cc:	842a                	mv	s0,a0
-nuttx/libs/libc/misc/lib_utsname.c:100
-  strlcpy(name->sysname, "NuttX", sizeof(name->sysname));
-    c00000ce:	5ee000ef          	jal	c00006bc <strlcpy>
-nuttx/libs/libc/misc/lib_utsname.c:104
-
-  /* Get the hostname */
-
-  ret = gethostname(name->nodename, HOST_NAME_MAX);
-    c00000d2:	02000593          	li	a1,32
-    c00000d6:	01540513          	add	a0,s0,21
-    c00000da:	30b010ef          	jal	c0001be4 <gethostname>
-    c00000de:	84aa                	mv	s1,a0
-nuttx/libs/libc/misc/lib_utsname.c:105
-  name->nodename[HOST_NAME_MAX - 1] = '\0';
-    c00000e0:	02040a23          	sb	zero,52(s0)
-nuttx/libs/libc/misc/lib_utsname.c:107
-
-  strlcpy(name->release,  CONFIG_VERSION_STRING, sizeof(name->release));
-    c00000e4:	4655                	li	a2,21
-    c00000e6:	00002597          	auipc	a1,0x2
-    c00000ea:	c3a58593          	add	a1,a1,-966 # c0001d20 <_einit+0x7c>
-    c00000ee:	03540513          	add	a0,s0,53
-    c00000f2:	5ca000ef          	jal	c00006bc <strlcpy>
-nuttx/libs/libc/misc/lib_utsname.c:109
-
-  _info("From _info: g_version=%s\n", g_version); //// TODO
-    c00000f6:	00100697          	auipc	a3,0x100
-    c00000fa:	10a68693          	add	a3,a3,266 # c0100200 <g_version>
-    c00000fe:	00002617          	auipc	a2,0x2
-    c0000102:	e0260613          	add	a2,a2,-510 # c0001f00 <__FUNCTION__.0>
-    c0000106:	00002597          	auipc	a1,0x2
-    c000010a:	c2258593          	add	a1,a1,-990 # c0001d28 <_einit+0x84>
-    c000010e:	4519                	li	a0,6
-    c0000110:	62c000ef          	jal	c000073c <syslog>
-nuttx/libs/libc/misc/lib_utsname.c:110
-  printf("From printf: g_version=%s\n", g_version); //// TODO
-    c0000114:	00100597          	auipc	a1,0x100
-    c0000118:	0ec58593          	add	a1,a1,236 # c0100200 <g_version>
-    c000011c:	00002517          	auipc	a0,0x2
-    c0000120:	c2c50513          	add	a0,a0,-980 # c0001d48 <_einit+0xa4>
-    c0000124:	036000ef          	jal	c000015a <printf>
-nuttx/libs/libc/misc/lib_utsname.c:111
-  strlcpy(name->version,  g_version, sizeof(name->version));
-    c0000128:	03300613          	li	a2,51
-    c000012c:	00100597          	auipc	a1,0x100
-    c0000130:	0d458593          	add	a1,a1,212 # c0100200 <g_version>
-    c0000134:	04a40513          	add	a0,s0,74
-    c0000138:	584000ef          	jal	c00006bc <strlcpy>
-nuttx/libs/libc/misc/lib_utsname.c:113
-
-
-  nuttx git:(uname) ✗ $ make distclean
-➜  nuttx git:(uname) ✗ $ tools/configure.sh milkv_duos:nsh
-make
-relink hello
-  riscv-none-elf-objdump \
-    --syms --source --reloc --demangle --line-numbers --wide \
-    --debugging \
-    ../apps/bin/hello \
-    >hello.S \
-    2>&1
-
-hello-sg2000.S:
-https://gist.github.com/lupyuen/910061a54afeddc875ae3b227ab18f0f
-
-Static Variables don't seem to work correctly for rv-virt:knsh64, wonder if there's a problem with the Linking of Static Vars?
-https://github.com/apache/nuttx/pull/15444#issuecomment-2586160111
-
-Why this PR?
-Because uname was working before:
-https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399
-
-Call in The Experts for help. And fixed by anjiahao!
-https://github.com/anjiahao1
-
-[BUG] Static Char Arrays are empty for NuttX Apps compiled for rv-virt:knsh and knsh64 #15526
-https://github.com/apache/nuttx/issues/15526
-
-modlib:gnu-elf.ld.in load exe elf data section mismatch #15527
-https://github.com/apache/nuttx/pull/15527
-
-Lesson Learnt: Please pay attention to the slightest disturbances, like the `uname` output. It might be hiding something seriously sinister!
-
-https://github.com/apache/nuttx/pull/15501
-riscv/Toolchain.defs: guard -r use #15501
-
-https://github.com/apache/nuttx/pull/15444
-modlib: preprocess gnu-elf.ld for executable ELF #15444
-
-
-But not sg2000
-https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-01-13
-nsh> uname -a
-NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:17:37 risc-v milkv_duos
+strlcpy(name->version,  g_version, sizeof(name->version));
+  c00001b4: 03300613           li a2,51
+  c00001b8: 00100597           auipc a1,0x100
+  c00001bc: 06058593           add a1,a1,96 # c0100218 <g_version>
+  c00001c0: 04a40513           add a0,s0,74
+  c00001c4: 584000ef           jal c0000748 <strlcpy>
 ```
 
+Which does 4 things...
+
+1.  Call _info (a.k.a. syslog) to print g_version
+
+1.  TODO
+
+# uname is Not a Kernel Call
+
+_Huh? Isn't this the exact same Kernel Code we saw earlier?_
+
+Precisely! We expected __`uname`__ to be a [__NuttX Kernel Call__](TODO)...
+
+TODO: Pic of kernel call
+
+But nope, __`uname`__ is a __Local Function__.
+
+Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
+
+That's why TODO printf
+
+The full path of __`uname`__ is a dead giveaway: It's a __Library Function__, not a Kernel Function...
+
+```text
+libs/libc/misc/lib_utsname.c
+```
+
+[(`uname` is a __System Call in Linux__)](https://man7.org/linux/man-pages/man2/syscalls.2.html)
+
+# Static Variables are Broken
+
+_Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?_
+
+Earlier we saw that __g_version__ is a __Static Variable__ that contains out Commit Hash: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
+
+```c
+// CONFIG_VERSION_BUILD goes inside Static Var g_version
+static char g_version[] = CONFIG_VERSION_BUILD;
+
+// g_version goes into the uname output
+int uname(FAR struct utsname *output) { ...
+  strlcpy(
+    output->version,         // Copy into the Output Version
+    g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
+    sizeof(output->version)  // Making sure we don't overflow
+  );
+```
+
+We have a strong hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](TODO)
+
+```c
+TODO
+```
+
+Our hunch is correct: __Static Variables are Broken!__
+
+```bash
+TODO
+```
+
+[(See the __Complete Log__)](TODO)
+
+OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
+
+We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiahao__](https://github.com/anjiahao1) yay! 🎉
+
+- [__Static Char Arrays are empty for NuttX Apps compiled for rv-virt:knsh and knsh64__](https://github.com/apache/nuttx/issues/15526)
+
+- [__modlib: gnu-elf.ld.in load exe elf data section mismatch__](https://github.com/apache/nuttx/pull/15527)
+
+__Lesson Learnt:__ Please pay attention to the slightest disturbances, like the __`uname`__ output. It might be hiding something seriously sinister!
 
 # What's Next
 
