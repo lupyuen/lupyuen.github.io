@@ -51,10 +51,19 @@ We search the [__NuttX Kernel Repo__](TODO) for __`uname`__...
 
 TODO: Pic of uname search
 
-[__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93)
+[__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
 ```c
-TODO
+// CONFIG_VERSION_BUILD goes inside Static Var g_version
+static char g_version[] = CONFIG_VERSION_BUILD;
+
+// g_version goes into the uname output
+int uname(FAR struct utsname *output) { ...
+  strlcpy(
+    output->version,         // Copy into the Output Version
+    g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
+    sizeof(output->version)  // Making sure we don't overflow
+  );
 ```
 
 But is __uname__ a __Kernel Function__? We'll find out in a bit!
@@ -63,13 +72,22 @@ But is __uname__ a __Kernel Function__? We'll find out in a bit!
 
 _What's this CONFIG_VERSION_BUILD?_
 
-We saw earlier that __`uname`__ function returns __CONFIG_VERSION_BUILD__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L93)
+Earlier we saw that __`uname`__ function returns __CONFIG_VERSION_BUILD__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
 ```c
-TODO
+// CONFIG_VERSION_BUILD goes inside Static Var g_version
+static char g_version[] = CONFIG_VERSION_BUILD;
+
+// g_version goes into the uname output
+int uname(FAR struct utsname *output) { ...
+  strlcpy(
+    output->version,         // Copy into the Output Version
+    g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
+    sizeof(output->version)  // Making sure we don't overflow
+  );
 ```
 
-Let's track the origin of __CONFIG_VERSION_BUILD__. We build NuttX for [__QEMU RISC-V 64-bit__](TODO)...
+Let's track the origin of __CONFIG_VERSION_BUILD__. We build NuttX for [__QEMU RISC-V 64-bit__](TODO) (Kernel Mode)
 
 ```bash
 TODO
@@ -89,15 +107,14 @@ We head back to NuttX Kernel Repo and [__search for CONFIG_VERSION_BUILD__](http
 
 > _That Header File was created at build time from a Hidden File that you can find in the top-level nuttx directory called __.version__._
 
-Aha! __CONFIG_VERSION_BUILD__ comes from __version.h__...
+Aha! __CONFIG_VERSION_BUILD__ a.k.a. Commit Hash comes from __version.h__
 
 ```bash
 $ cat include/nuttx/version.h 
 #define CONFIG_VERSION_BUILD "a2d4d74af7"
-...
 ```
 
-[(Thanks to TODO for porting the docs!)](TODO)
+[(Thanks to __Ludovic Vanasse__ for porting the docs)](https://github.com/apache/nuttx/pull/14239)
 
 # Static Variable g_version
 
@@ -105,7 +122,7 @@ _CONFIG_VERSION_BUILD looks OK. But is it compiled correctly into the NuttX Imag
 
 Let's snoop the __NuttX Kernel Image__ to be sure that __CONFIG_VERSION_BUILD__ is correct.
 
-We see that __CONFIG_VERSION_BUILD__ is stored in a Static Variable __g_version__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
+Recall that __CONFIG_VERSION_BUILD__ is stored in a Static Variable __g_version__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
@@ -120,7 +137,7 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-According to __NuttX Linker Map__: The address of __g_version__ is __`0x8040` `03B8`__...
+According to __NuttX Linker Map__: Address of __g_version__ is __`0x8040` `03B8`__
 
 ```bash
 ## Search for g_version in Linker Map, show 1 line after
@@ -186,13 +203,13 @@ board_app_initialize:
 
 [(See the __Complete Log__)](TODO)
 
-Yep NuttX Kernel correctly prints __g_version__ a.k.a. __CONFIG_VERSION_BUILD__ a.k.a. Commit Hash. No Kernel Corruption! (Phew)
+Yep NuttX Kernel correctly prints __g_version__ a.k.a. __CONFIG_VERSION_BUILD__ a.k.a. Commit Hash. No Kernel Corruption! _(Phew)_
 
 # Call uname in NuttX App
 
 _Maybe something got corrupted in our NuttX App?_
 
-Wow that's so diabolical, let's find out. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53)
+Wow that's so diabolical, let's hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53)
 
 ```c
 TODO
@@ -201,6 +218,7 @@ TODO
 Indeed something is messed up with __g_version__ a.k.a. __CONFIG_VERSION_BUILD__ a.k.a. Commit Hash...
 
 ```bash
+## Why is Commit Hash empty?
 NuttShell (NSH) NuttX-12.8.0
 nsh> hello
 version=
@@ -212,9 +230,9 @@ Inside our NuttX App: Why is __g_version__ empty? Wasn't it OK in NuttX Kernel?
 
 # Dump the NuttX App Disassembly
 
-_Why did uname work differently in NuttX Kernel vs NuttX Apps?_
+_Why did uname work differently: NuttX Kernel vs NuttX Apps?_
 
-Now we chase the __uname raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App...
+Now we chase the __`uname` raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App...
 
 ```bash
 $ riscv-none-elf-objdump \
@@ -231,7 +249,7 @@ But ugh NuttX Build has unhelpfully __Discarded the Debug Symbols__ from our Nut
 
 _How to recover the Debug Symbols?_
 
-We snoop around the __NuttX Build__...
+We sniff the __NuttX Build__...
 
 ```bash
 ## Update our Hello App
@@ -262,11 +280,11 @@ riscv-none-elf-objdump \
   2>&1
 ```
 
-[(See __RISC-V Disassembly hello.S__)](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
+[(See the __RISC-V Disassembly hello.S__)](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
 
 # Snoop uname in NuttX App
 
-_Once Again: How is uname different from NuttX Kernel vs NuttX App?_
+_Once Again: How is uname different in NuttX Kernel vs NuttX App?_
 
 Earlier we dumped the __RISC-V Disassembly__ for our modded Hello App: [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
 
@@ -309,7 +327,7 @@ strlcpy(name->version,  g_version, sizeof(name->version));
 
 Which does 4 things...
 
-1.  Call _info (a.k.a. syslog) to print g_version
+1.  Call __\_info__ (a.k.a. __syslog__) to print __g_version__
 
 1.  TODO
 
@@ -325,7 +343,14 @@ But nope, __`uname`__ is a __Local Function__.
 
 Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
 
-That's why TODO printf
+That's why __printf__ appears in the Hello Output but not __\_info__...
+
+```bash
+TODO
+## _info doesn't appear
+```
+
+(Because __\_info__ and __syslog__ won't work in NuttX Apps)
 
 The full path of __`uname`__ is a dead giveaway: It's a __Library Function__, not a Kernel Function...
 
@@ -339,7 +364,7 @@ libs/libc/misc/lib_utsname.c
 
 _Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?_
 
-Earlier we saw that __g_version__ is a __Static Variable__ that contains out Commit Hash: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
+Earlier we saw that __g_version__ is a __Static Variable__ that contains our Commit Hash: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
@@ -354,13 +379,13 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-We have a strong hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](TODO)
+We have a hefty hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](TODO)
 
 ```c
 TODO
 ```
 
-Our hunch is correct: __Static Variables are Broken!__
+Our hunch is 100% correct: __Static Variables are Broken!__
 
 ```bash
 TODO
@@ -372,11 +397,11 @@ OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section g
 
 We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiahao__](https://github.com/anjiahao1) yay! 🎉
 
-- [__Static Char Arrays are empty for NuttX Apps compiled for rv-virt:knsh and knsh64__](https://github.com/apache/nuttx/issues/15526)
+- [__Static Char Arrays are empty for NuttX Apps__](https://github.com/apache/nuttx/issues/15526)
 
 - [__modlib: gnu-elf.ld.in load exe elf data section mismatch__](https://github.com/apache/nuttx/pull/15527)
 
-__Lesson Learnt:__ Please pay attention to the slightest disturbances, like the __`uname`__ output. It might be hiding something seriously sinister!
+__Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __`uname`__ output. It might be hiding something seriously sinister!
 
 # What's Next
 
