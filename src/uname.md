@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
-[__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
+Earlier this week: [__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
 ## Hmmm something is missing
@@ -31,9 +31,9 @@ Watch as we stomp this seemingly simple bug... That turns out to be __something 
 
 # Inside uname
 
-_uname command: How does it work?_
+_uname on NuttX: How does it work?_
 
-Use the Source, Luke! First we understand what's inside the __`uname`__ command.
+Use the Source, Luke! First we peek inside the __`uname`__ command.
 
 Our bug happens in __NuttX Shell__. Thus we search the [__NuttX Apps Repo__](TODO) for __`uname`__...
 
@@ -66,7 +66,7 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-But is __uname__ a __Kernel Function__? We'll find out in a bit!
+(Is __`uname`__ a __Kernel Function__? We'll find out in a bit)
 
 # Commit Hash a.k.a. CONFIG_VERSION_BUILD
 
@@ -118,11 +118,11 @@ $ cat include/nuttx/version.h
 
 # Static Variable g_version
 
-_CONFIG_VERSION_BUILD looks OK. But is it compiled correctly into the NuttX Image?_
+_Is CONFIG_VERSION_BUILD compiled correctly into our NuttX Image?_
 
-Let's snoop the __NuttX Kernel Image__ to be sure that __CONFIG_VERSION_BUILD__ is correct.
+We snoop the __NuttX Kernel Image__ to verify that __CONFIG_VERSION_BUILD__ is correct.
 
-Recall that __CONFIG_VERSION_BUILD__ is stored in a Static Variable __g_version__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
+Recall that __CONFIG_VERSION_BUILD__ is stored in Static Variable __g_version__: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
@@ -174,13 +174,13 @@ And that's our __CONFIG_VERSION_BUILD__ with Commit Hash! Looks hunky dory, why 
 
 _Maybe NuttX Kernel got corrupted? Returning bad data for uname?_
 
-We tweak the NuttX Kernel and call __`uname`__ at startup: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121)
+We tweak the NuttX Kernel and call __`uname`__ at Kernel Startup: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121)
 
 ```c
 TODO
 ```
 
-And inside the __`uname`__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109)
+Inside the __`uname`__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109)
 
 ```c
 TODO
@@ -188,7 +188,7 @@ TODO
 
 (Why twice? We'll see in a while)
 
-We boot NuttX on __QEMU RISC-V 64-bit__...
+We boot NuttX on [__QEMU RISC-V 64-bit__](TODO)...
 
 ```bash
 TODO: qemu
@@ -209,7 +209,7 @@ Yep NuttX Kernel correctly prints __g_version__ a.k.a. __CONFIG_VERSION_BUILD__ 
 
 _Maybe something got corrupted in our NuttX App?_
 
-Wow that's so diabolical, let's hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53)
+Wow that's so diabolical, sure hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53)
 
 ```c
 TODO
@@ -235,10 +235,11 @@ _Why did uname work differently: NuttX Kernel vs NuttX Apps?_
 Now we chase the __`uname` raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App...
 
 ```bash
+## Dump the RISC-V Disassembly for apps/bin/hello
 $ riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
-  ../apps/bin_debug/hello \
+  ../apps/bin/hello \
   >hello.S \
   2>&1
 
