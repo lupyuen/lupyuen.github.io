@@ -368,6 +368,15 @@ https://github.com/apache/nuttx/pull/15444#issuecomment-2586160111
 Why this PR?
 Because uname was working before:
 https://gist.github.com/lupyuen/489af50d987c94e2cda54d927a8ea4f3#file-special-qemu-riscv-knsh64-log-L1398-L1399
+
+Call in The Experts for help. And fixed by anjiahao!
+https://github.com/anjiahao1
+
+[BUG] Static Char Arrays are empty for NuttX Apps compiled for rv-virt:knsh and knsh64 #15526
+https://github.com/apache/nuttx/issues/15526
+
+modlib:gnu-elf.ld.in load exe elf data section mismatch #15527
+https://github.com/apache/nuttx/pull/15527
 ```
 
 TODO: uname-hex1
