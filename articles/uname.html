@@ -66,7 +66,7 @@
     <h1 class="title">Fixing a uname bug (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#inside-uname" title="Inside uname">1 Inside uname</a><ul></ul></li>
-<li><a href="#commit-hash-aka-config_version_build" title="Commit Hash a.k.a. CONFIG_VERSION_BUILD">2 Commit Hash a.k.a. CONFIG_VERSION_BUILD</a><ul></ul></li>
+<li><a href="#config_version_build" title="CONFIG_VERSION_BUILD">2 CONFIG_VERSION_BUILD</a><ul></ul></li>
 <li><a href="#static-variable-g_version" title="Static Variable g_version">3 Static Variable g_version</a><ul></ul></li>
 <li><a href="#call-uname-in-nuttx-kernel" title="Call uname in NuttX Kernel">4 Call uname in NuttX Kernel</a><ul></ul></li>
 <li><a href="#call-uname-in-nuttx-app" title="Call uname in NuttX App">5 Call uname in NuttX App</a><ul></ul></li>
@@ -111,7 +111,7 @@ int uname(FAR struct utsname *output) { ...
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
 <p>(Is <strong><code>uname</code></strong> a <strong>Kernel Function</strong>? We’ll find out in a bit)</p>
-<h1 id="commit-hash-aka-config_version_build"><a class="doc-anchor" href="#commit-hash-aka-config_version_build">§</a>2 Commit Hash a.k.a. CONFIG_VERSION_BUILD</h1>
+<h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
 <p>Earlier we saw that <strong><code>uname</code></strong> function returns <strong>CONFIG_VERSION_BUILD</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
