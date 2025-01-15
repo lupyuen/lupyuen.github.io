@@ -87,8 +87,8 @@ nsh&gt; uname -a
 NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/uname-commit.png" alt="TODO" /></p>
 <p><em>Can we ignore it? Maybe nobody will notice?</em></p>
-<p>Noooooo! Commit Hash identifies the <strong>Exact Commit of NuttX</strong> (pic above) that was used to produce the NuttX Build. <em>(Apps Hash would be helpful too)</em></p>
-<p>Watch as we stomp this seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
+<p>Noooooo! Commit Hash identifies the <strong>Exact Commit of NuttX</strong> (pic above) that was used to produce the NuttX Build.</p>
+<p>Watch as we stomp the seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
 <h1 id="inside-uname"><a class="doc-anchor" href="#inside-uname">§</a>1 Inside uname</h1>
 <p><em>uname on NuttX: How does it work?</em></p>
 <p>Use the Source, Luke! First we peek inside the <strong><code>uname</code></strong> command.</p>
@@ -101,7 +101,7 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p>TODO: Pic of uname search</p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -115,7 +115,7 @@ int uname(FAR struct utsname *output) { ...
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
 <p>Earlier we saw that <strong><code>uname</code></strong> function returns <strong>CONFIG_VERSION_BUILD</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -146,7 +146,7 @@ int uname(FAR struct utsname *output) { ...
 <p>We snoop the <strong>NuttX Kernel Image</strong> to verify that <strong>CONFIG_VERSION_BUILD</strong> is correct.</p>
 <p>Recall that <strong>CONFIG_VERSION_BUILD</strong> is stored in Static Variable <strong>g_version</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -304,7 +304,7 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p><em>Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?</em></p>
 <p>Earlier we saw that <strong>g_version</strong> is a <strong>Static Variable</strong> that contains our Commit Hash: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
