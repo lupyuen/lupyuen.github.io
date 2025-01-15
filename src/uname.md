@@ -68,7 +68,7 @@ int uname(FAR struct utsname *output) { ...
 
 (Is __`uname`__ a __Kernel Function__? We'll find out in a bit)
 
-# Commit Hash a.k.a. CONFIG_VERSION_BUILD
+# CONFIG_VERSION_BUILD
 
 _What's this CONFIG_VERSION_BUILD?_
 
