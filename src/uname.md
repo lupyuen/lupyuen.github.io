@@ -25,9 +25,9 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
 
 _Can we ignore it? Maybe nobody will notice?_
 
-Noooooo! Commit Hash identifies the __Exact Commit of NuttX__ (pic above) that was used to produce the NuttX Build. _(Apps Hash would be helpful too)_
+Noooooo! Commit Hash identifies the __Exact Commit of NuttX__ (pic above) that was used to produce the NuttX Build.
 
-Watch as we stomp this seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
+Watch as we stomp the seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
 
 # Inside uname
 
@@ -55,7 +55,7 @@ TODO: Pic of uname search
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -76,7 +76,7 @@ Earlier we saw that __`uname`__ function returns __CONFIG_VERSION_BUILD__: [lib_
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -126,7 +126,7 @@ Recall that __CONFIG_VERSION_BUILD__ is stored in Static Variable __g_version__:
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
@@ -369,7 +369,7 @@ Earlier we saw that __g_version__ is a __Static Variable__ that contains our Com
 
 ```c
 // CONFIG_VERSION_BUILD goes inside Static Var g_version
-static char g_version[] = CONFIG_VERSION_BUILD;
+static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
 // g_version goes into the uname output
 int uname(FAR struct utsname *output) { ...
