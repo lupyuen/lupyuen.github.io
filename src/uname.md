@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/uname-title.png)
 
-Earlier this week: [__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
+Earlier This Week: [__`uname`__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
 ```bash
 ## Hmmm something is missing
