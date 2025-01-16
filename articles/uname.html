@@ -118,7 +118,7 @@ int uname(FAR struct utsname *output) { ...
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
 <p>(Is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll see soon)</p>
-<p>TODO: Pic of CONFIG_VERSION_BUILD</p>
+<p><img src="https://lupyuen.github.io/images/uname-title2.jpg" alt="CONFIG_VERSION_BUILD inside uname" /></p>
 <h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
 <p>Earlier we saw that <strong>uname</strong> function returns <em>CONFIG_VERSION_BUILD</em>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
@@ -166,7 +166,7 @@ popd</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat include/nuttx/version.h 
 #define CONFIG_VERSION_BUILD &quot;a2d4d74af7&quot;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/14239">(Thanks to <strong>Ludovic Vanasse</strong> for porting the docs)</a></p>
-<p>TODO: Pic of g_version</p>
+<p><img src="https://lupyuen.github.io/images/uname-title2.jpg" alt="Static Variable g_version inside uname" /></p>
 <h1 id="static-variable-g_version"><a class="doc-anchor" href="#static-variable-g_version">§</a>3 Static Variable g_version</h1>
 <p><em>Is CONFIG_VERSION_BUILD compiled correctly into our NuttX Image?</em></p>
 <p>We snoop the <strong>NuttX Kernel Image</strong> to verify that <em>CONFIG_VERSION_BUILD</em> is correct.</p>
