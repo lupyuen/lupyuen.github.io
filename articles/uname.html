@@ -132,7 +132,24 @@ int uname(FAR struct utsname *output) { ...
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
 <p>Let’s track the origin of <em>CONFIG_VERSION_BUILD</em>. We build NuttX for <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Kernel and NuttX Apps
+git clone https://github.com/apache/wip-nuttx
+git clone https://github.com/apache/wip-nuttx-apps apps
+
+## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
+cd nuttx
+tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make -j
+
+## Build the NuttX Apps
+make export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L47-L1251">(See the <strong>Build Log</strong>)</a></p>
 <p>Maybe <em>CONFIG_VERSION_BUILD</em> is in the NuttX Config File?</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ grep CONFIG_VERSION_BUILD .config
 [ Nothing ]
@@ -261,7 +278,13 @@ $ riscv-none-elf-objdump \
   &gt;hello.S \
   2&gt;&amp;1
 
-TODO: grep</code></pre></div>
+## Impossible to read, without Debug Symbols
+$ more hello.S
+SYMBOL TABLE: no symbols
+00000000c0000000 &lt;.text&gt;:
+  c0000000: 1141  add sp, sp, -16
+  c0000002: e006  sd  ra, 0(sp)
+  c0000004: 82aa  mv  t0, a0</code></pre></div>
 <p>But ugh NuttX Build has unhelpfully <strong>Discarded the Debug Symbols</strong> from our NuttX App, making it hard to digest.</p>
 <p><em>How to recover the Debug Symbols?</em></p>
 <p>We sniff the <strong>NuttX Build</strong>…</p>
