@@ -2,7 +2,7 @@
 
 📝 _30 Jan 2025_
 
-![TODO](https://lupyuen.github.io/images/uname-title.jpg)
+![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
 Earlier This Week: [__uname__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
 
@@ -37,7 +37,7 @@ Use the Source, Luke! First we peek inside the __uname__ command.
 
 Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](TODO) for __uname__...
 
-TODO: Pic of uname search
+![TODO](https://lupyuen.github.io/images/uname-search1.png)
 
 [__Searching for uname__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863)
 
@@ -54,9 +54,9 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
 
 We see that __uname command__ calls the __uname function__.
 
-We search the [__NuttX Kernel Repo__](TODO) for __uname__...
+Thus we search the [__NuttX Kernel Repo__](TODO) for __uname__...
 
-TODO: Pic of uname search
+![TODO](https://lupyuen.github.io/images/uname-search2.png)
 
 [__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
