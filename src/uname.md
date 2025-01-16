@@ -75,6 +75,8 @@ int uname(FAR struct utsname *output) { ...
 
 (Is __uname__ a __Kernel Function__? We'll find out in a bit)
 
+TODO: Pic of CONFIG_VERSION_BUILD
+
 # CONFIG_VERSION_BUILD
 
 _What's this CONFIG_VERSION_BUILD?_
@@ -141,6 +143,8 @@ $ cat include/nuttx/version.h
 
 [(Thanks to __Ludovic Vanasse__ for porting the docs)](https://github.com/apache/nuttx/pull/14239)
 
+TODO: Pic of g_version
+
 # Static Variable g_version
 
 _Is CONFIG_VERSION_BUILD compiled correctly into our NuttX Image?_
@@ -194,6 +198,8 @@ We open __nuttx.bin__ in [__VSCode Hex Editor__](https://marketplace.visualstudi
 ![nuttx.bin in VSCode Hex Viewer](https://lupyuen.github.io/images/uname-hex1.png)
 
 And that's our _CONFIG_VERSION_BUILD_ with Commit Hash! Looks hunky dory, why wasn't it returned correctly to __uname__ and NuttX Shell?
+
+TODO: Pic of Call uname in NuttX Kernel
 
 # Call uname in NuttX Kernel
 
@@ -255,6 +261,8 @@ NuttShell (NSH) NuttX-12.4.0
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1395)
 
 Yep NuttX Kernel correctly prints __g_version__ a.k.a. _CONFIG_VERSION_BUILD_ a.k.a. Commit Hash. No Kernel Corruption! _(Phew)_
+
+TODO: Pic of Call uname in NuttX App
 
 # Call uname in NuttX App
 
@@ -420,6 +428,8 @@ Precisely! We expected __uname__ to be a [__System Call to NuttX Kernel__](https
 
 But nope, __uname__ is a __Local Function__.
 
+TODO: Pic of Local Function
+
 Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
 
 That's why __printf__ appears in the [__Hello Output__](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431) but not __\_info__...
@@ -449,6 +459,8 @@ libs/libc/misc/lib_utsname.c
 ```
 
 [(uname is a __System Call in Linux__)](https://man7.org/linux/man-pages/man2/syscalls.2.html)
+
+TODO: Pic of Static Variables are Broken
 
 # Static Variables are Broken
 
@@ -504,6 +516,8 @@ We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiah
 - [__modlib: gnu-elf.ld.in load exe elf data section mismatch__](https://github.com/apache/nuttx/pull/15527)
 
 __Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __uname__ output. It might be a sign of something seriously sinister simmering under the surface!
+
+![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
 # What's Next
 
