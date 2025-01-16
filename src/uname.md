@@ -1,6 +1,6 @@
 # Fixing a uname bug (Apache NuttX RTOS)
 
-📝 _30 Jan 2025_
+📝 _19 Jan 2025_
 
 ![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
