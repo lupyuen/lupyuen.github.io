@@ -75,7 +75,7 @@ int uname(FAR struct utsname *output) { ...
 
 (Is __uname__ a __Kernel Function__? We'll see soon)
 
-TODO: Pic of CONFIG_VERSION_BUILD
+![CONFIG_VERSION_BUILD inside uname](https://lupyuen.github.io/images/uname-title2.jpg)
 
 # CONFIG_VERSION_BUILD
 
@@ -143,7 +143,7 @@ $ cat include/nuttx/version.h
 
 [(Thanks to __Ludovic Vanasse__ for porting the docs)](https://github.com/apache/nuttx/pull/14239)
 
-TODO: Pic of g_version
+![Static Variable g_version inside uname](https://lupyuen.github.io/images/uname-title2.jpg)
 
 # Static Variable g_version
 
