@@ -54,7 +54,7 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
 
 We see that __uname command__ calls the __uname function__.
 
-Thus we search the [__NuttX Kernel Repo__](https://github.com/apache/nuttx) for __uname__...
+So we search the [__NuttX Kernel Repo__](https://github.com/apache/nuttx) for __uname__...
 
 ![Search the NuttX Kernel Repo for uname](https://lupyuen.github.io/images/uname-search2.png)
 
@@ -73,7 +73,7 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-(Is __uname__ a __Kernel Function__? We'll find out in a bit)
+(Is __uname__ a __Kernel Function__? We'll see soon)
 
 TODO: Pic of CONFIG_VERSION_BUILD
 
@@ -179,7 +179,7 @@ $ grep \
   0x804003b8  0x21  staging/libkc.a(lib_utsname.o)
 ```
 
-What's the value inside __g_version__? We dump the __Binary Image__ of NuttX Kernel...
+What's the value inside __g_version__? We dump the __Binary Image__ of NuttX Kernel ELF...
 
 ```bash
 ## Export the NuttX Binary Image to nuttx.bin
@@ -189,7 +189,7 @@ riscv-none-elf-objcopy \
   nuttx.bin
 ```
 
-Recall that __g_version__ is at __`0x8040` `03B8`__.
+Earlier we said __g_version__ is at __`0x8040` `03B8`__.
 
 We open __nuttx.bin__ in [__VSCode Hex Editor__](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor), press __Ctrl-G__ and jump to __`0x2003B8`__...
 
@@ -412,7 +412,7 @@ Which does 4 things...
 
 1.  Call __\_info__ (a.k.a. __syslog__) to print __g_version__
 
-1.  Call __\_printf__ to print __g_version__
+1.  Call __printf__ to print __g_version__
 
 1.  Followed by __Address of g_version__
 
