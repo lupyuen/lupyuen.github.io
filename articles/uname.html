@@ -272,7 +272,7 @@ version=</code></pre></div>
 <p>Inside our NuttX App: Why is <strong>g_version</strong> empty? Wasn’t it OK in NuttX Kernel?</p>
 <h1 id="dump-the-nuttx-app-disassembly"><a class="doc-anchor" href="#dump-the-nuttx-app-disassembly">§</a>6 Dump the NuttX App Disassembly</h1>
 <p><em>Why did uname work differently: NuttX Kernel vs NuttX Apps?</em></p>
-<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App…</p>
+<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App ELF…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin/hello
 $ riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -317,7 +317,7 @@ riscv-none-elf-objdump \
 <h1 id="snoop-uname-in-nuttx-app"><a class="doc-anchor" href="#snoop-uname-in-nuttx-app">§</a>7 Snoop uname in NuttX App</h1>
 <p><em>Once Again: How is uname different in NuttX Kernel vs NuttX App?</em></p>
 <p>Earlier we dumped the <strong>RISC-V Disassembly</strong> for our modded Hello App: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a></p>
-<p>We browse <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a> and search for <strong>uname</strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
+<p>We browse the disassembly and search for <strong>uname</strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Inside Hello App: The RISC-V Disassembly of `uname` function
 int uname(FAR struct utsname *name) { ...
 
@@ -328,7 +328,7 @@ _info(&quot;From _info: g_version=%s\n&quot;, g_version);
   auipc a2, 0x2
   add   a2, a2, -270 // Arg #2: Format String
   auipc a1, 0x2
-  add   a1, a1, -814 // Arg #1: VarArgs Length (I think)
+  add   a1, a1, -814 // Arg #1: VarArgs Size (I think)
   li    a0, 6        // Arg #0: Info Logging Priority
   jal   c00007c8     // Call syslog()
 
