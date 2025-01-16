@@ -426,9 +426,9 @@ Precisely! We expected __uname__ to be a [__System Call to NuttX Kernel__](https
 
 ![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-syscall.jpg)
 
-But nope, __uname__ is a __Local Function__.
+But nope, __uname__ is a __Local Function__. _(Not a System Call)_
 
-TODO: Pic of Local Function
+![uname is a Local Function, not a System Call](https://lupyuen.github.io/images/uname-title5.jpg)
 
 Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
 
