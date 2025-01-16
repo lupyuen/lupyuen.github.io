@@ -4,7 +4,7 @@
 
 ![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
-Earlier This Week: [__uname__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](TODO)...
+Earlier This Week: [__uname__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13) became unusually quieter on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 ```bash
 ## Hmmm something is missing
@@ -21,7 +21,7 @@ nsh> uname -a
 NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
 ```
 
-![TODO](https://lupyuen.github.io/images/uname-commit.png)
+![Commit Hash identifies the Exact Commit of NuttX that was used to produce the NuttX Build](https://lupyuen.github.io/images/uname-commit.png)
 
 _Can we ignore it? Maybe nobody will notice?_
 
@@ -35,9 +35,9 @@ _uname on NuttX: How does it work?_
 
 Use the Source, Luke! First we peek inside the __uname__ command.
 
-Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](TODO) for __uname__...
+Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](https://github.com/apache/nuttx-apps) for __uname__...
 
-![TODO](https://lupyuen.github.io/images/uname-search1.png)
+![Search NuttX Apps Repo for uname](https://lupyuen.github.io/images/uname-search1.png)
 
 [__Searching for uname__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863)
 
@@ -54,9 +54,9 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
 
 We see that __uname command__ calls the __uname function__.
 
-Thus we search the [__NuttX Kernel Repo__](TODO) for __uname__...
+Thus we search the [__NuttX Kernel Repo__](https://github.com/apache/nuttx) for __uname__...
 
-![TODO](https://lupyuen.github.io/images/uname-search2.png)
+![Search the NuttX Kernel Repo for uname](https://lupyuen.github.io/images/uname-search2.png)
 
 [__NuttX Kernel Search__](https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&type=code) says that __uname__ is defined here: [lib_utsname.c](https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113)
 
@@ -94,7 +94,7 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-Let's track the origin of _CONFIG_VERSION_BUILD_. We build NuttX for [__QEMU RISC-V 64-bit__](TODO) (Kernel Mode)
+Let's track the origin of _CONFIG_VERSION_BUILD_. We build NuttX for [__QEMU RISC-V 64-bit__](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html) (Kernel Mode)
 
 ```bash
 ## Download the NuttX Kernel and NuttX Apps
@@ -187,11 +187,11 @@ riscv-none-elf-objcopy \
 
 Recall that __g_version__ is at __`0x8040` `03B8`__.
 
-We open __nuttx.bin__ in [__VSCode Hex Viewer__](TODO), press __Ctrl-G__ and jump to __`0x2003B8`__...
+We open __nuttx.bin__ in [__VSCode Hex Editor__](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor), press __Ctrl-G__ and jump to __`0x2003B8`__...
 
 [(Because NuttX Kernel loads at __`0x8020` `0000`__)](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26)
 
-![TODO](https://lupyuen.github.io/images/uname-hex1.png)
+![nuttx.bin in VSCode Hex Viewer](https://lupyuen.github.io/images/uname-hex1.png)
 
 And that's our _CONFIG_VERSION_BUILD_ with Commit Hash! Looks hunky dory, why wasn't it returned correctly to __uname__ and NuttX Shell?
 
@@ -230,7 +230,7 @@ int uname(FAR struct utsname *name) { ...
 
 (Why twice? We'll see in a while)
 
-We boot NuttX on [__QEMU RISC-V 64-bit__](TODO)...
+We boot NuttX on [__QEMU RISC-V 64-bit__](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)...
 
 ```bash
 ## Start QEMU with NuttX
@@ -241,8 +241,7 @@ $ qemu-system-riscv64 \
   -kernel nuttx \
   -nographic
 
-## Commit Hash looks hunky dory
-ABC
+## NuttX Kernel shows Commit Hash
 From _info:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
@@ -415,9 +414,9 @@ Which does 4 things...
 
 _Huh? Isn't this the exact same Kernel Code we saw earlier?_
 
-Precisely! We expected __uname__ to be a [__NuttX Kernel Call__](TODO)...
+Precisely! We expected __uname__ to be a [__System Call to NuttX Kernel__](https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel)...
 
-TODO: Pic of kernel call
+![NuttX App calls NuttX Kernel](https://lupyuen.github.io/images/app-syscall.jpg)
 
 But nope, __uname__ is a __Local Function__.
 
