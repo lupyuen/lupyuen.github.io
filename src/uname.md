@@ -460,8 +460,6 @@ libs/libc/misc/lib_utsname.c
 
 [(uname is a __System Call in Linux__)](https://man7.org/linux/man-pages/man2/syscalls.2.html)
 
-TODO: Pic of Static Variables are Broken
-
 # Static Variables are Broken
 
 _Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?_
@@ -506,6 +504,8 @@ Address of test_static=0xc0100200
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431)
+
+TODO: Pic of Static Variables are Broken
 
 OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
 
