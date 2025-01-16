@@ -104,7 +104,7 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
   struct utsname info;
   ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
-<p>Thus we search the <a href="https://github.com/apache/nuttx"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
+<p>So we search the <a href="https://github.com/apache/nuttx"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uname-search2.png" alt="Search the NuttX Kernel Repo for uname" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
@@ -117,7 +117,7 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>(Is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll find out in a bit)</p>
+<p>(Is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll see soon)</p>
 <p>TODO: Pic of CONFIG_VERSION_BUILD</p>
 <h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
@@ -190,13 +190,13 @@ $ grep \
 
 .data.g_version
   0x804003b8  0x21  staging/libkc.a(lib_utsname.o)</code></pre></div>
-<p>What’s the value inside <strong>g_version</strong>? We dump the <strong>Binary Image</strong> of NuttX Kernel…</p>
+<p>What’s the value inside <strong>g_version</strong>? We dump the <strong>Binary Image</strong> of NuttX Kernel ELF…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Binary Image to nuttx.bin
 riscv-none-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin</code></pre></div>
-<p>Recall that <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>.</p>
+<p>Earlier we said <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>.</p>
 <p>We open <strong>nuttx.bin</strong> in <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor"><strong>VSCode Hex Editor</strong></a>, press <strong>Ctrl-G</strong> and jump to <strong><code>0x2003B8</code></strong>…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="nuttx.bin in VSCode Hex Viewer" /></p>
@@ -361,7 +361,7 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p>Call <strong>_info</strong> (a.k.a. <strong>syslog</strong>) to print <strong>g_version</strong></p>
 </li>
 <li>
-<p>Call <strong>_printf</strong> to print <strong>g_version</strong></p>
+<p>Call <strong>printf</strong> to print <strong>g_version</strong></p>
 </li>
 <li>
 <p>Followed by <strong>Address of g_version</strong></p>
