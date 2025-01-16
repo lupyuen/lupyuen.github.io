@@ -134,8 +134,8 @@ int uname(FAR struct utsname *output) { ...
   );</code></pre></div>
 <p>Let’s track the origin of <em>CONFIG_VERSION_BUILD</em>. We build NuttX for <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Kernel and NuttX Apps
-git clone https://github.com/apache/wip-nuttx
-git clone https://github.com/apache/wip-nuttx-apps apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
 
 ## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
 cd nuttx
