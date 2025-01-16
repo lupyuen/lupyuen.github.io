@@ -505,7 +505,7 @@ Address of test_static=0xc0100200
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431)
 
-TODO: Pic of Static Variables are Broken
+![Static Variables are Broken!](https://lupyuen.github.io/images/uname-title6.jpg)
 
 OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
 
