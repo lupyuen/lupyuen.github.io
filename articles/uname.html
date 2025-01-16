@@ -118,6 +118,7 @@ int uname(FAR struct utsname *output) { ...
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
 <p>(Is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll find out in a bit)</p>
+<p>TODO: Pic of CONFIG_VERSION_BUILD</p>
 <h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
 <p>Earlier we saw that <strong>uname</strong> function returns <em>CONFIG_VERSION_BUILD</em>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
@@ -165,6 +166,7 @@ popd</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat include/nuttx/version.h 
 #define CONFIG_VERSION_BUILD &quot;a2d4d74af7&quot;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/14239">(Thanks to <strong>Ludovic Vanasse</strong> for porting the docs)</a></p>
+<p>TODO: Pic of g_version</p>
 <h1 id="static-variable-g_version"><a class="doc-anchor" href="#static-variable-g_version">§</a>3 Static Variable g_version</h1>
 <p><em>Is CONFIG_VERSION_BUILD compiled correctly into our NuttX Image?</em></p>
 <p>We snoop the <strong>NuttX Kernel Image</strong> to verify that <em>CONFIG_VERSION_BUILD</em> is correct.</p>
@@ -199,6 +201,7 @@ riscv-none-elf-objcopy \
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="nuttx.bin in VSCode Hex Viewer" /></p>
 <p>And that’s our <em>CONFIG_VERSION_BUILD</em> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
+<p>TODO: Pic of Call uname in NuttX Kernel</p>
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
 <p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125">qemu_rv_appinit.c</a></p>
@@ -243,6 +246,7 @@ board_app_initialize:
 NuttShell (NSH) NuttX-12.4.0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1395">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash. No Kernel Corruption! <em>(Phew)</em></p>
+<p>TODO: Pic of Call uname in NuttX App</p>
 <h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
 <p><em>Maybe something got corrupted in our NuttX App?</em></p>
 <p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57">hello_main.c</a></p>
@@ -371,6 +375,7 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p>Precisely! We expected <strong>uname</strong> to be a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call to NuttX Kernel</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
 <p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>.</p>
+<p>TODO: Pic of Local Function</p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
 <p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows `_info` and `printf`
@@ -390,6 +395,7 @@ From printf:
 <p>The full path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
 <div class="example-wrap"><pre class="language-text"><code>libs/libc/misc/lib_utsname.c</code></pre></div>
 <p><a href="https://man7.org/linux/man-pages/man2/syscalls.2.html">(uname is a <strong>System Call in Linux</strong>)</a></p>
+<p>TODO: Pic of Static Variables are Broken</p>
 <h1 id="static-variables-are-broken"><a class="doc-anchor" href="#static-variables-are-broken">§</a>9 Static Variables are Broken</h1>
 <p><em>Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?</em></p>
 <p>Earlier we saw that <strong>g_version</strong> is a <strong>Static Variable</strong> that contains our Commit Hash: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
@@ -431,6 +437,7 @@ Address of test_static=0xc0100200</code></pre></div>
 </li>
 </ul>
 <p><strong>Lesson Learnt:</strong> Please pay attention to the slightest disturbance, like the <strong>uname</strong> output. It might be a sign of something seriously sinister simmering under the surface!</p>
+<p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="Fixing a uname bug (Apache NuttX RTOS)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
