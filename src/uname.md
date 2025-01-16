@@ -25,7 +25,7 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt
 
 _Can we ignore it? Maybe nobody will notice?_
 
-Noooooo! Commit Hash identifies the __Exact Commit of NuttX__ (pic above) that was used to produce the NuttX Build.
+Noooooo! Commit Hash identifies the __Exact Commit of NuttX__ that was used to produce the NuttX Build. (Pic above)
 
 Watch as we stomp the seemingly simple bug... That turns out to be __something seriously sinister__! _(Spoiler: Static Vars are broken)_
 
