@@ -395,7 +395,6 @@ From printf:
 <p>The full path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
 <div class="example-wrap"><pre class="language-text"><code>libs/libc/misc/lib_utsname.c</code></pre></div>
 <p><a href="https://man7.org/linux/man-pages/man2/syscalls.2.html">(uname is a <strong>System Call in Linux</strong>)</a></p>
-<p>TODO: Pic of Static Variables are Broken</p>
 <h1 id="static-variables-are-broken"><a class="doc-anchor" href="#static-variables-are-broken">§</a>9 Static Variables are Broken</h1>
 <p><em>Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?</em></p>
 <p>Earlier we saw that <strong>g_version</strong> is a <strong>Static Variable</strong> that contains our Commit Hash: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
@@ -426,6 +425,7 @@ nsh&gt; hello
 test_static=
 Address of test_static=0xc0100200</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO: Pic of Static Variables are Broken</p>
 <p>OK this gets waaaaay beyond our debugging capability. <em>(NuttX App Data Section got mapped incorrectly into the Memory Space?)</em></p>
 <p>We call in the <strong>NuttX Experts</strong> for help. And it’s awesomely fixed by <a href="https://github.com/anjiahao1"><strong>anjiahao</strong></a> yay! 🎉</p>
 <ul>
