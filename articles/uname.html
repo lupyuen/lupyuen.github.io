@@ -374,8 +374,8 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p><em>Huh? Isn’t this the exact same Kernel Code we saw earlier?</em></p>
 <p>Precisely! We expected <strong>uname</strong> to be a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call to NuttX Kernel</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
-<p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>.</p>
-<p>TODO: Pic of Local Function</p>
+<p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>. <em>(Not a System Call)</em></p>
+<p><img src="https://lupyuen.github.io/images/uname-title5.jpg" alt="uname is a Local Function, not a System Call" /></p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
 <p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows `_info` and `printf`
