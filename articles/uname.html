@@ -76,7 +76,7 @@
 <li><a href="#static-variables-are-broken" title="Static Variables are Broken">9 Static Variables are Broken</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="TODO" /></p>
-<p>Earlier This Week: <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong><code>uname</code></strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p>Earlier This Week: <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong>uname</strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
 NuttShell (NSH) NuttX-12.8.0
 nsh&gt; uname -a
@@ -91,13 +91,13 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p>Watch as we stomp the seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
 <h1 id="inside-uname"><a class="doc-anchor" href="#inside-uname">§</a>1 Inside uname</h1>
 <p><em>uname on NuttX: How does it work?</em></p>
-<p>Use the Source, Luke! First we peek inside the <strong><code>uname</code></strong> command.</p>
-<p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search the <a href="TODO"><strong>NuttX Apps Repo</strong></a> for <strong><code>uname</code></strong>…</p>
+<p>Use the Source, Luke! First we peek inside the <strong>uname</strong> command.</p>
+<p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="TODO"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
 <p>TODO: Pic of uname search</p>
-<p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Our search for <code>uname</code></strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771">nsh_syscmds.c</a></p>
+<p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Our search for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771">nsh_syscmds.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
-<p>We see that <strong><code>uname</code> command</strong> calls the <strong><code>uname</code> function</strong>.</p>
-<p>We search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong><code>uname</code></strong>…</p>
+<p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
+<p>We search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
 <p>TODO: Pic of uname search</p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
@@ -110,10 +110,10 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>(Is <strong><code>uname</code></strong> a <strong>Kernel Function</strong>? We’ll find out in a bit)</p>
+<p>(Is <strong>uname</strong> a <strong>Kernel Function</strong>? We’ll find out in a bit)</p>
 <h1 id="config_version_build"><a class="doc-anchor" href="#config_version_build">§</a>2 CONFIG_VERSION_BUILD</h1>
 <p><em>What’s this CONFIG_VERSION_BUILD?</em></p>
-<p>Earlier we saw that <strong><code>uname</code></strong> function returns <strong>CONFIG_VERSION_BUILD</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
+<p>Earlier we saw that <strong>uname</strong> function returns <em>CONFIG_VERSION_BUILD</em>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
 static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
@@ -124,27 +124,27 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>Let’s track the origin of <strong>CONFIG_VERSION_BUILD</strong>. We build NuttX for <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
+<p>Let’s track the origin of <em>CONFIG_VERSION_BUILD</em>. We build NuttX for <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
-<p>Maybe <strong>CONFIG_VERSION_BUILD</strong> is in the NuttX Config File?</p>
+<p>Maybe <em>CONFIG_VERSION_BUILD</em> is in the NuttX Config File?</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ grep CONFIG_VERSION_BUILD .config
 [ Nothing ]
 ## Nope it&#39;s not!</code></pre></div>
-<p>We head back to NuttX Kernel Repo and <a href="https://github.com/apache/nuttx/blob/master/Documentation/guides/versioning_and_task_names.rst#L57"><strong>search for CONFIG_VERSION_BUILD</strong></a>…</p>
+<p>We head back to NuttX Kernel Repo and <a href="https://github.com/apache/nuttx/blob/master/Documentation/guides/versioning_and_task_names.rst#L57"><strong>search for <em>CONFIG_VERSION_BUILD</em></strong></a>…</p>
 <blockquote>
 <p><em>The Version Number you are looking at comes from the Header File <strong>nuttx/include/nuttx/version.h</strong>.</em></p>
 </blockquote>
 <blockquote>
 <p><em>That Header File was created at build time from a Hidden File that you can find in the top-level nuttx directory called <strong>.version</strong>.</em></p>
 </blockquote>
-<p>Aha! <strong>CONFIG_VERSION_BUILD</strong> a.k.a. Commit Hash comes from <strong>version.h</strong></p>
+<p>Aha! <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash comes from <strong>version.h</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cat include/nuttx/version.h 
 #define CONFIG_VERSION_BUILD &quot;a2d4d74af7&quot;</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/14239">(Thanks to <strong>Ludovic Vanasse</strong> for porting the docs)</a></p>
 <h1 id="static-variable-g_version"><a class="doc-anchor" href="#static-variable-g_version">§</a>3 Static Variable g_version</h1>
 <p><em>Is CONFIG_VERSION_BUILD compiled correctly into our NuttX Image?</em></p>
-<p>We snoop the <strong>NuttX Kernel Image</strong> to verify that <strong>CONFIG_VERSION_BUILD</strong> is correct.</p>
-<p>Recall that <strong>CONFIG_VERSION_BUILD</strong> is stored in Static Variable <strong>g_version</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
+<p>We snoop the <strong>NuttX Kernel Image</strong> to verify that <em>CONFIG_VERSION_BUILD</em> is correct.</p>
+<p>Recall that <em>CONFIG_VERSION_BUILD</em> is stored in Static Variable <strong>g_version</strong>: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
 static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
 
@@ -170,16 +170,16 @@ riscv-none-elf-objcopy \
   -O binary \
   nuttx \
   nuttx.bin</code></pre></div>
-<p>Remember <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>?</p>
+<p>Recall that <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>.</p>
 <p>We open <strong>nuttx.bin</strong> in <a href="TODO"><strong>VSCode Hex Viewer</strong></a>, press <strong>Ctrl-G</strong> and jump to <strong><code>0x2003B8</code></strong>…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="TODO" /></p>
-<p>And that’s our <strong>CONFIG_VERSION_BUILD</strong> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
+<p>And that’s our <em>CONFIG_VERSION_BUILD</em> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
-<p>We tweak the NuttX Kernel and call <strong><code>uname</code></strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121">qemu_rv_appinit.c</a></p>
+<p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121">qemu_rv_appinit.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
-<p>Inside the <strong><code>uname</code></strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109">lib_utsname.c</a></p>
+<p>Inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
 <p>(Why twice? We’ll see in a while)</p>
 <p>We boot NuttX on <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a>…</p>
@@ -192,12 +192,12 @@ From printf:
 board_app_initialize:
   version=c3330b17c7e-dirty Jan 13 2025 11:49:41</code></pre></div>
 <p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
-<p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <strong>CONFIG_VERSION_BUILD</strong> a.k.a. Commit Hash. No Kernel Corruption! <em>(Phew)</em></p>
+<p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash. No Kernel Corruption! <em>(Phew)</em></p>
 <h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
 <p><em>Maybe something got corrupted in our NuttX App?</em></p>
 <p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
-<p>Indeed something is messed up with <strong>g_version</strong> a.k.a. <strong>CONFIG_VERSION_BUILD</strong> a.k.a. Commit Hash…</p>
+<p>Indeed something is messed up with <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Why is Commit Hash empty?
 NuttShell (NSH) NuttX-12.8.0
 nsh&gt; hello
@@ -206,7 +206,7 @@ version=</code></pre></div>
 <p>Inside our NuttX App: Why is <strong>g_version</strong> empty? Wasn’t it OK in NuttX Kernel?</p>
 <h1 id="dump-the-nuttx-app-disassembly"><a class="doc-anchor" href="#dump-the-nuttx-app-disassembly">§</a>6 Dump the NuttX App Disassembly</h1>
 <p><em>Why did uname work differently: NuttX Kernel vs NuttX Apps?</em></p>
-<p>Now we chase the <strong><code>uname</code> raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App…</p>
+<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin/hello
 $ riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -245,7 +245,7 @@ riscv-none-elf-objdump \
 <h1 id="snoop-uname-in-nuttx-app"><a class="doc-anchor" href="#snoop-uname-in-nuttx-app">§</a>7 Snoop uname in NuttX App</h1>
 <p><em>Once Again: How is uname different in NuttX Kernel vs NuttX App?</em></p>
 <p>Earlier we dumped the <strong>RISC-V Disassembly</strong> for our modded Hello App: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a></p>
-<p>We browse <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a> and search for <strong><code>uname</code></strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
+<p>We browse <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a> and search for <strong>uname</strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>int uname(FAR struct utsname *name) { ...
 
 _info(&quot;From _info: g_version=%s\n&quot;, g_version);
@@ -289,17 +289,17 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 </ol>
 <h1 id="uname-is-not-a-kernel-call"><a class="doc-anchor" href="#uname-is-not-a-kernel-call">§</a>8 uname is Not a Kernel Call</h1>
 <p><em>Huh? Isn’t this the exact same Kernel Code we saw earlier?</em></p>
-<p>Precisely! We expected <strong><code>uname</code></strong> to be a <a href="TODO"><strong>NuttX Kernel Call</strong></a>…</p>
+<p>Precisely! We expected <strong>uname</strong> to be a <a href="TODO"><strong>NuttX Kernel Call</strong></a>…</p>
 <p>TODO: Pic of kernel call</p>
-<p>But nope, <strong><code>uname</code></strong> is a <strong>Local Function</strong>.</p>
+<p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>.</p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
 <p>That’s why <strong>printf</strong> appears in the Hello Output but not <strong>_info</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO
 ## _info doesn&#39;t appear</code></pre></div>
 <p>(Because <strong>_info</strong> and <strong>syslog</strong> won’t work in NuttX Apps)</p>
-<p>The full path of <strong><code>uname</code></strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
+<p>The full path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
 <div class="example-wrap"><pre class="language-text"><code>libs/libc/misc/lib_utsname.c</code></pre></div>
-<p><a href="https://man7.org/linux/man-pages/man2/syscalls.2.html">(<code>uname</code> is a <strong>System Call in Linux</strong>)</a></p>
+<p><a href="https://man7.org/linux/man-pages/man2/syscalls.2.html">(uname is a <strong>System Call in Linux</strong>)</a></p>
 <h1 id="static-variables-are-broken"><a class="doc-anchor" href="#static-variables-are-broken">§</a>9 Static Variables are Broken</h1>
 <p><em>Gasp! What if g_version a.k.a. Commit Hash got corrupted inside our app?</em></p>
 <p>Earlier we saw that <strong>g_version</strong> is a <strong>Static Variable</strong> that contains our Commit Hash: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
@@ -328,7 +328,7 @@ int uname(FAR struct utsname *output) { ...
 <p><a href="https://github.com/apache/nuttx/pull/15527"><strong>modlib: gnu-elf.ld.in load exe elf data section mismatch</strong></a></p>
 </li>
 </ul>
-<p><strong>Lesson Learnt:</strong> Please pay attention to the slightest disturbance, like the <strong><code>uname</code></strong> output. It might be a sign of something seriously sinister simmering under the surface!</p>
+<p><strong>Lesson Learnt:</strong> Please pay attention to the slightest disturbance, like the <strong>uname</strong> output. It might be a sign of something seriously sinister simmering under the surface!</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
