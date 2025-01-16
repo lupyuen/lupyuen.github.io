@@ -100,8 +100,8 @@ Let's track the origin of _CONFIG_VERSION_BUILD_. We build NuttX for [__QEMU RIS
 
 ```bash
 ## Download the NuttX Kernel and NuttX Apps
-git clone https://github.com/apache/wip-nuttx
-git clone https://github.com/apache/wip-nuttx-apps apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
 
 ## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
 cd nuttx
