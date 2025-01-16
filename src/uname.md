@@ -199,7 +199,7 @@ We open __nuttx.bin__ in [__VSCode Hex Editor__](https://marketplace.visualstudi
 
 And that's our _CONFIG_VERSION_BUILD_ with Commit Hash! Looks hunky dory, why wasn't it returned correctly to __uname__ and NuttX Shell?
 
-TODO: Pic of Call uname in NuttX Kernel
+![Call uname in NuttX Kernel](https://lupyuen.github.io/images/uname-title3.jpg)
 
 # Call uname in NuttX Kernel
 
@@ -262,7 +262,7 @@ NuttShell (NSH) NuttX-12.4.0
 
 Yep NuttX Kernel correctly prints __g_version__ a.k.a. _CONFIG_VERSION_BUILD_ a.k.a. Commit Hash. No Kernel Corruption! _(Phew)_
 
-TODO: Pic of Call uname in NuttX App
+![Call uname in NuttX App](https://lupyuen.github.io/images/uname-title4.jpg)
 
 # Call uname in NuttX App
 
