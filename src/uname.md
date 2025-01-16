@@ -97,8 +97,26 @@ int uname(FAR struct utsname *output) { ...
 Let's track the origin of _CONFIG_VERSION_BUILD_. We build NuttX for [__QEMU RISC-V 64-bit__](TODO) (Kernel Mode)
 
 ```bash
-TODO
+## Download the NuttX Kernel and NuttX Apps
+git clone https://github.com/apache/wip-nuttx
+git clone https://github.com/apache/wip-nuttx-apps apps
+
+## Configure NuttX for QEMU RISC-V 64-bit (Kernel Mode)
+cd nuttx
+tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make -j
+
+## Build the NuttX Apps
+make export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd
 ```
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L47-L1251)
 
 Maybe _CONFIG_VERSION_BUILD_ is in the NuttX Config File?
 
@@ -289,7 +307,13 @@ $ riscv-none-elf-objdump \
   >hello.S \
   2>&1
 
-TODO: grep
+## Impossible to read, without Debug Symbols
+$ more hello.S
+SYMBOL TABLE: no symbols
+00000000c0000000 <.text>:
+  c0000000: 1141  add sp, sp, -16
+  c0000002: e006  sd  ra, 0(sp)
+  c0000004: 82aa  mv  t0, a0
 ```
 
 But ugh NuttX Build has unhelpfully __Discarded the Debug Symbols__ from our NuttX App, making it hard to digest.
