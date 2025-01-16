@@ -39,10 +39,17 @@ Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](TODO) f
 
 TODO: Pic of uname search
 
-[__Our search for uname__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771)
+[__Searching for uname__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863)
 
 ```c
-TODO
+// Declare the `uname` function
+#include <sys/utsname.h>
+
+// NuttX Shell: To execute the `uname` command...
+int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
+  // We call the `uname` function
+  struct utsname info;
+  ret = uname(&info);
 ```
 
 We see that __uname command__ calls the __uname function__.
@@ -174,16 +181,33 @@ And that's our _CONFIG_VERSION_BUILD_ with Commit Hash! Looks hunky dory, why wa
 
 _Maybe NuttX Kernel got corrupted? Returning bad data for uname?_
 
-We tweak the NuttX Kernel and call __uname__ at Kernel Startup: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121)
+We tweak the NuttX Kernel and call __uname__ at Kernel Startup: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125)
 
 ```c
-TODO
+// Declare the `uname` function
+#include <sys/utsname.h>
+
+// When Kernel Boots: Call the `uname` function
+int board_app_initialize(uintptr_t arg) { ...
+  struct utsname info;
+  int ret2 = uname(&info);
+
+  // If `uname` returns OK:
+  // Print the Commit Hash a.k.a. `g_version`
+  if (ret2 == 0) {
+    _info("version=%s\n", info.version);
+  }
 ```
 
-Inside the __uname__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109)
+Inside the __uname__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113)
 
 ```c
-TODO
+// Inside the `uname` function:
+// Print `g_version` with `_info` and `printf`
+int uname(FAR struct utsname *name) { ...
+  _info("From _info: g_version=%s\n",   g_version);  // Kernel Only
+  printf("From printf: g_version=%s\n", g_version);  // Kernel and Apps
+  printf("Address of g_version=%p\n",   g_version);  // Kernel and Apps
 ```
 
 (Why twice? We'll see in a while)
@@ -191,17 +215,27 @@ TODO
 We boot NuttX on [__QEMU RISC-V 64-bit__](TODO)...
 
 ```bash
-TODO: qemu
+## Start QEMU with NuttX
+$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -kernel nuttx \
+  -nographic
+
+## Commit Hash looks hunky dory
 ABC
 From _info:
-  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
-  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+  Address of g_version=0x804003b8
 board_app_initialize:
-  version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+  version=bd6e5995ef Jan 16 2025 15:29:02
+NuttShell (NSH) NuttX-12.4.0
 ```
 
-[(See the __Complete Log__)](TODO)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1395)
 
 Yep NuttX Kernel correctly prints __g_version__ a.k.a. _CONFIG_VERSION_BUILD_ a.k.a. Commit Hash. No Kernel Corruption! _(Phew)_
 
@@ -209,10 +243,22 @@ Yep NuttX Kernel correctly prints __g_version__ a.k.a. _CONFIG_VERSION_BUILD_ a.
 
 _Maybe something got corrupted in our NuttX App?_
 
-Wow that's so diabolical, sure hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53)
+Wow that's so diabolical, sure hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57)
 
 ```c
-TODO
+// Declare the `uname` function
+#include <sys/utsname.h>
+
+// In Hello App: Call the `uname` function
+int main(int argc, FAR char *argv[]) { ...
+  struct utsname info;
+  int ret = uname(&info);
+
+  // If `uname` returns OK:
+  // Print the Commit Hash a.k.a `g_version`
+  if (ret >= 0) {
+    printf("version=%s\n", info.version);
+  }
 ```
 
 Indeed something is messed up with __g_version__ a.k.a. _CONFIG_VERSION_BUILD_ a.k.a. Commit Hash...
@@ -224,7 +270,7 @@ nsh> hello
 version=
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/ee3eee9752165bee8f3e60d57c224372#file-special-qemu-riscv-knsh64-log-L1410)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431)
 
 Inside our NuttX App: Why is __g_version__ empty? Wasn't it OK in NuttX Kernel?
 
@@ -291,46 +337,55 @@ Earlier we dumped the __RISC-V Disassembly__ for our modded Hello App: [__hello.
 
 We browse [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06) and search for __uname__. This appears: [hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496)
 
-```text
+```c
+// Inside Hello App: The RISC-V Disassembly of `uname` function
 int uname(FAR struct utsname *name) { ...
 
+// Call _info() to print g_version
 _info("From _info: g_version=%s\n", g_version);
-  c000016e: 00100697           auipc a3,0x100
-  c0000172: 0aa68693           add a3,a3,170 # c0100218 <g_version>
-  c0000176: 00002617           auipc a2,0x2
-  c000017a: ef260613           add a2,a2,-270 # c0002068 <__FUNCTION__.0>
-  c000017e: 00002597           auipc a1,0x2
-  c0000182: cd258593           add a1,a1,-814 # c0001e50 <_einit+0x120>
-  c0000186: 4519               li a0,6
-  c0000188: 640000ef           jal c00007c8 <syslog>
+  auipc a3, 0x100
+  add   a3, a3, 170  // Arg #3: g_version
+  auipc a2, 0x2
+  add   a2, a2, -270 // Arg #2: Format String
+  auipc a1, 0x2
+  add   a1, a1, -814 // Arg #1: VarArgs Length (I think)
+  li    a0, 6        // Arg #0: Info Logging Priority
+  jal   c00007c8     // Call syslog()
 
+// Call printf() to print g_version
 printf("From printf: g_version=%s\n", g_version);
-  c000018c: 00100597           auipc a1,0x100
-  c0000190: 08c58593           add a1,a1,140 # c0100218 <g_version>
-  c0000194: 00002517           auipc a0,0x2
-  c0000198: cdc50513           add a0,a0,-804 # c0001e70 <_einit+0x140>
-  c000019c: 04a000ef           jal c00001e6 <printf>
+  auipc a1, 0x100
+  add   a1, a1, 140  // Arg #1: g_version
+  auipc a0, 0x2
+  add   a0, a0, -804 // Arg #0: Format String
+  jal   c00001e6     // Call printf()
 
+// Call printf() to print Address of g_version
 printf("Address of g_version=%p\n", g_version);
-  c00001a0: 00100597           auipc a1,0x100
-  c00001a4: 07858593           add a1,a1,120 # c0100218 <g_version>
-  c00001a8: 00002517           auipc a0,0x2
-  c00001ac: ce850513           add a0,a0,-792 # c0001e90 <_einit+0x160>
-  c00001b0: 036000ef           jal c00001e6 <printf>
+  auipc a1, 0x100
+  add   a1, a1, 120  // Arg #1: g_version
+  auipc a0, 0x2
+  add   a0, a0, -792 // Arg #0: Format String
+  jal   c00001e6     // Call printf()
 
+// Copy g_version into the uname() output
 strlcpy(name->version,  g_version, sizeof(name->version));
-  c00001b4: 03300613           li a2,51
-  c00001b8: 00100597           auipc a1,0x100
-  c00001bc: 06058593           add a1,a1,96 # c0100218 <g_version>
-  c00001c0: 04a40513           add a0,s0,74
-  c00001c4: 584000ef           jal c0000748 <strlcpy>
+  li    a2, 51       // Arg #2: Size of name->version
+  auipc a1, 0x100
+  add   a1, a1, 96   // Arg #1: g_version
+  add   a0, s0, 74   // Arg #0: name->version
+  jal   c0000748     // Call strlcpy()
 ```
 
 Which does 4 things...
 
 1.  Call __\_info__ (a.k.a. __syslog__) to print __g_version__
 
-1.  TODO
+1.  Call __\_printf__ to print __g_version__
+
+1.  Followed by __Address of g_version__
+
+1.  Copy __g_version__ into the __uname__ output
 
 # uname is Not a Kernel Call
 
@@ -344,11 +399,22 @@ But nope, __uname__ is a __Local Function__.
 
 Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
 
-That's why __printf__ appears in the Hello Output but not __\_info__...
+That's why __printf__ appears in the [__Hello Output__](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431) but not __\_info__...
 
 ```bash
-TODO
-## _info doesn't appear
+## NuttX Kernel: Shows `_info` and `printf`
+From _info:
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+From printf:
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+  Address of g_version=0x804003b8
+
+## NuttX Apps: Won't show `_info`
+NuttShell (NSH) NuttX-12.4.0
+nsh> hello
+From printf:
+  g_version=
+  Address of g_version=0xc0100218
 ```
 
 (Because __\_info__ and __syslog__ won't work in NuttX Apps)
@@ -380,19 +446,31 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-We have a hefty hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](TODO)
+We have a hefty hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65)
 
 ```c
-TODO
+// Define our Static Var
+static char test_static[] =
+  "Testing Static Var";
+
+// In Hello App: Print our Static Var
+// "test_static=Testing Static Var"
+int main(int argc, FAR char *argv[]) { ...
+  printf("test_static=%s\n", test_static);
+  printf("Address of test_static=%p\n", test_static);
 ```
 
 Our hunch is 100% correct: __Static Variables are Broken!__
 
 ```bash
-TODO
+## Why is Static Var `test_static` empty?
+NuttShell (NSH) NuttX-12.4.0
+nsh> hello
+test_static=
+Address of test_static=0xc0100200
 ```
 
-[(See the __Complete Log__)](TODO)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431)
 
 OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
 
