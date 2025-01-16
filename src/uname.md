@@ -303,7 +303,7 @@ Inside our NuttX App: Why is __g_version__ empty? Wasn't it OK in NuttX Kernel?
 
 _Why did uname work differently: NuttX Kernel vs NuttX Apps?_
 
-Now we chase the __uname raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App...
+Now we chase the __uname raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App ELF...
 
 ```bash
 ## Dump the RISC-V Disassembly for apps/bin/hello
@@ -366,7 +366,7 @@ _Once Again: How is uname different in NuttX Kernel vs NuttX App?_
 
 Earlier we dumped the __RISC-V Disassembly__ for our modded Hello App: [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06)
 
-We browse [__hello.S__](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06) and search for __uname__. This appears: [hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496)
+We browse the disassembly and search for __uname__. This appears: [hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496)
 
 ```c
 // Inside Hello App: The RISC-V Disassembly of `uname` function
@@ -379,7 +379,7 @@ _info("From _info: g_version=%s\n", g_version);
   auipc a2, 0x2
   add   a2, a2, -270 // Arg #2: Format String
   auipc a1, 0x2
-  add   a1, a1, -814 // Arg #1: VarArgs Length (I think)
+  add   a1, a1, -814 // Arg #1: VarArgs Size (I think)
   li    a0, 6        // Arg #0: Info Logging Priority
   jal   c00007c8     // Call syslog()
 
