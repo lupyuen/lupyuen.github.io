@@ -76,7 +76,7 @@
 <li><a href="#static-variables-are-broken" title="Static Variables are Broken">9 Static Variables are Broken</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="Fixing a uname bug (Apache NuttX RTOS)" /></p>
-<p>Earlier This Week: <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong>uname</strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p>Earlier This Week: <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong>uname</strong></a> became unusually quieter on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
 NuttShell (NSH) NuttX-12.8.0
 nsh&gt; uname -a
@@ -85,15 +85,15 @@ NuttX 12.8.0  risc-v rv-virt</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## Commit Hash should always appear
 nsh&gt; uname -a
 NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/uname-commit.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/uname-commit.png" alt="Commit Hash identifies the Exact Commit of NuttX that was used to produce the NuttX Build" /></p>
 <p><em>Can we ignore it? Maybe nobody will notice?</em></p>
 <p>Noooooo! Commit Hash identifies the <strong>Exact Commit of NuttX</strong> that was used to produce the NuttX Build. (Pic above)</p>
 <p>Watch as we stomp the seemingly simple bug… That turns out to be <strong>something seriously sinister</strong>! <em>(Spoiler: Static Vars are broken)</em></p>
 <h1 id="inside-uname"><a class="doc-anchor" href="#inside-uname">§</a>1 Inside uname</h1>
 <p><em>uname on NuttX: How does it work?</em></p>
 <p>Use the Source, Luke! First we peek inside the <strong>uname</strong> command.</p>
-<p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="TODO"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/uname-search1.png" alt="TODO" /></p>
+<p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="https://github.com/apache/nuttx-apps"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/uname-search1.png" alt="Search NuttX Apps Repo for uname" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Searching for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863">nsh_syscmds.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
 #include &lt;sys/utsname.h&gt;
@@ -104,8 +104,8 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
   struct utsname info;
   ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
-<p>Thus we search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/uname-search2.png" alt="TODO" /></p>
+<p>Thus we search the <a href="https://github.com/apache/nuttx"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/uname-search2.png" alt="Search the NuttX Kernel Repo for uname" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
 static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
@@ -131,7 +131,7 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>Let’s track the origin of <em>CONFIG_VERSION_BUILD</em>. We build NuttX for <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
+<p>Let’s track the origin of <em>CONFIG_VERSION_BUILD</em>. We build NuttX for <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html"><strong>QEMU RISC-V 64-bit</strong></a> (Kernel Mode)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Kernel and NuttX Apps
 git clone https://github.com/apache/wip-nuttx
 git clone https://github.com/apache/wip-nuttx-apps apps
@@ -195,9 +195,9 @@ riscv-none-elf-objcopy \
   nuttx \
   nuttx.bin</code></pre></div>
 <p>Recall that <strong>g_version</strong> is at <strong><code>0x8040</code> <code>03B8</code></strong>.</p>
-<p>We open <strong>nuttx.bin</strong> in <a href="TODO"><strong>VSCode Hex Viewer</strong></a>, press <strong>Ctrl-G</strong> and jump to <strong><code>0x2003B8</code></strong>…</p>
+<p>We open <strong>nuttx.bin</strong> in <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor"><strong>VSCode Hex Editor</strong></a>, press <strong>Ctrl-G</strong> and jump to <strong><code>0x2003B8</code></strong>…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
-<p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="nuttx.bin in VSCode Hex Viewer" /></p>
 <p>And that’s our <em>CONFIG_VERSION_BUILD</em> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
@@ -223,7 +223,7 @@ int uname(FAR struct utsname *name) { ...
   printf(&quot;From printf: g_version=%s\n&quot;, g_version);  // Kernel and Apps
   printf(&quot;Address of g_version=%p\n&quot;,   g_version);  // Kernel and Apps</code></pre></div>
 <p>(Why twice? We’ll see in a while)</p>
-<p>We boot NuttX on <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a>…</p>
+<p>We boot NuttX on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html"><strong>QEMU RISC-V 64-bit</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start QEMU with NuttX
 $ qemu-system-riscv64 \
   -semihosting \
@@ -232,8 +232,7 @@ $ qemu-system-riscv64 \
   -kernel nuttx \
   -nographic
 
-## Commit Hash looks hunky dory
-ABC
+## NuttX Kernel shows Commit Hash
 From _info:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
@@ -369,8 +368,8 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 </ol>
 <h1 id="uname-is-not-a-kernel-call"><a class="doc-anchor" href="#uname-is-not-a-kernel-call">§</a>8 uname is Not a Kernel Call</h1>
 <p><em>Huh? Isn’t this the exact same Kernel Code we saw earlier?</em></p>
-<p>Precisely! We expected <strong>uname</strong> to be a <a href="TODO"><strong>NuttX Kernel Call</strong></a>…</p>
-<p>TODO: Pic of kernel call</p>
+<p>Precisely! We expected <strong>uname</strong> to be a <a href="https://lupyuen.github.io/articles/app#nuttx-app-calls-nuttx-kernel"><strong>System Call to NuttX Kernel</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/app-syscall.jpg" alt="NuttX App calls NuttX Kernel" /></p>
 <p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>.</p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
 <p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
