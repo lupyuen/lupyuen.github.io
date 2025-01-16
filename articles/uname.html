@@ -75,7 +75,7 @@
 <li><a href="#uname-is-not-a-kernel-call" title="uname is Not a Kernel Call">8 uname is Not a Kernel Call</a><ul></ul></li>
 <li><a href="#static-variables-are-broken" title="Static Variables are Broken">9 Static Variables are Broken</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
-<p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="Fixing a uname bug (Apache NuttX RTOS)" /></p>
 <p>Earlier This Week: <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-13"><strong>uname</strong></a> became unusually quieter on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Hmmm something is missing
 NuttShell (NSH) NuttX-12.8.0
@@ -93,7 +93,7 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p><em>uname on NuttX: How does it work?</em></p>
 <p>Use the Source, Luke! First we peek inside the <strong>uname</strong> command.</p>
 <p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="TODO"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
-<p>TODO: Pic of uname search</p>
+<p><img src="https://lupyuen.github.io/images/uname-search1.png" alt="TODO" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Searching for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863">nsh_syscmds.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
 #include &lt;sys/utsname.h&gt;
@@ -104,8 +104,8 @@ int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
   struct utsname info;
   ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
-<p>We search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
-<p>TODO: Pic of uname search</p>
+<p>Thus we search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/uname-search2.png" alt="TODO" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx%20uname&amp;type=code"><strong>NuttX Kernel Search</strong></a> says that <strong>uname</strong> is defined here: <a href="https://github.com/apache/nuttx/blob/master/libs/libc/misc/lib_utsname.c#L53-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// CONFIG_VERSION_BUILD goes inside Static Var g_version
 static char g_version[] = CONFIG_VERSION_BUILD;  // Omitted: Date and Time
