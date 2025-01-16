@@ -94,8 +94,15 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p>Use the Source, Luke! First we peek inside the <strong>uname</strong> command.</p>
 <p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="TODO"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
 <p>TODO: Pic of uname search</p>
-<p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Our search for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L771">nsh_syscmds.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Searching for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863">nsh_syscmds.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+#include &lt;sys/utsname.h&gt;
+
+// NuttX Shell: To execute the `uname` command...
+int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
+  // We call the `uname` function
+  struct utsname info;
+  ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
 <p>We search the <a href="TODO"><strong>NuttX Kernel Repo</strong></a> for <strong>uname</strong>…</p>
 <p>TODO: Pic of uname search</p>
@@ -177,32 +184,71 @@ riscv-none-elf-objcopy \
 <p>And that’s our <em>CONFIG_VERSION_BUILD</em> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
-<p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L121">qemu_rv_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
-<p>Inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L109">lib_utsname.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125">qemu_rv_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+#include &lt;sys/utsname.h&gt;
+
+// When Kernel Boots: Call the `uname` function
+int board_app_initialize(uintptr_t arg) { ...
+  struct utsname info;
+  int ret2 = uname(&amp;info);
+
+  // If `uname` returns OK:
+  // Print the Commit Hash a.k.a. `g_version`
+  if (ret2 == 0) {
+    _info(&quot;version=%s\n&quot;, info.version);
+  }</code></pre></div>
+<p>Inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113">lib_utsname.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Inside the `uname` function:
+// Print `g_version` with `_info` and `printf`
+int uname(FAR struct utsname *name) { ...
+  _info(&quot;From _info: g_version=%s\n&quot;,   g_version);  // Kernel Only
+  printf(&quot;From printf: g_version=%s\n&quot;, g_version);  // Kernel and Apps
+  printf(&quot;Address of g_version=%p\n&quot;,   g_version);  // Kernel and Apps</code></pre></div>
 <p>(Why twice? We’ll see in a while)</p>
 <p>We boot NuttX on <a href="TODO"><strong>QEMU RISC-V 64-bit</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO: qemu
+<div class="example-wrap"><pre class="language-bash"><code>## Start QEMU with NuttX
+$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -kernel nuttx \
+  -nographic
+
+## Commit Hash looks hunky dory
 ABC
 From _info:
-  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
-  g_version=c3330b17c7e-dirty Jan 13 2025 11:49:41
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+  Address of g_version=0x804003b8
 board_app_initialize:
-  version=c3330b17c7e-dirty Jan 13 2025 11:49:41</code></pre></div>
-<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+  version=bd6e5995ef Jan 16 2025 15:29:02
+NuttShell (NSH) NuttX-12.4.0</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1395">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash. No Kernel Corruption! <em>(Phew)</em></p>
 <h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
 <p><em>Maybe something got corrupted in our NuttX App?</em></p>
-<p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L43-L53">hello_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57">hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+#include &lt;sys/utsname.h&gt;
+
+// In Hello App: Call the `uname` function
+int main(int argc, FAR char *argv[]) { ...
+  struct utsname info;
+  int ret = uname(&amp;info);
+
+  // If `uname` returns OK:
+  // Print the Commit Hash a.k.a `g_version`
+  if (ret &gt;= 0) {
+    printf(&quot;version=%s\n&quot;, info.version);
+  }</code></pre></div>
 <p>Indeed something is messed up with <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Why is Commit Hash empty?
 NuttShell (NSH) NuttX-12.8.0
 nsh&gt; hello
 version=</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/ee3eee9752165bee8f3e60d57c224372#file-special-qemu-riscv-knsh64-log-L1410">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431">(See the <strong>Complete Log</strong>)</a></p>
 <p>Inside our NuttX App: Why is <strong>g_version</strong> empty? Wasn’t it OK in NuttX Kernel?</p>
 <h1 id="dump-the-nuttx-app-disassembly"><a class="doc-anchor" href="#dump-the-nuttx-app-disassembly">§</a>6 Dump the NuttX App Disassembly</h1>
 <p><em>Why did uname work differently: NuttX Kernel vs NuttX Apps?</em></p>
@@ -246,45 +292,56 @@ riscv-none-elf-objdump \
 <p><em>Once Again: How is uname different in NuttX Kernel vs NuttX App?</em></p>
 <p>Earlier we dumped the <strong>RISC-V Disassembly</strong> for our modded Hello App: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a></p>
 <p>We browse <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a> and search for <strong>uname</strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>int uname(FAR struct utsname *name) { ...
+<div class="example-wrap"><pre class="language-c"><code>// Inside Hello App: The RISC-V Disassembly of `uname` function
+int uname(FAR struct utsname *name) { ...
 
+// Call _info() to print g_version
 _info(&quot;From _info: g_version=%s\n&quot;, g_version);
-  c000016e: 00100697           auipc a3,0x100
-  c0000172: 0aa68693           add a3,a3,170 # c0100218 &lt;g_version&gt;
-  c0000176: 00002617           auipc a2,0x2
-  c000017a: ef260613           add a2,a2,-270 # c0002068 &lt;__FUNCTION__.0&gt;
-  c000017e: 00002597           auipc a1,0x2
-  c0000182: cd258593           add a1,a1,-814 # c0001e50 &lt;_einit+0x120&gt;
-  c0000186: 4519               li a0,6
-  c0000188: 640000ef           jal c00007c8 &lt;syslog&gt;
+  auipc a3, 0x100
+  add   a3, a3, 170  // Arg #3: g_version
+  auipc a2, 0x2
+  add   a2, a2, -270 // Arg #2: Format String
+  auipc a1, 0x2
+  add   a1, a1, -814 // Arg #1: VarArgs Length (I think)
+  li    a0, 6        // Arg #0: Info Logging Priority
+  jal   c00007c8     // Call syslog()
 
+// Call printf() to print g_version
 printf(&quot;From printf: g_version=%s\n&quot;, g_version);
-  c000018c: 00100597           auipc a1,0x100
-  c0000190: 08c58593           add a1,a1,140 # c0100218 &lt;g_version&gt;
-  c0000194: 00002517           auipc a0,0x2
-  c0000198: cdc50513           add a0,a0,-804 # c0001e70 &lt;_einit+0x140&gt;
-  c000019c: 04a000ef           jal c00001e6 &lt;printf&gt;
+  auipc a1, 0x100
+  add   a1, a1, 140  // Arg #1: g_version
+  auipc a0, 0x2
+  add   a0, a0, -804 // Arg #0: Format String
+  jal   c00001e6     // Call printf()
 
+// Call printf() to print Address of g_version
 printf(&quot;Address of g_version=%p\n&quot;, g_version);
-  c00001a0: 00100597           auipc a1,0x100
-  c00001a4: 07858593           add a1,a1,120 # c0100218 &lt;g_version&gt;
-  c00001a8: 00002517           auipc a0,0x2
-  c00001ac: ce850513           add a0,a0,-792 # c0001e90 &lt;_einit+0x160&gt;
-  c00001b0: 036000ef           jal c00001e6 &lt;printf&gt;
+  auipc a1, 0x100
+  add   a1, a1, 120  // Arg #1: g_version
+  auipc a0, 0x2
+  add   a0, a0, -792 // Arg #0: Format String
+  jal   c00001e6     // Call printf()
 
+// Copy g_version into the uname() output
 strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
-  c00001b4: 03300613           li a2,51
-  c00001b8: 00100597           auipc a1,0x100
-  c00001bc: 06058593           add a1,a1,96 # c0100218 &lt;g_version&gt;
-  c00001c0: 04a40513           add a0,s0,74
-  c00001c4: 584000ef           jal c0000748 &lt;strlcpy&gt;</code></pre></div>
+  li    a2, 51       // Arg #2: Size of name-&gt;version
+  auipc a1, 0x100
+  add   a1, a1, 96   // Arg #1: g_version
+  add   a0, s0, 74   // Arg #0: name-&gt;version
+  jal   c0000748     // Call strlcpy()</code></pre></div>
 <p>Which does 4 things…</p>
 <ol>
 <li>
 <p>Call <strong>_info</strong> (a.k.a. <strong>syslog</strong>) to print <strong>g_version</strong></p>
 </li>
 <li>
-<p>TODO</p>
+<p>Call <strong>_printf</strong> to print <strong>g_version</strong></p>
+</li>
+<li>
+<p>Followed by <strong>Address of g_version</strong></p>
+</li>
+<li>
+<p>Copy <strong>g_version</strong> into the <strong>uname</strong> output</p>
 </li>
 </ol>
 <h1 id="uname-is-not-a-kernel-call"><a class="doc-anchor" href="#uname-is-not-a-kernel-call">§</a>8 uname is Not a Kernel Call</h1>
@@ -293,9 +350,20 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p>TODO: Pic of kernel call</p>
 <p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>.</p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
-<p>That’s why <strong>printf</strong> appears in the Hello Output but not <strong>_info</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO
-## _info doesn&#39;t appear</code></pre></div>
+<p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows `_info` and `printf`
+From _info:
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+From printf:
+  g_version=bd6e5995ef Jan 16 2025 15:29:02
+  Address of g_version=0x804003b8
+
+## NuttX Apps: Won&#39;t show `_info`
+NuttShell (NSH) NuttX-12.4.0
+nsh&gt; hello
+From printf:
+  g_version=
+  Address of g_version=0xc0100218</code></pre></div>
 <p>(Because <strong>_info</strong> and <strong>syslog</strong> won’t work in NuttX Apps)</p>
 <p>The full path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
 <div class="example-wrap"><pre class="language-text"><code>libs/libc/misc/lib_utsname.c</code></pre></div>
@@ -313,11 +381,23 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>We have a hefty hunch that <strong>Static Variables</strong> might be broken <em>(gasp)</em>. We test our hypothesis in <strong>Hello App</strong>: <a href="TODO">hello_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
+<p>We have a hefty hunch that <strong>Static Variables</strong> might be broken <em>(gasp)</em>. We test our hypothesis in <strong>Hello App</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65">hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Define our Static Var
+static char test_static[] =
+  &quot;Testing Static Var&quot;;
+
+// In Hello App: Print our Static Var
+// &quot;test_static=Testing Static Var&quot;
+int main(int argc, FAR char *argv[]) { ...
+  printf(&quot;test_static=%s\n&quot;, test_static);
+  printf(&quot;Address of test_static=%p\n&quot;, test_static);</code></pre></div>
 <p>Our hunch is 100% correct: <strong>Static Variables are Broken!</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
-<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Why is Static Var `test_static` empty?
+NuttShell (NSH) NuttX-12.4.0
+nsh&gt; hello
+test_static=
+Address of test_static=0xc0100200</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431">(See the <strong>Complete Log</strong>)</a></p>
 <p>OK this gets waaaaay beyond our debugging capability. <em>(NuttX App Data Section got mapped incorrectly into the Memory Space?)</em></p>
 <p>We call in the <strong>NuttX Experts</strong> for help. And it’s awesomely fixed by <a href="https://github.com/anjiahao1"><strong>anjiahao</strong></a> yay! 🎉</p>
 <ul>
