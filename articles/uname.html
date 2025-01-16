@@ -201,7 +201,7 @@ riscv-none-elf-objcopy \
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel.script#L24-L26">(Because NuttX Kernel loads at <strong><code>0x8020</code> <code>0000</code></strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-hex1.png" alt="nuttx.bin in VSCode Hex Viewer" /></p>
 <p>And that’s our <em>CONFIG_VERSION_BUILD</em> with Commit Hash! Looks hunky dory, why wasn’t it returned correctly to <strong>uname</strong> and NuttX Shell?</p>
-<p>TODO: Pic of Call uname in NuttX Kernel</p>
+<p><img src="https://lupyuen.github.io/images/uname-title3.jpg" alt="Call uname in NuttX Kernel" /></p>
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
 <p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125">qemu_rv_appinit.c</a></p>
@@ -246,7 +246,7 @@ board_app_initialize:
 NuttShell (NSH) NuttX-12.4.0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1395">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep NuttX Kernel correctly prints <strong>g_version</strong> a.k.a. <em>CONFIG_VERSION_BUILD</em> a.k.a. Commit Hash. No Kernel Corruption! <em>(Phew)</em></p>
-<p>TODO: Pic of Call uname in NuttX App</p>
+<p><img src="https://lupyuen.github.io/images/uname-title4.jpg" alt="Call uname in NuttX App" /></p>
 <h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
 <p><em>Maybe something got corrupted in our NuttX App?</em></p>
 <p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57">hello_main.c</a></p>
