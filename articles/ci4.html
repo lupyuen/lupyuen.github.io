@@ -895,6 +895,13 @@ tar cvf /tmp/prometheus.tar \
   var/prometheus \
   var/log/prometheus.* \
   Cellar/prometheus</code></pre></div>
+<p>If we wish to allow <strong>Web Crawlers</strong> to index our server…</p>
+<ul>
+<li>Edit <em>/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt</em></li>
+<li>Change <strong><code>Disallow: /</code></strong></li>
+<li>To <strong><code>Disallow:</code></strong></li>
+</ul>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
