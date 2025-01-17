@@ -254,7 +254,7 @@ NuttShell (NSH) NuttX-12.4.0</code></pre></div>
 #include &lt;sys/utsname.h&gt;
 
 // In Hello App: Call the uname() function
-int main(int argc, FAR char *argv[]) { ...
+int main(int argc, FAR char *argv[]) {
   struct utsname info;
   int ret = uname(&amp;info);
 
@@ -304,7 +304,7 @@ riscv-none-elf-strip --strip-unneeded apps/bin/hello
 
 ## apps/bin/hello is missing the Debug Symbols
 ## apps/bin_debug/hello retains the Debug Symbols!</code></pre></div>
-<p>Ah NuttX Build has squirrelled away the <strong>Debug Version</strong> of our app into <strong>apps/bin_debug</strong>. We dump the <strong>RISC-V Disassembly</strong>…</p>
+<p>Ah NuttX Build has squirrelled away the <strong>Debug Version</strong> of our app into <strong>apps/bin_debug</strong>. We dump its <strong>RISC-V Disassembly</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin_debug/hello
 cd ../nuttx
 riscv-none-elf-objdump \
@@ -377,7 +377,7 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p>But nope, <strong>uname</strong> is a <strong>Local Function</strong>. <em>(Not a System Call)</em></p>
 <p><img src="https://lupyuen.github.io/images/uname-title5.jpg" alt="uname is a Local Function, not a System Call" /></p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
-<p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
+<p>Which explains why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows _info() and printf()
 From _info:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
@@ -392,7 +392,7 @@ From printf:
   g_version=
   Address of g_version=0xc0100218</code></pre></div>
 <p>(Because <strong>_info</strong> and <strong>syslog</strong> won’t work in NuttX Apps)</p>
-<p>The full path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>, not a Kernel Function…</p>
+<p>The Full Path of <strong>uname</strong> is a dead giveaway: It’s a <strong>Library Function</strong>. <em>(Not a Kernel Function)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>libs/libc/misc/lib_utsname.c</code></pre></div>
 <p><a href="https://man7.org/linux/man-pages/man2/syscalls.2.html">(uname is a <strong>System Call in Linux</strong>)</a></p>
 <h1 id="static-variables-are-broken"><a class="doc-anchor" href="#static-variables-are-broken">§</a>9 Static Variables are Broken</h1>
@@ -408,38 +408,39 @@ int uname(FAR struct utsname *output) { ...
     g_version,               // From our Static Var (CONFIG_VERSION_BUILD a.k.a Commit Hash)
     sizeof(output-&gt;version)  // Making sure we don&#39;t overflow
   );</code></pre></div>
-<p>We have a hefty hunch that <strong>Static Variables</strong> might be broken <em>(gasp)</em>. We test our hypothesis in <strong>Hello App</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65">hello_main.c</a></p>
+<p>We have a hefty hunch that <strong>Static Variables</strong> might be broken 😱. We test our hypothesis in <strong>Hello App</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Define our Static Var
 static char test_static[] =
   &quot;Testing Static Var&quot;;
 
 // In Hello App: Print our Static Var
 // &quot;test_static=Testing Static Var&quot;
-int main(int argc, FAR char *argv[]) { ...
+int main(int argc, FAR char *argv[]) {
   printf(&quot;test_static=%s\n&quot;, test_static);
   printf(&quot;Address of test_static=%p\n&quot;, test_static);</code></pre></div>
 <p>Our hunch is 100% correct: <strong>Static Variables are Broken!</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Why is Static Var `test_static` empty?
+<div class="example-wrap"><pre class="language-bash"><code>## Why is Static Var `test_static` empty???
 NuttShell (NSH) NuttX-12.4.0
 nsh&gt; hello
 test_static=
 Address of test_static=0xc0100200</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1416-L1431">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/uname-title6.jpg" alt="Static Variables are Broken!" /></p>
-<p>OK this gets waaaaay beyond our debugging capability. <em>(NuttX App Data Section got mapped incorrectly into the Memory Space?)</em></p>
+<p>OK this goes waaaaay beyond our debugging capability. <em>(NuttX App Data Section got mapped incorrectly into the Memory Space?)</em></p>
 <p>We call in the <strong>NuttX Experts</strong> for help. And it’s awesomely fixed by <a href="https://github.com/anjiahao1"><strong>anjiahao</strong></a> yay! 🎉</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/issues/15526"><strong>Static Char Arrays are empty for NuttX Apps</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/issues/15526"><strong>Static Char Arrays are Empty for NuttX Apps</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/pull/15527"><strong>modlib: gnu-elf.ld.in load exe elf data section mismatch</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15527"><strong>modlib: Data Section mismatch</strong></a></p>
 </li>
 </ul>
-<p><strong>Lesson Learnt:</strong> Please pay attention to the slightest disturbance, like the <strong>uname</strong> output. It might be a sign of something seriously sinister simmering under the surface!</p>
+<p><strong>Lesson Learnt:</strong> Please pay attention to the slightest disturbance, like the <strong>uname</strong> output…</p>
+<p>It might be a sign of something seriously sinister simmering under the surface!</p>
 <p><img src="https://lupyuen.github.io/images/uname-title.jpg" alt="Fixing a uname bug (Apache NuttX RTOS)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
-<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX CI. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
+<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.github.io/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
