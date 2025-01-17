@@ -223,7 +223,7 @@ int board_app_initialize(uintptr_t arg) { ...
   }
 ```
 
-Inside the __uname__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113)
+Then inside the __uname__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113)
 
 ```c
 // Inside the `uname` function:
