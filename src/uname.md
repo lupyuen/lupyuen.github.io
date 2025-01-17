@@ -275,7 +275,7 @@ Wow that's so diabolical, sure hope not. We mod the __NuttX Hello App__ and call
 #include <sys/utsname.h>
 
 // In Hello App: Call the uname() function
-int main(int argc, FAR char *argv[]) { ...
+int main(int argc, FAR char *argv[]) {
   struct utsname info;
   int ret = uname(&info);
 
@@ -345,7 +345,7 @@ riscv-none-elf-strip --strip-unneeded apps/bin/hello
 ## apps/bin_debug/hello retains the Debug Symbols!
 ```
 
-Ah NuttX Build has squirrelled away the __Debug Version__ of our app into __apps/bin_debug__. We dump the __RISC-V Disassembly__...
+Ah NuttX Build has squirrelled away the __Debug Version__ of our app into __apps/bin_debug__. We dump its __RISC-V Disassembly__...
 
 ```bash
 ## Dump the RISC-V Disassembly for apps/bin_debug/hello
@@ -432,7 +432,7 @@ But nope, __uname__ is a __Local Function__. _(Not a System Call)_
 
 Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's potentially corruptible hmmm...)_
 
-That's why __printf__ appears in the [__Hello Output__](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431) but not __\_info__...
+Which explains why __printf__ appears in the [__Hello Output__](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431) but not __\_info__...
 
 ```bash
 ## NuttX Kernel: Shows _info() and printf()
@@ -452,7 +452,7 @@ From printf:
 
 (Because __\_info__ and __syslog__ won't work in NuttX Apps)
 
-The full path of __uname__ is a dead giveaway: It's a __Library Function__, not a Kernel Function...
+The Full Path of __uname__ is a dead giveaway: It's a __Library Function__. _(Not a Kernel Function)_
 
 ```text
 libs/libc/misc/lib_utsname.c
@@ -479,7 +479,7 @@ int uname(FAR struct utsname *output) { ...
   );
 ```
 
-We have a hefty hunch that __Static Variables__ might be broken _(gasp)_. We test our hypothesis in __Hello App__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65)
+We have a hefty hunch that __Static Variables__ might be broken 😱. We test our hypothesis in __Hello App__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L30-L65)
 
 ```c
 // Define our Static Var
@@ -488,7 +488,7 @@ static char test_static[] =
 
 // In Hello App: Print our Static Var
 // "test_static=Testing Static Var"
-int main(int argc, FAR char *argv[]) { ...
+int main(int argc, FAR char *argv[]) {
   printf("test_static=%s\n", test_static);
   printf("Address of test_static=%p\n", test_static);
 ```
@@ -496,7 +496,7 @@ int main(int argc, FAR char *argv[]) { ...
 Our hunch is 100% correct: __Static Variables are Broken!__
 
 ```bash
-## Why is Static Var `test_static` empty?
+## Why is Static Var `test_static` empty???
 NuttShell (NSH) NuttX-12.4.0
 nsh> hello
 test_static=
@@ -507,21 +507,23 @@ Address of test_static=0xc0100200
 
 ![Static Variables are Broken!](https://lupyuen.github.io/images/uname-title6.jpg)
 
-OK this gets waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
+OK this goes waaaaay beyond our debugging capability. _(NuttX App Data Section got mapped incorrectly into the Memory Space?)_
 
 We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiahao__](https://github.com/anjiahao1) yay! 🎉
 
-- [__Static Char Arrays are empty for NuttX Apps__](https://github.com/apache/nuttx/issues/15526)
+- [__Static Char Arrays are Empty for NuttX Apps__](https://github.com/apache/nuttx/issues/15526)
 
-- [__modlib: gnu-elf.ld.in load exe elf data section mismatch__](https://github.com/apache/nuttx/pull/15527)
+- [__modlib: Data Section mismatch__](https://github.com/apache/nuttx/pull/15527)
 
-__Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __uname__ output. It might be a sign of something seriously sinister simmering under the surface!
+__Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __uname__ output...
+
+It might be a sign of something seriously sinister simmering under the surface!
 
 ![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
 # What's Next
 
-Next Article: Why __Sync-Build-Ingest__ is super important for NuttX CI. And how we monitor it with our __Magic Disco Light__.
+Next Article: Why __Sync-Build-Ingest__ is super important for NuttX Continuous Integration. And how we monitor it with our __Magic Disco Light__.
 
 After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fetch the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks?
 
