@@ -95,12 +95,12 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 <p>Our bug happens in <strong>NuttX Shell</strong>. Thus we search <a href="https://github.com/apache/nuttx-apps"><strong>NuttX Apps Repo</strong></a> for <strong>uname</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uname-search1.png" alt="Search NuttX Apps Repo for uname" /></p>
 <p><a href="https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&amp;type=code"><strong>Searching for uname</strong></a> returns this code in NuttX Shell: <a href="https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863">nsh_syscmds.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+<div class="example-wrap"><pre class="language-c"><code>// Declare the uname() function
 #include &lt;sys/utsname.h&gt;
 
-// NuttX Shell: To execute the `uname` command...
+// NuttX Shell: To execute the uname command...
 int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
-  // We call the `uname` function
+  // We call the uname() function
   struct utsname info;
   ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
@@ -190,7 +190,7 @@ $ grep \
 
 .data.g_version
   0x804003b8  0x21  staging/libkc.a(lib_utsname.o)</code></pre></div>
-<p>What’s the value inside <strong>g_version</strong>? We dump the <strong>Binary Image</strong> of NuttX Kernel ELF…</p>
+<p>What’s the value inside <strong>g_version</strong>? We dump the <strong>Binary Image</strong> from NuttX Kernel ELF…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Export the NuttX Binary Image to nuttx.bin
 riscv-none-elf-objcopy \
   -O binary \
@@ -205,27 +205,27 @@ riscv-none-elf-objcopy \
 <h1 id="call-uname-in-nuttx-kernel"><a class="doc-anchor" href="#call-uname-in-nuttx-kernel">§</a>4 Call uname in NuttX Kernel</h1>
 <p><em>Maybe NuttX Kernel got corrupted? Returning bad data for uname?</em></p>
 <p>We tweak the NuttX Kernel and call <strong>uname</strong> at Kernel Startup: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125">qemu_rv_appinit.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+<div class="example-wrap"><pre class="language-c"><code>// Declare the uname() function
 #include &lt;sys/utsname.h&gt;
 
-// When Kernel Boots: Call the `uname` function
+// When Kernel Boots: Call the uname() function
 int board_app_initialize(uintptr_t arg) { ...
   struct utsname info;
   int ret2 = uname(&amp;info);
 
-  // If `uname` returns OK:
-  // Print the Commit Hash a.k.a. `g_version`
+  // If uname() returns OK:
+  // Print the Commit Hash a.k.a. g_version
   if (ret2 == 0) {
     _info(&quot;version=%s\n&quot;, info.version);
   }</code></pre></div>
 <p>Then inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113">lib_utsname.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Inside the `uname` function:
-// Print `g_version` with `_info` and `printf`
+<div class="example-wrap"><pre class="language-c"><code>// Inside the uname() function:
+// Print g_version with _info() and printf()
 int uname(FAR struct utsname *name) { ...
   _info(&quot;From _info: g_version=%s\n&quot;,   g_version);  // Kernel Only
   printf(&quot;From printf: g_version=%s\n&quot;, g_version);  // Kernel and Apps
   printf(&quot;Address of g_version=%p\n&quot;,   g_version);  // Kernel and Apps</code></pre></div>
-<p>(Why twice? We’ll see in a while)</p>
+<p>(Why print twice? We’ll see soon)</p>
 <p>We boot NuttX on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html"><strong>QEMU RISC-V 64-bit</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start QEMU with NuttX
 $ qemu-system-riscv64 \
@@ -250,16 +250,16 @@ NuttShell (NSH) NuttX-12.4.0</code></pre></div>
 <h1 id="call-uname-in-nuttx-app"><a class="doc-anchor" href="#call-uname-in-nuttx-app">§</a>5 Call uname in NuttX App</h1>
 <p><em>Maybe something got corrupted in our NuttX App?</em></p>
 <p>Wow that’s so diabolical, sure hope not. We mod the <strong>NuttX Hello App</strong> and call <strong>uname</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57">hello_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Declare the `uname` function
+<div class="example-wrap"><pre class="language-c"><code>// Declare the uname() function
 #include &lt;sys/utsname.h&gt;
 
-// In Hello App: Call the `uname` function
+// In Hello App: Call the uname() function
 int main(int argc, FAR char *argv[]) { ...
   struct utsname info;
   int ret = uname(&amp;info);
 
-  // If `uname` returns OK:
-  // Print the Commit Hash a.k.a `g_version`
+  // If uname() returns OK:
+  // Print the Commit Hash a.k.a. g_version
   if (ret &gt;= 0) {
     printf(&quot;version=%s\n&quot;, info.version);
   }</code></pre></div>
@@ -318,7 +318,7 @@ riscv-none-elf-objdump \
 <p><em>Once Again: How is uname different in NuttX Kernel vs NuttX App?</em></p>
 <p>Earlier we dumped the <strong>RISC-V Disassembly</strong> for our modded Hello App: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06"><strong>hello.S</strong></a></p>
 <p>We browse the disassembly and search for <strong>uname</strong>. This appears: <a href="https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496">hello.S</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Inside Hello App: The RISC-V Disassembly of `uname` function
+<div class="example-wrap"><pre class="language-c"><code>// Inside Hello App: The RISC-V Disassembly of uname() function
 int uname(FAR struct utsname *name) { ...
 
 // Call _info() to print g_version
@@ -378,14 +378,14 @@ strlcpy(name-&gt;version,  g_version, sizeof(name-&gt;version));
 <p><img src="https://lupyuen.github.io/images/uname-title5.jpg" alt="uname is a Local Function, not a System Call" /></p>
 <p>Every NuttX App has a <strong>Local Copy of g_version</strong> and Commit Hash. <em>(That’s potentially corruptible hmmm…)</em></p>
 <p>That’s why <strong>printf</strong> appears in the <a href="https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431"><strong>Hello Output</strong></a> but not <strong>_info</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows `_info` and `printf`
+<div class="example-wrap"><pre class="language-bash"><code>## NuttX Kernel: Shows _info() and printf()
 From _info:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
   Address of g_version=0x804003b8
 
-## NuttX Apps: Won&#39;t show `_info`
+## NuttX Apps: Won&#39;t show _info()
 NuttShell (NSH) NuttX-12.4.0
 nsh&gt; hello
 From printf:
