@@ -457,6 +457,21 @@ sudo docker cp \
 <p>Inside the Backup: <strong>SQLite Database</strong> is at <strong>data/gitea/gitea.db</strong></p>
 <p><img src="https://lupyuen.github.io/images/forgejo-db.png" alt="SQLite Database is at data/gitea/gitea.db" /></p>
 </li>
+<li>
+<p><strong>Web Crawlers</strong> will easily consume 20 GB of bandwidth per day! This is how we block Web Crawlers…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a file: robots.txt
+$ cat robots.txt
+User-agent: *
+Disallow: /
+
+## Copy to Forgejo Server and verify
+$ docker cp robots.txt forgejo:/data/gitea
+$ curl https://nuttx-forge.org/robots.txt
+User-agent: *
+Disallow: /</code></pre></div>
+<p>Some Crawlers are persistent, we block them in our Firewall: <strong>User Agent &gt; contains &gt; “amazonbot” &gt; Block</strong></p>
+<p><img src="https://lupyuen.github.io/images/forgejo-firewall.png" alt="Blocking the Bots" /></p>
+</li>
 </ul>
 <p>Back to the <strong>Forgejo Configuration</strong>: This is how we specify the <strong>Forgejo Database</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/forgejo-install1.png" alt="Forgejo Configuration: Database" /></p>
@@ -561,7 +576,9 @@ sudo docker compose up</code></pre></div>
 <li>
 <p><strong>GitHub Reusable Workflows</strong> are <a href="https://code.forgejo.org/forgejo/runner/issues/63"><strong>Not Supported</strong></a> in Forgejo.</p>
 <p>This means the <a href="https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow"><strong>NuttX Build Rules (arch.yml)</strong></a> probably won’t run on Forgejo.</p>
-</li>
+<p>This appears in the Forgejo Server Log…</p>
+<div class="example-wrap"><pre class="language-text"><code>...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow &quot;arch.yml&quot;: unknown on type: map[string]interface {}{&quot;inputs&quot;:map[string]interface {}{&quot;boards&quot;:map[string]interface {}{&quot;description&quot;:&quot;List of All Builds: [arm-01, risc-v-01, xtensa-01, ...]&quot;, &quot;required&quot;:true, &quot;type&quot;:&quot;string&quot;}, &quot;os&quot;:map[string]interface {}{&quot;description&quot;:&quot;Operating System hosting the build: Linux, macOS or msys2&quot;, &quot;required&quot;:true, &quot;type&quot;:&quot;string&quot;}}, &quot;outputs&quot;:map[string]interface {}{&quot;selected_builds&quot;:map[string]interface {}{&quot;description&quot;:&quot;Selected Builds for the PR: [arm-01, risc-v-01, xtensa-01, ...]&quot;, &quot;value&quot;:&quot;${{ jobs.Select-Builds.outputs.selected_builds }}&quot;}, &quot;skip_all_builds&quot;:map[string]interface {}{&quot;description&quot;:&quot;Set to 1 if all builds should be skipped&quot;, &quot;value&quot;:&quot;${{ jobs.Select-Builds.outputs.skip_all_builds }}&quot;}}}
+...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow &quot;build.yml&quot;: unknown on type: &lt;nil&gt;</code></pre></div></li>
 <li>
 <p><strong>Git Command-Line Tools</strong> will work great with our Forgejo Server</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Mirror Repo
