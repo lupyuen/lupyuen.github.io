@@ -950,7 +950,7 @@ for (( ; ; )); do
 done
 ```
 
-Remember to __Backup our Grafana Server__...
+Remember to __Backup our Grafana and Prometheus Servers__...
 
 ```bash
 ## Backup Grafana to /tmp/grafana.tar
@@ -960,4 +960,12 @@ tar cvf /tmp/grafana.tar \
   var/lib/grafana \
   var/log/grafana \
   Cellar/grafana
+
+## Backup Prometheus to /tmp/grafana.tar
+cd /opt/homebrew
+tar cvf /tmp/prometheus.tar \
+  etc/prometheus.* \
+  var/prometheus \
+  var/log/prometheus.* \
+  Cellar/prometheus
 ```
