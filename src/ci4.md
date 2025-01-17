@@ -969,3 +969,9 @@ tar cvf /tmp/prometheus.tar \
   var/log/prometheus.* \
   Cellar/prometheus
 ```
+
+If we wish to allow __Web Crawlers__ to index our server...
+
+- Edit _/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt_
+- Change __`Disallow: /`__
+- To __`Disallow:`__
