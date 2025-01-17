@@ -42,12 +42,12 @@ Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](https:/
 [__Searching for uname__](https://github.com/search?q=repo%3Aapache%2Fnuttx-apps%20uname&type=code) returns this code in NuttX Shell: [nsh_syscmds.c](https://github.com/apache/nuttx-apps/blob/master/nshlib/nsh_syscmds.c#L765-L863)
 
 ```c
-// Declare the `uname` function
+// Declare the uname() function
 #include <sys/utsname.h>
 
-// NuttX Shell: To execute the `uname` command...
+// NuttX Shell: To execute the uname command...
 int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
-  // We call the `uname` function
+  // We call the uname() function
   struct utsname info;
   ret = uname(&info);
 ```
@@ -179,7 +179,7 @@ $ grep \
   0x804003b8  0x21  staging/libkc.a(lib_utsname.o)
 ```
 
-What's the value inside __g_version__? We dump the __Binary Image__ of NuttX Kernel ELF...
+What's the value inside __g_version__? We dump the __Binary Image__ from NuttX Kernel ELF...
 
 ```bash
 ## Export the NuttX Binary Image to nuttx.bin
@@ -208,16 +208,16 @@ _Maybe NuttX Kernel got corrupted? Returning bad data for uname?_
 We tweak the NuttX Kernel and call __uname__ at Kernel Startup: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L118-L125)
 
 ```c
-// Declare the `uname` function
+// Declare the uname() function
 #include <sys/utsname.h>
 
-// When Kernel Boots: Call the `uname` function
+// When Kernel Boots: Call the uname() function
 int board_app_initialize(uintptr_t arg) { ...
   struct utsname info;
   int ret2 = uname(&info);
 
-  // If `uname` returns OK:
-  // Print the Commit Hash a.k.a. `g_version`
+  // If uname() returns OK:
+  // Print the Commit Hash a.k.a. g_version
   if (ret2 == 0) {
     _info("version=%s\n", info.version);
   }
@@ -226,15 +226,15 @@ int board_app_initialize(uintptr_t arg) { ...
 Then inside the __uname__ function, we dump the value of __g_version__: [lib_utsname.c](https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113)
 
 ```c
-// Inside the `uname` function:
-// Print `g_version` with `_info` and `printf`
+// Inside the uname() function:
+// Print g_version with _info() and printf()
 int uname(FAR struct utsname *name) { ...
   _info("From _info: g_version=%s\n",   g_version);  // Kernel Only
   printf("From printf: g_version=%s\n", g_version);  // Kernel and Apps
   printf("Address of g_version=%p\n",   g_version);  // Kernel and Apps
 ```
 
-(Why twice? We'll see in a while)
+(Why print twice? We'll see soon)
 
 We boot NuttX on [__QEMU RISC-V 64-bit__](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)...
 
@@ -271,16 +271,16 @@ _Maybe something got corrupted in our NuttX App?_
 Wow that's so diabolical, sure hope not. We mod the __NuttX Hello App__ and call __uname__: [hello_main.c](https://github.com/lupyuen2/wip-nuttx-apps/blob/uname/examples/hello/hello_main.c#L42-L57)
 
 ```c
-// Declare the `uname` function
+// Declare the uname() function
 #include <sys/utsname.h>
 
-// In Hello App: Call the `uname` function
+// In Hello App: Call the uname() function
 int main(int argc, FAR char *argv[]) { ...
   struct utsname info;
   int ret = uname(&info);
 
-  // If `uname` returns OK:
-  // Print the Commit Hash a.k.a `g_version`
+  // If uname() returns OK:
+  // Print the Commit Hash a.k.a. g_version
   if (ret >= 0) {
     printf("version=%s\n", info.version);
   }
@@ -369,7 +369,7 @@ Earlier we dumped the __RISC-V Disassembly__ for our modded Hello App: [__hello.
 We browse the disassembly and search for __uname__. This appears: [hello.S](https://gist.github.com/lupyuen/f713ff54d8aa5f8f482f7b03e34a9f06#file-hello-s-L397-L496)
 
 ```c
-// Inside Hello App: The RISC-V Disassembly of `uname` function
+// Inside Hello App: The RISC-V Disassembly of uname() function
 int uname(FAR struct utsname *name) { ...
 
 // Call _info() to print g_version
@@ -435,14 +435,14 @@ Every NuttX App has a __Local Copy of g_version__ and Commit Hash. _(That's pote
 That's why __printf__ appears in the [__Hello Output__](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L1391-L1431) but not __\_info__...
 
 ```bash
-## NuttX Kernel: Shows `_info` and `printf`
+## NuttX Kernel: Shows _info() and printf()
 From _info:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
 From printf:
   g_version=bd6e5995ef Jan 16 2025 15:29:02
   Address of g_version=0x804003b8
 
-## NuttX Apps: Won't show `_info`
+## NuttX Apps: Won't show _info()
 NuttShell (NSH) NuttX-12.4.0
 nsh> hello
 From printf:
