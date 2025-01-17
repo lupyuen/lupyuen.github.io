@@ -12,10 +12,10 @@
     content="Fixing a uname bug (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Earlier This Week: uname became unusually quieter on Apache NuttX RTOS... The Commit Hash is missing! Watch as we stomp the seemingly simple bug, that turns out to be something seriously sinister! (Spoiler: Static Vars are broken)"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Earlier This Week: uname became unusually quieter on Apache NuttX RTOS... The Commit Hash is missing! Watch as we stomp the seemingly simple bug, that turns out to be something seriously sinister! (Spoiler: Static Vars are broken)">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/uname-title.jpg">
 <meta property="og:type" 
@@ -218,7 +218,7 @@ int board_app_initialize(uintptr_t arg) { ...
   if (ret2 == 0) {
     _info(&quot;version=%s\n&quot;, info.version);
   }</code></pre></div>
-<p>Inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113">lib_utsname.c</a></p>
+<p>Then inside the <strong>uname</strong> function, we dump the value of <strong>g_version</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/uname/libs/libc/misc/lib_utsname.c#L108-L113">lib_utsname.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Inside the `uname` function:
 // Print `g_version` with `_info` and `printf`
 int uname(FAR struct utsname *name) { ...
