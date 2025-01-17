@@ -517,7 +517,7 @@ We call in the __NuttX Experts__ for help. And it's awesomely fixed by [__anjiah
 
 __Lesson Learnt:__ Please pay attention to the slightest disturbance, like the __uname__ output...
 
-It might be a sign of something seriously sinister simmering under the surface!
+It might be a sign of __something seriously sinister simmering__ under the surface!
 
 ![Fixing a uname bug (Apache NuttX RTOS)](https://lupyuen.github.io/images/uname-title.jpg)
 
