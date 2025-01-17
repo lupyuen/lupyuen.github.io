@@ -276,6 +276,8 @@ $HOME/nuttx-bisect/run-job-bisect.sh \
 
 We're ready to run this!
 
+[(Which __apps_hash__ to use? __NuttX Build History__ might help)](https://lists.apache.org/thread/4oqjrwnzoq41tm0r6bl8bsgwbqokc4kp)
+
 ![Running Git Bisect on Real NuttX Commits](https://lupyuen.github.io/images/bisect-screen3.png)
 
 # Git Bisect For Real
