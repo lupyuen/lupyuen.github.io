@@ -449,6 +449,25 @@ sudo docker update --restart always forgejo
 
   ![SQLite Database is at data/gitea/gitea.db](https://lupyuen.github.io/images/forgejo-db.png)
 
+- __Web Crawlers__ will easily consume 20 GB of bandwidth per day! This is how we block Web Crawlers...
+
+  ```bash
+  ## Create a file: robots.txt
+  $ cat robots.txt
+  User-agent: *
+  Disallow: /
+
+  ## Copy to Forgejo Server and verify
+  $ docker cp robots.txt forgejo:/data/gitea
+  $ curl https://nuttx-forge.org/robots.txt
+  User-agent: *
+  Disallow: /
+  ```
+
+  Some Crawlers are persistent, we block them in our Firewall: __User Agent > contains > "amazonbot" > Block__
+
+  ![Blocking the Bots](https://lupyuen.github.io/images/forgejo-firewall.png)
+
 Back to the __Forgejo Configuration__: This is how we specify the __Forgejo Database__...
 
 ![Forgejo Configuration: Database](https://lupyuen.github.io/images/forgejo-install1.png)
@@ -592,6 +611,13 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 1.  __GitHub Reusable Workflows__ are [__Not Supported__](https://code.forgejo.org/forgejo/runner/issues/63) in Forgejo.
 
     This means the [__NuttX Build Rules (arch.yml)__](https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow) probably won't run on Forgejo.
+
+    This appears in the Forgejo Server Log...
+
+    ```text
+    ...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow "arch.yml": unknown on type: map[string]interface {}{"inputs":map[string]interface {}{"boards":map[string]interface {}{"description":"List of All Builds: [arm-01, risc-v-01, xtensa-01, ...]", "required":true, "type":"string"}, "os":map[string]interface {}{"description":"Operating System hosting the build: Linux, macOS or msys2", "required":true, "type":"string"}}, "outputs":map[string]interface {}{"selected_builds":map[string]interface {}{"description":"Selected Builds for the PR: [arm-01, risc-v-01, xtensa-01, ...]", "value":"${{ jobs.Select-Builds.outputs.selected_builds }}"}, "skip_all_builds":map[string]interface {}{"description":"Set to 1 if all builds should be skipped", "value":"${{ jobs.Select-Builds.outputs.skip_all_builds }}"}}}
+    ...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow "build.yml": unknown on type: <nil>
+    ```
 
 1.  __Git Command-Line Tools__ will work great with our Forgejo Server
 
