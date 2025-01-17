@@ -813,6 +813,22 @@ We should see the __Test Commit__. Yay!
 
 ![Test Repo with Test Commit](https://lupyuen.github.io/images/forgejo-ssh3.png)
 
+When we run [__Our Sync Script__](https://lupyuen.github.io/articles/forgejo#sync-our-read-write-mirror), this appears in the Forgejo Server Log...
+
+```text
+Accepted publickey for git from 172.21.0.1 port 51440 ssh2: ED25519 SHA256:...
+...eb/routing/logger.go:102:func1() [I] router: completed GET /api/internal/serv/command/1/nuttx/nuttx-mirror?mode=1&verb=git-upload-pack for 172.21.0.1:0, 200 OK in 0.6ms @ private/serv.go:79(private.ServCommand)
+...eb/routing/logger.go:102:func1() [I] router: completed POST /api/internal/ssh/1/update/2 for 172.21.0.1:0, 200 OK in 4.1ms @ private/key.go:16(private.UpdatePublicKeyInRepo)
+Received disconnect from 172.21.0.1 port 51440:11: disconnected by user
+Disconnected from user git 172.21.0.1 port 51440
+
+Accepted publickey for git from 172.21.0.1 port 34758 ssh2: ED25519 SHA256:...
+...eb/routing/logger.go:102:func1() [I] router: completed GET /api/internal/serv/command/1/nuttx/nuttx-update?mode=1&verb=git-upload-pack for 172.21.0.1:0, 200 OK in 0.9ms @ private/serv.go:79(private.ServCommand)
+...eb/routing/logger.go:102:func1() [I] router: completed POST /api/internal/ssh/1/update/3 for 172.21.0.1:0, 200 OK in 4.0ms @ private/key.go:16(private.UpdatePublicKeyInRepo)
+Received disconnect from 172.21.0.1 port 34758:11: disconnected by user
+Disconnected from user git 172.21.0.1 port 34758
+```
+
 # Appendix: SSH vs Docker Filesystem
 
 _Why did we change the Docker Filesystem for Forgejo?_
