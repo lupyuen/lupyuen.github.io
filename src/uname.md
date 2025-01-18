@@ -46,8 +46,8 @@ Our bug happens in __NuttX Shell__. Thus we search [__NuttX Apps Repo__](https:/
 #include <sys/utsname.h>
 
 // NuttX Shell: To execute the uname command...
-int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
-  // We call the uname() function
+// We call the uname() function
+int cmd_uname(...) { ...
   struct utsname info;
   ret = uname(&info);
 ```
@@ -211,7 +211,8 @@ We tweak the NuttX Kernel and call __uname__ at Kernel Startup: [qemu_rv_appinit
 // Declare the uname() function
 #include <sys/utsname.h>
 
-// When Kernel Boots: Call the uname() function
+// When Kernel Boots:
+// Call the uname() function
 int board_app_initialize(uintptr_t arg) { ...
   struct utsname info;
   int ret2 = uname(&info);
@@ -303,7 +304,7 @@ Inside our NuttX App: Why is __g_version__ empty? Wasn't it OK in NuttX Kernel?
 
 _Why did uname work differently: NuttX Kernel vs NuttX Apps?_
 
-Now we chase the __uname raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our NuttX App ELF...
+Now we chase the __uname raving rabbid__ inside our __NuttX App__. Normally we'd dump the __RISC-V Disassembly__ for our Hello App ELF...
 
 ```bash
 ## Dump the RISC-V Disassembly for apps/bin/hello
@@ -323,7 +324,7 @@ SYMBOL TABLE: no symbols
   c0000004: 82aa  mv  t0, a0
 ```
 
-But ugh NuttX Build has unhelpfully __Discarded the Debug Symbols__ from our NuttX App, making it hard to digest.
+But ugh NuttX Build has unhelpfully __Discarded the Debug Symbols__ from our Hello App ELF, making it hard to digest.
 
 _How to recover the Debug Symbols?_
 
@@ -345,7 +346,7 @@ riscv-none-elf-strip --strip-unneeded apps/bin/hello
 ## apps/bin_debug/hello retains the Debug Symbols!
 ```
 
-Ah NuttX Build has squirrelled away the __Debug Version__ of our app into __apps/bin_debug__. We dump its __RISC-V Disassembly__...
+Ah NuttX Build has squirrelled away the __Debug Version__ of Hello App into __apps/bin_debug__. We dump its __RISC-V Disassembly__...
 
 ```bash
 ## Dump the RISC-V Disassembly for apps/bin_debug/hello
