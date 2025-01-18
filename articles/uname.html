@@ -99,8 +99,8 @@ NuttX 12.8.0 5f4a15b690 Jan 13 2025 00:34:30 risc-v rv-virt</code></pre></div>
 #include &lt;sys/utsname.h&gt;
 
 // NuttX Shell: To execute the uname command...
-int cmd_uname(FAR struct nsh_vtbl_s *vtbl, int argc, FAR char **argv) { ...
-  // We call the uname() function
+// We call the uname() function
+int cmd_uname(...) { ...
   struct utsname info;
   ret = uname(&amp;info);</code></pre></div>
 <p>We see that <strong>uname command</strong> calls the <strong>uname function</strong>.</p>
@@ -208,7 +208,8 @@ riscv-none-elf-objcopy \
 <div class="example-wrap"><pre class="language-c"><code>// Declare the uname() function
 #include &lt;sys/utsname.h&gt;
 
-// When Kernel Boots: Call the uname() function
+// When Kernel Boots:
+// Call the uname() function
 int board_app_initialize(uintptr_t arg) { ...
   struct utsname info;
   int ret2 = uname(&amp;info);
@@ -272,7 +273,7 @@ version=</code></pre></div>
 <p>Inside our NuttX App: Why is <strong>g_version</strong> empty? Wasn’t it OK in NuttX Kernel?</p>
 <h1 id="dump-the-nuttx-app-disassembly"><a class="doc-anchor" href="#dump-the-nuttx-app-disassembly">§</a>6 Dump the NuttX App Disassembly</h1>
 <p><em>Why did uname work differently: NuttX Kernel vs NuttX Apps?</em></p>
-<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our NuttX App ELF…</p>
+<p>Now we chase the <strong>uname raving rabbid</strong> inside our <strong>NuttX App</strong>. Normally we’d dump the <strong>RISC-V Disassembly</strong> for our Hello App ELF…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin/hello
 $ riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -288,7 +289,7 @@ SYMBOL TABLE: no symbols
   c0000000: 1141  add sp, sp, -16
   c0000002: e006  sd  ra, 0(sp)
   c0000004: 82aa  mv  t0, a0</code></pre></div>
-<p>But ugh NuttX Build has unhelpfully <strong>Discarded the Debug Symbols</strong> from our NuttX App, making it hard to digest.</p>
+<p>But ugh NuttX Build has unhelpfully <strong>Discarded the Debug Symbols</strong> from our Hello App ELF, making it hard to digest.</p>
 <p><em>How to recover the Debug Symbols?</em></p>
 <p>We sniff the <strong>NuttX Build</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Update our Hello App
@@ -304,7 +305,7 @@ riscv-none-elf-strip --strip-unneeded apps/bin/hello
 
 ## apps/bin/hello is missing the Debug Symbols
 ## apps/bin_debug/hello retains the Debug Symbols!</code></pre></div>
-<p>Ah NuttX Build has squirrelled away the <strong>Debug Version</strong> of our app into <strong>apps/bin_debug</strong>. We dump its <strong>RISC-V Disassembly</strong>…</p>
+<p>Ah NuttX Build has squirrelled away the <strong>Debug Version</strong> of Hello App into <strong>apps/bin_debug</strong>. We dump its <strong>RISC-V Disassembly</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the RISC-V Disassembly for apps/bin_debug/hello
 cd ../nuttx
 riscv-none-elf-objdump \
