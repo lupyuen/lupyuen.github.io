@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Fixing a uname bug (Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/uname</link>
+            <description><![CDATA[Earlier This Week: uname became unusually quieter on Apache NuttX RTOS... The Commit Hash is missing! Watch as we stomp the seemingly simple bug, that turns out to be something seriously sinister! (Spoiler: Static Vars are broken)]]></description>
+            <guid>https://lupyuen.github.io/articles/uname</guid>
+            <pubDate>Sun, 19 Jan 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Forgejo Git Forge for Apache NuttX RTOS (Experimental)</title>
             <link>https://lupyuen.github.io/articles/forgejo</link>
             <description><![CDATA[Life Without GitHub: What's it like? Today we talk about Forgejo Git Forge, and whether Apache NuttX RTOS could possibly switch from GitHub to our own Git Forge.]]></description>
