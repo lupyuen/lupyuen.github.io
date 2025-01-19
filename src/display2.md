@@ -4,6 +4,8 @@
 
 ![Display Driver for StarFive JH7110 SoC](https://lupyuen.github.io/images/display2-title.jpg)
 
+__Update:__ Display Controller Registers are now listed in [__JH7110 PAC__](https://codeberg.org/weathered-steel/jh71xx-pac.git) and [__VOUT CRG__](https://docs.rs/jh71xx-pac/latest/src/jh71xx_pac/voutcrg.rs.html)
+
 Today we look deep inside the __Display Controller__ of the [__RISC-V StarFive JH7110 SoC__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) and figure out how it works.
 
 _But the JH7110 Display Controller is NOT documented!_
