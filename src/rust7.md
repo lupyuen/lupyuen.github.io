@@ -6,6 +6,34 @@
 
 TODO
 
+# TODO
+
+```text
+https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+
+examples: New app to build Rust with Cargo
+https://github.com/apache/nuttx-apps/pull/2487
+
+Add NuttX based targets for RISC-V and ARM
+https://github.com/rust-lang/rust/pull/127755
+
+The serde with no_std
+https://bitboom.github.io/2020-10-22/serde-no-std
+
+Hal?
+demo app
+why tokio for json
+disassemble
+Loop print something 
+Strings
+Patch 
+Which platforms 
+How to test
+Build Farm? Docker?
+How to bisect
+Blinky
+```
+
 # What's Next
 
 Next Article: Why __Sync-Build-Ingest__ is super important for NuttX Continuous Integration. And how we monitor it with our __Magic Disco Light__.
