@@ -33,6 +33,7 @@ Build Farm? Docker?
 How to bisect
 Blinky
 How to add crate
+RISC-V SBC? No knsh64 yet
 ```
 
 # TODO
