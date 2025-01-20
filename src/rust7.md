@@ -9,6 +9,15 @@ TODO
 # TODO
 
 ```text
+Rust in NuttX
+https://nuttx.apache.org/docs/latest/guides/rust.html
+
+examples: New app to build Rust with Cargo
+https://github.com/apache/nuttx-apps/pull/2487
+
+rust/hello: Optimize the build flags #2955
+https://github.com/apache/nuttx-apps/pull/2955
+
 https://github.com/apache/nuttx-apps/pull/2487#pullrequestreview-2538724037
 Tested OK with make and rv-virt:nsh. Thank you so much! :-)
 https://gist.github.com/lupyuen/37a28cc3ae0443aa29800d252e4345cf
@@ -135,6 +144,90 @@ qemu-system-riscv64 \
 uname -a
 hello
 hello_rust_cargo
+
+## Dump the disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+/Users/luppy/riscv/leds64-nuttx.S
+```
+
+TODO
+
+```text
+`make V=1` for `rv-virt:leds64`
+https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
+
+ 1018  make distclean
+ 1019  tools/configure.sh rv-virt:leds64
+ 1020  ## Disable CONFIG_ARCH_FPU
+ 1021  kconfig-tweak --disable CONFIG_ARCH_FPU
+ 1022  ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
+ 1023  kconfig-tweak --enable CONFIG_SYSTEM_TIME64
+ 1024  kconfig-tweak --enable CONFIG_FS_LARGEFILE
+ 1025  kconfig-tweak --enable CONFIG_DEV_URANDOM
+ 1026  kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+ 1027  ## Enable Hello Rust Cargo App
+ 1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
+ 1029  ## For knsh64
+ 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+ 1031  ## Update the Kconfig Dependencies
+ 1032  make olddefconfig
+ 1033  make V=1
+```
+
+TODO
+
+```text
+cd /home/luppy/rust/apps/examples/rust/hello
+cargo build --release -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+
+riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+
+riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
+        -o /home/luppy/rust/nuttx/nuttx   \
+        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a --end-group
+
+Remove release, change to debug
+pushd ../apps/examples/rust/hello
+cargo build -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+popd
+
+riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+
+riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
+        -o /home/luppy/rust/nuttx/nuttx   \
+        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a --end-group
+
+## Dump the disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+Cargo build debug
+https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
+/Users/luppy/riscv/leds64-debug-nuttx.S
+```
+
+TODO
+
+```text
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
+  >libhello.S \
+  2>&1
+
+/Users/luppy/riscv/libhello.S
 ```
 
 NOTUSED
