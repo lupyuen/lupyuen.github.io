@@ -611,7 +611,15 @@ Updated nix
 ```text
 Add support for NuttX #1
 https://github.com/lupyuen/nix/pull/1/files
+
+Implement I/O Safety #1750
+https://github.com/nix-rust/nix/issues/1750
+
+Feature Name: io_safety
+https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md
 ```
+
+[Rustix Ioctl](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
 
 NOTUSED
 
