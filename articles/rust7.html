@@ -480,6 +480,29 @@ cp \
 cp -r \
   /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
   .</code></pre></div>
+<p>TODO: panic</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+fd=3
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+
+thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:18:71:
+called `Result::unwrap()` on an `Err` value: ENOENT
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh&gt; </code></pre></div>
+<p>TODO: ioctl</p>
+<div class="example-wrap"><pre class="language-text"><code>https://docs.rs/nix/latest/nix/sys/ioctl/</code></pre></div>
 <p>NOTUSED</p>
 <div class="example-wrap"><pre class="language-text"><code>## Build Apps Filesystem
 make -j export
