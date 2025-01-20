@@ -606,6 +606,13 @@ Pretty JSON:
 Hello world from tokio!
 ```
 
+Updated nix
+
+```text
+Add support for NuttX #1
+https://github.com/lupyuen/nix/pull/1/files
+```
+
 NOTUSED
 
 ```text
