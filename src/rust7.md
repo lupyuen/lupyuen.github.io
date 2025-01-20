@@ -219,15 +219,59 @@ https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
 TODO
 
 ```text
+## Dump the libhello.a disassembly to libhello.S
 riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
-  nuttx \
   /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   >libhello.S \
   2>&1
 
 /Users/luppy/riscv/libhello.S
+```
+
+Search for pthread_create
+
+```text
+/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
+                    assert_eq!(libc::pthread_attr_setstacksize(&mut attr, stack_size), 0);
+                }
+            };
+        }
+
+        let ret = libc::pthread_create(&mut native, &attr, thread_start, p as *mut _);
+ 122:	00000517          	auipc	a0,0x0	122: R_RISCV_PCREL_HI20	std::sys::pal::unix::thread::Thread::new::thread_start
+ 126:	00050613          	mv	a2,a0	126: R_RISCV_PCREL_LO12_I	.Lpcrel_hi254
+ 12a:	0148                	add	a0,sp,132
+ 12c:	012c                	add	a1,sp,136
+ 12e:	f82e                	sd	a1,48(sp)
+ 130:	00000097          	auipc	ra,0x0	130: R_RISCV_CALL_PLT	pthread_create
+ 134:	000080e7          	jalr	ra # 130 <.Lpcrel_hi254+0xe>
+ 138:	85aa                	mv	a1,a0
+ 13a:	7542                	ld	a0,48(sp)
+ 13c:	862e                	mv	a2,a1
+ 13e:	fc32                	sd	a2,56(sp)
+ 140:	1eb12e23          	sw	a1,508(sp)
+
+https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84
+
+https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502
+    unsafe fn spawn_unchecked_<'scope, F, T>(
+        let my_thread = Thread::new(id, name);
+
+Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
+
+0000000000000000 <core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>>:
+core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>:
+/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
+   0:	1141                	add	sp,sp,-16
+   2:	e406                	sd	ra,8(sp)
+   4:	e02a                	sd	a0,0(sp)
+   6:	00000097          	auipc	ra,0x0	6: R_RISCV_CALL_PLT	<std::thread::Builder::spawn_unchecked_::MaybeDangling<T> as core::ops::drop::Drop>::drop
+   a:	000080e7          	jalr	ra # 6 <core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>+0x6>
+   e:	60a2                	ld	ra,8(sp)
+  10:	0141                	add	sp,sp,16
+  12:	8082                	ret
 ```
 
 NOTUSED
