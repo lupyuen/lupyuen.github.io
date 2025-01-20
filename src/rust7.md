@@ -13,6 +13,9 @@ https://github.com/apache/nuttx-apps/pull/2487#pullrequestreview-2538724037
 Tested OK with make and rv-virt:nsh. Thank you so much! :-)
 https://gist.github.com/lupyuen/37a28cc3ae0443aa29800d252e4345cf
 
+hello_rust_cargo on Apache NuttX RTOS rv-virt:leds64
+https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5
+
 hello_rust_cargo on Apache NuttX RTOS rv-virt:leds
 https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144
 
@@ -46,12 +49,12 @@ echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
 cat nuttx.hash
 
 make distclean
-## tools/configure.sh rv-virt:knsh64
 ## tools/configure.sh rv-virt:nsh64
-tools/configure.sh rv-virt:leds
+## tools/configure.sh rv-virt:knsh64
+## tools/configure.sh rv-virt:leds
+tools/configure.sh rv-virt:leds64
 
-## Enable Hello Rust Cargo App
-kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
+grep STACK .config
 
 ## error: Error loading target specification: Could not find specification for target "riscv64imafdc-unknown-nuttx-elf". Run `rustc --print target-list` for a list of built-in targets
 ## Disable CONFIG_ARCH_FPU
@@ -63,8 +66,23 @@ kconfig-tweak --enable CONFIG_FS_LARGEFILE
 kconfig-tweak --enable CONFIG_DEV_URANDOM
 kconfig-tweak --set-val CONFIG_TLS_NELEM 16
 
+## Enable Hello Rust Cargo App
+kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
+
+## For knsh64
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+
 ## Update the Kconfig Dependencies
 make olddefconfig
+
+grep STACK .config
+
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x8006bbc0      2048      1016    49.6%    irq
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x8006e7f0      1904       888    46.6%    Idle_Task
+dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x8006fd38      2888      1944    67.3%    nsh_main
+dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
+QEMU: Terminated
 
    Compiling std v0.0.0 (/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
 error[E0308]: mismatched types
@@ -84,6 +102,7 @@ note: associated function defined here
      |                         ^^^^^^^^
 
 ## Remember to patch fs.rs
+vi $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
 head -n 1049 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs | tail -n 17
 
     #[cfg(not(any(
@@ -105,17 +124,6 @@ head -n 1049 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustl
 
 make -j
 
-qemu-system-riscv32 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv32 \
-  -smp 8 \
-  -bios nuttx \
-  -nographic
-uname -a
-hello
-hello_rust_cargo
-
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -124,6 +132,14 @@ qemu-system-riscv64 \
   -kernel nuttx \
   -nographic
 
+uname -a
+hello
+hello_rust_cargo
+```
+
+NOTUSED
+
+```text
 ## Build Apps Filesystem
 make -j export
 pushd ../apps
@@ -140,7 +156,13 @@ qemu-system-riscv64 \
   -kernel nuttx \
   -nographic
 
-
+qemu-system-riscv32 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv32 \
+  -smp 8 \
+  -bios nuttx \
+  -nographic
 
 $ qemu-system-riscv32 -semihosting -M virt,aclint=on -cpu rv32 -smp 8 -bios nuttx -nographic
 ABC
@@ -158,7 +180,11 @@ Pretty JSON:
   "age": 28
 }
 Hello world from tokio!
+```
 
+TODO
+
+```text
 https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
 
 examples: New app to build Rust with Cargo
