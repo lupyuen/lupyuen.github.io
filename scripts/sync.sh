@@ -193,7 +193,7 @@ function run { for (( ;; )); do; goaccess access_log -o report.html --log-format
 open report.html
 for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
 ## Somehow GoAccess needs to be restarted once in a while
-for (( ; ; )); do ; pkill goaccess ; date ; sleep 60 ; done
+for (( ; ; )); do ; pkill -9 goaccess ; date ; sleep 60 ; done
 
 ## Update the Canonical Header
 ## <link rel="canonical" href="https://lupyuen.org/articles/TODO.html" />
