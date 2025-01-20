@@ -55,6 +55,9 @@ https://gist.github.com/lupyuen/37a28cc3ae0443aa29800d252e4345cf
 hello_rust_cargo on Apache NuttX RTOS rv-virt:leds64
 https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5
 
+hello_rust_cargo on macOS
+https://gist.github.com/lupyuen/a2b91b5cc15824a31c287fbb6cda5fa2
+
 hello_rust_cargo on Apache NuttX RTOS rv-virt:leds
 https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144
 
@@ -140,6 +143,18 @@ note: associated function defined here
 264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
      |                         ^^^^^^^^
 
+macOS:
+error[E0308]: mismatched types
+    --> /Users/luppy/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
+     |
+1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
+     |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
+     |                  |
+     |                  arguments to this function are incorrect
+     |
+     = note: expected raw pointer `*const u8`
+                found raw pointer `*const i8`
+
 ## Remember to patch fs.rs
 vi $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
 head -n 1049 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs | tail -n 17
@@ -186,7 +201,7 @@ riscv-none-elf-objdump \
 /Users/luppy/riscv/leds64-nuttx.S
 ```
 
-TODO
+TODO make V=1
 
 ```text
 `make V=1` for `rv-virt:leds64`
@@ -210,7 +225,7 @@ https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
  1033  make V=1
 ```
 
-TODO
+TODO dump disassembly
 
 ```text
 cd /home/luppy/rust/apps/examples/rust/hello
@@ -246,7 +261,7 @@ https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
 /Users/luppy/riscv/leds64-debug-nuttx.S
 ```
 
-TODO
+TODO dump libhello
 
 ```text
 ## Dump the libhello.a disassembly to libhello.S
@@ -304,7 +319,7 @@ core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<t
   12:	8082                	ret
 ```
 
-TODO
+TODO NuttX Thread not Task
 
 ```text
 hello_rust_cargo &
@@ -326,6 +341,106 @@ nsh> ps
     0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
     4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo
+```
+
+Override nightly
+
+```bash
+## Set Rust to nightly
+pushd ..
+rustup override list
+rustup override set nightly
+rustup override list
+popd
+```
+
+TODO: nix
+
+```text
+https://crates.io/crates/nix
+https://docs.rs/nix/0.29.0/nix/
+
+➜  hello git:(master) $ cargo add nix
+    Updating crates.io index
+      Adding nix v0.29.0 to dependencies
+             Features:
+             35 deactivated features
+    Updating crates.io index
+     Locking 3 packages to latest compatible versions
+      Adding bitflags v2.8.0
+      Adding cfg_aliases v0.2.1
+      Adding nix v0.29.0
+➜  hello git:(master) ✗ $ pwd
+/Users/luppy/riscv/apps/examples/rust/hello
+
+   Compiling tokio v1.43.0
+error[E0432]: unresolved import `self::consts`
+  --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:19:15
+   |
+19 | pub use self::consts::*;
+   |               ^^^^^^ could not find `consts` in `self`
+
+error[E0432]: unresolved import `self::Errno`
+   --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:198:15
+    |
+198 |     use self::Errno::*;
+    |               ^^^^^ could not find `Errno` in `self`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs:2:5
+  |
+2 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/signal.rs:6:5
+  |
+6 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs:3:5
+  |
+3 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `errno::Errno`
+   --> /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/lib.rs:194:5
+    |
+194 | use errno::Errno;
+    |     ^^^^^^^-----
+    |     |      |
+    |     |      help: a similar name exists in the module: `errno`
+    |     no `Errno` in `errno`
+```
+
+TODO: Fix nix
+
+```text
+/Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs
+Copy #[cfg(target_os = "freebsd")]
+to #[cfg(target_os = "nuttx")]
+
+/Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs
+    /// Leave the timestamp unchanged.
+    #[cfg(not(any(target_os = "redox", target_os="nuttx")))]////
+    // At the time of writing this PR, redox does not support this feature
+    pub const UTIME_OMIT: TimeSpec =
+        TimeSpec::new(0, libc::UTIME_OMIT as timespec_tv_nsec_t);
+    /// Update the timestamp to `Now`
+    // At the time of writing this PR, redox does not support this feature
+    #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]////
+    pub const UTIME_NOW: TimeSpec =
+        TimeSpec::new(0, libc::UTIME_NOW as timespec_tv_nsec_t);
 ```
 
 NOTUSED
