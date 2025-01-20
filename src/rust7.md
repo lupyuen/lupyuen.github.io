@@ -13,8 +13,12 @@ https://github.com/apache/nuttx-apps/pull/2487#pullrequestreview-2538724037
 Tested OK with make and rv-virt:nsh. Thank you so much! :-)
 https://gist.github.com/lupyuen/37a28cc3ae0443aa29800d252e4345cf
 
+hello_rust_cargo on Apache NuttX RTOS rv-virt:leds
+https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144
+
 rm -rf .cargo .rustup rust rust2
 https://rustup.rs/
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 Standard Installation 
 . "$HOME/.cargo/env"
 
@@ -31,6 +35,7 @@ mkdir rust
 cd rust
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
 
 git status && hash1=`git rev-parse HEAD`
 pushd ../apps
@@ -40,7 +45,6 @@ echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
 echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
 cat nuttx.hash
 
-cd nuttx
 make distclean
 ## tools/configure.sh rv-virt:knsh64
 ## tools/configure.sh rv-virt:nsh64
@@ -108,6 +112,9 @@ qemu-system-riscv32 \
   -smp 8 \
   -bios nuttx \
   -nographic
+uname -a
+hello
+hello_rust_cargo
 
 qemu-system-riscv64 \
   -semihosting \
