@@ -374,6 +374,17 @@ https://docs.rs/nix/0.29.0/nix/
              + ioctl
              33 deactivated features
 
+➜  hello git:(rust-std) ✗ $ cargo add nix --features fs,ioctl --git https://github.com/lupyuen/nix.git --branch nuttx
+    Updating git repository `https://github.com/lupyuen/nix.git`
+      Adding nix (git) to dependencies
+             Features:
+             + fs
+             + ioctl
+             34 deactivated features
+    Updating git repository `https://github.com/lupyuen/nix.git`
+     Locking 1 package to latest compatible version
+      Adding nix v0.29.0 (https://github.com/lupyuen/nix.git?branch=nuttx#bcbcb50f)
+
 ➜  hello git:(master) ✗ $ pwd
 /Users/luppy/riscv/apps/examples/rust/hello
 
