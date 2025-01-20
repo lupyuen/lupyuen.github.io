@@ -459,6 +459,37 @@ cp -r \
   .
 ```
 
+TODO: panic
+
+```text
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+fd=3
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+Hello world from tokio!
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+
+thread '<unnamed>' panicked at src/lib.rs:18:71:
+called `Result::unwrap()` on an `Err` value: ENOENT
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh> 
+```
+
+TODO: ioctl
+
+```text
+https://docs.rs/nix/latest/nix/sys/ioctl/
+```
+
 NOTUSED
 
 ```text
