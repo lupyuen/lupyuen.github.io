@@ -274,6 +274,30 @@ core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<t
   12:	8082                	ret
 ```
 
+TODO
+
+```text
+hello_rust_cargo &
+https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961
+nsh> hello_rust_cargo &
+hello_rust_cargo [4:100]
+nsh> {"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+Hello world from tokio!
+
+nsh> ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
+    2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
+    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo
+```
+
 NOTUSED
 
 ```text
