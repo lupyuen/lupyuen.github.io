@@ -267,15 +267,55 @@ Cargo build debug
 https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
 /Users/luppy/riscv/leds64-debug-nuttx.S</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv-none-elf-objdump \
+<div class="example-wrap"><pre class="language-text"><code>## Dump the libhello.a disassembly to libhello.S
+riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
-  nuttx \
   /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   &gt;libhello.S \
   2&gt;&amp;1
 
 /Users/luppy/riscv/libhello.S</code></pre></div>
+<p>Search for pthread_create</p>
+<div class="example-wrap"><pre class="language-text"><code>/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
+                    assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
+                }
+            };
+        }
+
+        let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
+ 122:	00000517          	auipc	a0,0x0	122: R_RISCV_PCREL_HI20	std::sys::pal::unix::thread::Thread::new::thread_start
+ 126:	00050613          	mv	a2,a0	126: R_RISCV_PCREL_LO12_I	.Lpcrel_hi254
+ 12a:	0148                	add	a0,sp,132
+ 12c:	012c                	add	a1,sp,136
+ 12e:	f82e                	sd	a1,48(sp)
+ 130:	00000097          	auipc	ra,0x0	130: R_RISCV_CALL_PLT	pthread_create
+ 134:	000080e7          	jalr	ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
+ 138:	85aa                	mv	a1,a0
+ 13a:	7542                	ld	a0,48(sp)
+ 13c:	862e                	mv	a2,a1
+ 13e:	fc32                	sd	a2,56(sp)
+ 140:	1eb12e23          	sw	a1,508(sp)
+
+https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84
+
+https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502
+    unsafe fn spawn_unchecked_&lt;&#39;scope, F, T&gt;(
+        let my_thread = Thread::new(id, name);
+
+Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
+
+0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
+core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;:
+/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
+   0:	1141                	add	sp,sp,-16
+   2:	e406                	sd	ra,8(sp)
+   4:	e02a                	sd	a0,0(sp)
+   6:	00000097          	auipc	ra,0x0	6: R_RISCV_CALL_PLT	&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
+   a:	000080e7          	jalr	ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
+   e:	60a2                	ld	ra,8(sp)
+  10:	0141                	add	sp,sp,16
+  12:	8082                	ret</code></pre></div>
 <p>NOTUSED</p>
 <div class="example-wrap"><pre class="language-text"><code>## Build Apps Filesystem
 make -j export
