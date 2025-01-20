@@ -555,6 +555,46 @@ ioctl: fd=0x0, req=0x101
 ioctl: fd=0x0, req=0x102
 ```
 
+ioctl OK yay!
+
+```text
+    const ULEDIOC_SETALL: i32 = 0x1d03;
+    ioctl_write_int_bad!(led_set_all, ULEDIOC_SETALL);
+
+    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+    unsafe { led_set_all(fd, 1).unwrap(); }
+
+    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
+    unsafe { led_set_all(fd, 0).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x1d03
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+ioctl: fd=0x3, req=0x1d03
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+Hello world from tokio!
+```
+
 NOTUSED
 
 ```text
