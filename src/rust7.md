@@ -360,16 +360,20 @@ TODO: nix
 https://crates.io/crates/nix
 https://docs.rs/nix/0.29.0/nix/
 
-➜  hello git:(master) $ cargo add nix
+➜  hello git:(master) ✗ $ cargo add nix --no-default-features
     Updating crates.io index
       Adding nix v0.29.0 to dependencies
              Features:
              35 deactivated features
+
+➜  hello git:(master) ✗ $ cargo add nix --features fs,ioctl
     Updating crates.io index
-     Locking 3 packages to latest compatible versions
-      Adding bitflags v2.8.0
-      Adding cfg_aliases v0.2.1
-      Adding nix v0.29.0
+      Adding nix v0.29.0 to dependencies
+             Features:
+             + fs
+             + ioctl
+             33 deactivated features
+
 ➜  hello git:(master) ✗ $ pwd
 /Users/luppy/riscv/apps/examples/rust/hello
 
@@ -441,6 +445,18 @@ to #[cfg(target_os = "nuttx")]
     #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]////
     pub const UTIME_NOW: TimeSpec =
         TimeSpec::new(0, libc::UTIME_NOW as timespec_tv_nsec_t);
+
+cp \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/stat.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/statvfs.rs \
+  .
+cp -r \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
+  .
 ```
 
 NOTUSED
