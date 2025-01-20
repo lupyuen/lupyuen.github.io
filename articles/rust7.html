@@ -316,6 +316,26 @@ core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDanglin
    e:	60a2                	ld	ra,8(sp)
   10:	0141                	add	sp,sp,16
   12:	8082                	ret</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>hello_rust_cargo &amp;
+https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961
+nsh&gt; hello_rust_cargo &amp;
+hello_rust_cargo [4:100]
+nsh&gt; {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
+    2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
+    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div>
 <p>NOTUSED</p>
 <div class="example-wrap"><pre class="language-text"><code>## Build Apps Filesystem
 make -j export
