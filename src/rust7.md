@@ -453,6 +453,9 @@ cp \
   /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs \
   /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/stat.rs \
   /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/statvfs.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/mod.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/mod.rs \
+  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/bsd.rs \
   .
 cp -r \
   /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
@@ -488,6 +491,68 @@ TODO: ioctl
 
 ```text
 https://docs.rs/nix/latest/nix/sys/ioctl/
+
+/Users/luppy/riscv/nuttx/fs/vfs/fs_ioctl.c
+int ioctl(int fd, int req, ...) {
+  _info("fd=0x%x, req=0x%x", fd, req);////
+
+    const ULEDIOC_SETALL: i32 = 0x1d03;
+    ioctl_none!(led_on, ULEDIOC_SETALL, 1);
+    unsafe { led_on(fd).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x201d0301
+
+thread '<unnamed>' panicked at src/lib.rs:31:25:
+called `Result::unwrap()` on an `Err` value: ENOTTY
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+    const ULEDIOC_SETALL: i32 = 0x1d03;
+    // ioctl_none!(led_on, ULEDIOC_SETALL, 1);
+    ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
+    unsafe { led_on(fd, 1).unwrap(); }
+    unsafe { led_on(fd, 0).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x801d0301
+
+thread '<unnamed>' panicked at src/lib.rs:30:28:
+called `Result::unwrap()` on an `Err` value: ENOTTY
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh> ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
 ```
 
 NOTUSED
