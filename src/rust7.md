@@ -49,6 +49,10 @@ _(OK it's more complicated. Stay tuned!)_
 
 All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
+# Compile our Rust Hello App
+
+TODO
+
 # JSON with Serde
 
 _What's this Serde?_
@@ -104,83 +108,39 @@ pub extern "C" fn hello_rust_cargo_main() {
 
 _What's this Tokio? Sounds like a city?_
 
-Indeed! "Tokio" is derived from Tokyo and [__Metal I/O__](https://crates.io/crates/mio)
+Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crates/mio))
 
-TODO
+> [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
 
-[__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) is a software library for the Rust programming language. It provides a runtime and functions that enable the use of asynchronous I/O, allowing for concurrency in regards to task completion.[2][3][4]
+Inside our __Rust Hello App__, this is how we we run __Async Tasks__ with Tokio: TODO
 
 ```rust
+// Use One Single Thread (Current Thread)
+// To schedule Async Tasks
 tokio::runtime::Builder
-  ::new_current_thread()
-  .enable_all()
-  .build()
-  .unwrap()
-  .block_on(
-    async {
+  ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
+  .enable_all()  // Enable I/O and Time Functions
+  .build()       // Create the Single-Threaded Scheduler
+  .unwrap()      // Halt on Error
+  .block_on(     // Start the Scheduler
+    async {      // With this Async Task
       println!("Hello world from tokio!");
   });
 
+// Is it really async? Let's block and find out!
 println!("Looping Forever...");
 loop {}
 ```
 
-https://tokio.rs/tokio/topics/bridging
-What #[tokio::main] expands to
+[(Derived from __`#[tokio::main]`__)](https://tokio.rs/tokio/topics/bridging)
 
-One important detail is the use of the current_thread runtime. Usually when using Tokio, you would be using the default multi_thread runtime, which will spawn a bunch of background threads so it can efficiently run many things at the same time. For our use-case, we are only going to be doing one thing at the time, so we won't gain anything by running multiple threads. This makes the current_thread runtime a perfect fit as it doesn't spawn any threads.
+Which prints...
 
-Because the current_thread runtime does not spawn threads, it only operates when block_on is called. Once block_on returns, all spawned tasks on that runtime will freeze until you call block_on again. Use the multi_threaded runtime if spawned tasks must keep running when not calling block_on.
-
-
-TODO: pthread_create
-
-```text
-int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
-                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
-{
-  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);////
-
-    tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(async {
-            println!("Hello world from tokio!");
-        });
-
-    println!("Looping Forever...");
-    loop {
-        // Do nothing
-    }
-}
-
-#[no_mangle]
-pub extern "C" fn pthread_set_name_np() {}
-
-NuttShell (NSH) NuttX-12.7.0
+```bash
 nsh> hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{"name":"John","age":30}
-{"name":"Jane","age":25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  "name": "Alice",
-  "age": 28
-}
-pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
-nx_pthread_create: entry=0x80047938, arg=0x8007ff18
 Hello world from tokio!
 Looping Forever...
 ```
-
-Like NodeJS
 
 _Yawn. Tokio looks underwhelming?_
 
@@ -191,9 +151,9 @@ nsh> hello_rust_cargo
 pthread_create
 nx_pthread_create
 Task 0 sleeping for 1000 ms
-Task 1 sleeping for 950 ms
-Task 2 sleeping for 900 ms
-Task 3 sleeping for 850 ms
+Task 1 sleeping for  950 ms
+Task 2 sleeping for  900 ms
+Task 3 sleeping for  850 ms
 Finished time-consuming task
 Task 3 stopping
 Task 2 stopping
@@ -201,9 +161,13 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-TODO: test_async
+Check the Appendix for a more impressive Tokio Async Demo. That works beautifully on NuttX!
 
-Good for Network Programming, waiting for tasks
+- TODO: test_async
+
+_How would we use Tokio?_
+
+TODO: Good for Network Programming, waiting for tasks
 
 TODO
 
@@ -217,6 +181,8 @@ popd
 # Appendix: Tokio Async Threading
 
 TODO
+
+[Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
 
 ```rust
 // Based on https://tokio.rs/tokio/topics/bridging
@@ -272,35 +238,19 @@ pub extern "C" fn pthread_set_name_np() {}
 
 Which shows 
 
-```text
+```bash
 nsh> hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{"name":"John","age":30}
-{"name":"Jane","age":25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  "name": "Alice",
-  "age": 28
-}
-Running test_async...
-pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
-nx_pthread_create: entry=0x80048f0c, arg=0x80085208
+pthread_create
+nx_pthread_create
 Task 0 sleeping for 1000 ms
-Task 1 sleeping for 950 ms
-Task 2 sleeping for 900 ms
-Task 3 sleeping for 850 ms
+Task 1 sleeping for  950 ms
+Task 2 sleeping for  900 ms
+Task 3 sleeping for  850 ms
 Finished time-consuming task
 Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping
-nsh> 
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
@@ -324,6 +274,54 @@ Task 2 stopping.
 Task 1 stopping.
 Task 0 stopping.
 nsh> 
+```
+
+
+TODO: pthread_create
+
+```text
+int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
+{
+  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);////
+
+    tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            println!("Hello world from tokio!");
+        });
+
+    println!("Looping Forever...");
+    loop {
+        // Do nothing
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn pthread_set_name_np() {}
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
+nx_pthread_create: entry=0x80047938, arg=0x8007ff18
+Hello world from tokio!
+Looping Forever...
 ```
 
 # LED Blinky with Nix
