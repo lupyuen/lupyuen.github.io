@@ -75,7 +75,7 @@
 <li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
-<p>This is how we Blink the LED with Rust Standard Library on NuttX…</p>
+<p><strong>Freshly Baked:</strong> Here’s how we <a href="TODO"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -101,42 +101,52 @@
 
 // Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
 </span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
-<p>Which requires the <code>nix</code> Rust Crate…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate (Library)
+<p>Which requires the <strong><code>nix</code> Rust Crate</strong> / Library…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate
 ## To our NuttX Rust App
 $ cd apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
 
 Updating crates.io index
 Adding nix v0.29.0 to dependencies
-Features: + fs + ioctl</code></pre></div><h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
+Features: + fs + ioctl</code></pre></div>
+<p><em>(OK it’s more complicated. Stay tuned!)</em></p>
+<p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
+<h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
 <p>TODO</p>
 <h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>2 Async Functions with Tokio</h1>
 <p>TODO</p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>4 Owned File Descriptors</h1>
-<p>TODO</p>
+<p><strong>Safety Quiz:</strong> Why will this work…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
-</span><span class="kw">let </span>owned_fd = open(      <span class="comment">// Equivalent to NuttX open()
-  </span><span class="string">"/dev/userleds"</span>,  <span class="comment">// LED Device
-  </span>OFlag::O_WRONLY,  <span class="comment">// Write Only
-  </span>Mode::empty()     <span class="comment">// No Modes
-</span>).unwrap();         <span class="comment">// Halt on Error
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+  .unwrap();  <span class="comment">// Returns an Owned File Descriptor
+</span>...
+led_set_all(
+  owned_fd.as_raw_fd(),  <span class="comment">// Borrow the Raw File Descriptor
+  </span><span class="number">1
+</span>).unwrap();  <span class="comment">// Yep runs OK</span></code></pre></div>
+<p>But not this?</p>
 
-// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
-</span><span class="kw">unsafe </span>{ led_set_all(owned_fd.as_raw_fd(), <span class="number">1</span>).unwrap(); }</code></pre></div>
-<p>vs</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = as_raw_fd();
-
-<span class="comment">// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
-</span><span class="kw">unsafe </span>{ led_set_all(fd, <span class="number">1</span>).unwrap(); }</code></pre></div>
-<h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>5 Nix vs Rustix</h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+  .unwrap()      <span class="comment">// Returns an Owned File Descriptor
+  </span>.as_raw_fd();  <span class="comment">// Which turns into a Raw File Descriptor
+</span>...
+led_set_all(
+  raw_fd,    <span class="comment">// Use the Raw File Descriptor
+  </span><span class="number">1
+</span>).unwrap();  <span class="comment">// Oops will fail!</span></code></pre></div>
+<p>The second snippet will fail with this error…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
+called `Result::unwrap()` on an `Err` value: EBADF
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div><h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>5 Nix vs Rustix</h1>
 <p>TODO: Are Nix ioctl safe?</p>
 <h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>6 Appendix: Porting Nix to NuttX</h1>
-<p>TODO</p>
+<p>TODO: Redox, BSD not Linux, PR</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
 
 examples: New app to build Rust with Cargo
