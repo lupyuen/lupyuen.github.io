@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/rust7-title.jpg)
 
-TODO: Blinky Code
+This is how we Blink the LED with Rust Standard Library on NuttX...
 
 ```rust
 // Open the LED Device for NuttX
@@ -33,7 +33,7 @@ unsafe {             // Be careful of ioctl()
 unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
 ```
 
-TODO: Cargo Add Example
+Which requires the `nix` Rust Crate...
 
 ```bash
 ## Add the `nix` Rust Crate (Libary)
