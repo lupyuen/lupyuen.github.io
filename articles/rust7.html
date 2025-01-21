@@ -65,12 +65,79 @@
 
     <h1 class="title">Rust Standard Library on Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
+<li><a href="#json-with-serde" title="JSON with Serde">1 JSON with Serde</a><ul></ul></li>
+<li><a href="#async-functions-with-tokio" title="Async Functions with Tokio">2 Async Functions with Tokio</a><ul></ul></li>
+<li><a href="#led-blinky-with-nix" title="LED Blinky with Nix">3 LED Blinky with Nix</a><ul></ul></li>
+<li><a href="#owned-file-descriptors" title="Owned File Descriptors">4 Owned File Descriptors</a><ul></ul></li>
+<li><a href="#nix-vs-rustix" title="Nix vs Rustix">5 Nix vs Rustix</a><ul></ul></li>
+<li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">6 Appendix: Porting Nix to NuttX</a><ul></ul></li>
+<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
+<p>TODO: Blinky Code</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
+</span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
+  </span><span class="string">"/dev/userleds"</span>,  <span class="comment">// LED Device
+  </span>OFlag::O_WRONLY,  <span class="comment">// Write Only
+  </span>Mode::empty()     <span class="comment">// No Modes
+</span>).unwrap();         <span class="comment">// Halt on Error
+
+// Define the ioctl() function for Flipping LEDs
+</span><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;  <span class="comment">// ioctl() Command
+</span><span class="macro">ioctl_write_int_bad!</span>(  <span class="comment">// ioctl() will write One Int Value (LED Bit State)
+  </span>led_set_all,         <span class="comment">// Name of our New Function
+  </span>ULEDIOC_SETALL       <span class="comment">// ioctl() Command to send
+</span>);
+
+<span class="comment">// Flip LED 1 to On
+</span><span class="kw">unsafe </span>{             <span class="comment">// Be careful of ioctl()
+  </span>led_set_all(       <span class="comment">// Set the LEDs for...
+    </span>fd.as_raw_fd(),  <span class="comment">// LED Device
+    </span><span class="number">1                </span><span class="comment">// LED 1 (Bit 0) turns On
+  </span>).unwrap();        <span class="comment">// Halt on Error
+</span>}  <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+
+// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
+</span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
+<p>TODO: Cargo Add Example</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate (Libary)
+## To our NuttX Rust App
+$ cd apps/examples/rust/hello
+$ cargo add nix --features fs,ioctl
+
+Updating crates.io index
+Adding nix v0.29.0 to dependencies
+Features: + fs + ioctl</code></pre></div><h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
 <p>TODO</p>
+<h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>2 Async Functions with Tokio</h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+<h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
+<p>TODO: Not NixOS</p>
+<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>4 Owned File Descriptors</h1>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
+</span><span class="kw">let </span>owned_fd = open(      <span class="comment">// Equivalent to NuttX open()
+  </span><span class="string">"/dev/userleds"</span>,  <span class="comment">// LED Device
+  </span>OFlag::O_WRONLY,  <span class="comment">// Write Only
+  </span>Mode::empty()     <span class="comment">// No Modes
+</span>).unwrap();         <span class="comment">// Halt on Error
+
+// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
+</span><span class="kw">unsafe </span>{ led_set_all(owned_fd.as_raw_fd(), <span class="number">1</span>).unwrap(); }</code></pre></div>
+<p>vs</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = as_raw_fd();
+
+<span class="comment">// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
+</span><span class="kw">unsafe </span>{ led_set_all(fd, <span class="number">1</span>).unwrap(); }</code></pre></div>
+<h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>5 Nix vs Rustix</h1>
+<p>TODO: Are Nix ioctl safe?</p>
+<h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>6 Appendix: Porting Nix to NuttX</h1>
+<p>TODO</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
 
 examples: New app to build Rust with Cargo
 https://github.com/apache/nuttx-apps/pull/2487
@@ -94,7 +161,7 @@ Build Farm? Docker?
 How to bisect
 Blinky
 How to add crate
-RISC-V SBC? No knsh64 yet</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
+RISC-V SBC? No knsh64 yet</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
 https://nuttx.apache.org/docs/latest/guides/rust.html
 
 examples: New app to build Rust with Cargo
@@ -665,7 +732,7 @@ Pretty JSON:
   &quot;name&quot;: &quot;Alice&quot;,
   &quot;age&quot;: 28
 }
-Hello world from tokio!</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+Hello world from tokio!</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
