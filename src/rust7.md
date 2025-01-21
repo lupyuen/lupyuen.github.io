@@ -287,19 +287,21 @@ _ULEDIOC_SETALL looks familiar?_
 
 We spoke about _ULEDIOC_SETALL_ in [__an earlier article__](https://lupyuen.github.io/articles/rust6#blink-the-led). And the Rust Code above mirrors the [__C Version__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85) of our Blinky App.
 
-_How to run the Rust Blinky?_
+_How to run the Rust Blinky App?_
 
 1.  Copy the files from TODO...
 
-1.  To our Rust Hello App: _apps/examples/rust/hello_
+1.  Overwrite our __Rust Hello App__: _apps/examples/rust/hello_
 
 1.  [Rebuild our __NuttX Project__](TODO)
 
-1.  Then run it with QEMU
+1.  Then run it with __QEMU RISC-V Emulator__
 
 ```bash
 TODO
 ```
+
+QEMU Emulator shows the __Emulated LED__ on NuttX.
 
 # Owned File Descriptors
 
