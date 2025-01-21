@@ -222,8 +222,6 @@ Looping Forever...
 
 Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: TODO
 
-TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
-
 ```rust
 // Run 4 Async Functions in the Background
 // By creating One New NuttX Thread
@@ -264,9 +262,9 @@ fn test_async() {
 
 // Our Async Function that runs in the background...
 // If i=0: Sleep for 1000 ms
-// If i=1: Sleep for 950 ms
-// If i=2: Sleep for 900 ms
-// If i=3: Sleep for 850 ms
+// If i=1: Sleep for  950 ms
+// If i=2: Sleep for  900 ms
+// If i=3: Sleep for  850 ms
 async fn my_bg_task(i: u64) {
   let millis = 1000 - 50 * i;
   println!("Task {} sleeping for {} ms.", i, millis);
@@ -299,6 +297,8 @@ Task 0 stopping
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
+
+TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
 
 TODO
 
