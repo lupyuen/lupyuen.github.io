@@ -53,6 +53,8 @@ All this is now possible thanks to the awesome work by [__Huang Qi__](https://gi
 
 _What's this Serde?_
 
+It means _"Serialise-Deserialise"_.
+
 [__Serde__](https://crates.io/crates/serde) is a framework for serializing and deserializing Rust data structures efficiently and generically.
 
 TODO
@@ -279,7 +281,7 @@ kconfig-tweak --set-val CONFIG_TLS_NELEM 16
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
 
 ## For knsh64
-kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
 
 ## Update the Kconfig Dependencies
 make olddefconfig
@@ -386,7 +388,7 @@ https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
  1027  ## Enable Hello Rust Cargo App
  1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
  1029  ## For knsh64
- 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+ 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
  1031  ## Update the Kconfig Dependencies
  1032  make olddefconfig
  1033  make V=1
