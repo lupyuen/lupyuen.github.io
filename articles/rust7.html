@@ -302,6 +302,7 @@ Features: + fs + ioctl
 </ol>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p>QEMU Emulator shows the <strong>Emulated LED</strong> on NuttX.</p>
+<p><a href="TODO">(What about <strong>Rust Embedded HAL</strong>?)</a></p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
@@ -388,7 +389,14 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
 <p>TODO: Nix vs Rustix</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<p><em>Which platforms are supported?</em></p>
+<p>TODO</p>
+<p><em>Will it run on a RISC-V SBC?</em></p>
+<p>Sorry RISC-V 64-bit Kernel Mode is <a href="TODO"><strong>not supported yet</strong></a>.</p>
+<p><em>How to test?</em></p>
+<p>TODO: Build Farm? Docker? How to bisect</p>
+<div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
 
 examples: New app to build Rust with Cargo
 https://github.com/apache/nuttx-apps/pull/2487
@@ -398,21 +406,7 @@ https://github.com/rust-lang/rust/pull/127755
 
 The serde with no_std
 https://bitboom.github.io/2020-10-22/serde-no-std
-
-Hal?
-demo app
-why tokio for json
-disassemble
-Loop print something 
-Strings
-Patch 
-Which platforms 
-How to test
-Build Farm? Docker?
-How to bisect
-Blinky
-How to add crate
-RISC-V SBC? No knsh64 yet</code></pre></div>
+</code></pre></div>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
