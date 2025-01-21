@@ -231,12 +231,11 @@ Task 0 stopping</code></pre></div>
 <p>TODO: NodeJS</p>
 <p>(We’re not calling it <em>“Async Task”</em>. Because a Task in NuttX is more like a NuttX Process)</p>
 <p><em>How would we use Tokio?</em></p>
-<p>TODO: Good for Network Programming, waiting for tasks</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
-pushd ../apps/examples/rust/hello
-cargo clean
-popd</code></pre></div><h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
+<blockquote>
+<p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
+</blockquote>
+<p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>… We spawn a few threads and call <strong>Async Functions</strong>.</p>
+<h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
 $ cargo add nix \
@@ -389,7 +388,7 @@ RISC-V SBC? No knsh64 yet</code></pre></div>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>8 Appendix: Build NuttX for Rust Standard Library</h1>
-<p>TODO</p>
+<p>TODO: Prerequisite</p>
 <div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
 https://nuttx.apache.org/docs/latest/guides/rust.html
 
@@ -551,11 +550,18 @@ riscv-none-elf-objdump \
 
 riscv/leds64-nuttx.S</code></pre></div>
 <p>TODO: Override nightly</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Set Rust to nightly
+<div class="example-wrap"><pre class="language-bash"><code>## Set Rust to Nightly Build
+## Apply this to the Parent Folder
+## So it will work for `nuttx` and `apps`
 pushd ..
 rustup override list
 rustup override set nightly
 rustup override list
+popd</code></pre></div>
+<p>Sometimes we might need to clean up the <strong>Rust Compiled Files</strong>, if the compilation goes wonky…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
+pushd ../apps/examples/rust/hello
+cargo clean
 popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
