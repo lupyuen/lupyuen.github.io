@@ -220,7 +220,7 @@ Hello world from tokio!
 Looping Forever...
 ```
 
-Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: TODO
+Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
 
 ```rust
 // Run 4 Async Functions in the Background
