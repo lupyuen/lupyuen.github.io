@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/rust7-title.jpg)
 
-This is how we Blink the LED with Rust Standard Library on NuttX...
+__Freshly Baked:__ Here's how we [__Blink the LED__](TODO) with __Rust Standard Library__ on [__Apache NuttX RTOS__](TODO)...
 
 ```rust
 // Open the LED Device for NuttX
@@ -33,10 +33,10 @@ unsafe {             // Be careful of ioctl()
 unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
 ```
 
-Which requires the `nix` Rust Crate...
+Which requires the __`nix` Rust Crate__ / Library...
 
 ```bash
-## Add the `nix` Rust Crate (Library)
+## Add the `nix` Rust Crate
 ## To our NuttX Rust App
 $ cd apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
@@ -45,6 +45,9 @@ Updating crates.io index
 Adding nix v0.29.0 to dependencies
 Features: + fs + ioctl
 ```
+_(OK it's more complicated. Stay tuned!)_
+
+All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
 # JSON with Serde
 
@@ -60,28 +63,41 @@ TODO: Not NixOS
 
 # Owned File Descriptors
 
-TODO
+__Safety Quiz:__ Why will this work...
 
 ```rust
-// Open the LED Device for NuttX
-let owned_fd = open(      // Equivalent to NuttX open()
-  "/dev/userleds",  // LED Device
-  OFlag::O_WRONLY,  // Write Only
-  Mode::empty()     // No Modes
-).unwrap();         // Halt on Error
-
-// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
-unsafe { led_set_all(owned_fd.as_raw_fd(), 1).unwrap(); }
+let owned_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+  .unwrap();  // Returns an Owned File Descriptor
+...
+led_set_all(
+  owned_fd.as_raw_fd(),  // Borrow the Raw File Descriptor
+  1
+).unwrap();  // Yep runs OK
 ```
 
-vs
+But not this?
 
 ```rust
-let fd = as_raw_fd();
-
-// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
-unsafe { led_set_all(fd, 1).unwrap(); }
+let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+  .unwrap()      // Returns an Owned File Descriptor
+  .as_raw_fd();  // Which turns into a Raw File Descriptor
+...
+led_set_all(
+  raw_fd,    // Use the Raw File Descriptor
+  1
+).unwrap();  // Oops will fail!
 ```
+
+The second snippet will fail with this error...
+
+```bash
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+thread '<unnamed>' panicked at src/lib.rs:32:33:
+called `Result::unwrap()` on an `Err` value: EBADF
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
 
 # Nix vs Rustix
 
@@ -89,7 +105,7 @@ TODO: Are Nix ioctl safe?
 
 # Appendix: Porting Nix to NuttX
 
-TODO
+TODO: Redox, BSD not Linux, PR
 
 # TODO
 
