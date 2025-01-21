@@ -51,7 +51,9 @@ All this is now possible thanks to the awesome work by [__Huang Qi__](https://gi
 
 # Compile our Rust Hello App
 
-TODO
+TODO: Instructions
+
+TODO: Run our Rust Hello App
 
 Some bits are a little wonky
 
@@ -59,50 +61,86 @@ Some bits are a little wonky
 
 _What's this Serde?_
 
-Think _"Serialise-Deserialise"_.
+Think _"Serialize-Deserialize"_. [__Serde__](https://crates.io/crates/serde) is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with [__JSON, CBOR, MessagePack, ...__](https://serde.rs/#data-formats)
 
-[__Serde__](https://crates.io/crates/serde) is a framework for serializing and deserializing Rust data structures efficiently and generically.
-
-TODO
+This is how we __Serialize to JSON__ in our NuttX App: TODO
 
 ```rust
+// Allow Serde to Serialize and Deserialize a Person Struct
 #[derive(Serialize, Deserialize)]
 struct Person {
-  name: String,
-  age: u8,
-}
+  name: String,  // Containing a Name (string)
+  age:  u8,      // And Age (uint8_t)
+}  // Note: Rust Strings live in Heap Memory!
 
+// Main Function of our Hello Rust App
 #[no_mangle]
 pub extern "C" fn hello_rust_cargo_main() {
-  // Print hello world to stdout
 
+  // Create a Person Struct
   let john = Person {
     name: "John".to_string(),
-    age: 30,
+    age:  30,
   };
 
-  let json_str = serde_json::to_string(&john).unwrap();
+  // Serialize our Person Struct
+  let json_str = serde_json  // Rust Struct
+    ::to_string(&john)  // Becomes a String
+    .unwrap();          // Halt on Error
   println!("{}", json_str);
+```
 
-  let jane = Person {
-    name: "Jane".to_string(),
-    age: 25,
-  };
+This prints...
 
-  let json_str_jane = serde_json::to_string(&jane).unwrap();
-  println!("{}", json_str_jane);
+```bash
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+{"name":"John","age":30}
+```
 
+Now we __Deserialize from JSON__: TODO
+
+```rust
+  // Declare a String with JSON inside
   let json_data = r#"
     {
       "name": "Alice",
       "age": 28
     }"#;
 
-  let alice: Person = serde_json::from_str(json_data).unwrap();
-  println!("Deserialized: {} is {} years old", alice.name, alice.age);
+  // Deserialize our JSON String
+  // Into a Person Struct
+  let alice: Person = serde_json
+    ::from_str(json_data)
+    .unwrap();
+  println!("Deserialized: {} is {} years old",
+    alice.name, alice.age);
+```
 
-  let pretty_json_str = serde_json::to_string_pretty(&alice).unwrap();
+Which prints...
+
+```bash
+Deserialized: Alice is 28 years old
+```
+
+Serde will also handle __JSON Formatting__: TODO
+
+```rust
+  // Serialize our Person Struct
+  // But neatly please
+  let pretty_json_str = serde_json
+    ::to_string_pretty(&alice)
+    .unwrap();
   println!("Pretty JSON:\n{}", pretty_json_str);
+```
+
+Looks much neater!
+
+```bash
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
 }
 ```
 
