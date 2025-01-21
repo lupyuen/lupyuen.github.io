@@ -325,6 +325,12 @@ nsh>
 TODO: pthread_create
 
 ```text
+https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
+
 int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
 {
