@@ -174,10 +174,10 @@ Features: + fs + ioctl</code></pre></div>
 </span>tokio::runtime::Builder
   ::new_current_thread()  <span class="comment">// Current Thread is the Single-Threaded Scheduler
   </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
-  </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
-  </span>.unwrap()      <span class="comment">// Halt on Error
-  </span>.block_on(     <span class="comment">// Start the Scheduler
-    </span><span class="kw">async </span>{      <span class="comment">// With this Async Function
+  </span>.build()   <span class="comment">// Create the Single-Threaded Scheduler
+  </span>.unwrap()  <span class="comment">// Halt on Error
+  </span>.block_on( <span class="comment">// Start the Scheduler
+    </span><span class="kw">async </span>{  <span class="comment">// With this Async Function
       </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
@@ -228,10 +228,10 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
 </span>tokio::runtime::Builder
   ::new_current_thread()  <span class="comment">// Current Thread is the Single-Threaded Scheduler
   </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
-  </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
-  </span>.unwrap()      <span class="comment">// Halt on Error
-  </span>.block_on(     <span class="comment">// Start the Scheduler
-    </span><span class="kw">async </span>{      <span class="comment">// With this Async Function
+  </span>.build()   <span class="comment">// Create the Single-Threaded Scheduler
+  </span>.unwrap()  <span class="comment">// Halt on Error
+  </span>.block_on( <span class="comment">// Start the Scheduler
+    </span><span class="kw">async </span>{  <span class="comment">// With this Async Function
       </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
@@ -254,17 +254,17 @@ Looping Forever...</code></pre></div>
   </span><span class="kw">let </span>runtime = tokio::runtime::Builder
     ::new_multi_thread() <span class="comment">// Multi-Threaded Scheduler
     </span>.worker_threads(<span class="number">1</span>)   <span class="comment">// With One New NuttX Thread for our Scheduler
-    </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
-    </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
-    </span>.unwrap();     <span class="comment">// Halt on Error
+    </span>.enable_all() <span class="comment">// Enable the I/O and Time Functions
+    </span>.build()      <span class="comment">// Create the Multi-Threaded Scheduler
+    </span>.unwrap();    <span class="comment">// Halt on Error
 
   // Create 4 Async Functions
   // Remember their Async Handles
   </span><span class="kw">let </span><span class="kw-2">mut </span>handles = Vec::with_capacity(<span class="number">4</span>);
   <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
-    handles.push(         <span class="comment">// Remember the Async Handles
-      </span>runtime.spawn(      <span class="comment">// Start in the Background
-        </span>my_bg_task(i)));  <span class="comment">// Our Async Function
+    handles.push(        <span class="comment">// Remember the Async Handles
+      </span>runtime.spawn(     <span class="comment">// Start in the Background
+        </span>my_bg_task(i))); <span class="comment">// Our Async Function
   </span>}
 
   <span class="comment">// Pretend to be busy while Async Functions execute (in the background)
