@@ -67,13 +67,14 @@
     <nav id="rustdoc"><ul>
 <li><a href="#json-with-serde" title="JSON with Serde">1 JSON with Serde</a><ul></ul></li>
 <li><a href="#async-functions-with-tokio" title="Async Functions with Tokio">2 Async Functions with Tokio</a><ul></ul></li>
-<li><a href="#led-blinky-with-nix" title="LED Blinky with Nix">3 LED Blinky with Nix</a><ul></ul></li>
-<li><a href="#owned-file-descriptors" title="Owned File Descriptors">4 Owned File Descriptors</a><ul></ul></li>
-<li><a href="#nix-vs-rustix" title="Nix vs Rustix">5 Nix vs Rustix</a><ul></ul></li>
-<li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">6 Appendix: Porting Nix to NuttX</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
+<li><a href="#appendix-tokio-async-threading" title="Appendix: Tokio Async Threading">3 Appendix: Tokio Async Threading</a><ul></ul></li>
+<li><a href="#led-blinky-with-nix" title="LED Blinky with Nix">4 LED Blinky with Nix</a><ul></ul></li>
+<li><a href="#owned-file-descriptors" title="Owned File Descriptors">5 Owned File Descriptors</a><ul></ul></li>
+<li><a href="#nix-vs-rustix" title="Nix vs Rustix">6 Nix vs Rustix</a><ul></ul></li>
+<li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">7 Appendix: Porting Nix to NuttX</a><ul></ul></li>
+<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">9 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
 <p><strong>Freshly Baked:</strong> Here’s how we <a href="TODO"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 
@@ -162,18 +163,18 @@ Features: + fs + ioctl</code></pre></div>
 <p>TODO</p>
 <p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> is a software library for the Rust programming language. It provides a runtime and functions that enable the use of asynchronous I/O, allowing for concurrency in regards to task completion.[2][3][4]</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>tokio::runtime::Builder::new_current_thread()
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>tokio::runtime::Builder
+  ::new_current_thread()
   .enable_all()
   .build()
   .unwrap()
-  .block_on(<span class="kw">async </span>{
-    <span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
+  .block_on(
+    <span class="kw">async </span>{
+      <span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
 <span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
-<span class="kw">loop </span>{
-    <span class="comment">// Do nothing
-</span>}</code></pre></div>
+<span class="kw">loop </span>{}</code></pre></div>
 <p>https://tokio.rs/tokio/topics/bridging
 What #[tokio::main] expands to</p>
 <p>One important detail is the use of the current_thread runtime. Usually when using Tokio, you would be using the default multi_thread runtime, which will spawn a bunch of background threads so it can efficiently run many things at the same time. For our use-case, we are only going to be doing one thing at the time, so we won’t gain anything by running multiple threads. This makes the current_thread runtime a perfect fit as it doesn’t spawn any threads.</p>
@@ -251,13 +252,83 @@ Task 1 stopping.
 Task 0 stopping.
 nsh&gt; </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
+<p>Good for Network Programming, waiting for tasks</p>
+<p>Like NodeJS</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
 pushd ../apps/examples/rust/hello
 cargo clean
-popd</code></pre></div><h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
+popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>3 Appendix: Tokio Async Threading</h1>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Based on https://tokio.rs/tokio/topics/bridging
+</span><span class="kw">fn </span>test_async() {
+
+  <span class="comment">// Create a Multi-Threaded Scheduler
+  </span><span class="kw">let </span>runtime = tokio::runtime::Builder
+    ::new_multi_thread()
+    .worker_threads(<span class="number">1</span>)
+    .enable_all()
+    .build()
+    .unwrap();
+
+  <span class="comment">// Create 4 Background Tasks
+  // Remember their Task Handles
+  </span><span class="kw">let </span><span class="kw-2">mut </span>handles = Vec::with_capacity(<span class="number">4</span>);
+  <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
+    handles.push(
+      runtime.spawn(
+        my_bg_task(i)));
+  }
+
+  <span class="comment">// Pretend to be busy while Background Tasks execute
+  // Wait 750 milliseconds
+  </span>std::thread::sleep(
+    tokio::time::Duration::from_millis(<span class="number">750</span>));
+  <span class="macro">println!</span>(<span class="string">"Finished time-consuming task."</span>);
+
+  <span class="comment">// Wait for All Tasks to complete
+  </span><span class="kw">for </span>handle <span class="kw">in </span>handles {
+    runtime
+      .block_on(handle)  <span class="comment">// Wait for One Task to complete
+      </span>.unwrap();
+  }
+}
+
+<span class="comment">// If i=0: Sleep for 1000 ms
+// If i=1: Sleep for 950 ms
+// If i=2: Sleep for 900 ms
+// If i=3: Sleep for 850 ms
+</span><span class="kw">async fn </span>my_bg_task(i: u64) {
+  <span class="kw">let </span>millis = <span class="number">1000 </span>- <span class="number">50 </span>* i;
+  <span class="macro">println!</span>(<span class="string">"Task {} sleeping for {} ms."</span>, i, millis);
+  tokio::time::sleep(
+    tokio::time::Duration::from_millis(millis)
+  ).<span class="kw">await</span>;  <span class="comment">// Wait for sleep to complete
+  </span><span class="macro">println!</span>(<span class="string">"Task {} stopping."</span>, i);
+}
+
+<span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>        .worker_threads(2)
+
+pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+nx_pthread_create: entry=0x80048f10, arg=0x800873e8
+pthread_create: pthread_entry=0x80048f10, arg=0x80287830
+nx_pthread_create: entry=0x80048f10, arg=0x80287830
+Task 0 sleeping for 1000 ms.
+Task 1 sleeping for 950 ms.
+Task 2 sleeping for 900 ms.
+Task 3 sleeping for 850 ms.
+Finished time-consuming task.
+Task 3 stopping.
+Task 2 stopping.
+Task 1 stopping.
+Task 0 stopping.
+nsh&gt; </code></pre></div><h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
-<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>4 Owned File Descriptors</h1>
+<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this work…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
@@ -282,11 +353,11 @@ led_set_all(
 nsh&gt; hello_rust_cargo
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div><h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>5 Nix vs Rustix</h1>
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div><h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
 <p>TODO: Are Nix ioctl safe?</p>
-<h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>6 Appendix: Porting Nix to NuttX</h1>
+<h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>7 Appendix: Porting Nix to NuttX</h1>
 <p>TODO: Redox, BSD not Linux, PR</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
 
 examples: New app to build Rust with Cargo
 https://github.com/apache/nuttx-apps/pull/2487
@@ -310,7 +381,7 @@ Build Farm? Docker?
 How to bisect
 Blinky
 How to add crate
-RISC-V SBC? No knsh64 yet</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
+RISC-V SBC? No knsh64 yet</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>9 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
 https://nuttx.apache.org/docs/latest/guides/rust.html
 
 examples: New app to build Rust with Cargo
@@ -881,7 +952,7 @@ Pretty JSON:
   &quot;name&quot;: &quot;Alice&quot;,
   &quot;age&quot;: 28
 }
-Hello world from tokio!</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+Hello world from tokio!</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
