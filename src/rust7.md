@@ -221,7 +221,11 @@ Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial
 
 # LED Blinky with Nix
 
-TODO: Not NixOS
+_Why are we running `nix` on NuttX?_
+
+Oh that's [__`nix` Crate__](https://crates.io/crates/nix) that provides __Safer Rust Bindings__ for POSIX / Unix / Linux. (Nope, not NixOS)
+
+This is how we add the library to our __Rust Hello App__...
 
 ```bash
 $ cd ../apps/examples/rust/hello
@@ -236,7 +240,66 @@ Features: + fs + ioctl
 34 deactivated features
 ```
 
-TODO: Explain LED Set All ioctl, C version
+_The URL looks a little sus?_
+
+That's because the `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to make it work on NuttX. [(Details in the __Appendix__)](TODO)
+
+_Why are we calling nix?_
+
+We're __Blinking the LED__ on NuttX. We could call the [__POSIX API__](https://crates.io/crates/libc) direcly from Rust...
+
+```rust
+let fd = unsafe { libc::open("/dev/userleds", ...) };
+unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
+unsafe { close(fd); }
+```
+
+But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by `nix` (tweaked for NuttX). Like so: TODO
+
+```rust
+// Open the LED Device for NuttX
+let fd = open(      // Equivalent to NuttX open()
+  "/dev/userleds",  // LED Device
+  OFlag::O_WRONLY,  // Write Only
+  Mode::empty()     // No Modes
+).unwrap();         // Halt on Error
+
+// Define the ioctl() function for Flipping LEDs
+const ULEDIOC_SETALL: i32 = 0x1d03;  // ioctl() Command
+ioctl_write_int_bad!(  // ioctl() will write One Int Value (LED Bit State)
+  led_set_all,         // Name of our New Function
+  ULEDIOC_SETALL       // ioctl() Command to send
+);
+
+// Flip LED 1 to On
+unsafe {             // Be careful of ioctl()
+  led_set_all(       // Set the LEDs for...
+    fd.as_raw_fd(),  // LED Device
+    1                // LED 1 (Bit 0) turns On
+  ).unwrap();        // Halt on Error
+}  // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+
+// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
+unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
+```
+
+_ULEDIOC_SETALL looks familiar?_
+
+We spoke about _ULEDIOC_SETALL_ in [__an earlier article__](https://lupyuen.github.io/articles/rust6#blink-the-led). And the Rust Code above mirrors the [__C Version__](https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85) of our Blinky App.
+
+_How to run the Rust Blinky?_
+
+1.  Copy the files from TODO...
+
+1.  To our Rust Hello App: _apps/examples/rust/hello_
+
+1.  [Rebuild our __NuttX Project__](TODO)
+
+1.  Then run it with QEMU
+
+```bash
+TODO
+```
 
 # Owned File Descriptors
 
