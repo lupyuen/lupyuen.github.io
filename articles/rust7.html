@@ -222,38 +222,23 @@ pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
 nx_pthread_create: entry=0x80047938, arg=0x8007ff18
 Hello world from tokio!
 Looping Forever...</code></pre></div>
-<p>TODO: test_async</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Running test_async...
-pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
-nx_pthread_create: entry=0x80048f0c, arg=0x80085208
-Task 0 sleeping for 1000 ms.
-Task 1 sleeping for 950 ms.
-Task 2 sleeping for 900 ms.
-Task 3 sleeping for 850 ms.
-Finished time-consuming task.
-Task 3 stopping.
-Task 2 stopping.
-Task 1 stopping.
-Task 0 stopping.
-nsh&gt; </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
-<p>Good for Network Programming, waiting for tasks</p>
 <p>Like NodeJS</p>
+<p><em>Yawn. Tokio looks underwhelming?</em></p>
+<p>Ah we haven’t seen the full power of <strong>Tokio Multi-Threaded Async Tasks</strong> on NuttX!</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
+pthread_create
+nx_pthread_create
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for 950 ms
+Task 2 sleeping for 900 ms
+Task 3 sleeping for 850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping</code></pre></div>
+<p>TODO: test_async</p>
+<p>Good for Network Programming, waiting for tasks</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
 pushd ../apps/examples/rust/hello
@@ -310,6 +295,36 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
 
 <span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
+<p>Which shows</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Running test_async...
+pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
+nx_pthread_create: entry=0x80048f0c, arg=0x80085208
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for 950 ms
+Task 2 sleeping for 900 ms
+Task 3 sleeping for 850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping
+nsh&gt; </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>        .worker_threads(2)
 
