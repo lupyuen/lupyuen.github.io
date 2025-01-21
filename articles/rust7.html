@@ -114,6 +114,7 @@ Features: + fs + ioctl</code></pre></div>
 <p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
+<p>It means <em>“Serialise-Deserialise”</em>.</p>
 <p><a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a framework for serializing and deserializing Rust data structures efficiently and generically.</p>
 <p>TODO</p>
 
@@ -301,7 +302,7 @@ kconfig-tweak --set-val CONFIG_TLS_NELEM 16
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
 
 ## For knsh64
-kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
 
 ## Update the Kconfig Dependencies
 make olddefconfig
@@ -404,7 +405,7 @@ https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
  1027  ## Enable Hello Rust Cargo App
  1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
  1029  ## For knsh64
- 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 8192
+ 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
  1031  ## Update the Kconfig Dependencies
  1032  make olddefconfig
  1033  make V=1</code></pre></div>
