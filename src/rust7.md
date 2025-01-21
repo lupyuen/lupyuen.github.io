@@ -122,10 +122,10 @@ Inside our __Rust Hello App__, this is how we we run __Async Functions__ with To
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
   .enable_all()  // Enable the I/O and Time Functions
-  .build()       // Create the Single-Threaded Scheduler
-  .unwrap()      // Halt on Error
-  .block_on(     // Start the Scheduler
-    async {      // With this Async Function
+  .build()   // Create the Single-Threaded Scheduler
+  .unwrap()  // Halt on Error
+  .block_on( // Start the Scheduler
+    async {  // With this Async Function
       println!("Hello world from tokio!");
   });
 
@@ -200,10 +200,10 @@ Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current N
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
   .enable_all()  // Enable the I/O and Time Functions
-  .build()       // Create the Single-Threaded Scheduler
-  .unwrap()      // Halt on Error
-  .block_on(     // Start the Scheduler
-    async {      // With this Async Function
+  .build()   // Create the Single-Threaded Scheduler
+  .unwrap()  // Halt on Error
+  .block_on( // Start the Scheduler
+    async {  // With this Async Function
       println!("Hello world from tokio!");
   });
 
@@ -233,17 +233,17 @@ fn test_async() {
   let runtime = tokio::runtime::Builder
     ::new_multi_thread() // Multi-Threaded Scheduler
     .worker_threads(1)   // With One New NuttX Thread for our Scheduler
-    .enable_all()  // Enable the I/O and Time Functions
-    .build()       // Create the Single-Threaded Scheduler
-    .unwrap();     // Halt on Error
+    .enable_all() // Enable the I/O and Time Functions
+    .build()      // Create the Multi-Threaded Scheduler
+    .unwrap();    // Halt on Error
 
   // Create 4 Async Functions
   // Remember their Async Handles
   let mut handles = Vec::with_capacity(4);
   for i in 0..4 {
-    handles.push(         // Remember the Async Handles
-      runtime.spawn(      // Start in the Background
-        my_bg_task(i)));  // Our Async Function
+    handles.push(        // Remember the Async Handles
+      runtime.spawn(     // Start in the Background
+        my_bg_task(i))); // Our Async Function
   }
 
   // Pretend to be busy while Async Functions execute (in the background)
