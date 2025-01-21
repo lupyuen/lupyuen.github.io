@@ -206,8 +206,8 @@ fn test_async() {
     .build()
     .unwrap();
 
-  // Create 4 Background Tasks
-  // Remember their Task Handles
+  // Create 4 Async Functions
+  // Remember their Async Handles
   let mut handles = Vec::with_capacity(4);
   for i in 0..4 {
     handles.push(
@@ -215,20 +215,21 @@ fn test_async() {
         my_bg_task(i)));
   }
 
-  // Pretend to be busy while Background Tasks execute
-  // Wait 750 milliseconds
+  // Pretend to be busy while Async Functions execute (in the background)
+  // We wait 750 milliseconds
   std::thread::sleep(
     tokio::time::Duration::from_millis(750));
   println!("Finished time-consuming task.");
 
-  // Wait for All Tasks to complete
+  // Wait for All Async Functions to complete
   for handle in handles {
     runtime
-      .block_on(handle)  // Wait for One Task to complete
+      .block_on(handle)  // Wait for One Async Function to complete
       .unwrap();
   }
 }
 
+// Our Async Function that runs in the background...
 // If i=0: Sleep for 1000 ms
 // If i=1: Sleep for 950 ms
 // If i=2: Sleep for 900 ms
@@ -242,6 +243,7 @@ async fn my_bg_task(i: u64) {
   println!("Task {} stopping.", i);
 }
 
+// Needed by Tokio Multi-Threaded Scheduler
 #[no_mangle]
 pub extern "C" fn pthread_set_name_np() {}
 ```
