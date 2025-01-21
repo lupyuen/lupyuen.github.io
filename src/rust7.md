@@ -4,9 +4,94 @@
 
 ![TODO](https://lupyuen.github.io/images/rust7-title.jpg)
 
-TODO
+TODO: Blinky Code
+
+```rust
+// Open the LED Device for NuttX
+let fd = open(      // Equivalent to NuttX open()
+  "/dev/userleds",  // LED Device
+  OFlag::O_WRONLY,  // Write Only
+  Mode::empty()     // No Modes
+).unwrap();         // Halt on Error
+
+// Define the ioctl() function for Flipping LEDs
+const ULEDIOC_SETALL: i32 = 0x1d03;  // ioctl() Command
+ioctl_write_int_bad!(  // ioctl() will write One Int Value (LED Bit State)
+  led_set_all,         // Name of our New Function
+  ULEDIOC_SETALL       // ioctl() Command to send
+);
+
+// Flip LED 1 to On
+unsafe {             // Be careful of ioctl()
+  led_set_all(       // Set the LEDs for...
+    fd.as_raw_fd(),  // LED Device
+    1                // LED 1 (Bit 0) turns On
+  ).unwrap();        // Halt on Error
+}  // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+
+// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
+unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
+```
+
+TODO: Cargo Add Example
+
+```bash
+## Add the `nix` Rust Crate (Libary)
+## To our NuttX Rust App
+$ cd apps/examples/rust/hello
+$ cargo add nix --features fs,ioctl
+
+Updating crates.io index
+Adding nix v0.29.0 to dependencies
+Features: + fs + ioctl
+```
+
+# JSON with Serde
 
 TODO
+
+# Async Functions with Tokio
+
+TODO
+
+# LED Blinky with Nix
+
+TODO: Not NixOS
+
+# Owned File Descriptors
+
+TODO
+
+```rust
+// Open the LED Device for NuttX
+let owned_fd = open(      // Equivalent to NuttX open()
+  "/dev/userleds",  // LED Device
+  OFlag::O_WRONLY,  // Write Only
+  Mode::empty()     // No Modes
+).unwrap();         // Halt on Error
+
+// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
+unsafe { led_set_all(owned_fd.as_raw_fd(), 1).unwrap(); }
+```
+
+vs
+
+```rust
+let fd = as_raw_fd();
+
+// Flip LED 1 to On: ioctl(fd, ULEDIOC_SETALL, 1)
+unsafe { led_set_all(fd, 1).unwrap(); }
+```
+
+# Nix vs Rustix
+
+TODO: Are Nix ioctl safe?
+
+# Appendix: Porting Nix to NuttX
+
+TODO
+
+# TODO
 
 ```text
 https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
