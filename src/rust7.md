@@ -245,35 +245,38 @@ Features: + fs + ioctl
 
 # Owned File Descriptors
 
-__Safety Quiz:__ Why will this work...
+__Safety Quiz:__ Why will this run OK...
 
 ```rust
+// Copied from above: Open the LED Device
 let owned_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
   .unwrap();  // Returns an Owned File Descriptor
 ...
+// Copied from above: Set the LEDs via ioctl()
 led_set_all(
   owned_fd.as_raw_fd(),  // Borrow the Raw File Descriptor
-  1
-).unwrap();  // Yep runs OK
+  1                      // Flip LED 1 to On
+).unwrap();              // Yep runs OK
 ```
 
 But not this?
 
 ```rust
+// Fetch earlier the Raw File Descriptor (from the LED Device)
 let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
   .unwrap()      // Returns an Owned File Descriptor
-  .as_raw_fd();  // Which turns into a Raw File Descriptor
+  .as_raw_fd();  // Which becomes a Raw File Descriptor
 ...
+// Set the LEDs via ioctl()
 led_set_all(
-  raw_fd,    // Use the Raw File Descriptor
-  1
+  raw_fd,    // Use the earlier Raw File Descriptor
+  1          // Flip LED 1 to On
 ).unwrap();  // Oops will fail!
 ```
 
 The second snippet will fail with this __EBADF Error__...
 
 ```bash
-NuttShell (NSH) NuttX-12.7.0
 nsh> hello_rust_cargo
 thread '<unnamed>' panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
@@ -284,12 +287,49 @@ There's something odd about __Raw File Descriptors__ vs __Owned File Descriptors
 
 _What's a Raw File Descriptor?_
 
-[Plain Integers!](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71)
+In NuttX and POSIX: [__Raw File Descriptor__](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71) is a __Plain Integer__ that specifies an I/O stream...
 
-0 Standard Input
-1 Standard Output
-2 Standard Error
-3 /dev/userleds (assuming we opened it)
+|File Descriptor|Purpose|
+|:---:|:----|
+| 0 | Standard Input
+| 1 | Standard Output
+| 2 | Standard Error
+| 3 | /dev/userleds _(assuming we opened it)_
+
+_What about an Owned File Descriptor?_
+
+In Rust: [__Owned File Descriptor__](https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html) is a __Rust Object__, wrapped around a Raw File Descriptor.
+
+And Rust Objects can be __Automatically Dropped__, when they go out of scope. (Unlike Integers)
+
+_Which causes the Second Snippet to fail?_
+
+Exactly! _open()_ returns an __Owned File Descriptor__...
+
+```rust
+// Open the LED Device
+let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+  .unwrap()      // Returns an Owned File Descriptor
+  .as_raw_fd();  // Which becomes a Raw File Descriptor
+```
+
+But we turned it into __Raw File Descriptor__. (The Plain Integer, not the Rust Object)
+
+Oops! Our Owned File Descriptor goes __out of scope__ and gets dropped by Rust.
+
+Which means Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
+
+```rust
+// Set the LEDs via ioctl()
+led_set_all(
+  raw_fd,    // Use the earlier Raw File Descriptor
+  1          // Flip LED 1 to On
+).unwrap();  // Oops will fail with EBADF Error!
+```
+
+Resulting in the [__EBADF Error__](https://man.freebsd.org/cgi/man.cgi?errno(2)). _ioctl()_ failed because _/dev/userleds_ is already closed!
+
+__Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.
 
 # Nix vs Rustix
 
