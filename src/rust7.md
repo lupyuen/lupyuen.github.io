@@ -114,18 +114,18 @@ Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crat
 
 > [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
 
-Inside our __Rust Hello App__, this is how we we run __Async Tasks__ with Tokio: TODO
+Inside our __Rust Hello App__, this is how we we run __Async Functions__ with Tokio: TODO
 
 ```rust
 // Use One Single Thread (Current Thread)
-// To schedule Async Tasks
+// To schedule Async Functions
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
   .enable_all()  // Enable I/O and Time Functions
   .build()       // Create the Single-Threaded Scheduler
   .unwrap()      // Halt on Error
   .block_on(     // Start the Scheduler
-    async {      // With this Async Task
+    async {      // With this Async Function
       println!("Hello world from tokio!");
   });
 
@@ -146,7 +146,7 @@ Looping Forever...
 
 _Yawn. Tokio looks underwhelming?_
 
-Ah we haven't seen the full power of __Tokio Multi-Threaded Async Tasks__ on NuttX!
+Ah we haven't seen the full power of __Tokio Multi-Threaded Async Functions__ on NuttX!
 
 ```bash
 nsh> hello_rust_cargo
@@ -167,9 +167,13 @@ Check the Appendix for a more impressive __Tokio Async Demo__. That works beauti
 
 - TODO: test_async
 
-_But NuttX has POSIX Threads. Why use Async Tasks?_
+_But NuttX has POSIX Threads. Why use Async Functions?_
+
+TODO: Threads vs Tasks vs Processes
 
 TODO: NodeJS
+
+(OK we're trying not to call it Async Task, because a Task in NuttX is more like a NuttX Process)
 
 _How would we use Tokio?_
 
