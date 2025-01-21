@@ -331,7 +331,13 @@ Task 1 stopping.
 Task 0 stopping.
 nsh&gt; </code></pre></div>
 <p>TODO: pthread_create</p>
-<div class="example-wrap"><pre class="language-text"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+<div class="example-wrap"><pre class="language-text"><code>https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
+
+int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
 {
   _info(&quot;pthread_entry=%p, arg=%p&quot;, pthread_entry, arg);////
