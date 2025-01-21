@@ -114,6 +114,7 @@ Features: + fs + ioctl</code></pre></div>
 <p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
+<p><a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a framework for serializing and deserializing Rust data structures efficiently and generically.</p>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Serialize, Deserialize)]
@@ -155,8 +156,10 @@ Features: + fs + ioctl</code></pre></div>
   <span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);
 }</code></pre></div>
 <h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>2 Async Functions with Tokio</h1>
-<p><em>What is Tokio?</em></p>
+<p><em>What’s this Tokio? Sounds like a city?</em></p>
+<p>Indeed! “Tokio” is derived from Tokyo and <a href="https://crates.io/crates/mio"><strong>Metal I/O</strong></a></p>
 <p>TODO</p>
+<p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> is a software library for the Rust programming language. It provides a runtime and functions that enable the use of asynchronous I/O, allowing for concurrency in regards to task completion.[2][3][4]</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>tokio::runtime::Builder::new_current_thread()
   .enable_all()
@@ -166,6 +169,7 @@ Features: + fs + ioctl</code></pre></div>
     <span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
+<span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
 <span class="kw">loop </span>{
     <span class="comment">// Do nothing
 </span>}</code></pre></div>
