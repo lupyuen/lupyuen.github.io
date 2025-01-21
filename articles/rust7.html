@@ -247,7 +247,9 @@ $ cargo add nix \
 Updating git repository `https://github.com/lupyuen/nix.git`
 Adding nix (git) to dependencies
 Features: + fs + ioctl
-34 deactivated features</code></pre></div><h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
+34 deactivated features</code></pre></div>
+<p>TODO: Explain LED Set All ioctl, C version</p>
+<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Copied from above: Open the LED Device
@@ -278,15 +280,15 @@ called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
 <p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
 <p><em>What’s a Raw File Descriptor?</em></p>
-<p>In NuttX and POSIX: <a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71"><strong>Raw File Descriptor</strong></a> is a <strong>Plain Integer</strong> that specifies an I/O stream…</p>
+<p>In NuttX and POSIX: <a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71"><strong>Raw File Descriptor</strong></a> is a <strong>Plain Integer</strong> that specifies an I/O Stream…</p>
 <div><table><thead><tr><th style="text-align: center">File Descriptor</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: left">Standard Input</td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: left">Standard Output</td></tr>
 <tr><td style="text-align: center">2</td><td style="text-align: left">Standard Error</td></tr>
-<tr><td style="text-align: center">3</td><td style="text-align: left">/dev/userleds <em>(assuming we opened it)</em></td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: left">/dev/userleds <br> <em>(assuming we opened it)</em></td></tr>
 </tbody></table>
 </div>
-<p><em>What about an Owned File Descriptor?</em></p>
+<p><em>What about Owned File Descriptor?</em></p>
 <p>In Rust: <a href="https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html"><strong>Owned File Descriptor</strong></a> is a <strong>Rust Object</strong>, wrapped around a Raw File Descriptor.</p>
 <p>And Rust Objects can be <strong>Automatically Dropped</strong>, when they go out of scope. (Unlike Integers)</p>
 <p><em>Which causes the Second Snippet to fail?</em></p>
