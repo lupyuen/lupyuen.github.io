@@ -248,38 +248,65 @@ Updating git repository `https://github.com/lupyuen/nix.git`
 Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div><h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
-<p><strong>Safety Quiz:</strong> Why will this work…</p>
+<p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Copied from above: Open the LED Device
+</span><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
   .unwrap();  <span class="comment">// Returns an Owned File Descriptor
 </span>...
-led_set_all(
+<span class="comment">// Copied from above: Set the LEDs via ioctl()
+</span>led_set_all(
   owned_fd.as_raw_fd(),  <span class="comment">// Borrow the Raw File Descriptor
-  </span><span class="number">1
-</span>).unwrap();  <span class="comment">// Yep runs OK</span></code></pre></div>
+  </span><span class="number">1                      </span><span class="comment">// Flip LED 1 to On
+</span>).unwrap();              <span class="comment">// Yep runs OK</span></code></pre></div>
 <p>But not this?</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch earlier the Raw File Descriptor (from the LED Device)
+</span><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
   .unwrap()      <span class="comment">// Returns an Owned File Descriptor
-  </span>.as_raw_fd();  <span class="comment">// Which turns into a Raw File Descriptor
+  </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor
 </span>...
-led_set_all(
-  raw_fd,    <span class="comment">// Use the Raw File Descriptor
-  </span><span class="number">1
+<span class="comment">// Set the LEDs via ioctl()
+</span>led_set_all(
+  raw_fd,    <span class="comment">// Use the earlier Raw File Descriptor
+  </span><span class="number">1          </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();  <span class="comment">// Oops will fail!</span></code></pre></div>
 <p>The second snippet will fail with this <strong>EBADF Error</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
 <p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
 <p><em>What’s a Raw File Descriptor?</em></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71">Plain Integers!</a></p>
-<p>0 Standard Input
-1 Standard Output
-2 Standard Error
-3 /dev/userleds (assuming we opened it)</p>
+<p>In NuttX and POSIX: <a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71"><strong>Raw File Descriptor</strong></a> is a <strong>Plain Integer</strong> that specifies an I/O stream…</p>
+<div><table><thead><tr><th style="text-align: center">File Descriptor</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: left">Standard Input</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: left">Standard Output</td></tr>
+<tr><td style="text-align: center">2</td><td style="text-align: left">Standard Error</td></tr>
+<tr><td style="text-align: center">3</td><td style="text-align: left">/dev/userleds <em>(assuming we opened it)</em></td></tr>
+</tbody></table>
+</div>
+<p><em>What about an Owned File Descriptor?</em></p>
+<p>In Rust: <a href="https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html"><strong>Owned File Descriptor</strong></a> is a <strong>Rust Object</strong>, wrapped around a Raw File Descriptor.</p>
+<p>And Rust Objects can be <strong>Automatically Dropped</strong>, when they go out of scope. (Unlike Integers)</p>
+<p><em>Which causes the Second Snippet to fail?</em></p>
+<p>Exactly! <em>open()</em> returns an <strong>Owned File Descriptor</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device
+</span><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+  .unwrap()      <span class="comment">// Returns an Owned File Descriptor
+  </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
+<p>But we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
+<p>Oops! Our Owned File Descriptor goes <strong>out of scope</strong> and gets dropped by Rust.</p>
+<p>Which means Rust will helpfully close <em>/dev/userleds</em>. Since it’s closed, the Raw File Descriptor <strong>becomes invalid</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Set the LEDs via ioctl()
+</span>led_set_all(
+  raw_fd,    <span class="comment">// Use the earlier Raw File Descriptor
+  </span><span class="number">1          </span><span class="comment">// Flip LED 1 to On
+</span>).unwrap();  <span class="comment">// Oops will fail with EBADF Error!</span></code></pre></div>
+<p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
+<p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
 <p><em>Is there a safer way to call ioctl()?</em></p>
 <p>Calling <em>ioctl()</em> from Rust will surely get messy: It’s an <strong>Unsafe Call</strong> that might cause bad writes into the NuttX Kernel! (If we’re not careful)</p>
