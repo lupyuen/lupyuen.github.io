@@ -285,22 +285,24 @@ Features: + fs + ioctl
 </span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
 <p><em>ULEDIOC_SETALL looks familiar?</em></p>
 <p>We spoke about <em>ULEDIOC_SETALL</em> in <a href="https://lupyuen.github.io/articles/rust6#blink-the-led"><strong>an earlier article</strong></a>. And the Rust Code above mirrors the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a> of our Blinky App.</p>
-<p><em>How to run the Rust Blinky?</em></p>
+<p><em>How to run the Rust Blinky App?</em></p>
 <ol>
 <li>
 <p>Copy the files from TODO…</p>
 </li>
 <li>
-<p>To our Rust Hello App: <em>apps/examples/rust/hello</em></p>
+<p>Overwrite our <strong>Rust Hello App</strong>: <em>apps/examples/rust/hello</em></p>
 </li>
 <li>
 <p><a href="TODO">Rebuild our <strong>NuttX Project</strong></a></p>
 </li>
 <li>
-<p>Then run it with QEMU</p>
+<p>Then run it with <strong>QEMU RISC-V Emulator</strong></p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div><h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p>QEMU Emulator shows the <strong>Emulated LED</strong> on NuttX.</p>
+<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Copied from above: Open the LED Device
