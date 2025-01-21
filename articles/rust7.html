@@ -218,19 +218,43 @@ Task 0 stopping</code></pre></div>
 pushd ../apps/examples/rust/hello
 cargo clean
 popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>4 Appendix: Tokio Async Threading</h1>
-<p>TODO: Earlier we saw Single-Threaded Scheduler</p>
-<p>Which isn’t terribly exciting</p>
-<p><a href="https://tokio.rs/tokio/topics/bridging">Bridging with sync code</a></p>
+<p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
+<ul>
+<li>TODO</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
+// To schedule Async Functions
+</span>tokio::runtime::Builder
+  ::new_current_thread()  <span class="comment">// Current Thread is the Single-Threaded Scheduler
+  </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
+  </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
+  </span>.unwrap()      <span class="comment">// Halt on Error
+  </span>.block_on(     <span class="comment">// Start the Scheduler
+    </span><span class="kw">async </span>{      <span class="comment">// With this Async Function
+      </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
+  });
+
+<span class="comment">// Is it really async? Let's block and find out!
+</span><span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
+<span class="kw">loop </span>{}</code></pre></div>
+<p>Which isn’t terribly exciting…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
+Hello world from tokio!
+Looping Forever...</code></pre></div>
+<p>Now we try Tokio’s <strong>Multi-Threaded Scheduler</strong>. And we create <strong>One New NuttX Thread</strong> for the Scheduler: TODO</p>
+<p>TODO: <a href="https://tokio.rs/tokio/topics/bridging">Bridging with sync code</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Run 4 Async Functions in the Background
+// By creating One New NuttX Thread
 // Based on https://tokio.rs/tokio/topics/bridging
 </span><span class="kw">fn </span>test_async() {
 
   <span class="comment">// Create a Multi-Threaded Scheduler
-  // Containing One NuttX Thread
+  // Containing One New NuttX Thread
   </span><span class="kw">let </span>runtime = tokio::runtime::Builder
     ::new_multi_thread() <span class="comment">// Multi-Threaded Scheduler
-    </span>.worker_threads(<span class="number">1</span>)   <span class="comment">// With One NuttX Thread for our Scheduler
+    </span>.worker_threads(<span class="number">1</span>)   <span class="comment">// With One New NuttX Thread for our Scheduler
     </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
     </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
     </span>.unwrap();     <span class="comment">// Halt on Error
