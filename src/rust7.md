@@ -190,11 +190,14 @@ popd
 
 # Appendix: Tokio Async Threading
 
-TODO
+TODO: Earlier we saw Single-Threaded Scheduler
+
+Which isn't terribly exciting
 
 [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
 
 ```rust
+// Run 4 Async Functions in the Background
 // Based on https://tokio.rs/tokio/topics/bridging
 fn test_async() {
 
