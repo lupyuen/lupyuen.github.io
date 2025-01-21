@@ -173,7 +173,7 @@ TODO: Threads vs Tasks vs Processes
 
 TODO: NodeJS
 
-(OK we're trying not to call it Async Task, because a Task in NuttX is more like a NuttX Process)
+(We're not calling it _"Async Task"_. Because a Task in NuttX is more like a NuttX Process)
 
 _How would we use Tokio?_
 
