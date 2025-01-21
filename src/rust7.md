@@ -201,7 +201,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check the Appendix for a more impressive __Tokio Async Demo__. That works beautifully on NuttX!
+Check the Appendix for the __Tokio Async Demo__. That works beautifully on NuttX!
 
 - TODO: test_async
 
@@ -224,193 +224,6 @@ TODO
 pushd ../apps/examples/rust/hello
 cargo clean
 popd
-```
-
-# Appendix: Tokio Async Threading
-
-Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current NuttX Thread__...
-
-- TODO
-
-```rust
-// Use One Single Thread (Current NuttX Thread)
-// To schedule Async Functions
-tokio::runtime::Builder
-  ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
-  .enable_all()  // Enable the I/O and Time Functions
-  .build()   // Create the Single-Threaded Scheduler
-  .unwrap()  // Halt on Error
-  .block_on( // Start the Scheduler
-    async {  // With this Async Function
-      println!("Hello world from tokio!");
-  });
-
-// Is it really async? Let's block and find out!
-println!("Looping Forever...");
-loop {}
-```
-
-Which isn't terribly exciting...
-
-```bash
-nsh> hello_rust_cargo
-Hello world from tokio!
-Looping Forever...
-```
-
-Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
-
-```rust
-// Run 4 Async Functions in the Background
-// By creating One New NuttX Thread
-// Based on https://tokio.rs/tokio/topics/bridging
-fn test_async() {
-
-  // Create a Multi-Threaded Scheduler
-  // Containing One New NuttX Thread
-  let runtime = tokio::runtime::Builder
-    ::new_multi_thread() // Multi-Threaded Scheduler
-    .worker_threads(1)   // With One New NuttX Thread for our Scheduler
-    .enable_all() // Enable the I/O and Time Functions
-    .build()      // Create the Multi-Threaded Scheduler
-    .unwrap();    // Halt on Error
-
-  // Create 4 Async Functions
-  // Remember their Async Handles
-  let mut handles = Vec::with_capacity(4);
-  for i in 0..4 {
-    handles.push(        // Remember the Async Handles
-      runtime.spawn(     // Start in the Background
-        my_bg_task(i))); // Our Async Function
-  }
-
-  // Pretend to be busy while Async Functions execute (in the background)
-  // We wait 750 milliseconds
-  std::thread::sleep(
-    tokio::time::Duration::from_millis(750));
-  println!("Finished time-consuming task.");
-
-  // Wait for All Async Functions to complete
-  for handle in handles {
-    runtime
-      .block_on(handle)  // Wait for One Async Function to complete
-      .unwrap();
-  }
-}
-
-// Our Async Function that runs in the background...
-// If i=0: Sleep for 1000 ms
-// If i=1: Sleep for  950 ms
-// If i=2: Sleep for  900 ms
-// If i=3: Sleep for  850 ms
-async fn my_bg_task(i: u64) {
-  let millis = 1000 - 50 * i;
-  println!("Task {} sleeping for {} ms.", i, millis);
-  tokio::time::sleep(
-    tokio::time::Duration::from_millis(millis)
-  ).await;  // Wait for sleep to complete
-  println!("Task {} stopping.", i);
-}
-
-// Needed by Tokio Multi-Threaded Scheduler
-#[no_mangle]
-pub extern "C" fn pthread_set_name_np() {}
-```
-
-Which shows 
-
-```bash
-nsh> hello_rust_cargo
-pthread_create
-nx_pthread_create
-Task 0 sleeping for 1000 ms
-Task 1 sleeping for  950 ms
-Task 2 sleeping for  900 ms
-Task 3 sleeping for  850 ms
-Finished time-consuming task
-Task 3 stopping
-Task 2 stopping
-Task 1 stopping
-Task 0 stopping
-```
-
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
-
-TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
-
-TODO
-
-```text
-        .worker_threads(2)
-
-pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
-nx_pthread_create: entry=0x80048f10, arg=0x800873e8
-pthread_create: pthread_entry=0x80048f10, arg=0x80287830
-nx_pthread_create: entry=0x80048f10, arg=0x80287830
-Task 0 sleeping for 1000 ms.
-Task 1 sleeping for 950 ms.
-Task 2 sleeping for 900 ms.
-Task 3 sleeping for 850 ms.
-Finished time-consuming task.
-Task 3 stopping.
-Task 2 stopping.
-Task 1 stopping.
-Task 0 stopping.
-nsh> 
-```
-
-
-TODO: pthread_create
-
-```text
-https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
-
-int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
-                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
-{
-  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);////
-
-    tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(async {
-            println!("Hello world from tokio!");
-        });
-
-    println!("Looping Forever...");
-    loop {
-        // Do nothing
-    }
-}
-
-#[no_mangle]
-pub extern "C" fn pthread_set_name_np() {}
-
-NuttShell (NSH) NuttX-12.7.0
-nsh> hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{"name":"John","age":30}
-{"name":"Jane","age":25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  "name": "Alice",
-  "age": 28
-}
-pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
-nx_pthread_create: entry=0x80047938, arg=0x8007ff18
-Hello world from tokio!
-Looping Forever...
 ```
 
 # LED Blinky with Nix
@@ -454,44 +267,50 @@ called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
+There's something odd about __Raw File Descriptors__ vs __Owned File Descriptors__... Fetching the raw one too early might cause problems. Here's why...
+
+_What's a Raw File Descriptor_
+
+[Plain Integers!](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71)
+
+0 Standard Input
+1 Standard Output
+2 Standard Error
+3 /dev/userleds (assuming we opened it)
 
 # Nix vs Rustix
 
-TODO: Are Nix ioctl safe?
+_Is there a safer way to call ioctl()?_
 
-# Appendix: Porting Nix to NuttX
+Calling _ioctl()_ from Rust will surely get messy: It's an __Unsafe Call__ that might cause bad writes into the NuttX Kernel! (If we're not careful)
 
-TODO: Redox, BSD not Linux, PR
+At the top of the article, we saw __`nix`__ crate calling _ioctl()_. Now we look at [__Rustix__](TODO) calling _ioctl()_: [rustix/fs/ioctl.rs](https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32)
 
-# TODO
+```rust
+// In Rustix: ioctl() is also unsafe
+unsafe {
+  // Create an "Ioctl Getter"
+  // That will read data thru ioctl()
+  let ctl = ioctl::Getter::<  // Ioctl Getter has 2 attributes...
+    ioctl::BadOpcode<  // Attribute #1: Ioctl Command Code
+      { c::BLKSSZGET } // Which is "Fetch the Logical Block Size of a Block Device"
+    >,
+    c::c_uint  // Attribute #2: Ioctl Getter will read a uint32_t thru ioctl()
+  >::new();    // Create the Ioctl Getter
 
-```text
-https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
-
-examples: New app to build Rust with Cargo
-https://github.com/apache/nuttx-apps/pull/2487
-
-Add NuttX based targets for RISC-V and ARM
-https://github.com/rust-lang/rust/pull/127755
-
-The serde with no_std
-https://bitboom.github.io/2020-10-22/serde-no-std
-
-Hal?
-demo app
-why tokio for json
-disassemble
-Loop print something 
-Strings
-Patch 
-Which platforms 
-How to test
-Build Farm? Docker?
-How to bisect
-Blinky
-How to add crate
-RISC-V SBC? No knsh64 yet
+  // Now that we have the Ioctl Getter
+  // We call ioctl() on the File Descriptor
+  // Equivalent to: ioctl(fd, BLKSSZGET, &output) ; return output
+  ioctl::ioctl(
+    fd,  // File Descriptor
+    ctl  // Ioctl Getter
+  ) // Returns the Value Read (Or Error)
+}
 ```
+
+[(Based on the __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
+
+TODO: Nix vs Rustix
 
 # TODO
 
@@ -1125,6 +944,34 @@ Hello world from tokio!
 
 # What's Next
 
+```text
+https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+
+examples: New app to build Rust with Cargo
+https://github.com/apache/nuttx-apps/pull/2487
+
+Add NuttX based targets for RISC-V and ARM
+https://github.com/rust-lang/rust/pull/127755
+
+The serde with no_std
+https://bitboom.github.io/2020-10-22/serde-no-std
+
+Hal?
+demo app
+why tokio for json
+disassemble
+Loop print something 
+Strings
+Patch 
+Which platforms 
+How to test
+Build Farm? Docker?
+How to bisect
+Blinky
+How to add crate
+RISC-V SBC? No knsh64 yet
+```
+
 Next Article: Why __Sync-Build-Ingest__ is super important for NuttX Continuous Integration. And how we monitor it with our __Magic Disco Light__.
 
 After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fetch the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks?
@@ -1148,3 +995,199 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/rust7.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md)
+
+# Appendix: Build NuttX for Rust Standard Library
+
+TODO
+
+# Appendix: Tokio Async Threading
+
+Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current NuttX Thread__...
+
+- TODO
+
+```rust
+// Use One Single Thread (Current NuttX Thread)
+// To schedule Async Functions
+tokio::runtime::Builder
+  ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
+  .enable_all()  // Enable the I/O and Time Functions
+  .build()   // Create the Single-Threaded Scheduler
+  .unwrap()  // Halt on Error
+  .block_on( // Start the Scheduler
+    async {  // With this Async Function
+      println!("Hello world from tokio!");
+  });
+
+// Is it really async? Let's block and find out!
+println!("Looping Forever...");
+loop {}
+```
+
+Which isn't terribly exciting...
+
+```bash
+nsh> hello_rust_cargo
+Hello world from tokio!
+Looping Forever...
+```
+
+Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+
+```rust
+// Run 4 Async Functions in the Background
+// By creating One New NuttX Thread
+// Based on https://tokio.rs/tokio/topics/bridging
+fn test_async() {
+
+  // Create a Multi-Threaded Scheduler
+  // Containing One New NuttX Thread
+  let runtime = tokio::runtime::Builder
+    ::new_multi_thread() // Multi-Threaded Scheduler
+    .worker_threads(1)   // With One New NuttX Thread for our Scheduler
+    .enable_all() // Enable the I/O and Time Functions
+    .build()      // Create the Multi-Threaded Scheduler
+    .unwrap();    // Halt on Error
+
+  // Create 4 Async Functions
+  // Remember their Async Handles
+  let mut handles = Vec::with_capacity(4);
+  for i in 0..4 {
+    handles.push(        // Remember the Async Handles
+      runtime.spawn(     // Start in the Background
+        my_bg_task(i))); // Our Async Function
+  }
+
+  // Pretend to be busy while Async Functions execute (in the background)
+  // We wait 750 milliseconds
+  std::thread::sleep(
+    tokio::time::Duration::from_millis(750));
+  println!("Finished time-consuming task.");
+
+  // Wait for All Async Functions to complete
+  for handle in handles {
+    runtime
+      .block_on(handle)  // Wait for One Async Function to complete
+      .unwrap();
+  }
+}
+
+// Our Async Function that runs in the background...
+// If i=0: Sleep for 1000 ms
+// If i=1: Sleep for  950 ms
+// If i=2: Sleep for  900 ms
+// If i=3: Sleep for  850 ms
+async fn my_bg_task(i: u64) {
+  let millis = 1000 - 50 * i;
+  println!("Task {} sleeping for {} ms.", i, millis);
+  tokio::time::sleep(
+    tokio::time::Duration::from_millis(millis)
+  ).await;  // Wait for sleep to complete
+  println!("Task {} stopping.", i);
+}
+
+// Needed by Tokio Multi-Threaded Scheduler
+#[no_mangle]
+pub extern "C" fn pthread_set_name_np() {}
+```
+
+Which shows 
+
+```bash
+nsh> hello_rust_cargo
+pthread_create
+nx_pthread_create
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for  950 ms
+Task 2 sleeping for  900 ms
+Task 3 sleeping for  850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
+
+TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
+
+TODO
+
+```text
+        .worker_threads(2)
+
+pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+nx_pthread_create: entry=0x80048f10, arg=0x800873e8
+pthread_create: pthread_entry=0x80048f10, arg=0x80287830
+nx_pthread_create: entry=0x80048f10, arg=0x80287830
+Task 0 sleeping for 1000 ms.
+Task 1 sleeping for 950 ms.
+Task 2 sleeping for 900 ms.
+Task 3 sleeping for 850 ms.
+Finished time-consuming task.
+Task 3 stopping.
+Task 2 stopping.
+Task 1 stopping.
+Task 0 stopping.
+nsh> 
+```
+
+
+TODO: pthread_create
+
+```text
+https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
+
+https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
+
+int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
+{
+  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);////
+
+    tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            println!("Hello world from tokio!");
+        });
+
+    println!("Looping Forever...");
+    loop {
+        // Do nothing
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn pthread_set_name_np() {}
+
+NuttShell (NSH) NuttX-12.7.0
+nsh> hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
+nx_pthread_create: entry=0x80047938, arg=0x8007ff18
+Hello world from tokio!
+Looping Forever...
+```
+
+# Appendix: Porting Nix to NuttX
+
+TODO: Redox, BSD not Linux, PR
+
