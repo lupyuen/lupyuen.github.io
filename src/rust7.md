@@ -190,22 +190,51 @@ popd
 
 # Appendix: Tokio Async Threading
 
-TODO: Earlier we saw Single-Threaded Scheduler
+Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current NuttX Thread__...
 
-Which isn't terribly exciting
+- TODO
 
-[Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
+```rust
+// Use One Single Thread (Current NuttX Thread)
+// To schedule Async Functions
+tokio::runtime::Builder
+  ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
+  .enable_all()  // Enable the I/O and Time Functions
+  .build()       // Create the Single-Threaded Scheduler
+  .unwrap()      // Halt on Error
+  .block_on(     // Start the Scheduler
+    async {      // With this Async Function
+      println!("Hello world from tokio!");
+  });
+
+// Is it really async? Let's block and find out!
+println!("Looping Forever...");
+loop {}
+```
+
+Which isn't terribly exciting...
+
+```bash
+nsh> hello_rust_cargo
+Hello world from tokio!
+Looping Forever...
+```
+
+Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: TODO
+
+TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
 
 ```rust
 // Run 4 Async Functions in the Background
+// By creating One New NuttX Thread
 // Based on https://tokio.rs/tokio/topics/bridging
 fn test_async() {
 
   // Create a Multi-Threaded Scheduler
-  // Containing One NuttX Thread
+  // Containing One New NuttX Thread
   let runtime = tokio::runtime::Builder
     ::new_multi_thread() // Multi-Threaded Scheduler
-    .worker_threads(1)   // With One NuttX Thread for our Scheduler
+    .worker_threads(1)   // With One New NuttX Thread for our Scheduler
     .enable_all()  // Enable the I/O and Time Functions
     .build()       // Create the Single-Threaded Scheduler
     .unwrap();     // Halt on Error
