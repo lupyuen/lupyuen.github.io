@@ -167,17 +167,17 @@ Features: + fs + ioctl</code></pre></div>
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> … provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion</p>
 </blockquote>
-<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Tasks</strong> with Tokio: TODO</p>
+<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current Thread)
-// To schedule Async Tasks
+// To schedule Async Functions
 </span>tokio::runtime::Builder
   ::new_current_thread()  <span class="comment">// Current Thread is the Single-Threaded Scheduler
   </span>.enable_all()  <span class="comment">// Enable I/O and Time Functions
   </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
   </span>.unwrap()      <span class="comment">// Halt on Error
   </span>.block_on(     <span class="comment">// Start the Scheduler
-    </span><span class="kw">async </span>{      <span class="comment">// With this Async Task
+    </span><span class="kw">async </span>{      <span class="comment">// With this Async Function
       </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
@@ -190,7 +190,7 @@ Features: + fs + ioctl</code></pre></div>
 Hello world from tokio!
 Looping Forever...</code></pre></div>
 <p><em>Yawn. Tokio looks underwhelming?</em></p>
-<p>Ah we haven’t seen the full power of <strong>Tokio Multi-Threaded Async Tasks</strong> on NuttX!</p>
+<p>Ah we haven’t seen the full power of <strong>Tokio Multi-Threaded Async Functions</strong> on NuttX!</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 pthread_create
 nx_pthread_create
@@ -207,8 +207,10 @@ Task 0 stopping</code></pre></div>
 <ul>
 <li>TODO: test_async</li>
 </ul>
-<p><em>But NuttX has POSIX Threads. Why use Async Tasks?</em></p>
+<p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
+<p>TODO: Threads vs Tasks vs Processes</p>
 <p>TODO: NodeJS</p>
+<p>(OK we’re trying not to call it Async Task, because a Task in NuttX is more like a NuttX Process)</p>
 <p><em>How would we use Tokio?</em></p>
 <p>TODO: Good for Network Programming, waiting for tasks</p>
 <p>TODO</p>
