@@ -102,7 +102,7 @@
 // Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
 </span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
 <p>Which requires the <code>nix</code> Rust Crate…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate (Libary)
+<div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate (Library)
 ## To our NuttX Rust App
 $ cd apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
