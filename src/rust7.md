@@ -180,44 +180,30 @@ Hello world from tokio!
 Looping Forever...
 ```
 
-TODO: test_async
+Like NodeJS
 
-```text
+_Yawn. Tokio looks underwhelming?_
+
+Ah we haven't seen the full power of __Tokio Multi-Threaded Async Tasks__ on NuttX!
+
+```bash
 nsh> hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{"name":"John","age":30}
-{"name":"Jane","age":25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  "name": "Alice",
-  "age": 28
-}
-Running test_async...
-pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
-nx_pthread_create: entry=0x80048f0c, arg=0x80085208
-Task 0 sleeping for 1000 ms.
-Task 1 sleeping for 950 ms.
-Task 2 sleeping for 900 ms.
-Task 3 sleeping for 850 ms.
-Finished time-consuming task.
-Task 3 stopping.
-Task 2 stopping.
-Task 1 stopping.
-Task 0 stopping.
-nsh> 
+pthread_create
+nx_pthread_create
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for 950 ms
+Task 2 sleeping for 900 ms
+Task 3 sleeping for 850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
+TODO: test_async
 
 Good for Network Programming, waiting for tasks
-
-Like NodeJS
 
 TODO
 
@@ -283,6 +269,41 @@ async fn my_bg_task(i: u64) {
 #[no_mangle]
 pub extern "C" fn pthread_set_name_np() {}
 ```
+
+Which shows 
+
+```text
+nsh> hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+Running test_async...
+pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
+nx_pthread_create: entry=0x80048f0c, arg=0x80085208
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for 950 ms
+Task 2 sleeping for 900 ms
+Task 3 sleeping for 850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping
+nsh> 
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
 
 TODO
 
