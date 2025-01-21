@@ -236,7 +236,9 @@ Task 0 stopping</code></pre></div>
 </blockquote>
 <p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>… We spawn a few threads and call <strong>Async Functions</strong>.</p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
-<p>TODO: Not NixOS</p>
+<p><em>Why are we running <code>nix</code> on NuttX?</em></p>
+<p>Oh that’s <a href="https://crates.io/crates/nix"><strong><code>nix</code> Crate</strong></a> that provides <strong>Safer Rust Bindings</strong> for POSIX / Unix / Linux. (Nope, not NixOS)</p>
+<p>This is how we add the library to our <strong>Rust Hello App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
 $ cargo add nix \
   --features fs,ioctl \
@@ -247,8 +249,58 @@ Updating git repository `https://github.com/lupyuen/nix.git`
 Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div>
-<p>TODO: Explain LED Set All ioctl, C version</p>
-<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
+<p><em>The URL looks a little sus?</em></p>
+<p>That’s because the <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to make it work on NuttX. <a href="TODO">(Details in the <strong>Appendix</strong>)</a></p>
+<p><em>Why are we calling nix?</em></p>
+<p>We’re <strong>Blinking the LED</strong> on NuttX. We could call the <a href="https://crates.io/crates/libc"><strong>POSIX API</strong></a> direcly from Rust…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
+<span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
+<span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
+<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code> (tweaked for NuttX). Like so: TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
+</span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
+  </span><span class="string">"/dev/userleds"</span>,  <span class="comment">// LED Device
+  </span>OFlag::O_WRONLY,  <span class="comment">// Write Only
+  </span>Mode::empty()     <span class="comment">// No Modes
+</span>).unwrap();         <span class="comment">// Halt on Error
+
+// Define the ioctl() function for Flipping LEDs
+</span><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;  <span class="comment">// ioctl() Command
+</span><span class="macro">ioctl_write_int_bad!</span>(  <span class="comment">// ioctl() will write One Int Value (LED Bit State)
+  </span>led_set_all,         <span class="comment">// Name of our New Function
+  </span>ULEDIOC_SETALL       <span class="comment">// ioctl() Command to send
+</span>);
+
+<span class="comment">// Flip LED 1 to On
+</span><span class="kw">unsafe </span>{             <span class="comment">// Be careful of ioctl()
+  </span>led_set_all(       <span class="comment">// Set the LEDs for...
+    </span>fd.as_raw_fd(),  <span class="comment">// LED Device
+    </span><span class="number">1                </span><span class="comment">// LED 1 (Bit 0) turns On
+  </span>).unwrap();        <span class="comment">// Halt on Error
+</span>}  <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+
+// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
+</span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
+<p><em>ULEDIOC_SETALL looks familiar?</em></p>
+<p>We spoke about <em>ULEDIOC_SETALL</em> in <a href="https://lupyuen.github.io/articles/rust6#blink-the-led"><strong>an earlier article</strong></a>. And the Rust Code above mirrors the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a> of our Blinky App.</p>
+<p><em>How to run the Rust Blinky?</em></p>
+<ol>
+<li>
+<p>Copy the files from TODO…</p>
+</li>
+<li>
+<p>To our Rust Hello App: <em>apps/examples/rust/hello</em></p>
+</li>
+<li>
+<p><a href="TODO">Rebuild our <strong>NuttX Project</strong></a></p>
+</li>
+<li>
+<p>Then run it with QEMU</p>
+</li>
+</ol>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div><h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Copied from above: Open the LED Device
