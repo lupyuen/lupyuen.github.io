@@ -53,11 +53,13 @@ All this is now possible thanks to the awesome work by [__Huang Qi__](https://gi
 
 TODO
 
+Some bits are a little wonky
+
 # JSON with Serde
 
 _What's this Serde?_
 
-It means _"Serialise-Deserialise"_.
+Think _"Serialise-Deserialise"_.
 
 [__Serde__](https://crates.io/crates/serde) is a framework for serializing and deserializing Rust data structures efficiently and generically.
 
