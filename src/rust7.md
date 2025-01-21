@@ -100,7 +100,6 @@ pub extern "C" fn hello_rust_cargo_main() {
 }
 ```
 
-
 # Async Functions with Tokio
 
 _What's this Tokio? Sounds like a city?_
@@ -112,18 +111,18 @@ TODO
 [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) is a software library for the Rust programming language. It provides a runtime and functions that enable the use of asynchronous I/O, allowing for concurrency in regards to task completion.[2][3][4]
 
 ```rust
-tokio::runtime::Builder::new_current_thread()
+tokio::runtime::Builder
+  ::new_current_thread()
   .enable_all()
   .build()
   .unwrap()
-  .block_on(async {
-    println!("Hello world from tokio!");
+  .block_on(
+    async {
+      println!("Hello world from tokio!");
   });
 
 println!("Looping Forever...");
-loop {
-    // Do nothing
-}
+loop {}
 ```
 
 https://tokio.rs/tokio/topics/bridging
@@ -216,6 +215,10 @@ nsh>
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
 
+Good for Network Programming, waiting for tasks
+
+Like NodeJS
+
 TODO
 
 ```bash
@@ -223,6 +226,83 @@ TODO
 pushd ../apps/examples/rust/hello
 cargo clean
 popd
+```
+
+# Appendix: Tokio Async Threading
+
+TODO
+
+```rust
+// Based on https://tokio.rs/tokio/topics/bridging
+fn test_async() {
+
+  // Create a Multi-Threaded Scheduler
+  let runtime = tokio::runtime::Builder
+    ::new_multi_thread()
+    .worker_threads(1)
+    .enable_all()
+    .build()
+    .unwrap();
+
+  // Create 4 Background Tasks
+  // Remember their Task Handles
+  let mut handles = Vec::with_capacity(4);
+  for i in 0..4 {
+    handles.push(
+      runtime.spawn(
+        my_bg_task(i)));
+  }
+
+  // Pretend to be busy while Background Tasks execute
+  // Wait 750 milliseconds
+  std::thread::sleep(
+    tokio::time::Duration::from_millis(750));
+  println!("Finished time-consuming task.");
+
+  // Wait for All Tasks to complete
+  for handle in handles {
+    runtime
+      .block_on(handle)  // Wait for One Task to complete
+      .unwrap();
+  }
+}
+
+// If i=0: Sleep for 1000 ms
+// If i=1: Sleep for 950 ms
+// If i=2: Sleep for 900 ms
+// If i=3: Sleep for 850 ms
+async fn my_bg_task(i: u64) {
+  let millis = 1000 - 50 * i;
+  println!("Task {} sleeping for {} ms.", i, millis);
+  tokio::time::sleep(
+    tokio::time::Duration::from_millis(millis)
+  ).await;  // Wait for sleep to complete
+  println!("Task {} stopping.", i);
+}
+
+#[no_mangle]
+pub extern "C" fn pthread_set_name_np() {}
+```
+
+TODO
+
+```text
+        .worker_threads(2)
+
+pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+nx_pthread_create: entry=0x80048f10, arg=0x800873e8
+pthread_create: pthread_entry=0x80048f10, arg=0x80287830
+nx_pthread_create: entry=0x80048f10, arg=0x80287830
+Task 0 sleeping for 1000 ms.
+Task 1 sleeping for 950 ms.
+Task 2 sleeping for 900 ms.
+Task 3 sleeping for 850 ms.
+Finished time-consuming task.
+Task 3 stopping.
+Task 2 stopping.
+Task 1 stopping.
+Task 0 stopping.
+nsh> 
 ```
 
 # LED Blinky with Nix
