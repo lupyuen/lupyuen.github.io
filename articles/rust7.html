@@ -115,53 +115,72 @@ Features: + fs + ioctl</code></pre></div>
 <p><em>(OK it’s more complicated. Stay tuned!)</em></p>
 <p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
 <h1 id="compile-our-rust-hello-app"><a class="doc-anchor" href="#compile-our-rust-hello-app">§</a>1 Compile our Rust Hello App</h1>
-<p>TODO</p>
+<p>TODO: Instructions</p>
+<p>TODO: Run our Rust Hello App</p>
 <p>Some bits are a little wonky</p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
-<p>Think <em>“Serialise-Deserialise”</em>.</p>
-<p><a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a framework for serializing and deserializing Rust data structures efficiently and generically.</p>
-<p>TODO</p>
+<p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
+<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: TODO</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Serialize, Deserialize)]
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allow Serde to Serialize and Deserialize a Person Struct
+</span><span class="attr">#[derive(Serialize, Deserialize)]
 </span><span class="kw">struct </span>Person {
-  name: String,
-  age: u8,
-}
+  name: String,  <span class="comment">// Containing a Name (string)
+  </span>age:  u8,      <span class="comment">// And Age (uint8_t)
+</span>}  <span class="comment">// Note: Rust Strings live in Heap Memory!
 
-<span class="attr">#[no_mangle]
+// Main Function of our Hello Rust App
+</span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_cargo_main() {
-  <span class="comment">// Print hello world to stdout
 
+  <span class="comment">// Create a Person Struct
   </span><span class="kw">let </span>john = Person {
     name: <span class="string">"John"</span>.to_string(),
-    age: <span class="number">30</span>,
+    age:  <span class="number">30</span>,
   };
 
-  <span class="kw">let </span>json_str = serde_json::to_string(<span class="kw-2">&amp;</span>john).unwrap();
-  <span class="macro">println!</span>(<span class="string">"{}"</span>, json_str);
+  <span class="comment">// Serialize our Person Struct
+  </span><span class="kw">let </span>json_str = serde_json  <span class="comment">// Rust Struct
+    </span>::to_string(<span class="kw-2">&amp;</span>john)  <span class="comment">// Becomes a String
+    </span>.unwrap();          <span class="comment">// Halt on Error
+  </span><span class="macro">println!</span>(<span class="string">"{}"</span>, json_str);</code></pre></div>
+<p>This prints…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}</code></pre></div>
+<p>Now we <strong>Deserialize from JSON</strong>: TODO</p>
 
-  <span class="kw">let </span>jane = Person {
-    name: <span class="string">"Jane"</span>.to_string(),
-    age: <span class="number">25</span>,
-  };
-
-  <span class="kw">let </span>json_str_jane = serde_json::to_string(<span class="kw-2">&amp;</span>jane).unwrap();
-  <span class="macro">println!</span>(<span class="string">"{}"</span>, json_str_jane);
-
-  <span class="kw">let </span>json_data = <span class="string">r#"
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Declare a String with JSON inside
+  </span><span class="kw">let </span>json_data = <span class="string">r#"
     {
       "name": "Alice",
       "age": 28
     }"#</span>;
 
-  <span class="kw">let </span>alice: Person = serde_json::from_str(json_data).unwrap();
-  <span class="macro">println!</span>(<span class="string">"Deserialized: {} is {} years old"</span>, alice.name, alice.age);
+  <span class="comment">// Deserialize our JSON String
+  // Into a Person Struct
+  </span><span class="kw">let </span>alice: Person = serde_json
+    ::from_str(json_data)
+    .unwrap();
+  <span class="macro">println!</span>(<span class="string">"Deserialized: {} is {} years old"</span>,
+    alice.name, alice.age);</code></pre></div>
+<p>Which prints…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Deserialized: Alice is 28 years old</code></pre></div>
+<p>Serde will also handle <strong>JSON Formatting</strong>: TODO</p>
 
-  <span class="kw">let </span>pretty_json_str = serde_json::to_string_pretty(<span class="kw-2">&amp;</span>alice).unwrap();
-  <span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);
-}</code></pre></div>
-<h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Serialize our Person Struct
+  // But neatly please
+  </span><span class="kw">let </span>pretty_json_str = serde_json
+    ::to_string_pretty(<span class="kw-2">&amp;</span>alice)
+    .unwrap();
+  <span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);</code></pre></div>
+<p>Looks much neater!</p>
+<div class="example-wrap"><pre class="language-bash"><code>Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}</code></pre></div><h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
 <p><em>What’s this Tokio? Sounds like a city?</em></p>
 <p>Indeed! “Tokio” is inspired by Tokyo (and <a href="https://crates.io/crates/mio"><strong>Metal I/O</strong></a>)</p>
 <blockquote>
