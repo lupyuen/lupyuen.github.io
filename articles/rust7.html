@@ -169,11 +169,11 @@ Features: + fs + ioctl</code></pre></div>
 </blockquote>
 <p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: TODO</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current Thread)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
 // To schedule Async Functions
 </span>tokio::runtime::Builder
   ::new_current_thread()  <span class="comment">// Current Thread is the Single-Threaded Scheduler
-  </span>.enable_all()  <span class="comment">// Enable I/O and Time Functions
+  </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
   </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
   </span>.unwrap()      <span class="comment">// Halt on Error
   </span>.block_on(     <span class="comment">// Start the Scheduler
@@ -225,21 +225,22 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
 </span><span class="kw">fn </span>test_async() {
 
   <span class="comment">// Create a Multi-Threaded Scheduler
+  // Containing One NuttX Thread
   </span><span class="kw">let </span>runtime = tokio::runtime::Builder
-    ::new_multi_thread()
-    .worker_threads(<span class="number">1</span>)
-    .enable_all()
-    .build()
-    .unwrap();
+    ::new_multi_thread() <span class="comment">// Multi-Threaded Scheduler
+    </span>.worker_threads(<span class="number">1</span>)   <span class="comment">// With One NuttX Thread for our Scheduler
+    </span>.enable_all()  <span class="comment">// Enable the I/O and Time Functions
+    </span>.build()       <span class="comment">// Create the Single-Threaded Scheduler
+    </span>.unwrap();     <span class="comment">// Halt on Error
 
-  <span class="comment">// Create 4 Async Functions
+  // Create 4 Async Functions
   // Remember their Async Handles
   </span><span class="kw">let </span><span class="kw-2">mut </span>handles = Vec::with_capacity(<span class="number">4</span>);
   <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
-    handles.push(
-      runtime.spawn(
-        my_bg_task(i)));
-  }
+    handles.push(         <span class="comment">// Remember the Async Handles
+      </span>runtime.spawn(      <span class="comment">// Start in the Background
+        </span>my_bg_task(i)));  <span class="comment">// Our Async Function
+  </span>}
 
   <span class="comment">// Pretend to be busy while Async Functions execute (in the background)
   // We wait 750 milliseconds
