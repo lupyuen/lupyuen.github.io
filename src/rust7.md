@@ -215,16 +215,9 @@ TODO: NodeJS
 
 _How would we use Tokio?_
 
-TODO: Good for Network Programming, waiting for tasks
+> [__Tokio__](https://tokio.rs/tokio/tutorial) is designed for __I/O-Bound Applications__ where each individual task spends most of its time waiting for I/O.
 
-TODO
-
-```bash
-## Erase the Rust Build
-pushd ../apps/examples/rust/hello
-cargo clean
-popd
-```
+Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many many __NuttX Threads__... We spawn a few threads and call __Async Functions__.
 
 # LED Blinky with Nix
 
@@ -423,7 +416,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for Rust Standard Library
 
-TODO
+TODO: Prerequisite
 
 ```text
 Rust in NuttX
@@ -591,11 +584,22 @@ riscv/leds64-nuttx.S
 TODO: Override nightly
 
 ```bash
-## Set Rust to nightly
+## Set Rust to Nightly Build
+## Apply this to the Parent Folder
+## So it will work for `nuttx` and `apps`
 pushd ..
 rustup override list
 rustup override set nightly
 rustup override list
+popd
+```
+
+Sometimes we might need to clean up the __Rust Compiled Files__, if the compilation goes wonky...
+
+```bash
+## Erase the Rust Build
+pushd ../apps/examples/rust/hello
+cargo clean
 popd
 ```
 
