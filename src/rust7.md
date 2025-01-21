@@ -36,7 +36,7 @@ unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
 Which requires the `nix` Rust Crate...
 
 ```bash
-## Add the `nix` Rust Crate (Libary)
+## Add the `nix` Rust Crate (Library)
 ## To our NuttX Rust App
 $ cd apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
