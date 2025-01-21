@@ -53,6 +53,8 @@ All this is now possible thanks to the awesome work by [__Huang Qi__](https://gi
 
 _What's this Serde?_
 
+[__Serde__](https://crates.io/crates/serde) is a framework for serializing and deserializing Rust data structures efficiently and generically.
+
 TODO
 
 ```rust
@@ -98,9 +100,13 @@ pub extern "C" fn hello_rust_cargo_main() {
 
 # Async Functions with Tokio
 
-_What is Tokio?_
+_What's this Tokio? Sounds like a city?_
+
+Indeed! "Tokio" is derived from Tokyo and [__Metal I/O__](https://crates.io/crates/mio)
 
 TODO
+
+[__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) is a software library for the Rust programming language. It provides a runtime and functions that enable the use of asynchronous I/O, allowing for concurrency in regards to task completion.[2][3][4]
 
 ```rust
 tokio::runtime::Builder::new_current_thread()
@@ -111,6 +117,7 @@ tokio::runtime::Builder::new_current_thread()
     println!("Hello world from tokio!");
   });
 
+println!("Looping Forever...");
 loop {
     // Do nothing
 }
