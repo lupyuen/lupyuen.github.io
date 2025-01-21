@@ -243,6 +243,8 @@ Features: + fs + ioctl
 34 deactivated features
 ```
 
+TODO: Explain LED Set All ioctl, C version
+
 # Owned File Descriptors
 
 __Safety Quiz:__ Why will this run OK...
@@ -287,16 +289,16 @@ There's something odd about __Raw File Descriptors__ vs __Owned File Descriptors
 
 _What's a Raw File Descriptor?_
 
-In NuttX and POSIX: [__Raw File Descriptor__](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71) is a __Plain Integer__ that specifies an I/O stream...
+In NuttX and POSIX: [__Raw File Descriptor__](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71) is a __Plain Integer__ that specifies an I/O Stream...
 
 |File Descriptor|Purpose|
 |:---:|:----|
 | 0 | Standard Input
 | 1 | Standard Output
 | 2 | Standard Error
-| 3 | /dev/userleds _(assuming we opened it)_
+| 3 | /dev/userleds <br> _(assuming we opened it)_
 
-_What about an Owned File Descriptor?_
+_What about Owned File Descriptor?_
 
 In Rust: [__Owned File Descriptor__](https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html) is a __Rust Object__, wrapped around a Raw File Descriptor.
 
