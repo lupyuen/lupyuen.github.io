@@ -113,9 +113,62 @@ Features: + fs + ioctl</code></pre></div>
 <p><em>(OK it’s more complicated. Stay tuned!)</em></p>
 <p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>1 JSON with Serde</h1>
+<p><em>What’s this Serde?</em></p>
 <p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Serialize, Deserialize)]
+</span><span class="kw">struct </span>Person {
+  name: String,
+  age: u8,
+}
+
+<span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_cargo_main() {
+  <span class="comment">// Print hello world to stdout
+
+  </span><span class="kw">let </span>john = Person {
+    name: <span class="string">"John"</span>.to_string(),
+    age: <span class="number">30</span>,
+  };
+
+  <span class="kw">let </span>json_str = serde_json::to_string(<span class="kw-2">&amp;</span>john).unwrap();
+  <span class="macro">println!</span>(<span class="string">"{}"</span>, json_str);
+
+  <span class="kw">let </span>jane = Person {
+    name: <span class="string">"Jane"</span>.to_string(),
+    age: <span class="number">25</span>,
+  };
+
+  <span class="kw">let </span>json_str_jane = serde_json::to_string(<span class="kw-2">&amp;</span>jane).unwrap();
+  <span class="macro">println!</span>(<span class="string">"{}"</span>, json_str_jane);
+
+  <span class="kw">let </span>json_data = <span class="string">r#"
+    {
+      "name": "Alice",
+      "age": 28
+    }"#</span>;
+
+  <span class="kw">let </span>alice: Person = serde_json::from_str(json_data).unwrap();
+  <span class="macro">println!</span>(<span class="string">"Deserialized: {} is {} years old"</span>, alice.name, alice.age);
+
+  <span class="kw">let </span>pretty_json_str = serde_json::to_string_pretty(<span class="kw-2">&amp;</span>alice).unwrap();
+  <span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);
+}</code></pre></div>
 <h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>2 Async Functions with Tokio</h1>
+<p><em>What is Tokio?</em></p>
 <p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>tokio::runtime::Builder::new_current_thread()
+  .enable_all()
+  .build()
+  .unwrap()
+  .block_on(<span class="kw">async </span>{
+    <span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
+  });
+
+<span class="kw">loop </span>{
+    <span class="comment">// Do nothing
+</span>}</code></pre></div>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>4 Owned File Descriptors</h1>
