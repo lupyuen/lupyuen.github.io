@@ -232,8 +232,8 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
     .build()
     .unwrap();
 
-  <span class="comment">// Create 4 Background Tasks
-  // Remember their Task Handles
+  <span class="comment">// Create 4 Async Functions
+  // Remember their Async Handles
   </span><span class="kw">let </span><span class="kw-2">mut </span>handles = Vec::with_capacity(<span class="number">4</span>);
   <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
     handles.push(
@@ -241,21 +241,22 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
         my_bg_task(i)));
   }
 
-  <span class="comment">// Pretend to be busy while Background Tasks execute
-  // Wait 750 milliseconds
+  <span class="comment">// Pretend to be busy while Async Functions execute (in the background)
+  // We wait 750 milliseconds
   </span>std::thread::sleep(
     tokio::time::Duration::from_millis(<span class="number">750</span>));
   <span class="macro">println!</span>(<span class="string">"Finished time-consuming task."</span>);
 
-  <span class="comment">// Wait for All Tasks to complete
+  <span class="comment">// Wait for All Async Functions to complete
   </span><span class="kw">for </span>handle <span class="kw">in </span>handles {
     runtime
-      .block_on(handle)  <span class="comment">// Wait for One Task to complete
+      .block_on(handle)  <span class="comment">// Wait for One Async Function to complete
       </span>.unwrap();
   }
 }
 
-<span class="comment">// If i=0: Sleep for 1000 ms
+<span class="comment">// Our Async Function that runs in the background...
+// If i=0: Sleep for 1000 ms
 // If i=1: Sleep for 950 ms
 // If i=2: Sleep for 900 ms
 // If i=3: Sleep for 850 ms
@@ -268,7 +269,8 @@ popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anc
   </span><span class="macro">println!</span>(<span class="string">"Task {} stopping."</span>, i);
 }
 
-<span class="attr">#[no_mangle]
+<span class="comment">// Needed by Tokio Multi-Threaded Scheduler
+</span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
 <p>Which shows</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
