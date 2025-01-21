@@ -117,11 +117,11 @@ Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crat
 Inside our __Rust Hello App__, this is how we we run __Async Functions__ with Tokio: TODO
 
 ```rust
-// Use One Single Thread (Current Thread)
+// Use One Single Thread (Current NuttX Thread)
 // To schedule Async Functions
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
-  .enable_all()  // Enable I/O and Time Functions
+  .enable_all()  // Enable the I/O and Time Functions
   .build()       // Create the Single-Threaded Scheduler
   .unwrap()      // Halt on Error
   .block_on(     // Start the Scheduler
@@ -199,20 +199,21 @@ TODO
 fn test_async() {
 
   // Create a Multi-Threaded Scheduler
+  // Containing One NuttX Thread
   let runtime = tokio::runtime::Builder
-    ::new_multi_thread()
-    .worker_threads(1)
-    .enable_all()
-    .build()
-    .unwrap();
+    ::new_multi_thread() // Multi-Threaded Scheduler
+    .worker_threads(1)   // With One NuttX Thread for our Scheduler
+    .enable_all()  // Enable the I/O and Time Functions
+    .build()       // Create the Single-Threaded Scheduler
+    .unwrap();     // Halt on Error
 
   // Create 4 Async Functions
   // Remember their Async Handles
   let mut handles = Vec::with_capacity(4);
   for i in 0..4 {
-    handles.push(
-      runtime.spawn(
-        my_bg_task(i)));
+    handles.push(         // Remember the Async Handles
+      runtime.spawn(      // Start in the Background
+        my_bg_task(i)));  // Our Async Function
   }
 
   // Pretend to be busy while Async Functions execute (in the background)
