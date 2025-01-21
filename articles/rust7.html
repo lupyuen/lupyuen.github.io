@@ -174,7 +174,88 @@ Features: + fs + ioctl</code></pre></div>
 <span class="kw">loop </span>{
     <span class="comment">// Do nothing
 </span>}</code></pre></div>
-<h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
+<p>https://tokio.rs/tokio/topics/bridging
+What #[tokio::main] expands to</p>
+<p>One important detail is the use of the current_thread runtime. Usually when using Tokio, you would be using the default multi_thread runtime, which will spawn a bunch of background threads so it can efficiently run many things at the same time. For our use-case, we are only going to be doing one thing at the time, so we won’t gain anything by running multiple threads. This makes the current_thread runtime a perfect fit as it doesn’t spawn any threads.</p>
+<p>Because the current_thread runtime does not spawn threads, it only operates when block_on is called. Once block_on returns, all spawned tasks on that runtime will freeze until you call block_on again. Use the multi_threaded runtime if spawned tasks must keep running when not calling block_on.</p>
+<p>TODO: pthread_create</p>
+<div class="example-wrap"><pre class="language-text"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
+{
+  _info(&quot;pthread_entry=%p, arg=%p&quot;, pthread_entry, arg);////
+
+    tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            println!(&quot;Hello world from tokio!&quot;);
+        });
+
+    println!(&quot;Looping Forever...&quot;);
+    loop {
+        // Do nothing
+    }
+}
+
+#[no_mangle]
+pub extern &quot;C&quot; fn pthread_set_name_np() {}
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
+nx_pthread_create: entry=0x80047938, arg=0x8007ff18
+Hello world from tokio!
+Looping Forever...</code></pre></div>
+<p>TODO: test_async</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello_rust_cargo
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Running test_async...
+pthread_create: pthread_entry=0x80048f0c, arg=0x80085208
+nx_pthread_create: entry=0x80048f0c, arg=0x80085208
+Task 0 sleeping for 1000 ms.
+Task 1 sleeping for 950 ms.
+Task 2 sleeping for 900 ms.
+Task 3 sleeping for 850 ms.
+Finished time-consuming task.
+Task 3 stopping.
+Task 2 stopping.
+Task 1 stopping.
+Task 0 stopping.
+nsh&gt; </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
+pushd ../apps/examples/rust/hello
+cargo clean
+popd</code></pre></div><h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>3 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>4 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this work…</p>
