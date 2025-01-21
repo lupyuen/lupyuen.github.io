@@ -75,7 +75,7 @@
 <li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
-<p>TODO: Blinky Code</p>
+<p>This is how we Blink the LED with Rust Standard Library on NuttX…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -101,7 +101,7 @@
 
 // Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
 </span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
-<p>TODO: Cargo Add Example</p>
+<p>Which requires the <code>nix</code> Rust Crate…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the `nix` Rust Crate (Libary)
 ## To our NuttX Rust App
 $ cd apps/examples/rust/hello
