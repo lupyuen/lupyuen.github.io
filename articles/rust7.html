@@ -218,10 +218,12 @@ Task 0 stopping</code></pre></div>
 pushd ../apps/examples/rust/hello
 cargo clean
 popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>4 Appendix: Tokio Async Threading</h1>
-<p>TODO</p>
+<p>TODO: Earlier we saw Single-Threaded Scheduler</p>
+<p>Which isn’t terribly exciting</p>
 <p><a href="https://tokio.rs/tokio/topics/bridging">Bridging with sync code</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Based on https://tokio.rs/tokio/topics/bridging
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Run 4 Async Functions in the Background
+// Based on https://tokio.rs/tokio/topics/bridging
 </span><span class="kw">fn </span>test_async() {
 
   <span class="comment">// Create a Multi-Threaded Scheduler
