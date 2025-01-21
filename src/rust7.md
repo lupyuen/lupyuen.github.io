@@ -163,9 +163,13 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check the Appendix for a more impressive Tokio Async Demo. That works beautifully on NuttX!
+Check the Appendix for a more impressive __Tokio Async Demo__. That works beautifully on NuttX!
 
 - TODO: test_async
+
+_But NuttX has POSIX Threads. Why use Async Tasks?_
+
+TODO: NodeJS
 
 _How would we use Tokio?_
 
