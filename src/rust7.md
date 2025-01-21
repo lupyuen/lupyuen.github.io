@@ -45,7 +45,7 @@ Updating crates.io index
 Adding nix v0.29.0 to dependencies
 Features: + fs + ioctl
 ```
-_(OK it's more complicated. Stay tuned!)_
+_(OK it's more complicated. Stay tuned)_
 
 All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
