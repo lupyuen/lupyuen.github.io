@@ -71,11 +71,11 @@
 <li><a href="#led-blinky-with-nix" title="LED Blinky with Nix">4 LED Blinky with Nix</a><ul></ul></li>
 <li><a href="#owned-file-descriptors" title="Owned File Descriptors">5 Owned File Descriptors</a><ul></ul></li>
 <li><a href="#nix-vs-rustix" title="Nix vs Rustix">6 Nix vs Rustix</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-rust-standard-library" title="Appendix: Build NuttX for Rust Standard Library">9 Appendix: Build NuttX for Rust Standard Library</a><ul></ul></li>
-<li><a href="#appendix-tokio-async-threading" title="Appendix: Tokio Async Threading">10 Appendix: Tokio Async Threading</a><ul></ul></li>
-<li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">11 Appendix: Porting Nix to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-rust-standard-library" title="Appendix: Build NuttX for Rust Standard Library">8 Appendix: Build NuttX for Rust Standard Library</a><ul></ul></li>
+<li><a href="#appendix-tokio-async-threading" title="Appendix: Tokio Async Threading">9 Appendix: Tokio Async Threading</a><ul></ul></li>
+<li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">10 Appendix: Porting Nix to NuttX</a><ul></ul></li>
+<li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">11 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
 <p><strong>Freshly Baked:</strong> Here’s how we <a href="TODO"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 
@@ -238,7 +238,16 @@ pushd ../apps/examples/rust/hello
 cargo clean
 popd</code></pre></div><h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p>TODO: Not NixOS</p>
-<h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
+<div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
+$ cargo add nix \
+  --features fs,ioctl \
+  --git https://github.com/lupyuen/nix.git \
+  --branch nuttx
+
+Updating git repository `https://github.com/lupyuen/nix.git`
+Adding nix (git) to dependencies
+Features: + fs + ioctl
+34 deactivated features</code></pre></div><h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this work…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
@@ -258,14 +267,14 @@ led_set_all(
   raw_fd,    <span class="comment">// Use the Raw File Descriptor
   </span><span class="number">1
 </span>).unwrap();  <span class="comment">// Oops will fail!</span></code></pre></div>
-<p>The second snippet will fail with this error…</p>
+<p>The second snippet will fail with this <strong>EBADF Error</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
-<p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause problems. Here’s why…</p>
-<p><em>What’s a Raw File Descriptor</em></p>
+<p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
+<p><em>What’s a Raw File Descriptor?</em></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71">Plain Integers!</a></p>
 <p>0 Standard Input
 1 Standard Output
@@ -297,7 +306,62 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
 <p>TODO: Nix vs Rustix</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
+
+examples: New app to build Rust with Cargo
+https://github.com/apache/nuttx-apps/pull/2487
+
+Add NuttX based targets for RISC-V and ARM
+https://github.com/rust-lang/rust/pull/127755
+
+The serde with no_std
+https://bitboom.github.io/2020-10-22/serde-no-std
+
+Hal?
+demo app
+why tokio for json
+disassemble
+Loop print something 
+Strings
+Patch 
+Which platforms 
+How to test
+Build Farm? Docker?
+How to bisect
+Blinky
+How to add crate
+RISC-V SBC? No knsh64 yet</code></pre></div>
+<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
+<p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
+<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
+<h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>8 Appendix: Build NuttX for Rust Standard Library</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
 https://nuttx.apache.org/docs/latest/guides/rust.html
 
 examples: New app to build Rust with Cargo
@@ -403,7 +467,7 @@ note: associated function defined here
 
 macOS:
 error[E0308]: mismatched types
-    --&gt; /Users/luppy/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
+    --&gt; .rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
      |
 1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
      |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
@@ -456,474 +520,14 @@ riscv-none-elf-objdump \
   &gt;nuttx.S \
   2&gt;&amp;1
 
-/Users/luppy/riscv/leds64-nuttx.S</code></pre></div>
-<p>TODO make V=1</p>
-<div class="example-wrap"><pre class="language-text"><code>`make V=1` for `rv-virt:leds64`
-https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
-
- 1018  make distclean
- 1019  tools/configure.sh rv-virt:leds64
- 1020  ## Disable CONFIG_ARCH_FPU
- 1021  kconfig-tweak --disable CONFIG_ARCH_FPU
- 1022  ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
- 1023  kconfig-tweak --enable CONFIG_SYSTEM_TIME64
- 1024  kconfig-tweak --enable CONFIG_FS_LARGEFILE
- 1025  kconfig-tweak --enable CONFIG_DEV_URANDOM
- 1026  kconfig-tweak --set-val CONFIG_TLS_NELEM 16
- 1027  ## Enable Hello Rust Cargo App
- 1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
- 1029  ## For knsh64
- 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
- 1031  ## Update the Kconfig Dependencies
- 1032  make olddefconfig
- 1033  make V=1</code></pre></div>
-<p>TODO dump disassembly</p>
-<div class="example-wrap"><pre class="language-text"><code>cd /home/luppy/rust/apps/examples/rust/hello
-cargo build --release -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
-
-riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
-
-riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
-        -o /home/luppy/rust/nuttx/nuttx   \
-        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a --end-group
-
-Remove release, change to debug
-pushd ../apps/examples/rust/hello
-cargo build -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
-popd
-
-riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
-
-riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
-        -o /home/luppy/rust/nuttx/nuttx   \
-        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a --end-group
-
-## Dump the disassembly to nuttx.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  &gt;nuttx.S \
-  2&gt;&amp;1
-
-Cargo build debug
-https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
-/Users/luppy/riscv/leds64-debug-nuttx.S</code></pre></div>
-<p>TODO dump libhello</p>
-<div class="example-wrap"><pre class="language-text"><code>## Dump the libhello.a disassembly to libhello.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
-  &gt;libhello.S \
-  2&gt;&amp;1
-
-/Users/luppy/riscv/libhello.S</code></pre></div>
-<p>Search for pthread_create</p>
-<div class="example-wrap"><pre class="language-text"><code>/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
-                    assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
-                }
-            };
-        }
-
-        let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
- 122:	00000517          	auipc	a0,0x0	122: R_RISCV_PCREL_HI20	std::sys::pal::unix::thread::Thread::new::thread_start
- 126:	00050613          	mv	a2,a0	126: R_RISCV_PCREL_LO12_I	.Lpcrel_hi254
- 12a:	0148                	add	a0,sp,132
- 12c:	012c                	add	a1,sp,136
- 12e:	f82e                	sd	a1,48(sp)
- 130:	00000097          	auipc	ra,0x0	130: R_RISCV_CALL_PLT	pthread_create
- 134:	000080e7          	jalr	ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
- 138:	85aa                	mv	a1,a0
- 13a:	7542                	ld	a0,48(sp)
- 13c:	862e                	mv	a2,a1
- 13e:	fc32                	sd	a2,56(sp)
- 140:	1eb12e23          	sw	a1,508(sp)
-
-https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84
-
-https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502
-    unsafe fn spawn_unchecked_&lt;&#39;scope, F, T&gt;(
-        let my_thread = Thread::new(id, name);
-
-Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
-
-0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
-core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;:
-/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
-   0:	1141                	add	sp,sp,-16
-   2:	e406                	sd	ra,8(sp)
-   4:	e02a                	sd	a0,0(sp)
-   6:	00000097          	auipc	ra,0x0	6: R_RISCV_CALL_PLT	&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
-   a:	000080e7          	jalr	ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
-   e:	60a2                	ld	ra,8(sp)
-  10:	0141                	add	sp,sp,16
-  12:	8082                	ret</code></pre></div>
-<p>TODO NuttX Thread not Task</p>
-<div class="example-wrap"><pre class="language-text"><code>hello_rust_cargo &amp;
-https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961
-nsh&gt; hello_rust_cargo &amp;
-hello_rust_cargo [4:100]
-nsh&gt; {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!
-
-nsh&gt; ps
-  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
-    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
-    2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
-    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div>
-<p>Override nightly</p>
+riscv/leds64-nuttx.S</code></pre></div>
+<p>TODO: Override nightly</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set Rust to nightly
 pushd ..
 rustup override list
 rustup override set nightly
 rustup override list
-popd</code></pre></div>
-<p>TODO: nix</p>
-<div class="example-wrap"><pre class="language-text"><code>https://crates.io/crates/nix
-https://docs.rs/nix/0.29.0/nix/
-
-➜  hello git:(master) ✗ $ cargo add nix --no-default-features
-    Updating crates.io index
-      Adding nix v0.29.0 to dependencies
-             Features:
-             35 deactivated features
-
-➜  hello git:(master) ✗ $ cargo add nix --features fs,ioctl
-    Updating crates.io index
-      Adding nix v0.29.0 to dependencies
-             Features:
-             + fs
-             + ioctl
-             33 deactivated features
-
-➜  hello git:(rust-std) ✗ $ cargo add nix --features fs,ioctl --git https://github.com/lupyuen/nix.git --branch nuttx
-    Updating git repository `https://github.com/lupyuen/nix.git`
-      Adding nix (git) to dependencies
-             Features:
-             + fs
-             + ioctl
-             34 deactivated features
-    Updating git repository `https://github.com/lupyuen/nix.git`
-     Locking 1 package to latest compatible version
-      Adding nix v0.29.0 (https://github.com/lupyuen/nix.git?branch=nuttx#bcbcb50f)
-
-➜  hello git:(master) ✗ $ pwd
-/Users/luppy/riscv/apps/examples/rust/hello
-
-   Compiling tokio v1.43.0
-error[E0432]: unresolved import `self::consts`
-  --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:19:15
-   |
-19 | pub use self::consts::*;
-   |               ^^^^^^ could not find `consts` in `self`
-
-error[E0432]: unresolved import `self::Errno`
-   --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:198:15
-    |
-198 |     use self::Errno::*;
-    |               ^^^^^ could not find `Errno` in `self`
-
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs:2:5
-  |
-2 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/signal.rs:6:5
-  |
-6 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs:3:5
-  |
-3 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `errno::Errno`
-   --&gt; /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/lib.rs:194:5
-    |
-194 | use errno::Errno;
-    |     ^^^^^^^-----
-    |     |      |
-    |     |      help: a similar name exists in the module: `errno`
-    |     no `Errno` in `errno`</code></pre></div>
-<p>TODO: Fix nix</p>
-<div class="example-wrap"><pre class="language-text"><code>/Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs
-Copy #[cfg(target_os = &quot;freebsd&quot;)]
-to #[cfg(target_os = &quot;nuttx&quot;)]
-
-/Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs
-    /// Leave the timestamp unchanged.
-    #[cfg(not(any(target_os = &quot;redox&quot;, target_os=&quot;nuttx&quot;)))]////
-    // At the time of writing this PR, redox does not support this feature
-    pub const UTIME_OMIT: TimeSpec =
-        TimeSpec::new(0, libc::UTIME_OMIT as timespec_tv_nsec_t);
-    /// Update the timestamp to `Now`
-    // At the time of writing this PR, redox does not support this feature
-    #[cfg(not(any(target_os = &quot;redox&quot;, target_os = &quot;nuttx&quot;)))]////
-    pub const UTIME_NOW: TimeSpec =
-        TimeSpec::new(0, libc::UTIME_NOW as timespec_tv_nsec_t);
-
-cp \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/stat.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/statvfs.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/mod.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/mod.rs \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/bsd.rs \
-  .
-cp -r \
-  /Users/luppy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
-  .</code></pre></div>
-<p>TODO: panic</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
-fd=3
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
-
-thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:18:71:
-called `Result::unwrap()` on an `Err` value: ENOENT
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; </code></pre></div>
-<p>TODO: ioctl</p>
-<div class="example-wrap"><pre class="language-text"><code>https://docs.rs/nix/latest/nix/sys/ioctl/
-
-/Users/luppy/riscv/nuttx/fs/vfs/fs_ioctl.c
-int ioctl(int fd, int req, ...) {
-  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////
-
-    const ULEDIOC_SETALL: i32 = 0x1d03;
-    ioctl_none!(led_on, ULEDIOC_SETALL, 1);
-    unsafe { led_on(fd).unwrap(); }
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
-fd=3
-ioctl: fd=0x3, req=0x201d0301
-
-thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:31:25:
-called `Result::unwrap()` on an `Err` value: ENOTTY
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-
-    const ULEDIOC_SETALL: i32 = 0x1d03;
-    // ioctl_none!(led_on, ULEDIOC_SETALL, 1);
-    ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
-    unsafe { led_on(fd, 1).unwrap(); }
-    unsafe { led_on(fd, 0).unwrap(); }
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
-fd=3
-ioctl: fd=0x3, req=0x801d0301
-
-thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:30:28:
-called `Result::unwrap()` on an `Err` value: ENOTTY
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102</code></pre></div>
-<p>ioctl OK yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>    const ULEDIOC_SETALL: i32 = 0x1d03;
-    ioctl_write_int_bad!(led_set_all, ULEDIOC_SETALL);
-
-    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
-    unsafe { led_set_all(fd, 1).unwrap(); }
-
-    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
-    unsafe { led_set_all(fd, 0).unwrap(); }
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
-fd=3
-ioctl: fd=0x3, req=0x1d03
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-ioctl: fd=0x3, req=0x1d03
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!</code></pre></div>
-<p>Updated nix</p>
-<div class="example-wrap"><pre class="language-text"><code>Add support for NuttX #1
-https://github.com/lupyuen/nix/pull/1/files
-
-Implement I/O Safety #1750
-https://github.com/nix-rust/nix/issues/1750
-
-Feature Name: io_safety
-https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre></div>
-<p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">Rustix Ioctl</a></p>
-<p>NOTUSED</p>
-<div class="example-wrap"><pre class="language-text"><code>## Build Apps Filesystem
-make -j export
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make -j import
-./tools/mkromfsimg.sh ../nuttx/arch/risc-v/src/board/romfs_boot.c
-popd
-make -j
-
-qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -kernel nuttx \
-  -nographic
-
-qemu-system-riscv32 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv32 \
-  -smp 8 \
-  -bios nuttx \
-  -nographic
-
-$ qemu-system-riscv32 -semihosting -M virt,aclint=on -cpu rv32 -smp 8 -bios nuttx -nographic
-ABC
-NuttShell (NSH) NuttX-10.0.1
-nsh&gt; uname -a
-NuttX 10.0.1 8205548707 Jan  9 2025 12:25:16 risc-v rv-virt
-
-nsh&gt; hello_rust_cargo
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
-
-examples: New app to build Rust with Cargo
-https://github.com/apache/nuttx-apps/pull/2487
-
-Add NuttX based targets for RISC-V and ARM
-https://github.com/rust-lang/rust/pull/127755
-
-The serde with no_std
-https://bitboom.github.io/2020-10-22/serde-no-std
-
-Hal?
-demo app
-why tokio for json
-disassemble
-Loop print something 
-Strings
-Patch 
-Which platforms 
-How to test
-Build Farm? Docker?
-How to bisect
-Blinky
-How to add crate
-RISC-V SBC? No knsh64 yet</code></pre></div>
-<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
-<p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
-<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
-<h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>9 Appendix: Build NuttX for Rust Standard Library</h1>
-<p>TODO</p>
-<h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>10 Appendix: Tokio Async Threading</h1>
+popd</code></pre></div><h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
 <li>TODO</li>
@@ -1084,9 +688,350 @@ Pretty JSON:
 pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
 nx_pthread_create: entry=0x80047938, arg=0x8007ff18
 Hello world from tokio!
-Looping Forever...</code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>11 Appendix: Porting Nix to NuttX</h1>
+Looping Forever...</code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
 <p>TODO: Redox, BSD not Linux, PR</p>
+<div class="example-wrap"><pre class="language-bash"><code>https://crates.io/crates/nix
+https://docs.rs/nix/0.29.0/nix/
 
+$ cd ../apps/examples/rust/hello
+$ cargo add nix --features fs,ioctl
+
+Adding nix v0.29.0 to dependencies
+Features: + fs + ioctl
+33 deactivated features
+
+error[E0432]: unresolved import `self::consts`
+  --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:19:15
+   |
+19 | pub use self::consts::*;
+   |               ^^^^^^ could not find `consts` in `self`
+
+error[E0432]: unresolved import `self::Errno`
+   --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:198:15
+    |
+198 |     use self::Errno::*;
+    |               ^^^^^ could not find `Errno` in `self`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs:2:5
+  |
+2 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/signal.rs:6:5
+  |
+6 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `crate::errno::Errno`
+ --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs:3:5
+  |
+3 | use crate::errno::Errno;
+  |     ^^^^^^^^^^^^^^-----
+  |     |             |
+  |     |             help: a similar name exists in the module: `errno`
+  |     no `Errno` in `errno`
+
+error[E0432]: unresolved import `errno::Errno`
+   --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/lib.rs:194:5
+    |
+194 | use errno::Errno;
+    |     ^^^^^^^-----
+    |     |      |
+    |     |      help: a similar name exists in the module: `errno`
+    |     no `Errno` in `errno`</code></pre></div>
+<p>TODO: Fix nix</p>
+<div class="example-wrap"><pre class="language-text"><code>.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs
+Copy #[cfg(target_os = &quot;freebsd&quot;)]
+to #[cfg(target_os = &quot;nuttx&quot;)]
+
+.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs
+    /// Leave the timestamp unchanged.
+    #[cfg(not(any(target_os = &quot;redox&quot;, target_os=&quot;nuttx&quot;)))]////
+    // At the time of writing this PR, redox does not support this feature
+    pub const UTIME_OMIT: TimeSpec =
+        TimeSpec::new(0, libc::UTIME_OMIT as timespec_tv_nsec_t);
+    /// Update the timestamp to `Now`
+    // At the time of writing this PR, redox does not support this feature
+    #[cfg(not(any(target_os = &quot;redox&quot;, target_os = &quot;nuttx&quot;)))]////
+    pub const UTIME_NOW: TimeSpec =
+        TimeSpec::new(0, libc::UTIME_NOW as timespec_tv_nsec_t);
+
+cp \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/stat.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/statvfs.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/mod.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/mod.rs \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/bsd.rs \
+  .
+cp -r \
+  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
+  .</code></pre></div>
+<p>TODO: panic</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+fd=3
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+
+thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:18:71:
+called `Result::unwrap()` on an `Err` value: ENOENT
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh&gt; </code></pre></div>
+<p>TODO: ioctl</p>
+<div class="example-wrap"><pre class="language-text"><code>https://docs.rs/nix/latest/nix/sys/ioctl/
+
+riscv/nuttx/fs/vfs/fs_ioctl.c
+int ioctl(int fd, int req, ...) {
+  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////
+
+    const ULEDIOC_SETALL: i32 = 0x1d03;
+    ioctl_none!(led_on, ULEDIOC_SETALL, 1);
+    unsafe { led_on(fd).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x201d0301
+
+thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:31:25:
+called `Result::unwrap()` on an `Err` value: ENOTTY
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+    const ULEDIOC_SETALL: i32 = 0x1d03;
+    // ioctl_none!(led_on, ULEDIOC_SETALL, 1);
+    ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
+    unsafe { led_on(fd, 1).unwrap(); }
+    unsafe { led_on(fd, 0).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x801d0301
+
+thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:30:28:
+called `Result::unwrap()` on an `Err` value: ENOTTY
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102</code></pre></div>
+<p>ioctl OK yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>    const ULEDIOC_SETALL: i32 = 0x1d03;
+    ioctl_write_int_bad!(led_set_all, ULEDIOC_SETALL);
+
+    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+    unsafe { led_set_all(fd, 1).unwrap(); }
+
+    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
+    unsafe { led_set_all(fd, 0).unwrap(); }
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+hello_rust_cargo
+ioctl: fd=0x0, req=0x101
+ioctl: fd=0x0, req=0x102
+ioctl: fd=0x1, req=0x118
+fd=3
+ioctl: fd=0x3, req=0x1d03
+board_userled: LED 1 set to 1
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+ioctl: fd=0x3, req=0x1d03
+board_userled: LED 1 set to 0
+board_userled: LED 2 set to 0
+board_userled: LED 3 set to 0
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!</code></pre></div>
+<p>Updated nix</p>
+<div class="example-wrap"><pre class="language-text"><code>Add support for NuttX #1
+https://github.com/lupyuen/nix/pull/1/files
+
+Implement I/O Safety #1750
+https://github.com/nix-rust/nix/issues/1750
+
+Feature Name: io_safety
+https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre></div>
+<p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">Rustix Ioctl</a></p>
+<h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
+<p>TODO make V=1</p>
+<div class="example-wrap"><pre class="language-text"><code>`make V=1` for `rv-virt:leds64`
+https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
+
+ 1018  make distclean
+ 1019  tools/configure.sh rv-virt:leds64
+ 1020  ## Disable CONFIG_ARCH_FPU
+ 1021  kconfig-tweak --disable CONFIG_ARCH_FPU
+ 1022  ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
+ 1023  kconfig-tweak --enable CONFIG_SYSTEM_TIME64
+ 1024  kconfig-tweak --enable CONFIG_FS_LARGEFILE
+ 1025  kconfig-tweak --enable CONFIG_DEV_URANDOM
+ 1026  kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+ 1027  ## Enable Hello Rust Cargo App
+ 1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
+ 1029  ## For knsh64
+ 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
+ 1031  ## Update the Kconfig Dependencies
+ 1032  make olddefconfig
+ 1033  make V=1</code></pre></div>
+<p>TODO dump disassembly</p>
+<div class="example-wrap"><pre class="language-text"><code>cd /home/luppy/rust/apps/examples/rust/hello
+cargo build --release -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+
+riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+
+riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
+        -o /home/luppy/rust/nuttx/nuttx   \
+        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a --end-group
+
+Remove release, change to debug
+pushd ../apps/examples/rust/hello
+cargo build -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+popd
+
+riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+
+riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
+        -o /home/luppy/rust/nuttx/nuttx   \
+        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a --end-group
+
+## Dump the disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+Cargo build debug
+https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
+riscv/leds64-debug-nuttx.S</code></pre></div>
+<p>TODO dump libhello</p>
+<div class="example-wrap"><pre class="language-text"><code>## Dump the libhello.a disassembly to libhello.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
+  &gt;libhello.S \
+  2&gt;&amp;1
+
+riscv/libhello.S</code></pre></div>
+<p>Search for pthread_create</p>
+<div class="example-wrap"><pre class="language-text"><code>/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
+                    assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
+                }
+            };
+        }
+
+        let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
+ 122:	00000517          	auipc	a0,0x0	122: R_RISCV_PCREL_HI20	std::sys::pal::unix::thread::Thread::new::thread_start
+ 126:	00050613          	mv	a2,a0	126: R_RISCV_PCREL_LO12_I	.Lpcrel_hi254
+ 12a:	0148                	add	a0,sp,132
+ 12c:	012c                	add	a1,sp,136
+ 12e:	f82e                	sd	a1,48(sp)
+ 130:	00000097          	auipc	ra,0x0	130: R_RISCV_CALL_PLT	pthread_create
+ 134:	000080e7          	jalr	ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
+ 138:	85aa                	mv	a1,a0
+ 13a:	7542                	ld	a0,48(sp)
+ 13c:	862e                	mv	a2,a1
+ 13e:	fc32                	sd	a2,56(sp)
+ 140:	1eb12e23          	sw	a1,508(sp)
+
+https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84
+
+https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502
+    unsafe fn spawn_unchecked_&lt;&#39;scope, F, T&gt;(
+        let my_thread = Thread::new(id, name);
+
+Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
+
+0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
+core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;:
+/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
+   0:	1141                	add	sp,sp,-16
+   2:	e406                	sd	ra,8(sp)
+   4:	e02a                	sd	a0,0(sp)
+   6:	00000097          	auipc	ra,0x0	6: R_RISCV_CALL_PLT	&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
+   a:	000080e7          	jalr	ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
+   e:	60a2                	ld	ra,8(sp)
+  10:	0141                	add	sp,sp,16
+  12:	8082                	ret</code></pre></div>
+<p>TODO NuttX Thread not Task</p>
+<div class="example-wrap"><pre class="language-text"><code>hello_rust_cargo &amp;
+https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961
+nsh&gt; hello_rust_cargo &amp;
+hello_rust_cargo [4:100]
+nsh&gt; {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
+    2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
+    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
