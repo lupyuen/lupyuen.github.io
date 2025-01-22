@@ -49,6 +49,10 @@ _(OK it's more complicated. Stay tuned)_
 
 All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
+In this article we...
+
+- TODO
+
 # Compile our Rust Hello App
 
 TODO: Instructions
