@@ -177,7 +177,7 @@ tokio::runtime::Builder
   .build()   // Create the Single-Threaded Scheduler
   .unwrap()  // Halt on Error
   .block_on( // Start the Scheduler
-    async {  // With this Async Function
+    async {  // With this Async Code
       println!("Hello world from tokio!");
   });
 
@@ -186,8 +186,6 @@ println!("Looping Forever...");
 loop {}
 ```
 
-[(Derived from __`#[tokio::main]`__)](https://tokio.rs/tokio/topics/bridging)
-
 Which prints...
 
 ```bash
@@ -195,6 +193,8 @@ nsh> hello_rust_cargo
 Hello world from tokio!
 Looping Forever...
 ```
+
+[(Derived from __tokio::main__)](https://tokio.rs/tokio/topics/bridging)
 
 _Yawn. Tokio looks underwhelming?_
 
@@ -271,7 +271,7 @@ We're __Blinking the LED__ on NuttX. We could call the [__POSIX API__](https://c
 ```rust
 let fd = unsafe { libc::open("/dev/userleds", ...) };
 unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
-unsafe { close(fd); }
+unsafe { libc::close(fd); }
 ```
 
 But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by `nix` (tweaked for NuttX). Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
@@ -309,19 +309,29 @@ We spoke about _ULEDIOC_SETALL_ in [__an earlier article__](https://lupyuen.gith
 
 _How to run the Rust Blinky App?_
 
-1.  Copy the files from TODO...
+1.  Copy the __Rust Blinky Files__ from here...
 
-1.  Overwrite our __Rust Hello App__: _apps/examples/rust/hello_
+    [_lupyuen2/wip-nuttx-apps/examples/rust/hello_](https://github.com/lupyuen2/wip-nuttx-apps/tree/rust-std/examples/rust/hello)
+
+1.  Overwrite our __Rust Hello App__...
+
+    _apps/examples/rust/hello_
 
 1.  [Rebuild our __NuttX Project__](TODO)
 
+    ```bash
+    make -j
+    ```
+
 1.  Then run it with __QEMU RISC-V Emulator__
 
-```bash
-TODO
-```
+    ```bash
+    TODO
+    ```
 
-QEMU Emulator shows the __Emulated LED__ on NuttX.
+    NuttX blinks the __Emulated LED__ on QEMU Emulator!
+
+    [(See the __Complete Log__)](TODO)
 
 TODO: Open in VSCode
 
@@ -788,7 +798,7 @@ tokio::runtime::Builder
   .build()   // Create the Single-Threaded Scheduler
   .unwrap()  // Halt on Error
   .block_on( // Start the Scheduler
-    async {  // With this Async Function
+    async {  // With this Async Code
       println!("Hello world from tokio!");
   });
 
