@@ -313,7 +313,9 @@ TODO
 
 QEMU Emulator shows the __Emulated LED__ on NuttX.
 
-[(What about __Rust Embedded HAL__?)](TODO)
+TODO: Open in VSCode
+
+[(What about __Rust Embedded HAL__)](TODO)
 
 # Owned File Descriptors
 
@@ -744,6 +746,8 @@ pushd ../apps/examples/rust/hello
 cargo clean
 popd
 ```
+
+TODO: Open in VSCode
 
 # Appendix: Tokio Async Threading
 
