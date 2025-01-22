@@ -160,7 +160,7 @@ Hello world from tokio!</code></pre></div>
 <p>Needs a tiny patch to <strong>Local Toolchain</strong> <em>(pal/unix/fs.rs)</em></p>
 </li>
 <li>
-<p>Sorry no <strong>RISC-V Floating Point</strong></p>
+<p>Sorry no <strong>RISC-V Floating Point</strong> and no <strong>Kernel Build</strong></p>
 </li>
 </ul>
 <p>What’s inside the brand new Rust Hello App? We dive in…</p>
@@ -216,12 +216,12 @@ nsh&gt; hello_rust_cargo
 <div class="example-wrap"><pre class="language-bash"><code>Deserialized: Alice is 28 years old</code></pre></div>
 <p>Serde will also handle <strong>JSON Formatting</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Serialize our Person Struct
-  // But neatly please
-  </span><span class="kw">let </span>pretty_json_str = serde_json <span class="comment">// Person Struct
-    </span>::to_string_pretty(<span class="kw-2">&amp;</span>alice)     <span class="comment">// Becomes a Formatted String
-    </span>.unwrap();                     <span class="comment">// Halt on Error
-  </span><span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Serialize our Person Struct
+// But neatly please
+</span><span class="kw">let </span>pretty_json_str = serde_json <span class="comment">// Person Struct
+  </span>::to_string_pretty(<span class="kw-2">&amp;</span>alice)     <span class="comment">// Becomes a Formatted String
+  </span>.unwrap();                     <span class="comment">// Halt on Error
+</span><span class="macro">println!</span>(<span class="string">"Pretty JSON:\n{}"</span>, pretty_json_str);</code></pre></div>
 <p>Looks much neater!</p>
 <div class="example-wrap"><pre class="language-bash"><code>Pretty JSON:
 {
@@ -284,7 +284,7 @@ Task 0 stopping</code></pre></div>
 <blockquote>
 <p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
 </blockquote>
-<p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>… We spawn a few threads and call <strong>Async Functions</strong>.</p>
+<p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>, we spawn a few threads and call <strong>Async Functions</strong>.</p>
 <p>(Check out <a href="https://tokio.rs/tokio/tutorial/select"><strong>Tokio Select</strong></a> and <a href="https://tokio.rs/tokio/tutorial/streams"><strong>Tokio Streams</strong></a>)</p>
 <p>TODO: Screenshot of VSCode</p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
@@ -302,7 +302,7 @@ Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div>
 <p><em>The URL looks a little sus?</em></p>
-<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="TODO">(Details in the <strong>Appendix</strong>)</a></p>
+<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="TODO">(Explained in the <strong>Appendix</strong>)</a></p>
 <p><em>Why are we calling nix?</em></p>
 <p>We’re <strong>Blinking the LED</strong> on NuttX. We could call the <a href="https://crates.io/crates/libc"><strong>POSIX API</strong></a> direcly from Rust…</p>
 
@@ -402,7 +402,7 @@ board_userled: LED 1 set to 0</code></pre></div>
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
-<p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
+<p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the Raw One too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
 <p><em>What’s a Raw File Descriptor?</em></p>
 <p>In NuttX and POSIX: <a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71"><strong>Raw File Descriptor</strong></a> is a <strong>Plain Integer</strong> that specifies an I/O Stream…</p>
 <div><table><thead><tr><th style="text-align: center">File Descriptor</th><th style="text-align: left">I/O Stream</th></tr></thead><tbody>
@@ -414,7 +414,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </div>
 <p><em>What about Owned File Descriptor?</em></p>
 <p>In Rust: <a href="https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html"><strong>Owned File Descriptor</strong></a> is a <strong>Rust Object</strong>, wrapped around a Raw File Descriptor.</p>
-<p>And Rust Objects can be <strong>Automatically Dropped</strong>, when they go out of scope. (Unlike Integers)</p>
+<p>And Rust Objects shall be <strong>Automatically Dropped</strong>, when they go out of scope. (Unlike Integers)</p>
 <p><em>Which causes the Second Snippet to fail?</em></p>
 <p>Exactly! <em>open()</em> returns an <strong>Owned File Descriptor</strong>…</p>
 
@@ -474,13 +474,13 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><em>Which shall we use: Nix or Rustix?</em></p>
 <p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
 <p>TODO: Pic of LOC</p>
-<p><a href="TODO">(What about <strong>Rust Embedded HAL</strong>)</a></p>
+<p><a href="TODO">(<strong>Rust Embedded HAL</strong> might be a bad fit)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2967"><strong>Upcoming:</strong> Slint Rust GUI for NuttX 🎉</a></p>
 <p><em>Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?</em></p>
 <p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this doc</strong></a> for updates.</p>
-<p>Sorry 64-bit <strong>RISC-V Kernel Mode</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>. So it <strong>won’t run on RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
-<p><em>Sounds like we need plenty of Rust Testing? For every platform?</em></p>
+<p>Sorry 64-bit <strong>RISC-V Kernel Build</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>. So it <strong>won’t run on RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
+<p><em>Sounds like we need plenty of Rust Testing? For every NuttX Platform?</em></p>
 <p>Yeah maybe we need <a href="TODO"><strong>Daily Automated Testing</strong></a> of NuttX + Rust Standard Library on <a href="TODO"><strong>NuttX Build Farm</strong></a>?</p>
 <p>With <a href="TODO"><strong>QEMU Emulator</strong></a> or a <a href="TODO"><strong>Real Device</strong></a>?</p>
 <p>And when the Daily Test fails: How to <a href="TODO"><strong>Auto-Rewind the Build</strong></a> and discover the Breaking Commit? Hmmm…</p>
@@ -830,10 +830,10 @@ Task 0 stopping</code></pre></div>
 </span><span class="kw">let </span>runtime = tokio::runtime::Builder
   ::new_multi_thread() <span class="comment">// New Multi-Threaded Scheduler
   </span>.worker_threads(<span class="number">2</span>)   <span class="comment">// With Two New NuttX Threads for our Scheduler</span></code></pre></div>
-<p>TODO: Not much difference?</p>
-<div class="example-wrap"><pre class="language-text"><code>pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+<p>Works the same though…</p>
+<div class="example-wrap"><pre class="language-bash"><code>pthread_create:    pthread_entry=0x80048f10, arg=0x800873e8
 nx_pthread_create: entry=0x80048f10, arg=0x800873e8
-pthread_create: pthread_entry=0x80048f10, arg=0x80287830
+pthread_create:    pthread_entry=0x80048f10, arg=0x80287830
 nx_pthread_create: entry=0x80048f10, arg=0x80287830
 Task 0 sleeping for 1000 ms.
 Task 1 sleeping for 950 ms.
@@ -843,34 +843,23 @@ Finished time-consuming task.
 Task 3 stopping.
 Task 2 stopping.
 Task 1 stopping.
-Task 0 stopping.
-nsh&gt; </code></pre></div>
-<p>TODO: pthread_create</p>
-<div class="example-wrap"><pre class="language-text"><code>https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
+Task 0 stopping.</code></pre></div>
+<p><em>How did we log pthread_create?</em></p>
+<p>Inside NuttX Kernel: We added Debug Code to
+<a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>
+and
+<a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a></p>
+<span style="font-size:90%">
+<div class="example-wrap"><pre class="language-text"><code>// At https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88
+#include &lt;debug.h&gt;
+int pthread_create(...) {
+  _info(&quot;pthread_entry=%p, arg=%p&quot;, pthread_entry, arg);
 
-#include &lt;debug.h&gt;////
-int ioctl(int fd, int req, ...)
-{
-  // _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////
-
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
-
-#include &lt;debug.h&gt;////
-int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
-                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
-{
-  _info(&quot;pthread_entry=%p, arg=%p&quot;, pthread_entry, arg);////
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
-
-#include &lt;debug.h&gt;////
-int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
-                      FAR const pthread_attr_t *attr,
-                      pthread_startroutine_t entry, pthread_addr_t arg)
-{
-  _info(&quot;entry=%p, arg=%p&quot;, entry, arg);////
-</code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
+// At https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179
+#include &lt;debug.h&gt;
+int nx_pthread_create(...) {
+  _info(&quot;entry=%p, arg=%p&quot;, entry, arg);</code></pre></div></span>
+<h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
 <p><em>What happens when we call nix crate as-is on NuttX?</em></p>
 <p>Earlier said that we <a href="TODO"><strong>customised the <code>nix</code> Crate</strong></a> to run on NuttX.</p>
 <p>Why? Let’s build our Rust Blinky App with the Original <code>nix</code> Crate…</p>
@@ -945,8 +934,7 @@ Features: + fs + ioctl
 <hr>
 <p><strong>Troubleshooting nix ioctl() on NuttX</strong></p>
 <p>To figure out if <code>nix</code> passes ioctl parameters correctly to NuttX: We insert <strong>ioctl Debug Code</strong> into NuttX Kernel…</p>
-<div class="example-wrap"><pre class="language-c"><code>TODO
-riscv/nuttx/fs/vfs/fs_ioctl.c
+<div class="example-wrap"><pre class="language-c"><code>// At https://github.com/apache/nuttx/blob/master/fs/vfs/fs_ioctl.c#L261
 #include &lt;debug.h&gt;
 int ioctl(int fd, int req, ...) {
   _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);</code></pre></div>
