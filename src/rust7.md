@@ -4,6 +4,8 @@
 
 ![TODO](https://lupyuen.github.io/images/rust7-title.jpg)
 
+TODO: Screenshot of VSCode
+
 __Freshly Baked:__ Here's how we [__Blink the LED__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs) with __Rust Standard Library__ on [__Apache NuttX RTOS__](TODO)...
 
 ```rust
@@ -64,6 +66,8 @@ Some bits are a little wonky
 - [examples: New app to build Rust with Cargo](https://github.com/apache/nuttx-apps/pull/2487)
 
 - [Add NuttX based targets for RISC-V and ARM](https://github.com/rust-lang/rust/pull/127755)
+
+TODO: Pic of JSON with Serde
 
 # JSON with Serde
 
@@ -211,9 +215,11 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check the Appendix for the __Tokio Async Demo__. That works beautifully on NuttX!
+Check the Appendix for the __Tokio Async Demo__. That works beautifully on NuttX! (Pic below)
 
 - TODO: test_async
+
+TODO: Screenshot of Tokio Async Multi-Thread
 
 _But NuttX has POSIX Threads. Why use Async Functions?_
 
@@ -223,11 +229,15 @@ TODO: NodeJS
 
 (We're not calling it _"Async Task"_. Because a Task in NuttX is more like a NuttX Process)
 
-_How would we use Tokio?_
+_How will we use Tokio?_
 
 > [__Tokio__](https://tokio.rs/tokio/tutorial) is designed for __I/O-Bound Applications__ where each individual task spends most of its time waiting for I/O.
 
 Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many many __NuttX Threads__... We spawn a few threads and call __Async Functions__.
+
+(Check out [__Tokio Select__](https://tokio.rs/tokio/tutorial/select) and [__Tokio Streams__](https://tokio.rs/tokio/tutorial/streams))
+
+TODO: Screenshot of VSCode
 
 # LED Blinky with Nix
 
@@ -389,7 +399,9 @@ let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
 
 But we turned it into __Raw File Descriptor__. (The Plain Integer, not the Rust Object)
 
-Oops! Our Owned File Descriptor goes __out of scope__ and gets dropped by Rust.
+Oops! Our Owned File Descriptor goes __Out Of Scope__ and gets dropped by Rust...
+
+TODO: Pic of drop
 
 Which means Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
 
@@ -437,35 +449,41 @@ unsafe {
 
 [(Based on the __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
 
-TODO: Nix vs Rustix
+_Nix vs Rustix: They feel quite similar?_
 
-Updated nix
+Yeah Nix used to be a lot simpler, supporting only __Raw File Descriptors__. (Instead of Owned File Descriptors)
 
-```text
-Implement I/O Safety #1750
-https://github.com/nix-rust/nix/issues/1750
+But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more __Rustix-like__...
 
-Feature Name: io_safety
-https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md
-```
+- [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
+
+- [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix)_
+
+TODO: Pic of NuttX vs Rustix
+
+_Which shall we use: Nix or Rustix?_
+
+Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code)
+
+TODO: Pic of LOC
 
 # What's Next
 
-_Which platforms are supported for NuttX + Rust Standard Library?_
+_Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?_
 
-Arm and RISC-V (32-bit and 64-bit). [__Check this article__](https://nuttx.apache.org/docs/latest/guides/rust.html) for updates.
+Arm and RISC-V (32-bit and 64-bit). [__Check this doc__](https://nuttx.apache.org/docs/latest/guides/rust.html) for updates.
 
-_Will it run on a RISC-V SBC?_
+Sorry 64-bit __RISC-V Kernel Mode__ is [__not supported yet__](https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835). So it __won't run on RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
 
-Sorry 64-bit __RISC-V Kernel Mode__ is [__not supported yet__](https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835).
+_Sounds like we need plenty of Rust Testing? For every platform?_
 
-_How to test?_
+Yeah maybe we need [__Daily Automated Testing__](TODO) of NuttX + Rust Standard Library on [__NuttX Build Farm__](TODO)?
 
-TODO: Build Farm? Docker? How to bisect
+With [__QEMU Emulator__](TODO) or a [__Real Device__](TODO)?
 
-Next Article: Why __Sync-Build-Ingest__ is super important for NuttX Continuous Integration. And how we monitor it with our __Magic Disco Light__.
+And when the Daily Test fails: How to [__Auto-Rewind the Build__](TODO) and discover the Breaking Commit? Hmmm...
 
-After That: Since we can __Rewind NuttX Builds__ and automatically __Git Bisect__... Can we create a Bot that will fetch the __Failed Builds from NuttX Dashboard__, identify the Breaking PR, and escalate to the right folks?
+<hr>
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years.
 
@@ -747,7 +765,13 @@ cargo clean
 popd
 ```
 
+TODO: Pic of VSCode
+
 TODO: Open in VSCode
+
+TODO: Link to Rust PRs
+
+TODO: Screenshot of Tokio Async Multi-Thread
 
 # Appendix: Tokio Async Threading
 
