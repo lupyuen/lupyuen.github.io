@@ -851,11 +851,11 @@ int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
 
 # Appendix: Porting Nix to NuttX
 
-TODO: Redox, BSD not Linux, PR
-
 _What happens when we call nix crate as-is on NuttX?_
 
-TODO
+Earlier said that we [__customised the `nix` Crate__](TODO) to run on NuttX.
+
+Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
 ```bash
 $ pushd ../apps/examples/rust/hello
@@ -867,69 +867,31 @@ Features: + fs + ioctl
 $ popd
 $ make -j
 
-error[E0432]: unresolved import `self::const](TODO)
-
-  -->   [errno.rs:19:15
-   |
+error[E0432]: unresolved import `self::const`
+  -->   errno.rs:19:15
 19 | pub use self::consts::*;
    |               ^^^^^^ could not find `consts` in `self`
 
-error[E0432]: unresolved import `self::Errn](TODO)
-
-   -->  [errno.rs:198:15
-    |
+error[E0432]: unresolved import `self::Errno`
+   -->  errno.rs:198:15
 198 |     use self::Errno::*;
     |               ^^^^^ could not find `Errno` in `self`
 
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- -->  [fcntl.rs:2:5
-  |
+error[E0432]: unresolved import `crate::errno::Errno`
+ -->  fcntl.rs:2:5
 2 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
   |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- -->  [sys/signal.rs:6:5
-  |
-6 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- -->  [unistd.rs:3:5
-  |
-3 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `errno::Errn](TODO)
-
-   -->  [lib.rs:194:5
-    |
-194 | use errno::Errno;
-    |     ^^^^^^^-----
-    |     |      |
-    |     |      help: a similar name exists in the module: `errno`
-    |     no `Errno` in `errno`
 ```
 
-TODO: Fix nix
+That's why we __Customised the `nix` Crate__ for NuttX...
 
 1.  We modified [src/errno.rs](TODO), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
 
-1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? That's why a lot of the modded code looks like this: [src/sys/time.rs](TODO)
+1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed a lot of the modded code to look like this: [src/sys/time.rs](TODO)
 
     ```rust
-    #[cfg(not(any(target_os = "redox", target_os="nuttx")))]
+    #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]
     pub const UTIME_OMIT: TimeSpec = ...
 
     #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]
@@ -968,17 +930,17 @@ TODO: Fix nix
 
 __Troubleshooting nix ioctl() on NuttX__
 
-To figure out if nix passes ioctl() parameters correctly to NuttX: We insert __ioctl() Debug Code__ into NuttX Kernel...
+To figure out if `nix` passes ioctl parameters correctly to NuttX: We insert __ioctl Debug Code__ into NuttX Kernel...
 
 ```c
 TODO
 riscv/nuttx/fs/vfs/fs_ioctl.c
 #include <debug.h>
 int ioctl(int fd, int req, ...) {
-  _info("fd=0x%x, req=0x%x", fd, req);////
+  _info("fd=0x%x, req=0x%x", fd, req);
 ```
 
-Which [__Ioctl Macro__](https://docs.rs/nix/latest/nix/sys/ioctl/) shall we use in nix? We tried __ioctl_none!__...
+Which [__Ioctl Macro__](https://docs.rs/nix/latest/nix/sys/ioctl/) shall we use in `nix`? We tried __ioctl_none__...
 
 ```rust
 const ULEDIOC_SETALL: i32 = 0x1d03;
@@ -986,7 +948,7 @@ ioctl_none!(led_on, ULEDIOC_SETALL, 1);
 unsafe { led_on(fd).unwrap(); }
 ```
 
-But the __ioctl() Command Code__ got mangled up (`0x201d0301` should be `0x1d03`)
+But the __ioctl Command Code__ got mangled up (`0x201d0301` should be `0x1d03`)
 
 ```bash
 NuttShell (NSH) NuttX-12.7.0
@@ -999,7 +961,7 @@ called `Result::unwrap()` on an `Err` value: ENOTTY
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
-Then we tried __ioctl_write_int!__...
+Then we tried __ioctl_write_int__...
 
 ```rust
 const ULEDIOC_SETALL: i32 = 0x1d03;
@@ -1007,7 +969,7 @@ ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
 unsafe { led_on(fd, 1).unwrap(); }
 ```
 
-Nope the __ioctl() Command Code__ is still mangled (`0x801d0301` should be `0x1d03`)
+Nope the __ioctl Command Code__ is still mangled (`0x801d0301` should be `0x1d03`)
 
 ```bash
 nsh> hello_rust_cargo
@@ -1016,7 +978,7 @@ thread '<unnamed>' panicked at src/lib.rs:30:28:
 called `Result::unwrap()` on an `Err` value: ENOTTY
 ```
 
-Finally this works: __ioctl_write_int_bad!__...
+Finally this works: __ioctl_write_int_bad__...
 
 ```rust
 const ULEDIOC_SETALL: i32 = 0x1d03;
@@ -1029,7 +991,7 @@ unsafe { led_set_all(fd, 1).unwrap(); }
 unsafe { led_set_all(fd, 0).unwrap(); }
 ```
 
-__ioctl() Command Code__ `0x1d03` is hunky dory yay!
+__ioctl Command Code__ `0x1d03` is hunky dory yay!
 
 ```bash
 NuttShell (NSH) NuttX-12.7.0
@@ -1127,7 +1089,7 @@ riscv-none-elf-ld \
   --end-group
 ```
 
-Ah NuttX Build calls `cargo build --release`, which will strip the Debug Symbols. We change it to `cargo build` and dump the RISC-V Disassembly...
+Ah NuttX Build calls __cargo build --release__, which will strip the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
 
 ```bash
 ## Preserve the Rust Debug Symbols
@@ -1190,11 +1152,11 @@ riscv-none-elf-objdump \
 ```
 [(See the __Build Log__)](https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f)
 
-Which produces the Complete NuttX Disassembly: [__leds64-debug-nuttx.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S)
+Which produces the __Complete NuttX Disassembly__: [__leds64-debug-nuttx.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S)
 
 Whoa the Complete NuttX Disassembly is too huge to inspect!
 
-We dump the RISC-V Disassembly of the __Rust Part__ only: __libhello.a__
+Let's dump the RISC-V Disassembly of the __Rust Part__ only: __libhello.a__
 
 ```bash
 ## Dump the libhello.a disassembly to libhello.S
@@ -1206,7 +1168,7 @@ riscv-none-elf-objdump \
   2>&1
 ```
 
-Which produces the Rust Disassembly: [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S)
+Which produces the __Rust Disassembly__: [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S)
 
 Is Tokio calling NuttX to create POSIX Threads? We search [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S) for __pthread_create__...
 
@@ -1235,7 +1197,7 @@ let ret = libc::pthread_create(&mut native, &attr, thread_start, p as *mut _);
 
 OK that's the [__Rust Standard Library__](https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84) calling __pthread_create__ to create a new Rust Thread.
 
-How are Rust Threads created in Rust Standard Library? Like this: [std/thread/mod.rs](https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502)
+How are __Rust Threads__ created in Rust Standard Library? Like this: [std/thread/mod.rs](https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502)
 
 ```rust
 // spawn_unchecked_ creates a new Rust Thread
