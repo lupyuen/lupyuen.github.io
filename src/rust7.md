@@ -1080,18 +1080,32 @@ error[E0432]: unresolved import `crate::errno::Errno`
 
 </span>
 
-Plus many many errors. That's why we __Customised the `nix` Crate__ for NuttX...
+Plus many many errors. That's why we [__Customised the `nix` Crate__](https://github.com/lupyuen/nix/tree/nuttx) for NuttX...
+
+```bash
+$ cd ../apps/examples/rust/hello
+$ cargo add nix \
+  --features fs,ioctl \
+  --git https://github.com/lupyuen/nix.git \
+  --branch nuttx
+
+Updating git repository `https://github.com/lupyuen/nix.git`
+Adding nix (git) to dependencies
+Features: + fs + ioctl
+34 deactivated features
+```
+
+Here's how...
 
 1.  We modified [src/errno.rs](TODO), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
 
-1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed a lot of the modded code to look like this: [src/sys/time.rs](TODO)
+1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [src/sys/time.rs](TODO)
 
     ```rust
-    #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]
+    // NuttX works like Redox OS
+    #[cfg(not(any(target_os = "redox",
+                  target_os = "nuttx")))]
     pub const UTIME_OMIT: TimeSpec = ...
-
-    #[cfg(not(any(target_os = "redox", target_os = "nuttx")))]
-    pub const UTIME_NOW: TimeSpec = ...
     ```
 
 1.  __For NuttX ioctl():__ It works more like BSD (second parameter is `int`) than Linux (second parameter is `long`): [sys/ioctl/mod.rs](TODO)
