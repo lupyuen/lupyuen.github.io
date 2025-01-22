@@ -120,6 +120,8 @@ popd
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/db850282e6f84673b2fd07900f574f4d#file-special-qemu-riscv-knsh64-log-L47-L1251)
 
+[(Remember to install __RISC-V Toolchain__ and __RISC-V QEMU__)](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)
+
 Maybe _CONFIG_VERSION_BUILD_ is in the NuttX Config File?
 
 ```bash
