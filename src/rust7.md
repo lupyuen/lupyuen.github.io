@@ -520,13 +520,13 @@ But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which
 
 - [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
 
-TODO: Pic of Nix vs Rustix
+![TODO](https://lupyuen.github.io/images/rust7-compare.png)
 
 _Which shall we use: Nix or Rustix?_
 
 Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). Which might hinder our porting to NuttX...
 
-TODO: Pic of LOC
+![TODO](https://lupyuen.github.io/images/rust7-loc.png)
 
 [(__Rust Embedded HAL__ might be a bad fit)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal)
 
