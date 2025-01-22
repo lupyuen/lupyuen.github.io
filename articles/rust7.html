@@ -562,22 +562,20 @@ Hello world from tokio!</code></pre></div>
 <ul>
 <li>
 <p>If NuttX Build fails with <strong>“Mismatched Types”</strong>…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>  Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
 error[E0308]: mismatched types
     --&gt; .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
-    |
 1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
     |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
     |                  |
     |                  arguments to this function are incorrect
-    |
     = note: expected raw pointer `*const u8`
                 found raw pointer `*const i8`
 note: associated function defined here
     --&gt; .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
-    |
 264  |     pub const unsafe fn from_ptr&lt;&#39;a&gt;(ptr: *const c_char) -&gt; &amp;&#39;a CStr {
-    |                         ^^^^^^^^</code></pre></div>
+    |                         ^^^^^^^^</code></pre></div></span>
 <p>Then edit this file…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu
 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
@@ -611,7 +609,8 @@ head -n 1049 $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/s
 </li>
 <li>
 <p>If the build fails with <strong>“-Z” Error</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>error: the `-Z` flag is only accepted on the nightly channel of Cargo, but this is the `stable` channel</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>error: the `-Z` flag is only accepted on the nightly channel of Cargo
+but this is the `stable` channel</code></pre></div>
 <p>Then switch to the Nightly Toolchain…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Switch to the Nightly Toolchain
 rustup update
@@ -630,7 +629,8 @@ rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 ## For macOS: rustup component add rust-src --toolchain nightly-aarch64-apple-darwin</code></pre></div></li>
 <li>
 <p>If the build fails with <strong>“Error Loading Target”</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>error: Error loading target specification: Could not find specification for target &quot;riscv64imafdc-unknown-nuttx-elf&quot;. Run `rustc --print target-list` for a list of built-in targets</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>error: Error loading target specification:
+Could not find specification for target &quot;riscv64imafdc-unknown-nuttx-elf&quot;</code></pre></div>
 <p>Then disable Floating Point…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Disable Floating Point: CONFIG_ARCH_FPU
 kconfig-tweak --disable CONFIG_ARCH_FPU
@@ -638,7 +638,7 @@ kconfig-tweak --disable CONFIG_ARCH_FPU
 ## Update the Kconfig Dependencies
 make olddefconfig
 make -j</code></pre></div></li>
-</ul>
+<li>
 <p><em>What if we’re using Rust already? And we don’t wish to change the Default Toolchain?</em></p>
 <p>Use <code>rustup override</code> to <strong>Override the Folder Toolchain</strong>. Do it in the <strong>Parent Folder</strong> of <code>nuttx</code> and <code>apps</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set Rust to Nightly Build
@@ -648,18 +648,21 @@ pushd ..
 rustup override list
 rustup override set nightly
 rustup override list
-popd</code></pre></div>
+popd</code></pre></div></li>
+<li>
 <p><em>Rust App crashes in QEMU?</em></p>
 <p>We might see a Stack Dump that <strong>Loops Forever</strong>. Or we might see <strong>100% Full</strong> for the App Stack…</p>
-<div class="example-wrap"><pre class="language-text"><code>dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo</code></pre></div>
+<span style="font-size:80%">
+<div class="example-wrap"><pre class="language-bash"><code>dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo</code></pre></div></span>
 <p>Then increase the App Stack Size…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Increase the App Stack Size to 64 KB
 kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
 
 ## Update the Kconfig Dependencies and rebuild
 make olddefconfig
-make -j</code></pre></div>
+make -j</code></pre></div></li>
+<li>
 <p><em>Rust Build seems to break sometimes?</em></p>
 <p>We might need to clean up the <strong>Rust Compiled Files</strong>, if the Rust Build goes wonky…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build and rebuild
@@ -668,9 +671,13 @@ cargo clean
 popd
 make -j</code></pre></div>
 <p>TODO: Pic of VSCode</p>
+</li>
+<li>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
 <p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic above)</p>
+</li>
+</ul>
 <p>TODO: Link to Rust PRs</p>
 <p>TODO: Screenshot of Tokio Async Multi-Thread</p>
 <h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
@@ -819,6 +826,7 @@ int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
 <p><em>What happens when we call nix crate as-is on NuttX?</em></p>
 <p>Earlier said that we <a href="TODO"><strong>customised the <code>nix</code> Crate</strong></a> to run on NuttX.</p>
 <p>Why? Let’s build our Rust Blinky App with the Original <code>nix</code> Crate…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
 Adding nix v0.29.0 to dependencies
@@ -842,7 +850,7 @@ error[E0432]: unresolved import `crate::errno::Errno`
  --&gt;  fcntl.rs:2:5
 2 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
-  |     no `Errno` in `errno`</code></pre></div>
+  |     no `Errno` in `errno`</code></pre></div></span>
 <p>Plus many many errors. That’s why we <strong>Customised the <code>nix</code> Crate</strong> for NuttX…</p>
 <ol>
 <li>
@@ -934,23 +942,28 @@ board_userled: LED 3 set to 0</code></pre></div><h1 id="appendix-snooping-tokio-
 <p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <code>make V=1</code> on <code>rv-virt:leds64</code></p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
 tools/configure.sh rv-virt:leds64
+
 ## Disable CONFIG_ARCH_FPU
 kconfig-tweak --disable CONFIG_ARCH_FPU
+
 ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
 kconfig-tweak --enable CONFIG_SYSTEM_TIME64
 kconfig-tweak --enable CONFIG_FS_LARGEFILE
 kconfig-tweak --enable CONFIG_DEV_URANDOM
 kconfig-tweak --set-val CONFIG_TLS_NELEM 16
-## Enable Hello Rust Cargo App
+
+## Enable Hello Rust Cargo App, increase the Stack Size
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
-## For knsh64
 kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
+
 ## Update the Kconfig Dependencies
 make olddefconfig
-## Build NuttX
+
+## Build NuttX with Tracing Enabled
 make V=1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374">(See the <strong>Build Log</strong>)</a></p>
 <p>According to the <code>make V=1</code> trace: <strong>NuttX Build</strong> does this…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Discard the Rust Debug Symbols
 cd apps/examples/rust/hello
 cargo build \
@@ -999,8 +1012,9 @@ riscv-none-elf-ld \
   -lfs \
   -lbinfmt \
   -lboard xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a \
-  --end-group</code></pre></div>
+  --end-group</code></pre></div></span>
 <p>Ah NuttX Build calls <strong>cargo build –release</strong>, which will strip the Debug Symbols. We change it to <strong>cargo build</strong> and dump the RISC-V Disassembly…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Preserve the Rust Debug Symbols
 pushd ../apps/examples/rust/hello
 cargo build \
@@ -1057,7 +1071,7 @@ riscv-none-elf-objdump \
   --debugging \
   nuttx \
   &gt;leds64-debug-nuttx.S \
-  2&gt;&amp;1</code></pre></div>
+  2&gt;&amp;1</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f">(See the <strong>Build Log</strong>)</a></p>
 <p>Which produces the <strong>Complete NuttX Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S"><strong>leds64-debug-nuttx.S</strong></a></p>
 <p>Whoa the Complete NuttX Disassembly is too huge to inspect!</p>
@@ -1071,6 +1085,7 @@ riscv-none-elf-objdump \
   2&gt;&amp;1</code></pre></div>
 <p>Which produces the <strong>Rust Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
 <p>Is Tokio calling NuttX to create POSIX Threads? We search <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a> for <strong>pthread_create</strong>…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
             assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
         }
@@ -1090,7 +1105,7 @@ let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *m
  13a: 7542                 ld a0,48(sp)
  13c: 862e                 mv a2,a1
  13e: fc32                 sd a2,56(sp)
- 140: 1eb12e23           sw a1,508(sp)</code></pre></div>
+ 140: 1eb12e23           sw a1,508(sp)</code></pre></div></span>
 <p>OK that’s the <a href="https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84"><strong>Rust Standard Library</strong></a> calling <strong>pthread_create</strong> to create a new Rust Thread.</p>
 <p>How are <strong>Rust Threads</strong> created in Rust Standard Library? Like this: <a href="https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502">std/thread/mod.rs</a></p>
 
@@ -1098,6 +1113,7 @@ let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *m
 </span><span class="kw">unsafe fn </span>spawn_unchecked_&lt;<span class="lifetime">'scope</span>, F, T&gt;(
     <span class="kw">let </span>my_thread = Thread::new(id, name);</code></pre></div>
 <p>And <strong>spawn_unchecked</strong> is called by Tokio, according to our Rust Disassembly…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
 
 0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
@@ -1110,7 +1126,7 @@ core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDanglin
    a: 000080e7           jalr ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
    e: 60a2                 ld ra,8(sp)
   10: 0141                 add sp,sp,16
-  12: 8082                 ret</code></pre></div>
+  12: 8082                 ret</code></pre></div></span>
 <p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
 <p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
 <p>We run <code>hello_rust_cargo &amp;</code> to put it in the background…</p>
