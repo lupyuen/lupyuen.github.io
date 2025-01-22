@@ -486,19 +486,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 TODO: Prerequisite
 
 ```text
-hello_rust_cargo on Apache NuttX RTOS rv-virt:leds64
-https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5
+```
 
-hello_rust_cargo on macOS
-https://gist.github.com/lupyuen/a2b91b5cc15824a31c287fbb6cda5fa2
-
-hello_rust_cargo on Apache NuttX RTOS rv-virt:leds
-https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144
-
-rm -rf .cargo .rustup rust rust2
-https://rustup.rs/
+```bash
+## Install Rust: https://rustup.rs/
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-Standard Installation 
+## Select Standard Installation 
 . "$HOME/.cargo/env"
 
 ## error: the `-Z` flag is only accepted on the nightly channel of Cargo, but this is the `stable` channel
@@ -510,30 +503,18 @@ rustc --version
 ## error: ".rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock" does not exist, unable to build with the standard library, try: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 
-mkdir rust
-cd rust
+## Download the NuttX Kernel and Apps
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
 cd nuttx
 
-git status && hash1=`git rev-parse HEAD`
-pushd ../apps
-git status && hash2=`git rev-parse HEAD`
-popd
-echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
-echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
-cat nuttx.hash
-
-make distclean
-## tools/configure.sh rv-virt:nsh64
-## tools/configure.sh rv-virt:knsh64
-## tools/configure.sh rv-virt:leds
+## Configure NuttX for RISC-V 64-bit QEMU with LEDs
+## (Alternatively: rv-virt:nsh64 or rv-virt:nsh or rv-virt:leds)
 tools/configure.sh rv-virt:leds64
 
-grep STACK .config
-
 ## error: Error loading target specification: Could not find specification for target "riscv64imafdc-unknown-nuttx-elf". Run `rustc --print target-list` for a list of built-in targets
-## Disable CONFIG_ARCH_FPU
+
+## Disable Floating Point: CONFIG_ARCH_FPU
 kconfig-tweak --disable CONFIG_ARCH_FPU
 
 ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
@@ -542,76 +523,21 @@ kconfig-tweak --enable CONFIG_FS_LARGEFILE
 kconfig-tweak --enable CONFIG_DEV_URANDOM
 kconfig-tweak --set-val CONFIG_TLS_NELEM 16
 
-## Enable Hello Rust Cargo App
+## Enable the Hello Rust Cargo App
+## Increase the App Stack Size from 2 KB to 16 KB (especially for 64-bit platforms)
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
-
-## For knsh64
 kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
 
 ## Update the Kconfig Dependencies
 make olddefconfig
 
-grep STACK .config
-
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x8006bbc0      2048      1016    49.6%    irq
-dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x8006e7f0      1904       888    46.6%    Idle_Task
-dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x8006fd38      2888      1944    67.3%    nsh_main
-dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
-QEMU: Terminated
-
-   Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
-error[E0308]: mismatched types
-    --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
-     |
-1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
-     |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
-     |                  |
-     |                  arguments to this function are incorrect
-     |
-     = note: expected raw pointer `*const u8`
-                found raw pointer `*const i8`
-note: associated function defined here
-    --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
-     |
-264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
-     |                         ^^^^^^^^
-
-macOS:
-error[E0308]: mismatched types
-    --> .rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
-     |
-1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
-     |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
-     |                  |
-     |                  arguments to this function are incorrect
-     |
-     = note: expected raw pointer `*const u8`
-                found raw pointer `*const i8`
-
-## Remember to patch fs.rs
-vi $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
-head -n 1049 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs | tail -n 17
-
-    #[cfg(not(any(
-        target_os = "android",
-        target_os = "linux",
-        target_os = "solaris",
-        target_os = "illumos",
-        target_os = "fuchsia",
-        target_os = "redox",
-        target_os = "aix",
-        target_os = "nto",
-        target_os = "vita",
-        target_os = "hurd",
-    )))]
-    fn name_cstr(&self) -> &CStr {
-        // Previously: unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
-        unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }
-    }
-
+## Build NuttX
 make -j
 
+## If it fails with "Mismatched Types":
+## Patch the file `fs.rs` (see below)
+
+## Start NuttX on QEMU RISC-V 64-bit
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -620,22 +546,106 @@ qemu-system-riscv64 \
   -kernel nuttx \
   -nographic
 
-uname -a
-hello
+## Inside QEMU: Run our Hello Rust App
 hello_rust_cargo
-
-## Dump the disassembly to nuttx.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  >nuttx.S \
-  2>&1
-
-riscv/leds64-nuttx.S
 ```
 
-TODO: Override nightly
+We'll see this inside QEMU Emulator...
+
+```bash
+TODO
+```
+
+[(See the __Ubuntu Build Log__)](https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5)
+
+[(See the __macOS Build Log__)](https://gist.github.com/lupyuen/a2b91b5cc15824a31c287fbb6cda5fa2)
+
+[(Also works for __rv-virt:leds__)](https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144)
+
+<hr>
+
+__Troubleshooting The Rust Build__
+
+- If the build fails with __"Mismatched Types"__...
+
+  ```text
+    Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+  error[E0308]: mismatched types
+      --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
+      |
+  1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
+      |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
+      |                  |
+      |                  arguments to this function are incorrect
+      |
+      = note: expected raw pointer `*const u8`
+                  found raw pointer `*const i8`
+  note: associated function defined here
+      --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
+      |
+  264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
+      |                         ^^^^^^^^
+  ```
+
+  Then edit this file...
+
+  ```bash
+  ## For Ubuntu
+  $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
+
+  $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
+  ## For macOS
+  ```
+
+  Change this function (line TODO)
+
+  ```rust
+      fn name_cstr(&self) -> &CStr {
+          unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
+      }
+  ```
+
+  To this...
+
+  ```rust
+      fn name_cstr(&self) -> &CStr {
+          unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }
+      }
+  ```
+
+  And verify the change...
+
+  ```bash
+  ## For Ubuntu
+  head -n 1049 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs \
+    | tail -n 17
+
+  ## For macOS
+  head -n 1049 $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs \
+    | tail -n 17
+
+  ## We should see
+  ## fn name_cstr(&self) -> &CStr {
+  ##   unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }
+  ```
+
+  Then rebuild with `make -j`
+
+
+TODO: Stack Overflow
+
+```text
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x8006bbc0      2048      1016    49.6%    irq
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x8006e7f0      1904       888    46.6%    Idle_Task
+dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x8006fd38      2888      1944    67.3%    nsh_main
+dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
+QEMU: Terminated
+```
+
+_What if we're using Rust already? And we don't wish to change the Default Toolchain?_
+
+Use `rustup override` to __Override the Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
 
 ```bash
 ## Set Rust to Nightly Build
@@ -648,7 +658,9 @@ rustup override list
 popd
 ```
 
-Sometimes we might need to clean up the __Rust Compiled Files__, if the compilation goes wonky...
+_Rust Build seems to break sometimes?_
+
+We might need to clean up the __Rust Compiled Files__, if the Rust Build goes wonky...
 
 ```bash
 ## Erase the Rust Build
