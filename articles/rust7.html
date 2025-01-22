@@ -77,7 +77,7 @@
 <li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">10 Appendix: Porting Nix to NuttX</a><ul></ul></li>
 <li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">11 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
-<p><strong>Freshly Baked:</strong> Here’s how we <a href="TODO"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
+<p><strong>Freshly Baked:</strong> Here’s how we <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -118,10 +118,18 @@ Features: + fs + ioctl</code></pre></div>
 <p>TODO: Instructions</p>
 <p>TODO: Run our Rust Hello App</p>
 <p>Some bits are a little wonky</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx-apps/pull/2487">examples: New app to build Rust with Cargo</a></p>
+</li>
+<li>
+<p><a href="https://github.com/rust-lang/rust/pull/127755">Add NuttX based targets for RISC-V and ARM</a></p>
+</li>
+</ul>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
 <p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
-<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: TODO</p>
+<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allow Serde to Serialize and Deserialize a Person Struct
 </span><span class="attr">#[derive(Serialize, Deserialize)]
@@ -149,7 +157,7 @@ Features: + fs + ioctl</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}</code></pre></div>
-<p>Now we <strong>Deserialize from JSON</strong>: TODO</p>
+<p>Now we <strong>Deserialize from JSON</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Declare a String with JSON inside
   </span><span class="kw">let </span>json_data = <span class="string">r#"
@@ -167,7 +175,7 @@ nsh&gt; hello_rust_cargo
     alice.name, alice.age);</code></pre></div>
 <p>Which prints…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Deserialized: Alice is 28 years old</code></pre></div>
-<p>Serde will also handle <strong>JSON Formatting</strong>: TODO</p>
+<p>Serde will also handle <strong>JSON Formatting</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Serialize our Person Struct
   // But neatly please
@@ -180,13 +188,15 @@ nsh&gt; hello_rust_cargo
 {
   &quot;name&quot;: &quot;Alice&quot;,
   &quot;age&quot;: 28
-}</code></pre></div><h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
+}</code></pre></div>
+<p><a href="https://bitboom.github.io/2020-10-22/serde-no-std">(Serde also runs on <strong>Rust Core Library</strong>, but super messy)</a></p>
+<h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
 <p><em>What’s this Tokio? Sounds like a city?</em></p>
 <p>Indeed! “Tokio” is inspired by Tokyo (and <a href="https://crates.io/crates/mio"><strong>Metal I/O</strong></a>)</p>
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> … provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion</p>
 </blockquote>
-<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: TODO</p>
+<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
 // To schedule Async Functions
@@ -236,7 +246,7 @@ Task 0 stopping</code></pre></div>
 </blockquote>
 <p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>… We spawn a few threads and call <strong>Async Functions</strong>.</p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
-<p><em>Why are we running <code>nix</code> on NuttX?</em></p>
+<p><em>We’re running nix on NuttX?</em></p>
 <p>Oh that’s <a href="https://crates.io/crates/nix"><strong><code>nix</code> Crate</strong></a> that provides <strong>Safer Rust Bindings</strong> for POSIX / Unix / Linux. (Nope, not NixOS)</p>
 <p>This is how we add the library to our <strong>Rust Hello App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
@@ -250,14 +260,14 @@ Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div>
 <p><em>The URL looks a little sus?</em></p>
-<p>That’s because the <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to make it work on NuttX. <a href="TODO">(Details in the <strong>Appendix</strong>)</a></p>
+<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="TODO">(Details in the <strong>Appendix</strong>)</a></p>
 <p><em>Why are we calling nix?</em></p>
 <p>We’re <strong>Blinking the LED</strong> on NuttX. We could call the <a href="https://crates.io/crates/libc"><strong>POSIX API</strong></a> direcly from Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
 <span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
 <span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
-<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code> (tweaked for NuttX). Like so: TODO</p>
+<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code> (tweaked for NuttX). Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -390,23 +400,12 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
 <p>TODO: Nix vs Rustix</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
-<p><em>Which platforms are supported?</em></p>
-<p>TODO</p>
+<p><em>Which platforms are supported for NuttX + Rust Standard Library?</em></p>
+<p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this article</strong></a> for updates.</p>
 <p><em>Will it run on a RISC-V SBC?</em></p>
-<p>Sorry RISC-V 64-bit Kernel Mode is <a href="TODO"><strong>not supported yet</strong></a>.</p>
+<p>Sorry 64-bit <strong>RISC-V Kernel Mode</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>.</p>
 <p><em>How to test?</em></p>
 <p>TODO: Build Farm? Docker? How to bisect</p>
-<div class="example-wrap"><pre class="language-text"><code>https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs
-
-examples: New app to build Rust with Cargo
-https://github.com/apache/nuttx-apps/pull/2487
-
-Add NuttX based targets for RISC-V and ARM
-https://github.com/rust-lang/rust/pull/127755
-
-The serde with no_std
-https://bitboom.github.io/2020-10-22/serde-no-std
-</code></pre></div>
 <p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
 <p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
@@ -437,20 +436,7 @@ https://bitboom.github.io/2020-10-22/serde-no-std
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>8 Appendix: Build NuttX for Rust Standard Library</h1>
 <p>TODO: Prerequisite</p>
-<div class="example-wrap"><pre class="language-text"><code>Rust in NuttX
-https://nuttx.apache.org/docs/latest/guides/rust.html
-
-examples: New app to build Rust with Cargo
-https://github.com/apache/nuttx-apps/pull/2487
-
-rust/hello: Optimize the build flags #2955
-https://github.com/apache/nuttx-apps/pull/2955
-
-https://github.com/apache/nuttx-apps/pull/2487#pullrequestreview-2538724037
-Tested OK with make and rv-virt:nsh. Thank you so much! :-)
-https://gist.github.com/lupyuen/37a28cc3ae0443aa29800d252e4345cf
-
-hello_rust_cargo on Apache NuttX RTOS rv-virt:leds64
+<div class="example-wrap"><pre class="language-text"><code>hello_rust_cargo on Apache NuttX RTOS rv-virt:leds64
 https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5
 
 hello_rust_cargo on macOS
@@ -706,10 +692,14 @@ Task 1 stopping
 Task 0 stopping</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: <a href="https://tokio.rs/tokio/topics/bridging">Bridging with sync code</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>        .worker_threads(2)
+<p><em>What if we increase the Worker Threads? From 1 to 2?</em></p>
 
-pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Two Worker Threads instead of One
+</span><span class="kw">let </span>runtime = tokio::runtime::Builder
+  ::new_multi_thread() <span class="comment">// New Multi-Threaded Scheduler
+  </span>.worker_threads(<span class="number">2</span>)   <span class="comment">// With Two New NuttX Threads for our Scheduler</span></code></pre></div>
+<p>TODO: Not much difference?</p>
+<div class="example-wrap"><pre class="language-text"><code>pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
 nx_pthread_create: entry=0x80048f10, arg=0x800873e8
 pthread_create: pthread_entry=0x80048f10, arg=0x80287830
 nx_pthread_create: entry=0x80048f10, arg=0x80287830
@@ -726,62 +716,40 @@ nsh&gt; </code></pre></div>
 <p>TODO: pthread_create</p>
 <div class="example-wrap"><pre class="language-text"><code>https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
 
+#include &lt;debug.h&gt;////
+int ioctl(int fd, int req, ...)
+{
+  // _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////
+
+
 https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
 
-https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
-
+#include &lt;debug.h&gt;////
 int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
 {
   _info(&quot;pthread_entry=%p, arg=%p&quot;, pthread_entry, arg);////
 
-    tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(async {
-            println!(&quot;Hello world from tokio!&quot;);
-        });
+https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
 
-    println!(&quot;Looping Forever...&quot;);
-    loop {
-        // Do nothing
-    }
-}
-
-#[no_mangle]
-pub extern &quot;C&quot; fn pthread_set_name_np() {}
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
-board_userled: LED 1 set to 1
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-board_userled: LED 1 set to 0
-board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
+#include &lt;debug.h&gt;////
+int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
+                      FAR const pthread_attr_t *attr,
+                      pthread_startroutine_t entry, pthread_addr_t arg)
 {
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-pthread_create: pthread_entry=0x80047938, arg=0x8007ff18
-nx_pthread_create: entry=0x80047938, arg=0x8007ff18
-Hello world from tokio!
-Looping Forever...</code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
+  _info(&quot;entry=%p, arg=%p&quot;, entry, arg);////
+</code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
 <p>TODO: Redox, BSD not Linux, PR</p>
-<div class="example-wrap"><pre class="language-bash"><code>https://crates.io/crates/nix
-https://docs.rs/nix/0.29.0/nix/
-
-$ cd ../apps/examples/rust/hello
+<p><em>What happens when we call nix crate as-is on NuttX?</em></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
-
 Adding nix v0.29.0 to dependencies
 Features: + fs + ioctl
 33 deactivated features
+
+$ popd
+$ make -j
 
 error[E0432]: unresolved import `self::consts`
   --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:19:15
