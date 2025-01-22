@@ -555,15 +555,9 @@ head -n 1049 $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/s
 ## fn name_cstr(&amp;self) -&gt; &amp;CStr {
 ##   unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }</code></pre></div>
 <p>Then rebuild with <code>make -j</code></p>
+<p>TODO: will be fixed</p>
 </li>
 </ul>
-<p>TODO: Stack Overflow</p>
-<div class="example-wrap"><pre class="language-text"><code>dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x8006bbc0      2048      1016    49.6%    irq
-dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x8006e7f0      1904       888    46.6%    Idle_Task
-dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x8006fd38      2888      1944    67.3%    nsh_main
-dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
-QEMU: Terminated</code></pre></div>
 <p><em>What if we’re using Rust already? And we don’t wish to change the Default Toolchain?</em></p>
 <p>Use <code>rustup override</code> to <strong>Override the Toolchain</strong>. Do it in the <strong>Parent Folder</strong> of <code>nuttx</code> and <code>apps</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set Rust to Nightly Build
@@ -574,6 +568,17 @@ rustup override list
 rustup override set nightly
 rustup override list
 popd</code></pre></div>
+<p><em>Rust App is crashing in QEMU?</em></p>
+<p>We might see a Stack Dump that <strong>Loops Forever</strong>. Or we might see <strong>100% Full</strong> for the App Stack…</p>
+<div class="example-wrap"><pre class="language-text"><code>dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo</code></pre></div>
+<p>Then increase the App Stack Size…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Increase the App Stack Size to 64 KB
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
+
+## Update the Kconfig Dependencies and rebuild
+make olddefconfig
+make -j</code></pre></div>
 <p><em>Rust Build seems to break sometimes?</em></p>
 <p>We might need to clean up the <strong>Rust Compiled Files</strong>, if the Rust Build goes wonky…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Erase the Rust Build
