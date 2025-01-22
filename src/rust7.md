@@ -57,15 +57,50 @@ In this article we...
 
 # Compile our Rust Hello App
 
-TODO: Instructions
+_How to build NuttX + Rust Standard Library?_
 
-TODO: Run our Rust Hello App
+Follow the instructions here...
 
-Some bits are a little wonky
+- TODO: Instructions
 
-- [examples: New app to build Rust with Cargo](https://github.com/apache/nuttx-apps/pull/2487)
+Then run the (thoroughly revamped) [__Rust Hello App__](TODO) with __QEMU RISC-V Emulator__...
 
-- [Add NuttX based targets for RISC-V and ARM](https://github.com/rust-lang/rust/pull/127755)
+```bash
+## Start NuttX on QEMU RISC-V 64-bit
+$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Run the Rust Hello App
+NuttShell (NSH) NuttX-12.8.0
+nsh> hello_rust_cargo
+
+{"name":"John","age":30}
+{"name":"Jane","age":25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  "name": "Alice",
+  "age": 28
+}
+Hello world from tokio!
+```
+
+Some bits are a little wonky (but will get better)
+
+- Supports only [__Arm and RISC-V__](https://nuttx.apache.org/docs/latest/guides/rust.html) architectures _(32-bit and 64-bit)_
+
+- Works only on __Rust Nightly Toolchain__ _(not Rust Stable)_
+
+- Needs a tiny patch to __Local Toolchain__ _(pal/unix/fs.rs)_
+
+- Doesn't support __RISC-V Floating Point__
+
+What's inside the brand new Rust Hello App? We dive inside...
 
 TODO: Pic of JSON with Serde
 
@@ -96,7 +131,7 @@ pub extern "C" fn hello_rust_cargo_main() {
   };
 
   // Serialize our Person Struct
-  let json_str = serde_json  // Rust Struct
+  let json_str = serde_json // Person Struct
     ::to_string(&john)  // Becomes a String
     .unwrap();          // Halt on Error
   println!("{}", json_str);
@@ -113,20 +148,20 @@ nsh> hello_rust_cargo
 Now we __Deserialize from JSON__: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
 
 ```rust
-  // Declare a String with JSON inside
-  let json_data = r#"
-    {
-      "name": "Alice",
-      "age": 28
-    }"#;
+// Declare a String with JSON inside
+let json_data = r#"
+  {
+    "name": "Alice",
+    "age": 28
+  }"#;
 
-  // Deserialize our JSON String
-  // Into a Person Struct
-  let alice: Person = serde_json
-    ::from_str(json_data)
-    .unwrap();
-  println!("Deserialized: {} is {} years old",
-    alice.name, alice.age);
+// Deserialize our JSON String
+// Into a Person Struct
+let alice: Person = serde_json // Get Person Struct
+  ::from_str(json_data)  // From JSON String
+  .unwrap();             // Halt on Error
+println!("Deserialized: {} is {} years old",
+  alice.name, alice.age);
 ```
 
 Which prints...
@@ -140,9 +175,9 @@ Serde will also handle __JSON Formatting__: [nuttx-apps/lib.rs](https://github.c
 ```rust
   // Serialize our Person Struct
   // But neatly please
-  let pretty_json_str = serde_json
-    ::to_string_pretty(&alice)
-    .unwrap();
+  let pretty_json_str = serde_json // Person Struct
+    ::to_string_pretty(&alice)     // Becomes a Formatted String
+    .unwrap();                     // Halt on Error
   println!("Pretty JSON:\n{}", pretty_json_str);
 ```
 
@@ -223,11 +258,11 @@ TODO: Screenshot of Tokio Async Multi-Thread
 
 _But NuttX has POSIX Threads. Why use Async Functions?_
 
-TODO: Threads vs Tasks vs Processes
+Think [__Node.js__](https://en.wikipedia.org/wiki/Node.js#Threading) and its _Single-Thread Event Loop_, making _Non-Blocking I/O Calls_. Supporting tens of thousands of concurrent connections. _(Without costly Thread Context Switching)_
 
-TODO: NodeJS
+Today we can do the same with __NuttX and Async Rust__.
 
-(We're not calling it _"Async Task"_. Because a Task in NuttX is more like a NuttX Process)
+(OK we won't call them _"Async Tasks"_. Because a Task in NuttX is more like a NuttX Process)
 
 _How will we use Tokio?_
 
@@ -497,6 +532,8 @@ TODO: Pic of LOC
 
 # What's Next
 
+[__Upcoming:__ Slint Rust GUI for NuttX 🎉](https://github.com/apache/nuttx-apps/pull/2967)
+
 _Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?_
 
 Arm and RISC-V (32-bit and 64-bit). [__Check this doc__](https://nuttx.apache.org/docs/latest/guides/rust.html) for updates.
@@ -636,24 +673,26 @@ __Troubleshooting The Rust Build__
   <span style="font-size:80%">
 
   ```bash
-    Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+  Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
   error[E0308]: mismatched types
       --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
   1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
-      |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
-      |                  |
-      |                  arguments to this function are incorrect
-      = note: expected raw pointer `*const u8`
+       |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
+       |                  |
+       |                  arguments to this function are incorrect
+       = note: expected raw pointer `*const u8`
                   found raw pointer `*const i8`
   note: associated function defined here
       --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
   264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
-      |                         ^^^^^^^^
+       |                         ^^^^^^^^
   ```
 
   </span>
 
   Then edit this file...
+
+  <span style="font-size:80%">
 
   ```bash
   ## For Ubuntu
@@ -663,7 +702,11 @@ __Troubleshooting The Rust Build__
   $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
   ```
 
+  </span>
+
   Change the __name_cstr__ function at __Line 1036__...
+
+  <span style="font-size:80%">
 
   ```rust
       fn name_cstr(&self) -> &CStr {
@@ -671,7 +714,11 @@ __Troubleshooting The Rust Build__
       }
   ```
 
+  </span>
+
   To this...
+
+  <span style="font-size:80%">
 
   ```rust
       fn name_cstr(&self) -> &CStr {
@@ -679,7 +726,11 @@ __Troubleshooting The Rust Build__
       }
   ```
 
+  </span>
+
   And verify the change...
+
+  <span style="font-size:80%">
 
   ```bash
   ## For Ubuntu
@@ -695,7 +746,9 @@ __Troubleshooting The Rust Build__
   ##   unsafe { CStr::from_ptr(self.entry.d_name.as_ptr() as *const u8) }
   ```
 
-  Then rebuild with `make -j`
+  </span>
+
+  Finally rebuild with `make -j`
 
   TODO: will be fixed
 
@@ -810,7 +863,11 @@ __Troubleshooting The Rust Build__
 
   Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
 
-TODO: Link to Rust PRs
+More details here...
+
+- [__examples: New app to build Rust with Cargo__](https://github.com/apache/nuttx-apps/pull/2487)
+
+- [__Rust: Add NuttX based targets for RISC-V and ARM__](https://github.com/rust-lang/rust/pull/127755)
 
 TODO: Screenshot of Tokio Async Multi-Thread
 
