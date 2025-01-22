@@ -90,17 +90,17 @@ Pretty JSON:
 Hello world from tokio!
 ```
 
-Some bits are a little wonky (but will get better)
+Some bits are [__a little wonky__](TODO) (but will get better)
 
-- Supports only [__Arm and RISC-V__](https://nuttx.apache.org/docs/latest/guides/rust.html) architectures _(32-bit and 64-bit)_
+- Supports [__Arm and RISC-V__](https://nuttx.apache.org/docs/latest/guides/rust.html) architectures _(32-bit and 64-bit)_
 
-- Works only on __Rust Nightly Toolchain__ _(not Rust Stable)_
+- Works on __Rust Nightly Toolchain__ _(not Rust Stable)_
 
 - Needs a tiny patch to __Local Toolchain__ _(pal/unix/fs.rs)_
 
-- Doesn't support __RISC-V Floating Point__
+- Sorry no __RISC-V Floating Point__
 
-What's inside the brand new Rust Hello App? We dive inside...
+What's inside the brand new Rust Hello App? We dive in...
 
 TODO: Pic of JSON with Serde
 
