@@ -77,6 +77,7 @@
 <li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">10 Appendix: Porting Nix to NuttX</a><ul></ul></li>
 <li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">11 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.jpg" alt="TODO" /></p>
+<p>TODO: Screenshot of VSCode</p>
 <p><strong>Freshly Baked:</strong> Here’s how we <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="TODO"><strong>Apache NuttX RTOS</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
@@ -130,6 +131,7 @@ Features: + fs + ioctl</code></pre></div>
 <p><a href="https://github.com/rust-lang/rust/pull/127755">Add NuttX based targets for RISC-V and ARM</a></p>
 </li>
 </ul>
+<p>TODO: Pic of JSON with Serde</p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
 <p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
@@ -236,19 +238,22 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Check the Appendix for the <strong>Tokio Async Demo</strong>. That works beautifully on NuttX!</p>
+<p>Check the Appendix for the <strong>Tokio Async Demo</strong>. That works beautifully on NuttX! (Pic below)</p>
 <ul>
 <li>TODO: test_async</li>
 </ul>
+<p>TODO: Screenshot of Tokio Async Multi-Thread</p>
 <p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>TODO: Threads vs Tasks vs Processes</p>
 <p>TODO: NodeJS</p>
 <p>(We’re not calling it <em>“Async Task”</em>. Because a Task in NuttX is more like a NuttX Process)</p>
-<p><em>How would we use Tokio?</em></p>
+<p><em>How will we use Tokio?</em></p>
 <blockquote>
 <p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
 </blockquote>
 <p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>… We spawn a few threads and call <strong>Async Functions</strong>.</p>
+<p>(Check out <a href="https://tokio.rs/tokio/tutorial/select"><strong>Tokio Select</strong></a> and <a href="https://tokio.rs/tokio/tutorial/streams"><strong>Tokio Streams</strong></a>)</p>
+<p>TODO: Screenshot of VSCode</p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p><em>We’re running nix on NuttX?</em></p>
 <p>Oh that’s <a href="https://crates.io/crates/nix"><strong><code>nix</code> Crate</strong></a> that provides <strong>Safer Rust Bindings</strong> for POSIX / Unix / Linux. (Nope, not NixOS)</p>
@@ -368,7 +373,8 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   .unwrap()      <span class="comment">// Returns an Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
 <p>But we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
-<p>Oops! Our Owned File Descriptor goes <strong>out of scope</strong> and gets dropped by Rust.</p>
+<p>Oops! Our Owned File Descriptor goes <strong>Out Of Scope</strong> and gets dropped by Rust…</p>
+<p>TODO: Pic of drop</p>
 <p>Which means Rust will helpfully close <em>/dev/userleds</em>. Since it’s closed, the Raw File Descriptor <strong>becomes invalid</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Set the LEDs via ioctl()
@@ -403,21 +409,30 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   </span>) <span class="comment">// Returns the Value Read (Or Error)
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
-<p>TODO: Nix vs Rustix</p>
-<p>Updated nix</p>
-<div class="example-wrap"><pre class="language-text"><code>Implement I/O Safety #1750
-https://github.com/nix-rust/nix/issues/1750
-
-Feature Name: io_safety
-https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
-<p><em>Which platforms are supported for NuttX + Rust Standard Library?</em></p>
-<p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this article</strong></a> for updates.</p>
-<p><em>Will it run on a RISC-V SBC?</em></p>
-<p>Sorry 64-bit <strong>RISC-V Kernel Mode</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>.</p>
-<p><em>How to test?</em></p>
-<p>TODO: Build Farm? Docker? How to bisect</p>
-<p>Next Article: Why <strong>Sync-Build-Ingest</strong> is super important for NuttX Continuous Integration. And how we monitor it with our <strong>Magic Disco Light</strong>.</p>
-<p>After That: Since we can <strong>Rewind NuttX Builds</strong> and automatically <strong>Git Bisect</strong>… Can we create a Bot that will fetch the <strong>Failed Builds from NuttX Dashboard</strong>, identify the Breaking PR, and escalate to the right folks?</p>
+<p><em>Nix vs Rustix: They feel quite similar?</em></p>
+<p>Yeah Nix used to be a lot simpler, supporting only <strong>Raw File Descriptors</strong>. (Instead of Owned File Descriptors)</p>
+<p>But Nix is now moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Which means Nix is becoming more <strong>Rustix-like</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/nix-rust/nix/issues/1750"><strong>Nix: Implement I/O Safety</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md"><strong>Rust I/O Safety</strong></a> <em>(used in Rustix)</em></p>
+</li>
+</ul>
+<p>TODO: Pic of NuttX vs Rustix</p>
+<p><em>Which shall we use: Nix or Rustix?</em></p>
+<p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code)</p>
+<p>TODO: Pic of LOC</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<p><em>Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?</em></p>
+<p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this doc</strong></a> for updates.</p>
+<p>Sorry 64-bit <strong>RISC-V Kernel Mode</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>. So it <strong>won’t run on RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
+<p><em>Sounds like we need plenty of Rust Testing? For every platform?</em></p>
+<p>Yeah maybe we need <a href="TODO"><strong>Daily Automated Testing</strong></a> of NuttX + Rust Standard Library on <a href="TODO"><strong>NuttX Build Farm</strong></a>?</p>
+<p>With <a href="TODO"><strong>QEMU Emulator</strong></a> or a <a href="TODO"><strong>Real Device</strong></a>?</p>
+<p>And when the Daily Test fails: How to <a href="TODO"><strong>Auto-Rewind the Build</strong></a> and discover the Breaking Commit? Hmmm…</p>
+<hr>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
@@ -632,7 +647,10 @@ make -j</code></pre></div>
 pushd ../apps/examples/rust/hello
 cargo clean
 popd</code></pre></div>
+<p>TODO: Pic of VSCode</p>
 <p>TODO: Open in VSCode</p>
+<p>TODO: Link to Rust PRs</p>
+<p>TODO: Screenshot of Tokio Async Multi-Thread</p>
 <h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
