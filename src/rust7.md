@@ -576,7 +576,7 @@ __To Quit QEMU:__ Press __`Ctrl-a`__ then __`x`__
 
 [(See the __macOS Build Log__)](https://gist.github.com/lupyuen/a2b91b5cc15824a31c287fbb6cda5fa2)
 
-[(Also works for __rv-virt:leds__)](https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144)
+[(Also works for 32-bit __rv-virt:leds__)](https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144)
 
 <hr>
 
