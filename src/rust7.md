@@ -697,7 +697,7 @@ __Troubleshooting The Rust Build__
 
 _What if we're using Rust already? And we don't wish to change the Default Toolchain?_
 
-Use `rustup override` to __Override the Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
+Use `rustup override` to __Override the Folder Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
 
 ```bash
 ## Set Rust to Nightly Build
