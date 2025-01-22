@@ -328,20 +328,30 @@ _How to run the Rust Blinky App?_
 1.  Then run it with __QEMU RISC-V Emulator__
 
     ```bash
-    TODO
+    $ qemu-system-riscv64 \
+      -semihosting \
+      -M virt,aclint=on \
+      -cpu rv64 \
+      -bios none \
+      -kernel nuttx \
+      -nographic
+
+    NuttShell (NSH) NuttX-12.7.0
+    nsh> hello_rust_cargo
+
+    board_userled: LED 1 set to 1
+    board_userled: LED 1 set to 0
     ```
 
     NuttX blinks the __Emulated LED__ on QEMU Emulator!
 
-    [(See the __Complete Log__)](TODO)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af)
 
 _How to code Rust Apps for NuttX?_
 
 We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
 Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
-
-[(What about __Rust Embedded HAL__)](TODO)
 
 # Owned File Descriptors
 
@@ -482,6 +492,8 @@ _Which shall we use: Nix or Rustix?_
 Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). Which might hinder our porting to NuttX...
 
 TODO: Pic of LOC
+
+[(What about __Rust Embedded HAL__)](TODO)
 
 # What's Next
 
