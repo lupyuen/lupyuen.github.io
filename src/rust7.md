@@ -445,9 +445,9 @@ __Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpfu
 
 # Nix vs Rustix
 
-_Is there a safer way to call ioctl()?_
+_Is there a Safer Way to call ioctl()?_
 
-Calling _ioctl()_ from Rust will surely get messy: It's an __Unsafe Call__ that might cause bad writes into the NuttX Kernel! (If we're not careful)
+Calling _ioctl()_ from Rust will surely get messy: It's an __Unsafe Call__ that might cause bad writes into the NuttX Kernel! _(If we're not careful)_
 
 At the top of the article, we saw __`nix`__ crate calling _ioctl()_. Now we look at [__Rustix__](TODO) calling _ioctl()_: [rustix/fs/ioctl.rs](https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32)
 
@@ -485,7 +485,7 @@ But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which
 
 - [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
 
-TODO: Pic of NuttX vs Rustix
+TODO: Pic of Nix vs Rustix
 
 _Which shall we use: Nix or Rustix?_
 
@@ -1389,6 +1389,8 @@ _Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?_
 
 We run `hello_rust_cargo &` to put it in the background...
 
+<span style="font-size:80%">
+
 ```bash
 nsh> hello_rust_cargo &
 Hello world from tokio!
@@ -1399,6 +1401,8 @@ nsh> ps
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
     4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo
 ```
+
+</span>
 
 `ps` says that there's only One Single NuttX Task `hello_rust_cargo`. And no other NuttX Tasks.
 
