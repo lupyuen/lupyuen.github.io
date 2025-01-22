@@ -402,8 +402,8 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
 <p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
-<p><em>Is there a safer way to call ioctl()?</em></p>
-<p>Calling <em>ioctl()</em> from Rust will surely get messy: It’s an <strong>Unsafe Call</strong> that might cause bad writes into the NuttX Kernel! (If we’re not careful)</p>
+<p><em>Is there a Safer Way to call ioctl()?</em></p>
+<p>Calling <em>ioctl()</em> from Rust will surely get messy: It’s an <strong>Unsafe Call</strong> that might cause bad writes into the NuttX Kernel! <em>(If we’re not careful)</em></p>
 <p>At the top of the article, we saw <strong><code>nix</code></strong> crate calling <em>ioctl()</em>. Now we look at <a href="TODO"><strong>Rustix</strong></a> calling <em>ioctl()</em>: <a href="https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32">rustix/fs/ioctl.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// In Rustix: ioctl() is also unsafe
@@ -437,7 +437,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md"><strong>Rust I/O Safety</strong></a> <em>(used in Rustix and New Nix)</em></p>
 </li>
 </ul>
-<p>TODO: Pic of NuttX vs Rustix</p>
+<p>TODO: Pic of Nix vs Rustix</p>
 <p><em>Which shall we use: Nix or Rustix?</em></p>
 <p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
 <p>TODO: Pic of LOC</p>
@@ -1130,6 +1130,7 @@ core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDanglin
 <p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
 <p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
 <p>We run <code>hello_rust_cargo &amp;</code> to put it in the background…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo &amp;
 Hello world from tokio!
 
@@ -1137,7 +1138,7 @@ nsh&gt; ps
   PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
     0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
-    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div>
+    4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div></span>
 <p><code>ps</code> says that there’s only One Single NuttX Task <code>hello_rust_cargo</code>. And no other NuttX Tasks.</p>
 <p><a href="https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961">(See the <strong>Complete Log</strong>)</a></p>
 
