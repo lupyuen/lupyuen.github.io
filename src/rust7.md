@@ -389,7 +389,7 @@ _What's a Raw File Descriptor?_
 
 In NuttX and POSIX: [__Raw File Descriptor__](https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71) is a __Plain Integer__ that specifies an I/O Stream...
 
-|File Descriptor|Purpose|
+|File Descriptor|I/O Stream|
 |:---:|:----|
 | 0 | Standard Input
 | 1 | Standard Output
