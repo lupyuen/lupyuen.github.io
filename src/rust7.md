@@ -493,8 +493,8 @@ TODO: Prerequisite
 
 ```bash
 ## Install Rust: https://rustup.rs/
+## Select "Standard Installation"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-## Select Standard Installation 
 . "$HOME/.cargo/env"
 
 ## Switch to the Nightly Toolchain
