@@ -399,7 +399,12 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
 <p>TODO: Nix vs Rustix</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<p>Updated nix</p>
+<div class="example-wrap"><pre class="language-text"><code>Implement I/O Safety #1750
+https://github.com/nix-rust/nix/issues/1750
+
+Feature Name: io_safety
+https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Which platforms are supported for NuttX + Rust Standard Library?</em></p>
 <p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this article</strong></a> for updates.</p>
 <p><em>Will it run on a RISC-V SBC?</em></p>
@@ -751,20 +756,23 @@ Features: + fs + ioctl
 $ popd
 $ make -j
 
-error[E0432]: unresolved import `self::consts`
-  --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:19:15
+error[E0432]: unresolved import `self::const](TODO)
+
+  --&gt;   [errno.rs:19:15
    |
 19 | pub use self::consts::*;
    |               ^^^^^^ could not find `consts` in `self`
 
-error[E0432]: unresolved import `self::Errno`
-   --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs:198:15
+error[E0432]: unresolved import `self::Errn](TODO)
+
+   --&gt;  [errno.rs:198:15
     |
 198 |     use self::Errno::*;
     |               ^^^^^ could not find `Errno` in `self`
 
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs:2:5
+error[E0432]: unresolved import `crate::errno::Errn](TODO)
+
+ --&gt;  [fcntl.rs:2:5
   |
 2 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
@@ -772,8 +780,9 @@ error[E0432]: unresolved import `crate::errno::Errno`
   |     |             help: a similar name exists in the module: `errno`
   |     no `Errno` in `errno`
 
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/signal.rs:6:5
+error[E0432]: unresolved import `crate::errno::Errn](TODO)
+
+ --&gt;  [sys/signal.rs:6:5
   |
 6 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
@@ -781,8 +790,9 @@ error[E0432]: unresolved import `crate::errno::Errno`
   |     |             help: a similar name exists in the module: `errno`
   |     no `Errno` in `errno`
 
-error[E0432]: unresolved import `crate::errno::Errno`
- --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs:3:5
+error[E0432]: unresolved import `crate::errno::Errn](TODO)
+
+ --&gt;  [unistd.rs:3:5
   |
 3 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
@@ -790,8 +800,9 @@ error[E0432]: unresolved import `crate::errno::Errno`
   |     |             help: a similar name exists in the module: `errno`
   |     no `Errno` in `errno`
 
-error[E0432]: unresolved import `errno::Errno`
-   --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/lib.rs:194:5
+error[E0432]: unresolved import `errno::Errn](TODO)
+
+   --&gt;  [lib.rs:194:5
     |
 194 | use errno::Errno;
     |     ^^^^^^^-----
@@ -799,139 +810,82 @@ error[E0432]: unresolved import `errno::Errno`
     |     |      help: a similar name exists in the module: `errno`
     |     no `Errno` in `errno`</code></pre></div>
 <p>TODO: Fix nix</p>
-<div class="example-wrap"><pre class="language-text"><code>.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs
-Copy #[cfg(target_os = &quot;freebsd&quot;)]
-to #[cfg(target_os = &quot;nuttx&quot;)]
+<ol>
+<li>
+<p>We modified <a href="TODO">src/errno.rs</a>, copying FreeBSD <code>#[cfg(target_os = "freebsd")]</code> to NuttX <code>#[cfg(target_os = "nuttx")]</code></p>
+</li>
+<li>
+<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? That’s why a lot of the modded code looks like this: <a href="TODO">src/sys/time.rs</a></p>
 
-.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs
-    /// Leave the timestamp unchanged.
-    #[cfg(not(any(target_os = &quot;redox&quot;, target_os=&quot;nuttx&quot;)))]////
-    // At the time of writing this PR, redox does not support this feature
-    pub const UTIME_OMIT: TimeSpec =
-        TimeSpec::new(0, libc::UTIME_OMIT as timespec_tv_nsec_t);
-    /// Update the timestamp to `Now`
-    // At the time of writing this PR, redox does not support this feature
-    #[cfg(not(any(target_os = &quot;redox&quot;, target_os = &quot;nuttx&quot;)))]////
-    pub const UTIME_NOW: TimeSpec =
-        TimeSpec::new(0, libc::UTIME_NOW as timespec_tv_nsec_t);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os=<span class="string">"nuttx"</span>)))]
+</span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...
 
-cp \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/errno.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/time.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/fcntl.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/unistd.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/stat.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/statvfs.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/mod.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/mod.rs \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0/src/sys/ioctl/bsd.rs \
-  .
-cp -r \
-  .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.29.0 \
-  .</code></pre></div>
-<p>TODO: panic</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
-fd=3
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; hello_rust_cargo
-
-thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:18:71:
-called `Result::unwrap()` on an `Err` value: ENOENT
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; </code></pre></div>
-<p>TODO: ioctl</p>
-<div class="example-wrap"><pre class="language-text"><code>https://docs.rs/nix/latest/nix/sys/ioctl/
-
+<span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os = <span class="string">"nuttx"</span>)))]
+</span><span class="kw">pub const </span>UTIME_NOW: TimeSpec = ...</code></pre></div>
+</li>
+<li>
+<p><strong>For NuttX ioctl():</strong> It works more like BSD (parameter is <code>int</code>) than Linux (parameter is <code>long</code>): <a href="TODO">sys/ioctl/mod.rs</a></p>
+<p>TODO</p>
+</li>
+<li>
+<p>Here are all the files we modified:</p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files">All Modified Files</a></p>
+<p><a href="TODO">errno.rs</a></p>
+<p><a href="TODO">sys/time.rs</a></p>
+<p><a href="TODO">fcntl.rs</a></p>
+<p><a href="TODO">unistd.rs</a></p>
+<p><a href="TODO">sys/stat.rs</a></p>
+<p><a href="TODO">sys/statvfs.rs</a></p>
+<p><a href="TODO">sys/mod.rs</a></p>
+<p><a href="TODO">sys/ioctl/mod.rs</a></p>
+<p><a href="TODO">sys/ioctl/bsd.rs</a></p>
+</li>
+</ol>
+<hr>
+<p><strong>Troubleshooting NuttX ioctl()</strong></p>
+<p>To figure out if nix was passing parameters correctly to NuttX: We inserted Debug Code into NuttX Kernel…</p>
+<div class="example-wrap"><pre class="language-c"><code>TODO
 riscv/nuttx/fs/vfs/fs_ioctl.c
+#include &lt;debug.h&gt;
 int ioctl(int fd, int req, ...) {
-  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////
+  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////</code></pre></div>
+<p>Which <a href="https://docs.rs/nix/latest/nix/sys/ioctl/"><strong>Ioctl Macro</strong></a> shall we use in nix? We tried <strong>ioctl_none!</strong>…</p>
 
-    const ULEDIOC_SETALL: i32 = 0x1d03;
-    ioctl_none!(led_on, ULEDIOC_SETALL, 1);
-    unsafe { led_on(fd).unwrap(); }
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
+<span class="macro">ioctl_none!</span>(led_on, ULEDIOC_SETALL, <span class="number">1</span>);
+<span class="kw">unsafe </span>{ led_on(fd).unwrap(); }</code></pre></div>
+<p>But the <strong>ioctl() Command Code</strong> got mangled up (<code>0x201d0301</code> should be <code>0x1d03</code>)</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
 fd=3
 ioctl: fd=0x3, req=0x201d0301
 
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:31:25:
 called `Result::unwrap()` on an `Err` value: ENOTTY
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
+<p>Then we tried <strong>ioctl_write_int!</strong>…</p>
 
-    const ULEDIOC_SETALL: i32 = 0x1d03;
-    // ioctl_none!(led_on, ULEDIOC_SETALL, 1);
-    ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
-    unsafe { led_on(fd, 1).unwrap(); }
-    unsafe { led_on(fd, 0).unwrap(); }
-
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
-fd=3
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
+<span class="macro">ioctl_write_int!</span>(led_on, ULEDIOC_SETALL, <span class="number">1</span>);
+<span class="kw">unsafe </span>{ led_on(fd, <span class="number">1</span>).unwrap(); }</code></pre></div>
+<p>Nope the <strong>ioctl() Command Code</strong> is still mangled (<code>0x801d0301</code> should be <code>0x1d03</code>)</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 ioctl: fd=0x3, req=0x801d0301
-
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:30:28:
-called `Result::unwrap()` on an `Err` value: ENOTTY
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102</code></pre></div>
-<p>ioctl OK yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>    const ULEDIOC_SETALL: i32 = 0x1d03;
-    ioctl_write_int_bad!(led_set_all, ULEDIOC_SETALL);
+called `Result::unwrap()` on an `Err` value: ENOTTY</code></pre></div>
+<p>Finally this works: <strong>ioctl_write_int_bad!</strong>…</p>
 
-    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
-    unsafe { led_set_all(fd, 1).unwrap(); }
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
+<span class="macro">ioctl_write_int_bad!</span>(led_set_all, ULEDIOC_SETALL);
 
-    // Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
-    unsafe { led_set_all(fd, 0).unwrap(); }
+<span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+</span><span class="kw">unsafe </span>{ led_set_all(fd, <span class="number">1</span>).unwrap(); }
 
-NuttShell (NSH) NuttX-12.7.0
-nsh&gt; ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-hello_rust_cargo
-ioctl: fd=0x0, req=0x101
-ioctl: fd=0x0, req=0x102
-ioctl: fd=0x1, req=0x118
+<span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
+</span><span class="kw">unsafe </span>{ led_set_all(fd, <span class="number">0</span>).unwrap(); }</code></pre></div>
+<p><strong>ioctl() Command Code</strong> <code>0x1d03</code> is hunky dory yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
 fd=3
 ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 1
@@ -940,27 +894,7 @@ board_userled: LED 3 set to 0
 ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0
-{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
-Hello world from tokio!</code></pre></div>
-<p>Updated nix</p>
-<div class="example-wrap"><pre class="language-text"><code>Add support for NuttX #1
-https://github.com/lupyuen/nix/pull/1/files
-
-Implement I/O Safety #1750
-https://github.com/nix-rust/nix/issues/1750
-
-Feature Name: io_safety
-https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre></div>
-<p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">Rustix Ioctl</a></p>
-<h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
+board_userled: LED 3 set to 0</code></pre></div><h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
 <p>TODO make V=1</p>
 <div class="example-wrap"><pre class="language-text"><code>`make V=1` for `rv-virt:leds64`
 https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
