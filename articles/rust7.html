@@ -899,19 +899,29 @@ error[E0432]: unresolved import `crate::errno::Errno`
 2 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
   |     no `Errno` in `errno`</code></pre></div></span>
-<p>Plus many many errors. That’s why we <strong>Customised the <code>nix</code> Crate</strong> for NuttX…</p>
+<p>Plus many many errors. That’s why we <a href="https://github.com/lupyuen/nix/tree/nuttx"><strong>Customised the <code>nix</code> Crate</strong></a> for NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
+$ cargo add nix \
+  --features fs,ioctl \
+  --git https://github.com/lupyuen/nix.git \
+  --branch nuttx
+
+Updating git repository `https://github.com/lupyuen/nix.git`
+Adding nix (git) to dependencies
+Features: + fs + ioctl
+34 deactivated features</code></pre></div>
+<p>Here’s how…</p>
 <ol>
 <li>
 <p>We modified <a href="TODO">src/errno.rs</a>, copying FreeBSD <code>#[cfg(target_os = "freebsd")]</code> to NuttX <code>#[cfg(target_os = "nuttx")]</code></p>
 </li>
 <li>
-<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? We changed a lot of the modded code to look like this: <a href="TODO">src/sys/time.rs</a></p>
+<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? We changed plenty of code to look like this: <a href="TODO">src/sys/time.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os = <span class="string">"nuttx"</span>)))]
-</span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...
-
-<span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os = <span class="string">"nuttx"</span>)))]
-</span><span class="kw">pub const </span>UTIME_NOW: TimeSpec = ...</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// NuttX works like Redox OS
+</span><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>,
+              target_os = <span class="string">"nuttx"</span>)))]
+</span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...</code></pre></div>
 </li>
 <li>
 <p><strong>For NuttX ioctl():</strong> It works more like BSD (second parameter is <code>int</code>) than Linux (second parameter is <code>long</code>): <a href="TODO">sys/ioctl/mod.rs</a></p>
