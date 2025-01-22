@@ -822,6 +822,7 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
+<p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in the <strong>Tokio Docs</strong>)</a></p>
 <p><em>What if we increase the Worker Threads? From 1 to 2?</em></p>
@@ -831,10 +832,10 @@ Task 0 stopping</code></pre></div>
   ::new_multi_thread() <span class="comment">// New Multi-Threaded Scheduler
   </span>.worker_threads(<span class="number">2</span>)   <span class="comment">// With Two New NuttX Threads for our Scheduler</span></code></pre></div>
 <p>Works the same though…</p>
-<div class="example-wrap"><pre class="language-bash"><code>pthread_create:    pthread_entry=0x80048f10, arg=0x800873e8
-nx_pthread_create: entry=0x80048f10, arg=0x800873e8
-pthread_create:    pthread_entry=0x80048f10, arg=0x80287830
-nx_pthread_create: entry=0x80048f10, arg=0x80287830
+<div class="example-wrap"><pre class="language-bash"><code>pthread_create:
+nx_pthread_create:
+pthread_create:
+nx_pthread_create:
 Task 0 sleeping for 1000 ms.
 Task 1 sleeping for 950 ms.
 Task 2 sleeping for 900 ms.
@@ -844,6 +845,7 @@ Task 3 stopping.
 Task 2 stopping.
 Task 1 stopping.
 Task 0 stopping.</code></pre></div>
+<p>We see Two Calls to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>. Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)</p>
 <p><em>How did we log pthread_create?</em></p>
 <p>Inside NuttX Kernel: We added Debug Code to
 <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>
@@ -1143,46 +1145,31 @@ riscv-none-elf-objdump \
 <p>Is Tokio calling NuttX to create POSIX Threads? We search <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a> for <strong>pthread_create</strong>…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
-            assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
-        }
-    };
-}
 
 let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
 
- 122: 00000517           auipc a0,0x0 122: R_RISCV_PCREL_HI20 std::sys::pal::unix::thread::Thread::new::thread_start
- 126: 00050613           mv a2,a0 126: R_RISCV_PCREL_LO12_I .Lpcrel_hi254
- 12a: 0148                 add a0,sp,132
- 12c: 012c                 add a1,sp,136
- 12e: f82e                 sd a1,48(sp)
- 130: 00000097           auipc ra,0x0 130: R_RISCV_CALL_PLT pthread_create
- 134: 000080e7           jalr ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
- 138: 85aa                 mv a1,a0
- 13a: 7542                 ld a0,48(sp)
- 13c: 862e                 mv a2,a1
- 13e: fc32                 sd a2,56(sp)
- 140: 1eb12e23           sw a1,508(sp)</code></pre></div></span>
+auipc a0, 0x0 122: R_RISCV_PCREL_HI20 std::sys::pal::unix::thread::Thread::new::thread_start
+mv    a2, a0 126: R_RISCV_PCREL_LO12_I .Lpcrel_hi254
+add   a0, sp, 132
+add   a1, sp, 136
+sd    a1, 48(sp)
+auipc ra, 0x0 130: R_RISCV_CALL_PLT pthread_create</code></pre></div></span>
 <p>OK that’s the <a href="https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84"><strong>Rust Standard Library</strong></a> calling <strong>pthread_create</strong> to create a new Rust Thread.</p>
 <p>How are <strong>Rust Threads</strong> created in Rust Standard Library? Like this: <a href="https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502">std/thread/mod.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// spawn_unchecked_ creates a new Rust Thread
 </span><span class="kw">unsafe fn </span>spawn_unchecked_&lt;<span class="lifetime">'scope</span>, F, T&gt;(
-    <span class="kw">let </span>my_thread = Thread::new(id, name);</code></pre></div>
+  <span class="kw">let </span>my_thread = Thread::new(id, name);</code></pre></div>
 <p>And <strong>spawn_unchecked</strong> is called by Tokio, according to our Rust Disassembly…</p>
 <span style="font-size:80%">
-<div class="example-wrap"><pre class="language-bash"><code>Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
+<div class="example-wrap"><pre class="language-bash"><code>&lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
 
-0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
-core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;:
 .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
-   0: 1141                 add sp,sp,-16
-   2: e406                 sd ra,8(sp)
-   4: e02a                 sd a0,0(sp)
-   6: 00000097           auipc ra,0x0 6: R_RISCV_CALL_PLT &lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
-   a: 000080e7           jalr ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
-   e: 60a2                 ld ra,8(sp)
-  10: 0141                 add sp,sp,16
-  12: 8082                 ret</code></pre></div></span>
+
+add   sp, sp, -16
+sd    ra, 8(sp)
+sd    a0, 0(sp)
+auipc ra, 0x0 6: R_RISCV_CALL_PLT &lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop</code></pre></div></span>
 <p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
 <p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
 <p>We run <code>hello_rust_cargo &amp;</code> to put it in the background…</p>
