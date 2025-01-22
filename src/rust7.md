@@ -6,7 +6,7 @@
 
 TODO: Screenshot of VSCode
 
-__Freshly Baked:__ Here's how we [__Blink the LED__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs) with __Rust Standard Library__ on [__Apache NuttX RTOS__](TODO)...
+__Freshly Baked:__ Here's how we [__Blink the LED__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs) with __Rust Standard Library__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 ```rust
 // Open the LED Device for NuttX
@@ -63,7 +63,7 @@ Follow the instructions here...
 
 - TODO: Instructions
 
-Then run the (thoroughly revamped) [__Rust Hello App__](TODO) with __QEMU RISC-V Emulator__...
+Then run the (thoroughly revamped) [__Rust Hello App__](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs) with __QEMU RISC-V Emulator__...
 
 ```bash
 ## Start NuttX on QEMU RISC-V 64-bit
@@ -484,7 +484,7 @@ _Is there a Safer Way to call ioctl()?_
 
 Calling _ioctl()_ from Rust will surely get messy: It's an __Unsafe Call__ that might cause bad writes into the NuttX Kernel! _(If we're not careful)_
 
-At the top of the article, we saw __`nix`__ crate calling _ioctl()_. Now we look at [__Rustix__](TODO) calling _ioctl()_: [rustix/fs/ioctl.rs](https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32)
+At the top of the article, we saw __`nix`__ crate calling _ioctl()_. Now we look at [__Rustix__](https://crates.io/crates/rustix) calling _ioctl()_: [rustix/fs/ioctl.rs](https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32)
 
 ```rust
 // In Rustix: ioctl() is also unsafe
@@ -514,7 +514,7 @@ _Nix vs Rustix: They feel quite similar?_
 
 Actually Nix used to be a lot simpler, supporting only __Raw File Descriptors__. _(Instead of Owned File Descriptors)_
 
-But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more [__Rustix-like__](TODO)...
+But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more [__Rustix-like__](https://crates.io/crates/rustix)...
 
 - [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
 
@@ -528,7 +528,7 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 TODO: Pic of LOC
 
-[(__Rust Embedded HAL__ might be a bad fit)](TODO)
+[(__Rust Embedded HAL__ might be a bad fit)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal)
 
 # What's Next
 
@@ -542,11 +542,11 @@ Sorry 64-bit __RISC-V Kernel Build__ is [__not supported yet__](https://github.c
 
 _Sounds like we need plenty of Rust Testing? For every NuttX Platform?_
 
-Yeah maybe we need [__Daily Automated Testing__](TODO) of NuttX + Rust Standard Library on [__NuttX Build Farm__](TODO)?
+Yeah maybe we need [__Daily Automated Testing__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v) of NuttX + Rust Standard Library on [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4)?
 
-With [__QEMU Emulator__](TODO) or a [__Real Device__](TODO)?
+With [__QEMU Emulator__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v) or a [__Real Device__](https://lupyuen.github.io/articles/sg2000a)?
 
-And when the Daily Test fails: How to [__Auto-Rewind the Build__](TODO) and discover the Breaking Commit? Hmmm...
+And when the Daily Test fails: How to [__Auto-Rewind the Build__](https://lupyuen.github.io/articles/ci6) and discover the Breaking Commit? Hmmm...
 
 <hr>
 
@@ -574,7 +574,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Follow these steps to build __NuttX bundled with Rust Standard Library__...
 
-TODO: Prerequisite
+[(Remember to install __RISC-V Toolchain__ and __RISC-V QEMU__)](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)
 
 ```bash
 ## Install Rust: https://rustup.rs/
@@ -750,7 +750,7 @@ __Troubleshooting The Rust Build__
 
   Finally rebuild with `make -j`
 
-  TODO: will be fixed
+  [(Will be fixed in __Rust Toolchain__)](https://github.com/rust-lang/libc/pull/4222)
 
 - If the build fails with __"-Z" Error__...
 
@@ -962,7 +962,7 @@ async fn my_bg_task(i: u64) {
 pub extern "C" fn pthread_set_name_np() {}
 ```
 
-Which shows 
+Which shows...
 
 ```bash
 nsh> hello_rust_cargo
@@ -981,7 +981,7 @@ Task 0 stopping
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
 
-TODO: [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
+[(Explained in the __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
 
 _What if we increase the Worker Threads? From 1 to 2?_
 
@@ -1037,7 +1037,7 @@ int nx_pthread_create(...) {
 
 _What happens when we call nix crate as-is on NuttX?_
 
-Earlier said that we [__customised the `nix` Crate__](TODO) to run on NuttX.
+Earlier said that we [__Customised the `nix` Crate__](TODO) to run on NuttX.
 
 Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
@@ -1089,9 +1089,9 @@ Features: + fs + ioctl
 
 Here's how...
 
-1.  We modified [src/errno.rs](TODO), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
+1.  We modified [errno.rs](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
 
-1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [src/sys/time.rs](TODO)
+1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [sys/time.rs](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
 
     ```rust
     // NuttX works like Redox OS
@@ -1100,9 +1100,20 @@ Here's how...
     pub const UTIME_OMIT: TimeSpec = ...
     ```
 
-1.  __For NuttX ioctl():__ It works more like BSD (second parameter is `int`) than Linux (second parameter is `long`): [sys/ioctl/mod.rs](TODO)
+1.  __For NuttX ioctl():__ It works more like BSD (second parameter is `int`) than Linux (second parameter is `long`): [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
 
-    TODO
+    ```rust
+    // NuttX ioctl() works like BSD
+    #[cfg(any(bsd, solarish, target_os = "haiku", 
+              target_os = "nuttx"))]
+    #[macro_use]
+    mod bsd;
+
+    // Nope, NuttX ioctl() does NOT work like Linux
+    #[cfg(any(linux_android, target_os = "fuchsia", target_os = "redox"))]
+    #[macro_use]
+    mod linux;
+    ```
 
 1.  Here are all the files we modified for NuttX...
     
@@ -1110,23 +1121,23 @@ Here's how...
 
     [All Modified Files](https://github.com/lupyuen/nix/pull/1/files)
 
-    [errno.rs](TODO)
+    [errno.rs](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e)
 
-    [fcntl.rs](TODO)
+    [fcntl.rs](https://github.com/lupyuen/nix/pull/1/files#diff-234e7e6580542ac96403821955043ffefa4cef1e0659216a9ee170cad6315c7d)
 
-    [unistd.rs](TODO)
+    [unistd.rs](https://github.com/lupyuen/nix/pull/1/files#diff-0223913fb22a7da0dcb64a51b192e5c049b4b276351c83bbaeb0cee0dbbd8a04)
 
-    [sys/stat.rs](TODO)
+    [sys/stat.rs](https://github.com/lupyuen/nix/pull/1/files#diff-5c119a000c85b1959421747235c671cc2f43b4f5fd2628daf1276f684a100ad8)
 
-    [sys/statvfs.rs](TODO)
+    [sys/statvfs.rs](https://github.com/lupyuen/nix/pull/1/files#diff-ed80a57034c9c336fb4516644f86cbd9ef75296fa76bdf9c7ca9adf251be0421)
 
-    [sys/mod.rs](TODO)
+    [sys/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-db4000d9e8bf29c6719984245eeefdf7e0a9b4e525f37ac8c5d6a918d4dc3005)
 
-    [sys/time.rs](TODO)
+    [sys/time.rs](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
 
-    [sys/ioctl/mod.rs](TODO)
+    [sys/ioctl/bsd.rs](https://github.com/lupyuen/nix/pull/1/files#diff-48ef2619f99fe3916c145e82b718b5f2975d58992113203c51fb4315d8e3155b)
 
-    [sys/ioctl/bsd.rs](TODO)
+    [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
 
 <hr>
 
