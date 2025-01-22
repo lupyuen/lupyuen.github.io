@@ -276,7 +276,7 @@ Features: + fs + ioctl
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
 <span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
 <span class="kw">unsafe </span>{ libc::close(fd); }</code></pre></div>
-<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code> (tweaked for NuttX). Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
+<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code>. Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -413,19 +413,19 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on the <strong>Rustix Docs</strong>)</a></p>
 <p><em>Nix vs Rustix: They feel quite similar?</em></p>
-<p>Yeah Nix used to be a lot simpler, supporting only <strong>Raw File Descriptors</strong>. (Instead of Owned File Descriptors)</p>
-<p>But Nix is now moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Which means Nix is becoming more <strong>Rustix-like</strong>…</p>
+<p>Actually Nix used to be a lot simpler, supporting only <strong>Raw File Descriptors</strong>. <em>(Instead of Owned File Descriptors)</em></p>
+<p>But Nix is now moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Which means Nix is becoming more <a href="TODO"><strong>Rustix-like</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/nix-rust/nix/issues/1750"><strong>Nix: Implement I/O Safety</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md"><strong>Rust I/O Safety</strong></a> <em>(used in Rustix)</em></p>
+<p><a href="https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md"><strong>Rust I/O Safety</strong></a> <em>(used in Rustix and New Nix)</em></p>
 </li>
 </ul>
 <p>TODO: Pic of NuttX vs Rustix</p>
 <p><em>Which shall we use: Nix or Rustix?</em></p>
-<p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code)</p>
+<p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
 <p>TODO: Pic of LOC</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?</em></p>
@@ -528,6 +528,7 @@ hello_rust_cargo</code></pre></div>
 <p>We’ll see this in <strong>QEMU RISC-V Emulator</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
 nsh&gt; hello_rust_cargo
+
 {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
 {&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
 Deserialized: Alice is 28 years old
@@ -847,12 +848,12 @@ error[E0432]: unresolved import `crate::errno::Errno`
 <p>(Supporting <code>fs</code> and <code>ioctl</code> features only)</p>
 <p><a href="https://github.com/lupyuen/nix/pull/1/files">All Modified Files</a></p>
 <p><a href="TODO">errno.rs</a></p>
-<p><a href="TODO">sys/time.rs</a></p>
 <p><a href="TODO">fcntl.rs</a></p>
 <p><a href="TODO">unistd.rs</a></p>
 <p><a href="TODO">sys/stat.rs</a></p>
 <p><a href="TODO">sys/statvfs.rs</a></p>
 <p><a href="TODO">sys/mod.rs</a></p>
+<p><a href="TODO">sys/time.rs</a></p>
 <p><a href="TODO">sys/ioctl/mod.rs</a></p>
 <p><a href="TODO">sys/ioctl/bsd.rs</a></p>
 </li>
@@ -1094,7 +1095,7 @@ core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDanglin
   12: 8082                 ret</code></pre></div>
 <p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
 <p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
-<p>We run <code>hello_rust_cargo &amp;</code> to put in the background…</p>
+<p>We run <code>hello_rust_cargo &amp;</code> to put it in the background…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo &amp;
 Hello world from tokio!
 
