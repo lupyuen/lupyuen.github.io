@@ -320,15 +320,26 @@ Features: + fs + ioctl
 <div class="example-wrap"><pre class="language-bash"><code>make -j</code></pre></div></li>
 <li>
 <p>Then run it with <strong>QEMU RISC-V Emulator</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+
+board_userled: LED 1 set to 1
+board_userled: LED 1 set to 0</code></pre></div>
 <p>NuttX blinks the <strong>Emulated LED</strong> on QEMU Emulator!</p>
-<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
 <p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic above)</p>
-<p><a href="TODO">(What about <strong>Rust Embedded HAL</strong>)</a></p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
@@ -430,6 +441,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><em>Which shall we use: Nix or Rustix?</em></p>
 <p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
 <p>TODO: Pic of LOC</p>
+<p><a href="TODO">(What about <strong>Rust Embedded HAL</strong>)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?</em></p>
 <p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this doc</strong></a> for updates.</p>
