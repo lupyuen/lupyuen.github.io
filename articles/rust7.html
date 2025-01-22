@@ -440,20 +440,24 @@ https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md</code></pre
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
 <h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>8 Appendix: Build NuttX for Rust Standard Library</h1>
+<p>Follow these steps to build <strong>NuttX bundled with Rust Standard Library</strong>…</p>
 <p>TODO: Prerequisite</p>
-<div class="example-wrap"><pre class="language-text"><code></code></pre></div><div class="example-wrap"><pre class="language-bash"><code>## Install Rust: https://rustup.rs/
+<div class="example-wrap"><pre class="language-bash"><code>## Install Rust: https://rustup.rs/
 curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ## Select Standard Installation 
 . &quot;$HOME/.cargo/env&quot;
 
-## error: the `-Z` flag is only accepted on the nightly channel of Cargo, but this is the `stable` channel
+## Switch to the Nightly Toolchain
 rustup update
 rustup toolchain install nightly
 rustup default nightly
+
+## Should show `rustc 1.86.0-nightly` or later
 rustc --version
 
-## error: &quot;.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock&quot; does not exist, unable to build with the standard library, try: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+## Install the Nightly Toolchain
 rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+## For macOS: rustup component add rust-src --toolchain nightly-aarch64-apple-darwin
 
 ## Download the NuttX Kernel and Apps
 git clone https://github.com/apache/nuttx
@@ -463,8 +467,6 @@ cd nuttx
 ## Configure NuttX for RISC-V 64-bit QEMU with LEDs
 ## (Alternatively: rv-virt:nsh64 or rv-virt:nsh or rv-virt:leds)
 tools/configure.sh rv-virt:leds64
-
-## error: Error loading target specification: Could not find specification for target &quot;riscv64imafdc-unknown-nuttx-elf&quot;. Run `rustc --print target-list` for a list of built-in targets
 
 ## Disable Floating Point: CONFIG_ARCH_FPU
 kconfig-tweak --disable CONFIG_ARCH_FPU
@@ -500,8 +502,19 @@ qemu-system-riscv64 \
 
 ## Inside QEMU: Run our Hello Rust App
 hello_rust_cargo</code></pre></div>
-<p>We’ll see this inside QEMU Emulator…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p>We’ll see this in <strong>QEMU RISC-V Emulator</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
+nsh&gt; hello_rust_cargo
+{&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
+{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
+Deserialized: Alice is 28 years old
+Pretty JSON:
+{
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;age&quot;: 28
+}
+Hello world from tokio!</code></pre></div>
+<p><strong>To Quit QEMU:</strong> Press <strong><code>Ctrl-a</code></strong> then <strong><code>x</code></strong></p>
 <p><a href="https://gist.github.com/lupyuen/6985933271f140db0dc6172ebba9bff5">(See the <strong>Ubuntu Build Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/a2b91b5cc15824a31c287fbb6cda5fa2">(See the <strong>macOS Build Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ccfae733657b864f2f9a24ce41808144">(Also works for <strong>rv-virt:leds</strong>)</a></p>
@@ -509,8 +522,8 @@ hello_rust_cargo</code></pre></div>
 <p><strong>Troubleshooting The Rust Build</strong></p>
 <ul>
 <li>
-<p>If the build fails with <strong>“Mismatched Types”</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>  Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+<p>If NuttX Build fails with <strong>“Mismatched Types”</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>  Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
 error[E0308]: mismatched types
     --&gt; .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
     |
@@ -530,9 +543,9 @@ note: associated function defined here
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu
 $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
 
-$HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs
-## For macOS</code></pre></div>
-<p>Change this function (line TODO)</p>
+## For macOS
+$HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs</code></pre></div>
+<p>Change the <strong>name_cstr</strong> function at <strong>Line 1036</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">fn </span>name_cstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
         <span class="kw">unsafe </span>{ CStr::from_ptr(<span class="self">self</span>.entry.d_name.as_ptr()) }
@@ -557,6 +570,35 @@ head -n 1049 $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/s
 <p>Then rebuild with <code>make -j</code></p>
 <p>TODO: will be fixed</p>
 </li>
+<li>
+<p>If the build fails with <strong>“-Z” Error</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>error: the `-Z` flag is only accepted on the nightly channel of Cargo, but this is the `stable` channel</code></pre></div>
+<p>Then switch to the Nightly Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Switch to the Nightly Toolchain
+rustup update
+rustup toolchain install nightly
+rustup default nightly
+
+## Should show `rustc 1.86.0-nightly` or later
+rustc --version</code></pre></div></li>
+<li>
+<p>If the build fails with <strong>“Cargo.lock does not exist”</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>error: &quot;.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock&quot; does not exist, unable to build with the standard library
+try: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu</code></pre></div>
+<p>Then install the Nightly Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install the Nightly Toolchain
+rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+## For macOS: rustup component add rust-src --toolchain nightly-aarch64-apple-darwin</code></pre></div></li>
+<li>
+<p>If the build fails with <strong>“Error Loading Target”</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>error: Error loading target specification: Could not find specification for target &quot;riscv64imafdc-unknown-nuttx-elf&quot;. Run `rustc --print target-list` for a list of built-in targets</code></pre></div>
+<p>Then disable Floating Point…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Disable Floating Point: CONFIG_ARCH_FPU
+kconfig-tweak --disable CONFIG_ARCH_FPU
+
+## Update the Kconfig Dependencies
+make olddefconfig
+make -j</code></pre></div></li>
 </ul>
 <p><em>What if we’re using Rust already? And we don’t wish to change the Default Toolchain?</em></p>
 <p>Use <code>rustup override</code> to <strong>Override the Toolchain</strong>. Do it in the <strong>Parent Folder</strong> of <code>nuttx</code> and <code>apps</code>…</p>
