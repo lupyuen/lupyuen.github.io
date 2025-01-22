@@ -212,18 +212,18 @@ nsh&gt; hello_rust_cargo
   </span>.build()   <span class="comment">// Create the Single-Threaded Scheduler
   </span>.unwrap()  <span class="comment">// Halt on Error
   </span>.block_on( <span class="comment">// Start the Scheduler
-    </span><span class="kw">async </span>{  <span class="comment">// With this Async Function
+    </span><span class="kw">async </span>{  <span class="comment">// With this Async Code
       </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
 <span class="comment">// Is it really async? Let's block and find out!
 </span><span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
 <span class="kw">loop </span>{}</code></pre></div>
-<p><a href="https://tokio.rs/tokio/topics/bridging">(Derived from <strong><code>#[tokio::main]</code></strong>)</a></p>
 <p>Which prints…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 Hello world from tokio!
 Looping Forever...</code></pre></div>
+<p><a href="https://tokio.rs/tokio/topics/bridging">(Derived from <strong>tokio::main</strong>)</a></p>
 <p><em>Yawn. Tokio looks underwhelming?</em></p>
 <p>Ah we haven’t seen the full power of <strong>Tokio Multi-Threaded Async Functions</strong> on NuttX!</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
@@ -275,7 +275,7 @@ Features: + fs + ioctl
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
 <span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
-<span class="kw">unsafe </span>{ close(fd); }</code></pre></div>
+<span class="kw">unsafe </span>{ libc::close(fd); }</code></pre></div>
 <p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code> (tweaked for NuttX). Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
@@ -307,20 +307,23 @@ Features: + fs + ioctl
 <p><em>How to run the Rust Blinky App?</em></p>
 <ol>
 <li>
-<p>Copy the files from TODO…</p>
+<p>Copy the <strong>Rust Blinky Files</strong> from here…</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/tree/rust-std/examples/rust/hello"><em>lupyuen2/wip-nuttx-apps/examples/rust/hello</em></a></p>
 </li>
 <li>
-<p>Overwrite our <strong>Rust Hello App</strong>: <em>apps/examples/rust/hello</em></p>
+<p>Overwrite our <strong>Rust Hello App</strong>…</p>
+<p><em>apps/examples/rust/hello</em></p>
 </li>
 <li>
 <p><a href="TODO">Rebuild our <strong>NuttX Project</strong></a></p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>make -j</code></pre></div></li>
 <li>
 <p>Then run it with <strong>QEMU RISC-V Emulator</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p>NuttX blinks the <strong>Emulated LED</strong> on QEMU Emulator!</p>
+<p><a href="TODO">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
-<p>QEMU Emulator shows the <strong>Emulated LED</strong> on NuttX.</p>
 <p>TODO: Open in VSCode</p>
 <p><a href="TODO">(What about <strong>Rust Embedded HAL</strong>)</a></p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
@@ -665,7 +668,7 @@ popd</code></pre></div>
   </span>.build()   <span class="comment">// Create the Single-Threaded Scheduler
   </span>.unwrap()  <span class="comment">// Halt on Error
   </span>.block_on( <span class="comment">// Start the Scheduler
-    </span><span class="kw">async </span>{  <span class="comment">// With this Async Function
+    </span><span class="kw">async </span>{  <span class="comment">// With this Async Code
       </span><span class="macro">println!</span>(<span class="string">"Hello world from tokio!"</span>);
   });
 
