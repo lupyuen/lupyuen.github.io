@@ -333,7 +333,11 @@ _How to run the Rust Blinky App?_
 
     [(See the __Complete Log__)](TODO)
 
-TODO: Open in VSCode
+_How to code Rust Apps for NuttX?_
+
+We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+
+Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
 
 [(What about __Rust Embedded HAL__)](TODO)
 
@@ -745,7 +749,7 @@ rustup override list
 popd
 ```
 
-_Rust App is crashing in QEMU?_
+_Rust App crashes in QEMU?_
 
 We might see a Stack Dump that __Loops Forever__. Or we might see __100% Full__ for the App Stack...
 
@@ -770,15 +774,20 @@ _Rust Build seems to break sometimes?_
 We might need to clean up the __Rust Compiled Files__, if the Rust Build goes wonky...
 
 ```bash
-## Erase the Rust Build
+## Erase the Rust Build and rebuild
 pushd ../apps/examples/rust/hello
 cargo clean
 popd
+make -j
 ```
 
 TODO: Pic of VSCode
 
-TODO: Open in VSCode
+_How to code Rust Apps for NuttX?_
+
+We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+
+Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
 
 TODO: Link to Rust PRs
 
@@ -989,7 +998,7 @@ error[E0432]: unresolved import `crate::errno::Errno`
   |     no `Errno` in `errno`
 ```
 
-That's why we __Customised the `nix` Crate__ for NuttX...
+Plus many many errors. That's why we __Customised the `nix` Crate__ for NuttX...
 
 1.  We modified [src/errno.rs](TODO), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
 
