@@ -633,24 +633,25 @@ __Troubleshooting The Rust Build__
 
 - If NuttX Build fails with __"Mismatched Types"__...
 
+  <span style="font-size:80%">
+
   ```bash
     Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
   error[E0308]: mismatched types
       --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
-      |
   1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
       |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
       |                  |
       |                  arguments to this function are incorrect
-      |
       = note: expected raw pointer `*const u8`
                   found raw pointer `*const i8`
   note: associated function defined here
       --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
-      |
   264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
       |                         ^^^^^^^^
   ```
+
+  </span>
 
   Then edit this file...
 
@@ -701,7 +702,8 @@ __Troubleshooting The Rust Build__
 - If the build fails with __"-Z" Error__...
 
   ```bash
-  error: the `-Z` flag is only accepted on the nightly channel of Cargo, but this is the `stable` channel
+  error: the `-Z` flag is only accepted on the nightly channel of Cargo
+  but this is the `stable` channel
   ```
 
   Then switch to the Nightly Toolchain...
@@ -734,7 +736,8 @@ __Troubleshooting The Rust Build__
 - If the build fails with __"Error Loading Target"__...
 
   ```bash
-  error: Error loading target specification: Could not find specification for target "riscv64imafdc-unknown-nuttx-elf". Run `rustc --print target-list` for a list of built-in targets
+  error: Error loading target specification:
+  Could not find specification for target "riscv64imafdc-unknown-nuttx-elf"
   ```
 
   Then disable Floating Point...
@@ -748,60 +751,64 @@ __Troubleshooting The Rust Build__
   make -j
   ```
 
-_What if we're using Rust already? And we don't wish to change the Default Toolchain?_
+- _What if we're using Rust already? And we don't wish to change the Default Toolchain?_
 
-Use `rustup override` to __Override the Folder Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
+  Use `rustup override` to __Override the Folder Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
 
-```bash
-## Set Rust to Nightly Build
-## Apply this to the Parent Folder
-## So it will work for `nuttx` and `apps`
-pushd ..
-rustup override list
-rustup override set nightly
-rustup override list
-popd
-```
+  ```bash
+  ## Set Rust to Nightly Build
+  ## Apply this to the Parent Folder
+  ## So it will work for `nuttx` and `apps`
+  pushd ..
+  rustup override list
+  rustup override set nightly
+  rustup override list
+  popd
+  ```
 
-_Rust App crashes in QEMU?_
+- _Rust App crashes in QEMU?_
 
-We might see a Stack Dump that __Loops Forever__. Or we might see __100% Full__ for the App Stack...
+  We might see a Stack Dump that __Loops Forever__. Or we might see __100% Full__ for the App Stack...
 
-```text
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
-```
+  <span style="font-size:80%">
 
-Then increase the App Stack Size...
+  ```bash
+  dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+  dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
+  ```
 
-```bash
-## Increase the App Stack Size to 64 KB
-kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
+  </span>
 
-## Update the Kconfig Dependencies and rebuild
-make olddefconfig
-make -j
-```
+  Then increase the App Stack Size...
 
-_Rust Build seems to break sometimes?_
+  ```bash
+  ## Increase the App Stack Size to 64 KB
+  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
 
-We might need to clean up the __Rust Compiled Files__, if the Rust Build goes wonky...
+  ## Update the Kconfig Dependencies and rebuild
+  make olddefconfig
+  make -j
+  ```
 
-```bash
-## Erase the Rust Build and rebuild
-pushd ../apps/examples/rust/hello
-cargo clean
-popd
-make -j
-```
+- _Rust Build seems to break sometimes?_
 
-TODO: Pic of VSCode
+  We might need to clean up the __Rust Compiled Files__, if the Rust Build goes wonky...
 
-_How to code Rust Apps for NuttX?_
+  ```bash
+  ## Erase the Rust Build and rebuild
+  pushd ../apps/examples/rust/hello
+  cargo clean
+  popd
+  make -j
+  ```
 
-We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+  TODO: Pic of VSCode
 
-Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
+- _How to code Rust Apps for NuttX?_
+
+  We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+
+  Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
 
 TODO: Link to Rust PRs
 
@@ -985,6 +992,8 @@ Earlier said that we [__customised the `nix` Crate__](TODO) to run on NuttX.
 
 Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
+<span style="font-size:80%">
+
 ```bash
 $ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
@@ -1011,6 +1020,8 @@ error[E0432]: unresolved import `crate::errno::Errno`
   |     ^^^^^^^^^^^^^^-----
   |     no `Errno` in `errno`
 ```
+
+</span>
 
 Plus many many errors. That's why we __Customised the `nix` Crate__ for NuttX...
 
@@ -1144,26 +1155,32 @@ First we obtain the __RISC-V Disassembly__ of our NuttX Image, bundled with the 
 ```bash
 make distclean
 tools/configure.sh rv-virt:leds64
+
 ## Disable CONFIG_ARCH_FPU
 kconfig-tweak --disable CONFIG_ARCH_FPU
+
 ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
 kconfig-tweak --enable CONFIG_SYSTEM_TIME64
 kconfig-tweak --enable CONFIG_FS_LARGEFILE
 kconfig-tweak --enable CONFIG_DEV_URANDOM
 kconfig-tweak --set-val CONFIG_TLS_NELEM 16
-## Enable Hello Rust Cargo App
+
+## Enable Hello Rust Cargo App, increase the Stack Size
 kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
-## For knsh64
 kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
+
 ## Update the Kconfig Dependencies
 make olddefconfig
-## Build NuttX
+
+## Build NuttX with Tracing Enabled
 make V=1
 ```
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374)
 
 According to the `make V=1` trace: __NuttX Build__ does this...
+
+<span style="font-size:80%">
 
 ```bash
 ## Discard the Rust Debug Symbols
@@ -1217,7 +1234,11 @@ riscv-none-elf-ld \
   --end-group
 ```
 
+</span>
+
 Ah NuttX Build calls __cargo build --release__, which will strip the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
+
+<span style="font-size:80%">
 
 ```bash
 ## Preserve the Rust Debug Symbols
@@ -1278,6 +1299,9 @@ riscv-none-elf-objdump \
   >leds64-debug-nuttx.S \
   2>&1
 ```
+
+</span>
+
 [(See the __Build Log__)](https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f)
 
 Which produces the __Complete NuttX Disassembly__: [__leds64-debug-nuttx.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S)
@@ -1299,6 +1323,8 @@ riscv-none-elf-objdump \
 Which produces the __Rust Disassembly__: [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S)
 
 Is Tokio calling NuttX to create POSIX Threads? We search [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S) for __pthread_create__...
+
+<span style="font-size:80%">
 
 ```bash
 .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
@@ -1323,6 +1349,8 @@ let ret = libc::pthread_create(&mut native, &attr, thread_start, p as *mut _);
  140: 1eb12e23           sw a1,508(sp)
 ```
 
+</span>
+
 OK that's the [__Rust Standard Library__](https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84) calling __pthread_create__ to create a new Rust Thread.
 
 How are __Rust Threads__ created in Rust Standard Library? Like this: [std/thread/mod.rs](https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502)
@@ -1334,6 +1362,8 @@ unsafe fn spawn_unchecked_<'scope, F, T>(
 ```
 
 And __spawn_unchecked__ is called by Tokio, according to our Rust Disassembly...
+
+<span style="font-size:80%">
 
 ```bash
 Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
@@ -1350,6 +1380,8 @@ core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<t
   10: 0141                 add sp,sp,16
   12: 8082                 ret
 ```
+
+</span>
 
 Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!
 
