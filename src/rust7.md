@@ -98,7 +98,7 @@ Some bits are [__a little wonky__](TODO) (but will get better)
 
 - Needs a tiny patch to __Local Toolchain__ _(pal/unix/fs.rs)_
 
-- Sorry no __RISC-V Floating Point__
+- Sorry no __RISC-V Floating Point__ and no __Kernel Build__
 
 What's inside the brand new Rust Hello App? We dive in...
 
@@ -173,12 +173,12 @@ Deserialized: Alice is 28 years old
 Serde will also handle __JSON Formatting__: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
 
 ```rust
-  // Serialize our Person Struct
-  // But neatly please
-  let pretty_json_str = serde_json // Person Struct
-    ::to_string_pretty(&alice)     // Becomes a Formatted String
-    .unwrap();                     // Halt on Error
-  println!("Pretty JSON:\n{}", pretty_json_str);
+// Serialize our Person Struct
+// But neatly please
+let pretty_json_str = serde_json // Person Struct
+  ::to_string_pretty(&alice)     // Becomes a Formatted String
+  .unwrap();                     // Halt on Error
+println!("Pretty JSON:\n{}", pretty_json_str);
 ```
 
 Looks much neater!
@@ -268,7 +268,7 @@ _How will we use Tokio?_
 
 > [__Tokio__](https://tokio.rs/tokio/tutorial) is designed for __I/O-Bound Applications__ where each individual task spends most of its time waiting for I/O.
 
-Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many many __NuttX Threads__... We spawn a few threads and call __Async Functions__.
+Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many many __NuttX Threads__, we spawn a few threads and call __Async Functions__.
 
 (Check out [__Tokio Select__](https://tokio.rs/tokio/tutorial/select) and [__Tokio Streams__](https://tokio.rs/tokio/tutorial/streams))
 
@@ -297,7 +297,7 @@ Features: + fs + ioctl
 
 _The URL looks a little sus?_
 
-Yep it's our Bespoke `nix` Crate. That's because the Official `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Details in the __Appendix__)](TODO)
+Yep it's our Bespoke `nix` Crate. That's because the Official `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](TODO)
 
 _Why are we calling nix?_
 
@@ -428,7 +428,7 @@ called `Result::unwrap()` on an `Err` value: EBADF
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
-There's something odd about __Raw File Descriptors__ vs __Owned File Descriptors__... Fetching the raw one too early might cause __EBADF Errors__. Here's why...
+There's something odd about __Raw File Descriptors__ vs __Owned File Descriptors__... Fetching the Raw One too early might cause __EBADF Errors__. Here's why...
 
 _What's a Raw File Descriptor?_
 
@@ -445,7 +445,7 @@ _What about Owned File Descriptor?_
 
 In Rust: [__Owned File Descriptor__](https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html) is a __Rust Object__, wrapped around a Raw File Descriptor.
 
-And Rust Objects can be __Automatically Dropped__, when they go out of scope. (Unlike Integers)
+And Rust Objects shall be __Automatically Dropped__, when they go out of scope. (Unlike Integers)
 
 _Which causes the Second Snippet to fail?_
 
@@ -528,7 +528,7 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 TODO: Pic of LOC
 
-[(What about __Rust Embedded HAL__)](TODO)
+[(__Rust Embedded HAL__ might be a bad fit)](TODO)
 
 # What's Next
 
@@ -538,9 +538,9 @@ _Which platforms are supported for NuttX + Rust Standard Library? What about SBC
 
 Arm and RISC-V (32-bit and 64-bit). [__Check this doc__](https://nuttx.apache.org/docs/latest/guides/rust.html) for updates.
 
-Sorry 64-bit __RISC-V Kernel Mode__ is [__not supported yet__](https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835). So it __won't run on RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
+Sorry 64-bit __RISC-V Kernel Build__ is [__not supported yet__](https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835). So it __won't run on RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
 
-_Sounds like we need plenty of Rust Testing? For every platform?_
+_Sounds like we need plenty of Rust Testing? For every NuttX Platform?_
 
 Yeah maybe we need [__Daily Automated Testing__](TODO) of NuttX + Rust Standard Library on [__NuttX Build Farm__](TODO)?
 
@@ -992,12 +992,12 @@ let runtime = tokio::runtime::Builder
   .worker_threads(2)   // With Two New NuttX Threads for our Scheduler
 ```
 
-TODO: Not much difference?
+Works the same though...
 
-```text
-pthread_create: pthread_entry=0x80048f10, arg=0x800873e8
+```bash
+pthread_create:    pthread_entry=0x80048f10, arg=0x800873e8
 nx_pthread_create: entry=0x80048f10, arg=0x800873e8
-pthread_create: pthread_entry=0x80048f10, arg=0x80287830
+pthread_create:    pthread_entry=0x80048f10, arg=0x80287830
 nx_pthread_create: entry=0x80048f10, arg=0x80287830
 Task 0 sleeping for 1000 ms.
 Task 1 sleeping for 950 ms.
@@ -1008,38 +1008,30 @@ Task 3 stopping.
 Task 2 stopping.
 Task 1 stopping.
 Task 0 stopping.
-nsh> 
 ```
 
-TODO: pthread_create
+_How did we log pthread_create?_
+
+Inside NuttX Kernel: We added Debug Code to 
+[__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88)
+and
+[__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)
+
+<span style="font-size:90%">
 
 ```text
-https://github.com/lupyuen2/wip-nuttx/blob/master/fs/vfs/fs_ioctl.c#L263-L264
+// At https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88
+#include <debug.h>
+int pthread_create(...) {
+  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);
 
-#include <debug.h>////
-int ioctl(int fd, int req, ...)
-{
-  // _info("fd=0x%x, req=0x%x", fd, req);////
-
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/libs/libc/pthread/pthread_create.c#L93
-
-#include <debug.h>////
-int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
-                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
-{
-  _info("pthread_entry=%p, arg=%p", pthread_entry, arg);////
-
-https://github.com/lupyuen2/wip-nuttx/blob/master/sched/pthread/pthread_create.c#L34
-
-#include <debug.h>////
-int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
-                      FAR const pthread_attr_t *attr,
-                      pthread_startroutine_t entry, pthread_addr_t arg)
-{
-  _info("entry=%p, arg=%p", entry, arg);////
-
+// At https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179
+#include <debug.h>
+int nx_pthread_create(...) {
+  _info("entry=%p, arg=%p", entry, arg);
 ```
+
+</span>
 
 # Appendix: Porting Nix to NuttX
 
@@ -1143,8 +1135,7 @@ __Troubleshooting nix ioctl() on NuttX__
 To figure out if `nix` passes ioctl parameters correctly to NuttX: We insert __ioctl Debug Code__ into NuttX Kernel...
 
 ```c
-TODO
-riscv/nuttx/fs/vfs/fs_ioctl.c
+// At https://github.com/apache/nuttx/blob/master/fs/vfs/fs_ioctl.c#L261
 #include <debug.h>
 int ioctl(int fd, int req, ...) {
   _info("fd=0x%x, req=0x%x", fd, req);
