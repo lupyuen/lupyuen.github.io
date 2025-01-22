@@ -507,7 +507,7 @@ rustup toolchain install nightly
 rustup default nightly
 rustc --version
 
-## error: "/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock" does not exist, unable to build with the standard library, try: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+## error: ".rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock" does not exist, unable to build with the standard library, try: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
 
 mkdir rust
@@ -560,9 +560,9 @@ dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  00000000000
 dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
 QEMU: Terminated
 
-   Compiling std v0.0.0 (/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+   Compiling std v0.0.0 (.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
 error[E0308]: mismatched types
-    --> /home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
+    --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/fs.rs:1037:33
      |
 1037 |         unsafe { CStr::from_ptr(self.entry.d_name.as_ptr()) }
      |                  -------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const u8`, found `*const i8`
@@ -572,7 +572,7 @@ error[E0308]: mismatched types
      = note: expected raw pointer `*const u8`
                 found raw pointer `*const i8`
 note: associated function defined here
-    --> /home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
+    --> .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ffi/c_str.rs:264:25
      |
 264  |     pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
      |                         ^^^^^^^^
@@ -914,11 +914,13 @@ TODO: Fix nix
     pub const UTIME_NOW: TimeSpec = ...
     ```
 
-1.  __For NuttX ioctl():__ It works more like BSD (parameter is `int`) than Linux (parameter is `long`): [sys/ioctl/mod.rs](TODO)
+1.  __For NuttX ioctl():__ It works more like BSD (second parameter is `int`) than Linux (second parameter is `long`): [sys/ioctl/mod.rs](TODO)
 
     TODO
 
-1.  Here are all the files we modified:
+1.  Here are all the files we modified for NuttX...
+    
+    (Supporting `fs` and `ioctl` features only)
 
     [All Modified Files](https://github.com/lupyuen/nix/pull/1/files)
 
@@ -942,9 +944,9 @@ TODO: Fix nix
 
 <hr>
 
-__Troubleshooting NuttX ioctl()__
+__Troubleshooting nix ioctl() on NuttX__
 
-To figure out if nix was passing parameters correctly to NuttX: We inserted Debug Code into NuttX Kernel...
+To figure out if nix was passing ioctl() parameters correctly to NuttX: We inserted Debug Code into NuttX Kernel...
 
 ```c
 TODO
@@ -1023,52 +1025,138 @@ board_userled: LED 3 set to 0
 
 # Appendix: Snooping Tokio on NuttX
 
-TODO make V=1
+In this section, we discover how __Tokio works under the hood__. Does it really call __POSIX Functions in NuttX__?
 
-```text
-`make V=1` for `rv-virt:leds64`
-https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374
+First we obtain the __RISC-V Disassembly__ of our Hello Rust App. We trace the NuttX Build: Run `make V=1` on `rv-virt:leds64`
 
- 1018  make distclean
- 1019  tools/configure.sh rv-virt:leds64
- 1020  ## Disable CONFIG_ARCH_FPU
- 1021  kconfig-tweak --disable CONFIG_ARCH_FPU
- 1022  ## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
- 1023  kconfig-tweak --enable CONFIG_SYSTEM_TIME64
- 1024  kconfig-tweak --enable CONFIG_FS_LARGEFILE
- 1025  kconfig-tweak --enable CONFIG_DEV_URANDOM
- 1026  kconfig-tweak --set-val CONFIG_TLS_NELEM 16
- 1027  ## Enable Hello Rust Cargo App
- 1028  kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
- 1029  ## For knsh64
- 1030  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
- 1031  ## Update the Kconfig Dependencies
- 1032  make olddefconfig
- 1033  make V=1
+```bash
+make distclean
+tools/configure.sh rv-virt:leds64
+## Disable CONFIG_ARCH_FPU
+kconfig-tweak --disable CONFIG_ARCH_FPU
+## Enable CONFIG_SYSTEM_TIME64 / CONFIG_FS_LARGEFILE / CONFIG_DEV_URANDOM / CONFIG_TLS_NELEM = 16
+kconfig-tweak --enable CONFIG_SYSTEM_TIME64
+kconfig-tweak --enable CONFIG_FS_LARGEFILE
+kconfig-tweak --enable CONFIG_DEV_URANDOM
+kconfig-tweak --set-val CONFIG_TLS_NELEM 16
+## Enable Hello Rust Cargo App
+kconfig-tweak --enable CONFIG_EXAMPLES_HELLO_RUST_CARGO
+## For knsh64
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 16384
+## Update the Kconfig Dependencies
+make olddefconfig
+## Build NuttX
+make V=1
 ```
 
-TODO dump disassembly
+[(See the __Build Log__)](https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374)
 
-```text
-cd /home/luppy/rust/apps/examples/rust/hello
-cargo build --release -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+According to the `make V=1` trace: __NuttX Build__ does this...
 
-riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+```bash
+## Discard the Rust Debug Symbols
+cd apps/examples/rust/hello
+cargo build \
+  --release \
+  -Zbuild-std=std,panic_abort \
+  --manifest-path apps/examples/rust/hello/Cargo.toml \
+  --target riscv64imac-unknown-nuttx-elf
 
-riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
-        -o /home/luppy/rust/nuttx/nuttx   \
-        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a --end-group
+## Generate the Linker Script
+riscv-none-elf-gcc \
+  -E \
+  -P \
+  -x c \
+  -isystem nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG \
+  -D__KERNEL__  \
+  -I nuttx/arch/risc-v/src/chip \
+  -I nuttx/arch/risc-v/src/common \
+  -I nuttx/sched \
+  nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script \
+  -o  nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
 
-Remove release, change to debug
+## Link Rust App into NuttX
+riscv-none-elf-ld \
+  --entry=__start \
+  -melf64lriscv \
+  --gc-sections \
+  -nostdlib \
+  --cref \
+  -Map=nuttx/nuttx.map \
+  --print-memory-usage \
+  -Tnuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  \
+  -L nuttx/staging \
+  -L nuttx/arch/risc-v/src/board  \
+  -o nuttx/nuttx   \
+  --start-group \
+  -lsched \
+  -ldrivers \
+  -lboards \
+  -lc \
+  -lmm \
+  -larch \
+  -lm \
+  -lapps \
+  -lfs \
+  -lbinfmt \
+  -lboard xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a \
+  --end-group
+```
+
+Ah NuttX Build calls `cargo build --release`, which will strip the Debug Symbols. We change it to `cargo build` and dump the RISC-V Disassembly...
+
+```bash
+## Preserve the Rust Debug Symbols
 pushd ../apps/examples/rust/hello
-cargo build -Zbuild-std=std,panic_abort --manifest-path /home/luppy/rust/apps/examples/rust/hello/Cargo.toml --target riscv64imac-unknown-nuttx-elf
+cargo build \
+  -Zbuild-std=std,panic_abort \
+  --manifest-path apps/examples/rust/hello/Cargo.toml \
+  --target riscv64imac-unknown-nuttx-elf
 popd
 
-riscv-none-elf-gcc -E -P -x c -isystem /home/luppy/rust/nuttx/include -D__NuttX__ -DNDEBUG -D__KERNEL__  -I /home/luppy/rust/nuttx/arch/risc-v/src/chip -I /home/luppy/rust/nuttx/arch/risc-v/src/common -I /home/luppy/rust/nuttx/sched   /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script -o  /home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
+## Generate the Linker Script
+riscv-none-elf-gcc \
+  -E \
+  -P \
+  -x c \
+  -isystem nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG \
+  -D__KERNEL__  \
+  -I nuttx/arch/risc-v/src/chip \
+  -I nuttx/arch/risc-v/src/common \
+  -I nuttx/sched \
+  nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script \
+  -o  nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp
 
-riscv-none-elf-ld --entry=__start -melf64lriscv --gc-sections -nostdlib --cref -Map=/home/luppy/rust/nuttx/nuttx.map --print-memory-usage -T/home/luppy/rust/nuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  -L /home/luppy/rust/nuttx/staging -L /home/luppy/rust/nuttx/arch/risc-v/src/board  \
-        -o /home/luppy/rust/nuttx/nuttx   \
-        --start-group -lsched -ldrivers -lboards -lc -lmm -larch -lm -lapps -lfs -lbinfmt -lboard /home/luppy/xpack-riscv-none-elf-gcc-13.2.0-2/bin/../lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a --end-group
+## Link Rust App into NuttX
+riscv-none-elf-ld \
+  --entry=__start \
+  -melf64lriscv \
+  --gc-sections \
+  -nostdlib \
+  --cref \
+  -Map=nuttx/nuttx.map \
+  --print-memory-usage \
+  -Tnuttx/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script.tmp  \
+  -L nuttx/staging \
+  -L nuttx/arch/risc-v/src/board  \
+  -o nuttx/nuttx   \
+  --start-group \
+  -lsched \
+  -ldrivers \
+  -lboards \
+  -lc \
+  -lmm \
+  -larch \
+  -lm \
+  -lapps \
+  -lfs \
+  -lbinfmt \
+  -lboard xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
+  --end-group
 
 ## Dump the disassembly to nuttx.S
 riscv-none-elf-objdump \
@@ -1077,30 +1165,29 @@ riscv-none-elf-objdump \
   nuttx \
   >nuttx.S \
   2>&1
-
-Cargo build debug
-https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f
-riscv/leds64-debug-nuttx.S
 ```
+[(See the __Build Log__)](https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f)
+
+TODO: riscv/leds64-debug-nuttx.S
 
 TODO dump libhello
 
-```text
+```bash
 ## Dump the libhello.a disassembly to libhello.S
 riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
-  /home/luppy/rust/apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
+  apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   >libhello.S \
   2>&1
-
-riscv/libhello.S
 ```
+
+TODO: riscv/libhello.S
 
 Search for pthread_create
 
-```text
-/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
+```bash
+.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
                     assert_eq!(libc::pthread_attr_setstacksize(&mut attr, stack_size), 0);
                 }
             };
@@ -1119,18 +1206,25 @@ Search for pthread_create
  13c:	862e                	mv	a2,a1
  13e:	fc32                	sd	a2,56(sp)
  140:	1eb12e23          	sw	a1,508(sp)
+```
 
 https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84
 
 https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502
+
+```rust
     unsafe fn spawn_unchecked_<'scope, F, T>(
         let my_thread = Thread::new(id, name);
+```
 
+TODO
+
+```bash
 Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
 
 0000000000000000 <core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>>:
 core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>:
-/home/luppy/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
+.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
    0:	1141                	add	sp,sp,-16
    2:	e406                	sd	ra,8(sp)
    4:	e02a                	sd	a0,0(sp)
@@ -1145,7 +1239,6 @@ TODO NuttX Thread not Task
 
 ```text
 hello_rust_cargo &
-https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961
 nsh> hello_rust_cargo &
 hello_rust_cargo [4:100]
 nsh> {"name":"John","age":30}
@@ -1164,3 +1257,5 @@ nsh> ps
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
     4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo
 ```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961)
