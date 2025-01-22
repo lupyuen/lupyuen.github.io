@@ -274,7 +274,7 @@ unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
 unsafe { libc::close(fd); }
 ```
 
-But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by `nix` (tweaked for NuttX). Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by `nix`. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
 
 ```rust
 // Open the LED Device for NuttX
@@ -461,19 +461,19 @@ unsafe {
 
 _Nix vs Rustix: They feel quite similar?_
 
-Yeah Nix used to be a lot simpler, supporting only __Raw File Descriptors__. (Instead of Owned File Descriptors)
+Actually Nix used to be a lot simpler, supporting only __Raw File Descriptors__. _(Instead of Owned File Descriptors)_
 
-But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more __Rustix-like__...
+But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more [__Rustix-like__](TODO)...
 
 - [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
 
-- [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix)_
+- [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
 
 TODO: Pic of NuttX vs Rustix
 
 _Which shall we use: Nix or Rustix?_
 
-Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code)
+Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). Which might hinder our porting to NuttX...
 
 TODO: Pic of LOC
 
@@ -589,6 +589,7 @@ We'll see this in __QEMU RISC-V Emulator__...
 ```bash
 NuttShell (NSH) NuttX-12.8.0
 nsh> hello_rust_cargo
+
 {"name":"John","age":30}
 {"name":"Jane","age":25}
 Deserialized: Alice is 28 years old
@@ -1014,8 +1015,6 @@ That's why we __Customised the `nix` Crate__ for NuttX...
 
     [errno.rs](TODO)
 
-    [sys/time.rs](TODO)
-
     [fcntl.rs](TODO)
 
     [unistd.rs](TODO)
@@ -1025,6 +1024,8 @@ That's why we __Customised the `nix` Crate__ for NuttX...
     [sys/statvfs.rs](TODO)
 
     [sys/mod.rs](TODO)
+
+    [sys/time.rs](TODO)
 
     [sys/ioctl/mod.rs](TODO)
 
@@ -1331,7 +1332,7 @@ Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to creat
 
 _Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?_
 
-We run `hello_rust_cargo &` to put in the background...
+We run `hello_rust_cargo &` to put it in the background...
 
 ```bash
 nsh> hello_rust_cargo &
