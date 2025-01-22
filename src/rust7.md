@@ -313,6 +313,8 @@ _How to run the Rust Blinky App?_
 
     [_lupyuen2/wip-nuttx-apps/examples/rust/hello_](https://github.com/lupyuen2/wip-nuttx-apps/tree/rust-std/examples/rust/hello)
 
+    Specifically: [__Cargo.toml__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/Cargo.toml) and [__src/lib.rs__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+
 1.  Overwrite our __Rust Hello App__...
 
     _apps/examples/rust/hello_
