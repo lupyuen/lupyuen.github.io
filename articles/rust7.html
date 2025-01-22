@@ -727,9 +727,9 @@ int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
 {
   _info(&quot;entry=%p, arg=%p&quot;, entry, arg);////
 </code></pre></div><h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
-<p>TODO: Redox, BSD not Linux, PR</p>
 <p><em>What happens when we call nix crate as-is on NuttX?</em></p>
-<p>TODO</p>
+<p>Earlier said that we <a href="TODO"><strong>customised the <code>nix</code> Crate</strong></a> to run on NuttX.</p>
+<p>Why? Let’s build our Rust Blinky App with the Original <code>nix</code> Crate…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
 Adding nix v0.29.0 to dependencies
@@ -739,68 +739,30 @@ Features: + fs + ioctl
 $ popd
 $ make -j
 
-error[E0432]: unresolved import `self::const](TODO)
-
-  --&gt;   [errno.rs:19:15
-   |
+error[E0432]: unresolved import `self::const`
+  --&gt;   errno.rs:19:15
 19 | pub use self::consts::*;
    |               ^^^^^^ could not find `consts` in `self`
 
-error[E0432]: unresolved import `self::Errn](TODO)
-
-   --&gt;  [errno.rs:198:15
-    |
+error[E0432]: unresolved import `self::Errno`
+   --&gt;  errno.rs:198:15
 198 |     use self::Errno::*;
     |               ^^^^^ could not find `Errno` in `self`
 
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- --&gt;  [fcntl.rs:2:5
-  |
+error[E0432]: unresolved import `crate::errno::Errno`
+ --&gt;  fcntl.rs:2:5
 2 | use crate::errno::Errno;
   |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- --&gt;  [sys/signal.rs:6:5
-  |
-6 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `crate::errno::Errn](TODO)
-
- --&gt;  [unistd.rs:3:5
-  |
-3 | use crate::errno::Errno;
-  |     ^^^^^^^^^^^^^^-----
-  |     |             |
-  |     |             help: a similar name exists in the module: `errno`
-  |     no `Errno` in `errno`
-
-error[E0432]: unresolved import `errno::Errn](TODO)
-
-   --&gt;  [lib.rs:194:5
-    |
-194 | use errno::Errno;
-    |     ^^^^^^^-----
-    |     |      |
-    |     |      help: a similar name exists in the module: `errno`
-    |     no `Errno` in `errno`</code></pre></div>
-<p>TODO: Fix nix</p>
+  |     no `Errno` in `errno`</code></pre></div>
+<p>That’s why we <strong>Customised the <code>nix</code> Crate</strong> for NuttX…</p>
 <ol>
 <li>
 <p>We modified <a href="TODO">src/errno.rs</a>, copying FreeBSD <code>#[cfg(target_os = "freebsd")]</code> to NuttX <code>#[cfg(target_os = "nuttx")]</code></p>
 </li>
 <li>
-<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? That’s why a lot of the modded code looks like this: <a href="TODO">src/sys/time.rs</a></p>
+<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? We changed a lot of the modded code to look like this: <a href="TODO">src/sys/time.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os=<span class="string">"nuttx"</span>)))]
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os = <span class="string">"nuttx"</span>)))]
 </span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...
 
 <span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>, target_os = <span class="string">"nuttx"</span>)))]
@@ -827,18 +789,18 @@ error[E0432]: unresolved import `errno::Errn](TODO)
 </ol>
 <hr>
 <p><strong>Troubleshooting nix ioctl() on NuttX</strong></p>
-<p>To figure out if nix passes ioctl() parameters correctly to NuttX: We insert <strong>ioctl() Debug Code</strong> into NuttX Kernel…</p>
+<p>To figure out if <code>nix</code> passes ioctl parameters correctly to NuttX: We insert <strong>ioctl Debug Code</strong> into NuttX Kernel…</p>
 <div class="example-wrap"><pre class="language-c"><code>TODO
 riscv/nuttx/fs/vfs/fs_ioctl.c
 #include &lt;debug.h&gt;
 int ioctl(int fd, int req, ...) {
-  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);////</code></pre></div>
-<p>Which <a href="https://docs.rs/nix/latest/nix/sys/ioctl/"><strong>Ioctl Macro</strong></a> shall we use in nix? We tried <strong>ioctl_none!</strong>…</p>
+  _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);</code></pre></div>
+<p>Which <a href="https://docs.rs/nix/latest/nix/sys/ioctl/"><strong>Ioctl Macro</strong></a> shall we use in <code>nix</code>? We tried <strong>ioctl_none</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
 <span class="macro">ioctl_none!</span>(led_on, ULEDIOC_SETALL, <span class="number">1</span>);
 <span class="kw">unsafe </span>{ led_on(fd).unwrap(); }</code></pre></div>
-<p>But the <strong>ioctl() Command Code</strong> got mangled up (<code>0x201d0301</code> should be <code>0x1d03</code>)</p>
+<p>But the <strong>ioctl Command Code</strong> got mangled up (<code>0x201d0301</code> should be <code>0x1d03</code>)</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 fd=3
@@ -847,17 +809,17 @@ ioctl: fd=0x3, req=0x201d0301
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:31:25:
 called `Result::unwrap()` on an `Err` value: ENOTTY
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</code></pre></div>
-<p>Then we tried <strong>ioctl_write_int!</strong>…</p>
+<p>Then we tried <strong>ioctl_write_int</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
 <span class="macro">ioctl_write_int!</span>(led_on, ULEDIOC_SETALL, <span class="number">1</span>);
 <span class="kw">unsafe </span>{ led_on(fd, <span class="number">1</span>).unwrap(); }</code></pre></div>
-<p>Nope the <strong>ioctl() Command Code</strong> is still mangled (<code>0x801d0301</code> should be <code>0x1d03</code>)</p>
+<p>Nope the <strong>ioctl Command Code</strong> is still mangled (<code>0x801d0301</code> should be <code>0x1d03</code>)</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 ioctl: fd=0x3, req=0x801d0301
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:30:28:
 called `Result::unwrap()` on an `Err` value: ENOTTY</code></pre></div>
-<p>Finally this works: <strong>ioctl_write_int_bad!</strong>…</p>
+<p>Finally this works: <strong>ioctl_write_int_bad</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
 <span class="macro">ioctl_write_int_bad!</span>(led_set_all, ULEDIOC_SETALL);
@@ -867,7 +829,7 @@ called `Result::unwrap()` on an `Err` value: ENOTTY</code></pre></div>
 
 <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 0)
 </span><span class="kw">unsafe </span>{ led_set_all(fd, <span class="number">0</span>).unwrap(); }</code></pre></div>
-<p><strong>ioctl() Command Code</strong> <code>0x1d03</code> is hunky dory yay!</p>
+<p><strong>ioctl Command Code</strong> <code>0x1d03</code> is hunky dory yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 fd=3
@@ -949,7 +911,7 @@ riscv-none-elf-ld \
   -lbinfmt \
   -lboard xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a \
   --end-group</code></pre></div>
-<p>Ah NuttX Build calls <code>cargo build --release</code>, which will strip the Debug Symbols. We change it to <code>cargo build</code> and dump the RISC-V Disassembly…</p>
+<p>Ah NuttX Build calls <strong>cargo build –release</strong>, which will strip the Debug Symbols. We change it to <strong>cargo build</strong> and dump the RISC-V Disassembly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Preserve the Rust Debug Symbols
 pushd ../apps/examples/rust/hello
 cargo build \
@@ -1008,9 +970,9 @@ riscv-none-elf-objdump \
   &gt;leds64-debug-nuttx.S \
   2&gt;&amp;1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f">(See the <strong>Build Log</strong>)</a></p>
-<p>Which produces the Complete NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S"><strong>leds64-debug-nuttx.S</strong></a></p>
+<p>Which produces the <strong>Complete NuttX Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S"><strong>leds64-debug-nuttx.S</strong></a></p>
 <p>Whoa the Complete NuttX Disassembly is too huge to inspect!</p>
-<p>We dump the RISC-V Disassembly of the <strong>Rust Part</strong> only: <strong>libhello.a</strong></p>
+<p>Let’s dump the RISC-V Disassembly of the <strong>Rust Part</strong> only: <strong>libhello.a</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the libhello.a disassembly to libhello.S
 riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -1018,7 +980,7 @@ riscv-none-elf-objdump \
   apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   &gt;libhello.S \
   2&gt;&amp;1</code></pre></div>
-<p>Which produces the Rust Disassembly: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
+<p>Which produces the <strong>Rust Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
 <p>Is Tokio calling NuttX to create POSIX Threads? We search <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a> for <strong>pthread_create</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
             assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
@@ -1041,7 +1003,7 @@ let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *m
  13e: fc32                 sd a2,56(sp)
  140: 1eb12e23           sw a1,508(sp)</code></pre></div>
 <p>OK that’s the <a href="https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84"><strong>Rust Standard Library</strong></a> calling <strong>pthread_create</strong> to create a new Rust Thread.</p>
-<p>How are Rust Threads created in Rust Standard Library? Like this: <a href="https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502">std/thread/mod.rs</a></p>
+<p>How are <strong>Rust Threads</strong> created in Rust Standard Library? Like this: <a href="https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502">std/thread/mod.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// spawn_unchecked_ creates a new Rust Thread
 </span><span class="kw">unsafe fn </span>spawn_unchecked_&lt;<span class="lifetime">'scope</span>, F, T&gt;(
