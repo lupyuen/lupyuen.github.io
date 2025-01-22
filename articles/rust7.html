@@ -278,8 +278,8 @@ Task 0 stopping</code></pre></div>
 <p>TODO: Screenshot of Tokio Async Multi-Thread</p>
 <p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
-<p>Today we can do the same with <strong>NuttX and Async Rust</strong>.</p>
-<p>(OK we won’t call them <em>“Async Tasks”</em>. Because a Task in NuttX is more like a NuttX Process)</p>
+<p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>.</p>
+<p>(We won’t call them <em>“Async Tasks”</em>. Because a Task in NuttX is more like a NuttX Process)</p>
 <p><em>How will we use Tokio?</em></p>
 <blockquote>
 <p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
