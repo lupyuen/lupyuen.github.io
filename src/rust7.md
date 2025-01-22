@@ -979,6 +979,8 @@ Task 1 stopping
 Task 0 stopping
 ```
 
+Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
 
 [(Explained in the __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
@@ -995,10 +997,10 @@ let runtime = tokio::runtime::Builder
 Works the same though...
 
 ```bash
-pthread_create:    pthread_entry=0x80048f10, arg=0x800873e8
-nx_pthread_create: entry=0x80048f10, arg=0x800873e8
-pthread_create:    pthread_entry=0x80048f10, arg=0x80287830
-nx_pthread_create: entry=0x80048f10, arg=0x80287830
+pthread_create:
+nx_pthread_create:
+pthread_create:
+nx_pthread_create:
 Task 0 sleeping for 1000 ms.
 Task 1 sleeping for 950 ms.
 Task 2 sleeping for 900 ms.
@@ -1009,6 +1011,8 @@ Task 2 stopping.
 Task 1 stopping.
 Task 0 stopping.
 ```
+
+We see Two Calls to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179). Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)
 
 _How did we log pthread_create?_
 
@@ -1401,25 +1405,15 @@ Is Tokio calling NuttX to create POSIX Threads? We search [__libhello.S__](https
 
 ```bash
 .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
-            assert_eq!(libc::pthread_attr_setstacksize(&mut attr, stack_size), 0);
-        }
-    };
-}
 
 let ret = libc::pthread_create(&mut native, &attr, thread_start, p as *mut _);
 
- 122: 00000517           auipc a0,0x0 122: R_RISCV_PCREL_HI20 std::sys::pal::unix::thread::Thread::new::thread_start
- 126: 00050613           mv a2,a0 126: R_RISCV_PCREL_LO12_I .Lpcrel_hi254
- 12a: 0148                 add a0,sp,132
- 12c: 012c                 add a1,sp,136
- 12e: f82e                 sd a1,48(sp)
- 130: 00000097           auipc ra,0x0 130: R_RISCV_CALL_PLT pthread_create
- 134: 000080e7           jalr ra # 130 <.Lpcrel_hi254+0xe>
- 138: 85aa                 mv a1,a0
- 13a: 7542                 ld a0,48(sp)
- 13c: 862e                 mv a2,a1
- 13e: fc32                 sd a2,56(sp)
- 140: 1eb12e23           sw a1,508(sp)
+auipc a0, 0x0 122: R_RISCV_PCREL_HI20 std::sys::pal::unix::thread::Thread::new::thread_start
+mv    a2, a0 126: R_RISCV_PCREL_LO12_I .Lpcrel_hi254
+add   a0, sp, 132
+add   a1, sp, 136
+sd    a1, 48(sp)
+auipc ra, 0x0 130: R_RISCV_CALL_PLT pthread_create
 ```
 
 </span>
@@ -1431,7 +1425,7 @@ How are __Rust Threads__ created in Rust Standard Library? Like this: [std/threa
 ```rust
 // spawn_unchecked_ creates a new Rust Thread
 unsafe fn spawn_unchecked_<'scope, F, T>(
-    let my_thread = Thread::new(id, name);
+  let my_thread = Thread::new(id, name);
 ```
 
 And __spawn_unchecked__ is called by Tokio, according to our Rust Disassembly...
@@ -1439,19 +1433,14 @@ And __spawn_unchecked__ is called by Tokio, according to our Rust Disassembly...
 <span style="font-size:80%">
 
 ```bash
-Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
+<core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>>:
 
-0000000000000000 <core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>>:
-core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>:
 .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
-   0: 1141                 add sp,sp,-16
-   2: e406                 sd ra,8(sp)
-   4: e02a                 sd a0,0(sp)
-   6: 00000097           auipc ra,0x0 6: R_RISCV_CALL_PLT <std::thread::Builder::spawn_unchecked_::MaybeDangling<T> as core::ops::drop::Drop>::drop
-   a: 000080e7           jalr ra # 6 <core::ptr::drop_in_place<std::thread::Builder::spawn_unchecked_::MaybeDangling<tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}>>+0x6>
-   e: 60a2                 ld ra,8(sp)
-  10: 0141                 add sp,sp,16
-  12: 8082                 ret
+
+add   sp, sp, -16
+sd    ra, 8(sp)
+sd    a0, 0(sp)
+auipc ra, 0x0 6: R_RISCV_CALL_PLT <std::thread::Builder::spawn_unchecked_::MaybeDangling<T> as core::ops::drop::Drop>::drop
 ```
 
 </span>
