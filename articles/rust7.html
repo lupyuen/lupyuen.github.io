@@ -844,7 +844,7 @@ error[E0432]: unresolved import `errno::Errn](TODO)
 </ol>
 <hr>
 <p><strong>Troubleshooting nix ioctl() on NuttX</strong></p>
-<p>To figure out if nix was passing ioctl() parameters correctly to NuttX: We inserted Debug Code into NuttX Kernel…</p>
+<p>To figure out if nix passes ioctl() parameters correctly to NuttX: We insert <strong>ioctl() Debug Code</strong> into NuttX Kernel…</p>
 <div class="example-wrap"><pre class="language-c"><code>TODO
 riscv/nuttx/fs/vfs/fs_ioctl.c
 #include &lt;debug.h&gt;
@@ -897,7 +897,7 @@ board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0</code></pre></div><h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
 <p>In this section, we discover how <strong>Tokio works under the hood</strong>. Does it really call <strong>POSIX Functions in NuttX</strong>?</p>
-<p>First we obtain the <strong>RISC-V Disassembly</strong> of our Hello Rust App. We trace the NuttX Build: Run <code>make V=1</code> on <code>rv-virt:leds64</code></p>
+<p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <code>make V=1</code> on <code>rv-virt:leds64</code></p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
 tools/configure.sh rv-virt:leds64
 ## Disable CONFIG_ARCH_FPU
@@ -1022,11 +1022,12 @@ riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
   --debugging \
   nuttx \
-  &gt;nuttx.S \
+  &gt;leds64-debug-nuttx.S \
   2&gt;&amp;1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7b52d54725aaa831cb3dddc0b68bb41f">(See the <strong>Build Log</strong>)</a></p>
-<p>TODO: riscv/leds64-debug-nuttx.S</p>
-<p>TODO dump libhello</p>
+<p>Which produces the Complete NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/leds64-debug-nuttx.S"><strong>leds64-debug-nuttx.S</strong></a></p>
+<p>Whoa the Complete NuttX Disassembly is too huge to inspect!</p>
+<p>We dump the RISC-V Disassembly of the <strong>Rust Part</strong> only: <strong>libhello.a</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump the libhello.a disassembly to libhello.S
 riscv-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide \
@@ -1034,58 +1035,52 @@ riscv-none-elf-objdump \
   apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   &gt;libhello.S \
   2&gt;&amp;1</code></pre></div>
-<p>TODO: riscv/libhello.S</p>
-<p>Search for pthread_create</p>
+<p>Which produces the Rust Disassembly: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
+<p>Is Tokio calling NuttX to create POSIX Threads? We search <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a> for <strong>pthread_create</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
-                    assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
-                }
-            };
+            assert_eq!(libc::pthread_attr_setstacksize(&amp;mut attr, stack_size), 0);
         }
+    };
+}
 
-        let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
- 122:	00000517          	auipc	a0,0x0	122: R_RISCV_PCREL_HI20	std::sys::pal::unix::thread::Thread::new::thread_start
- 126:	00050613          	mv	a2,a0	126: R_RISCV_PCREL_LO12_I	.Lpcrel_hi254
- 12a:	0148                	add	a0,sp,132
- 12c:	012c                	add	a1,sp,136
- 12e:	f82e                	sd	a1,48(sp)
- 130:	00000097          	auipc	ra,0x0	130: R_RISCV_CALL_PLT	pthread_create
- 134:	000080e7          	jalr	ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
- 138:	85aa                	mv	a1,a0
- 13a:	7542                	ld	a0,48(sp)
- 13c:	862e                	mv	a2,a1
- 13e:	fc32                	sd	a2,56(sp)
- 140:	1eb12e23          	sw	a1,508(sp)</code></pre></div>
-<p>https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84</p>
-<p>https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502</p>
+let ret = libc::pthread_create(&amp;mut native, &amp;attr, thread_start, p as *mut _);
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">unsafe fn </span>spawn_unchecked_&lt;<span class="lifetime">'scope</span>, F, T&gt;(
-        <span class="kw">let </span>my_thread = Thread::new(id, name);</code></pre></div>
-<p>TODO</p>
+ 122: 00000517           auipc a0,0x0 122: R_RISCV_PCREL_HI20 std::sys::pal::unix::thread::Thread::new::thread_start
+ 126: 00050613           mv a2,a0 126: R_RISCV_PCREL_LO12_I .Lpcrel_hi254
+ 12a: 0148                 add a0,sp,132
+ 12c: 012c                 add a1,sp,136
+ 12e: f82e                 sd a1,48(sp)
+ 130: 00000097           auipc ra,0x0 130: R_RISCV_CALL_PLT pthread_create
+ 134: 000080e7           jalr ra # 130 &lt;.Lpcrel_hi254+0xe&gt;
+ 138: 85aa                 mv a1,a0
+ 13a: 7542                 ld a0,48(sp)
+ 13c: 862e                 mv a2,a1
+ 13e: fc32                 sd a2,56(sp)
+ 140: 1eb12e23           sw a1,508(sp)</code></pre></div>
+<p>OK that’s the <a href="https://doc.rust-lang.org/src/std/sys/pal/unix/thread.rs.html#84"><strong>Rust Standard Library</strong></a> calling <strong>pthread_create</strong> to create a new Rust Thread.</p>
+<p>How are Rust Threads created in Rust Standard Library? Like this: <a href="https://github.com/rust-lang/rust/blob/master/library/std/src/thread/mod.rs#L502">std/thread/mod.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// spawn_unchecked_ creates a new Rust Thread
+</span><span class="kw">unsafe fn </span>spawn_unchecked_&lt;<span class="lifetime">'scope</span>, F, T&gt;(
+    <span class="kw">let </span>my_thread = Thread::new(id, name);</code></pre></div>
+<p>And <strong>spawn_unchecked</strong> is called by Tokio, according to our Rust Disassembly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Disassembly of section .text._ZN4core3ptr164drop_in_place$LT$std..thread..Builder..spawn_unchecked_..MaybeDangling$LT$tokio..runtime..blocking..pool..Spawner..spawn_thread..$u7b$$u7b$closure$u7d$$u7d$$GT$$GT$17hdb2d2ae6bc31ecdfE:
 
 0000000000000000 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;&gt;:
 core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;:
 .rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:523
-   0:	1141                	add	sp,sp,-16
-   2:	e406                	sd	ra,8(sp)
-   4:	e02a                	sd	a0,0(sp)
-   6:	00000097          	auipc	ra,0x0	6: R_RISCV_CALL_PLT	&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
-   a:	000080e7          	jalr	ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
-   e:	60a2                	ld	ra,8(sp)
-  10:	0141                	add	sp,sp,16
-  12:	8082                	ret</code></pre></div>
-<p>TODO NuttX Thread not Task</p>
-<div class="example-wrap"><pre class="language-text"><code>hello_rust_cargo &amp;
-nsh&gt; hello_rust_cargo &amp;
-hello_rust_cargo [4:100]
-nsh&gt; {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}
-{&quot;name&quot;:&quot;Jane&quot;,&quot;age&quot;:25}
-Deserialized: Alice is 28 years old
-Pretty JSON:
-{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;age&quot;: 28
-}
+   0: 1141                 add sp,sp,-16
+   2: e406                 sd ra,8(sp)
+   4: e02a                 sd a0,0(sp)
+   6: 00000097           auipc ra,0x0 6: R_RISCV_CALL_PLT &lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop
+   a: 000080e7           jalr ra # 6 &lt;core::ptr::drop_in_place&lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;tokio::runtime::blocking::pool::Spawner::spawn_thread::{{closure}}&gt;&gt;+0x6&gt;
+   e: 60a2                 ld ra,8(sp)
+  10: 0141                 add sp,sp,16
+  12: 8082                 ret</code></pre></div>
+<p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
+<p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
+<p>We run <code>hello_rust_cargo &amp;</code> to put in the background…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo &amp;
 Hello world from tokio!
 
 nsh&gt; ps
@@ -1093,6 +1088,7 @@ nsh&gt; ps
     0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
     4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div>
+<p><code>ps</code> says that there’s only One Single NuttX Task <code>hello_rust_cargo</code>. And no other NuttX Tasks.</p>
 <p><a href="https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961">(See the <strong>Complete Log</strong>)</a></p>
 
     
