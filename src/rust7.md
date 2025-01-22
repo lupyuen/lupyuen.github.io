@@ -631,17 +631,7 @@ __Troubleshooting The Rust Build__
 
   Then rebuild with `make -j`
 
-
-TODO: Stack Overflow
-
-```text
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x8006bbc0      2048      1016    49.6%    irq
-dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x8006e7f0      1904       888    46.6%    Idle_Task
-dump_task:       1     1 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x8006fd38      2888      1944    67.3%    nsh_main
-dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
-QEMU: Terminated
-```
+  TODO: will be fixed
 
 _What if we're using Rust already? And we don't wish to change the Default Toolchain?_
 
@@ -656,6 +646,26 @@ rustup override list
 rustup override set nightly
 rustup override list
 popd
+```
+
+_Rust App is crashing in QEMU?_
+
+We might see a Stack Dump that __Loops Forever__. Or we might see __100% Full__ for the App Stack...
+
+```text
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
+```
+
+Then increase the App Stack Size...
+
+```bash
+## Increase the App Stack Size to 64 KB
+kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
+
+## Update the Kconfig Dependencies and rebuild
+make olddefconfig
+make -j
 ```
 
 _Rust Build seems to break sometimes?_
