@@ -361,7 +361,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p>There’s something odd about <strong>Raw File Descriptors</strong> vs <strong>Owned File Descriptors</strong>… Fetching the raw one too early might cause <strong>EBADF Errors</strong>. Here’s why…</p>
 <p><em>What’s a Raw File Descriptor?</em></p>
 <p>In NuttX and POSIX: <a href="https://github.com/apache/nuttx/blob/master/include/stdio.h#L65-L71"><strong>Raw File Descriptor</strong></a> is a <strong>Plain Integer</strong> that specifies an I/O Stream…</p>
-<div><table><thead><tr><th style="text-align: center">File Descriptor</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<div><table><thead><tr><th style="text-align: center">File Descriptor</th><th style="text-align: left">I/O Stream</th></tr></thead><tbody>
 <tr><td style="text-align: center">0</td><td style="text-align: left">Standard Input</td></tr>
 <tr><td style="text-align: center">1</td><td style="text-align: left">Standard Output</td></tr>
 <tr><td style="text-align: center">2</td><td style="text-align: left">Standard Error</td></tr>
