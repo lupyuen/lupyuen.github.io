@@ -2,9 +2,7 @@
 
 📝 _30 Jan 2025_
 
-![TODO](https://lupyuen.github.io/images/rust7-title.jpg)
-
-TODO: Screenshot of VSCode
+![LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)](https://lupyuen.github.io/images/rust7-title.png)
 
 __Freshly Baked:__ Here's how we [__Blink the LED__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs) with __Rust Standard Library__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
