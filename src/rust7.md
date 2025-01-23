@@ -250,7 +250,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check the Appendix for the __Tokio Async Demo__. That works beautifully on NuttX! (Pic below)
+Check the Appendix for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
 
 - TODO: test_async
 
