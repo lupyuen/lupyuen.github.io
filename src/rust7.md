@@ -388,6 +388,8 @@ We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
 Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
 
+TODO: Pic of Owned File Descriptors
+
 # Owned File Descriptors
 
 __Safety Quiz:__ Why will this run OK...
@@ -478,6 +480,8 @@ Resulting in the [__EBADF Error__](https://man.freebsd.org/cgi/man.cgi?errno(2))
 
 __Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.
 
+![TODO](https://lupyuen.github.io/images/rust7-compare.png)
+
 # Nix vs Rustix
 
 _Is there a Safer Way to call ioctl()?_
@@ -519,8 +523,6 @@ But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which
 - [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
 
 - [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
-
-![TODO](https://lupyuen.github.io/images/rust7-compare.png)
 
 _Which shall we use: Nix or Rustix?_
 
@@ -1039,11 +1041,13 @@ int nx_pthread_create(...) {
 
 </span>
 
+![LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)](https://lupyuen.github.io/images/rust7-title.png)
+
 # Appendix: Porting Nix to NuttX
 
 _What happens when we call nix crate as-is on NuttX?_
 
-Earlier we said that we [__Customised the `nix` Crate__](TODO) to run on NuttX.
+Earlier we said that we [__Customised the `nix` Crate__](TODO) to run on NuttX. (Pic above)
 
 Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
