@@ -163,7 +163,7 @@ Hello world from tokio!</code></pre></div>
 </li>
 </ul>
 <p>What’s inside the brand new Rust Hello App? We dive in…</p>
-<p>TODO: Pic of JSON with Serde</p>
+<p><img src="https://lupyuen.github.io/images/rust7-json2.png" alt="JSON with Serde on Apache NuttX RTOS (Neovim IDE)" /></p>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
 <p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
@@ -274,7 +274,7 @@ Task 0 stopping</code></pre></div>
 <ul>
 <li>TODO: test_async</li>
 </ul>
-<p>TODO: Screenshot of Tokio Async Multi-Thread</p>
+<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="TODO" /></p>
 <p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
 <p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming Non-Blocking I/O works OK.</p>
@@ -285,7 +285,7 @@ Task 0 stopping</code></pre></div>
 </blockquote>
 <p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>, we spawn a few threads and call <strong>Async Functions</strong>.</p>
 <p>(Check out <a href="https://tokio.rs/tokio/tutorial/select"><strong>Tokio Select</strong></a> and <a href="https://tokio.rs/tokio/tutorial/streams"><strong>Tokio Streams</strong></a>)</p>
-<p>TODO: Screenshot of VSCode</p>
+<p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)" /></p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p><em>We’re running nix on NuttX?</em></p>
 <p>Oh that’s <a href="https://crates.io/crates/nix"><strong><code>nix</code> Crate</strong></a> that provides <strong>Safer Rust Bindings</strong> for POSIX / Unix / Linux. (Nope, not NixOS)</p>
@@ -371,7 +371,7 @@ board_userled: LED 1 set to 0</code></pre></div>
 </ol>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
-<p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic above)</p>
+<p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer <a href="https://lupyuen.github.io/images/rust7-vscode2.png"><strong>will work perfectly</strong></a>!</p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
@@ -708,13 +708,11 @@ make -j</code></pre></div></li>
 pushd ../apps/examples/rust/hello
 cargo clean
 popd
-make -j</code></pre></div>
-<p>TODO: Pic of VSCode</p>
-</li>
+make -j</code></pre></div></li>
 <li>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
-<p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic above)</p>
+<p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic below)</p>
 </li>
 </ul>
 <p>More details here…</p>
@@ -726,7 +724,7 @@ make -j</code></pre></div>
 <p><a href="https://github.com/rust-lang/rust/pull/127755"><strong>Rust: Add NuttX based targets for RISC-V and ARM</strong></a></p>
 </li>
 </ul>
-<p>TODO: Screenshot of Tokio Async Multi-Thread</p>
+<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="TODO" /></p>
 <h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
@@ -752,7 +750,8 @@ make -j</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 Hello world from tokio!
 Looping Forever...</code></pre></div>
-<p>Now we try Tokio’s <strong>Multi-Threaded Scheduler</strong>. And we create <strong>One New NuttX Thread</strong> for the Scheduler: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
+<p>Now we try Tokio’s <strong>Multi-Threaded Scheduler</strong>. (Pic above)</p>
+<p>And we create <strong>One New NuttX Thread</strong> for the Scheduler: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Run 4 Async Functions in the Background
 // By creating One New NuttX Thread
