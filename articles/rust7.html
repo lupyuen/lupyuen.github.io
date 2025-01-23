@@ -76,7 +76,7 @@
 <li><a href="#appendix-tokio-async-threading" title="Appendix: Tokio Async Threading">9 Appendix: Tokio Async Threading</a><ul></ul></li>
 <li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">10 Appendix: Porting Nix to NuttX</a><ul></ul></li>
 <li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">11 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>30 Jan 2025</em></p>
-<p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)" /></p>
 <p><strong>Freshly Baked:</strong> Here’s how we <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
@@ -228,6 +228,7 @@ nsh&gt; hello_rust_cargo
   &quot;age&quot;: 28
 }</code></pre></div>
 <p><a href="https://bitboom.github.io/2020-10-22/serde-no-std">(Serde also runs on <strong>Rust Core Library</strong>, but super messy)</a></p>
+<p><img src="https://lupyuen.github.io/images/rust7-tokio.png" alt="Async Functions with Tokio (Helix Editor + Zellij Workspace)" /></p>
 <h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
 <p><em>What’s this Tokio? Sounds like a city?</em></p>
 <p>Indeed! “Tokio” is inspired by Tokyo (and <a href="https://crates.io/crates/mio"><strong>Metal I/O</strong></a>)</p>
@@ -285,7 +286,7 @@ Task 0 stopping</code></pre></div>
 </blockquote>
 <p>Which means it’s great for <a href="https://tokio.rs/tokio/tutorial/io"><strong>Network Servers</strong></a>. Instead of spawning many many <strong>NuttX Threads</strong>, we spawn a few threads and call <strong>Async Functions</strong>.</p>
 <p>(Check out <a href="https://tokio.rs/tokio/tutorial/select"><strong>Tokio Select</strong></a> and <a href="https://tokio.rs/tokio/tutorial/streams"><strong>Tokio Streams</strong></a>)</p>
-<p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)" /></p>
 <h1 id="led-blinky-with-nix"><a class="doc-anchor" href="#led-blinky-with-nix">§</a>4 LED Blinky with Nix</h1>
 <p><em>We’re running nix on NuttX?</em></p>
 <p>Oh that’s <a href="https://crates.io/crates/nix"><strong><code>nix</code> Crate</strong></a> that provides <strong>Safer Rust Bindings</strong> for POSIX / Unix / Linux. (Nope, not NixOS)</p>
