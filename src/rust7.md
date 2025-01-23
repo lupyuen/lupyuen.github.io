@@ -1041,7 +1041,7 @@ int nx_pthread_create(...) {
 
 _What happens when we call nix crate as-is on NuttX?_
 
-Earlier said that we [__Customised the `nix` Crate__](TODO) to run on NuttX.
+Earlier we said that we [__Customised the `nix` Crate__](TODO) to run on NuttX.
 
 Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
