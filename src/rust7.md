@@ -260,9 +260,9 @@ _But NuttX has POSIX Threads. Why use Async Functions?_
 
 Think [__Node.js__](https://en.wikipedia.org/wiki/Node.js#Threading) and its _Single-Thread Event Loop_, making _Non-Blocking I/O Calls_. Supporting tens of thousands of concurrent connections. _(Without costly Thread Context Switching)_
 
-Today we can (probably) do the same with __NuttX and Async Rust__.
+Today we can (probably) do the same with __NuttX and Async Rust__. Assuming Non-Blocking I/O works OK.
 
-(We won't call them _"Async Tasks"_. Because a Task in NuttX is more like a NuttX Process)
+(Tokio calls them _"Async Tasks"_, but we won't. Because a Task in NuttX is more like a NuttX Process)
 
 _How will we use Tokio?_
 
