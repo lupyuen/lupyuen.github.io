@@ -530,6 +530,8 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 # What's Next
 
+![Upcoming: Slint Rust GUI for NuttX 🎉](https://lupyuen.github.io/images/rust7-slint.jpg)
+
 [__Upcoming:__ Slint Rust GUI for NuttX 🎉](https://github.com/apache/nuttx-apps/pull/2967)
 
 _Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?_
