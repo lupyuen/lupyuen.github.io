@@ -77,6 +77,7 @@ body {
     -webkit-font-feature-settings: "kern", "liga";
     -moz-font-feature-settings: "kern", "liga";
     font-feature-settings: "kern", "liga";
+    max-width: 40rem;
 }
 
 h1 {
