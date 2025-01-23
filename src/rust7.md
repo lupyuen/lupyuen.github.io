@@ -325,7 +325,13 @@ ioctl_write_int_bad!(  // ioctl() will write One Int Value (LED Bit State)
   led_set_all,         // Name of our New Function
   ULEDIOC_SETALL       // ioctl() Command to send
 );
+```
 
+The code above opens the __LED Device__, returning an __Owned File Descriptor__ (explained below). It defines a function __led_set_all__, that will call _ioctl()_ to flip the LED.
+
+This is how we call __led_set_all__ to flip the LED: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+
+```rust
 // Flip LED 1 to On
 unsafe {             // Be careful of ioctl()
   led_set_all(       // Set the LEDs for...
@@ -333,6 +339,13 @@ unsafe {             // Be careful of ioctl()
     1                // LED 1 (Bit 0) turns On
   ).unwrap();        // Halt on Error
 }  // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+```
+
+We wait Two Seconds, then flip the __LED to Off__: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+
+```rust
+// Wait 2 seconds
+sleep(2);
 
 // Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
 unsafe { led_set_all(fd.as_raw_fd(), 0).unwrap(); }
@@ -479,6 +492,8 @@ led_set_all(
 Resulting in the [__EBADF Error__](https://man.freebsd.org/cgi/man.cgi?errno(2)). _ioctl()_ failed because _/dev/userleds_ is already closed!
 
 __Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.
+
+Rustix is another popular POSIX Wrapper. Let's take a peek...
 
 ![TODO](https://lupyuen.github.io/images/rust7-compare.png)
 
