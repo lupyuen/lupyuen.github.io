@@ -323,17 +323,23 @@ Features: + fs + ioctl
 </span><span class="macro">ioctl_write_int_bad!</span>(  <span class="comment">// ioctl() will write One Int Value (LED Bit State)
   </span>led_set_all,         <span class="comment">// Name of our New Function
   </span>ULEDIOC_SETALL       <span class="comment">// ioctl() Command to send
-</span>);
+</span>);</code></pre></div>
+<p>The code above opens the <strong>LED Device</strong>, returning an <strong>Owned File Descriptor</strong> (explained below). It defines a function <strong>led_set_all</strong>, that will call <em>ioctl()</em> to flip the LED.</p>
+<p>This is how we call <strong>led_set_all</strong> to flip the LED: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">lib.rs</a></p>
 
-<span class="comment">// Flip LED 1 to On
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Flip LED 1 to On
 </span><span class="kw">unsafe </span>{             <span class="comment">// Be careful of ioctl()
   </span>led_set_all(       <span class="comment">// Set the LEDs for...
     </span>fd.as_raw_fd(),  <span class="comment">// LED Device
     </span><span class="number">1                </span><span class="comment">// LED 1 (Bit 0) turns On
   </span>).unwrap();        <span class="comment">// Halt on Error
-</span>}  <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
+</span>}  <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)</span></code></pre></div>
+<p>We wait Two Seconds, then flip the <strong>LED to Off</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">lib.rs</a></p>
 
-// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Wait 2 seconds
+</span>sleep(<span class="number">2</span>);
+
+<span class="comment">// Flip LED 1 to Off: ioctl(fd, ULEDIOC_SETALL, 0)
 </span><span class="kw">unsafe </span>{ led_set_all(fd.as_raw_fd(), <span class="number">0</span>).unwrap(); }</code></pre></div>
 <p><em>ULEDIOC_SETALL looks familiar?</em></p>
 <p>We spoke about <em>ULEDIOC_SETALL</em> in <a href="https://lupyuen.github.io/articles/rust6#blink-the-led"><strong>an earlier article</strong></a>. And the Rust Code above mirrors the <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/nim/examples/hello/hello_main.c#L40-L85"><strong>C Version</strong></a> of our Blinky App.</p>
@@ -435,6 +441,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>).unwrap();  <span class="comment">// Oops will fail with EBADF Error!</span></code></pre></div>
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
 <p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
+<p>Rustix is another popular POSIX Wrapper. Let’s take a peek…</p>
 <p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="TODO" /></p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
 <p><em>Is there a Safer Way to call ioctl()?</em></p>
