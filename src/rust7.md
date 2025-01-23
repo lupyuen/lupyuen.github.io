@@ -2,7 +2,7 @@
 
 📝 _30 Jan 2025_
 
-![LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)](https://lupyuen.github.io/images/rust7-title.png)
+![LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)](https://lupyuen.github.io/images/rust7-title.png)
 
 __Freshly Baked:__ Here's how we [__Blink the LED__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs) with __Rust Standard Library__ on [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
@@ -191,6 +191,8 @@ Pretty JSON:
 
 [(Serde also runs on __Rust Core Library__, but super messy)](https://bitboom.github.io/2020-10-22/serde-no-std)
 
+![Async Functions with Tokio (Helix Editor + Zellij Workspace)](https://lupyuen.github.io/images/rust7-tokio.png)
+
 # Async Functions with Tokio
 
 _What's this Tokio? Sounds like a city?_
@@ -270,7 +272,7 @@ Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial
 
 (Check out [__Tokio Select__](https://tokio.rs/tokio/tutorial/select) and [__Tokio Streams__](https://tokio.rs/tokio/tutorial/streams))
 
-![LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)](https://lupyuen.github.io/images/rust7-title.png)
+![LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)](https://lupyuen.github.io/images/rust7-title.png)
 
 # LED Blinky with Nix
 
