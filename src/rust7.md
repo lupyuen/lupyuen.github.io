@@ -100,7 +100,7 @@ Some bits are [__a little wonky__](TODO) (but will get better)
 
 What's inside the brand new Rust Hello App? We dive in...
 
-TODO: Pic of JSON with Serde
+![JSON with Serde on Apache NuttX RTOS (Neovim IDE)](https://lupyuen.github.io/images/rust7-json2.png)
 
 # JSON with Serde
 
@@ -252,7 +252,7 @@ Check the Appendix for the __Tokio Async Demo__. Which works beautifully on Nutt
 
 - TODO: test_async
 
-TODO: Screenshot of Tokio Async Multi-Thread
+![TODO](https://lupyuen.github.io/images/rust7-vscode2.png)
 
 _But NuttX has POSIX Threads. Why use Async Functions?_
 
@@ -270,7 +270,7 @@ Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial
 
 (Check out [__Tokio Select__](https://tokio.rs/tokio/tutorial/select) and [__Tokio Streams__](https://tokio.rs/tokio/tutorial/streams))
 
-TODO: Screenshot of VSCode
+![LED Blinky with Rust Standard Library on Apache NuttX RTOS (Rust Rover IDE)](https://lupyuen.github.io/images/rust7-title.png)
 
 # LED Blinky with Nix
 
@@ -384,7 +384,7 @@ _How to code Rust Apps for NuttX?_
 
 We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
-Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
+Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
 
 # Owned File Descriptors
 
@@ -853,13 +853,11 @@ __Troubleshooting The Rust Build__
   make -j
   ```
 
-  TODO: Pic of VSCode
-
 - _How to code Rust Apps for NuttX?_
 
   We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
-  Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic above)
+  Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic below)
 
 More details here...
 
@@ -867,7 +865,7 @@ More details here...
 
 - [__Rust: Add NuttX based targets for RISC-V and ARM__](https://github.com/rust-lang/rust/pull/127755)
 
-TODO: Screenshot of Tokio Async Multi-Thread
+![TODO](https://lupyuen.github.io/images/rust7-vscode2.png)
 
 # Appendix: Tokio Async Threading
 
@@ -901,7 +899,9 @@ Hello world from tokio!
 Looping Forever...
 ```
 
-Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+Now we try Tokio's __Multi-Threaded Scheduler__. (Pic above)
+
+And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
 
 ```rust
 // Run 4 Async Functions in the Background
