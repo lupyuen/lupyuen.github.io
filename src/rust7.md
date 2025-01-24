@@ -1,6 +1,6 @@
 # Rust Standard Library on Apache NuttX RTOS
 
-📝 _30 Jan 2025_
+📝 _26 Jan 2025_
 
 ![LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)](https://lupyuen.github.io/images/rust7-title.png)
 
