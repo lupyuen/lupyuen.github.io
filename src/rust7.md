@@ -419,7 +419,7 @@ led_set_all(
 ).unwrap();              // Yep runs OK
 ```
 
-But not this?
+But not this? (Pic above)
 
 ```rust
 // Fetch earlier the Raw File Descriptor (from the LED Device)
