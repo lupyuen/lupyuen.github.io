@@ -413,6 +413,14 @@ We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
 Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
 
+Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
+
+```bash
+$ cargo clippy
+Checking hello v0.1.0 (apps/examples/rust/hello)
+Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
+```
+
 ![Owned File Descriptors vs Raw File Descriptors](https://lupyuen.github.io/images/rust7-fd2.jpg)
 
 # Owned File Descriptors
@@ -895,7 +903,15 @@ __Troubleshooting The Rust Build__
 
   Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic below)
 
-More details here...
+  Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
+
+  ```bash
+  $ cargo clippy
+  Checking hello v0.1.0 (apps/examples/rust/hello)
+  Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
+  ```
+
+How did we port Rust Standard Library to NuttX? Details here...
 
 - [__examples: New app to build Rust with Cargo__](https://github.com/apache/nuttx-apps/pull/2487)
 
