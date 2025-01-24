@@ -262,7 +262,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-See this for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
+Check this link for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
 
 - [__"Tokio Async Threading"__](https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading)
 
@@ -1029,11 +1029,15 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
-
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535)
 
 [(Explained in __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
+
+Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
+
+The happenings above verifies our __Reverse Engineering of Tokio__...
+
+- [__"Snooping Tokio on NuttX"__](https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx)
 
 _What if we increase the Worker Threads? From 1 to 2?_
 
