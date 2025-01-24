@@ -437,7 +437,7 @@ let owned_fd =
 
 // Copied from above: Set the LEDs via ioctl()
 led_set_all(
-  owned_fd.as_raw_fd(),  // Borrow the Raw File Descriptor
+  owned_fd.as_raw_fd(),  // Extract the Raw File Descriptor
   1                      // Flip LED 1 to On
 ).unwrap();              // Yep runs OK
 ```
@@ -445,10 +445,10 @@ led_set_all(
 But __Not This__? (Pic above)
 
 ```rust
-// Fetch earlier the Raw File Descriptor (from the LED Device)
+// Extract earlier the Raw File Descriptor (from the LED Device)
 let raw_fd =
   open("/dev/userleds", ...)  // Open the LED Device
-  .unwrap()      // Returns an Owned File Descriptor
+  .unwrap()      // Get the Owned File Descriptor
   .as_raw_fd();  // Which becomes a Raw File Descriptor
 
 // Set the LEDs via ioctl()
@@ -491,10 +491,10 @@ _Causing the Second Snippet to fail?_
 Exactly! _open()_ returns an __Owned File Descriptor__...
 
 ```rust
-// Open the LED Device
+// Owned File Descriptor becomes Raw File Descriptor
 let raw_fd =
   open("/dev/userleds", ...)  // Open the LED Device
-  .unwrap()      // Returns an Owned File Descriptor
+  .unwrap()      // Get the Owned File Descriptor
   .as_raw_fd();  // Which becomes a Raw File Descriptor
 ```
 
@@ -516,7 +516,7 @@ led_set_all(
 
 Resulting in the [__EBADF Error__](https://man.freebsd.org/cgi/man.cgi?errno(2)). _ioctl()_ failed because _/dev/userleds_ is already closed!
 
-__Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.
+__Lesson Learnt:__ Be careful with Owned File Descriptors. They're super helpful for Auto-Closing our files. But might have strange consequences.
 
 Rustix is another popular POSIX Wrapper. We take a peek...
 
