@@ -392,7 +392,7 @@ board_userled: LED 1 set to 0</code></pre></div>
   owned_fd.as_raw_fd(),  <span class="comment">// Borrow the Raw File Descriptor
   </span><span class="number">1                      </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();              <span class="comment">// Yep runs OK</span></code></pre></div>
-<p>But not this?</p>
+<p>But not this? (Pic above)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch earlier the Raw File Descriptor (from the LED Device)
 </span><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
