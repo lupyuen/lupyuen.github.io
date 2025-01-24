@@ -421,6 +421,8 @@ Checking hello v0.1.0 (apps/examples/rust/hello)
 Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
 ```
 
+Let's talk about Owned File Descriptors vs Raw File Descriptors...
+
 ![Owned File Descriptors vs Raw File Descriptors](https://lupyuen.github.io/images/rust7-fd2.jpg)
 
 # Owned File Descriptors
