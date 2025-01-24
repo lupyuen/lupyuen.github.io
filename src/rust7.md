@@ -542,7 +542,7 @@ unsafe {
 }
 ```
 
-[(Based on the __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
+[(Based on __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
 
 _Nix vs Rustix: They feel quite similar?_
 
