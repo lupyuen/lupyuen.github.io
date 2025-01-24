@@ -522,14 +522,15 @@ $ make</code></pre></div>
   }
 }</code></pre></div>
 <p>My gut feel is that we should do it the Zephyr way. But make it POSIX-like. Thus we should drop <strong>nuttx-embedded-hal</strong> altogether :-)</p>
-<p><em>What about rustix?</em></p>
-<p>rustix is kinda heavy I think? It does Managed File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?</p>
+<p><em>What about Rustix?</em></p>
+<p>Rustix is kinda heavy I think? It does Owned File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?</p>
 <p>Earlier I <a href="https://lupyuen.github.io/articles/rust6#handle-errors-safely">wrote this</a>…</p>
 <blockquote>
 <p><em>Can we auto-close the File Descriptor when it goes out of scope?</em>
 Probably, if we do <a href="https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html"><strong>Managed File Descriptors</strong></a>. But that’s way beyond the size, scope and scale of GSoC.</p>
 </blockquote>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2487">(More discussion here)</a></p>
+<p><strong>Update:</strong> We’re reassessing Rustix for NuttX. Simpler is swell but we’ll run into problems with I/O Safety sigh. Check out the new article…</p>
 <p><img src="https://lupyuen.github.io/images/rust6-qemu.jpg" alt="Testing Rust Blinky on QEMU Emulator" /></p>
 <h1 id="appendix-daily-test-of-rust-blinky"><a class="doc-anchor" href="#appendix-daily-test-of-rust-blinky">§</a>13 Appendix: Daily Test of Rust Blinky</h1>
 <p>Earlier we said that our Rust Blinky App might someday <a href="https://lupyuen.github.io/articles/rust6#daily-build-and-test"><strong>fail to build or execute</strong></a> correctly. That’s why we…</p>
