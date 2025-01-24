@@ -490,11 +490,12 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   // We call ioctl() on the File Descriptor
   // Equivalent to: ioctl(fd, BLKSSZGET, &amp;output) ; return output
   </span>ioctl::ioctl(
-    fd,  <span class="comment">// File Descriptor
+    fd,  <span class="comment">// Borrowed File Descriptor (safer than Raw)
     </span>ctl  <span class="comment">// Ioctl Getter
   </span>) <span class="comment">// Returns the Value Read (Or Error)
 </span>}</code></pre></div>
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on <strong>Rustix Docs</strong>)</a></p>
+<p><a href="https://docs.rs/rustix/latest/rustix/ioctl/fn.ioctl.html">(Rustix Ioctl uses a <strong>Borrowed File Descriptor</strong>, safer than Raw)</a></p>
 <p><em>Nix vs Rustix: They feel quite similar?</em></p>
 <p>Actually Nix used to be a lot simpler, supporting only <strong>Raw File Descriptors</strong>. <em>(Instead of Owned File Descriptors)</em></p>
 <p>Today, Nix is moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Bummer it means Nix is becoming more <a href="https://crates.io/crates/rustix"><strong>Rustix-like</strong></a>…</p>
