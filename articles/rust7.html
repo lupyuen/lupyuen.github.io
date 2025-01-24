@@ -399,6 +399,10 @@ board_userled: LED 1 set to 0</code></pre></div>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
 <p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer <a href="https://lupyuen.github.io/images/rust7-vscode2.png"><strong>will work perfectly</strong></a>!</p>
+<p>Remember to run <a href="https://doc.rust-lang.org/clippy/index.html"><strong>cargo clippy</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo clippy
+Checking hello v0.1.0 (apps/examples/rust/hello)
+Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust7-fd2.jpg" alt="Owned File Descriptors vs Raw File Descriptors" /></p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
@@ -746,9 +750,12 @@ make -j</code></pre></div></li>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
 <p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer will work perfectly! (Pic below)</p>
-</li>
+<p>Remember to run <a href="https://doc.rust-lang.org/clippy/index.html"><strong>cargo clippy</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo clippy
+Checking hello v0.1.0 (apps/examples/rust/hello)
+Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s</code></pre></div></li>
 </ul>
-<p>More details here…</p>
+<p>How did we port Rust Standard Library to NuttX? Details here…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>examples: New app to build Rust with Cargo</strong></a></p>
