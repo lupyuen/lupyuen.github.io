@@ -120,7 +120,7 @@ _What's this Serde?_
 
 Think _"Serialize-Deserialize"_. [__Serde__](https://crates.io/crates/serde) is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with [__JSON, CBOR, MessagePack, ...__](https://serde.rs/#data-formats)
 
-This is how we __Serialize to JSON__ in our NuttX App: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
+This is how we __Serialize to JSON__ in our NuttX App: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32)
 
 ```rust
 // Allow Serde to Serialize and Deserialize a Person Struct
@@ -155,7 +155,7 @@ nsh> hello_rust_cargo
 {"name":"John","age":30}
 ```
 
-Now we __Deserialize from JSON__: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
+Now we __Deserialize from JSON__: [lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L32-L41)
 
 ```rust
 // Declare a String with JSON inside
@@ -180,7 +180,7 @@ Which prints...
 Deserialized: Alice is 28 years old
 ```
 
-Serde will also handle __JSON Formatting__: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
+Serde will also do __JSON Formatting__: [lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L41-L44)
 
 ```rust
 // Serialize our Person Struct
@@ -213,7 +213,7 @@ Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crat
 
 > [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
 
-Inside our __Rust Hello App__, this is how we we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs)
+Inside our __Rust Hello App__, this is how we we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
 
 ```rust
 // Use One Single Thread (Current NuttX Thread)
@@ -309,7 +309,7 @@ Features: + fs + ioctl
 
 _The URL looks a little sus?_
 
-Yep it's our Bespoke `nix` Crate. That's because the Official `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx)
+Yep it's our Bespoke __`nix`__ Crate. That's because the Official __`nix`__ Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx)
 
 _Why are we calling nix?_
 
@@ -321,7 +321,7 @@ unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
 unsafe { libc::close(fd); }
 ```
 
-But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by `nix`. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by __`nix`__. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39)
 
 ```rust
 // Open the LED Device for NuttX
@@ -341,7 +341,7 @@ ioctl_write_int_bad!(  // ioctl() will write One Int Value (LED Bit State)
 
 The code above opens the __LED Device__, returning an __Owned File Descriptor__ (explained below). It defines a function __led_set_all__, that will call _ioctl()_ to flip the LED.
 
-This is how we call __led_set_all__ to flip the LED: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+This is how we call __led_set_all__ to flip the LED: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47)
 
 ```rust
 // Flip LED 1 to On
@@ -353,7 +353,7 @@ unsafe {             // Be careful of ioctl()
 }  // Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)
 ```
 
-We wait Two Seconds, then flip the __LED to Off__: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+We wait Two Seconds, then flip the __LED to Off__: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L47-L53)
 
 ```rust
 // Wait 2 seconds
@@ -405,7 +405,7 @@ _How to run the Rust Blinky App?_
 
     NuttX blinks the __Emulated LED__ on QEMU Emulator!
 
-    [(See the __Complete Log__)](https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af)
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af#file-hello_rust_cargo-log-L496-L533)
 
 _How to code Rust Apps for NuttX?_
 
@@ -878,7 +878,9 @@ __Troubleshooting The Rust Build__
 
   ```bash
   ## Increase the App Stack Size to 64 KB
-  kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
+  kconfig-tweak --set-val \
+    CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE \
+    65536
 
   ## Update the Kconfig Dependencies and rebuild
   make olddefconfig
@@ -951,9 +953,7 @@ Hello world from tokio!
 Looping Forever...
 ```
 
-Now we try Tokio's __Multi-Threaded Scheduler__. (Pic above)
-
-And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
+Now we try Tokio's __Multi-Threaded Scheduler__ (pic above). And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L86-L140)
 
 ```rust
 // Run 4 Async Functions in the Background
@@ -1012,7 +1012,7 @@ async fn my_bg_task(i: u64) {
 pub extern "C" fn pthread_set_name_np() {}
 ```
 
-Which shows...
+Which shows __Four Async Functions__, running on __One New POSIX Thread__...
 
 ```bash
 nsh> hello_rust_cargo
@@ -1031,9 +1031,9 @@ Task 0 stopping
 
 Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535)
 
-[(Explained in the __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
+[(Explained in __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
 
 _What if we increase the Worker Threads? From 1 to 2?_
 
@@ -1044,32 +1044,30 @@ let runtime = tokio::runtime::Builder
   .worker_threads(2)   // With Two New NuttX Threads for our Scheduler
 ```
 
-Works the same though...
+The output looks exactly the same...
 
 ```bash
-pthread_create:
-nx_pthread_create:
-pthread_create:
-nx_pthread_create:
-Task 0 sleeping for 1000 ms.
-Task 1 sleeping for 950 ms.
-Task 2 sleeping for 900 ms.
-Task 3 sleeping for 850 ms.
-Finished time-consuming task.
-Task 3 stopping.
-Task 2 stopping.
-Task 1 stopping.
-Task 0 stopping.
+pthread_create
+nx_pthread_create
+pthread_create
+nx_pthread_create
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for  950 ms
+Task 2 sleeping for  900 ms
+Task 3 sleeping for  850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping
 ```
 
-We see Two Calls to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179). Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)
+Except that we see __Two Calls__ to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179). Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)
 
 _How did we log pthread_create?_
 
 Inside NuttX Kernel: We added Debug Code to 
-[__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88)
-and
-[__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)
+[__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)
 
 <span style="font-size:90%">
 
@@ -1095,7 +1093,7 @@ _What happens when we call nix crate as-is on NuttX?_
 
 Earlier we said that we [__Customised the `nix` Crate__](https://lupyuen.github.io/articles/rust7#led-blinky-with-nix) to run on NuttX. (Pic above)
 
-Why? Let's build our Rust Blinky App with the Original `nix` Crate...
+Why? Let's build our Rust Blinky App with the Original __`nix`__ Crate...
 
 <span style="font-size:80%">
 
@@ -1199,7 +1197,7 @@ Here's how...
 
 __Troubleshooting nix ioctl() on NuttX__
 
-To figure out if `nix` passes ioctl parameters correctly to NuttX: We insert __ioctl Debug Code__ into NuttX Kernel...
+To figure out if __`nix`__ passes ioctl parameters correctly to NuttX: We insert __ioctl Debug Code__ into NuttX Kernel...
 
 ```c
 // At https://github.com/apache/nuttx/blob/master/fs/vfs/fs_ioctl.c#L261
@@ -1208,7 +1206,7 @@ int ioctl(int fd, int req, ...) {
   _info("fd=0x%x, req=0x%x", fd, req);
 ```
 
-Which [__Ioctl Macro__](https://docs.rs/nix/latest/nix/sys/ioctl/) shall we use in `nix`? We tried __ioctl_none__...
+Which [__Ioctl Macro__](https://docs.rs/nix/latest/nix/sys/ioctl/) shall we call in __`nix`__? We tried __ioctl_none__...
 
 ```rust
 const ULEDIOC_SETALL: i32 = 0x1d03;
@@ -1279,7 +1277,7 @@ board_userled: LED 3 set to 0
 
 In this section, we discover how __Tokio works under the hood__. Does it really call __POSIX Functions in NuttX__?
 
-First we obtain the __RISC-V Disassembly__ of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run `make V=1` on `rv-virt:leds64`
+First we obtain the __RISC-V Disassembly__ of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run __`make V=1`__ on __`rv-virt:leds64`__
 
 ```bash
 make distclean
@@ -1307,7 +1305,7 @@ make V=1
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374)
 
-According to the `make V=1` trace: __NuttX Build__ does this...
+According to the __`make V=1`__ trace: __NuttX Build__ does this...
 
 <span style="font-size:80%">
 
@@ -1449,7 +1447,7 @@ riscv-none-elf-objdump \
   2>&1
 ```
 
-Which produces the __Rust Disassembly__: [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S)
+Which produces the (much smaller) __Rust Disassembly__: [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S)
 
 Is Tokio calling NuttX to create POSIX Threads? We search [__libhello.S__](https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S) for __pthread_create__...
 
@@ -1501,7 +1499,7 @@ Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to creat
 
 _Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?_
 
-We run `hello_rust_cargo &` to put it in the background...
+We run __`hello_rust_cargo &`__ to put it in the background...
 
 <span style="font-size:80%">
 
@@ -1518,6 +1516,6 @@ nsh> ps
 
 </span>
 
-`ps` says that there's only One Single NuttX Task `hello_rust_cargo`. And no other NuttX Tasks.
+__`ps`__ says that there's only One Single NuttX Task __`hello_rust_cargo`__. And no other NuttX Tasks.
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961)
