@@ -47,9 +47,9 @@ Features: + fs + ioctl
 ```
 _(OK it's more complicated. Stay tuned)_
 
-All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
+All this is now possible, thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
-In this article, we explain...
+In today's article, we explain...
 
 - How to build __NuttX + Rust Standard Library__
 
@@ -120,7 +120,7 @@ _What's this Serde?_
 
 Think _"Serialize-Deserialize"_. [__Serde__](https://crates.io/crates/serde) is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with [__JSON, CBOR, MessagePack, ...__](https://serde.rs/#data-formats)
 
-This is how we __Serialize to JSON__ in our NuttX App: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32)
+This is how we __Serialize to JSON__ in our Hello Rust App: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32)
 
 ```rust
 // Allow Serde to Serialize and Deserialize a Person Struct
@@ -147,7 +147,7 @@ pub extern "C" fn hello_rust_cargo_main() {
   println!("{}", json_str);
 ```
 
-This prints...
+Which will print...
 
 ```bash
 NuttShell (NSH) NuttX-12.7.0
@@ -174,7 +174,7 @@ println!("Deserialized: {} is {} years old",
   alice.name, alice.age);
 ```
 
-Which prints...
+And we'll see...
 
 ```bash
 Deserialized: Alice is 28 years old
@@ -201,7 +201,7 @@ Pretty JSON:
 }
 ```
 
-[(Serde also runs on __Rust Core Library__, but super messy)](https://bitboom.github.io/2020-10-22/serde-no-std)
+[(Serde also runs on __Rust Core Library__, though super messy)](https://bitboom.github.io/2020-10-22/serde-no-std)
 
 ![Async Functions with Tokio (Helix Editor + Zellij Workspace)](https://lupyuen.github.io/images/rust7-tokio.png)
 
@@ -213,7 +213,7 @@ Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crat
 
 > [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
 
-Inside our __Rust Hello App__, this is how we we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
+Inside our __Rust Hello App__, here's how we we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
 
 ```rust
 // Use One Single Thread (Current NuttX Thread)
@@ -233,7 +233,7 @@ println!("Looping Forever...");
 loop {}
 ```
 
-Which prints...
+We'll see...
 
 ```bash
 nsh> hello_rust_cargo
@@ -262,19 +262,19 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check this link for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
+Check this link for the __Tokio Async Demo__. And it works beautifully on NuttX! (Pic below)
 
 - [__"Tokio Async Threading"__](https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading)
 
 ![Tokio Async Demo](https://lupyuen.github.io/images/rust7-vscode2.png)
 
-_But NuttX has POSIX Threads. Why use Async Functions?_
+_NuttX has POSIX Threads. Why use Async Functions?_
 
 Think [__Node.js__](https://en.wikipedia.org/wiki/Node.js#Threading) and its _Single-Thread Event Loop_, making _Non-Blocking I/O Calls_. Supporting tens of thousands of concurrent connections. _(Without costly Thread Context Switching)_
 
 Today we can (probably) do the same with __NuttX and Async Rust__. Assuming Non-Blocking I/O works OK.
 
-(Tokio calls them _"Async Tasks"_, but we won't. Because a Task in NuttX is more like a NuttX Process)
+(Tokio calls them _"Async Tasks"_, sorry we won't. Because a Task in NuttX is more like a NuttX Process)
 
 _How will we use Tokio?_
 
@@ -321,7 +321,7 @@ unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
 unsafe { libc::close(fd); }
 ```
 
-But it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by __`nix`__. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39)
+Erm it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by __`nix`__. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39)
 
 ```rust
 // Open the LED Device for NuttX
@@ -341,7 +341,7 @@ ioctl_write_int_bad!(  // ioctl() will write One Int Value (LED Bit State)
 
 The code above opens the __LED Device__, returning an __Owned File Descriptor__ (explained below). It defines a function __led_set_all__, that will call _ioctl()_ to flip the LED.
 
-This is how we call __led_set_all__ to flip the LED: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47)
+Here's how we call __led_set_all__ to flip the LED: [lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47)
 
 ```rust
 // Flip LED 1 to On
@@ -484,7 +484,7 @@ In Rust: [__Owned File Descriptor__](https://doc.rust-lang.org/std/os/fd/struct.
 
 And Rust Objects shall be __Automatically Dropped__, when they go out of scope. (Unlike Integers)
 
-_Which causes the Second Snippet to fail?_
+_Causing the Second Snippet to fail?_
 
 Exactly! _open()_ returns an __Owned File Descriptor__...
 
@@ -496,13 +496,13 @@ let raw_fd =
   .as_raw_fd();  // Which becomes a Raw File Descriptor
 ```
 
-But we turned it into __Raw File Descriptor__. (The Plain Integer, not the Rust Object)
+And we turned it into __Raw File Descriptor__. (The Plain Integer, not the Rust Object)
 
 Oops! Our Owned File Descriptor goes __Out Of Scope__ and gets dropped by Rust...
 
 ![Our Owned File Descriptor goes Out Of Scope and gets dropped by Rust](https://lupyuen.github.io/images/rust7-fd.jpg)
 
-Which means Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
+Thus Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
 
 ```rust
 // Set the LEDs via ioctl()
@@ -556,15 +556,15 @@ _Nix vs Rustix: They feel quite similar?_
 
 Actually Nix used to be a lot simpler, supporting only __Raw File Descriptors__. _(Instead of Owned File Descriptors)_
 
-But Nix is now moving to __Owned File Descriptors__ due to __I/O Safety__. Which means Nix is becoming more [__Rustix-like__](https://crates.io/crates/rustix)...
+Today, Nix is moving to __Owned File Descriptors__ due to __I/O Safety__. Bummer it means Nix is becoming more [__Rustix-like__](https://crates.io/crates/rustix)...
 
 - [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
 
 - [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
 
-_Which shall we use: Nix or Rustix?_
+_What's our preference: Nix or Rustix?_
 
-Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). Which might hinder our porting to NuttX...
+Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). It might hinder our porting to NuttX...
 
 ![Nix vs Rustix: Lines of Code](https://lupyuen.github.io/images/rust7-loc.png)
 
@@ -576,7 +576,7 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 [__Upcoming:__ Slint Rust GUI for NuttX 🎉](https://github.com/apache/nuttx-apps/pull/2967)
 
-_Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?_
+_What platforms are supported for NuttX + Rust Standard Library? How about SBCs?_
 
 Arm and RISC-V (32-bit and 64-bit). [__Check this doc__](https://nuttx.apache.org/docs/latest/guides/rust.html) for updates.
 
@@ -945,7 +945,7 @@ println!("Looping Forever...");
 loop {}
 ```
 
-Which isn't terribly exciting...
+And it ain't terribly exciting...
 
 ```bash
 nsh> hello_rust_cargo
@@ -1012,7 +1012,7 @@ async fn my_bg_task(i: u64) {
 pub extern "C" fn pthread_set_name_np() {}
 ```
 
-Which shows __Four Async Functions__, running on __One New POSIX Thread__...
+We'll see __Four Async Functions__, running on __One New POSIX Thread__...
 
 ```bash
 nsh> hello_rust_cargo
@@ -1035,7 +1035,7 @@ Task 0 stopping
 
 Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
 
-The happenings above verifies our __Reverse Engineering of Tokio__...
+Yep it's consistent wirh our __Reverse Engineering of Tokio__...
 
 - [__"Snooping Tokio on NuttX"__](https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx)
 
@@ -1066,7 +1066,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Except that we see __Two Calls__ to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179). Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)
+Except that we see __Two Calls__ to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88) and [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179). Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)
 
 _How did we log pthread_create?_
 
@@ -1367,7 +1367,7 @@ riscv-none-elf-ld \
 
 </span>
 
-Ah NuttX Build calls __cargo build --release__, which will strip the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
+Ah NuttX Build calls __cargo build --release__, stripping the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
 
 <span style="font-size:80%">
 
