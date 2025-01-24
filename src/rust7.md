@@ -59,7 +59,7 @@ _How to build NuttX + Rust Standard Library?_
 
 Follow the instructions here...
 
-- TODO: Instructions
+- [__"Build NuttX for Rust Standard Library"__](https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library)
 
 Then run the (thoroughly revamped) [__Rust Hello App__](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs) with __QEMU RISC-V Emulator__...
 
@@ -88,7 +88,7 @@ Pretty JSON:
 Hello world from tokio!
 ```
 
-Some bits are [__a little wonky__](TODO) (but will get better)
+Some bits are [__a little wonky__](https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library) (but will get better)
 
 - Supports [__Arm and RISC-V__](https://nuttx.apache.org/docs/latest/guides/rust.html) architectures _(32-bit and 64-bit)_
 
@@ -250,9 +250,9 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check the Appendix for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
+See this for the __Tokio Async Demo__. Which works beautifully on NuttX! (Pic below)
 
-- TODO: test_async
+- [__"Tokio Async Threading"__](https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading)
 
 ![Tokio Async Demo](https://lupyuen.github.io/images/rust7-vscode2.png)
 
@@ -297,7 +297,7 @@ Features: + fs + ioctl
 
 _The URL looks a little sus?_
 
-Yep it's our Bespoke `nix` Crate. That's because the Official `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](TODO)
+Yep it's our Bespoke `nix` Crate. That's because the Official `nix` Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx)
 
 _Why are we calling nix?_
 
@@ -367,7 +367,7 @@ _How to run the Rust Blinky App?_
 
     _apps/examples/rust/hello_
 
-1.  [Rebuild our __NuttX Project__](TODO)
+1.  [Rebuild our __NuttX Project__](https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library)
 
     ```bash
     make -j
@@ -409,9 +409,10 @@ __Safety Quiz:__ Why will this run OK...
 
 ```rust
 // Copied from above: Open the LED Device
-let owned_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+let owned_fd =
+  open("/dev/userleds", ...)
   .unwrap();  // Returns an Owned File Descriptor
-...
+
 // Copied from above: Set the LEDs via ioctl()
 led_set_all(
   owned_fd.as_raw_fd(),  // Borrow the Raw File Descriptor
@@ -419,14 +420,15 @@ led_set_all(
 ).unwrap();              // Yep runs OK
 ```
 
-But not this? (Pic above)
+But __Not This__? (Pic above)
 
 ```rust
 // Fetch earlier the Raw File Descriptor (from the LED Device)
-let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+let raw_fd =
+  open("/dev/userleds", ...)  // Open the LED Device
   .unwrap()      // Returns an Owned File Descriptor
   .as_raw_fd();  // Which becomes a Raw File Descriptor
-...
+
 // Set the LEDs via ioctl()
 led_set_all(
   raw_fd,    // Use the earlier Raw File Descriptor
@@ -434,7 +436,7 @@ led_set_all(
 ).unwrap();  // Oops will fail!
 ```
 
-The second snippet will fail with this __EBADF Error__...
+The Second Snippet will fail with __EBADF Error__...
 
 ```bash
 nsh> hello_rust_cargo
@@ -468,7 +470,8 @@ Exactly! _open()_ returns an __Owned File Descriptor__...
 
 ```rust
 // Open the LED Device
-let raw_fd = open("/dev/userleds", OFlag::O_WRONLY, Mode::empty())
+let raw_fd =
+  open("/dev/userleds", ...)  // Open the LED Device
   .unwrap()      // Returns an Owned File Descriptor
   .as_raw_fd();  // Which becomes a Raw File Descriptor
 ```
@@ -484,7 +487,7 @@ Which means Rust will helpfully close _/dev/userleds_. Since it's closed, the Ra
 ```rust
 // Set the LEDs via ioctl()
 led_set_all(
-  raw_fd,    // Use the earlier Raw File Descriptor
+  raw_fd,    // Use the (closed) Raw File Descriptor
   1          // Flip LED 1 to On
 ).unwrap();  // Oops will fail with EBADF Error!
 ```
@@ -892,7 +895,7 @@ More details here...
 
 Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current NuttX Thread__...
 
-- TODO
+- [__"Async Functions with Tokio"__](https://lupyuen.github.io/articles/rust7#async-functions-with-tokio)
 
 ```rust
 // Use One Single Thread (Current NuttX Thread)
@@ -1062,7 +1065,7 @@ int nx_pthread_create(...) {
 
 _What happens when we call nix crate as-is on NuttX?_
 
-Earlier we said that we [__Customised the `nix` Crate__](TODO) to run on NuttX. (Pic above)
+Earlier we said that we [__Customised the `nix` Crate__](https://lupyuen.github.io/articles/rust7#led-blinky-with-nix) to run on NuttX. (Pic above)
 
 Why? Let's build our Rust Blinky App with the Original `nix` Crate...
 
