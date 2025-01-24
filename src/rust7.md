@@ -516,7 +516,7 @@ Resulting in the [__EBADF Error__](https://man.freebsd.org/cgi/man.cgi?errno(2))
 
 __Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.
 
-Rustix is another popular POSIX Wrapper. Let's take a peek...
+Rustix is another popular POSIX Wrapper. We take a peek...
 
 ![Nix vs Rustix](https://lupyuen.github.io/images/rust7-compare.png)
 
@@ -529,6 +529,7 @@ Calling _ioctl()_ from Rust will surely get messy: It's an __Unsafe Call__ that 
 At the top of the article, we saw __`nix`__ crate calling _ioctl()_. Now we look at [__Rustix__](https://crates.io/crates/rustix) calling _ioctl()_: [rustix/fs/ioctl.rs](https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32)
 
 ```rust
+// Let's implement ioctl(fd, BLKSSZGET, &output)
 // In Rustix: ioctl() is also unsafe
 unsafe {
   // Create an "Ioctl Getter"
