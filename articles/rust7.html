@@ -113,8 +113,8 @@ Updating crates.io index
 Adding nix v0.29.0 to dependencies
 Features: + fs + ioctl</code></pre></div>
 <p><em>(OK it’s more complicated. Stay tuned)</em></p>
-<p>All this is now possible thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
-<p>In this article, we explain…</p>
+<p>All this is now possible, thanks to the awesome work by <a href="https://github.com/apache/nuttx-apps/pull/2487"><strong>Huang Qi</strong></a>! 🎉</p>
+<p>In today’s article, we explain…</p>
 <ul>
 <li>
 <p>How to build <strong>NuttX + Rust Standard Library</strong></p>
@@ -187,7 +187,7 @@ Hello world from tokio!</code></pre></div>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
 <p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
-<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32">nuttx-apps/lib.rs</a></p>
+<p>This is how we <strong>Serialize to JSON</strong> in our Hello Rust App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allow Serde to Serialize and Deserialize a Person Struct
 </span><span class="attr">#[derive(Serialize, Deserialize)]
@@ -211,7 +211,7 @@ Hello world from tokio!</code></pre></div>
     </span>::to_string(<span class="kw-2">&amp;</span>john)  <span class="comment">// Becomes a String
     </span>.unwrap();          <span class="comment">// Halt on Error
   </span><span class="macro">println!</span>(<span class="string">"{}"</span>, json_str);</code></pre></div>
-<p>This prints…</p>
+<p>Which will print…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}</code></pre></div>
@@ -231,7 +231,7 @@ nsh&gt; hello_rust_cargo
   </span>.unwrap();             <span class="comment">// Halt on Error
 </span><span class="macro">println!</span>(<span class="string">"Deserialized: {} is {} years old"</span>,
   alice.name, alice.age);</code></pre></div>
-<p>Which prints…</p>
+<p>And we’ll see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Deserialized: Alice is 28 years old</code></pre></div>
 <p>Serde will also do <strong>JSON Formatting</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L41-L44">lib.rs</a></p>
 
@@ -247,7 +247,7 @@ nsh&gt; hello_rust_cargo
   &quot;name&quot;: &quot;Alice&quot;,
   &quot;age&quot;: 28
 }</code></pre></div>
-<p><a href="https://bitboom.github.io/2020-10-22/serde-no-std">(Serde also runs on <strong>Rust Core Library</strong>, but super messy)</a></p>
+<p><a href="https://bitboom.github.io/2020-10-22/serde-no-std">(Serde also runs on <strong>Rust Core Library</strong>, though super messy)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust7-tokio.png" alt="Async Functions with Tokio (Helix Editor + Zellij Workspace)" /></p>
 <h1 id="async-functions-with-tokio"><a class="doc-anchor" href="#async-functions-with-tokio">§</a>3 Async Functions with Tokio</h1>
 <p><em>What’s this Tokio? Sounds like a city?</em></p>
@@ -255,7 +255,7 @@ nsh&gt; hello_rust_cargo
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> … provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion</p>
 </blockquote>
-<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56">nuttx-apps/lib.rs</a></p>
+<p>Inside our <strong>Rust Hello App</strong>, here’s how we we run <strong>Async Functions</strong> with Tokio: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
 // To schedule Async Functions
@@ -272,7 +272,7 @@ nsh&gt; hello_rust_cargo
 <span class="comment">// Is it really async? Let's block and find out!
 </span><span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
 <span class="kw">loop </span>{}</code></pre></div>
-<p>Which prints…</p>
+<p>We’ll see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 Hello world from tokio!
 Looping Forever...</code></pre></div>
@@ -291,15 +291,15 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Check this link for the <strong>Tokio Async Demo</strong>. Which works beautifully on NuttX! (Pic below)</p>
+<p>Check this link for the <strong>Tokio Async Demo</strong>. And it works beautifully on NuttX! (Pic below)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading"><strong>“Tokio Async Threading”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="Tokio Async Demo" /></p>
-<p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
+<p><em>NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
 <p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming Non-Blocking I/O works OK.</p>
-<p>(Tokio calls them <em>“Async Tasks”</em>, but we won’t. Because a Task in NuttX is more like a NuttX Process)</p>
+<p>(Tokio calls them <em>“Async Tasks”</em>, sorry we won’t. Because a Task in NuttX is more like a NuttX Process)</p>
 <p><em>How will we use Tokio?</em></p>
 <blockquote>
 <p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
@@ -329,7 +329,7 @@ Features: + fs + ioctl
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
 <span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
 <span class="kw">unsafe </span>{ libc::close(fd); }</code></pre></div>
-<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <strong><code>nix</code></strong>. Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39">wip-nuttx-apps/lib.rs</a></p>
+<p>Erm it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <strong><code>nix</code></strong>. Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -345,7 +345,7 @@ Features: + fs + ioctl
   </span>ULEDIOC_SETALL       <span class="comment">// ioctl() Command to send
 </span>);</code></pre></div>
 <p>The code above opens the <strong>LED Device</strong>, returning an <strong>Owned File Descriptor</strong> (explained below). It defines a function <strong>led_set_all</strong>, that will call <em>ioctl()</em> to flip the LED.</p>
-<p>This is how we call <strong>led_set_all</strong> to flip the LED: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47">lib.rs</a></p>
+<p>Here’s how we call <strong>led_set_all</strong> to flip the LED: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Flip LED 1 to On
 </span><span class="kw">unsafe </span>{             <span class="comment">// Be careful of ioctl()
@@ -448,7 +448,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><em>What about Owned File Descriptor?</em></p>
 <p>In Rust: <a href="https://doc.rust-lang.org/std/os/fd/struct.OwnedFd.html"><strong>Owned File Descriptor</strong></a> is a <strong>Rust Object</strong>, wrapped around a Raw File Descriptor.</p>
 <p>And Rust Objects shall be <strong>Automatically Dropped</strong>, when they go out of scope. (Unlike Integers)</p>
-<p><em>Which causes the Second Snippet to fail?</em></p>
+<p><em>Causing the Second Snippet to fail?</em></p>
 <p>Exactly! <em>open()</em> returns an <strong>Owned File Descriptor</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device
@@ -456,10 +456,10 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   open(<span class="string">"/dev/userleds"</span>, ...)  <span class="comment">// Open the LED Device
   </span>.unwrap()      <span class="comment">// Returns an Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
-<p>But we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
+<p>And we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
 <p>Oops! Our Owned File Descriptor goes <strong>Out Of Scope</strong> and gets dropped by Rust…</p>
 <p><img src="https://lupyuen.github.io/images/rust7-fd.jpg" alt="Our Owned File Descriptor goes Out Of Scope and gets dropped by Rust" /></p>
-<p>Which means Rust will helpfully close <em>/dev/userleds</em>. Since it’s closed, the Raw File Descriptor <strong>becomes invalid</strong>…</p>
+<p>Thus Rust will helpfully close <em>/dev/userleds</em>. Since it’s closed, the Raw File Descriptor <strong>becomes invalid</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Set the LEDs via ioctl()
 </span>led_set_all(
@@ -497,7 +497,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><a href="https://docs.rs/rustix/latest/rustix/ioctl/index.html">(Based on <strong>Rustix Docs</strong>)</a></p>
 <p><em>Nix vs Rustix: They feel quite similar?</em></p>
 <p>Actually Nix used to be a lot simpler, supporting only <strong>Raw File Descriptors</strong>. <em>(Instead of Owned File Descriptors)</em></p>
-<p>But Nix is now moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Which means Nix is becoming more <a href="https://crates.io/crates/rustix"><strong>Rustix-like</strong></a>…</p>
+<p>Today, Nix is moving to <strong>Owned File Descriptors</strong> due to <strong>I/O Safety</strong>. Bummer it means Nix is becoming more <a href="https://crates.io/crates/rustix"><strong>Rustix-like</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/nix-rust/nix/issues/1750"><strong>Nix: Implement I/O Safety</strong></a></p>
@@ -506,14 +506,14 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md"><strong>Rust I/O Safety</strong></a> <em>(used in Rustix and New Nix)</em></p>
 </li>
 </ul>
-<p><em>Which shall we use: Nix or Rustix?</em></p>
-<p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
+<p><em>What’s our preference: Nix or Rustix?</em></p>
+<p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). It might hinder our porting to NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/rust7-loc.png" alt="Nix vs Rustix: Lines of Code" /></p>
 <p><a href="https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal">(<strong>Rust Embedded HAL</strong> might be a bad fit)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><img src="https://lupyuen.github.io/images/rust7-slint.jpg" alt="Upcoming: Slint Rust GUI for NuttX 🎉" /></p>
 <p><a href="https://github.com/apache/nuttx-apps/pull/2967"><strong>Upcoming:</strong> Slint Rust GUI for NuttX 🎉</a></p>
-<p><em>Which platforms are supported for NuttX + Rust Standard Library? What about SBCs?</em></p>
+<p><em>What platforms are supported for NuttX + Rust Standard Library? How about SBCs?</em></p>
 <p>Arm and RISC-V (32-bit and 64-bit). <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Check this doc</strong></a> for updates.</p>
 <p>Sorry 64-bit <strong>RISC-V Kernel Build</strong> is <a href="https://github.com/apache/nuttx-apps/pull/2487#issuecomment-2601488835"><strong>not supported yet</strong></a>. So it <strong>won’t run on RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p><em>Sounds like we need plenty of Rust Testing? For every NuttX Platform?</em></p>
@@ -788,7 +788,7 @@ Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s</code></pre>
 <span class="comment">// Is it really async? Let's block and find out!
 </span><span class="macro">println!</span>(<span class="string">"Looping Forever..."</span>);
 <span class="kw">loop </span>{}</code></pre></div>
-<p>Which isn’t terribly exciting…</p>
+<p>And it ain’t terribly exciting…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 Hello world from tokio!
 Looping Forever...</code></pre></div>
@@ -848,7 +848,7 @@ Looping Forever...</code></pre></div>
 <span class="comment">// Needed by Tokio Multi-Threaded Scheduler
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
-<p>Which shows <strong>Four Async Functions</strong>, running on <strong>One New POSIX Thread</strong>…</p>
+<p>We’ll see <strong>Four Async Functions</strong>, running on <strong>One New POSIX Thread</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 pthread_create
 nx_pthread_create
@@ -864,7 +864,7 @@ Task 0 stopping</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in <strong>Tokio Docs</strong>)</a></p>
 <p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
-<p>The happenings above verifies our <strong>Reverse Engineering of Tokio</strong>…</p>
+<p>Yep it’s consistent wirh our <strong>Reverse Engineering of Tokio</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx"><strong>“Snooping Tokio on NuttX”</strong></a></li>
 </ul>
@@ -888,7 +888,7 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Except that we see <strong>Two Calls</strong> to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>. Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)</p>
+<p>Except that we see <strong>Two Calls</strong> to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>. Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)</p>
 <p><em>How did we log pthread_create?</em></p>
 <p>Inside NuttX Kernel: We added Debug Code to
 <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a></p>
@@ -1113,7 +1113,7 @@ riscv-none-elf-ld \
   -lbinfmt \
   -lboard xpack-riscv-none-elf-gcc-13.2.0-2/lib/gcc/riscv-none-elf/13.2.0/rv64imac/lp64/libgcc.a apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/release/libhello.a \
   --end-group</code></pre></div></span>
-<p>Ah NuttX Build calls <strong>cargo build –release</strong>, which will strip the Debug Symbols. We change it to <strong>cargo build</strong> and dump the RISC-V Disassembly…</p>
+<p>Ah NuttX Build calls <strong>cargo build –release</strong>, stripping the Debug Symbols. We change it to <strong>cargo build</strong> and dump the RISC-V Disassembly…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Preserve the Rust Debug Symbols
 pushd ../apps/examples/rust/hello
