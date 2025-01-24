@@ -187,7 +187,7 @@ Hello world from tokio!</code></pre></div>
 <h1 id="json-with-serde"><a class="doc-anchor" href="#json-with-serde">§</a>2 JSON with Serde</h1>
 <p><em>What’s this Serde?</em></p>
 <p>Think <em>“Serialize-Deserialize”</em>. <a href="https://crates.io/crates/serde"><strong>Serde</strong></a> is a Rust Crate / Library for Serializing and Deserializing our Data Structures. Works with <a href="https://serde.rs/#data-formats"><strong>JSON, CBOR, MessagePack, …</strong></a></p>
-<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
+<p>This is how we <strong>Serialize to JSON</strong> in our NuttX App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L1-L32">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Allow Serde to Serialize and Deserialize a Person Struct
 </span><span class="attr">#[derive(Serialize, Deserialize)]
@@ -215,7 +215,7 @@ Hello world from tokio!</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.7.0
 nsh&gt; hello_rust_cargo
 {&quot;name&quot;:&quot;John&quot;,&quot;age&quot;:30}</code></pre></div>
-<p>Now we <strong>Deserialize from JSON</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
+<p>Now we <strong>Deserialize from JSON</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L32-L41">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Declare a String with JSON inside
 </span><span class="kw">let </span>json_data = <span class="string">r#"
@@ -233,7 +233,7 @@ nsh&gt; hello_rust_cargo
   alice.name, alice.age);</code></pre></div>
 <p>Which prints…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Deserialized: Alice is 28 years old</code></pre></div>
-<p>Serde will also handle <strong>JSON Formatting</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
+<p>Serde will also do <strong>JSON Formatting</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L41-L44">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Serialize our Person Struct
 // But neatly please
@@ -255,7 +255,7 @@ nsh&gt; hello_rust_cargo
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Tokio_(software)"><strong>Tokio</strong></a> … provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion</p>
 </blockquote>
-<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs">nuttx-apps/lib.rs</a></p>
+<p>Inside our <strong>Rust Hello App</strong>, this is how we we run <strong>Async Functions</strong> with Tokio: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56">nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
 // To schedule Async Functions
@@ -322,14 +322,14 @@ Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div>
 <p><em>The URL looks a little sus?</em></p>
-<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx">(Explained in the <strong>Appendix</strong>)</a></p>
+<p>Yep it’s our Bespoke <strong><code>nix</code></strong> Crate. That’s because the Official <strong><code>nix</code></strong> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx">(Explained in the <strong>Appendix</strong>)</a></p>
 <p><em>Why are we calling nix?</em></p>
 <p>We’re <strong>Blinking the LED</strong> on NuttX. We could call the <a href="https://crates.io/crates/libc"><strong>POSIX API</strong></a> direcly from Rust…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::open(<span class="string">"/dev/userleds"</span>, ...) };
 <span class="kw">unsafe </span>{ libc::ioctl(fd, ULEDIOC_SETALL, <span class="number">1</span>); }
 <span class="kw">unsafe </span>{ libc::close(fd); }</code></pre></div>
-<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <code>nix</code>. Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
+<p>But it doesn’t look very… Safe. That’s why we call the <strong>Safer POSIX Bindings</strong> provided by <strong><code>nix</code></strong>. Like so: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device for NuttX
 </span><span class="kw">let </span>fd = open(      <span class="comment">// Equivalent to NuttX open()
@@ -345,7 +345,7 @@ Features: + fs + ioctl
   </span>ULEDIOC_SETALL       <span class="comment">// ioctl() Command to send
 </span>);</code></pre></div>
 <p>The code above opens the <strong>LED Device</strong>, returning an <strong>Owned File Descriptor</strong> (explained below). It defines a function <strong>led_set_all</strong>, that will call <em>ioctl()</em> to flip the LED.</p>
-<p>This is how we call <strong>led_set_all</strong> to flip the LED: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">lib.rs</a></p>
+<p>This is how we call <strong>led_set_all</strong> to flip the LED: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L39-L47">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Flip LED 1 to On
 </span><span class="kw">unsafe </span>{             <span class="comment">// Be careful of ioctl()
@@ -354,7 +354,7 @@ Features: + fs + ioctl
     </span><span class="number">1                </span><span class="comment">// LED 1 (Bit 0) turns On
   </span>).unwrap();        <span class="comment">// Halt on Error
 </span>}  <span class="comment">// Equivalent to ioctl(fd, ULEDIOC_SETALL, 1)</span></code></pre></div>
-<p>We wait Two Seconds, then flip the <strong>LED to Off</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">lib.rs</a></p>
+<p>We wait Two Seconds, then flip the <strong>LED to Off</strong>: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L47-L53">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Wait 2 seconds
 </span>sleep(<span class="number">2</span>);
@@ -393,7 +393,7 @@ nsh&gt; hello_rust_cargo
 board_userled: LED 1 set to 1
 board_userled: LED 1 set to 0</code></pre></div>
 <p>NuttX blinks the <strong>Emulated LED</strong> on QEMU Emulator!</p>
-<p><a href="https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/4321601a962589b531bf83b0032a94af#file-hello_rust_cargo-log-L496-L533">(See the <strong>Complete Log</strong>)</a></p>
 </li>
 </ol>
 <p><em>How to code Rust Apps for NuttX?</em></p>
@@ -733,7 +733,9 @@ popd</code></pre></div></li>
 dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo</code></pre></div></span>
 <p>Then increase the App Stack Size…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Increase the App Stack Size to 64 KB
-kconfig-tweak --set-val CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE 65536
+kconfig-tweak --set-val \
+  CONFIG_EXAMPLES_HELLO_RUST_CARGO_STACKSIZE \
+  65536
 
 ## Update the Kconfig Dependencies and rebuild
 make olddefconfig
@@ -790,8 +792,7 @@ Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s</code></pre>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 Hello world from tokio!
 Looping Forever...</code></pre></div>
-<p>Now we try Tokio’s <strong>Multi-Threaded Scheduler</strong>. (Pic above)</p>
-<p>And we create <strong>One New NuttX Thread</strong> for the Scheduler: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs">wip-nuttx-apps/lib.rs</a></p>
+<p>Now we try Tokio’s <strong>Multi-Threaded Scheduler</strong> (pic above). And we create <strong>One New NuttX Thread</strong> for the Scheduler: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L86-L140">wip-nuttx-apps/lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Run 4 Async Functions in the Background
 // By creating One New NuttX Thread
@@ -847,7 +848,7 @@ Looping Forever...</code></pre></div>
 <span class="comment">// Needed by Tokio Multi-Threaded Scheduler
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
-<p>Which shows…</p>
+<p>Which shows <strong>Four Async Functions</strong>, running on <strong>One New POSIX Thread</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 pthread_create
 nx_pthread_create
@@ -861,34 +862,32 @@ Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
 <p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
-<p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in the <strong>Tokio Docs</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in <strong>Tokio Docs</strong>)</a></p>
 <p><em>What if we increase the Worker Threads? From 1 to 2?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Two Worker Threads instead of One
 </span><span class="kw">let </span>runtime = tokio::runtime::Builder
   ::new_multi_thread() <span class="comment">// New Multi-Threaded Scheduler
   </span>.worker_threads(<span class="number">2</span>)   <span class="comment">// With Two New NuttX Threads for our Scheduler</span></code></pre></div>
-<p>Works the same though…</p>
-<div class="example-wrap"><pre class="language-bash"><code>pthread_create:
-nx_pthread_create:
-pthread_create:
-nx_pthread_create:
-Task 0 sleeping for 1000 ms.
-Task 1 sleeping for 950 ms.
-Task 2 sleeping for 900 ms.
-Task 3 sleeping for 850 ms.
-Finished time-consuming task.
-Task 3 stopping.
-Task 2 stopping.
-Task 1 stopping.
-Task 0 stopping.</code></pre></div>
-<p>We see Two Calls to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>. Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)</p>
+<p>The output looks exactly the same…</p>
+<div class="example-wrap"><pre class="language-bash"><code>pthread_create
+nx_pthread_create
+pthread_create
+nx_pthread_create
+Task 0 sleeping for 1000 ms
+Task 1 sleeping for  950 ms
+Task 2 sleeping for  900 ms
+Task 3 sleeping for  850 ms
+Finished time-consuming task
+Task 3 stopping
+Task 2 stopping
+Task 1 stopping
+Task 0 stopping</code></pre></div>
+<p>Except that we see <strong>Two Calls</strong> to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>. Which means that Tokio called NuttX to create Two POSIX Threads. (For the Multi-Threaded Scheduler)</p>
 <p><em>How did we log pthread_create?</em></p>
 <p>Inside NuttX Kernel: We added Debug Code to
-<a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>
-and
-<a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a></p>
+<a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a></p>
 <span style="font-size:90%">
 <div class="example-wrap"><pre class="language-text"><code>// At https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88
 #include &lt;debug.h&gt;
@@ -903,7 +902,7 @@ int nx_pthread_create(...) {
 <h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
 <p><em>What happens when we call nix crate as-is on NuttX?</em></p>
 <p>Earlier we said that we <a href="https://lupyuen.github.io/articles/rust7#led-blinky-with-nix"><strong>Customised the <code>nix</code> Crate</strong></a> to run on NuttX. (Pic above)</p>
-<p>Why? Let’s build our Rust Blinky App with the Original <code>nix</code> Crate…</p>
+<p>Why? Let’s build our Rust Blinky App with the Original <strong><code>nix</code></strong> Crate…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
@@ -984,12 +983,12 @@ Features: + fs + ioctl
 </ol>
 <hr>
 <p><strong>Troubleshooting nix ioctl() on NuttX</strong></p>
-<p>To figure out if <code>nix</code> passes ioctl parameters correctly to NuttX: We insert <strong>ioctl Debug Code</strong> into NuttX Kernel…</p>
+<p>To figure out if <strong><code>nix</code></strong> passes ioctl parameters correctly to NuttX: We insert <strong>ioctl Debug Code</strong> into NuttX Kernel…</p>
 <div class="example-wrap"><pre class="language-c"><code>// At https://github.com/apache/nuttx/blob/master/fs/vfs/fs_ioctl.c#L261
 #include &lt;debug.h&gt;
 int ioctl(int fd, int req, ...) {
   _info(&quot;fd=0x%x, req=0x%x&quot;, fd, req);</code></pre></div>
-<p>Which <a href="https://docs.rs/nix/latest/nix/sys/ioctl/"><strong>Ioctl Macro</strong></a> shall we use in <code>nix</code>? We tried <strong>ioctl_none</strong>…</p>
+<p>Which <a href="https://docs.rs/nix/latest/nix/sys/ioctl/"><strong>Ioctl Macro</strong></a> shall we call in <strong><code>nix</code></strong>? We tried <strong>ioctl_none</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ULEDIOC_SETALL: i32 = <span class="number">0x1d03</span>;
 <span class="macro">ioctl_none!</span>(led_on, ULEDIOC_SETALL, <span class="number">1</span>);
@@ -1036,7 +1035,7 @@ board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0</code></pre></div><h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
 <p>In this section, we discover how <strong>Tokio works under the hood</strong>. Does it really call <strong>POSIX Functions in NuttX</strong>?</p>
-<p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <code>make V=1</code> on <code>rv-virt:leds64</code></p>
+<p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <strong><code>make V=1</code></strong> on <strong><code>rv-virt:leds64</code></strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
 tools/configure.sh rv-virt:leds64
 
@@ -1059,7 +1058,7 @@ make olddefconfig
 ## Build NuttX with Tracing Enabled
 make V=1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374">(See the <strong>Build Log</strong>)</a></p>
-<p>According to the <code>make V=1</code> trace: <strong>NuttX Build</strong> does this…</p>
+<p>According to the <strong><code>make V=1</code></strong> trace: <strong>NuttX Build</strong> does this…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Discard the Rust Debug Symbols
 cd apps/examples/rust/hello
@@ -1180,7 +1179,7 @@ riscv-none-elf-objdump \
   apps/examples/rust/hello/target/riscv64imac-unknown-nuttx-elf/debug/libhello.a \
   &gt;libhello.S \
   2&gt;&amp;1</code></pre></div>
-<p>Which produces the <strong>Rust Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
+<p>Which produces the (much smaller) <strong>Rust Disassembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a></p>
 <p>Is Tokio calling NuttX to create POSIX Threads? We search <a href="https://github.com/lupyuen2/wip-nuttx/releases/download/rust-std-1/libhello.S"><strong>libhello.S</strong></a> for <strong>pthread_create</strong>…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/pal/unix/thread.rs:85
@@ -1211,7 +1210,7 @@ sd    a0, 0(sp)
 auipc ra, 0x0 6: R_RISCV_CALL_PLT &lt;std::thread::Builder::spawn_unchecked_::MaybeDangling&lt;T&gt; as core::ops::drop::Drop&gt;::drop</code></pre></div></span>
 <p>Yep it checks out: Tokio calls Rust Standard Library, which calls NuttX to create POSIX Threads!</p>
 <p><em>Are we sure that Tokio creates a POSIX Thread? Not a NuttX Task?</em></p>
-<p>We run <code>hello_rust_cargo &amp;</code> to put it in the background…</p>
+<p>We run <strong><code>hello_rust_cargo &amp;</code></strong> to put it in the background…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo &amp;
 Hello world from tokio!
@@ -1221,7 +1220,7 @@ nsh&gt; ps
     0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001904 0000712  37.3%  Idle_Task
     2     2 100 RR       Task      - Running            0000000000000000 0002888 0002472  85.5%! nsh_main
     4     4 100 RR       Task      - Ready              0000000000000000 0007992 0006904  86.3%! hello_rust_cargo</code></pre></div></span>
-<p><code>ps</code> says that there’s only One Single NuttX Task <code>hello_rust_cargo</code>. And no other NuttX Tasks.</p>
+<p><strong><code>ps</code></strong> says that there’s only One Single NuttX Task <strong><code>hello_rust_cargo</code></strong>. And no other NuttX Tasks.</p>
 <p><a href="https://gist.github.com/lupyuen/0377d9e015fee1d6a833c22e1b118961">(See the <strong>Complete Log</strong>)</a></p>
 
     
