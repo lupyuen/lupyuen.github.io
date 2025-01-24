@@ -544,13 +544,15 @@ unsafe {
   // We call ioctl() on the File Descriptor
   // Equivalent to: ioctl(fd, BLKSSZGET, &output) ; return output
   ioctl::ioctl(
-    fd,  // File Descriptor
+    fd,  // Borrowed File Descriptor (safer than Raw)
     ctl  // Ioctl Getter
   ) // Returns the Value Read (Or Error)
 }
 ```
 
 [(Based on __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
+
+[(Rustix Ioctl uses a __Borrowed File Descriptor__, safer than Raw)](https://docs.rs/rustix/latest/rustix/ioctl/fn.ioctl.html)
 
 _Nix vs Rustix: They feel quite similar?_
 
