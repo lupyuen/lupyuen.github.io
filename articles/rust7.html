@@ -550,6 +550,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md"><strong>lupyuen.org/src/rust7.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/rust7-vscode.png" alt="NuttX with Rust Standard Library" /></p>
 <h1 id="appendix-build-nuttx-for-rust-standard-library"><a class="doc-anchor" href="#appendix-build-nuttx-for-rust-standard-library">§</a>8 Appendix: Build NuttX for Rust Standard Library</h1>
 <p>Follow these steps to build <strong>NuttX bundled with Rust Standard Library</strong>…</p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html">(Remember to install <strong>RISC-V Toolchain</strong> and <strong>RISC-V QEMU</strong>)</a></p>
@@ -1040,7 +1041,9 @@ board_userled: LED 3 set to 0
 ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
-board_userled: LED 3 set to 0</code></pre></div><h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
+board_userled: LED 3 set to 0</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust7-tokio.png" alt="Async Functions with Tokio (Helix Editor + Zellij Workspace)" /></p>
+<h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
 <p>In this section, we discover how <strong>Tokio works under the hood</strong>. Does it really call <strong>POSIX Functions in NuttX</strong>?</p>
 <p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <strong><code>make V=1</code></strong> on <strong><code>rv-virt:leds64</code></strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
