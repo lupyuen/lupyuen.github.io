@@ -468,14 +468,15 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </span>).unwrap();  <span class="comment">// Oops will fail with EBADF Error!</span></code></pre></div>
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
 <p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
-<p>Rustix is another popular POSIX Wrapper. Let’s take a peek…</p>
+<p>Rustix is another popular POSIX Wrapper. We take a peek…</p>
 <p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="Nix vs Rustix" /></p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
 <p><em>Is there a Safer Way to call ioctl()?</em></p>
 <p>Calling <em>ioctl()</em> from Rust will surely get messy: It’s an <strong>Unsafe Call</strong> that might cause bad writes into the NuttX Kernel! <em>(If we’re not careful)</em></p>
 <p>At the top of the article, we saw <strong><code>nix</code></strong> crate calling <em>ioctl()</em>. Now we look at <a href="https://crates.io/crates/rustix"><strong>Rustix</strong></a> calling <em>ioctl()</em>: <a href="https://github.com/bytecodealliance/rustix/blob/main/src/fs/ioctl.rs#L16-L32">rustix/fs/ioctl.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// In Rustix: ioctl() is also unsafe
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Let's implement ioctl(fd, BLKSSZGET, &amp;output)
+// In Rustix: ioctl() is also unsafe
 </span><span class="kw">unsafe </span>{
   <span class="comment">// Create an "Ioctl Getter"
   // That will read data thru ioctl()
