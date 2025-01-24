@@ -272,7 +272,7 @@ _NuttX has POSIX Threads. Why use Async Functions?_
 
 Think [__Node.js__](https://en.wikipedia.org/wiki/Node.js#Threading) and its _Single-Thread Event Loop_, making _Non-Blocking I/O Calls_. Supporting tens of thousands of concurrent connections. _(Without costly Thread Context Switching)_
 
-Today we can (probably) do the same with __NuttX and Async Rust__. Assuming Non-Blocking I/O works OK.
+Today we can (probably) do the same with __NuttX and Async Rust__. Assuming [__POSIX Async I/O__](https://nuttx.apache.org/docs/12.5.0/components/filesystem/aio.html) works OK.
 
 (Tokio calls them _"Async Tasks"_, sorry we won't. Because a Task in NuttX is more like a NuttX Process)
 
