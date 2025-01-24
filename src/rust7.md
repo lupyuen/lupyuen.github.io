@@ -254,7 +254,7 @@ Check the Appendix for the __Tokio Async Demo__. Which works beautifully on Nutt
 
 - TODO: test_async
 
-![TODO](https://lupyuen.github.io/images/rust7-vscode2.png)
+![Tokio Async Demo](https://lupyuen.github.io/images/rust7-vscode2.png)
 
 _But NuttX has POSIX Threads. Why use Async Functions?_
 
@@ -401,7 +401,7 @@ We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
 
 Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
 
-TODO: Pic of Owned File Descriptors
+![Owned File Descriptors vs Raw File Descriptors](https://lupyuen.github.io/images/rust7-fd2.jpg)
 
 # Owned File Descriptors
 
@@ -477,7 +477,7 @@ But we turned it into __Raw File Descriptor__. (The Plain Integer, not the Rust 
 
 Oops! Our Owned File Descriptor goes __Out Of Scope__ and gets dropped by Rust...
 
-TODO: Pic of drop
+![Our Owned File Descriptor goes Out Of Scope and gets dropped by Rust](https://lupyuen.github.io/images/rust7-fd.jpg)
 
 Which means Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
 
@@ -495,7 +495,7 @@ __Lesson Learnt:__ Be careful with Owned File Descriptors. They are super helpfu
 
 Rustix is another popular POSIX Wrapper. Let's take a peek...
 
-![TODO](https://lupyuen.github.io/images/rust7-compare.png)
+![Nix vs Rustix](https://lupyuen.github.io/images/rust7-compare.png)
 
 # Nix vs Rustix
 
@@ -543,7 +543,7 @@ _Which shall we use: Nix or Rustix?_
 
 Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). Which might hinder our porting to NuttX...
 
-![TODO](https://lupyuen.github.io/images/rust7-loc.png)
+![Nix vs Rustix: Lines of Code](https://lupyuen.github.io/images/rust7-loc.png)
 
 [(__Rust Embedded HAL__ might be a bad fit)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal)
 
@@ -886,7 +886,7 @@ More details here...
 
 - [__Rust: Add NuttX based targets for RISC-V and ARM__](https://github.com/rust-lang/rust/pull/127755)
 
-![TODO](https://lupyuen.github.io/images/rust7-vscode2.png)
+![Tokio Async Threading](https://lupyuen.github.io/images/rust7-vscode2.png)
 
 # Appendix: Tokio Async Threading
 
