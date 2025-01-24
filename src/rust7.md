@@ -552,11 +552,11 @@ unsafe {
 
 [(Based on __Rustix Docs__)](https://docs.rs/rustix/latest/rustix/ioctl/index.html)
 
-[(Rustix Ioctl uses a __Borrowed File Descriptor__, safer than Raw)](https://docs.rs/rustix/latest/rustix/ioctl/fn.ioctl.html)
+[(Rustix Ioctl passes a __Borrowed File Descriptor__, safer than Raw)](https://docs.rs/rustix/latest/rustix/ioctl/fn.ioctl.html)
 
 _Nix vs Rustix: They feel quite similar?_
 
-Actually Nix used to be a lot simpler, supporting only __Raw File Descriptors__. _(Instead of Owned File Descriptors)_
+Actually Nix was previously a lot simpler, supporting only __Raw File Descriptors__. _(Instead of Owned File Descriptors)_
 
 Today, Nix is moving to __Owned File Descriptors__ due to __I/O Safety__. Bummer it means Nix is becoming more [__Rustix-like__](https://crates.io/crates/rustix)...
 
