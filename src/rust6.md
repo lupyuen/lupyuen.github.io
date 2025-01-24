@@ -533,9 +533,9 @@ fn main() {
 
 My gut feel is that we should do it the Zephyr way. But make it POSIX-like. Thus we should drop __nuttx-embedded-hal__ altogether :-)
 
-_What about rustix?_
+_What about Rustix?_
 
-rustix is kinda heavy I think? It does Managed File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?
+Rustix is kinda heavy I think? It does Owned File Descriptors that will auto-close when they go out of scope. There might be a lot of dependencies inside?
 
 Earlier I [wrote this](https://lupyuen.github.io/articles/rust6#handle-errors-safely)...
 
@@ -543,6 +543,8 @@ Earlier I [wrote this](https://lupyuen.github.io/articles/rust6#handle-errors-sa
 > Probably, if we do [__Managed File Descriptors__](https://docs.rs/rustix/latest/rustix/fd/struct.OwnedFd.html). But that's way beyond the size, scope and scale of GSoC.
 
 [(More discussion here)](https://github.com/apache/nuttx-apps/pull/2487)
+
+__Update:__ We're reassessing Rustix for NuttX. Simpler is swell but we'll run into problems with I/O Safety sigh. Check out the new article...
 
 ![Testing Rust Blinky on QEMU Emulator](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
