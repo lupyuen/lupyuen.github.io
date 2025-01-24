@@ -275,7 +275,7 @@ Task 0 stopping</code></pre></div>
 <ul>
 <li>TODO: test_async</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="Tokio Async Demo" /></p>
 <p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
 <p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming Non-Blocking I/O works OK.</p>
@@ -379,7 +379,7 @@ board_userled: LED 1 set to 0</code></pre></div>
 <p><em>How to code Rust Apps for NuttX?</em></p>
 <p>We could open the <code>apps</code> folder in VSCode, but <strong>Rust Analyzer</strong> won’t work.</p>
 <p>Do this instead: Open the folder <em>apps/examples/rust/hello</em> in VSCode. Then Rust Analyzer <a href="https://lupyuen.github.io/images/rust7-vscode2.png"><strong>will work perfectly</strong></a>!</p>
-<p>TODO: Pic of Owned File Descriptors</p>
+<p><img src="https://lupyuen.github.io/images/rust7-fd2.jpg" alt="Owned File Descriptors vs Raw File Descriptors" /></p>
 <h1 id="owned-file-descriptors"><a class="doc-anchor" href="#owned-file-descriptors">§</a>5 Owned File Descriptors</h1>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
@@ -431,7 +431,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
 <p>But we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
 <p>Oops! Our Owned File Descriptor goes <strong>Out Of Scope</strong> and gets dropped by Rust…</p>
-<p>TODO: Pic of drop</p>
+<p><img src="https://lupyuen.github.io/images/rust7-fd.jpg" alt="Our Owned File Descriptor goes Out Of Scope and gets dropped by Rust" /></p>
 <p>Which means Rust will helpfully close <em>/dev/userleds</em>. Since it’s closed, the Raw File Descriptor <strong>becomes invalid</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Set the LEDs via ioctl()
@@ -442,7 +442,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
 <p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
 <p>Rustix is another popular POSIX Wrapper. Let’s take a peek…</p>
-<p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="Nix vs Rustix" /></p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
 <p><em>Is there a Safer Way to call ioctl()?</em></p>
 <p>Calling <em>ioctl()</em> from Rust will surely get messy: It’s an <strong>Unsafe Call</strong> that might cause bad writes into the NuttX Kernel! <em>(If we’re not careful)</em></p>
@@ -481,7 +481,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 </ul>
 <p><em>Which shall we use: Nix or Rustix?</em></p>
 <p>Hmmm we’re still pondering. <strong>Rustix is newer</strong> (pic above), but it’s also <strong>more complex</strong> (based on Lines of Code). Which might hinder our porting to NuttX…</p>
-<p><img src="https://lupyuen.github.io/images/rust7-loc.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-loc.png" alt="Nix vs Rustix: Lines of Code" /></p>
 <p><a href="https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal">(<strong>Rust Embedded HAL</strong> might be a bad fit)</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><img src="https://lupyuen.github.io/images/rust7-slint.jpg" alt="Upcoming: Slint Rust GUI for NuttX 🎉" /></p>
@@ -734,7 +734,7 @@ make -j</code></pre></div></li>
 <p><a href="https://github.com/rust-lang/rust/pull/127755"><strong>Rust: Add NuttX based targets for RISC-V and ARM</strong></a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="Tokio Async Threading" /></p>
 <h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
