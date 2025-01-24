@@ -291,7 +291,7 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>See this for the <strong>Tokio Async Demo</strong>. Which works beautifully on NuttX! (Pic below)</p>
+<p>Check this link for the <strong>Tokio Async Demo</strong>. Which works beautifully on NuttX! (Pic below)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading"><strong>“Tokio Async Threading”</strong></a></li>
 </ul>
@@ -861,9 +861,13 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in <strong>Tokio Docs</strong>)</a></p>
+<p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
+<p>The happenings above verifies our <strong>Reverse Engineering of Tokio</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx"><strong>“Snooping Tokio on NuttX”</strong></a></li>
+</ul>
 <p><em>What if we increase the Worker Threads? From 1 to 2?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Two Worker Threads instead of One
