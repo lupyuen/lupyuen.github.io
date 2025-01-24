@@ -298,7 +298,7 @@ Task 0 stopping</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="Tokio Async Demo" /></p>
 <p><em>NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
-<p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming <a href="https://nuttx.apache.org/docs/12.5.0/components/filesystem/aio.html"><strong>POSIX Async I/O</strong></a> works OK.</p>
+<p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming <a href="https://nuttx.apache.org/docs/12.5.0/components/filesystem/aio.html"><strong>POSIX Async I/O</strong></a> works OK with <a href="https://github.com/tokio-rs/tokio/blob/master/tokio/src/io/bsd/poll_aio.rs"><strong>Tokio</strong></a>.</p>
 <p>(Tokio calls them <em>“Async Tasks”</em>, sorry we won’t. Because a Task in NuttX is more like a NuttX Process)</p>
 <p><em>How will we use Tokio?</em></p>
 <blockquote>
