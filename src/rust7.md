@@ -560,7 +560,7 @@ Today, Nix is moving to __Owned File Descriptors__ due to __I/O Safety__. Bummer
 
 - [__Nix: Implement I/O Safety__](https://github.com/nix-rust/nix/issues/1750)
 
-- [__Rust I/O Safety__](https://github.com/rust-lang/rfcs/blob/master/text/3128-io-safety.md) _(used in Rustix and New Nix)_
+- [__Rust: I/O Safety__](https://rust-lang.github.io/rfcs/3128-io-safety.html) _(used in Rustix and New Nix)_
 
 _What's our preference: Nix or Rustix?_
 
