@@ -617,6 +617,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/rust7.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rust7.md)
 
+![NuttX with Rust Standard Library](https://lupyuen.github.io/images/rust7-vscode.png)
+
 # Appendix: Build NuttX for Rust Standard Library
 
 Follow these steps to build __NuttX bundled with Rust Standard Library__...
@@ -1281,6 +1283,8 @@ board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
 ```
+
+![Async Functions with Tokio (Helix Editor + Zellij Workspace)](https://lupyuen.github.io/images/rust7-tokio.png)
 
 # Appendix: Snooping Tokio on NuttX
 
