@@ -852,6 +852,34 @@ Looping Forever...</code></pre></div>
 <span class="comment">// Needed by Tokio Multi-Threaded Scheduler
 </span><span class="attr">#[no_mangle]
 </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>pthread_set_name_np() {}</code></pre></div>
+<p><em>How to run the Tokio Demo?</em></p>
+<ol>
+<li>
+<p>Copy the <strong>Tokio Demo Files</strong> from here…</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx-apps/tree/rust-std/examples/rust/hello"><em>lupyuen2/wip-nuttx-apps/examples/rust/hello</em></a></p>
+<p>Specifically: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/Cargo.toml"><strong>Cargo.toml</strong></a> and <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs"><strong>src/lib.rs</strong></a></p>
+</li>
+<li>
+<p>Overwrite our <strong>Rust Hello App</strong>…</p>
+<p><em>apps/examples/rust/hello</em></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library">Rebuild our <strong>NuttX Project</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>make -j</code></pre></div></li>
+<li>
+<p>Then run it with <strong>QEMU RISC-V Emulator</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>$ qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+NuttShell (NSH) NuttX-12.7.0
+nsh&gt; hello_rust_cargo
+</code></pre></div></li>
+<li>
 <p>We’ll see <strong>Four Async Functions</strong>, running on <strong>One New POSIX Thread</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 pthread_create
@@ -867,11 +895,15 @@ Task 1 stopping
 Task 0 stopping</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://tokio.rs/tokio/topics/bridging">(Explained in <strong>Tokio Docs</strong>)</a></p>
+</li>
+<li>
 <p>Aha! See the call to <a href="https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88"><strong>pthread_create</strong></a>, which calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179"><strong>nx_pthread_create</strong></a>? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)</p>
-<p>Yep it’s consistent wirh our <strong>Reverse Engineering of Tokio</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx"><strong>“Snooping Tokio on NuttX”</strong></a></li>
-</ul>
+</li>
+<li>
+<p>Yep it’s consistent with our <strong>Reverse Engineering of Tokio</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx"><strong>“Snooping Tokio on NuttX”</strong></a></p>
+</li>
+</ol>
 <p><em>What if we increase the Worker Threads? From 1 to 2?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Two Worker Threads instead of One
@@ -879,7 +911,8 @@ Task 0 stopping</code></pre></div>
   ::new_multi_thread() <span class="comment">// New Multi-Threaded Scheduler
   </span>.worker_threads(<span class="number">2</span>)   <span class="comment">// With Two New NuttX Threads for our Scheduler</span></code></pre></div>
 <p>The output looks exactly the same…</p>
-<div class="example-wrap"><pre class="language-bash"><code>pthread_create
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
+pthread_create
 nx_pthread_create
 pthread_create
 nx_pthread_create
