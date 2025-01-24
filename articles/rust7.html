@@ -415,15 +415,15 @@ Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s</code></pre>
 
 // Copied from above: Set the LEDs via ioctl()
 </span>led_set_all(
-  owned_fd.as_raw_fd(),  <span class="comment">// Borrow the Raw File Descriptor
+  owned_fd.as_raw_fd(),  <span class="comment">// Extract the Raw File Descriptor
   </span><span class="number">1                      </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();              <span class="comment">// Yep runs OK</span></code></pre></div>
 <p>But <strong>Not This</strong>? (Pic above)</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch earlier the Raw File Descriptor (from the LED Device)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Extract earlier the Raw File Descriptor (from the LED Device)
 </span><span class="kw">let </span>raw_fd =
   open(<span class="string">"/dev/userleds"</span>, ...)  <span class="comment">// Open the LED Device
-  </span>.unwrap()      <span class="comment">// Returns an Owned File Descriptor
+  </span>.unwrap()      <span class="comment">// Get the Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor
 
 // Set the LEDs via ioctl()
@@ -452,10 +452,10 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p><em>Causing the Second Snippet to fail?</em></p>
 <p>Exactly! <em>open()</em> returns an <strong>Owned File Descriptor</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Owned File Descriptor becomes Raw File Descriptor
 </span><span class="kw">let </span>raw_fd =
   open(<span class="string">"/dev/userleds"</span>, ...)  <span class="comment">// Open the LED Device
-  </span>.unwrap()      <span class="comment">// Returns an Owned File Descriptor
+  </span>.unwrap()      <span class="comment">// Get the Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
 <p>And we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
 <p>Oops! Our Owned File Descriptor goes <strong>Out Of Scope</strong> and gets dropped by Rust…</p>
@@ -468,7 +468,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
   </span><span class="number">1          </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();  <span class="comment">// Oops will fail with EBADF Error!</span></code></pre></div>
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
-<p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They are super helpful for auto-closing our files. But might have strange consequences.</p>
+<p><strong>Lesson Learnt:</strong> Be careful with Owned File Descriptors. They’re super helpful for Auto-Closing our files. But might have strange consequences.</p>
 <p>Rustix is another popular POSIX Wrapper. We take a peek…</p>
 <p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="Nix vs Rustix" /></p>
 <h1 id="nix-vs-rustix"><a class="doc-anchor" href="#nix-vs-rustix">§</a>6 Nix vs Rustix</h1>
