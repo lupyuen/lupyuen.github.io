@@ -1019,32 +1019,64 @@ async fn my_bg_task(i: u64) {
 pub extern "C" fn pthread_set_name_np() {}
 ```
 
-We'll see __Four Async Functions__, running on __One New POSIX Thread__...
+_How to run the Tokio Demo?_
 
-```bash
-nsh> hello_rust_cargo
-pthread_create
-nx_pthread_create
-Task 0 sleeping for 1000 ms
-Task 1 sleeping for  950 ms
-Task 2 sleeping for  900 ms
-Task 3 sleeping for  850 ms
-Finished time-consuming task
-Task 3 stopping
-Task 2 stopping
-Task 1 stopping
-Task 0 stopping
-```
+1.  Copy the __Tokio Demo Files__ from here...
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535)
+    [_lupyuen2/wip-nuttx-apps/examples/rust/hello_](https://github.com/lupyuen2/wip-nuttx-apps/tree/rust-std/examples/rust/hello)
 
-[(Explained in __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
+    Specifically: [__Cargo.toml__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/Cargo.toml) and [__src/lib.rs__](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs)
 
-Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
+1.  Overwrite our __Rust Hello App__...
 
-Yep it's consistent wirh our __Reverse Engineering of Tokio__...
+    _apps/examples/rust/hello_
 
-- [__"Snooping Tokio on NuttX"__](https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx)
+1.  [Rebuild our __NuttX Project__](https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library)
+
+    ```bash
+    make -j
+    ```
+
+1.  Then run it with __QEMU RISC-V Emulator__
+
+    ```bash
+    $ qemu-system-riscv64 \
+      -semihosting \
+      -M virt,aclint=on \
+      -cpu rv64 \
+      -bios none \
+      -kernel nuttx \
+      -nographic
+
+    NuttShell (NSH) NuttX-12.7.0
+    nsh> hello_rust_cargo
+
+1.  We'll see __Four Async Functions__, running on __One New POSIX Thread__...
+
+    ```bash
+    nsh> hello_rust_cargo
+    pthread_create
+    nx_pthread_create
+    Task 0 sleeping for 1000 ms
+    Task 1 sleeping for  950 ms
+    Task 2 sleeping for  900 ms
+    Task 3 sleeping for  850 ms
+    Finished time-consuming task
+    Task 3 stopping
+    Task 2 stopping
+    Task 1 stopping
+    Task 0 stopping
+    ```
+
+    [(See the __Complete Log__)](https://gist.github.com/lupyuen/46db6d1baee0e589774cc43dd690da07#file-gistfile1-txt-L497-L535)
+
+    [(Explained in __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
+
+1.  Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
+
+1.  Yep it's consistent with our __Reverse Engineering of Tokio__...
+
+    [__"Snooping Tokio on NuttX"__](https://lupyuen.github.io/articles/rust7#appendix-snooping-tokio-on-nuttx)
 
 _What if we increase the Worker Threads? From 1 to 2?_
 
@@ -1058,6 +1090,7 @@ let runtime = tokio::runtime::Builder
 The output looks exactly the same...
 
 ```bash
+nsh> hello_rust_cargo
 pthread_create
 nx_pthread_create
 pthread_create
