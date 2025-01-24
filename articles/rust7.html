@@ -122,7 +122,7 @@ Features: + fs + ioctl</code></pre></div>
 <p><em>How to build NuttX + Rust Standard Library?</em></p>
 <p>Follow the instructions here…</p>
 <ul>
-<li>TODO: Instructions</li>
+<li><a href="https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library"><strong>“Build NuttX for Rust Standard Library”</strong></a></li>
 </ul>
 <p>Then run the (thoroughly revamped) <a href="https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs"><strong>Rust Hello App</strong></a> with <strong>QEMU RISC-V Emulator</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU RISC-V 64-bit
@@ -147,7 +147,7 @@ Pretty JSON:
   &quot;age&quot;: 28
 }
 Hello world from tokio!</code></pre></div>
-<p>Some bits are <a href="TODO"><strong>a little wonky</strong></a> (but will get better)</p>
+<p>Some bits are <a href="https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library"><strong>a little wonky</strong></a> (but will get better)</p>
 <ul>
 <li>
 <p>Supports <a href="https://nuttx.apache.org/docs/latest/guides/rust.html"><strong>Arm and RISC-V</strong></a> architectures <em>(32-bit and 64-bit)</em></p>
@@ -271,9 +271,9 @@ Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Check the Appendix for the <strong>Tokio Async Demo</strong>. Which works beautifully on NuttX! (Pic below)</p>
+<p>See this for the <strong>Tokio Async Demo</strong>. Which works beautifully on NuttX! (Pic below)</p>
 <ul>
-<li>TODO: test_async</li>
+<li><a href="https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading"><strong>“Tokio Async Threading”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rust7-vscode2.png" alt="Tokio Async Demo" /></p>
 <p><em>But NuttX has POSIX Threads. Why use Async Functions?</em></p>
@@ -302,7 +302,7 @@ Adding nix (git) to dependencies
 Features: + fs + ioctl
 34 deactivated features</code></pre></div>
 <p><em>The URL looks a little sus?</em></p>
-<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="TODO">(Explained in the <strong>Appendix</strong>)</a></p>
+<p>Yep it’s our Bespoke <code>nix</code> Crate. That’s because the Official <code>nix</code> Crate doesn’t support NuttX yet. We made <a href="https://github.com/lupyuen/nix/pull/1/files"><strong>a few tweaks</strong></a> to compile on NuttX. <a href="https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx">(Explained in the <strong>Appendix</strong>)</a></p>
 <p><em>Why are we calling nix?</em></p>
 <p>We’re <strong>Blinking the LED</strong> on NuttX. We could call the <a href="https://crates.io/crates/libc"><strong>POSIX API</strong></a> direcly from Rust…</p>
 
@@ -355,7 +355,7 @@ Features: + fs + ioctl
 <p><em>apps/examples/rust/hello</em></p>
 </li>
 <li>
-<p><a href="TODO">Rebuild our <strong>NuttX Project</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/rust7#appendix-build-nuttx-for-rust-standard-library">Rebuild our <strong>NuttX Project</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>make -j</code></pre></div></li>
 <li>
 <p>Then run it with <strong>QEMU RISC-V Emulator</strong></p>
@@ -384,27 +384,29 @@ board_userled: LED 1 set to 0</code></pre></div>
 <p><strong>Safety Quiz:</strong> Why will this run OK…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Copied from above: Open the LED Device
-</span><span class="kw">let </span>owned_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
+</span><span class="kw">let </span>owned_fd =
+  open(<span class="string">"/dev/userleds"</span>, ...)
   .unwrap();  <span class="comment">// Returns an Owned File Descriptor
-</span>...
-<span class="comment">// Copied from above: Set the LEDs via ioctl()
+
+// Copied from above: Set the LEDs via ioctl()
 </span>led_set_all(
   owned_fd.as_raw_fd(),  <span class="comment">// Borrow the Raw File Descriptor
   </span><span class="number">1                      </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();              <span class="comment">// Yep runs OK</span></code></pre></div>
-<p>But not this? (Pic above)</p>
+<p>But <strong>Not This</strong>? (Pic above)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch earlier the Raw File Descriptor (from the LED Device)
-</span><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
-  .unwrap()      <span class="comment">// Returns an Owned File Descriptor
+</span><span class="kw">let </span>raw_fd =
+  open(<span class="string">"/dev/userleds"</span>, ...)  <span class="comment">// Open the LED Device
+  </span>.unwrap()      <span class="comment">// Returns an Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor
-</span>...
-<span class="comment">// Set the LEDs via ioctl()
+
+// Set the LEDs via ioctl()
 </span>led_set_all(
   raw_fd,    <span class="comment">// Use the earlier Raw File Descriptor
   </span><span class="number">1          </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();  <span class="comment">// Oops will fail!</span></code></pre></div>
-<p>The second snippet will fail with this <strong>EBADF Error</strong>…</p>
+<p>The Second Snippet will fail with <strong>EBADF Error</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 thread &#39;&lt;unnamed&gt;&#39; panicked at src/lib.rs:32:33:
 called `Result::unwrap()` on an `Err` value: EBADF
@@ -426,8 +428,9 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 <p>Exactly! <em>open()</em> returns an <strong>Owned File Descriptor</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Open the LED Device
-</span><span class="kw">let </span>raw_fd = open(<span class="string">"/dev/userleds"</span>, OFlag::O_WRONLY, Mode::empty())
-  .unwrap()      <span class="comment">// Returns an Owned File Descriptor
+</span><span class="kw">let </span>raw_fd =
+  open(<span class="string">"/dev/userleds"</span>, ...)  <span class="comment">// Open the LED Device
+  </span>.unwrap()      <span class="comment">// Returns an Owned File Descriptor
   </span>.as_raw_fd();  <span class="comment">// Which becomes a Raw File Descriptor</span></code></pre></div>
 <p>But we turned it into <strong>Raw File Descriptor</strong>. (The Plain Integer, not the Rust Object)</p>
 <p>Oops! Our Owned File Descriptor goes <strong>Out Of Scope</strong> and gets dropped by Rust…</p>
@@ -436,7 +439,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</c
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Set the LEDs via ioctl()
 </span>led_set_all(
-  raw_fd,    <span class="comment">// Use the earlier Raw File Descriptor
+  raw_fd,    <span class="comment">// Use the (closed) Raw File Descriptor
   </span><span class="number">1          </span><span class="comment">// Flip LED 1 to On
 </span>).unwrap();  <span class="comment">// Oops will fail with EBADF Error!</span></code></pre></div>
 <p>Resulting in the <a href="https://man.freebsd.org/cgi/man.cgi?errno(2)"><strong>EBADF Error</strong></a>. <em>ioctl()</em> failed because <em>/dev/userleds</em> is already closed!</p>
@@ -738,7 +741,7 @@ make -j</code></pre></div></li>
 <h1 id="appendix-tokio-async-threading"><a class="doc-anchor" href="#appendix-tokio-async-threading">§</a>9 Appendix: Tokio Async Threading</h1>
 <p>Earlier we saw Tokio’s <strong>Single-Threaded Scheduler</strong>, running on the <strong>Current NuttX Thread</strong>…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/rust7#async-functions-with-tokio"><strong>“Async Functions with Tokio”</strong></a></li>
 </ul>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Use One Single Thread (Current NuttX Thread)
@@ -872,7 +875,7 @@ int nx_pthread_create(...) {
 <p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)" /></p>
 <h1 id="appendix-porting-nix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-nix-to-nuttx">§</a>10 Appendix: Porting Nix to NuttX</h1>
 <p><em>What happens when we call nix crate as-is on NuttX?</em></p>
-<p>Earlier we said that we <a href="TODO"><strong>Customised the <code>nix</code> Crate</strong></a> to run on NuttX. (Pic above)</p>
+<p>Earlier we said that we <a href="https://lupyuen.github.io/articles/rust7#led-blinky-with-nix"><strong>Customised the <code>nix</code> Crate</strong></a> to run on NuttX. (Pic above)</p>
 <p>Why? Let’s build our Rust Blinky App with the Original <code>nix</code> Crate…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ pushd ../apps/examples/rust/hello
