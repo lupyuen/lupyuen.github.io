@@ -49,9 +49,21 @@ _(OK it's more complicated. Stay tuned)_
 
 All this is now possible thanks to the awesome work by [__Huang Qi__](https://github.com/apache/nuttx-apps/pull/2487)! 🎉
 
-In this article we...
+In this article, we explain...
 
-- TODO
+- How to build __NuttX + Rust Standard Library__
+
+- __Handling JSON__ with the Serde Crate
+
+- __Async Functions__ with the Tokio Crate
+
+- __Blinking LEDs__ with the Nix Crate
+
+- How we ported __Nix to NuttX__
+
+- Why Nix? __Rustix__ might be better
+
+- Why __File Descriptors are "Owned"__ in Rust
 
 # Compile our Rust Hello App
 
