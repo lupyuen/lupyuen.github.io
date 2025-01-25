@@ -1344,18 +1344,16 @@ _Will Rustix run on NuttX?_
 Nope not yet...
 
 ```bash
+$ cd ../apps/examples/rust/hello
 $ cargo add rustix \
   --features fs \
   --git https://github.com/lupyuen/rustix.git \
   --branch nuttx
-    Updating git repository `https://github.com/lupyuen/rustix.git`
-      Adding rustix (git) to dependencies
-             Features:
-             + alloc
-             + fs
-             + std
-             + use-libc-auxv
-             29 deactivated features
+
+Updating git repository `https://github.com/lupyuen/rustix.git`
+Adding rustix (git) to dependencies
+Features: + alloc + fs + std + use-libc-auxv
+29 deactivated features
 ```
 
 We tried compiling this code...
