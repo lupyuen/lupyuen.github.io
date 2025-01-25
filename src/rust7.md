@@ -409,11 +409,11 @@ _How to run the Rust Blinky App?_
 
 _How to code Rust Apps for NuttX?_
 
-We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+We could open the __`apps`__ folder in VSCode, but __Rust Analyzer__ won't work.
 
-Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
+Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
 
-Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
+__cargo build__ seems to work, __cargo run__ won't. Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
 
 ```bash
 $ cargo clippy
@@ -912,11 +912,11 @@ __Troubleshooting The Rust Build__
 
 - _How to code Rust Apps for NuttX?_
 
-  We could open the `apps` folder in VSCode, but __Rust Analyzer__ won't work.
+  We could open the __`apps`__ folder in VSCode, but __Rust Analyzer__ won't work.
 
-  Do this instead: Open the folder _apps/examples/rust/hello_ in VSCode. Then Rust Analyzer will work perfectly! (Pic below)
+  Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer will work perfectly! (Pic below)
 
-  Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
+  __cargo build__ seems to work, __cargo run__ won't. Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
 
   ```bash
   $ cargo clippy
