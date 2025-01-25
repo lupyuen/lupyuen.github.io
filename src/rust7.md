@@ -1194,7 +1194,7 @@ Here's how...
 1.  __For Easier Porting:__ We cloned __`nix`__ locally...
 
     ```bash
-    git clone https://github.com/lupyuen/nix
+    git clone https://github.com/lupyuen/nix --branch nuttx
     cd ../apps/examples/rust/hello
     cargo add nix \
       --features fs,ioctl \
@@ -1216,18 +1216,22 @@ Here's how...
 
     ```rust
     // NuttX ioctl() works like BSD
-    #[cfg(any(bsd, solarish, target_os = "haiku", 
+    #[cfg(any(bsd,
+              solarish,
+              target_os = "haiku",
               target_os = "nuttx"))]
     #[macro_use]
     mod bsd;
 
     // Nope, NuttX ioctl() does NOT work like Linux
-    #[cfg(any(linux_android, target_os = "fuchsia", target_os = "redox"))]
+    #[cfg(any(linux_android,
+              target_os = "fuchsia",
+              target_os = "redox"))]
     #[macro_use]
     mod linux;
     ```
 
-1.  Here are all the files we modified for NuttX...
+1.  Here are the files we modified for NuttX...
     
     (Supporting __`fs`__ and __`ioctl`__ features only)
 
