@@ -285,16 +285,18 @@ Looping Forever...</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; hello_rust_cargo
 pthread_create
 nx_pthread_create
+
 Task 0 sleeping for 1000 ms
 Task 1 sleeping for  950 ms
 Task 2 sleeping for  900 ms
 Task 3 sleeping for  850 ms
+
 Finished time-consuming task
 Task 3 stopping
 Task 2 stopping
 Task 1 stopping
 Task 0 stopping</code></pre></div>
-<p>Check this link for the <strong>Tokio Async Demo</strong>. And it works beautifully on NuttX. (Pic below)</p>
+<p>Check this link for the <strong>Tokio Async Demo</strong>. And it works beautifully on NuttX! (Pic below)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading"><strong>“Tokio Async Threading”</strong></a></li>
 </ul>
@@ -302,7 +304,7 @@ Task 0 stopping</code></pre></div>
 <p><em>NuttX has POSIX Threads. Why use Async Functions?</em></p>
 <p>Think <a href="https://en.wikipedia.org/wiki/Node.js#Threading"><strong>Node.js</strong></a> and its <em>Single-Thread Event Loop</em>, making <em>Non-Blocking I/O Calls</em>. Supporting tens of thousands of concurrent connections. <em>(Without costly Thread Context Switching)</em></p>
 <p>Today we can (probably) do the same with <strong>NuttX and Async Rust</strong>. Assuming <a href="https://nuttx.apache.org/docs/12.5.0/components/filesystem/aio.html"><strong>POSIX Async I/O</strong></a> works OK with <a href="https://github.com/tokio-rs/tokio/blob/master/tokio/src/io/bsd/poll_aio.rs"><strong>Tokio</strong></a>.</p>
-<p>(Tokio calls them <em>“Async Tasks”</em>, sorry we won’t. Because a Task in NuttX is more like a NuttX Process)</p>
+<p>(Tokio calls them <em>“Async Tasks”</em>, sorry we won’t. Because a <a href="https://cwiki.apache.org/confluence/display/NUTTX/Tasks+vs.+Threads+FAQ"><strong>Task in NuttX</strong></a> means something else)</p>
 <p><em>How will we use Tokio?</em></p>
 <blockquote>
 <p><a href="https://tokio.rs/tokio/tutorial"><strong>Tokio</strong></a> is designed for <strong>I/O-Bound Applications</strong> where each individual task spends most of its time waiting for I/O.</p>
