@@ -1095,18 +1095,16 @@ board_userled: LED 3 set to 0</code></pre></div>
 <h1 id="appendix-porting-rustix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-rustix-to-nuttx">§</a>11 Appendix: Porting Rustix to NuttX</h1>
 <p><em>Will Rustix run on NuttX?</em></p>
 <p>Nope not yet…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ cargo add rustix \
+<div class="example-wrap"><pre class="language-bash"><code>$ cd ../apps/examples/rust/hello
+$ cargo add rustix \
   --features fs \
   --git https://github.com/lupyuen/rustix.git \
   --branch nuttx
-    Updating git repository `https://github.com/lupyuen/rustix.git`
-      Adding rustix (git) to dependencies
-             Features:
-             + alloc
-             + fs
-             + std
-             + use-libc-auxv
-             29 deactivated features</code></pre></div>
+
+Updating git repository `https://github.com/lupyuen/rustix.git`
+Adding rustix (git) to dependencies
+Features: + alloc + fs + std + use-libc-auxv
+29 deactivated features</code></pre></div>
 <p>We tried compiling this code…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[no_mangle]
