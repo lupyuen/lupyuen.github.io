@@ -4,6 +4,8 @@
 
 ![Blinking the NuttX LED in Rust](https://lupyuen.github.io/images/rust6-title.jpg)
 
+[(__Update:__ Rust Standard Library is now supported on NuttX!)](https://lupyuen.org/articles/rust7.html)
+
 My student [__Rushabh Gala__](https://github.com/rushabhvg) has just completed his project for [__Google Summer of Code__](https://summerofcode.withgoogle.com/). Rushabh has created __Safer Rust Apps__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)...
 
 - [__GSoC Final Report__](https://rushabhvg.github.io/articles/end_report)
