@@ -575,6 +575,8 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 [(__Rustix on NuttX:__ Will it run? Nope not yet)](https://lupyuen.github.io/articles/rust7#appendix-porting-rustix-to-nuttx)
 
+[(__no1wudi/nuttx-rs__ shows potential)](https://github.com/no1wudi/nuttx-rs)
+
 [(__Rust Embedded HAL__ might be a bad fit)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal)
 
 # What's Next
