@@ -75,7 +75,8 @@
 <li><a href="#appendix-build-nuttx-for-rust-standard-library" title="Appendix: Build NuttX for Rust Standard Library">8 Appendix: Build NuttX for Rust Standard Library</a><ul></ul></li>
 <li><a href="#appendix-tokio-async-threading" title="Appendix: Tokio Async Threading">9 Appendix: Tokio Async Threading</a><ul></ul></li>
 <li><a href="#appendix-porting-nix-to-nuttx" title="Appendix: Porting Nix to NuttX">10 Appendix: Porting Nix to NuttX</a><ul></ul></li>
-<li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">11 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2025</em></p>
+<li><a href="#appendix-porting-rustix-to-nuttx" title="Appendix: Porting Rustix to NuttX">11 Appendix: Porting Rustix to NuttX</a><ul></ul></li>
+<li><a href="#appendix-snooping-tokio-on-nuttx" title="Appendix: Snooping Tokio on NuttX">12 Appendix: Snooping Tokio on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rust7-title.png" alt="LED Blinky with Rust Standard Library on Apache NuttX RTOS (RustRover IDE)" /></p>
 <p><strong>Freshly Baked:</strong> Here’s how we <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs"><strong>Blink the LED</strong></a> with <strong>Rust Standard Library</strong> on <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>…</p>
 
@@ -986,10 +987,17 @@ Features: + fs + ioctl
 <p>Here’s how…</p>
 <ol>
 <li>
-<p>We modified <a href="https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e">errno.rs</a>, copying FreeBSD <code>#[cfg(target_os = "freebsd")]</code> to NuttX <code>#[cfg(target_os = "nuttx")]</code></p>
+<p><strong>For Easier Porting:</strong> We cloned <strong><code>nix</code></strong> locally…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/nix
+cd ../apps/examples/rust/hello
+cargo add nix \
+  --features fs,ioctl \
+  --path $HOME/nix</code></pre></div></li>
+<li>
+<p>We extended <a href="https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e"><strong>errno.rs</strong></a>, copying FreeBSD <em>#[cfg(target_os = “freebsd”)]</em> to NuttX <em>#[cfg(target_os = “nuttx”)]</em></p>
 </li>
 <li>
-<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? We changed plenty of code to look like this: <a href="https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0">sys/time.rs</a></p>
+<p>NuttX seems to have a similar POSIX Profile to <strong>Redox OS</strong>? We changed plenty of code to look like this: <a href="https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0"><strong>sys/time.rs</strong></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// NuttX works like Redox OS
 </span><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>,
@@ -997,7 +1005,7 @@ Features: + fs + ioctl
 </span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...</code></pre></div>
 </li>
 <li>
-<p><strong>For NuttX ioctl():</strong> It works more like BSD (second parameter is <code>int</code>) than Linux (second parameter is <code>long</code>): <a href="https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4">sys/ioctl/mod.rs</a></p>
+<p><strong>For NuttX ioctl():</strong> It works more like BSD (second parameter is <strong><code>int</code></strong>) than Linux (second parameter is <strong><code>long</code></strong>): <a href="https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4">sys/ioctl/mod.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// NuttX ioctl() works like BSD
 </span><span class="attr">#[cfg(any(bsd, solarish, target_os = <span class="string">"haiku"</span>, 
@@ -1012,17 +1020,17 @@ Features: + fs + ioctl
 </li>
 <li>
 <p>Here are all the files we modified for NuttX…</p>
-<p>(Supporting <code>fs</code> and <code>ioctl</code> features only)</p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files">All Modified Files</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e">errno.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-234e7e6580542ac96403821955043ffefa4cef1e0659216a9ee170cad6315c7d">fcntl.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-0223913fb22a7da0dcb64a51b192e5c049b4b276351c83bbaeb0cee0dbbd8a04">unistd.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-5c119a000c85b1959421747235c671cc2f43b4f5fd2628daf1276f684a100ad8">sys/stat.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-ed80a57034c9c336fb4516644f86cbd9ef75296fa76bdf9c7ca9adf251be0421">sys/statvfs.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-db4000d9e8bf29c6719984245eeefdf7e0a9b4e525f37ac8c5d6a918d4dc3005">sys/mod.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0">sys/time.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-48ef2619f99fe3916c145e82b718b5f2975d58992113203c51fb4315d8e3155b">sys/ioctl/bsd.rs</a></p>
-<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4">sys/ioctl/mod.rs</a></p>
+<p>(Supporting <strong><code>fs</code></strong> and <strong><code>ioctl</code></strong> features only)</p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files"><strong>All Modified Files</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e"><strong>errno.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-234e7e6580542ac96403821955043ffefa4cef1e0659216a9ee170cad6315c7d"><strong>fcntl.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-0223913fb22a7da0dcb64a51b192e5c049b4b276351c83bbaeb0cee0dbbd8a04"><strong>unistd.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-5c119a000c85b1959421747235c671cc2f43b4f5fd2628daf1276f684a100ad8"><strong>sys/stat.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-ed80a57034c9c336fb4516644f86cbd9ef75296fa76bdf9c7ca9adf251be0421"><strong>sys/statvfs.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-db4000d9e8bf29c6719984245eeefdf7e0a9b4e525f37ac8c5d6a918d4dc3005"><strong>sys/mod.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0"><strong>sys/time.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-48ef2619f99fe3916c145e82b718b5f2975d58992113203c51fb4315d8e3155b"><strong>sys/ioctl/bsd.rs</strong></a></p>
+<p><a href="https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4"><strong>sys/ioctl/mod.rs</strong></a></p>
 </li>
 </ol>
 <hr>
@@ -1078,8 +1086,47 @@ ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/rust7-compare.png" alt="Nix vs Rustix" /></p>
+<h1 id="appendix-porting-rustix-to-nuttx"><a class="doc-anchor" href="#appendix-porting-rustix-to-nuttx">§</a>11 Appendix: Porting Rustix to NuttX</h1>
+<p><em>Will Rustix run on NuttX?</em></p>
+<p>Nope not yet…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo add rustix \
+  --features fs \
+  --git https://github.com/lupyuen/rustix.git \
+  --branch nuttx
+    Updating git repository `https://github.com/lupyuen/rustix.git`
+      Adding rustix (git) to dependencies
+             Features:
+             + alloc
+             + fs
+             + std
+             + use-libc-auxv
+             29 deactivated features</code></pre></div>
+<p>We tried compiling this code…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[no_mangle]
+</span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>hello_rust_cargo_main() {
+  <span class="kw">use </span>rustix::fs::{Mode, OFlags};
+  <span class="kw">let </span>file = rustix::fs::open(
+    <span class="string">"/dev/userleds"</span>,
+    OFlags::WRONLY,
+    Mode::empty(),
+  )
+  .unwrap();
+  <span class="macro">println!</span>(<span class="string">"file={file:?}"</span>);
+}</code></pre></div>
+<p>But it fails…</p>
+<div class="example-wrap"><pre class="language-bash"><code>error[E0432]: unresolved import `libc::strerror_r`
+  --&gt; .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/errno-0.3.10/src/unix.rs:16:33
+   |
+16 | use libc::{self, c_int, size_t, strerror_r, strlen};
+   |                                 ^^^^^^^^^^
+   |                                 |
+   |                                 no `strerror_r` in the root
+   |                                 help: a similar name exists in the module: `strerror`</code></pre></div>
+<p>Seems we need to fix <strong>libc::strerror_r</strong> for NuttX? Or maybe the <strong>errno</strong> crate.</p>
 <p><img src="https://lupyuen.github.io/images/rust7-tokio.png" alt="Async Functions with Tokio (Helix Editor + Zellij Workspace)" /></p>
-<h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>11 Appendix: Snooping Tokio on NuttX</h1>
+<h1 id="appendix-snooping-tokio-on-nuttx"><a class="doc-anchor" href="#appendix-snooping-tokio-on-nuttx">§</a>12 Appendix: Snooping Tokio on NuttX</h1>
 <p>In this section, we discover how <strong>Tokio works under the hood</strong>. Does it really call <strong>POSIX Functions in NuttX</strong>?</p>
 <p>First we obtain the <strong>RISC-V Disassembly</strong> of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run <strong><code>make V=1</code></strong> on <strong><code>rv-virt:leds64</code></strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
