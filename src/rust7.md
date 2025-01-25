@@ -1189,9 +1189,19 @@ Features: + fs + ioctl
 
 Here's how...
 
-1.  We modified [errno.rs](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e), copying FreeBSD `#[cfg(target_os = "freebsd")]` to NuttX `#[cfg(target_os = "nuttx")]`
+1.  __For Easier Porting:__ We cloned __`nix`__ locally...
 
-1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [sys/time.rs](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
+    ```bash
+    git clone https://github.com/lupyuen/nix
+    cd ../apps/examples/rust/hello
+    cargo add nix \
+      --features fs,ioctl \
+      --path $HOME/nix
+    ```
+
+1.  We extended [__errno.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e), copying FreeBSD _#[cfg(target_os = "freebsd")]_ to NuttX _#[cfg(target_os = "nuttx")]_
+
+1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [__sys/time.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
 
     ```rust
     // NuttX works like Redox OS
@@ -1200,7 +1210,7 @@ Here's how...
     pub const UTIME_OMIT: TimeSpec = ...
     ```
 
-1.  __For NuttX ioctl():__ It works more like BSD (second parameter is `int`) than Linux (second parameter is `long`): [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
+1.  __For NuttX ioctl():__ It works more like BSD (second parameter is __`int`__) than Linux (second parameter is __`long`__): [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
 
     ```rust
     // NuttX ioctl() works like BSD
@@ -1217,27 +1227,27 @@ Here's how...
 
 1.  Here are all the files we modified for NuttX...
     
-    (Supporting `fs` and `ioctl` features only)
+    (Supporting __`fs`__ and __`ioctl`__ features only)
 
-    [All Modified Files](https://github.com/lupyuen/nix/pull/1/files)
+    [__All Modified Files__](https://github.com/lupyuen/nix/pull/1/files)
 
-    [errno.rs](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e)
+    [__errno.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e)
 
-    [fcntl.rs](https://github.com/lupyuen/nix/pull/1/files#diff-234e7e6580542ac96403821955043ffefa4cef1e0659216a9ee170cad6315c7d)
+    [__fcntl.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-234e7e6580542ac96403821955043ffefa4cef1e0659216a9ee170cad6315c7d)
 
-    [unistd.rs](https://github.com/lupyuen/nix/pull/1/files#diff-0223913fb22a7da0dcb64a51b192e5c049b4b276351c83bbaeb0cee0dbbd8a04)
+    [__unistd.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-0223913fb22a7da0dcb64a51b192e5c049b4b276351c83bbaeb0cee0dbbd8a04)
 
-    [sys/stat.rs](https://github.com/lupyuen/nix/pull/1/files#diff-5c119a000c85b1959421747235c671cc2f43b4f5fd2628daf1276f684a100ad8)
+    [__sys/stat.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-5c119a000c85b1959421747235c671cc2f43b4f5fd2628daf1276f684a100ad8)
 
-    [sys/statvfs.rs](https://github.com/lupyuen/nix/pull/1/files#diff-ed80a57034c9c336fb4516644f86cbd9ef75296fa76bdf9c7ca9adf251be0421)
+    [__sys/statvfs.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-ed80a57034c9c336fb4516644f86cbd9ef75296fa76bdf9c7ca9adf251be0421)
 
-    [sys/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-db4000d9e8bf29c6719984245eeefdf7e0a9b4e525f37ac8c5d6a918d4dc3005)
+    [__sys/mod.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-db4000d9e8bf29c6719984245eeefdf7e0a9b4e525f37ac8c5d6a918d4dc3005)
 
-    [sys/time.rs](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
+    [__sys/time.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
 
-    [sys/ioctl/bsd.rs](https://github.com/lupyuen/nix/pull/1/files#diff-48ef2619f99fe3916c145e82b718b5f2975d58992113203c51fb4315d8e3155b)
+    [__sys/ioctl/bsd.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-48ef2619f99fe3916c145e82b718b5f2975d58992113203c51fb4315d8e3155b)
 
-    [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
+    [__sys/ioctl/mod.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
 
 <hr>
 
@@ -1318,6 +1328,60 @@ board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
 ```
+
+![Nix vs Rustix](https://lupyuen.github.io/images/rust7-compare.png)
+
+# Appendix: Porting Rustix to NuttX
+
+_Will Rustix run on NuttX?_
+
+Nope not yet...
+
+```bash
+$ cargo add rustix \
+  --features fs \
+  --git https://github.com/lupyuen/rustix.git \
+  --branch nuttx
+    Updating git repository `https://github.com/lupyuen/rustix.git`
+      Adding rustix (git) to dependencies
+             Features:
+             + alloc
+             + fs
+             + std
+             + use-libc-auxv
+             29 deactivated features
+```
+
+We tried compiling this code...
+
+```rust
+#[no_mangle]
+pub extern "C" fn hello_rust_cargo_main() {
+  use rustix::fs::{Mode, OFlags};
+  let file = rustix::fs::open(
+    "/dev/userleds",
+    OFlags::WRONLY,
+    Mode::empty(),
+  )
+  .unwrap();
+  println!("file={file:?}");
+}
+```
+
+But it fails...
+
+```bash
+error[E0432]: unresolved import `libc::strerror_r`
+  --> .cargo/registry/src/index.crates.io-1949cf8c6b5b557f/errno-0.3.10/src/unix.rs:16:33
+   |
+16 | use libc::{self, c_int, size_t, strerror_r, strlen};
+   |                                 ^^^^^^^^^^
+   |                                 |
+   |                                 no `strerror_r` in the root
+   |                                 help: a similar name exists in the module: `strerror`
+```
+
+Seems we need to fix __libc::strerror_r__ for NuttX? Or maybe the __errno__ crate.
 
 ![Async Functions with Tokio (Helix Editor + Zellij Workspace)](https://lupyuen.github.io/images/rust7-tokio.png)
 
