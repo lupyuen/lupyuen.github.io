@@ -601,6 +601,8 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
+- [__Discuss this article on Hacker News__](TODO)
+
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
 - [__My Other Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
