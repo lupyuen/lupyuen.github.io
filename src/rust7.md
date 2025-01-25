@@ -253,10 +253,12 @@ Ah we haven't seen the full power of __Tokio Multi-Threaded Async Functions__ on
 nsh> hello_rust_cargo
 pthread_create
 nx_pthread_create
+
 Task 0 sleeping for 1000 ms
 Task 1 sleeping for  950 ms
 Task 2 sleeping for  900 ms
 Task 3 sleeping for  850 ms
+
 Finished time-consuming task
 Task 3 stopping
 Task 2 stopping
@@ -264,7 +266,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check this link for the __Tokio Async Demo__. And it works beautifully on NuttX. (Pic below)
+Check this link for the __Tokio Async Demo__. And it works beautifully on NuttX! (Pic below)
 
 - [__"Tokio Async Threading"__](https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading)
 
@@ -276,7 +278,7 @@ Think [__Node.js__](https://en.wikipedia.org/wiki/Node.js#Threading) and its _Si
 
 Today we can (probably) do the same with __NuttX and Async Rust__. Assuming [__POSIX Async I/O__](https://nuttx.apache.org/docs/12.5.0/components/filesystem/aio.html) works OK with [__Tokio__](https://github.com/tokio-rs/tokio/blob/master/tokio/src/io/bsd/poll_aio.rs).
 
-(Tokio calls them _"Async Tasks"_, sorry we won't. Because a Task in NuttX is more like a NuttX Process)
+(Tokio calls them _"Async Tasks"_, sorry we won't. Because a [__Task in NuttX__](https://cwiki.apache.org/confluence/display/NUTTX/Tasks+vs.+Threads+FAQ) means something else)
 
 _How will we use Tokio?_
 
