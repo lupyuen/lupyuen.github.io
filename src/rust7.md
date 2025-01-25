@@ -569,7 +569,9 @@ Today, Nix is moving to __Owned File Descriptors__ due to __I/O Safety__. Bummer
 
 _What's our preference: Nix or Rustix?_
 
-Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). It might hinder our porting to NuttX...
+Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __more complex__ (based on Lines of Code). It might hinder our porting to NuttX.
+
+Which would you choose? Please lemme know! 🙏
 
 ![Nix vs Rustix: Lines of Code](https://lupyuen.github.io/images/rust7-loc.png)
 
