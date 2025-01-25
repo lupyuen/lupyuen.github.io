@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust Standard Library on Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/rust7</link>
+            <description><![CDATA[Rust Standard Library is now available on Apache NuttX RTOS, thanks to awesome work by Huang Qi! In this article we explain (1) How to build NuttX + Rust Standard Library (2) Handling JSON with the Serde Crate (3) Async Functions with the Tokio Crate (4) Blinking LEDs with the Nix Crate]]></description>
+            <guid>https://lupyuen.github.io/articles/rust7</guid>
+            <pubDate>Sun, 26 Jan 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Fixing a uname bug (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/uname</link>
             <description><![CDATA[Earlier This Week: uname became unusually quieter on Apache NuttX RTOS... The Commit Hash is missing! Watch as we stomp the seemingly simple bug, that turns out to be something seriously sinister! (Spoiler: Static Vars are broken)]]></description>

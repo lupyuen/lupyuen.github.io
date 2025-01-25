@@ -213,7 +213,7 @@ _What's this Tokio? Sounds like a city?_
 
 Indeed, "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crates/mio))
 
-> [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
+> [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of __Asynchronous I/O__, allowing for Concurrency in regards to Task Completion
 
 Inside our __Rust Hello App__, here's how we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
 
@@ -611,7 +611,7 @@ Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponso
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=42825198)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
