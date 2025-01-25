@@ -92,11 +92,13 @@ nsh> hello_rust_cargo
 {"name":"John","age":30}
 {"name":"Jane","age":25}
 Deserialized: Alice is 28 years old
+
 Pretty JSON:
 {
   "name": "Alice",
   "age": 28
 }
+
 Hello world from tokio!
 ```
 
@@ -150,7 +152,7 @@ pub extern "C" fn hello_rust_cargo_main() {
 Which will print...
 
 ```bash
-NuttShell (NSH) NuttX-12.7.0
+NuttShell (NSH) NuttX-12.8.0
 nsh> hello_rust_cargo
 {"name":"John","age":30}
 ```
@@ -191,7 +193,7 @@ let pretty_json_str = serde_json // Person Struct
 println!("Pretty JSON:\n{}", pretty_json_str);
 ```
 
-Looks much neater!
+Looks much neater...
 
 ```bash
 Pretty JSON:
@@ -201,7 +203,7 @@ Pretty JSON:
 }
 ```
 
-[(Serde also runs on __Rust Core Library__, though super messy)](https://bitboom.github.io/2020-10-22/serde-no-std)
+[(Serde runs on __Rust Core Library__, though super messy)](https://bitboom.github.io/2020-10-22/serde-no-std)
 
 ![Async Functions with Tokio (Helix Editor + Zellij Workspace)](https://lupyuen.github.io/images/rust7-tokio.png)
 
@@ -209,14 +211,14 @@ Pretty JSON:
 
 _What's this Tokio? Sounds like a city?_
 
-Indeed! "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crates/mio))
+Indeed, "Tokio" is inspired by Tokyo (and [__Metal I/O__](https://crates.io/crates/mio))
 
 > [__Tokio__](https://en.wikipedia.org/wiki/Tokio_(software)) ... provides a runtime and functions that enable the use of Asynchronous I/O, allowing for Concurrency in regards to Task Completion
 
-Inside our __Rust Hello App__, here's how we we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
+Inside our __Rust Hello App__, here's how we run __Async Functions__ with Tokio: [nuttx-apps/lib.rs](https://github.com/apache/nuttx-apps/blob/master/examples/rust/hello/src/lib.rs#L44-L56)
 
 ```rust
-// Use One Single Thread (Current NuttX Thread)
+// Use One Single Thread (Current Thread)
 // To schedule Async Functions
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
@@ -245,7 +247,7 @@ Looping Forever...
 
 _Yawn. Tokio looks underwhelming?_
 
-Ah we haven't seen the full power of __Tokio Multi-Threaded Async Functions__ on NuttX!
+Ah we haven't seen the full power of __Tokio Multi-Threaded Async Functions__ on NuttX...
 
 ```bash
 nsh> hello_rust_cargo
@@ -262,7 +264,7 @@ Task 1 stopping
 Task 0 stopping
 ```
 
-Check this link for the __Tokio Async Demo__. And it works beautifully on NuttX! (Pic below)
+Check this link for the __Tokio Async Demo__. And it works beautifully on NuttX. (Pic below)
 
 - [__"Tokio Async Threading"__](https://lupyuen.github.io/articles/rust7#appendix-tokio-async-threading)
 
@@ -280,7 +282,7 @@ _How will we use Tokio?_
 
 > [__Tokio__](https://tokio.rs/tokio/tutorial) is designed for __I/O-Bound Applications__ where each individual task spends most of its time waiting for I/O.
 
-Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many many __NuttX Threads__, we spawn a few threads and call __Async Functions__.
+Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial/io). Instead of spawning many __POSIX Threads__, we spawn a few threads and call __Async Functions__.
 
 (Check out [__Tokio Select__](https://tokio.rs/tokio/tutorial/select) and [__Tokio Streams__](https://tokio.rs/tokio/tutorial/streams))
 
@@ -290,7 +292,7 @@ Which means it's great for [__Network Servers__](https://tokio.rs/tokio/tutorial
 
 _We're running nix on NuttX?_
 
-Oh that's [__`nix` Crate__](https://crates.io/crates/nix) that provides __Safer Rust Bindings__ for POSIX / Unix / Linux. (Nope, not NixOS)
+Oh that's [__`nix` Crate__](https://crates.io/crates/nix) that provides __Safer Rust Bindings__ for POSIX / Unix / Linux. (It's not NixOS)
 
 This is how we add the library to our __Rust Hello App__...
 
@@ -307,11 +309,11 @@ Features: + fs + ioctl
 34 deactivated features
 ```
 
-_The URL looks a little sus?_
+_URL looks sus?_
 
 Yep it's our Bespoke __`nix`__ Crate. That's because the Official __`nix`__ Crate doesn't support NuttX yet. We made [__a few tweaks__](https://github.com/lupyuen/nix/pull/1/files) to compile on NuttX. [(Explained in the __Appendix__)](https://lupyuen.github.io/articles/rust7#appendix-porting-nix-to-nuttx)
 
-_Why are we calling nix?_
+_Why call nix?_
 
 We're __Blinking the LED__ on NuttX. We could call the [__POSIX API__](https://crates.io/crates/libc) direcly from Rust...
 
@@ -321,7 +323,7 @@ unsafe { libc::ioctl(fd, ULEDIOC_SETALL, 1); }
 unsafe { libc::close(fd); }
 ```
 
-Erm it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by __`nix`__. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39)
+Though it doesn't look very... Safe. That's why we call the __Safer POSIX Bindings__ provided by __`nix`__. Like so: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L6-L39)
 
 ```rust
 // Open the LED Device for NuttX
@@ -396,7 +398,7 @@ _How to run the Rust Blinky App?_
       -kernel nuttx \
       -nographic
 
-    NuttShell (NSH) NuttX-12.7.0
+    NuttShell (NSH) NuttX-12.8.0
     nsh> hello_rust_cargo
 
     board_userled: LED 1 set to 1
@@ -411,7 +413,7 @@ _How to code Rust Apps for NuttX?_
 
 We could open the __`apps`__ folder in VSCode, but __Rust Analyzer__ won't work.
 
-Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png)!
+Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer [__will work perfectly__](https://lupyuen.github.io/images/rust7-vscode2.png).
 
 __cargo build__ seems to work, __cargo run__ won't. Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
 
@@ -504,7 +506,7 @@ Oops! Our Owned File Descriptor goes __Out Of Scope__ and gets dropped by Rust..
 
 ![Our Owned File Descriptor goes Out Of Scope and gets dropped by Rust](https://lupyuen.github.io/images/rust7-fd.jpg)
 
-Thus Rust will helpfully close _/dev/userleds_. Since it's closed, the Raw File Descriptor __becomes invalid__...
+Thus Rust will helpfully close _/dev/userleds_. Since it's closed, our Raw File Descriptor __becomes invalid__...
 
 ```rust
 // Set the LEDs via ioctl()
@@ -828,7 +830,7 @@ __Troubleshooting The Rust Build__
   rustc --version
   ```
 
-- If the build fails with __"Cargo.lock does not exist"__...
+- If the build fails with __"Unable to build with the Standard Library"__...
 
   ```bash
   error: ".rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/Cargo.lock" does not exist, unable to build with the standard library
@@ -863,7 +865,7 @@ __Troubleshooting The Rust Build__
 
 - _What if we're using Rust already? And we don't wish to change the Default Toolchain?_
 
-  Use `rustup override` to __Override the Folder Toolchain__. Do it in the __Parent Folder__ of `nuttx` and `apps`...
+  Use __rustup override__ to __Override the Folder Toolchain__. Do it in the __Parent Folder__ of __`nuttx`__ and __`apps`__...
 
   ```bash
   ## Set Rust to Nightly Build
@@ -883,8 +885,8 @@ __Troubleshooting The Rust Build__
   <span style="font-size:80%">
 
   ```bash
-  dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-  dump_task:       3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
+  PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+    3     3 100 RR       Task    -   Running            0000000000000000 0x80071420      1856      1856   100.0%!   hello_rust_cargo
   ```
 
   </span>
@@ -904,7 +906,7 @@ __Troubleshooting The Rust Build__
 
 - _Rust Build seems to break sometimes?_
 
-  We might need to clean up the __Rust Compiled Files__, if the Rust Build goes wonky...
+  We might need to clean up the __Rust Target Files__, if the Rust Build goes wonky...
 
   ```bash
   ## Erase the Rust Build and rebuild
@@ -918,7 +920,7 @@ __Troubleshooting The Rust Build__
 
   We could open the __`apps`__ folder in VSCode, but __Rust Analyzer__ won't work.
 
-  Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer will work perfectly! (Pic below)
+  Do this instead: _VSCode > File > Open Folder > apps/examples/rust/hello_. Then Rust Analyzer will work perfectly. (Pic below)
 
   __cargo build__ seems to work, __cargo run__ won't. Remember to run [__cargo clippy__](https://doc.rust-lang.org/clippy/index.html)...
 
@@ -938,12 +940,12 @@ How did we port Rust Standard Library to NuttX? Details here...
 
 # Appendix: Tokio Async Threading
 
-Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current NuttX Thread__...
+Earlier we saw Tokio's __Single-Threaded Scheduler__, running on the __Current Thread__...
 
 - [__"Async Functions with Tokio"__](https://lupyuen.github.io/articles/rust7#async-functions-with-tokio)
 
 ```rust
-// Use One Single Thread (Current NuttX Thread)
+// Use One Single Thread (Current Thread)
 // To schedule Async Functions
 tokio::runtime::Builder
   ::new_current_thread()  // Current Thread is the Single-Threaded Scheduler
@@ -968,19 +970,19 @@ Hello world from tokio!
 Looping Forever...
 ```
 
-Now we try Tokio's __Multi-Threaded Scheduler__ (pic above). And we create __One New NuttX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L86-L140)
+Now we try Tokio's __Multi-Threaded Scheduler__. And we create __One New POSIX Thread__ for the Scheduler: [wip-nuttx-apps/lib.rs](https://github.com/lupyuen2/wip-nuttx-apps/blob/rust-std/examples/rust/hello/src/lib.rs#L86-L140)
 
 ```rust
 // Run 4 Async Functions in the Background
-// By creating One New NuttX Thread
+// By creating One New POSIX Thread
 // Based on https://tokio.rs/tokio/topics/bridging
 fn test_async() {
 
   // Create a Multi-Threaded Scheduler
-  // Containing One New NuttX Thread
+  // Containing One New POSIX Thread
   let runtime = tokio::runtime::Builder
     ::new_multi_thread() // Multi-Threaded Scheduler
-    .worker_threads(1)   // With One New NuttX Thread for our Scheduler
+    .worker_threads(1)   // With One New POSIX Thread for our Scheduler
     .enable_all() // Enable the I/O and Time Functions
     .build()      // Create the Multi-Threaded Scheduler
     .unwrap();    // Halt on Error
@@ -1056,7 +1058,7 @@ _How to run the Tokio Demo?_
       -kernel nuttx \
       -nographic
 
-    NuttShell (NSH) NuttX-12.7.0
+    NuttShell (NSH) NuttX-12.8.0
     nsh> hello_rust_cargo
 
 1.  We'll see __Four Async Functions__, running on __One New POSIX Thread__...
@@ -1065,10 +1067,12 @@ _How to run the Tokio Demo?_
     nsh> hello_rust_cargo
     pthread_create
     nx_pthread_create
+
     Task 0 sleeping for 1000 ms
     Task 1 sleeping for  950 ms
     Task 2 sleeping for  900 ms
     Task 3 sleeping for  850 ms
+
     Finished time-consuming task
     Task 3 stopping
     Task 2 stopping
@@ -1080,7 +1084,7 @@ _How to run the Tokio Demo?_
 
     [(Explained in __Tokio Docs__)](https://tokio.rs/tokio/topics/bridging)
 
-1.  Aha! See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
+1.  See the call to [__pthread_create__](https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88), which calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179)? It means that Tokio is actually calling NuttX to create One POSIX Thread! (For the Multi-Threaded Scheduler)
 
 1.  Yep it's consistent with our __Reverse Engineering of Tokio__...
 
@@ -1092,7 +1096,7 @@ _What if we increase the Worker Threads? From 1 to 2?_
 // Two Worker Threads instead of One
 let runtime = tokio::runtime::Builder
   ::new_multi_thread() // New Multi-Threaded Scheduler
-  .worker_threads(2)   // With Two New NuttX Threads for our Scheduler
+  .worker_threads(2)   // With Two New POSIX Threads for our Scheduler
 ```
 
 The output looks exactly the same...
@@ -1103,10 +1107,12 @@ pthread_create
 nx_pthread_create
 pthread_create
 nx_pthread_create
+
 Task 0 sleeping for 1000 ms
 Task 1 sleeping for  950 ms
 Task 2 sleeping for  900 ms
 Task 3 sleeping for  850 ms
+
 Finished time-consuming task
 Task 3 stopping
 Task 2 stopping
@@ -1123,7 +1129,7 @@ Inside NuttX Kernel: We added Debug Code to
 
 <span style="font-size:90%">
 
-```text
+```c
 // At https://github.com/apache/nuttx/blob/master/libs/libc/pthread/pthread_create.c#L88
 #include <debug.h>
 int pthread_create(...) {
@@ -1143,7 +1149,7 @@ int nx_pthread_create(...) {
 
 _What happens when we call nix crate as-is on NuttX?_
 
-Earlier we said that we [__Customised the `nix` Crate__](https://lupyuen.github.io/articles/rust7#led-blinky-with-nix) to run on NuttX. (Pic above)
+Earlier we said that we [__Customised the `nix` Crate__](https://lupyuen.github.io/articles/rust7#led-blinky-with-nix) to run on NuttX.
 
 Why? Let's build our Rust Blinky App with the Original __`nix`__ Crate...
 
@@ -1152,6 +1158,7 @@ Why? Let's build our Rust Blinky App with the Original __`nix`__ Crate...
 ```bash
 $ pushd ../apps/examples/rust/hello
 $ cargo add nix --features fs,ioctl
+
 Adding nix v0.29.0 to dependencies
 Features: + fs + ioctl
 33 deactivated features
@@ -1178,7 +1185,7 @@ error[E0432]: unresolved import `crate::errno::Errno`
 
 </span>
 
-Plus many many errors. That's why we [__Customised the `nix` Crate__](https://github.com/lupyuen/nix/tree/nuttx) for NuttX...
+Plus many errors. That's why we [__Customised the `nix` Crate__](https://github.com/lupyuen/nix/tree/nuttx) for NuttX...
 
 ```bash
 $ cd ../apps/examples/rust/hello
@@ -1198,14 +1205,18 @@ Here's how...
 1.  __For Easier Porting:__ We cloned __`nix`__ locally...
 
     ```bash
-    git clone https://github.com/lupyuen/nix --branch nuttx
+    git clone \
+      https://github.com/lupyuen/nix \
+      --branch nuttx
     cd ../apps/examples/rust/hello
     cargo add nix \
       --features fs,ioctl \
       --path $HOME/nix
     ```
 
-1.  We extended [__errno.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e), copying FreeBSD _#[cfg(target_os = "freebsd")]_ to NuttX _#[cfg(target_os = "nuttx")]_
+1.  We extended [__errno.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-c64965cf18ab089e705398a750edb9b349ff3e0509454d801d6a150db7ff9b5e), copying the __FreeBSD Section__ _[cfg(target_os = "freebsd")]_ to __NuttX Section__ _[cfg(target_os = "nuttx")]_.
+
+    (We removed the bits that don't exist on NuttX)
 
 1.  NuttX seems to have a similar POSIX Profile to __Redox OS__? We changed plenty of code to look like this: [__sys/time.rs__](https://github.com/lupyuen/nix/pull/1/files#diff-7f322738311de78991dc089e6bcd3a89bcebc6d39b1a17508cf6c94bb170c9b0)
 
@@ -1216,7 +1227,7 @@ Here's how...
     pub const UTIME_OMIT: TimeSpec = ...
     ```
 
-1.  __For NuttX ioctl():__ It works more like BSD (second parameter is __`int`__) than Linux (second parameter is __`long`__): [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
+1.  __For NuttX ioctl():__ It works more like BSD _(second parameter is __`int`__)_ than Linux _(second parameter is __`long`__)_: [sys/ioctl/mod.rs](https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4)
 
     ```rust
     // NuttX ioctl() works like BSD
@@ -1263,7 +1274,7 @@ Here's how...
 
 __Troubleshooting nix ioctl() on NuttX__
 
-To figure out if __`nix`__ passes ioctl parameters correctly to NuttX: We insert __ioctl Debug Code__ into NuttX Kernel...
+To figure out if __`nix`__ passes ioctl() parameters correctly to NuttX: We insert __Ioctl Debug Code__ into NuttX Kernel...
 
 ```c
 // At https://github.com/apache/nuttx/blob/master/fs/vfs/fs_ioctl.c#L261
@@ -1280,10 +1291,10 @@ ioctl_none!(led_on, ULEDIOC_SETALL, 1);
 unsafe { led_on(fd).unwrap(); }
 ```
 
-But the __ioctl Command Code__ got mangled up (`0x201d0301` should be `0x1d03`)
+But the __Ioctl Command Code__ got mangled up (`0x201d0301` should be `0x1d03`)
 
 ```bash
-NuttShell (NSH) NuttX-12.7.0
+NuttShell (NSH) NuttX-12.8.0
 nsh> hello_rust_cargo
 fd=3
 ioctl: fd=0x3, req=0x201d0301
@@ -1301,7 +1312,7 @@ ioctl_write_int!(led_on, ULEDIOC_SETALL, 1);
 unsafe { led_on(fd, 1).unwrap(); }
 ```
 
-Nope the __ioctl Command Code__ is still mangled (`0x801d0301` should be `0x1d03`)
+Nope the __Ioctl Command Code__ is still mangled (`0x801d0301` should be `0x1d03`)
 
 ```bash
 nsh> hello_rust_cargo
@@ -1323,16 +1334,17 @@ unsafe { led_set_all(fd, 1).unwrap(); }
 unsafe { led_set_all(fd, 0).unwrap(); }
 ```
 
-__ioctl Command Code__ `0x1d03` is hunky dory yay!
+__Ioctl Command Code__ `0x1d03` is hunky dory yay!
 
 ```bash
-NuttShell (NSH) NuttX-12.7.0
+NuttShell (NSH) NuttX-12.8.0
 nsh> hello_rust_cargo
 fd=3
 ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 1
 board_userled: LED 2 set to 0
 board_userled: LED 3 set to 0
+
 ioctl: fd=0x3, req=0x1d03
 board_userled: LED 1 set to 0
 board_userled: LED 2 set to 0
@@ -1397,7 +1409,7 @@ Seems we need to fix __libc::strerror_r__ for NuttX? Or maybe the __errno__ crat
 
 In this section, we discover how __Tokio works under the hood__. Does it really call __POSIX Functions in NuttX__?
 
-First we obtain the __RISC-V Disassembly__ of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: Run __`make V=1`__ on __`rv-virt:leds64`__
+First we obtain the __RISC-V Disassembly__ of our NuttX Image, bundled with the Hello Rust App. We trace the NuttX Build: __`make V=1`__
 
 ```bash
 make distclean
@@ -1425,7 +1437,7 @@ make V=1
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/b8f051c25e872fb8a444559c3dbf6374)
 
-According to the __`make V=1`__ trace: __NuttX Build__ does this...
+According to the Make Trace: __NuttX Build__ does this...
 
 <span style="font-size:80%">
 
@@ -1483,7 +1495,7 @@ riscv-none-elf-ld \
 
 </span>
 
-Ah NuttX Build calls __cargo build --release__, stripping the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
+Ah NuttX Build calls __cargo build `--`release__, stripping the Debug Symbols. We change it to __cargo build__ and dump the RISC-V Disassembly...
 
 <span style="font-size:80%">
 
