@@ -573,6 +573,8 @@ Hmmm we're still pondering. __Rustix is newer__ (pic above), but it's also __mor
 
 ![Nix vs Rustix: Lines of Code](https://lupyuen.github.io/images/rust7-loc.png)
 
+[(__Rustix on NuttX:__ Will it run? Nope not yet)](https://lupyuen.github.io/articles/rust7#appendix-porting-rustix-to-nuttx)
+
 [(__Rust Embedded HAL__ might be a bad fit)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-vs-rust-embedded-hal)
 
 # What's Next
