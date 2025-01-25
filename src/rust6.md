@@ -546,6 +546,8 @@ Earlier I [wrote this](https://lupyuen.github.io/articles/rust6#handle-errors-sa
 
 __Update:__ We're reassessing Rustix for NuttX. Simpler is swell but we'll run into problems with I/O Safety sigh. Check out the new article...
 
+- [__"Rust Standard Library on Apache NuttX RTOS"__](https://lupyuen.org/articles/rust7.html)
+
 ![Testing Rust Blinky on QEMU Emulator](https://lupyuen.github.io/images/rust6-qemu.jpg)
 
 # Appendix: Daily Test of Rust Blinky
