@@ -972,8 +972,40 @@ tar cvf /tmp/prometheus.tar \
   Cellar/prometheus
 ```
 
-If we wish to allow __Web Crawlers__ to index our server...
+If we wish to allow __Web Crawlers__ to index our __Grafana Server__...
 
-- Edit _/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt_
-- Change __`Disallow: /`__
-- To __`Disallow:`__
+1.  Edit _/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt_
+
+1.  Change...
+
+    ```bash
+    Disallow: /
+    ```
+
+1.  To...
+
+    ```bash
+    Disallow:
+    ```
+
+Sometimes it's helpful to allow __Prometheus Server__ to be accessed by the __Local Network__, instead of LocalHost only...
+
+1.  Edit _/opt/homebrew/etc/prometheus.args_
+
+1.  Change...
+
+    ```bash
+    --web.listen-address=127.0.0.1:9090
+    ```
+
+    To...
+
+    ```bash
+    --web.listen-address=0.0.0.0:9090
+    ```
+
+1.  Restart Prometheus...
+
+    ```bash
+    brew services restart prometheus
+    ```
