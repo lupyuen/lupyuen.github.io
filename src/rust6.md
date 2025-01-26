@@ -812,6 +812,8 @@ Yeah OSTest for __64-bit QEMU RISC-V__ fails on GitHub Actions, wonder why...
 
   _"ostest_main: Started user_main"_
 
+  [(__Update:__ It's a Docker Problem, not GitHub Actions)](https://gist.github.com/lupyuen/9d9fe108e8aaf387fcc390c57717cf81)
+
   [(GitHub Actions Workflow)](https://github.com/lupyuen/nuttx-riscv64/blob/main/.github/workflows/qemu-riscv-knsh64.yml#L2)
 
   [(About __Flat Build__ vs __Kernel Build__)](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
