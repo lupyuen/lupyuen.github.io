@@ -898,12 +898,32 @@ tar cvf /tmp/prometheus.tar \
   var/prometheus \
   var/log/prometheus.* \
   Cellar/prometheus</code></pre></div>
-<p>If we wish to allow <strong>Web Crawlers</strong> to index our server…</p>
-<ul>
-<li>Edit <em>/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt</em></li>
-<li>Change <strong><code>Disallow: /</code></strong></li>
-<li>To <strong><code>Disallow:</code></strong></li>
-</ul>
+<p>If we wish to allow <strong>Web Crawlers</strong> to index our <strong>Grafana Server</strong>…</p>
+<ol>
+<li>
+<p>Edit <em>/opt/homebrew/Cellar/grafana/*/share/grafana/public/robots.txt</em></p>
+</li>
+<li>
+<p>Change…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Disallow: /</code></pre></div></li>
+<li>
+<p>To…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Disallow:</code></pre></div></li>
+</ol>
+<p>Sometimes it’s helpful to allow <strong>Prometheus Server</strong> to be accessed by the <strong>Local Network</strong>, instead of LocalHost only…</p>
+<ol>
+<li>
+<p>Edit <em>/opt/homebrew/etc/prometheus.args</em></p>
+</li>
+<li>
+<p>Change…</p>
+<div class="example-wrap"><pre class="language-bash"><code>--web.listen-address=127.0.0.1:9090</code></pre></div>
+<p>To…</p>
+<div class="example-wrap"><pre class="language-bash"><code>--web.listen-address=0.0.0.0:9090</code></pre></div></li>
+<li>
+<p>Restart Prometheus…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew services restart prometheus</code></pre></div></li>
+</ol>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
