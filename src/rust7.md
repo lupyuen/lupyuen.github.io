@@ -635,6 +635,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Follow these steps to build __NuttX bundled with Rust Standard Library__...
 
+[(Based on the __Official Doc__)](https://nuttx.apache.org/docs/latest/guides/rust.html)
+
 [(Remember to install __RISC-V Toolchain__ and __RISC-V QEMU__)](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html)
 
 ```bash
