@@ -602,6 +602,10 @@ Yes indeed, Rust Apps will run hunky dory on a __64-bit RISC-V SBC__. Like __Ox6
 
 - We'll see more Rust Apps on RISC-V, for [__Google Summer of Code__](https://summerofcode.withgoogle.com/programs/2024/projects/6XD00y5S)!
 
+Check out the new article...
+
+- [__"Rust Standard Library on Apache NuttX RTOS"__](https://lupyuen.org/articles/rust7.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

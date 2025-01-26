@@ -471,6 +471,10 @@ These are the __Early Days of Rust Apps__ on Apache NuttX RTOS. We talked about.
 
   (With our __Updated Docker Image__ for Continuous Integration)
 
+Check out the next article...
+
+- [__"Rust Standard Library on Apache NuttX RTOS"__](https://lupyuen.org/articles/rust7.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 Special Thanks to __Mr Rushabh Gala__: Sorry it’s my first GSoC, I could have done better, I'm grateful for your patience and understanding 🙏

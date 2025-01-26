@@ -717,6 +717,8 @@ Check out the next article...
 
 - [__"Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rust4)
 
+- [__"Rust Standard Library on Apache NuttX RTOS"__](https://lupyuen.org/articles/rust7.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

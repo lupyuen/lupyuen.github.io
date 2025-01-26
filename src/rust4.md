@@ -704,6 +704,10 @@ Today we learnt a bit more about __C-to-Rust Interop__ (pic above)...
 
   (Runs perfectly on QEMU Emulator for RISC-V)
 
+Check out the new article...
+
+- [__"Rust Standard Library on Apache NuttX RTOS"__](https://lupyuen.org/articles/rust7.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
