@@ -9,7 +9,7 @@ TODO
 # TODO
 
 ```text
-./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
+. ../gitlab-token.sh && glab auth status && ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
 
 30 mins for 7 rewinds
 
