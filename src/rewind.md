@@ -23,6 +23,27 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+https://github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
+    #[tokio::test]
+    async fn associated_pull_requests_serializes_correctly() {
+        use super::PullRequestTarget;
+
+        let octocrab = crate::Octocrab::default();
+        let handler = octocrab.commits("owner", "repo");
+        let associated_prs =
+            handler.associated_pull_requests(PullRequestTarget::Sha("commit_sha".to_string()));
+
+        assert_eq!(
+            serde_json::to_value(associated_prs).unwrap(),
+            serde_json::json!({
+                "target": "commit_sha"
+            })
+        );
+    }
+
+List pull requests associated with a commit
+https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit
+
 Sort by Log Timestamp
 
 Add Log Timestamp
