@@ -12,7 +12,7 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](TODO)... Can we __Auto-R
 
 1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](TODO), that includes the (suspicious) __Pull Request__
 
-1.  And maybe draft a [__Polite Note__](TODO) for our NuttX Dev to investigate, please
+1.  Bonus: The Machine will draft a [__Polite Note__](TODO) for our NuttX Colleague to investigate, please
 
 TODO
 
