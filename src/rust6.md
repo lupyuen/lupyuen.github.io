@@ -501,7 +501,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: NuttX vs Rust Embedded HAL
 
-[(__Update:__ NuttX now supports __Cargo__ and __Tokio__!)](https://github.com/apache/nuttx-apps/pull/2487)
+[(__Update:__ NuttX now supports __Cargo__ and __Tokio__!)](https://lupyuen.org/articles/rust7.html)
 
 _Shall we implement Rust Embedded HAL on NuttX?_
 
