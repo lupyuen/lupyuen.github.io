@@ -530,7 +530,8 @@ Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/
 
 | Field | Value |
 |:------|:------|
-| __timestamp__ | Timestamp _(2024-12-06T06:14:54)_
+| __timestamp__ | Timestamp of Build _(2024-12-06T06:14:54)_
+| __timestamp_log__ | Timestamp of Log File
 | __version__ | Always 3
 | __user__ | Which Build PC _(nuttxmacos)_
 | __arch__ | Architecture _(risc-v)_

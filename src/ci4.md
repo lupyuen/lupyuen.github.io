@@ -305,6 +305,7 @@ Oh yes we have a long list of fields describing __Every Build Score__...
 | Field | Value |
 |:------|:------|
 | __version__ | Always 3
+| __timestamp_log__ | Timestamp of Log File
 | __user__ | Which Build PC _(nuttxmacos)_
 | __arch__ | Architecture _(risc-v)_
 | __group__ | Target Group _(risc-v-01)_
