@@ -19,6 +19,9 @@ TODO
 # TODO
 
 ```text
+Sort: Timestamp + NuttX Hash
+TODO: Add timestamp_log (from Snippet)
+
 Parse OSTest correctly
 https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
 
