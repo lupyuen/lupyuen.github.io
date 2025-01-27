@@ -23,6 +23,12 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+Search for
+***** BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ 657247bda89d60112d79bb9b8d223eca5f9641b5 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+***** Build / Test OK for Previous Commit: nuttx @ be40c01ddd6f43a527abeae31042ba7978aabb58 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+***** BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ 48846954d8506e1c95089a8654787fdc42cc098c / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799243#L1629
+
 https://github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
     #[tokio::test]
     async fn associated_pull_requests_serializes_correctly() {
