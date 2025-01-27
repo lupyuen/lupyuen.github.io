@@ -86,7 +86,28 @@
 <p><em>Why are we doing this?</em></p>
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Sort by Log Timestamp
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
+    #[tokio::test]
+    async fn associated_pull_requests_serializes_correctly() {
+        use super::PullRequestTarget;
+
+        let octocrab = crate::Octocrab::default();
+        let handler = octocrab.commits(&quot;owner&quot;, &quot;repo&quot;);
+        let associated_prs =
+            handler.associated_pull_requests(PullRequestTarget::Sha(&quot;commit_sha&quot;.to_string()));
+
+        assert_eq!(
+            serde_json::to_value(associated_prs).unwrap(),
+            serde_json::json!({
+                &quot;target&quot;: &quot;commit_sha&quot;
+            })
+        );
+    }
+
+List pull requests associated with a commit
+https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit
+
+Sort by Log Timestamp
 
 Add Log Timestamp
 https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
