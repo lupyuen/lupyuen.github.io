@@ -18,7 +18,7 @@ _Why are we doing this?_
 
 __If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
 
-Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs.
+Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
 # TODO
 
