@@ -74,17 +74,22 @@
 <p>Every Day at 00:00 UTC: <a href="TODO"><strong>Ubuntu Cron</strong></a> shall trigger a <strong>Daily Buld and Test</strong> of NuttX for <strong>QEMU RISC-V</strong> (knsh64 / 64-bit Kernel Build)</p>
 </li>
 <li>
-<p><strong>If The Test Fails:</strong> Our Machine will <a href="TODO"><strong>Backtrack The Commits</strong></a>, rebuilding and retesting each one</p>
+<p><strong>If The Test Fails:</strong> Our Machine will <a href="TODO"><strong>Backtrack The Commits</strong></a>, rebuilding and retesting each commit</p>
 </li>
 <li>
 <p>When it discovers the <strong>Breaking Commit</strong>: Our Machine shall post a <a href="TODO"><strong>Mastodon Alert</strong></a>, that includes the (suspicious) <strong>Pull Request</strong></p>
 </li>
 <li>
-<p>Bonus: The Machine will draft a <a href="TODO"><strong>Polite Note</strong></a> for our NuttX Colleague to investigate, please</p>
+<p>Bonus: The Machine will draft a <a href="TODO"><strong>Polite Note</strong></a> for our NuttX Colleague to investigate the Pull Request, please</p>
 </li>
 </ol>
-<p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Sort: Timestamp + NuttX Hash
+<p><em>Why are we doing this?</em></p>
+<p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
+<p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V SBC Devs.</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Add Log Timestamp
+https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
+
+Sort: Timestamp + NuttX Hash
 TODO: Add timestamp_log (from Snippet)
 
 Parse OSTest correctly
