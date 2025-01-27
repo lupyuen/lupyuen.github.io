@@ -8,17 +8,24 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](TODO)... Can we __Auto-R
 
 1.  Every Day at 00:00 UTC: [__Ubuntu Cron__](TODO) shall trigger a __Daily Buld and Test__ of NuttX for __QEMU RISC-V__ (knsh64 / 64-bit Kernel Build)
 
-1.  __If The Test Fails:__ Our Machine will [__Backtrack The Commits__](TODO), rebuilding and retesting each one
+1.  __If The Test Fails:__ Our Machine will [__Backtrack The Commits__](TODO), rebuilding and retesting each commit
 
 1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](TODO), that includes the (suspicious) __Pull Request__
 
-1.  Bonus: The Machine will draft a [__Polite Note__](TODO) for our NuttX Colleague to investigate, please
+1.  Bonus: The Machine will draft a [__Polite Note__](TODO) for our NuttX Colleague to investigate the Pull Request, please
 
-TODO
+_Why are we doing this?_
+
+__If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
+
+Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V SBC Devs.
 
 # TODO
 
 ```text
+Add Log Timestamp
+https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
+
 Sort: Timestamp + NuttX Hash
 TODO: Add timestamp_log (from Snippet)
 
