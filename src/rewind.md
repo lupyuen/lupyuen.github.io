@@ -1,4 +1,4 @@
-# Auto-Rewind (and Be Kind) for Apache NuttX RTOS
+# Auto-Rewind for Daily Test (Apache NuttX RTOS)
 
 📝 _26 Feb 2025_
 
