@@ -4,6 +4,16 @@
 
 ![TODO](https://lupyuen.github.io/images/rewind-title.jpg)
 
+If the __Daily Test__ fails for [__Apache NuttX RTOS__](TODO)... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's find out!
+
+1.  Every Day at 00:00 UTC: [__Ubuntu Cron__](TODO) shall trigger a __Daily Buld and Test__ of NuttX for __QEMU RISC-V__ (knsh64 / 64-bit Kernel Build)
+
+1.  __If The Test Fails:__ Our Machine will [__Backtrack The Commits__](TODO), rebuilding and retesting each one
+
+1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](TODO), that includes the (suspicious) __Pull Request__
+
+1.  And maybe draft a [__Polite Note__](TODO) for our NuttX Dev to investigate, please
+
 TODO
 
 # TODO
