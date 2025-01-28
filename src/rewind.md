@@ -23,6 +23,15 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+nuttx_hash_next
+nuttx_hash_prev
+
+apps_hash_next
+apps_prev_next
+
+build_score_next
+build_score_prev
+
 Query prometheus for today's builds by rewind
 Sort by timestamp_log
 
