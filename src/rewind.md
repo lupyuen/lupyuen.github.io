@@ -32,6 +32,17 @@ apps_prev_next
 build_score_next
 build_score_prev
 
+if group == "unknown"
+Search for
+"build / test failed" vs "build / test ok"
+"this commit" vs "previous commit" vs "next commit"
+
+extract nuttx hash
+extract apps hash
+
+if failed: build_score=0
+if successful: build_score=1
+
 Query prometheus for today's builds by rewind
 Sort by timestamp_log
 
