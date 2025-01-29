@@ -185,7 +185,6 @@ https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-
 commit=be40c01ddd6f43a527abeae31042ba7978aabb58
 curl -L \
   -H &quot;Accept: application/vnd.github+json&quot; \
-  -H &quot;Authorization: Bearer $GITHUB_TOKEN&quot; \
   -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
   https://api.github.com/repos/apache/nuttx/commits/$commit/pulls
 
@@ -623,48 +622,47 @@ extract apps hash
 if failed: build_score=0
 if successful: build_score=1</code></pre></div>
 <p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Query prometheus <span class="kw">for </span>today<span class="lifetime">'s </span>builds by rewind
+<div class="example-wrap"><pre class="language-text"><code>Query prometheus for today&#39;s builds by rewind
 Sort by timestamp_log
 
-Search <span class="kw">for
-</span><span class="kw-2">****</span>* BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ <span class="number">657247bda89d60112d79bb9b8d223eca5f9641b5 </span>/ nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-<span class="kw-2">****</span>* Build / Test OK <span class="kw">for </span>Previous Commit: nuttx @ be40c01ddd6f43a527abeae31042ba7978aabb58 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-<span class="kw-2">****</span>* BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ <span class="number">48846954d8506e1c95089a8654787fdc42cc098c </span>/ nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-https:<span class="comment">//gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799243#L1629
+Search for
+***** BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ 657247bda89d60112d79bb9b8d223eca5f9641b5 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+***** Build / Test OK for Previous Commit: nuttx @ be40c01ddd6f43a527abeae31042ba7978aabb58 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+***** BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ 48846954d8506e1c95089a8654787fdc42cc098c / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799243#L1629
 
-</span>https:<span class="comment">//github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
-    </span><span class="attr">#[tokio::test]
-    </span><span class="kw">async fn </span>associated_pull_requests_serializes_correctly() {
-        <span class="kw">use </span><span class="kw">super</span>::PullRequestTarget;
+https://github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
+    #[tokio::test]
+    async fn associated_pull_requests_serializes_correctly() {
+        use super::PullRequestTarget;
 
-        <span class="kw">let </span>octocrab = <span class="kw">crate</span>::Octocrab::default();
-        <span class="kw">let </span>handler = octocrab.commits(<span class="string">"owner"</span>, <span class="string">"repo"</span>);
-        <span class="kw">let </span>associated_prs =
-            handler.associated_pull_requests(PullRequestTarget::Sha(<span class="string">"commit_sha"</span>.to_string()));
+        let octocrab = crate::Octocrab::default();
+        let handler = octocrab.commits(&quot;owner&quot;, &quot;repo&quot;);
+        let associated_prs =
+            handler.associated_pull_requests(PullRequestTarget::Sha(&quot;commit_sha&quot;.to_string()));
 
-        <span class="macro">assert_eq!</span>(
+        assert_eq!(
             serde_json::to_value(associated_prs).unwrap(),
-            <span class="macro">serde_json::json!</span>({
-                <span class="string">"target"</span>: <span class="string">"commit_sha"
-            </span>})
+            serde_json::json!({
+                &quot;target&quot;: &quot;commit_sha&quot;
+            })
         );
     }
 
 Sort by Log Timestamp
 
 Add Log Timestamp
-https:<span class="comment">//github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
+https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
 
-</span>Sort: Timestamp + NuttX Hash
+Sort: Timestamp + NuttX Hash
 TODO: Add timestamp_log (from Snippet)
 
 Parse OSTest correctly
-https:<span class="comment">//github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
+https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
 
-</span>. ../gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
+. ../gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
 
-<span class="number">30 </span>mins <span class="kw">for </span><span class="number">7 </span>rewinds
+30 mins for 7 rewinds
 
 build-test
 If fail
@@ -681,37 +679,36 @@ Uname
 Last few lines
 
 TODO: daily cron
-https:<span class="comment">//help.ubuntu.com/community/CronHowto
+https://help.ubuntu.com/community/CronHowto
 
-</span>TODO: Get hashes from Prometheus 
+TODO: Get hashes from Prometheus 
 
-https:<span class="comment">//github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
-</span>NuttX Source: https:<span class="comment">//github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
-</span>NuttX Apps: https:<span class="comment">//github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
+NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
 
-</span>https:<span class="comment">//github.com/apache/nuttx/pull/15444#issuecomment-2585595498
-</span>Sorry @yf13: This PR is causing <span class="string">"Instruction page fault" </span><span class="kw">for </span>rv-virt:knsh64. Wonder <span class="kw">if </span>there<span class="lifetime">'s </span>something I missed <span class="kw">in </span>my testing steps<span class="question-mark">? </span><span class="macro">Thanks!</span>
+https://github.com/apache/nuttx/pull/15444#issuecomment-2585595498
+Sorry @yf13: This PR is causing &quot;Instruction page fault&quot; for rv-virt:knsh64. Wonder if there&#39;s something I missed in my testing steps? Thanks!
 
-https:<span class="comment">//gist.github.com/lupyuen/60d54514ce9a8589b56ed6207c356d95#file-special-qemu-riscv-knsh64-log-L1396
-</span>+ git reset --hard <span class="number">657247bda89d60112d79bb9b8d223eca5f9641b5
-</span>HEAD is now at <span class="number">657247bda8 </span>libc/modlib: preprocess gnu-elf.ld
-NuttX Source: https:<span class="comment">//github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-</span>NuttX Apps: https:<span class="comment">//github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-</span>+ tools/configure.sh rv-virt:knsh64
+https://gist.github.com/lupyuen/60d54514ce9a8589b56ed6207c356d95#file-special-qemu-riscv-knsh64-log-L1396
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
++ tools/configure.sh rv-virt:knsh64
 + make -j
 + make export
 + pushd ../apps
-+ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-<span class="number">12.8</span>.<span class="number">0</span>.tar.gz
++ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
 + make import
 + popd
 + qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-QEMU emulator version <span class="number">9.2</span>.<span class="number">0
-</span>OpenSBI v1.<span class="number">5.1
-</span>ABC
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: <span class="number">000000000000000c</span>, EPC: <span class="number">000000018000001a</span>, MTVAL: <span class="number">000000018000001a
-</span>riscv_exception: Segmentation fault <span class="kw">in </span>PID <span class="number">2</span>: /system/bin/init
-(Earlier Commit is OK)</code></pre></div>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+QEMU emulator version 9.2.0
+OpenSBI v1.5.1
+ABC
+riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+riscv_exception: Segmentation fault in PID 2: /system/bin/init
+(Earlier Commit is OK)</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
