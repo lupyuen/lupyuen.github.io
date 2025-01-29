@@ -23,6 +23,18 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+build_score{
+target="rv-virt:knsh64_test5",
+build_score_prev="1"
+} == 0
+
+Get nuttx_hash_prev
+"be40c01ddd6f43a527abeae31042ba7978aabb58"
+```
+
+TODO
+
+```text
 nuttx_hash_next
 nuttx_hash_prev
 
@@ -42,7 +54,11 @@ extract apps hash
 
 if failed: build_score=0
 if successful: build_score=1
+```
 
+TODO
+
+```
 Query prometheus for today's builds by rewind
 Sort by timestamp_log
 
