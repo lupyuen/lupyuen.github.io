@@ -86,7 +86,88 @@
 <p><em>Why are we doing this?</em></p>
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Get Log</code></pre></div>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Get Log
+
+build_score{
+target=&quot;rv-virt:knsh64_test5&quot;,
+build_score_prev=&quot;1&quot;
+} == 0
+
+Breaking Commit:
+nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;
+
+build_score{
+target=&quot;rv-virt:knsh64_test5&quot;,
+nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;
+}
+
+url=&quot;https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L85&quot;
+
+Starting at Line 85: Search for lines starting with &quot;+ &quot; or &quot;spawn&quot;
+
+wget https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962/raw/main/ci-unknown.log
+grep &quot;^+ &quot; ci-unknown.log
+
+&lt;&lt;
++ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 657247bda89d60112d79bb9b8d223eca5f9641b5 a6b9e718460a56722205c2a84a9b07b94ca664aa
++ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
++ apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa
++ neofetch
++ tmp_path=/tmp/build-test-knsh64
++ rm -rf /tmp/build-test-knsh64
++ mkdir /tmp/build-test-knsh64
++ cd /tmp/build-test-knsh64
++ git clone https://github.com/apache/nuttx
++ git clone https://github.com/apache/nuttx-apps apps
++ [[ 657247bda89d60112d79bb9b8d223eca5f9641b5 != &#39;&#39; ]]
++ pushd nuttx
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
++ popd
++ [[ a6b9e718460a56722205c2a84a9b07b94ca664aa != &#39;&#39; ]]
++ pushd apps
++ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
++ popd
++ set +x
++ riscv-none-elf-gcc -v
++ rustup --version
++ rustc --version
++ cd nuttx
++ tools/configure.sh rv-virt:knsh64
++ make -j
++ riscv-none-elf-size nuttx
++ make -j export
++ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
++ make -j import
++ popd
++ qemu-system-riscv64 --version
++ script=qemu-riscv-knsh64
++ wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
+spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
++ expect ./qemu-riscv-knsh64.exp
+&gt;&gt;
+
+Include Commit Info
+&lt;&lt;
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+&gt;&gt;
+
+Include QEMU and OpenSBI version
+&lt;&lt;
++ qemu-system-riscv64 --version
+QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
+
++ expect ./qemu-riscv-knsh64.exp
+spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+
+OpenSBI v1.3
+&gt;&gt;
+
+Search for lines starting with &quot;===== Error: Test Failed&quot;
+Backtrack last 10 lines
+</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Breaking PR
 
