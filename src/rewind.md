@@ -24,6 +24,87 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 
 ```text
 Get Log
+
+build_score{
+target="rv-virt:knsh64_test5",
+build_score_prev="1"
+} == 0
+
+Breaking Commit:
+nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5"
+
+build_score{
+target="rv-virt:knsh64_test5",
+nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5"
+}
+
+url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L85"
+
+Starting at Line 85: Search for lines starting with "+ " or "spawn"
+
+wget https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962/raw/main/ci-unknown.log
+grep "^+ " ci-unknown.log
+
+<<
++ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 657247bda89d60112d79bb9b8d223eca5f9641b5 a6b9e718460a56722205c2a84a9b07b94ca664aa
++ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
++ apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa
++ neofetch
++ tmp_path=/tmp/build-test-knsh64
++ rm -rf /tmp/build-test-knsh64
++ mkdir /tmp/build-test-knsh64
++ cd /tmp/build-test-knsh64
++ git clone https://github.com/apache/nuttx
++ git clone https://github.com/apache/nuttx-apps apps
++ [[ 657247bda89d60112d79bb9b8d223eca5f9641b5 != '' ]]
++ pushd nuttx
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
++ popd
++ [[ a6b9e718460a56722205c2a84a9b07b94ca664aa != '' ]]
++ pushd apps
++ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
++ popd
++ set +x
++ riscv-none-elf-gcc -v
++ rustup --version
++ rustc --version
++ cd nuttx
++ tools/configure.sh rv-virt:knsh64
++ make -j
++ riscv-none-elf-size nuttx
++ make -j export
++ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
++ make -j import
++ popd
++ qemu-system-riscv64 --version
++ script=qemu-riscv-knsh64
++ wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
+spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
++ expect ./qemu-riscv-knsh64.exp
+>>
+
+Include Commit Info
+<<
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+>>
+
+Include QEMU and OpenSBI version
+<<
++ qemu-system-riscv64 --version
+QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
+
++ expect ./qemu-riscv-knsh64.exp
+spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+
+OpenSBI v1.3
+>>
+
+Search for lines starting with "===== Error: Test Failed"
+Backtrack last 10 lines
+
 ```
 
 TODO
