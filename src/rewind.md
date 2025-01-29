@@ -126,7 +126,6 @@ https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-
 commit=be40c01ddd6f43a527abeae31042ba7978aabb58
 curl -L \
   -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/apache/nuttx/commits/$commit/pulls
 
@@ -575,7 +574,7 @@ if successful: build_score=1
 
 TODO
 
-```
+```text
 Query prometheus for today's builds by rewind
 Sort by timestamp_log
 
