@@ -102,7 +102,15 @@ spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx
 OpenSBI v1.3
 >>
 
-Search for lines starting with "===== Error: Test Failed"
+Extract Log from Line Number till "===== "
+Extract 5 lines:
+"+ git reset "
+"NuttX Source: "
+"NuttX Apps: "
+"+ qemu"
+"+ expect ./qemu"
+
+Search for lines starting with "===== Error: Test Failed" or "===== Test OK"
 Backtrack last 10 lines
 
 ```
