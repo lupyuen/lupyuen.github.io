@@ -23,6 +23,12 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+Get Log
+```
+
+TODO
+
+```text
 Get Breaking PR
 
 List pull requests associated with a commit
