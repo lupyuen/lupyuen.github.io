@@ -184,16 +184,17 @@ docker cp lupyuen:/usr/local/apache2/logs/access_log .
 ## Render the logs with GoAccess
 ## GeoLite2 Databse form http://dev.maxmind.com/geoip/geoip2/geolite2/
 brew install goaccess
-tar xvf GeoLite2-City_*.tar.gz
-tar xvf GeoLite2-Country_*.tar.gz
+cd /tmp
+tar xvf ~/Downloads/GeoLite2-City_*.tar.gz
+tar xvf ~/Downloads/GeoLite2-Country_*.tar.gz
 cp GeoLite2-City_*/*.mmdb .
 cp GeoLite2-Country_*/*.mmdb .
 docker cp lupyuen:/usr/local/apache2/logs/access_log .
 function run { for (( ;; )); do; goaccess access_log -o report.html --log-format=COMBINED --real-time-html --geoip-database=GeoLite2-City.mmdb ; date; sleep 10; done; } ; run &
 open report.html
-for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
+cd /tmp ; for (( ;; )); do; docker cp lupyuen:/usr/local/apache2/logs/access_log .; date; sleep 10; done;
 ## Somehow GoAccess needs to be restarted once in a while
-for (( ; ; )); do ; pkill -9 goaccess ; date ; sleep 60 ; done
+cd /tmp ; for (( ; ; )); do ; pkill -9 goaccess ; date ; sleep 60 ; done
 
 ## Update the Canonical Header
 ## <link rel="canonical" href="https://lupyuen.org/articles/TODO.html" />
