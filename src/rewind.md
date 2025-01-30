@@ -25,6 +25,9 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 ```text
 Cron Job
 
+If Hash=HEAD:
+Convert to Commit ID
+
 build_score{
     config!="leds64_zig",
     user!="nuttxlinux",
