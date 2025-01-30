@@ -52,6 +52,8 @@ curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" 
   --header 'Content-Type: application/json' \
   --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   -d @snippet.json
+
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488
 ```
 
 TODO
