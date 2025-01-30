@@ -23,6 +23,31 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+Cron Job
+
+build_score{
+    config!="leds64_zig",
+    user!="nuttxlinux",
+    user!="nuttxmacos",
+    user!="jerpelea"
+} < 0.5
+
+```
+
+TODO
+
+```text
+Delete Snippet
+https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
+
+curl --request DELETE \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --url "https://gitlab.example.com/api/v4/snippets/1"
+```
+
+TODO
+
+```text
 Create Snippet
 https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
 
