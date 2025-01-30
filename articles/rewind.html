@@ -86,7 +86,24 @@
 <p><em>Why are we doing this?</em></p>
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Create Snippet
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Cron Job
+
+build_score{
+    config!=&quot;leds64_zig&quot;,
+    user!=&quot;nuttxlinux&quot;,
+    user!=&quot;nuttxmacos&quot;,
+    user!=&quot;jerpelea&quot;
+} &lt; 0.5
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Delete Snippet
+https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
+
+curl --request DELETE \
+  --header &quot;PRIVATE-TOKEN: &lt;your_access_token&gt;&quot; \
+  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Create Snippet
 https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
 
 snippet.json
