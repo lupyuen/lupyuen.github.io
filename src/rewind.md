@@ -23,6 +23,40 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+Create Snippet
+https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
+
+snippet.json
+<<
+{
+  "title": "This is a snippet",
+  "description": "Hello World snippet",
+  "visibility": "public",
+  "files": [
+    {
+      "content": "Hello world",
+      "file_path": "test.txt"
+    }
+  ]
+}
+>>
+
+. $HOME/gitlab-token.sh
+user=lupyuen
+repo=nuttx-build-log
+curl --url https://gitlab.com/api/v4/projects/$user%2F$repo/snippets \
+  --header 'Content-Type: application/json' \
+  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+
+curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" \
+  --header 'Content-Type: application/json' \
+  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+  -d @snippet.json
+```
+
+TODO
+
+```text
 Get Log
 
 build_score{
