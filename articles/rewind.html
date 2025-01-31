@@ -93,18 +93,46 @@ https://help.ubuntu.com/community/CronHowto
 crontab -e
 
 ## Run every day at 00:00 UTC
-0 0 * * * /home/luppy/nuttx-build-farm/cron.sh
+0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build
 
 ## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-build-farm/cron.sh
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build
 
 tail -f /var/log/syslog
 &lt;&lt;
 2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
 2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
 2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
-2025-01-31T15:16:01.693463+08:00 thinkstation CRON[3015035]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh)
+
+2025-01-31T17:13:01.834380+08:00 thinkstation CRON[1234832]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build)
+2025-01-31T17:13:01.834657+08:00 thinkstation nuttx-rewind-build: + target=rv-virt:knsh64_test8
+2025-01-31T17:13:01.834800+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=HEAD
+2025-01-31T17:13:01.834869+08:00 thinkstation nuttx-rewind-build: + apps_hash=HEAD
+2025-01-31T17:13:01.834924+08:00 thinkstation nuttx-rewind-build: + min_commits=1
+2025-01-31T17:13:01.834982+08:00 thinkstation nuttx-rewind-build: + max_commits=20
+2025-01-31T17:13:01.835036+08:00 thinkstation nuttx-rewind-build: + script_path=/home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835093+08:00 thinkstation nuttx-rewind-build: +++ dirname -- /home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835145+08:00 thinkstation nuttx-rewind-build: ++ cd -P /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835197+08:00 thinkstation nuttx-rewind-build: ++ pwd
+2025-01-31T17:13:01.835249+08:00 thinkstation nuttx-rewind-build: + script_dir=/home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835301+08:00 thinkstation nuttx-rewind-build: + cd /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835359+08:00 thinkstation nuttx-rewind-build: + ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+2025-01-31T17:13:01.835415+08:00 thinkstation nuttx-rewind-build: Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
 ...
+2025-01-31T17:17:56.123175+08:00 thinkstation nuttx-rewind-build: - Creating snippet in lupyuen/nuttx-build-log
+2025-01-31T17:17:57.586891+08:00 thinkstation nuttx-rewind-build: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
+2025-01-31T17:17:57.591633+08:00 thinkstation nuttx-rewind-build: + next_hash=4606f1f9e1e897ce508f9dcadcc57dea979041b5
+2025-01-31T17:17:57.591815+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=11a47a4b0c3b4c371578bc3e578b2088dffbb678
+2025-01-31T17:17:57.591922+08:00 thinkstation nuttx-rewind-build: + timestamp=2025-01-31T04:53:36
+2025-01-31T17:17:57.592019+08:00 thinkstation nuttx-rewind-build: + (( count++ ))
+2025-01-31T17:17:57.592118+08:00 thinkstation nuttx-rewind-build: + [[ 1 == \1 ]]
+2025-01-31T17:17:57.592208+08:00 thinkstation nuttx-rewind-build: + break
+2025-01-31T17:17:57.592298+08:00 thinkstation nuttx-rewind-build: + set +x
+2025-01-31T17:17:57.592406+08:00 thinkstation nuttx-rewind-build: ***** Done!
+&gt;&gt;
+
+Without logger:
+&lt;&lt;
 2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
 &gt;&gt;
 
