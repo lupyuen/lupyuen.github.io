@@ -23,6 +23,18 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 # TODO
 
 ```text
+nuttx-rewind-notify
+
+export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+./run.sh",
+
+cron:
+
+```
+
+TODO
+
+```text
 Cron Job
 https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
