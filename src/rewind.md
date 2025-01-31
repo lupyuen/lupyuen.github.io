@@ -730,7 +730,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init
 
 # What's Next
 
-TODO
+TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?
 
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years.
 
