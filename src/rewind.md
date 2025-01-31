@@ -41,6 +41,8 @@ tail -f /var/log/syslog
 2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
 2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
 2025-01-31T15:16:01.693463+08:00 thinkstation CRON[3015035]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh)
+...
+2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
 >>
 
 ls -l /tmp
@@ -49,7 +51,31 @@ drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
 
 tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
 <<
+Final memory usage:
+VARIABLE  BEFORE   AFTER
+======== ======== ========
+arena       81000    81000
+ordblks         2        3
+mxordblk    7cff8    78ff8
+uordblks     2660     4570
+fordblks    7e9a0    7ca90
+user_main: Exiting
+ostest_main: Exiting with status 0
 
+===== Test OK
+
++ res=0
++ set -e
++ set +x
+res=0
+====================================================================================
++ echo res=0
+res=0
++ [[ 0 != \0 ]]
++ echo '***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4'
+***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4
++ [[ 4606f1f9e1e897ce508f9dcadcc57dea979041b5 != \4\6\0\6\f\1\f\9\e\1\e\8\9\7\c\e\5\0\8\f\9\d\c\a\d\c\c\5\7\d\e\a\9\7\9\0\4\1\b\5 ]]
++ df -H
 >>
 
 Check the snippets
