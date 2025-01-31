@@ -87,8 +87,38 @@
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Cron Job
+https://help.ubuntu.com/community/CronHowto
+. $HOME/gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; cd $HOME/nuttx-build-farm &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
 
-If Hash=HEAD:
+crontab -e
+
+## Run every day at 00:00 UTC
+0 0 * * * /home/luppy/nuttx-build-farm/cron.sh
+
+## Run every hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh
+
+tail -f /var/log/syslog
+&lt;&lt;
+2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
+2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
+2025-01-31T15:16:01.693463+08:00 thinkstation CRON[3015035]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh)
+&gt;&gt;
+
+ls -l /tmp
+drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
+drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
+
+tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
+&lt;&lt;
+
+&gt;&gt;
+
+Check the snippets
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>If Hash=HEAD:
 Convert to Commit ID
 
 build_score{
