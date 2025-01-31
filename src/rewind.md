@@ -24,7 +24,41 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 
 ```text
 Cron Job
+https://help.ubuntu.com/community/CronHowto
+. $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
 
+crontab -e
+
+## Run every day at 00:00 UTC
+0 0 * * * /home/luppy/nuttx-build-farm/cron.sh
+
+## Run every hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh
+
+tail -f /var/log/syslog
+<<
+2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
+2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
+2025-01-31T15:16:01.693463+08:00 thinkstation CRON[3015035]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh)
+>>
+
+ls -l /tmp
+drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
+drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
+
+tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
+<<
+
+>>
+
+Check the snippets
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
+```
+
+TODO
+
+```text
 If Hash=HEAD:
 Convert to Commit ID
 
