@@ -86,7 +86,15 @@
 <p><em>Why are we doing this?</em></p>
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Cron Job
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
+
+export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+./run.sh&quot;,
+
+cron:
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Cron Job
 https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; cd $HOME/nuttx-build-farm &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
 
