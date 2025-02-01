@@ -35,7 +35,7 @@ cd nuttx-build-farm
 . ../gitlab-token.sh
 glab auth status
 
-## Rewind the Build for QEMU RISC-V (64-bit Kernel Build)
+## Find the Breaking Commit for QEMU RISC-V (64-bit Kernel Build)
 nuttx_hash=  ## Optional: Begin with this NuttX Hash
 apps_hash=   ## Optional: Begin with this Apps Hash
 ./rewind-build.sh \
@@ -44,27 +44,35 @@ apps_hash=   ## Optional: Begin with this Apps Hash
   $apps_hash
 ```
 
-# Rewind Build
+The Rewind Script runs __20 Iterations of Build + Test__...
 
-```text
-. ../gitlab-token.sh && glab auth status && ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
+```bash
+## Build and Test: Latest NuttX Commit
+git reset --hard HEAD
+tools/configure.sh rv-virt:knsh64
+make -j
+qemu-system-riscv64 -kernel nuttx
 
-30 mins for 7 rewinds
-
-build-test
-If fail
-Rewind-build
-Use latest hashes
-
-lookup prometheus
-Compose Mastodon message 
-Get pr, author 
-Link to build history 
-Earlier build is ok
-Run log snippet 
-Uname
-Last few lines
+## Build and Test: Previous NuttX Commit
+git reset --hard HEAD~1
+tools/configure.sh rv-virt:knsh64
+make -j
+qemu-system-riscv64 -kernel nuttx
+...
+## Build and Test: 20th NuttX Commit
+git reset --hard HEAD~20
+tools/configure.sh rv-virt:knsh64
+make -j
+qemu-system-riscv64 -kernel nuttx
 ```
+
+_Build and Test 20 times? Won't the log be awfully messy?_
+
+Ah that's why we neatly present the __20 Outcomes__ (Build + Test) into the __NuttX Build History__ (bundled with [__NuttX Dashboard__](TODO))
+
+TODO: Pic of Build History
+
+TODO: 30 mins for 7 rewinds
 
 # Get hashes from Prometheus 
 
