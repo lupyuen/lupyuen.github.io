@@ -20,6 +20,30 @@ __If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
+# Breaking Commit
+
+_How shall we find the Breaking Commit?_
+
+Our script will __Rewind the NuttX Build__ and discover the Breaking Commit...
+
+```bash
+## Download the NuttX Rewind Scripts
+git clone https://github.com/lupyuen/nuttx-build-farm
+cd nuttx-build-farm
+
+## Set the GitLab Token, check that it's OK
+. ../gitlab-token.sh
+glab auth status
+
+## Rewind the Build for QEMU RISC-V (64-bit Kernel Build)
+nuttx_hash=  ## Optional: Begin with this NuttX Hash
+apps_hash=   ## Optional: Begin with this Apps Hash
+./rewind-build.sh \
+  rv-virt:knsh64_test \
+  $nuttx_hash \
+  $apps_hash
+```
+
 # Rewind Build
 
 ```text
