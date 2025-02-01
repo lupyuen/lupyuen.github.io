@@ -1036,6 +1036,8 @@ riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EP
 riscv_exception: Segmentation fault in PID 2: /system/bin/init
 (Earlier Commit is OK)</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
+<p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
+<p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
 <p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
 <ul>
 <li>
