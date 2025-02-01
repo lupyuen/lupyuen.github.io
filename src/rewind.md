@@ -20,6 +20,61 @@ __If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
+# Rewind Build
+
+```text
+. ../gitlab-token.sh && glab auth status && ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
+
+30 mins for 7 rewinds
+
+build-test
+If fail
+Rewind-build
+Use latest hashes
+
+lookup prometheus
+Compose Mastodon message 
+Get pr, author 
+Link to build history 
+Earlier build is ok
+Run log snippet 
+Uname
+Last few lines
+```
+
+# Get hashes from Prometheus 
+
+```text
+TODO: Get hashes from Prometheus 
+
+https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
+NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+
+https://github.com/apache/nuttx/pull/15444#issuecomment-2585595498
+Sorry @yf13: This PR is causing "Instruction page fault" for rv-virt:knsh64. Wonder if there's something I missed in my testing steps? Thanks!
+
+https://gist.github.com/lupyuen/60d54514ce9a8589b56ed6207c356d95#file-special-qemu-riscv-knsh64-log-L1396
++ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
++ tools/configure.sh rv-virt:knsh64
++ make -j
++ make export
++ pushd ../apps
++ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
++ make import
++ popd
++ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+QEMU emulator version 9.2.0
+OpenSBI v1.5.1
+ABC
+riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+riscv_exception: Segmentation fault in PID 2: /system/bin/init
+(Earlier Commit is OK)
+```
+
 # Query Prometheus
 
 TODO
@@ -62,56 +117,6 @@ TODO: Add timestamp_log (from Snippet)
 
 Parse OSTest correctly
 https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
-
-. ../gitlab-token.sh && glab auth status && ./rewind-build.sh rv-virt:knsh64_test aa0aecbd80a2ce69ee33ced41b7677f8521acd43 a6b9e718460a56722205c2a84a9b07b94ca664aa
-
-30 mins for 7 rewinds
-
-build-test
-If fail
-Rewind-build
-Use latest hashes
-
-lookup prometheus
-Compose Mastodon message 
-Get pr, author 
-Link to build history 
-Earlier build is ok
-Run log snippet 
-Uname
-Last few lines
-
-TODO: daily cron
-https://help.ubuntu.com/community/CronHowto
-
-TODO: Get hashes from Prometheus 
-
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
-NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-
-https://github.com/apache/nuttx/pull/15444#issuecomment-2585595498
-Sorry @yf13: This PR is causing "Instruction page fault" for rv-virt:knsh64. Wonder if there's something I missed in my testing steps? Thanks!
-
-https://gist.github.com/lupyuen/60d54514ce9a8589b56ed6207c356d95#file-special-qemu-riscv-knsh64-log-L1396
-+ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-+ tools/configure.sh rv-virt:knsh64
-+ make -j
-+ make export
-+ pushd ../apps
-+ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
-+ make import
-+ popd
-+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-QEMU emulator version 9.2.0
-OpenSBI v1.5.1
-ABC
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init
-(Earlier Commit is OK)
 ```
 
 # Get Log
