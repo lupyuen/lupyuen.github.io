@@ -20,359 +20,6 @@ __If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
-# nuttx-rewind-notify
-
-```text
-nuttx-rewind-notify
-
-export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-./run.sh",
-
-const ALL_BUILDS_FILENAME: &str = "/tmp/nuttx-rewind-notify.json";
-
-cron:
-
-crontab -e
-
-## Run every 15 minutes
-*/15 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
-
-## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
-
-tail -f /var/log/syslog
-<<
-2025-01-31T18:29:21.853366+08:00 thinkstation crontab[3946431]: (luppy) BEGIN EDIT (luppy)
-2025-01-31T18:29:29.480578+08:00 thinkstation crontab[3946431]: (luppy) REPLACE (luppy)
-2025-01-31T18:29:29.480737+08:00 thinkstation crontab[3946431]: (luppy) END EDIT (luppy)
-2025-01-31T18:30:01.179722+08:00 thinkstation systemd[1]: Starting sysstat-collect.service - system activity accounting tool...
-2025-01-31T18:30:01.197467+08:00 thinkstation systemd[1]: sysstat-collect.service: Deactivated successfully.
-2025-01-31T18:30:01.197644+08:00 thinkstation systemd[1]: Finished sysstat-collect.service - system activity accounting tool.
-2025-01-31T18:30:01.542271+08:00 thinkstation cron[1248]: (luppy) RELOAD (crontabs/luppy)
-2025-01-31T18:30:01.548522+08:00 thinkstation CRON[4011165]: (root) CMD ([ -x /etc/init.d/anacron ] && if [ ! -d /run/systemd/system ]; then /usr/sbin/invoke-rc.d anacron start >/dev/null; fi)
-2025-01-31T18:30:01.554147+08:00 thinkstation CRON[4011172]: (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
-2025-01-31T18:30:01.561773+08:00 thinkstation nuttx-rewind-notify: + export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-2025-01-31T18:30:01.562012+08:00 thinkstation nuttx-rewind-notify: + PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-2025-01-31T18:30:01.562086+08:00 thinkstation nuttx-rewind-notify: + script_path=/home/luppy/nuttx-rewind-notify/cron.sh
-2025-01-31T18:30:01.565423+08:00 thinkstation nuttx-rewind-notify: +++ dirname -- /home/luppy/nuttx-rewind-notify/cron.sh
-2025-01-31T18:30:01.565529+08:00 thinkstation nuttx-rewind-notify: ++ cd -P /home/luppy/nuttx-rewind-notify
-2025-01-31T18:30:01.565598+08:00 thinkstation nuttx-rewind-notify: ++ pwd
-2025-01-31T18:30:01.565670+08:00 thinkstation nuttx-rewind-notify: + script_dir=/home/luppy/nuttx-rewind-notify
-2025-01-31T18:30:01.565742+08:00 thinkstation nuttx-rewind-notify: + cd /home/luppy/nuttx-rewind-notify
-2025-01-31T18:30:01.565801+08:00 thinkstation nuttx-rewind-notify: + cargo run
-2025-01-31T18:30:01.878649+08:00 thinkstation nuttx-rewind-notify:     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s
-2025-01-31T18:30:01.893883+08:00 thinkstation nuttx-rewind-notify:      Running `target/debug/nuttx-rewind-notify`
-2025-01-31T18:30:01.920672+08:00 thinkstation nuttx-rewind-notify: query=
-2025-01-31T18:30:01.923383+08:00 thinkstation nuttx-rewind-notify:         build_score{
-2025-01-31T18:30:01.923533+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test8",
-2025-01-31T18:30:01.923643+08:00 thinkstation nuttx-rewind-notify:             build_score_prev="1"
-2025-01-31T18:30:01.923739+08:00 thinkstation nuttx-rewind-notify:         } == 0
-2025-01-31T18:30:01.924934+08:00 thinkstation nuttx-rewind-notify:     
-2025-01-31T18:30:02.130675+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:30:02 GMT", "content-length": "63"} }
-2025-01-31T18:30:27.330670+08:00 thinkstation crontab[4054090]: (luppy) BEGIN EDIT (luppy)
-2025-01-31T18:30:30.928696+08:00 thinkstation crontab[4054090]: (luppy) REPLACE (luppy)
-2025-01-31T18:30:30.928960+08:00 thinkstation crontab[4054090]: (luppy) END EDIT (luppy)
-2025-01-31T18:31:01.144675+08:00 thinkstation cron[1248]: (luppy) RELOAD (crontabs/luppy)
-2025-01-31T18:31:01.603569+08:00 thinkstation CRON[4119911]: (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
-2025-01-31T18:31:01.608441+08:00 thinkstation nuttx-rewind-notify: + export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-2025-01-31T18:31:01.608661+08:00 thinkstation nuttx-rewind-notify: + PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-2025-01-31T18:31:01.608738+08:00 thinkstation nuttx-rewind-notify: + script_path=/home/luppy/nuttx-rewind-notify/cron.sh
-2025-01-31T18:31:01.608876+08:00 thinkstation nuttx-rewind-notify: +++ dirname -- /home/luppy/nuttx-rewind-notify/cron.sh
-2025-01-31T18:31:01.609689+08:00 thinkstation nuttx-rewind-notify: ++ cd -P /home/luppy/nuttx-rewind-notify
-2025-01-31T18:31:01.609776+08:00 thinkstation nuttx-rewind-notify: ++ pwd
-2025-01-31T18:31:01.609959+08:00 thinkstation nuttx-rewind-notify: + script_dir=/home/luppy/nuttx-rewind-notify
-2025-01-31T18:31:01.610021+08:00 thinkstation nuttx-rewind-notify: + cd /home/luppy/nuttx-rewind-notify
-2025-01-31T18:31:01.610077+08:00 thinkstation nuttx-rewind-notify: + cargo run
-2025-01-31T18:31:02.081532+08:00 thinkstation nuttx-rewind-notify:    Compiling nuttx-rewind-notify v1.0.0 (/home/luppy/nuttx-rewind-notify)
-2025-01-31T18:31:04.336844+08:00 thinkstation nuttx-rewind-notify:     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.67s
-2025-01-31T18:31:04.615750+08:00 thinkstation nuttx-rewind-notify:      Running `target/debug/nuttx-rewind-notify`
-2025-01-31T18:31:04.638879+08:00 thinkstation nuttx-rewind-notify: query=
-2025-01-31T18:31:04.639035+08:00 thinkstation nuttx-rewind-notify:         build_score{
-2025-01-31T18:31:04.639126+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test6",
-2025-01-31T18:31:04.639213+08:00 thinkstation nuttx-rewind-notify:             build_score_prev="1"
-2025-01-31T18:31:04.639304+08:00 thinkstation nuttx-rewind-notify:         } == 0
-2025-01-31T18:31:04.642417+08:00 thinkstation nuttx-rewind-notify:     
-2025-01-31T18:31:04.845860+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:31:04 GMT", "content-length": "1630"} }
-2025-01-31T18:31:04.846089+08:00 thinkstation nuttx-rewind-notify: nuttx_hash_prev=be40c01ddd6f43a527abeae31042ba7978aabb58
-2025-01-31T18:31:04.846164+08:00 thinkstation nuttx-rewind-notify: url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
-2025-01-31T18:31:04.846233+08:00 thinkstation nuttx-rewind-notify: board=rv-virt
-2025-01-31T18:31:04.846299+08:00 thinkstation nuttx-rewind-notify: config=knsh64_test6
-2025-01-31T18:31:04.846384+08:00 thinkstation nuttx-rewind-notify: user=rewind
-2025-01-31T18:31:04.846460+08:00 thinkstation nuttx-rewind-notify: query=
-2025-01-31T18:31:04.846516+08:00 thinkstation nuttx-rewind-notify:         build_score{
-2025-01-31T18:31:04.846614+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test6",
-2025-01-31T18:31:04.846706+08:00 thinkstation nuttx-rewind-notify:             nuttx_hash="be40c01ddd6f43a527abeae31042ba7978aabb58"
-2025-01-31T18:31:04.846791+08:00 thinkstation nuttx-rewind-notify:         }
-2025-01-31T18:31:04.846878+08:00 thinkstation nuttx-rewind-notify:     
-2025-01-31T18:31:04.967500+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:31:04 GMT", "content-length": "1344"} }
-2025-01-31T18:31:04.967635+08:00 thinkstation nuttx-rewind-notify: previous_url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80
-2025-01-31T18:31:05.506663+08:00 thinkstation nuttx-rewind-notify: pr_url=https://github.com/apache/nuttx/pull/15444
-2025-01-31T18:31:05.506806+08:00 thinkstation nuttx-rewind-notify: pr_user=yf13
-2025-01-31T18:31:05.506893+08:00 thinkstation nuttx-rewind-notify: raw_url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059/raw/
-2025-01-31T18:31:06.178706+08:00 thinkstation nuttx-rewind-notify: 138: $ git clone https://github.com/apache/nuttx
-2025-01-31T18:31:06.178905+08:00 thinkstation nuttx-rewind-notify: 147: $ git clone https://github.com/apache/nuttx-apps apps
-2025-01-31T18:31:06.179012+08:00 thinkstation nuttx-rewind-notify: 156: $ pushd nuttx
-2025-01-31T18:31:06.179112+08:00 thinkstation nuttx-rewind-notify: 158: $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-2025-01-31T18:31:06.179256+08:00 thinkstation nuttx-rewind-notify: 159: HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-2025-01-31T18:31:06.179451+08:00 thinkstation nuttx-rewind-notify: 160: $ popd
-2025-01-31T18:31:06.179558+08:00 thinkstation nuttx-rewind-notify: 163: $ pushd apps
-2025-01-31T18:31:06.179626+08:00 thinkstation nuttx-rewind-notify: 165: $ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
-2025-01-31T18:31:06.179694+08:00 thinkstation nuttx-rewind-notify: 166: HEAD is now at a6b9e7184 testing/nettest: Add utils directory and two tcp testcases to the testing framework
-2025-01-31T18:31:06.179761+08:00 thinkstation nuttx-rewind-notify: 167: $ popd
-2025-01-31T18:31:06.179827+08:00 thinkstation nuttx-rewind-notify: 171: NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-2025-01-31T18:31:06.179894+08:00 thinkstation nuttx-rewind-notify: 174: NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-2025-01-31T18:31:06.179958+08:00 thinkstation nuttx-rewind-notify: 191: $ cd nuttx
-2025-01-31T18:31:06.180025+08:00 thinkstation nuttx-rewind-notify: 192: $ tools/configure.sh rv-virt:knsh64
-2025-01-31T18:31:06.180088+08:00 thinkstation nuttx-rewind-notify: 239: $ make -j
-2025-01-31T18:31:06.180160+08:00 thinkstation nuttx-rewind-notify: 255: $ make -j export
-2025-01-31T18:31:06.180225+08:00 thinkstation nuttx-rewind-notify: 256: $ pushd ../apps
-2025-01-31T18:31:06.180291+08:00 thinkstation nuttx-rewind-notify: 258: $ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
-2025-01-31T18:31:06.180372+08:00 thinkstation nuttx-rewind-notify: 259: $ make -j import
-2025-01-31T18:31:06.180443+08:00 thinkstation nuttx-rewind-notify: 363: $ popd
-2025-01-31T18:31:06.180503+08:00 thinkstation nuttx-rewind-notify: 365: $ qemu-system-riscv64 --version
-2025-01-31T18:31:06.180569+08:00 thinkstation nuttx-rewind-notify: 366: QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
-2025-01-31T18:31:06.181138+08:00 thinkstation nuttx-rewind-notify: 382: $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-2025-01-31T18:31:06.181212+08:00 thinkstation nuttx-rewind-notify: 384: OpenSBI v1.3
-2025-01-31T18:31:06.181285+08:00 thinkstation nuttx-rewind-notify: 432: Boot HART ISA Extensions  : time,sstc
-2025-01-31T18:31:06.181373+08:00 thinkstation nuttx-rewind-notify: 433: Boot HART PMP Count       : 16
-2025-01-31T18:31:06.181436+08:00 thinkstation nuttx-rewind-notify: 434: Boot HART PMP Granularity : 4
-2025-01-31T18:31:06.181511+08:00 thinkstation nuttx-rewind-notify: 435: Boot HART PMP Address Bits: 54
-2025-01-31T18:31:06.181575+08:00 thinkstation nuttx-rewind-notify: 436: Boot HART MHPM Count      : 16
-2025-01-31T18:31:06.181640+08:00 thinkstation nuttx-rewind-notify: 437: Boot HART MIDELEG         : 0x0000000000001666
-2025-01-31T18:31:06.181704+08:00 thinkstation nuttx-rewind-notify: 438: Boot HART MEDELEG         : 0x0000000000f0b509
-2025-01-31T18:31:06.181769+08:00 thinkstation nuttx-rewind-notify: 439: ABC[    0.238338] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-2025-01-31T18:31:06.181835+08:00 thinkstation nuttx-rewind-notify: 440: [    0.242809] riscv_exception: Segmentation fault in PID 2: /system/bin/init
-2025-01-31T18:31:06.181912+08:00 thinkstation nuttx-rewind-notify: 441: 
-2025-01-31T18:31:06.181989+08:00 thinkstation nuttx-rewind-notify: status=
-2025-01-31T18:31:06.182054+08:00 thinkstation nuttx-rewind-notify: 
-2025-01-31T18:31:06.182122+08:00 thinkstation nuttx-rewind-notify: rv-virt : KNSH64_TEST6 - Build Failed (rewind)
-2025-01-31T18:31:06.182186+08:00 thinkstation nuttx-rewind-notify: Breaking PR: https://github.com/apache/nuttx/pull/15444
-2025-01-31T18:31:06.182251+08:00 thinkstation nuttx-rewind-notify: NuttX Dashboard: https://nuttx-dashboard.org
-2025-01-31T18:31:06.182316+08:00 thinkstation nuttx-rewind-notify: Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6
-2025-01-31T18:31:06.182404+08:00 thinkstation nuttx-rewind-notify: 
-2025-01-31T18:31:06.182470+08:00 thinkstation nuttx-rewind-notify: Sorry @yf13: The above PR is failing for rv-virt:knsh64_test6. Could you please take a look? Thanks!
-2025-01-31T18:31:06.182531+08:00 thinkstation nuttx-rewind-notify: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
-2025-01-31T18:31:06.182596+08:00 thinkstation nuttx-rewind-notify: ```text
-2025-01-31T18:31:06.182660+08:00 thinkstation nuttx-rewind-notify: $ git clone https://github.com/apache/nuttx
-2025-01-31T18:31:06.182725+08:00 thinkstation nuttx-rewind-notify: $ git clone https://github.com/apache/nuttx-apps apps
-2025-01-31T18:31:06.182786+08:00 thinkstation nuttx-rewind-notify: $ pushd nuttx
-2025-01-31T18:31:06.182846+08:00 thinkstation nuttx-rewind-notify: $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-2025-01-31T18:31:06.182910+08:00 thinkstation nuttx-rewind-notify: HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-2025-01-31T18:31:06.182977+08:00 thinkstation nuttx-rewind-notify: $ popd
-2025-01-31T18:31:06.183042+08:00 thinkstation nuttx-rewind-notify: $ pushd apps
-2025-01-31T18:31:06.183102+08:00 thinkstation nuttx-rewind-notify: $ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
-2025-01-31T18:31:06.183162+08:00 thinkstation nuttx-rewind-notify: HEAD is now at a6b9e7184 testing/nettest: Add utils directory and two tcp testcases to the testing framework
-2025-01-31T18:31:06.183227+08:00 thinkstation nuttx-rewind-notify: $ popd
-2025-01-31T18:31:06.183288+08:00 thinkstation nuttx-rewind-notify: NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-2025-01-31T18:31:06.183361+08:00 thinkstation nuttx-rewind-notify: NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-2025-01-31T18:31:06.183431+08:00 thinkstation nuttx-rewind-notify: $ cd nuttx
-2025-01-31T18:31:06.183496+08:00 thinkstation nuttx-rewind-notify: $ tools/configure.sh rv-virt:knsh64
-2025-01-31T18:31:06.183557+08:00 thinkstation nuttx-rewind-notify: $ make -j
-2025-01-31T18:31:06.183627+08:00 thinkstation nuttx-rewind-notify: $ make -j export
-2025-01-31T18:31:06.183692+08:00 thinkstation nuttx-rewind-notify: $ pushd ../apps
-2025-01-31T18:31:06.183762+08:00 thinkstation nuttx-rewind-notify: $ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
-2025-01-31T18:31:06.183822+08:00 thinkstation nuttx-rewind-notify: $ make -j import
-2025-01-31T18:31:06.183885+08:00 thinkstation nuttx-rewind-notify: $ popd
-2025-01-31T18:31:06.183939+08:00 thinkstation nuttx-rewind-notify: $ qemu-system-riscv64 --version
-2025-01-31T18:31:06.184003+08:00 thinkstation nuttx-rewind-notify: QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
-2025-01-31T18:31:06.184072+08:00 thinkstation nuttx-rewind-notify: $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-2025-01-31T18:31:06.184143+08:00 thinkstation nuttx-rewind-notify: OpenSBI v1.3
-2025-01-31T18:31:06.184211+08:00 thinkstation nuttx-rewind-notify: Boot HART ISA Extensions  : time,sstc
-2025-01-31T18:31:06.184279+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Count       : 16
-2025-01-31T18:31:06.184364+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Granularity : 4
-2025-01-31T18:31:06.184427+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Address Bits: 54
-2025-01-31T18:31:06.184487+08:00 thinkstation nuttx-rewind-notify: Boot HART MHPM Count      : 16
-2025-01-31T18:31:06.184541+08:00 thinkstation nuttx-rewind-notify: Boot HART MIDELEG         : 0x0000000000001666
-2025-01-31T18:31:06.184600+08:00 thinkstation nuttx-rewind-notify: Boot HART MEDELEG         : 0x0000000000f0b509
-2025-01-31T18:31:06.184654+08:00 thinkstation nuttx-rewind-notify: ABC[    0.238338] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-2025-01-31T18:31:06.184715+08:00 thinkstation nuttx-rewind-notify: [    0.242809] riscv_exception: Segmentation fault in PID 2: /system/bin/init
-2025-01-31T18:31:06.184779+08:00 thinkstation nuttx-rewind-notify: 
-2025-01-31T18:31:06.184841+08:00 thinkstation nuttx-rewind-notify: ```
-2025-01-31T18:31:06.184904+08:00 thinkstation nuttx-rewind-notify: [(Earlier Commit is OK)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80)
-2025-01-31T18:31:06.184969+08:00 thinkstation nuttx-rewind-notify: [(See the Build History)](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6)
-2025-01-31T18:31:06.185042+08:00 thinkstation nuttx-rewind-notify:             
-2025-01-31T18:31:07.364053+08:00 thinkstation nuttx-rewind-notify: snippet_url=
-2025-01-31T18:31:07.364225+08:00 thinkstation nuttx-rewind-notify: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057
-2025-01-31T18:31:07.781755+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "https://nuttx-feed.org/api/v1/statuses", status: 200, headers: {"date": "Fri, 31 Jan 2025 10:31:07 GMT", "content-type": "application/json; charset=utf-8", "content-length": "3763", "connection": "keep-alive", "cache-control": "private, no-store", "content-security-policy": "default-src 'none'; frame-ancestors 'none'; form-action 'none'", "etag": "W/\"9a52e8b22f4bb37b96bfdd8b737c9ae9\"", "referrer-policy": "same-origin", "strict-transport-security": "max-age=63072000; includeSubDomains", "vary": "Authorization, Origin", "x-content-type-options": "nosniff", "x-frame-options": "DENY", "x-ratelimit-limit": "300", "x-ratelimit-remaining": "297", "x-ratelimit-reset": "2025-01-31T12:00:00.180196Z", "x-request-id": "4e920371-0b4f-4a27-9ed0-2f6efee59eec", "x-runtime": "0.051579", "x-xss-protection": "0", "cf-cache-status": "DYNAMIC", "report-to": "{\"endpoints\":[{\"url\":\"https:\/\/a.nel.cloudflare.com\/report\/v4?s=V2keLESz1ucPXJh%2BkCWpkuJb4jdGM2BEHwg2wVQfX1KTdo0qK1BKt7u5t%2BIZBtAW6hz468oucrG
-2025-01-31T18:31:07.784412+08:00 thinkstation nuttx-rewind-notify: 8lw6hMtBflMCo3iRwhA3QkkiXuy1oEN7rlzCRWEzCVnt%2F1JxM4Jc3kQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}", "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}", "server": "cloudflare", "cf-ray": "90a907c148f46045-SIN", "alt-svc": "h3=\":443\"; ma=86400", "server-timing": "cfL4;desc=\"?proto=TCP&rtt=2820&min_rtt=2083&rtt_var=1243&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2833&recv_bytes=1464&delivery_rate=1382999&cwnd=196&unsent_bytes=0&cid=7928dd566ec28f03&ts=94&x=0\""} }
-2025-01-31T18:31:07.784581+08:00 thinkstation nuttx-rewind-notify: Body: {"id":"113922504467871604","created_at":"2025-01-31T10:31:05.147Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"https://nuttx-feed.org/users/nuttx_build/statuses/113922504467871604","url":"https://nuttx-feed.org/@nuttx_build/113922504467871604","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003eDetails: \u003ca href=\"https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egitlab.com/lupyuen/nuttx-build\u003c/span\u003e\u003cspan class=\"invisible\"\u003e-log/-/snippets/4801057\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003erv-virt : KNSH64_TEST6 - Build Failed (rewind)\u003cbr /\u003eBreaking PR: \u
-2025-01-31T18:31:07.784717+08:00 thinkstation nuttx-rewind-notify: 003ca href=\"https://github.com/apache/nuttx/pull/15444\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egithub.com/apache/nuttx/pull/1\u003c/span\u003e\u003cspan class=\"invisible\"\u003e5444\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003eNuttX Dashboard: \u003ca href=\"https://nuttx-dashboard.org\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003enuttx-dashboard.org\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003eBuild History: \u003ca href=\"https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt\u0026amp;var-config=knsh64_test6\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis
-2025-01-31T18:31:07.784854+08:00 thinkstation nuttx-rewind-notify: \"\u003enuttx-dashboard.org/d/fe2q876w\u003c/span\u003e\u003cspan class=\"invisible\"\u003eubc3kc/nuttx-build-history?var-board=rv-virt\u0026amp;var-config=knsh64_test6\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003eSorry @yf13: The above PR is failing for rv-virt:knsh64_test6. Could you please take a look? Thanks!\u003cbr /\u003e\u003ca href=\"https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egitlab.com/lupyuen/nuttx-build\u003c/span\u003e\u003cspan class=\"invisible\"\u003e-log/-/snippets/4800059#L85\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003e``\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"NuttX Dashboard","website":"https://nuttx-dashboard.org"},"account":{"id":"113642720924513889","username":"nuttx_build","acct":"nuttx_build","display_name":"","locked":false,"bot":false,"discoverable"
-2025-01-31T18:31:07.784992+08:00 thinkstation nuttx-rewind-notify: :null,"indexable":false,"group":false,"created_at":"2024-12-13T00:00:00.000Z","note":"","url":"https://nuttx-feed.org/@nuttx_build","uri":"https://nuttx-feed.org/users/nuttx_build","avatar":"https://nuttx-feed.org/avatars/original/missing.png","avatar_static":"https://nuttx-feed.org/avatars/original/missing.png","header":"https://nuttx-feed.org/headers/original/missing.png","header_static":"https://nuttx-feed.org/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":781,"last_status_at":"2025-01-31","hide_collections":null,"noindex":false,"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":null}
-2025-01-31T18:31:07.785121+08:00 thinkstation nuttx-rewind-notify: status_id=113922504467871604
-2025-01-31T18:31:07.785208+08:00 thinkstation nuttx-rewind-notify: 
-2025-01-31T18:31:07.785296+08:00 thinkstation nuttx-rewind-notify: all_builds=
-2025-01-31T18:31:07.785407+08:00 thinkstation nuttx-rewind-notify: {
-2025-01-31T18:31:07.785494+08:00 thinkstation nuttx-rewind-notify:   "rv-virt:knsh64_test6": {
-2025-01-31T18:31:07.785583+08:00 thinkstation nuttx-rewind-notify:     "status_id": "113922504467871604",
-2025-01-31T18:31:07.785670+08:00 thinkstation nuttx-rewind-notify:     "users": [
-2025-01-31T18:31:07.785753+08:00 thinkstation nuttx-rewind-notify:       "rewind"
-2025-01-31T18:31:07.785843+08:00 thinkstation nuttx-rewind-notify:     ]
-2025-01-31T18:31:07.785932+08:00 thinkstation nuttx-rewind-notify:   }
-2025-01-31T18:31:07.786033+08:00 thinkstation nuttx-rewind-notify: }
-2025-01-31T18:31:07.786127+08:00 thinkstation nuttx-rewind-notify: 
->>
-```
-
-# Cron Job
-
-TODO
-
-```text
-https://help.ubuntu.com/community/CronHowto
-. $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-
-crontab -e
-
-## Run every day at 00:00 UTC
-0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
-
-## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
-
-tail -f /var/log/syslog
-<<
-2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
-2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
-2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
-
-2025-01-31T17:13:01.834380+08:00 thinkstation CRON[1234832]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
-2025-01-31T17:13:01.834657+08:00 thinkstation nuttx-rewind-build: + target=rv-virt:knsh64_test8
-2025-01-31T17:13:01.834800+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=HEAD
-2025-01-31T17:13:01.834869+08:00 thinkstation nuttx-rewind-build: + apps_hash=HEAD
-2025-01-31T17:13:01.834924+08:00 thinkstation nuttx-rewind-build: + min_commits=1
-2025-01-31T17:13:01.834982+08:00 thinkstation nuttx-rewind-build: + max_commits=20
-2025-01-31T17:13:01.835036+08:00 thinkstation nuttx-rewind-build: + script_path=/home/luppy/nuttx-build-farm/cron.sh
-2025-01-31T17:13:01.835093+08:00 thinkstation nuttx-rewind-build: +++ dirname -- /home/luppy/nuttx-build-farm/cron.sh
-2025-01-31T17:13:01.835145+08:00 thinkstation nuttx-rewind-build: ++ cd -P /home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835197+08:00 thinkstation nuttx-rewind-build: ++ pwd
-2025-01-31T17:13:01.835249+08:00 thinkstation nuttx-rewind-build: + script_dir=/home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835301+08:00 thinkstation nuttx-rewind-build: + cd /home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835359+08:00 thinkstation nuttx-rewind-build: + ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-2025-01-31T17:13:01.835415+08:00 thinkstation nuttx-rewind-build: Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-...
-2025-01-31T17:17:56.123175+08:00 thinkstation nuttx-rewind-build: - Creating snippet in lupyuen/nuttx-build-log
-2025-01-31T17:17:57.586891+08:00 thinkstation nuttx-rewind-build: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
-2025-01-31T17:17:57.591633+08:00 thinkstation nuttx-rewind-build: + next_hash=4606f1f9e1e897ce508f9dcadcc57dea979041b5
-2025-01-31T17:17:57.591815+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=11a47a4b0c3b4c371578bc3e578b2088dffbb678
-2025-01-31T17:17:57.591922+08:00 thinkstation nuttx-rewind-build: + timestamp=2025-01-31T04:53:36
-2025-01-31T17:17:57.592019+08:00 thinkstation nuttx-rewind-build: + (( count++ ))
-2025-01-31T17:17:57.592118+08:00 thinkstation nuttx-rewind-build: + [[ 1 == \1 ]]
-2025-01-31T17:17:57.592208+08:00 thinkstation nuttx-rewind-build: + break
-2025-01-31T17:17:57.592298+08:00 thinkstation nuttx-rewind-build: + set +x
-2025-01-31T17:17:57.592406+08:00 thinkstation nuttx-rewind-build: ***** Done!
->>
-
-Without logger:
-<<
-2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
->>
-
-ls -l /tmp
-drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
-drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
-
-tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
-<<
-Final memory usage:
-VARIABLE  BEFORE   AFTER
-======== ======== ========
-arena       81000    81000
-ordblks         2        3
-mxordblk    7cff8    78ff8
-uordblks     2660     4570
-fordblks    7e9a0    7ca90
-user_main: Exiting
-ostest_main: Exiting with status 0
-
-===== Test OK
-
-+ res=0
-+ set -e
-+ set +x
-res=0
-====================================================================================
-+ echo res=0
-res=0
-+ [[ 0 != \0 ]]
-+ echo '***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4'
-***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4
-+ [[ 4606f1f9e1e897ce508f9dcadcc57dea979041b5 != \4\6\0\6\f\1\f\9\e\1\e\8\9\7\c\e\5\0\8\f\9\d\c\a\d\c\c\5\7\d\e\a\9\7\9\0\4\1\b\5 ]]
-+ df -H
->>
-
-Check the snippets
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
-```
-
-# Convert to Commit ID
-
-TODO
-
-```text
-If Hash=HEAD:
-Convert to Commit ID
-
-build_score{
-    config!="leds64_zig",
-    user!="nuttxlinux",
-    user!="nuttxmacos",
-    user!="jerpelea"
-} < 0.5
-
-```
-
-# Delete Snippet
-
-TODO
-
-```text
-Delete Snippet
-https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
-
-curl --request DELETE \
-  --header "PRIVATE-TOKEN: <your_access_token>" \
-  --url "https://gitlab.example.com/api/v4/snippets/1"
-```
-
-# Create Snippet
-
-TODO
-
-```text
-Create Snippet
-https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
-
-snippet.json
-<<
-{
-  "title": "This is a snippet",
-  "description": "Hello World snippet",
-  "visibility": "public",
-  "files": [
-    {
-      "content": "Hello world",
-      "file_path": "test.txt"
-    }
-  ]
-}
->>
-
-. $HOME/gitlab-token.sh
-user=lupyuen
-repo=nuttx-build-log
-curl --url https://gitlab.com/api/v4/projects/$user%2F$repo/snippets \
-  --header 'Content-Type: application/json' \
-  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-
-curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" \
-  --header 'Content-Type: application/json' \
-  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-  -d @snippet.json
-
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488
-```
-
 # Get Log
 
 TODO
@@ -905,6 +552,360 @@ Get nuttx_hash_prev
 
 build_score{apps_hash="a6b9e718460a56722205c2a84a9b07b94ca664aa", apps_hash_next="a6b9e718460a56722205c2a84a9b07b94ca664aa", apps_hash_prev="a6b9e718460a56722205c2a84a9b07b94ca664aa", arch="unknown", board="rv-virt", build_score_next="0", build_score_prev="1", config="knsh64_test5", exported_instance="rv-virt:knsh64_test5@657247bda89d60112d79bb9b8d223eca5f9641b5@a6b9e718460a56722205c2a84a9b07b94ca664aa", exported_job="rewind", group="unknown", instance="localhost:9091", job="pushgateway", msg="+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa + nuttx_hash=48846954d8506e1c95089a8654787fdc42cc098c + apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa + neofetch .-/+oossssoo+/-. `:+ssssssssssssssssss+:` -+ssssssssssssssssssyyssss+-", nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5", nuttx_hash_next="48846954d8506e1c95089a8654787fdc42cc098c", nuttx_hash_prev="be40c01ddd6f43a527abeae31042ba7978aabb58", subarch="unknown", target="rv-virt:knsh64_test5", timestamp="2025-01-11T10:54:36", timestamp_log="2025-01-29T04:59:10.699Z", url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629", url_display="gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629", user="rewind", version="3"}
 ```
+
+# nuttx-rewind-notify
+
+```text
+nuttx-rewind-notify
+
+export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+./run.sh",
+
+const ALL_BUILDS_FILENAME: &str = "/tmp/nuttx-rewind-notify.json";
+
+cron:
+
+crontab -e
+
+## Run every 15 minutes
+*/15 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+
+## Run every hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+
+tail -f /var/log/syslog
+<<
+2025-01-31T18:29:21.853366+08:00 thinkstation crontab[3946431]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T18:29:29.480578+08:00 thinkstation crontab[3946431]: (luppy) REPLACE (luppy)
+2025-01-31T18:29:29.480737+08:00 thinkstation crontab[3946431]: (luppy) END EDIT (luppy)
+2025-01-31T18:30:01.179722+08:00 thinkstation systemd[1]: Starting sysstat-collect.service - system activity accounting tool...
+2025-01-31T18:30:01.197467+08:00 thinkstation systemd[1]: sysstat-collect.service: Deactivated successfully.
+2025-01-31T18:30:01.197644+08:00 thinkstation systemd[1]: Finished sysstat-collect.service - system activity accounting tool.
+2025-01-31T18:30:01.542271+08:00 thinkstation cron[1248]: (luppy) RELOAD (crontabs/luppy)
+2025-01-31T18:30:01.548522+08:00 thinkstation CRON[4011165]: (root) CMD ([ -x /etc/init.d/anacron ] && if [ ! -d /run/systemd/system ]; then /usr/sbin/invoke-rc.d anacron start >/dev/null; fi)
+2025-01-31T18:30:01.554147+08:00 thinkstation CRON[4011172]: (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
+2025-01-31T18:30:01.561773+08:00 thinkstation nuttx-rewind-notify: + export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+2025-01-31T18:30:01.562012+08:00 thinkstation nuttx-rewind-notify: + PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+2025-01-31T18:30:01.562086+08:00 thinkstation nuttx-rewind-notify: + script_path=/home/luppy/nuttx-rewind-notify/cron.sh
+2025-01-31T18:30:01.565423+08:00 thinkstation nuttx-rewind-notify: +++ dirname -- /home/luppy/nuttx-rewind-notify/cron.sh
+2025-01-31T18:30:01.565529+08:00 thinkstation nuttx-rewind-notify: ++ cd -P /home/luppy/nuttx-rewind-notify
+2025-01-31T18:30:01.565598+08:00 thinkstation nuttx-rewind-notify: ++ pwd
+2025-01-31T18:30:01.565670+08:00 thinkstation nuttx-rewind-notify: + script_dir=/home/luppy/nuttx-rewind-notify
+2025-01-31T18:30:01.565742+08:00 thinkstation nuttx-rewind-notify: + cd /home/luppy/nuttx-rewind-notify
+2025-01-31T18:30:01.565801+08:00 thinkstation nuttx-rewind-notify: + cargo run
+2025-01-31T18:30:01.878649+08:00 thinkstation nuttx-rewind-notify:     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s
+2025-01-31T18:30:01.893883+08:00 thinkstation nuttx-rewind-notify:      Running `target/debug/nuttx-rewind-notify`
+2025-01-31T18:30:01.920672+08:00 thinkstation nuttx-rewind-notify: query=
+2025-01-31T18:30:01.923383+08:00 thinkstation nuttx-rewind-notify:         build_score{
+2025-01-31T18:30:01.923533+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test8",
+2025-01-31T18:30:01.923643+08:00 thinkstation nuttx-rewind-notify:             build_score_prev="1"
+2025-01-31T18:30:01.923739+08:00 thinkstation nuttx-rewind-notify:         } == 0
+2025-01-31T18:30:01.924934+08:00 thinkstation nuttx-rewind-notify:     
+2025-01-31T18:30:02.130675+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:30:02 GMT", "content-length": "63"} }
+2025-01-31T18:30:27.330670+08:00 thinkstation crontab[4054090]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T18:30:30.928696+08:00 thinkstation crontab[4054090]: (luppy) REPLACE (luppy)
+2025-01-31T18:30:30.928960+08:00 thinkstation crontab[4054090]: (luppy) END EDIT (luppy)
+2025-01-31T18:31:01.144675+08:00 thinkstation cron[1248]: (luppy) RELOAD (crontabs/luppy)
+2025-01-31T18:31:01.603569+08:00 thinkstation CRON[4119911]: (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
+2025-01-31T18:31:01.608441+08:00 thinkstation nuttx-rewind-notify: + export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+2025-01-31T18:31:01.608661+08:00 thinkstation nuttx-rewind-notify: + PROMETHEUS_SERVER=luppys-mac-mini.local:9090
+2025-01-31T18:31:01.608738+08:00 thinkstation nuttx-rewind-notify: + script_path=/home/luppy/nuttx-rewind-notify/cron.sh
+2025-01-31T18:31:01.608876+08:00 thinkstation nuttx-rewind-notify: +++ dirname -- /home/luppy/nuttx-rewind-notify/cron.sh
+2025-01-31T18:31:01.609689+08:00 thinkstation nuttx-rewind-notify: ++ cd -P /home/luppy/nuttx-rewind-notify
+2025-01-31T18:31:01.609776+08:00 thinkstation nuttx-rewind-notify: ++ pwd
+2025-01-31T18:31:01.609959+08:00 thinkstation nuttx-rewind-notify: + script_dir=/home/luppy/nuttx-rewind-notify
+2025-01-31T18:31:01.610021+08:00 thinkstation nuttx-rewind-notify: + cd /home/luppy/nuttx-rewind-notify
+2025-01-31T18:31:01.610077+08:00 thinkstation nuttx-rewind-notify: + cargo run
+2025-01-31T18:31:02.081532+08:00 thinkstation nuttx-rewind-notify:    Compiling nuttx-rewind-notify v1.0.0 (/home/luppy/nuttx-rewind-notify)
+2025-01-31T18:31:04.336844+08:00 thinkstation nuttx-rewind-notify:     Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.67s
+2025-01-31T18:31:04.615750+08:00 thinkstation nuttx-rewind-notify:      Running `target/debug/nuttx-rewind-notify`
+2025-01-31T18:31:04.638879+08:00 thinkstation nuttx-rewind-notify: query=
+2025-01-31T18:31:04.639035+08:00 thinkstation nuttx-rewind-notify:         build_score{
+2025-01-31T18:31:04.639126+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test6",
+2025-01-31T18:31:04.639213+08:00 thinkstation nuttx-rewind-notify:             build_score_prev="1"
+2025-01-31T18:31:04.639304+08:00 thinkstation nuttx-rewind-notify:         } == 0
+2025-01-31T18:31:04.642417+08:00 thinkstation nuttx-rewind-notify:     
+2025-01-31T18:31:04.845860+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:31:04 GMT", "content-length": "1630"} }
+2025-01-31T18:31:04.846089+08:00 thinkstation nuttx-rewind-notify: nuttx_hash_prev=be40c01ddd6f43a527abeae31042ba7978aabb58
+2025-01-31T18:31:04.846164+08:00 thinkstation nuttx-rewind-notify: url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
+2025-01-31T18:31:04.846233+08:00 thinkstation nuttx-rewind-notify: board=rv-virt
+2025-01-31T18:31:04.846299+08:00 thinkstation nuttx-rewind-notify: config=knsh64_test6
+2025-01-31T18:31:04.846384+08:00 thinkstation nuttx-rewind-notify: user=rewind
+2025-01-31T18:31:04.846460+08:00 thinkstation nuttx-rewind-notify: query=
+2025-01-31T18:31:04.846516+08:00 thinkstation nuttx-rewind-notify:         build_score{
+2025-01-31T18:31:04.846614+08:00 thinkstation nuttx-rewind-notify:             target="rv-virt:knsh64_test6",
+2025-01-31T18:31:04.846706+08:00 thinkstation nuttx-rewind-notify:             nuttx_hash="be40c01ddd6f43a527abeae31042ba7978aabb58"
+2025-01-31T18:31:04.846791+08:00 thinkstation nuttx-rewind-notify:         }
+2025-01-31T18:31:04.846878+08:00 thinkstation nuttx-rewind-notify:     
+2025-01-31T18:31:04.967500+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "http://luppys-mac-mini.local:9090/api/v1/query", status: 200, headers: {"content-type": "application/json", "date": "Fri, 31 Jan 2025 10:31:04 GMT", "content-length": "1344"} }
+2025-01-31T18:31:04.967635+08:00 thinkstation nuttx-rewind-notify: previous_url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80
+2025-01-31T18:31:05.506663+08:00 thinkstation nuttx-rewind-notify: pr_url=https://github.com/apache/nuttx/pull/15444
+2025-01-31T18:31:05.506806+08:00 thinkstation nuttx-rewind-notify: pr_user=yf13
+2025-01-31T18:31:05.506893+08:00 thinkstation nuttx-rewind-notify: raw_url=https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059/raw/
+2025-01-31T18:31:06.178706+08:00 thinkstation nuttx-rewind-notify: 138: $ git clone https://github.com/apache/nuttx
+2025-01-31T18:31:06.178905+08:00 thinkstation nuttx-rewind-notify: 147: $ git clone https://github.com/apache/nuttx-apps apps
+2025-01-31T18:31:06.179012+08:00 thinkstation nuttx-rewind-notify: 156: $ pushd nuttx
+2025-01-31T18:31:06.179112+08:00 thinkstation nuttx-rewind-notify: 158: $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+2025-01-31T18:31:06.179256+08:00 thinkstation nuttx-rewind-notify: 159: HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+2025-01-31T18:31:06.179451+08:00 thinkstation nuttx-rewind-notify: 160: $ popd
+2025-01-31T18:31:06.179558+08:00 thinkstation nuttx-rewind-notify: 163: $ pushd apps
+2025-01-31T18:31:06.179626+08:00 thinkstation nuttx-rewind-notify: 165: $ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
+2025-01-31T18:31:06.179694+08:00 thinkstation nuttx-rewind-notify: 166: HEAD is now at a6b9e7184 testing/nettest: Add utils directory and two tcp testcases to the testing framework
+2025-01-31T18:31:06.179761+08:00 thinkstation nuttx-rewind-notify: 167: $ popd
+2025-01-31T18:31:06.179827+08:00 thinkstation nuttx-rewind-notify: 171: NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+2025-01-31T18:31:06.179894+08:00 thinkstation nuttx-rewind-notify: 174: NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+2025-01-31T18:31:06.179958+08:00 thinkstation nuttx-rewind-notify: 191: $ cd nuttx
+2025-01-31T18:31:06.180025+08:00 thinkstation nuttx-rewind-notify: 192: $ tools/configure.sh rv-virt:knsh64
+2025-01-31T18:31:06.180088+08:00 thinkstation nuttx-rewind-notify: 239: $ make -j
+2025-01-31T18:31:06.180160+08:00 thinkstation nuttx-rewind-notify: 255: $ make -j export
+2025-01-31T18:31:06.180225+08:00 thinkstation nuttx-rewind-notify: 256: $ pushd ../apps
+2025-01-31T18:31:06.180291+08:00 thinkstation nuttx-rewind-notify: 258: $ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
+2025-01-31T18:31:06.180372+08:00 thinkstation nuttx-rewind-notify: 259: $ make -j import
+2025-01-31T18:31:06.180443+08:00 thinkstation nuttx-rewind-notify: 363: $ popd
+2025-01-31T18:31:06.180503+08:00 thinkstation nuttx-rewind-notify: 365: $ qemu-system-riscv64 --version
+2025-01-31T18:31:06.180569+08:00 thinkstation nuttx-rewind-notify: 366: QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
+2025-01-31T18:31:06.181138+08:00 thinkstation nuttx-rewind-notify: 382: $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+2025-01-31T18:31:06.181212+08:00 thinkstation nuttx-rewind-notify: 384: OpenSBI v1.3
+2025-01-31T18:31:06.181285+08:00 thinkstation nuttx-rewind-notify: 432: Boot HART ISA Extensions  : time,sstc
+2025-01-31T18:31:06.181373+08:00 thinkstation nuttx-rewind-notify: 433: Boot HART PMP Count       : 16
+2025-01-31T18:31:06.181436+08:00 thinkstation nuttx-rewind-notify: 434: Boot HART PMP Granularity : 4
+2025-01-31T18:31:06.181511+08:00 thinkstation nuttx-rewind-notify: 435: Boot HART PMP Address Bits: 54
+2025-01-31T18:31:06.181575+08:00 thinkstation nuttx-rewind-notify: 436: Boot HART MHPM Count      : 16
+2025-01-31T18:31:06.181640+08:00 thinkstation nuttx-rewind-notify: 437: Boot HART MIDELEG         : 0x0000000000001666
+2025-01-31T18:31:06.181704+08:00 thinkstation nuttx-rewind-notify: 438: Boot HART MEDELEG         : 0x0000000000f0b509
+2025-01-31T18:31:06.181769+08:00 thinkstation nuttx-rewind-notify: 439: ABC[    0.238338] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+2025-01-31T18:31:06.181835+08:00 thinkstation nuttx-rewind-notify: 440: [    0.242809] riscv_exception: Segmentation fault in PID 2: /system/bin/init
+2025-01-31T18:31:06.181912+08:00 thinkstation nuttx-rewind-notify: 441: 
+2025-01-31T18:31:06.181989+08:00 thinkstation nuttx-rewind-notify: status=
+2025-01-31T18:31:06.182054+08:00 thinkstation nuttx-rewind-notify: 
+2025-01-31T18:31:06.182122+08:00 thinkstation nuttx-rewind-notify: rv-virt : KNSH64_TEST6 - Build Failed (rewind)
+2025-01-31T18:31:06.182186+08:00 thinkstation nuttx-rewind-notify: Breaking PR: https://github.com/apache/nuttx/pull/15444
+2025-01-31T18:31:06.182251+08:00 thinkstation nuttx-rewind-notify: NuttX Dashboard: https://nuttx-dashboard.org
+2025-01-31T18:31:06.182316+08:00 thinkstation nuttx-rewind-notify: Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6
+2025-01-31T18:31:06.182404+08:00 thinkstation nuttx-rewind-notify: 
+2025-01-31T18:31:06.182470+08:00 thinkstation nuttx-rewind-notify: Sorry @yf13: The above PR is failing for rv-virt:knsh64_test6. Could you please take a look? Thanks!
+2025-01-31T18:31:06.182531+08:00 thinkstation nuttx-rewind-notify: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
+2025-01-31T18:31:06.182596+08:00 thinkstation nuttx-rewind-notify: ```text
+2025-01-31T18:31:06.182660+08:00 thinkstation nuttx-rewind-notify: $ git clone https://github.com/apache/nuttx
+2025-01-31T18:31:06.182725+08:00 thinkstation nuttx-rewind-notify: $ git clone https://github.com/apache/nuttx-apps apps
+2025-01-31T18:31:06.182786+08:00 thinkstation nuttx-rewind-notify: $ pushd nuttx
+2025-01-31T18:31:06.182846+08:00 thinkstation nuttx-rewind-notify: $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+2025-01-31T18:31:06.182910+08:00 thinkstation nuttx-rewind-notify: HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+2025-01-31T18:31:06.182977+08:00 thinkstation nuttx-rewind-notify: $ popd
+2025-01-31T18:31:06.183042+08:00 thinkstation nuttx-rewind-notify: $ pushd apps
+2025-01-31T18:31:06.183102+08:00 thinkstation nuttx-rewind-notify: $ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
+2025-01-31T18:31:06.183162+08:00 thinkstation nuttx-rewind-notify: HEAD is now at a6b9e7184 testing/nettest: Add utils directory and two tcp testcases to the testing framework
+2025-01-31T18:31:06.183227+08:00 thinkstation nuttx-rewind-notify: $ popd
+2025-01-31T18:31:06.183288+08:00 thinkstation nuttx-rewind-notify: NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+2025-01-31T18:31:06.183361+08:00 thinkstation nuttx-rewind-notify: NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+2025-01-31T18:31:06.183431+08:00 thinkstation nuttx-rewind-notify: $ cd nuttx
+2025-01-31T18:31:06.183496+08:00 thinkstation nuttx-rewind-notify: $ tools/configure.sh rv-virt:knsh64
+2025-01-31T18:31:06.183557+08:00 thinkstation nuttx-rewind-notify: $ make -j
+2025-01-31T18:31:06.183627+08:00 thinkstation nuttx-rewind-notify: $ make -j export
+2025-01-31T18:31:06.183692+08:00 thinkstation nuttx-rewind-notify: $ pushd ../apps
+2025-01-31T18:31:06.183762+08:00 thinkstation nuttx-rewind-notify: $ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
+2025-01-31T18:31:06.183822+08:00 thinkstation nuttx-rewind-notify: $ make -j import
+2025-01-31T18:31:06.183885+08:00 thinkstation nuttx-rewind-notify: $ popd
+2025-01-31T18:31:06.183939+08:00 thinkstation nuttx-rewind-notify: $ qemu-system-riscv64 --version
+2025-01-31T18:31:06.184003+08:00 thinkstation nuttx-rewind-notify: QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
+2025-01-31T18:31:06.184072+08:00 thinkstation nuttx-rewind-notify: $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+2025-01-31T18:31:06.184143+08:00 thinkstation nuttx-rewind-notify: OpenSBI v1.3
+2025-01-31T18:31:06.184211+08:00 thinkstation nuttx-rewind-notify: Boot HART ISA Extensions  : time,sstc
+2025-01-31T18:31:06.184279+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Count       : 16
+2025-01-31T18:31:06.184364+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Granularity : 4
+2025-01-31T18:31:06.184427+08:00 thinkstation nuttx-rewind-notify: Boot HART PMP Address Bits: 54
+2025-01-31T18:31:06.184487+08:00 thinkstation nuttx-rewind-notify: Boot HART MHPM Count      : 16
+2025-01-31T18:31:06.184541+08:00 thinkstation nuttx-rewind-notify: Boot HART MIDELEG         : 0x0000000000001666
+2025-01-31T18:31:06.184600+08:00 thinkstation nuttx-rewind-notify: Boot HART MEDELEG         : 0x0000000000f0b509
+2025-01-31T18:31:06.184654+08:00 thinkstation nuttx-rewind-notify: ABC[    0.238338] riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+2025-01-31T18:31:06.184715+08:00 thinkstation nuttx-rewind-notify: [    0.242809] riscv_exception: Segmentation fault in PID 2: /system/bin/init
+2025-01-31T18:31:06.184779+08:00 thinkstation nuttx-rewind-notify: 
+2025-01-31T18:31:06.184841+08:00 thinkstation nuttx-rewind-notify: ```
+2025-01-31T18:31:06.184904+08:00 thinkstation nuttx-rewind-notify: [(Earlier Commit is OK)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80)
+2025-01-31T18:31:06.184969+08:00 thinkstation nuttx-rewind-notify: [(See the Build History)](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6)
+2025-01-31T18:31:06.185042+08:00 thinkstation nuttx-rewind-notify:             
+2025-01-31T18:31:07.364053+08:00 thinkstation nuttx-rewind-notify: snippet_url=
+2025-01-31T18:31:07.364225+08:00 thinkstation nuttx-rewind-notify: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057
+2025-01-31T18:31:07.781755+08:00 thinkstation nuttx-rewind-notify: res=Response { url: "https://nuttx-feed.org/api/v1/statuses", status: 200, headers: {"date": "Fri, 31 Jan 2025 10:31:07 GMT", "content-type": "application/json; charset=utf-8", "content-length": "3763", "connection": "keep-alive", "cache-control": "private, no-store", "content-security-policy": "default-src 'none'; frame-ancestors 'none'; form-action 'none'", "etag": "W/\"9a52e8b22f4bb37b96bfdd8b737c9ae9\"", "referrer-policy": "same-origin", "strict-transport-security": "max-age=63072000; includeSubDomains", "vary": "Authorization, Origin", "x-content-type-options": "nosniff", "x-frame-options": "DENY", "x-ratelimit-limit": "300", "x-ratelimit-remaining": "297", "x-ratelimit-reset": "2025-01-31T12:00:00.180196Z", "x-request-id": "4e920371-0b4f-4a27-9ed0-2f6efee59eec", "x-runtime": "0.051579", "x-xss-protection": "0", "cf-cache-status": "DYNAMIC", "report-to": "{\"endpoints\":[{\"url\":\"https:\/\/a.nel.cloudflare.com\/report\/v4?s=V2keLESz1ucPXJh%2BkCWpkuJb4jdGM2BEHwg2wVQfX1KTdo0qK1BKt7u5t%2BIZBtAW6hz468oucrG
+2025-01-31T18:31:07.784412+08:00 thinkstation nuttx-rewind-notify: 8lw6hMtBflMCo3iRwhA3QkkiXuy1oEN7rlzCRWEzCVnt%2F1JxM4Jc3kQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}", "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}", "server": "cloudflare", "cf-ray": "90a907c148f46045-SIN", "alt-svc": "h3=\":443\"; ma=86400", "server-timing": "cfL4;desc=\"?proto=TCP&rtt=2820&min_rtt=2083&rtt_var=1243&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2833&recv_bytes=1464&delivery_rate=1382999&cwnd=196&unsent_bytes=0&cid=7928dd566ec28f03&ts=94&x=0\""} }
+2025-01-31T18:31:07.784581+08:00 thinkstation nuttx-rewind-notify: Body: {"id":"113922504467871604","created_at":"2025-01-31T10:31:05.147Z","in_reply_to_id":null,"in_reply_to_account_id":null,"sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"https://nuttx-feed.org/users/nuttx_build/statuses/113922504467871604","url":"https://nuttx-feed.org/@nuttx_build/113922504467871604","replies_count":0,"reblogs_count":0,"favourites_count":0,"edited_at":null,"favourited":false,"reblogged":false,"muted":false,"bookmarked":false,"pinned":false,"content":"\u003cp\u003eDetails: \u003ca href=\"https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egitlab.com/lupyuen/nuttx-build\u003c/span\u003e\u003cspan class=\"invisible\"\u003e-log/-/snippets/4801057\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003erv-virt : KNSH64_TEST6 - Build Failed (rewind)\u003cbr /\u003eBreaking PR: \u
+2025-01-31T18:31:07.784717+08:00 thinkstation nuttx-rewind-notify: 003ca href=\"https://github.com/apache/nuttx/pull/15444\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egithub.com/apache/nuttx/pull/1\u003c/span\u003e\u003cspan class=\"invisible\"\u003e5444\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003eNuttX Dashboard: \u003ca href=\"https://nuttx-dashboard.org\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"\"\u003enuttx-dashboard.org\u003c/span\u003e\u003cspan class=\"invisible\"\u003e\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003eBuild History: \u003ca href=\"https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt\u0026amp;var-config=knsh64_test6\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis
+2025-01-31T18:31:07.784854+08:00 thinkstation nuttx-rewind-notify: \"\u003enuttx-dashboard.org/d/fe2q876w\u003c/span\u003e\u003cspan class=\"invisible\"\u003eubc3kc/nuttx-build-history?var-board=rv-virt\u0026amp;var-config=knsh64_test6\u003c/span\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003eSorry @yf13: The above PR is failing for rv-virt:knsh64_test6. Could you please take a look? Thanks!\u003cbr /\u003e\u003ca href=\"https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"\u003e\u003cspan class=\"invisible\"\u003ehttps://\u003c/span\u003e\u003cspan class=\"ellipsis\"\u003egitlab.com/lupyuen/nuttx-build\u003c/span\u003e\u003cspan class=\"invisible\"\u003e-log/-/snippets/4800059#L85\u003c/span\u003e\u003c/a\u003e\u003cbr /\u003e``\u003c/p\u003e","filtered":[],"reblog":null,"application":{"name":"NuttX Dashboard","website":"https://nuttx-dashboard.org"},"account":{"id":"113642720924513889","username":"nuttx_build","acct":"nuttx_build","display_name":"","locked":false,"bot":false,"discoverable"
+2025-01-31T18:31:07.784992+08:00 thinkstation nuttx-rewind-notify: :null,"indexable":false,"group":false,"created_at":"2024-12-13T00:00:00.000Z","note":"","url":"https://nuttx-feed.org/@nuttx_build","uri":"https://nuttx-feed.org/users/nuttx_build","avatar":"https://nuttx-feed.org/avatars/original/missing.png","avatar_static":"https://nuttx-feed.org/avatars/original/missing.png","header":"https://nuttx-feed.org/headers/original/missing.png","header_static":"https://nuttx-feed.org/headers/original/missing.png","followers_count":1,"following_count":0,"statuses_count":781,"last_status_at":"2025-01-31","hide_collections":null,"noindex":false,"emojis":[],"roles":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":null}
+2025-01-31T18:31:07.785121+08:00 thinkstation nuttx-rewind-notify: status_id=113922504467871604
+2025-01-31T18:31:07.785208+08:00 thinkstation nuttx-rewind-notify: 
+2025-01-31T18:31:07.785296+08:00 thinkstation nuttx-rewind-notify: all_builds=
+2025-01-31T18:31:07.785407+08:00 thinkstation nuttx-rewind-notify: {
+2025-01-31T18:31:07.785494+08:00 thinkstation nuttx-rewind-notify:   "rv-virt:knsh64_test6": {
+2025-01-31T18:31:07.785583+08:00 thinkstation nuttx-rewind-notify:     "status_id": "113922504467871604",
+2025-01-31T18:31:07.785670+08:00 thinkstation nuttx-rewind-notify:     "users": [
+2025-01-31T18:31:07.785753+08:00 thinkstation nuttx-rewind-notify:       "rewind"
+2025-01-31T18:31:07.785843+08:00 thinkstation nuttx-rewind-notify:     ]
+2025-01-31T18:31:07.785932+08:00 thinkstation nuttx-rewind-notify:   }
+2025-01-31T18:31:07.786033+08:00 thinkstation nuttx-rewind-notify: }
+2025-01-31T18:31:07.786127+08:00 thinkstation nuttx-rewind-notify: 
+>>
+```
+
+# Cron Job
+
+TODO
+
+```text
+https://help.ubuntu.com/community/CronHowto
+. $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+
+crontab -e
+
+## Run every day at 00:00 UTC
+0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
+
+## Run every hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
+
+tail -f /var/log/syslog
+<<
+2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
+2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
+
+2025-01-31T17:13:01.834380+08:00 thinkstation CRON[1234832]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
+2025-01-31T17:13:01.834657+08:00 thinkstation nuttx-rewind-build: + target=rv-virt:knsh64_test8
+2025-01-31T17:13:01.834800+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=HEAD
+2025-01-31T17:13:01.834869+08:00 thinkstation nuttx-rewind-build: + apps_hash=HEAD
+2025-01-31T17:13:01.834924+08:00 thinkstation nuttx-rewind-build: + min_commits=1
+2025-01-31T17:13:01.834982+08:00 thinkstation nuttx-rewind-build: + max_commits=20
+2025-01-31T17:13:01.835036+08:00 thinkstation nuttx-rewind-build: + script_path=/home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835093+08:00 thinkstation nuttx-rewind-build: +++ dirname -- /home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835145+08:00 thinkstation nuttx-rewind-build: ++ cd -P /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835197+08:00 thinkstation nuttx-rewind-build: ++ pwd
+2025-01-31T17:13:01.835249+08:00 thinkstation nuttx-rewind-build: + script_dir=/home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835301+08:00 thinkstation nuttx-rewind-build: + cd /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835359+08:00 thinkstation nuttx-rewind-build: + ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+2025-01-31T17:13:01.835415+08:00 thinkstation nuttx-rewind-build: Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+...
+2025-01-31T17:17:56.123175+08:00 thinkstation nuttx-rewind-build: - Creating snippet in lupyuen/nuttx-build-log
+2025-01-31T17:17:57.586891+08:00 thinkstation nuttx-rewind-build: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
+2025-01-31T17:17:57.591633+08:00 thinkstation nuttx-rewind-build: + next_hash=4606f1f9e1e897ce508f9dcadcc57dea979041b5
+2025-01-31T17:17:57.591815+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=11a47a4b0c3b4c371578bc3e578b2088dffbb678
+2025-01-31T17:17:57.591922+08:00 thinkstation nuttx-rewind-build: + timestamp=2025-01-31T04:53:36
+2025-01-31T17:17:57.592019+08:00 thinkstation nuttx-rewind-build: + (( count++ ))
+2025-01-31T17:17:57.592118+08:00 thinkstation nuttx-rewind-build: + [[ 1 == \1 ]]
+2025-01-31T17:17:57.592208+08:00 thinkstation nuttx-rewind-build: + break
+2025-01-31T17:17:57.592298+08:00 thinkstation nuttx-rewind-build: + set +x
+2025-01-31T17:17:57.592406+08:00 thinkstation nuttx-rewind-build: ***** Done!
+>>
+
+Without logger:
+<<
+2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
+>>
+
+ls -l /tmp
+drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
+drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
+
+tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
+<<
+Final memory usage:
+VARIABLE  BEFORE   AFTER
+======== ======== ========
+arena       81000    81000
+ordblks         2        3
+mxordblk    7cff8    78ff8
+uordblks     2660     4570
+fordblks    7e9a0    7ca90
+user_main: Exiting
+ostest_main: Exiting with status 0
+
+===== Test OK
+
++ res=0
++ set -e
++ set +x
+res=0
+====================================================================================
++ echo res=0
+res=0
++ [[ 0 != \0 ]]
++ echo '***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4'
+***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4
++ [[ 4606f1f9e1e897ce508f9dcadcc57dea979041b5 != \4\6\0\6\f\1\f\9\e\1\e\8\9\7\c\e\5\0\8\f\9\d\c\a\d\c\c\5\7\d\e\a\9\7\9\0\4\1\b\5 ]]
++ df -H
+>>
+
+Check the snippets
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
+```
+
+# Convert to Commit ID
+
+TODO
+
+```text
+If Hash=HEAD:
+Convert to Commit ID
+
+build_score{
+    config!="leds64_zig",
+    user!="nuttxlinux",
+    user!="nuttxmacos",
+    user!="jerpelea"
+} < 0.5
+
+```
+
+# Delete Snippet
+
+TODO
+
+```text
+Delete Snippet
+https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
+
+curl --request DELETE \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --url "https://gitlab.example.com/api/v4/snippets/1"
+```
+
+# Create Snippet
+
+TODO
+
+```text
+Create Snippet
+https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
+
+snippet.json
+<<
+{
+  "title": "This is a snippet",
+  "description": "Hello World snippet",
+  "visibility": "public",
+  "files": [
+    {
+      "content": "Hello world",
+      "file_path": "test.txt"
+    }
+  ]
+}
+>>
+
+. $HOME/gitlab-token.sh
+user=lupyuen
+repo=nuttx-build-log
+curl --url https://gitlab.com/api/v4/projects/$user%2F$repo/snippets \
+  --header 'Content-Type: application/json' \
+  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+
+curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" \
+  --header 'Content-Type: application/json' \
+  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+  -d @snippet.json
+
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488
+```
+
 
 # Test Failed vs Test OK
 
