@@ -1014,6 +1014,10 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init
 
 TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?
 
+TODO: @nuttxpr test rv-virt:knsh64. Security?
+
+TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years.
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
