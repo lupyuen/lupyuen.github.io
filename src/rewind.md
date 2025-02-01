@@ -20,7 +20,7 @@ __If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
-# TODO
+# nuttx-rewind-notify
 
 ```text
 nuttx-rewind-notify
@@ -214,10 +214,11 @@ tail -f /var/log/syslog
 >>
 ```
 
+# Cron Job
+
 TODO
 
 ```text
-Cron Job
 https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
 
@@ -304,6 +305,8 @@ Check the snippets
 https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
 ```
 
+# Convert to Commit ID
+
 TODO
 
 ```text
@@ -319,6 +322,8 @@ build_score{
 
 ```
 
+# Delete Snippet
+
 TODO
 
 ```text
@@ -329,6 +334,8 @@ curl --request DELETE \
   --header "PRIVATE-TOKEN: <your_access_token>" \
   --url "https://gitlab.example.com/api/v4/snippets/1"
 ```
+
+# Create Snippet
 
 TODO
 
@@ -365,6 +372,8 @@ curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" 
 
 https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488
 ```
+
+# Get Log
 
 TODO
 
@@ -458,8 +467,9 @@ Extract 5 lines:
 
 Search for lines starting with "===== Error: Test Failed" or "===== Test OK"
 Backtrack last 10 lines
-
 ```
+
+# Get Breaking PR
 
 TODO
 
@@ -878,6 +888,8 @@ curl -L \
 ]
 ```
 
+# Get Breaking Commit
+
 TODO
 
 ```text
@@ -893,6 +905,8 @@ Get nuttx_hash_prev
 
 build_score{apps_hash="a6b9e718460a56722205c2a84a9b07b94ca664aa", apps_hash_next="a6b9e718460a56722205c2a84a9b07b94ca664aa", apps_hash_prev="a6b9e718460a56722205c2a84a9b07b94ca664aa", arch="unknown", board="rv-virt", build_score_next="0", build_score_prev="1", config="knsh64_test5", exported_instance="rv-virt:knsh64_test5@657247bda89d60112d79bb9b8d223eca5f9641b5@a6b9e718460a56722205c2a84a9b07b94ca664aa", exported_job="rewind", group="unknown", instance="localhost:9091", job="pushgateway", msg="+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa + nuttx_hash=48846954d8506e1c95089a8654787fdc42cc098c + apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa + neofetch .-/+oossssoo+/-. `:+ssssssssssssssssss+:` -+ssssssssssssssssssyyssss+-", nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5", nuttx_hash_next="48846954d8506e1c95089a8654787fdc42cc098c", nuttx_hash_prev="be40c01ddd6f43a527abeae31042ba7978aabb58", subarch="unknown", target="rv-virt:knsh64_test5", timestamp="2025-01-11T10:54:36", timestamp_log="2025-01-29T04:59:10.699Z", url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629", url_display="gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629", user="rewind", version="3"}
 ```
+
+# Test Failed vs Test OK
 
 TODO
 
@@ -917,6 +931,8 @@ extract apps hash
 if failed: build_score=0
 if successful: build_score=1
 ```
+
+# Query Prometheus
 
 TODO
 
