@@ -445,6 +445,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 1.  Track down any bugs that [__Fail the Merge Job__](https://github.com/apache/nuttx/issues/14796)
 
+1.  Maintaining the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) and [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)
+
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
     (For upcoming __Board Testing Farm__)
