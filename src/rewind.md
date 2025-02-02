@@ -201,10 +201,6 @@ done
 
 [(__build_commit__ calls _rewind-commit.sh_)](TODO)
 
-# Expect Script
-
-TODO
-
 # Get hashes from Prometheus 
 
 ```text
