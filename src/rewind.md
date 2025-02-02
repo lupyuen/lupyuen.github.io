@@ -68,6 +68,8 @@ qemu-system-riscv64 -kernel nuttx
 ## Roughly One Hour for 20 Rewinds of Build + Test
 ```
 
+(What about Git Bisect? We'll come back to this)
+
 _Build and Test 20 times? Won't the log be awfully messy?_
 
 Ah that's why we neatly present the __20 Outcomes__ (Build + Test) into the __NuttX Build History__ (part of [__NuttX Dashboard__](TODO))
@@ -1228,13 +1230,15 @@ if successful: build_score=1
 
 # What's Next
 
+TODO: Git Bisect? Assume < 20 commits. If necessary: Test and rewind more often
+
 TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?
 
 TODO: @nuttxpr test rv-virt:knsh64. Security?
 
 TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
 
-Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years.
+Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years. Special Thanks to Mr Gregory Nutt for your guidance.
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
