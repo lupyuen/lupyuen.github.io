@@ -106,12 +106,13 @@ pushd ../apps
 make -j import
 popd
 
-## Test NuttX on QEMU RISC-V 64-bit
+## Boot NuttX on QEMU RISC-V 64-bit
+## Run the NuttX Test with our Expect Script
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
 expect qemu-riscv-knsh64.exp
 ```
 
-(More about __expect__ in a while)
+[(__Expect Script__ shall validate the QEMU Output)](TODO)
 
 Our script above is called by __build_nuttx__. We wrap the output neatly in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
 
