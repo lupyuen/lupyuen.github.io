@@ -136,6 +136,7 @@ make -j
 qemu-system-riscv64 -kernel nuttx
 
 ## Roughly One Hour for 20 Rewinds of Build + Test</code></pre></div>
+<p>(What about Git Bisect? We’ll come back to this)</p>
 <p><em>Build and Test 20 times? Won’t the log be awfully messy?</em></p>
 <p>Ah that’s why we neatly present the <strong>20 Outcomes</strong> (Build + Test) into the <strong>NuttX Build History</strong> (part of <a href="TODO"><strong>NuttX Dashboard</strong></a>)</p>
 <p>TODO: Pic of Build History</p>
@@ -1208,10 +1209,11 @@ extract apps hash
 
 if failed: build_score=0
 if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
 <p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
-<p>Many Thanks to the awesome <strong>NuttX Admins</strong> and <strong>NuttX Devs</strong>! And <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years.</p>
+<p>Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for sticking with me all these years. Special Thanks to Mr Gregory Nutt for your guidance.</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
