@@ -130,7 +130,7 @@ make -j
 qemu-system-riscv64 -kernel nuttx
 ...
 ## Build and Test: 20th NuttX Commit
-git reset --hard HEAD~20
+git reset --hard HEAD~19
 tools/configure.sh rv-virt:knsh64
 make -j
 qemu-system-riscv64 -kernel nuttx
@@ -165,10 +165,8 @@ for commit in $(
   build_commit \
     $tmp_dir/$nuttx_hash.log \
     $timestamp \
-    $apps_hash \
-    $nuttx_hash \
-    $prev_hash \
-    $next_hash
+    $apps_hash $nuttx_hash \
+    $prev_hash $next_hash
 
   ## Shift the Commits
   next_hash=$nuttx_hash
