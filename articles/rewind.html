@@ -116,7 +116,7 @@ apps_hash=   ## Optional: Begin with this Apps Hash
   rv-virt:knsh64_test \
   $nuttx_hash \
   $apps_hash</code></pre></div>
-<p>The Rewind Script runs <strong>20 Iterations of Build + Test</strong>…</p>
+<p>Our Rewind Script runs <strong>20 Iterations of Build + Test</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test: Latest NuttX Commit
 git reset --hard HEAD
 tools/configure.sh rv-virt:knsh64
@@ -138,14 +138,14 @@ qemu-system-riscv64 -kernel nuttx
 ## Roughly One Hour for 20 Rewinds of Build + Test</code></pre></div>
 <p>(What about Git Bisect? We’ll come back to this)</p>
 <p><em>Build and Test 20 times? Won’t the log be awfully messy?</em></p>
-<p>Ah that’s why we neatly present the <strong>20 Outcomes</strong> (Build + Test) into the <strong>NuttX Build History</strong> (part of <a href="TODO"><strong>NuttX Dashboard</strong></a>)</p>
+<p>Ah that’s why we neatly present the <strong>20 Outcomes</strong> (Build + Test) as the <strong>NuttX Build History</strong> (part of <a href="TODO"><strong>NuttX Dashboard</strong></a>)</p>
 <p>TODO: Pic of Build History</p>
 <p>What’s inside our script? We dive in…</p>
 <h1 id="inside-our-rewind-script"><a class="doc-anchor" href="#inside-our-rewind-script">§</a>2 Inside our Rewind Script</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh">rewind-build.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build the Latest 20 Commits
-num_commits=$max_commits
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test the Latest 20 Commits
+num_commits=20
 num_success=0
 count=1
 for commit in $(
@@ -155,13 +155,13 @@ for commit in $(
   --date=&#39;format-local:%Y-%m-%dT%H:%M:%S&#39; \
   --format=&quot;%cd,%H&quot;
 ); do
+  ## Extract the Commit Timestamp and Commit Hash
   ## Commit looks like 2024-11-24T09:52:42,9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
   prev_timestamp=$(echo $commit | cut -d &#39;,&#39; -f 1)  ## 2024-11-24T09:52:42
   prev_hash=$(echo $commit | cut -d &#39;,&#39; -f 2)  ## 9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
 
-  ## Omitted: Skip the first commit TODO
-
-  ## TODO:
+  ## Build and Test the NuttX Hash + Apps Hash
+  ## If It Fails: Build and Test the Previous NuttX Hash + Previous Apps Hash
   build_commit \
     $tmp_dir/$nuttx_hash.log \
     $timestamp \
@@ -176,95 +176,52 @@ for commit in $(
   timestamp=$prev_timestamp
   ((count++)) || true
 
-  ## Stop when we have reached the Minimum Number of Successful Commits
+  ## Stop when we have reached the
+  ## Minimum Number of Successful Commits
   if [[ &quot;$num_success&quot; == &quot;$min_commits&quot; ]]; then
     break
   fi
+
+  ## Omitted: Skip the First Commit (because we need a Previous Commit)
 done</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>function build_nuttx {
-  local nuttx_commit=$1
-  local apps_commit=$2
-  local target_slash=$(echo $target | tr &#39;:&#39; &#39;/&#39;)
-  local timestamp_space=$(echo $timestamp | tr &#39;T&#39; &#39; &#39;)
-
-  set +x  ## Disable Echo
-  echo &quot;====================================================================================&quot;
-  echo &quot;Configuration/Tool: $target_slash,&quot;
-  echo &quot;$timestamp_space&quot;
-  echo &quot;------------------------------------------------------------------------------------&quot;
-  set -x  ## Enable Echo
-
-  set +x  ## Disable Echo
-  if [[ &quot;$target&quot; == &quot;rv-virt:knsh64_test&quot;* ]]; then
-    ## Build and Test Locally: QEMU RISC-V knsh64
-    set +e  ## Ignore errors
-    set -x  ## Enable Echo
-    $script_dir/build-test-knsh64.sh $nuttx_commit $apps_commit
-    res=$?
-    set -e  ## Exit when any command fails
-  fi
-
-  set +x  ## Disable Echo
-  echo res=$res
-  echo &quot;====================================================================================&quot;
-  set -x  ## Enable Echo
-}
-
-## Build / Test the Target for the Commit
-echo &quot;Building This Commit: nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot;
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
 build_nuttx $nuttx_hash $apps_hash
-echo res=$res
 
-## If it fails: Rebuild with Previous Commit and Next Commit
-if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
-  echo &quot;***** BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash&quot;
+## If It Fails: Rebuild / Retest
+## With the Previous Commit and Next Commit
+if [[ &quot;$res&quot; != &quot;0&quot; ]]; then ...
+  build_nuttx $prev_hash $apps_hash
+  build_nuttx $next_hash $apps_hash
+fi
 
-  if [[ &quot;$prev_hash&quot; != &quot;$nuttx_hash&quot; ]]; then
-    echo &quot;Building Previous Commit: nuttx @ $prev_hash / nuttx-apps @ $apps_hash&quot;
-    res=
-    build_nuttx $prev_hash $apps_hash
-    echo res=$res
-    if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
-      echo &quot;***** BUILD / TEST FAILED FOR PREVIOUS COMMIT: nuttx @ $prev_hash / nuttx-apps @ $apps_hash&quot;
-    else
-      echo &quot;***** Build / Test OK for Previous Commit: nuttx @ $prev_hash / nuttx-apps @ $apps_hash&quot;
-    fi
-  fi
+## Build and Test One Commit
+function build_nuttx { ...
 
-  if [[ &quot;$next_hash&quot; != &quot;$nuttx_hash&quot; ]]; then
-    echo &quot;Building Next Commit: nuttx @ $next_hash / nuttx-apps @ $apps_hash&quot;
-    res=
-    build_nuttx $next_hash $apps_hash
-    echo res=$res
-    if [[ &quot;$res&quot; != &quot;0&quot; ]]; then
-      echo &quot;***** BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ $next_hash / nuttx-apps @ $apps_hash&quot;
-    else
-      echo &quot;***** Build / Test OK for Next Commit: nuttx @ $next_hash / nuttx-apps @ $apps_hash&quot;
-    fi
-  fi
-fi</code></pre></div>
+  ## NuttX Dashboard expects this Log Format
+  echo &quot;====================================================================================&quot;
+  echo &quot;Configuration/Tool: rv-virt/knsh64_test,&quot;
+  echo &quot;$timestamp&quot;
+  echo &quot;------------------------------------------------------------------------------------&quot;
+
+  ## Build and Test Locally: QEMU RISC-V 64-bit Kernel Build
+  $script_dir/build-test-knsh64.sh \
+    $nuttx_commit \
+    $apps_commit
+  res=$?
+
+  ## Omitted: Build and Test Other Targets
+  echo &quot;====================================================================================&quot;
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
-echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh $1 $2&quot;
-
 ## Download NuttX and Apps
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
 
-## Switch to this NuttX Commit
-if [[ &quot;$nuttx_hash&quot; != &quot;&quot; ]]; then
-  pushd nuttx
-  git reset --hard $nuttx_hash
-  popd
-fi
-
-## Switch to this Apps Commit
-if [[ &quot;$apps_hash&quot; != &quot;&quot; ]]; then
-  pushd apps
-  git reset --hard $apps_hash
-  popd
-fi
+## Switch to this NuttX Commit and Apps Commit
+pushd nuttx ; git reset --hard $nuttx_hash ; popd
+pushd apps  ; git reset --hard $apps_hash  ; popd
 
 ## Configure the NuttX Build
 cd nuttx
@@ -272,7 +229,6 @@ tools/configure.sh rv-virt:knsh64
 
 ## Build the NuttX Kernel
 make -j
-riscv-none-elf-size nuttx
 
 ## Build the NuttX Apps
 make -j export
@@ -281,11 +237,11 @@ pushd ../apps
 make -j import
 popd
 
-## Run the NuttX Test
-qemu-system-riscv64 --version
-script=qemu-riscv-knsh64
-wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/$script.exp
-expect ./$script.exp</code></pre></div><h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>3 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
+## Test NuttX on QEMU RISC-V 64-bit
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
+expect ./qemu-riscv-knsh64.exp</code></pre></div>
+<p>TODO: Expect</p>
+<h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>3 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
 
 https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
 NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
