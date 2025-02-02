@@ -173,7 +173,7 @@ popd
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
 expect qemu-riscv-knsh64.exp</code></pre></div>
 <p><a href="TODO">(<strong>Expect Script</strong> shall validate the QEMU Output)</a></p>
-<p>Our script above is called by <strong>build_nuttx</strong>. We wrap the output neatly in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
+<p>Our script above is called by <strong>build_nuttx</strong>. Which will wrap the output neatly in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
 function build_nuttx { ...
 
@@ -205,8 +205,7 @@ fi</code></pre></div>
 <p>Our log becomes a little easier to read, less flipping back and forth. Let’s zoom out…</p>
 <h1 id="testing-20-commits"><a class="doc-anchor" href="#testing-20-commits">§</a>3 Testing 20 Commits</h1>
 <p><em>Who calls the script above: rewind-commit.sh?</em></p>
-<p>TODO: Remember we need to Build and Test <strong>20 Commits</strong>?</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh">rewind-build.sh</a></p>
+<p>Remember we need to Build and Test <strong>20 Commits</strong>? We call the script above 20 times: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh">rewind-build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test the Latest 20 Commits
 num_commits=20
 num_success=0
@@ -243,7 +242,9 @@ for commit in $(
   if [[ &quot;$num_success&quot; == &quot;$min_commits&quot; ]]; then
     break
   fi
-done</code></pre></div><h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>4 Expect Script</h1>
+done</code></pre></div>
+<p><a href="TODO">(<strong>build_commit</strong> calls <em>rewind-commit.sh</em>)</a></p>
+<h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>4 Expect Script</h1>
 <p>TODO</p>
 <h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>5 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
 
