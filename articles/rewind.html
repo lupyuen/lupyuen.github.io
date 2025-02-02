@@ -66,20 +66,22 @@
     <h1 class="title">Auto-Rewind for Daily Test (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#find-the-breaking-commit" title="Find the Breaking Commit">1 Find the Breaking Commit</a><ul></ul></li>
-<li><a href="#inside-our-rewind-script" title="Inside our Rewind Script">2 Inside our Rewind Script</a><ul></ul></li>
-<li><a href="#expect-script" title="Expect Script">3 Expect Script</a><ul></ul></li>
-<li><a href="#get-hashes-from-prometheus" title="Get hashes from Prometheus">4 Get hashes from Prometheus</a><ul></ul></li>
-<li><a href="#query-prometheus" title="Query Prometheus">5 Query Prometheus</a><ul></ul></li>
-<li><a href="#get-log" title="Get Log">6 Get Log</a><ul></ul></li>
-<li><a href="#get-breaking-pr" title="Get Breaking PR">7 Get Breaking PR</a><ul></ul></li>
-<li><a href="#get-breaking-commit" title="Get Breaking Commit">8 Get Breaking Commit</a><ul></ul></li>
-<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">9 nuttx-rewind-notify</a><ul></ul></li>
-<li><a href="#cron-job" title="Cron Job">10 Cron Job</a><ul></ul></li>
-<li><a href="#convert-to-commit-id" title="Convert to Commit ID">11 Convert to Commit ID</a><ul></ul></li>
-<li><a href="#delete-snippet" title="Delete Snippet">12 Delete Snippet</a><ul></ul></li>
-<li><a href="#create-snippet" title="Create Snippet">13 Create Snippet</a><ul></ul></li>
-<li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">14 Test Failed vs Test OK</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
+<li><a href="#testing-one-commit" title="Testing One Commit">2 Testing One Commit</a><ul></ul></li>
+<li><a href="#testing-20-commits" title="Testing 20 Commits">3 Testing 20 Commits</a><ul></ul></li>
+<li><a href="#inside-our-rewind-script" title="Inside our Rewind Script">4 Inside our Rewind Script</a><ul></ul></li>
+<li><a href="#expect-script" title="Expect Script">5 Expect Script</a><ul></ul></li>
+<li><a href="#get-hashes-from-prometheus" title="Get hashes from Prometheus">6 Get hashes from Prometheus</a><ul></ul></li>
+<li><a href="#query-prometheus" title="Query Prometheus">7 Query Prometheus</a><ul></ul></li>
+<li><a href="#get-log" title="Get Log">8 Get Log</a><ul></ul></li>
+<li><a href="#get-breaking-pr" title="Get Breaking PR">9 Get Breaking PR</a><ul></ul></li>
+<li><a href="#get-breaking-commit" title="Get Breaking Commit">10 Get Breaking Commit</a><ul></ul></li>
+<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">11 nuttx-rewind-notify</a><ul></ul></li>
+<li><a href="#cron-job" title="Cron Job">12 Cron Job</a><ul></ul></li>
+<li><a href="#convert-to-commit-id" title="Convert to Commit ID">13 Convert to Commit ID</a><ul></ul></li>
+<li><a href="#delete-snippet" title="Delete Snippet">14 Delete Snippet</a><ul></ul></li>
+<li><a href="#create-snippet" title="Create Snippet">15 Create Snippet</a><ul></ul></li>
+<li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">16 Test Failed vs Test OK</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">17 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="TODO" /></p>
 <p>If the <strong>Daily Test</strong> fails for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s find out!</p>
 <ol>
@@ -100,67 +102,6 @@
 <p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
-<p><em>How to find the Breaking Commit?</em></p>
-<p>Let’s zoom out slowly, from Micro to Macro. This script will <strong>Build and Test NuttX</strong> for <strong>One Single Commit</strong> on QEMU: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
-## Download NuttX and Apps
-git clone https://github.com/apache/nuttx
-git clone https://github.com/apache/nuttx-apps apps
-
-## Switch to this NuttX Commit and Apps Commit
-pushd nuttx ; git reset --hard $nuttx_hash ; popd
-pushd apps  ; git reset --hard $apps_hash  ; popd
-
-## Configure the NuttX Build
-cd nuttx
-tools/configure.sh rv-virt:knsh64
-
-## Build the NuttX Kernel
-make -j
-
-## Build the NuttX Apps
-make -j export
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make -j import
-popd
-
-## Test NuttX on QEMU RISC-V 64-bit
-wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
-expect qemu-riscv-knsh64.exp</code></pre></div>
-<p>(More about <strong>expect</strong> in a while)</p>
-<p>Our script above is called by <strong>build_nuttx</strong>. Wrapped neatly in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
-function build_nuttx { ...
-
-  ## NuttX Dashboard expects this Log Format
-  echo &quot;====================================================================================&quot;
-  echo &quot;Configuration/Tool: rv-virt/knsh64_test,&quot;
-  echo &quot;$timestamp&quot;
-  echo &quot;------------------------------------------------------------------------------------&quot;
-
-  ## Build and Test Locally: QEMU RISC-V 64-bit Kernel Build
-  $script_dir/build-test-knsh64.sh \
-    $nuttx_commit \
-    $apps_commit
-  res=$?
-
-  ## Omitted: Build and Test Other Targets
-  echo &quot;====================================================================================&quot;
-}</code></pre></div>
-<p>Remember we need to Build and Test <strong>20 Commits</strong>?</p>
-<p>For Every Commit, we bundle <strong>Three Commits</strong> into a single log: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
-build_nuttx $nuttx_hash $apps_hash
-
-## If It Fails: Rebuild / Retest
-## With the Previous Commit and Next Commit
-## So it&#39;s easier to read
-if [[ &quot;$res&quot; != &quot;0&quot; ]]; then ...
-  build_nuttx $prev_hash $apps_hash
-  build_nuttx $next_hash $apps_hash
-fi</code></pre></div>
-<p>TODO</p>
 <p>Our script will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Rewind Scripts
 git clone https://github.com/lupyuen/nuttx-build-farm
@@ -202,7 +143,71 @@ qemu-system-riscv64 -kernel nuttx
 <p>Ah that’s why we neatly present the <strong>20 Outcomes</strong> (Build + Test) as the <strong>NuttX Build History</strong> (part of <a href="TODO"><strong>NuttX Dashboard</strong></a>)</p>
 <p>TODO: Pic of Build History</p>
 <p>What’s inside our script? We dive in…</p>
-<h1 id="inside-our-rewind-script"><a class="doc-anchor" href="#inside-our-rewind-script">§</a>2 Inside our Rewind Script</h1>
+<h1 id="testing-one-commit"><a class="doc-anchor" href="#testing-one-commit">§</a>2 Testing One Commit</h1>
+<p><em>How to find the Breaking Commit?</em></p>
+<p>Let’s zoom out slowly, from Micro to Macro. This script will <strong>Build and Test NuttX</strong> for <strong>One Single Commit</strong> on QEMU: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
+## Download NuttX and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+## Switch to this NuttX Commit and Apps Commit
+pushd nuttx ; git reset --hard $nuttx_hash ; popd
+pushd apps  ; git reset --hard $apps_hash  ; popd
+
+## Configure the NuttX Build
+cd nuttx
+tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make -j
+
+## Build the NuttX Apps
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Test NuttX on QEMU RISC-V 64-bit
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
+expect qemu-riscv-knsh64.exp</code></pre></div>
+<p>(More about <strong>expect</strong> in a while)</p>
+<p>Our script above is called by <strong>build_nuttx</strong>. We wrap the output neatly in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
+function build_nuttx { ...
+
+  ## NuttX Dashboard expects this Log Format
+  echo &quot;====================================================================================&quot;
+  echo &quot;Configuration/Tool: rv-virt/knsh64_test,&quot;
+  echo &quot;$timestamp&quot;
+  echo &quot;------------------------------------------------------------------------------------&quot;
+
+  ## Build and Test Locally: QEMU RISC-V 64-bit Kernel Build
+  $script_dir/build-test-knsh64.sh \
+    $nuttx_commit \
+    $apps_commit
+  res=$?
+
+  ## Omitted: Build and Test Other Targets
+  echo &quot;====================================================================================&quot;
+}</code></pre></div>
+<p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
+build_nuttx $nuttx_hash $apps_hash
+
+## If It Fails: Rebuild / Retest
+## With the Previous Commit and Next Commit
+## So it&#39;s easier to read
+if [[ &quot;$res&quot; != &quot;0&quot; ]]; then ...
+  build_nuttx $prev_hash $apps_hash
+  build_nuttx $next_hash $apps_hash
+fi</code></pre></div>
+<p>Let’s zoom out…</p>
+<h1 id="testing-20-commits"><a class="doc-anchor" href="#testing-20-commits">§</a>3 Testing 20 Commits</h1>
+<p><em>Who calls the script above: rewind-commit.sh?</em></p>
+<p>TODO: Remember we need to Build and Test <strong>20 Commits</strong>?</p>
+<h1 id="inside-our-rewind-script"><a class="doc-anchor" href="#inside-our-rewind-script">§</a>4 Inside our Rewind Script</h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh">rewind-build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test the Latest 20 Commits
@@ -241,9 +246,9 @@ for commit in $(
   if [[ &quot;$num_success&quot; == &quot;$min_commits&quot; ]]; then
     break
   fi
-done</code></pre></div><h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>3 Expect Script</h1>
+done</code></pre></div><h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>5 Expect Script</h1>
 <p>TODO</p>
-<h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>4 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
+<h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>6 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
 
 https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
 NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
@@ -270,7 +275,7 @@ OpenSBI v1.5.1
 ABC
 riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
 riscv_exception: Segmentation fault in PID 2: /system/bin/init
-(Earlier Commit is OK)</code></pre></div><h1 id="query-prometheus"><a class="doc-anchor" href="#query-prometheus">§</a>5 Query Prometheus</h1>
+(Earlier Commit is OK)</code></pre></div><h1 id="query-prometheus"><a class="doc-anchor" href="#query-prometheus">§</a>7 Query Prometheus</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Query prometheus for today&#39;s builds by rewind
 Sort by timestamp_log
@@ -308,7 +313,7 @@ Sort: Timestamp + NuttX Hash
 TODO: Add timestamp_log (from Snippet)
 
 Parse OSTest correctly
-https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12</code></pre></div><h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
+https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12</code></pre></div><h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>8 Get Log</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Log
 
@@ -398,7 +403,7 @@ Extract 5 lines:
 &quot;+ expect ./qemu&quot;
 
 Search for lines starting with &quot;===== Error: Test Failed&quot; or &quot;===== Test OK&quot;
-Backtrack last 10 lines</code></pre></div><h1 id="get-breaking-pr"><a class="doc-anchor" href="#get-breaking-pr">§</a>7 Get Breaking PR</h1>
+Backtrack last 10 lines</code></pre></div><h1 id="get-breaking-pr"><a class="doc-anchor" href="#get-breaking-pr">§</a>9 Get Breaking PR</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Breaking PR
 
@@ -811,7 +816,7 @@ curl -L \
     &quot;auto_merge&quot;: null,
     &quot;active_lock_reason&quot;: null
   }
-]</code></pre></div><h1 id="get-breaking-commit"><a class="doc-anchor" href="#get-breaking-commit">§</a>8 Get Breaking Commit</h1>
+]</code></pre></div><h1 id="get-breaking-commit"><a class="doc-anchor" href="#get-breaking-commit">§</a>10 Get Breaking Commit</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Breaking Commit
 
@@ -823,7 +828,7 @@ build_score_prev=&quot;1&quot;
 Get nuttx_hash_prev
 &quot;be40c01ddd6f43a527abeae31042ba7978aabb58&quot;
 
-build_score{apps_hash=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_next=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_prev=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, arch=&quot;unknown&quot;, board=&quot;rv-virt&quot;, build_score_next=&quot;0&quot;, build_score_prev=&quot;1&quot;, config=&quot;knsh64_test5&quot;, exported_instance=&quot;rv-virt:knsh64_test5@657247bda89d60112d79bb9b8d223eca5f9641b5@a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, exported_job=&quot;rewind&quot;, group=&quot;unknown&quot;, instance=&quot;localhost:9091&quot;, job=&quot;pushgateway&quot;, msg=&quot;+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa + nuttx_hash=48846954d8506e1c95089a8654787fdc42cc098c + apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa + neofetch .-/+oossssoo+/-. `:+ssssssssssssssssss+:` -+ssssssssssssssssssyyssss+-&quot;, nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;, nuttx_hash_next=&quot;48846954d8506e1c95089a8654787fdc42cc098c&quot;, nuttx_hash_prev=&quot;be40c01ddd6f43a527abeae31042ba7978aabb58&quot;, subarch=&quot;unknown&quot;, target=&quot;rv-virt:knsh64_test5&quot;, timestamp=&quot;2025-01-11T10:54:36&quot;, timestamp_log=&quot;2025-01-29T04:59:10.699Z&quot;, url=&quot;https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, url_display=&quot;gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, user=&quot;rewind&quot;, version=&quot;3&quot;}</code></pre></div><h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>9 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
+build_score{apps_hash=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_next=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_prev=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, arch=&quot;unknown&quot;, board=&quot;rv-virt&quot;, build_score_next=&quot;0&quot;, build_score_prev=&quot;1&quot;, config=&quot;knsh64_test5&quot;, exported_instance=&quot;rv-virt:knsh64_test5@657247bda89d60112d79bb9b8d223eca5f9641b5@a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, exported_job=&quot;rewind&quot;, group=&quot;unknown&quot;, instance=&quot;localhost:9091&quot;, job=&quot;pushgateway&quot;, msg=&quot;+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa + nuttx_hash=48846954d8506e1c95089a8654787fdc42cc098c + apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa + neofetch .-/+oossssoo+/-. `:+ssssssssssssssssss+:` -+ssssssssssssssssssyyssss+-&quot;, nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;, nuttx_hash_next=&quot;48846954d8506e1c95089a8654787fdc42cc098c&quot;, nuttx_hash_prev=&quot;be40c01ddd6f43a527abeae31042ba7978aabb58&quot;, subarch=&quot;unknown&quot;, target=&quot;rv-virt:knsh64_test5&quot;, timestamp=&quot;2025-01-11T10:54:36&quot;, timestamp_log=&quot;2025-01-29T04:59:10.699Z&quot;, url=&quot;https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, url_display=&quot;gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, user=&quot;rewind&quot;, version=&quot;3&quot;}</code></pre></div><h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>11 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
 
 export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
 ./run.sh&quot;,
@@ -1011,7 +1016,7 @@ tail -f /var/log/syslog
 2025-01-31T18:31:07.785932+08:00 thinkstation nuttx-rewind-notify:   }
 2025-01-31T18:31:07.786033+08:00 thinkstation nuttx-rewind-notify: }
 2025-01-31T18:31:07.786127+08:00 thinkstation nuttx-rewind-notify: 
-&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>10 Cron Job</h1>
+&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>12 Cron Job</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; cd $HOME/nuttx-build-farm &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
@@ -1096,7 +1101,7 @@ res=0
 &gt;&gt;
 
 Check the snippets
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="convert-to-commit-id"><a class="doc-anchor" href="#convert-to-commit-id">§</a>11 Convert to Commit ID</h1>
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="convert-to-commit-id"><a class="doc-anchor" href="#convert-to-commit-id">§</a>13 Convert to Commit ID</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>If Hash=HEAD:
 Convert to Commit ID
@@ -1107,14 +1112,14 @@ build_score{
     user!=&quot;nuttxmacos&quot;,
     user!=&quot;jerpelea&quot;
 } &lt; 0.5
-</code></pre></div><h1 id="delete-snippet"><a class="doc-anchor" href="#delete-snippet">§</a>12 Delete Snippet</h1>
+</code></pre></div><h1 id="delete-snippet"><a class="doc-anchor" href="#delete-snippet">§</a>14 Delete Snippet</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Delete Snippet
 https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
 
 curl --request DELETE \
   --header &quot;PRIVATE-TOKEN: &lt;your_access_token&gt;&quot; \
-  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div><h1 id="create-snippet"><a class="doc-anchor" href="#create-snippet">§</a>13 Create Snippet</h1>
+  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div><h1 id="create-snippet"><a class="doc-anchor" href="#create-snippet">§</a>15 Create Snippet</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Create Snippet
 https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
@@ -1146,7 +1151,7 @@ curl --request POST &quot;https://gitlab.com/api/v4/projects/$user%2F$repo/snipp
   --header &quot;PRIVATE-TOKEN: $GITLAB_TOKEN&quot; \
   -d @snippet.json
 
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488</code></pre></div><h1 id="test-failed-vs-test-ok"><a class="doc-anchor" href="#test-failed-vs-test-ok">§</a>14 Test Failed vs Test OK</h1>
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488</code></pre></div><h1 id="test-failed-vs-test-ok"><a class="doc-anchor" href="#test-failed-vs-test-ok">§</a>16 Test Failed vs Test OK</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx_hash_next
 nuttx_hash_prev
@@ -1166,7 +1171,7 @@ extract nuttx hash
 extract apps hash
 
 if failed: build_score=0
-if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>17 What’s Next</h1>
 <p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
