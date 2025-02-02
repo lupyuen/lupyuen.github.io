@@ -144,24 +144,19 @@ build_nuttx $nuttx_hash $apps_hash
 
 ## If It Fails: Rebuild / Retest
 ## With the Previous Commit and Next Commit
-## So it's easier to read
 if [[ "$res" != "0" ]]; then ...
   build_nuttx $prev_hash $apps_hash
   build_nuttx $next_hash $apps_hash
 fi
 ```
 
-Let's zoom out...
+Our log becomes a little easier to read, less flipping back and forth. Let's zoom out...
 
 # Testing 20 Commits
 
 _Who calls the script above: rewind-commit.sh?_
 
 TODO: Remember we need to Build and Test __20 Commits__?
-
-# Inside our Rewind Script
-
-TODO
 
 [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
 
