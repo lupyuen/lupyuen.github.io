@@ -176,11 +176,10 @@ for commit in $(
 
   ## Stop when we have reached the
   ## Minimum Number of Successful Commits
+  ## Omitted: Skip the First Commit (because we need a Previous Commit)
   if [[ &quot;$num_success&quot; == &quot;$min_commits&quot; ]]; then
     break
   fi
-
-  ## Omitted: Skip the First Commit (because we need a Previous Commit)
 done</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
