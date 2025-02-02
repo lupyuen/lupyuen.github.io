@@ -114,7 +114,7 @@ expect qemu-riscv-knsh64.exp
 
 [(__Expect Script__ shall validate the QEMU Output)](TODO)
 
-Our script above is called by __build_nuttx__. We wrap the output neatly in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+Our script above is called by __build_nuttx__. Which will wrap the output neatly in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
 
 ```bash
 ## Build and Test One Commit
@@ -157,9 +157,7 @@ Our log becomes a little easier to read, less flipping back and forth. Let's zoo
 
 _Who calls the script above: rewind-commit.sh?_
 
-TODO: Remember we need to Build and Test __20 Commits__?
-
-[rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
+Remember we need to Build and Test __20 Commits__? We call the script above 20 times: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
 
 ```bash
 ## Build and Test the Latest 20 Commits
@@ -201,7 +199,7 @@ for commit in $(
 done
 ```
 
-
+[(__build_commit__ calls _rewind-commit.sh_)](TODO)
 
 # Expect Script
 
