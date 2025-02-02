@@ -117,11 +117,10 @@ for commit in $(
 
   ## Stop when we have reached the
   ## Minimum Number of Successful Commits
+  ## Omitted: Skip the First Commit (because we need a Previous Commit)
   if [[ "$num_success" == "$min_commits" ]]; then
     break
   fi
-
-  ## Omitted: Skip the First Commit (because we need a Previous Commit)
 done
 ```
 
