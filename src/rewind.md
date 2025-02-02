@@ -76,6 +76,8 @@ TODO: Pic of Build History
 
 What's inside our script? We dive in...
 
+[(Which __Apps Hash__ to use? NuttX Build History can help)](TODO)
+
 # Testing One Commit
 
 _How to find the Breaking Commit?_
