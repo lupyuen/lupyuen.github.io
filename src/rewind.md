@@ -1191,6 +1191,8 @@ TODO: @nuttxpr test rv-virt:knsh64. Security?
 
 TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
 
+TODO: Why not Docker
+
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
