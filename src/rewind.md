@@ -99,7 +99,7 @@ for commit in $(
   ## Extract the Commit Timestamp and Commit Hash
   ## Commit looks like 2024-11-24T09:52:42,9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
   prev_timestamp=$(echo $commit | cut -d ',' -f 1)  ## 2024-11-24T09:52:42
-  prev_hash=$(echo $commit | cut -d ',' -f 2)  ## 9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
+  prev_hash=$(echo $commit | cut -d ',' -f 2)       ## 9f9cc7ecebd97c1a6b511a1863b1528295f68cd7
 
   ## Build and Test the NuttX Hash + Apps Hash
   ## If It Fails: Build and Test the Previous NuttX Hash + Previous Apps Hash
@@ -185,7 +185,7 @@ popd
 
 ## Test NuttX on QEMU RISC-V 64-bit
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
-expect ./qemu-riscv-knsh64.exp
+expect qemu-riscv-knsh64.exp
 ```
 
 TODO: Expect
