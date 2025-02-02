@@ -1238,7 +1238,7 @@ TODO: @nuttxpr test rv-virt:knsh64. Security?
 
 TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
 
-Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years. Special Thanks to Mr Gregory Nutt for your guidance.
+Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for sticking with me all these years. Special Thanks to Mr Gregory Nutt for your guidance and kindness.
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
