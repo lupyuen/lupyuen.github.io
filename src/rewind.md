@@ -22,7 +22,82 @@ Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V D
 
 # Find the Breaking Commit
 
-_How shall we find the Breaking Commit?_
+_How to find the Breaking Commit?_
+
+Let's zoom out slowly, from Micro to Macro. This script will __Build and Test NuttX__ for __One Single Commit__ on QEMU: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
+
+```bash
+## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
+## Download NuttX and Apps
+git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+## Switch to this NuttX Commit and Apps Commit
+pushd nuttx ; git reset --hard $nuttx_hash ; popd
+pushd apps  ; git reset --hard $apps_hash  ; popd
+
+## Configure the NuttX Build
+cd nuttx
+tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make -j
+
+## Build the NuttX Apps
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Test NuttX on QEMU RISC-V 64-bit
+wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
+expect qemu-riscv-knsh64.exp
+```
+
+(More about __expect__ in a while)
+
+Our script above is called by __build_nuttx__. Wrapped neatly in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+
+```bash
+## Build and Test One Commit
+function build_nuttx { ...
+
+  ## NuttX Dashboard expects this Log Format
+  echo "===================================================================================="
+  echo "Configuration/Tool: rv-virt/knsh64_test,"
+  echo "$timestamp"
+  echo "------------------------------------------------------------------------------------"
+
+  ## Build and Test Locally: QEMU RISC-V 64-bit Kernel Build
+  $script_dir/build-test-knsh64.sh \
+    $nuttx_commit \
+    $apps_commit
+  res=$?
+
+  ## Omitted: Build and Test Other Targets
+  echo "===================================================================================="
+}
+```
+
+Remember we need to Build and Test __20 Commits__?
+
+For Every Commit, we bundle __Three Commits__ into a single log: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+
+```bash
+## Build and Test This Commit
+build_nuttx $nuttx_hash $apps_hash
+
+## If It Fails: Rebuild / Retest
+## With the Previous Commit and Next Commit
+## So it's easier to read
+if [[ "$res" != "0" ]]; then ...
+  build_nuttx $prev_hash $apps_hash
+  build_nuttx $next_hash $apps_hash
+fi
+```
+
+TODO
 
 Our script will __Rewind the NuttX Build__ and discover the Breaking Commit...
 
@@ -124,71 +199,11 @@ for commit in $(
 done
 ```
 
-[rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
 
-```bash
-## Build and Test One Commit
-build_nuttx $nuttx_hash $apps_hash
 
-## If It Fails: Rebuild / Retest
-## With the Previous Commit and Next Commit
-if [[ "$res" != "0" ]]; then ...
-  build_nuttx $prev_hash $apps_hash
-  build_nuttx $next_hash $apps_hash
-fi
+# Expect Script
 
-## Build and Test One Commit
-function build_nuttx { ...
-
-  ## NuttX Dashboard expects this Log Format
-  echo "===================================================================================="
-  echo "Configuration/Tool: rv-virt/knsh64_test,"
-  echo "$timestamp"
-  echo "------------------------------------------------------------------------------------"
-
-  ## Build and Test Locally: QEMU RISC-V 64-bit Kernel Build
-  $script_dir/build-test-knsh64.sh \
-    $nuttx_commit \
-    $apps_commit
-  res=$?
-
-  ## Omitted: Build and Test Other Targets
-  echo "===================================================================================="
-}
-```
-
-[build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
-
-```bash
-## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
-## Download NuttX and Apps
-git clone https://github.com/apache/nuttx
-git clone https://github.com/apache/nuttx-apps apps
-
-## Switch to this NuttX Commit and Apps Commit
-pushd nuttx ; git reset --hard $nuttx_hash ; popd
-pushd apps  ; git reset --hard $apps_hash  ; popd
-
-## Configure the NuttX Build
-cd nuttx
-tools/configure.sh rv-virt:knsh64
-
-## Build the NuttX Kernel
-make -j
-
-## Build the NuttX Apps
-make -j export
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make -j import
-popd
-
-## Test NuttX on QEMU RISC-V 64-bit
-wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
-expect qemu-riscv-knsh64.exp
-```
-
-TODO: Expect
+TODO
 
 # Get hashes from Prometheus 
 
