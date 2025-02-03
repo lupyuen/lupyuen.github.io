@@ -556,14 +556,25 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 </li>
 <li>
 <p><em>Suppose we wish to add Our Own Boards to the System?</em></p>
-<p><strong>For Our Own Boards:</strong> We could upload the <strong>NuttX Test Logs</strong> (in the prescribed format) to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
-<p>(Rewinding the Build on Our Own Boards? That needs more work)</p>
+<p>Let’s assume we have <strong>Automated Board Testing</strong>. Then we could upload the <strong>NuttX Test Logs</strong> <em>(in the prescribed format)</em> to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
+<p>(Rewinding the Build on Our Own Boards? Needs more work)</p>
+</li>
+<li>
+<p><em>Why Rewind every commit? Isn’t Git Bisect quicker?</em></p>
+<p>Git Bisect won’t work if the Runtime Bug is <a href="https://lupyuen.github.io/articles/bisect#good-commit-goes-bad"><strong>Not Reliably Reproducible</strong></a>.</p>
+<p>When we Rewind 20 Commits, we’ll know if the bug is Reliably Reproducible.</p>
+</li>
+<li>
+<p><em>Why aren’t we using Docker?</em></p>
+<p>Docker doesn’t run OSTest correctly on <a href="https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions"><strong>QEMU RISC-V 64-bit</strong></a>.</p>
+</li>
+<li>
+<p><em>Any more Grand Plans?</em></p>
+<p>We might allow a <strong>PR Comment</strong> to trigger a Build + Test on QEMU. For example, this PR Comment…</p>
+<div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test rv-virt:knsh64</code></pre></div>
+<p>Will trigger our <strong>Test Bot</strong> to download the PR Code, and run Build + Test on QEMU RISC-V. Super helpful for <strong>Testing Pull Requests</strong> before Merging. But might have <a href="https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886"><strong>Security Implications</strong></a> 🤔</p>
 </li>
 </ol>
-<p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
-<p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
-<p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
-<p>TODO: Why not Docker</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
