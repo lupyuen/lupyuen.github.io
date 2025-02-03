@@ -415,7 +415,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-Grungy bits
+[Grungy bits](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251)
 
 [Extract the Build Log](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
 
