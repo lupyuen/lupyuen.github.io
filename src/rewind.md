@@ -419,7 +419,7 @@ let builds = &data["data"]["result"];
 
 _Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can't fix it right?_
 
-Here comes the __Human-Computer Interface__: Our Machine (kinda) __Escalates the Breaking Commit__ to the Right Human for fixing, politely please...
+Here comes the __Human-Computer Interface__: Our Machine (kinda) __Escalates the Breaking Commit__ to a Human Expert for fixing, politely please...
 
 <span style="font-size:80%">
 
@@ -447,7 +447,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init
 
 </span>
 
-This goes to our [__Mastodon Server__](https://lupyuen.github.io/articles/mastodon) for NuttX Continuous Integration. (I'll copy this and paste it as a PR Comment, after my vetting)
+This goes to our [__Mastodon Server__](https://lupyuen.github.io/articles/mastodon) for NuttX Continuous Integration. I'll copy this and paste it as a PR Comment, after my vetting.
 
 _Our Machine writes this based on the Breaking Commit? From the Previous Section?_
 
@@ -469,7 +469,7 @@ Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-r
 
 _But Mastodon Posts are limited to 500 chars?_
 
-Bummer. That's why we [__Create a GitLab Snippet__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410). And embed the Hyperlink in our Mastodon Post.
+Bummer. That's why we [__Create a GitLab Snippet__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410) for our Polite Note. And embed the Hyperlink in our Mastodon Post.
 
 _How to get the Breaking PR from GitHub?_
 
