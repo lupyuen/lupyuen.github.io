@@ -610,17 +610,29 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 
 1.  _Suppose we wish to add Our Own Boards to the System?_
 
-    __For Our Own Boards:__ We could upload the __NuttX Test Logs__ (in the prescribed format) to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
+    Let's assume we have __Automated Board Testing__. Then we could upload the __NuttX Test Logs__ _(in the prescribed format)_ to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
 
-    (Rewinding the Build on Our Own Boards? That needs more work)
+    (Rewinding the Build on Our Own Boards? Needs more work)
 
-TODO: @nuttxpr test rv-virt:knsh64. Security?
+1.  _Why Rewind every commit? Isn't Git Bisect quicker?_
 
-TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
+    Git Bisect won't work if the Runtime Bug is [__Not Reliably Reproducible__](https://lupyuen.github.io/articles/bisect#good-commit-goes-bad).
 
-TODO: Git Bisect? Assume < 20 commits. If necessary: Test and rewind more often
+    When we Rewind 20 Commits, we'll know if the bug is Reliably Reproducible.
 
-TODO: Why not Docker
+1.  _Why aren't we using Docker?_
+
+    Docker doesn't run OSTest correctly on [__QEMU RISC-V 64-bit__](https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions).
+
+1.  _Any more Grand Plans?_
+
+    We might allow a __PR Comment__ to trigger a Build + Test on QEMU. For example, this PR Comment...
+
+    ```bash
+    @nuttxpr test rv-virt:knsh64
+    ```
+
+    Will trigger our __Test Bot__ to download the PR Code, and run Build + Test on QEMU RISC-V. Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
 
 # What's Next
 
