@@ -369,6 +369,10 @@ Test Log #7 | This Commit is OK
 Test Log #8 | This Commit is OK
 ```
 
+[__Or Visually__...](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)
+
+TODO: Screenshot of Build History
+
 Ding ding: __Test Log #6__ will reveal the __Breaking Commit__!
 
 _Inside Prometheus: How to find Test Log #6?_
@@ -385,6 +389,31 @@ build_score{
 __Dear Prometheus:__ Please find the __Test Log__ for...
 
 TODO
+
+Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
+
+```rust
+// Fetch the Breaking Commit from Prometheus
+let query = format!(r##"
+  build_score{{
+    target="{TARGET}",
+    build_score_prev="1"
+  }} == 0
+"##);
+
+let params = [("query", query)];
+let client = reqwest::Client::new();
+let prometheus = format!("http://{prometheus_server}/api/v1/query");
+let res = client
+    .post(prometheus)
+    .form(&params)
+    .send()
+    .await?;
+
+let body = res.text().await?;
+let data: Value = serde_json::from_str(&body).unwrap();
+let builds = &data["data"]["result"];
+```
 
 # Get Log
 
