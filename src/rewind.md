@@ -576,7 +576,7 @@ $ tail -f /var/log/syslog
 
 [(__cron.sh__ will start TODO)](TODO)
 
-We'll see the __Mastodon Notification__...
+The __Mastodon Notification__ appears like so...
 
 <span style="font-size:80%">
 
