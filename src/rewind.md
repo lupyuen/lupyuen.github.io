@@ -303,6 +303,10 @@ build_score{
 } 0  ## Means This Commit Failed (Score=0)
 ```
 
+__Hello Prometheus:__ We're sending you the __Test Log__ for...
+
+TODO
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
 
 Which is transformed and transmitted by our __Rust App__, from GitLab Snippet to Prometheus: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
@@ -377,6 +381,8 @@ build_score{
   build_score_prev="1"
 } == 0
 ```
+
+__Dear Prometheus:__ Please find the __Test Log__ for...
 
 TODO
 
