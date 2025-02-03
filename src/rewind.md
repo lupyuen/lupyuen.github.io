@@ -854,7 +854,9 @@ Hopefully it will make my __Daily Routine__ a little less painful...
 
 - Oops Daily Test failed! I __Rewind or Bisect__ the Daily Build
 
-- I write a __Polite Note__ post it to the Pull Request
+- I write a __Polite Note__ _(depending on my mood)_
+
+- And post it to the __Breaking Pull Request__
 
 We're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
 
