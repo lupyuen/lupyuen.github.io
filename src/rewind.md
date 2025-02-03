@@ -415,147 +415,21 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-# Get Log
+[Extract the Build Log](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
 
-TODO
+[Only the Important Bits](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L251-L331)
 
-```text
-Get Log
+[Get the Breaking PR from GitHub, based on the Breaking Commit](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138)
 
-Breaking Commit:
-nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5"
+[Compose the Mastodon Post](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L157-L178)
 
-build_score{
-target="rv-virt:knsh64_test5",
-nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5"
-}
+[Post the Status to Mastodon](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L178-L220)
 
-url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L85"
+But 500 chars limit! Bummer
 
-Starting at Line 85: Search for lines starting with "+ " or "spawn"
+[Create a GitLab Snippet](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410)
 
-wget https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962/raw/main/ci-unknown.log
-grep "^+ " ci-unknown.log
-
-<<
-+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 657247bda89d60112d79bb9b8d223eca5f9641b5 a6b9e718460a56722205c2a84a9b07b94ca664aa
-+ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
-+ apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa
-+ neofetch
-+ tmp_path=/tmp/build-test-knsh64
-+ rm -rf /tmp/build-test-knsh64
-+ mkdir /tmp/build-test-knsh64
-+ cd /tmp/build-test-knsh64
-+ git clone https://github.com/apache/nuttx
-+ git clone https://github.com/apache/nuttx-apps apps
-+ [[ 657247bda89d60112d79bb9b8d223eca5f9641b5 != '' ]]
-+ pushd nuttx
-+ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-+ popd
-+ [[ a6b9e718460a56722205c2a84a9b07b94ca664aa != '' ]]
-+ pushd apps
-+ git reset --hard a6b9e718460a56722205c2a84a9b07b94ca664aa
-+ popd
-+ set +x
-+ riscv-none-elf-gcc -v
-+ rustup --version
-+ rustc --version
-+ cd nuttx
-+ tools/configure.sh rv-virt:knsh64
-+ make -j
-+ riscv-none-elf-size nuttx
-+ make -j export
-+ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
-+ make -j import
-+ popd
-+ qemu-system-riscv64 --version
-+ script=qemu-riscv-knsh64
-+ wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
-spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-+ expect ./qemu-riscv-knsh64.exp
->>
-
-Include Commit Info
-<<
-+ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
->>
-
-Include QEMU and OpenSBI version
-<<
-+ qemu-system-riscv64 --version
-QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.4)
-
-+ expect ./qemu-riscv-knsh64.exp
-spawn qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-
-OpenSBI v1.3
->>
-
-Extract Log from Line Number till "===== "
-Extract 5 lines:
-"+ git reset "
-"NuttX Source: "
-"NuttX Apps: "
-"+ qemu"
-"+ expect ./qemu"
-
-Search for lines starting with "===== Error: Test Failed" or "===== Test OK"
-Backtrack last 10 lines
-```
-
-
-# Get Hashes from Prometheus 
-
-```text
-TODO: Get hashes from Prometheus 
-
-https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
-NuttX Source: https://github.com/apache/nuttx/tree/aa0aecbd80a2ce69ee33ced41b7677f8521acd43
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-
-https://github.com/apache/nuttx/pull/15444#issuecomment-2585595498
-Sorry @yf13: This PR is causing "Instruction page fault" for rv-virt:knsh64. Wonder if there's something I missed in my testing steps? Thanks!
-
-https://gist.github.com/lupyuen/60d54514ce9a8589b56ed6207c356d95#file-special-qemu-riscv-knsh64-log-L1396
-+ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-+ tools/configure.sh rv-virt:knsh64
-+ make -j
-+ make export
-+ pushd ../apps
-+ ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-12.8.0.tar.gz
-+ make import
-+ popd
-+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-QEMU emulator version 9.2.0
-OpenSBI v1.5.1
-ABC
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init
-(Earlier Commit is OK)
-```
-
-# Query Prometheus
-
-TODO
-
-```text
-Query prometheus for today's builds by rewind
-Sort by timestamp_log
-
-Search for
-***** BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ 657247bda89d60112d79bb9b8d223eca5f9641b5 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-***** Build / Test OK for Previous Commit: nuttx @ be40c01ddd6f43a527abeae31042ba7978aabb58 / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-***** BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ 48846954d8506e1c95089a8654787fdc42cc098c / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799243#L1629
-
-Sort by Log Timestamp
-```
+[Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
 # Get Breaking PR
 
