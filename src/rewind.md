@@ -315,7 +315,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 
 [(How we fetch the __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
 
-[(And __Extract the Fields__ from Test Log)](https://github.com/lupyuen/ingest-nuttx-builds/pull/2/files)
+[(And __Extract the Fields__ from Test Logs)](https://github.com/lupyuen/ingest-nuttx-builds/pull/2/files)
 
 # Get hashes from Prometheus 
 
