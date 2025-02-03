@@ -277,7 +277,8 @@ This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
 build_score{ 
-  version="3",
+
+  ## These fields shall be rendered in Grafana (NuttX Dashboard and Build History)
   timestamp="2025-01-11T10:54:36",
   user="rewind",
   board="rv-virt",
@@ -298,7 +299,8 @@ build_score{
   nuttx_hash_next="48846954d8506e1c95089a8654787fdc42cc098c",
   apps_hash_next="a6b9e718460a56722205c2a84a9b07b94ca664aa",
   build_score_next="0"
-} 0  ## Means This Commit Failed
+
+} 0  ## Means This Commit Failed (Score=0)
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
