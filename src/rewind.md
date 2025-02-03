@@ -16,9 +16,9 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](TODO)... Can we __Auto-R
 
 _Why are we doing this?_
 
-__If NuttX Fails on QEMU RISC-V:__ High chance that NuttX will also fail on __RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
+If NuttX Fails on __QEMU RISC-V__: High chance that NuttX will also fail on __RISC-V SBCs__ like Ox64 BL808 and Oz64 SG2000.
 
-Thus it's important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
+Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
 # Find the Breaking Commit
 
@@ -303,11 +303,17 @@ build_score{
 } 0  ## Means This Commit Failed (Score=0)
 ```
 
-__Hello Prometheus:__ We're sending you the __Test Log__ for...
+__Hello Prometheus:__ We're sending you this __Test Log__ at the Specified URL...
 
-TODO
+- __NuttX Target__ is QEMU RISC-V _(rv-virt:knsh64)_
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
+- __Previous Commit__ is OK _(Previous Score = 1)_
+
+- __Next Commit__ is NOT OK _(Next Score = 0)_
+
+- __This Commit__ is NOT OK _(This Score = 0)_
+
+  [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
 
 Which is transformed and transmitted by our __Rust App__, from GitLab Snippet to Prometheus: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
 
@@ -386,7 +392,11 @@ build_score{
 
 __Dear Prometheus:__ Please find the __Test Log__ that matches...
 
-TODO
+- __NuttX Target__ is QEMU RISC-V _(rv-virt:knsh64)_
+
+- __Previous Commit__ is OK _(Previous Score = 1)_
+
+- __This Commit__ is NOT OK _(This Score = 0)_
 
 Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
 
@@ -419,7 +429,7 @@ let builds = &data["data"]["result"];
 
 _Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can't fix it right?_
 
-Here comes the __Human-Computer Interface__: Our Machine (kinda) __Escalates the Breaking Commit__ to a Human Expert for fixing, politely please...
+Here comes the Human-Computer Interface: Our Machine (kinda) __Escalates the Breaking Commit__ to a Human Expert for fixing, politely please...
 
 <span style="font-size:80%">
 
@@ -616,7 +626,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 
 1.  _Why Rewind every commit? Isn't Git Bisect quicker?_
 
-    Git Bisect won't work if the Runtime Bug is [__Not Reliably Reproducible__](https://lupyuen.github.io/articles/bisect#good-commit-goes-bad).
+    Ah remember that we're fixing Runtime Bugs, not Compile Errors. Git Bisect won't work if the Runtime Bug is [__Not Reliably Reproducible__](https://lupyuen.github.io/articles/bisect#good-commit-goes-bad).
 
     When we Rewind 20 Commits, we'll know if the bug is Reliably Reproducible.
 
