@@ -342,25 +342,38 @@ TODO: Breaking Commit
 
 # Query Prometheus for Breaking Commit
 
-_Test Logs are now inside Prometheus. How will Prometheus tell us the Breaking Commit?_
+_Test Logs are now inside Prometheus Database. How will Prometheus tell us the Breaking Commit?_
+
+Recall that our __Prometheus Database__ contains...
+
+- __20 Test Logs__ and their Outcomes:
+
+  _Commit is OK or Failed_
+
+- Each Test Log contains __Three Outcomes__:
+
+  _This Commit vs Previous Commit vs Next Commit_
+
+The __Test Logs__ in Prometheus will look like this...
+
+```text
+Test Log #1 | This Commit FAILED <br> Previous Commit FAILED
+Test Log #2 | This Commit FAILED <br> Previous Commit FAILED
+...
+Test Log #6 | This Commit FAILED <br> Previous Commit is OK
+Test Log #7 | This Commit is OK
+Test Log #8 | This Commit is OK
+```
+
+Ding ding: __Test Log #6__ will reveal the __Breaking Commit__!
 
 TODO
 
-```text
-Test Log #1:
-This Commit has Failed
-Previous Commit has Failed
-
-Test Log #2:
-This Commit has Failed
-Previous Commit has Failed
-...
-Test Log #6:
-This Commit has Failed
-Previous Commit is OK
-
-Test Log $7:
-This Commit is OK
+```bash
+build_score{
+target="rv-virt:knsh64_test5",
+build_score_prev="1"
+} == 0
 ```
 
 # Get Log
@@ -369,11 +382,6 @@ TODO
 
 ```text
 Get Log
-
-build_score{
-target="rv-virt:knsh64_test5",
-build_score_prev="1"
-} == 0
 
 Breaking Commit:
 nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5"
