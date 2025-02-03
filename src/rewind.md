@@ -763,7 +763,7 @@ Dunno, we're still testing? Hopefully the New System will make my __Daily Routin
 
 - Every Morning: I check the [__NuttX Daily Test__](TODO)
 
-- Oops Daily Test failed! I manually __Rewind or Bisect__ the Daily Build
+- Oops Daily Test failed! I run a script to [__Rewind or Bisect__](TODO) the Daily Build
 
 - I write a [__Polite Note__](TODO) _(depending on my mood)_
 
