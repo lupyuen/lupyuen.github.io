@@ -464,6 +464,10 @@ $ curl -L \
 
 # Cron Everything
 
+_We coded plenty of goodies over the Lunar New Year. How will they be triggered?_
+
+Via [__Ubuntu Cron__](TODO).
+
 TODO
 
 # nuttx-rewind-notify
