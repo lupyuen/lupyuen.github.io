@@ -393,7 +393,7 @@ TODO
 Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
 
 ```rust
-// Fetch the Breaking Commit from Prometheus
+// Query Prometheus for the Breaking Commit
 let query = format!(r##"
   build_score{{
     target="{TARGET}",
@@ -401,15 +401,17 @@ let query = format!(r##"
   }} == 0
 "##);
 
+// Send query to Prometheus via HTTP Form Post
 let params = [("query", query)];
 let client = reqwest::Client::new();
 let prometheus = format!("http://{prometheus_server}/api/v1/query");
 let res = client
-    .post(prometheus)
-    .form(&params)
-    .send()
-    .await?;
+  .post(prometheus)
+  .form(&params)
+  .send()
+  .await?;
 
+// Process the Query Results
 let body = res.text().await?;
 let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
@@ -836,6 +838,9 @@ if failed: build_score=0
 if successful: build_score=1
 ```
 
+# Be Kind, Rewind!
+
+TODO
 
 # What's Next
 
