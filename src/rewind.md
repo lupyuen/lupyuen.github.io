@@ -489,7 +489,11 @@ crontab -e
 
 ## Run every hour at 00:16, 01:16, 12:16, ...
 16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+```
 
+[See the Complete Log](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
+
+```text
 tail -f /var/log/syslog
 <<
 2025-01-31T18:29:21.853366+08:00 thinkstation crontab[3946431]: (luppy) BEGIN EDIT (luppy)
@@ -679,7 +683,11 @@ crontab -e
 
 ## Run every hour at 00:16, 01:16, 12:16, ...
 16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
+```
 
+[See the Complete Log](https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456)
+
+```text
 tail -f /var/log/syslog
 <<
 2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
@@ -761,9 +769,9 @@ _Wow this looks super complicated. Does it work?_
 
 Dunno, we're still testing? Hopefully the New System will make my __Daily Routine__ a little less painful...
 
-- Every Morning: I check the [__NuttX Daily Test__](TODO)
+- Every Morning: I check the [__NuttX Daily Test__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12)
 
-- Oops Daily Test failed! I run a script to [__Rewind or Bisect__](TODO) the Daily Build
+- Oops Daily Test failed! I run a script to [__Rewind or Bisect__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L45-L61) the Daily Build
 
 - I write a [__Polite Note__](TODO) _(depending on my mood)_
 
@@ -773,13 +781,17 @@ That's why we're __Fast Tracking__ the complicated new system: Right now it runs
 
 _What if it works?_
 
-TODO: Git Bisect? Assume < 20 commits. If necessary: Test and rewind more often
+We might try the __Daily Rewind__ on a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
 
-TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?
+Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they are quicker and more predictable.
+
+Plus other __QEMU Emulator Targets__: _rv-virt:nsh / nsh64 / knsh_
 
 TODO: @nuttxpr test rv-virt:knsh64. Security?
 
 TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment `@nuttxpr please test`, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
+
+TODO: Git Bisect? Assume < 20 commits. If necessary: Test and rewind more often
 
 TODO: Why not Docker
 
