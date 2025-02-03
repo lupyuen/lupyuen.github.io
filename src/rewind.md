@@ -761,11 +761,11 @@ _Wow this looks super complicated. Does it work?_
 
 Dunno, we're still testing? Hopefully the New System will make my __Daily Routine__ a little less painful...
 
-- Every Morning: I check the __NuttX Daily Test__
+- Every Morning: I check the [__NuttX Daily Test__](TODO)
 
 - Oops Daily Test failed! I manually __Rewind or Bisect__ the Daily Build
 
-- I write a __Polite Note__ _(depending on my mood)_
+- I write a [__Polite Note__](TODO) _(depending on my mood)_
 
 - And post it to the __Breaking Pull Request__
 
