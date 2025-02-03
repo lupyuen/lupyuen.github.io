@@ -342,7 +342,26 @@ TODO: Breaking Commit
 
 # Query Prometheus for Breaking Commit
 
+_Test Logs are now inside Prometheus. How will Prometheus tell us the Breaking Commit?_
+
 TODO
+
+```text
+Test Log #1:
+This Commit has Failed
+Previous Commit has Failed
+
+Test Log #2:
+This Commit has Failed
+Previous Commit has Failed
+...
+Test Log #6:
+This Commit has Failed
+Previous Commit is OK
+
+Test Log $7:
+This Commit is OK
+```
 
 # Get Log
 
