@@ -193,6 +193,7 @@ function build_nuttx { ...
   ## Omitted: Build and Test Other Targets
   echo &quot;====================================================================================&quot;
 }</code></pre></div>
+<p>TODO: Sample Build / Test Log</p>
 <p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
 build_nuttx $nuttx_hash $apps_hash
@@ -294,14 +295,43 @@ for commit in $(
   fi
 done</code></pre></div><h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
-<p>That’s because we need to ingest the Test Log into our <strong>NuttX Dashboard</strong>. (So we can present the log neatly as <strong>NuttX Build History</strong>)</p>
-<p>TODO</p>
-<p>Add Log Timestamp
-https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24</p>
-<p>Sort: Timestamp + NuttX Hash
-TODO: Add timestamp_log (from Snippet)</p>
-<p>Parse OSTest correctly
-https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12</p>
+<p>That’s because we’ll Ingest the Test Log into our <strong>NuttX Dashboard</strong>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
+<p>This is how we <strong>Ingest a Test Log</strong> into our <a href="TODO"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{
+  timestamp=&quot;2025-02-02T06:17:45&quot;,
+  user=&quot;rewind&quot;,
+  board=&quot;rv-virt&quot;,
+  config=&quot;knsh64_test&quot;,
+  target=&quot;rv-virt:knsh64_test&quot;,
+  url=&quot;https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801805#L80&quot;,
+  nuttx_hash=&quot;d36b2f94d351895dcb1a82f74ea89d5fafcac168&quot;,
+  apps_hash=&quot;43439a6b16a435bce7d9ac85f05c3a6013f91348&quot;
+} 0.8</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Complete Log</strong>)</a></p>
+<p>Which is transmitted by our <strong>Rust App</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the Test Log to Prometheus Pushgateway
+</span><span class="kw">async fn </span>post_to_pushgateway( ... ) -&gt; ... { ...
+
+  <span class="comment">// Compose the Pushgateway Metric
+  </span><span class="kw">let </span>body = <span class="macro">format!</span>(
+<span class="string">r##"
+build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{timestamp_log}", user="{user}", arch="{arch}", subarch="{subarch}", group="{group}", board="{board}", config="{config}", target="{target}", url="{url}", url_display="{url_display}"{msg_opt}{nuttx_hash_opt}{apps_hash_opt}{prev_opt}{next_opt} }} {build_score}
+"##</span>);
+
+  <span class="comment">// Send the Metric to Pushgateway via HTTP POST
+  </span><span class="kw">let </span>client = reqwest::Client::new();
+  <span class="kw">let </span>pushgateway = <span class="macro">format!</span>(<span class="string">"http://localhost:9091/metrics/job/{user}/instance/{target_rewind}"</span>);
+  <span class="kw">let </span>res = client
+    .post(pushgateway)
+    .body(body)
+    .send()
+    .<span class="kw">await</span><span class="question-mark">?</span>;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch the <strong>GitLab Snippets</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/pull/2/files">(And <strong>Extract the Fields</strong> from Test Log)</a></p>
 <h1 id="get-hashes-from-prometheus"><a class="doc-anchor" href="#get-hashes-from-prometheus">§</a>5 Get hashes from Prometheus</h1><div class="example-wrap"><pre class="language-text"><code>TODO: Get hashes from Prometheus 
 
 https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12
