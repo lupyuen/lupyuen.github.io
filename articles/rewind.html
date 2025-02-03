@@ -91,8 +91,8 @@
 </li>
 </ol>
 <p><em>Why are we doing this?</em></p>
-<p><strong>If NuttX Fails on QEMU RISC-V:</strong> High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
-<p>Thus it’s important to Nip the Bud and Fix the Bug, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
+<p>If NuttX Fails on <strong>QEMU RISC-V</strong>: High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
+<p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
 <p>Our script will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Rewind Scripts
@@ -319,9 +319,22 @@ build_score{
   build_score_next=&quot;0&quot;
 
 } 0  ## Means This Commit Failed (Score=0)</code></pre></div>
-<p><strong>Hello Prometheus:</strong> We’re sending you the <strong>Test Log</strong> for…</p>
-<p>TODO</p>
+<p><strong>Hello Prometheus:</strong> We’re sending you this <strong>Test Log</strong> at the Specified URL…</p>
+<ul>
+<li>
+<p><strong>NuttX Target</strong> is QEMU RISC-V <em>(rv-virt:knsh64)</em></p>
+</li>
+<li>
+<p><strong>Previous Commit</strong> is OK <em>(Previous Score = 1)</em></p>
+</li>
+<li>
+<p><strong>Next Commit</strong> is NOT OK <em>(Next Score = 0)</em></p>
+</li>
+<li>
+<p><strong>This Commit</strong> is NOT OK <em>(This Score = 0)</em></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578">(See the <strong>Complete Log</strong>)</a></p>
+</li>
+</ul>
 <p>Which is transformed and transmitted by our <strong>Rust App</strong>, from GitLab Snippet to Prometheus: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the Test Log to Prometheus Pushgateway
@@ -379,7 +392,17 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
   build_score_prev=&quot;1&quot;
 } == 0</code></pre></div>
 <p><strong>Dear Prometheus:</strong> Please find the <strong>Test Log</strong> that matches…</p>
-<p>TODO</p>
+<ul>
+<li>
+<p><strong>NuttX Target</strong> is QEMU RISC-V <em>(rv-virt:knsh64)</em></p>
+</li>
+<li>
+<p><strong>Previous Commit</strong> is OK <em>(Previous Score = 1)</em></p>
+</li>
+<li>
+<p><strong>This Commit</strong> is NOT OK <em>(This Score = 0)</em></p>
+</li>
+</ul>
 <p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
@@ -406,7 +429,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
-<p>Here comes the <strong>Human-Computer Interface</strong>: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to a Human Expert for fixing, politely please…</p>
+<p>Here comes the Human-Computer Interface: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to a Human Expert for fixing, politely please…</p>
 <span style="font-size:80%">
 <blockquote>
 <p>Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks! <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><em>nuttx-build-log/snippets/4800059</em></a></p>
@@ -561,7 +584,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 </li>
 <li>
 <p><em>Why Rewind every commit? Isn’t Git Bisect quicker?</em></p>
-<p>Git Bisect won’t work if the Runtime Bug is <a href="https://lupyuen.github.io/articles/bisect#good-commit-goes-bad"><strong>Not Reliably Reproducible</strong></a>.</p>
+<p>Ah remember that we’re fixing Runtime Bugs, not Compile Errors. Git Bisect won’t work if the Runtime Bug is <a href="https://lupyuen.github.io/articles/bisect#good-commit-goes-bad"><strong>Not Reliably Reproducible</strong></a>.</p>
 <p>When we Rewind 20 Commits, we’ll know if the bug is Reliably Reproducible.</p>
 </li>
 <li>
