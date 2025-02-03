@@ -778,10 +778,6 @@ tail -f /var/log/syslog
 >>
 ```
 
-# Cron Job
-
-TODO
-
 # Be Kind, Rewind!
 
 _Wow this looks super complicated. Does it work?_
