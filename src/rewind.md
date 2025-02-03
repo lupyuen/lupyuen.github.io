@@ -848,6 +848,18 @@ _Wow this looks super complicated. Does it work?_
 
 TODO: Dunno we're still testing? Hourly
 
+Hopefully it will make my __Daily Routine__ a little less painful...
+
+- Every Morning: I check the __NuttX Daily Test__
+
+- Oops Daily Test failed! I __Rewind or Bisect__ the Daily Build
+
+- I write a __Polite Note__ post it to the Pull Request
+
+We're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
+
+_What if it works?_
+
 TODO: Git Bisect? Assume < 20 commits. If necessary: Test and rewind more often
 
 TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?
