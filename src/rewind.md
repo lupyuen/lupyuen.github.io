@@ -82,7 +82,7 @@ What's inside our script? We dive in...
 
 _How to find the Breaking Commit?_
 
-Let's zoom out slowly, from Micro to Macro. This script will __Build and Test NuttX__ for __One Single Commit__ on QEMU: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
+We zoom out and explain slowly, from Micro to Macro. This script will __Build and Test NuttX__ for __One Single Commit__ on QEMU: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
 
 ```bash
 ## Build and Test NuttX for QEMU RISC-V 64-bit (Kernel Build)
@@ -116,7 +116,7 @@ expect qemu-riscv-knsh64.exp
 
 [(__Expect Script__ shall validate the QEMU Output)](TODO)
 
-Our script above is called by __build_nuttx__. Which will wrap the output neatly in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+The script above is called by __build_nuttx__ below. Which will wrap the output in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
 
 ```bash
 ## Build and Test One Commit
@@ -139,27 +139,85 @@ function build_nuttx { ...
 }
 ```
 
-For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
 
 ```bash
 ## Build and Test This Commit
 build_nuttx $nuttx_hash $apps_hash
 
-## If It Fails: Rebuild / Retest
-## With the Previous Commit and Next Commit
-if [[ "$res" != "0" ]]; then ...
+## If Build / Test Fails...
+if [[ "$res" != "0" ]]; then
+  echo "BUILD / TEST FAILED FOR THIS COMMIT: nuttx @ $nuttx_hash / nuttx-apps @ $apps_hash"
+
+  ## Rebuild / Retest with the Previous Commit
   build_nuttx $prev_hash $apps_hash
+  if [[ "$res" != "0" ]]; then
+    echo "BUILD / TEST FAILED FOR PREVIOUS COMMIT: nuttx @ $prev_hash / nuttx-apps @ $apps_hash"
+  fi
+
+  ## Rebuild / Retest with the Next Commit
   build_nuttx $next_hash $apps_hash
+  if [[ "$res" != "0" ]]; then
+    echo "BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ $next_hash / nuttx-apps @ $apps_hash"
+  fi
 fi
+
+## Why the Long Echoes? We'll ingest them later
 ```
 
-Our log becomes a little easier to read, less flipping back and forth. Let's zoom out...
+Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let's zoom out...
 
 # Testing 20 Commits
 
 _Who calls the script above: rewind-commit.sh?_
 
-Remember we need to Build and Test __20 Commits__? We call the script above 20 times: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh)
+The script above is called by __run_job__ below: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L105-L128)
+
+```bash
+## Build and Test This Commit
+## And capture the Build / Test Output
+function run_job { ...
+  script $log_file \
+    $script_option \
+    " \
+      $script_dir/rewind-commit.sh \
+        $target \
+        $nuttx_hash $apps_hash \
+        $timestamp \
+        $prev_hash $next_hash \
+    "
+}
+```
+
+Which captures the __Build / Test Output__ into a Log File.
+
+What happens to the __Log File__? We upload and publish it as a __GitLab Snippet__: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L75-L105)
+
+```bash
+## Build and Test One Commit for the NuttX Target
+function build_commit { ...
+
+  ## Build and Test This Commit
+  ## And capture the Build / Test Output into a Log File
+  run_job \
+    $log $timestamp \
+    $apps_hash $nuttx_hash \
+    $prev_hash $next_hash
+  clean_log $log
+  find_messages $log
+
+  ## Upload the Build / Test Log File
+  ## As GitLab Snippet
+  upload_log \
+    $log unknown \
+    $nuttx_hash $apps_hash \
+    $timestamp
+}
+```
+
+[(__upload_log__ creates the GitLab Snippet)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L172-L205)
+
+Remember we need to Build and Test __20 Commits__? We call the script above 20 times: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L205-L275)
 
 ```bash
 ## Build and Test the Latest 20 Commits
@@ -187,6 +245,7 @@ for commit in $(
     $prev_hash $next_hash
 
   ## Shift the Commits
+  ## Omitted: Skip the First Commit (because we need a Previous Commit)
   next_hash=$nuttx_hash
   nuttx_hash=$prev_hash
   timestamp=$prev_timestamp
@@ -194,14 +253,15 @@ for commit in $(
 
   ## Stop when we have reached the
   ## Minimum Number of Successful Commits
-  ## Omitted: Skip the First Commit (because we need a Previous Commit)
   if [[ "$num_success" == "$min_commits" ]]; then
     break
   fi
 done
 ```
 
-[(__build_commit__ calls _rewind-commit.sh_)](TODO)
+# Ingest the Test Log
+
+TODO
 
 # Get hashes from Prometheus 
 
