@@ -449,9 +449,9 @@ crontab -e
 */15 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-notify
 
 ## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-notify
-
-tail -f /var/log/syslog
+16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-notify</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf">See the Complete Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>tail -f /var/log/syslog
 &lt;&lt;
 2025-01-31T18:29:21.853366+08:00 thinkstation crontab[3946431]: (luppy) BEGIN EDIT (luppy)
 2025-01-31T18:29:29.480578+08:00 thinkstation crontab[3946431]: (luppy) REPLACE (luppy)
@@ -633,9 +633,9 @@ crontab -e
 0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build
 
 ## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build
-
-tail -f /var/log/syslog
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456">See the Complete Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>tail -f /var/log/syslog
 &lt;&lt;
 2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
 2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
@@ -712,10 +712,10 @@ https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="
 <p>Dunno, we’re still testing? Hopefully the New System will make my <strong>Daily Routine</strong> a little less painful…</p>
 <ul>
 <li>
-<p>Every Morning: I check the <a href="TODO"><strong>NuttX Daily Test</strong></a></p>
+<p>Every Morning: I check the <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12"><strong>NuttX Daily Test</strong></a></p>
 </li>
 <li>
-<p>Oops Daily Test failed! I run a script to <a href="TODO"><strong>Rewind or Bisect</strong></a> the Daily Build</p>
+<p>Oops Daily Test failed! I run a script to <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L45-L61"><strong>Rewind or Bisect</strong></a> the Daily Build</p>
 </li>
 <li>
 <p>I write a <a href="TODO"><strong>Polite Note</strong></a> <em>(depending on my mood)</em></p>
@@ -726,10 +726,12 @@ https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="
 </ul>
 <p>That’s why we’re <strong>Fast Tracking</strong> the complicated new system: Right now it runs <strong>Every Hour</strong> (instead of every day)</p>
 <p><em>What if it works?</em></p>
-<p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
-<p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
+<p>We might try the <strong>Daily Rewind</strong> on a Real Board: <a href="https://lupyuen.github.io/articles/sg2000a"><strong>Oz64 SG2000 RISC-V SBC</strong></a>.</p>
+<p>Or maybe <a href="https://lupyuen.github.io/articles/sg2000b"><strong>SG2000 Emulator</strong></a> and <a href="TODO"><strong>Ox64 Emulator</strong></a>, since they are quicker and more predictable.</p>
+<p>Plus other <strong>QEMU Emulator Targets</strong>: <em>rv-virt:nsh / nsh64 / knsh</em></p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
 <p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
+<p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: Why not Docker</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
