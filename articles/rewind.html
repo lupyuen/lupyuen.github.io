@@ -406,7 +406,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
-<p>Here comes the <strong>Human-Computer Interface</strong>: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to the Right Human for fixing, politely please…</p>
+<p>Here comes the <strong>Human-Computer Interface</strong>: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to a Human Expert for fixing, politely please…</p>
 <span style="font-size:80%">
 <blockquote>
 <p>Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks! <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><em>nuttx-build-log/snippets/4800059</em></a></p>
@@ -431,7 +431,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6">(See the Build History)</a></p>
 </blockquote>
 </span>
-<p>This goes to our <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Server</strong></a> for NuttX Continuous Integration. (I’ll copy this and paste it as a PR Comment, after my vetting)</p>
+<p>This goes to our <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Server</strong></a> for NuttX Continuous Integration. I’ll copy this and paste it as a PR Comment, after my vetting.</p>
 <p><em>Our Machine writes this based on the Breaking Commit? From the Previous Section?</em></p>
 <p>Exactly! We won’t explain the <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251"><strong>Dull Bits</strong></a>, involving…</p>
 <ol>
@@ -452,7 +452,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 </li>
 </ol>
 <p><em>But Mastodon Posts are limited to 500 chars?</em></p>
-<p>Bummer. That’s why we <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410"><strong>Create a GitLab Snippet</strong></a>. And embed the Hyperlink in our Mastodon Post.</p>
+<p>Bummer. That’s why we <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410"><strong>Create a GitLab Snippet</strong></a> for our Polite Note. And embed the Hyperlink in our Mastodon Post.</p>
 <p><em>How to get the Breaking PR from GitHub?</em></p>
 <p>We call the <a href="https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit"><strong>GitHub API</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fetch the Pull Request for this Commit
