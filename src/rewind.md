@@ -139,6 +139,8 @@ function build_nuttx { ...
 }
 ```
 
+TODO: Sample Build / Test Log
+
 For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
 
 ```bash
@@ -265,18 +267,55 @@ done
 
 _Why publish the Test Log as a GitLab Snippet?_
 
-That's because we need to ingest the Test Log into our __NuttX Dashboard__. (So we can present the log neatly as __NuttX Build History__)
+That's because we'll Ingest the Test Log into our __NuttX Dashboard__. (So we can present the logs neatly as __NuttX Build History__)
 
-TODO
+This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](TODO) (that powers our NuttX Dashboard)...
 
-Add Log Timestamp
-https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
+```bash
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{
+  timestamp="2025-02-02T06:17:45",
+  user="rewind",
+  board="rv-virt",
+  config="knsh64_test",
+  target="rv-virt:knsh64_test",
+  url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801805#L80",
+  nuttx_hash="d36b2f94d351895dcb1a82f74ea89d5fafcac168",
+  apps_hash="43439a6b16a435bce7d9ac85f05c3a6013f91348"
+} 0.8
+```
 
-Sort: Timestamp + NuttX Hash
-TODO: Add timestamp_log (from Snippet)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
-Parse OSTest correctly
-https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
+Which is transmitted by our __Rust App__: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
+
+```rust
+// Post the Test Log to Prometheus Pushgateway
+async fn post_to_pushgateway( ... ) -> ... { ...
+
+  // Compose the Pushgateway Metric
+  let body = format!(
+r##"
+# TYPE build_score gauge
+# HELP build_score 1.0 for successful build, 0.0 for failed build
+build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{timestamp_log}", user="{user}", arch="{arch}", subarch="{subarch}", group="{group}", board="{board}", config="{config}", target="{target}", url="{url}", url_display="{url_display}"{msg_opt}{nuttx_hash_opt}{apps_hash_opt}{prev_opt}{next_opt} }} {build_score}
+"##);
+
+  // Send the Metric to Pushgateway via HTTP POST
+  let client = reqwest::Client::new();
+  let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target_rewind}");
+  let res = client
+    .post(pushgateway)
+    .body(body)
+    .send()
+    .await?;
+}
+```
+
+[(How we fetch the __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
+
+[(And __Extract the Fields__ from Test Log)](https://github.com/lupyuen/ingest-nuttx-builds/pull/2/files)
 
 # Get hashes from Prometheus 
 
