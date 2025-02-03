@@ -369,14 +369,16 @@ Ding ding: __Test Log #6__ will reveal the __Breaking Commit__!
 
 _Inside Prometheus: How to find Test Log #6?_
 
-TODO
+We find the Breaking Commit with this __Prometheus Query__...
 
 ```bash
 build_score{
-target="rv-virt:knsh64_test5",
-build_score_prev="1"
+  target="rv-virt:knsh64_test",
+  build_score_prev="1"
 } == 0
 ```
+
+TODO
 
 # Get Log
 
