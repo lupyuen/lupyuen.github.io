@@ -449,6 +449,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 </li>
 <li>
 <p><strong>Without</strong> any AI or LLM</p>
+<p><em>(Because they ain’t cheap)</em></p>
 </li>
 </ol>
 <p><em>But Mastodon Posts are limited to 500 chars?</em></p>
@@ -465,7 +466,7 @@ $ curl -L \
 [{ html_url: &quot;https://github.com/apache/nuttx/pull/15444&quot;,
    title:    &quot;modlib: preprocess gnu-elf.ld for executable ELF&quot;,
    user: { login: &quot;GITHUB_USERID&quot;, ...</code></pre></div>
-<p>Which <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138"><strong>becomes this</strong></a> in our Rust App.</p>
+<p>Which <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138"><strong>becomes this function</strong></a> in our Rust App.</p>
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">Search the NuttX Commit in Prometheus</a></p>
 <h1 id="cron-everything"><a class="doc-anchor" href="#cron-everything">§</a>7 Cron Everything</h1>
@@ -529,6 +530,8 @@ $ make -j
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
 riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
 riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div><h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
+<ol>
+<li>
 <p><em>Wow this looks super complicated. Does it work?</em></p>
 <p>Dunno, we’re still testing? Hopefully the New System will make my <strong>Daily Routine</strong> a little less painful…</p>
 <ul>
@@ -546,13 +549,19 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 </li>
 </ul>
 <p>That’s why we’re <strong>Fast Tracking</strong> the complicated new system: Right now it runs <strong>Every Hour</strong> (instead of every day)</p>
+</li>
+<li>
 <p><em>What if it works?</em></p>
 <p>We might try the <strong>Daily Rewind</strong> on a Real Board: <a href="https://lupyuen.github.io/articles/sg2000a"><strong>Oz64 SG2000 RISC-V SBC</strong></a>.</p>
 <p>Or maybe <a href="https://lupyuen.github.io/articles/sg2000b"><strong>SG2000 Emulator</strong></a> and <a href="TODO"><strong>Ox64 Emulator</strong></a>, since they are quicker and more predictable.</p>
 <p>Plus other <strong>QEMU Emulator Targets</strong>: <em>rv-virt:nsh / nsh64 / knsh</em></p>
+</li>
+<li>
 <p><em>Suppose we wish to add Our Own Boards to the System?</em></p>
-<p><strong>For Our Own Boards:</strong> We could upload the <strong>Test Logs</strong> to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
-<p>(Rewinding the Build on Our Own Boards? That’s tricky)</p>
+<p><strong>For Our Own Boards:</strong> We could upload the <strong>NuttX Test Logs</strong> (in the prescribed format) to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
+<p>(Rewinding the Build on Our Own Boards? That needs more work)</p>
+</li>
+</ol>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
 <p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
 <p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
