@@ -71,14 +71,11 @@
 <li><a href="#ingest-the-test-log" title="Ingest the Test Log">4 Ingest the Test Log</a><ul></ul></li>
 <li><a href="#query-prometheus-for-breaking-commit" title="Query Prometheus for Breaking Commit">5 Query Prometheus for Breaking Commit</a><ul></ul></li>
 <li><a href="#write-a-polite-note" title="Write a Polite Note">6 Write a Polite Note</a><ul></ul></li>
-<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">7 nuttx-rewind-notify</a><ul></ul></li>
-<li><a href="#cron-job" title="Cron Job">8 Cron Job</a><ul></ul></li>
-<li><a href="#convert-to-commit-id" title="Convert to Commit ID">9 Convert to Commit ID</a><ul></ul></li>
-<li><a href="#delete-snippet" title="Delete Snippet">10 Delete Snippet</a><ul></ul></li>
-<li><a href="#create-snippet" title="Create Snippet">11 Create Snippet</a><ul></ul></li>
-<li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">12 Test Failed vs Test OK</a><ul></ul></li>
-<li><a href="#be-kind-rewind" title="Be Kind, Rewind!">13 Be Kind, Rewind!</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
+<li><a href="#cron-everything" title="Cron Everything">7 Cron Everything</a><ul></ul></li>
+<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">8 nuttx-rewind-notify</a><ul></ul></li>
+<li><a href="#cron-job" title="Cron Job">9 Cron Job</a><ul></ul></li>
+<li><a href="#be-kind-rewind" title="Be Kind, Rewind!">10 Be Kind, Rewind!</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="TODO" /></p>
 <p>If the <strong>Daily Test</strong> fails for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s find out!</p>
 <ol>
@@ -433,7 +430,9 @@ $ curl -L \
    title:    &quot;modlib: preprocess gnu-elf.ld for executable ELF&quot;,
    user: { login: &quot;GITHUB_USERID&quot;, ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>7 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
+<h1 id="cron-everything"><a class="doc-anchor" href="#cron-everything">§</a>7 Cron Everything</h1>
+<p>TODO</p>
+<h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>8 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
 
 export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
 ./run.sh&quot;,
@@ -621,7 +620,7 @@ tail -f /var/log/syslog
 2025-01-31T18:31:07.785932+08:00 thinkstation nuttx-rewind-notify:   }
 2025-01-31T18:31:07.786033+08:00 thinkstation nuttx-rewind-notify: }
 2025-01-31T18:31:07.786127+08:00 thinkstation nuttx-rewind-notify: 
-&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>8 Cron Job</h1>
+&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>9 Cron Job</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; cd $HOME/nuttx-build-farm &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
@@ -706,80 +705,9 @@ res=0
 &gt;&gt;
 
 Check the snippets
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="convert-to-commit-id"><a class="doc-anchor" href="#convert-to-commit-id">§</a>9 Convert to Commit ID</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>If Hash=HEAD:
-Convert to Commit ID
-
-build_score{
-    config!=&quot;leds64_zig&quot;,
-    user!=&quot;nuttxlinux&quot;,
-    user!=&quot;nuttxmacos&quot;,
-    user!=&quot;jerpelea&quot;
-} &lt; 0.5
-</code></pre></div><h1 id="delete-snippet"><a class="doc-anchor" href="#delete-snippet">§</a>10 Delete Snippet</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Delete Snippet
-https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
-
-curl --request DELETE \
-  --header &quot;PRIVATE-TOKEN: &lt;your_access_token&gt;&quot; \
-  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div><h1 id="create-snippet"><a class="doc-anchor" href="#create-snippet">§</a>11 Create Snippet</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Create Snippet
-https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
-
-snippet.json
-&lt;&lt;
-{
-  &quot;title&quot;: &quot;This is a snippet&quot;,
-  &quot;description&quot;: &quot;Hello World snippet&quot;,
-  &quot;visibility&quot;: &quot;public&quot;,
-  &quot;files&quot;: [
-    {
-      &quot;content&quot;: &quot;Hello world&quot;,
-      &quot;file_path&quot;: &quot;test.txt&quot;
-    }
-  ]
-}
-&gt;&gt;
-
-. $HOME/gitlab-token.sh
-user=lupyuen
-repo=nuttx-build-log
-curl --url https://gitlab.com/api/v4/projects/$user%2F$repo/snippets \
-  --header &#39;Content-Type: application/json&#39; \
-  --header &quot;PRIVATE-TOKEN: $GITLAB_TOKEN&quot; \
-
-curl --request POST &quot;https://gitlab.com/api/v4/projects/$user%2F$repo/snippets&quot; \
-  --header &#39;Content-Type: application/json&#39; \
-  --header &quot;PRIVATE-TOKEN: $GITLAB_TOKEN&quot; \
-  -d @snippet.json
-
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488</code></pre></div><h1 id="test-failed-vs-test-ok"><a class="doc-anchor" href="#test-failed-vs-test-ok">§</a>12 Test Failed vs Test OK</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx_hash_next
-nuttx_hash_prev
-
-apps_hash_next
-apps_prev_next
-
-build_score_next
-build_score_prev
-
-if group == &quot;unknown&quot;
-Search for
-&quot;build / test failed&quot; vs &quot;build / test ok&quot;
-&quot;this commit&quot; vs &quot;previous commit&quot; vs &quot;next commit&quot;
-
-extract nuttx hash
-extract apps hash
-
-if failed: build_score=0
-if successful: build_score=1</code></pre></div><h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>13 Be Kind, Rewind!</h1>
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>10 Be Kind, Rewind!</h1>
 <p><em>Wow this looks super complicated. Does it work?</em></p>
-<p>TODO: Dunno we’re still testing? Hourly</p>
-<p>Hopefully it will make my <strong>Daily Routine</strong> a little less painful…</p>
+<p>Dunno, we’re still testing? Hopefully the New System will make my <strong>Daily Routine</strong> a little less painful…</p>
 <ul>
 <li>
 <p>Every Morning: I check the <strong>NuttX Daily Test</strong></p>
@@ -794,14 +722,14 @@ if successful: build_score=1</code></pre></div><h1 id="be-kind-rewind"><a class=
 <p>And post it to the <strong>Breaking Pull Request</strong></p>
 </li>
 </ul>
-<p>We’re <strong>Fast Tracking</strong> the complicated new system: Right now it runs <strong>Every Hour</strong> (instead of every day)</p>
+<p>That’s why we’re <strong>Fast Tracking</strong> the complicated new system: Right now it runs <strong>Every Hour</strong> (instead of every day)</p>
 <p><em>What if it works?</em></p>
 <p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
 <p>TODO: I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment <code>@nuttxpr please test</code>, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔</p>
 <p>TODO: Why not Docker</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
