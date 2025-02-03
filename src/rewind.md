@@ -366,6 +366,8 @@ Recall that our __Prometheus Database__ contains...
 
 The __Test Logs__ in Prometheus will look like this...
 
+<span style="font-size:80%">
+
 | | |
 |:---:|:---|
 | _Test Log #1_ | This Commit _FAILED_ <br> Previous Commit _FAILED_
@@ -374,6 +376,10 @@ The __Test Logs__ in Prometheus will look like this...
 | _Test Log #6_ | This Commit _FAILED_ <br> Previous Commit is __OK__
 | _Test Log #7_ | This Commit is __OK__
 | _Test Log #8_ | This Commit is __OK__
+| _Test Log #9_ | This Commit is __OK__
+| &nbsp;
+
+</span>
 
 Ding ding: __Test Log #6__ will reveal the [__Breaking Commit__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)!
 
