@@ -452,6 +452,10 @@ $ curl -L \
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
 
+# Write a Polite Note
+
+TODO
+
 # nuttx-rewind-notify
 
 ```text
