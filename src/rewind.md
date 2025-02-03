@@ -648,7 +648,13 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
     @nuttxpr test rv-virt:knsh64
     ```
 
-    Will trigger our __Test Bot__ to download the PR Code, and run Build + Test on QEMU RISC-V. Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
+    Will trigger our __Test Bot__ to download the PR Code, and run Build + Test on QEMU RISC-V. Or on __Real Hardware__...
+
+    ```bash
+    @nuttxpr test milkv_duos:nsh
+    ```
+    
+    Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
 
 # What's Next
 
