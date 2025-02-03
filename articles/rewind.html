@@ -375,6 +375,8 @@ Test Log #2 | This Commit FAILED &lt;br&gt; Previous Commit FAILED
 Test Log #6 | This Commit FAILED &lt;br&gt; Previous Commit is OK
 Test Log #7 | This Commit is OK
 Test Log #8 | This Commit is OK</code></pre></div>
+<p><a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>Or Visually</strong>…</a></p>
+<p>TODO: Screenshot of Build History</p>
 <p>Ding ding: <strong>Test Log #6</strong> will reveal the <strong>Breaking Commit</strong>!</p>
 <p><em>Inside Prometheus: How to find Test Log #6?</em></p>
 <p>We find the Breaking Commit with this <strong>Prometheus Query</strong>…</p>
@@ -384,6 +386,28 @@ Test Log #8 | This Commit is OK</code></pre></div>
 } == 0</code></pre></div>
 <p><strong>Dear Prometheus:</strong> Please find the <strong>Test Log</strong> for…</p>
 <p>TODO</p>
+<p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Breaking Commit from Prometheus
+</span><span class="kw">let </span>query = <span class="macro">format!</span>(<span class="string">r##"
+  build_score{{
+    target="{TARGET}",
+    build_score_prev="1"
+  }} == 0
+"##</span>);
+
+<span class="kw">let </span>params = [(<span class="string">"query"</span>, query)];
+<span class="kw">let </span>client = reqwest::Client::new();
+<span class="kw">let </span>prometheus = <span class="macro">format!</span>(<span class="string">"http://{prometheus_server}/api/v1/query"</span>);
+<span class="kw">let </span>res = client
+    .post(prometheus)
+    .form(<span class="kw-2">&amp;</span>params)
+    .send()
+    .<span class="kw">await</span><span class="question-mark">?</span>;
+
+<span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
+<span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
+<span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Log
