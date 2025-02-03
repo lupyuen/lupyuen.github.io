@@ -451,7 +451,7 @@ This goes to our [__Mastodon Server__](https://lupyuen.github.io/articles/mastod
 
 _Our Machine writes this based on the Breaking Commit? From the Previous Section?_
 
-Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251), which involve...
+Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251), involving...
 
 1.  Extracting the [__Test Log__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
 
@@ -464,6 +464,8 @@ Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-r
 1.  Composing the [__Mastodon Post__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L157-L178)
 
     _(And [__Posting to Mastodon__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L178-L220))_
+
+1.  __Without__ any AI or LLM
 
 _But Mastodon Posts are limited to 500 chars?_
 
