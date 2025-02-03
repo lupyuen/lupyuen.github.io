@@ -462,6 +462,10 @@ $ curl -L \
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
 
+# Cron Everything
+
+TODO
+
 # nuttx-rewind-notify
 
 ```text
@@ -747,108 +751,11 @@ Check the snippets
 https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
 ```
 
-# Convert to Commit ID
-
-TODO
-
-```text
-If Hash=HEAD:
-Convert to Commit ID
-
-build_score{
-    config!="leds64_zig",
-    user!="nuttxlinux",
-    user!="nuttxmacos",
-    user!="jerpelea"
-} < 0.5
-
-```
-
-# Delete Snippet
-
-TODO
-
-```text
-Delete Snippet
-https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
-
-curl --request DELETE \
-  --header "PRIVATE-TOKEN: <your_access_token>" \
-  --url "https://gitlab.example.com/api/v4/snippets/1"
-```
-
-# Create Snippet
-
-TODO
-
-```text
-Create Snippet
-https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
-
-snippet.json
-<<
-{
-  "title": "This is a snippet",
-  "description": "Hello World snippet",
-  "visibility": "public",
-  "files": [
-    {
-      "content": "Hello world",
-      "file_path": "test.txt"
-    }
-  ]
-}
->>
-
-. $HOME/gitlab-token.sh
-user=lupyuen
-repo=nuttx-build-log
-curl --url https://gitlab.com/api/v4/projects/$user%2F$repo/snippets \
-  --header 'Content-Type: application/json' \
-  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-
-curl --request POST "https://gitlab.com/api/v4/projects/$user%2F$repo/snippets" \
-  --header 'Content-Type: application/json' \
-  --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-  -d @snippet.json
-
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488
-```
-
-
-# Test Failed vs Test OK
-
-TODO
-
-```text
-nuttx_hash_next
-nuttx_hash_prev
-
-apps_hash_next
-apps_prev_next
-
-build_score_next
-build_score_prev
-
-if group == "unknown"
-Search for
-"build / test failed" vs "build / test ok"
-"this commit" vs "previous commit" vs "next commit"
-
-extract nuttx hash
-extract apps hash
-
-if failed: build_score=0
-if successful: build_score=1
-```
-
 # Be Kind, Rewind!
 
 _Wow this looks super complicated. Does it work?_
 
-TODO: Dunno we're still testing? Hourly
-
-Hopefully it will make my __Daily Routine__ a little less painful...
+Dunno, we're still testing? Hopefully the New System will make my __Daily Routine__ a little less painful...
 
 - Every Morning: I check the __NuttX Daily Test__
 
@@ -858,7 +765,7 @@ Hopefully it will make my __Daily Routine__ a little less painful...
 
 - And post it to the __Breaking Pull Request__
 
-We're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
+That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
 
 _What if it works?_
 
