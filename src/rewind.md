@@ -276,19 +276,29 @@ This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database
 ```bash
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{
-  timestamp="2025-02-02T06:17:45",
+build_score{ 
+  version="3",
+  timestamp="2025-01-11T10:54:36",
   user="rewind",
   board="rv-virt",
   config="knsh64_test",
   target="rv-virt:knsh64_test",
-  url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801805#L80",
-  nuttx_hash="d36b2f94d351895dcb1a82f74ea89d5fafcac168",
-  apps_hash="43439a6b16a435bce7d9ac85f05c3a6013f91348"
-} 0.8
+  url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85",
+
+  nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5",
+  apps_hash="a6b9e718460a56722205c2a84a9b07b94ca664aa",
+
+  nuttx_hash_prev="be40c01ddd6f43a527abeae31042ba7978aabb58",
+  apps_hash_prev="a6b9e718460a56722205c2a84a9b07b94ca664aa",
+  build_score_prev="1",
+
+  nuttx_hash_next="48846954d8506e1c95089a8654787fdc42cc098c",
+  apps_hash_next="a6b9e718460a56722205c2a84a9b07b94ca664aa",
+  build_score_next="0"
+} 0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
 
 Which is transmitted by our __Rust App__: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
 
@@ -318,6 +328,8 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 [(How we fetch the __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
 
 [(And __Extract the Fields__ from Test Logs)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760)
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
 TODO: Screenshot of Prometheus
 
