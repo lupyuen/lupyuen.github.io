@@ -407,6 +407,10 @@ Test Log #8 | This Commit is OK</code></pre></div>
 </span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
+<h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
+<p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
+<p>Here comes the <strong>Human-Computer Interface</strong>: Our Machine <strong>Escalates the Breaking Commit</strong> to the Right Human for fixing, politely please…</p>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251">Grungy bits</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157">Extract the Build Log</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L251-L331">Only the Important Bits</a></p>
@@ -429,8 +433,6 @@ $ curl -L \
    title:    &quot;modlib: preprocess gnu-elf.ld for executable ELF&quot;,
    user: { login: &quot;GITHUB_USERID&quot;, ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
-<h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
-<p>TODO</p>
 <h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>7 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
 
 export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
