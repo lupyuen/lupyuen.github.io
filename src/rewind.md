@@ -360,20 +360,18 @@ Recall that our __Prometheus Database__ contains...
 
 The __Test Logs__ in Prometheus will look like this...
 
-```text
-Test Log #1 | This Commit FAILED <br> Previous Commit FAILED
-Test Log #2 | This Commit FAILED <br> Previous Commit FAILED
-...
-Test Log #6 | This Commit FAILED <br> Previous Commit is OK
-Test Log #7 | This Commit is OK
-Test Log #8 | This Commit is OK
-```
+| | |
+|:---:|:---|
+| _Test Log #1_ | This Commit _FAILED_ <br> Previous Commit _FAILED_
+| _Test Log #2_ | This Commit _FAILED_ <br> Previous Commit _FAILED_
+| ...
+| _Test Log #6_ | This Commit _FAILED_ <br> Previous Commit is __OK__
+| _Test Log #7_ | This Commit is __OK__
+| _Test Log #8_ | This Commit is __OK__
 
-[__Or Visually__...](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)
+Ding ding: __Test Log #6__ will reveal the __Breaking Commit__! [__Or Visually__...](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)
 
 TODO: Screenshot of Build History
-
-Ding ding: __Test Log #6__ will reveal the __Breaking Commit__!
 
 _Inside Prometheus: How to find Test Log #6?_
 
