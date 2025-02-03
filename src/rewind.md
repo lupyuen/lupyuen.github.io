@@ -367,6 +367,8 @@ Test Log #8 | This Commit is OK
 
 Ding ding: __Test Log #6__ will reveal the __Breaking Commit__!
 
+_Inside Prometheus: How to find Test Log #6?_
+
 TODO
 
 ```bash
