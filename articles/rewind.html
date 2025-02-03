@@ -374,6 +374,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 </li>
 </ul>
 <p>The <strong>Test Logs</strong> in Prometheus will look like this…</p>
+<span style="font-size:80%">
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><em>Test Log #1</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit <em>FAILED</em></td></tr>
 <tr><td style="text-align: center"><em>Test Log #2</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit <em>FAILED</em></td></tr>
@@ -381,8 +382,10 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 <tr><td style="text-align: center"><em>Test Log #6</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit is <strong>OK</strong></td></tr>
 <tr><td style="text-align: center"><em>Test Log #7</em></td><td style="text-align: left">This Commit is <strong>OK</strong></td></tr>
 <tr><td style="text-align: center"><em>Test Log #8</em></td><td style="text-align: left">This Commit is <strong>OK</strong></td></tr>
+<tr><td style="text-align: center"><em>Test Log #9</em></td><td style="text-align: left">This Commit is <strong>OK</strong></td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
-</div>
+</div></span>
 <p>Ding ding: <strong>Test Log #6</strong> will reveal the <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>Breaking Commit</strong></a>!</p>
 <p>TODO: Screenshot of Build History</p>
 <p><em>Inside Prometheus: How to find Test Log #6?</em></p>
