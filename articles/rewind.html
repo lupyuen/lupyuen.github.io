@@ -70,15 +70,13 @@
 <li><a href="#testing-20-commits" title="Testing 20 Commits">3 Testing 20 Commits</a><ul></ul></li>
 <li><a href="#ingest-the-test-log" title="Ingest the Test Log">4 Ingest the Test Log</a><ul></ul></li>
 <li><a href="#query-prometheus-for-breaking-commit" title="Query Prometheus for Breaking Commit">5 Query Prometheus for Breaking Commit</a><ul></ul></li>
-<li><a href="#get-breaking-pr" title="Get Breaking PR">6 Get Breaking PR</a><ul></ul></li>
-<li><a href="#get-breaking-commit" title="Get Breaking Commit">7 Get Breaking Commit</a><ul></ul></li>
-<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">8 nuttx-rewind-notify</a><ul></ul></li>
-<li><a href="#cron-job" title="Cron Job">9 Cron Job</a><ul></ul></li>
-<li><a href="#convert-to-commit-id" title="Convert to Commit ID">10 Convert to Commit ID</a><ul></ul></li>
-<li><a href="#delete-snippet" title="Delete Snippet">11 Delete Snippet</a><ul></ul></li>
-<li><a href="#create-snippet" title="Create Snippet">12 Create Snippet</a><ul></ul></li>
-<li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">13 Test Failed vs Test OK</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
+<li><a href="#nuttx-rewind-notify" title="nuttx-rewind-notify">6 nuttx-rewind-notify</a><ul></ul></li>
+<li><a href="#cron-job" title="Cron Job">7 Cron Job</a><ul></ul></li>
+<li><a href="#convert-to-commit-id" title="Convert to Commit ID">8 Convert to Commit ID</a><ul></ul></li>
+<li><a href="#delete-snippet" title="Delete Snippet">9 Delete Snippet</a><ul></ul></li>
+<li><a href="#create-snippet" title="Create Snippet">10 Create Snippet</a><ul></ul></li>
+<li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">11 Test Failed vs Test OK</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="TODO" /></p>
 <p>If the <strong>Daily Test</strong> fails for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s find out!</p>
 <ol>
@@ -414,432 +412,20 @@ Test Log #8 | This Commit is OK</code></pre></div>
 <p>But 500 chars limit! Bummer</p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410">Create a GitLab Snippet</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">Search the NuttX Commit in Prometheus</a></p>
-<h1 id="get-breaking-pr"><a class="doc-anchor" href="#get-breaking-pr">§</a>6 Get Breaking PR</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Get Breaking PR
-
-List pull requests associated with a commit
-https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit
-
-commit=be40c01ddd6f43a527abeae31042ba7978aabb58
-curl -L \
+<p>TODo: Get Breaking PR</p>
+<p><a href="https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit">List pull requests associated with a commit</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Fetch the Pull Request for this Commit
+$ commit=be40c01ddd6f43a527abeae31042ba7978aabb58
+$ curl -L \
   -H &quot;Accept: application/vnd.github+json&quot; \
   -H &quot;X-GitHub-Api-Version: 2022-11-28&quot; \
   https://api.github.com/repos/apache/nuttx/commits/$commit/pulls
 
-[
-  {
-    &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444&quot;,
-    &quot;id&quot;: 2263146908,
-    &quot;node_id&quot;: &quot;PR_kwDODZiUac6G5OGc&quot;,
-    &quot;html_url&quot;: &quot;https://github.com/apache/nuttx/pull/15444&quot;,
-    &quot;diff_url&quot;: &quot;https://github.com/apache/nuttx/pull/15444.diff&quot;,
-    &quot;patch_url&quot;: &quot;https://github.com/apache/nuttx/pull/15444.patch&quot;,
-    &quot;issue_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/15444&quot;,
-    &quot;number&quot;: 15444,
-    &quot;state&quot;: &quot;closed&quot;,
-    &quot;locked&quot;: false,
-    &quot;title&quot;: &quot;modlib: preprocess gnu-elf.ld for executable ELF&quot;,
-    &quot;user&quot;: {
-      &quot;login&quot;: &quot;yf13&quot;,
-      &quot;id&quot;: 5899566,
-      &quot;node_id&quot;: &quot;MDQ6VXNlcjU4OTk1NjY=&quot;,
-      &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/5899566?v=4&quot;,
-      &quot;gravatar_id&quot;: &quot;&quot;,
-      &quot;url&quot;: &quot;https://api.github.com/users/yf13&quot;,
-      &quot;html_url&quot;: &quot;https://github.com/yf13&quot;,
-      &quot;followers_url&quot;: &quot;https://api.github.com/users/yf13/followers&quot;,
-      &quot;following_url&quot;: &quot;https://api.github.com/users/yf13/following{/other_user}&quot;,
-      &quot;gists_url&quot;: &quot;https://api.github.com/users/yf13/gists{/gist_id}&quot;,
-      &quot;starred_url&quot;: &quot;https://api.github.com/users/yf13/starred{/owner}{/repo}&quot;,
-      &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/yf13/subscriptions&quot;,
-      &quot;organizations_url&quot;: &quot;https://api.github.com/users/yf13/orgs&quot;,
-      &quot;repos_url&quot;: &quot;https://api.github.com/users/yf13/repos&quot;,
-      &quot;events_url&quot;: &quot;https://api.github.com/users/yf13/events{/privacy}&quot;,
-      &quot;received_events_url&quot;: &quot;https://api.github.com/users/yf13/received_events&quot;,
-      &quot;type&quot;: &quot;User&quot;,
-      &quot;user_view_type&quot;: &quot;public&quot;,
-      &quot;site_admin&quot;: false
-    },
-    &quot;body&quot;: &quot;# Summary\r\n\r\nThis allows apps for kernel mode NuttX (e.g. on arm/qemu-armv7a) can be built as executable type ELF files. Benefits of executable programs are smaller in size and easier GDB debugging.\r\n\r\nInitial scope was only for qemu-armv7a but it used an almost duplicated `gnu-elf.ld` which differs only at `.text` and `.data` addresses from the `gnu-elf.ld` in modlib.  \r\n\r\nTo avoid such duplications, a preprocessed `gnu-elf.ld` in modlib is added  so that to adapt to target config. This requires minor tweaks for `addrenv.h` so that some macros can be included in `gnu-elf.ld.in`.\r\n\r\n# Impacts\r\n\r\nHardware: qemu-armv7a or using kernel build.\r\n\r\n# Testing\r\n\r\n- local checks with QEMU v6.2 on Ubuntu 22.04: `qemu-armv7a:knsh`, `bl602evb:elf`.\r\n- CI checks\r\n\r\n&quot;,
-    &quot;created_at&quot;: &quot;2025-01-07T06:30:43Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-01-14T04:41:41Z&quot;,
-    &quot;closed_at&quot;: &quot;2025-01-11T10:54:36Z&quot;,
-    &quot;merged_at&quot;: &quot;2025-01-11T10:54:36Z&quot;,
-    &quot;merge_commit_sha&quot;: &quot;ff488133c9348901fc6abd3890299a9f9d81dec6&quot;,
-    &quot;assignee&quot;: null,
-    &quot;assignees&quot;: [
-
-    ],
-    &quot;requested_reviewers&quot;: [
-
-    ],
-    &quot;requested_teams&quot;: [
-
-    ],
-    &quot;labels&quot;: [
-      {
-        &quot;id&quot;: 7292036618,
-        &quot;node_id&quot;: &quot;LA_kwDODZiUac8AAAABsqOmCg&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx/labels/Arch:%20all&quot;,
-        &quot;name&quot;: &quot;Arch: all&quot;,
-        &quot;color&quot;: &quot;DC5544&quot;,
-        &quot;default&quot;: false,
-        &quot;description&quot;: &quot;Issues that apply to all architectures&quot;
-      },
-      {
-        &quot;id&quot;: 7292038640,
-        &quot;node_id&quot;: &quot;LA_kwDODZiUac8AAAABsqOt8A&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx/labels/Arch:%20arm&quot;,
-        &quot;name&quot;: &quot;Arch: arm&quot;,
-        &quot;color&quot;: &quot;DC5544&quot;,
-        &quot;default&quot;: false,
-        &quot;description&quot;: &quot;Issues related to ARM (32-bit) architecture&quot;
-      },
-      {
-        &quot;id&quot;: 7292097170,
-        &quot;node_id&quot;: &quot;LA_kwDODZiUac8AAAABsqSSkg&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx/labels/Area:%20OS%20Components&quot;,
-        &quot;name&quot;: &quot;Area: OS Components&quot;,
-        &quot;color&quot;: &quot;0075ca&quot;,
-        &quot;default&quot;: false,
-        &quot;description&quot;: &quot;OS Components issues&quot;
-      },
-      {
-        &quot;id&quot;: 7486822345,
-        &quot;node_id&quot;: &quot;LA_kwDODZiUac8AAAABvj_XyQ&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx/labels/Size:%20S&quot;,
-        &quot;name&quot;: &quot;Size: S&quot;,
-        &quot;color&quot;: &quot;FEF2C0&quot;,
-        &quot;default&quot;: false,
-        &quot;description&quot;: &quot;The size of the change in this PR is small&quot;
-      }
-    ],
-    &quot;milestone&quot;: null,
-    &quot;draft&quot;: false,
-    &quot;commits_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444/commits&quot;,
-    &quot;review_comments_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444/comments&quot;,
-    &quot;review_comment_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/comments{/number}&quot;,
-    &quot;comments_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/15444/comments&quot;,
-    &quot;statuses_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/statuses/1be695191cd77b426ac53914cf0ebc0e60617c8c&quot;,
-    &quot;head&quot;: {
-      &quot;label&quot;: &quot;yf13:a7mi&quot;,
-      &quot;ref&quot;: &quot;a7mi&quot;,
-      &quot;sha&quot;: &quot;1be695191cd77b426ac53914cf0ebc0e60617c8c&quot;,
-      &quot;user&quot;: {
-        &quot;login&quot;: &quot;yf13&quot;,
-        &quot;id&quot;: 5899566,
-        &quot;node_id&quot;: &quot;MDQ6VXNlcjU4OTk1NjY=&quot;,
-        &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/5899566?v=4&quot;,
-        &quot;gravatar_id&quot;: &quot;&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/users/yf13&quot;,
-        &quot;html_url&quot;: &quot;https://github.com/yf13&quot;,
-        &quot;followers_url&quot;: &quot;https://api.github.com/users/yf13/followers&quot;,
-        &quot;following_url&quot;: &quot;https://api.github.com/users/yf13/following{/other_user}&quot;,
-        &quot;gists_url&quot;: &quot;https://api.github.com/users/yf13/gists{/gist_id}&quot;,
-        &quot;starred_url&quot;: &quot;https://api.github.com/users/yf13/starred{/owner}{/repo}&quot;,
-        &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/yf13/subscriptions&quot;,
-        &quot;organizations_url&quot;: &quot;https://api.github.com/users/yf13/orgs&quot;,
-        &quot;repos_url&quot;: &quot;https://api.github.com/users/yf13/repos&quot;,
-        &quot;events_url&quot;: &quot;https://api.github.com/users/yf13/events{/privacy}&quot;,
-        &quot;received_events_url&quot;: &quot;https://api.github.com/users/yf13/received_events&quot;,
-        &quot;type&quot;: &quot;User&quot;,
-        &quot;user_view_type&quot;: &quot;public&quot;,
-        &quot;site_admin&quot;: false
-      },
-      &quot;repo&quot;: {
-        &quot;id&quot;: 730975045,
-        &quot;node_id&quot;: &quot;R_kgDOK5HLRQ&quot;,
-        &quot;name&quot;: &quot;nuttx&quot;,
-        &quot;full_name&quot;: &quot;yf13/nuttx&quot;,
-        &quot;private&quot;: false,
-        &quot;owner&quot;: {
-          &quot;login&quot;: &quot;yf13&quot;,
-          &quot;id&quot;: 5899566,
-          &quot;node_id&quot;: &quot;MDQ6VXNlcjU4OTk1NjY=&quot;,
-          &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/5899566?v=4&quot;,
-          &quot;gravatar_id&quot;: &quot;&quot;,
-          &quot;url&quot;: &quot;https://api.github.com/users/yf13&quot;,
-          &quot;html_url&quot;: &quot;https://github.com/yf13&quot;,
-          &quot;followers_url&quot;: &quot;https://api.github.com/users/yf13/followers&quot;,
-          &quot;following_url&quot;: &quot;https://api.github.com/users/yf13/following{/other_user}&quot;,
-          &quot;gists_url&quot;: &quot;https://api.github.com/users/yf13/gists{/gist_id}&quot;,
-          &quot;starred_url&quot;: &quot;https://api.github.com/users/yf13/starred{/owner}{/repo}&quot;,
-          &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/yf13/subscriptions&quot;,
-          &quot;organizations_url&quot;: &quot;https://api.github.com/users/yf13/orgs&quot;,
-          &quot;repos_url&quot;: &quot;https://api.github.com/users/yf13/repos&quot;,
-          &quot;events_url&quot;: &quot;https://api.github.com/users/yf13/events{/privacy}&quot;,
-          &quot;received_events_url&quot;: &quot;https://api.github.com/users/yf13/received_events&quot;,
-          &quot;type&quot;: &quot;User&quot;,
-          &quot;user_view_type&quot;: &quot;public&quot;,
-          &quot;site_admin&quot;: false
-        },
-        &quot;html_url&quot;: &quot;https://github.com/yf13/nuttx&quot;,
-        &quot;description&quot;: &quot;Apache NuttX is a mature, real-time embedded operating system (RTOS)&quot;,
-        &quot;fork&quot;: true,
-        &quot;url&quot;: &quot;https://api.github.com/repos/yf13/nuttx&quot;,
-        &quot;forks_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/forks&quot;,
-        &quot;keys_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/keys{/key_id}&quot;,
-        &quot;collaborators_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/collaborators{/collaborator}&quot;,
-        &quot;teams_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/teams&quot;,
-        &quot;hooks_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/hooks&quot;,
-        &quot;issue_events_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/issues/events{/number}&quot;,
-        &quot;events_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/events&quot;,
-        &quot;assignees_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/assignees{/user}&quot;,
-        &quot;branches_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/branches{/branch}&quot;,
-        &quot;tags_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/tags&quot;,
-        &quot;blobs_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/git/blobs{/sha}&quot;,
-        &quot;git_tags_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/git/tags{/sha}&quot;,
-        &quot;git_refs_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/git/refs{/sha}&quot;,
-        &quot;trees_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/git/trees{/sha}&quot;,
-        &quot;statuses_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/statuses/{sha}&quot;,
-        &quot;languages_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/languages&quot;,
-        &quot;stargazers_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/stargazers&quot;,
-        &quot;contributors_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/contributors&quot;,
-        &quot;subscribers_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/subscribers&quot;,
-        &quot;subscription_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/subscription&quot;,
-        &quot;commits_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/commits{/sha}&quot;,
-        &quot;git_commits_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/git/commits{/sha}&quot;,
-        &quot;comments_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/comments{/number}&quot;,
-        &quot;issue_comment_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/issues/comments{/number}&quot;,
-        &quot;contents_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/contents/{+path}&quot;,
-        &quot;compare_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/compare/{base}...{head}&quot;,
-        &quot;merges_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/merges&quot;,
-        &quot;archive_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/{archive_format}{/ref}&quot;,
-        &quot;downloads_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/downloads&quot;,
-        &quot;issues_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/issues{/number}&quot;,
-        &quot;pulls_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/pulls{/number}&quot;,
-        &quot;milestones_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/milestones{/number}&quot;,
-        &quot;notifications_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/notifications{?since,all,participating}&quot;,
-        &quot;labels_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/labels{/name}&quot;,
-        &quot;releases_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/releases{/id}&quot;,
-        &quot;deployments_url&quot;: &quot;https://api.github.com/repos/yf13/nuttx/deployments&quot;,
-        &quot;created_at&quot;: &quot;2023-12-13T04:50:13Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-01-22T05:52:32Z&quot;,
-        &quot;pushed_at&quot;: &quot;2025-01-27T01:39:23Z&quot;,
-        &quot;git_url&quot;: &quot;git://github.com/yf13/nuttx.git&quot;,
-        &quot;ssh_url&quot;: &quot;git@github.com:yf13/nuttx.git&quot;,
-        &quot;clone_url&quot;: &quot;https://github.com/yf13/nuttx.git&quot;,
-        &quot;svn_url&quot;: &quot;https://github.com/yf13/nuttx&quot;,
-        &quot;homepage&quot;: &quot;https://nuttx.apache.org/&quot;,
-        &quot;size&quot;: 315415,
-        &quot;stargazers_count&quot;: 2,
-        &quot;watchers_count&quot;: 2,
-        &quot;language&quot;: &quot;C&quot;,
-        &quot;has_issues&quot;: false,
-        &quot;has_projects&quot;: true,
-        &quot;has_downloads&quot;: true,
-        &quot;has_wiki&quot;: false,
-        &quot;has_pages&quot;: true,
-        &quot;has_discussions&quot;: false,
-        &quot;forks_count&quot;: 0,
-        &quot;mirror_url&quot;: null,
-        &quot;archived&quot;: false,
-        &quot;disabled&quot;: false,
-        &quot;open_issues_count&quot;: 0,
-        &quot;license&quot;: {
-          &quot;key&quot;: &quot;apache-2.0&quot;,
-          &quot;name&quot;: &quot;Apache License 2.0&quot;,
-          &quot;spdx_id&quot;: &quot;Apache-2.0&quot;,
-          &quot;url&quot;: &quot;https://api.github.com/licenses/apache-2.0&quot;,
-          &quot;node_id&quot;: &quot;MDc6TGljZW5zZTI=&quot;
-        },
-        &quot;allow_forking&quot;: true,
-        &quot;is_template&quot;: false,
-        &quot;web_commit_signoff_required&quot;: false,
-        &quot;topics&quot;: [
-
-        ],
-        &quot;visibility&quot;: &quot;public&quot;,
-        &quot;forks&quot;: 0,
-        &quot;open_issues&quot;: 0,
-        &quot;watchers&quot;: 2,
-        &quot;default_branch&quot;: &quot;master&quot;
-      }
-    },
-    &quot;base&quot;: {
-      &quot;label&quot;: &quot;apache:master&quot;,
-      &quot;ref&quot;: &quot;master&quot;,
-      &quot;sha&quot;: &quot;91c71ed00a61ca4ba46000be9e814074e6a70e49&quot;,
-      &quot;user&quot;: {
-        &quot;login&quot;: &quot;apache&quot;,
-        &quot;id&quot;: 47359,
-        &quot;node_id&quot;: &quot;MDEyOk9yZ2FuaXphdGlvbjQ3MzU5&quot;,
-        &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/47359?v=4&quot;,
-        &quot;gravatar_id&quot;: &quot;&quot;,
-        &quot;url&quot;: &quot;https://api.github.com/users/apache&quot;,
-        &quot;html_url&quot;: &quot;https://github.com/apache&quot;,
-        &quot;followers_url&quot;: &quot;https://api.github.com/users/apache/followers&quot;,
-        &quot;following_url&quot;: &quot;https://api.github.com/users/apache/following{/other_user}&quot;,
-        &quot;gists_url&quot;: &quot;https://api.github.com/users/apache/gists{/gist_id}&quot;,
-        &quot;starred_url&quot;: &quot;https://api.github.com/users/apache/starred{/owner}{/repo}&quot;,
-        &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/apache/subscriptions&quot;,
-        &quot;organizations_url&quot;: &quot;https://api.github.com/users/apache/orgs&quot;,
-        &quot;repos_url&quot;: &quot;https://api.github.com/users/apache/repos&quot;,
-        &quot;events_url&quot;: &quot;https://api.github.com/users/apache/events{/privacy}&quot;,
-        &quot;received_events_url&quot;: &quot;https://api.github.com/users/apache/received_events&quot;,
-        &quot;type&quot;: &quot;Organization&quot;,
-        &quot;user_view_type&quot;: &quot;public&quot;,
-        &quot;site_admin&quot;: false
-      },
-      &quot;repo&quot;: {
-        &quot;id&quot;: 228103273,
-        &quot;node_id&quot;: &quot;MDEwOlJlcG9zaXRvcnkyMjgxMDMyNzM=&quot;,
-        &quot;name&quot;: &quot;nuttx&quot;,
-        &quot;full_name&quot;: &quot;apache/nuttx&quot;,
-        &quot;private&quot;: false,
-        &quot;owner&quot;: {
-          &quot;login&quot;: &quot;apache&quot;,
-          &quot;id&quot;: 47359,
-          &quot;node_id&quot;: &quot;MDEyOk9yZ2FuaXphdGlvbjQ3MzU5&quot;,
-          &quot;avatar_url&quot;: &quot;https://avatars.githubusercontent.com/u/47359?v=4&quot;,
-          &quot;gravatar_id&quot;: &quot;&quot;,
-          &quot;url&quot;: &quot;https://api.github.com/users/apache&quot;,
-          &quot;html_url&quot;: &quot;https://github.com/apache&quot;,
-          &quot;followers_url&quot;: &quot;https://api.github.com/users/apache/followers&quot;,
-          &quot;following_url&quot;: &quot;https://api.github.com/users/apache/following{/other_user}&quot;,
-          &quot;gists_url&quot;: &quot;https://api.github.com/users/apache/gists{/gist_id}&quot;,
-          &quot;starred_url&quot;: &quot;https://api.github.com/users/apache/starred{/owner}{/repo}&quot;,
-          &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/apache/subscriptions&quot;,
-          &quot;organizations_url&quot;: &quot;https://api.github.com/users/apache/orgs&quot;,
-          &quot;repos_url&quot;: &quot;https://api.github.com/users/apache/repos&quot;,
-          &quot;events_url&quot;: &quot;https://api.github.com/users/apache/events{/privacy}&quot;,
-          &quot;received_events_url&quot;: &quot;https://api.github.com/users/apache/received_events&quot;,
-          &quot;type&quot;: &quot;Organization&quot;,
-          &quot;user_view_type&quot;: &quot;public&quot;,
-          &quot;site_admin&quot;: false
-        },
-        &quot;html_url&quot;: &quot;https://github.com/apache/nuttx&quot;,
-        &quot;description&quot;: &quot;Apache NuttX is a mature, real-time embedded operating system (RTOS)&quot;,
-        &quot;fork&quot;: false,
-        &quot;url&quot;: &quot;https://api.github.com/repos/apache/nuttx&quot;,
-        &quot;forks_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/forks&quot;,
-        &quot;keys_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/keys{/key_id}&quot;,
-        &quot;collaborators_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/collaborators{/collaborator}&quot;,
-        &quot;teams_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/teams&quot;,
-        &quot;hooks_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/hooks&quot;,
-        &quot;issue_events_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/events{/number}&quot;,
-        &quot;events_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/events&quot;,
-        &quot;assignees_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/assignees{/user}&quot;,
-        &quot;branches_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/branches{/branch}&quot;,
-        &quot;tags_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/tags&quot;,
-        &quot;blobs_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/git/blobs{/sha}&quot;,
-        &quot;git_tags_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/git/tags{/sha}&quot;,
-        &quot;git_refs_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/git/refs{/sha}&quot;,
-        &quot;trees_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/git/trees{/sha}&quot;,
-        &quot;statuses_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/statuses/{sha}&quot;,
-        &quot;languages_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/languages&quot;,
-        &quot;stargazers_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/stargazers&quot;,
-        &quot;contributors_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/contributors&quot;,
-        &quot;subscribers_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/subscribers&quot;,
-        &quot;subscription_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/subscription&quot;,
-        &quot;commits_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/commits{/sha}&quot;,
-        &quot;git_commits_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/git/commits{/sha}&quot;,
-        &quot;comments_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/comments{/number}&quot;,
-        &quot;issue_comment_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/comments{/number}&quot;,
-        &quot;contents_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/contents/{+path}&quot;,
-        &quot;compare_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/compare/{base}...{head}&quot;,
-        &quot;merges_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/merges&quot;,
-        &quot;archive_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/{archive_format}{/ref}&quot;,
-        &quot;downloads_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/downloads&quot;,
-        &quot;issues_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues{/number}&quot;,
-        &quot;pulls_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls{/number}&quot;,
-        &quot;milestones_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/milestones{/number}&quot;,
-        &quot;notifications_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/notifications{?since,all,participating}&quot;,
-        &quot;labels_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/labels{/name}&quot;,
-        &quot;releases_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/releases{/id}&quot;,
-        &quot;deployments_url&quot;: &quot;https://api.github.com/repos/apache/nuttx/deployments&quot;,
-        &quot;created_at&quot;: &quot;2019-12-14T23:27:55Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-01-29T04:43:44Z&quot;,
-        &quot;pushed_at&quot;: &quot;2025-01-29T04:43:39Z&quot;,
-        &quot;git_url&quot;: &quot;git://github.com/apache/nuttx.git&quot;,
-        &quot;ssh_url&quot;: &quot;git@github.com:apache/nuttx.git&quot;,
-        &quot;clone_url&quot;: &quot;https://github.com/apache/nuttx.git&quot;,
-        &quot;svn_url&quot;: &quot;https://github.com/apache/nuttx&quot;,
-        &quot;homepage&quot;: &quot;https://nuttx.apache.org/&quot;,
-        &quot;size&quot;: 316389,
-        &quot;stargazers_count&quot;: 3066,
-        &quot;watchers_count&quot;: 3066,
-        &quot;language&quot;: &quot;C&quot;,
-        &quot;has_issues&quot;: true,
-        &quot;has_projects&quot;: true,
-        &quot;has_downloads&quot;: true,
-        &quot;has_wiki&quot;: false,
-        &quot;has_pages&quot;: false,
-        &quot;has_discussions&quot;: false,
-        &quot;forks_count&quot;: 1232,
-        &quot;mirror_url&quot;: null,
-        &quot;archived&quot;: false,
-        &quot;disabled&quot;: false,
-        &quot;open_issues_count&quot;: 572,
-        &quot;license&quot;: {
-          &quot;key&quot;: &quot;apache-2.0&quot;,
-          &quot;name&quot;: &quot;Apache License 2.0&quot;,
-          &quot;spdx_id&quot;: &quot;Apache-2.0&quot;,
-          &quot;url&quot;: &quot;https://api.github.com/licenses/apache-2.0&quot;,
-          &quot;node_id&quot;: &quot;MDc6TGljZW5zZTI=&quot;
-        },
-        &quot;allow_forking&quot;: true,
-        &quot;is_template&quot;: false,
-        &quot;web_commit_signoff_required&quot;: false,
-        &quot;topics&quot;: [
-          &quot;embedded&quot;,
-          &quot;mcu&quot;,
-          &quot;microcontroller&quot;,
-          &quot;nuttx&quot;,
-          &quot;real-time&quot;,
-          &quot;rtos&quot;
-        ],
-        &quot;visibility&quot;: &quot;public&quot;,
-        &quot;forks&quot;: 1232,
-        &quot;open_issues&quot;: 572,
-        &quot;watchers&quot;: 3066,
-        &quot;default_branch&quot;: &quot;master&quot;
-      }
-    },
-    &quot;_links&quot;: {
-      &quot;self&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444&quot;
-      },
-      &quot;html&quot;: {
-        &quot;href&quot;: &quot;https://github.com/apache/nuttx/pull/15444&quot;
-      },
-      &quot;issue&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/15444&quot;
-      },
-      &quot;comments&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/issues/15444/comments&quot;
-      },
-      &quot;review_comments&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444/comments&quot;
-      },
-      &quot;review_comment&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/comments{/number}&quot;
-      },
-      &quot;commits&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/pulls/15444/commits&quot;
-      },
-      &quot;statuses&quot;: {
-        &quot;href&quot;: &quot;https://api.github.com/repos/apache/nuttx/statuses/1be695191cd77b426ac53914cf0ebc0e60617c8c&quot;
-      }
-    },
-    &quot;author_association&quot;: &quot;CONTRIBUTOR&quot;,
-    &quot;auto_merge&quot;: null,
-    &quot;active_lock_reason&quot;: null
-  }
-]</code></pre></div><h1 id="get-breaking-commit"><a class="doc-anchor" href="#get-breaking-commit">§</a>7 Get Breaking Commit</h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Get Breaking Commit
-
-build_score{
-target=&quot;rv-virt:knsh64_test5&quot;,
-build_score_prev=&quot;1&quot;
-} == 0
-
-Get nuttx_hash_prev
-&quot;be40c01ddd6f43a527abeae31042ba7978aabb58&quot;
-
-build_score{apps_hash=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_next=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, apps_hash_prev=&quot;a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, arch=&quot;unknown&quot;, board=&quot;rv-virt&quot;, build_score_next=&quot;0&quot;, build_score_prev=&quot;1&quot;, config=&quot;knsh64_test5&quot;, exported_instance=&quot;rv-virt:knsh64_test5@657247bda89d60112d79bb9b8d223eca5f9641b5@a6b9e718460a56722205c2a84a9b07b94ca664aa&quot;, exported_job=&quot;rewind&quot;, group=&quot;unknown&quot;, instance=&quot;localhost:9091&quot;, job=&quot;pushgateway&quot;, msg=&quot;+ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh 48846954d8506e1c95089a8654787fdc42cc098c a6b9e718460a56722205c2a84a9b07b94ca664aa + nuttx_hash=48846954d8506e1c95089a8654787fdc42cc098c + apps_hash=a6b9e718460a56722205c2a84a9b07b94ca664aa + neofetch .-/+oossssoo+/-. `:+ssssssssssssssssss+:` -+ssssssssssssssssssyyssss+-&quot;, nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;, nuttx_hash_next=&quot;48846954d8506e1c95089a8654787fdc42cc098c&quot;, nuttx_hash_prev=&quot;be40c01ddd6f43a527abeae31042ba7978aabb58&quot;, subarch=&quot;unknown&quot;, target=&quot;rv-virt:knsh64_test5&quot;, timestamp=&quot;2025-01-11T10:54:36&quot;, timestamp_log=&quot;2025-01-29T04:59:10.699Z&quot;, url=&quot;https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, url_display=&quot;gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799962#L1629&quot;, user=&quot;rewind&quot;, version=&quot;3&quot;}</code></pre></div><h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>8 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
+[{ html_url: &quot;https://github.com/apache/nuttx/pull/15444&quot;,
+   title:    &quot;modlib: preprocess gnu-elf.ld for executable ELF&quot;,
+   user: { login: &quot;GITHUB_USERID&quot;, ...</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="nuttx-rewind-notify"><a class="doc-anchor" href="#nuttx-rewind-notify">§</a>6 nuttx-rewind-notify</h1><div class="example-wrap"><pre class="language-text"><code>nuttx-rewind-notify
 
 export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
 ./run.sh&quot;,
@@ -1027,7 +613,7 @@ tail -f /var/log/syslog
 2025-01-31T18:31:07.785932+08:00 thinkstation nuttx-rewind-notify:   }
 2025-01-31T18:31:07.786033+08:00 thinkstation nuttx-rewind-notify: }
 2025-01-31T18:31:07.786127+08:00 thinkstation nuttx-rewind-notify: 
-&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>9 Cron Job</h1>
+&gt;&gt;</code></pre></div><h1 id="cron-job"><a class="doc-anchor" href="#cron-job">§</a>7 Cron Job</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>https://help.ubuntu.com/community/CronHowto
 . $HOME/gitlab-token.sh &amp;&amp; glab auth status &amp;&amp; cd $HOME/nuttx-build-farm &amp;&amp; ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
@@ -1112,7 +698,7 @@ res=0
 &gt;&gt;
 
 Check the snippets
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="convert-to-commit-id"><a class="doc-anchor" href="#convert-to-commit-id">§</a>10 Convert to Commit ID</h1>
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets</code></pre></div><h1 id="convert-to-commit-id"><a class="doc-anchor" href="#convert-to-commit-id">§</a>8 Convert to Commit ID</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>If Hash=HEAD:
 Convert to Commit ID
@@ -1123,14 +709,14 @@ build_score{
     user!=&quot;nuttxmacos&quot;,
     user!=&quot;jerpelea&quot;
 } &lt; 0.5
-</code></pre></div><h1 id="delete-snippet"><a class="doc-anchor" href="#delete-snippet">§</a>11 Delete Snippet</h1>
+</code></pre></div><h1 id="delete-snippet"><a class="doc-anchor" href="#delete-snippet">§</a>9 Delete Snippet</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Delete Snippet
 https://docs.gitlab.com/ee/api/snippets.html#delete-snippet
 
 curl --request DELETE \
   --header &quot;PRIVATE-TOKEN: &lt;your_access_token&gt;&quot; \
-  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div><h1 id="create-snippet"><a class="doc-anchor" href="#create-snippet">§</a>12 Create Snippet</h1>
+  --url &quot;https://gitlab.example.com/api/v4/snippets/1&quot;</code></pre></div><h1 id="create-snippet"><a class="doc-anchor" href="#create-snippet">§</a>10 Create Snippet</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Create Snippet
 https://docs.gitlab.com/ee/api/snippets.html#create-new-snippet
@@ -1162,7 +748,7 @@ curl --request POST &quot;https://gitlab.com/api/v4/projects/$user%2F$repo/snipp
   --header &quot;PRIVATE-TOKEN: $GITLAB_TOKEN&quot; \
   -d @snippet.json
 
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488</code></pre></div><h1 id="test-failed-vs-test-ok"><a class="doc-anchor" href="#test-failed-vs-test-ok">§</a>13 Test Failed vs Test OK</h1>
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800488</code></pre></div><h1 id="test-failed-vs-test-ok"><a class="doc-anchor" href="#test-failed-vs-test-ok">§</a>11 Test Failed vs Test OK</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx_hash_next
 nuttx_hash_prev
@@ -1182,7 +768,7 @@ extract nuttx hash
 extract apps hash
 
 if failed: build_score=0
-if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
