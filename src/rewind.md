@@ -68,9 +68,9 @@ qemu-system-riscv64 -kernel nuttx
 
 (What about Git Bisect? We'll come back to this)
 
-_Build and Test 20 times? Won't the log be awfully messy?_
+_Build and Test 20 times! Won't it look mighty messy?_
 
-Ah that's why we neatly present the __20 Outcomes__ (Build + Test) as the __NuttX Build History__ (part of [__NuttX Dashboard__](TODO))
+Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the __NuttX Build History__ (part of [__NuttX Dashboard__](TODO))
 
 TODO: Pic of Build History
 
