@@ -354,29 +354,33 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 <p>TODO: Screenshot of Prometheus</p>
 <p>TODO: Breaking Commit</p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
-<p><em>Test Logs are now inside Prometheus. How will Prometheus tell us the Breaking Commit?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Test Log #1:
-This Commit has Failed
-Previous Commit has Failed
-
-Test Log #2:
-This Commit has Failed
-Previous Commit has Failed
+<p><em>Test Logs are now inside Prometheus Database. How will Prometheus tell us the Breaking Commit?</em></p>
+<p>Recall that our <strong>Prometheus Database</strong> contains…</p>
+<ul>
+<li>
+<p><strong>20 Test Logs</strong> and their Outcomes:</p>
+<p><em>Commit is OK or Failed</em></p>
+</li>
+<li>
+<p>Each Test Log contains <strong>Three Outcomes</strong>:</p>
+<p><em>This Commit vs Previous Commit vs Next Commit</em></p>
+</li>
+</ul>
+<p>The <strong>Test Logs</strong> in Prometheus will look like this…</p>
+<div class="example-wrap"><pre class="language-text"><code>Test Log #1 | This Commit FAILED &lt;br&gt; Previous Commit FAILED
+Test Log #2 | This Commit FAILED &lt;br&gt; Previous Commit FAILED
 ...
-Test Log #6:
-This Commit has Failed
-Previous Commit is OK
-
-Test Log $7:
-This Commit is OK</code></pre></div><h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
+Test Log #6 | This Commit FAILED &lt;br&gt; Previous Commit is OK
+Test Log #7 | This Commit is OK
+Test Log #8 | This Commit is OK</code></pre></div>
+<p>Ding ding: <strong>Test Log #6</strong> will reveal the <strong>Breaking Commit</strong>!</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Get Log
-
-build_score{
+<div class="example-wrap"><pre class="language-bash"><code>build_score{
 target=&quot;rv-virt:knsh64_test5&quot;,
 build_score_prev=&quot;1&quot;
-} == 0
+} == 0</code></pre></div><h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Get Log
 
 Breaking Commit:
 nuttx_hash=&quot;657247bda89d60112d79bb9b8d223eca5f9641b5&quot;
