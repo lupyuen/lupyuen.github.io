@@ -467,6 +467,8 @@ Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-r
 
 1.  __Without__ any AI or LLM
 
+    _(Because they ain't cheap)_
+
 _But Mastodon Posts are limited to 500 chars?_
 
 Bummer. That's why we [__Create a GitLab Snippet__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410) for our Polite Note. And embed the Hyperlink in our Mastodon Post.
@@ -488,7 +490,7 @@ $ curl -L \
    user: { login: "GITHUB_USERID", ...
 ```
 
-Which [__becomes this__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138) in our Rust App.
+Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138) in our Rust App.
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
 
@@ -580,33 +582,33 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init
 
 # Be Kind, Rewind!
 
-_Wow this looks super complicated. Does it work?_
+1.  _Wow this looks super complicated. Does it work?_
 
-Dunno, we're still testing? Hopefully the New System will make my __Daily Routine__ a little less painful...
+    Dunno, we're still testing? Hopefully the New System will make my __Daily Routine__ a little less painful...
 
-- Every Morning: I check the [__NuttX Daily Test__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12)
+    - Every Morning: I check the [__NuttX Daily Test__](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-knsh64-2025-01-12)
 
-- Oops Daily Test failed! I run a script to [__Rewind or Bisect__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L45-L61) the Daily Build
+    - Oops Daily Test failed! I run a script to [__Rewind or Bisect__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L45-L61) the Daily Build
 
-- I write a [__Polite Note__](TODO) _(depending on my mood)_
+    - I write a [__Polite Note__](TODO) _(depending on my mood)_
 
-- And post it to the __Breaking Pull Request__
+    - And post it to the __Breaking Pull Request__
 
-That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
+    That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
 
-_What if it works?_
+1.  _What if it works?_
 
-We might try the __Daily Rewind__ on a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
+    We might try the __Daily Rewind__ on a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
 
-Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they are quicker and more predictable.
+    Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they are quicker and more predictable.
 
-Plus other __QEMU Emulator Targets__: _rv-virt:nsh / nsh64 / knsh_
+    Plus other __QEMU Emulator Targets__: _rv-virt:nsh / nsh64 / knsh_
 
-_Suppose we wish to add Our Own Boards to the System?_
+1.  _Suppose we wish to add Our Own Boards to the System?_
 
-__For Our Own Boards:__ We could upload the __Test Logs__ to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
+    __For Our Own Boards:__ We could upload the __NuttX Test Logs__ (in the prescribed format) to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
 
-(Rewinding the Build on Our Own Boards? That's tricky)
+    (Rewinding the Build on Our Own Boards? That needs more work)
 
 TODO: @nuttxpr test rv-virt:knsh64. Security?
 
