@@ -305,7 +305,7 @@ build_score{
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
 
-Which is transmitted by our __Rust App__: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
+Which is transformed and transmitted by our __Rust App__, from GitLab Snippet to Prometheus: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
 
 ```rust
 // Post the Test Log to Prometheus Pushgateway
@@ -330,11 +330,11 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 }
 ```
 
-[(How we fetch the __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
+[(How we fetch __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
 
 [(And __Extract the Fields__ from Test Logs)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760)
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
+[(See the __Rust App Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
 TODO: Screenshot of Prometheus
 
