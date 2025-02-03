@@ -328,7 +328,7 @@ build_score{
 
 } 0  ## Means This Commit Failed (Score=0)</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578">(See the <strong>Complete Log</strong>)</a></p>
-<p>Which is transmitted by our <strong>Rust App</strong>: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>
+<p>Which is transformed and transmitted by our <strong>Rust App</strong>, from GitLab Snippet to Prometheus: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the Test Log to Prometheus Pushgateway
 </span><span class="kw">async fn </span>post_to_pushgateway( ... ) -&gt; ... { ...
@@ -348,9 +348,9 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
     .send()
     .<span class="kw">await</span><span class="question-mark">?</span>;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch the <strong>GitLab Snippets</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760">(And <strong>Extract the Fields</strong> from Test Logs)</a></p>
-<p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
 <p>TODO: Screenshot of Prometheus</p>
 <p>TODO: Breaking Commit</p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
