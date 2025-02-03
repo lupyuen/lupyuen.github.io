@@ -522,6 +522,8 @@ $ tail -f /var/log/syslog
 
 We'll see the __Test and Rewind__ in action...
 
+<span style="font-size:80%">
+
 ```bash
 (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
 ./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
@@ -530,13 +532,15 @@ Creating snippet https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
 Done!
 ```
 
+</span>
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456)
 
 [(See the __GitLab Snippets__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets)
 
-_And the Polite Note? That goes to Mastodon?_
+_And the Polite Note? That goes to our Mastodon Server?_
 
-__Every 15 Minutes:__ Ubuntu Cron shall trigger the __Mastodon Notification__...
+Every 15 Minutes: Ubuntu Cron shall trigger the __Mastodon Notification__...
 
 ```bash
 ## Add a Cron Job
@@ -556,29 +560,29 @@ $ tail -f /var/log/syslog
 
 [(__cron.sh__ will start TODO)](TODO)
 
-We'll see...
+We'll see the __Mastodon Notification__...
+
+<span style="font-size:80%">
 
 ```bash
 (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
 + cargo run
+
 build_score{
-    target="rv-virt:knsh64_test",
-    build_score_prev="1"
+  target="rv-virt:knsh64_test",
+  build_score_prev="1"
 } == 0
 
 rv-virt : KNSH64_TEST - Build Failed (rewind)
 Breaking PR: https://github.com/apache/nuttx/pull/15444
-NuttX Dashboard: https://nuttx-dashboard.org
 Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6
 
 Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
-$ tools/configure.sh rv-virt:knsh64
-$ make -j
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init
 ```
+
+</span>
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
 
 # Be Kind, Rewind!
 
@@ -596,13 +600,13 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init
 
     That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
 
-1.  _What if it works?_
+1.  _What if it's a smashing success?_
 
-    We might try the __Daily Rewind__ on a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
+    We might extend the __Daily Rewind__ to a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
 
-    Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they are quicker and more predictable.
+    Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they're quicker and more consistent than Real Hardware. (Though less accurate)
 
-    Plus other __QEMU Emulator Targets__: _rv-virt:nsh / nsh64 / knsh_
+    Plus other __QEMU Targets__: _rv-virt:nsh / nsh64 / knsh_
 
 1.  _Suppose we wish to add Our Own Boards to the System?_
 
