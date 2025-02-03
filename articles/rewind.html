@@ -77,7 +77,8 @@
 <li><a href="#delete-snippet" title="Delete Snippet">10 Delete Snippet</a><ul></ul></li>
 <li><a href="#create-snippet" title="Create Snippet">11 Create Snippet</a><ul></ul></li>
 <li><a href="#test-failed-vs-test-ok" title="Test Failed vs Test OK">12 Test Failed vs Test OK</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
+<li><a href="#be-kind-rewind" title="Be Kind, Rewind!">13 Be Kind, Rewind!</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="TODO" /></p>
 <p>If the <strong>Daily Test</strong> fails for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s find out!</p>
 <ol>
@@ -384,7 +385,7 @@ Test Log #8 | This Commit is OK</code></pre></div>
 <p>TODO</p>
 <p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch the Breaking Commit from Prometheus
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
 </span><span class="kw">let </span>query = <span class="macro">format!</span>(<span class="string">r##"
   build_score{{
     target="{TARGET}",
@@ -392,16 +393,18 @@ Test Log #8 | This Commit is OK</code></pre></div>
   }} == 0
 "##</span>);
 
-<span class="kw">let </span>params = [(<span class="string">"query"</span>, query)];
+<span class="comment">// Send query to Prometheus via HTTP Form Post
+</span><span class="kw">let </span>params = [(<span class="string">"query"</span>, query)];
 <span class="kw">let </span>client = reqwest::Client::new();
 <span class="kw">let </span>prometheus = <span class="macro">format!</span>(<span class="string">"http://{prometheus_server}/api/v1/query"</span>);
 <span class="kw">let </span>res = client
-    .post(prometheus)
-    .form(<span class="kw-2">&amp;</span>params)
-    .send()
-    .<span class="kw">await</span><span class="question-mark">?</span>;
+  .post(prometheus)
+  .form(<span class="kw-2">&amp;</span>params)
+  .send()
+  .<span class="kw">await</span><span class="question-mark">?</span>;
 
-<span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
+<span class="comment">// Process the Query Results
+</span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251">Grungy bits</a></p>
@@ -771,7 +774,9 @@ extract nuttx hash
 extract apps hash
 
 if failed: build_score=0
-if successful: build_score=1</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
+if successful: build_score=1</code></pre></div><h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>13 Be Kind, Rewind!</h1>
+<p>TODO</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>TODO: Git Bisect? Assume &lt; 20 commits. If necessary: Test and rewind more often</p>
 <p>TODO: nsh, nsh64, knsh, knsh64, ox64 emulator, sg2000 emulator, sg2000 board?</p>
 <p>TODO: @nuttxpr test rv-virt:knsh64. Security?</p>
