@@ -852,7 +852,7 @@ Hopefully it will make my __Daily Routine__ a little less painful...
 
 - Every Morning: I check the __NuttX Daily Test__
 
-- Oops Daily Test failed! I __Rewind or Bisect__ the Daily Build
+- Oops Daily Test failed! I manually __Rewind or Bisect__ the Daily Build
 
 - I write a __Polite Note__ _(depending on my mood)_
 
