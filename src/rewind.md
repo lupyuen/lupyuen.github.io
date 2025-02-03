@@ -369,13 +369,13 @@ The __Test Logs__ in Prometheus will look like this...
 | _Test Log #7_ | This Commit is __OK__
 | _Test Log #8_ | This Commit is __OK__
 
-Ding ding: __Test Log #6__ will reveal the __Breaking Commit__! [__Or Visually__...](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)
+Ding ding: __Test Log #6__ will reveal the [__Breaking Commit__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)!
 
 TODO: Screenshot of Build History
 
 _Inside Prometheus: How to find Test Log #6?_
 
-We find the Breaking Commit with this __Prometheus Query__...
+We fetch the Breaking Commit with this __Prometheus Query__...
 
 ```bash
 build_score{
@@ -384,7 +384,7 @@ build_score{
 } == 0
 ```
 
-__Dear Prometheus:__ Please find the __Test Log__ for...
+__Dear Prometheus:__ Please find the __Test Log__ that matches...
 
 TODO
 
