@@ -409,7 +409,7 @@ let res = client
   .send()
   .await?;
 
-// Process the Query Results
+// Process the Query Results (Breaking Commit)
 let body = res.text().await?;
 let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
@@ -421,29 +421,31 @@ _Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can
 
 Here comes the __Human-Computer Interface__: Our Machine (kinda) __Escalates the Breaking Commit__ to the Right Human for fixing, politely please...
 
-TODO
+TODO: Mastodon
 
-[Grungy bits](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251)
+_Our Machine writes this based on the Breaking Commit? From the Previous Section?_
 
-[Extract the Build Log](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
+Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251), which involve...
 
-[Only the Important Bits](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L251-L331)
+1.  Extracting the [__Test Log__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
 
-[Get the Breaking PR from GitHub, based on the Breaking Commit](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138)
+    _(Only the [__Important Parts__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L251-L331))_
 
-[Compose the Mastodon Post](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L157-L178)
+1.  Fetching the [__Breaking PR from GitHub__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138)
 
-[Post the Status to Mastodon](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L178-L220)
+    _(Based on the Breaking Commit)_
 
-But 500 chars limit! Bummer
+1.  Composing the [__Mastodon Post__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L157-L178)
 
-[Create a GitLab Snippet](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410)
+    _(And [__Posting to Mastodon__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L178-L220))_
 
-[Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
+_But Mastodon Posts are limited to 500 chars?_
 
-TODo: Get Breaking PR
+Bummer. That's why we [__Create a GitLab Snippet__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410). And embed the Hyperlink in our Mastodon Post.
 
-[List pull requests associated with a commit](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit)
+_How to get the Breaking PR from GitHub?_
+
+We call the [__GitHub API__](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit)...
 
 ```bash
 ## Fetch the Pull Request for this Commit
@@ -458,38 +460,148 @@ $ curl -L \
    user: { login: "GITHUB_USERID", ...
 ```
 
+Which [__becomes this__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138) in our Rust App.
+
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
+
+TODO: [Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
 # Cron Everything
 
 _We coded plenty of goodies over the Lunar New Year. How will they be triggered?_
 
-Via [__Ubuntu Cron__](TODO).
+Via [__Ubuntu Cron__](https://help.ubuntu.com/community/CronHowto). Every Day it shall trigger the __Daily Test and Rewind__...
 
-TODO
+```bash
+## Add a Cron Job
+$ crontab -e
 
-# nuttx-rewind-notify
+## Then insert this...
+## Test and Rewind: Every Day at 00:00 UTC
+0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
 
-```text
-nuttx-rewind-notify
+## Or For Testing...
+## Test and Rewind: Every Hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
 
-export PROMETHEUS_SERVER=luppys-mac-mini.local:9090
-./run.sh",
-
-const ALL_BUILDS_FILENAME: &str = "/tmp/nuttx-rewind-notify.json";
-
-cron:
-
-crontab -e
-
-## Run every 15 minutes
-*/15 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
-
-## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+## Exit and Monitor our Cron Job
+$ tail -f /var/log/syslog
 ```
 
-[See the Complete Log](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
+[(__cron.sh__ will start TODO)](TODO)
+
+We'll see...
+
+```bash
+TODO
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456)
+
+```text
+<<
+2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
+2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
+2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
+
+2025-01-31T17:13:01.834380+08:00 thinkstation CRON[1234832]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
+2025-01-31T17:13:01.834657+08:00 thinkstation nuttx-rewind-build: + target=rv-virt:knsh64_test8
+2025-01-31T17:13:01.834800+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=HEAD
+2025-01-31T17:13:01.834869+08:00 thinkstation nuttx-rewind-build: + apps_hash=HEAD
+2025-01-31T17:13:01.834924+08:00 thinkstation nuttx-rewind-build: + min_commits=1
+2025-01-31T17:13:01.834982+08:00 thinkstation nuttx-rewind-build: + max_commits=20
+2025-01-31T17:13:01.835036+08:00 thinkstation nuttx-rewind-build: + script_path=/home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835093+08:00 thinkstation nuttx-rewind-build: +++ dirname -- /home/luppy/nuttx-build-farm/cron.sh
+2025-01-31T17:13:01.835145+08:00 thinkstation nuttx-rewind-build: ++ cd -P /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835197+08:00 thinkstation nuttx-rewind-build: ++ pwd
+2025-01-31T17:13:01.835249+08:00 thinkstation nuttx-rewind-build: + script_dir=/home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835301+08:00 thinkstation nuttx-rewind-build: + cd /home/luppy/nuttx-build-farm
+2025-01-31T17:13:01.835359+08:00 thinkstation nuttx-rewind-build: + ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+2025-01-31T17:13:01.835415+08:00 thinkstation nuttx-rewind-build: Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
+...
+2025-01-31T17:17:56.123175+08:00 thinkstation nuttx-rewind-build: - Creating snippet in lupyuen/nuttx-build-log
+2025-01-31T17:17:57.586891+08:00 thinkstation nuttx-rewind-build: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
+2025-01-31T17:17:57.591633+08:00 thinkstation nuttx-rewind-build: + next_hash=4606f1f9e1e897ce508f9dcadcc57dea979041b5
+2025-01-31T17:17:57.591815+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=11a47a4b0c3b4c371578bc3e578b2088dffbb678
+2025-01-31T17:17:57.591922+08:00 thinkstation nuttx-rewind-build: + timestamp=2025-01-31T04:53:36
+2025-01-31T17:17:57.592019+08:00 thinkstation nuttx-rewind-build: + (( count++ ))
+2025-01-31T17:17:57.592118+08:00 thinkstation nuttx-rewind-build: + [[ 1 == \1 ]]
+2025-01-31T17:17:57.592208+08:00 thinkstation nuttx-rewind-build: + break
+2025-01-31T17:17:57.592298+08:00 thinkstation nuttx-rewind-build: + set +x
+2025-01-31T17:17:57.592406+08:00 thinkstation nuttx-rewind-build: ***** Done!
+>>
+
+Without logger:
+<<
+2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
+>>
+
+ls -l /tmp
+drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
+drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
+
+tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
+<<
+Final memory usage:
+VARIABLE  BEFORE   AFTER
+======== ======== ========
+arena       81000    81000
+ordblks         2        3
+mxordblk    7cff8    78ff8
+uordblks     2660     4570
+fordblks    7e9a0    7ca90
+user_main: Exiting
+ostest_main: Exiting with status 0
+
+===== Test OK
+
++ res=0
++ set -e
++ set +x
+res=0
+====================================================================================
++ echo res=0
+res=0
++ [[ 0 != \0 ]]
++ echo '***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4'
+***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4
++ [[ 4606f1f9e1e897ce508f9dcadcc57dea979041b5 != \4\6\0\6\f\1\f\9\e\1\e\8\9\7\c\e\5\0\8\f\9\d\c\a\d\c\c\5\7\d\e\a\9\7\9\0\4\1\b\5 ]]
++ df -H
+>>
+
+Check the snippets
+https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
+```
+
+_And the Polite Note? That goes to Mastodon?_
+
+__Every 15 Minutes:__ Ubuntu Cron shall trigger the __Mastodon Notification__...
+
+```bash
+## Add a Cron Job
+$ crontab -e
+
+## Then insert this...
+## Notify Mastodon: Every 15 minutes
+*/15 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+
+## Or For Testing...
+## Notify Mastodon: Every Hour at 00:16, 01:16, 12:16, ...
+16 * * * * /home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify
+
+## Exit and Monitor our Cron Job
+$ tail -f /var/log/syslog
+```
+
+[(__cron.sh__ will start TODO)](TODO)
+
+We'll see...
+
+```bash
+TODO
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
 
 ```text
 tail -f /var/log/syslog
@@ -669,97 +781,6 @@ tail -f /var/log/syslog
 # Cron Job
 
 TODO
-
-```text
-https://help.ubuntu.com/community/CronHowto
-. $HOME/gitlab-token.sh && glab auth status && cd $HOME/nuttx-build-farm && ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-
-crontab -e
-
-## Run every day at 00:00 UTC
-0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
-
-## Run every hour at 00:16, 01:16, 12:16, ...
-16 * * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
-```
-
-[See the Complete Log](https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456)
-
-```text
-tail -f /var/log/syslog
-<<
-2025-01-31T15:15:33.725765+08:00 thinkstation crontab[2982952]: (luppy) BEGIN EDIT (luppy)
-2025-01-31T15:15:53.889440+08:00 thinkstation crontab[2982952]: (luppy) REPLACE (luppy)
-2025-01-31T15:15:53.889656+08:00 thinkstation crontab[2982952]: (luppy) END EDIT (luppy)
-
-2025-01-31T17:13:01.834380+08:00 thinkstation CRON[1234832]: (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
-2025-01-31T17:13:01.834657+08:00 thinkstation nuttx-rewind-build: + target=rv-virt:knsh64_test8
-2025-01-31T17:13:01.834800+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=HEAD
-2025-01-31T17:13:01.834869+08:00 thinkstation nuttx-rewind-build: + apps_hash=HEAD
-2025-01-31T17:13:01.834924+08:00 thinkstation nuttx-rewind-build: + min_commits=1
-2025-01-31T17:13:01.834982+08:00 thinkstation nuttx-rewind-build: + max_commits=20
-2025-01-31T17:13:01.835036+08:00 thinkstation nuttx-rewind-build: + script_path=/home/luppy/nuttx-build-farm/cron.sh
-2025-01-31T17:13:01.835093+08:00 thinkstation nuttx-rewind-build: +++ dirname -- /home/luppy/nuttx-build-farm/cron.sh
-2025-01-31T17:13:01.835145+08:00 thinkstation nuttx-rewind-build: ++ cd -P /home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835197+08:00 thinkstation nuttx-rewind-build: ++ pwd
-2025-01-31T17:13:01.835249+08:00 thinkstation nuttx-rewind-build: + script_dir=/home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835301+08:00 thinkstation nuttx-rewind-build: + cd /home/luppy/nuttx-build-farm
-2025-01-31T17:13:01.835359+08:00 thinkstation nuttx-rewind-build: + ./rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-2025-01-31T17:13:01.835415+08:00 thinkstation nuttx-rewind-build: Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh rv-virt:knsh64_test8 HEAD HEAD 1 20
-...
-2025-01-31T17:17:56.123175+08:00 thinkstation nuttx-rewind-build: - Creating snippet in lupyuen/nuttx-build-log
-2025-01-31T17:17:57.586891+08:00 thinkstation nuttx-rewind-build: https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
-2025-01-31T17:17:57.591633+08:00 thinkstation nuttx-rewind-build: + next_hash=4606f1f9e1e897ce508f9dcadcc57dea979041b5
-2025-01-31T17:17:57.591815+08:00 thinkstation nuttx-rewind-build: + nuttx_hash=11a47a4b0c3b4c371578bc3e578b2088dffbb678
-2025-01-31T17:17:57.591922+08:00 thinkstation nuttx-rewind-build: + timestamp=2025-01-31T04:53:36
-2025-01-31T17:17:57.592019+08:00 thinkstation nuttx-rewind-build: + (( count++ ))
-2025-01-31T17:17:57.592118+08:00 thinkstation nuttx-rewind-build: + [[ 1 == \1 ]]
-2025-01-31T17:17:57.592208+08:00 thinkstation nuttx-rewind-build: + break
-2025-01-31T17:17:57.592298+08:00 thinkstation nuttx-rewind-build: + set +x
-2025-01-31T17:17:57.592406+08:00 thinkstation nuttx-rewind-build: ***** Done!
->>
-
-Without logger:
-<<
-2025-01-31T15:40:47.812335+08:00 thinkstation CRON[280259]: (CRON) info (No MTA installed, discarding output)
->>
-
-ls -l /tmp
-drwxrwxr-x  4 luppy luppy    4096 Jan 31 15:17 rewind-build-rv-virt:knsh64_test8
-drwxrwxr-x  3 luppy luppy    4096 Jan 31 15:17 build-test-knsh64
-
-tail -f /tmp/rewind-build-rv-virt:knsh64_test8/*.log
-<<
-Final memory usage:
-VARIABLE  BEFORE   AFTER
-======== ======== ========
-arena       81000    81000
-ordblks         2        3
-mxordblk    7cff8    78ff8
-uordblks     2660     4570
-fordblks    7e9a0    7ca90
-user_main: Exiting
-ostest_main: Exiting with status 0
-
-===== Test OK
-
-+ res=0
-+ set -e
-+ set +x
-res=0
-====================================================================================
-+ echo res=0
-res=0
-+ [[ 0 != \0 ]]
-+ echo '***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4'
-***** Build / Test OK for Previous Commit: nuttx @ 11a47a4b0c3b4c371578bc3e578b2088dffbb678 / nuttx-apps @ e1e28eb88ad153711223cab612f5d5bd019f8dd4
-+ [[ 4606f1f9e1e897ce508f9dcadcc57dea979041b5 != \4\6\0\6\f\1\f\9\e\1\e\8\9\7\c\e\5\0\8\f\9\d\c\a\d\c\c\5\7\d\e\a\9\7\9\0\4\1\b\5 ]]
-+ df -H
->>
-
-Check the snippets
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets
-```
 
 # Be Kind, Rewind!
 
