@@ -487,15 +487,16 @@ $ crontab -e
 $ tail -f /var/log/syslog</code></pre></div>
 <p><a href="TODO">(<strong>cron.sh</strong> will start TODO)</a></p>
 <p>We’ll see the <strong>Test and Rewind</strong> in action…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>(luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build)
 ./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
 ...
 Creating snippet https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
-Done!</code></pre></div>
+Done!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets">(See the <strong>GitLab Snippets</strong>)</a></p>
-<p><em>And the Polite Note? That goes to Mastodon?</em></p>
-<p><strong>Every 15 Minutes:</strong> Ubuntu Cron shall trigger the <strong>Mastodon Notification</strong>…</p>
+<p><em>And the Polite Note? That goes to our Mastodon Server?</em></p>
+<p>Every 15 Minutes: Ubuntu Cron shall trigger the <strong>Mastodon Notification</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add a Cron Job
 $ crontab -e
 
@@ -510,26 +511,23 @@ $ crontab -e
 ## Exit and Monitor our Cron Job
 $ tail -f /var/log/syslog</code></pre></div>
 <p><a href="TODO">(<strong>cron.sh</strong> will start TODO)</a></p>
-<p>We’ll see…</p>
+<p>We’ll see the <strong>Mastodon Notification</strong>…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>(luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-notify)
 + cargo run
+
 build_score{
-    target=&quot;rv-virt:knsh64_test&quot;,
-    build_score_prev=&quot;1&quot;
+  target=&quot;rv-virt:knsh64_test&quot;,
+  build_score_prev=&quot;1&quot;
 } == 0
 
 rv-virt : KNSH64_TEST - Build Failed (rewind)
 Breaking PR: https://github.com/apache/nuttx/pull/15444
-NuttX Dashboard: https://nuttx-dashboard.org
 Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6
 
-Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!
-https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85
-$ tools/configure.sh rv-virt:knsh64
-$ make -j
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div><h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
+Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!</code></pre></div></span>
+<p><a href="https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
 <ol>
 <li>
 <p><em>Wow this looks super complicated. Does it work?</em></p>
@@ -551,10 +549,10 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 <p>That’s why we’re <strong>Fast Tracking</strong> the complicated new system: Right now it runs <strong>Every Hour</strong> (instead of every day)</p>
 </li>
 <li>
-<p><em>What if it works?</em></p>
-<p>We might try the <strong>Daily Rewind</strong> on a Real Board: <a href="https://lupyuen.github.io/articles/sg2000a"><strong>Oz64 SG2000 RISC-V SBC</strong></a>.</p>
-<p>Or maybe <a href="https://lupyuen.github.io/articles/sg2000b"><strong>SG2000 Emulator</strong></a> and <a href="TODO"><strong>Ox64 Emulator</strong></a>, since they are quicker and more predictable.</p>
-<p>Plus other <strong>QEMU Emulator Targets</strong>: <em>rv-virt:nsh / nsh64 / knsh</em></p>
+<p><em>What if it’s a smashing success?</em></p>
+<p>We might extend the <strong>Daily Rewind</strong> to a Real Board: <a href="https://lupyuen.github.io/articles/sg2000a"><strong>Oz64 SG2000 RISC-V SBC</strong></a>.</p>
+<p>Or maybe <a href="https://lupyuen.github.io/articles/sg2000b"><strong>SG2000 Emulator</strong></a> and <a href="TODO"><strong>Ox64 Emulator</strong></a>, since they’re quicker and more consistent than Real Hardware. (Though less accurate)</p>
+<p>Plus other <strong>QEMU Targets</strong>: <em>rv-virt:nsh / nsh64 / knsh</em></p>
 </li>
 <li>
 <p><em>Suppose we wish to add Our Own Boards to the System?</em></p>
