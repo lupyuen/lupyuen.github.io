@@ -363,15 +363,17 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 </li>
 </ul>
 <p>The <strong>Test Logs</strong> in Prometheus will look like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>Test Log #1 | This Commit FAILED &lt;br&gt; Previous Commit FAILED
-Test Log #2 | This Commit FAILED &lt;br&gt; Previous Commit FAILED
-...
-Test Log #6 | This Commit FAILED &lt;br&gt; Previous Commit is OK
-Test Log #7 | This Commit is OK
-Test Log #8 | This Commit is OK</code></pre></div>
-<p><a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>Or Visually</strong>…</a></p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><em>Test Log #1</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit <em>FAILED</em></td></tr>
+<tr><td style="text-align: center"><em>Test Log #2</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit <em>FAILED</em></td></tr>
+<tr><td style="text-align: center">…</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><em>Test Log #6</em></td><td style="text-align: left">This Commit <em>FAILED</em> <br> Previous Commit is <strong>OK</strong></td></tr>
+<tr><td style="text-align: center"><em>Test Log #7</em></td><td style="text-align: left">This Commit is <strong>OK</strong></td></tr>
+<tr><td style="text-align: center"><em>Test Log #8</em></td><td style="text-align: left">This Commit is <strong>OK</strong></td></tr>
+</tbody></table>
+</div>
+<p>Ding ding: <strong>Test Log #6</strong> will reveal the <strong>Breaking Commit</strong>! <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>Or Visually</strong>…</a></p>
 <p>TODO: Screenshot of Build History</p>
-<p>Ding ding: <strong>Test Log #6</strong> will reveal the <strong>Breaking Commit</strong>!</p>
 <p><em>Inside Prometheus: How to find Test Log #6?</em></p>
 <p>We find the Breaking Commit with this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>build_score{
