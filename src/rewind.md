@@ -417,6 +417,14 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
+# Write a Polite Note
+
+_Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can't fix it right?_
+
+Here comes the __Human-Computer Interface__: Our Machine __Escalates the Breaking Commit__ to the Right Human for fixing, politely please...
+
+TODO
+
 [Grungy bits](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251)
 
 [Extract the Build Log](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
@@ -453,10 +461,6 @@ $ curl -L \
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
-
-# Write a Polite Note
-
-TODO
 
 # nuttx-rewind-notify
 
