@@ -109,7 +109,7 @@ make -j import
 popd
 
 ## Boot NuttX on QEMU RISC-V 64-bit
-## Run the NuttX Test with our Expect Script
+## Run OSTest with our Expect Script
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
 expect qemu-riscv-knsh64.exp
 ```
@@ -217,6 +217,8 @@ function build_commit { ...
 
 [(__upload_log__ creates the GitLab Snippet)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L172-L205)
 
+[(__GitHub Gists__ are supported too)](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L172-L205)
+
 Remember we need to Build and Test __20 Commits__? We call the script above 20 times: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L205-L275)
 
 ```bash
@@ -261,7 +263,20 @@ done
 
 # Ingest the Test Log
 
+_Why publish the Test Log as a GitLab Snippet?_
+
+That's because we need to ingest the Test Log into our __NuttX Dashboard__. (So we can present the log neatly as __NuttX Build History__)
+
 TODO
+
+Add Log Timestamp
+https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
+
+Sort: Timestamp + NuttX Hash
+TODO: Add timestamp_log (from Snippet)
+
+Parse OSTest correctly
+https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
 
 # Get hashes from Prometheus 
 
@@ -310,34 +325,7 @@ Search for
 ***** BUILD / TEST FAILED FOR NEXT COMMIT: nuttx @ 48846954d8506e1c95089a8654787fdc42cc098c / nuttx-apps @ a6b9e718460a56722205c2a84a9b07b94ca664aa
 https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4799243#L1629
 
-https://github.com/XAMPPRocky/octocrab/blob/ce8c885dc2701c891ce868c846fa25d32fd44ba2/src/api/commits/associated_pull_requests.rs#L75
-    #[tokio::test]
-    async fn associated_pull_requests_serializes_correctly() {
-        use super::PullRequestTarget;
-
-        let octocrab = crate::Octocrab::default();
-        let handler = octocrab.commits("owner", "repo");
-        let associated_prs =
-            handler.associated_pull_requests(PullRequestTarget::Sha("commit_sha".to_string()));
-
-        assert_eq!(
-            serde_json::to_value(associated_prs).unwrap(),
-            serde_json::json!({
-                "target": "commit_sha"
-            })
-        );
-    }
-
 Sort by Log Timestamp
-
-Add Log Timestamp
-https://github.com/lupyuen/ingest-nuttx-builds/commit/055149d999c6727183b843feedce6d3086062a24
-
-Sort: Timestamp + NuttX Hash
-TODO: Add timestamp_log (from Snippet)
-
-Parse OSTest correctly
-https://github.com/lupyuen/ingest-nuttx-builds/commit/b4eb156075002bafa510230c2120f70e09f7cf12
 ```
 
 # Get Log
