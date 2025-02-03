@@ -317,6 +317,8 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 
 [(And __Extract the Fields__ from Test Logs)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760)
 
+TODO: Screenshot of Prometheus
+
 # Get hashes from Prometheus 
 
 ```text
