@@ -375,11 +375,13 @@ Test Log #7 | This Commit is OK
 Test Log #8 | This Commit is OK</code></pre></div>
 <p>Ding ding: <strong>Test Log #6</strong> will reveal the <strong>Breaking Commit</strong>!</p>
 <p><em>Inside Prometheus: How to find Test Log #6?</em></p>
-<p>TODO</p>
+<p>We find the Breaking Commit with this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>build_score{
-target=&quot;rv-virt:knsh64_test5&quot;,
-build_score_prev=&quot;1&quot;
-} == 0</code></pre></div><h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
+  target=&quot;rv-virt:knsh64_test&quot;,
+  build_score_prev=&quot;1&quot;
+} == 0</code></pre></div>
+<p>TODO</p>
+<h1 id="get-log"><a class="doc-anchor" href="#get-log">§</a>6 Get Log</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Log
 
