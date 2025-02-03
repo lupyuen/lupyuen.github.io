@@ -285,17 +285,20 @@ build_score{
   target="rv-virt:knsh64_test",
   url="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85",
 
+  ## Here's the NuttX Hash and Apps Hash for This Commit
   nuttx_hash="657247bda89d60112d79bb9b8d223eca5f9641b5",
   apps_hash="a6b9e718460a56722205c2a84a9b07b94ca664aa",
 
+  ## Previous Commit is OK (Score=1)
   nuttx_hash_prev="be40c01ddd6f43a527abeae31042ba7978aabb58",
   apps_hash_prev="a6b9e718460a56722205c2a84a9b07b94ca664aa",
   build_score_prev="1",
 
+  ## Next Commit is Not OK (Score=0)
   nuttx_hash_next="48846954d8506e1c95089a8654787fdc42cc098c",
   apps_hash_next="a6b9e718460a56722205c2a84a9b07b94ca664aa",
   build_score_next="0"
-} 0
+} 0  ## Means This Commit Failed
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
