@@ -421,7 +421,7 @@ let builds = &data["data"]["result"];
 
 _Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can't fix it right?_
 
-Here comes the __Human-Computer Interface__: Our Machine __Escalates the Breaking Commit__ to the Right Human for fixing, politely please...
+Here comes the __Human-Computer Interface__: Our Machine (kinda) __Escalates the Breaking Commit__ to the Right Human for fixing, politely please...
 
 TODO
 
