@@ -22,7 +22,7 @@ If NuttX Fails on __QEMU RISC-V__: High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
-![TODO](https://lupyuen.org/images/rewind-title2.jpg)
+![Find the Breaking Commit](https://lupyuen.org/images/rewind-title2.jpg)
 
 # Find the Breaking Commit
 
@@ -87,7 +87,7 @@ What's inside our script? We dive in...
 
 [(Which __Apps Hash__ to use? NuttX Build History can help)](TODO)
 
-> ![TODO](https://lupyuen.org/images/rewind-title3.jpg)
+> ![Testing One Commit](https://lupyuen.org/images/rewind-title3.jpg)
 
 # Testing One Commit
 
@@ -180,7 +180,7 @@ fi
 
 Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let's zoom out...
 
-![TODO](https://lupyuen.org/images/rewind-title4.jpg)
+![Testing 20 Commits](https://lupyuen.org/images/rewind-title4.jpg)
 
 # Testing 20 Commits
 
@@ -278,7 +278,7 @@ done
 
 TODO: Breaking Commit
 
-![TODO](https://lupyuen.org/images/rewind-title5.jpg)
+![Ingest the Test Log](https://lupyuen.org/images/rewind-title5.jpg)
 
 # Ingest the Test Log
 
@@ -365,7 +365,7 @@ TODO: Screenshot of Prometheus
 
 TODO: Breaking Commit
 
-![TODO](https://lupyuen.org/images/rewind-title6.jpg)
+![Query Prometheus for Breaking Commit](https://lupyuen.org/images/rewind-title6.jpg)
 
 # Query Prometheus for Breaking Commit
 
@@ -448,7 +448,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-![TODO](https://lupyuen.org/images/rewind-title7.jpg)
+![Write a Polite Note](https://lupyuen.org/images/rewind-title7.jpg)
 
 # Write a Polite Note
 
@@ -531,7 +531,7 @@ Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify
 
 TODO: [Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
-TODO: Pic of Rewind Cron
+![Cron Job for Daily Test and Rewind](https://lupyuen.org/images/rewind-title8.jpg)
 
 # Cron Everything
 
@@ -582,7 +582,7 @@ Done!
 
 [(See the __GitLab Snippets__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets)
 
-TODO: Pic of Notify Cron
+![Cron Jab for Mastodon Notification](https://lupyuen.org/images/rewind-title9.jpg)
 
 _And the Polite Note? That goes to our Mastodon Server?_
 
