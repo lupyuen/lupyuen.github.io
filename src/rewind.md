@@ -85,7 +85,7 @@ Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__Nut
 
 What's inside our script? We dive in...
 
-[(Which __Apps Hash__ to use? NuttX Build History can help)](TODO)
+[(Which __Apps Hash__ to use? NuttX Build History can help)](https://lists.apache.org/thread/4oqjrwnzoq41tm0r6bl8bsgwbqokc4kp)
 
 > ![Testing One Commit](https://lupyuen.org/images/rewind-title3.jpg)
 
@@ -125,7 +125,7 @@ wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-kns
 expect qemu-riscv-knsh64.exp
 ```
 
-[(__Expect Script__ shall validate the QEMU Output)](TODO)
+[(__Expect Script__ shall validate the QEMU Output)](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp)
 
 The script above is called by __build_nuttx__ below. Which will wrap the output in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
 
@@ -286,7 +286,7 @@ _Why publish the Test Log as a GitLab Snippet?_
 
 That's because we'll Ingest the Test Log into our __NuttX Dashboard__. (So we can present the logs neatly as __NuttX Build History__)
 
-This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](TODO) (that powers our NuttX Dashboard)...
+This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) (that powers our NuttX Dashboard)...
 
 ```bash
 # TYPE build_score gauge
@@ -555,7 +555,7 @@ $ crontab -e
 $ tail -f /var/log/syslog
 ```
 
-[(__cron.sh__ will start TODO)](TODO)
+[(__cron.sh__ will start _rewind-build.sh_)](https://github.com/lupyuen/nuttx-build-farm/blob/main/cron.sh)
 
 We'll see the __Test and Rewind__ in action...
 
@@ -604,7 +604,7 @@ $ crontab -e
 $ tail -f /var/log/syslog
 ```
 
-[(__cron.sh__ will start TODO)](TODO)
+[(__cron.sh__ will start our Rust App)](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/cron.sh)
 
 The __Mastodon Notification__ appears like so...
 
