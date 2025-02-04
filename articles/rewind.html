@@ -352,7 +352,7 @@ build_score{
   <span class="comment">// Compose the Pushgateway Metric
   </span><span class="kw">let </span>body = <span class="macro">format!</span>(
 <span class="string">r##"
-build_score{{ version="{version}" ... }} {build_score}
+build_score ... version="{version}" ... {build_score}
 "##</span>);
 
   <span class="comment">// Send the Metric to Pushgateway via HTTP POST
