@@ -335,26 +335,22 @@ __Hello Prometheus:__ We're sending you this __Test Log__ at the Specified URL..
 Which is transformed and transmitted by our __Rust App__, from GitLab Snippet to Prometheus: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
 
 ```rust
-// Post the Test Log to Prometheus Pushgateway
-async fn post_to_pushgateway( ... ) -> ... { ...
-
-  // Compose the Pushgateway Metric
-  let body = format!(
-r##"
+// Post the Test Log to Prometheus Pushgateway:
+// Compose the Pushgateway Metric containing the Test Log
+let body = format!(r##"
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score ... version="{version}" ... {build_score}
+build_score ... url="{url}" ... {build_score}
 "##);
 
-  // Send the Metric to Pushgateway via HTTP POST
-  let client = reqwest::Client::new();
-  let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target_rewind}");
-  let res = client
-    .post(pushgateway)
-    .body(body)
-    .send()
-    .await?;
-}
+// Send the Metric to Pushgateway via HTTP POST
+let client = reqwest::Client::new();
+let pushgateway = format!("http://localhost:9091/metrics/job/{user}/instance/{target_rewind}");
+let res = client
+  .post(pushgateway)
+  .body(body)
+  .send()
+  .await?;
 ```
 
 [(How we fetch __GitLab Snippets__)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263)
