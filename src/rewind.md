@@ -22,7 +22,7 @@ Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RI
 
 # Find the Breaking Commit
 
-We wrote a script that will __Rewind the NuttX Build__ and discover the Breaking Commit...
+We wrote a script will __Rewind the NuttX Build__ and discover the Breaking Commit...
 
 ```bash
 ## Set the GitLab Token, check that it's OK
