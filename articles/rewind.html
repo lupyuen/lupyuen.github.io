@@ -350,24 +350,20 @@ build_score{
 </ul>
 <p>Which is transformed and transmitted by our <strong>Rust App</strong>, from GitLab Snippet to Prometheus: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the Test Log to Prometheus Pushgateway
-</span><span class="kw">async fn </span>post_to_pushgateway( ... ) -&gt; ... { ...
-
-  <span class="comment">// Compose the Pushgateway Metric
-  </span><span class="kw">let </span>body = <span class="macro">format!</span>(
-<span class="string">r##"
-build_score ... version="{version}" ... {build_score}
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Post the Test Log to Prometheus Pushgateway:
+// Compose the Pushgateway Metric containing the Test Log
+</span><span class="kw">let </span>body = <span class="macro">format!</span>(<span class="string">r##"
+build_score ... url="{url}" ... {build_score}
 "##</span>);
 
-  <span class="comment">// Send the Metric to Pushgateway via HTTP POST
-  </span><span class="kw">let </span>client = reqwest::Client::new();
-  <span class="kw">let </span>pushgateway = <span class="macro">format!</span>(<span class="string">"http://localhost:9091/metrics/job/{user}/instance/{target_rewind}"</span>);
-  <span class="kw">let </span>res = client
-    .post(pushgateway)
-    .body(body)
-    .send()
-    .<span class="kw">await</span><span class="question-mark">?</span>;
-}</code></pre></div>
+<span class="comment">// Send the Metric to Pushgateway via HTTP POST
+</span><span class="kw">let </span>client = reqwest::Client::new();
+<span class="kw">let </span>pushgateway = <span class="macro">format!</span>(<span class="string">"http://localhost:9091/metrics/job/{user}/instance/{target_rewind}"</span>);
+<span class="kw">let </span>res = client
+  .post(pushgateway)
+  .body(body)
+  .send()
+  .<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760">(And <strong>Extract the Fields</strong> from Test Logs)</a></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
