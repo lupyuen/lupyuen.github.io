@@ -79,7 +79,7 @@ qemu-system-riscv64 -kernel nuttx
 
 _Build and Test 20 times! Won't it look mighty messy?_
 
-Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](TODO)...
+Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)...
 
 ![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
