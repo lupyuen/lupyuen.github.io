@@ -424,10 +424,10 @@ Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.
 ```rust
 // Query Prometheus for the Breaking Commit
 let query = format!(r##"
-  build_score{{
+  build_score{ ...
     target="{TARGET}",
     build_score_prev="1"
-  }} == 0
+  ... } == 0
 "##);
 
 // Send query to Prometheus via HTTP Form Post
