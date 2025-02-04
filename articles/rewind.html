@@ -197,7 +197,7 @@ function build_nuttx { ...
   echo &quot;====================================================================================&quot;
 }</code></pre></div>
 <p>Our <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Build-Test Log</strong></a> looks like this…</p>
-<p>TODO: Pic of Build / Test Log</p>
+<p><img src="https://lupyuen.org/images/rewind-log.png" alt="Build-Test Log in GitLab Snippet" /></p>
 <p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
 build_nuttx $nuttx_hash $apps_hash
@@ -428,7 +428,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 </li>
 </ul>
 <p>Prometheus returns the <strong>Breaking Commit</strong> that we seek…</p>
-<p>TODO: Screenshot of Prometheus</p>
+<p><img src="https://lupyuen.org/images/rewind-prometheus.png" alt="Prometheus returns the Breaking Commit that we seek" /></p>
 <p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
