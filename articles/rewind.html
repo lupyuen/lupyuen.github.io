@@ -300,10 +300,11 @@ for commit in $(
   fi
 done</code></pre></div>
 <p>With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-  Error: Test Failed</code></pre></div>
+  Error: Test Failed</code></pre></div></span>
 <p>There’s an easier way…</p>
 <p><img src="https://lupyuen.org/images/rewind-title5.jpg" alt="Ingest the Test Log" /></p>
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
@@ -373,10 +374,11 @@ build_score ... url="{url}" ... {build_score}
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760">(And <strong>Extract the Fields</strong> from Test Logs)</a></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
 <p>We promised to find the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
+<span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-  Error: Test Failed</code></pre></div>
+  Error: Test Failed</code></pre></div></span>
 <p>Here’s how…</p>
 <p><img src="https://lupyuen.org/images/rewind-title6.jpg" alt="Query Prometheus for Breaking Commit" /></p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
