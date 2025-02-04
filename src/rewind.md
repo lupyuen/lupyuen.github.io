@@ -626,7 +626,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 
     - And post it to the __Breaking Pull Request__
 
-    That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__ (instead of every day)
+    That's why we're __Fast Tracking__ the complicated new system: Right now it runs __Every Hour__. (Instead of every day)
 
 1.  _What if it's a smashing success?_
 
