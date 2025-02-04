@@ -22,7 +22,7 @@ If NuttX Fails on __QEMU RISC-V__: High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
-TODO: Pic of Breaking Commit
+![TODO](https://lupyuen.org/images/rewind-title2.jpg)
 
 # Find the Breaking Commit
 
@@ -87,7 +87,7 @@ What's inside our script? We dive in...
 
 [(Which __Apps Hash__ to use? NuttX Build History can help)](TODO)
 
-TODO: Pic of One Commit
+> ![TODO](https://lupyuen.org/images/rewind-title3.jpg)
 
 # Testing One Commit
 
@@ -180,7 +180,7 @@ fi
 
 Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let's zoom out...
 
-TODO: Pic of 20 Commits
+![TODO](https://lupyuen.org/images/rewind-title4.jpg)
 
 # Testing 20 Commits
 
