@@ -150,7 +150,7 @@ function build_nuttx { ...
 }
 ```
 
-Our [__Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
+Our [__Build / Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
 
 TODO: Sample Build / Test Log
 
@@ -278,7 +278,16 @@ for commit in $(
 done
 ```
 
-TODO: Breaking Commit
+With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
+
+```bash
+$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+  riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+  Error: Test Failed
+```
+
+There's an easier way...
 
 ![Ingest the Test Log](https://lupyuen.org/images/rewind-title5.jpg)
 
@@ -359,7 +368,16 @@ let res = client
 
 [(See the __Rust App Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
-TODO: Breaking Commit
+We promised to find the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
+
+```bash
+$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
+$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+  riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+  Error: Test Failed
+```
+
+Here's how...
 
 ![Query Prometheus for Breaking Commit](https://lupyuen.org/images/rewind-title6.jpg)
 
