@@ -93,6 +93,7 @@
 <p><em>Why are we doing this?</em></p>
 <p>If NuttX Fails on <strong>QEMU RISC-V</strong>: High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
+<p>TODO: Pic of Breaking Commit</p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
 <p>We wrote a script will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitLab Token, check that it&#39;s OK
@@ -141,6 +142,7 @@ qemu-system-riscv64 -kernel nuttx
 <p>TODO: Pic of Build History</p>
 <p>What’s inside our script? We dive in…</p>
 <p><a href="TODO">(Which <strong>Apps Hash</strong> to use? NuttX Build History can help)</a></p>
+<p>TODO: Pic of One Commit</p>
 <h1 id="testing-one-commit"><a class="doc-anchor" href="#testing-one-commit">§</a>2 Testing One Commit</h1>
 <p><em>How to find the Breaking Commit?</em></p>
 <p>We zoom out and explain slowly, from Micro to Macro. This script will <strong>Build and Test NuttX</strong> for <strong>One Single Commit</strong> on QEMU: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
@@ -215,6 +217,7 @@ fi
 
 ## Why the Long Echoes? We&#39;ll ingest them later</code></pre></div>
 <p>Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let’s zoom out…</p>
+<p>TODO: Pic of 20 Commits</p>
 <h1 id="testing-20-commits"><a class="doc-anchor" href="#testing-20-commits">§</a>3 Testing 20 Commits</h1>
 <p><em>Who calls the script above: rewind-commit.sh?</em></p>
 <p>The script above is called by <strong>run_job</strong> below: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L105-L128">rewind-build.sh</a></p>
@@ -293,6 +296,7 @@ for commit in $(
   fi
 done</code></pre></div>
 <p>TODO: Breaking Commit</p>
+<p>TODO: Pic of Ingest Test Log</p>
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
 <p>That’s because we’ll Ingest the Test Log into our <strong>NuttX Dashboard</strong>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
@@ -365,6 +369,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
 <p>TODO: Screenshot of Prometheus</p>
 <p>TODO: Breaking Commit</p>
+<p>TODO: Pic of Query Prometheus</p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
 <p><em>Test Logs are now inside Prometheus Database. How will Prometheus tell us the Breaking Commit?</em></p>
 <p>Recall that our <strong>Prometheus Database</strong> contains…</p>
@@ -435,6 +440,7 @@ build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{time
 </span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
+<p>TODO: Pic of Polite Note</p>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
 <p>Here comes the Human-Computer Interface: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to a Human Expert for fixing, politely please…</p>
@@ -500,6 +506,7 @@ $ curl -L \
 <p>Which <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138"><strong>becomes this function</strong></a> in our Rust App.</p>
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">Search the NuttX Commit in Prometheus</a></p>
+<p>TODO: Pic of Rewind Cron</p>
 <h1 id="cron-everything"><a class="doc-anchor" href="#cron-everything">§</a>7 Cron Everything</h1>
 <p><em>We coded plenty of goodies over the Lunar New Year. How will they be triggered?</em></p>
 <p>Via <a href="https://help.ubuntu.com/community/CronHowto"><strong>Ubuntu Cron</strong></a>. Every Day it shall trigger the <strong>Daily Test and Rewind</strong>…</p>
@@ -533,6 +540,7 @@ $ tail -f /var/log/syslog</code></pre></div>
 Done!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets">(See the <strong>GitLab Snippets</strong>)</a></p>
+<p>TODO: Pic of Notify Cron</p>
 <p><em>And the Polite Note? That goes to our Mastodon Server?</em></p>
 <p>Every 15 Minutes: Ubuntu Cron shall trigger the <strong>Mastodon Notification</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add a Cron Job
@@ -565,6 +573,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 
 Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
 <h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
 <ol>
 <li>
