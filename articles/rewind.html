@@ -453,6 +453,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 </span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
+<p>One last thing to do with our Breaking Commit…</p>
 <p><img src="https://lupyuen.org/images/rewind-title7.jpg" alt="Write a Polite Note" /></p>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
@@ -647,6 +648,9 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
