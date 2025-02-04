@@ -535,16 +535,16 @@ $ tail -f /var/log/syslog</code></pre></div>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>(luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build)
 + ./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
-/tmp/rewind-build-rv-virt:knsh64_test/apps /tmp/rewind-build-rv-virt:knsh64_test
-#1 of 20: Building nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx_apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348
+  /tmp/rewind-build-rv-virt:knsh64_test/apps /tmp/rewind-build-rv-virt:knsh64_test
+  #1 of 20: Building nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx_apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348
 + build_commit /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
 + run_job /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
 + script /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log -c &#39;       /home/luppy/nuttx-build-farm/rewind-commit.sh         rv-virt:knsh64_test         8995e5a66e14819e2bfda467d4f9fb8719fd9134         43439a6b16a435bce7d9ac85f05c3a6013f91348         2025-02-03T08:21:26         dc5251f9c8db878ac9706586eb85ad7e201286b6         8995e5a66e14819e2bfda467d4f9fb8719fd9134     &#39;
 + /home/luppy/nuttx-build-farm/build-test-knsh64.sh 8995e5a66e14819e2bfda467d4f9fb8719fd9134 43439a6b16a435bce7d9ac85f05c3a6013f91348#015
 ...
 + glab snippet new --repo lupyuen/nuttx-build-log --visibility public --title &#39;[unknown] CI Log for rv-virt:knsh64_test @ 2025-02-03T08:21:26 / nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx-apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348&#39; --filename ci-unknown.log
-- Creating snippet in https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4802191
-Done!</code></pre></div></span>
+  Creating snippet in https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4802191
+  Done!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets">(See the <strong>GitLab Snippets</strong>)</a></p>
 <blockquote>
@@ -570,17 +570,14 @@ $ tail -f /var/log/syslog</code></pre></div>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>(luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-notify)
 + cargo run
-
 build_score{
   target=&quot;rv-virt:knsh64_test&quot;,
   build_score_prev=&quot;1&quot;
 } == 0
-
 rv-virt : KNSH64_TEST - Build Failed (rewind)
-Breaking PR: https://github.com/apache/nuttx/pull/15444
-Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6
-
-Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!</code></pre></div></span>
+  Breaking PR: https://github.com/apache/nuttx/pull/15444
+  Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6
+  Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf">(See the <strong>Complete Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
 <h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
