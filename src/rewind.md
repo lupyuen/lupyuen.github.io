@@ -150,9 +150,9 @@ function build_nuttx { ...
 }
 ```
 
-Our [__Build / Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
+Our [__Build-Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
 
-TODO: Sample Build / Test Log
+TODO: Pic of Build / Test Log
 
 For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
 
