@@ -4,15 +4,15 @@
 
 ![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.github.io/images/rewind-title.jpg)
 
-If the __Daily Test__ fails for [__Apache NuttX RTOS__](TODO)... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this...
+If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this...
 
-1.  Every Day at 00:00 UTC: [__Ubuntu Cron__](TODO) shall trigger a __Daily Build and Test__ of NuttX for __QEMU RISC-V__ _(knsh64 / 64-bit Kernel Build)_
+1.  Every Day at 00:00 UTC: __Ubuntu Cron__ shall trigger a __Daily Build and Test__ of NuttX for __QEMU RISC-V__ _(knsh64 / 64-bit Kernel Build)_
 
-1.  __If The Test Fails:__ Our Machine will [__Backtrack The Commits__](TODO), rebuilding and retesting each commit _(on QEMU Emulator)_
+1.  __If The Test Fails:__ Our Machine will __Backtrack The Commits__, rebuilding and retesting each commit _(on QEMU Emulator)_
 
-1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](TODO), that includes the _(suspicious)_ __Pull Request__
+1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](https://nuttx-feed.org/@nuttx_build/113922504467871604), that includes the _(suspicious)_ __Pull Request__
 
-1.  __Bonus:__ The Machine will draft a [__Polite Note__](TODO) for our NuttX Colleague to investigate the Pull Request, please
+1.  __Bonus:__ The Machine will draft a [__Polite Note__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057) for our NuttX Colleague to investigate the Pull Request, please
 
 _Why are we doing this?_
 
@@ -22,7 +22,7 @@ Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RI
 
 # Find the Breaking Commit
 
-We wrote a script will __Rewind the NuttX Build__ and discover the Breaking Commit...
+We wrote a script that will __Rewind the NuttX Build__ and discover the Breaking Commit...
 
 ```bash
 ## Set the GitLab Token, check that it's OK
