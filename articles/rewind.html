@@ -420,10 +420,10 @@ build_score ... version="{version}" ... {build_score}
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
 </span><span class="kw">let </span>query = <span class="macro">format!</span>(<span class="string">r##"
-  build_score{{
+  build_score{ ...
     target="{TARGET}",
     build_score_prev="1"
-  }} == 0
+  ... } == 0
 "##</span>);
 
 <span class="comment">// Send query to Prometheus via HTTP Form Post
