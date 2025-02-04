@@ -531,7 +531,7 @@ Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify
 
 TODO: [Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
-![Cron Job for Daily Test and Rewind](https://lupyuen.org/images/rewind-title8.jpg)
+> ![Cron Job for Daily Test and Rewind](https://lupyuen.org/images/rewind-title8.jpg)
 
 # Cron Everything
 
@@ -582,7 +582,7 @@ Done!
 
 [(See the __GitLab Snippets__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets)
 
-![Cron Jab for Mastodon Notification](https://lupyuen.org/images/rewind-title9.jpg)
+> ![Cron Jab for Mastodon Notification](https://lupyuen.org/images/rewind-title9.jpg)
 
 _And the Polite Note? That goes to our Mastodon Server?_
 
