@@ -622,7 +622,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 
     - Oops Daily Test failed! I run a script to [__Rewind or Bisect__](https://github.com/lupyuen/nuttx-riscv64/blob/main/special-qemu-riscv-knsh64.sh#L45-L61) the Daily Build
 
-    - I write a [__Polite Note__](TODO) _(depending on my mood)_
+    - I write a [__Polite Note__](https://github.com/apache/nuttx/pull/15444#issuecomment-2585595498) _(depending on my mood)_
 
     - And post it to the __Breaking Pull Request__
 
@@ -632,7 +632,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 
     We might extend the __Daily Rewind__ to a Real Board: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000a).
 
-    Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](TODO), since they're quicker and more consistent than Real Hardware. (Though less accurate)
+    Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](https://lupyuen.github.io/articles/tinyemu3), since they're quicker and more consistent than Real Hardware. (Though less accurate)
 
     Plus other __QEMU Targets__: _rv-virt:nsh / nsh64 / knsh_
 
@@ -668,7 +668,13 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
     
     Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
 
-TODO: Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation
+![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
 
 # What's Next
 
