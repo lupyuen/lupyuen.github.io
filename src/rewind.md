@@ -4,7 +4,7 @@
 
 ![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
 
-If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this...
+If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) ... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this (pic above)
 
 1.  Every Day at 00:00 UTC: __Ubuntu Cron__ shall trigger a __Daily Build and Test__ of NuttX for __QEMU RISC-V__ _(knsh64 / 64-bit Kernel Build)_
 
@@ -13,6 +13,8 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org
 1.  When it discovers the __Breaking Commit__: Our Machine shall post a [__Mastodon Alert__](https://nuttx-feed.org/@nuttx_build/113922504467871604), that includes the _(suspicious)_ __Pull Request__
 
 1.  __Bonus:__ The Machine will draft a [__Polite Note__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057) for our NuttX Colleague to investigate the Pull Request, please
+
+    ![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-mastodon3.png)
 
 _Why are we doing this?_
 
@@ -77,9 +79,9 @@ qemu-system-riscv64 -kernel nuttx
 
 _Build and Test 20 times! Won't it look mighty messy?_
 
-Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the __NuttX Build History__ (part of [__NuttX Dashboard__](TODO))
+Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](TODO)...
 
-TODO: Pic of Build History
+![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
 What's inside our script? We dive in...
 
@@ -398,7 +400,7 @@ The __Test Logs__ in Prometheus will look like this...
 
 Ding ding: __Test Log #6__ will reveal the [__Breaking Commit__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)!
 
-TODO: Screenshot of Build History
+![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
 _Inside Prometheus: How to find Test Log #6?_
 
