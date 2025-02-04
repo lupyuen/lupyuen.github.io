@@ -75,26 +75,26 @@
 <li><a href="#be-kind-rewind" title="Be Kind, Rewind!">8 Be Kind, Rewind!</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>26 Feb 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
-<p>If the <strong>Daily Test</strong> fails for <a href="TODO"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s try this…</p>
+<p>If the <strong>Daily Test</strong> fails for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>… Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s try this…</p>
 <ol>
 <li>
-<p>Every Day at 00:00 UTC: <a href="TODO"><strong>Ubuntu Cron</strong></a> shall trigger a <strong>Daily Build and Test</strong> of NuttX for <strong>QEMU RISC-V</strong> <em>(knsh64 / 64-bit Kernel Build)</em></p>
+<p>Every Day at 00:00 UTC: <strong>Ubuntu Cron</strong> shall trigger a <strong>Daily Build and Test</strong> of NuttX for <strong>QEMU RISC-V</strong> <em>(knsh64 / 64-bit Kernel Build)</em></p>
 </li>
 <li>
-<p><strong>If The Test Fails:</strong> Our Machine will <a href="TODO"><strong>Backtrack The Commits</strong></a>, rebuilding and retesting each commit <em>(on QEMU Emulator)</em></p>
+<p><strong>If The Test Fails:</strong> Our Machine will <strong>Backtrack The Commits</strong>, rebuilding and retesting each commit <em>(on QEMU Emulator)</em></p>
 </li>
 <li>
-<p>When it discovers the <strong>Breaking Commit</strong>: Our Machine shall post a <a href="TODO"><strong>Mastodon Alert</strong></a>, that includes the <em>(suspicious)</em> <strong>Pull Request</strong></p>
+<p>When it discovers the <strong>Breaking Commit</strong>: Our Machine shall post a <a href="https://nuttx-feed.org/@nuttx_build/113922504467871604"><strong>Mastodon Alert</strong></a>, that includes the <em>(suspicious)</em> <strong>Pull Request</strong></p>
 </li>
 <li>
-<p><strong>Bonus:</strong> The Machine will draft a <a href="TODO"><strong>Polite Note</strong></a> for our NuttX Colleague to investigate the Pull Request, please</p>
+<p><strong>Bonus:</strong> The Machine will draft a <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057"><strong>Polite Note</strong></a> for our NuttX Colleague to investigate the Pull Request, please</p>
 </li>
 </ol>
 <p><em>Why are we doing this?</em></p>
 <p>If NuttX Fails on <strong>QEMU RISC-V</strong>: High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
-<p>We wrote a script will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
+<p>We wrote a script that will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitLab Token, check that it&#39;s OK
 ## export GITLAB_TOKEN=...
 . $HOME/gitlab-token.sh
