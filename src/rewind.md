@@ -280,12 +280,16 @@ done
 
 With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
 
+<span style="font-size:80%">
+
 ```bash
 $ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
   Error: Test Failed
 ```
+
+</span>
 
 There's an easier way...
 
@@ -370,12 +374,16 @@ let res = client
 
 We promised to find the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
 
+<span style="font-size:80%">
+
 ```bash
 $ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
   Error: Test Failed
 ```
+
+</span>
 
 Here's how...
 
