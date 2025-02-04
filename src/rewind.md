@@ -339,7 +339,7 @@ async fn post_to_pushgateway( ... ) -> ... { ...
 r##"
 # TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
-build_score{{ version="{version}", timestamp="{timestamp}", timestamp_log="{timestamp_log}", user="{user}", arch="{arch}", subarch="{subarch}", group="{group}", board="{board}", config="{config}", target="{target}", url="{url}", url_display="{url_display}"{msg_opt}{nuttx_hash_opt}{apps_hash_opt}{prev_opt}{next_opt} }} {build_score}
+build_score{{ version="{version}" ... }} {build_score}
 "##);
 
   // Send the Metric to Pushgateway via HTTP POST
