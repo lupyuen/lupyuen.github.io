@@ -20,6 +20,8 @@ If NuttX Fails on __QEMU RISC-V__: High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
+TODO: Pic of Breaking Commit
+
 # Find the Breaking Commit
 
 We wrote a script will __Rewind the NuttX Build__ and discover the Breaking Commit...
@@ -82,6 +84,8 @@ TODO: Pic of Build History
 What's inside our script? We dive in...
 
 [(Which __Apps Hash__ to use? NuttX Build History can help)](TODO)
+
+TODO: Pic of One Commit
 
 # Testing One Commit
 
@@ -173,6 +177,8 @@ fi
 ```
 
 Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let's zoom out...
+
+TODO: Pic of 20 Commits
 
 # Testing 20 Commits
 
@@ -270,6 +276,8 @@ done
 
 TODO: Breaking Commit
 
+TODO: Pic of Ingest Test Log
+
 # Ingest the Test Log
 
 _Why publish the Test Log as a GitLab Snippet?_
@@ -355,6 +363,8 @@ TODO: Screenshot of Prometheus
 
 TODO: Breaking Commit
 
+TODO: Pic of Query Prometheus
+
 # Query Prometheus for Breaking Commit
 
 _Test Logs are now inside Prometheus Database. How will Prometheus tell us the Breaking Commit?_
@@ -435,6 +445,8 @@ let body = res.text().await?;
 let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
+
+TODO: Pic of Polite Note
 
 # Write a Polite Note
 
@@ -517,6 +529,8 @@ Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify
 
 TODO: [Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
+TODO: Pic of Rewind Cron
+
 # Cron Everything
 
 _We coded plenty of goodies over the Lunar New Year. How will they be triggered?_
@@ -566,6 +580,8 @@ Done!
 
 [(See the __GitLab Snippets__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets)
 
+TODO: Pic of Notify Cron
+
 _And the Polite Note? That goes to our Mastodon Server?_
 
 Every 15 Minutes: Ubuntu Cron shall trigger the __Mastodon Notification__...
@@ -611,6 +627,8 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
 </span>
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
+
+![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
 
 # Be Kind, Rewind!
 
