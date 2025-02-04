@@ -22,16 +22,21 @@ Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RI
 
 # Find the Breaking Commit
 
-Our script will __Rewind the NuttX Build__ and discover the Breaking Commit...
+We have a script will __Rewind the NuttX Build__ and discover the Breaking Commit...
 
 ```bash
+## Set the GitLab Token, check that it's OK
+## export GITLAB_TOKEN=...
+. $HOME/gitlab-token.sh
+glab auth status
+
+## Set the GitLab User and Repo for posting GitLab Snippets
+export GITLAB_USER=lupyuen
+export GITLAB_REPO=nuttx-build-log
+
 ## Download the NuttX Rewind Scripts
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
-
-## Set the GitLab Token, check that it's OK
-. ../gitlab-token.sh
-glab auth status
 
 ## Find the Breaking Commit for QEMU RISC-V (64-bit Kernel Build)
 nuttx_hash=  ## Optional: Begin with this NuttX Hash
@@ -542,9 +547,16 @@ We'll see the __Test and Rewind__ in action...
 
 ```bash
 (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
-./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
++ ./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
+/tmp/rewind-build-rv-virt:knsh64_test/apps /tmp/rewind-build-rv-virt:knsh64_test
+#1 of 20: Building nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx_apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348
++ build_commit /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
++ run_job /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
++ script /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log -c '       /home/luppy/nuttx-build-farm/rewind-commit.sh         rv-virt:knsh64_test         8995e5a66e14819e2bfda467d4f9fb8719fd9134         43439a6b16a435bce7d9ac85f05c3a6013f91348         2025-02-03T08:21:26         dc5251f9c8db878ac9706586eb85ad7e201286b6         8995e5a66e14819e2bfda467d4f9fb8719fd9134     '
++ /home/luppy/nuttx-build-farm/build-test-knsh64.sh 8995e5a66e14819e2bfda467d4f9fb8719fd9134 43439a6b16a435bce7d9ac85f05c3a6013f91348#015
 ...
-Creating snippet https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801032
++ glab snippet new --repo lupyuen/nuttx-build-log --visibility public --title '[unknown] CI Log for rv-virt:knsh64_test @ 2025-02-03T08:21:26 / nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx-apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348' --filename ci-unknown.log
+- Creating snippet in https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4802191
 Done!
 ```
 
