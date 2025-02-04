@@ -568,16 +568,16 @@ We'll see the __Test and Rewind__ in action...
 ```bash
 (luppy) CMD (/home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build)
 + ./rewind-build.sh rv-virt:knsh64_test HEAD HEAD 1 20
-/tmp/rewind-build-rv-virt:knsh64_test/apps /tmp/rewind-build-rv-virt:knsh64_test
-#1 of 20: Building nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx_apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348
+  /tmp/rewind-build-rv-virt:knsh64_test/apps /tmp/rewind-build-rv-virt:knsh64_test
+  #1 of 20: Building nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx_apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348
 + build_commit /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
 + run_job /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log 2025-02-03T08:21:26 43439a6b16a435bce7d9ac85f05c3a6013f91348 8995e5a66e14819e2bfda467d4f9fb8719fd9134 dc5251f9c8db878ac9706586eb85ad7e201286b6 8995e5a66e14819e2bfda467d4f9fb8719fd9134
 + script /tmp/rewind-build-rv-virt:knsh64_test/8995e5a66e14819e2bfda467d4f9fb8719fd9134.log -c '       /home/luppy/nuttx-build-farm/rewind-commit.sh         rv-virt:knsh64_test         8995e5a66e14819e2bfda467d4f9fb8719fd9134         43439a6b16a435bce7d9ac85f05c3a6013f91348         2025-02-03T08:21:26         dc5251f9c8db878ac9706586eb85ad7e201286b6         8995e5a66e14819e2bfda467d4f9fb8719fd9134     '
 + /home/luppy/nuttx-build-farm/build-test-knsh64.sh 8995e5a66e14819e2bfda467d4f9fb8719fd9134 43439a6b16a435bce7d9ac85f05c3a6013f91348#015
 ...
 + glab snippet new --repo lupyuen/nuttx-build-log --visibility public --title '[unknown] CI Log for rv-virt:knsh64_test @ 2025-02-03T08:21:26 / nuttx @ 8995e5a66e14819e2bfda467d4f9fb8719fd9134 / nuttx-apps @ 43439a6b16a435bce7d9ac85f05c3a6013f91348' --filename ci-unknown.log
-- Creating snippet in https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4802191
-Done!
+  Creating snippet in https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4802191
+  Done!
 ```
 
 </span>
@@ -617,17 +617,14 @@ The __Mastodon Notification__ appears like so...
 ```bash
 (luppy) CMD (/home/luppy/nuttx-rewind-notify/cron.sh 2>&1 | logger -t nuttx-rewind-notify)
 + cargo run
-
 build_score{
   target="rv-virt:knsh64_test",
   build_score_prev="1"
 } == 0
-
 rv-virt : KNSH64_TEST - Build Failed (rewind)
-Breaking PR: https://github.com/apache/nuttx/pull/15444
-Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6
-
-Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!
+  Breaking PR: https://github.com/apache/nuttx/pull/15444
+  Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6
+  Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!
 ```
 
 </span>
