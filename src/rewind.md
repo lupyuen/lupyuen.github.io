@@ -150,6 +150,8 @@ function build_nuttx { ...
 }
 ```
 
+Our [__Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
+
 TODO: Sample Build / Test Log
 
 For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
@@ -361,8 +363,6 @@ build_score ... version="{version}" ... {build_score}
 
 [(See the __Rust App Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
-TODO: Screenshot of Prometheus
-
 TODO: Breaking Commit
 
 ![Query Prometheus for Breaking Commit](https://lupyuen.org/images/rewind-title6.jpg)
@@ -420,6 +420,10 @@ __Dear Prometheus:__ Please find the __Test Log__ that matches...
 - __Previous Commit__ is OK _(Previous Score = 1)_
 
 - __This Commit__ is NOT OK _(This Score = 0)_
+
+Prometheus returns the __Breaking Commit__ that we seek...
+
+TODO: Screenshot of Prometheus
 
 Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
 
@@ -529,7 +533,7 @@ Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b)
 
-TODO: [Search the NuttX Commit in Prometheus](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
+[(Searching for __NuttX Commit__ in Prometheus)](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
 > ![Cron Job for Daily Test and Rewind](https://lupyuen.org/images/rewind-title8.jpg)
 
