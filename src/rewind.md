@@ -2,7 +2,7 @@
 
 📝 _26 Feb 2025_
 
-![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.github.io/images/rewind-title.jpg)
+![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
 
 If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this...
 
