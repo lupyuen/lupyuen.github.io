@@ -94,7 +94,7 @@
 <p><em>Why are we doing this?</em></p>
 <p>If NuttX Fails on <strong>QEMU RISC-V</strong>: High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<p>TODO: Pic of Breaking Commit</p>
+<p><img src="https://lupyuen.org/images/rewind-title2.jpg" alt="TODO" /></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
 <p>We wrote a script that will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitLab Token, check that it&#39;s OK
@@ -143,7 +143,9 @@ qemu-system-riscv64 -kernel nuttx
 <p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p>What’s inside our script? We dive in…</p>
 <p><a href="TODO">(Which <strong>Apps Hash</strong> to use? NuttX Build History can help)</a></p>
-<p>TODO: Pic of One Commit</p>
+<blockquote>
+<p><img src="https://lupyuen.org/images/rewind-title3.jpg" alt="TODO" /></p>
+</blockquote>
 <h1 id="testing-one-commit"><a class="doc-anchor" href="#testing-one-commit">§</a>2 Testing One Commit</h1>
 <p><em>How to find the Breaking Commit?</em></p>
 <p>We zoom out and explain slowly, from Micro to Macro. This script will <strong>Build and Test NuttX</strong> for <strong>One Single Commit</strong> on QEMU: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
@@ -218,7 +220,7 @@ fi
 
 ## Why the Long Echoes? We&#39;ll ingest them later</code></pre></div>
 <p>Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let’s zoom out…</p>
-<p>TODO: Pic of 20 Commits</p>
+<p><img src="https://lupyuen.org/images/rewind-title4.jpg" alt="TODO" /></p>
 <h1 id="testing-20-commits"><a class="doc-anchor" href="#testing-20-commits">§</a>3 Testing 20 Commits</h1>
 <p><em>Who calls the script above: rewind-commit.sh?</em></p>
 <p>The script above is called by <strong>run_job</strong> below: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L105-L128">rewind-build.sh</a></p>
