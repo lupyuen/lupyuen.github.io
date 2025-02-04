@@ -668,7 +668,7 @@ Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you plea
     
     Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
 
-![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
+![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
 
 <span style="font-size:80%">
 
