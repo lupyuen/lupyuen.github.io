@@ -385,7 +385,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 
 </span>
 
-Here's how...
+Finally we're ready...
 
 ![Query Prometheus for Breaking Commit](https://lupyuen.org/images/rewind-title6.jpg)
 
