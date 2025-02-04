@@ -152,7 +152,7 @@ function build_nuttx { ...
 
 Our [__Build-Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
 
-TODO: Pic of Build / Test Log
+![Build-Test Log in GitLab Snippet](https://lupyuen.org/images/rewind-log.png)
 
 For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
 
@@ -445,7 +445,7 @@ __Dear Prometheus:__ Please find the __Test Log__ that matches...
 
 Prometheus returns the __Breaking Commit__ that we seek...
 
-TODO: Screenshot of Prometheus
+![Prometheus returns the Breaking Commit that we seek](https://lupyuen.org/images/rewind-prometheus.png)
 
 Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
 
