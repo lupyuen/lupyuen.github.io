@@ -278,7 +278,7 @@ done
 
 TODO: Breaking Commit
 
-TODO: Pic of Ingest Test Log
+![TODO](https://lupyuen.org/images/rewind-title5.jpg)
 
 # Ingest the Test Log
 
@@ -365,7 +365,7 @@ TODO: Screenshot of Prometheus
 
 TODO: Breaking Commit
 
-TODO: Pic of Query Prometheus
+![TODO](https://lupyuen.org/images/rewind-title6.jpg)
 
 # Query Prometheus for Breaking Commit
 
@@ -448,7 +448,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-TODO: Pic of Polite Note
+![TODO](https://lupyuen.org/images/rewind-title7.jpg)
 
 # Write a Polite Note
 
@@ -537,7 +537,7 @@ TODO: Pic of Rewind Cron
 
 _We coded plenty of goodies over the Lunar New Year. How will they be triggered?_
 
-Via [__Ubuntu Cron__](https://help.ubuntu.com/community/CronHowto). Every Day it shall trigger the __Daily Test and Rewind__...
+Via [__Ubuntu Cron__](https://help.ubuntu.com/community/CronHowto). Every Day it shall trigger the __Daily Test and Rewind__ (pic above)
 
 ```bash
 ## Add a Cron Job
@@ -586,7 +586,7 @@ TODO: Pic of Notify Cron
 
 _And the Polite Note? That goes to our Mastodon Server?_
 
-Every 15 Minutes: Ubuntu Cron shall trigger the __Mastodon Notification__...
+Every 15 Minutes: Ubuntu Cron shall trigger the __Mastodon Notification__ (pic above)
 
 ```bash
 ## Add a Cron Job
