@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Auto-Rewind for Daily Test (Apache NuttX RTOS)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2025-02-09",
+      "website": "https://lupyuen.github.io/articles/rewind",
+      "summary": "If the Daily Test fails for Apache NuttX RTOS... Can we Auto-Rewind and discover the Breaking Commit? Let's do it with Prometheus Time-Series Database and Mastodon Server"
+    },
+    {
       "name": "Rust Standard Library on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-26",

@@ -1,6 +1,6 @@
 # Auto-Rewind for Daily Test (Apache NuttX RTOS)
 
-📝 _26 Feb 2025_
+📝 _9 Feb 2025_
 
 ![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
 
