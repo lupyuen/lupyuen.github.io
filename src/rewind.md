@@ -474,6 +474,8 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
+One last thing to do with our Breaking Commit...
+
 ![Write a Polite Note](https://lupyuen.org/images/rewind-title7.jpg)
 
 # Write a Polite Note
@@ -724,6 +726,8 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
+
+- [__Discuss this article on Hacker News__](TODO)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
