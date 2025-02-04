@@ -196,6 +196,7 @@ function build_nuttx { ...
   ## Omitted: Build and Test Other Targets
   echo &quot;====================================================================================&quot;
 }</code></pre></div>
+<p>Our <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Test Log</strong></a> looks like this…</p>
 <p>TODO: Sample Build / Test Log</p>
 <p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
@@ -370,7 +371,6 @@ build_score ... version="{version}" ... {build_score}
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760">(And <strong>Extract the Fields</strong> from Test Logs)</a></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
-<p>TODO: Screenshot of Prometheus</p>
 <p>TODO: Breaking Commit</p>
 <p><img src="https://lupyuen.org/images/rewind-title6.jpg" alt="Query Prometheus for Breaking Commit" /></p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
@@ -419,6 +419,8 @@ build_score ... version="{version}" ... {build_score}
 <p><strong>This Commit</strong> is NOT OK <em>(This Score = 0)</em></p>
 </li>
 </ul>
+<p>Prometheus returns the <strong>Breaking Commit</strong> that we seek…</p>
+<p>TODO: Screenshot of Prometheus</p>
 <p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
@@ -508,7 +510,7 @@ $ curl -L \
    user: { login: &quot;GITHUB_USERID&quot;, ...</code></pre></div>
 <p>Which <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L109-L138"><strong>becomes this function</strong></a> in our Rust App.</p>
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">Search the NuttX Commit in Prometheus</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">(Searching for <strong>NuttX Commit</strong> in Prometheus)</a></p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/rewind-title8.jpg" alt="Cron Job for Daily Test and Rewind" /></p>
 </blockquote>
