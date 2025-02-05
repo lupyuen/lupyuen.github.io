@@ -717,13 +717,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
     
     Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886) 🤔
 
-![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
-
-<span style="font-size:80%">
-
-[_Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation_](https://qoto.org/@lupyuen/113517788288458811)
-
-</span>
+![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot.jpg)
 
 # What's Next
 
@@ -748,3 +742,11 @@ Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also g
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/rewind.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rewind.md)
+
+![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
