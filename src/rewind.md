@@ -150,9 +150,11 @@ function build_nuttx { ...
 }
 ```
 
-Our [__Build-Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) looks like this...
+Our [__Build-Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) becomes this __GitLab Snippet__...
 
 ![Build-Test Log in GitLab Snippet](https://lupyuen.org/images/rewind-log.png)
+
+_What's the other stuff inside the GitLab Snippet above?_
 
 For Every Commit, we bundle __Three Commits__ into a single Log File: _This Commit, Previous Commit, Next Commit_: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169)
 
@@ -679,7 +681,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
     Or maybe [__SG2000 Emulator__](https://lupyuen.github.io/articles/sg2000b) and [__Ox64 Emulator__](https://lupyuen.github.io/articles/tinyemu3), since they're quicker and more consistent than Real Hardware. (Though less accurate)
 
-    Plus other __QEMU Targets__: _rv-virt:nsh / nsh64 / knsh_
+    Plus other __QEMU Targets__: _[qemu-armv8a:nsh](https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html)_, _[rv-virt:nsh](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml) / [nsh64](https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-12) / [knsh](https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml)_
 
 1.  _Suppose we wish to add Our Own Boards to the System?_
 
@@ -692,6 +694,8 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
     Ah remember that we're fixing Runtime Bugs, not Compile Errors. Git Bisect won't work if the Runtime Bug is [__Not Reliably Reproducible__](https://lupyuen.github.io/articles/bisect#good-commit-goes-bad).
 
     When we Rewind 20 Commits, we'll know if the bug is Reliably Reproducible.
+    
+    TODO: Pic of this bug is NOT reliably reproducible
 
 1.  _Why aren't we using Docker?_
 
