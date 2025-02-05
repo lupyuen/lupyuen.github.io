@@ -196,8 +196,9 @@ function build_nuttx { ...
   ## Omitted: Build and Test Other Targets
   echo &quot;====================================================================================&quot;
 }</code></pre></div>
-<p>Our <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Build-Test Log</strong></a> looks like this…</p>
+<p>Our <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Build-Test Log</strong></a> becomes this <strong>GitLab Snippet</strong>…</p>
 <p><img src="https://lupyuen.org/images/rewind-log.png" alt="Build-Test Log in GitLab Snippet" /></p>
+<p><em>What’s the other stuff inside the GitLab Snippet above?</em></p>
 <p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
 build_nuttx $nuttx_hash $apps_hash
@@ -614,7 +615,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 <p><em>What if it’s a smashing success?</em></p>
 <p>We might extend the <strong>Daily Rewind</strong> to a Real Board: <a href="https://lupyuen.github.io/articles/sg2000a"><strong>Oz64 SG2000 RISC-V SBC</strong></a>.</p>
 <p>Or maybe <a href="https://lupyuen.github.io/articles/sg2000b"><strong>SG2000 Emulator</strong></a> and <a href="https://lupyuen.github.io/articles/tinyemu3"><strong>Ox64 Emulator</strong></a>, since they’re quicker and more consistent than Real Hardware. (Though less accurate)</p>
-<p>Plus other <strong>QEMU Targets</strong>: <em>rv-virt:nsh / nsh64 / knsh</em></p>
+<p>Plus other <strong>QEMU Targets</strong>: <em><a href="https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html">qemu-armv8a:nsh</a></em>, <em><a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-nsh.yml">rv-virt:nsh</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/releases/tag/qemu-riscv-nsh64-2025-01-12">nsh64</a> / <a href="https://github.com/lupyuen/nuttx-riscv64/actions/workflows/qemu-riscv-knsh.yml">knsh</a></em></p>
 </li>
 <li>
 <p><em>Suppose we wish to add Our Own Boards to the System?</em></p>
@@ -625,6 +626,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 <p><em>Why Rewind every commit? Isn’t Git Bisect quicker?</em></p>
 <p>Ah remember that we’re fixing Runtime Bugs, not Compile Errors. Git Bisect won’t work if the Runtime Bug is <a href="https://lupyuen.github.io/articles/bisect#good-commit-goes-bad"><strong>Not Reliably Reproducible</strong></a>.</p>
 <p>When we Rewind 20 Commits, we’ll know if the bug is Reliably Reproducible.</p>
+<p>TODO: Pic of this bug is NOT reliably reproducible</p>
 </li>
 <li>
 <p><em>Why aren’t we using Docker?</em></p>
