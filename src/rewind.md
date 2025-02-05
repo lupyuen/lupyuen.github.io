@@ -703,13 +703,13 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
 1.  _Any more Grand Plans?_
 
-    We might allow a __PR Comment__ to trigger a Build + Test on QEMU. For example, this PR Comment...
+    We might allow a [__PR Comment__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs) to trigger a Build + Test on QEMU. For example, this PR Comment...
 
     ```bash
     @nuttxpr test rv-virt:knsh64
     ```
 
-    Will trigger our __Test Bot__ to download the PR Code, and run Build + Test on QEMU RISC-V. Or on __Real Hardware__...
+    Will trigger our [__Test Bot__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs) to download the PR Code, and run Build + Test on QEMU RISC-V. Or on [__Real Hardware__](https://lupyuen.github.io/articles/sg2000a)...
 
     ```bash
     @nuttxpr test milkv_duos:nsh
