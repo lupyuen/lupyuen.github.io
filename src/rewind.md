@@ -705,13 +705,13 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
 1.  _Any more Grand Plans?_
 
-    We might allow a [__PR Comment__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs) to trigger a Build + Test on QEMU. For example, this PR Comment...
+    Our new [__PR Test Bot__](https://github.com/apache/nuttx/issues/15779) will allow a [__PR Comment__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) to trigger a Build + Test on QEMU. For example, this PR Comment...
 
     ```bash
     @nuttxpr test rv-virt:knsh64
     ```
 
-    Will trigger our [__Test Bot__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs) to download the PR Code, and run Build + Test on QEMU RISC-V. Or on [__Real Hardware__](https://lupyuen.github.io/articles/sg2000a)...
+    Will trigger our [__PR Test Bot__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs) to download the PR Code, and run Build + Test on QEMU RISC-V. Or on [__Real Hardware__](https://lupyuen.github.io/articles/sg2000a)...
 
     ```bash
     @nuttxpr test milkv_duos:nsh
