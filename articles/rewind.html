@@ -96,7 +96,7 @@
 <p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
 <p><img src="https://lupyuen.org/images/rewind-title2.jpg" alt="Find the Breaking Commit" /></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
-<p>We wrote a script that will <strong>Rewind the NuttX Build</strong> and discover the Breaking Commit…</p>
+<p>We wrote a script that will <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>Rewind the NuttX Build</strong></a> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitLab Token, check that it&#39;s OK
 ## export GITLAB_TOKEN=...
 . $HOME/gitlab-token.sh
@@ -117,7 +117,7 @@ apps_hash=   ## Optional: Begin with this Apps Hash
   rv-virt:knsh64_test \
   $nuttx_hash \
   $apps_hash</code></pre></div>
-<p>Our Rewind Script runs <strong>20 Iterations of Build + Test</strong>…</p>
+<p>Our Rewind Script runs <strong>20 Iterations of Build + Test</strong> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test: Latest NuttX Commit
 git reset --hard HEAD
 tools/configure.sh rv-virt:knsh64
@@ -311,7 +311,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
 <p>That’s because we’ll Ingest the Test Log into our <strong>NuttX Dashboard</strong>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
-<p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)…</p>
+<p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)</p>
 <div class="example-wrap"><pre class="language-bash"><code># TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
 build_score{ 
@@ -417,7 +417,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
   target=&quot;rv-virt:knsh64_test&quot;,
   build_score_prev=&quot;1&quot;
 } == 0</code></pre></div>
-<p><strong>Dear Prometheus:</strong> Please find the <strong>Test Log</strong> that matches…</p>
+<p><strong>Dear Prometheus:</strong> Please find the <strong>Test Log</strong> that matches the following…</p>
 <ul>
 <li>
 <p><strong>NuttX Target</strong> is QEMU RISC-V <em>(rv-virt:knsh64)</em></p>
@@ -455,7 +455,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 </span><span class="kw">let </span>body = res.text().<span class="kw">await</span><span class="question-mark">?</span>;
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
-<p>One last thing to do with our Breaking Commit…</p>
+<p>One more thing to do with our Breaking Commit…</p>
 <p><img src="https://lupyuen.org/images/rewind-title7.jpg" alt="Write a Polite Note" /></p>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
@@ -486,7 +486,7 @@ riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div
 </span>
 <p>This goes to our <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Server</strong></a> for NuttX Continuous Integration. I’ll copy this and paste it as a PR Comment, after my vetting.</p>
 <p><em>Our Machine writes this based on the Breaking Commit? From the Previous Section?</em></p>
-<p>Exactly! We won’t explain the <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251"><strong>Dull Bits</strong></a>, involving…</p>
+<p>Exactly! We won’t explain the <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251"><strong>Dull Bits</strong></a>. They involve…</p>
 <ol>
 <li>
 <p>Extracting the <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157"><strong>Test Log</strong></a></p>
@@ -620,7 +620,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 </li>
 <li>
 <p><em>Suppose we wish to add Our Own Boards to the System?</em></p>
-<p>Let’s assume we have <strong>Automated Board Testing</strong>. Then we could upload the <strong>NuttX Test Logs</strong> <em>(in the prescribed format)</em> to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
+<p>Let’s assume we have <a href="https://github.com/apache/nuttx/issues/15730"><strong>Automated Board Testing</strong></a>. Then we could upload the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets"><strong>NuttX Test Logs</strong></a> <em>(in the prescribed format)</em> to GitLab Snippets or GitHub Gists. They’ll appear in NuttX Dashboard and Build History.</p>
 <p>(Rewinding the Build on Our Own Boards? Needs more work)</p>
 </li>
 <li>
