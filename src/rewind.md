@@ -26,7 +26,7 @@ Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RI
 
 # Find the Breaking Commit
 
-We wrote a script that will __Rewind the NuttX Build__ and discover the Breaking Commit...
+We wrote a script that will [__Rewind the NuttX Build__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh) and discover the Breaking Commit...
 
 ```bash
 ## Set the GitLab Token, check that it's OK
@@ -51,7 +51,7 @@ apps_hash=   ## Optional: Begin with this Apps Hash
   $apps_hash
 ```
 
-Our Rewind Script runs __20 Iterations of Build + Test__...
+Our Rewind Script runs __20 Iterations of Build + Test__ like so...
 
 ```bash
 ## Build and Test: Latest NuttX Commit
@@ -303,7 +303,7 @@ _Why publish the Test Log as a GitLab Snippet?_
 
 That's because we'll Ingest the Test Log into our __NuttX Dashboard__. (So we can present the logs neatly as __NuttX Build History__)
 
-This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) (that powers our NuttX Dashboard)...
+This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) (that powers our NuttX Dashboard)
 
 ```bash
 # TYPE build_score gauge
@@ -439,7 +439,7 @@ build_score{
 } == 0
 ```
 
-__Dear Prometheus:__ Please find the __Test Log__ that matches...
+__Dear Prometheus:__ Please find the __Test Log__ that matches the following...
 
 - __NuttX Target__ is QEMU RISC-V _(rv-virt:knsh64)_
 
@@ -478,7 +478,7 @@ let data: Value = serde_json::from_str(&body).unwrap();
 let builds = &data["data"]["result"];
 ```
 
-One last thing to do with our Breaking Commit...
+One more thing to do with our Breaking Commit...
 
 ![Write a Polite Note](https://lupyuen.org/images/rewind-title7.jpg)
 
@@ -518,7 +518,7 @@ This goes to our [__Mastodon Server__](https://lupyuen.github.io/articles/mastod
 
 _Our Machine writes this based on the Breaking Commit? From the Previous Section?_
 
-Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251), involving...
+Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L81-L251). They involve...
 
 1.  Extracting the [__Test Log__](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L140-L157)
 
@@ -687,7 +687,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
 1.  _Suppose we wish to add Our Own Boards to the System?_
 
-    Let's assume we have __Automated Board Testing__. Then we could upload the __NuttX Test Logs__ _(in the prescribed format)_ to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
+    Let's assume we have [__Automated Board Testing__](https://github.com/apache/nuttx/issues/15730). Then we could upload the [__NuttX Test Logs__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets) _(in the prescribed format)_ to GitLab Snippets or GitHub Gists. They'll appear in NuttX Dashboard and Build History.
 
     (Rewinding the Build on Our Own Boards? Needs more work)
 
