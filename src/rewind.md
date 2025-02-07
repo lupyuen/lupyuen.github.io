@@ -127,7 +127,7 @@ expect qemu-riscv-knsh64.exp
 
 [(__Expect Script__ shall validate the QEMU Output)](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp)
 
-The script above is called by __build_nuttx__ below. Which will wrap the output in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh)
+The script above is called by __build_nuttx__ below. Which will wrap the output in the Log Format that __NuttX Dashboard__ expects: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L64-L133)
 
 ```bash
 ## Build and Test One Commit
@@ -280,7 +280,7 @@ for commit in $(
 done
 ```
 
-With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
+With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L2) that fails the NuttX Test...
 
 <span style="font-size:80%">
 
@@ -376,7 +376,7 @@ let res = client
 
 [(See the __Rust App Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897)
 
-We promised to find the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) that fails the NuttX Test...
+We promised to find the [__Earliest Commit__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L2) that fails the NuttX Test...
 
 <span style="font-size:80%">
 
