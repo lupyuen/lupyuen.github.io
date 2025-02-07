@@ -719,7 +719,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
     
     Super helpful for __Testing Pull Requests__ before Merging. But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886). We'll chat in the Next Article!
 
-![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot2.jpg)
+![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot3.jpg)
 
 # What's Next
 
