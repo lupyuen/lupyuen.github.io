@@ -697,7 +697,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
     When we Rewind 20 Commits, we'll know if the bug is Reliably Reproducible.
     
-    TODO: Pic of this bug is NOT reliably reproducible
+    ![Our bug is NOT Reliably Reproducible](https://lupyuen.org/images/rewind-history2.png)
 
 1.  _Why aren't we using Docker?_
 
