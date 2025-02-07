@@ -177,7 +177,7 @@ popd
 wget https://raw.githubusercontent.com/lupyuen/nuttx-riscv64/main/qemu-riscv-knsh64.exp
 expect qemu-riscv-knsh64.exp</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp">(<strong>Expect Script</strong> shall validate the QEMU Output)</a></p>
-<p>The script above is called by <strong>build_nuttx</strong> below. Which will wrap the output in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh">rewind-commit.sh</a></p>
+<p>The script above is called by <strong>build_nuttx</strong> below. Which will wrap the output in the Log Format that <strong>NuttX Dashboard</strong> expects: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L64-L133">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit
 function build_nuttx { ...
 
@@ -300,7 +300,7 @@ for commit in $(
     break
   fi
 done</code></pre></div>
-<p>With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
+<p>With the Test Logs: We have everything we need to identify the Breaking Commit. Just dig up the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L2"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
@@ -375,7 +375,7 @@ build_score ... url="{url}" ... {build_score}
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L171-L263">(How we fetch <strong>GitLab Snippets</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L704-L760">(And <strong>Extract the Fields</strong> from Test Logs)</a></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897">(See the <strong>Rust App Log</strong>)</a></p>
-<p>We promised to find the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
+<p>We promised to find the <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L2"><strong>Earliest Commit</strong></a> that fails the NuttX Test…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>$ nuttx_hash=657247bda89d60112d79bb9b8d223eca5f9641b5
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
