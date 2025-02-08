@@ -517,6 +517,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Fixing a uname bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/uname.html)
 
+- [__"Auto-Rewind for Daily Test (Apache NuttX RTOS)"__](https://lupyuen.org/articles/rewind.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
