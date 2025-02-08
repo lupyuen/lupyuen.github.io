@@ -22,7 +22,7 @@ _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
 # Expect Script
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp
+[nuttx-build-farm/oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
 #!/usr/bin/expect
@@ -141,247 +141,11 @@ expect {
 }
 ```
 
-# NuttX Test Bot
-
-https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs
-
-```rust
-//! Fetch the Latest 20 Unread Notifications:
-//!   If Mention = "@nuttxpr test rv-virt:knsh64"
-//!   - Build and Test NuttX
-//!   - Capture the Output Log
-//!   - Extract the Log Output and Result
-//!   - Post as PR Comment
-//!   - Post to Mastodon
-//!   - Allow only Specific People
-```
-
-Fetch all Notifications:
-
-https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L43-L111
-
-```rust
-    // Fetch all Notifications
-    // TODO: Unread only
-    let notifications = octocrab
-        .activity()
-        .notifications()
-        .list()
-        .all(true)
-        .send()
-        .await?;
-
-    // For Every Notification...
-    for n in notifications {
-        // Handle only Mentions
-        let reason = &n.reason;  // "mention"
-        // println!("reason={reason}", );
-        if reason != "mention" { continue; }
-        // TODO: Mark Notification as Read
-
-        // Fetch the PR from the Notification
-        let owner = n.repository.owner.clone().unwrap().login;
-        let repo = n.repository.name.clone();
-        let pr_title = &n.subject.title;  // "Testing our bot"
-        let pr_url = n.subject.url.clone().unwrap();  // https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
-        let thread_url = &n.url;  // https://api.github.com/notifications/threads/14630615157
-        println!("owner={owner}");
-        println!("repo={repo}");
-        println!("pr_title={pr_title}");
-        println!("pr_url={pr_url}");
-        println!("thread_url={thread_url}");
-        if !pr_url.as_str().contains("/pulls/") { error!("Not a PR: {pr_url}"); continue; }
-        // println!("n={n:#?}");
-
-        // Extract the PR Number
-        let regex = Regex::new(".*/([0-9]+)$").unwrap();
-        let caps = regex.captures(pr_url.as_str()).unwrap();
-        let pr_id_str = caps.get(1).unwrap().as_str();
-        let pr_id: u64 = pr_id_str.parse().unwrap();
-        println!("pr_id={pr_id}");
-
-        // Allow only Specific Repos: apache/nuttx, apache/nuttx-apps
-        if owner != "apache" ||
-            !["nuttx", "nuttx-apps"].contains(&repo.as_str()) {
-            error!("Disallowed owner/repo: {owner}/{repo}");
-            continue;
-        }
-
-        // Get the Handlers for GitHub Pull Requests and Issues
-        let pulls = octocrab.pulls(&owner, &repo);
-        let issues = octocrab.issues(&owner, &repo);
-
-        // Post the Result and Log Output as PR Comment
-        process_pr(&pulls, &issues, pr_id).await?;
-
-        // Wait 1 minute
-        sleep(Duration::from_secs(60));
-
-        // TODO: Mark Notification as Read
-        // TODO: Continue to Next Notification
-        break;
-
-        // TODO: Allow only Specific People
-        // TODO: Post to Mastodon
-    }
-```
-
-Build and Test the PR. Then post the results as a PR Comment
-
-https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175
-
-```rust
-/// Build and Test the PR. Then post the results as a PR Comment
-async fn process_pr(pulls: &PullRequestHandler<'_>, issues: &IssueHandler<'_>, pr_id: u64) -> Result<(), Box<dyn std::error::Error>> {
-    // Get the Command and Args: ["test", "milkv_duos:nsh"]
-    let args = get_command(issues, pr_id).await?;
-    if args.is_none() { warn!("Missing command"); return Ok(()); }
-    let args = args.unwrap();
-    let cmd = &args[0];
-    let target = &args[1];
-    if cmd != "test" { error!("Unknown command: {cmd}"); return Ok(()); }
-    let (script, target) = match target.as_str() {
-        "milkv_duos:nsh" => ("oz64", target),
-        "oz64:nsh"       => ("oz64", &"milkv_duos:nsh".into()),
-        "rv-virt:knsh64" => ("knsh64", target),
-        _ => { error!("Unknown target: {target}"); return Ok(()); }
-    };
-    println!("target={target}");
-    println!("script={script}");
-
-    // Fetch the PR
-    let pr = pulls
-        .get(pr_id)
-        .await?;
-    info!("{:#?}", pr.url);
-
-    // Skip if PR State is Not Open
-    if pr.state.clone().unwrap() != IssueState::Open {
-        info!("Skipping Closed PR: {}", pr_id);
-        return Ok(());
-    }
-
-    // Fetch the PR Reactions. Quit if Both Reactions are set.
-    let reactions = get_reactions(issues, pr_id).await?;
-    if reactions.0.is_some() && reactions.1.is_some() {
-        info!("Skipping PR after 3 retries: {}", pr_id);
-        return Ok(());
-    }
-
-    // Bump up the PR Reactions: 00 > 01 > 10 > 11
-    bump_reactions(issues, pr_id, reactions).await?;
-
-    // Build and Test the PR
-    let response_text = build_test(&pr, target, script).await?;
-
-    // Header for PR Comment
-    let header = "[**\\[Experimental Bot, please feedback here\\]**](https://github.com/search?q=repo%3Aapache%2Fnuttx+15779&type=issues)";
-
-    // Compose the PR Comment
-    let comment_text =
-        header.to_string() + "\n\n" +
-        &response_text;
-
-    // Post the PR Comment
-    issues.create_comment(pr_id, comment_text).await?;
-
-    // If successful, delete the PR Reactions
-    delete_reactions(issues, pr_id).await?;
-    info!("{:#?}", pr.url);
-
-    // Wait 1 minute
-    sleep(Duration::from_secs(60));
-
-    // Return OK
-    Ok(())
-}
-```
-
-https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278
-
-```rust
-/// Build and Test the PR. Return the Build-Test Result.
-async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<String, Box<dyn std::error::Error>> {
-    // Get the Head Ref and Head URL from PR
-    // let pr: Value = serde_json::from_str(&body).unwrap();
-    // let pr_id = pr["number"].as_u64().unwrap();
-    let head = &pr.head;
-    let head_ref = &head.ref_field;  // "test-bot"
-    let head_url = head.repo.clone().unwrap().html_url.unwrap();  // https://github.com/lupyuen2/wip-nuttx
-    // println!("head_ref={head_ref}");
-    // println!("head_url={head_url}");
-
-    // True if URL is an Apps Repo
-    let is_apps =
-        if head_url.as_str().contains("apps") { true }
-        else { false };
-
-    // Set the URLs and Refs for NuttX and Apps
-    let nuttx_hash = "HEAD";
-    let nuttx_url =
-        if is_apps { "https://github.com/apache/nuttx" }
-        else { head_url.as_str() };
-    let nuttx_ref =
-        if is_apps { "master" }
-        else { head_ref };
-    let apps_hash = "HEAD";
-    let apps_url = 
-        if is_apps { head_url.as_str() }
-        else { "https://github.com/apache/nuttx-apps" };
-    let apps_ref =
-        if is_apps { head_ref }
-        else { "master" };
-
-    // Build and Test NuttX: ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    // Which calls: ./build-test-knsh64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    let cmd = format!("./build-test-{script}.sh \n  {nuttx_hash} {apps_hash} \n  {nuttx_url} {nuttx_ref} \n  {apps_url} {apps_ref}");
-    println!("{cmd}");
-    // std::process::exit(0); ////
-    println!("PLEASE VERIFY");
-    sleep(Duration::from_secs(30));
-
-    // Start the Build and Test Script
-    let log = "/tmp/nuttx-test-bot.log";
-    let mut child = Command
-        ::new("../nuttx-build-farm/build-test.sh")
-        .arg(script).arg(log)
-        .arg(nuttx_hash).arg(apps_hash)
-        .arg(nuttx_url).arg(nuttx_ref)
-        .arg(apps_url).arg(apps_ref)
-        .spawn().unwrap();
-    // println!("child={child:?}");
-
-    // Wait for Build and Test to complete
-    let status = child.wait().unwrap();  // 0 if successful
-    println!("status={status:?}");
-
-    // Upload the log as GitLab Snippet
-    let log_content = fs::read_to_string(log).unwrap();
-    let snippet_url = create_snippet(&log_content).await?;
-
-    // Extract the Log Output
-    let log_extract = extract_log(&snippet_url).await?;
-    let log_content = log_extract.join("\n");
-    println!("log_content=\n{log_content}");
-    let mut result = 
-        if status.success() { format!("Build and Test Successful ({target})\n") }
-        else { format!("Build and Test **FAILED** ({target})\n") };
-    result.push_str(&snippet_url);
-    result.push_str("\n```text\n");
-    result.push_str(&log_content);
-    result.push_str("\n```\n");
-    println!("result={result}");
-
-    // Return the Result
-    Ok(result)
-}
-```
-
 # Build Script
 
 Build and Test NuttX. Called by nuttx-test-bot
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh
+[nuttx-build-farm/build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
 
 ```bash
 #!/usr/bin/env bash
@@ -486,7 +250,7 @@ exit $res
 
 Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh
+[nuttx-build-farm/build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
 ```bash
 #!/usr/bin/env bash
@@ -605,9 +369,245 @@ cd $script_dir
 expect ./oz64.exp
 ```
 
+# NuttX Test Bot
+
+[nuttx-test-bot/main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs)
+
+```rust
+//! Fetch the Latest 20 Unread Notifications:
+//!   If Mention = "@nuttxpr test rv-virt:knsh64"
+//!   - Build and Test NuttX
+//!   - Capture the Output Log
+//!   - Extract the Log Output and Result
+//!   - Post as PR Comment
+//!   - Post to Mastodon
+//!   - Allow only Specific People
+```
+
+Fetch all Notifications:
+
+[main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L43-L111)
+
+```rust
+    // Fetch all Notifications
+    // TODO: Unread only
+    let notifications = octocrab
+        .activity()
+        .notifications()
+        .list()
+        .all(true)
+        .send()
+        .await?;
+
+    // For Every Notification...
+    for n in notifications {
+        // Handle only Mentions
+        let reason = &n.reason;  // "mention"
+        // println!("reason={reason}", );
+        if reason != "mention" { continue; }
+        // TODO: Mark Notification as Read
+
+        // Fetch the PR from the Notification
+        let owner = n.repository.owner.clone().unwrap().login;
+        let repo = n.repository.name.clone();
+        let pr_title = &n.subject.title;  // "Testing our bot"
+        let pr_url = n.subject.url.clone().unwrap();  // https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
+        let thread_url = &n.url;  // https://api.github.com/notifications/threads/14630615157
+        println!("owner={owner}");
+        println!("repo={repo}");
+        println!("pr_title={pr_title}");
+        println!("pr_url={pr_url}");
+        println!("thread_url={thread_url}");
+        if !pr_url.as_str().contains("/pulls/") { error!("Not a PR: {pr_url}"); continue; }
+        // println!("n={n:#?}");
+
+        // Extract the PR Number
+        let regex = Regex::new(".*/([0-9]+)$").unwrap();
+        let caps = regex.captures(pr_url.as_str()).unwrap();
+        let pr_id_str = caps.get(1).unwrap().as_str();
+        let pr_id: u64 = pr_id_str.parse().unwrap();
+        println!("pr_id={pr_id}");
+
+        // Allow only Specific Repos: apache/nuttx, apache/nuttx-apps
+        if owner != "apache" ||
+            !["nuttx", "nuttx-apps"].contains(&repo.as_str()) {
+            error!("Disallowed owner/repo: {owner}/{repo}");
+            continue;
+        }
+
+        // Get the Handlers for GitHub Pull Requests and Issues
+        let pulls = octocrab.pulls(&owner, &repo);
+        let issues = octocrab.issues(&owner, &repo);
+
+        // Post the Result and Log Output as PR Comment
+        process_pr(&pulls, &issues, pr_id).await?;
+
+        // Wait 1 minute
+        sleep(Duration::from_secs(60));
+
+        // TODO: Mark Notification as Read
+        // TODO: Continue to Next Notification
+        break;
+
+        // TODO: Allow only Specific People
+        // TODO: Post to Mastodon
+    }
+```
+
+Build and Test the PR. Then post the results as a PR Comment
+
+[main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175)
+
+```rust
+/// Build and Test the PR. Then post the results as a PR Comment
+async fn process_pr(pulls: &PullRequestHandler<'_>, issues: &IssueHandler<'_>, pr_id: u64) -> Result<(), Box<dyn std::error::Error>> {
+    // Get the Command and Args: ["test", "milkv_duos:nsh"]
+    let args = get_command(issues, pr_id).await?;
+    if args.is_none() { warn!("Missing command"); return Ok(()); }
+    let args = args.unwrap();
+    let cmd = &args[0];
+    let target = &args[1];
+    if cmd != "test" { error!("Unknown command: {cmd}"); return Ok(()); }
+    let (script, target) = match target.as_str() {
+        "milkv_duos:nsh" => ("oz64", target),
+        "oz64:nsh"       => ("oz64", &"milkv_duos:nsh".into()),
+        "rv-virt:knsh64" => ("knsh64", target),
+        _ => { error!("Unknown target: {target}"); return Ok(()); }
+    };
+    println!("target={target}");
+    println!("script={script}");
+
+    // Fetch the PR
+    let pr = pulls
+        .get(pr_id)
+        .await?;
+    info!("{:#?}", pr.url);
+
+    // Skip if PR State is Not Open
+    if pr.state.clone().unwrap() != IssueState::Open {
+        info!("Skipping Closed PR: {}", pr_id);
+        return Ok(());
+    }
+
+    // Fetch the PR Reactions. Quit if Both Reactions are set.
+    let reactions = get_reactions(issues, pr_id).await?;
+    if reactions.0.is_some() && reactions.1.is_some() {
+        info!("Skipping PR after 3 retries: {}", pr_id);
+        return Ok(());
+    }
+
+    // Bump up the PR Reactions: 00 > 01 > 10 > 11
+    bump_reactions(issues, pr_id, reactions).await?;
+
+    // Build and Test the PR
+    let response_text = build_test(&pr, target, script).await?;
+
+    // Header for PR Comment
+    let header = "[**\\[Experimental Bot, please feedback here\\]**](https://github.com/search?q=repo%3Aapache%2Fnuttx+15779&type=issues)";
+
+    // Compose the PR Comment
+    let comment_text =
+        header.to_string() + "\n\n" +
+        &response_text;
+
+    // Post the PR Comment
+    issues.create_comment(pr_id, comment_text).await?;
+
+    // If successful, delete the PR Reactions
+    delete_reactions(issues, pr_id).await?;
+    info!("{:#?}", pr.url);
+
+    // Wait 1 minute
+    sleep(Duration::from_secs(60));
+
+    // Return OK
+    Ok(())
+}
+```
+
+[main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278)
+
+```rust
+/// Build and Test the PR. Return the Build-Test Result.
+async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<String, Box<dyn std::error::Error>> {
+    // Get the Head Ref and Head URL from PR
+    // let pr: Value = serde_json::from_str(&body).unwrap();
+    // let pr_id = pr["number"].as_u64().unwrap();
+    let head = &pr.head;
+    let head_ref = &head.ref_field;  // "test-bot"
+    let head_url = head.repo.clone().unwrap().html_url.unwrap();  // https://github.com/lupyuen2/wip-nuttx
+    // println!("head_ref={head_ref}");
+    // println!("head_url={head_url}");
+
+    // True if URL is an Apps Repo
+    let is_apps =
+        if head_url.as_str().contains("apps") { true }
+        else { false };
+
+    // Set the URLs and Refs for NuttX and Apps
+    let nuttx_hash = "HEAD";
+    let nuttx_url =
+        if is_apps { "https://github.com/apache/nuttx" }
+        else { head_url.as_str() };
+    let nuttx_ref =
+        if is_apps { "master" }
+        else { head_ref };
+    let apps_hash = "HEAD";
+    let apps_url = 
+        if is_apps { head_url.as_str() }
+        else { "https://github.com/apache/nuttx-apps" };
+    let apps_ref =
+        if is_apps { head_ref }
+        else { "master" };
+
+    // Build and Test NuttX: ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
+    // Which calls: ./build-test-knsh64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
+    let cmd = format!("./build-test-{script}.sh \n  {nuttx_hash} {apps_hash} \n  {nuttx_url} {nuttx_ref} \n  {apps_url} {apps_ref}");
+    println!("{cmd}");
+    // std::process::exit(0); ////
+    println!("PLEASE VERIFY");
+    sleep(Duration::from_secs(30));
+
+    // Start the Build and Test Script
+    let log = "/tmp/nuttx-test-bot.log";
+    let mut child = Command
+        ::new("../nuttx-build-farm/build-test.sh")
+        .arg(script).arg(log)
+        .arg(nuttx_hash).arg(apps_hash)
+        .arg(nuttx_url).arg(nuttx_ref)
+        .arg(apps_url).arg(apps_ref)
+        .spawn().unwrap();
+    // println!("child={child:?}");
+
+    // Wait for Build and Test to complete
+    let status = child.wait().unwrap();  // 0 if successful
+    println!("status={status:?}");
+
+    // Upload the log as GitLab Snippet
+    let log_content = fs::read_to_string(log).unwrap();
+    let snippet_url = create_snippet(&log_content).await?;
+
+    // Extract the Log Output
+    let log_extract = extract_log(&snippet_url).await?;
+    let log_content = log_extract.join("\n");
+    println!("log_content=\n{log_content}");
+    let mut result = 
+        if status.success() { format!("Build and Test Successful ({target})\n") }
+        else { format!("Build and Test **FAILED** ({target})\n") };
+    result.push_str(&snippet_url);
+    result.push_str("\n```text\n");
+    result.push_str(&log_content);
+    result.push_str("\n```\n");
+    println!("result={result}");
+
+    // Return the Result
+    Ok(result)
+}
+```
+
 # Power On SBC
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh
+[nuttx-build-farm/oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
 
 ```bash
 #!/usr/bin/env bash
@@ -656,6 +656,28 @@ power1
 power2
 
 ![TODO](https://lupyuen.org/images/testbot-power2.png)
+
+# Security Implications
+
+TODO
+
+Reminder to myself: Be careful when running Unmerged Code on our Home Computers. In case the PR contains any Scripts or Apps that may cause problems on our Home Computer or Home Network.
+
+Basically we only operate on NuttX repos, so there should be no malware... but anyone can send PR with anything true!!!
+
+How to prevent problems? Network separation? One time use containers / jails / vm with restricted network access?
+
+I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment @nuttxpr please test, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
+
+5 Years Ago: We had Security Issues with a PineTime Smartwatch that we opened up for Remote Testing :-)
+
+[Remote PineTime Bot: Security Issues](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues)
+
+1.  NuttX Scripts
+
+1.  Network Access (DMZ / Guest Network)
+
+1.  Semihosting
 
 # What's Next
 
