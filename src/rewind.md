@@ -14,7 +14,7 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org
 
 1.  __Bonus:__ The Machine will draft a [__Polite Note__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057) for our NuttX Colleague to investigate the Pull Request, please
 
-    ![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-mastodon3.png)
+    ![Mastodon Alert for Daily Test](https://lupyuen.org/images/rewind-mastodon3.png)
 
 _Why are we doing this?_
 
@@ -535,6 +535,8 @@ Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-r
 1.  __Without__ any AI or LLM
 
     _(Because they ain't cheap)_
+
+![Mastodon Alert for Daily Test](https://lupyuen.org/images/rewind-mastodon3.png)
 
 _But Mastodon Posts are limited to 500 chars?_
 
