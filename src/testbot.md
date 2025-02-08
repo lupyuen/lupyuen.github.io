@@ -687,6 +687,10 @@ I might try a scaled-down simpler implementation that has less security risk. Fo
 
 1.  Semihosting
 
+_If we had to do it all again with NuttX on PineTime?_
+
+Same: SBC with OpenOCD + Semihosting
+
 # What's Next
 
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 

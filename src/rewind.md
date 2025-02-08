@@ -194,7 +194,7 @@ The script above is called by __run_job__ below: [rewind-build.sh](https://githu
 
 ```bash
 ## Build and Test This Commit
-## And capture the Build / Test Output
+## And capture the Build-Test Output
 function run_job { ...
   script $log_file \
     $script_option \
@@ -208,7 +208,7 @@ function run_job { ...
 }
 ```
 
-Which captures the __Build / Test Output__ into a Log File.
+Which captures the __Build-Test Output__ into a Log File.
 
 What happens to the __Log File__? We upload and publish it as a __GitLab Snippet__: [rewind-build.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L75-L105)
 
@@ -217,7 +217,7 @@ What happens to the __Log File__? We upload and publish it as a __GitLab Snippet
 function build_commit { ...
 
   ## Build and Test This Commit
-  ## And capture the Build / Test Output into a Log File
+  ## And capture the Build-Test Output into a Log File
   run_job \
     $log $timestamp \
     $apps_hash $nuttx_hash \
@@ -225,7 +225,7 @@ function build_commit { ...
   clean_log $log
   find_messages $log
 
-  ## Upload the Build / Test Log File
+  ## Upload the Build-Test Log File
   ## As GitLab Snippet
   upload_log \
     $log unknown \
@@ -293,7 +293,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 
 </span>
 
-There's an easier way...
+Though there's an easier way...
 
 ![Ingest the Test Log](https://lupyuen.org/images/rewind-title5.jpg)
 
@@ -301,7 +301,9 @@ There's an easier way...
 
 _Why publish the Test Log as a GitLab Snippet?_
 
-That's because we'll Ingest the Test Log into our __NuttX Dashboard__. (So we can present the logs neatly as __NuttX Build History__)
+That's because we'll Ingest the Test Log into our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (So we can present the logs neatly as __NuttX Build History__)
+
+![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
 This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) (that powers our NuttX Dashboard)
 
@@ -493,21 +495,21 @@ Here comes the Human-Computer Interface: Our Machine (kinda) __Escalates the Bre
 > Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks! [_nuttx-build-log/snippets/4800059_](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85)
 
 ```text
-$ git clone https://github.com/apache/nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-$ pushd nuttx
-$ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-$ popd
-NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-$ cd nuttx
-$ tools/configure.sh rv-virt:knsh64
-$ make -j
-...
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init
+    $ git clone https://github.com/apache/nuttx
+    $ git clone https://github.com/apache/nuttx-apps apps
+    $ pushd nuttx
+    $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+    HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+    $ popd
+    NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+    NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+    $ cd nuttx
+    $ tools/configure.sh rv-virt:knsh64
+    $ make -j
+    ...
+    $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+    riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+    riscv_exception: Segmentation fault in PID 2: /system/bin/init
 ```
 > [(Earlier Commit is OK)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80)
 [(See the Build History)](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&var-config=knsh64_test6)
