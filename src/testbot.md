@@ -1,4 +1,4 @@
-# Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS)
+# Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)
 
 📝 _28 Feb 2025_
 
