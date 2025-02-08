@@ -22,6 +22,8 @@ _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
 # Expect Script
 
+_For Testing NuttX: What does our Bot run on Oz64 SBC?_
+
 [nuttx-build-farm/oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
