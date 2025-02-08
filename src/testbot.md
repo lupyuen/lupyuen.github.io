@@ -691,7 +691,7 @@ Notify via Mastodon. Click "Like" on the PR to approve?
 
 _If we had to do it all again with NuttX on PineTime?_
 
-Same: SBC with OpenOCD + Semihosting
+Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
 
 # What's Next
 
