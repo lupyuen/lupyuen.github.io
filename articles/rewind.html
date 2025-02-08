@@ -227,7 +227,7 @@ fi
 <p><em>Who calls the script above: rewind-commit.sh?</em></p>
 <p>The script above is called by <strong>run_job</strong> below: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L105-L128">rewind-build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
-## And capture the Build / Test Output
+## And capture the Build-Test Output
 function run_job { ...
   script $log_file \
     $script_option \
@@ -239,13 +239,13 @@ function run_job { ...
         $prev_hash $next_hash \
     &quot;
 }</code></pre></div>
-<p>Which captures the <strong>Build / Test Output</strong> into a Log File.</p>
+<p>Which captures the <strong>Build-Test Output</strong> into a Log File.</p>
 <p>What happens to the <strong>Log File</strong>? We upload and publish it as a <strong>GitLab Snippet</strong>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L75-L105">rewind-build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test One Commit for the NuttX Target
 function build_commit { ...
 
   ## Build and Test This Commit
-  ## And capture the Build / Test Output into a Log File
+  ## And capture the Build-Test Output into a Log File
   run_job \
     $log $timestamp \
     $apps_hash $nuttx_hash \
@@ -253,7 +253,7 @@ function build_commit { ...
   clean_log $log
   find_messages $log
 
-  ## Upload the Build / Test Log File
+  ## Upload the Build-Test Log File
   ## As GitLab Snippet
   upload_log \
     $log unknown \
@@ -306,11 +306,12 @@ done</code></pre></div>
 $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
   Error: Test Failed</code></pre></div></span>
-<p>There’s an easier way…</p>
+<p>Though there’s an easier way…</p>
 <p><img src="https://lupyuen.org/images/rewind-title5.jpg" alt="Ingest the Test Log" /></p>
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
-<p>That’s because we’ll Ingest the Test Log into our <strong>NuttX Dashboard</strong>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
+<p>That’s because we’ll Ingest the Test Log into our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
+<p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)</p>
 <div class="example-wrap"><pre class="language-bash"><code># TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
@@ -464,21 +465,21 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 <blockquote>
 <p>Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks! <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><em>nuttx-build-log/snippets/4800059</em></a></p>
 </blockquote>
-<div class="example-wrap"><pre class="language-text"><code>$ git clone https://github.com/apache/nuttx
-$ git clone https://github.com/apache/nuttx-apps apps
-$ pushd nuttx
-$ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
-HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
-$ popd
-NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
-$ cd nuttx
-$ tools/configure.sh rv-virt:knsh64
-$ make -j
-...
-$ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
-riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
-riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>    $ git clone https://github.com/apache/nuttx
+    $ git clone https://github.com/apache/nuttx-apps apps
+    $ pushd nuttx
+    $ git reset --hard 657247bda89d60112d79bb9b8d223eca5f9641b5
+    HEAD is now at 657247bda8 libc/modlib: preprocess gnu-elf.ld
+    $ popd
+    NuttX Source: https://github.com/apache/nuttx/tree/657247bda89d60112d79bb9b8d223eca5f9641b5
+    NuttX Apps: https://github.com/apache/nuttx-apps/tree/a6b9e718460a56722205c2a84a9b07b94ca664aa
+    $ cd nuttx
+    $ tools/configure.sh rv-virt:knsh64
+    $ make -j
+    ...
+    $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -nographic
+    riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
+    riscv_exception: Segmentation fault in PID 2: /system/bin/init</code></pre></div>
 <blockquote>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800063#L80">(Earlier Commit is OK)</a>
 <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6">(See the Build History)</a></p>
