@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Auto-Rewind for Daily Test (Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/rewind</link>
+            <description><![CDATA[If the Daily Test fails for Apache NuttX RTOS... Can we Auto-Rewind and discover the Breaking Commit? Let's do it with Prometheus Time-Series Database and Mastodon Server]]></description>
+            <guid>https://lupyuen.github.io/articles/rewind</guid>
+            <pubDate>Sun, 09 Feb 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust Standard Library on Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/rust7</link>
             <description><![CDATA[Rust Standard Library is now available on Apache NuttX RTOS, thanks to awesome work by Huang Qi! In this article we explain (1) How to build NuttX + Rust Standard Library (2) Handling JSON with the Serde Crate (3) Async Functions with the Tokio Crate (4) Blinking LEDs with the Nix Crate]]></description>

@@ -679,6 +679,8 @@ I might try a scaled-down simpler implementation that has less security risk. Fo
 
 5 Years Ago: We had Security Issues with a PineTime Smartwatch that we opened up for Remote Testing :-)
 
+Notify via Mastodon. Click "Like" on the PR to approve?
+
 [Remote PineTime Bot: Security Issues](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues)
 
 1.  NuttX Scripts
