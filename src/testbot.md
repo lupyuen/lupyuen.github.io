@@ -685,7 +685,7 @@ I might try a scaled-down simpler implementation that has less security risk. Fo
 
 1.  Network Access (DMZ / Guest Network)
 
-1.  Semihosting
+1.  Semihosting: Breaking out from Semihosting Guest to Semihosting Host
 
 _If we had to do it all again with NuttX on PineTime?_
 
