@@ -66,9 +66,9 @@
     <h1 class="title">Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#expect-script" title="Expect Script">1 Expect Script</a><ul></ul></li>
-<li><a href="#build-script" title="Build Script">2 Build Script</a><ul></ul></li>
-<li><a href="#nuttx-test-bot" title="NuttX Test Bot">3 NuttX Test Bot</a><ul></ul></li>
-<li><a href="#power-on-sbc" title="Power On SBC">4 Power On SBC</a><ul></ul></li>
+<li><a href="#build-and-test-script" title="Build and Test Script">2 Build and Test Script</a><ul></ul></li>
+<li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">3 Test Bot for Pull Requests</a><ul></ul></li>
+<li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">4 Power Up our Oz64 SBC</a><ul></ul></li>
 <li><a href="#security-implications" title="Security Implications">5 Security Implications</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
@@ -195,107 +195,8 @@ expect {
     puts &quot;\n===== Error: Test Failed\n&quot;
     exit 1 
   }
-}</code></pre></div><h1 id="build-script"><a class="doc-anchor" href="#build-script">§</a>2 Build Script</h1>
-<p>Build and Test NuttX. Called by nuttx-test-bot</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Build and Test NuttX. Called by nuttx-test-bot.
-## ./build-test.sh knsh64 /tmp/build-test.log
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh $1 $2 $3 $4 $5 $6 $7 $8&quot;
-
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-
-## First Parameter is the Build Test Script, like &quot;knsh64&quot;
-script=$1
-if [[ &quot;$script&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Script is missing (e.g. knsh64)&quot;
-  exit 1
-fi
-
-## Second Parameter is the Log File, like &quot;/tmp/build-test.log&quot;
-log=$2
-if [[ &quot;$log&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Log File is missing (e.g. /tmp/build-test.log)&quot;
-  exit 1
-fi
-
-## Get the Script Directory
-script_path=&quot;${BASH_SOURCE}&quot;
-script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-
-## Get the `script` option
-if [ &quot;`uname`&quot; == &quot;Linux&quot; ]; then
-  script_option=-c
-else
-  script_option=
-fi
-
-## Build and Test NuttX
-function build_test {
-  local script=$1
-  local log=$2
-
-  ## Propagate the Return Status from Script
-  pushd /tmp
-  set +e  ## Ignore errors
-  script $log \
-    --return \
-    $script_option \
-    &quot;$script_dir/build-test-$script.sh $3 $4 $5 $6 $7 $8&quot;
-  res=$?
-  set -e  ## Exit when any command fails
-  popd
-
-  ## Find errors and warnings
-  clean_log $log
-  find_messages $log
-}
-
-## Strip the control chars
-function clean_log {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
-  cat $log_file \
-    | tr -d &#39;\r&#39; \
-    | tr -d &#39;\r&#39; \
-    | sed &#39;s/\x08/ /g&#39; \
-    | sed &#39;s/\x1B(B//g&#39; \
-    | sed &#39;s/\x1B\[K//g&#39; \
-    | sed &#39;s/\x1B[&lt;=&gt;]//g&#39; \
-    | sed &#39;s/\x1B\[[0-9:;&lt;=&gt;?]*[!]*[A-Za-z]//g&#39; \
-    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
-    | cat -v \
-    &gt;$tmp_file
-  mv $tmp_file $log_file
-  echo ----- &quot;Done! $log_file&quot;
-}
-
-## Search for Errors and Warnings
-function find_messages {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
-  local msg_file=$log_file.msg
-  local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
-  grep &#39;^\*\*\*\*\*&#39; $log_file \
-    &gt; $msg_file || true
-  grep -P &quot;$pattern&quot; $log_file \
-    | uniq \
-    &gt;&gt; $msg_file || true
-  cat $msg_file $log_file &gt;$tmp_file
-  mv $tmp_file $log_file
-}
-
-## Build and Test NuttX
-build_test \
-  $script \
-  $log \
-  $3 $4 $5 $6 $7 $8
-
-set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
-exit $res</code></pre></div>
+}</code></pre></div><h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>2 Build and Test Script</h1>
+<p><em>Who runs the above Expect Script?</em></p>
 <p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">nuttx-build-farm/build-test-oz64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
@@ -411,7 +312,108 @@ ssh $OZ64_SERVER ls -l /tftpboot/Image-sg2000
 
 ## Run the NuttX Test
 cd $script_dir
-expect ./oz64.exp</code></pre></div><h1 id="nuttx-test-bot"><a class="doc-anchor" href="#nuttx-test-bot">§</a>3 NuttX Test Bot</h1>
+expect ./oz64.exp</code></pre></div>
+<p>Build and Test NuttX. Called by nuttx-test-bot</p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
+## Build and Test NuttX. Called by nuttx-test-bot.
+## ./build-test.sh knsh64 /tmp/build-test.log
+## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD
+## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
+echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh $1 $2 $3 $4 $5 $6 $7 $8&quot;
+
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+
+## First Parameter is the Build Test Script, like &quot;knsh64&quot;
+script=$1
+if [[ &quot;$script&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: Script is missing (e.g. knsh64)&quot;
+  exit 1
+fi
+
+## Second Parameter is the Log File, like &quot;/tmp/build-test.log&quot;
+log=$2
+if [[ &quot;$log&quot; == &quot;&quot; ]]; then
+  echo &quot;ERROR: Log File is missing (e.g. /tmp/build-test.log)&quot;
+  exit 1
+fi
+
+## Get the Script Directory
+script_path=&quot;${BASH_SOURCE}&quot;
+script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
+
+## Get the `script` option
+if [ &quot;`uname`&quot; == &quot;Linux&quot; ]; then
+  script_option=-c
+else
+  script_option=
+fi
+
+## Build and Test NuttX
+function build_test {
+  local script=$1
+  local log=$2
+
+  ## Propagate the Return Status from Script
+  pushd /tmp
+  set +e  ## Ignore errors
+  script $log \
+    --return \
+    $script_option \
+    &quot;$script_dir/build-test-$script.sh $3 $4 $5 $6 $7 $8&quot;
+  res=$?
+  set -e  ## Exit when any command fails
+  popd
+
+  ## Find errors and warnings
+  clean_log $log
+  find_messages $log
+}
+
+## Strip the control chars
+function clean_log {
+  local log_file=$1
+  local tmp_file=$log_file.tmp
+  cat $log_file \
+    | tr -d &#39;\r&#39; \
+    | tr -d &#39;\r&#39; \
+    | sed &#39;s/\x08/ /g&#39; \
+    | sed &#39;s/\x1B(B//g&#39; \
+    | sed &#39;s/\x1B\[K//g&#39; \
+    | sed &#39;s/\x1B[&lt;=&gt;]//g&#39; \
+    | sed &#39;s/\x1B\[[0-9:;&lt;=&gt;?]*[!]*[A-Za-z]//g&#39; \
+    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
+    | cat -v \
+    &gt;$tmp_file
+  mv $tmp_file $log_file
+  echo ----- &quot;Done! $log_file&quot;
+}
+
+## Search for Errors and Warnings
+function find_messages {
+  local log_file=$1
+  local tmp_file=$log_file.tmp
+  local msg_file=$log_file.msg
+  local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
+  grep &#39;^\*\*\*\*\*&#39; $log_file \
+    &gt; $msg_file || true
+  grep -P &quot;$pattern&quot; $log_file \
+    | uniq \
+    &gt;&gt; $msg_file || true
+  cat $msg_file $log_file &gt;$tmp_file
+  mv $tmp_file $log_file
+}
+
+## Build and Test NuttX
+build_test \
+  $script \
+  $log \
+  $3 $4 $5 $6 $7 $8
+
+set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
+exit $res</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>3 Test Bot for Pull Requests</h1>
+<p><em>How will a Pull Request trigger the script above?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs">nuttx-test-bot/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//! Fetch the Latest 20 Unread Notifications:
@@ -632,7 +634,8 @@ expect ./oz64.exp</code></pre></div><h1 id="nuttx-test-bot"><a class="doc-anchor
     <span class="comment">// Return the Result
     </span><span class="prelude-val">Ok</span>(result)
 }</code></pre></div>
-<h1 id="power-on-sbc"><a class="doc-anchor" href="#power-on-sbc">§</a>4 Power On SBC</h1>
+<h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>4 Power Up our Oz64 SBC</h1>
+<p>One Final Step: How we flip the Power, On and Off for our Oz64 SBC.</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">nuttx-build-farm/oz64-power.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Power Oz64 On or Off
