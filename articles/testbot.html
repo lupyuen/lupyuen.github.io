@@ -184,7 +184,7 @@ expect {
   }
 }</code></pre></div><h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script runs on Build &amp; Test Server? Not Test Controller?</em></p>
-<p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Our Build &amp; Test Server tells Test Controller (Linux SBC) to <strong>pass them through</strong> to Oz64.</p>
+<p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
 <p>That’s why our <strong>Expect Script</strong> does this on Build &amp; Test Server: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For every 1 character sent, wait 1 millisecond
 ## Wait at most 60 seconds for every command
