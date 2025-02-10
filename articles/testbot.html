@@ -81,10 +81,26 @@
 <p>Super helpful for <strong>Testing Pull Requests</strong> before Merging. But might have <a href="https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886"><strong>Security Implications</strong></a>. (We’ll come back to this)</p>
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
+<p>TODO: Pic of Test Controller + Oz64</p>
 <h1 id="connect-our-oz64-sbc"><a class="doc-anchor" href="#connect-our-oz64-sbc">§</a>1 Connect our Oz64 SBC</h1>
-<p>TODO</p>
+<p>Oz64 won’t boot over USB or Serial. We’ll connect these to control Oz64 (pic above)</p>
+<ul>
+<li>
+<p><strong>Wired Ethernet</strong>: For booting NuttX over TFTP</p>
+</li>
+<li>
+<p><strong>UART0 Port</strong>: For sending NuttX Commands (Pins TODO)</p>
+</li>
+<li>
+<p>Which connects to our <strong>Test Controller</strong> (Linux SBC) via a USB Serial Dongle</p>
+</li>
+<li>
+<p>Test Controller is also our <strong>TFTP Server</strong> for booting NuttX on Oz64</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
+</li>
+</ul>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
-<p><em>But who controls our Test Controller?</em></p>
+<p><em>Who controls our Test Controller?</em></p>
 <p>TODO</p>
 <h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>3 Expect Script</h1>
 <p><em>For Testing NuttX: What does our Bot run on Oz64 SBC?</em></p>
