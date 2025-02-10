@@ -372,6 +372,7 @@ async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<Stri
   let snippet_url = create_snippet(&log_content).await?;
 
   // Extract the essential bits from Test Log
+  // Return the Extracted Test Log and Snippet URL
   let log_extract = extract_log(&snippet_url).await?;
   let log_content = log_extract.join("\n");
   let mut result = 
@@ -379,9 +380,11 @@ async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<Stri
     else { format!("Build and Test **FAILED** ({target})\n") };
   result.push_str(&snippet_url);
   result.push_str(&log_content);
-  Ok(result)  // Return the Result
+  Ok(result)
 }
 ```
+
+[(__create_snippet__ publishes the GitLab Snippet)](TODO)
 
 Which will call our __Generic Build & Test Script__ like so: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7)
 
