@@ -240,8 +240,10 @@ TODO
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>3 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">nuttx-build-farm/build-test-oz64.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">build-test-oz64.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: nuttx_url / apps_url
+
+## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 ## Download NuttX and Apps
 git clone $nuttx_url nuttx --branch $nuttx_ref
 git clone $apps_url  apps  --branch $apps_ref
@@ -251,9 +253,8 @@ cd nuttx
 tools/configure.sh milkv_duos:nsh
 
 ## Build the NuttX Kernel
+## And the NuttX Apps
 make -j
-
-## Build the NuttX Apps
 make -j export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
@@ -270,7 +271,8 @@ cat nuttx.bin /tmp/nuttx.pad initrd &gt;Image
 scp Image test-controller:/tftpboot/Image-sg2000
 ssh test-controller ls -l /tftpboot/Image-sg2000
 
-## Run the Expect Script and NuttX Test
+## Start the Expect Script
+## That runs the NuttX Test on Oz64
 expect ./oz64.exp</code></pre></div>
 <p>Build and Test NuttX. Called by nuttx-test-bot</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
