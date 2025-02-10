@@ -69,10 +69,11 @@
 <li><a href="#control-our-oz64-sbc" title="Control our Oz64 SBC">2 Control our Oz64 SBC</a><ul></ul></li>
 <li><a href="#build-and-test-script" title="Build and Test Script">3 Build and Test Script</a><ul></ul></li>
 <li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">4 Test Bot for Pull Requests</a><ul></ul></li>
-<li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">5 Power Up our Oz64 SBC</a><ul></ul></li>
-<li><a href="#security-implications" title="Security Implications">6 Security Implications</a><ul></ul></li>
-<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
+<li><a href="#build-and-test-nuttx" title="Build and Test NuttX">5 Build and Test NuttX</a><ul></ul></li>
+<li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">6 Power Up our Oz64 SBC</a><ul></ul></li>
+<li><a href="#security-implications" title="Security Implications">7 Security Implications</a><ul></ul></li>
+<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re <a href="https://lists.apache.org/thread/mn4l1tmr6fj46o2y9vvrmfcrgyo48s5d"><strong>Making Things Better</strong></a> (and making better things) with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Our new <strong>Test Bot for Pull Requests</strong> will allow a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Pull Request Comment</strong></a> to trigger a <strong>NuttX Build + Test</strong> on Real Hardware. For example, this PR Comment…</p>
@@ -161,6 +162,7 @@ send -s &quot;ostest\r&quot;</code></pre></div>
 <p>The same script shall <strong>Validate the Responses</strong> from Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Check the response from `ostest`...
 expect {
+
   ## If we see this message...
   &quot;ostest_main: Exiting with status 0&quot; { 
 
@@ -259,8 +261,8 @@ TODO
 
 ## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 ## Download NuttX and Apps
-git clone $nuttx_url nuttx --branch $nuttx_ref
-git clone $apps_url  apps  --branch $apps_ref
+git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
+git clone https://github.com/apache/nuttx-apps apps  --branch master
 
 ## Configure the NuttX Build
 cd nuttx
@@ -287,8 +289,159 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 
 ## Start the Expect Script
 ## That runs the NuttX Test on Oz64
-expect ./oz64.exp</code></pre></div>
-<p>Build and Test NuttX. Called by nuttx-test-bot</p>
+expect ./oz64.exp</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>4 Test Bot for Pull Requests</h1>
+<p><em>How will a Pull Request trigger the script above?</em></p>
+<p>With a little help from <a href="TODO"><strong>GitHub API</strong></a>. Our Test Bot shall…</p>
+<ul>
+<li>
+<p>Fetch the <strong>Newest Notifications</strong> for <em>@nuttxpr</em></p>
+</li>
+<li>
+<p>Find a <strong>Mentioned Comment</strong>: <em>“@nuttxpr test oz64:nsh”</em></p>
+</li>
+<li>
+<p><strong>Build and Test</strong> NuttX on Oz64 <em>(script above)</em></p>
+</li>
+<li>
+<p>Capture the <strong>Test Log</strong> <em>(and extract the essential bits)</em></p>
+</li>
+<li>
+<p>Post the Test Log as a <strong>PR Comment</strong></p>
+</li>
+</ul>
+<p>This is how we <strong>Fetch Notifications</strong> for <em>@nuttxpr</em>: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L43-L111">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Fetch all Notifications for @nuttxpr
+</span><span class="kw">let </span>notifications = octocrab
+  .activity()
+  .notifications()
+  .list()
+  .all(<span class="bool-val">true</span>)
+  .send()
+  .<span class="kw">await</span><span class="question-mark">?</span>;
+
+<span class="comment">// For Every Notification...
+</span><span class="kw">for </span>n <span class="kw">in </span>notifications {
+
+  <span class="comment">// Handle only Mentions
+  </span><span class="kw">let </span>reason = <span class="kw-2">&amp;</span>n.reason;
+  <span class="kw">if </span>reason != <span class="string">"mention" </span>{ <span class="kw">continue</span>; }
+
+  <span class="comment">// Fetch the PR from the Notification
+  // Handle only PR Notifications
+  </span><span class="kw">let </span>pr_url = n.subject.url.clone().unwrap();  <span class="comment">// https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
+  </span><span class="kw">if </span>!pr_url.as_str().contains(<span class="string">"/pulls/"</span>) { <span class="kw">continue</span>; }
+
+  <span class="comment">// Omitted: Extract the PR Number from PR URL
+  // Allow only Specific Repos: apache/nuttx, apache/nuttx-apps
+  </span>...
+
+  <span class="comment">// Execute the Build &amp; Test for Oz64
+  // Post the Test Log as a PR Comment
+  </span>process_pr(<span class="kw-2">&amp;</span>pulls, <span class="kw-2">&amp;</span>issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
+}</code></pre></div>
+<p>This is how we execute the <strong>Build &amp; Test</strong> for Oz64. Then post the <strong>Test Log</strong> as a PR Comment: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Execute the Build &amp; Test for Oz64. Post the Test Log as a PR Comment.
+</span><span class="kw">async fn </span>process_pr(...) -&gt; <span class="prelude-ty">Result</span>&lt;...&gt; {
+
+  <span class="comment">// Fetch the PR from GitHub
+  </span><span class="kw">let </span>pr = pulls.get(pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
+
+  <span class="comment">// Get the Command and Args: ["test", "ox64:nsh"]
+  // Omitted: Set target="milkv_duos:nsh", script="ox64"
+  </span><span class="kw">let </span>args = get_command(issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
+
+  <span class="comment">// Build and Test the PR on Oz64
+  </span><span class="kw">let </span>response_text = build_test(<span class="kw-2">&amp;</span>pr, target, script).<span class="kw">await</span><span class="question-mark">?</span>;
+
+  <span class="comment">// Post the PR Comment. Return OK.
+  </span><span class="kw">let </span>comment_text =
+    header.to_string() + <span class="string">"\n\n" </span>+
+    <span class="kw-2">&amp;</span>response_text;
+  issues.create_comment(pr_id, comment_text).<span class="kw">await</span><span class="question-mark">?</span>;
+  <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p><em>What’s inside build_test?</em></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Build and Test the PR. Return the Build-Test Result.
+</span><span class="kw">async fn </span>build_test(pr: <span class="kw-2">&amp;</span>PullRequest, target: <span class="kw-2">&amp;</span>str, script: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+    <span class="comment">// Get the Head Ref and Head URL from PR
+    // let pr: Value = serde_json::from_str(&amp;body).unwrap();
+    // let pr_id = pr["number"].as_u64().unwrap();
+    </span><span class="kw">let </span>head = <span class="kw-2">&amp;</span>pr.head;
+    <span class="kw">let </span>head_ref = <span class="kw-2">&amp;</span>head.ref_field;  <span class="comment">// "test-bot"
+    </span><span class="kw">let </span>head_url = head.repo.clone().unwrap().html_url.unwrap();  <span class="comment">// https://github.com/lupyuen2/wip-nuttx
+    // println!("head_ref={head_ref}");
+    // println!("head_url={head_url}");
+
+    // True if URL is an Apps Repo
+    </span><span class="kw">let </span>is_apps =
+        <span class="kw">if </span>head_url.as_str().contains(<span class="string">"apps"</span>) { <span class="bool-val">true </span>}
+        <span class="kw">else </span>{ <span class="bool-val">false </span>};
+
+    <span class="comment">// Set the URLs and Refs for NuttX and Apps
+    </span><span class="kw">let </span>nuttx_hash = <span class="string">"HEAD"</span>;
+    <span class="kw">let </span>nuttx_url =
+        <span class="kw">if </span>is_apps { <span class="string">"https://github.com/apache/nuttx" </span>}
+        <span class="kw">else </span>{ head_url.as_str() };
+    <span class="kw">let </span>nuttx_ref =
+        <span class="kw">if </span>is_apps { <span class="string">"master" </span>}
+        <span class="kw">else </span>{ head_ref };
+    <span class="kw">let </span>apps_hash = <span class="string">"HEAD"</span>;
+    <span class="kw">let </span>apps_url = 
+        <span class="kw">if </span>is_apps { head_url.as_str() }
+        <span class="kw">else </span>{ <span class="string">"https://github.com/apache/nuttx-apps" </span>};
+    <span class="kw">let </span>apps_ref =
+        <span class="kw">if </span>is_apps { head_ref }
+        <span class="kw">else </span>{ <span class="string">"master" </span>};
+
+    <span class="comment">// Build and Test NuttX: ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
+    // Which calls: ./build-test-knsh64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
+    </span><span class="kw">let </span>cmd = <span class="macro">format!</span>(<span class="string">"./build-test-{script}.sh \n  {nuttx_hash} {apps_hash} \n  {nuttx_url} {nuttx_ref} \n  {apps_url} {apps_ref}"</span>);
+    <span class="macro">println!</span>(<span class="string">"{cmd}"</span>);
+    <span class="comment">// std::process::exit(0); ////
+    </span><span class="macro">println!</span>(<span class="string">"PLEASE VERIFY"</span>);
+    sleep(Duration::from_secs(<span class="number">30</span>));
+
+    <span class="comment">// Start the Build and Test Script
+    </span><span class="kw">let </span>log = <span class="string">"/tmp/nuttx-test-bot.log"</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>child = Command
+        ::new(<span class="string">"../nuttx-build-farm/build-test.sh"</span>)
+        .arg(script).arg(log)
+        .arg(nuttx_hash).arg(apps_hash)
+        .arg(nuttx_url).arg(nuttx_ref)
+        .arg(apps_url).arg(apps_ref)
+        .spawn().unwrap();
+    <span class="comment">// println!("child={child:?}");
+
+    // Wait for Build and Test to complete
+    </span><span class="kw">let </span>status = child.wait().unwrap();  <span class="comment">// 0 if successful
+    </span><span class="macro">println!</span>(<span class="string">"status={status:?}"</span>);
+
+    <span class="comment">// Upload the log as GitLab Snippet
+    </span><span class="kw">let </span>log_content = fs::read_to_string(log).unwrap();
+    <span class="kw">let </span>snippet_url = create_snippet(<span class="kw-2">&amp;</span>log_content).<span class="kw">await</span><span class="question-mark">?</span>;
+
+    <span class="comment">// Extract the Log Output
+    </span><span class="kw">let </span>log_extract = extract_log(<span class="kw-2">&amp;</span>snippet_url).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let </span>log_content = log_extract.join(<span class="string">"\n"</span>);
+    <span class="macro">println!</span>(<span class="string">"log_content=\n{log_content}"</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>result = 
+        <span class="kw">if </span>status.success() { <span class="macro">format!</span>(<span class="string">"Build and Test Successful ({target})\n"</span>) }
+        <span class="kw">else </span>{ <span class="macro">format!</span>(<span class="string">"Build and Test **FAILED** ({target})\n"</span>) };
+    result.push_str(<span class="kw-2">&amp;</span>snippet_url);
+    result.push_str(<span class="string">"\n```text\n"</span>);
+    result.push_str(<span class="kw-2">&amp;</span>log_content);
+    result.push_str(<span class="string">"\n```\n"</span>);
+    <span class="macro">println!</span>(<span class="string">"result={result}"</span>);
+
+    <span class="comment">// Return the Result
+    </span><span class="prelude-val">Ok</span>(result)
+}</code></pre></div>
+<h1 id="build-and-test-nuttx"><a class="doc-anchor" href="#build-and-test-nuttx">§</a>5 Build and Test NuttX</h1>
+<p>Called by nuttx-test-bot</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Build and Test NuttX. Called by nuttx-test-bot.
@@ -387,229 +540,7 @@ build_test \
   $3 $4 $5 $6 $7 $8
 
 set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
-exit $res</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>4 Test Bot for Pull Requests</h1>
-<p><em>How will a Pull Request trigger the script above?</em></p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs">nuttx-test-bot/main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//! Fetch the Latest 20 Unread Notifications:
-//!   If Mention = "@nuttxpr test rv-virt:knsh64"
-//!   - Build and Test NuttX
-//!   - Capture the Output Log
-//!   - Extract the Log Output and Result
-//!   - Post as PR Comment
-//!   - Post to Mastodon
-//!   - Allow only Specific People</span></code></pre></div>
-<p>Fetch all Notifications:</p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L43-L111">main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Fetch all Notifications
-    // TODO: Unread only
-    </span><span class="kw">let </span>notifications = octocrab
-        .activity()
-        .notifications()
-        .list()
-        .all(<span class="bool-val">true</span>)
-        .send()
-        .<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="comment">// For Every Notification...
-    </span><span class="kw">for </span>n <span class="kw">in </span>notifications {
-        <span class="comment">// Handle only Mentions
-        </span><span class="kw">let </span>reason = <span class="kw-2">&amp;</span>n.reason;  <span class="comment">// "mention"
-        // println!("reason={reason}", );
-        </span><span class="kw">if </span>reason != <span class="string">"mention" </span>{ <span class="kw">continue</span>; }
-        <span class="comment">// TODO: Mark Notification as Read
-
-        // Fetch the PR from the Notification
-        </span><span class="kw">let </span>owner = n.repository.owner.clone().unwrap().login;
-        <span class="kw">let </span>repo = n.repository.name.clone();
-        <span class="kw">let </span>pr_title = <span class="kw-2">&amp;</span>n.subject.title;  <span class="comment">// "Testing our bot"
-        </span><span class="kw">let </span>pr_url = n.subject.url.clone().unwrap();  <span class="comment">// https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
-        </span><span class="kw">let </span>thread_url = <span class="kw-2">&amp;</span>n.url;  <span class="comment">// https://api.github.com/notifications/threads/14630615157
-        </span><span class="macro">println!</span>(<span class="string">"owner={owner}"</span>);
-        <span class="macro">println!</span>(<span class="string">"repo={repo}"</span>);
-        <span class="macro">println!</span>(<span class="string">"pr_title={pr_title}"</span>);
-        <span class="macro">println!</span>(<span class="string">"pr_url={pr_url}"</span>);
-        <span class="macro">println!</span>(<span class="string">"thread_url={thread_url}"</span>);
-        <span class="kw">if </span>!pr_url.as_str().contains(<span class="string">"/pulls/"</span>) { <span class="macro">error!</span>(<span class="string">"Not a PR: {pr_url}"</span>); <span class="kw">continue</span>; }
-        <span class="comment">// println!("n={n:#?}");
-
-        // Extract the PR Number
-        </span><span class="kw">let </span>regex = Regex::new(<span class="string">".*/([0-9]+)$"</span>).unwrap();
-        <span class="kw">let </span>caps = regex.captures(pr_url.as_str()).unwrap();
-        <span class="kw">let </span>pr_id_str = caps.get(<span class="number">1</span>).unwrap().as_str();
-        <span class="kw">let </span>pr_id: u64 = pr_id_str.parse().unwrap();
-        <span class="macro">println!</span>(<span class="string">"pr_id={pr_id}"</span>);
-
-        <span class="comment">// Allow only Specific Repos: apache/nuttx, apache/nuttx-apps
-        </span><span class="kw">if </span>owner != <span class="string">"apache" </span>||
-            ![<span class="string">"nuttx"</span>, <span class="string">"nuttx-apps"</span>].contains(<span class="kw-2">&amp;</span>repo.as_str()) {
-            <span class="macro">error!</span>(<span class="string">"Disallowed owner/repo: {owner}/{repo}"</span>);
-            <span class="kw">continue</span>;
-        }
-
-        <span class="comment">// Get the Handlers for GitHub Pull Requests and Issues
-        </span><span class="kw">let </span>pulls = octocrab.pulls(<span class="kw-2">&amp;</span>owner, <span class="kw-2">&amp;</span>repo);
-        <span class="kw">let </span>issues = octocrab.issues(<span class="kw-2">&amp;</span>owner, <span class="kw-2">&amp;</span>repo);
-
-        <span class="comment">// Post the Result and Log Output as PR Comment
-        </span>process_pr(<span class="kw-2">&amp;</span>pulls, <span class="kw-2">&amp;</span>issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
-
-        <span class="comment">// Wait 1 minute
-        </span>sleep(Duration::from_secs(<span class="number">60</span>));
-
-        <span class="comment">// TODO: Mark Notification as Read
-        // TODO: Continue to Next Notification
-        </span><span class="kw">break</span>;
-
-        <span class="comment">// TODO: Allow only Specific People
-        // TODO: Post to Mastodon
-    </span>}</code></pre></div>
-<p>Build and Test the PR. Then post the results as a PR Comment</p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175">main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Build and Test the PR. Then post the results as a PR Comment
-</span><span class="kw">async fn </span>process_pr(pulls: <span class="kw-2">&amp;</span>PullRequestHandler&lt;<span class="lifetime">'_</span>&gt;, issues: <span class="kw-2">&amp;</span>IssueHandler&lt;<span class="lifetime">'_</span>&gt;, pr_id: u64) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
-    <span class="comment">// Get the Command and Args: ["test", "milkv_duos:nsh"]
-    </span><span class="kw">let </span>args = get_command(issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">if </span>args.is_none() { <span class="macro">warn!</span>(<span class="string">"Missing command"</span>); <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
-    <span class="kw">let </span>args = args.unwrap();
-    <span class="kw">let </span>cmd = <span class="kw-2">&amp;</span>args[<span class="number">0</span>];
-    <span class="kw">let </span>target = <span class="kw-2">&amp;</span>args[<span class="number">1</span>];
-    <span class="kw">if </span>cmd != <span class="string">"test" </span>{ <span class="macro">error!</span>(<span class="string">"Unknown command: {cmd}"</span>); <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
-    <span class="kw">let </span>(script, target) = <span class="kw">match </span>target.as_str() {
-        <span class="string">"milkv_duos:nsh" </span>=&gt; (<span class="string">"oz64"</span>, target),
-        <span class="string">"oz64:nsh"       </span>=&gt; (<span class="string">"oz64"</span>, <span class="kw-2">&amp;</span><span class="string">"milkv_duos:nsh"</span>.into()),
-        <span class="string">"rv-virt:knsh64" </span>=&gt; (<span class="string">"knsh64"</span>, target),
-        <span class="kw">_ </span>=&gt; { <span class="macro">error!</span>(<span class="string">"Unknown target: {target}"</span>); <span class="kw">return </span><span class="prelude-val">Ok</span>(()); }
-    };
-    <span class="macro">println!</span>(<span class="string">"target={target}"</span>);
-    <span class="macro">println!</span>(<span class="string">"script={script}"</span>);
-
-    <span class="comment">// Fetch the PR
-    </span><span class="kw">let </span>pr = pulls
-        .get(pr_id)
-        .<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="macro">info!</span>(<span class="string">"{:#?}"</span>, pr.url);
-
-    <span class="comment">// Skip if PR State is Not Open
-    </span><span class="kw">if </span>pr.state.clone().unwrap() != IssueState::Open {
-        <span class="macro">info!</span>(<span class="string">"Skipping Closed PR: {}"</span>, pr_id);
-        <span class="kw">return </span><span class="prelude-val">Ok</span>(());
-    }
-
-    <span class="comment">// Fetch the PR Reactions. Quit if Both Reactions are set.
-    </span><span class="kw">let </span>reactions = get_reactions(issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">if </span>reactions.<span class="number">0</span>.is_some() &amp;&amp; reactions.<span class="number">1</span>.is_some() {
-        <span class="macro">info!</span>(<span class="string">"Skipping PR after 3 retries: {}"</span>, pr_id);
-        <span class="kw">return </span><span class="prelude-val">Ok</span>(());
-    }
-
-    <span class="comment">// Bump up the PR Reactions: 00 &gt; 01 &gt; 10 &gt; 11
-    </span>bump_reactions(issues, pr_id, reactions).<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="comment">// Build and Test the PR
-    </span><span class="kw">let </span>response_text = build_test(<span class="kw-2">&amp;</span>pr, target, script).<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="comment">// Header for PR Comment
-    </span><span class="kw">let </span>header = <span class="string">"[**\\[Experimental Bot, please feedback here\\]**](https://github.com/search?q=repo%3Aapache%2Fnuttx+15779&amp;type=issues)"</span>;
-
-    <span class="comment">// Compose the PR Comment
-    </span><span class="kw">let </span>comment_text =
-        header.to_string() + <span class="string">"\n\n" </span>+
-        <span class="kw-2">&amp;</span>response_text;
-
-    <span class="comment">// Post the PR Comment
-    </span>issues.create_comment(pr_id, comment_text).<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="comment">// If successful, delete the PR Reactions
-    </span>delete_reactions(issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="macro">info!</span>(<span class="string">"{:#?}"</span>, pr.url);
-
-    <span class="comment">// Wait 1 minute
-    </span>sleep(Duration::from_secs(<span class="number">60</span>));
-
-    <span class="comment">// Return OK
-    </span><span class="prelude-val">Ok</span>(())
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Build and Test the PR. Return the Build-Test Result.
-</span><span class="kw">async fn </span>build_test(pr: <span class="kw-2">&amp;</span>PullRequest, target: <span class="kw-2">&amp;</span>str, script: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
-    <span class="comment">// Get the Head Ref and Head URL from PR
-    // let pr: Value = serde_json::from_str(&amp;body).unwrap();
-    // let pr_id = pr["number"].as_u64().unwrap();
-    </span><span class="kw">let </span>head = <span class="kw-2">&amp;</span>pr.head;
-    <span class="kw">let </span>head_ref = <span class="kw-2">&amp;</span>head.ref_field;  <span class="comment">// "test-bot"
-    </span><span class="kw">let </span>head_url = head.repo.clone().unwrap().html_url.unwrap();  <span class="comment">// https://github.com/lupyuen2/wip-nuttx
-    // println!("head_ref={head_ref}");
-    // println!("head_url={head_url}");
-
-    // True if URL is an Apps Repo
-    </span><span class="kw">let </span>is_apps =
-        <span class="kw">if </span>head_url.as_str().contains(<span class="string">"apps"</span>) { <span class="bool-val">true </span>}
-        <span class="kw">else </span>{ <span class="bool-val">false </span>};
-
-    <span class="comment">// Set the URLs and Refs for NuttX and Apps
-    </span><span class="kw">let </span>nuttx_hash = <span class="string">"HEAD"</span>;
-    <span class="kw">let </span>nuttx_url =
-        <span class="kw">if </span>is_apps { <span class="string">"https://github.com/apache/nuttx" </span>}
-        <span class="kw">else </span>{ head_url.as_str() };
-    <span class="kw">let </span>nuttx_ref =
-        <span class="kw">if </span>is_apps { <span class="string">"master" </span>}
-        <span class="kw">else </span>{ head_ref };
-    <span class="kw">let </span>apps_hash = <span class="string">"HEAD"</span>;
-    <span class="kw">let </span>apps_url = 
-        <span class="kw">if </span>is_apps { head_url.as_str() }
-        <span class="kw">else </span>{ <span class="string">"https://github.com/apache/nuttx-apps" </span>};
-    <span class="kw">let </span>apps_ref =
-        <span class="kw">if </span>is_apps { head_ref }
-        <span class="kw">else </span>{ <span class="string">"master" </span>};
-
-    <span class="comment">// Build and Test NuttX: ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    // Which calls: ./build-test-knsh64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    </span><span class="kw">let </span>cmd = <span class="macro">format!</span>(<span class="string">"./build-test-{script}.sh \n  {nuttx_hash} {apps_hash} \n  {nuttx_url} {nuttx_ref} \n  {apps_url} {apps_ref}"</span>);
-    <span class="macro">println!</span>(<span class="string">"{cmd}"</span>);
-    <span class="comment">// std::process::exit(0); ////
-    </span><span class="macro">println!</span>(<span class="string">"PLEASE VERIFY"</span>);
-    sleep(Duration::from_secs(<span class="number">30</span>));
-
-    <span class="comment">// Start the Build and Test Script
-    </span><span class="kw">let </span>log = <span class="string">"/tmp/nuttx-test-bot.log"</span>;
-    <span class="kw">let </span><span class="kw-2">mut </span>child = Command
-        ::new(<span class="string">"../nuttx-build-farm/build-test.sh"</span>)
-        .arg(script).arg(log)
-        .arg(nuttx_hash).arg(apps_hash)
-        .arg(nuttx_url).arg(nuttx_ref)
-        .arg(apps_url).arg(apps_ref)
-        .spawn().unwrap();
-    <span class="comment">// println!("child={child:?}");
-
-    // Wait for Build and Test to complete
-    </span><span class="kw">let </span>status = child.wait().unwrap();  <span class="comment">// 0 if successful
-    </span><span class="macro">println!</span>(<span class="string">"status={status:?}"</span>);
-
-    <span class="comment">// Upload the log as GitLab Snippet
-    </span><span class="kw">let </span>log_content = fs::read_to_string(log).unwrap();
-    <span class="kw">let </span>snippet_url = create_snippet(<span class="kw-2">&amp;</span>log_content).<span class="kw">await</span><span class="question-mark">?</span>;
-
-    <span class="comment">// Extract the Log Output
-    </span><span class="kw">let </span>log_extract = extract_log(<span class="kw-2">&amp;</span>snippet_url).<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="kw">let </span>log_content = log_extract.join(<span class="string">"\n"</span>);
-    <span class="macro">println!</span>(<span class="string">"log_content=\n{log_content}"</span>);
-    <span class="kw">let </span><span class="kw-2">mut </span>result = 
-        <span class="kw">if </span>status.success() { <span class="macro">format!</span>(<span class="string">"Build and Test Successful ({target})\n"</span>) }
-        <span class="kw">else </span>{ <span class="macro">format!</span>(<span class="string">"Build and Test **FAILED** ({target})\n"</span>) };
-    result.push_str(<span class="kw-2">&amp;</span>snippet_url);
-    result.push_str(<span class="string">"\n```text\n"</span>);
-    result.push_str(<span class="kw-2">&amp;</span>log_content);
-    result.push_str(<span class="string">"\n```\n"</span>);
-    <span class="macro">println!</span>(<span class="string">"result={result}"</span>);
-
-    <span class="comment">// Return the Result
-    </span><span class="prelude-val">Ok</span>(result)
-}</code></pre></div>
-<h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>5 Power Up our Oz64 SBC</h1>
+exit $res</code></pre></div><h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>6 Power Up our Oz64 SBC</h1>
 <p>One Final Step: How we flip the Power, On and Off for our Oz64 SBC.</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">nuttx-build-farm/oz64-power.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
@@ -649,7 +580,7 @@ curl \
 <p><img src="https://lupyuen.org/images/testbot-power1.png" alt="TODO" /></p>
 <p>power2</p>
 <p><img src="https://lupyuen.org/images/testbot-power2.png" alt="TODO" /></p>
-<h1 id="security-implications"><a class="doc-anchor" href="#security-implications">§</a>6 Security Implications</h1>
+<h1 id="security-implications"><a class="doc-anchor" href="#security-implications">§</a>7 Security Implications</h1>
 <p>TODO</p>
 <p>Reminder to myself: Be careful when running Unmerged Code on our Home Computers. In case the PR contains any Scripts or Apps that may cause problems on our Home Computer or Home Network.</p>
 <p>Basically we only operate on NuttX repos, so there should be no malware… but anyone can send PR with anything true!!!</p>
@@ -671,10 +602,10 @@ curl \
 </ol>
 <p><em>If we had to do it all again with NuttX on PineTime?</em></p>
 <p>Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
 <p>Combine Build &amp; Test Server with Test Controller</p>
 <p>Multiple Test Controllers</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
