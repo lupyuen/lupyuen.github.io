@@ -191,6 +191,8 @@ expect {
 ## send -s "uname -a\r"
 ```
 
+(How to power up Oz64? See below)
+
 Turning our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
@@ -414,45 +416,49 @@ build-test.sh \
 
 [(__build-test.sh__ is explained here)](TODO)
 
+[(Which calls the __Build & Test Script__ we saw earlier)](TODO)
+
 # Power Up our Oz64 SBC
 
-TODO
+_We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?_
 
-One Final Step: How we flip the Power, On and Off for our Oz64 SBC.
+With an [__IKEA Smart Power Plug__](TODO) and an [__IKEA Zigbee Hub__](TODO)!
 
-[nuttx-build-farm/oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
+Here is our script that __Flips the Oz64 Power__, On and Off: [oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Power Oz64 On or Off
+## This script will power Oz64 on or off...
 ## ./oz64-power on
 ## ./oz64-power off
-echo "Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh $1"
-
-set -e  ## Exit when any command fails
 
 ## First Parameter is on or off
 state=$1
-if [[ "$state" == "" ]]; then
-  echo "ERROR: Specify 'on' or 'off'"
-  exit 1
-fi
+
+## Set the Home Assistant Server
+export HOME_ASSISTANT_SERVER=luppys-mac-mini.local:8123
 
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export HOME_ASSISTANT_TOKEN=xxxx
 . $HOME/home-assistant-token.sh
 
-## Set the Home Assistant Server
-export HOME_ASSISTANT_SERVER=luppys-mac-mini.local:8123
-
-echo "----- Power $state Oz64"
+## Call Home Assistant API: Power Oz64 On or Off
 curl \
-    -X POST \
-    -H "Authorization: Bearer $HOME_ASSISTANT_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "{\"entity_id\": \"automation.oz64_power_$state\"}" \
-    http://$HOME_ASSISTANT_SERVER/api/services/automation/trigger
+  -X POST \
+  -H "Authorization: Bearer $HOME_ASSISTANT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"entity_id\": \"automation.oz64_power_$state\"}" \
+  http://$HOME_ASSISTANT_SERVER/api/services/automation/trigger
 ```
+
+This script assumes that we have...
+
+- Installed a __Home Assistant Server__
+
+- Added the Smart Power Plug (and Zigbee Hub) to __Google Home__
+
+- Installed the __Google Home Integration__ for Home Assistant
+
+- Created the __Power Automations__ in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
 
 power3
 
