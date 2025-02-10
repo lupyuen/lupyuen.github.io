@@ -72,7 +72,7 @@
 <li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">5 Test Bot for Pull Requests</a><ul></ul></li>
 <li><a href="#bot-calls-test-script" title="Bot calls Test Script">6 Bot calls Test Script</a><ul></ul></li>
 <li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">7 Power Up our Oz64 SBC</a><ul></ul></li>
-<li><a href="#security-implications" title="Security Implications">8 Security Implications</a><ul></ul></li>
+<li><a href="#securing-our-bot" title="Securing Our Bot">8 Securing Our Bot</a><ul></ul></li>
 <li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">11 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
@@ -434,6 +434,8 @@ build-test.sh \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="TODO">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="TODO">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
+<p><a href="TODO">(How to run our <strong>Test Bot</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Bot Log</strong>)</a></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
 <p><em>We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?</em></p>
 <p>With an <a href="TODO"><strong>IKEA Smart Power Plug</strong></a> and an <a href="TODO"><strong>IKEA Zigbee Hub</strong></a>!</p>
@@ -482,7 +484,24 @@ curl \
 <p><img src="https://lupyuen.org/images/testbot-power1.png" alt="TODO" /></p>
 <p>power2</p>
 <p><img src="https://lupyuen.org/images/testbot-power2.png" alt="TODO" /></p>
-<h1 id="security-implications"><a class="doc-anchor" href="#security-implications">§</a>8 Security Implications</h1>
+<h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
+<ol>
+<li>
+<p><em>A Bot that will auto-build and auto-test any Pull Request. What could possibly go wrong?</em></p>
+<p>Plenty! The Pull Requests is awaiting <strong>Manual Review</strong>. It might contain <strong>Unauthorised Code</strong> that will be executed by our Bot. <em>(Think: Makefiles with Malicious Scripts inside)</em></p>
+<p>Or the Runtime Code might disrupt the <strong>Local Network</strong> hosting our Bot. Also it might break out of the <a href="TODO"><strong>Semihosting Environment</strong></a> and mess up our Host Machine.</p>
+</li>
+<li>
+<p><em>Has something happened before?</em></p>
+<p>Five Years Ago: I connected a <a href="TODO"><strong>PineTime Smartwatch</strong></a> to the net for anyone to test their firmware. Some folks discovered that they could break out of the <a href="TODO"><strong>Semihosting Environment</strong></a> and access my computer.</p>
+<p>That’s why we’ll trigger our Bot manually.</p>
+</li>
+<li>
+<p><em>Speaking of PineTime: How should we allow remote firmware testing?</em></p>
+<p>Let’s assume NuttX has been ported to PineTime Smartwatch.</p>
+</li>
+</ol>
+<p>Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment</p>
 <p>TODO</p>
 <p>Reminder to myself: Be careful when running Unmerged Code on our Home Computers. In case the PR contains any Scripts or Apps that may cause problems on our Home Computer or Home Network.</p>
 <p>Basically we only operate on NuttX repos, so there should be no malware… but anyone can send PR with anything true!!!</p>
