@@ -336,7 +336,7 @@ async fn process_pr(...) -> Result<...> {
 }
 ```
 
-# Build and Test NuttX
+# Bot calls Test Script
 
 _What's inside build_test?_
 
