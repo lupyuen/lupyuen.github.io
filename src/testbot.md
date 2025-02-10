@@ -77,7 +77,7 @@ TODO
 
 The responses to the above commands are validated by another machine...
 
-TODO: Pic of Build & Test Server, Test Controller, Ox64
+TODO: Pic of Build & Test Server, Test Controller, Oz64
 
 # Control our Oz64 SBC
 
@@ -252,7 +252,7 @@ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
 head -c 65536 /dev/zero >/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd >Image
 
-## Copy the NuttX Image to TFTP Server (Test Controller)
+## Copy the NuttX Image to our Test Controller (TFTP Server)
 scp Image test-controller:/tftpboot/Image-sg2000
 ssh test-controller ls -l /tftpboot/Image-sg2000
 
@@ -282,12 +282,12 @@ This is how we __Fetch Notifications__ for _@nuttxpr_: [main.rs](https://github.
 ```rust
 // Fetch all Notifications for @nuttxpr
 let notifications = octocrab
-  .activity()
-  .notifications()
-  .list()
-  .all(true)
-  .send()
-  .await?;
+  .activity()       // Get User Activity from GitHub
+  .notifications()  // Notifications specifically
+  .list()           // Return as a list
+  .all(true)        // Read and Unread Notifications
+  .send()           // Fetch from GitHub
+  .await?;          // Block until completed
 
 // For Every Notification...
 for n in notifications {
@@ -320,8 +320,8 @@ async fn process_pr(...) -> Result<...> {
   // Fetch the PR from GitHub
   let pr = pulls.get(pr_id).await?;
 
-  // Get the Command and Args: ["test", "ox64:nsh"]
-  // Omitted: Set target="milkv_duos:nsh", script="ox64"
+  // Get the Command and Args: ["test", "oz64:nsh"]
+  // Omitted: Set target="milkv_duos:nsh", script="oz64"
   let args = get_command(issues, pr_id).await?;
 
   // Build and Test the PR on Oz64
@@ -338,84 +338,69 @@ async fn process_pr(...) -> Result<...> {
 
 _What's inside build_test?_
 
-[main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278)
+It will call a script to execute the __Oz64 Build & Test__, and record the Test Log: [main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278)
 
 ```rust
 /// Build and Test the PR. Return the Build-Test Result.
-async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<String, Box<dyn std::error::Error>> {
-    // Get the Head Ref and Head URL from PR
-    // let pr: Value = serde_json::from_str(&body).unwrap();
-    // let pr_id = pr["number"].as_u64().unwrap();
+/// target="milkv_duos:nsh", script="oz64"
+async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<String, ...> {
+
+    // Get the PR URL and PR Branch
+    // Omitted: Set apps_url="https://github.com/apache/nuttx-apps", apps_ref="master"
     let head = &pr.head;
-    let head_ref = &head.ref_field;  // "test-bot"
-    let head_url = head.repo.clone().unwrap().html_url.unwrap();  // https://github.com/lupyuen2/wip-nuttx
-    // println!("head_ref={head_ref}");
-    // println!("head_url={head_url}");
-
-    // True if URL is an Apps Repo
-    let is_apps =
-        if head_url.as_str().contains("apps") { true }
-        else { false };
-
-    // Set the URLs and Refs for NuttX and Apps
-    let nuttx_hash = "HEAD";
-    let nuttx_url =
-        if is_apps { "https://github.com/apache/nuttx" }
-        else { head_url.as_str() };
-    let nuttx_ref =
-        if is_apps { "master" }
-        else { head_ref };
-    let apps_hash = "HEAD";
-    let apps_url = 
-        if is_apps { head_url.as_str() }
-        else { "https://github.com/apache/nuttx-apps" };
-    let apps_ref =
-        if is_apps { head_ref }
-        else { "master" };
-
-    // Build and Test NuttX: ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    // Which calls: ./build-test-knsh64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-    let cmd = format!("./build-test-{script}.sh \n  {nuttx_hash} {apps_hash} \n  {nuttx_url} {nuttx_ref} \n  {apps_url} {apps_ref}");
-    println!("{cmd}");
-    // std::process::exit(0); ////
-    println!("PLEASE VERIFY");
-    sleep(Duration::from_secs(30));
+    let nuttx_ref = &head.ref_field;
+    let nuttx_url = head.repo.clone().unwrap().html_url.unwrap();
 
     // Start the Build and Test Script
+    // Record the Test Log
     let log = "/tmp/nuttx-test-bot.log";
     let mut child = Command
         ::new("../nuttx-build-farm/build-test.sh")
         .arg(script).arg(log)
-        .arg(nuttx_hash).arg(apps_hash)
+        .arg("HEAD").arg("HEAD")
         .arg(nuttx_url).arg(nuttx_ref)
         .arg(apps_url).arg(apps_ref)
         .spawn().unwrap();
-    // println!("child={child:?}");
 
-    // Wait for Build and Test to complete
-    let status = child.wait().unwrap();  // 0 if successful
-    println!("status={status:?}");
+    // Wait for Build and Test to complete (0 if successful)
+    let status = child.wait().unwrap();
 
-    // Upload the log as GitLab Snippet
+    // Upload the Test Log as GitLab Snippet
     let log_content = fs::read_to_string(log).unwrap();
     let snippet_url = create_snippet(&log_content).await?;
 
-    // Extract the Log Output
+    // Extract the essential bits from Test Log
     let log_extract = extract_log(&snippet_url).await?;
     let log_content = log_extract.join("\n");
-    println!("log_content=\n{log_content}");
     let mut result = 
         if status.success() { format!("Build and Test Successful ({target})\n") }
         else { format!("Build and Test **FAILED** ({target})\n") };
     result.push_str(&snippet_url);
-    result.push_str("\n```text\n");
     result.push_str(&log_content);
-    result.push_str("\n```\n");
-    println!("result={result}");
-
-    // Return the Result
-    Ok(result)
+    Ok(result)  // Return the Result
 }
+```
+
+Which will call our __Generic Build & Test Script__ like so: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7)
+
+```bash
+## Set the NuttX PR URL, branch and commit hash
+nuttx_url=https://github.com/USERNAME/nuttx
+nuttx_ref=BRANCH
+nuttx_hash=HEAD
+
+## Set the Apps PR URL, branch and commit hash
+apps_url=https://github.com/apache/nuttx-apps
+apps_ref=master
+apps_hash=HEAD
+
+## Start the Oz64 Build and Test
+## Record the Test Log
+build-test.sh \
+  oz64 nuttx-test-bot.log \
+  $nuttx_hash $apps_hash \
+  $nuttx_url  $nuttx_ref \
+  $apps_url   $apps_ref
 ```
 
 # Build and Test NuttX
