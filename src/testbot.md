@@ -496,9 +496,9 @@ power2
 
     Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run __OpenOCD + ST-Link + Semihosting__.
 
-    Watch Faces on PineTime will be rendered as an __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic in the PR Response, for manual validation.
+    Watch Faces on PineTime will be rendered as an __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for manual validation.
 
-    We'll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone, via __Mastodon Alert__. I'll review the PR, click the "Like" button on the PR Comment, to activate the test.
+    We'll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone (via __Mastodon Alert__). I'll review the PR, click "Like" on the PR Comment, to activate the test.
 
 1.  _Can we combine the Test Controller with the Build & Test Server?_
 
