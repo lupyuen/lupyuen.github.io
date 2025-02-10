@@ -538,11 +538,35 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build and Test NuttX
 
+Earlier we spoke about our Test Bot calling the __Generic Build & Test Script__...
+
+- [__"TODO"__](TODO)
+
+```bash
+## Set the NuttX PR URL, branch and commit hash
+nuttx_url=https://github.com/USERNAME/nuttx
+nuttx_ref=BRANCH
+nuttx_hash=HEAD
+
+## Set the Apps PR URL, branch and commit hash
+apps_url=https://github.com/apache/nuttx-apps
+apps_ref=master
+apps_hash=HEAD
+
+## Start the Oz64 Build and Test
+## Record the Test Log
+build-test.sh \
+  oz64 nuttx-test-bot.log \
+  $nuttx_hash $apps_hash \
+  $nuttx_url  $nuttx_ref \
+  $apps_url   $apps_ref
+```
+
+This section explains what's inside [__build-test.sh__](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh).
+
 TODO
 
-Called by nuttx-test-bot
-
-[nuttx-build-farm/build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
+[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
 
 ```bash
 #!/usr/bin/env bash
