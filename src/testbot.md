@@ -113,10 +113,10 @@ send -s "ostest\r"
 The same script shall __Validate the Responses__ from Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
-## Check the response from `ostest`...
+## Check the response from OSTest`...
 expect {
 
-  ## If we see this message...
+  ## If OSTest completes successfully...
   "ostest_main: Exiting with status 0" { 
 
     ## Terminate the `screen` session: Ctrl-A k y
@@ -129,7 +129,7 @@ expect {
     exit 0 
   }
 
-  ## If we don't see the message, exit with an error
+  ## If OSTest Fails: Exit with an error
   ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
   timeout { ...
     exit 1 
@@ -137,7 +137,13 @@ expect {
 }
 ```
 
-But these commands will only work when we tell __Test Controller__ (Linux SBC) to pass them through to Oz64. That's why our __Expect Script__ does this at the top: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+# Pass Through to Oz64
+
+_But this Expect Script runs on Build & Test Server? Not Test Controller?_
+
+Ah the commands above will only work when our Build & Test Server tells __Test Controller__ (Linux SBC) to pass them through to Oz64.
+
+That's why our __Expect Script__ does this on Build & Test Server: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
 ## For every 1 character sent, wait 1 millisecond
@@ -154,10 +160,8 @@ send -s "\r"
 
 ## Terminate the Previous Session for the `screen` command: Ctrl-A k y
 expect "$"
-send -s "screen -x\r"
-sleep 5
-send -s "\x01ky\r"
-sleep 5
+send -s "screen -x\r" ; sleep 5
+send -s "\x01ky\r"    ; sleep 5
 
 ## Connect to USB Serial Terminal via the `screen` command
 ## Test Controller (Linux SBC) now becomes a passthrough
@@ -165,15 +169,14 @@ expect "$"
 send -s "screen /dev/ttyUSB0 115200\r"
 
 ## Power Oz64 Off and On
-system "./oz64-power.sh off"
-sleep 5
+system "./oz64-power.sh off" ; sleep 5
 system "./oz64-power.sh on"
 
 ## Wait for the NuttX Prompt
 expect {
   "nsh> " {}
 
-  ## If timeout, exit with an error
+  ## If NuttX Crashes: Exit with an error
   ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
   timeout { ...
     exit 1 
@@ -181,12 +184,13 @@ expect {
 }
 
 ## Omitted: Enter the NuttX Commands and validate the responses
-send -s "uname -a\r"
+## send -s "uname -a\r"
 ```
 
 Turning our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
+## Watch How It Works...
 ## Build & Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
 
