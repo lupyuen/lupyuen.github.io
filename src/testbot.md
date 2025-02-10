@@ -490,48 +490,23 @@ power2
 
 1.  _Has something happened before?_
 
-    Five Years Ago: I connected a [__PineTime Smartwatch__](TODO) to the net for anyone to test their firmware. Some folks discovered that they could break out of the [__Semihosting Environment__](TODO) and access my computer.
+    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some folks discovered that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
-    That's why we'll trigger our Bot manually.
+1.  _Speaking of PineTime: How should we allow auto-testing of firmware?_
 
-1.  _Speaking of PineTime: How should we allow remote firmware testing?_
+    Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run __OpenOCD + ST-Link + Semihosting__.
 
-    Let's assume NuttX has been ported to PineTime Smartwatch.
+    Watch Faces on PineTime will be rendered as an __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic in the PR Response, for manual validation.
 
+    We'll start our Test Bot manually, after reviewing the code in the PR.
 
-Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
+1.  _Can we combine the Test Controller with the Build & Test Server?_
 
-TODO
+    TODO
 
-Reminder to myself: Be careful when running Unmerged Code on our Home Computers. In case the PR contains any Scripts or Apps that may cause problems on our Home Computer or Home Network.
+    Combine Build & Test Server with Test Controller
 
-Basically we only operate on NuttX repos, so there should be no malware... but anyone can send PR with anything true!!!
-
-How to prevent problems? Network separation? One time use containers / jails / vm with restricted network access?
-
-I might try a scaled-down simpler implementation that has less security risk. For example, when I post a PR Comment @nuttxpr please test, then our Test Bot will download the PR and run Build + Test on QEMU RISC-V 🤔
-
-5 Years Ago: We had Security Issues with a PineTime Smartwatch that we opened up for Remote Testing :-)
-
-Notify via Mastodon. Click "Like" on the PR to approve?
-
-[Remote PineTime Bot: Security Issues](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues)
-
-1.  NuttX Scripts
-
-1.  Network Access (DMZ / Guest Network)
-
-1.  Semihosting: Breaking out from Semihosting Guest to Semihosting Host
-
-_If we had to do it all again with NuttX on PineTime?_
-
-Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
-
-# TODO
-
-Combine Build & Test Server with Test Controller
-
-Multiple Test Controllers
+    Multiple Test Controllers
 
 # What's Next
 
