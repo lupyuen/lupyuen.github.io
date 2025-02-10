@@ -498,13 +498,13 @@ curl \
 <p><em>Speaking of PineTime: How should we allow auto-testing of firmware?</em></p>
 <p>Let’s assume NuttX has been ported to PineTime Smartwatch <em>(Nordic nRF52832)</em>. On our Test Controller <em>(Linux SBC)</em>, we’ll run <strong>OpenOCD + ST-Link + Semihosting</strong>.</p>
 <p>Watch Faces on PineTime will be rendered as an <strong>LVGL Display</strong>. Our Test Controller shall have a <strong>MIPI CSI Camera</strong>, that will snap a pic of the LVGL Display. And attach the pic in the PR Response, for manual validation.</p>
-<p>We’ll start our Test Bot manually, after reviewing the code in the PR.</p>
+<p>We’ll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone, via <strong>Mastodon Alert</strong>. I’ll review the PR, click the “Like” button on the PR Comment, to activate the test.</p>
 </li>
 <li>
 <p><em>Can we combine the Test Controller with the Build &amp; Test Server?</em></p>
-<p>TODO</p>
-<p>Combine Build &amp; Test Server with Test Controller</p>
-<p>Multiple Test Controllers</p>
+<p>Yeah we could combine the <strong>Test Controller</strong> <em>(Linux SBC)</em> with the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC)</em>. Though the Current Design will scale better with <strong>Multiple Test Controllers</strong>…</p>
+<p>TODO: Pic of Multiple Test Controllers</p>
+<p>(Too bad we don’t have solution for swapping SD Cards)</p>
 </li>
 </ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
