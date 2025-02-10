@@ -538,9 +538,30 @@ curl \
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
 </span>
 <h1 id="appendix-build-and-test-nuttx"><a class="doc-anchor" href="#appendix-build-and-test-nuttx">§</a>10 Appendix: Build and Test NuttX</h1>
+<p>Earlier we spoke about our Test Bot calling the <strong>Generic Build &amp; Test Script</strong>…</p>
+<ul>
+<li><a href="TODO"><strong>“TODO”</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the NuttX PR URL, branch and commit hash
+nuttx_url=https://github.com/USERNAME/nuttx
+nuttx_ref=BRANCH
+nuttx_hash=HEAD
+
+## Set the Apps PR URL, branch and commit hash
+apps_url=https://github.com/apache/nuttx-apps
+apps_ref=master
+apps_hash=HEAD
+
+## Start the Oz64 Build and Test
+## Record the Test Log
+build-test.sh \
+  oz64 nuttx-test-bot.log \
+  $nuttx_hash $apps_hash \
+  $nuttx_url  $nuttx_ref \
+  $apps_url   $apps_ref</code></pre></div>
+<p>This section explains what’s inside <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh"><strong>build-test.sh</strong></a>.</p>
 <p>TODO</p>
-<p>Called by nuttx-test-bot</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Build and Test NuttX. Called by nuttx-test-bot.
 ## ./build-test.sh knsh64 /tmp/build-test.log
