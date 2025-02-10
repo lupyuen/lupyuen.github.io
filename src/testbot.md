@@ -418,6 +418,10 @@ build-test.sh \
 
 [(Which calls the __Build & Test Script__ we saw earlier)](TODO)
 
+[(How to run our __Test Bot__)](TODO)
+
+[(See the __Bot Log__)](TODO)
+
 # Power Up our Oz64 SBC
 
 _We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?_
@@ -476,7 +480,26 @@ power2
 
 ![TODO](https://lupyuen.org/images/testbot-power2.png)
 
-# Security Implications
+# Securing Our Bot
+
+1.  _A Bot that will auto-build and auto-test any Pull Request. What could possibly go wrong?_
+
+    Plenty! The Pull Requests is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
+
+    Or the Runtime Code might disrupt the __Local Network__ hosting our Bot. Also it might break out of the [__Semihosting Environment__](TODO) and mess up our Host Machine.
+
+1.  _Has something happened before?_
+
+    Five Years Ago: I connected a [__PineTime Smartwatch__](TODO) to the net for anyone to test their firmware. Some folks discovered that they could break out of the [__Semihosting Environment__](TODO) and access my computer.
+
+    That's why we'll trigger our Bot manually.
+
+1.  _Speaking of PineTime: How should we allow remote firmware testing?_
+
+    Let's assume NuttX has been ported to PineTime Smartwatch.
+
+
+Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
 
 TODO
 
