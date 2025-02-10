@@ -41,26 +41,34 @@ _What commands are tested on Oz64?_
 Test Controller sends these __NuttX Commands__ to Oz64 and validates the responses: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
+## Record the NuttX Commit Hash
 nsh> uname -a
 TODO
 
+## Check for Heap Problems
 nsh> free
 TODO
 
+## Show what's running
 nsh> ps
 TODO
 
+## List the Device Drivers
 nsh> ls -l /dev
 TODO
 
+## Simple App
 nsh> hello
 TODO
 
+## Now with Threading and Timers
 nsh> getprime
 TODO
 
 ## Omitted: Test `hello` and `getprime` again
+## To test the swapping of Address Spaces
 
+## Exercise everything in NuttX
 nsh> ostest
 TODO
 ```
