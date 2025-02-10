@@ -36,9 +36,9 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic abo
 
   [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
-_What commands are tested on Oz64?_
+_How shall we test Oz64?_
 
-Test Controller sends these __NuttX Commands__ to Oz64 and validates the responses: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
 ## Record the NuttX Commit Hash
@@ -61,12 +61,12 @@ TODO
 nsh> hello
 TODO
 
-## Now with Threading and Timers
+## App with Threading and Timers
 nsh> getprime
 TODO
 
 ## Omitted: Test `hello` and `getprime` again
-## To test the swapping of Address Spaces
+## To verify the swapping of Address Spaces
 
 ## Exercise everything in NuttX
 nsh> ostest
@@ -74,6 +74,8 @@ TODO
 ```
 
 [(Why we test __hello__ and __getprime__ twice)](TODO)
+
+The responses to the above commands are validated by another machine...
 
 # Control our Oz64 SBC
 
