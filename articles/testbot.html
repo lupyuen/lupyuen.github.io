@@ -228,6 +228,7 @@ expect {
 
 ## Omitted: Enter the NuttX Commands and validate the responses
 ## send -s &quot;uname -a\r&quot;</code></pre></div>
+<p>(How to power up Oz64? See below)</p>
 <p>Turning our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Watch How It Works...
 ## Build &amp; Test Server: Launches a shell on Test Controller...
@@ -432,39 +433,47 @@ build-test.sh \
   $nuttx_url  $nuttx_ref \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="TODO">(<strong>build-test.sh</strong> is explained here)</a></p>
+<p><a href="TODO">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
-<p>TODO</p>
-<p>One Final Step: How we flip the Power, On and Off for our Oz64 SBC.</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">nuttx-build-farm/oz64-power.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Power Oz64 On or Off
+<p><em>We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?</em></p>
+<p>With an <a href="TODO"><strong>IKEA Smart Power Plug</strong></a> and an <a href="TODO"><strong>IKEA Zigbee Hub</strong></a>!</p>
+<p>Here is our script that <strong>Flips the Oz64 Power</strong>, On and Off: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">oz64-power.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## This script will power Oz64 on or off...
 ## ./oz64-power on
 ## ./oz64-power off
-echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh $1&quot;
-
-set -e  ## Exit when any command fails
 
 ## First Parameter is on or off
 state=$1
-if [[ &quot;$state&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Specify &#39;on&#39; or &#39;off&#39;&quot;
-  exit 1
-fi
+
+## Set the Home Assistant Server
+export HOME_ASSISTANT_SERVER=luppys-mac-mini.local:8123
 
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export HOME_ASSISTANT_TOKEN=xxxx
 . $HOME/home-assistant-token.sh
 
-## Set the Home Assistant Server
-export HOME_ASSISTANT_SERVER=luppys-mac-mini.local:8123
-
-echo &quot;----- Power $state Oz64&quot;
+## Call Home Assistant API: Power Oz64 On or Off
 curl \
-    -X POST \
-    -H &quot;Authorization: Bearer $HOME_ASSISTANT_TOKEN&quot; \
-    -H &quot;Content-Type: application/json&quot; \
-    -d &quot;{\&quot;entity_id\&quot;: \&quot;automation.oz64_power_$state\&quot;}&quot; \
-    http://$HOME_ASSISTANT_SERVER/api/services/automation/trigger</code></pre></div>
+  -X POST \
+  -H &quot;Authorization: Bearer $HOME_ASSISTANT_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &quot;{\&quot;entity_id\&quot;: \&quot;automation.oz64_power_$state\&quot;}&quot; \
+  http://$HOME_ASSISTANT_SERVER/api/services/automation/trigger</code></pre></div>
+<p>This script assumes that we have…</p>
+<ul>
+<li>
+<p>Installed a <strong>Home Assistant Server</strong></p>
+</li>
+<li>
+<p>Added the Smart Power Plug (and Zigbee Hub) to <strong>Google Home</strong></p>
+</li>
+<li>
+<p>Installed the <strong>Google Home Integration</strong> for Home Assistant</p>
+</li>
+<li>
+<p>Created the <strong>Power Automations</strong> in Home Assistant: <em>“Oz64 Power On”</em> and <em>“Oz64 Power Off”</em>…</p>
+</li>
+</ul>
 <p>power3</p>
 <p><img src="https://lupyuen.org/images/testbot-power3.png" alt="TODO" /></p>
 <p>power4</p>
