@@ -213,13 +213,15 @@ _Who runs the above Expect Script?_
 
 The Expect Script above is called by our __Build & Test Script__ that will...
 
-- Compile the NuttX Kernel and Apps
+- Compile the __NuttX Kernel__ _(plus NuttX Apps)_
 
-- Copy them to our Test Controller (Linux SBC)
+- Copy them to our __Test Controller__ _(Linux SBC)_
 
-- Start the Expect Script (from Previous Section)
+- Start the __Expect Script__ _(from Previous Section)_
 
-- So that Test Controller will boot Oz64 (over TFTP) and send the NuttX Test Commands
+- So that Test Controller will __Boot Oz64__ _(over TFTP)_
+
+- And send the __Test Commands__ _(to NuttX Shell)_
 
 Like so: [build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
