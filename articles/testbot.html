@@ -133,11 +133,11 @@ nsh&gt; ostest
 TODO</code></pre></div>
 <p><a href="TODO">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
 <p>The responses to the above commands are validated by another machine…</p>
-<p>TODO: Pic of Build-Test Server, Test Controller, Ox64</p>
+<p>TODO: Pic of Build &amp; Test Server, Test Controller, Ox64</p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
-<p>Our Test Controller (Linux SBC) accepts commands from the <strong>Build-Test Server</strong> (Ubuntu PC).</p>
-<p>Remember the NuttX Commands from Previous Section? Our Build-Test Server runs this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>Our Test Controller (Linux SBC) accepts commands from the <strong>Build &amp; Test Server</strong> (Ubuntu PC).</p>
+<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server runs this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for each command
 set timeout 300
 
@@ -186,7 +186,7 @@ expect {
 set send_slow {1 0.001}
 set timeout 60
 
-## Connect from Build-Test Server (Ubuntu PC)
+## Connect from Build &amp; Test Server (Ubuntu PC)
 ## to Test Controller (Linux SBC) over SSH
 ## Will execute `ssh test-controller`
 ## Then wake up the SBC
@@ -224,7 +224,7 @@ expect {
 ## Omitted: Enter the NuttX Commands and validate the responses
 send -s &quot;uname -a\r&quot;</code></pre></div>
 <p>Turning our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build-Test Server: Launches a shell on Test Controller...
+<div class="example-wrap"><pre class="language-bash"><code>## Build &amp; Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
 
 ## Test Controller: Executes these Linux Commands...
@@ -235,12 +235,26 @@ $ screen /dev/ttyUSB0 115200
 nsh&gt; uname -a
 TODO
 
-## Build-Test Server: Validates the responses</code></pre></div>
+## Build &amp; Test Server: Validates the responses</code></pre></div>
 <p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>3 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
-<p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">build-test-oz64.sh</a></p>
+<p>The Expect Script above is called by our <strong>Build &amp; Test Script</strong> that will…</p>
+<ul>
+<li>
+<p>Compile the NuttX Kernel and Apps</p>
+</li>
+<li>
+<p>Copy them to our Test Controller (Linux SBC)</p>
+</li>
+<li>
+<p>Start the Expect Script (from Previous Section)</p>
+</li>
+<li>
+<p>So that Test Controller will boot Oz64 (over TFTP) and send the NuttX Test Commands</p>
+</li>
+</ul>
+<p>Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">build-test-oz64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: nuttx_url / apps_url
 
 ## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
@@ -658,7 +672,7 @@ curl \
 <p><em>If we had to do it all again with NuttX on PineTime?</em></p>
 <p>Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1>
-<p>Combine Build-Test Server with Test Controller</p>
+<p>Combine Build &amp; Test Server with Test Controller</p>
 <p>Multiple Test Controllers</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
