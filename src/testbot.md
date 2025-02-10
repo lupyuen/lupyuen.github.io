@@ -208,9 +208,11 @@ _Who runs the above Expect Script?_
 
 Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 
-[nuttx-build-farm/build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
+[build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
 ```bash
+## TODO: nuttx_url / apps_url
+
 ## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 ## Download NuttX and Apps
 git clone $nuttx_url nuttx --branch $nuttx_ref
@@ -221,9 +223,8 @@ cd nuttx
 tools/configure.sh milkv_duos:nsh
 
 ## Build the NuttX Kernel
+## And the NuttX Apps
 make -j
-
-## Build the NuttX Apps
 make -j export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
@@ -240,7 +241,8 @@ cat nuttx.bin /tmp/nuttx.pad initrd >Image
 scp Image test-controller:/tftpboot/Image-sg2000
 ssh test-controller ls -l /tftpboot/Image-sg2000
 
-## Run the Expect Script and NuttX Test
+## Start the Expect Script
+## That runs the NuttX Test on Oz64
 expect ./oz64.exp
 ```
 
