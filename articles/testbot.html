@@ -223,15 +223,19 @@ expect {
 
 ## Omitted: Enter the NuttX Commands and validate the responses
 send -s &quot;uname -a\r&quot;</code></pre></div>
-<p>Which will effectively turn our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
+<p>Turning our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build-Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
 
-## Test Controller: Executes these commands...
+## Test Controller: Executes these Linux Commands...
 $ screen -x
 $ screen /dev/ttyUSB0 115200
+
+## Test Controller: Passes through the NuttX Commands...
 nsh&gt; uname -a
-TODO</code></pre></div>
+TODO
+
+## Build-Test Server: Validates the responses</code></pre></div>
 <p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>3 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
