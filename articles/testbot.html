@@ -165,7 +165,7 @@ expect {
   &quot;ostest_main: Exiting with status 0&quot; { 
 
     ## Terminate the `screen` session: Ctrl-A k y
-    ## Exit the SSH Shell
+    ## Exit the SSH Session
     send -s &quot;\x01ky&quot;
     send -s &quot;exit\r&quot;
 
@@ -175,127 +175,65 @@ expect {
   }
 
   ## If we don&#39;t see the message, exit with an error
+  ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
   timeout { ...
     exit 1 
   }
 }</code></pre></div>
-<p>(Merging the Linux SBC and Ubuntu PC into one? We’ll come back to this)</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">nuttx-build-farm/oz64.exp</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
-## Expect Script for Testing NuttX on Oz64 SG2000, over SSH to SBC
-puts &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp&quot;
-
-## For every 1 character sent, wait 0.001 milliseconds
+<p>But these commands will only work when we tell <strong>Test Controller</strong> (Linux SBC) to pass them through to Oz64. That’s why our <strong>Expect Script</strong> does this at the top: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## For every 1 character sent, wait 1 millisecond
+## Wait at most 60 seconds for every command
 set send_slow {1 0.001}
-
-## Wait at most 60 seconds
 set timeout 60
 
-## Connect to SBC over SSH
-spawn ssh $::env(OZ64_SERVER)
-
-## Wake up SBC
+## Connect from Build-Test Server (Ubuntu PC)
+## to Test Controller (Linux SBC) over SSH
+## Will execute `ssh test-controller`
+## Then wake up the SBC
+spawn ssh test-controller
 send -s &quot;\r&quot;
 
-## Connect to SBC over USB Serial Port
+## Terminate the Previous Session for the `screen` command: Ctrl-A k y
 expect &quot;$&quot;
 send -s &quot;screen -x\r&quot;
-
-## Wait a while
+sleep 5
+send -s &quot;\x01ky\r&quot;
 sleep 5
 
-## Terminate the session: Ctrl-A k y
-send -s &quot;\x01ky&quot;
-send -s &quot;\r&quot;
-sleep 5
-
-## Connect to USB Serial Terminal
+## Connect to USB Serial Terminal via the `screen` command
+## Test Controller (Linux SBC) now becomes a passthrough
 expect &quot;$&quot;
 send -s &quot;screen /dev/ttyUSB0 115200\r&quot;
 
-## Power Off Oz64
-puts &quot;Power Off Oz64...&quot;
+## Power Oz64 Off and On
 system &quot;./oz64-power.sh off&quot;
 sleep 5
-
-## Power On Oz64
-puts &quot;Power On Oz64...&quot;
 system &quot;./oz64-power.sh on&quot;
 
-## Wait for the prompt and enter `uname -a`
+## Wait for the NuttX Prompt
 expect {
   &quot;nsh&gt; &quot; {}
 
   ## If timeout, exit with an error
-  timeout { 
-    ## Terminate the session: Ctrl-A k y
-    send -s &quot;\x01ky&quot;
-    send -s &quot;exit\r&quot;
-    system &quot;./oz64-power.sh off&quot;
-    puts &quot;\n===== Error: Test Failed\n&quot;
+  ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
+  timeout { ...
     exit 1 
   }
 }
-send -s &quot;uname -a\r&quot;
 
-## Wait at most 300 seconds for other commands
-set timeout 300
+## Omitted: Enter the NuttX Commands and validate the responses
+send -s &quot;uname -a\r&quot;</code></pre></div>
+<p>Which will effectively turn our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build-Test Server: Launches a shell on Test Controller...
+$ ssh test-controller
 
-## Wait for the prompt and enter `free`
-expect &quot;nsh&gt; &quot;
-send -s &quot;free\r&quot;
-
-## Wait for the prompt and enter `ps`
-expect &quot;nsh&gt; &quot;
-send -s &quot;ps\r&quot;
-
-## Wait for the prompt and enter `ls -l /dev`
-expect &quot;nsh&gt; &quot;
-send -s &quot;ls -l /dev\r&quot;
-
-## Wait for the prompt and enter `hello`
-expect &quot;nsh&gt; &quot;
-send -s &quot;hello\r&quot;
-
-## Wait for the prompt and enter `getprime`
-expect &quot;nsh&gt; &quot;
-send -s &quot;getprime\r&quot;
-
-## Wait for the prompt and enter `hello`
-expect &quot;nsh&gt; &quot;
-send -s &quot;hello\r&quot;
-
-## Wait for the prompt and enter `getprime`
-expect &quot;nsh&gt; &quot;
-send -s &quot;getprime\r&quot;
-
-## Wait for the prompt and enter `ostest`
-expect &quot;nsh&gt; &quot;
-send -s &quot;ostest\r&quot;
-
-## Check the response...
-expect {
-  ## If we see this message, exit normally
-  &quot;ostest_main: Exiting with status 0&quot; { 
-    ## Terminate the session: Ctrl-A k y
-    send -s &quot;\x01ky&quot;
-    send -s &quot;exit\r&quot;
-    system &quot;./oz64-power.sh off&quot;
-    puts &quot;\n===== Test OK\n&quot;
-    exit 0 
-  }
-
-  ## If timeout, exit with an error
-  timeout { 
-    ## Terminate the session: Ctrl-A k y
-    send -s &quot;\x01ky&quot;
-    send -s &quot;exit\r&quot;
-    system &quot;./oz64-power.sh off&quot;
-    puts &quot;\n===== Error: Test Failed\n&quot;
-    exit 1 
-  }
-}</code></pre></div><h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>3 Build and Test Script</h1>
+## Test Controller: Executes these commands...
+$ screen -x
+$ screen /dev/ttyUSB0 115200
+nsh&gt; uname -a
+TODO</code></pre></div>
+<p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
+<h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>3 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">nuttx-build-farm/build-test-oz64.sh</a></p>
