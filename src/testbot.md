@@ -456,13 +456,13 @@ curl \
 
 This script assumes that we have...
 
-- Installed a __Home Assistant Server__
+- Installed a [__Home Assistant Server__](TODO)
 
-- Added the Smart Power Plug (and Zigbee Hub) to __Google Home__
+- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](TODO)
 
-- Installed the __Google Home Integration__ for Home Assistant
+- Installed the [__Google Home Integration__](TODO) for Home Assistant
 
-- Created the __Power Automations__ in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
+- Created the [__Power Automation__](TODO) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
 
 power3
 
@@ -506,7 +506,7 @@ power2
 
     TODO: Pic of Multiple Test Controllers
 
-    (Too bad we don't have solution for swapping SD Cards)
+    (Too bad we don't have a solution for Swapping SD Cards)
 
 # What's Next
 
