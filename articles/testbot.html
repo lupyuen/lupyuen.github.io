@@ -65,12 +65,14 @@
 
     <h1 class="title">Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#expect-script" title="Expect Script">1 Expect Script</a><ul></ul></li>
-<li><a href="#build-and-test-script" title="Build and Test Script">2 Build and Test Script</a><ul></ul></li>
-<li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">3 Test Bot for Pull Requests</a><ul></ul></li>
-<li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">4 Power Up our Oz64 SBC</a><ul></ul></li>
-<li><a href="#security-implications" title="Security Implications">5 Security Implications</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
+<li><a href="#connect-our-oz64-sbc" title="Connect our Oz64 SBC">1 Connect our Oz64 SBC</a><ul></ul></li>
+<li><a href="#control-our-oz64-sbc" title="Control our Oz64 SBC">2 Control our Oz64 SBC</a><ul></ul></li>
+<li><a href="#expect-script" title="Expect Script">3 Expect Script</a><ul></ul></li>
+<li><a href="#build-and-test-script" title="Build and Test Script">4 Build and Test Script</a><ul></ul></li>
+<li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">5 Test Bot for Pull Requests</a><ul></ul></li>
+<li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">6 Power Up our Oz64 SBC</a><ul></ul></li>
+<li><a href="#security-implications" title="Security Implications">7 Security Implications</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re <a href="https://lists.apache.org/thread/mn4l1tmr6fj46o2y9vvrmfcrgyo48s5d"><strong>Making Things Better</strong></a> (and making better things) with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Our new <strong>Test Bot for Pull Requests</strong> will allow a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Pull Request Comment</strong></a> to trigger a <strong>NuttX Build + Test</strong> on Real Hardware. For example, this PR Comment…</p>
@@ -79,7 +81,12 @@
 <p>Super helpful for <strong>Testing Pull Requests</strong> before Merging. But might have <a href="https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886"><strong>Security Implications</strong></a>. (We’ll come back to this)</p>
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
-<h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>1 Expect Script</h1>
+<h1 id="connect-our-oz64-sbc"><a class="doc-anchor" href="#connect-our-oz64-sbc">§</a>1 Connect our Oz64 SBC</h1>
+<p>TODO</p>
+<h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
+<p><em>But who controls our Test Controller?</em></p>
+<p>TODO</p>
+<h1 id="expect-script"><a class="doc-anchor" href="#expect-script">§</a>3 Expect Script</h1>
 <p><em>For Testing NuttX: What does our Bot run on Oz64 SBC?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">nuttx-build-farm/oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/expect
@@ -195,7 +202,7 @@ expect {
     puts &quot;\n===== Error: Test Failed\n&quot;
     exit 1 
   }
-}</code></pre></div><h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>2 Build and Test Script</h1>
+}</code></pre></div><h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>4 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">nuttx-build-farm/build-test-oz64.sh</a></p>
@@ -412,7 +419,7 @@ build_test \
   $3 $4 $5 $6 $7 $8
 
 set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
-exit $res</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>3 Test Bot for Pull Requests</h1>
+exit $res</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
 <p><em>How will a Pull Request trigger the script above?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs">nuttx-test-bot/main.rs</a></p>
 
@@ -634,7 +641,7 @@ exit $res</code></pre></div><h1 id="test-bot-for-pull-requests"><a class="doc-an
     <span class="comment">// Return the Result
     </span><span class="prelude-val">Ok</span>(result)
 }</code></pre></div>
-<h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>4 Power Up our Oz64 SBC</h1>
+<h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>6 Power Up our Oz64 SBC</h1>
 <p>One Final Step: How we flip the Power, On and Off for our Oz64 SBC.</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">nuttx-build-farm/oz64-power.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
@@ -674,7 +681,7 @@ curl \
 <p><img src="https://lupyuen.org/images/testbot-power1.png" alt="TODO" /></p>
 <p>power2</p>
 <p><img src="https://lupyuen.org/images/testbot-power2.png" alt="TODO" /></p>
-<h1 id="security-implications"><a class="doc-anchor" href="#security-implications">§</a>5 Security Implications</h1>
+<h1 id="security-implications"><a class="doc-anchor" href="#security-implications">§</a>7 Security Implications</h1>
 <p>TODO</p>
 <p>Reminder to myself: Be careful when running Unmerged Code on our Home Computers. In case the PR contains any Scripts or Apps that may cause problems on our Home Computer or Home Network.</p>
 <p>Basically we only operate on NuttX repos, so there should be no malware… but anyone can send PR with anything true!!!</p>
@@ -696,7 +703,7 @@ curl \
 </ol>
 <p><em>If we had to do it all again with NuttX on PineTime?</em></p>
 <p>Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
