@@ -70,7 +70,7 @@
 <li><a href="#pass-through-to-oz64" title="Pass Through to Oz64">3 Pass Through to Oz64</a><ul></ul></li>
 <li><a href="#build-and-test-script" title="Build and Test Script">4 Build and Test Script</a><ul></ul></li>
 <li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">5 Test Bot for Pull Requests</a><ul></ul></li>
-<li><a href="#build-and-test-nuttx" title="Build and Test NuttX">6 Build and Test NuttX</a><ul></ul></li>
+<li><a href="#bot-calls-test-script" title="Bot calls Test Script">6 Bot calls Test Script</a><ul></ul></li>
 <li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">7 Power Up our Oz64 SBC</a><ul></ul></li>
 <li><a href="#security-implications" title="Security Implications">8 Security Implications</a><ul></ul></li>
 <li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
@@ -367,7 +367,7 @@ expect ./oz64.exp</code></pre></div><h1 id="test-bot-for-pull-requests"><a class
   issues.create_comment(pr_id, comment_text).<span class="kw">await</span><span class="question-mark">?</span>;
   <span class="prelude-val">Ok</span>(())
 }</code></pre></div>
-<h1 id="build-and-test-nuttx"><a class="doc-anchor" href="#build-and-test-nuttx">§</a>6 Build and Test NuttX</h1>
+<h1 id="bot-calls-test-script"><a class="doc-anchor" href="#bot-calls-test-script">§</a>6 Bot calls Test Script</h1>
 <p><em>What’s inside build_test?</em></p>
 <p>It will call a script to execute the <strong>Oz64 Build &amp; Test</strong>. And record the Test Log as a <strong>GitLab Snippet</strong>: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
 
