@@ -141,7 +141,7 @@ expect {
 
 _Erm this Expect Script runs on Build & Test Server? Not Test Controller?_
 
-Ah the commands above will work: Our Build & Test Server tells Test Controller (Linux SBC) to __pass them through__ to Oz64.
+Ah the __NuttX Commands__ above will work, no worries! Our Build & Test Server tells Test Controller (Linux SBC) to __pass them through__ to Oz64.
 
 That's why our __Expect Script__ does this on Build & Test Server: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
