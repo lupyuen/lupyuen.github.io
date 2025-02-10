@@ -77,15 +77,15 @@ TODO
 
 The responses to the above commands are validated by another machine...
 
-TODO: Pic of Build-Test Server, Test Controller, Ox64
+TODO: Pic of Build & Test Server, Test Controller, Ox64
 
 # Control our Oz64 SBC
 
 _Who controls our Test Controller?_
 
-Our Test Controller (Linux SBC) accepts commands from the __Build-Test Server__ (Ubuntu PC).
+Our Test Controller (Linux SBC) accepts commands from the __Build & Test Server__ (Ubuntu PC).
 
-Remember the NuttX Commands from Previous Section? Our Build-Test Server runs this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+Remember the NuttX Commands from Previous Section? Our Build & Test Server runs this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
 ## Wait at most 300 seconds for each command
@@ -144,7 +144,7 @@ But these commands will only work when we tell __Test Controller__ (Linux SBC) t
 set send_slow {1 0.001}
 set timeout 60
 
-## Connect from Build-Test Server (Ubuntu PC)
+## Connect from Build & Test Server (Ubuntu PC)
 ## to Test Controller (Linux SBC) over SSH
 ## Will execute `ssh test-controller`
 ## Then wake up the SBC
@@ -186,7 +186,7 @@ send -s "uname -a\r"
 Turning our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
-## Build-Test Server: Launches a shell on Test Controller...
+## Build & Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
 
 ## Test Controller: Executes these Linux Commands...
@@ -197,7 +197,7 @@ $ screen /dev/ttyUSB0 115200
 nsh> uname -a
 TODO
 
-## Build-Test Server: Validates the responses
+## Build & Test Server: Validates the responses
 ```
 
 (Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
@@ -206,9 +206,17 @@ TODO
 
 _Who runs the above Expect Script?_
 
-Build and Test NuttX for Oz64 SG2000 RISC-V SBC
+The Expect Script above is called by our __Build & Test Script__ that will...
 
-[build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
+- Compile the NuttX Kernel and Apps
+
+- Copy them to our Test Controller (Linux SBC)
+
+- Start the Expect Script (from Previous Section)
+
+- So that Test Controller will boot Oz64 (over TFTP) and send the NuttX Test Commands
+
+Like so: [build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
 ```bash
 ## TODO: nuttx_url / apps_url
@@ -673,7 +681,7 @@ Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
 
 # TODO
 
-Combine Build-Test Server with Test Controller
+Combine Build & Test Server with Test Controller
 
 Multiple Test Controllers
 
