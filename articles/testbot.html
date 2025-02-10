@@ -241,87 +241,10 @@ TODO
 <p><em>Who runs the above Expect Script?</em></p>
 <p>Build and Test NuttX for Oz64 SG2000 RISC-V SBC</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">nuttx-build-farm/build-test-oz64.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
-## ./build-test-oz64.sh
-## ./build-test-oz64.sh HEAD HEAD
-## ./build-test-oz64.sh HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh $1 $2 $3 $4 $5 $6&quot;
-
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
-
-## Server that controls Oz64
-export OZ64_SERVER=tftpserver
-
-nuttx_hash=$1  ## Optional NuttX Hash (HEAD)
-apps_hash=$2   ## Optional Apps Hash (HEAD)
-nuttx_url=$3   ## Optional NuttX URL (https://github.com/apache/nuttx)
-nuttx_ref=$4   ## Optional NuttX Ref (master)
-apps_url=$5    ## Optional Apps URL (https://github.com/apache/nuttx-apps
-apps_ref=$6    ## Optional Apps Ref (master)
-neofetch
-
-## Set the defaults
-if [[ &quot;$nuttx_hash&quot; == &quot;&quot; ]]; then
-  nuttx_hash=HEAD
-fi
-if [[ &quot;$apps_hash&quot; == &quot;&quot; ]]; then
-  apps_hash=HEAD
-fi
-if [[ &quot;$nuttx_url&quot; == &quot;&quot; ]]; then
-  nuttx_url=https://github.com/apache/nuttx
-fi
-if [[ &quot;$nuttx_ref&quot; == &quot;&quot; ]]; then
-  nuttx_ref=master
-fi
-if [[ &quot;$apps_url&quot; == &quot;&quot; ]]; then
-  apps_url=https://github.com/apache/nuttx-apps
-fi
-if [[ &quot;$apps_ref&quot; == &quot;&quot; ]]; then
-  apps_ref=master
-fi
-
-## Get the Script Directory
-script_path=&quot;${BASH_SOURCE}&quot;
-script_dir=&quot;$(cd -P &quot;$(dirname -- &quot;${script_path}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-
-## Run in a Temp Folder
-nuttx_ref2=$(echo $nuttx_ref | tr &#39;/&#39; &#39;_&#39;)
-apps_ref2=$(echo $apps_ref | tr &#39;/&#39; &#39;_&#39;)
-tmp_path=/tmp/build-test-oz64-$nuttx_ref2-$apps_ref2
-rm -rf $tmp_path
-mkdir $tmp_path
-cd $tmp_path
-
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 ## Download NuttX and Apps
 git clone $nuttx_url nuttx --branch $nuttx_ref
 git clone $apps_url  apps  --branch $apps_ref
-
-## Switch to this NuttX Commit
-if [[ &quot;$nuttx_hash&quot; != &quot;&quot; ]]; then
-  pushd nuttx
-  git reset --hard $nuttx_hash
-  popd
-fi
-
-## Switch to this Apps Commit
-if [[ &quot;$apps_hash&quot; != &quot;&quot; ]]; then
-  pushd apps
-  git reset --hard $apps_hash
-  popd
-fi
-
-## Dump the NuttX and Apps Hash
-set +x  ## Disable Echo
-pushd nuttx ; echo NuttX Source: https://github.com/apache/nuttx/tree/$(git rev-parse HEAD) ; popd
-pushd apps  ; echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$(git rev-parse HEAD) ; popd
-set -x  ## Enable Echo
-
-## Show the GCC and Rust versions
-riscv-none-elf-gcc -v
-rustup --version || true
-rustc  --version || true
 
 ## Configure the NuttX Build
 cd nuttx
@@ -329,7 +252,6 @@ tools/configure.sh milkv_duos:nsh
 
 ## Build the NuttX Kernel
 make -j
-riscv-none-elf-size nuttx
 
 ## Build the NuttX Apps
 make -j export
@@ -338,22 +260,17 @@ pushd ../apps
 make -j import
 popd
 
-## Generate Initial RAM Disk
+## Generate the NuttX Image:
+## NuttX Kernel + Padding + NuttX Apps
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
-
-## Prepare a Padding with 64 KB of zeroes
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+cat nuttx.bin /tmp/nuttx.pad initrd &gt;Image
 
-## Append Padding and Initial RAM Disk to NuttX Kernel
-cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image
+## Copy the NuttX Image to TFTP Server (Test Controller)
+scp Image test-controller:/tftpboot/Image-sg2000
+ssh test-controller ls -l /tftpboot/Image-sg2000
 
-## Copy the NuttX Image to TFTP Server
-scp Image $OZ64_SERVER:/tftpboot/Image-sg2000
-ssh $OZ64_SERVER ls -l /tftpboot/Image-sg2000
-
-## Run the NuttX Test
-cd $script_dir
+## Run the Expect Script and NuttX Test
 expect ./oz64.exp</code></pre></div>
 <p>Build and Test NuttX. Called by nuttx-test-bot</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">nuttx-build-farm/build-test.sh</a></p>
