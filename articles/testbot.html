@@ -100,8 +100,8 @@
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 </li>
 </ul>
-<p><em>What commands are tested on Oz64?</em></p>
-<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64 and validates the responses: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p><em>How shall we test Oz64?</em></p>
+<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
 nsh&gt; uname -a
 TODO
@@ -122,17 +122,18 @@ TODO
 nsh&gt; hello
 TODO
 
-## Now with Threading and Timers
+## App with Threading and Timers
 nsh&gt; getprime
 TODO
 
 ## Omitted: Test `hello` and `getprime` again
-## To test the swapping of Address Spaces
+## To verify the swapping of Address Spaces
 
 ## Exercise everything in NuttX
 nsh&gt; ostest
 TODO</code></pre></div>
 <p><a href="TODO">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
+<p>The responses to the above commands are validated by another machine…</p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>TODO</p>
