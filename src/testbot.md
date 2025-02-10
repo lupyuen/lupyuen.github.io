@@ -119,7 +119,7 @@ expect {
   "ostest_main: Exiting with status 0" { 
 
     ## Terminate the `screen` session: Ctrl-A k y
-    ## Exit the SSH Shell
+    ## Exit the SSH Session
     send -s "\x01ky"
     send -s "exit\r"
 
@@ -129,134 +129,74 @@ expect {
   }
 
   ## If we don't see the message, exit with an error
+  ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
   timeout { ...
     exit 1 
   }
 }
 ```
 
-(Merging the Linux SBC and Ubuntu PC into one? We'll come back to this)
-
-TODO
-
-[nuttx-build-farm/oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+But these commands will only work when we tell __Test Controller__ (Linux SBC) to pass them through to Oz64. That's why our __Expect Script__ does this at the top: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
-#!/usr/bin/expect
-## Expect Script for Testing NuttX on Oz64 SG2000, over SSH to SBC
-puts "Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp"
-
-## For every 1 character sent, wait 0.001 milliseconds
+## For every 1 character sent, wait 1 millisecond
+## Wait at most 60 seconds for every command
 set send_slow {1 0.001}
-
-## Wait at most 60 seconds
 set timeout 60
 
-## Connect to SBC over SSH
-spawn ssh $::env(OZ64_SERVER)
-
-## Wake up SBC
+## Connect from Build-Test Server (Ubuntu PC)
+## to Test Controller (Linux SBC) over SSH
+## Will execute `ssh test-controller`
+## Then wake up the SBC
+spawn ssh test-controller
 send -s "\r"
 
-## Connect to SBC over USB Serial Port
+## Terminate the Previous Session for the `screen` command: Ctrl-A k y
 expect "$"
 send -s "screen -x\r"
-
-## Wait a while
+sleep 5
+send -s "\x01ky\r"
 sleep 5
 
-## Terminate the session: Ctrl-A k y
-send -s "\x01ky"
-send -s "\r"
-sleep 5
-
-## Connect to USB Serial Terminal
+## Connect to USB Serial Terminal via the `screen` command
+## Test Controller (Linux SBC) now becomes a passthrough
 expect "$"
 send -s "screen /dev/ttyUSB0 115200\r"
 
-## Power Off Oz64
-puts "Power Off Oz64..."
+## Power Oz64 Off and On
 system "./oz64-power.sh off"
 sleep 5
-
-## Power On Oz64
-puts "Power On Oz64..."
 system "./oz64-power.sh on"
 
-## Wait for the prompt and enter `uname -a`
+## Wait for the NuttX Prompt
 expect {
   "nsh> " {}
 
   ## If timeout, exit with an error
-  timeout { 
-    ## Terminate the session: Ctrl-A k y
-    send -s "\x01ky"
-    send -s "exit\r"
-    system "./oz64-power.sh off"
-    puts "\n===== Error: Test Failed\n"
+  ## Omitted: Power off Oz64. Terminate the `screen` session and SSH Session
+  timeout { ...
     exit 1 
   }
 }
+
+## Omitted: Enter the NuttX Commands and validate the responses
 send -s "uname -a\r"
-
-## Wait at most 300 seconds for other commands
-set timeout 300
-
-## Wait for the prompt and enter `free`
-expect "nsh> "
-send -s "free\r"
-
-## Wait for the prompt and enter `ps`
-expect "nsh> "
-send -s "ps\r"
-
-## Wait for the prompt and enter `ls -l /dev`
-expect "nsh> "
-send -s "ls -l /dev\r"
-
-## Wait for the prompt and enter `hello`
-expect "nsh> "
-send -s "hello\r"
-
-## Wait for the prompt and enter `getprime`
-expect "nsh> "
-send -s "getprime\r"
-
-## Wait for the prompt and enter `hello`
-expect "nsh> "
-send -s "hello\r"
-
-## Wait for the prompt and enter `getprime`
-expect "nsh> "
-send -s "getprime\r"
-
-## Wait for the prompt and enter `ostest`
-expect "nsh> "
-send -s "ostest\r"
-
-## Check the response...
-expect {
-  ## If we see this message, exit normally
-  "ostest_main: Exiting with status 0" { 
-    ## Terminate the session: Ctrl-A k y
-    send -s "\x01ky"
-    send -s "exit\r"
-    system "./oz64-power.sh off"
-    puts "\n===== Test OK\n"
-    exit 0 
-  }
-
-  ## If timeout, exit with an error
-  timeout { 
-    ## Terminate the session: Ctrl-A k y
-    send -s "\x01ky"
-    send -s "exit\r"
-    system "./oz64-power.sh off"
-    puts "\n===== Error: Test Failed\n"
-    exit 1 
-  }
-}
 ```
+
+Which will effectively turn our Test Controller into a __Passthrough for NuttX Commands__...
+
+```bash
+## Build-Test Server: Launches a shell on Test Controller...
+$ ssh test-controller
+
+## Test Controller: Executes these commands...
+$ screen -x
+$ screen /dev/ttyUSB0 115200
+nsh> uname -a
+TODO
+```
+
+(Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
 
 # Build and Test Script
 
