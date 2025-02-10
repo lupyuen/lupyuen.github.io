@@ -183,17 +183,21 @@ expect {
 send -s "uname -a\r"
 ```
 
-Which will effectively turn our Test Controller into a __Passthrough for NuttX Commands__...
+Turning our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
 ## Build-Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
 
-## Test Controller: Executes these commands...
+## Test Controller: Executes these Linux Commands...
 $ screen -x
 $ screen /dev/ttyUSB0 115200
+
+## Test Controller: Passes through the NuttX Commands...
 nsh> uname -a
 TODO
+
+## Build-Test Server: Validates the responses
 ```
 
 (Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
