@@ -20,6 +20,16 @@ Super helpful for __Testing Pull Requests__ before Merging. But might have [__Se
 
 _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
+# Connect our Oz64 SBC
+
+TODO
+
+# Control our Oz64 SBC
+
+_But who controls our Test Controller?_
+
+TODO
+
 # Expect Script
 
 _For Testing NuttX: What does our Bot run on Oz64 SBC?_
