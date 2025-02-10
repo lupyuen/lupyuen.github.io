@@ -28,13 +28,44 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic abo
 
 - __Wired Ethernet__: For booting NuttX over TFTP
 
-- __UART0 Port__: For sending NuttX Commands (Pins TODO)
+- __UART0 Port__: For receiving NuttX Shell Commands (Pins TODO)
 
 - Which connects to our __Test Controller__ (Linux SBC) via a USB Serial Dongle
 
 - Test Controller is also our __TFTP Server__ for booting NuttX on Oz64
 
   [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+
+_What commands are tested on Oz64?_
+
+Test Controller sends these __NuttX Commands__ to Oz64 and validates the responses: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+
+```bash
+nsh> uname -a
+TODO
+
+nsh> free
+TODO
+
+nsh> ps
+TODO
+
+nsh> ls -l /dev
+TODO
+
+nsh> hello
+TODO
+
+nsh> getprime
+TODO
+
+## Omitted: Test `hello` and `getprime` again
+
+nsh> ostest
+TODO
+```
+
+[(Why we test __hello__ and __getprime__ twice)](TODO)
 
 # Control our Oz64 SBC
 
@@ -714,6 +745,12 @@ Notify via Mastodon. Click "Like" on the PR to approve?
 _If we had to do it all again with NuttX on PineTime?_
 
 Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment
+
+# TODO
+
+Combine Build-Test Server with Test Controller
+
+Multiple Test Controllers
 
 # What's Next
 
