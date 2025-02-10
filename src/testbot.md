@@ -45,7 +45,7 @@ Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://githu
 nsh> uname -a
 TODO
 
-## Check for Heap Problems
+## Check for corrupted Heap Memory
 nsh> free
 TODO
 
@@ -77,15 +77,67 @@ TODO
 
 The responses to the above commands are validated by another machine...
 
+TODO: Pic of Build-Test Server, Test Controller, Ox64
+
 # Control our Oz64 SBC
 
 _Who controls our Test Controller?_
 
+Our Test Controller (Linux SBC) accepts commands from the __Build-Test Server__ (Ubuntu PC).
+
+Remember the NuttX Commands from Previous Section? Our Build-Test Server runs this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+
+```bash
+## Wait at most 300 seconds for each command
+set timeout 300
+
+## Expect Script for Testing NuttX on Oz64 SG2000, over SSH to SBC
+send -s "uname -a\r"
+
+## Wait for the prompt and enter `free`
+expect "nsh> "
+send -s "free\r"
+
+## Wait for the prompt and enter `ps`
+expect "nsh> "
+send -s "ps\r"
+
+## Omitted: Send the other commands
+...
+
+## Wait for the prompt and enter `ostest`
+expect "nsh> "
+send -s "ostest\r"
+```
+
+The same script shall __Validate the Responses__ from Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+
+```bash
+## Check the response from `ostest`...
+expect {
+  ## If we see this message...
+  "ostest_main: Exiting with status 0" { 
+
+    ## Terminate the `screen` session: Ctrl-A k y
+    ## Exit the SSH Shell
+    send -s "\x01ky"
+    send -s "exit\r"
+
+    ## Power off Oz64 and Exit normally
+    system "./oz64-power.sh off"
+    exit 0 
+  }
+
+  ## If we don't see the message, exit with an error
+  timeout { ...
+    exit 1 
+  }
+}
+```
+
+(Merging the Linux SBC and Ubuntu PC into one? We'll come back to this)
+
 TODO
-
-# Expect Script
-
-_For Testing NuttX: What does our Bot run on Oz64 SBC?_
 
 [nuttx-build-farm/oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
