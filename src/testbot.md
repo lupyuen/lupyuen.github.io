@@ -20,13 +20,25 @@ Super helpful for __Testing Pull Requests__ before Merging. But might have [__Se
 
 _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
+TODO: Pic of Test Controller + Oz64
+
 # Connect our Oz64 SBC
 
-TODO
+Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic above)
+
+- __Wired Ethernet__: For booting NuttX over TFTP
+
+- __UART0 Port__: For sending NuttX Commands (Pins TODO)
+
+- Which connects to our __Test Controller__ (Linux SBC) via a USB Serial Dongle
+
+- Test Controller is also our __TFTP Server__ for booting NuttX on Oz64
+
+  [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
 # Control our Oz64 SBC
 
-_But who controls our Test Controller?_
+_Who controls our Test Controller?_
 
 TODO
 
