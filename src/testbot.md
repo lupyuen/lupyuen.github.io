@@ -428,7 +428,7 @@ _We need to power up Oz64 so it will boot NuttX over TFTP. How to control the po
 
 With an [__IKEA Smart Power Plug__](TODO) and an [__IKEA Zigbee Hub__](TODO)!
 
-Here is our script that __Flips the Oz64 Power__, On and Off: [oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
+Here's our script that __Flips the Oz64 Power__, On and Off: [oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
 
 ```bash
 ## This script will power Oz64 on or off...
