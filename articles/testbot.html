@@ -72,7 +72,8 @@
 <li><a href="#test-bot-for-pull-requests" title="Test Bot for Pull Requests">5 Test Bot for Pull Requests</a><ul></ul></li>
 <li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">6 Power Up our Oz64 SBC</a><ul></ul></li>
 <li><a href="#security-implications" title="Security Implications">7 Security Implications</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
+<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re <a href="https://lists.apache.org/thread/mn4l1tmr6fj46o2y9vvrmfcrgyo48s5d"><strong>Making Things Better</strong></a> (and making better things) with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Our new <strong>Test Bot for Pull Requests</strong> will allow a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Pull Request Comment</strong></a> to trigger a <strong>NuttX Build + Test</strong> on Real Hardware. For example, this PR Comment…</p>
@@ -89,7 +90,7 @@
 <p><strong>Wired Ethernet</strong>: For booting NuttX over TFTP</p>
 </li>
 <li>
-<p><strong>UART0 Port</strong>: For sending NuttX Commands (Pins TODO)</p>
+<p><strong>UART0 Port</strong>: For receiving NuttX Shell Commands (Pins TODO)</p>
 </li>
 <li>
 <p>Which connects to our <strong>Test Controller</strong> (Linux SBC) via a USB Serial Dongle</p>
@@ -99,6 +100,31 @@
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 </li>
 </ul>
+<p><em>What commands are tested on Oz64?</em></p>
+<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64 and validates the responses: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; uname -a
+TODO
+
+nsh&gt; free
+TODO
+
+nsh&gt; ps
+TODO
+
+nsh&gt; ls -l /dev
+TODO
+
+nsh&gt; hello
+TODO
+
+nsh&gt; getprime
+TODO
+
+## Omitted: Test `hello` and `getprime` again
+
+nsh&gt; ostest
+TODO</code></pre></div>
+<p><a href="TODO">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>TODO</p>
@@ -719,7 +745,10 @@ curl \
 </ol>
 <p><em>If we had to do it all again with NuttX on PineTime?</em></p>
 <p>Same: SBC with OpenOCD + Semihosting. Send Screenshot in PR Comment</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
+<p>Combine Build-Test Server with Test Controller</p>
+<p>Multiple Test Controllers</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
