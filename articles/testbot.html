@@ -400,6 +400,7 @@ expect ./oz64.exp</code></pre></div><h1 id="test-bot-for-pull-requests"><a class
   <span class="kw">let </span>snippet_url = create_snippet(<span class="kw-2">&amp;</span>log_content).<span class="kw">await</span><span class="question-mark">?</span>;
 
   <span class="comment">// Extract the essential bits from Test Log
+  // Return the Extracted Test Log and Snippet URL
   </span><span class="kw">let </span>log_extract = extract_log(<span class="kw-2">&amp;</span>snippet_url).<span class="kw">await</span><span class="question-mark">?</span>;
   <span class="kw">let </span>log_content = log_extract.join(<span class="string">"\n"</span>);
   <span class="kw">let </span><span class="kw-2">mut </span>result = 
@@ -407,8 +408,9 @@ expect ./oz64.exp</code></pre></div><h1 id="test-bot-for-pull-requests"><a class
     <span class="kw">else </span>{ <span class="macro">format!</span>(<span class="string">"Build and Test **FAILED** ({target})\n"</span>) };
   result.push_str(<span class="kw-2">&amp;</span>snippet_url);
   result.push_str(<span class="kw-2">&amp;</span>log_content);
-  <span class="prelude-val">Ok</span>(result)  <span class="comment">// Return the Result
-</span>}</code></pre></div>
+  <span class="prelude-val">Ok</span>(result)
+}</code></pre></div>
+<p><a href="TODO">(<strong>create_snippet</strong> publishes the GitLab Snippet)</a></p>
 <p>Which will call our <strong>Generic Build &amp; Test Script</strong> like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the NuttX PR URL, branch and commit hash
 nuttx_url=https://github.com/USERNAME/nuttx
