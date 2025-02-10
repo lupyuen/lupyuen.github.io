@@ -492,11 +492,11 @@ power2
 
     Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some folks discovered that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
-1.  _Speaking of PineTime: How should we allow auto-testing of firmware?_
+1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
-    Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run __OpenOCD + ST-Link + Semihosting__.
+    Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run [__OpenOCD + ST-Link + Semihosting__](TODO) for flashing and testing.
 
-    Watch Faces on PineTime will be rendered as an __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for manual validation.
+    Watch Faces on PineTime will render on the __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.
 
     We'll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone (via __Mastodon Alert__). I'll review the PR, click "Like" on the PR Comment, to activate the test.
 
