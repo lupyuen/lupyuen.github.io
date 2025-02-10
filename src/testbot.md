@@ -498,15 +498,15 @@ power2
 
     Watch Faces on PineTime will be rendered as an __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic in the PR Response, for manual validation.
 
-    We'll start our Test Bot manually, after reviewing the code in the PR.
+    We'll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone, via __Mastodon Alert__. I'll review the PR, click the "Like" button on the PR Comment, to activate the test.
 
 1.  _Can we combine the Test Controller with the Build & Test Server?_
 
-    TODO
+    Yeah we could combine the __Test Controller__ _(Linux SBC)_ with the __Build & Test Server__ _(Ubuntu PC)_. Though the Current Design will scale better with __Multiple Test Controllers__...
 
-    Combine Build & Test Server with Test Controller
+    TODO: Pic of Multiple Test Controllers
 
-    Multiple Test Controllers
+    (Too bad we don't have solution for swapping SD Cards)
 
 # What's Next
 
