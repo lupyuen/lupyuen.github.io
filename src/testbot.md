@@ -466,7 +466,7 @@ This script assumes that we have...
 
 # Securing Our Bot
 
-1.  _A Bot that will auto-build and auto-test any Pull Request. What could possibly go wrong?_
+1.  _Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?_
 
     Plenty! The Pull Requests is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
 
@@ -513,14 +513,6 @@ Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also g
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/testbot.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md)
-
-![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
-
-<span style="font-size:80%">
-
-[_PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation_](https://qoto.org/@lupyuen/113517788288458811)
-
-</span>
 
 # Appendix: Build and Test NuttX
 
@@ -654,3 +646,11 @@ build_test \
 set +x ; echo "***** Done! res=$res" ; set -x
 exit $res
 ```
+
+![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
