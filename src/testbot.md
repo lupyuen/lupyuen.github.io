@@ -2,7 +2,7 @@
 
 📝 _28 Feb 2025_
 
-![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
+![PINE64 Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
 
 We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
@@ -12,7 +12,7 @@ Our new __Test Bot for Pull Requests__ will allow a [__Pull Request Comment__](h
 @nuttxpr test oz64:nsh
 ```
 
-Will trigger our PR Test Bot to download the PR Code and test it on [__Oz64 SG2000 RISC-V SBC__](TODO). (Pic above)
+Will trigger our PR Test Bot to download the PR Code and test it on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000). (Pic above)
 
 This is super helpful for __Testing Pull Requests__ before Merging.
 
@@ -30,13 +30,13 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
 - __Wired Ethernet__: For booting NuttX over TFTP Network
 
-- __UART0 Port__: For receiving NuttX Shell Commands _(Pins TODO)_
+- __UART0 Port__: For receiving NuttX Shell Commands _(TX: Pin 8 / RX: Pin 10)_
 
 - Which connects to our __Test Controller__ _(Linux SBC)_ via a USB Serial Dongle
 
-- Test Controller is also our [__TFTP Server__](TODO) for booting NuttX on Oz64
+- Test Controller is also our [__TFTP Server__](https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp) for booting NuttX on Oz64
 
-![TODO](https://lupyuen.org/images/testbot-flow2.jpg)
+![Connect our Oz64 SBC to Test Controller](https://lupyuen.org/images/testbot-flow2.jpg)
 
 [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
@@ -47,41 +47,43 @@ Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://githu
 ```bash
 ## Record the NuttX Commit Hash
 nsh> uname -a
-TODO
+NuttX 10.3.0 d33f654011 ...
 
 ## Check for corrupted Heap Memory
 nsh> free
-TODO
+total: 2061312 / used: 11624 / free: 2049688 ...
 
 ## Show what's running
 nsh> ps
-TODO
+/system/bin/init ...
 
 ## List the Device Drivers
 nsh> ls -l /dev
-TODO
+console ...
 
 ## Simple App
 nsh> hello
-TODO
+Hello, World!!
 
 ## App with Threading and Timers
 nsh> getprime
-TODO
+getprime took 279 msec
 
 ## Omitted: Test `hello` and `getprime` again
 ## To verify the swapping of Address Spaces
 
 ## Exercise everything in NuttX
 nsh> ostest
-TODO
+ostest_main: Exiting with status 0
 ```
 
-[(Why we test __hello__ and __getprime__ twice)](TODO)
+[(See the __Test Log__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4803688#L456)
+
+[(Why we test __hello__ and __getprime__ twice)](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906)
 
 The responses to the above commands are validated by another machine...
 
-![TODO](https://lupyuen.org/images/testbot-flow3.jpg)
+![Test Controller (Linux SBC) accepts commands from the Build & Test Server (Ubuntu PC)](https://lupyuen.org/images/testbot-flow3.jpg)
 
 # Control our Oz64 SBC
 
@@ -141,7 +143,7 @@ expect {
 }
 ```
 
-![TODO](https://lupyuen.org/images/testbot-flow4.jpg)
+![Pass Through to Oz64](https://lupyuen.org/images/testbot-flow4.jpg)
 
 # Pass Through to Oz64
 
@@ -193,6 +195,8 @@ expect {
 ## send -s "uname -a\r"
 ```
 
+[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L6065-L6405)
+
 (How to power up Oz64? See below)
 
 Turning our Test Controller into a __Passthrough for NuttX Commands__...
@@ -208,14 +212,14 @@ $ screen /dev/ttyUSB0 115200
 
 ## Test Controller: Passes through the NuttX Commands...
 nsh> uname -a
-TODO
+NuttX 10.3.0 d33f654011 ...
 
 ## Build & Test Server: Validates the responses
 ```
 
 (Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
 
-![TODO](https://lupyuen.org/images/testbot-flow5.jpg)
+![Build and Test Script](https://lupyuen.org/images/testbot-flow5.jpg)
 
 # Build and Test Script
 
@@ -271,13 +275,13 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 expect ./oz64.exp
 ```
 
-![TODO](https://lupyuen.org/images/testbot-flow6.jpg)
+![Test Bot for Pull Requests](https://lupyuen.org/images/testbot-flow6.jpg)
 
 # Test Bot for Pull Requests
 
 _How will a Pull Request trigger the script above?_
 
-With a little help from [__GitHub API__](TODO). Our Test Bot shall...
+With a little help from [__GitHub API__](https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-28#list-notifications-for-the-authenticated-user). Our Test Bot shall...
 
 - Fetch the __Newest Notifications__ for _@nuttxpr_
 
@@ -352,7 +356,7 @@ async fn process_pr(...) -> Result<...> {
 
 Finally we're ready for the Big Picture...
 
-![TODO](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
 
 # Bot calls Test Script
 
@@ -402,7 +406,7 @@ async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<Stri
 }
 ```
 
-[(__create_snippet__ publishes the GitLab Snippet)](TODO)
+[(__create_snippet__ publishes the GitLab Snippet)](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L370-L417)
 
 Which will call our __Generic Build & Test Script__ like so: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7)
 
@@ -426,11 +430,11 @@ build-test.sh \
   $apps_url   $apps_ref
 ```
 
-[(__build-test.sh__ is explained here)](TODO)
+[(__build-test.sh__ is explained here)](https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx)
 
-[(Which calls the __Build & Test Script__ we saw earlier)](TODO)
+[(Which calls the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
 
-[(How to run our __Test Bot__)](TODO)
+[(How to run our __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
 
 [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
@@ -470,13 +474,13 @@ This script assumes that we have...
 
 - Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
-- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug): _"Oz64 Power"_
 
 - Installed the [__Google Home Integration__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
 
 - Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
 
-![TODO](https://lupyuen.org/images/testbot-power.png)
+![Automations in Home Assistant: Oz64 Power On and Oz64 Power Off](https://lupyuen.org/images/testbot-power.png)
 
 # Securing Our Bot
 
@@ -484,7 +488,7 @@ This script assumes that we have...
 
     Plenty! The Pull Request is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
 
-    Or the Runtime Code might disrupt the __Local Network__ hosting our Bot. Also it might break out of the [__Semihosting Environment__](TODO) and mess up our Host Machine.
+    Or the Runtime Code might disrupt the __Local Network__ hosting our Bot. Also it might break out of the [__Semihosting Environment__](https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting) and mess up our Host Machine.
 
 1.  _Has something happened before?_
 
@@ -492,7 +496,7 @@ This script assumes that we have...
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
-    Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run [__OpenOCD + ST-Link + Semihosting__](TODO) for flashing and testing.
+    Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run [__OpenOCD + ST-Link + Semihosting__](https://nuttx.apache.org/docs/latest/quickstart/running.html) for flashing and testing.
 
     Watch Faces on PineTime will render on the __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.
 
@@ -504,7 +508,7 @@ This script assumes that we have...
 
     _(Too bad we don't have a solution for Swapping SD Cards)_
 
-![TODO](https://lupyuen.org/images/testbot-multi.jpg)
+![Multiple Test Controllers](https://lupyuen.org/images/testbot-multi.jpg)
 
 # What's Next
 
@@ -528,7 +532,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/testbot.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md)
 
-![TODO](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
 
 # Appendix: Build and Test NuttX
 
@@ -558,13 +562,15 @@ build-test.sh \
 
 This section explains what's inside [__build-test.sh__](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh).
 
-TODO
-
-[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
+Here are the parameters for our script: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
 
 ```bash
-## First Parameter is the Build Test Script, like "knsh64"
+## First Parameter is the Build & Test Script, like "oz64"
 ## Second Parameter is the Log File, like "/tmp/build-test.log"
+## Other Parameters shall be passed through to the Build & Test Script:
+##   nuttx_hash apps_hash
+##   nuttx_url  nuttx_ref
+##   apps_url   apps_ref
 script=$1
 log=$2
 
@@ -585,11 +591,11 @@ build_test \
   $log \
   $3 $4 $5 $6 $7 $8
 
-set +x ; echo "***** Done! res=$res" ; set -x
+## Return the Result Code to the caller
 exit $res
 ```
 
-[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56)
+__build_test__ will call the __Platform-Specific__ Build & Test Script, like for Oz64. The Test Log will be recorded into the Log File: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56)
 
 ```bash
 ## Build and Test NuttX
@@ -614,7 +620,11 @@ function build_test {
 }
 ```
 
-[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75)
+[(__Oz64 Build & Test Script__ is explained here)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
+
+The code above calls __clean_log__ and __find_messages__.
+
+__clean_log__ will remove Special Characters from the Log File: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75)
 
 ```bash
 ## Strip the control chars
@@ -633,11 +643,10 @@ function clean_log {
     | cat -v \
     >$tmp_file
   mv $tmp_file $log_file
-  echo ----- "Done! $log_file"
 }
 ```
 
-[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90)
+__find_messages__ will search for Warning and Errors, and insert them into the top of the Log File: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90)
 
 ```bash
 ## Search for Errors and Warnings
@@ -655,6 +664,46 @@ function find_messages {
   mv $tmp_file $log_file
 }
 ```
+
+_Why the funny Regex Pattern?_
+
+The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our [__Continuous Integration__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180) builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
+
+```bash
+## Filename : Line : Col : warning/error : Message
+^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$
+```
+
+Which will match and detect [__GCC Compiler Errors__](https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1) like...
+
+```bash
+chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated
+```
+
+But it won't match [__CMake Errors__](https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451) like this!
+
+```text
+CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
+  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
+  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &&
+  ARCH_CHIP_STM32 && ARCH_ARM with value n, but is currently being y-selected
+```
+
+And [__Linker Errors__](https://gist.github.com/nuttxpr/74e46f5eca2a0cd5a234e5389d40457a#file-ci-arm-04-log-L157)...
+
+```text
+arm-none-eabi-ld: /root/nuttx/staging//libc.a(lib_arc4random.o): in function `arc4random_buf':
+/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks'
+```
+
+Also __Network and Timeout Errors__...
+
+```text
+curl: (6) Could not resolve host: github.com
+make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
+```
+
+We might need to tweak the Regex Pattern and catch more errors.
 
 ![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
 
