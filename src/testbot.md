@@ -26,19 +26,19 @@ _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
 # Connect our Oz64 SBC
 
-Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic above)
+Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
-- __Wired Ethernet__: For booting NuttX over TFTP
+- __Wired Ethernet__: For booting NuttX over TFTP Network
 
-- __UART0 Port__: For receiving NuttX Shell Commands (Pins TODO)
+- __UART0 Port__: For receiving NuttX Shell Commands _(Pins TODO)_
 
-- Which connects to our __Test Controller__ (Linux SBC) via a USB Serial Dongle
+- Which connects to our __Test Controller__ _(Linux SBC)_ via a USB Serial Dongle
 
-- Test Controller is also our __TFTP Server__ for booting NuttX on Oz64
+- Test Controller is also our [__TFTP Server__](TODO) for booting NuttX on Oz64
 
-  [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+![TODO](https://lupyuen.org/images/testbot-flow2.jpg)
 
-TODO: Pic of Test Controller + Oz64
+[(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
 _How shall we test Oz64?_
 
@@ -81,13 +81,13 @@ TODO
 
 The responses to the above commands are validated by another machine...
 
-TODO: Pic of Build & Test Server, Test Controller, Oz64
+![TODO](https://lupyuen.org/images/testbot-flow3.jpg)
 
 # Control our Oz64 SBC
 
 _Who controls our Test Controller?_
 
-Our Test Controller (Linux SBC) accepts commands from the __Build & Test Server__ (Ubuntu PC).
+Our Test Controller _(Linux SBC)_ accepts commands from the __Build & Test Server__ _(Ubuntu PC, pic above)_.
 
 Remember the NuttX Commands from Previous Section? Our Build & Test Server runs this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
@@ -141,7 +141,7 @@ expect {
 }
 ```
 
-TODO: Pic of Pass Thru
+![TODO](https://lupyuen.org/images/testbot-flow4.jpg)
 
 # Pass Through to Oz64
 
@@ -215,13 +215,15 @@ TODO
 
 (Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
 
-TODO: Pic of Compile, Copy, Boot
+![TODO](https://lupyuen.org/images/testbot-flow5.jpg)
 
 # Build and Test Script
 
 _Who runs the above Expect Script?_
 
 The Expect Script above is called by our __Build & Test Script__ that will...
+
+- Download the __NuttX Code__ _(from the Pull Request)_
 
 - Compile the __NuttX Kernel__ _(plus NuttX Apps)_
 
@@ -237,7 +239,7 @@ Like so: [build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/m
 
 ```bash
 ## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
-## Download NuttX and Apps
+## Download NuttX and Apps based on the Pull Request
 git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
 git clone https://github.com/apache/nuttx-apps apps  --branch master
 
@@ -269,7 +271,7 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 expect ./oz64.exp
 ```
 
-TODO: Fetch @Mentions
+![TODO](https://lupyuen.org/images/testbot-flow6.jpg)
 
 # Test Bot for Pull Requests
 
