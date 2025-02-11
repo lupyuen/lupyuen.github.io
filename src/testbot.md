@@ -432,7 +432,7 @@ build-test.sh \
 
 [(How to run our __Test Bot__)](TODO)
 
-[(See the __Bot Log__)](TODO)
+[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
 ![IKEA Smart Power Plug](https://lupyuen.github.io/images/sg2000a-ikea.jpg)
 
