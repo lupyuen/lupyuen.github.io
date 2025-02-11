@@ -4,7 +4,7 @@
 
 ![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
 
-We're [__Making Things Better__](https://lists.apache.org/thread/mn4l1tmr6fj46o2y9vvrmfcrgyo48s5d) _(and making better things)_ with [__Apache NuttX RTOS__](TODO).
+We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](TODO).
 
 Our new __Test Bot for Pull Requests__ will allow a [__Pull Request Comment__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) to trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
