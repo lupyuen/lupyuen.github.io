@@ -283,6 +283,8 @@ With a little help from [__GitHub API__](TODO). Our Test Bot shall...
 
 - Find a __Mentioned Comment__: _"@nuttxpr test oz64:nsh"_
 
+- __Download NuttX__ Source Code _(from the Pull Request)_
+
 - __Build and Test__ NuttX on Oz64 _(script above)_
 
 - Capture the __Test Log__ _(and extract the essential bits)_
