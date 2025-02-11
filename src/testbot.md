@@ -83,6 +83,8 @@ The responses to the above commands are validated by another machine...
 
 TODO: Pic of Build & Test Server, Test Controller, Oz64
 
+![TODO](https://lupyuen.org/images/testbot-flow.jpg)
+
 # Control our Oz64 SBC
 
 _Who controls our Test Controller?_
@@ -342,6 +344,8 @@ async fn process_pr(...) -> Result<...> {
 }
 ```
 
+![TODO](https://lupyuen.org/images/testbot-flow.jpg)
+
 # Bot calls Test Script
 
 _What's inside build_test?_
@@ -421,6 +425,8 @@ build-test.sh \
 [(How to run our __Test Bot__)](TODO)
 
 [(See the __Bot Log__)](TODO)
+
+TODO: Pic of power plug
 
 # Power Up our Oz64 SBC
 
@@ -513,6 +519,8 @@ Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also g
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/testbot.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md)
+
+![TODO](https://lupyuen.org/images/testbot-flow.jpg)
 
 # Appendix: Build and Test NuttX
 
