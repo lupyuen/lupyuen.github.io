@@ -75,11 +75,11 @@
 <li><a href="#securing-our-bot" title="Securing Our Bot">8 Securing Our Bot</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
-<p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
+<p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="PINE64 Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Our new <strong>Test Bot for Pull Requests</strong> will allow a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Pull Request Comment</strong></a> to trigger a <strong>NuttX Build + Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
-<p>Will trigger our PR Test Bot to download the PR Code and test it on <a href="TODO"><strong>Oz64 SG2000 RISC-V SBC</strong></a>. (Pic above)</p>
+<p>Will trigger our PR Test Bot to download the PR Code and test it on <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a>. (Pic above)</p>
 <p>This is super helpful for <strong>Testing Pull Requests</strong> before Merging.</p>
 <p>TODO: In this article</p>
 <p>TODO: But might have <a href="https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886"><strong>Security Implications</strong></a>. (We’ll come back to this)</p>
@@ -92,52 +92,53 @@
 <p><strong>Wired Ethernet</strong>: For booting NuttX over TFTP Network</p>
 </li>
 <li>
-<p><strong>UART0 Port</strong>: For receiving NuttX Shell Commands <em>(Pins TODO)</em></p>
+<p><strong>UART0 Port</strong>: For receiving NuttX Shell Commands <em>(TX: Pin 8 / RX: Pin 10)</em></p>
 </li>
 <li>
 <p>Which connects to our <strong>Test Controller</strong> <em>(Linux SBC)</em> via a USB Serial Dongle</p>
 </li>
 <li>
-<p>Test Controller is also our <a href="TODO"><strong>TFTP Server</strong></a> for booting NuttX on Oz64</p>
+<p>Test Controller is also our <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>TFTP Server</strong></a> for booting NuttX on Oz64</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="Connect our Oz64 SBC to Test Controller" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 <p><em>How shall we test Oz64?</em></p>
 <p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
 nsh&gt; uname -a
-TODO
+NuttX 10.3.0 d33f654011 ...
 
 ## Check for corrupted Heap Memory
 nsh&gt; free
-TODO
+total: 2061312 / used: 11624 / free: 2049688 ...
 
 ## Show what&#39;s running
 nsh&gt; ps
-TODO
+/system/bin/init ...
 
 ## List the Device Drivers
 nsh&gt; ls -l /dev
-TODO
+console ...
 
 ## Simple App
 nsh&gt; hello
-TODO
+Hello, World!!
 
 ## App with Threading and Timers
 nsh&gt; getprime
-TODO
+getprime took 279 msec
 
 ## Omitted: Test `hello` and `getprime` again
 ## To verify the swapping of Address Spaces
 
 ## Exercise everything in NuttX
 nsh&gt; ostest
-TODO</code></pre></div>
-<p><a href="TODO">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
+ostest_main: Exiting with status 0</code></pre></div>
+<p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4803688#L456">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
 <p>The responses to the above commands are validated by another machine…</p>
-<p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="Test Controller (Linux SBC) accepts commands from the Build &amp; Test Server (Ubuntu PC)" /></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>Our Test Controller <em>(Linux SBC)</em> accepts commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
@@ -185,7 +186,7 @@ expect {
     exit 1 
   }
 }</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="Pass Through to Oz64" /></p>
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script runs on Build &amp; Test Server? Not Test Controller?</em></p>
 <p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
@@ -229,6 +230,7 @@ expect {
 
 ## Omitted: Enter the NuttX Commands and validate the responses
 ## send -s &quot;uname -a\r&quot;</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L6065-L6405">(See the <strong>Bot Log</strong>)</a></p>
 <p>(How to power up Oz64? See below)</p>
 <p>Turning our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Watch How It Works...
@@ -241,11 +243,11 @@ $ screen /dev/ttyUSB0 115200
 
 ## Test Controller: Passes through the NuttX Commands...
 nsh&gt; uname -a
-TODO
+NuttX 10.3.0 d33f654011 ...
 
 ## Build &amp; Test Server: Validates the responses</code></pre></div>
 <p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
-<p><img src="https://lupyuen.org/images/testbot-flow5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow5.jpg" alt="Build and Test Script" /></p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>4 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>The Expect Script above is called by our <strong>Build &amp; Test Script</strong> that will…</p>
@@ -301,10 +303,10 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## Start the Expect Script
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="Test Bot for Pull Requests" /></p>
 <h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
 <p><em>How will a Pull Request trigger the script above?</em></p>
-<p>With a little help from <a href="TODO"><strong>GitHub API</strong></a>. Our Test Bot shall…</p>
+<p>With a little help from <a href="https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-28#list-notifications-for-the-authenticated-user"><strong>GitHub API</strong></a>. Our Test Bot shall…</p>
 <ul>
 <li>
 <p>Fetch the <strong>Newest Notifications</strong> for <em>@nuttxpr</em></p>
@@ -379,7 +381,7 @@ expect ./oz64.exp</code></pre></div>
   <span class="prelude-val">Ok</span>(())
 }</code></pre></div>
 <p>Finally we’re ready for the Big Picture…</p>
-<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="bot-calls-test-script"><a class="doc-anchor" href="#bot-calls-test-script">§</a>6 Bot calls Test Script</h1>
 <p><em>What’s inside build_test?</em></p>
 <p>It will call a script to execute the <strong>Oz64 Build &amp; Test</strong>. And record the Test Log as a <strong>GitLab Snippet</strong>: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
@@ -423,7 +425,7 @@ expect ./oz64.exp</code></pre></div>
   result.push_str(<span class="kw-2">&amp;</span>log_content);
   <span class="prelude-val">Ok</span>(result)
 }</code></pre></div>
-<p><a href="TODO">(<strong>create_snippet</strong> publishes the GitLab Snippet)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L370-L417">(<strong>create_snippet</strong> publishes the GitLab Snippet)</a></p>
 <p>Which will call our <strong>Generic Build &amp; Test Script</strong> like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download this NuttX PR: URL, branch and commit hash
 nuttx_url=https://github.com/USERNAME/nuttx
@@ -442,9 +444,9 @@ build-test.sh \
   $nuttx_hash $apps_hash \
   $nuttx_url  $nuttx_ref \
   $apps_url   $apps_ref</code></pre></div>
-<p><a href="TODO">(<strong>build-test.sh</strong> is explained here)</a></p>
-<p><a href="TODO">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
-<p><a href="TODO">(How to run our <strong>Test Bot</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run our <strong>Test Bot</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
@@ -477,7 +479,7 @@ curl \
 <p>Installed a <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Home Assistant Server</strong></a></p>
 </li>
 <li>
-<p>Added the Smart Power Plug (and Zigbee Hub) to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Home</strong></a></p>
+<p>Added the Smart Power Plug (and Zigbee Hub) to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Home</strong></a>: <em>“Oz64 Power”</em></p>
 </li>
 <li>
 <p>Installed the <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Home Integration</strong></a> for Home Assistant</p>
@@ -486,13 +488,13 @@ curl \
 <p>Created the <a href="https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api"><strong>Power Automation</strong></a> in Home Assistant: <em>“Oz64 Power On”</em> and <em>“Oz64 Power Off”</em>…</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/testbot-power.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-power.png" alt="Automations in Home Assistant: Oz64 Power On and Oz64 Power Off" /></p>
 <h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
 <ol>
 <li>
 <p><em>Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?</em></p>
 <p>Plenty! The Pull Request is awaiting <strong>Manual Review</strong>. It might contain <strong>Unauthorised Code</strong> that will be executed by our Bot. <em>(Think: Makefiles with Malicious Scripts inside)</em></p>
-<p>Or the Runtime Code might disrupt the <strong>Local Network</strong> hosting our Bot. Also it might break out of the <a href="TODO"><strong>Semihosting Environment</strong></a> and mess up our Host Machine.</p>
+<p>Or the Runtime Code might disrupt the <strong>Local Network</strong> hosting our Bot. Also it might break out of the <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting Environment</strong></a> and mess up our Host Machine.</p>
 </li>
 <li>
 <p><em>Has something happened before?</em></p>
@@ -500,7 +502,7 @@ curl \
 </li>
 <li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
-<p>Let’s assume NuttX has been ported to PineTime Smartwatch <em>(Nordic nRF52832)</em>. On our Test Controller <em>(Linux SBC)</em>, we’ll run <a href="TODO"><strong>OpenOCD + ST-Link + Semihosting</strong></a> for flashing and testing.</p>
+<p>Let’s assume NuttX has been ported to PineTime Smartwatch <em>(Nordic nRF52832)</em>. On our Test Controller <em>(Linux SBC)</em>, we’ll run <a href="https://nuttx.apache.org/docs/latest/quickstart/running.html"><strong>OpenOCD + ST-Link + Semihosting</strong></a> for flashing and testing.</p>
 <p>Watch Faces on PineTime will render on the <strong>LVGL Display</strong>. Our Test Controller shall have a <strong>MIPI CSI Camera</strong>, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.</p>
 <p>We’ll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone (via <strong>Mastodon Alert</strong>). I’ll review the PR, click “Like” on the PR Comment, to activate the test.</p>
 </li>
@@ -510,7 +512,7 @@ curl \
 <p><em>(Too bad we don’t have a solution for Swapping SD Cards)</em></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/testbot-multi.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-multi.jpg" alt="Multiple Test Controllers" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
@@ -538,7 +540,7 @@ curl \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md"><strong>lupyuen.org/src/testbot.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="appendix-build-and-test-nuttx"><a class="doc-anchor" href="#appendix-build-and-test-nuttx">§</a>10 Appendix: Build and Test NuttX</h1>
 <p>Earlier we spoke about our Test Bot calling the <strong>Generic Build &amp; Test Script</strong>…</p>
 <ul>
@@ -562,10 +564,13 @@ build-test.sh \
   $nuttx_url  $nuttx_ref \
   $apps_url   $apps_ref</code></pre></div>
 <p>This section explains what’s inside <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh"><strong>build-test.sh</strong></a>.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">build-test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## First Parameter is the Build Test Script, like &quot;knsh64&quot;
+<p>Here are the parameters for our script: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">build-test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## First Parameter is the Build &amp; Test Script, like &quot;oz64&quot;
 ## Second Parameter is the Log File, like &quot;/tmp/build-test.log&quot;
+## Other Parameters shall be passed through to the Build &amp; Test Script:
+##   nuttx_hash apps_hash
+##   nuttx_url  nuttx_ref
+##   apps_url   apps_ref
 script=$1
 log=$2
 
@@ -586,9 +591,9 @@ build_test \
   $log \
   $3 $4 $5 $6 $7 $8
 
-set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
+## Return the Result Code to the caller
 exit $res</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56">build-test.sh</a></p>
+<p><strong>build_test</strong> will call the <strong>Platform-Specific</strong> Build &amp; Test Script, like for Oz64. The Test Log will be recorded into the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX
 function build_test {
   local script=$1
@@ -609,7 +614,9 @@ function build_test {
   clean_log $log
   find_messages $log
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75">build-test.sh</a></p>
+<p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(<strong>Oz64 Build &amp; Test Script</strong> is explained here)</a></p>
+<p>The code above calls <strong>clean_log</strong> and <strong>find_messages</strong>.</p>
+<p><strong>clean_log</strong> will remove Special Characters from the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Strip the control chars
 function clean_log {
   local log_file=$1
@@ -626,9 +633,8 @@ function clean_log {
     | cat -v \
     &gt;$tmp_file
   mv $tmp_file $log_file
-  echo ----- &quot;Done! $log_file&quot;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90">build-test.sh</a></p>
+<p><strong>find_messages</strong> will search for Warning and Errors, and insert them into the top of the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local log_file=$1
@@ -643,6 +649,24 @@ function find_messages {
   cat $msg_file $log_file &gt;$tmp_file
   mv $tmp_file $log_file
 }</code></pre></div>
+<p><em>Why the funny Regex Pattern?</em></p>
+<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180"><strong>Continuous Integration</strong></a> builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
+^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$</code></pre></div>
+<p>Which will match and detect <a href="https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
+<div class="example-wrap"><pre class="language-bash"><code>chip/stm32_gpio.c:41:11: warning: CONFIG_STM32_USE_LEGACY_PINMAP will be deprecated</code></pre></div>
+<p>But it won’t match <a href="https://gist.github.com/nuttxpr/353f4c035473cdf67afe0d76496ca950#file-ci-arm-11-log-L421-L451"><strong>CMake Errors</strong></a> like this!</p>
+<div class="example-wrap"><pre class="language-text"><code>CMake Warning at cmake/nuttx_kconfig.cmake:171 (message):
+  Kconfig Configuration Error: warning: STM32_HAVE_HRTIM1_PLLCLK (defined at
+  arch/arm/src/stm32/Kconfig:8109) has direct dependencies STM32_HRTIM &amp;&amp;
+  ARCH_CHIP_STM32 &amp;&amp; ARCH_ARM with value n, but is currently being y-selected</code></pre></div>
+<p>And <a href="https://gist.github.com/nuttxpr/74e46f5eca2a0cd5a234e5389d40457a#file-ci-arm-04-log-L157"><strong>Linker Errors</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>arm-none-eabi-ld: /root/nuttx/staging//libc.a(lib_arc4random.o): in function `arc4random_buf&#39;:
+/root/nuttx/libs/libc/stdlib/lib_arc4random.c:111:(.text.arc4random_buf+0x26): undefined reference to `clock_systime_ticks&#39;</code></pre></div>
+<p>Also <strong>Network and Timeout Errors</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>curl: (6) Could not resolve host: github.com
+make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6</code></pre></div>
+<p>We might need to tweak the Regex Pattern and catch more errors.</p>
 <p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
 <span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
