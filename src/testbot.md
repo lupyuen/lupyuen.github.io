@@ -440,7 +440,7 @@ build-test.sh \
 
 _We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?_
 
-With an [__IKEA Smart Power Plug__](TODO) and [__IKEA Zigbee Hub__](TODO). Here's our script that __Flips the Oz64 Power__, On and Off: [oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
+With an [__IKEA Smart Power Plug__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) and [__IKEA Zigbee Hub__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug). Here's our script that __Flips the Oz64 Power__, On and Off: [oz64-power.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh)
 
 ```bash
 ## This script will power Oz64 on or off...
@@ -468,13 +468,13 @@ curl \
 
 This script assumes that we have...
 
-- Installed a [__Home Assistant Server__](TODO)
+- Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
-- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](TODO)
+- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
-- Installed the [__Google Home Integration__](TODO) for Home Assistant
+- Installed the [__Google Home Integration__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
 
-- Created the [__Power Automation__](TODO) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
+- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
 
 ![TODO](https://lupyuen.org/images/testbot-power.png)
 
