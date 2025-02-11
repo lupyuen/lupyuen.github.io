@@ -86,23 +86,23 @@
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
 <h1 id="connect-our-oz64-sbc"><a class="doc-anchor" href="#connect-our-oz64-sbc">§</a>1 Connect our Oz64 SBC</h1>
-<p>Oz64 won’t boot over USB or Serial. We’ll connect these to control Oz64 (pic above)</p>
+<p>Oz64 won’t boot over USB or Serial. We’ll connect these to control Oz64…</p>
 <ul>
 <li>
-<p><strong>Wired Ethernet</strong>: For booting NuttX over TFTP</p>
+<p><strong>Wired Ethernet</strong>: For booting NuttX over TFTP Network</p>
 </li>
 <li>
-<p><strong>UART0 Port</strong>: For receiving NuttX Shell Commands (Pins TODO)</p>
+<p><strong>UART0 Port</strong>: For receiving NuttX Shell Commands <em>(Pins TODO)</em></p>
 </li>
 <li>
-<p>Which connects to our <strong>Test Controller</strong> (Linux SBC) via a USB Serial Dongle</p>
+<p>Which connects to our <strong>Test Controller</strong> <em>(Linux SBC)</em> via a USB Serial Dongle</p>
 </li>
 <li>
-<p>Test Controller is also our <strong>TFTP Server</strong> for booting NuttX on Oz64</p>
-<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
+<p>Test Controller is also our <a href="TODO"><strong>TFTP Server</strong></a> for booting NuttX on Oz64</p>
 </li>
 </ul>
-<p>TODO: Pic of Test Controller + Oz64</p>
+<p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="TODO" /></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 <p><em>How shall we test Oz64?</em></p>
 <p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
@@ -137,10 +137,10 @@ nsh&gt; ostest
 TODO</code></pre></div>
 <p><a href="TODO">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
 <p>The responses to the above commands are validated by another machine…</p>
-<p>TODO: Pic of Build &amp; Test Server, Test Controller, Oz64</p>
+<p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="TODO" /></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
-<p>Our Test Controller (Linux SBC) accepts commands from the <strong>Build &amp; Test Server</strong> (Ubuntu PC).</p>
+<p>Our Test Controller <em>(Linux SBC)</em> accepts commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
 <p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server runs this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for each command
 set timeout 300
@@ -185,7 +185,7 @@ expect {
     exit 1 
   }
 }</code></pre></div>
-<p>TODO: Pic of Pass Thru</p>
+<p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="TODO" /></p>
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script runs on Build &amp; Test Server? Not Test Controller?</em></p>
 <p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
@@ -245,11 +245,14 @@ TODO
 
 ## Build &amp; Test Server: Validates the responses</code></pre></div>
 <p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
-<p>TODO: Pic of Compile, Copy, Boot</p>
+<p><img src="https://lupyuen.org/images/testbot-flow5.jpg" alt="TODO" /></p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>4 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>The Expect Script above is called by our <strong>Build &amp; Test Script</strong> that will…</p>
 <ul>
+<li>
+<p>Download the <strong>NuttX Code</strong> <em>(from the Pull Request)</em></p>
+</li>
 <li>
 <p>Compile the <strong>NuttX Kernel</strong> <em>(plus NuttX Apps)</em></p>
 </li>
@@ -268,7 +271,7 @@ TODO
 </ul>
 <p>Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh">build-test-oz64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
-## Download NuttX and Apps
+## Download NuttX and Apps based on the Pull Request
 git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
 git clone https://github.com/apache/nuttx-apps apps  --branch master
 
@@ -298,7 +301,7 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## Start the Expect Script
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp</code></pre></div>
-<p>TODO: Fetch @Mentions</p>
+<p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="TODO" /></p>
 <h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
 <p><em>How will a Pull Request trigger the script above?</em></p>
 <p>With a little help from <a href="TODO"><strong>GitHub API</strong></a>. Our Test Bot shall…</p>
