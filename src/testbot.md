@@ -434,7 +434,7 @@ build-test.sh \
 
 [(See the __Bot Log__)](TODO)
 
-TODO: Pic of power plug
+![IKEA Smart Power Plug](https://lupyuen.github.io/images/sg2000a-ikea.jpg)
 
 # Power Up our Oz64 SBC
 
