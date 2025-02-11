@@ -468,13 +468,13 @@ This script assumes that we have...
 
 1.  _Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?_
 
-    Plenty! The Pull Requests is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
+    Plenty! The Pull Request is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
 
     Or the Runtime Code might disrupt the __Local Network__ hosting our Bot. Also it might break out of the [__Semihosting Environment__](TODO) and mess up our Host Machine.
 
 1.  _Has something happened before?_
 
-    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some kind folks discovered that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
+    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
