@@ -344,6 +344,8 @@ async fn process_pr(...) -> Result<...> {
 }
 ```
 
+Finally we're ready for the Big Picture...
+
 ![TODO](https://lupyuen.org/images/testbot-flow.jpg)
 
 # Bot calls Test Script
