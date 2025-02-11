@@ -24,8 +24,6 @@ TODO: But might have [__Security Implications__](https://github.com/apache/nuttx
 
 _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
-TODO: Pic of Test Controller + Oz64
-
 # Connect our Oz64 SBC
 
 Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic above)
@@ -39,6 +37,8 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64 (pic abo
 - Test Controller is also our __TFTP Server__ for booting NuttX on Oz64
 
   [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+
+TODO: Pic of Test Controller + Oz64
 
 _How shall we test Oz64?_
 
@@ -82,8 +82,6 @@ TODO
 The responses to the above commands are validated by another machine...
 
 TODO: Pic of Build & Test Server, Test Controller, Oz64
-
-![TODO](https://lupyuen.org/images/testbot-flow.jpg)
 
 # Control our Oz64 SBC
 
@@ -142,6 +140,8 @@ expect {
   }
 }
 ```
+
+TODO: Pic of Pass Thru
 
 # Pass Through to Oz64
 
@@ -215,6 +215,8 @@ TODO
 
 (Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
 
+TODO: Pic of Compile, Copy, Boot
+
 # Build and Test Script
 
 _Who runs the above Expect Script?_
@@ -234,8 +236,6 @@ The Expect Script above is called by our __Build & Test Script__ that will...
 Like so: [build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
 ```bash
-## TODO: nuttx_url / apps_url
-
 ## Build and Test NuttX for Oz64 SG2000 RISC-V SBC
 ## Download NuttX and Apps
 git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
@@ -268,6 +268,8 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp
 ```
+
+TODO: Fetch @Mentions
 
 # Test Bot for Pull Requests
 
