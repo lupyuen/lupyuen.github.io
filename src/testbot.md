@@ -488,9 +488,9 @@ This script assumes that we have...
 
     Yeah we could combine the __Test Controller__ _(Linux SBC)_ with the __Build & Test Server__ _(Ubuntu PC)_. Though the Current Design will scale better with __Multiple Test Controllers__...
 
-    TODO: Pic of Multiple Test Controllers
+    _(Too bad we don't have a solution for Swapping SD Cards)_
 
-    (Too bad we don't have a solution for Swapping SD Cards)
+![TODO](https://lupyuen.org/images/testbot-multi.jpg)
 
 # What's Next
 
