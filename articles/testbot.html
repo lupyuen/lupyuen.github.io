@@ -478,7 +478,7 @@ curl \
 <h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
 <ol>
 <li>
-<p><em>A Bot that will auto-build and auto-test any Pull Request. What could possibly go wrong?</em></p>
+<p><em>Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?</em></p>
 <p>Plenty! The Pull Requests is awaiting <strong>Manual Review</strong>. It might contain <strong>Unauthorised Code</strong> that will be executed by our Bot. <em>(Think: Makefiles with Malicious Scripts inside)</em></p>
 <p>Or the Runtime Code might disrupt the <strong>Local Network</strong> hosting our Bot. Also it might break out of the <a href="TODO"><strong>Semihosting Environment</strong></a> and mess up our Host Machine.</p>
 </li>
@@ -526,10 +526,6 @@ curl \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md"><strong>lupyuen.org/src/testbot.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
-<span style="font-size:80%">
-<p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
-</span>
 <h1 id="appendix-build-and-test-nuttx"><a class="doc-anchor" href="#appendix-build-and-test-nuttx">§</a>10 Appendix: Build and Test NuttX</h1>
 <p>Earlier we spoke about our Test Bot calling the <strong>Generic Build &amp; Test Script</strong>…</p>
 <ul>
@@ -653,6 +649,11 @@ build_test \
 
 set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
 exit $res</code></pre></div>
+<p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
+<span style="font-size:80%">
+<p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
+</span>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
