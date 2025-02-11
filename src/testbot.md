@@ -4,7 +4,7 @@
 
 ![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
 
-We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](TODO).
+We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
 Our new __Test Bot for Pull Requests__ will allow a [__Pull Request Comment__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) to trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
@@ -534,15 +534,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Earlier we spoke about our Test Bot calling the __Generic Build & Test Script__...
 
-- [__"TODO"__](TODO)
+- [__"Bot calls Test Script"__](https://lupyuen.github.io/articles/testbot#bot-calls-test-script)
 
 ```bash
-## Set the NuttX PR URL, branch and commit hash
+## Download this NuttX PR: URL, branch and commit hash
 nuttx_url=https://github.com/USERNAME/nuttx
 nuttx_ref=BRANCH
 nuttx_hash=HEAD
 
-## Set the Apps PR URL, branch and commit hash
+## Download this Apps PR: URL, branch and commit hash
 apps_url=https://github.com/apache/nuttx-apps
 apps_ref=master
 apps_hash=HEAD
@@ -563,29 +563,10 @@ TODO
 [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh)
 
 ```bash
-#!/usr/bin/env bash
-## Build and Test NuttX. Called by nuttx-test-bot.
-## ./build-test.sh knsh64 /tmp/build-test.log
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-echo "Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh $1 $2 $3 $4 $5 $6 $7 $8"
-
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-
 ## First Parameter is the Build Test Script, like "knsh64"
-script=$1
-if [[ "$script" == "" ]]; then
-  echo "ERROR: Script is missing (e.g. knsh64)"
-  exit 1
-fi
-
 ## Second Parameter is the Log File, like "/tmp/build-test.log"
+script=$1
 log=$2
-if [[ "$log" == "" ]]; then
-  echo "ERROR: Log File is missing (e.g. /tmp/build-test.log)"
-  exit 1
-fi
 
 ## Get the Script Directory
 script_path="${BASH_SOURCE}"
@@ -598,6 +579,19 @@ else
   script_option=
 fi
 
+## Build and Test NuttX
+build_test \
+  $script \
+  $log \
+  $3 $4 $5 $6 $7 $8
+
+set +x ; echo "***** Done! res=$res" ; set -x
+exit $res
+```
+
+[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56)
+
+```bash
 ## Build and Test NuttX
 function build_test {
   local script=$1
@@ -618,7 +612,11 @@ function build_test {
   clean_log $log
   find_messages $log
 }
+```
 
+[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75)
+
+```bash
 ## Strip the control chars
 function clean_log {
   local log_file=$1
@@ -637,7 +635,11 @@ function clean_log {
   mv $tmp_file $log_file
   echo ----- "Done! $log_file"
 }
+```
 
+[build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90)
+
+```bash
 ## Search for Errors and Warnings
 function find_messages {
   local log_file=$1
@@ -652,15 +654,6 @@ function find_messages {
   cat $msg_file $log_file >$tmp_file
   mv $tmp_file $log_file
 }
-
-## Build and Test NuttX
-build_test \
-  $script \
-  $log \
-  $3 $4 $5 $6 $7 $8
-
-set +x ; echo "***** Done! res=$res" ; set -x
-exit $res
 ```
 
 ![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
