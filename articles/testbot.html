@@ -76,7 +76,7 @@
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
-<p>We’re <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p>We’re <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Our new <strong>Test Bot for Pull Requests</strong> will allow a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Pull Request Comment</strong></a> to trigger a <strong>NuttX Build + Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Will trigger our PR Test Bot to download the PR Code and test it on <a href="TODO"><strong>Oz64 SG2000 RISC-V SBC</strong></a>. (Pic above)</p>
@@ -542,14 +542,14 @@ curl \
 <h1 id="appendix-build-and-test-nuttx"><a class="doc-anchor" href="#appendix-build-and-test-nuttx">§</a>10 Appendix: Build and Test NuttX</h1>
 <p>Earlier we spoke about our Test Bot calling the <strong>Generic Build &amp; Test Script</strong>…</p>
 <ul>
-<li><a href="TODO"><strong>“TODO”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/testbot#bot-calls-test-script"><strong>“Bot calls Test Script”</strong></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-bash"><code>## Set the NuttX PR URL, branch and commit hash
+<div class="example-wrap"><pre class="language-bash"><code>## Download this NuttX PR: URL, branch and commit hash
 nuttx_url=https://github.com/USERNAME/nuttx
 nuttx_ref=BRANCH
 nuttx_hash=HEAD
 
-## Set the Apps PR URL, branch and commit hash
+## Download this Apps PR: URL, branch and commit hash
 apps_url=https://github.com/apache/nuttx-apps
 apps_ref=master
 apps_hash=HEAD
@@ -564,29 +564,10 @@ build-test.sh \
 <p>This section explains what’s inside <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh"><strong>build-test.sh</strong></a>.</p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh">build-test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
-## Build and Test NuttX. Called by nuttx-test-bot.
-## ./build-test.sh knsh64 /tmp/build-test.log
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD
-## ./build-test.sh knsh64 /tmp/build-test.log HEAD HEAD https://github.com/apache/nuttx master https://github.com/apache/nuttx-apps master
-echo &quot;Now running https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh $1 $2 $3 $4 $5 $6 $7 $8&quot;
-
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-
-## First Parameter is the Build Test Script, like &quot;knsh64&quot;
-script=$1
-if [[ &quot;$script&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Script is missing (e.g. knsh64)&quot;
-  exit 1
-fi
-
+<div class="example-wrap"><pre class="language-bash"><code>## First Parameter is the Build Test Script, like &quot;knsh64&quot;
 ## Second Parameter is the Log File, like &quot;/tmp/build-test.log&quot;
+script=$1
 log=$2
-if [[ &quot;$log&quot; == &quot;&quot; ]]; then
-  echo &quot;ERROR: Log File is missing (e.g. /tmp/build-test.log)&quot;
-  exit 1
-fi
 
 ## Get the Script Directory
 script_path=&quot;${BASH_SOURCE}&quot;
@@ -600,6 +581,15 @@ else
 fi
 
 ## Build and Test NuttX
+build_test \
+  $script \
+  $log \
+  $3 $4 $5 $6 $7 $8
+
+set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
+exit $res</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56">build-test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX
 function build_test {
   local script=$1
   local log=$2
@@ -618,9 +608,9 @@ function build_test {
   ## Find errors and warnings
   clean_log $log
   find_messages $log
-}
-
-## Strip the control chars
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75">build-test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Strip the control chars
 function clean_log {
   local log_file=$1
   local tmp_file=$log_file.tmp
@@ -637,9 +627,9 @@ function clean_log {
     &gt;$tmp_file
   mv $tmp_file $log_file
   echo ----- &quot;Done! $log_file&quot;
-}
-
-## Search for Errors and Warnings
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90">build-test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
   local log_file=$1
   local tmp_file=$log_file.tmp
@@ -652,16 +642,7 @@ function find_messages {
     &gt;&gt; $msg_file || true
   cat $msg_file $log_file &gt;$tmp_file
   mv $tmp_file $log_file
-}
-
-## Build and Test NuttX
-build_test \
-  $script \
-  $log \
-  $3 $4 $5 $6 $7 $8
-
-set +x ; echo &quot;***** Done! res=$res&quot; ; set -x
-exit $res</code></pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
 <span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
