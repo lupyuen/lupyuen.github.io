@@ -407,12 +407,12 @@ async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<Stri
 Which will call our __Generic Build & Test Script__ like so: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L1-L7)
 
 ```bash
-## Set the NuttX PR URL, branch and commit hash
+## Download this NuttX PR: URL, branch and commit hash
 nuttx_url=https://github.com/USERNAME/nuttx
 nuttx_ref=BRANCH
 nuttx_hash=HEAD
 
-## Set the Apps PR URL, branch and commit hash
+## Download this Apps PR: URL, branch and commit hash
 apps_url=https://github.com/apache/nuttx-apps
 apps_ref=master
 apps_hash=HEAD
