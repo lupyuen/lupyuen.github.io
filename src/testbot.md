@@ -462,21 +462,7 @@ This script assumes that we have...
 
 - Created the [__Power Automation__](TODO) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
 
-power3
-
-![TODO](https://lupyuen.org/images/testbot-power3.png)
-
-power4
-
-![TODO](https://lupyuen.org/images/testbot-power4.png)
-
-power1
-
-![TODO](https://lupyuen.org/images/testbot-power1.png)
-
-power2
-
-![TODO](https://lupyuen.org/images/testbot-power2.png)
+![TODO](https://lupyuen.org/images/testbot-power.png)
 
 # Securing Our Bot
 
