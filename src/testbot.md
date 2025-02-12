@@ -6,7 +6,7 @@
 
 We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
-Test Bot will watch for [__Comments on a Pull Request__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
+Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
 ```bash
 @nuttxpr test oz64:nsh
