@@ -77,14 +77,17 @@
 <li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="PINE64 Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. Today we talk about our new <strong>Test Bot for Pull Requests</strong>.</p>
-<p>Test Bot shall watch for <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Comments on Pull Requests</strong></a> and trigger a <strong>NuttX Build + Test</strong> on Real Hardware. This PR Comment…</p>
+<p>Test Bot shall watch for <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Comments on Pull Requests</strong></a> and start a <strong>NuttX Build + Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Will trigger our PR Test Bot to download the PR Code and test it on <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a> (pic above). Which is is super helpful for <strong>Testing Pull Requests</strong> before Merging.</p>
-<p>TODO: In this article</p>
-<p>TODO: But might have <a href="https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886"><strong>Security Implications</strong></a>. (We’ll come back to this)</p>
+<p><em>Why are we doing this?</em></p>
+<p>Testing a Pull Request on Real Hardware is a <strong>Compulsory Cumbersome Chore</strong>. Especially for our Open-Source Project that’s championed by Unpaid Volunteers. Let’s make it a little less painful!</p>
+<p>(Be Mindful: Pull Requests might have <a href="https://lupyuen.github.io/articles/testbot#securing-our-bot"><strong>Security Concerns</strong></a>)</p>
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
 <h1 id="connect-our-oz64-sbc"><a class="doc-anchor" href="#connect-our-oz64-sbc">§</a>1 Connect our Oz64 SBC</h1>
+<p><em>Our Test Bot shall control Oz64. How?</em></p>
+<p>With an <em>(inexpensive)</em> Arm64 Linux SBC. We’ll call it <strong>Test Controller</strong>.</p>
 <p>Oz64 won’t boot over USB or Serial. We’ll connect these to control Oz64…</p>
 <ul>
 <li>
@@ -102,6 +105,7 @@
 </ul>
 <p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="Connect our Oz64 SBC to Test Controller" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(What about <strong>Simpler Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed )</a></p>
 <p><em>How shall we test Oz64?</em></p>
 <p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
@@ -445,6 +449,8 @@ build-test.sh \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
+<p><em>What are the essential bits?</em></p>
+<p>TODO: <strong>extract_log</strong> / We need evidence</p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run our <strong>Test Bot</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
