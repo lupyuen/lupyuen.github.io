@@ -81,7 +81,7 @@
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Will trigger our PR Test Bot to <strong>Download, Build and Test</strong> the PR Code on <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a> (pic above). Which is super helpful for <strong>Validating Pull Requests</strong> (pic below) before Merging.</p>
 <p><em>Why are we doing this?</em></p>
-<p>Testing a Pull Request on Real Hardware is a <strong>Compulsory, Cumbersome Chore</strong>. Especially for our Open-Source Project that’s championed by Unpaid Volunteers. Let’s make it a little less painful! 👍</p>
+<p>Testing a Pull Request on Real Hardware is a <strong>Compulsory, Cumbersome Chore</strong>. Executed by Unpaid Volunteers who care about Code Quality. Let’s make it a little less painful! 👍</p>
 <p>(Be Mindful: Pull Requests might have <a href="https://lupyuen.github.io/articles/testbot#securing-our-bot"><strong>Security Concerns</strong></a>)</p>
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
@@ -449,16 +449,21 @@ build-test.sh \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
+<p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="Evidence of a Successful Testing" /></p>
 <p><em>What about the essential bits?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a <strong>Successful Test</strong>: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
-<div class="example-wrap"><pre class="language-text"><code>$ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
-$ git clone https://github.com/apache/nuttx-apps apps --branch master
+<div class="example-wrap"><pre class="language-bash"><code>## Build and Test Successful (milkv_duos:nsh)
+$ git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
+$ git clone https://github.com/apache/nuttx-apps apps  --branch master
+
 $ pushd nuttx ; git reset --hard HEAD ; popd
-HEAD is now at d33f654011 include/stdlib.h: define system()&#39;s prototype for the flat build
+HEAD is now at d33f654011 include/stdlib.h: define system() prototype for the flat build
 $ pushd apps ; git reset --hard HEAD ; popd
 HEAD is now at f139e56cd testing/libc/wcstombs: Add testing application for wcstombs
+
 NuttX Source: https://github.com/apache/nuttx/tree/d33f6540113b8a5a4392f8a69b1a8b6258669f64
 NuttX Apps: https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
+
 $ cd nuttx
 $ tools/configure.sh milkv_duos:nsh
 $ make -j
@@ -522,12 +527,12 @@ curl \
 </li>
 <li>
 <p><em>Has something happened before?</em></p>
-<p>Five Years Ago: I connected a <a href="https://github.com/lupyuen/remote-pinetime-bot"><strong>PineTime Smartwatch</strong></a> to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the <a href="https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues"><strong>Semihosting Environment</strong></a> and access my computer.</p>
+<p>Five Years Ago: I connected a <a href="https://github.com/lupyuen/remote-pinetime-bot"><strong>PineTime Smartwatch</strong></a> <em>(Apache Mynewt)</em> to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the <a href="https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues"><strong>Semihosting Environment</strong></a> and access my computer.</p>
 </li>
 <li>
 <p><em>Thus we’re running Test Bot the safer way?</em></p>
-<p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR.</p>
-<p>Soon: Test Bot might push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to my phone. I’ll review the PR, click <em>“Like”</em> on the PR Comment, to activate the test.</p>
+<p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving <strong>RISC-V Architecture</strong>.</p>
+<p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we’ll review the PR and click <em>“Like”</em> on the PR Comment.</p>
 </li>
 <li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
