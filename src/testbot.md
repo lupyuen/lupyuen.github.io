@@ -6,13 +6,13 @@
 
 We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
-Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and start a __NuttX Build + Test__ on Real Hardware. This PR Comment...
+Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and start a __NuttX Build and Test__ on Real Hardware. This PR Comment...
 
 ```bash
 @nuttxpr test oz64:nsh
 ```
 
-Will trigger our PR Test Bot to __Download and Test__ the PR Code on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is super helpful for __Testing Pull Requests__ (pic below) before Merging.
+Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is super helpful for __Testing Pull Requests__ (pic below) before Merging.
 
 _Why are we doing this?_
 
