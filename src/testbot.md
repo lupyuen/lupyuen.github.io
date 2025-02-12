@@ -16,7 +16,7 @@ Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__O
 
 _Why are we doing this?_
 
-Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. Especially for our Open-Source Project that's championed by Unpaid Volunteers. Let's make it a little less painful! 👍
+Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. Executed by Unpaid Volunteers who care about Code Quality. Let's make it a little less painful! 👍
 
 (Be Mindful: Pull Requests might have [__Security Concerns__](https://lupyuen.github.io/articles/testbot#securing-our-bot))
 
@@ -440,19 +440,25 @@ build-test.sh \
 
 [(Which calls the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
 
+![Evidence of a Successful Testing](https://lupyuen.org/images/rewind-bot3.jpg)
+
 _What about the essential bits?_
 
 [__extract_log__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370) will pick out the evidence of a __Successful Test__: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
 
-```text
-$ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
-$ git clone https://github.com/apache/nuttx-apps apps --branch master
+```bash
+## Build and Test Successful (milkv_duos:nsh)
+$ git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
+$ git clone https://github.com/apache/nuttx-apps apps  --branch master
+
 $ pushd nuttx ; git reset --hard HEAD ; popd
-HEAD is now at d33f654011 include/stdlib.h: define system()'s prototype for the flat build
+HEAD is now at d33f654011 include/stdlib.h: define system() prototype for the flat build
 $ pushd apps ; git reset --hard HEAD ; popd
 HEAD is now at f139e56cd testing/libc/wcstombs: Add testing application for wcstombs
+
 NuttX Source: https://github.com/apache/nuttx/tree/d33f6540113b8a5a4392f8a69b1a8b6258669f64
 NuttX Apps: https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
+
 $ cd nuttx
 $ tools/configure.sh milkv_duos:nsh
 $ make -j
@@ -525,13 +531,13 @@ This script assumes that we have...
 
 1.  _Has something happened before?_
 
-    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
+    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) _(Apache Mynewt)_ to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
 1.  _Thus we're running Test Bot the safer way?_
 
-    Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR.
+    Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving __RISC-V Architecture__.
     
-    Soon: Test Bot might push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to my phone. I'll review the PR, click _"Like"_ on the PR Comment, to activate the test.
+    It gets better! Soon: Test Bot will run non-stop and push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to our phones, when it's triggered. To activate the PR Test, we'll review the PR and click _"Like"_ on the PR Comment.
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
