@@ -442,7 +442,7 @@ build-test.sh \
 
 _What are the essential bits?_
 
-[__extract_log__](TODO) will pick out the evidence of a Successful Test: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
+[__extract_log__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370) will pick out the evidence of a Successful Test: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
 
 ```text
 $ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
@@ -469,7 +469,7 @@ ostest_main: Exiting with status 0
 
 [(How to run our __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
 
-TODO: [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
+[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
 ![IKEA Smart Power Plug and IKEA Zigbee Hub](https://lupyuen.org/images/testbot-ikea.png)
 
@@ -527,13 +527,17 @@ This script assumes that we have...
 
     Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
+1.  _So we're running Test Bot the safer way?_
+
+    Yep. Today we __Start Manually__ our Test Bot, after reviewing the code in the PR.
+    
+    Soon: Test Bot might push a __Mastodon Alert__ to my phone. I'll review the PR, click _"Like"_ on the PR Comment, to activate the test.
+
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
     Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run [__OpenOCD + ST-Link + Semihosting__](https://nuttx.apache.org/docs/latest/quickstart/running.html) for flashing and testing.
 
     Watch Faces on PineTime will render on the __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.
-
-    We'll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone (via __Mastodon Alert__). I'll review the PR, click "Like" on the PR Comment, to activate the test.
 
 1.  _Can we combine the Test Controller with the Build & Test Server?_
 
