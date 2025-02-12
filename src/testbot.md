@@ -44,7 +44,7 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
 [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
-[(__GPIO Wiring__ might be needed )](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
+[(__GPIO Wiring__ might be needed)](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
 
 _How shall we test Oz64?_
 
