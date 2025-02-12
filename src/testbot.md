@@ -442,11 +442,34 @@ build-test.sh \
 
 _What are the essential bits?_
 
-TODO: __extract_log__ / We need evidence 
+[__extract_log__](TODO) will pick out the evidence of a Successful Test: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
+
+```text
+$ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
+$ git clone https://github.com/apache/nuttx-apps apps --branch master
+$ pushd nuttx ; git reset --hard HEAD ; popd
+HEAD is now at d33f654011 include/stdlib.h: define system()'s prototype for the flat build
+$ pushd apps ; git reset --hard HEAD ; popd
+HEAD is now at f139e56cd testing/libc/wcstombs: Add testing application for wcstombs
+NuttX Source: https://github.com/apache/nuttx/tree/d33f6540113b8a5a4392f8a69b1a8b6258669f64
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
+$ cd nuttx
+$ tools/configure.sh milkv_duos:nsh
+$ make -j
+...
+$ ssh test-controller
+OpenSBI v0.9
+nsh> uname -a
+NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
+nsh> ostest
+ostest_main: Exiting with status 0
+```
+
+[(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
 
 [(How to run our __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
 
-[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
+TODO: [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
 ![IKEA Smart Power Plug and IKEA Zigbee Hub](https://lupyuen.org/images/testbot-ikea.png)
 
