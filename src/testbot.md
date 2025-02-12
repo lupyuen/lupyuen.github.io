@@ -440,9 +440,9 @@ build-test.sh \
 
 [(Which calls the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
 
-_What are the essential bits?_
+_What about the essential bits?_
 
-[__extract_log__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370) will pick out the evidence of a Successful Test: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
+[__extract_log__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370) will pick out the evidence of a __Successful Test__: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
 
 ```text
 $ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
@@ -527,9 +527,9 @@ This script assumes that we have...
 
     Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
-1.  _So we're running Test Bot the safer way?_
+1.  _Thus we're running Test Bot the safer way?_
 
-    Yep. Today we __Start Manually__ our Test Bot, after reviewing the code in the PR.
+    Indeed. Today we __Start Manually__ our Test Bot, after reviewing the code in the PR.
     
     Soon: Test Bot might push a __Mastodon Alert__ to my phone. I'll review the PR, click _"Like"_ on the PR Comment, to activate the test.
 
