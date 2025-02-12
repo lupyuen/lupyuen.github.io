@@ -529,9 +529,9 @@ This script assumes that we have...
 
 1.  _Thus we're running Test Bot the safer way?_
 
-    Indeed. Today we __Start Manually__ our Test Bot, after reviewing the code in the PR.
+    Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR.
     
-    Soon: Test Bot might push a __Mastodon Alert__ to my phone. I'll review the PR, click _"Like"_ on the PR Comment, to activate the test.
+    Soon: Test Bot might push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to my phone. I'll review the PR, click _"Like"_ on the PR Comment, to activate the test.
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
