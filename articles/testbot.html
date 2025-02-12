@@ -449,8 +449,8 @@ build-test.sh \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
-<p><em>What are the essential bits?</em></p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a Successful Test: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
+<p><em>What about the essential bits?</em></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a <strong>Successful Test</strong>: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
 $ git clone https://github.com/apache/nuttx-apps apps --branch master
 $ pushd nuttx ; git reset --hard HEAD ; popd
@@ -525,8 +525,8 @@ curl \
 <p>Five Years Ago: I connected a <a href="https://github.com/lupyuen/remote-pinetime-bot"><strong>PineTime Smartwatch</strong></a> to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the <a href="https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues"><strong>Semihosting Environment</strong></a> and access my computer.</p>
 </li>
 <li>
-<p><em>So we’re running Test Bot the safer way?</em></p>
-<p>Yep. Today we <strong>Start Manually</strong> our Test Bot, after reviewing the code in the PR.</p>
+<p><em>Thus we’re running Test Bot the safer way?</em></p>
+<p>Indeed. Today we <strong>Start Manually</strong> our Test Bot, after reviewing the code in the PR.</p>
 <p>Soon: Test Bot might push a <strong>Mastodon Alert</strong> to my phone. I’ll review the PR, click <em>“Like”</em> on the PR Comment, to activate the test.</p>
 </li>
 <li>
