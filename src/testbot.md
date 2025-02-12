@@ -32,9 +32,9 @@ With an _(inexpensive)_ Arm64 Linux SBC. We'll call it __Test Controller__.
 
 Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
-- __Wired Ethernet__: For booting NuttX over TFTP Network
+- __Wired Ethernet__: For booting NuttX over TFTP _(Trivial File Transfer Protocol)_
 
-- __UART0 Port__: For receiving NuttX Shell Commands _(TX: Pin 8 / RX: Pin 10)_
+- __UART0 Port__: For receiving NuttX Shell Commands _(TX: Pin 8, RX: Pin 10)_
 
 - Which connects to our __Test Controller__ _(Linux SBC)_ via a USB Serial Dongle
 
@@ -42,9 +42,9 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
 ![Connect our Oz64 SBC to Test Controller](https://lupyuen.org/images/testbot-flow2.jpg)
 
-[(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+[(__Arm32 Boards__: What about STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
-[(__GPIO Wiring__ might be needed)](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
+[(__GPIO Wiring__ might be needed for some RISC-V Boards)](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
 
 _How shall we test Oz64?_
 
