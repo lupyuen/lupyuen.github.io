@@ -4,17 +4,15 @@
 
 ![PINE64 Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
 
-We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
+We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
-Our new __Test Bot for Pull Requests__ will allow a [__Pull Request Comment__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) to trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
+Test Bot will watch for [__Comments on a Pull Request__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
 ```bash
 @nuttxpr test oz64:nsh
 ```
 
-Will trigger our PR Test Bot to download the PR Code and test it on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000). (Pic above)
-
-This is super helpful for __Testing Pull Requests__ before Merging.
+Will trigger our PR Test Bot to download the PR Code and test it on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is is super helpful for __Testing Pull Requests__ before Merging.
 
 TODO: In this article
 
