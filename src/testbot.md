@@ -6,7 +6,7 @@
 
 We're [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
-Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and trigger a __NuttX Build + Test__ on Real Hardware. This PR Comment...
+Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and start a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
 ```bash
 @nuttxpr test oz64:nsh
@@ -14,15 +14,21 @@ Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apac
 
 Will trigger our PR Test Bot to download the PR Code and test it on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is is super helpful for __Testing Pull Requests__ before Merging.
 
-TODO: In this article
+_Why are we doing this?_
 
-TODO: But might have [__Security Implications__](https://github.com/apache/nuttx/issues/15731#issuecomment-2628647886). (We'll come back to this)
+Testing a Pull Request on Real Hardware is a __Compulsory Cumbersome Chore__. Especially for our Open-Source Project that's championed by Unpaid Volunteers. Let's make it a little less painful!
+
+(Be Mindful: Pull Requests might have [__Security Concerns__](https://lupyuen.github.io/articles/testbot#securing-our-bot))
 
 ![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot3.jpg)
 
 _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
 # Connect our Oz64 SBC
+
+_Our Test Bot shall control Oz64. How?_
+
+With an _(inexpensive)_ Arm64 Linux SBC. We'll call it __Test Controller__.
 
 Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 
@@ -37,6 +43,8 @@ Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
 ![Connect our Oz64 SBC to Test Controller](https://lupyuen.org/images/testbot-flow2.jpg)
 
 [(What about __Simpler Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+
+[(__GPIO Wiring__ might be needed )](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
 
 _How shall we test Oz64?_
 
@@ -431,6 +439,10 @@ build-test.sh \
 [(__build-test.sh__ is explained here)](https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx)
 
 [(Which calls the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
+
+_What are the essential bits?_
+
+TODO: __extract_log__ / We need evidence 
 
 [(How to run our __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
 
