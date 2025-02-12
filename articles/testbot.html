@@ -450,7 +450,7 @@ build-test.sh \
 <p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Which calls the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
 <p><em>What are the essential bits?</em></p>
-<p><a href="TODO"><strong>extract_log</strong></a> will pick out the evidence of a Successful Test: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a Successful Test: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>$ git clone https://github.com/USERNAME/nuttx nuttx --branch BRANCH
 $ git clone https://github.com/apache/nuttx-apps apps --branch master
 $ pushd nuttx ; git reset --hard HEAD ; popd
@@ -471,7 +471,7 @@ nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run our <strong>Test Bot</strong>)</a></p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
 <p><em>We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?</em></p>
@@ -525,10 +525,14 @@ curl \
 <p>Five Years Ago: I connected a <a href="https://github.com/lupyuen/remote-pinetime-bot"><strong>PineTime Smartwatch</strong></a> to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the <a href="https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues"><strong>Semihosting Environment</strong></a> and access my computer.</p>
 </li>
 <li>
+<p><em>So we’re running Test Bot the safer way?</em></p>
+<p>Yep. Today we <strong>Start Manually</strong> our Test Bot, after reviewing the code in the PR.</p>
+<p>Soon: Test Bot might push a <strong>Mastodon Alert</strong> to my phone. I’ll review the PR, click <em>“Like”</em> on the PR Comment, to activate the test.</p>
+</li>
+<li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
 <p>Let’s assume NuttX has been ported to PineTime Smartwatch <em>(Nordic nRF52832)</em>. On our Test Controller <em>(Linux SBC)</em>, we’ll run <a href="https://nuttx.apache.org/docs/latest/quickstart/running.html"><strong>OpenOCD + ST-Link + Semihosting</strong></a> for flashing and testing.</p>
 <p>Watch Faces on PineTime will render on the <strong>LVGL Display</strong>. Our Test Controller shall have a <strong>MIPI CSI Camera</strong>, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.</p>
-<p>We’ll start our Test Bot manually, after reviewing the code in the PR. Or maybe our Bot shall push a notification to my phone (via <strong>Mastodon Alert</strong>). I’ll review the PR, click “Like” on the PR Comment, to activate the test.</p>
 </li>
 <li>
 <p><em>Can we combine the Test Controller with the Build &amp; Test Server?</em></p>
