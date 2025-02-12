@@ -28,9 +28,7 @@ _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
 _Our Test Bot shall control Oz64. How?_
 
-With an _(inexpensive)_ Arm64 Linux SBC. We'll call it __Test Controller__.
-
-Oz64 won't boot over USB or Serial. We'll connect these to control Oz64...
+With an _(inexpensive)_ Arm64 Linux SBC, called the __Test Controller__. Oz64 won't boot over USB or Serial, we'll connect these instead...
 
 - __Wired Ethernet__: For booting NuttX over TFTP _(Trivial File Transfer Protocol)_
 
