@@ -12,7 +12,7 @@ Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apac
 @nuttxpr test oz64:nsh
 ```
 
-Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is super helpful for __Validating Pull Requests__ (pic below) before Merging.
+Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is mighty helpful for __Validating Pull Requests__ (pic below) before Merging.
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/qiBhC5VTkIo)
 
