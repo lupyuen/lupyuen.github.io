@@ -18,7 +18,7 @@ Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__O
 
 _Why are we doing this?_
 
-Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. Executed by Unpaid Volunteers who care about Code Quality. Let's make it a little less painful! 👍
+Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. Executed by our Unpaid Volunteers who care about Code Quality. Let's make it a little less painful! 👍
 
 (Be Mindful: Pull Requests might have [__Security Concerns__](https://lupyuen.github.io/articles/testbot#securing-our-bot))
 
