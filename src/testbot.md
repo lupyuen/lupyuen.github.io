@@ -523,7 +523,7 @@ This script assumes that we have...
 
 - Added the Smart Power Plug (and Zigbee Hub) to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug): _"Oz64 Power"_ (pic above)
 
-- Installed the [__Google Assistant Integration__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
+- Installed the [__Google Assistant SDK__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
 
 - Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_ (pic below)
 
