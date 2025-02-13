@@ -547,7 +547,7 @@ And our Test Bot is complete! Except for these security issues...
 
     Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving __RISC-V Architecture__.
     
-    It gets better! Soon: Test Bot will run non-stop and push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to our phones, when it's triggered. To activate the PR Test, we'll review the PR and click _"Like"_ on the PR Comment.
+    It gets better! Soon: Test Bot will run non-stop and push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to our phones, when it's triggered. To activate the PR Test, we review the PR and click _"Like"_ on the PR Comment.
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
@@ -624,8 +624,8 @@ Here are the parameters for our script: [build-test.sh](https://github.com/lupyu
 ##   nuttx_hash apps_hash
 ##   nuttx_url  nuttx_ref
 ##   apps_url   apps_ref
-script=$1
-log=$2
+script=$1  ## oz64
+log=$2     ## /tmp/build-test.log
 
 ## Get the Script Directory
 script_path="${BASH_SOURCE}"
@@ -653,8 +653,8 @@ __build_test__ will call the __Platform-Specific__ Build & Test Script, like for
 ```bash
 ## Build and Test NuttX
 function build_test {
-  local script=$1
-  local log=$2
+  local script=$1  ## oz64
+  local log=$2     ## /tmp/build-test.log
 
   ## Propagate the Return Status from Script
   pushd /tmp
@@ -680,10 +680,10 @@ The code above calls __clean_log__ and __find_messages__.
 __clean_log__ will remove Special Characters from the Log File: [build-test.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75)
 
 ```bash
-## Strip the control chars
+## Strip the Control Characters from the Log File
 function clean_log {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
+  local log_file=$1  ## /tmp/build-test.log
+  local tmp_file=$log_file.tmp  ## /tmp/build-test.log.tmp
   cat $log_file \
     | tr -d '\r' \
     | tr -d '\r' \
@@ -704,9 +704,9 @@ __find_messages__ will search for Warning and Errors, and insert them into the t
 ```bash
 ## Search for Errors and Warnings
 function find_messages {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
-  local msg_file=$log_file.msg
+  local log_file=$1  ## /tmp/build-test.log
+  local tmp_file=$log_file.tmp  ## /tmp/build-test.log.tmp
+  local msg_file=$log_file.msg  ## /tmp/build-test.log.msg
   local pattern='^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$'
   grep '^\*\*\*\*\*' $log_file \
     > $msg_file || true
