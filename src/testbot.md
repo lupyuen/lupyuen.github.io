@@ -207,7 +207,7 @@ expect {
 
 (How to power up Oz64? See below)
 
-Turning our Test Controller into a __Passthrough for NuttX Commands__...
+The Expect Script turns our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
 ## Watch How It Works...
@@ -446,7 +446,7 @@ build-test.sh \
 
 [(__build-test.sh__ is explained here)](https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx)
 
-[(Which calls the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
+[(Calling the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
 
 ![Evidence of a Successful Testing](https://lupyuen.org/images/rewind-bot3.jpg)
 
@@ -478,6 +478,8 @@ NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
 nsh> ostest
 ostest_main: Exiting with status 0
 ```
+
+This __Test Evidence__ becomes a PR Comment (pic above). Yep we're ready to Merge the Pull Request into NuttX!
 
 [(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
 
