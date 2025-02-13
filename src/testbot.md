@@ -149,6 +149,8 @@ expect {
 }
 ```
 
+Even though it's NOT running on Test Controller...
+
 ![Pass Through to Oz64](https://lupyuen.org/images/testbot-flow4.jpg)
 
 # Pass Through to Oz64
@@ -281,6 +283,8 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 expect ./oz64.exp
 ```
 
+Who calls this script? We find out...
+
 ![Test Bot for Pull Requests](https://lupyuen.org/images/testbot-flow6.jpg)
 
 # Test Bot for Pull Requests
@@ -335,7 +339,7 @@ for n in notifications {
 }
 ```
 
-This is how we execute the __Build & Test__ for Oz64. Then post the __Test Log__ as a PR Comment: [main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175)
+__process_pr__ will execute the __Build & Test__ for Oz64. Then post the __Test Log__ as a PR Comment: [main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175)
 
 ```rust
 /// Execute the Build & Test for Oz64. Post the Test Log as a PR Comment.
@@ -361,6 +365,10 @@ async fn process_pr(...) -> Result<...> {
 ```
 
 Finally we're ready for the Big Picture...
+
+[(How to run __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
+
+[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
 ![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
 
@@ -453,11 +461,11 @@ $ git clone https://github.com/apache/nuttx-apps apps  --branch master
 
 $ pushd nuttx ; git reset --hard HEAD ; popd
 HEAD is now at d33f654011 include/stdlib.h: define system() prototype for the flat build
-$ pushd apps ; git reset --hard HEAD ; popd
+$ pushd apps  ; git reset --hard HEAD ; popd
 HEAD is now at f139e56cd testing/libc/wcstombs: Add testing application for wcstombs
 
 NuttX Source: https://github.com/apache/nuttx/tree/d33f6540113b8a5a4392f8a69b1a8b6258669f64
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
+NuttX Apps:   https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
 
 $ cd nuttx
 $ tools/configure.sh milkv_duos:nsh
@@ -472,10 +480,6 @@ ostest_main: Exiting with status 0
 ```
 
 [(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
-
-[(How to run __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
-
-[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/qiBhC5VTkIo)
 
@@ -515,11 +519,13 @@ This script assumes that we have...
 
 - Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
-- Added the Smart Power Plug (and Zigbee Hub) to [__Google Home__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug): _"Oz64 Power"_
+- Added the Smart Power Plug (and Zigbee Hub) to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug): _"Oz64 Power"_ (pic above)
 
-- Installed the [__Google Home Integration__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
+- Installed the [__Google Assistant Integration__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
 
-- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_...
+- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_ (pic below)
+
+And our Test Bot is complete! Except for these security issues...
 
 ![Automations in Home Assistant: Oz64 Power On and Oz64 Power Off](https://lupyuen.org/images/testbot-power.png)
 
