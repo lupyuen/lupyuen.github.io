@@ -80,6 +80,7 @@
 <p>Test Bot shall watch for <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Comments on Pull Requests</strong></a> and start a <strong>NuttX Build and Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Will trigger our PR Test Bot to <strong>Download, Build and Test</strong> the PR Code on <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a> (pic above). Which is super helpful for <strong>Validating Pull Requests</strong> (pic below) before Merging.</p>
+<p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><em>Why are we doing this?</em></p>
 <p>Testing a Pull Request on Real Hardware is a <strong>Compulsory, Cumbersome Chore</strong>. Executed by Unpaid Volunteers who care about Code Quality. Let’s make it a little less painful! 👍</p>
 <p>(Be Mindful: Pull Requests might have <a href="https://lupyuen.github.io/articles/testbot#securing-our-bot"><strong>Security Concerns</strong></a>)</p>
@@ -474,8 +475,9 @@ NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
 nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run our <strong>Test Bot</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run <strong>Test Bot</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
+<p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
 <p><em>We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?</em></p>
