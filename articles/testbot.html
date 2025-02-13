@@ -144,8 +144,8 @@ ostest_main: Exiting with status 0</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="Test Controller (Linux SBC) accepts commands from the Build &amp; Test Server (Ubuntu PC)" /></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
-<p>Our Test Controller <em>(Linux SBC)</em> accepts commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
-<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server runs this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>Our Test Controller <em>(Linux SBC)</em> will accept commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
+<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server will run this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for each command
 set timeout 300
 
@@ -192,7 +192,7 @@ expect {
 <p>Even though it’s NOT running on Test Controller…</p>
 <p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="Pass Through to Oz64" /></p>
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
-<p><em>Erm this Expect Script runs on Build &amp; Test Server? Not Test Controller?</em></p>
+<p><em>Erm this Expect Script will run on Build &amp; Test Server? Not Test Controller?</em></p>
 <p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
 <p>That’s why our <strong>Expect Script</strong> does this on Build &amp; Test Server: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For every 1 character sent, wait 1 millisecond
@@ -236,7 +236,7 @@ expect {
 ## send -s &quot;uname -a\r&quot;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L6065-L6405">(See the <strong>Bot Log</strong>)</a></p>
 <p>(How to power up Oz64? See below)</p>
-<p>The Expect Script turns our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
+<p>The Expect Script will turn our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Watch How It Works...
 ## Build &amp; Test Server: Launches a shell on Test Controller...
 $ ssh test-controller
@@ -307,6 +307,7 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## Start the Expect Script
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000">(Explained here)</a></p>
 <p>Who calls this script? We find out…</p>
 <p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="Test Bot for Pull Requests" /></p>
 <h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
