@@ -537,7 +537,7 @@ curl \
 <li>
 <p><em>Thus we’re running Test Bot the safer way?</em></p>
 <p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving <strong>RISC-V Architecture</strong>.</p>
-<p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we’ll review the PR and click <em>“Like”</em> on the PR Comment.</p>
+<p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we review the PR and click <em>“Like”</em> on the PR Comment.</p>
 </li>
 <li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
@@ -609,8 +609,8 @@ build-test.sh \
 ##   nuttx_hash apps_hash
 ##   nuttx_url  nuttx_ref
 ##   apps_url   apps_ref
-script=$1
-log=$2
+script=$1  ## oz64
+log=$2     ## /tmp/build-test.log
 
 ## Get the Script Directory
 script_path=&quot;${BASH_SOURCE}&quot;
@@ -634,8 +634,8 @@ exit $res</code></pre></div>
 <p><strong>build_test</strong> will call the <strong>Platform-Specific</strong> Build &amp; Test Script, like for Oz64. The Test Log will be recorded into the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L35-L56">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test NuttX
 function build_test {
-  local script=$1
-  local log=$2
+  local script=$1  ## oz64
+  local log=$2     ## /tmp/build-test.log
 
   ## Propagate the Return Status from Script
   pushd /tmp
@@ -655,10 +655,10 @@ function build_test {
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(<strong>Oz64 Build &amp; Test Script</strong> is explained here)</a></p>
 <p>The code above calls <strong>clean_log</strong> and <strong>find_messages</strong>.</p>
 <p><strong>clean_log</strong> will remove Special Characters from the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L56-L75">build-test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Strip the control chars
+<div class="example-wrap"><pre class="language-bash"><code>## Strip the Control Characters from the Log File
 function clean_log {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
+  local log_file=$1  ## /tmp/build-test.log
+  local tmp_file=$log_file.tmp  ## /tmp/build-test.log.tmp
   cat $log_file \
     | tr -d &#39;\r&#39; \
     | tr -d &#39;\r&#39; \
@@ -675,9 +675,9 @@ function clean_log {
 <p><strong>find_messages</strong> will search for Warning and Errors, and insert them into the top of the Log File: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test.sh#L75-L90">build-test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Search for Errors and Warnings
 function find_messages {
-  local log_file=$1
-  local tmp_file=$log_file.tmp
-  local msg_file=$log_file.msg
+  local log_file=$1  ## /tmp/build-test.log
+  local tmp_file=$log_file.tmp  ## /tmp/build-test.log.tmp
+  local msg_file=$log_file.msg  ## /tmp/build-test.log.msg
   local pattern=&#39;^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$&#39;
   grep &#39;^\*\*\*\*\*&#39; $log_file \
     &gt; $msg_file || true
