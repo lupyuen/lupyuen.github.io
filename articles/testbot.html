@@ -107,7 +107,7 @@
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(<strong>Arm32 Boards</strong>: What about STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed for some RISC-V Boards)</a></p>
 <p><em>How shall we test Oz64?</em></p>
-<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
+<p>Test Controller will send these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
 nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 ...
@@ -234,7 +234,7 @@ expect {
 
 ## Omitted: Enter the NuttX Commands and validate the responses
 ## send -s &quot;uname -a\r&quot;</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L6065-L6405">(See the <strong>Bot Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L376-L1491">(See the <strong>Bot Log</strong>)</a></p>
 <p>(How to power up Oz64? See below)</p>
 <p>The Expect Script will turn our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Watch How It Works...
@@ -486,7 +486,7 @@ nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
 nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
-<p>The <strong>Test Evidence</strong> becomes a PR Comment (pic above). With this evidence, we’re ready to Merge the Pull Request into NuttX!</p>
+<p>The <strong>Test Evidence</strong> becomes a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672"><strong>PR Comment</strong></a> (pic above). With this evidence, we can safely Merge the Pull Request into NuttX!</p>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
 <p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
@@ -551,11 +551,12 @@ curl \
 <p><em>Thus we’re running Test Bot the safer way?</em></p>
 <p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving <strong>RISC-V Architecture</strong>.</p>
 <p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we review the PR and click <em>“Like”</em> on the PR Comment.</p>
+<p><img src="https://lupyuen.org/images/remote-pinetime-youtube.png" alt="Remote PineTime Live Stream" /></p>
 </li>
 <li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
 <p>Let’s assume NuttX has been ported to PineTime Smartwatch <em>(Nordic nRF52832)</em>. On our Test Controller <em>(Linux SBC)</em>, we’ll run <a href="https://nuttx.apache.org/docs/latest/quickstart/running.html"><strong>OpenOCD + ST-Link + Semihosting</strong></a> for flashing and testing.</p>
-<p>Watch Faces on PineTime will render on the <strong>LVGL Display</strong>. Our Test Controller shall have a <strong>MIPI CSI Camera</strong>, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.</p>
+<p>Watch Faces on PineTime will render on the <strong>LVGL Display</strong> (pic above). Our Test Controller shall have a <strong>MIPI CSI Camera</strong>, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.</p>
 </li>
 <li>
 <p><em>Can we combine the Test Controller with the Build &amp; Test Server?</em></p>
@@ -701,7 +702,7 @@ function find_messages {
   mv $tmp_file $log_file
 }</code></pre></div>
 <p><em>Why the funny Regex Pattern?</em></p>
-<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180"><strong>Continuous Integration</strong></a> builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
+<p>The <strong>Regex Pattern</strong> above is the same one that NuttX uses to detect errors in our <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L172-L180"><strong>Continuous Integration</strong></a> builds: <a href="https://github.com/apache/nuttx/blob/master/.github/gcc.json">.github/gcc.json</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Filename : Line : Col : warning/error : Message
 ^(.*):(\d+):(\d+):\s+(warning|fatal error|error):\s+(.*)$</code></pre></div>
 <p>Which will match and detect <a href="https://gist.github.com/nuttxpr/62d5cc0da1686174446b3614ea208af0#file-ci-arm-12-log-L1"><strong>GCC Compiler Errors</strong></a> like…</p>
