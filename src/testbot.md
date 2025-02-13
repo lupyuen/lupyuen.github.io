@@ -559,7 +559,7 @@ And our Test Bot is complete! Except for these security issues...
 
 1.  _Has something happened before?_
 
-    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) _(Apache Mynewt)_ to the net for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
+    Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) _(Apache Mynewt)_ to the internet, for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
 1.  _Thus we're running Test Bot the safer way?_
 
