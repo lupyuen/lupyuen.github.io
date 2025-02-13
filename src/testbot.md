@@ -95,9 +95,9 @@ The responses to the above commands are validated by another machine...
 
 _Who controls our Test Controller?_
 
-Our Test Controller _(Linux SBC)_ accepts commands from the __Build & Test Server__ _(Ubuntu PC, pic above)_.
+Our Test Controller _(Linux SBC)_ will accept commands from the __Build & Test Server__ _(Ubuntu PC, pic above)_.
 
-Remember the NuttX Commands from Previous Section? Our Build & Test Server runs this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+Remember the NuttX Commands from Previous Section? Our Build & Test Server will run this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
 
 ```bash
 ## Wait at most 300 seconds for each command
@@ -155,7 +155,7 @@ Even though it's NOT running on Test Controller...
 
 # Pass Through to Oz64
 
-_Erm this Expect Script runs on Build & Test Server? Not Test Controller?_
+_Erm this Expect Script will run on Build & Test Server? Not Test Controller?_
 
 Ah the __NuttX Commands__ above will work, no worries! Build & Test Server _(Ubuntu PC)_ will ask Test Controller _(Linux SBC)_ to __pass them through__ to Oz64.
 
@@ -207,7 +207,7 @@ expect {
 
 (How to power up Oz64? See below)
 
-The Expect Script turns our Test Controller into a __Passthrough for NuttX Commands__...
+The Expect Script will turn our Test Controller into a __Passthrough for NuttX Commands__...
 
 ```bash
 ## Watch How It Works...
@@ -282,6 +282,8 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp
 ```
+
+[(Explained here)](https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000)
 
 Who calls this script? We find out...
 
