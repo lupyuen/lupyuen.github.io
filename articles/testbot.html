@@ -107,7 +107,7 @@
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(<strong>Arm32 Boards</strong>: What about STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed for some RISC-V Boards)</a></p>
 <p><em>How shall we test Oz64?</em></p>
-<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>Test Controller sends these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
 nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 ...
@@ -140,12 +140,12 @@ nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4803688#L456">(See the <strong>Test Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
-<p>The responses to the above commands are validated by another machine…</p>
+<p>Responses to the above commands are validated by another machine…</p>
 <p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="Test Controller (Linux SBC) accepts commands from the Build &amp; Test Server (Ubuntu PC)" /></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>Our Test Controller <em>(Linux SBC)</em> will accept commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
-<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server will run this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server will run this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for each command
 set timeout 300
 
@@ -166,7 +166,7 @@ send -s &quot;ps\r&quot;
 ## Wait for the prompt and enter `ostest`
 expect &quot;nsh&gt; &quot;
 send -s &quot;ostest\r&quot;</code></pre></div>
-<p>The same script shall <strong>Validate the Responses</strong> from Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>The same script shall <strong>Validate the Responses</strong> from Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L92-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Check the response from OSTest`...
 expect {
 
@@ -194,7 +194,7 @@ expect {
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script will run on Build &amp; Test Server? Not Test Controller?</em></p>
 <p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
-<p>That’s why our <strong>Expect Script</strong> does this on Build &amp; Test Server: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp">oz64.exp</a></p>
+<p>That’s why our <strong>Expect Script</strong> does this on Build &amp; Test Server: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L1-L57">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## For every 1 character sent, wait 1 millisecond
 ## Wait at most 60 seconds for every command
 set send_slow {1 0.001}
