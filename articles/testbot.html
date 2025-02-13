@@ -340,8 +340,8 @@ expect ./oz64.exp</code></pre></div>
   .activity()       <span class="comment">// Get User Activity from GitHub
   </span>.notifications()  <span class="comment">// Notifications specifically
   </span>.list()           <span class="comment">// Return as a list
-  </span>.all(<span class="bool-val">true</span>)        <span class="comment">// Read and Unread Notifications
-  </span>.send()           <span class="comment">// Fetch from GitHub
+  </span>.all(<span class="bool-val">true</span>)        <span class="comment">// All Notifications: Read and Unread
+  </span>.send()           <span class="comment">// Send the Request to GitHub
   </span>.<span class="kw">await</span><span class="question-mark">?</span>;          <span class="comment">// Block until completed
 
 // For Every Notification...
@@ -366,7 +366,8 @@ expect ./oz64.exp</code></pre></div>
 }</code></pre></div>
 <p><strong>process_pr</strong> will execute the <strong>Build &amp; Test</strong> for Oz64. Then post the <strong>Test Log</strong> as a PR Comment: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Execute the Build &amp; Test for Oz64. Post the Test Log as a PR Comment.
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Execute the Build &amp; Test for Oz64.
+/// Post the Test Log as a PR Comment.
 </span><span class="kw">async fn </span>process_pr(...) -&gt; <span class="prelude-ty">Result</span>&lt;...&gt; {
 
   <span class="comment">// Fetch the PR from GitHub
@@ -377,9 +378,13 @@ expect ./oz64.exp</code></pre></div>
   </span><span class="kw">let </span>args = get_command(issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
 
   <span class="comment">// Build and Test the PR on Oz64
-  </span><span class="kw">let </span>response_text = build_test(<span class="kw-2">&amp;</span>pr, target, script).<span class="kw">await</span><span class="question-mark">?</span>;
+  </span><span class="kw">let </span>response_text = build_test(
+    <span class="kw-2">&amp;</span>pr,     <span class="comment">// Pull Request fetched from GitHub
+    </span>target,  <span class="comment">// "milkv_duos:nsh"
+    </span>script   <span class="comment">// "oz64"
+  </span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
-  <span class="comment">// Post the PR Comment. Return OK.
+  <span class="comment">// Post the PR Comment
   </span><span class="kw">let </span>comment_text =
     header.to_string() + <span class="string">"\n\n" </span>+
     <span class="kw-2">&amp;</span>response_text;
@@ -391,7 +396,7 @@ expect ./oz64.exp</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="bot-calls-test-script"><a class="doc-anchor" href="#bot-calls-test-script">§</a>6 Bot calls Test Script</h1>
-<p><em>What’s inside build_test?</em></p>
+<p><em>Test Bot calls build_test. What’s inside build_test?</em></p>
 <p>It will call a script to execute the <strong>Oz64 Build &amp; Test</strong>. And record the Test Log as a <strong>GitLab Snippet</strong>: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Build and Test the PR. Return the Build-Test Result.
@@ -423,13 +428,14 @@ expect ./oz64.exp</code></pre></div>
   <span class="kw">let </span>snippet_url = create_snippet(<span class="kw-2">&amp;</span>log_content).<span class="kw">await</span><span class="question-mark">?</span>;
 
   <span class="comment">// Extract the essential bits from Test Log
-  // Return the Extracted Test Log and Snippet URL
   </span><span class="kw">let </span>log_extract = extract_log(<span class="kw-2">&amp;</span>snippet_url).<span class="kw">await</span><span class="question-mark">?</span>;
   <span class="kw">let </span>log_content = log_extract.join(<span class="string">"\n"</span>);
   <span class="kw">let </span><span class="kw-2">mut </span>result = 
     <span class="kw">if </span>status.success() { <span class="macro">format!</span>(<span class="string">"Build and Test Successful ({target})\n"</span>) }
     <span class="kw">else </span>{ <span class="macro">format!</span>(<span class="string">"Build and Test **FAILED** ({target})\n"</span>) };
-  result.push_str(<span class="kw-2">&amp;</span>snippet_url);
+
+  <span class="comment">// Return the Extracted Test Log and Snippet URL
+  </span>result.push_str(<span class="kw-2">&amp;</span>snippet_url);
   result.push_str(<span class="kw-2">&amp;</span>log_content);
   <span class="prelude-val">Ok</span>(result)
 }</code></pre></div>
@@ -457,7 +463,8 @@ build-test.sh \
 <p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="Evidence of a Successful Testing" /></p>
 <p><em>What about the essential bits?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a <strong>Successful Test</strong>: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Build and Test Successful (milkv_duos:nsh)
+<div class="example-wrap"><pre class="language-bash"><code>## Extracted Test Log will look like this...
+## Build and Test Successful (milkv_duos:nsh)
 $ git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
 $ git clone https://github.com/apache/nuttx-apps apps  --branch master
 
@@ -479,7 +486,7 @@ nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
 nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
-<p>This <strong>Test Evidence</strong> becomes a PR Comment (pic above). Yep we’re ready to Merge the Pull Request into NuttX!</p>
+<p>The <strong>Test Evidence</strong> becomes a PR Comment (pic above). With this evidence, we’re ready to Merge the Pull Request into NuttX!</p>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
 <p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
