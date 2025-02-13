@@ -517,7 +517,8 @@ export HOME_ASSISTANT_SERVER=luppys-mac-mini.local:8123
 ## export HOME_ASSISTANT_TOKEN=xxxx
 . $HOME/home-assistant-token.sh
 
-## Call Home Assistant API: Power Oz64 On or Off
+## Call the Home Assistant API:
+## Power Oz64 On or Off
 curl \
   -X POST \
   -H "Authorization: Bearer $HOME_ASSISTANT_TOKEN" \
@@ -530,11 +531,19 @@ This script assumes that we have...
 
 - Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
-- Added the Smart Power Plug (and Zigbee Hub) to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug): _"Oz64 Power"_ (pic above)
+  _(Works fine with Docker)_
+
+- Added the Smart Power Plug (and Zigbee Hub) to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+
+  _"Oz64 Power" (pic above)_
 
 - Installed the [__Google Assistant SDK__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
 
-- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant: _"Oz64 Power On"_ and _"Oz64 Power Off"_ (pic below)
+  _(So we don't need Zigbee programming)_
+
+- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant
+
+  _"Oz64 Power On"_ and _"Oz64 Power Off" (pic below)_
 
 And our Test Bot is complete! Except for these security issues...
 
