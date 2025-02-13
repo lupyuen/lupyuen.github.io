@@ -48,7 +48,7 @@ With an _(inexpensive)_ Arm64 Linux SBC, called the __Test Controller__. Oz64 wo
 
 _How shall we test Oz64?_
 
-Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
 
 ```bash
 ## Record the NuttX Commit Hash
@@ -87,7 +87,7 @@ ostest_main: Exiting with status 0
 
 [(Why we test __hello__ and __getprime__ twice)](https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906)
 
-The responses to the above commands are validated by another machine...
+Responses to the above commands are validated by another machine...
 
 ![Test Controller (Linux SBC) accepts commands from the Build & Test Server (Ubuntu PC)](https://lupyuen.org/images/testbot-flow3.jpg)
 
@@ -97,7 +97,7 @@ _Who controls our Test Controller?_
 
 Our Test Controller _(Linux SBC)_ will accept commands from the __Build & Test Server__ _(Ubuntu PC, pic above)_.
 
-Remember the NuttX Commands from Previous Section? Our Build & Test Server will run this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+Remember the NuttX Commands from Previous Section? Our Build & Test Server will run this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
 
 ```bash
 ## Wait at most 300 seconds for each command
@@ -122,7 +122,7 @@ expect "nsh> "
 send -s "ostest\r"
 ```
 
-The same script shall __Validate the Responses__ from Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+The same script shall __Validate the Responses__ from Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L92-L114)
 
 ```bash
 ## Check the response from OSTest`...
@@ -159,7 +159,7 @@ _Erm this Expect Script will run on Build & Test Server? Not Test Controller?_
 
 Ah the __NuttX Commands__ above will work, no worries! Build & Test Server _(Ubuntu PC)_ will ask Test Controller _(Linux SBC)_ to __pass them through__ to Oz64.
 
-That's why our __Expect Script__ does this on Build & Test Server: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp)
+That's why our __Expect Script__ does this on Build & Test Server: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L1-L57)
 
 ```bash
 ## For every 1 character sent, wait 1 millisecond
