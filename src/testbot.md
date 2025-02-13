@@ -48,7 +48,7 @@ With an _(inexpensive)_ Arm64 Linux SBC, called the __Test Controller__. Oz64 wo
 
 _How shall we test Oz64?_
 
-Test Controller sends these __NuttX Commands__ to Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
+Test Controller will send these __NuttX Commands__ to Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
 
 ```bash
 ## Record the NuttX Commit Hash
@@ -203,7 +203,7 @@ expect {
 ## send -s "uname -a\r"
 ```
 
-[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L6065-L6405)
+[(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L376-L1491)
 
 (How to power up Oz64? See below)
 
@@ -488,7 +488,7 @@ nsh> ostest
 ostest_main: Exiting with status 0
 ```
 
-The __Test Evidence__ becomes a PR Comment (pic above). With this evidence, we're ready to Merge the Pull Request into NuttX!
+The __Test Evidence__ becomes a [__PR Comment__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672) (pic above). With this evidence, we can safely Merge the Pull Request into NuttX!
 
 [(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
 
@@ -567,11 +567,13 @@ And our Test Bot is complete! Except for these security issues...
     
     It gets better! Soon: Test Bot will run non-stop and push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to our phones, when it's triggered. To activate the PR Test, we review the PR and click _"Like"_ on the PR Comment.
 
+    ![Remote PineTime Live Stream](https://lupyuen.org/images/remote-pinetime-youtube.png)
+
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
     Let's assume NuttX has been ported to PineTime Smartwatch _(Nordic nRF52832)_. On our Test Controller _(Linux SBC)_, we'll run [__OpenOCD + ST-Link + Semihosting__](https://nuttx.apache.org/docs/latest/quickstart/running.html) for flashing and testing.
 
-    Watch Faces on PineTime will render on the __LVGL Display__. Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.
+    Watch Faces on PineTime will render on the __LVGL Display__ (pic above). Our Test Controller shall have a __MIPI CSI Camera__, that will snap a pic of the LVGL Display. And attach the pic to the Test Log, for Manual Validation.
 
 1.  _Can we combine the Test Controller with the Build & Test Server?_
 
@@ -738,7 +740,7 @@ function find_messages {
 
 _Why the funny Regex Pattern?_
 
-The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our [__Continuous Integration__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L180) builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
+The __Regex Pattern__ above is the same one that NuttX uses to detect errors in our [__Continuous Integration__](https://github.com/apache/nuttx/blob/master/.github/workflows/build.yml#L172-L180) builds: [.github/gcc.json](https://github.com/apache/nuttx/blob/master/.github/gcc.json)
 
 ```bash
 ## Filename : Line : Col : warning/error : Message
