@@ -14,6 +14,8 @@ Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apac
 
 Will trigger our PR Test Bot to __Download, Build and Test__ the PR Code on [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000) (pic above). Which is super helpful for __Validating Pull Requests__ (pic below) before Merging.
 
+[(Watch the __Demo on YouTube__)](https://youtu.be/qiBhC5VTkIo)
+
 _Why are we doing this?_
 
 Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. Executed by Unpaid Volunteers who care about Code Quality. Let's make it a little less painful! 👍
@@ -471,9 +473,11 @@ ostest_main: Exiting with status 0
 
 [(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
 
-[(How to run our __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
+[(How to run __Test Bot__)](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh)
 
 [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/qiBhC5VTkIo)
 
 ![IKEA Smart Power Plug and IKEA Zigbee Hub](https://lupyuen.org/images/testbot-ikea.png)
 
