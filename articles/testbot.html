@@ -9,13 +9,13 @@
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS)" 
+    content="Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="We're always Making Things Better (and making better things) with Apache NuttX RTOS. Our new Test Bot shall watch for Comments on Pull Requests and start a NuttX Build and Test on Real Hardware: PINE64 Oz64 SG2000 RISC-V SBC."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="We're always Making Things Better (and making better things) with Apache NuttX RTOS. Our new Test Bot shall watch for Comments on Pull Requests and start a NuttX Build and Test on Real Hardware: PINE64 Oz64 SG2000 RISC-V SBC.">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/testbot-title.jpg">
 <meta property="og:type" 
@@ -74,9 +74,9 @@
 <li><a href="#power-up-our-oz64-sbc" title="Power Up our Oz64 SBC">7 Power Up our Oz64 SBC</a><ul></ul></li>
 <li><a href="#securing-our-bot" title="Securing Our Bot">8 Securing Our Bot</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>28 Feb 2025</em></p>
+<li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="PINE64 Oz64 SG2000 RISC-V SBC)" /></p>
-<p>We’re <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. Today we talk about our new <strong>Test Bot for Pull Requests</strong>.</p>
+<p>We’re always <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. Today we talk about our new <strong>Test Bot for Pull Requests</strong>.</p>
 <p>Test Bot shall watch for <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Comments on Pull Requests</strong></a> and start a <strong>NuttX Build and Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Will trigger our PR Test Bot to <strong>Download, Build and Test</strong> the PR Code on <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a> (pic above). Which is super helpful for <strong>Validating Pull Requests</strong> (pic below) before Merging.</p>
