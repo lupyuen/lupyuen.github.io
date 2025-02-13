@@ -189,6 +189,7 @@ expect {
     exit 1 
   }
 }</code></pre></div>
+<p>Even though it’s NOT running on Test Controller…</p>
 <p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="Pass Through to Oz64" /></p>
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script runs on Build &amp; Test Server? Not Test Controller?</em></p>
@@ -306,6 +307,7 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 ## Start the Expect Script
 ## That runs the NuttX Test on Oz64
 expect ./oz64.exp</code></pre></div>
+<p>Who calls this script? We find out…</p>
 <p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="Test Bot for Pull Requests" /></p>
 <h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
 <p><em>How will a Pull Request trigger the script above?</em></p>
@@ -361,7 +363,7 @@ expect ./oz64.exp</code></pre></div>
   // Post the Test Log as a PR Comment
   </span>process_pr(<span class="kw-2">&amp;</span>pulls, <span class="kw-2">&amp;</span>issues, pr_id).<span class="kw">await</span><span class="question-mark">?</span>;
 }</code></pre></div>
-<p>This is how we execute the <strong>Build &amp; Test</strong> for Oz64. Then post the <strong>Test Log</strong> as a PR Comment: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175">main.rs</a></p>
+<p><strong>process_pr</strong> will execute the <strong>Build &amp; Test</strong> for Oz64. Then post the <strong>Test Log</strong> as a PR Comment: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Execute the Build &amp; Test for Oz64. Post the Test Log as a PR Comment.
 </span><span class="kw">async fn </span>process_pr(...) -&gt; <span class="prelude-ty">Result</span>&lt;...&gt; {
@@ -384,6 +386,8 @@ expect ./oz64.exp</code></pre></div>
   <span class="prelude-val">Ok</span>(())
 }</code></pre></div>
 <p>Finally we’re ready for the Big Picture…</p>
+<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run <strong>Test Bot</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="bot-calls-test-script"><a class="doc-anchor" href="#bot-calls-test-script">§</a>6 Bot calls Test Script</h1>
 <p><em>What’s inside build_test?</em></p>
@@ -458,11 +462,11 @@ $ git clone https://github.com/apache/nuttx-apps apps  --branch master
 
 $ pushd nuttx ; git reset --hard HEAD ; popd
 HEAD is now at d33f654011 include/stdlib.h: define system() prototype for the flat build
-$ pushd apps ; git reset --hard HEAD ; popd
+$ pushd apps  ; git reset --hard HEAD ; popd
 HEAD is now at f139e56cd testing/libc/wcstombs: Add testing application for wcstombs
 
 NuttX Source: https://github.com/apache/nuttx/tree/d33f6540113b8a5a4392f8a69b1a8b6258669f64
-NuttX Apps: https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
+NuttX Apps:   https://github.com/apache/nuttx-apps/tree/f139e56cd62a30d6edcd7207c7e4cbc6e9b8b7d1
 
 $ cd nuttx
 $ tools/configure.sh milkv_duos:nsh
@@ -475,8 +479,6 @@ NuttX 10.3.0 d33f654011 Feb  7 2025 06:49:26 risc-v milkv_duos
 nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run <strong>Test Bot</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
 <p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
@@ -509,15 +511,16 @@ curl \
 <p>Installed a <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Home Assistant Server</strong></a></p>
 </li>
 <li>
-<p>Added the Smart Power Plug (and Zigbee Hub) to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Home</strong></a>: <em>“Oz64 Power”</em></p>
+<p>Added the Smart Power Plug (and Zigbee Hub) to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant</strong></a>: <em>“Oz64 Power”</em> (pic above)</p>
 </li>
 <li>
-<p>Installed the <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Home Integration</strong></a> for Home Assistant</p>
+<p>Installed the <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant Integration</strong></a> for Home Assistant</p>
 </li>
 <li>
-<p>Created the <a href="https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api"><strong>Power Automation</strong></a> in Home Assistant: <em>“Oz64 Power On”</em> and <em>“Oz64 Power Off”</em>…</p>
+<p>Created the <a href="https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api"><strong>Power Automation</strong></a> in Home Assistant: <em>“Oz64 Power On”</em> and <em>“Oz64 Power Off”</em> (pic below)</p>
 </li>
 </ul>
+<p>And our Test Bot is complete! Except for these security issues…</p>
 <p><img src="https://lupyuen.org/images/testbot-power.png" alt="Automations in Home Assistant: Oz64 Power On and Oz64 Power Off" /></p>
 <h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
 <ol>
