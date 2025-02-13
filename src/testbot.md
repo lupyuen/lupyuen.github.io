@@ -315,8 +315,8 @@ let notifications = octocrab
   .activity()       // Get User Activity from GitHub
   .notifications()  // Notifications specifically
   .list()           // Return as a list
-  .all(true)        // Read and Unread Notifications
-  .send()           // Fetch from GitHub
+  .all(true)        // All Notifications: Read and Unread
+  .send()           // Send the Request to GitHub
   .await?;          // Block until completed
 
 // For Every Notification...
@@ -344,7 +344,8 @@ for n in notifications {
 __process_pr__ will execute the __Build & Test__ for Oz64. Then post the __Test Log__ as a PR Comment: [main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L111-L175)
 
 ```rust
-/// Execute the Build & Test for Oz64. Post the Test Log as a PR Comment.
+/// Execute the Build & Test for Oz64.
+/// Post the Test Log as a PR Comment.
 async fn process_pr(...) -> Result<...> {
 
   // Fetch the PR from GitHub
@@ -355,9 +356,13 @@ async fn process_pr(...) -> Result<...> {
   let args = get_command(issues, pr_id).await?;
 
   // Build and Test the PR on Oz64
-  let response_text = build_test(&pr, target, script).await?;
+  let response_text = build_test(
+    &pr,     // Pull Request fetched from GitHub
+    target,  // "milkv_duos:nsh"
+    script   // "oz64"
+  ).await?;
 
-  // Post the PR Comment. Return OK.
+  // Post the PR Comment
   let comment_text =
     header.to_string() + "\n\n" +
     &response_text;
@@ -376,7 +381,7 @@ Finally we're ready for the Big Picture...
 
 # Bot calls Test Script
 
-_What's inside build_test?_
+_Test Bot calls build_test. What's inside build_test?_
 
 It will call a script to execute the __Oz64 Build & Test__. And record the Test Log as a __GitLab Snippet__: [main.rs](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278)
 
@@ -410,12 +415,13 @@ async fn build_test(pr: &PullRequest, target: &str, script: &str) -> Result<Stri
   let snippet_url = create_snippet(&log_content).await?;
 
   // Extract the essential bits from Test Log
-  // Return the Extracted Test Log and Snippet URL
   let log_extract = extract_log(&snippet_url).await?;
   let log_content = log_extract.join("\n");
   let mut result = 
     if status.success() { format!("Build and Test Successful ({target})\n") }
     else { format!("Build and Test **FAILED** ({target})\n") };
+
+  // Return the Extracted Test Log and Snippet URL
   result.push_str(&snippet_url);
   result.push_str(&log_content);
   Ok(result)
@@ -457,6 +463,7 @@ _What about the essential bits?_
 [__extract_log__](https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370) will pick out the evidence of a __Successful Test__: _Commit Hash, Build Steps, OSTest Result (or Crash Dump)_
 
 ```bash
+## Extracted Test Log will look like this...
 ## Build and Test Successful (milkv_duos:nsh)
 $ git clone https://github.com/USERNAME/nuttx    nuttx --branch BRANCH
 $ git clone https://github.com/apache/nuttx-apps apps  --branch master
@@ -481,7 +488,7 @@ nsh> ostest
 ostest_main: Exiting with status 0
 ```
 
-This __Test Evidence__ becomes a PR Comment (pic above). Yep we're ready to Merge the Pull Request into NuttX!
+The __Test Evidence__ becomes a PR Comment (pic above). With this evidence, we're ready to Merge the Pull Request into NuttX!
 
 [(See the __Extracted Log__)](https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672)
 
