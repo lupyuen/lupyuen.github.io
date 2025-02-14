@@ -341,17 +341,17 @@ expect ./oz64.exp</code></pre></div>
   </span>.list()           <span class="comment">// Return as a list
   </span>.all(<span class="bool-val">true</span>)        <span class="comment">// All Notifications: Read and Unread
   </span>.send()           <span class="comment">// Send the Request to GitHub
-  </span>.<span class="kw">await</span><span class="question-mark">?</span>;          <span class="comment">// Block until completed
+  </span>.<span class="kw">await</span><span class="question-mark">?</span>;          <span class="comment">// Wait until completed
 
 // For Every Notification...
 </span><span class="kw">for </span>n <span class="kw">in </span>notifications {
 
-  <span class="comment">// Handle only Mentions
+  <span class="comment">// We handle only Mentions
   </span><span class="kw">let </span>reason = <span class="kw-2">&amp;</span>n.reason;
   <span class="kw">if </span>reason != <span class="string">"mention" </span>{ <span class="kw">continue</span>; }
 
-  <span class="comment">// Fetch the PR from the Notification
-  // Handle only PR Notifications
+  <span class="comment">// We handle only PR Notifications
+  // Fetch the PR from the Notification
   </span><span class="kw">let </span>pr_url = n.subject.url.clone().unwrap();  <span class="comment">// https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
   </span><span class="kw">if </span>!pr_url.as_str().contains(<span class="string">"/pulls/"</span>) { <span class="kw">continue</span>; }
 
@@ -521,7 +521,7 @@ curl \
 <p><em>(Works fine with Docker)</em></p>
 </li>
 <li>
-<p>Added the Smart Power Plug (and Zigbee Hub) to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant</strong></a></p>
+<p>Added the Smart Power Plug to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant</strong></a></p>
 <p><em>“Oz64 Power” (pic above)</em></p>
 </li>
 <li>
@@ -538,7 +538,7 @@ curl \
 <h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
 <ol>
 <li>
-<p><em>Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?</em></p>
+<p><em>Our Bot shall Auto-Build and Auto-Test any Pull Request. What could possibly go wrong?</em></p>
 <p>Plenty! The Pull Request is awaiting <strong>Manual Review</strong>. It might contain <strong>Unauthorised Code</strong> that will be executed by our Bot. <em>(Think: Makefiles with Malicious Scripts inside)</em></p>
 <p>Or the Runtime Code might disrupt the <strong>Local Network</strong> hosting our Bot. Also it might break out of the <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting Environment</strong></a> and mess up our Host Machine.</p>
 </li>
@@ -547,7 +547,7 @@ curl \
 <p>Five Years Ago: I connected a <a href="https://github.com/lupyuen/remote-pinetime-bot"><strong>PineTime Smartwatch</strong></a> <em>(Apache Mynewt)</em> to the internet, for anyone to test their firmware. Some kind folks disclosed that they could break out of the <a href="https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues"><strong>Semihosting Environment</strong></a> and access my computer.</p>
 </li>
 <li>
-<p><em>Thus we’re running Test Bot the safer way?</em></p>
+<p><em>Thus we’re running it the safer way?</em></p>
 <p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving <strong>RISC-V Architecture</strong>.</p>
 <p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we review the PR and click <em>“Like”</em> on the PR Comment.</p>
 <p><img src="https://lupyuen.org/images/remote-pinetime-youtube.png" alt="Remote PineTime Live Stream" /></p>
@@ -650,6 +650,7 @@ function build_test {
   local script=$1  ## oz64
   local log=$2     ## /tmp/build-test.log
 
+  ## Call the Platform-Specific Build &amp; Test Script: build-test-oz64.sh
   ## Propagate the Return Status from Script
   pushd /tmp
   set +e  ## Ignore errors
