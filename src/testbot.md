@@ -42,9 +42,9 @@ With an _(inexpensive)_ Arm64 Linux SBC, called the __Test Controller__. Oz64 wo
 
 ![Connect our Oz64 SBC to Test Controller](https://lupyuen.org/images/testbot-flow2.jpg)
 
-[(__Arm32 Boards__: What about STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
+[(__Arm32 Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
-[(__GPIO Wiring__ might be needed for some RISC-V Boards)](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
+[(__GPIO Wiring__ might be needed for RISC-V Boards)](https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer)
 
 _How shall we test Oz64?_
 
@@ -55,7 +55,7 @@ Test Controller will send these __NuttX Commands__ to Oz64: [oz64.exp](https://g
 nsh> uname -a
 NuttX 10.3.0 d33f654011 ...
 
-## Check for corrupted Heap Memory
+## Check the Heap Memory
 nsh> free
 total: 2061312 / used: 11624 / free: 2049688 ...
 
@@ -97,7 +97,7 @@ _Who controls our Test Controller?_
 
 Our Test Controller _(Linux SBC)_ will accept commands from the __Build & Test Server__ _(Ubuntu PC, pic above)_.
 
-Remember the NuttX Commands from Previous Section? Our Build & Test Server will run this __Expect Script__ to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
+Remember the NuttX Commands from Previous Section? Our Build & Test Server will run this [__Expect Script__](https://core.tcl-lang.org/expect/index) to send the commands to Oz64, passing through the Test Controller: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114)
 
 ```bash
 ## Wait at most 300 seconds for each command
@@ -125,7 +125,7 @@ send -s "ostest\r"
 The same script shall __Validate the Responses__ from Oz64: [oz64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L92-L114)
 
 ```bash
-## Check the response from OSTest`...
+## Check the response from OSTest...
 expect {
 
   ## If OSTest completes successfully...
@@ -169,7 +169,6 @@ set timeout 60
 
 ## Connect from Build & Test Server (Ubuntu PC)
 ## to Test Controller (Linux SBC) over SSH
-## Will execute `ssh test-controller`
 ## Then wake up the SBC
 spawn ssh test-controller
 send -s "\r"
@@ -205,7 +204,7 @@ expect {
 
 [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L376-L1491)
 
-(How to power up Oz64? See below)
+[(How to __Power up Oz64__)](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc)
 
 The Expect Script will turn our Test Controller into a __Passthrough for NuttX Commands__...
 
@@ -225,7 +224,7 @@ NuttX 10.3.0 d33f654011 ...
 ## Build & Test Server: Validates the responses
 ```
 
-(Can we combine the Linux SBC and Ubuntu PC? We'll come back to this)
+[(Combining the __Linux SBC__ and __Ubuntu PC__)](https://lupyuen.github.io/articles/testbot#securing-our-bot)
 
 ![Build and Test Script](https://lupyuen.org/images/testbot-flow5.jpg)
 
