@@ -562,7 +562,7 @@ And our Test Bot is complete! Except for these security issues...
 
     Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) _(Apache Mynewt)_ to the internet, for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
-1.  _Thus we're running it the safer way?_
+1.  _Thus we're doing it the wiser, safer way?_
 
     Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving __RISC-V Architecture__.
     
