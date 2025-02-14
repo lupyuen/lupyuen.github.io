@@ -578,9 +578,7 @@ And our Test Bot is complete! Except for these security issues...
 
 1.  _Can we combine the Test Controller with the Build & Test Server?_
 
-    Yeah we could combine the __Test Controller__ _(Linux SBC)_ with the __Build & Test Server__ _(Ubuntu PC)_. Though the Current Design will scale better with __Multiple Test Controllers__...
-
-    _(Too bad we don't have a solution for Swapping SD Cards)_
+    Yeah we could combine the __Test Controller__ _(Linux SBC)_ with the __Build & Test Server__ _(Ubuntu PC)_. Though the Current Design will scale better with __Multiple Test Controllers__ and a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/)...
 
 ![Multiple Test Controllers](https://lupyuen.org/images/testbot-multi.jpg)
 
