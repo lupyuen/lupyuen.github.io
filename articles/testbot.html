@@ -104,15 +104,15 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="Connect our Oz64 SBC to Test Controller" /></p>
-<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(<strong>Arm32 Boards</strong>: What about STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed for some RISC-V Boards)</a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(<strong>Arm32 Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed for RISC-V Boards)</a></p>
 <p><em>How shall we test Oz64?</em></p>
 <p>Test Controller will send these <strong>NuttX Commands</strong> to Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Record the NuttX Commit Hash
 nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 ...
 
-## Check for corrupted Heap Memory
+## Check the Heap Memory
 nsh&gt; free
 total: 2061312 / used: 11624 / free: 2049688 ...
 
@@ -145,7 +145,7 @@ ostest_main: Exiting with status 0</code></pre></div>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>Our Test Controller <em>(Linux SBC)</em> will accept commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
-<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server will run this <strong>Expect Script</strong> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
+<p>Remember the NuttX Commands from Previous Section? Our Build &amp; Test Server will run this <a href="https://core.tcl-lang.org/expect/index"><strong>Expect Script</strong></a> to send the commands to Oz64, passing through the Test Controller: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L56-L114">oz64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for each command
 set timeout 300
 
@@ -167,7 +167,7 @@ send -s &quot;ps\r&quot;
 expect &quot;nsh&gt; &quot;
 send -s &quot;ostest\r&quot;</code></pre></div>
 <p>The same script shall <strong>Validate the Responses</strong> from Oz64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64.exp#L92-L114">oz64.exp</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Check the response from OSTest`...
+<div class="example-wrap"><pre class="language-bash"><code>## Check the response from OSTest...
 expect {
 
   ## If OSTest completes successfully...
@@ -202,7 +202,6 @@ set timeout 60
 
 ## Connect from Build &amp; Test Server (Ubuntu PC)
 ## to Test Controller (Linux SBC) over SSH
-## Will execute `ssh test-controller`
 ## Then wake up the SBC
 spawn ssh test-controller
 send -s &quot;\r&quot;
@@ -235,7 +234,7 @@ expect {
 ## Omitted: Enter the NuttX Commands and validate the responses
 ## send -s &quot;uname -a\r&quot;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97#file-gistfile1-txt-L376-L1491">(See the <strong>Bot Log</strong>)</a></p>
-<p>(How to power up Oz64? See below)</p>
+<p><a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc">(How to <strong>Power up Oz64</strong>)</a></p>
 <p>The Expect Script will turn our Test Controller into a <strong>Passthrough for NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Watch How It Works...
 ## Build &amp; Test Server: Launches a shell on Test Controller...
@@ -250,7 +249,7 @@ nsh&gt; uname -a
 NuttX 10.3.0 d33f654011 ...
 
 ## Build &amp; Test Server: Validates the responses</code></pre></div>
-<p>(Can we combine the Linux SBC and Ubuntu PC? We’ll come back to this)</p>
+<p><a href="https://lupyuen.github.io/articles/testbot#securing-our-bot">(Combining the <strong>Linux SBC</strong> and <strong>Ubuntu PC</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot-flow5.jpg" alt="Build and Test Script" /></p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>4 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
