@@ -224,6 +224,8 @@ NuttX 10.3.0 d33f654011 ...
 ## Build & Test Server: Validates the responses
 ```
 
+Before the testing, we need to build NuttX...
+
 [(Combining the __Linux SBC__ and __Ubuntu PC__)](https://lupyuen.github.io/articles/testbot#securing-our-bot)
 
 ![Build and Test Script](https://lupyuen.org/images/testbot-flow5.jpg)
