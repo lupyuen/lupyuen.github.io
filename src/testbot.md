@@ -316,17 +316,17 @@ let notifications = octocrab
   .list()           // Return as a list
   .all(true)        // All Notifications: Read and Unread
   .send()           // Send the Request to GitHub
-  .await?;          // Block until completed
+  .await?;          // Wait until completed
 
 // For Every Notification...
 for n in notifications {
 
-  // Handle only Mentions
+  // We handle only Mentions
   let reason = &n.reason;
   if reason != "mention" { continue; }
 
+  // We handle only PR Notifications
   // Fetch the PR from the Notification
-  // Handle only PR Notifications
   let pr_url = n.subject.url.clone().unwrap();  // https://api.github.com/repos/lupyuen2/wip-nuttx/pulls/88
   if !pr_url.as_str().contains("/pulls/") { continue; }
 
@@ -532,7 +532,7 @@ This script assumes that we have...
 
   _(Works fine with Docker)_
 
-- Added the Smart Power Plug (and Zigbee Hub) to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+- Added the Smart Power Plug to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
 
   _"Oz64 Power" (pic above)_
 
@@ -550,7 +550,7 @@ And our Test Bot is complete! Except for these security issues...
 
 # Securing Our Bot
 
-1.  _Our Bot shall auto-build and auto-test any Pull Request. What could possibly go wrong?_
+1.  _Our Bot shall Auto-Build and Auto-Test any Pull Request. What could possibly go wrong?_
 
     Plenty! The Pull Request is awaiting __Manual Review__. It might contain __Unauthorised Code__ that will be executed by our Bot. _(Think: Makefiles with Malicious Scripts inside)_
 
@@ -560,7 +560,7 @@ And our Test Bot is complete! Except for these security issues...
 
     Five Years Ago: I connected a [__PineTime Smartwatch__](https://github.com/lupyuen/remote-pinetime-bot) _(Apache Mynewt)_ to the internet, for anyone to test their firmware. Some kind folks disclosed that they could break out of the [__Semihosting Environment__](https://github.com/lupyuen/remote-pinetime-bot?tab=readme-ov-file#security-issues) and access my computer.
 
-1.  _Thus we're running Test Bot the safer way?_
+1.  _Thus we're running it the safer way?_
 
     Indeed. Today we [__Start Manually__](https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh) our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving __RISC-V Architecture__.
     
@@ -675,6 +675,7 @@ function build_test {
   local script=$1  ## oz64
   local log=$2     ## /tmp/build-test.log
 
+  ## Call the Platform-Specific Build & Test Script: build-test-oz64.sh
   ## Propagate the Return Status from Script
   pushd /tmp
   set +e  ## Ignore errors
