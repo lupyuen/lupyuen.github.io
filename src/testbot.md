@@ -6,7 +6,7 @@
 
 We're always [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
-Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and start a __NuttX Build and Test__ on Real Hardware. This PR Comment...
+Test Bot shall watch for [__Comments on Pull Requests__](https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894) and start a __NuttX Build + Test__ on Real Hardware. This PR Comment...
 
 ```bash
 @nuttxpr test oz64:nsh
@@ -246,7 +246,7 @@ The Expect Script above is called by our __Build & Test Script__ that will...
 
 - So Test Controller will __Boot Oz64__ _(over TFTP)_
 
-- And send __Test Commands__ _(to NuttX Shell)_
+- And forward __Test Commands__ _(to NuttX Shell)_
 
 Like so: [build-test-oz64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-oz64.sh)
 
@@ -587,6 +587,8 @@ And our Test Bot is complete! Except for these security issues...
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
+
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43060183)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 

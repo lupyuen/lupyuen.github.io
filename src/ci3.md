@@ -479,6 +479,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Auto-Rewind for Daily Test (Apache NuttX RTOS)"__](https://lupyuen.org/articles/rewind.html)
 
+- [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

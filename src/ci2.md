@@ -519,6 +519,8 @@ We have more stories about __NuttX Continuous Integration__ in these articles...
 
 - [__"Auto-Rewind for Daily Test (Apache NuttX RTOS)"__](https://lupyuen.org/articles/rewind.html)
 
+- [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
+
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

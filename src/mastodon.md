@@ -461,6 +461,8 @@ But First...
 
 - [__"Fixing a uname bug (Apache NuttX RTOS)"__](https://lupyuen.org/articles/uname.html)
 
+- [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! And [__My Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 - [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)

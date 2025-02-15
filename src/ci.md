@@ -407,6 +407,8 @@ Check out the updates for __NuttX Continuous Integration__ in these articles...
 
 - [__"Auto-Rewind for Daily Test (Apache NuttX RTOS)"__](https://lupyuen.org/articles/rewind.html)
 
+- [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
+
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/ci.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci.md)

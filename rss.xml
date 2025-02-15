@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)</title>
+            <link>https://lupyuen.github.io/articles/testbot</link>
+            <description><![CDATA[We're always Making Things Better (and making better things) with Apache NuttX RTOS. Our new Test Bot shall watch for Comments on Pull Requests and start a NuttX Build and Test on Real Hardware: PINE64 Oz64 SG2000 RISC-V SBC.]]></description>
+            <guid>https://lupyuen.github.io/articles/testbot</guid>
+            <pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Auto-Rewind for Daily Test (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/rewind</link>
             <description><![CDATA[If the Daily Test fails for Apache NuttX RTOS... Can we Auto-Rewind and discover the Breaking Commit? Let's do it with Prometheus Time-Series Database and Mastodon Server]]></description>
