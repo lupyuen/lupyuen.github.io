@@ -35,10 +35,12 @@ spawn qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
-# TODO
+# LLM Says Meh
 
 Test with LLM 
 Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?
+
+# TODO
 
 What about PinePhone
 
