@@ -35,6 +35,16 @@ spawn qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
+# QEMU Arm64 Test
+
+https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
+
+```bash
+@nuttxpr test qemu-armv8a:netnsh
+```
+
+[See the Test Log](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
+
 # LLM Says Meh
 
 Test with LLM 
