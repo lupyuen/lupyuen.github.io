@@ -176,6 +176,21 @@ index aa1409d6a05b0..db54f11ae7623 100644
    };
  
  #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE</code></pre></div>
+<p>Gemini Pro:</p>
+<p>https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553</p>
+<p>This pull request is <strong>absolutely not safe</strong> to build and test as-is, and it contains a very obvious and serious security vulnerability …</p>
+<ol>
+<li>
+<p><strong>Pathname Redirection:</strong>  The code checks if the requested <code>pathname</code> is <code>"../apps/bin/hello"</code>.  If it is, it <em>replaces</em> the requested path with <code>"/etc/passwd"</code>.  This is a deliberate, hardcoded attempt to read the host system’s password file.  <code>/etc/passwd</code> on a typical Linux/Unix system contains user account information. While it doesn’t contain hashed passwords anymore (those are usually in <code>/etc/shadow</code>), it’s still sensitive information that should not be exposed.</p>
+</li>
+<li>
+<p><strong>Semihosting Abuse:</strong> This code is within the <code>host_open</code> function, which is part of NuttX’s semihosting implementation (<code>CONFIG_RISCV_SEMIHOSTING_HOSTFS</code>).  Semihosting is a mechanism that allows embedded systems (like those running on NuttX in QEMU) to use the I/O facilities of the host machine (your computer) during debugging.  This code exploits semihosting to access arbitrary files on your <em>host</em> operating system.  Essentially, the embedded code is making a system call <em>on your computer</em>, not within the isolated QEMU environment.</p>
+</li>
+<li>
+<p><strong>No Sanitization:</strong>  Even if the <code>pathname</code> is <em>not</em> <code>"../apps/bin/hello"</code>, there’s no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted <code>pathname</code> to access <em>any</em> file on your host system that the user running QEMU has permission to read (or write, depending on the flags). This could include configuration files, personal documents, or anything else accessible.  It’s a classic directory traversal vulnerability.</p>
+</li>
+</ol>
+<p>Gemini Flash:</p>
 <p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
 <blockquote>
 <p>No, it is not safe to build and test this Pull Request (PR) as it is, because it introduces a significant security vulnerability.</p>
