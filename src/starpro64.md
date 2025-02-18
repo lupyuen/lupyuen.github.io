@@ -1,4 +1,4 @@
-# StarPro64 RISC-V SBC: Running LLM on the NPU
+# StarPro64 RISC-V SBC: LLM on NPU on NuttX?
 
 📝 _16 Apr 2025_
 
@@ -40,6 +40,8 @@ sudo apt install p7zip-full
 ```
 
 # TODO
+
+https://github.com/rockos-riscv
 
 🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)
 
