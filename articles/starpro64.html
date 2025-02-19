@@ -74,6 +74,7 @@
 <li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
+<p>Star64 power</p>
 <p>Beware: Very Hot!</p>
 <h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>1 ESWIN AI Sample User Guide</h1>
 <p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
@@ -418,10 +419,13 @@ total 20786832
 -rw-r--r--  1 luppy  wheel   500M Feb 19 09:52 boot-rockos-20250123-210346.ext4
 -rw-r--r--@ 1 luppy  wheel   154M Feb 19 10:24 boot-rockos-20250123-210346.ext4.zst
 -rw-r--r--  1 luppy  wheel   7.0G Feb 19 10:24 root-rockos-20250123-210346.ext4
--rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst</code></pre></div><div class="example-wrap"><pre class="language-text"><code>copy the ext4 files to usb drive
+-rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst</code></pre></div>
+<p>https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702</p>
+<div class="example-wrap"><pre class="language-text"><code>copy the ext4 files to usb drive
 rename to boot.ext4, root.ext4
 
 uboot:
+Hit any key to stop autoboot
 ls mmc 0
 mmc part
 
@@ -432,7 +436,16 @@ mmc part
 
 ls usb 0
 es_fs update usb 0 boot.ext4 mmc 0:1
-es_fs update usb 0 root.ext4 mmc 0:3</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
+es_fs update usb 0 root.ext4 mmc 0:3
+
+ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
+es_burn write 0x100000000 flash</code></pre></div>
+<p>Boot Fail: https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f</p>
+<p>https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947</p>
+<div class="example-wrap"><pre class="language-text"><code>[  132.081330] thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+[  132.089435] reboot: HARDWARE PROTECTION shutdown (Temperature too high)
+thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+reboot: HARDWARE PROTECTION shutdown (Temperature too high)</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
