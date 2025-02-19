@@ -484,13 +484,13 @@ https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
 
 _Qwen is an odd name innit?_
 
-Qwen will sound strange to Bilingual Folks...
+Qwen will sound confusing to Bilingual Folks...
 
 - It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
 
 - Instead it's pronounced __"Q Wen"__
 
-- But some folks will think _"Q = Question"_ and _"Wen = 问 = Question"_, thus contracting to _"QQ"_, which means _"Bouncy"_
+- And it confuses me: _"Q = Question"_ and _"Wen = 问 = Question"_, thus contracting to _"QQ"_, which means _"Bouncy"_
 
 - Thankfully _"Q Wen"_ actually means something: __"千问"__ _(Ask a Thousand Questions, "Qian1 Wen4")_
 
