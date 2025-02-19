@@ -145,6 +145,8 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false
 
 Hence it's __Not Safe__ to test somebody's Pull Request on our computer. Unless we inpect the PR Code very carefully.
 
+[(__Arm32 + OpenOCD__ might be prone to Semihosting Exploit)](TODO)
+
 # LLM Says Nope!
 
 _Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?_
