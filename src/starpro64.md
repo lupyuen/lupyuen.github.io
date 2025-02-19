@@ -6,6 +6,8 @@
 
 TODO
 
+StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.
+
 Star64 power
 
 IKEA Smart Power Plug
