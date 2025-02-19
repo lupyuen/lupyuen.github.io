@@ -65,8 +65,8 @@
 
     <h1 class="title">QEMU Test Bot for Pull Requests: Beware of Semihosting Breakout (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#qemu-arm64" title="QEMU Arm64">1 QEMU Arm64</a><ul></ul></li>
-<li><a href="#qemu-arm64-test" title="QEMU Arm64 Test">2 QEMU Arm64 Test</a><ul></ul></li>
+<li><a href="#testing-arm64-on-qemu" title="Testing Arm64 on QEMU">1 Testing Arm64 on QEMU</a><ul></ul></li>
+<li><a href="#testing-risc-v-on-qemu" title="Testing RISC-V on QEMU">2 Testing RISC-V on QEMU</a><ul></ul></li>
 <li><a href="#semihosting-breakout" title="Semihosting Breakout">3 Semihosting Breakout</a><ul></ul></li>
 <li><a href="#llm-says-nope" title="LLM Says Nope!">4 LLM Says Nope!</a><ul></ul></li>
 <li><a href="#real-hardware-arm-and-esp32" title="Real Hardware: Arm and ESP32">5 Real Hardware: Arm and ESP32</a><ul></ul></li>
@@ -74,7 +74,8 @@
 <li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot2-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="qemu-arm64"><a class="doc-anchor" href="#qemu-arm64">§</a>1 QEMU Arm64</h1>
+<h1 id="testing-arm64-on-qemu"><a class="doc-anchor" href="#testing-arm64-on-qemu">§</a>1 Testing Arm64 on QEMU</h1>
+<p>TODO</p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh</p>
 <p>https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp</p>
 <div class="example-wrap"><pre class="language-text"><code>## Boot NuttX on Arm64 QEMU:
@@ -96,10 +97,12 @@ spawn qemu-system-aarch64 \
   -drive file=./mydisk-1gb.img,if=none,format=raw,id=hd \
   -device virtio-blk-device,bus=virtio-mmio-bus.3,drive=hd \
   -mon chardev=con,mode=readline \
-  -kernel ./nuttx</code></pre></div><h1 id="qemu-arm64-test"><a class="doc-anchor" href="#qemu-arm64-test">§</a>2 QEMU Arm64 Test</h1>
+  -kernel ./nuttx</code></pre></div>
 <p>https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921">See the Test Log</a></p>
+<h1 id="testing-risc-v-on-qemu"><a class="doc-anchor" href="#testing-risc-v-on-qemu">§</a>2 Testing RISC-V on QEMU</h1>
+<p>TODO</p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="TODO" /></p>
 </blockquote>
