@@ -99,6 +99,9 @@ spawn qemu-system-aarch64 \
 <p>https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921">See the Test Log</a></p>
+<blockquote>
+<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="TODO" /></p>
+</blockquote>
 <h1 id="semihosting-breakout"><a class="doc-anchor" href="#semihosting-breakout">§</a>3 Semihosting Breakout</h1>
 <p><em>Testing a Pull Request with QEMU: Should be Totally Safe right?</em></p>
 <p>Nope <strong>Beware of Semihosting</strong>, it might break out from the QEMU Sandbox and into our Host Computer! Here’s why…</p>
@@ -112,7 +115,7 @@ Hello, World!!</code></pre></div>
 nsh&gt; /system/bin/hello
 Hello, World!!</code></pre></div>
 <p><em>Where is /system/bin? Don’t recall bundling any ELF Executables?</em></p>
-<p>The ELF Executables exist on Our Computer’s <strong>Local Filesystem</strong>… Outside QEMU and the NuttX Filesystem!</p>
+<p>The ELF Executables exist on Our Computer’s <strong>Local Filesystem</strong>… Outside QEMU and the NuttX Filesystem.</p>
 <p><img src="https://lupyuen.org/images/testbot2-apps.png" alt="TODO" /></p>
 <p>This is called <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting</strong></a>, it gives QEMU direct access to our computer’s filesystem. We <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#configurations"><strong>Enabled Semihosting</strong></a> when we started QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For NuttX Kernel Build: (rv-virt:knsh64)
@@ -126,7 +129,7 @@ qemu-system-riscv64 \
   -nographic</code></pre></div>
 <p><a href="TODO">(Semihosting is also used by <strong>OpenOCD</strong> for debugging <strong>Arm32 Devices</strong>)</a></p>
 <p><em>Thus NuttX could break out of QEMU? And access anything in our computer’s filesystem?</em></p>
-<p>Exactly! This is our <strong>“Exploit Code”</strong> for NuttX Semihosting: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141">riscv_hostfs.c</a></p>
+<p>Exactly. This is our <strong>“Exploit Code”</strong> for NuttX Semihosting: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141">riscv_hostfs.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When NuttX opens a file via Semihosting...
 int host_open(const char *pathname, int flags, int mode) {
 
