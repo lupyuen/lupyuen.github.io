@@ -6,6 +6,8 @@
 
 TODO
 
+Beware: Very Hot!
+
 # ESWIN AI Sample User Guide
 
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
@@ -44,19 +46,137 @@ sudo apt install p7zip-full
 https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7
 
 ```text
-Register 2000140 NbrPorts 2
+OpenSBI v1.0
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : ESWIN EIC770X
+Platform Features         : none
+Platform HART Count       : 4
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 1000000Hz
+Platform Console Device   : uart8250
+Platform HSM Device       : ---
+Platform Reboot Device    : eswin_eic770x_reset
+Platform Shutdown Device  : eswin_eic770x_reset
+Firmware Base             : 0x80000000
+Firmware Size             : 308 KB
+Runtime SBI Version       : 0.3
+
+Domain0 Name              : root
+Domain0 Boot HART         : 1
+Domain0 HARTs             : 0*,1*,2*,3*
+Domain0 Region00          : 0x0000000002000000-0x000000000200ffff (I)
+Domain0 Region01          : 0x0000000080000000-0x000000008007ffff ()
+Domain0 Region02          : 0x0000001000000000-0x0000007fffffffff (M)
+Domain0 Region03          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000080200000
+Domain0 Next Arg1         : 0x00000000f8000000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+
+Boot HART ID              : 1
+Boot HART Domain          : root
+Boot HART ISA             : rv64imafdcsuhx
+Boot HART Features        : scounteren,mcounteren,mcountinhibit,sscofpmf
+Boot HART PMP Count       : 16
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 39
+Boot HART MHPM Count      : 4
+Boot HART MIDELEG         : 0x0000000000002666
+Boot HART MEDELEG         : 0x0000000000f00509
+ll
+
+U-Boot 2024.01 (Oct 21 2024 - 12:03:34 +0800)
+
+CPU:   rv64imafdc_zba_zbb
+Model: ESWIN EIC7700 StarPro64
+DRAM:  32 GiB (effective 16 GiB)
+llCore:  123 devices, 31 uclasses, devicetree: separate
+Warning: Device tree includes old 'u-boot,dm-' tags: please fix by 2023.07!
+MMC:   sdhci@50450000: 0, sd@50460000: 1
+Loading Environment from SPIFlash... SF: Detected w25q128fw with page size 256 Bytes, erase size 4 KiB, total 16 MiB
+*** Warning - bad CRC, using default environment
+
+[display_init]Eswin UBOOT DRM driver version: v1.0.1
+xfer: num: 2, addr: 0x50
+xfer: num: 2, addr: 0x50
+Monitor has basic audio support
+mode:1920x1080
+[display_init]Detailed mode clock 148500 kHz, flags[5]
+    H: 1920 2008 2052 2200
+    V: 1080 1084 1089 1125
+bus_format: 100a
+[eswin_dc_init]regs=0x00000000502c0000, regsbak=0x00000000ed9398a0
+[eswin_dc_init]:layer:0 hdisplay = 1920, htotal = 2200.hsync_st:2008.hsync_end:2052
+[eswin_dc_init]: vdisplay = 1080, vtotal = 1125.vsync_st:1084.vsync_end:1089
+[eswin_dc_init]: src_width = 1920, src_height = 1080.
+CEA mode used vic=16
+final pixclk = 148500000 tmdsclk = 148500000
+PHY powered down in 0 iterations
+PHY PLL locked 1 iterations
+PHY powered down in 1 iterations
+PHY PLL locked 1 iterations
+sink has audio support
+hdmi_set_clk_regenerator: fs=48000Hz ftdms=148.500MHz N=6144 cts=148500
+In:    serial,usbkbd
+Out:   vidconsole,serial
+Err:   vidconsole,serial
+Bootspi flash write protection enabled
+Get board info from flash
+ERROR: There is no valid hardware board information!!!
+sdhci_transfer_data: Transfer data timeout
+Finish lpcpu boot
+Net:   eqos_probe(dev=00000000ed92dad0):
+eqos_probe_resources_core(dev=00000000ed92dad0):
+eqos_probe_resources_core: tx_descs=00000000ed94b300, rx_descs=00000000ed94b340
+eqos_probe_resources_core: tx_dma_buf=00000000ed94b3c0
+eqos_probe_resources_core: rx_dma_buf=00000000ed94ba40
+eqos_probe_resources_core: rx_pkt=00000000ed94d350
+eqos_probe_resources_core: OK
+eqos_probe_resources_eswin(dev=00000000ed92dad0):
+eqos_get_interface_eswin(dev=00000000ed92dad0):
+eqos_probe_resources_eswin: OK
+eqos_probe: OK
+
+Warning: ethernet@50400000 (eth0) using random MAC address - ca:d4:cf:fa:18:ba
+eth0: ethernet@50400000eqos_probe(dev=00000000ed92dcd0):
+eqos_probe_resources_core(dev=00000000ed92dcd0):
+eqos_probe_resources_core: tx_descs=00000000ed94dd80, rx_descs=00000000ed94ddc0
+eqos_probe_resources_core: tx_dma_buf=00000000ed94de40
+eqos_probe_resources_core: rx_dma_buf=00000000ed94e4c0
+eqos_probe_resources_core: rx_pkt=00000000ed94fdd0
+eqos_probe_resources_core: OK
+eqos_probe_resources_eswin(dev=00000000ed92dcd0):
+eqos_get_interface_eswin(dev=00000000ed92dcd0):
+eqos_probe_resources_eswin: OK
+eqos_probe: OK
+
+Warning: ethernet@50410000 (eth1) using random MAC address - 62:3c:84:68:ca:a1
+, eth1: ethernet@50410000
+Working FDT set to ed913170
+starting USB...
+Bus usb1@50490000: Register 2000140 NbrPorts 2
 Starting the controller
 USB XHCI 1.10
 scanning bus usb1@50490000 for devices... 3 USB Device(s) found
        scanning usb for storage devices... 0 Storage Device(s) found
 No SATA device found!
 Hit any key to stop autoboot:  0
-=> ��^P
-Unknown command '��^P' - try 'help'
+=> Δ�^BJ��L�^P
+Unknown command 'Δ�^BJ��L�^P' - try 'help'
 =>
-Unknown command '��^P' - try 'help'
-=> ���^BJ}��9�^�^L^�^
-Unknown command '���^BJ}��9�^�^L^�^' - try 'help'
+Unknown command 'Δ�^BJ��L�^P' - try 'help'
+=> )�^BJ�'^�^BJ�
+>
+> help
+> <INTERRUPT>
 => help
 ?         - alias for 'help'
 base      - print or set address offset
@@ -197,8 +317,8 @@ bootcmd=sysboot mmc ${emmc_dev}:1 any $boot_conf_addr_r $boot_conf_file;
 bootdelay=5
 cpu=eic7700
 emmc_dev=0
-eth1addr=c2:cd:69:98:98:e0
-ethaddr=5a:55:75:91:ad:ae
+eth1addr=62:3c:84:68:ca:a1
+ethaddr=ca:d4:cf:fa:18:ba
 fdt_addr=ed913170
 fdt_addr_r=0x88000000
 fdt_high=0xffffffffffffffff
@@ -232,6 +352,50 @@ vendor=eswin
 
 Environment size: 1516/524284 bytes
 =>
+```
+
+# UART
+
+```text
+https://pinout.xyz/
+
+Yellow - GND - pin 6
+Blue - Tx - pin 8
+Green - Rx - pin 10
+
+screen /dev/ttyUSB0 115200
+```
+
+# New RockOS
+
+https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/
+
+```bash
+$ unzstd boot-rockos-20250123-210346.ext4.zst
+boot-rockos-20250123-210346.ext4.zst: 524288000 bytes
+
+$ ls -l
+total 1338680
+-rw-r--r--  1 luppy  wheel  524288000 Feb 19 09:52 boot-rockos-20250123-210346.ext4
+-rw-r--r--@ 1 luppy  wheel  161113502 Feb 19 09:52 boot-rockos-20250123-210346.ext4.zst
+```
+
+```text
+copy the ext4 files to usb drive
+rename to boot.ext4, root.ext4
+
+uboot:
+ls mmc 0
+mmc part
+
+if not partitioned:
+echo $partitions
+run gpt_partition
+mmc part
+
+ls usb 0
+es_fs update usb 0 boot.ext4 mmc 0:1
+es_fs update usb 0 root.ext4 mmc 0:3
 ```
 
 # TODO
