@@ -8,6 +8,8 @@ TODO
 
 Star64 power
 
+IKEA Smart Power Plug
+
 Beware: Very Hot!
 
 # ESWIN AI Sample User Guide
