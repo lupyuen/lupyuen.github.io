@@ -476,25 +476,33 @@ Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-
 
 https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
 
-通义_百度百科
-
-https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178
-
 ollama
 
 https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
 
-qwen the name
-gwen stafani / gwen stacy
-qwen = question wen = qq = bouncy
+Qwen will sound strange to Bilingual Folks...
+
+- It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
+
+- Instead it's pronounced __"Q Wen"__
+
+- But some folks will think _"Q = Question"_ and _"Wen = 问 = Question"_, thus contracting to _"QQ"_, which means _"Bouncy"_
+
+- Thankfully _"Q Wen"_ actually means something: __"千问"__ _(Ask a Thousand Questions, "Qian1 Wen4")_
+
+- Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
 
 southern islands of singapore
 identify pic of creatures or sea life
 rainforest critters or underwater creatures
 in one word
-Duck, octopus 
+"DUCK", "OCTOPUS" 
 
-_(Here's an idea for Horror Sci-Fi: We installed an LLM Sensor in a Remote Island. One day our LLM Sensor sends us sinister words like "evil", "death", "doom"...)_
+<span style="font-size:80%">
+
+_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
+
+</span>
 
 strings
 ghidra
