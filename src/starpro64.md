@@ -448,6 +448,8 @@ fdt addr ${fdt_addr_r}
 booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
+(Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
+
 https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9
 
 ```text
