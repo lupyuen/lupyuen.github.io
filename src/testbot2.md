@@ -147,17 +147,29 @@ Hence it's __Not Safe__ to test somebody's Pull Request on our computer. Unless 
 
 # LLM Says Nope!
 
-PR is not safe!
+_Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?_
 
-https://github.com/lupyuen2/wip-nuttx/pull/89
+Let's find out. We crafted a __"Malicious Pull Request"__ with our "Exploit Code"...
 
-https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff
+- [__"Pull Request that might be Safe or Unsafe"__](https://github.com/lupyuen2/wip-nuttx/pull/89)
 
-https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900
+We append `.diff` to the URL...
+
+```bash
+github.com/lupyuen2/wip-nuttx/pull/89.diff
+```
+
+To produce a [__Diff Patch__](https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff) for our "Malicious Pull Request"...
+
+![TODO](https://lupyuen.org/images/testbot2-diff.png)
+
+And we feed the Diff Patch to __Any LLM__...
+
+<span style="font-size:80%">
+
+> _Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?_
 
 ```text
-Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?
-
 diff --git a/arch/risc-v/src/common/riscv_hostfs.c b/arch/risc-v/src/common/riscv_hostfs.c
 index aa1409d6a05b0..db54f11ae7623 100644
 --- a/arch/risc-v/src/common/riscv_hostfs.c
@@ -196,11 +208,15 @@ index aa1409d6a05b0..db54f11ae7623 100644
  #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE
 ```
 
-Gemini Pro:
+</span>
 
-https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553
+[(See the __LLM Prompt__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
 
-This pull request is **absolutely not safe** to build and test as-is, and it contains a very obvious and serious security vulnerability ...
+The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
+
+<span style="font-size:80%">
+
+> This pull request is **absolutely not safe** to build and test as-is, and it contains a very obvious and serious security vulnerability ...
 
 1.  **Pathname Redirection:**  The code checks if the requested `pathname` is `"../apps/bin/hello"`.  If it is, it *replaces* the requested path with `"/etc/passwd"`.  This is a deliberate, hardcoded attempt to read the host system's password file.  `/etc/passwd` on a typical Linux/Unix system contains user account information. While it doesn't contain hashed passwords anymore (those are usually in `/etc/shadow`), it's still sensitive information that should not be exposed.
 
@@ -208,11 +224,11 @@ This pull request is **absolutely not safe** to build and test as-is, and it con
 
 3.  **No Sanitization:**  Even if the `pathname` is *not* `"../apps/bin/hello"`, there's no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted `pathname` to access *any* file on your host system that the user running QEMU has permission to read (or write, depending on the flags). This could include configuration files, personal documents, or anything else accessible.  It's a classic directory traversal vulnerability.
 
-Gemini Flash:
+</span>
 
-https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900
+[(See the __LLM Response__)](https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553)
 
-> No, it is not safe to build and test this Pull Request (PR) as it is, because it introduces a significant security vulnerability.
+[(Gemini Flash 2.0? It neglected the __Semihosting__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
 
 # TODO
 
