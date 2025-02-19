@@ -167,6 +167,8 @@ Kind folks at Espressif could help to modify the scripts to test
 
 # What's Next
 
+Next week we'll take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: StarPro64. Stay tuned!
+
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
