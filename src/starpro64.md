@@ -351,6 +351,8 @@ screen /dev/ttyUSB0 115200
 
 # New RockOS
 
+https://nightcord.de/@icenowy/114027871300585376
+
 https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/
 
 ```bash
