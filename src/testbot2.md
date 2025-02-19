@@ -45,6 +45,8 @@ https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
 
 [See the Test Log](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
 
+> ![TODO](https://lupyuen.org/images/semihost-qemu.jpg)
+
 # Semihosting Breakout
 
 _Testing a Pull Request with QEMU: Should be Totally Safe right?_
@@ -69,7 +71,7 @@ Hello, World!!
 
 _Where is /system/bin? Don't recall bundling any ELF Executables?_
 
-The ELF Executables exist on Our Computer's __Local Filesystem__... Outside QEMU and the NuttX Filesystem!
+The ELF Executables exist on Our Computer's __Local Filesystem__... Outside QEMU and the NuttX Filesystem.
 
 ![TODO](https://lupyuen.org/images/testbot2-apps.png)
 
@@ -91,7 +93,7 @@ qemu-system-riscv64 \
 
 _Thus NuttX could break out of QEMU? And access anything in our computer's filesystem?_
 
-Exactly! This is our __"Exploit Code"__ for NuttX Semihosting: [riscv_hostfs.c](https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141)
+Exactly. This is our __"Exploit Code"__ for NuttX Semihosting: [riscv_hostfs.c](https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141)
 
 ```c
 // When NuttX opens a file via Semihosting...
