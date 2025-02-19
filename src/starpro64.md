@@ -351,6 +351,8 @@ Green - Rx - pin 10
 screen /dev/ttyUSB0 115200
 ```
 
+Same pins as Star64 and Oz64 SG2000
+
 # New RockOS
 
 https://nightcord.de/@icenowy/114027871300585376
@@ -479,6 +481,10 @@ Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-
 #RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)
 
 https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
+
+llama.cpp
+
+https://github.com/ggml-org/llama.cpp
 
 ollama
 
