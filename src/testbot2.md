@@ -234,6 +234,14 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop ANY Malicious Pull Request? 🤔
 
+# Real Hardware: Arm and ESP32
+
+Arm64:
+
+Arm32: Lemme know if you need help 🙏
+
+ESP32 (Xtensa and RISC-V):
+
 # TODO
 
 What about PinePhone
