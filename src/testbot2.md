@@ -143,6 +143,8 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705#file-gistfile1-txt-L1238-L1246)
 
+Hence it's __Not Safe__ to test somebody's Pull Request on our computer. Unless we inpect the PR Code very carefully.
+
 # LLM Says Nope!
 
 PR is not safe!
