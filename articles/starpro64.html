@@ -410,10 +410,15 @@ screen /dev/ttyUSB0 115200</code></pre></div><h1 id="new-rockos"><a class="doc-a
 <div class="example-wrap"><pre class="language-bash"><code>$ unzstd boot-rockos-20250123-210346.ext4.zst
 boot-rockos-20250123-210346.ext4.zst: 524288000 bytes
 
-$ ls -l
-total 1338680
--rw-r--r--  1 luppy  wheel  524288000 Feb 19 09:52 boot-rockos-20250123-210346.ext4
--rw-r--r--@ 1 luppy  wheel  161113502 Feb 19 09:52 boot-rockos-20250123-210346.ext4.zst</code></pre></div><div class="example-wrap"><pre class="language-text"><code>copy the ext4 files to usb drive
+$ unzstd root-rockos-20250123-210346.ext4.zst
+root-rockos-20250123-210346.ext4.zst: 7516192768 bytes
+
+$ ls -lh
+total 20786832
+-rw-r--r--  1 luppy  wheel   500M Feb 19 09:52 boot-rockos-20250123-210346.ext4
+-rw-r--r--@ 1 luppy  wheel   154M Feb 19 10:24 boot-rockos-20250123-210346.ext4.zst
+-rw-r--r--  1 luppy  wheel   7.0G Feb 19 10:24 root-rockos-20250123-210346.ext4
+-rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst</code></pre></div><div class="example-wrap"><pre class="language-text"><code>copy the ext4 files to usb drive
 rename to boot.ext4, root.ext4
 
 uboot:
@@ -449,8 +454,7 @@ identify pic of creatures or sea life
 rainforest critters or underwater creatures
 in one word
 Duck, octopus</p>
-<p>here’s an idea for horror sci-fi
-llm sensor sends sinister words like “evil”, “death”, “doom”</p>
+<p><em>(Here’s an idea for Horror Sci-Fi: We installed an LLM Sensor in a Remote Island. One day our LLM Sensor sends us sinister words like “evil”, “death”, “doom”…)</em></p>
 <p>strings
 ghidra
 npu driver
