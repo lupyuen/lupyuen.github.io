@@ -155,13 +155,13 @@ Let's find out. We crafted a __"Malicious Pull Request"__ with our "Exploit Code
 
 - [__"Pull Request that might be Safe or Unsafe"__](https://github.com/lupyuen2/wip-nuttx/pull/89)
 
-We append __`.diff`__ to the URL...
+We append __`.diff`__ to the Pull Request URL...
 
 ```bash
 github.com/lupyuen2/wip-nuttx/pull/89.diff
 ```
 
-To produce a [__Diff Patch__](https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff) for our "Malicious Pull Request"...
+To produce a barebones [__Diff Patch__](https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff) for our "Malicious Pull Request"...
 
 ![TODO](https://lupyuen.org/images/testbot2-diff.png)
 
@@ -232,7 +232,7 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 [(Gemini Flash 2.0? It neglected the __Semihosting__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
 
-OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop ANY Malicious Pull Request? 🤔
+OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop EVERY Malicious Pull Request? 🤔
 
 # Real Hardware: Arm and ESP32
 
