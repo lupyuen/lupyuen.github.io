@@ -480,6 +480,8 @@ ollama
 
 https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
 
+_Qwen is an odd name innit?_
+
 Qwen will sound strange to Bilingual Folks...
 
 - It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
