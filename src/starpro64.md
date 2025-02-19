@@ -14,6 +14,8 @@ IKEA Smart Power Plug
 
 Beware: Very Hot!
 
+If something smells like barbeque: Drop it, stop it and power off!
+
 iTerm: Edit > Paste Special > Paste Slowly
 
 Settings > Advanced > Pasteboard
