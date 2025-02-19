@@ -12,6 +12,14 @@ IKEA Smart Power Plug
 
 Beware: Very Hot!
 
+iTerm: Edit > Paste Special > Paste Slowly
+
+Settings > Advanced > Pasteboard
+
+Delay in seconds between chunks when Pasting Slowly: 1 second
+
+Number of bytes to paste in each chunk when Pasting Slowly: 16
+
 # ESWIN AI Sample User Guide
 
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
