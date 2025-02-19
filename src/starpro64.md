@@ -24,6 +24,8 @@ Delay in seconds between chunks when Pasting Slowly: 1 second
 
 Number of bytes to paste in each chunk when Pasting Slowly: 16
 
+Well documented
+
 # ESWIN AI Sample User Guide
 
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
@@ -484,11 +486,11 @@ Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-
 
 https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
 
-llama.cpp
+__llama.cpp__ _(C++)_
 
 https://github.com/ggml-org/llama.cpp
 
-ollama
+or __ollama__ _(GoLang)_
 
 https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
 
