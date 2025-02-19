@@ -397,6 +397,52 @@ reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 https://lupyuen.github.io/articles/sg2000
 
 
+```bash
+$ net list
+eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
+
+## Set the U-Boot TFTP Server
+## TODO: Change to your TFTP Server
+setenv tftp_server 192.168.31.10
+
+## Save the U-Boot Config for future reboots
+saveenv
+
+## Fetch the IP Address over DHCP
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x80200000
+dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+
+## Load the Device Tree from TFTP Server
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
+
+## Set the RAM Address of Device Tree
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+fdt addr ${fdt_addr_r}
+
+## Boot the NuttX Image with the Device Tree
+## kernel_addr_r=0x80200000
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
+https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9
+
+```text
+=> booti ${kernel_addr_r} - ${fdt_addr_r}
+Moving Image from 0x84000000 to 0x80200000, end=80408000
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+Working FDT set to 88000000
+   Using Device Tree in place at 0000000088000000, end 0000000088008446
+Working FDT set to 88000000
+
+Starting kernel ...
+```
 
 # TODO
 
