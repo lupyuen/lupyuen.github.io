@@ -172,13 +172,21 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705#file-gistfile1-txt-L1238-L1246">(See the <strong>Complete Log</strong>)</a></p>
 <p>Hence it’s <strong>Not Safe</strong> to test somebody’s Pull Request on our computer. Unless we inpect the PR Code very carefully.</p>
 <h1 id="llm-says-nope"><a class="doc-anchor" href="#llm-says-nope">§</a>4 LLM Says Nope!</h1>
-<p>PR is not safe!</p>
-<p>https://github.com/lupyuen2/wip-nuttx/pull/89</p>
-<p>https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff</p>
-<p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
-<div class="example-wrap"><pre class="language-text"><code>Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?
-
-diff --git a/arch/risc-v/src/common/riscv_hostfs.c b/arch/risc-v/src/common/riscv_hostfs.c
+<p><em>Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?</em></p>
+<p>Let’s find out. We crafted a <strong>“Malicious Pull Request”</strong> with our “Exploit Code”…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/89"><strong>“Pull Request that might be Safe or Unsafe”</strong></a></li>
+</ul>
+<p>We append <code>.diff</code> to the URL…</p>
+<div class="example-wrap"><pre class="language-bash"><code>github.com/lupyuen2/wip-nuttx/pull/89.diff</code></pre></div>
+<p>To produce a <a href="https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff"><strong>Diff Patch</strong></a> for our “Malicious Pull Request”…</p>
+<p><img src="https://lupyuen.org/images/testbot2-diff.png" alt="TODO" /></p>
+<p>And we feed the Diff Patch to <strong>Any LLM</strong>…</p>
+<span style="font-size:80%">
+<blockquote>
+<p><em>Here is a Pull Request for Apache NuttX RTOS that I will check out to my computer and test on QEMU RISC-V 64-bit Kernel Mode. Is it safe to build and test this Pull Request on my computer?</em></p>
+</blockquote>
+<div class="example-wrap"><pre class="language-text"><code>diff --git a/arch/risc-v/src/common/riscv_hostfs.c b/arch/risc-v/src/common/riscv_hostfs.c
 index aa1409d6a05b0..db54f11ae7623 100644
 --- a/arch/risc-v/src/common/riscv_hostfs.c
 +++ b/arch/risc-v/src/common/riscv_hostfs.c
@@ -213,10 +221,13 @@ index aa1409d6a05b0..db54f11ae7623 100644
 +    .len = strlen(pathname2),
    };
  
- #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE</code></pre></div>
-<p>Gemini Pro:</p>
-<p>https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553</p>
+ #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE</code></pre></div></span>
+<p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(See the <strong>LLM Prompt</strong>)</a></p>
+<p>The LLM we tested <em>(Gemini Pro 2.0 Experimental)</em> says…</p>
+<span style="font-size:80%">
+<blockquote>
 <p>This pull request is <strong>absolutely not safe</strong> to build and test as-is, and it contains a very obvious and serious security vulnerability …</p>
+</blockquote>
 <ol>
 <li>
 <p><strong>Pathname Redirection:</strong>  The code checks if the requested <code>pathname</code> is <code>"../apps/bin/hello"</code>.  If it is, it <em>replaces</em> the requested path with <code>"/etc/passwd"</code>.  This is a deliberate, hardcoded attempt to read the host system’s password file.  <code>/etc/passwd</code> on a typical Linux/Unix system contains user account information. While it doesn’t contain hashed passwords anymore (those are usually in <code>/etc/shadow</code>), it’s still sensitive information that should not be exposed.</p>
@@ -228,11 +239,9 @@ index aa1409d6a05b0..db54f11ae7623 100644
 <p><strong>No Sanitization:</strong>  Even if the <code>pathname</code> is <em>not</em> <code>"../apps/bin/hello"</code>, there’s no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted <code>pathname</code> to access <em>any</em> file on your host system that the user running QEMU has permission to read (or write, depending on the flags). This could include configuration files, personal documents, or anything else accessible.  It’s a classic directory traversal vulnerability.</p>
 </li>
 </ol>
-<p>Gemini Flash:</p>
-<p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
-<blockquote>
-<p>No, it is not safe to build and test this Pull Request (PR) as it is, because it introduces a significant security vulnerability.</p>
-</blockquote>
+</span>
+<p><a href="https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553">(See the <strong>LLM Response</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(Gemini Flash 2.0? It neglected the <strong>Semihosting</strong>)</a></p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
 <p>What about PinePhone</p>
 <p>What about ESP32</p>
