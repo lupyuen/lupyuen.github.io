@@ -6,6 +6,8 @@
 
 TODO
 
+Star64 power
+
 Beware: Very Hot!
 
 # ESWIN AI Sample User Guide
@@ -385,11 +387,14 @@ total 20786832
 -rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst
 ```
 
+https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702
+
 ```text
 copy the ext4 files to usb drive
 rename to boot.ext4, root.ext4
 
 uboot:
+Hit any key to stop autoboot
 ls mmc 0
 mmc part
 
@@ -401,6 +406,20 @@ mmc part
 ls usb 0
 es_fs update usb 0 boot.ext4 mmc 0:1
 es_fs update usb 0 root.ext4 mmc 0:3
+
+ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
+es_burn write 0x100000000 flash
+```
+
+Boot Fail: https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f
+
+https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947
+
+```text
+[  132.081330] thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+[  132.089435] reboot: HARDWARE PROTECTION shutdown (Temperature too high)
+thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 ```
 
 # TODO
