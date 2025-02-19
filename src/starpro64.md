@@ -374,10 +374,15 @@ https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/
 $ unzstd boot-rockos-20250123-210346.ext4.zst
 boot-rockos-20250123-210346.ext4.zst: 524288000 bytes
 
-$ ls -l
-total 1338680
--rw-r--r--  1 luppy  wheel  524288000 Feb 19 09:52 boot-rockos-20250123-210346.ext4
--rw-r--r--@ 1 luppy  wheel  161113502 Feb 19 09:52 boot-rockos-20250123-210346.ext4.zst
+$ unzstd root-rockos-20250123-210346.ext4.zst
+root-rockos-20250123-210346.ext4.zst: 7516192768 bytes
+
+$ ls -lh
+total 20786832
+-rw-r--r--  1 luppy  wheel   500M Feb 19 09:52 boot-rockos-20250123-210346.ext4
+-rw-r--r--@ 1 luppy  wheel   154M Feb 19 10:24 boot-rockos-20250123-210346.ext4.zst
+-rw-r--r--  1 luppy  wheel   7.0G Feb 19 10:24 root-rockos-20250123-210346.ext4
+-rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst
 ```
 
 ```text
@@ -436,8 +441,7 @@ rainforest critters or underwater creatures
 in one word
 Duck, octopus 
 
-here's an idea for horror sci-fi
-llm sensor sends sinister words like "evil", "death", "doom"
+_(Here's an idea for Horror Sci-Fi: We installed an LLM Sensor in a Remote Island. One day our LLM Sensor sends us sinister words like "evil", "death", "doom"...)_
 
 strings
 ghidra
