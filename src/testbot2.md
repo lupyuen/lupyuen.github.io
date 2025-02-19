@@ -6,7 +6,9 @@
 
 TODO
 
-# QEMU Arm64
+# Testing Arm64 on QEMU
+
+TODO
 
 https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh
 
@@ -35,8 +37,6 @@ spawn qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
-# QEMU Arm64 Test
-
 https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
 
 ```bash
@@ -44,6 +44,10 @@ https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
 ```
 
 [See the Test Log](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
+
+# Testing RISC-V on QEMU
+
+TODO
 
 > ![TODO](https://lupyuen.org/images/semihost-qemu.jpg)
 
