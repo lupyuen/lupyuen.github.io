@@ -153,7 +153,7 @@ Let's find out. We crafted a __"Malicious Pull Request"__ with our "Exploit Code
 
 - [__"Pull Request that might be Safe or Unsafe"__](https://github.com/lupyuen2/wip-nuttx/pull/89)
 
-We append `.diff` to the URL...
+We append __`.diff`__ to the URL...
 
 ```bash
 github.com/lupyuen2/wip-nuttx/pull/89.diff
@@ -229,6 +229,8 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 [(See the __LLM Response__)](https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553)
 
 [(Gemini Flash 2.0? It neglected the __Semihosting__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
+
+OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop ANY Malicious Pull Request? 🤔
 
 # TODO
 
