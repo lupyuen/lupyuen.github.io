@@ -22,6 +22,14 @@ Today we extend our Test Bot for __QEMU Emulators: Arm64 and RISC-V__
 @nuttxpr test rv-virt:knsh64
 ```
 
+_Testing a Pull Request with QEMU: Is it Totally Safe?_
+
+Not quite, beware of [__Semihosting Breakout__](TODO). Some LLMs might be helpful for flagging the [__Safety Issues__](TODO).
+
+_What about testing on Real Hardware?_
+
+TODO
+
 TODO: Pic of Arm64 PR
 
 # Testing Arm64 on QEMU
