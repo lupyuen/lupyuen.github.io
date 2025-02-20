@@ -2,9 +2,9 @@
 
 📝 _16 Mar 2025_
 
-![TODO](https://lupyuen.org/images/testbot2-title.jpg)
+![Test Bot for NuttX Pull Requests](https://lupyuen.org/images/testbot-flow.jpg)
 
-Last week we saw our new [__Test Bot__](TODO) for NuttX Pull Requests. When we post this __PR Comment__, it will Build and Test the Pull Request on Real Hardware: [__Oz64 SG2000 RISC-V SBC__](TODO)...
+Last week we saw our new [__Test Bot__](TODO) for NuttX Pull Requests. When we post this __PR Comment__, it will Build and Test the Pull Request on Real Hardware: [__Oz64 SG2000 RISC-V SBC__](TODO)
 
 ```bash
 ## Test this PR on Real Hardware:
