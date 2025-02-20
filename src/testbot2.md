@@ -137,6 +137,10 @@ And validate the [__OSTest Output__](TODO).
 
 [(See the __Test Log__)](TODO)
 
+_Is there a Test Controller for QEMU?_
+
+Nope Test Bot for QEMU doesn't require a [__Test Controller__](TODO). We run the QEMU Tests directly on our [__Build & Test Server__](TODO). Which might be unsafe...
+
 > ![TODO](https://lupyuen.org/images/semihost-qemu.jpg)
 
 # Semihosting Breakout
