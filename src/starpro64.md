@@ -14,6 +14,12 @@ IKEA Smart Power Plug
 
 Beware: Very Hot!
 
+```text
+pll failed.
+pll failed.
+pll failed.
+```
+
 If something smells like barbeque: Drop it, stop it and power off!
 
 iTerm: Edit > Paste Special > Paste Slowly
@@ -352,10 +358,44 @@ Yellow - GND - pin 6
 Blue - Tx - pin 8
 Green - Rx - pin 10
 
-screen /dev/ttyUSB0 115200
+set -x
+for (( ; ; )) do 
+  screen /dev/ttyUSB0 115200
+  sleep 10
+done
 ```
 
 Same pins as Star64 and Oz64 SG2000
+
+# Power Plug
+
+```bash
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+## token=xxxx
+set +x  ##  Disable echo
+. $HOME/home-assistant-token.sh
+set -x  ##  Enable echo
+
+set +x  ##  Disable echo
+echo "----- Power Off the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.pi_power_off"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+set +x  ##  Disable echo
+echo "----- Power On the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.pi_power_on"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+```
 
 # New RockOS
 
@@ -475,6 +515,8 @@ setenv bootcmd "run bootcmd_tftp ; $bootcmd"
 ## Save it for future reboots
 saveenv
 ```
+
+Press Ctrl-C to stop
 
 (Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
 
