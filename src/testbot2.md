@@ -26,15 +26,15 @@ _Testing a Pull Request with QEMU: Is it Totally Safe?_
 
 Not quite, beware of [__Semihosting Breakout__](TODO). Some LLMs might be helpful for flagging the [__Safety Issues__](TODO).
 
-_What about testing on Real Hardware?_
+_How about Real Hardware for Arm32, Arm64 and ESP32? Can we test our PRs there?_
 
-TODO
+Yep we might support testing of Pull Requests on Other Hardware: [__Arm32, Arm64 and ESP32__](TODO). Some Boards might require a [__MicroSD Multiplexer__](TODO).
 
 TODO: Pic of Arm64 PR
 
 # Testing Arm64 on QEMU
 
-_Testing a Pull Request on Arm64: How does it work?_
+_Testing a Pull Request on Arm64 QEMU: How does it work?_
 
 ```bash
 @nuttxpr test qemu-armv8a:netnsh
