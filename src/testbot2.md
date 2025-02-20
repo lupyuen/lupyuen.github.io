@@ -334,11 +334,11 @@ TODO: Pic of PinePhone
 
     Yep just modify the [__Build & Test Script__](TODO) to call [__OpenOCD + ST-Link + Semihosting__](TODO). Lemme know if you have questions! 🙏
 
-1.  ESP32 (Xtensa and RISC-V):
+1.  _And ESP32 Hardware? Xtensa + RISC-V?_
 
-    Kind folks at Espressif could help to modify the scripts to test 
-
-    TODO
+    We're hoping the __Kind Folks at Espressif__ could help to modify the [__Build & Test Scripts__](TODO) for our PR Test Bot.
+    
+    Then we can easily test any NuttX Pull Request on __Real ESP32 Hardware__, Xtensa and RISC-V. 👍
 
 # What's Next
 
