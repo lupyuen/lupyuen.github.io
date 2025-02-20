@@ -4,21 +4,58 @@
 
 ![TODO](https://lupyuen.org/images/testbot2-title.jpg)
 
-TODO
+Last week we saw our new [__Test Bot__](TODO) for NuttX Pull Requests. When we post this __PR Comment__, it will Build and Test the Pull Request on Real Hardware: [__Oz64 SG2000 RISC-V SBC__](TODO)...
+
+```bash
+## Test this PR on Real Hardware:
+## Oz64 SG2000 RISC-V SBC
+@nuttxpr TODO
+```
+
+Today we extend our Test Bot for __QEMU Emulators: Arm64 and RISC-V__
+
+```bash
+## Test this PR on QEMU Arm64:
+## VirtIO Network, Block, RNG, Serial
+@nuttxpr test qemu-armv8a:netnsh
+
+## Test this PR on QEMU RISC-V:
+## 64-bit Kernel Build
+@nuttxpr test rv-virt:knsh64
+```
+
+TODO: Pic of Arm64 PR
 
 # Testing Arm64 on QEMU
 
-TODO
+_Testing a Pull Request on Arm64: How does it work?_
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh
+```bash
+@nuttxpr test qemu-armv8a:netnsh
+```
 
-https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp
+The PR Comment above will trigger our [__Test Bot Rust App__](TODO) to launch a Build + Test for QEMU Arm64: [build-test-arm64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh)
 
-```text
-## Boot NuttX on Arm64 QEMU:
-## Single Core with virtio network, block, rng, serial driver (GICv3)
+```bash
+## Configure NuttX for Arm64 QEMU with VirtIO and Networking
 ## https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html
-spawn qemu-system-aarch64 \
+tools/configure.sh qemu-armv8a:netnsh
+
+## Build the NuttX Kernel and Apps
+make -j
+
+## Run the NuttX Test
+expect arm64.exp
+```
+
+Which will execute this __Expect Script__: [arm64.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp)
+
+<span style="font-size:80%">
+
+```bash
+## Boot NuttX on Arm64 QEMU:
+## Single Core with VirtIO Network, Block, RNG, Serial
+qemu-system-aarch64 \
   -cpu cortex-a53 \
   -nographic \
   -machine virt,virtualization=on,gic-version=3 \
@@ -37,17 +74,62 @@ spawn qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
-https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707
+</span>
 
-```bash
-@nuttxpr test qemu-armv8a:netnsh
-```
+And validate the [__OSTest Output__](TODO).
 
-[See the Test Log](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
+[(See the __Pull Request__)](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707)
+
+[(See the __Test Log__)](https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921)
+
+TODO: Pic of RISC-V PR
 
 # Testing RISC-V on QEMU
 
-TODO
+_What about QEMU RISC-V?_
+
+```bash
+@nuttxpr test rv-virt:knsh64
+```
+
+The PR Comment above will trigger our [__Test Bot Rust App__](TODO) to launch a Build + Test for QEMU RISC-V: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
+
+```bash
+## Configure NuttX for QEMU RISC-V (64-bit Kernel Build)
+## https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#knsh64
+tools/configure.sh rv-virt:knsh64
+
+## Build the NuttX Kernel
+make -j
+
+## Build the NuttX Apps
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Run the NuttX Test
+expect qemu-riscv-knsh64.exp
+```
+
+Which will execute this __Expect Script__: [qemu-riscv-knsh64.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp)
+
+```bash
+## Boot NuttX on QEMU Emulator for 64-bit RISC-V with OpenSBI
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -kernel nuttx \
+  -nographic
+```
+
+And validate the [__OSTest Output__](TODO).
+
+[(See the __Pull Request__)](TODO)
+
+[(See the __Test Log__)](TODO)
 
 > ![TODO](https://lupyuen.org/images/semihost-qemu.jpg)
 
