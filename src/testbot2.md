@@ -10,7 +10,7 @@ Last week we saw our new [__Test Bot__](TODO) for NuttX Pull Requests. When we p
 @nuttxpr TODO
 ```
 
-Today we extend our Test Bot to __QEMU Emulators: Arm64 and RISC-V__
+Today we extend our Test Bot to __QEMU Emulators__: [__Arm64 QEMU__](TODO) and [__RISC-V QEMU__](TODO)
 
 ```bash
 ## Test this PR on QEMU Arm64:
