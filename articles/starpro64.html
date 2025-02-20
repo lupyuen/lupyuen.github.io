@@ -72,8 +72,9 @@
 <li><a href="#power-plug" title="Power Plug">5 Power Plug</a><ul></ul></li>
 <li><a href="#new-rockos" title="New RockOS">6 New RockOS</a><ul></ul></li>
 <li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">7 Boot NuttX over TFTP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#multiple-cpu" title="Multiple CPU">8 Multiple CPU</a><ul></ul></li>
+<li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -527,7 +528,17 @@ Working FDT set to 88000000
    Using Device Tree in place at 0000000088000000, end 0000000088008446
 Working FDT set to 88000000
 
-Starting kernel ...</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
+Starting kernel ...</code></pre></div><h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>8 Multiple CPU</h1>
+<p>https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+
+123Hello NuttX!
+2ABC[CPU2] nx_start: Entry
+[CPU2] uart_register: Registering /dev/console
+[CPU2] uart_register: Registering /dev/ttyS0
+[CPU2] dump_assert_info: Current Version: NuttX  12.4.0 01cbd0ca38-dirty Feb 20 2025 19:56:29 risc-v
+[CPU2] dump_assert_info: Assertion failed up_cpu_index() == 0: at file: init/nx_start.c:745 task(CPU2): CPU2 IDLE process: Kernel 0x802019a6
+[CPU2] up_dump_register: EPC: 0000000080216ffc</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -572,7 +583,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
