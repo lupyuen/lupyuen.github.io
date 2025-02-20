@@ -478,7 +478,7 @@ Source: https://pine64.org/2024/10/02/september_2024/#starpro64
 
 #RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)
 
-https://github.com/eswincomputing/EIC7
+https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual
 
 #RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)
 
