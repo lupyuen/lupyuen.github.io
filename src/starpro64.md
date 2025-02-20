@@ -433,12 +433,12 @@ saveenv
 ## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x80200000
-dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
 
 ## Load the Device Tree from TFTP Server
 ## fdt_addr_r=0x81200000
 ## TODO: Fix the Device Tree, it's not needed by NuttX
-tftpboot ${fdt_addr_r} ${tftp_server}:cv181x_milkv_duos_sd.dtb
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 
 ## Set the RAM Address of Device Tree
 ## fdt_addr_r=0x81200000
@@ -450,6 +450,30 @@ fdt addr ${fdt_addr_r}
 ## fdt_addr_r=0x81200000
 ## TODO: Fix the Device Tree, it's not needed by NuttX
 booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
+_We type these commands EVERY TIME we boot?_
+
+We can automate: Just do this once, and NuttX will __Auto-Boot__ whenever we power up...
+
+```bash
+## Add the Boot Command for TFTP
+setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
+
+## Save it for future reboots
+saveenv
+
+## Test the Boot Command for TFTP, then reboot
+run bootcmd_tftp
+
+## Remember the Original Boot Command: `bootflow scan -lb`
+setenv orig_bootcmd "$bootcmd"
+
+## Prepend TFTP to the Boot Command: `run bootcmd_tftp ; bootflow scan -lb`
+setenv bootcmd "run bootcmd_tftp ; $bootcmd"
+
+## Save it for future reboots
+saveenv
 ```
 
 (Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
