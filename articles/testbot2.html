@@ -72,9 +72,9 @@
 <li><a href="#real-hardware-arm-and-esp32" title="Real Hardware: Arm and ESP32">5 Real Hardware: Arm and ESP32</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for NuttX Pull Requests" /></p>
-<p>Last week we saw our new <a href="TODO"><strong>Test Bot</strong></a> for NuttX Pull Requests. When we post this <strong>PR Comment</strong>, it will Build and Test the Pull Request on Real Hardware: <a href="TODO"><strong>Oz64 SG2000 RISC-V SBC</strong></a></p>
-<div class="example-wrap"><pre class="language-bash"><code>@nuttxpr TODO</code></pre></div>
-<p>Today we extend our Test Bot to <strong>QEMU Emulators</strong>: <a href="TODO"><strong>Arm64 QEMU</strong></a> and <a href="TODO"><strong>RISC-V QEMU</strong></a></p>
+<p>Last week we saw our new <a href="https://lupyuen.org/articles/testbot.html"><strong>Test Bot</strong></a> for NuttX Pull Requests. When we post this <strong>PR Comment</strong>, it will Build and Test the Pull Request on Real Hardware: <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
+<p>Today we extend our Test Bot to <strong>QEMU Emulators</strong>: <a href="https://lupyuen.github.io/articles/testbot2#testing-arm64-on-qemu"><strong>Arm64 QEMU</strong></a> and <a href="https://lupyuen.github.io/articles/testbot2#testing-risc-v-on-qemu"><strong>RISC-V QEMU</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Test this PR on QEMU Arm64:
 ## VirtIO Network, Block, RNG, Serial
 @nuttxpr test qemu-armv8a:netnsh
@@ -83,14 +83,14 @@
 ## 64-bit Kernel Build
 @nuttxpr test rv-virt:knsh64</code></pre></div>
 <p><em>Testing a Pull Request with QEMU: Is it Totally Safe?</em></p>
-<p>Not quite, beware of <a href="TODO"><strong>Semihosting Breakout</strong></a>. Some LLMs might be helpful for flagging the <a href="TODO"><strong>Safety Issues</strong></a>.</p>
+<p>Not quite, beware of <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting Breakout</strong></a>. Some LLMs might be helpful for flagging the <a href="https://lupyuen.github.io/articles/testbot2#llm-says-nope"><strong>Safety Issues</strong></a>.</p>
 <p><em>How about Real Hardware for Arm and ESP32? Can we test our PRs there?</em></p>
-<p>Yep we might support testing of Pull Requests on Other Hardware: <a href="TODO"><strong>Arm32, Arm64 and ESP32</strong></a>. Some Boards might require a <a href="TODO"><strong>MicroSD Multiplexer</strong></a>.</p>
+<p>Yep we might support testing of Pull Requests on Other Hardware: <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>Arm32, Arm64 and ESP32</strong></a>. Some Boards might require a <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>MicroSD Multiplexer</strong></a>.</p>
 <p>TODO: Pic of Arm64 PR</p>
 <h1 id="testing-arm64-on-qemu"><a class="doc-anchor" href="#testing-arm64-on-qemu">§</a>1 Testing Arm64 on QEMU</h1>
 <p><em>Testing a Pull Request on Arm64 QEMU: How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
-<p>The PR Comment above will trigger our <a href="TODO"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU Arm64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh">build-test-arm64.sh</a></p>
+<p>The PR Comment above will trigger our <a href="https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU Arm64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh">build-test-arm64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for Arm64 QEMU with VirtIO and Networking
 ## https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html
 tools/configure.sh qemu-armv8a:netnsh
@@ -121,14 +121,14 @@ qemu-system-aarch64 \
   -device virtio-blk-device,bus=virtio-mmio-bus.3,drive=hd \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx</code></pre></div></span>
-<p>And validate the <a href="TODO"><strong>OSTest Output</strong></a>.</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664190707">(See the <strong>Pull Request</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2664196921">(See the <strong>Test Log</strong>)</a></p>
+<p>And validate the <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp#L76-L98"><strong>OSTest Output</strong></a>. <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc">(Explained here)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15857#issuecomment-2665533412">(See the <strong>Pull Request</strong>)</a></p>
+<p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026">(See the <strong>Test Log</strong>)</a></p>
 <p>TODO: Pic of RISC-V PR</p>
 <h1 id="testing-risc-v-on-qemu"><a class="doc-anchor" href="#testing-risc-v-on-qemu">§</a>2 Testing RISC-V on QEMU</h1>
 <p><em>What about QEMU RISC-V?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test rv-virt:knsh64</code></pre></div>
-<p>The PR Comment above will trigger our <a href="TODO"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU RISC-V: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
+<p>The PR Comment above will trigger our <a href="https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU RISC-V: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for QEMU RISC-V (64-bit Kernel Build)
 ## https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#knsh64
 tools/configure.sh rv-virt:knsh64
@@ -153,13 +153,14 @@ qemu-system-riscv64 \
   -cpu rv64 \
   -kernel nuttx \
   -nographic</code></pre></div>
-<p>And validate the <a href="TODO"><strong>OSTest Output</strong></a>.</p>
-<p><a href="TODO">(See the <strong>Pull Request</strong>)</a></p>
-<p><a href="TODO">(See the <strong>Test Log</strong>)</a></p>
+<p>And validate the <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp#L62-L84"><strong>OSTest Output</strong></a>. <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/88#issuecomment-2671847491">(See the <strong>Pull Request</strong>)</a></p>
+<p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808969">(See the <strong>Test Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/1229510efa9c5b773ed0f4fd73e15e91">(See the <strong>Bot Log</strong>)</a></p>
 <p><em>Is there a Test Controller for QEMU?</em></p>
-<p>Nope Test Bot for QEMU doesn’t require a <a href="TODO"><strong>Test Controller</strong></a>. We run the QEMU Tests directly on our <a href="TODO"><strong>Build &amp; Test Server</strong></a>. Which might be unsafe…</p>
+<p>Nope Test Bot for QEMU doesn’t require a <a href="https://lupyuen.org/articles/testbot.html#connect-our-oz64-sbc"><strong>Test Controller</strong></a>. We run the QEMU Tests directly on our <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc"><strong>Build &amp; Test Server</strong></a>. Which might be unsafe…</p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="Beware of Semihosting, it might break out from the QEMU Sandbox and into our Host Computer" /></p>
 </blockquote>
 <h1 id="semihosting-breakout"><a class="doc-anchor" href="#semihosting-breakout">§</a>3 Semihosting Breakout</h1>
 <p><em>Testing a Pull Request with QEMU: Should be Totally Safe right?</em></p>
@@ -175,7 +176,7 @@ nsh&gt; /system/bin/hello
 Hello, World!!</code></pre></div>
 <p><em>Where is /system/bin? Don’t recall bundling any ELF Executables?</em></p>
 <p>The ELF Executables exist on Our Computer’s <strong>Local Filesystem</strong>… Outside QEMU and the NuttX Filesystem.</p>
-<p><img src="https://lupyuen.org/images/testbot2-apps.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot2-apps.png" alt="ELF Executables exist on Our Computer’s Local Filesystem… Outside QEMU and the NuttX Filesystem" /></p>
 <p>This is called <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting</strong></a>, it gives QEMU direct access to our computer’s filesystem. We <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#configurations"><strong>Enabled Semihosting</strong></a> when we started QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For NuttX Kernel Build: (rv-virt:knsh64)
 ## QEMU must run with Semihosting Enabled
@@ -186,7 +187,7 @@ qemu-system-riscv64 \
   -bios none \
   -kernel nuttx \
   -nographic</code></pre></div>
-<p><a href="TODO">(Semihosting is also used by <strong>OpenOCD</strong> for debugging <strong>Arm32 Devices</strong>)</a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(Semihosting is also used by <strong>OpenOCD</strong> for debugging <strong>Arm32 Devices</strong>)</a></p>
 <p><em>Thus NuttX could break out of QEMU? And access anything in our computer’s filesystem?</em></p>
 <p>Exactly. This is our <strong>“Exploit Code”</strong> for NuttX Semihosting: <a href="https://github.com/lupyuen2/wip-nuttx/blob/sbo/arch/risc-v/src/common/riscv_hostfs.c#L117-L141">riscv_hostfs.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When NuttX opens a file via Semihosting...
@@ -230,7 +231,7 @@ root:*:0:0:System Administrator:/var/root:/bin/sh
 daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a1c06b6cbf08feedee4d711b21561705#file-gistfile1-txt-L1238-L1246">(See the <strong>Complete Log</strong>)</a></p>
 <p>Hence it’s <strong>Not Safe</strong> to test somebody’s Pull Request on our computer. Unless we inpect the PR Code very carefully.</p>
-<p><a href="TODO">(<strong>Arm32 + OpenOCD</strong> might be prone to Semihosting Exploit)</a></p>
+<p><a href="https://lupyuen.org/articles/testbot.html#securing-our-bot">(<strong>Arm32 + OpenOCD</strong> might be prone to Semihosting Exploit)</a></p>
 <h1 id="llm-says-nope"><a class="doc-anchor" href="#llm-says-nope">§</a>4 LLM Says Nope!</h1>
 <p><em>Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?</em></p>
 <p>Let’s find out. We crafted a <strong>“Malicious Pull Request”</strong> with our “Exploit Code”…</p>
@@ -240,7 +241,7 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
 <p>We append <strong><code>.diff</code></strong> to the Pull Request URL…</p>
 <div class="example-wrap"><pre class="language-bash"><code>github.com/lupyuen2/wip-nuttx/pull/89.diff</code></pre></div>
 <p>To produce a barebones <a href="https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff"><strong>Diff Patch</strong></a> for our “Malicious Pull Request”…</p>
-<p><img src="https://lupyuen.org/images/testbot2-diff.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot2-diff.png" alt="Diff Patch for our “Malicious Pull Request”" /></p>
 <p>And we feed the Diff Patch to <strong>Any LLM</strong>…</p>
 <span style="font-size:80%">
 <blockquote>
@@ -309,16 +310,16 @@ index aa1409d6a05b0..db54f11ae7623 100644
 <li>
 <p><em>How about NuttX Arm64: Testing on Real Hardware?</em></p>
 <p>Ah this becomes an interesting challenge: Arm64 Devices will boot NuttX on a <strong>MicroSD Card</strong>. Which requires <strong>Human Intervention</strong> to Flash the MicroSD Card and insert into the Arm64 Device.</p>
-<p>But there’s hope for Automated Testing! We ordered a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.</p>
-<p>We’ll test the MicroSD Multiplexer with <a href="TODO"><strong>PinePhone NuttX</strong></a> real soon.</p>
+<p>But there’s hope for Automated Testing! We ordered a <a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>MicroSD Multiplexer</strong></a> that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.</p>
+<p>We’ll test the MicroSD Multiplexer with <a href="https://lupyuen.github.io/articles/what"><strong>PinePhone NuttX</strong></a> real soon.</p>
 </li>
 <li>
 <p><em>Testing on Arm32 Hardware should be easier? STM32, nRF52, RP2040?</em></p>
-<p>Yep just modify the <a href="TODO"><strong>Build &amp; Test Script</strong></a> to call <a href="TODO"><strong>OpenOCD + ST-Link + Semihosting</strong></a>. Lemme know if you have questions! 🙏</p>
+<p>Yep just modify the <a href="https://lupyuen.org/articles/testbot.html#build-and-test-script"><strong>Build &amp; Test Script</strong></a> and <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc"><strong>Expect Script</strong></a> to call <a href="https://nuttx.apache.org/docs/latest/quickstart/running.html"><strong>OpenOCD + ST-Link + Semihosting</strong></a>. Lemme know if you have questions! 🙏</p>
 </li>
 <li>
 <p><em>And ESP32 Hardware? Xtensa + RISC-V?</em></p>
-<p>We’re hoping the <strong>Kind Folks at Espressif</strong> could help to modify the <a href="TODO"><strong>Build &amp; Test Scripts</strong></a> for our PR Test Bot.</p>
+<p>We’re hoping the <strong>Kind Folks at Espressif</strong> could help to modify the <a href="https://lupyuen.org/articles/testbot.html#build-and-test-script"><strong>Build &amp; Test Script</strong></a> and <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc"><strong>Expect Script</strong></a> for our PR Test Bot.</p>
 <p>Then we can easily test any NuttX Pull Request on <strong>Real ESP32 Hardware</strong>, Xtensa and RISC-V. 👍</p>
 </li>
 </ol>
