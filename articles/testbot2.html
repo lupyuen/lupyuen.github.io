@@ -70,8 +70,7 @@
 <li><a href="#semihosting-breakout" title="Semihosting Breakout">3 Semihosting Breakout</a><ul></ul></li>
 <li><a href="#llm-says-nope" title="LLM Says Nope!">4 LLM Says Nope!</a><ul></ul></li>
 <li><a href="#real-hardware-arm-and-esp32" title="Real Hardware: Arm and ESP32">5 Real Hardware: Arm and ESP32</a><ul></ul></li>
-<li><a href="#todo" title="TODO">6 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for NuttX Pull Requests" /></p>
 <p>Last week we saw our new <a href="TODO"><strong>Test Bot</strong></a> for NuttX Pull Requests. When we post this <strong>PR Comment</strong>, it will Build and Test the Pull Request on Real Hardware: <a href="TODO"><strong>Oz64 SG2000 RISC-V SBC</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr TODO</code></pre></div>
@@ -298,15 +297,27 @@ index aa1409d6a05b0..db54f11ae7623 100644
 <p><a href="https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553">(See the <strong>LLM Response</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(Gemini Flash 2.0? It neglected the <strong>Semihosting</strong>)</a></p>
 <p>OK Smarty Pants LLM, you foiled our “Malicious Pull Request”. Could you possibly stop EVERY Malicious Pull Request? 🤔</p>
+<p>TODO: Pic of PinePhone</p>
 <h1 id="real-hardware-arm-and-esp32"><a class="doc-anchor" href="#real-hardware-arm-and-esp32">§</a>5 Real Hardware: Arm and ESP32</h1>
-<p>Arm64:</p>
-<p>Arm32: Lemme know if you need help 🙏</p>
+<ol>
+<li>
+<p><em>How about NuttX Arm64: Testing on Real Hardware?</em></p>
+<p>Ah this becomes an interesting challenge: Arm64 Devices will boot NuttX on a <strong>MicroSD Card</strong>. Which requires <strong>Human Intervention</strong> to Flash the MicroSD Card and insert into the Arm64 Device.</p>
+<p>But there’s hope for Automated Testing! We ordered a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.</p>
+<p>We’ll test the MicroSD Multiplexer with <a href="TODO"><strong>PinePhone NuttX</strong></a> real soon.</p>
+</li>
+<li>
+<p><em>Testing on Arm32 should be easier? STM32, nRF52, RP2040?</em></p>
+<p>Yep just modify the <a href="TODO"><strong>Build &amp; Test Script</strong></a> to call <a href="TODO"><strong>OpenOCD + ST-Link + Semihosting</strong></a>. Lemme know if you need help! 🙏</p>
+<p>TODO</p>
+</li>
+<li>
 <p>ESP32 (Xtensa and RISC-V):</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1>
-<p>What about PinePhone</p>
-<p>What about ESP32</p>
 <p>Kind folks at Espressif could help to modify the scripts to test</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
+<p>TODO</p>
+</li>
+</ol>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
 <p>Next week we take a break from Continuous Integration. We’ll chat about the (literally) Hot New RISC-V SBC: StarPro64. Stay tuned!</p>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
