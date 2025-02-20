@@ -349,6 +349,12 @@ vendor=eswin
 Environment size: 1435/524284 bytes
 ```
 
+TODO
+
+```text
+  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
+```
+
 # UART
 
 ```text
@@ -366,6 +372,12 @@ done
 ```
 
 Same pins as Star64 and Oz64 SG2000
+
+Garbage: Compute CONFIG_16550_UART0_CLOCK
+
+CONFIG_16550_UART0_IRQ=125
+
+100 + 25
 
 # Power Plug
 
