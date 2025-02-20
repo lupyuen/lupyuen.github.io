@@ -546,6 +546,22 @@ Working FDT set to 88000000
 Starting kernel ...
 ```
 
+# Multiple CPU
+
+https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef
+
+```text
+Starting kernel ...
+
+123Hello NuttX!
+2ABC[CPU2] nx_start: Entry
+[CPU2] uart_register: Registering /dev/console
+[CPU2] uart_register: Registering /dev/ttyS0
+[CPU2] dump_assert_info: Current Version: NuttX  12.4.0 01cbd0ca38-dirty Feb 20 2025 19:56:29 risc-v
+[CPU2] dump_assert_info: Assertion failed up_cpu_index() == 0: at file: init/nx_start.c:745 task(CPU2): CPU2 IDLE process: Kernel 0x802019a6
+[CPU2] up_dump_register: EPC: 0000000080216ffc
+```
+
 # TODO
 
 https://github.com/rockos-riscv
