@@ -84,11 +84,11 @@
 @nuttxpr test rv-virt:knsh64</code></pre></div>
 <p><em>Testing a Pull Request with QEMU: Is it Totally Safe?</em></p>
 <p>Not quite, beware of <a href="TODO"><strong>Semihosting Breakout</strong></a>. Some LLMs might be helpful for flagging the <a href="TODO"><strong>Safety Issues</strong></a>.</p>
-<p><em>What about testing on Real Hardware?</em></p>
-<p>TODO</p>
+<p><em>How about Real Hardware for Arm32, Arm64 and ESP32? Can we test our PRs there?</em></p>
+<p>Yep we might support testing of Pull Requests on Other Hardware: <a href="TODO"><strong>Arm32, Arm64 and ESP32</strong></a>. Some Boards might require a <a href="TODO"><strong>MicroSD Multiplexer</strong></a>.</p>
 <p>TODO: Pic of Arm64 PR</p>
 <h1 id="testing-arm64-on-qemu"><a class="doc-anchor" href="#testing-arm64-on-qemu">§</a>1 Testing Arm64 on QEMU</h1>
-<p><em>Testing a Pull Request on Arm64: How does it work?</em></p>
+<p><em>Testing a Pull Request on Arm64 QEMU: How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
 <p>The PR Comment above will trigger our <a href="TODO"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU Arm64: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-arm64.sh">build-test-arm64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for Arm64 QEMU with VirtIO and Networking
