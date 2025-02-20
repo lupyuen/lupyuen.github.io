@@ -383,7 +383,9 @@ uuid_root=b0f77ad6-36cd-4a99-a8c0-31d73649aa08
 uuid_swap=5ebcaaf0-e098-43b9-beef-1f8deedd135e
 vendor=eswin
 
-Environment size: 1435/524284 bytes</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>4 UART</h1><div class="example-wrap"><pre class="language-text"><code>https://pinout.xyz/
+Environment size: 1435/524284 bytes</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>4 UART</h1><div class="example-wrap"><pre class="language-text"><code>https://pinout.xyz/
 
 Yellow - GND - pin 6
 Blue - Tx - pin 8
@@ -395,6 +397,9 @@ for (( ; ; )) do
   sleep 10
 done</code></pre></div>
 <p>Same pins as Star64 and Oz64 SG2000</p>
+<p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
+<p>CONFIG_16550_UART0_IRQ=125</p>
+<p>100 + 25</p>
 <h1 id="power-plug"><a class="doc-anchor" href="#power-plug">§</a>5 Power Plug</h1><div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## token=xxxx
 set +x  ##  Disable echo
