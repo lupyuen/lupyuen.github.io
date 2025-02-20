@@ -330,11 +330,9 @@ TODO: Pic of PinePhone
     
     We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](TODO) real soon.
 
-1.  _Testing on Arm32 should be easier? STM32, nRF52, RP2040?_
+1.  _Testing on Arm32 Hardware should be easier? STM32, nRF52, RP2040?_
 
-    Yep just modify the [__Build & Test Script__](TODO) to call [__OpenOCD + ST-Link + Semihosting__](TODO). Lemme know if you need help! 🙏
-
-    TODO
+    Yep just modify the [__Build & Test Script__](TODO) to call [__OpenOCD + ST-Link + Semihosting__](TODO). Lemme know if you have questions! 🙏
 
 1.  ESP32 (Xtensa and RISC-V):
 
