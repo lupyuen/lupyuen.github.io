@@ -366,7 +366,7 @@ Green - Rx - pin 10
 
 set -x
 for (( ; ; )) do 
-  screen /dev/ttyUSB0 115200
+  screen /dev/ttyUSB* 115200
   sleep 10
 done
 ```
