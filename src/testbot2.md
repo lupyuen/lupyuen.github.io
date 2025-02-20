@@ -318,21 +318,29 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop EVERY Malicious Pull Request? 🤔
 
+TODO: Pic of PinePhone
+
 # Real Hardware: Arm and ESP32
 
-Arm64:
+1.  _How about NuttX Arm64: Testing on Real Hardware?_
 
-Arm32: Lemme know if you need help 🙏
+    Ah this becomes an interesting challenge: Arm64 Devices will boot NuttX on a __MicroSD Card__. Which requires __Human Intervention__ to Flash the MicroSD Card and insert into the Arm64 Device.
 
-ESP32 (Xtensa and RISC-V):
+    But there's hope for Automated Testing! We ordered a [__MicroSD Multiplexer__](TODO) that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.
+    
+    We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](TODO) real soon.
 
-# TODO
+1.  _Testing on Arm32 should be easier? STM32, nRF52, RP2040?_
 
-What about PinePhone
+    Yep just modify the [__Build & Test Script__](TODO) to call [__OpenOCD + ST-Link + Semihosting__](TODO). Lemme know if you need help! 🙏
 
-What about ESP32
+    TODO
 
-Kind folks at Espressif could help to modify the scripts to test 
+1.  ESP32 (Xtensa and RISC-V):
+
+    Kind folks at Espressif could help to modify the scripts to test 
+
+    TODO
 
 # What's Next
 
