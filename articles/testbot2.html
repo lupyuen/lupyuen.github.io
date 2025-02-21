@@ -86,7 +86,7 @@
 <p>Not quite, beware of <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting Breakout</strong></a>. Some LLMs might be helpful for flagging the <a href="https://lupyuen.github.io/articles/testbot2#llm-says-nope"><strong>Safety Issues</strong></a>.</p>
 <p><em>How about Real Hardware for Arm and ESP32? Can we test our PRs there?</em></p>
 <p>Yep we might support testing of Pull Requests on Other Hardware: <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>Arm32, Arm64 and ESP32</strong></a>. Some Boards might require a <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>MicroSD Multiplexer</strong></a>.</p>
-<p>TODO: Pic of Arm64 PR</p>
+<p><img src="https://lupyuen.org/images/testbot2-arm64.jpg" alt="Testing a Pull Request on Arm64 QEMU" /></p>
 <h1 id="testing-arm64-on-qemu"><a class="doc-anchor" href="#testing-arm64-on-qemu">§</a>1 Testing Arm64 on QEMU</h1>
 <p><em>Testing a Pull Request on Arm64 QEMU: How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
@@ -124,7 +124,7 @@ qemu-system-aarch64 \
 <p>And validate the <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp#L76-L98"><strong>OSTest Output</strong></a>. <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc">(Explained here)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/15857#issuecomment-2665533412">(See the <strong>Pull Request</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026">(See the <strong>Test Log</strong>)</a></p>
-<p>TODO: Pic of RISC-V PR</p>
+<p><img src="https://lupyuen.org/images/testbot2-riscv.jpg" alt="Testing a Pull Request on QEMU RISC-V" /></p>
 <h1 id="testing-risc-v-on-qemu"><a class="doc-anchor" href="#testing-risc-v-on-qemu">§</a>2 Testing RISC-V on QEMU</h1>
 <p><em>We just saw QEMU Arm64. What about QEMU RISC-V?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test rv-virt:knsh64</code></pre></div>
