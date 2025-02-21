@@ -562,6 +562,14 @@ Starting kernel ...
 [CPU2] up_dump_register: EPC: 0000000080216ffc
 ```
 
+Boot HART ID = 0. OSTest OK yay!
+
+https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b
+
+Boot HART ID = 2. Boot fail :-(
+
+https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95
+
 # TODO
 
 https://github.com/rockos-riscv
