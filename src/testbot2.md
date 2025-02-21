@@ -332,7 +332,7 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop EVERY Malicious Pull Request? 🤔
 
-TODO: Pic of PinePhone
+![Testing PinePhone with MicroSD Multiplexer](https://lupyuen.org/images/testbot2-flow.jpg)
 
 # Real Hardware: Arm and ESP32
 
