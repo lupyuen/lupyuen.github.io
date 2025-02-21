@@ -570,6 +570,35 @@ Boot HART ID = 2. Boot fail :-(
 
 https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95
 
+![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
+
+StarPro64 will boot on a Random Hart: 0 to 3. But NuttX only boots on Hart 0!
+
+We need to fix the PLIC Driver in NuttX, which only works on Hart 0...
+
+- [NuttX boots OK on Hart 0](https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b)
+
+   ```text
+   Boot HART ID              : 0
+   ...
+   [CPU0] nx_start: Entry
+   [CPU0] nx_start: CPU0: Beginning Idle Loop
+
+   NuttShell (NSH) NuttX-12.4.0
+   nsh> hello
+   Hello, World!!   
+   ```
+
+- [NuttX won't boot on other Harts](https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95)
+
+   ```text
+   Boot HART ID              : 2
+   ...
+   [CPU0] nx_start: Entry
+   [CPU0] nx_start: CPU0: Beginning Idle Loop
+   [ Stuck here ]
+   ```
+
 # TODO
 
 https://github.com/rockos-riscv
