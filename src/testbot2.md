@@ -92,13 +92,13 @@ TODO: Pic of RISC-V PR
 
 # Testing RISC-V on QEMU
 
-_What about QEMU RISC-V?_
+_We just saw QEMU Arm64. What about QEMU RISC-V?_
 
 ```bash
 @nuttxpr test rv-virt:knsh64
 ```
 
-The PR Comment above will trigger our [__Test Bot Rust App__](https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests) to launch a Build + Test for QEMU RISC-V: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
+Works the same! When our [__Test Bot Rust App__](https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests) sees the above PR Comment, it will launch a Build + Test for QEMU RISC-V: [build-test-knsh64.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh)
 
 ```bash
 ## Configure NuttX for QEMU RISC-V (64-bit Kernel Build)
@@ -119,7 +119,7 @@ popd
 expect qemu-riscv-knsh64.exp
 ```
 
-Which will execute this __Expect Script__: [qemu-riscv-knsh64.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp)
+Which will call this __Expect Script__: [qemu-riscv-knsh64.exp](https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp)
 
 ```bash
 ## Boot NuttX on QEMU Emulator for 64-bit RISC-V with OpenSBI
