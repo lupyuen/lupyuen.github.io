@@ -126,9 +126,9 @@ qemu-system-aarch64 \
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026">(See the <strong>Test Log</strong>)</a></p>
 <p>TODO: Pic of RISC-V PR</p>
 <h1 id="testing-risc-v-on-qemu"><a class="doc-anchor" href="#testing-risc-v-on-qemu">§</a>2 Testing RISC-V on QEMU</h1>
-<p><em>What about QEMU RISC-V?</em></p>
+<p><em>We just saw QEMU Arm64. What about QEMU RISC-V?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test rv-virt:knsh64</code></pre></div>
-<p>The PR Comment above will trigger our <a href="https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests"><strong>Test Bot Rust App</strong></a> to launch a Build + Test for QEMU RISC-V: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
+<p>Works the same! When our <a href="https://lupyuen.org/articles/testbot.html#test-bot-for-pull-requests"><strong>Test Bot Rust App</strong></a> sees the above PR Comment, it will launch a Build + Test for QEMU RISC-V: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-knsh64.sh">build-test-knsh64.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for QEMU RISC-V (64-bit Kernel Build)
 ## https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#knsh64
 tools/configure.sh rv-virt:knsh64
@@ -145,7 +145,7 @@ popd
 
 ## Run the NuttX Test
 expect qemu-riscv-knsh64.exp</code></pre></div>
-<p>Which will execute this <strong>Expect Script</strong>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp">qemu-riscv-knsh64.exp</a></p>
+<p>Which will call this <strong>Expect Script</strong>: <a href="https://github.com/lupyuen/nuttx-riscv64/blob/main/qemu-riscv-knsh64.exp">qemu-riscv-knsh64.exp</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX on QEMU Emulator for 64-bit RISC-V with OpenSBI
 qemu-system-riscv64 \
   -semihosting \
