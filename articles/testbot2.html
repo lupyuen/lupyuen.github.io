@@ -236,7 +236,7 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
 <p><em>Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?</em></p>
 <p>Let’s find out. We crafted a <strong>“Malicious Pull Request”</strong> with our “Exploit Code”…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/89"><strong>“Pull Request that might be Safe or Unsafe”</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/89/files"><strong>“Pull Request that might be Safe or Unsafe”</strong></a></li>
 </ul>
 <p>We append <strong><code>.diff</code></strong> to the Pull Request URL…</p>
 <div class="example-wrap"><pre class="language-bash"><code>github.com/lupyuen2/wip-nuttx/pull/89.diff</code></pre></div>
@@ -283,7 +283,7 @@ index aa1409d6a05b0..db54f11ae7623 100644
    };
  
  #ifdef CONFIG_RISCV_SEMIHOSTING_HOSTFS_CACHE_COHERENCE</code></pre></div></span>
-<p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(See the <strong>LLM Prompt</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900#prompt-to-llm">(See the <strong>LLM Prompt</strong>)</a></p>
 <p>The LLM we tested <em>(Gemini Pro 2.0 Experimental)</em> says…</p>
 <span style="font-size:80%">
 <blockquote>
@@ -291,17 +291,17 @@ index aa1409d6a05b0..db54f11ae7623 100644
 </blockquote>
 <ol>
 <li>
-<p><strong>Pathname Redirection:</strong>  The code checks if the requested <code>pathname</code> is <code>"../apps/bin/hello"</code>.  If it is, it <em>replaces</em> the requested path with <code>"/etc/passwd"</code>.  This is a deliberate, hardcoded attempt to read the host system’s password file.  <code>/etc/passwd</code> on a typical Linux/Unix system contains user account information. While it doesn’t contain hashed passwords anymore (those are usually in <code>/etc/shadow</code>), it’s still sensitive information that should not be exposed.</p>
+<p><strong>Pathname Redirection:</strong>  The code checks if the requested <code>pathname</code> is <code>"../apps/bin/hello"</code>.  If it is, it <em>replaces</em> the requested path with <code>"/etc/passwd"</code>.  This is a deliberate, hardcoded attempt to read the host system’s password file …</p>
 </li>
 <li>
-<p><strong>Semihosting Abuse:</strong> This code is within the <code>host_open</code> function, which is part of NuttX’s semihosting implementation (<code>CONFIG_RISCV_SEMIHOSTING_HOSTFS</code>).  Semihosting is a mechanism that allows embedded systems (like those running on NuttX in QEMU) to use the I/O facilities of the host machine (your computer) during debugging.  This code exploits semihosting to access arbitrary files on your <em>host</em> operating system.  Essentially, the embedded code is making a system call <em>on your computer</em>, not within the isolated QEMU environment.</p>
+<p><strong>Semihosting Abuse:</strong> This code is within the <code>host_open</code> function, which is part of NuttX’s semihosting implementation (<code>CONFIG_RISCV_SEMIHOSTING_HOSTFS</code>) … This code exploits semihosting to access arbitrary files on your <em>host</em> operating system.  Essentially, the embedded code is making a system call <em>on your computer</em>, not within the isolated QEMU environment.</p>
 </li>
 <li>
-<p><strong>No Sanitization:</strong>  Even if the <code>pathname</code> is <em>not</em> <code>"../apps/bin/hello"</code>, there’s no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted <code>pathname</code> to access <em>any</em> file on your host system that the user running QEMU has permission to read (or write, depending on the flags). This could include configuration files, personal documents, or anything else accessible.  It’s a classic directory traversal vulnerability.</p>
+<p><strong>No Sanitization:</strong>  Even if the <code>pathname</code> is <em>not</em> <code>"../apps/bin/hello"</code>, there’s no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted <code>pathname</code> to access <em>any</em> file on your host system …</p>
 </li>
 </ol>
 </span>
-<p><a href="https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553">(See the <strong>LLM Response</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900#response-from-llm-gemini-advanced-20-flash">(See the <strong>LLM Response</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(Gemini Flash 2.0? It neglected the <strong>Semihosting</strong>)</a></p>
 <p>OK Smarty Pants LLM, you foiled our “Malicious Pull Request”. Could you possibly stop EVERY Malicious Pull Request? 🤔</p>
 <p><img src="https://lupyuen.org/images/testbot2-flow.jpg" alt="Testing PinePhone with MicroSD Multiplexer" /></p>
@@ -310,7 +310,7 @@ index aa1409d6a05b0..db54f11ae7623 100644
 <li>
 <p><em>How about NuttX Arm64: Testing on Real Hardware?</em></p>
 <p>Ah this becomes an interesting challenge: Arm64 Devices will boot NuttX on a <strong>MicroSD Card</strong>. Which requires <strong>Human Intervention</strong> to Flash the MicroSD Card and insert into the Arm64 Device.</p>
-<p>But there’s hope for Automated Testing! We ordered a <a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>MicroSD Multiplexer</strong></a> that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.</p>
+<p>But there’s hope for Automated Testing! We ordered a <a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>MicroSD Multiplexer</strong></a> that will (electrically) Swap a MicroSD between a Test Controller PC and the Arm64 Test Device.</p>
 <p>We’ll test the MicroSD Multiplexer with <a href="https://lupyuen.github.io/articles/what"><strong>PinePhone NuttX</strong></a> real soon.</p>
 </li>
 <li>
@@ -324,7 +324,7 @@ index aa1409d6a05b0..db54f11ae7623 100644
 </li>
 </ol>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
-<p>Next week we take a break from Continuous Integration. We’ll chat about the (literally) Hot New RISC-V SBC: StarPro64. Stay tuned!</p>
+<p>Next week we take a break from Continuous Integration. We’ll chat about the (literally) Hot New RISC-V SBC: <strong>StarPro64 EIC7700X</strong>. Stay tuned!</p>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
 <li>
