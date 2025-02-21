@@ -643,7 +643,11 @@ Hart ID 2. OK yay!
 
 https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0
 
-Fix the sleep
+Hart ID 1. OK yay!
+
+https://gist.github.com/lupyuen/9bdfad6d283945effc994923ae99117a
+
+Fix the sleep. too slow
 
 # Build Loop
 
