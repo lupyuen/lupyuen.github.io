@@ -251,7 +251,7 @@ _Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?_
 
 Let's find out. We crafted a __"Malicious Pull Request"__ with our "Exploit Code"...
 
-- [__"Pull Request that might be Safe or Unsafe"__](https://github.com/lupyuen2/wip-nuttx/pull/89)
+- [__"Pull Request that might be Safe or Unsafe"__](https://github.com/lupyuen2/wip-nuttx/pull/89/files)
 
 We append __`.diff`__ to the Pull Request URL...
 
@@ -310,7 +310,7 @@ index aa1409d6a05b0..db54f11ae7623 100644
 
 </span>
 
-[(See the __LLM Prompt__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
+[(See the __LLM Prompt__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900#prompt-to-llm)
 
 The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
@@ -318,15 +318,15 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 > This pull request is **absolutely not safe** to build and test as-is, and it contains a very obvious and serious security vulnerability ...
 
-1.  **Pathname Redirection:**  The code checks if the requested `pathname` is `"../apps/bin/hello"`.  If it is, it *replaces* the requested path with `"/etc/passwd"`.  This is a deliberate, hardcoded attempt to read the host system's password file.  `/etc/passwd` on a typical Linux/Unix system contains user account information. While it doesn't contain hashed passwords anymore (those are usually in `/etc/shadow`), it's still sensitive information that should not be exposed.
+1.  **Pathname Redirection:**  The code checks if the requested `pathname` is `"../apps/bin/hello"`.  If it is, it *replaces* the requested path with `"/etc/passwd"`.  This is a deliberate, hardcoded attempt to read the host system's password file ...
 
-2.  **Semihosting Abuse:** This code is within the `host_open` function, which is part of NuttX's semihosting implementation (`CONFIG_RISCV_SEMIHOSTING_HOSTFS`).  Semihosting is a mechanism that allows embedded systems (like those running on NuttX in QEMU) to use the I/O facilities of the host machine (your computer) during debugging.  This code exploits semihosting to access arbitrary files on your *host* operating system.  Essentially, the embedded code is making a system call *on your computer*, not within the isolated QEMU environment.
+2.  **Semihosting Abuse:** This code is within the `host_open` function, which is part of NuttX's semihosting implementation (`CONFIG_RISCV_SEMIHOSTING_HOSTFS`) ... This code exploits semihosting to access arbitrary files on your *host* operating system.  Essentially, the embedded code is making a system call *on your computer*, not within the isolated QEMU environment.
 
-3.  **No Sanitization:**  Even if the `pathname` is *not* `"../apps/bin/hello"`, there's no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted `pathname` to access *any* file on your host system that the user running QEMU has permission to read (or write, depending on the flags). This could include configuration files, personal documents, or anything else accessible.  It's a classic directory traversal vulnerability.
+3.  **No Sanitization:**  Even if the `pathname` is *not* `"../apps/bin/hello"`, there's no sanitization or validation of the requested file path.  An attacker could potentially provide a crafted `pathname` to access *any* file on your host system ...
 
 </span>
 
-[(See the __LLM Response__)](https://gist.github.com/lupyuen/b9fc83a5f496d375b030c93c65271553)
+[(See the __LLM Response__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900#response-from-llm-gemini-advanced-20-flash)
 
 [(Gemini Flash 2.0? It neglected the __Semihosting__)](https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900)
 
@@ -340,7 +340,7 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
     Ah this becomes an interesting challenge: Arm64 Devices will boot NuttX on a __MicroSD Card__. Which requires __Human Intervention__ to Flash the MicroSD Card and insert into the Arm64 Device.
 
-    But there's hope for Automated Testing! We ordered a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/) that will (electrically) swap a MicroSD between a Test Controller PC and the Arm64 Test Device.
+    But there's hope for Automated Testing! We ordered a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/) that will (electrically) Swap a MicroSD between a Test Controller PC and the Arm64 Test Device.
     
     We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](https://lupyuen.github.io/articles/what) real soon.
 
@@ -356,7 +356,7 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
 # What's Next
 
-Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: StarPro64. Stay tuned!
+Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: __StarPro64 EIC7700X__. Stay tuned!
 
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
