@@ -245,6 +245,8 @@ Hence it's __Not Safe__ to test somebody's Pull Request on our computer. Unless 
 
 [(__Arm32 + OpenOCD__ might be prone to Semihosting Exploit)](https://lupyuen.org/articles/testbot.html#securing-our-bot)
 
+[(__nsh64__ and __knsh64__ will fail on Docker)](https://lupyuen.github.io/articles/rust6#appendix-nuttx-qemu-risc-v-fails-on-github-actions)
+
 # LLM Says Nope!
 
 _Bummer. Will LLM tell us if the Pull Request is Safe for Testing Locally?_
