@@ -647,6 +647,10 @@ Fix the sleep. too slow. factor of 25
 
 [waiter_func: Thread 2 waiting on semaphore](https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65)
 
+[__Watch the Demo on YouTube__](https://youtu.be/70DQ4YlQMMw)
+
+[__See the NuttX Log__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)
+
 # Build Loop
 
 make
