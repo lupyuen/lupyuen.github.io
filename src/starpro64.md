@@ -367,7 +367,7 @@ Green - Rx - pin 10
 set -x
 for (( ; ; )) do 
   screen /dev/ttyUSB* 115200
-  sleep 10
+  sleep 5
 done
 ```
 
@@ -598,6 +598,66 @@ We need to fix the PLIC Driver in NuttX, which only works on Hart 0...
    [CPU0] nx_start: CPU0: Beginning Idle Loop
    [ Stuck here ]
    ```
+
+# PLIC Multiple Harts
+
+Page 240 (Skip the M-Modes)
+
+```text
+Address Width Attr. Description
+0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
+0x0C00_20C0 4B RW End Hart 0 S-Mode interrupt enables
+
+0x0C00_2180 4B RW Start Hart 1 S-Mode interrupt enables
+0x0C00_21C0 4B RW End Hart 1 S-Mode interrupt enables
+
+0x0C00_2280 4B RW Start Hart 2 S-Mode interrupt enables
+0x0C00_22C0 4B RW End Hart 2 S-Mode interrupt enables
+```
+
+- 0x0C00_2080: Hart 0 S-Mode Interrupt Enable
+- 0x0C00_2180: Hart 1 S-Mode Interrupt Enable
+- 0x0C00_2280: Hart 2 S-Mode Interrupt Enable
+
+Interrupt Enable: Skip 0x100 per hart
+
+Page 241 (Skip the M-Modes)
+
+```text
+Address Width Attr. Description
+0x0C20_1000 4B RW Hart 0 S-Mode priority threshold
+0x0C20_1004 4B RW Hart 0 S-Mode claim/ complete
+
+0x0C20_3000 4B RW Hart 1 S-Mode priority threshold
+0x0C20_3004 4B RW Hart 1 S-Mode claim/ complete
+
+0x0C20_5000 4B RW Hart 2 S-Mode priority threshold
+0x0C20_5004 4B RW Hart 2 S-Mode claim/ complete
+```
+
+priority threshold: Skip 0x2000 per hart
+
+claim/ complete: Skip 0x2000 per hart
+
+Hart ID 2. OK yay!
+
+https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0
+
+Fix the sleep
+
+# Build Loop
+
+make
+
+make app
+
+power off
+
+power on
+
+read
+
+power off
 
 # TODO
 
