@@ -639,15 +639,13 @@ priority threshold: Skip 0x2000 per hart
 
 claim/ complete: Skip 0x2000 per hart
 
-Hart ID 2. OK yay!
+[Hart ID 2. OK yay!](https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0)
 
-https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0
+[Hart ID 1. OK yay!](https://gist.github.com/lupyuen/9bdfad6d283945effc994923ae99117a)
 
-Hart ID 1. OK yay!
+Fix the sleep. too slow. factor of 25
 
-https://gist.github.com/lupyuen/9bdfad6d283945effc994923ae99117a
-
-Fix the sleep. too slow
+[waiter_func: Thread 2 waiting on semaphore](https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65)
 
 # Build Loop
 
