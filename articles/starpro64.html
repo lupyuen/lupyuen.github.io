@@ -73,8 +73,10 @@
 <li><a href="#new-rockos" title="New RockOS">6 New RockOS</a><ul></ul></li>
 <li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">7 Boot NuttX over TFTP</a><ul></ul></li>
 <li><a href="#multiple-cpu" title="Multiple CPU">8 Multiple CPU</a><ul></ul></li>
-<li><a href="#todo" title="TODO">9 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">9 PLIC Multiple Harts</a><ul></ul></li>
+<li><a href="#build-loop" title="Build Loop">10 Build Loop</a><ul></ul></li>
+<li><a href="#todo" title="TODO">11 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -395,7 +397,7 @@ Green - Rx - pin 10
 set -x
 for (( ; ; )) do 
   screen /dev/ttyUSB* 115200
-  sleep 10
+  sleep 5
 done</code></pre></div>
 <p>Same pins as Star64 and Oz64 SG2000</p>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
@@ -565,7 +567,46 @@ Hello, World!!   </code></pre></div></li>
 [CPU0] nx_start: CPU0: Beginning Idle Loop
 [ Stuck here ]</code></pre></div></li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
+<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>9 PLIC Multiple Harts</h1>
+<p>Page 240 (Skip the M-Modes)</p>
+<div class="example-wrap"><pre class="language-text"><code>Address Width Attr. Description
+0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
+0x0C00_20C0 4B RW End Hart 0 S-Mode interrupt enables
+
+0x0C00_2180 4B RW Start Hart 1 S-Mode interrupt enables
+0x0C00_21C0 4B RW End Hart 1 S-Mode interrupt enables
+
+0x0C00_2280 4B RW Start Hart 2 S-Mode interrupt enables
+0x0C00_22C0 4B RW End Hart 2 S-Mode interrupt enables</code></pre></div>
+<ul>
+<li>0x0C00_2080: Hart 0 S-Mode Interrupt Enable</li>
+<li>0x0C00_2180: Hart 1 S-Mode Interrupt Enable</li>
+<li>0x0C00_2280: Hart 2 S-Mode Interrupt Enable</li>
+</ul>
+<p>Interrupt Enable: Skip 0x100 per hart</p>
+<p>Page 241 (Skip the M-Modes)</p>
+<div class="example-wrap"><pre class="language-text"><code>Address Width Attr. Description
+0x0C20_1000 4B RW Hart 0 S-Mode priority threshold
+0x0C20_1004 4B RW Hart 0 S-Mode claim/ complete
+
+0x0C20_3000 4B RW Hart 1 S-Mode priority threshold
+0x0C20_3004 4B RW Hart 1 S-Mode claim/ complete
+
+0x0C20_5000 4B RW Hart 2 S-Mode priority threshold
+0x0C20_5004 4B RW Hart 2 S-Mode claim/ complete</code></pre></div>
+<p>priority threshold: Skip 0x2000 per hart</p>
+<p>claim/ complete: Skip 0x2000 per hart</p>
+<p>Hart ID 2. OK yay!</p>
+<p>https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0</p>
+<p>Fix the sleep</p>
+<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>10 Build Loop</h1>
+<p>make</p>
+<p>make app</p>
+<p>power off</p>
+<p>power on</p>
+<p>read</p>
+<p>power off</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>11 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -610,7 +651,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
