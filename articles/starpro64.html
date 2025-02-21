@@ -538,7 +538,12 @@ Starting kernel ...</code></pre></div><h1 id="multiple-cpu"><a class="doc-anchor
 [CPU2] uart_register: Registering /dev/ttyS0
 [CPU2] dump_assert_info: Current Version: NuttX  12.4.0 01cbd0ca38-dirty Feb 20 2025 19:56:29 risc-v
 [CPU2] dump_assert_info: Assertion failed up_cpu_index() == 0: at file: init/nx_start.c:745 task(CPU2): CPU2 IDLE process: Kernel 0x802019a6
-[CPU2] up_dump_register: EPC: 0000000080216ffc</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
+[CPU2] up_dump_register: EPC: 0000000080216ffc</code></pre></div>
+<p>Boot HART ID = 0. OSTest OK yay!</p>
+<p>https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b</p>
+<p>Boot HART ID = 2. Boot fail :-(</p>
+<p>https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
