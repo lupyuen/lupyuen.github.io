@@ -543,6 +543,28 @@ Starting kernel ...</code></pre></div><h1 id="multiple-cpu"><a class="doc-anchor
 <p>https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b</p>
 <p>Boot HART ID = 2. Boot fail :-(</p>
 <p>https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95</p>
+<p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
+<p>StarPro64 will boot on a Random Hart: 0 to 3. But NuttX only boots on Hart 0!</p>
+<p>We need to fix the PLIC Driver in NuttX, which only works on Hart 0…</p>
+<ul>
+<li>
+<p><a href="https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b">NuttX boots OK on Hart 0</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 0
+...
+[CPU0] nx_start: Entry
+[CPU0] nx_start: CPU0: Beginning Idle Loop
+
+NuttShell (NSH) NuttX-12.4.0
+nsh&gt; hello
+Hello, World!!   </code></pre></div></li>
+<li>
+<p><a href="https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95">NuttX won’t boot on other Harts</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 2
+...
+[CPU0] nx_start: Entry
+[CPU0] nx_start: CPU0: Beginning Idle Loop
+[ Stuck here ]</code></pre></div></li>
+</ul>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>9 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
