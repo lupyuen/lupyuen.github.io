@@ -30,7 +30,7 @@ _How about Real Hardware for Arm and ESP32? Can we test our PRs there?_
 
 Yep we might support testing of Pull Requests on Other Hardware: [__Arm32, Arm64 and ESP32__](https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32). Some Boards might require a [__MicroSD Multiplexer__](https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32).
 
-TODO: Pic of Arm64 PR
+![Testing a Pull Request on Arm64 QEMU](https://lupyuen.org/images/testbot2-arm64.jpg)
 
 # Testing Arm64 on QEMU
 
@@ -88,7 +88,7 @@ And validate the [__OSTest Output__](https://github.com/lupyuen/nuttx-build-farm
 
 [(See the __Test Log__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026)
 
-TODO: Pic of RISC-V PR
+![Testing a Pull Request on QEMU RISC-V](https://lupyuen.org/images/testbot2-riscv.jpg)
 
 # Testing RISC-V on QEMU
 
