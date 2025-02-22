@@ -1,4 +1,4 @@
-# StarPro64 RISC-V SBC: LLM on NPU on NuttX?
+# StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?
 
 📝 _16 Apr 2025_
 

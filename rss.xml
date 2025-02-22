@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>QEMU Test Bot for Pull Requests: Beware of Semihosting Breakout (Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/testbot2</link>
+            <description><![CDATA[Last week we saw our new Test Bot for NuttX Pull Requests, that will test on Real Hardware: Oz64 SG2000 RISC-V SBC. Today we extend our Test Bot to QEMU Emulators: Arm64 QEMU and RISC-V QEMU.]]></description>
+            <guid>https://lupyuen.github.io/articles/testbot2</guid>
+            <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)</title>
             <link>https://lupyuen.github.io/articles/testbot</link>
             <description><![CDATA[We're always Making Things Better (and making better things) with Apache NuttX RTOS. Our new Test Bot shall watch for Comments on Pull Requests and start a NuttX Build and Test on Real Hardware: PINE64 Oz64 SG2000 RISC-V SBC.]]></description>

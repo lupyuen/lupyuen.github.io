@@ -358,13 +358,13 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
 # What's Next
 
-Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: __StarPro64 EIC7700X__. Stay tuned!
+Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: __StarPro64 EIC7700X__. Maybe LLM on NPU on NuttX? Stay tuned!
 
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43143394)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
