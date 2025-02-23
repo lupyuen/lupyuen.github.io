@@ -76,8 +76,9 @@
 <li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">9 PLIC Multiple Harts</a><ul></ul></li>
 <li><a href="#build-loop" title="Build Loop">10 Build Loop</a><ul></ul></li>
 <li><a href="#semaphore-fail" title="Semaphore Fail">11 Semaphore Fail</a><ul></ul></li>
-<li><a href="#todo" title="TODO">12 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">12 Thread 1 isn’t started!</a><ul></ul></li>
+<li><a href="#todo" title="TODO">13 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -616,6 +617,11 @@ Hello, World!!   </code></pre></div></li>
 sem_test: Initializing semaphore to 0
 sem_test: Starting waiter thread 1
 sem_test: Set thread 1 priority to 191
+
+&lt;&lt;
+???
+&gt;&gt;
+
 sem_test: Starting waiter thread 2
 sem_test: Set thread 2 priority to 128
 waiter_func: Thread 2 Started
@@ -628,7 +634,11 @@ waiter_func: Thread 2 waiting on semaphore</code></pre></div>
 sem_test: Initializing semaphore to 0
 sem_test: Starting waiter thread 1
 sem_test: Set thread 1 priority to 191
+
+&lt;&lt;
 waiter_func: Thread 1 Started
+&gt;&gt;
+
 sem_test: Starting waiter thread 2
 waiter_func: Thread 1 initial semaphore value = 0
 sem_test: Set thread 2 priority to 128
@@ -639,6 +649,7 @@ waiter_func: Thread 2 initial semaphore value = -1
 &gt;&gt;&gt;
 waiter_func: Thread 2 waiting on semaphore
 sem_test: Starting poster thread 3</code></pre></div>
+<p>Thread 1 isn’t started!</p>
 <p>https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/ostest_main.c#L435-L439</p>
 <div class="example-wrap"><pre class="language-c"><code>      /* Verify pthreads and semaphores */
 
@@ -937,7 +948,251 @@ up_switch_context():
        * task is again ready to run and has execution priority.
        */
     }
-}</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>12 Thread 1 isn’t started!</h1>
+<p>pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93</p>
+<div class="example-wrap"><pre class="language-c"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
+{
+  return nx_pthread_create(pthread_startup, thread, attr, pthread_entry,
+                           arg);
+}</code></pre></div>
+<p>nx_pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412</p>
+<div class="example-wrap"><pre class="language-c"><code>int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
+                      FAR const pthread_attr_t *attr,
+                      pthread_startroutine_t entry, pthread_addr_t arg)
+{
+  pthread_attr_t default_attr = g_default_pthread_attr;
+  FAR struct pthread_tcb_s *ptcb;
+  struct sched_param param;
+  FAR struct tcb_s *parent;
+  int policy;
+  int errcode;
+  int ret;
+
+  DEBUGASSERT(trampoline != NULL);
+
+  parent = this_task();
+  DEBUGASSERT(parent != NULL);
+
+  /* If attributes were not supplied, use the default attributes */
+
+  if (!attr)
+    {
+      /* Inherit parent priority by default. except idle */
+
+      if (!is_idle_task(parent))
+        {
+          default_attr.priority = parent-&gt;sched_priority;
+        }
+
+      attr = &amp;default_attr;
+    }
+
+  /* Allocate a TCB for the new task. */
+
+  ptcb = kmm_zalloc(sizeof(struct pthread_tcb_s));
+  if (!ptcb)
+    {
+      serr(&quot;ERROR: Failed to allocate TCB\n&quot;);
+      return ENOMEM;
+    }
+
+  ptcb-&gt;cmn.flags |= TCB_FLAG_FREE_TCB;
+
+  /* Initialize the task join */
+
+  nxtask_joininit(&amp;ptcb-&gt;cmn);
+
+#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
+  spin_lock_init(&amp;ptcb-&gt;cmn.mutex_lock);
+#endif
+
+  /* Bind the parent&#39;s group to the new TCB (we have not yet joined the
+   * group).
+   */
+
+  group_bind(ptcb);
+
+#ifdef CONFIG_ARCH_ADDRENV
+  /* Share the address environment of the parent task group. */
+
+  ret = addrenv_join(this_task(), (FAR struct tcb_s *)ptcb);
+  if (ret &lt; 0)
+    {
+      errcode = -ret;
+      goto errout_with_tcb;
+    }
+#endif
+
+  if (attr-&gt;detachstate == PTHREAD_CREATE_DETACHED)
+    {
+      ptcb-&gt;cmn.flags |= TCB_FLAG_DETACHED;
+    }
+
+  if (attr-&gt;stackaddr)
+    {
+      /* Use pre-allocated stack */
+
+      ret = up_use_stack((FAR struct tcb_s *)ptcb, attr-&gt;stackaddr,
+                         attr-&gt;stacksize);
+    }
+  else
+    {
+      /* Allocate the stack for the TCB */
+
+      ret = up_create_stack((FAR struct tcb_s *)ptcb, attr-&gt;stacksize,
+                            TCB_FLAG_TTYPE_PTHREAD);
+    }
+
+  if (ret != OK)
+    {
+      errcode = ENOMEM;
+      goto errout_with_tcb;
+    }
+
+#if defined(CONFIG_ARCH_ADDRENV) &amp;&amp; \
+    defined(CONFIG_BUILD_KERNEL) &amp;&amp; defined(CONFIG_ARCH_KERNEL_STACK)
+  /* Allocate the kernel stack */
+
+  ret = up_addrenv_kstackalloc(&amp;ptcb-&gt;cmn);
+  if (ret &lt; 0)
+    {
+      errcode = ENOMEM;
+      goto errout_with_tcb;
+    }
+#endif
+
+  /* Initialize thread local storage */
+
+  ret = tls_init_info(&amp;ptcb-&gt;cmn);
+  if (ret != OK)
+    {
+      errcode = -ret;
+      goto errout_with_tcb;
+    }
+
+  /* Should we use the priority and scheduler specified in the pthread
+   * attributes?  Or should we use the current thread&#39;s priority and
+   * scheduler?
+   */
+
+  if (attr-&gt;inheritsched == PTHREAD_INHERIT_SCHED)
+    {
+      /* Get the priority (and any other scheduling parameters) for this
+       * thread.
+       */
+
+      ret = nxsched_get_param(0, &amp;param);
+      if (ret &lt; 0)
+        {
+          errcode = -ret;
+          goto errout_with_tcb;
+        }
+
+      /* Get the scheduler policy for this thread */
+
+      policy = nxsched_get_scheduler(0);
+      if (policy &lt; 0)
+        {
+          errcode = -policy;
+          goto errout_with_tcb;
+        }
+    }
+  else
+    {
+      /* Use the scheduler policy and policy the attributes */
+
+      policy                             = attr-&gt;policy;
+      param.sched_priority               = attr-&gt;priority;
+
+#ifdef CONFIG_SCHED_SPORADIC
+      param.sched_ss_low_priority        = attr-&gt;low_priority;
+      param.sched_ss_max_repl            = attr-&gt;max_repl;
+      param.sched_ss_repl_period.tv_sec  = attr-&gt;repl_period.tv_sec;
+      param.sched_ss_repl_period.tv_nsec = attr-&gt;repl_period.tv_nsec;
+      param.sched_ss_init_budget.tv_sec  = attr-&gt;budget.tv_sec;
+      param.sched_ss_init_budget.tv_nsec = attr-&gt;budget.tv_nsec;
+#endif
+    }
+
+#ifdef CONFIG_SCHED_SPORADIC
+  if (policy == SCHED_SPORADIC)
+    {
+      FAR struct sporadic_s *sporadic;
+      sclock_t repl_ticks;
+      sclock_t budget_ticks;
+
+      /* Convert timespec values to system clock ticks */
+
+      repl_ticks = clock_time2ticks(&amp;param.sched_ss_repl_period);
+      budget_ticks = clock_time2ticks(&amp;param.sched_ss_init_budget);
+
+      /* The replenishment period must be greater than or equal to the
+       * budget period.
+       */
+
+      if (repl_ticks &lt; budget_ticks)
+        {
+          errcode = EINVAL;
+          goto errout_with_tcb;
+        }
+
+      /* Initialize the sporadic policy */
+
+      ret = nxsched_initialize_sporadic(&amp;ptcb-&gt;cmn);
+      if (ret &gt;= 0)
+        {
+          sporadic               = ptcb-&gt;cmn.sporadic;
+          DEBUGASSERT(sporadic != NULL);
+
+          /* Save the sporadic scheduling parameters */
+
+          sporadic-&gt;hi_priority  = param.sched_priority;
+          sporadic-&gt;low_priority = param.sched_ss_low_priority;
+          sporadic-&gt;max_repl     = param.sched_ss_max_repl;
+          sporadic-&gt;repl_period  = repl_ticks;
+          sporadic-&gt;budget       = budget_ticks;
+
+          /* And start the first replenishment interval */
+
+          ret = nxsched_start_sporadic(&amp;ptcb-&gt;cmn);
+        }
+
+      /* Handle any failures */
+
+      if (ret &lt; 0)
+        {
+          errcode = -ret;
+          goto errout_with_tcb;
+        }
+    }
+#endif
+
+  /* Initialize the task control block */
+
+  ret = pthread_setup_scheduler(ptcb, param.sched_priority, pthread_start,
+                                entry);
+  if (ret != OK)
+    {
+      errcode = EBUSY;
+      goto errout_with_tcb;
+    }
+
+#ifdef CONFIG_SMP
+  /* pthread_setup_scheduler() will set the affinity mask by inheriting the
+   * setting from the parent task.  We need to override this setting
+   * with the value from the pthread attributes unless that value is
+   * zero:  Zero is the default value and simply means to inherit the
+   * parent thread&#39;s affinity mask.
+   */
+
+  if (attr-&gt;affinity != 0)
+    {
+      ptcb-&gt;cmn.affinity = attr-&gt;affinity;
+    }
+#endif</code></pre></div>
+<p>How to set affinity?</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>13 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -982,7 +1237,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
