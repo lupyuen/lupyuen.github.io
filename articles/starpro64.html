@@ -77,8 +77,9 @@
 <li><a href="#build-loop" title="Build Loop">10 Build Loop</a><ul></ul></li>
 <li><a href="#semaphore-fail" title="Semaphore Fail">11 Semaphore Fail</a><ul></ul></li>
 <li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">12 Thread 1 isn’t started!</a><ul></ul></li>
-<li><a href="#todo" title="TODO">13 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#multiple-cpu-1" title="Multiple CPU">13 Multiple CPU</a><ul></ul></li>
+<li><a href="#todo" title="TODO">14 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -1192,7 +1193,30 @@ up_switch_context():
     }
 #endif</code></pre></div>
 <p>How to set affinity?</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>13 TODO</h1>
+<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>13 Multiple CPU</h1>
+<p>boot_hartid=2
+hart=0, cpu=1
+hart=1, cpu=2
+hart=2, cpu=0
+hart=3, cpu=3</p>
+<p>cpu=0, hart=2
+cpu=1, hart=0
+cpu=2, hart=1
+cpu=3, hart=3</p>
+<div class="example-wrap"><pre class="language-text"><code>123Hello NuttX!
+Hart1
+ABC[123Hello NuttX!
+Hart0
+Hart0
+CPU0] nx_start: Entry
+[CPU0] uart_register: Registering /dev/console
+[CPU0] uart_register: Registering /dev/ttyS0
+[CPU0] up_cpu_start: CPU=1
+V[CCP[UC0P]U 0]r idsucvm_pc_pauss_ebroto_t:in CfPo:U0  CSurtarretnetd
+2er[sCPioU0n]:  nNxu_titdX l e1_2t.r4am.p0o 0l2i6n5e:46 C7P5Ucb0-: diBregtiyn nFeibn g 23I dl20e 2L5o o20p:
+ 9:44 risc-v
+[CPU0] dump_assert_info: Assertion failed (g_cpu_irqset &amp; (1 &lt;&lt; cpu)) == 0: at file: irq/irq_csection.c:232 task(CPU0): CPU0 IDLE process: Kernel 0x80201dfa
+[CPU0] up_dump_register: EPC: 0000000080202d1a</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>14 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1237,7 +1261,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
