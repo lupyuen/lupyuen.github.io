@@ -665,6 +665,220 @@ read
 
 power off
 
+# Semaphore Fail
+
+https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6
+
+```text
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+sem_test: Starting waiter thread 2
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 2 Started
+waiter_func: Thread 2 initial semaphore value = 0
+waiter_func: Thread 2 waiting on semaphore
+```
+
+https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/ostest_main.c#L435-L439
+
+```c
+      /* Verify pthreads and semaphores */
+
+      printf("\nuser_main: semaphore test\n");
+      sem_test();
+      check_test_memory_usage();
+```
+
+https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/sem.c#L49-L73
+
+```c
+static void *waiter_func(void *parameter)
+{
+  int id  = (int)((intptr_t)parameter);
+  int status;
+  int value;
+
+  printf("waiter_func: Thread %d Started\n",  id);
+
+  /* Take the semaphore */
+
+  status = sem_getvalue(&sem, &value);
+  if (status < 0)
+    {
+      printf("waiter_func: "
+             "ERROR thread %d could not get semaphore value\n",  id);
+      ASSERT(false);
+    }
+  else
+    {
+      printf("waiter_func: "
+             "Thread %d initial semaphore value = %d\n",  id, value);
+    }
+
+  printf("waiter_func: Thread %d waiting on semaphore\n",  id);
+  status = sem_wait(&sem);
+```
+
+sem_wait:
+
+https://github.com/apache/nuttx/blob/824dd706177444d020ebb20acdc08c294ab0db37/libs/libc/semaphore/sem_wait.c#L59
+
+```c
+int sem_wait(FAR sem_t *sem)
+{
+  int errcode;
+  int ret;
+
+  if (sem == NULL)
+    {
+      set_errno(EINVAL);
+      return ERROR;
+    }
+
+  /* sem_wait() is a cancellation point */
+
+  if (enter_cancellation_point())
+    {
+#ifdef CONFIG_CANCELLATION_POINTS
+      /* If there is a pending cancellation, then do not perform
+       * the wait.  Exit now with ECANCELED.
+       */
+
+      errcode = ECANCELED;
+      goto errout_with_cancelpt;
+#endif
+    }
+
+  /* Let nxsem_wait() do the real work */
+
+  ret = nxsem_wait(sem);
+  if (ret < 0)
+    {
+      errcode = -ret;
+      goto errout_with_cancelpt;
+    }
+
+  leave_cancellation_point();
+  return OK;
+
+errout_with_cancelpt:
+  set_errno(errcode);
+  leave_cancellation_point();
+  return ERROR;
+}
+```
+
+nxsem_wait: https://github.com/lupyuen2/wip-nuttx/blob/starpro64/sched/semaphore/sem_wait.c#L248-L271
+
+```c
+int nxsem_wait(FAR sem_t *sem)
+{
+  /* This API should not be called from interrupt handlers & idleloop */
+
+  DEBUGASSERT(sem != NULL && up_interrupt_context() == false);
+  DEBUGASSERT(!OSINIT_IDLELOOP() || !sched_idletask());
+
+  /* If this is a mutex, we can try to get the mutex in fast mode,
+   * else try to get it in slow mode.
+   */
+
+#if !defined(CONFIG_PRIORITY_INHERITANCE) && !defined(CONFIG_PRIORITY_PROTECT)
+  if (sem->flags & SEM_TYPE_MUTEX)
+    {
+      int32_t old = 1;
+      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &old, 0))
+        {
+          return OK;
+        }
+    }
+#endif
+
+  return nxsem_wait_slow(sem);
+}
+```
+
+nxsem_wait in disassembly: nuttx.S
+
+```text
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:260
+  /* If this is a mutex, we can try to get the mutex in fast mode,
+   * else try to get it in slow mode.
+   */
+
+#if !defined(CONFIG_PRIORITY_INHERITANCE) && !defined(CONFIG_PRIORITY_PROTECT)
+  if (sem->flags & SEM_TYPE_MUTEX)
+    80204f96:	0044c783          	lbu	a5,4(s1)
+    80204f9a:	8b91                	and	a5,a5,4
+    80204f9c:	e7a1                	bnez	a5,80204fe4 <nxsem_wait+0xbc>
+nxsem_wait_slow():
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:82
+  flags = enter_critical_section();
+    80204f9e:	b5bfc0ef          	jal	80201af8 <enter_critical_section_wo_note>
+    80204fa2:	89aa                	mv	s3,a0
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:88
+  if (atomic_fetch_sub(NXSEM_COUNT(sem), 1) > 0)
+    80204fa4:	577d                	li	a4,-1
+    80204fa6:	0f50000f          	fence	iorw,ow
+    80204faa:	04e4a7af          	amoadd.w.aq	a5,a4,(s1)
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:88 (discriminator 1)
+    80204fae:	2781                	sext.w	a5,a5
+    80204fb0:	04f04e63          	bgtz	a5,8020500c <nxsem_wait+0xe4>
+up_irq_save():
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:766
+  __asm__ __volatile__
+    80204fb4:	4a09                	li	s4,2
+    80204fb6:	100a3a73          	csrrc	s4,sstatus,s4
+this_task():
+/Users/luppy/starpro64/nuttx/sched/sched/sched.h:381
+    80204fba:	80efc0ef          	jal	80200fc8 <up_this_cpu>
+/Users/luppy/starpro64/nuttx/sched/sched/sched.h:381 (discriminator 1)
+    80204fbe:	001fe917          	auipc	s2,0x1fe
+    80204fc2:	ef290913          	add	s2,s2,-270 # 80402eb0 <g_assignedtasks>
+    80204fc6:	00451793          	sll	a5,a0,0x4
+    80204fca:	97ca                	add	a5,a5,s2
+    80204fcc:	6380                	ld	s0,0(a5)
+up_irq_restore():
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:792
+  __asm__ __volatile__
+    80204fce:	100a1073          	csrw	sstatus,s4
+nxsem_wait_slow():
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:118 (discriminator 1)
+      DEBUGASSERT(rtcb->waitobj == NULL);
+    80204fd2:	6c7c                	ld	a5,216(s0)
+    80204fd4:	c3a9                	beqz	a5,80205016 <nxsem_wait+0xee>
+    80204fd6:	0001b617          	auipc	a2,0x1b
+    80204fda:	1a260613          	add	a2,a2,418 # 80220178 <_srodata+0x1200>
+    80204fde:	07600593          	li	a1,118
+    80204fe2:	b78d                	j	80204f44 <nxsem_wait+0x1c>
+nxsem_wait():
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:263
+    {
+      int32_t old = 1;
+      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &old, 0))
+    80204fe4:	4705                	li	a4,1
+    80204fe6:	1004a7af          	lr.w	a5,(s1)
+    80204fea:	00e79563          	bne	a5,a4,80204ff4 <nxsem_wait+0xcc>
+    80204fee:	1c04a6af          	sc.w.aq	a3,zero,(s1)
+    80204ff2:	faf5                	bnez	a3,80204fe6 <nxsem_wait+0xbe>
+    80204ff4:	37fd                	addw	a5,a5,-1
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:265
+        {
+          return OK;
+    80204ff6:	4401                	li	s0,0
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:263
+      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &old, 0))
+    80204ff8:	f3dd                	bnez	a5,80204f9e <nxsem_wait+0x76>
+/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:271
+        }
+    }
+#endif
+
+  return nxsem_wait_slow(sem);
+}
+```
+
 # TODO
 
 https://github.com/rockos-riscv
