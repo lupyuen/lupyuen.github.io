@@ -1310,6 +1310,36 @@ int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
 
 How to set affinity?
 
+# Multiple CPU
+
+boot_hartid=2
+hart=0, cpu=1
+hart=1, cpu=2
+hart=2, cpu=0
+hart=3, cpu=3
+
+cpu=0, hart=2
+cpu=1, hart=0
+cpu=2, hart=1
+cpu=3, hart=3
+
+```text
+123Hello NuttX!
+Hart1
+ABC[123Hello NuttX!
+Hart0
+Hart0
+CPU0] nx_start: Entry
+[CPU0] uart_register: Registering /dev/console
+[CPU0] uart_register: Registering /dev/ttyS0
+[CPU0] up_cpu_start: CPU=1
+V[CCP[UC0P]U 0]r idsucvm_pc_pauss_ebroto_t:in CfPo:U0  CSurtarretnetd
+2er[sCPioU0n]:  nNxu_titdX l e1_2t.r4am.p0o 0l2i6n5e:46 C7P5Ucb0-: diBregtiyn nFeibn g 23I dl20e 2L5o o20p:
+ 9:44 risc-v
+[CPU0] dump_assert_info: Assertion failed (g_cpu_irqset & (1 << cpu)) == 0: at file: irq/irq_csection.c:232 task(CPU0): CPU0 IDLE process: Kernel 0x80201dfa
+[CPU0] up_dump_register: EPC: 0000000080202d1a
+```
+
 # TODO
 
 https://github.com/rockos-riscv
