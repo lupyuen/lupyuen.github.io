@@ -1464,9 +1464,9 @@ CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4
 ```
 
-Apache NuttX RTOS on StarPro64: OSTest is OK yay!
+Apache NuttX RTOS on StarPro64: OSTest runs OK yay! (ESWIN EIC7700X)
 
-https://gist.github.com/lupyuen/64b447472cb953b3a09c4f176465146e
+https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5
 
 # TODO
 
