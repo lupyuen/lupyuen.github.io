@@ -824,7 +824,102 @@ sem_test: Starting waiter thread 2
 sem_test: Set thread 2 priority to 128
 waiter_func: Thread 2 Started
 waiter_func: Thread 2 initial semaphore value = 0
-waiter_func: Thread 2 waiting on semaphore</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+waiter_func: Thread 2 waiting on semaphore</code></pre></div>
+<p>https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/semaphore/sem_wait.c#L76-L84</p>
+<div class="example-wrap"><pre class="language-c"><code>
+  /* The following operations must be performed with interrupts
+   * disabled because nxsem_post() may be called from an interrupt
+   * handler.
+   */
+
+   *(volatile uint8_t *) 0x50900000ul = &#39;5&#39;; ////
+   flags = enter_critical_section();
+   *(volatile uint8_t *) 0x50900000ul = &#39;6&#39;; ////</code></pre></div>
+<p>Output log:</p>
+<div class="example-wrap"><pre class="language-text"><code>84565631456563045656304565630456563 456563 456563 456563 456563845656314565630456563045656304565456563
+      456563o40101010101010101[CPU0] nxtask_activate: ostest pid=21,TCB=0x80413028
+010156563563r456563d456563b456563l456563k456563s456563 456563 456563 456563 456563 456563 4565634565633 456563 4565633456563 456563 456563 456563 456563 456563 456563 456563 4565633456563
+      456563m456563x456563o456563r456563d456563b456563l456563k456563 4010156563 456563 456563 45656374565638456563f456563f4565638456563 456563 456563 456563 45656374565638456563f456563f4565638456563
+      456563u456563o456563r456563d456563b456563l456563k456563s456563 456563 456563 456563 456563 4565634456563545656384565638456563 456563 456563 456563 40101010101[CPU0] nxtask_activate: ostest pid=25,TCB=0x80413e08
+456563563 4565634456563545656384565638456563
+      456563f456563o456563r456563d456563b456563l456563k456563s456563 456563 456563 456563 4565637456563c456563a45656374565638456563 456563 456563 456563 4565637456563c456563a401015656374565638456563
+456563456563
+      456563u456563s456563e456563r456563_456563m456563a456563i456563n456563:456563 456563s4565634565633m456563a456563p456563h456563o456563r456563e456563 456563t456563e456563s456563t456563
+      456563s456563e456563m456563_456563t456563e456563s456563t456563:456563 456563I456563n456563i456563t456563i456563a456563l456563i4010156563z456563i456563n456563g456563 456563s456563e456563m456563a456563p456563h456563o456563r456563e456563 456563t456563o456563 4565630456563
+      456563s456563e456563m456563_456563t456563e456563s456563t456563:456563 456563S456563t456563a456563r456563t456563i456563n456563g456563 456563w456563a456563i456563t4563er thread 1
+sem_test: Set thread 1 priority to 191
+sem_test: Starting waiter thread 2
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 2 Started
+waiter_func: Thread 2 initial semaphore value = 0
+waiter_func: Thread 2 waiting on semaphore</code></pre></div>
+<p>Hang in up_switch_context:</p>
+<p>up_switch_context:</p>
+<div class="example-wrap"><pre class="language-text"><code>000000008020d362 &lt;up_switch_context&gt;:
+up_switch_context():
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:61
+ *   rtcb: Refers to the running task which will be blocked.
+ *
+ ****************************************************************************/
+
+void up_switch_context(struct tcb_s *tcb, struct tcb_s *rtcb)
+{
+    8020d362:	1101                	add	sp,sp,-32
+    8020d364:	e822                	sd	s0,16(sp)
+    8020d366:	e426                	sd	s1,8(sp)
+    8020d368:	e04a                	sd	s2,0(sp)
+    8020d36a:	ec06                	sd	ra,24(sp)
+    8020d36c:	842a                	mv	s0,a0
+    8020d36e:	84ae                	mv	s1,a1
+up_irq_save():
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:766
+    8020d370:	4909                	li	s2,2
+    8020d372:	10093973          	csrrc	s2,sstatus,s2
+up_interrupt_context():
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:832
+  bool ret = g_interrupt_context[up_this_cpu()];
+    8020d376:	c53f30ef          	jal	80200fc8 &lt;up_this_cpu&gt;
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:832 (discriminator 1)
+    8020d37a:	001f9797          	auipc	a5,0x1f9
+    8020d37e:	5de78793          	add	a5,a5,1502 # 80406958 &lt;g_interrupt_context&gt;
+    8020d382:	97aa                	add	a5,a5,a0
+    8020d384:	0007c783          	lbu	a5,0(a5)
+    8020d388:	0ff7f793          	zext.b	a5,a5
+up_irq_restore():
+/Users/luppy/starpro64/nuttx/include/arch/irq.h:792
+  __asm__ __volatile__
+    8020d38c:	10091073          	csrw	sstatus,s2
+up_switch_context():
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:64 (discriminator 1)
+  /* Are we in an interrupt handler? */
+
+  if (up_interrupt_context())
+    8020d390:	c785                	beqz	a5,8020d3b8 &lt;up_switch_context+0x56&gt;
+riscv_savecontext():
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:262
+  riscv_savefpu(tcb-&gt;xcp.regs, riscv_fpuregs(tcb));
+    8020d392:	1504b503          	ld	a0,336(s1)
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:262 (discriminator 1)
+    8020d396:	10850593          	add	a1,a0,264
+    8020d39a:	868f30ef          	jal	80200402 &lt;riscv_savefpu&gt;
+riscv_restorecontext():
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:277
+  riscv_restorefpu(tcb-&gt;xcp.regs, riscv_fpuregs(tcb));
+    8020d39e:	15043503          	ld	a0,336(s0)
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:277 (discriminator 1)
+    8020d3a2:	10850593          	add	a1,a0,264
+    8020d3a6:	8f8f30ef          	jal	8020049e &lt;riscv_restorefpu&gt;
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:289
+  __asm__ __volatile__(&quot;mv tp, %0&quot; : : &quot;r&quot;(tcb));
+    8020d3aa:	8222                	mv	tp,s0
+up_switch_context():
+/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:93
+       * head of the ready-to-run list.  It does not &#39;return&#39; in the
+       * normal sense.  When it does return, it is because the blocked
+       * task is again ready to run and has execution priority.
+       */
+    }
+}</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
