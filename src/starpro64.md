@@ -677,8 +677,30 @@ sem_test: Set thread 1 priority to 191
 sem_test: Starting waiter thread 2
 sem_test: Set thread 2 priority to 128
 waiter_func: Thread 2 Started
+<<<
 waiter_func: Thread 2 initial semaphore value = 0
+>>>
 waiter_func: Thread 2 waiting on semaphore
+```
+
+Compare with SG2000: https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23
+
+```text
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+waiter_func: Thread 1 Started
+sem_test: Starting waiter thread 2
+waiter_func: Thread 1 initial semaphore value = 0
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 1 waiting on semaphore
+waiter_func: Thread 2 Started
+<<<
+waiter_func: Thread 2 initial semaphore value = -1
+>>>
+waiter_func: Thread 2 waiting on semaphore
+sem_test: Starting poster thread 3
 ```
 
 https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/ostest_main.c#L435-L439
