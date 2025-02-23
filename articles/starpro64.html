@@ -1216,7 +1216,50 @@ V[CCP[UC0P]U 0]r idsucvm_pc_pauss_ebroto_t:in CfPo:U0  CSurtarretnetd
 2er[sCPioU0n]:  nNxu_titdX l e1_2t.r4am.p0o 0l2i6n5e:46 C7P5Ucb0-: diBregtiyn nFeibn g 23I dl20e 2L5o o20p:
  9:44 risc-v
 [CPU0] dump_assert_info: Assertion failed (g_cpu_irqset &amp; (1 &lt;&lt; cpu)) == 0: at file: irq/irq_csection.c:232 task(CPU0): CPU0 IDLE process: Kernel 0x80201dfa
-[CPU0] up_dump_register: EPC: 0000000080202d1a</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>14 TODO</h1>
+[CPU0] up_dump_register: EPC: 0000000080202d1a</code></pre></div>
+<p>TODO: Support non-zero boot hart.</p>
+<p>https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423</p>
+<div class="example-wrap"><pre class="language-text"><code>/****************************************************************************
+ * Name: riscv_set_inital_sp
+ *
+ * Description:
+ *   Set inital sp for riscv core. This function should be only called
+ *   when initing.
+ *
+ *   sp (stack top) = sp base + idle stack size * hart id
+ *   sp (stack base) = sp (stack top) + idle stack size * - XCPTCONTEXT_SIZE
+ *
+ *   Note: The XCPTCONTEXT_SIZE byte after stack base is reserved for
+ *         up_initial_state since we are already running and using
+ *         the per CPU idle stack.
+ *
+ *   TODO: Support non-zero boot hart.
+ *
+ * Parameter:
+ *   base - Pointer to where the stack is allocated (e.g. _ebss)
+ *   size - Stack size for pre cpu to allocate
+ *   hartid - Hart id register of this hart (Usually a0)
+ *
+ ****************************************************************************/
+.macro riscv_set_inital_sp base, size, hartid
+  la      t0, \base
+  li      t1, \size
+  mul     t1, \hartid, t1
+  add     t0, t0, t1
+
+  /* ensure the last XCPTCONTEXT_SIZE is reserved for non boot CPU */
+
+  bnez \hartid, 998f
+  li   t1, STACK_ALIGN_DOWN(\size)
+  j    999f
+
+998:
+  li   t1, STACK_ALIGN_DOWN(\size - XCPTCONTEXT_SIZE)
+
+999:
+  add  t0, t0, t1
+  mv   sp, t0
+.endm</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>14 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
