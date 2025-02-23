@@ -674,6 +674,11 @@ user_main: semaphore test
 sem_test: Initializing semaphore to 0
 sem_test: Starting waiter thread 1
 sem_test: Set thread 1 priority to 191
+
+<<
+???
+>>
+
 sem_test: Starting waiter thread 2
 sem_test: Set thread 2 priority to 128
 waiter_func: Thread 2 Started
@@ -690,7 +695,11 @@ user_main: semaphore test
 sem_test: Initializing semaphore to 0
 sem_test: Starting waiter thread 1
 sem_test: Set thread 1 priority to 191
+
+<<
 waiter_func: Thread 1 Started
+>>
+
 sem_test: Starting waiter thread 2
 waiter_func: Thread 1 initial semaphore value = 0
 sem_test: Set thread 2 priority to 128
@@ -702,6 +711,8 @@ waiter_func: Thread 2 initial semaphore value = -1
 waiter_func: Thread 2 waiting on semaphore
 sem_test: Starting poster thread 3
 ```
+
+Thread 1 isn't started!
 
 https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/ostest_main.c#L435-L439
 
@@ -1044,6 +1055,260 @@ up_switch_context():
     }
 }
 ```
+
+# Thread 1 isn't started!
+
+pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93
+
+```c
+int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
+                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
+{
+  return nx_pthread_create(pthread_startup, thread, attr, pthread_entry,
+                           arg);
+}
+```
+
+nx_pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412
+
+```c
+int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
+                      FAR const pthread_attr_t *attr,
+                      pthread_startroutine_t entry, pthread_addr_t arg)
+{
+  pthread_attr_t default_attr = g_default_pthread_attr;
+  FAR struct pthread_tcb_s *ptcb;
+  struct sched_param param;
+  FAR struct tcb_s *parent;
+  int policy;
+  int errcode;
+  int ret;
+
+  DEBUGASSERT(trampoline != NULL);
+
+  parent = this_task();
+  DEBUGASSERT(parent != NULL);
+
+  /* If attributes were not supplied, use the default attributes */
+
+  if (!attr)
+    {
+      /* Inherit parent priority by default. except idle */
+
+      if (!is_idle_task(parent))
+        {
+          default_attr.priority = parent->sched_priority;
+        }
+
+      attr = &default_attr;
+    }
+
+  /* Allocate a TCB for the new task. */
+
+  ptcb = kmm_zalloc(sizeof(struct pthread_tcb_s));
+  if (!ptcb)
+    {
+      serr("ERROR: Failed to allocate TCB\n");
+      return ENOMEM;
+    }
+
+  ptcb->cmn.flags |= TCB_FLAG_FREE_TCB;
+
+  /* Initialize the task join */
+
+  nxtask_joininit(&ptcb->cmn);
+
+#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
+  spin_lock_init(&ptcb->cmn.mutex_lock);
+#endif
+
+  /* Bind the parent's group to the new TCB (we have not yet joined the
+   * group).
+   */
+
+  group_bind(ptcb);
+
+#ifdef CONFIG_ARCH_ADDRENV
+  /* Share the address environment of the parent task group. */
+
+  ret = addrenv_join(this_task(), (FAR struct tcb_s *)ptcb);
+  if (ret < 0)
+    {
+      errcode = -ret;
+      goto errout_with_tcb;
+    }
+#endif
+
+  if (attr->detachstate == PTHREAD_CREATE_DETACHED)
+    {
+      ptcb->cmn.flags |= TCB_FLAG_DETACHED;
+    }
+
+  if (attr->stackaddr)
+    {
+      /* Use pre-allocated stack */
+
+      ret = up_use_stack((FAR struct tcb_s *)ptcb, attr->stackaddr,
+                         attr->stacksize);
+    }
+  else
+    {
+      /* Allocate the stack for the TCB */
+
+      ret = up_create_stack((FAR struct tcb_s *)ptcb, attr->stacksize,
+                            TCB_FLAG_TTYPE_PTHREAD);
+    }
+
+  if (ret != OK)
+    {
+      errcode = ENOMEM;
+      goto errout_with_tcb;
+    }
+
+#if defined(CONFIG_ARCH_ADDRENV) && \
+    defined(CONFIG_BUILD_KERNEL) && defined(CONFIG_ARCH_KERNEL_STACK)
+  /* Allocate the kernel stack */
+
+  ret = up_addrenv_kstackalloc(&ptcb->cmn);
+  if (ret < 0)
+    {
+      errcode = ENOMEM;
+      goto errout_with_tcb;
+    }
+#endif
+
+  /* Initialize thread local storage */
+
+  ret = tls_init_info(&ptcb->cmn);
+  if (ret != OK)
+    {
+      errcode = -ret;
+      goto errout_with_tcb;
+    }
+
+  /* Should we use the priority and scheduler specified in the pthread
+   * attributes?  Or should we use the current thread's priority and
+   * scheduler?
+   */
+
+  if (attr->inheritsched == PTHREAD_INHERIT_SCHED)
+    {
+      /* Get the priority (and any other scheduling parameters) for this
+       * thread.
+       */
+
+      ret = nxsched_get_param(0, &param);
+      if (ret < 0)
+        {
+          errcode = -ret;
+          goto errout_with_tcb;
+        }
+
+      /* Get the scheduler policy for this thread */
+
+      policy = nxsched_get_scheduler(0);
+      if (policy < 0)
+        {
+          errcode = -policy;
+          goto errout_with_tcb;
+        }
+    }
+  else
+    {
+      /* Use the scheduler policy and policy the attributes */
+
+      policy                             = attr->policy;
+      param.sched_priority               = attr->priority;
+
+#ifdef CONFIG_SCHED_SPORADIC
+      param.sched_ss_low_priority        = attr->low_priority;
+      param.sched_ss_max_repl            = attr->max_repl;
+      param.sched_ss_repl_period.tv_sec  = attr->repl_period.tv_sec;
+      param.sched_ss_repl_period.tv_nsec = attr->repl_period.tv_nsec;
+      param.sched_ss_init_budget.tv_sec  = attr->budget.tv_sec;
+      param.sched_ss_init_budget.tv_nsec = attr->budget.tv_nsec;
+#endif
+    }
+
+#ifdef CONFIG_SCHED_SPORADIC
+  if (policy == SCHED_SPORADIC)
+    {
+      FAR struct sporadic_s *sporadic;
+      sclock_t repl_ticks;
+      sclock_t budget_ticks;
+
+      /* Convert timespec values to system clock ticks */
+
+      repl_ticks = clock_time2ticks(&param.sched_ss_repl_period);
+      budget_ticks = clock_time2ticks(&param.sched_ss_init_budget);
+
+      /* The replenishment period must be greater than or equal to the
+       * budget period.
+       */
+
+      if (repl_ticks < budget_ticks)
+        {
+          errcode = EINVAL;
+          goto errout_with_tcb;
+        }
+
+      /* Initialize the sporadic policy */
+
+      ret = nxsched_initialize_sporadic(&ptcb->cmn);
+      if (ret >= 0)
+        {
+          sporadic               = ptcb->cmn.sporadic;
+          DEBUGASSERT(sporadic != NULL);
+
+          /* Save the sporadic scheduling parameters */
+
+          sporadic->hi_priority  = param.sched_priority;
+          sporadic->low_priority = param.sched_ss_low_priority;
+          sporadic->max_repl     = param.sched_ss_max_repl;
+          sporadic->repl_period  = repl_ticks;
+          sporadic->budget       = budget_ticks;
+
+          /* And start the first replenishment interval */
+
+          ret = nxsched_start_sporadic(&ptcb->cmn);
+        }
+
+      /* Handle any failures */
+
+      if (ret < 0)
+        {
+          errcode = -ret;
+          goto errout_with_tcb;
+        }
+    }
+#endif
+
+  /* Initialize the task control block */
+
+  ret = pthread_setup_scheduler(ptcb, param.sched_priority, pthread_start,
+                                entry);
+  if (ret != OK)
+    {
+      errcode = EBUSY;
+      goto errout_with_tcb;
+    }
+
+#ifdef CONFIG_SMP
+  /* pthread_setup_scheduler() will set the affinity mask by inheriting the
+   * setting from the parent task.  We need to override this setting
+   * with the value from the pthread attributes unless that value is
+   * zero:  Zero is the default value and simply means to inherit the
+   * parent thread's affinity mask.
+   */
+
+  if (attr->affinity != 0)
+    {
+      ptcb->cmn.affinity = attr->affinity;
+    }
+#endif
+```
+
+How to set affinity?
 
 # TODO
 
