@@ -34,6 +34,48 @@ Well documented
 
 NuttX: Power efficient AI
 
+# ESWIN EIC7700X RISC-V SoC
+
+# Boot Without MicroSD
+
+# Download the Linux Image
+
+# Boot the Linux Image
+
+# Settings for U-Boot Bootloader
+
+# Boot NuttX over TFTP
+
+# Appendix: Build NuttX for StarPro64
+
+# Appendix: Port NuttX to StarPro64
+
+https://github.com/lupyuen2/wip-nuttx/pull/93/files
+
+arch/risc-v/Kconfig
+
+arch/risc-v/include/sg2000/irq.h
+
+arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h
+
+arch/risc-v/src/sg2000/hardware/sg2000_plic.h
+
+arch/risc-v/src/sg2000/sg2000_head.S
+
+arch/risc-v/src/sg2000/sg2000_irq.c
+
+arch/risc-v/src/sg2000/sg2000_irq_dispatch.c
+
+arch/risc-v/src/sg2000/sg2000_mm_init.c
+
+arch/risc-v/src/sg2000/sg2000_start.c
+
+arch/risc-v/src/sg2000/sg2000_timerisr.c
+
+boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
+
+drivers/serial/uart_16550.c
+
 # ESWIN AI Sample User Guide
 
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
