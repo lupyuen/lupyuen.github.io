@@ -1472,6 +1472,8 @@ Apache NuttX RTOS on StarPro64: Build Script
 
 https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac
 
+We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!
+
 ![TODO](https://lupyuen.org/images/starpro64-ostest.png)
 
 # TODO
