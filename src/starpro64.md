@@ -36,9 +36,159 @@ NuttX: Power efficient AI
 
 # ESWIN EIC7700X RISC-V SoC
 
+TODO: Pic of UART
+
 # Boot Without MicroSD
 
+_What happens if we boot StarPro64? Fresh from the box?_
+
+We monitor the __UART0 Port__ for Debug Messages. Connect our __USB UART Dongle__ (CH340 or CP2102) to these pins (pic above)...
+
+| StarPro64 | USB UART | Colour |
+|:------------:|:--------:|:------:|
+| __GND__ (Pin 6)	| __GND__ | _Yellow_ |
+| __TX__ (Pin 8) |	__RX__ | _Blue_ |
+| __RX__ (Pin 10)	| __TX__ | _Green_ |
+
+(Same Pins as the __GPIO Header__ on Oz64 SG2000 and Star64 JH7110)
+
+Connect to the USB UART at __115.2 kbps__...
+
+```bash
+screen /dev/ttyUSB0 115200
+```
+
+Power up the board with a __Power Adapter__. [(Same one as __Star64 JH7110__)](TODO)
+
+We'll see [__OpenSBI__](TODO)...
+
+```text
+TODO
+```
+
+Then [__U-Boot Bootloader__](TODO)...
+
+```text
+TODO
+```
+
+And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let's init our eMMC...
+
+(__HDMI Output__ will show U-Boot, but not OpenSBI)
+
+TODO: Pic of HDMI Output
+
 # Download the Linux Image
+
+_Is there a Linux Image for StarPro64?_
+
+The fine folks at [__RockOS__](TODO) are busy preparing the __Linux Image__ for StarPro64. Thanks to [__@icenowy__](https://nightcord.de/@icenowy/114027871300585376), we have a [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of the Linux Image...
+
+1. __Bootloader (OpenSBI + U-Boot)__
+
+   [_bootloader\_secboot\_ddr5\_pine64-starpro64.bin_](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/bootloader_secboot_ddr5_pine64-starpro64.bin)
+
+1. __Linux Boot Image (Linux Kernel)__
+
+   [_boot-rockos-20250123-210346.ext4.zst_](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/boot-rockos-20250123-210346.ext4.zst)
+
+1. __Linux Root Image (Linux Filesystem)__
+
+   [_root-rockos-20250123-210346.ext4.zst_](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/root-rockos-20250123-210346.ext4.zst)
+
+Uncompress the files and rename them. Copy them to a [__USB Drive__](TODO) (not MicroSD)
+
+```bash
+$ ls -lh *.bin *.zst
+4.2M  bootloader_secboot_ddr5_pine64-starpro64.bin
+154M  boot-rockos-20250123-210346.ext4.zst
+2.3G  root-rockos-20250123-210346.ext4.zst
+
+$ unzstd boot-rockos-20250123-210346.ext4.zst
+boot-rockos-20250123-210346.ext4.zst: 524288000 bytes
+
+$ unzstd root-rockos-20250123-210346.ext4.zst
+root-rockos-20250123-210346.ext4.zst: 7516192768 bytes
+
+$ mv boot-rockos-20250123-210346.ext4 boot.ext4
+$ mv root-rockos-20250123-210346.ext4 root.ext4
+
+$ ls -lh *.bin *.ext4
+4.2M  bootloader_secboot_ddr5_pine64-starpro64.bin
+500M  boot.ext4
+7.0G  root.ext4
+
+$ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
+```
+
+(We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst) because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64)
+
+TODO: Pic of eMMC
+
+_How to load them into eMMC?_
+
+Based on the [__Official Doc__](TODO)...
+
+1. Connect our __eMMC to StarPro64__ (pic above)
+
+1. __At U-Boot:__ Press __Ctrl-C__ to stop Autoboot
+
+1. Verify that the __eMMC is OK__...
+
+   ```bash
+   $ ls mmc 0
+   TODO
+
+   $ mmc part
+   TODO
+   ```
+
+1. First Time Only: __GPT Partition__ our eMMC...
+
+   ```bash
+   $ echo $partitions
+   TODO
+
+   $ run gpt_partition
+   TODO
+
+   $ mmc part
+   TODO
+   ```
+
+1. Install the __Bootloader, Boot Image and Root Image__ to eMMC...
+
+   ```bash
+   $ ls usb 0
+   TODO
+
+   $ es_fs update usb 0 boot.ext4 mmc 0:1
+   TODO
+
+   $ es_fs update usb 0 root.ext4 mmc 0:3
+   TODO
+
+   $ ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
+   TODO
+
+   $ es_burn write 0x100000000 flash
+   TODO
+   ```
+
+   [(See the __eMMC Log__)](https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702)
+
+# StarPro64 is (Literally) Hot!
+
+Boot Fail: https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f
+
+https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947
+
+```text
+[  132.081330] thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+[  132.089435] reboot: HARDWARE PROTECTION shutdown (Temperature too high)
+thermal thermal_zone0: thermal0: critical temperature reached, shutting down
+reboot: HARDWARE PROTECTION shutdown (Temperature too high)
+```
 
 # Boot the Linux Image
 
@@ -75,6 +225,75 @@ arch/risc-v/src/sg2000/sg2000_timerisr.c
 boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
 
 drivers/serial/uart_16550.c
+
+# Tech Ref
+
+```text
+disable thead mmu flags
+app addr env
+nuttx/arch/risc-v/Kconfig
+remove ARCH_MMU_EXT_THEAD
+
+# Tech Ref 1
+
+## Page 380
+System Memory Map
+
+System Space (Low)
+0000_0000 to 8000_0000
+
+Memory Space
+8000_0000 to 10_0000_0000
+
+## Page 239
+Table 3-74 PLIC Memory Map Address Width Attr. Description 
+0x0C00_0000 
+
+## Page 237
+CLINT Memory Map Address Width Attr. Description Notes 
+0x0200_0000 
+
+## Page 366
+uart interrupt
+UART 100 lsp_uart0_intr
+
+## Page 374
+max interrupts = 458
+
+# Tech Ref 4
+
+uart clock?
+
+## Page 353
+Table 12-1 Peripheral address space. Name Address space Size Remarks 
+wdt0 0x5080_0000~0x5080_3FFF 16k LSP APB2 
+wdt1 0x5080_4000~0x5080_7FFF 16k LSP APB2 
+wdt2 0x5080_8000~0x5080_BFFF 16k LSP APB2 
+wdt3 0x5080_C000~0x5080_FFFF 16k LSP APB2 
+spi0 0x5081_0000~0x5081_3FFF 16k LSP APB2 
+spi1 0x5081_4000~0x5081_7FFF 16k LSP APB2 
+pwm 0x5081_8000~0x5081_BFFF 16k LSP APB2 
+uart0 0x5090_0000~0x5090_FFFF 64k LSP APB3 
+uart1 0x5091_0000~0x5091_FFFF 64k LSP APB3 
+uart2 0x5092_0000~0x5092_FFFF 64k LSP APB3 
+uart3 0x5093_0000~0x5093_FFFF 64k LSP APB3 
+uart4 0x5094_0000~0x5094_FFFF 64k LSP APB3 i2c0 0x5095_0000~0x5095_FFFF 64k LSP APB3 
+i2c1 0x5096_0000~0x5096_FFFF 
+
+## Page 524
+Register Offset Description 
+RBR 0x0 Receive Buffer Register 
+THR 0x0 Transmit Holding Register 
+DLL 0x0 Divisor Latch (Low) 
+IER 0x4 Interrupt Enable Register 
+DLH 0x4 Divisor Latch High 
+IIR 0x8 Interrupt Identification Register FCR 0x8 FIFO Control Register 
+LCR 0xc Line Control Register 
+MCR 0x10 Modem Control Register 
+LSR 0x14 Line Status Register 
+MSR 0x18 Modem Status Register SCR 
+
+```
 
 # ESWIN AI Sample User Guide
 
@@ -452,63 +671,6 @@ curl \
     -d '{"entity_id": "automation.pi_power_on"}' \
     http://localhost:8123/api/services/automation/trigger
 set -x  ##  Enable echo
-```
-
-# New RockOS
-
-https://nightcord.de/@icenowy/114027871300585376
-
-https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/
-
-```bash
-$ unzstd boot-rockos-20250123-210346.ext4.zst
-boot-rockos-20250123-210346.ext4.zst: 524288000 bytes
-
-$ unzstd root-rockos-20250123-210346.ext4.zst
-root-rockos-20250123-210346.ext4.zst: 7516192768 bytes
-
-$ ls -lh
-total 20786832
--rw-r--r--  1 luppy  wheel   500M Feb 19 09:52 boot-rockos-20250123-210346.ext4
--rw-r--r--@ 1 luppy  wheel   154M Feb 19 10:24 boot-rockos-20250123-210346.ext4.zst
--rw-r--r--  1 luppy  wheel   7.0G Feb 19 10:24 root-rockos-20250123-210346.ext4
--rw-r--r--@ 1 luppy  wheel   2.3G Feb 19 10:24 root-rockos-20250123-210346.ext4.zst
-```
-
-https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702
-
-```text
-copy the ext4 files to usb drive
-rename to boot.ext4, root.ext4
-
-uboot:
-Hit any key to stop autoboot
-Or press Ctrl-C
-ls mmc 0
-mmc part
-
-if not partitioned:
-echo $partitions
-run gpt_partition
-mmc part
-
-ls usb 0
-es_fs update usb 0 boot.ext4 mmc 0:1
-es_fs update usb 0 root.ext4 mmc 0:3
-
-ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
-es_burn write 0x100000000 flash
-```
-
-Boot Fail: https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f
-
-https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947
-
-```text
-[  132.081330] thermal thermal_zone0: thermal0: critical temperature reached, shutting down
-[  132.089435] reboot: HARDWARE PROTECTION shutdown (Temperature too high)
-thermal thermal_zone0: thermal0: critical temperature reached, shutting down
-reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 ```
 
 # Boot NuttX over TFTP
