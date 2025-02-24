@@ -1468,6 +1468,12 @@ CONFIG_SMP_NCPUS=4
 
 [__Watch the Demo on YouTube__](https://youtu.be/Yr7aYNIMUsw)
 
+Apache NuttX RTOS on StarPro64: Build Script
+
+https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac
+
+![TODO](https://lupyuen.org/images/starpro64-ostest.png)
+
 # TODO
 
 https://github.com/rockos-riscv
