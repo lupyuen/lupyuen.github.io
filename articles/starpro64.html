@@ -78,17 +78,16 @@
 <li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">11 Appendix: Port NuttX to StarPro64</a><ul></ul></li>
 <li><a href="#tech-ref" title="Tech Ref">12 Tech Ref</a><ul></ul></li>
 <li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">13 ESWIN AI Sample User Guide</a><ul></ul></li>
-<li><a href="#download-microsd" title="Download MicroSD">14 Download MicroSD</a><ul></ul></li>
-<li><a href="#uart" title="UART">15 UART</a><ul></ul></li>
-<li><a href="#multiple-cpu" title="Multiple CPU">16 Multiple CPU</a><ul></ul></li>
-<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">17 PLIC Multiple Harts</a><ul></ul></li>
-<li><a href="#build-loop" title="Build Loop">18 Build Loop</a><ul></ul></li>
-<li><a href="#semaphore-fail" title="Semaphore Fail">19 Semaphore Fail</a><ul></ul></li>
-<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">20 Thread 1 isn’t started!</a><ul></ul></li>
-<li><a href="#multiple-cpu-1" title="Multiple CPU">21 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">22 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">23 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">24 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#uart" title="UART">14 UART</a><ul></ul></li>
+<li><a href="#multiple-cpu" title="Multiple CPU">15 Multiple CPU</a><ul></ul></li>
+<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">16 PLIC Multiple Harts</a><ul></ul></li>
+<li><a href="#build-loop" title="Build Loop">17 Build Loop</a><ul></ul></li>
+<li><a href="#semaphore-fail" title="Semaphore Fail">18 Semaphore Fail</a><ul></ul></li>
+<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">19 Thread 1 isn’t started!</a><ul></ul></li>
+<li><a href="#multiple-cpu-1" title="Multiple CPU">20 Multiple CPU</a><ul></ul></li>
+<li><a href="#disable-smp" title="Disable SMP">21 Disable SMP</a><ul></ul></li>
+<li><a href="#todo" title="TODO">22 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">23 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -478,20 +477,397 @@ curl \
 <h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>10 Appendix: Build NuttX for StarPro64</h1>
 <p>TODO</p>
 <h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>11 Appendix: Port NuttX to StarPro64</h1>
+<p>We took the NuttX Port of <strong>Milk-V Duo S (Oz64 SG2000)</strong> and tweaked it for <strong>StarPro64 EIC7700X</strong>, with the following modifications…</p>
 <p>https://github.com/lupyuen2/wip-nuttx/pull/93/files</p>
 <p>arch/risc-v/Kconfig</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb</p>
+<div class="example-wrap"><pre class="language-bash"><code>config ARCH_CHIP_SG2000
+	select ARCH_RV_CPUID_MAP</code></pre></div>
 <p>arch/risc-v/include/sg2000/irq.h</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f</p>
+<div class="example-wrap"><pre class="language-c"><code>#define NR_IRQS (RISCV_IRQ_SEXT + 458)</code></pre></div>
 <p>arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767</p>
+<div class="example-wrap"><pre class="language-c"><code>#define SG2000_PLIC_BASE 0x0C000000ul</code></pre></div>
 <p>arch/risc-v/src/sg2000/hardware/sg2000_plic.h</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Interrupt Priority */
+
+#define SG2000_PLIC_PRIORITY (SG2000_PLIC_BASE + 0x000000)
+
+/* Hart 0 S-Mode Interrupt Enable */
+
+#define SG2000_PLIC_ENABLE0     (SG2000_PLIC_BASE + 0x002080)
+#define SG2000_PLIC_ENABLE_HART (0x100)
+
+/* Hart 0 S-Mode Priority Threshold */
+
+#define SG2000_PLIC_THRESHOLD0     (SG2000_PLIC_BASE + 0x201000)
+#define SG2000_PLIC_THRESHOLD_HART (0x2000)
+
+/* Hart 0 S-Mode Claim / Complete */
+
+#define SG2000_PLIC_CLAIM0     (SG2000_PLIC_BASE + 0x201004)
+#define SG2000_PLIC_CLAIM_HART (0x2000)</code></pre></div>
 <p>arch/risc-v/src/sg2000/sg2000_head.S</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58</p>
+<div class="example-wrap"><pre class="language-c"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>real_start:
+
+  /* Print `123` to UART */
+  /* Load UART Base Address to Register t0 */
+  li  t0, 0x50900000
+
+  /* Load `1` to Register t1 */
+  li  t1, 0x31
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `2` to Register t1 */
+  li  t1, 0x32
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `3` to Register t1 */
+  li  t1, 0x33
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* If a0 (hartid) &gt;= t1 (the number of CPUs), stop here */
+
+  /* TODO: Enable this for SMP
+  blt  a0, t1, 3f
+  csrw CSR_SIE, zero
+  wfi
+  */
+
+3:
+  /* Set stack pointer to the idle thread stack */
+  li a2, 0
+  riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a2
+
+  /* TODO: Enable this for SMP
+  riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a0
+  */</code></pre></div>
 <p>arch/risc-v/src/sg2000/sg2000_irq.c</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Disable all global interrupts */
+
+  for (hart = 0; hart &lt; CONFIG_SMP_NCPUS; hart++)
+    {
+      addr = SG2000_PLIC_ENABLE0 + (hart * SG2000_PLIC_ENABLE_HART);
+      for (offset = 0; offset &lt; (NR_IRQS - RISCV_IRQ_EXT) &gt;&gt; 3; offset += 4)
+        {
+          putreg32(0x0, addr + offset);          
+        }
+    }
+
+  /* Clear pendings in PLIC */
+
+  for (hart = 0; hart &lt; CONFIG_SMP_NCPUS; hart++)
+    {
+      addr = SG2000_PLIC_CLAIM0 + (hart * SG2000_PLIC_CLAIM_HART);
+      claim = getreg32(addr);
+      putreg32(claim, addr);
+    }
+
+  /* Set irq threshold to 0 (permits all global interrupts) */
+
+  for (hart = 0; hart &lt; CONFIG_SMP_NCPUS; hart++)
+    {
+      addr = SG2000_PLIC_THRESHOLD0 +
+             (hart * SG2000_PLIC_THRESHOLD_HART);
+      putreg32(0, addr);
+    }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>void up_disable_irq(int irq) {
+      ...
+      /* Clear enable bit for the irq */
+
+      if (0 &lt;= extirq &amp;&amp; extirq &lt;= NR_IRQS - RISCV_IRQ_EXT)
+        {
+          addr = SG2000_PLIC_ENABLE0 + 
+                 (boot_hartid * SG2000_PLIC_ENABLE_HART);
+          modifyreg32(addr + (4 * (extirq / 32)),
+                      1 &lt;&lt; (extirq % 32), 0);
+        }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>void up_enable_irq(int irq) {
+      ...
+      /* Set enable bit for the irq */
+
+      if (0 &lt;= extirq &amp;&amp; extirq &lt;= NR_IRQS - RISCV_IRQ_EXT)
+        {
+          addr = SG2000_PLIC_ENABLE0 + 
+                 (boot_hartid * SG2000_PLIC_ENABLE_HART);
+          modifyreg32(addr + (4 * (extirq / 32)),
+                      0, 1 &lt;&lt; (extirq % 32));
+        }</code></pre></div>
 <p>arch/risc-v/src/sg2000/sg2000_irq_dispatch.c</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea</p>
+<div class="example-wrap"><pre class="language-c"><code>void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
+{
+  int irq = (vector &gt;&gt; RV_IRQ_MASK) | (vector &amp; 0xf);
+  uintptr_t claim = SG2000_PLIC_CLAIM0 + 
+                    (boot_hartid * SG2000_PLIC_CLAIM_HART);
+      ...
+      uintptr_t val = getreg32(claim);
+      ...
+      /* Then write PLIC_CLAIM to clear pending in PLIC */
+
+      putreg32(irq - RISCV_IRQ_EXT, claim);</code></pre></div>
 <p>arch/risc-v/src/sg2000/sg2000_mm_init.c</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f</p>
+<p>Removed all T-Head MMU Extensions, including mmu_flush_cache</p>
 <p>arch/risc-v/src/sg2000/sg2000_start.c</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7</p>
+<div class="example-wrap"><pre class="language-c"><code>//// TODO
+struct sbiret_s
+{
+  intreg_t    error;
+  uintreg_t   value;
+};
+typedef struct sbiret_s sbiret_t;
+static void sg2000_boot_secondary(void);
+static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr);
+static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
+                          uintreg_t parm0, uintreg_t parm1,
+                          uintreg_t parm2, uintreg_t parm3,
+                          uintreg_t parm4, uintreg_t parm5);
+
+#define SBI_EXT_HSM (0x0048534D)
+#define SBI_EXT_HSM_HART_START (0x0)
+
+int boot_hartid = -1;
+
+void sg2000_start_s(int mhartid)
+{
+  /* Configure FPU */
+
+  riscv_fpuconfig();
+
+  if (mhartid != boot_hartid)
+    {
+      goto cpux;
+    }
+    ...
+
+cpux:
+
+  /* Non-Boot Hart starts here */
+
+  *(volatile uint8_t *) 0x50900000ul = &#39;H&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;a&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;r&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;t&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;0&#39; + mhartid;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\r&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\n&#39;;
+
+  ...
+
+void sg2000_start(int mhartid)
+{
+  *(volatile uint8_t *) 0x50900000ul = &#39;H&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;e&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;l&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;l&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;o&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39; &#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;N&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;u&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;t&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;t&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;X&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;!&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\r&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\n&#39;;
+
+  *(volatile uint8_t *) 0x50900000ul = &#39;H&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;a&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;r&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;t&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;0&#39; + mhartid;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\r&#39;;
+  *(volatile uint8_t *) 0x50900000ul = &#39;\n&#39;;
+  up_mdelay(1000);  // Wait a while for UART Queue to flush
+
+  /* If Boot Hart is not 0, restart with Hart 0 */
+
+  if (mhartid != 0)
+    {
+      /* Clear the BSS */
+
+      sg2000_clear_bss();
+
+      /* Restart with Hart 0 */
+
+      riscv_sbi_boot_secondary(0, (uintptr_t)&amp;__start);
+
+      /* Let this Hart idle forever */
+
+      while (true)
+        {
+          asm(&quot;WFI&quot;);
+        }  
+      PANIC(); /* Should not come here */
+    }
+
+  /* Init the globals once only. Remember the Boot Hart. */
+
+  if (boot_hartid &lt; 0)
+    {
+      boot_hartid = mhartid;
+
+      /* Clear the BSS */
+
+      sg2000_clear_bss();
+
+      /* Boot the other cores */
+
+      // TODO: sg2000_boot_secondary();
+
+      /* Copy the RAM Disk */
+
+      sg2000_copy_ramdisk();
+      /* Initialize the per CPU areas */
+      riscv_percpu_add_hart(mhartid);
+    }
+
+/****************************************************************************
+ * Name: riscv_hartid_to_cpuid
+ *
+ * Description:
+ *   Convert physical core number to logical core number.
+ *
+ ****************************************************************************/
+
+int weak_function riscv_hartid_to_cpuid(int hart)
+{
+  /* Boot Hart is CPU 0. Renumber the Other Harts. */
+
+  if (hart == boot_hartid)
+    {
+      return 0;
+    }
+  else if (hart &lt; boot_hartid)
+    {
+      return hart + 1;
+    }
+  else
+    {
+      return hart;
+    }
+}
+
+/****************************************************************************
+ * Name: riscv_cpuid_to_hartid
+ *
+ * Description:
+ *   Convert logical core number to physical core number.
+ *
+ ****************************************************************************/
+
+int weak_function riscv_cpuid_to_hartid(int cpu)
+{
+  /* Boot Hart is CPU 0. Renumber the Other Harts. */
+
+  if (cpu == 0)
+    {
+      return boot_hartid;
+    }
+  else if (cpu &lt; boot_hartid + 1)
+    {
+      return cpu - 1;
+    }
+  else
+    {
+      return cpu;
+    }
+}
+
+static void sg2000_boot_secondary(void)
+{
+  int i;
+
+  for (i = 0; i &lt; CONFIG_SMP_NCPUS; i++)
+    {
+      if (i == boot_hartid)
+        {
+          continue;
+        }
+
+      riscv_sbi_boot_secondary(i, (uintptr_t)&amp;__start);
+    }
+}
+
+static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr)
+{
+  sbiret_t ret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_START,
+                           hartid, addr, 0, 0, 0, 0);
+
+  if (ret.error &lt; 0)
+    {
+      _err(&quot;Boot Hart %d failed\n&quot;, hartid);
+      PANIC();
+    }
+
+  return 0;
+}
+
+static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
+                          uintreg_t parm0, uintreg_t parm1,
+                          uintreg_t parm2, uintreg_t parm3,
+                          uintreg_t parm4, uintreg_t parm5)
+{
+  register long r0 asm(&quot;a0&quot;) = (long)(parm0);
+  register long r1 asm(&quot;a1&quot;) = (long)(parm1);
+  register long r2 asm(&quot;a2&quot;) = (long)(parm2);
+  register long r3 asm(&quot;a3&quot;) = (long)(parm3);
+  register long r4 asm(&quot;a4&quot;) = (long)(parm4);
+  register long r5 asm(&quot;a5&quot;) = (long)(parm5);
+  register long r6 asm(&quot;a6&quot;) = (long)(fid);
+  register long r7 asm(&quot;a7&quot;) = (long)(extid);
+  sbiret_t ret;
+
+  asm volatile
+    (
+     &quot;ecall&quot;
+     : &quot;+r&quot;(r0), &quot;+r&quot;(r1)
+     : &quot;r&quot;(r2), &quot;r&quot;(r3), &quot;r&quot;(r4), &quot;r&quot;(r5), &quot;r&quot;(r6), &quot;r&quot;(r7)
+     : &quot;memory&quot;
+     );
+
+  ret.error = r0;
+  ret.value = (uintreg_t)r1;
+
+  return ret;
+}</code></pre></div>
 <p>arch/risc-v/src/sg2000/sg2000_timerisr.c</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe</p>
+<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000ul</code></pre></div>
 <p>boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig</p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_UART0_BASE=0x50900000
+CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_IRQ=125
+
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
 <p>drivers/serial/uart_16550.c</p>
-<h1 id="tech-ref"><a class="doc-anchor" href="#tech-ref">§</a>12 Tech Ref</h1><div class="example-wrap"><pre class="language-text"><code>disable thead mmu flags
+<p>https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
+  /* Enter DLAB=1 */
+
+  u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
+  ...
+  /* Clear DLAB */
+
+  u16550_serialout(priv, UART_LCR_OFFSET, lcr);
+#endif  // TODO</code></pre></div><h1 id="tech-ref"><a class="doc-anchor" href="#tech-ref">§</a>12 Tech Ref</h1><div class="example-wrap"><pre class="language-text"><code>disable thead mmu flags
 app addr env
 nuttx/arch/risc-v/Kconfig
 remove ARCH_MMU_EXT_THEAD
@@ -565,15 +941,7 @@ EIC7x_Release_Images_p550_20241230
 └── hifive-premier-p550
  ├── bootloader_P550.bin
  ├── boot-P550-20250126-011559.ext4
-└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="download-microsd"><a class="doc-anchor" href="#download-microsd">§</a>14 Download MicroSD</h1>
-<p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
-<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/Development_board_image_installation_and_upgrade_manual.pdf</p>
-<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/EIC7x_Release_Images_p550_20241230.zip.001</p>
-<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/EIC7x_Release_Images_p550_20241230.zip.002</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo apt install p7zip-full
-7z x EIC7x_Release_Images_p550_20241230.zip.001</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>15 UART</h1><div class="example-wrap"><pre class="language-text"><code>## First Time Only
+└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>14 UART</h1><div class="example-wrap"><pre class="language-text"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
 set -x
@@ -585,7 +953,7 @@ done</code></pre></div>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
 <p>CONFIG_16550_UART0_IRQ=125</p>
 <p>100 + 25</p>
-<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>16 Multiple CPU</h1>
+<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>15 Multiple CPU</h1>
 <p>https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
@@ -622,7 +990,7 @@ Hello, World!!   </code></pre></div></li>
 [CPU0] nx_start: CPU0: Beginning Idle Loop
 [ Stuck here ]</code></pre></div></li>
 </ul>
-<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>17 PLIC Multiple Harts</h1>
+<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>16 PLIC Multiple Harts</h1>
 <p>Page 240 (Skip the M-Modes)</p>
 <div class="example-wrap"><pre class="language-text"><code>Address Width Attr. Description
 0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
@@ -657,14 +1025,14 @@ Hello, World!!   </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65">waiter_func: Thread 2 waiting on semaphore</a></p>
 <p><a href="https://youtu.be/70DQ4YlQMMw"><strong>Watch the Demo on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>See the NuttX Log</strong></a></p>
-<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>18 Build Loop</h1>
+<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>17 Build Loop</h1>
 <p>make</p>
 <p>make app</p>
 <p>power off</p>
 <p>power on</p>
 <p>read</p>
 <p>power off</p>
-<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>19 Semaphore Fail</h1>
+<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>18 Semaphore Fail</h1>
 <p>https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6</p>
 <div class="example-wrap"><pre class="language-text"><code>user_main: semaphore test
 sem_test: Initializing semaphore to 0
@@ -1001,7 +1369,7 @@ up_switch_context():
        * task is again ready to run and has execution priority.
        */
     }
-}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>20 Thread 1 isn’t started!</h1>
+}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>19 Thread 1 isn’t started!</h1>
 <p>pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93</p>
 <div class="example-wrap"><pre class="language-c"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
@@ -1245,7 +1613,7 @@ up_switch_context():
     }
 #endif</code></pre></div>
 <p>How to set affinity?</p>
-<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>21 Multiple CPU</h1>
+<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>20 Multiple CPU</h1>
 <p>boot_hartid=2
 hart=0, cpu=1
 hart=1, cpu=2
@@ -1369,7 +1737,7 @@ VeCCP[UC0P]U 0]r isdcuvm_p_capsus_ebroto_t:i nfCPoU: 0C uStrraertnte d
 [CPU0] dump_task:       0     0     0   0 FIFO     Kthread -   Running            0000000000000000 0x8040b010      3056       712    23.2%    CPU0 IDLE
 [CPU0] dump_task:       1     0     1   0 FIFO     Kthread -   Running            0000000000000000 0x8040bc10      3056       528    17.2%    CPU1 IDLE
 [CPU0] dump_task:       2     0     2   0 FIFO     Kthread -   Running            0000000000000000 0x8040c810      3056      2824    92.4%!   CPU2 IDLE
-[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>22 Disable SMP</h1>
+[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>21 Disable SMP</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
 <p>Remove these from defconfig:</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
@@ -1380,7 +1748,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
 <p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>23 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>22 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1425,7 +1793,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>24 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>23 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
