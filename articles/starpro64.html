@@ -91,7 +91,7 @@
 <li><a href="#disable-smp" title="Disable SMP">24 Disable SMP</a><ul></ul></li>
 <li><a href="#todo" title="TODO">25 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">26 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
-<p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
 <p>Star64 power</p>
@@ -280,14 +280,69 @@ reboot:
 <h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>6 Boot the Linux Image</h1>
 <p><em>Earlier we flashed Linux to eMMC. Can we boot Linux now?</em></p>
 <p>Yep just power up StarPro64 and emmC will <strong>Boot Linux</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
+<span style="font-size:80%">
+<div class="example-wrap"><pre class="language-text"><code>U-Boot menu
+1:      RockOS GNU/Linux 6.6.73-win2030
+2:      RockOS GNU/Linux 6.6.73-win2030 (rescue target)
+Enter choice: 1:        RockOS GNU/Linux 6.6.73-win2030
+Retrieving file: /vmlinuz-6.6.73-win2030
+Retrieving file: /initrd.img-6.6.73-win2030
+append: root=PARTUUID=b0f77ad6-36cd-4a99-a8c0-31d73649aa08 console=ttyS0,115200 root=PARTUUID=b0f77ad6-36cd-4a99-a8c0-31d73649aa08 rootfstype=ext4 rootwait rw earlycon selinux=0 LANG=en_US.UTF-8
+Retrieving file: /dtbs/linux-image-6.6.73-win2030/eswin/eic7700-pine64-starpro64.dtb
+   Uncompressing Kernel Image
+Moving Image from 0x84000000 to 0x80200000, end=81e63000
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+Working FDT set to 88000000
+ERROR: reserving fdt memory region failed (addr=fffff000 size=1000 flags=4)
+   Using Device Tree in place at 0000000088000000, end 0000000088027af4
+Working FDT set to 88000000
+
+Starting kernel ...
+Linux version 6.6.73-win2030 (riscv@riscv-builder) (riscv64-unknown-linux-gnu-gcc () 13.2.0, GNU ld (GNU Binutils) 2.42) #2025.01.23.02.46+aeb0f375c SMP Thu Jan 23 03:08:39 UTC 2025
+Machine model: Pine64 StarPro64
+...
+mmc0: Timeout waiting for hardware interrupt.
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000008 | Version:  0x00000005
+mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000</code></pre></div></span>
+<p>Sadly the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/"><strong>Preview Version</strong></a> of RockOS won’t boot correctly on our Prototype StarPro64. Hopefully we’ll sort this out real soon! (Pic below)</p>
 <p><a href="https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f">(See the <strong>Boot Log</strong>)</a></p>
-<p>Sadly the <a href="TODO"><strong>Preview Version</strong></a> of RockOS won’t boot correctly on our board. Hopefully we’ll sort this out real soon!</p>
-<p>TODO: Photo of Linux Boot</p>
+<p><img src="https://lupyuen.org/images/starpro64-linux.jpg" alt="TODO" /></p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>7 Settings for U-Boot Bootloader</h1>
 <p><em>Bummer. What else can we boot on StarPro64?</em></p>
 <p>Let’s snoop around <a href="TODO"><strong>U-Boot Bootloader</strong></a>. And figure out how to boot <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
-<p>TODO</p>
+<p>Power up StarPro64 and press <strong>Ctrl-C</strong>. At the <strong>U-Boot Prompt</strong>: We enter these commands…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ help
+printenv  - print environment variables
+saveenv   - save environment variables to persistent storage
+net       - NET sub-system
+dhcp      - boot image via network using DHCP/TFTP protocol
+tftpboot  - load file via network using TFTP protocol
+fdt       - flattened device tree utility commands
+booti     - boot Linux kernel &#39;Image&#39; format from memory
+
+$ printenv
+fdt_addr_r=0x88000000
+kernel_addr_r=0x84000000
+loadaddr=0x80200000</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7">(See the <strong>U-Boot Log</strong>)</a></p>
+<p>A-ha! This says…</p>
+<ul>
+<li>
+<p>U-Boot supports booting over TFTP: <a href="TODO"><strong>Trivial File Transfer Protocol</strong></a></p>
+</li>
+<li>
+<p>It will load the <strong>Kernel Image</strong> <em>(Linux / NuttX)</em> into RAM at <strong><code>0x8400</code> <code>0000</code></strong></p>
+</li>
+<li>
+<p>Then it will move the Kernel Image to <strong><code>0x8020</code> <code>0000</code></strong> and boot there</p>
+</li>
+<li>
+<p>Also it loads the <strong>Device Tree</strong> into <strong><code>0x8800</code> <code>0000</code></strong></p>
+</li>
+</ul>
+<p>Thanks U-Boot! You told us everything we need to Boot NuttX…</p>
 <h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>8 Boot NuttX over TFTP</h1><h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>9 Appendix: Build NuttX for StarPro64</h1><h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>10 Appendix: Port NuttX to StarPro64</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/pull/93/files</p>
 <p>arch/risc-v/Kconfig</p>
