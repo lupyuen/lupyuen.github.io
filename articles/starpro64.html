@@ -200,7 +200,7 @@ $ ls -lh *.bin *.ext4
 7.0G  root.ext4
 
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
-<p>We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on StarPro64.</p>
+<p>We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on our Prototype StarPro64.</p>
 <p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="TODO" /></p>
 <h1 id="prepare-the-linux-image"><a class="doc-anchor" href="#prepare-the-linux-image">§</a>4 Prepare the Linux Image</h1>
 <p><em>How to load the Linux Image into eMMC?</em></p>
@@ -218,41 +218,48 @@ $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
 <li>
 <p>Verify that the <strong>eMMC is OK</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls mmc 0
-TODO
+[ Nothing ]
 
 $ mmc part
-TODO</code></pre></div></li>
+[ Nothing ]</code></pre></div></li>
 <li>
 <p>First Time Only: <strong>GPT Partition</strong> our eMMC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ echo $partitions
-TODO
+partitions=
+  name=boot,start=1MiB,size=2048MiB,type=${typeid_filesystem},uuid=${uuid_boot};
+  name=swap,size=4096MiB,type=${typeid_swap},uuid=${uuid_swap};
+  name=root,size=-,type=${typeid_filesystem},uuid=${uuid_root}
 
 $ run gpt_partition
-TODO
-
 $ mmc part
-TODO</code></pre></div></li>
+1 0x00000800 0x001007ff &quot;boot&quot;
+2 0x00100800 0x009007ff &quot;swap&quot;
+3 0x00900800 0x0e677fde &quot;root&quot;</code></pre></div></li>
 <li>
 <p>Verify that our <strong>USB Drive</strong> works…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls usb 0
-TODO</code></pre></div></li>
+ 524288000 boot.ext4
+7516192768 root.ext4
+   4380760 bootloader_secboot_ddr5_pine64-starpro64.bin   </code></pre></div></li>
 <li>
 <p>Install the <strong>Bootloader, Boot Image and Root Image</strong>, from USB Drive to eMMC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ es_fs update usb 0 boot.ext4 mmc 0:1
-TODO
+mmc has been successfully writen in mmc 0:1
 
 $ es_fs update usb 0 root.ext4 mmc 0:3
-TODO
+mmc has been successfully writen in mmc 0:3
 
 $ ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
-TODO
+4380760 bytes read in 162 ms (25.8 MiB/s)
 
 $ es_burn write 0x100000000 flash
-TODO</code></pre></div>
+bootloader write OK</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702">(See the <strong>eMMC Log</strong>)</a></p>
 </li>
+<li>
+<p><strong>Beware of Overheating!</strong> Keep StarPro64 cool, or the previous step might corrupt the <strong>SPI Boot Flash</strong> and cause unspeakable agony…</p>
+</li>
 </ol>
-<p><strong>Beware of overheating!</strong> Keep StarPro64 cool or the last step above might corrupt the SPI Boot Flash…</p>
 <p>TODO: Pic of fan</p>
 <h1 id="starpro64-is-literally-hot"><a class="doc-anchor" href="#starpro64-is-literally-hot">§</a>5 StarPro64 is (Literally) Hot!</h1>
 <p><em>Something is smelling like barbecue?</em></p>
@@ -267,7 +274,7 @@ reboot:
   HARDWARE PROTECTION shutdown (Temperature too high)</code></pre></div>
 <p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>. But don’t power it with USB Port on StarPro64! (Pic above)</p>
 <p><em>Anything else we should worry about?</em></p>
-<p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
+<p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
 <p>Hence the <strong>Headless Ironman</strong>: USB Drive on StarPro64…</p>
 <p><img src="https://lupyuen.org/images/starpro64-ironman.jpg" alt="TODO" /></p>
 <h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>6 Boot the Linux Image</h1>
