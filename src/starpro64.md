@@ -232,7 +232,7 @@ Based on the [__Official Doc__](TODO)...
 
 1. __Beware of Overheating!__ Keep StarPro64 cool, or the previous step might corrupt the __SPI Boot Flash__ and cause unspeakable agony...
 
-TODO: Pic of fan
+![TODO](https://lupyuen.org/images/starpro64-fan.jpg)
 
 # StarPro64 is (Literally) Hot!
 
