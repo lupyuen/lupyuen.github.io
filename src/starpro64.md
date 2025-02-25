@@ -24,6 +24,12 @@ Well documented
 
 NuttX: Power efficient AI
 
+_StarPro64 is just an upgraded Star64?_
+
+Nope it's a totally different beast!
+
+Docs are so much better! (??? pages)
+
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
 # ESWIN EIC7700X RISC-V SoC
