@@ -630,7 +630,7 @@ remove ARCH_MMU_EXT_THEAD
 
 EIC7700X supports __458 External Interrupts__...
 
-| EIC7700X Tech Ref 1 | Page 374 |
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 374 |
 |:--------------------------------|:---------|
 |Max Interrupts | 458
 
@@ -644,7 +644,7 @@ EIC7700X supports __458 External Interrupts__...
 
 __PLIC Base Address__ is specified here...
 
-| EIC7700X Tech Ref 1 | Page 239 |
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 239 |
 |:--------------------------------|:---------|
 |PLIC Memory Map | 0x0C00_0000 
 
@@ -825,7 +825,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
 We derived the above from the __EIC7700X Memory Map__...
 
-| EIC7700X Tech Ref 1 | Page 380 |
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 380 |
 |:--------------------------------|:---------|
 | System Memory Map
 | System Space (Low) | 0000_0000 to 8000_0000
@@ -1088,23 +1088,23 @@ CONFIG_DEBUG_SCHED_WARN=y
 
 __16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 
-| EIC7700X Tech Ref 4 | Page 524 |
+| [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 524 |
 |:--------------------------------|:---------|
 | UART Register Offset
-| RBR 0x0 | Receive Buffer Register 
-| IER 0x4 | Interrupt Enable Register 
-| IIR 0x8 | Interrupt Identification Register
+| 0x0 | Receive Buffer Register (RBR)
+| 0x4 | Interrupt Enable Register (IER)
+| 0x8 | Interrupt Identification Register (IIR)
 
 __UART0 Base Address__ is here...
 
-| EIC7700X Tech Ref 4 | Page 353 |
+| [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 353 |
 |:--------------------------------|:---------|
 | Peripheral Address Space
 | UART0 | 0x5090_0000
 
 __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
 
-| EIC7700X Tech Ref 1 | Page 366 |
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 366 |
 |:--------------------------------|:---------|
 |UART0 Interrupt Number | 100 _(lsp_uart0_intr)_
 
