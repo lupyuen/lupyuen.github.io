@@ -2,7 +2,7 @@
 
 📝 _16 Apr 2025_
 
-![TODO](https://lupyuen.org/images/starpro64-title.jpg)
+![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
 TODO
 
@@ -261,15 +261,43 @@ _Earlier we flashed Linux to eMMC. Can we boot Linux now?_
 
 Yep just power up StarPro64 and emmC will __Boot Linux__...
 
+<span style="font-size:80%">
+
 ```text
-TODO
+U-Boot menu
+1:      RockOS GNU/Linux 6.6.73-win2030
+2:      RockOS GNU/Linux 6.6.73-win2030 (rescue target)
+Enter choice: 1:        RockOS GNU/Linux 6.6.73-win2030
+Retrieving file: /vmlinuz-6.6.73-win2030
+Retrieving file: /initrd.img-6.6.73-win2030
+append: root=PARTUUID=b0f77ad6-36cd-4a99-a8c0-31d73649aa08 console=ttyS0,115200 root=PARTUUID=b0f77ad6-36cd-4a99-a8c0-31d73649aa08 rootfstype=ext4 rootwait rw earlycon selinux=0 LANG=en_US.UTF-8
+Retrieving file: /dtbs/linux-image-6.6.73-win2030/eswin/eic7700-pine64-starpro64.dtb
+   Uncompressing Kernel Image
+Moving Image from 0x84000000 to 0x80200000, end=81e63000
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+Working FDT set to 88000000
+ERROR: reserving fdt memory region failed (addr=fffff000 size=1000 flags=4)
+   Using Device Tree in place at 0000000088000000, end 0000000088027af4
+Working FDT set to 88000000
+
+Starting kernel ...
+Linux version 6.6.73-win2030 (riscv@riscv-builder) (riscv64-unknown-linux-gnu-gcc () 13.2.0, GNU ld (GNU Binutils) 2.42) #2025.01.23.02.46+aeb0f375c SMP Thu Jan 23 03:08:39 UTC 2025
+Machine model: Pine64 StarPro64
+...
+mmc0: Timeout waiting for hardware interrupt.
+mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc0: sdhci: Sys addr:  0x00000008 | Version:  0x00000005
+mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
 ```
+
+</span>
+
+Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of RockOS won't boot correctly on our Prototype StarPro64. Hopefully we'll sort this out real soon! (Pic below)
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
 
-Sadly the [__Preview Version__](TODO) of RockOS won't boot correctly on our board. Hopefully we'll sort this out real soon!
-
-TODO: Photo of Linux Boot
+![TODO](https://lupyuen.org/images/starpro64-linux.jpg)
 
 # Settings for U-Boot Bootloader
 
@@ -277,7 +305,37 @@ _Bummer. What else can we boot on StarPro64?_
 
 Let's snoop around [__U-Boot Bootloader__](TODO). And figure out how to boot [__Apache NuttX RTOS__](TODO).
 
-TODO
+Power up StarPro64 and press __Ctrl-C__. At the __U-Boot Prompt__: We enter these commands...
+
+```bash
+$ help
+printenv  - print environment variables
+saveenv   - save environment variables to persistent storage
+net       - NET sub-system
+dhcp      - boot image via network using DHCP/TFTP protocol
+tftpboot  - load file via network using TFTP protocol
+fdt       - flattened device tree utility commands
+booti     - boot Linux kernel 'Image' format from memory
+
+$ printenv
+fdt_addr_r=0x88000000
+kernel_addr_r=0x84000000
+loadaddr=0x80200000
+```
+
+[(See the __U-Boot Log__)](https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7)
+
+A-ha! This says...
+
+- U-Boot supports booting over TFTP: [__Trivial File Transfer Protocol__](TODO)
+
+- It will load the __Kernel Image__ _(Linux / NuttX)_ into RAM at __`0x8400` `0000`__
+
+- Then it will move the Kernel Image to __`0x8020` `0000`__ and boot there
+
+- Also it loads the __Device Tree__ into __`0x8800` `0000`__
+
+Thanks U-Boot! You told us everything we need to Boot NuttX...
 
 # Boot NuttX over TFTP
 
