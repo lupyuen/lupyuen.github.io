@@ -151,7 +151,7 @@ $ ls -lh *.bin *.ext4
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
 ```
 
-We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64.
+We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on our Prototype StarPro64.
 
 ![TODO](https://lupyuen.org/images/starpro64-emmc.jpg)
 
@@ -171,51 +171,56 @@ Based on the [__Official Doc__](TODO)...
 
    ```bash
    $ ls mmc 0
-   TODO
+   [ Nothing ]
 
    $ mmc part
-   TODO
+   [ Nothing ]
    ```
 
 1. First Time Only: __GPT Partition__ our eMMC...
 
    ```bash
    $ echo $partitions
-   TODO
+   partitions=
+     name=boot,start=1MiB,size=2048MiB,type=${typeid_filesystem},uuid=${uuid_boot};
+     name=swap,size=4096MiB,type=${typeid_swap},uuid=${uuid_swap};
+     name=root,size=-,type=${typeid_filesystem},uuid=${uuid_root}
 
    $ run gpt_partition
-   TODO
-
    $ mmc part
-   TODO
+   1 0x00000800 0x001007ff "boot"
+   2 0x00100800 0x009007ff "swap"
+   3 0x00900800 0x0e677fde "root"
    ```
 
 1. Verify that our __USB Drive__ works...
 
    ```bash
    $ ls usb 0
-   TODO
+    524288000 boot.ext4
+   7516192768 root.ext4
+      4380760 bootloader_secboot_ddr5_pine64-starpro64.bin   
    ```
 
 1. Install the __Bootloader, Boot Image and Root Image__, from USB Drive to eMMC...
 
    ```bash
    $ es_fs update usb 0 boot.ext4 mmc 0:1
-   TODO
+   mmc has been successfully writen in mmc 0:1
 
    $ es_fs update usb 0 root.ext4 mmc 0:3
-   TODO
+   mmc has been successfully writen in mmc 0:3
 
    $ ext4load usb 0 0x100000000 bootloader_secboot_ddr5_pine64-starpro64.bin
-   TODO
+   4380760 bytes read in 162 ms (25.8 MiB/s)
 
    $ es_burn write 0x100000000 flash
-   TODO
+   bootloader write OK
    ```
 
    [(See the __eMMC Log__)](https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702)
 
-__Beware of overheating!__ Keep StarPro64 cool or the last step above might corrupt the SPI Boot Flash...
+1. __Beware of Overheating!__ Keep StarPro64 cool, or the previous step might corrupt the __SPI Boot Flash__ and cause unspeakable agony...
 
 TODO: Pic of fan
 
@@ -244,7 +249,7 @@ Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.
 
 _Anything else we should worry about?_
 
-The [__MicroSD Interface__](TODO) wasn't working well on our StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.
+The [__MicroSD Interface__](TODO) wasn't working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.
 
 Hence the __Headless Ironman__: USB Drive on StarPro64...
 
