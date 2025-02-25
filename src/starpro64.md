@@ -658,6 +658,8 @@ __PLIC Base Address__ is specified here...
 
 [arch/risc-v/src/sg2000/hardware/sg2000_plic.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
+[(__Multiple Harts__ explained here)](TODO)
+
 ```c
 /* Interrupt Priority */
 
@@ -684,6 +686,8 @@ TODO
 <hr>
 
 [arch/risc-v/src/sg2000/sg2000_head.S](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
+
+[(__Multiple Harts__ explained here)](TODO)
 
 ```c
   .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
@@ -739,6 +743,7 @@ TODO
 
 [arch/risc-v/src/sg2000/sg2000_irq.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
+[(__Multiple Harts__ explained here)](TODO)
 
 ```c
   /* Disable all global interrupts */
@@ -806,6 +811,8 @@ void up_enable_irq(int irq) {
 
 [arch/risc-v/src/sg2000/sg2000_irq_dispatch.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
+[(__Multiple Harts__ explained here)](TODO)
+
 ```c
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 {
@@ -842,6 +849,8 @@ We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 <hr>
 
 [arch/risc-v/src/sg2000/sg2000_start.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
+
+[(__Multiple Harts__ explained here)](TODO)
 
 ```c
 //// TODO
@@ -1133,6 +1142,28 @@ TODO: __16550_UART0_CLOCK__
 ```
 
 # Appendix: Multiple Harts on StarPro64
+
+_Multiple Harts are problematic. Why?_
+
+Inside EIC7700X SoC: We have __Four Harts__ (RISC-V CPU Cores) numbered 0 to 3.
+
+This SoC will boot OpenSBI on __Any Random Hart__, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the __Same Random Hart__.
+
+_What's the problem?_
+
+NuttX assumes that it always __Boots on Hart 0__. This code __will fail__ when it boots on Harts 1 to 3: [__TODO__](TODO)
+
+_How to fix this?_
+
+Our workaround is to __Always Reboot NuttX on Hart 0__.
+
+TODO
+
+_Can't we start One Hart and ignore the Other Harts?_
+
+TODO: Affinity
+
+_How to enable Multple Harts?_
 
 TODO
 
