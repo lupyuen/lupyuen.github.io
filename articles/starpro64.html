@@ -68,28 +68,29 @@
 <li><a href="#eswin-eic7700x-risc-v-soc" title="ESWIN EIC7700X RISC-V SoC">1 ESWIN EIC7700X RISC-V SoC</a><ul></ul></li>
 <li><a href="#boot-without-microsd" title="Boot Without MicroSD">2 Boot Without MicroSD</a><ul></ul></li>
 <li><a href="#download-the-linux-image" title="Download the Linux Image">3 Download the Linux Image</a><ul></ul></li>
-<li><a href="#starpro64-is-literally-hot" title="StarPro64 is (Literally) Hot!">4 StarPro64 is (Literally) Hot!</a><ul></ul></li>
-<li><a href="#boot-the-linux-image" title="Boot the Linux Image">5 Boot the Linux Image</a><ul></ul></li>
-<li><a href="#settings-for-u-boot-bootloader" title="Settings for U-Boot Bootloader">6 Settings for U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">7 Boot NuttX over TFTP</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-starpro64" title="Appendix: Build NuttX for StarPro64">8 Appendix: Build NuttX for StarPro64</a><ul></ul></li>
-<li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">9 Appendix: Port NuttX to StarPro64</a><ul></ul></li>
-<li><a href="#tech-ref" title="Tech Ref">10 Tech Ref</a><ul></ul></li>
-<li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">11 ESWIN AI Sample User Guide</a><ul></ul></li>
-<li><a href="#download-microsd" title="Download MicroSD">12 Download MicroSD</a><ul></ul></li>
-<li><a href="#u-boot" title="U-Boot">13 U-Boot</a><ul></ul></li>
-<li><a href="#uart" title="UART">14 UART</a><ul></ul></li>
-<li><a href="#power-plug" title="Power Plug">15 Power Plug</a><ul></ul></li>
-<li><a href="#boot-nuttx-over-tftp-1" title="Boot NuttX over TFTP">16 Boot NuttX over TFTP</a><ul></ul></li>
-<li><a href="#multiple-cpu" title="Multiple CPU">17 Multiple CPU</a><ul></ul></li>
-<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">18 PLIC Multiple Harts</a><ul></ul></li>
-<li><a href="#build-loop" title="Build Loop">19 Build Loop</a><ul></ul></li>
-<li><a href="#semaphore-fail" title="Semaphore Fail">20 Semaphore Fail</a><ul></ul></li>
-<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">21 Thread 1 isn’t started!</a><ul></ul></li>
-<li><a href="#multiple-cpu-1" title="Multiple CPU">22 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">23 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">24 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">25 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#prepare-the-linux-image" title="Prepare the Linux Image">4 Prepare the Linux Image</a><ul></ul></li>
+<li><a href="#starpro64-is-literally-hot" title="StarPro64 is (Literally) Hot!">5 StarPro64 is (Literally) Hot!</a><ul></ul></li>
+<li><a href="#boot-the-linux-image" title="Boot the Linux Image">6 Boot the Linux Image</a><ul></ul></li>
+<li><a href="#settings-for-u-boot-bootloader" title="Settings for U-Boot Bootloader">7 Settings for U-Boot Bootloader</a><ul></ul></li>
+<li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">8 Boot NuttX over TFTP</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-starpro64" title="Appendix: Build NuttX for StarPro64">9 Appendix: Build NuttX for StarPro64</a><ul></ul></li>
+<li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">10 Appendix: Port NuttX to StarPro64</a><ul></ul></li>
+<li><a href="#tech-ref" title="Tech Ref">11 Tech Ref</a><ul></ul></li>
+<li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">12 ESWIN AI Sample User Guide</a><ul></ul></li>
+<li><a href="#download-microsd" title="Download MicroSD">13 Download MicroSD</a><ul></ul></li>
+<li><a href="#u-boot" title="U-Boot">14 U-Boot</a><ul></ul></li>
+<li><a href="#uart" title="UART">15 UART</a><ul></ul></li>
+<li><a href="#power-plug" title="Power Plug">16 Power Plug</a><ul></ul></li>
+<li><a href="#boot-nuttx-over-tftp-1" title="Boot NuttX over TFTP">17 Boot NuttX over TFTP</a><ul></ul></li>
+<li><a href="#multiple-cpu" title="Multiple CPU">18 Multiple CPU</a><ul></ul></li>
+<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">19 PLIC Multiple Harts</a><ul></ul></li>
+<li><a href="#build-loop" title="Build Loop">20 Build Loop</a><ul></ul></li>
+<li><a href="#semaphore-fail" title="Semaphore Fail">21 Semaphore Fail</a><ul></ul></li>
+<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">22 Thread 1 isn’t started!</a><ul></ul></li>
+<li><a href="#multiple-cpu-1" title="Multiple CPU">23 Multiple CPU</a><ul></ul></li>
+<li><a href="#disable-smp" title="Disable SMP">24 Disable SMP</a><ul></ul></li>
+<li><a href="#todo" title="TODO">25 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">26 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -199,13 +200,17 @@ $ ls -lh *.bin *.ext4
 7.0G  root.ext4
 
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
-<p>(We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on StarPro64)</p>
+<p>We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on StarPro64.</p>
 <p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="TODO" /></p>
-<p><em>How to load them into eMMC?</em></p>
+<h1 id="prepare-the-linux-image"><a class="doc-anchor" href="#prepare-the-linux-image">§</a>4 Prepare the Linux Image</h1>
+<p><em>How to load the Linux Image into eMMC?</em></p>
 <p>Based on the <a href="TODO"><strong>Official Doc</strong></a>…</p>
 <ol>
 <li>
 <p>Connect our <strong>eMMC to StarPro64</strong> (pic above)</p>
+</li>
+<li>
+<p>Connect our <strong>USB Drive</strong> from previous section</p>
 </li>
 <li>
 <p><strong>At U-Boot:</strong> Press <strong>Ctrl-C</strong> to stop Autoboot</p>
@@ -228,11 +233,12 @@ TODO
 $ mmc part
 TODO</code></pre></div></li>
 <li>
-<p>Install the <strong>Bootloader, Boot Image and Root Image</strong> to eMMC…</p>
+<p>Verify that our <strong>USB Drive</strong> works…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls usb 0
-TODO
-
-$ es_fs update usb 0 boot.ext4 mmc 0:1
+TODO</code></pre></div></li>
+<li>
+<p>Install the <strong>Bootloader, Boot Image and Root Image</strong>, from USB Drive to eMMC…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ es_fs update usb 0 boot.ext4 mmc 0:1
 TODO
 
 $ es_fs update usb 0 root.ext4 mmc 0:3
@@ -248,7 +254,7 @@ TODO</code></pre></div>
 </ol>
 <p><strong>Beware of overheating!</strong> Keep StarPro64 cool or the last step above might corrupt the SPI Boot Flash…</p>
 <p>TODO: Pic of fan</p>
-<h1 id="starpro64-is-literally-hot"><a class="doc-anchor" href="#starpro64-is-literally-hot">§</a>4 StarPro64 is (Literally) Hot!</h1>
+<h1 id="starpro64-is-literally-hot"><a class="doc-anchor" href="#starpro64-is-literally-hot">§</a>5 StarPro64 is (Literally) Hot!</h1>
 <p><em>Something is smelling like barbecue?</em></p>
 <p>Whoa StarPro64 is on fire: Drop it, stop it and <strong>power off</strong>! StarPro64 will show <a href="https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b#file-gistfile1-txt-L796-L894"><strong>PLL Errors</strong></a> when it overheats…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pll failed.
@@ -259,19 +265,23 @@ pll failed.</code></pre></div>
   critical temperature reached, shutting down
 reboot:
   HARDWARE PROTECTION shutdown (Temperature too high)</code></pre></div>
-<p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>. But don’t power it with USB Port on StarPro64!</p>
+<p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>. But don’t power it with USB Port on StarPro64! (Pic above)</p>
 <p><em>Anything else we should worry about?</em></p>
 <p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
 <p>Hence the <strong>Headless Ironman</strong>: USB Drive on StarPro64…</p>
 <p><img src="https://lupyuen.org/images/starpro64-ironman.jpg" alt="TODO" /></p>
-<h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>5 Boot the Linux Image</h1>
+<h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>6 Boot the Linux Image</h1>
 <p><em>Earlier we flashed Linux to eMMC. Can we boot Linux now?</em></p>
 <p>Yep just power up StarPro64 and emmC will <strong>Boot Linux</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f">(See the <strong>Boot Log</strong>)</a></p>
 <p>Sadly the <a href="TODO"><strong>Preview Version</strong></a> of RockOS won’t boot correctly on our board. Hopefully we’ll sort this out real soon!</p>
 <p>TODO: Photo of Linux Boot</p>
-<h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>6 Settings for U-Boot Bootloader</h1><h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>7 Boot NuttX over TFTP</h1><h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>8 Appendix: Build NuttX for StarPro64</h1><h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>9 Appendix: Port NuttX to StarPro64</h1>
+<h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>7 Settings for U-Boot Bootloader</h1>
+<p><em>Bummer. What else can we boot on StarPro64?</em></p>
+<p>Let’s snoop around <a href="TODO"><strong>U-Boot Bootloader</strong></a>. And figure out how to boot <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p>TODO</p>
+<h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>8 Boot NuttX over TFTP</h1><h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>9 Appendix: Build NuttX for StarPro64</h1><h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>10 Appendix: Port NuttX to StarPro64</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/pull/93/files</p>
 <p>arch/risc-v/Kconfig</p>
 <p>arch/risc-v/include/sg2000/irq.h</p>
@@ -285,7 +295,7 @@ reboot:
 <p>arch/risc-v/src/sg2000/sg2000_timerisr.c</p>
 <p>boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig</p>
 <p>drivers/serial/uart_16550.c</p>
-<h1 id="tech-ref"><a class="doc-anchor" href="#tech-ref">§</a>10 Tech Ref</h1><div class="example-wrap"><pre class="language-text"><code>disable thead mmu flags
+<h1 id="tech-ref"><a class="doc-anchor" href="#tech-ref">§</a>11 Tech Ref</h1><div class="example-wrap"><pre class="language-text"><code>disable thead mmu flags
 app addr env
 nuttx/arch/risc-v/Kconfig
 remove ARCH_MMU_EXT_THEAD
@@ -348,7 +358,7 @@ LCR 0xc Line Control Register
 MCR 0x10 Modem Control Register 
 LSR 0x14 Line Status Register 
 MSR 0x18 Modem Status Register SCR 
-</code></pre></div><h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>11 ESWIN AI Sample User Guide</h1>
+</code></pre></div><h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>12 ESWIN AI Sample User Guide</h1>
 <p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
 <p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
 <div class="example-wrap"><pre class="language-text"><code>ESWIN provides users with the desktop version of the Debian image files. the default username and
@@ -359,13 +369,13 @@ EIC7x_Release_Images_p550_20241230
 └── hifive-premier-p550
  ├── bootloader_P550.bin
  ├── boot-P550-20250126-011559.ext4
-└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="download-microsd"><a class="doc-anchor" href="#download-microsd">§</a>12 Download MicroSD</h1>
+└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="download-microsd"><a class="doc-anchor" href="#download-microsd">§</a>13 Download MicroSD</h1>
 <p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
 <p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/Development_board_image_installation_and_upgrade_manual.pdf</p>
 <p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/EIC7x_Release_Images_p550_20241230.zip.001</p>
 <p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/EIC7x_Release_Images_p550_20241230.zip.002</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo apt install p7zip-full
-7z x EIC7x_Release_Images_p550_20241230.zip.001</code></pre></div><h1 id="u-boot"><a class="doc-anchor" href="#u-boot">§</a>13 U-Boot</h1>
+7z x EIC7x_Release_Images_p550_20241230.zip.001</code></pre></div><h1 id="u-boot"><a class="doc-anchor" href="#u-boot">§</a>14 U-Boot</h1>
 <p>https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7</p>
 <div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.5
    ____                    _____ ____ _____
@@ -643,7 +653,7 @@ vendor=eswin
 
 Environment size: 1435/524284 bytes</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>14 UART</h1><div class="example-wrap"><pre class="language-text"><code>https://pinout.xyz/
+<div class="example-wrap"><pre class="language-text"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>15 UART</h1><div class="example-wrap"><pre class="language-text"><code>https://pinout.xyz/
 
 Yellow - GND - pin 6
 Blue - Tx - pin 8
@@ -661,7 +671,7 @@ done</code></pre></div>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
 <p>CONFIG_16550_UART0_IRQ=125</p>
 <p>100 + 25</p>
-<h1 id="power-plug"><a class="doc-anchor" href="#power-plug">§</a>15 Power Plug</h1>
+<h1 id="power-plug"><a class="doc-anchor" href="#power-plug">§</a>16 Power Plug</h1>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
@@ -688,7 +698,7 @@ curl \
     -H &quot;Content-Type: application/json&quot; \
     -d &#39;{&quot;entity_id&quot;: &quot;automation.pi_power_on&quot;}&#39; \
     http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo</code></pre></div><h1 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>16 Boot NuttX over TFTP</h1>
+set -x  ##  Enable echo</code></pre></div><h1 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>17 Boot NuttX over TFTP</h1>
 <p><img src="https://lupyuen.org/images/starpro64-nuttx.png" alt="TODO" /></p>
 <p>https://lupyuen.github.io/articles/sg2000</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ net list
@@ -751,7 +761,7 @@ Working FDT set to 88000000
    Using Device Tree in place at 0000000088000000, end 0000000088008446
 Working FDT set to 88000000
 
-Starting kernel ...</code></pre></div><h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>17 Multiple CPU</h1>
+Starting kernel ...</code></pre></div><h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>18 Multiple CPU</h1>
 <p>https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
@@ -788,7 +798,7 @@ Hello, World!!   </code></pre></div></li>
 [CPU0] nx_start: CPU0: Beginning Idle Loop
 [ Stuck here ]</code></pre></div></li>
 </ul>
-<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>18 PLIC Multiple Harts</h1>
+<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>19 PLIC Multiple Harts</h1>
 <p>Page 240 (Skip the M-Modes)</p>
 <div class="example-wrap"><pre class="language-text"><code>Address Width Attr. Description
 0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
@@ -823,14 +833,14 @@ Hello, World!!   </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65">waiter_func: Thread 2 waiting on semaphore</a></p>
 <p><a href="https://youtu.be/70DQ4YlQMMw"><strong>Watch the Demo on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>See the NuttX Log</strong></a></p>
-<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>19 Build Loop</h1>
+<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>20 Build Loop</h1>
 <p>make</p>
 <p>make app</p>
 <p>power off</p>
 <p>power on</p>
 <p>read</p>
 <p>power off</p>
-<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>20 Semaphore Fail</h1>
+<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>21 Semaphore Fail</h1>
 <p>https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6</p>
 <div class="example-wrap"><pre class="language-text"><code>user_main: semaphore test
 sem_test: Initializing semaphore to 0
@@ -1167,7 +1177,7 @@ up_switch_context():
        * task is again ready to run and has execution priority.
        */
     }
-}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>21 Thread 1 isn’t started!</h1>
+}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>22 Thread 1 isn’t started!</h1>
 <p>pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93</p>
 <div class="example-wrap"><pre class="language-c"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
@@ -1411,7 +1421,7 @@ up_switch_context():
     }
 #endif</code></pre></div>
 <p>How to set affinity?</p>
-<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>22 Multiple CPU</h1>
+<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>23 Multiple CPU</h1>
 <p>boot_hartid=2
 hart=0, cpu=1
 hart=1, cpu=2
@@ -1535,7 +1545,7 @@ VeCCP[UC0P]U 0]r isdcuvm_p_capsus_ebroto_t:i nfCPoU: 0C uStrraertnte d
 [CPU0] dump_task:       0     0     0   0 FIFO     Kthread -   Running            0000000000000000 0x8040b010      3056       712    23.2%    CPU0 IDLE
 [CPU0] dump_task:       1     0     1   0 FIFO     Kthread -   Running            0000000000000000 0x8040bc10      3056       528    17.2%    CPU1 IDLE
 [CPU0] dump_task:       2     0     2   0 FIFO     Kthread -   Running            0000000000000000 0x8040c810      3056      2824    92.4%!   CPU2 IDLE
-[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>23 Disable SMP</h1>
+[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>24 Disable SMP</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
 <p>Remove these from defconfig:</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
@@ -1546,7 +1556,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
 <p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>24 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>25 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1591,7 +1601,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>25 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>26 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
