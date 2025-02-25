@@ -12,16 +12,6 @@ Star64 power
 
 IKEA Smart Power Plug
 
-Beware: Very Hot!
-
-```text
-pll failed.
-pll failed.
-pll failed.
-```
-
-If something smells like barbeque: Drop it, stop it and power off!
-
 iTerm: Edit > Paste Special > Paste Slowly
 
 Settings > Advanced > Pasteboard
@@ -177,20 +167,56 @@ Based on the [__Official Doc__](TODO)...
 
    [(See the __eMMC Log__)](https://gist.github.com/lupyuen/a07e8dcd56d3fb306dce8983f4924702)
 
+__Beware of overheating!__ Keep StarPro64 cool or the last step above might corrupt the SPI Boot Flash...
+
+TODO: Pic of fan
+
 # StarPro64 is (Literally) Hot!
 
-Boot Fail: https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f
+_Something is smelling like barbecue?_
 
-https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947
+Whoa StarPro64 is on fire: Drop it, stop it and __power off__! StarPro64 will show [__PLL Errors__](https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b#file-gistfile1-txt-L796-L894) when it overheats...
 
-```text
-[  132.081330] thermal thermal_zone0: thermal0: critical temperature reached, shutting down
-[  132.089435] reboot: HARDWARE PROTECTION shutdown (Temperature too high)
-thermal thermal_zone0: thermal0: critical temperature reached, shutting down
-reboot: HARDWARE PROTECTION shutdown (Temperature too high)
+```bash
+pll failed.
+pll failed.
+pll failed.
 ```
 
+Also watch for [__Thermal Errors__](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f#file-gistfile1-txt-L1940-L1947) when booting Linux...
+
+```bash
+thermal thermal_zone0: thermal0:
+  critical temperature reached, shutting down
+reboot:
+  HARDWARE PROTECTION shutdown (Temperature too high)
+```
+
+Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64!
+
+_Anything else we should worry about?_
+
+The [__MicroSD Interface__](TODO) wasn't working well on our StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.
+
+Hence the __Headless Ironman__: USB Drive on StarPro64...
+
+TODO: Headless Ironman
+
 # Boot the Linux Image
+
+_Earlier we flashed Linux to eMMC. Can we boot Linux now?_
+
+Yep just power up StarPro64 and emmC will __Boot Linux__...
+
+```text
+TODO
+```
+
+[(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
+
+Sadly the [__Preview Version__](TODO) of RockOS won't boot correctly on our board. Hopefully we'll sort this out real soon!
+
+TODO: Photo of Linux Boot
 
 # Settings for U-Boot Bootloader
 
