@@ -561,21 +561,22 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">arch/risc-v/Kconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>config ARCH_CHIP_SG2000
 	select ARCH_RV_CPUID_MAP</code></pre></div>
-<p>disable thead mmu flags
+<p>TODO
+disable thead mmu flags
 app addr env
 nuttx/arch/risc-v/Kconfig
 remove ARCH_MMU_EXT_THEAD</p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f">arch/risc-v/include/sg2000/irq.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define NR_IRQS (RISCV_IRQ_SEXT + 458)</code></pre></div>
-<p>EIC7700X supports 458 External Interrupts…</p>
+<p>EIC7700X supports <strong>458 External Interrupts</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 1</th><th style="text-align: left">Page 374</th></tr></thead><tbody>
 <tr><td style="text-align: left">Max Interrupts</td><td style="text-align: left">458</td></tr>
 </tbody></table>
 </div><hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767">arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define SG2000_PLIC_BASE 0x0C000000ul</code></pre></div>
-<p>PLIC Base Address is specified here…</p>
+<p><strong>PLIC Base Address</strong> is specified here…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 1</th><th style="text-align: left">Page 239</th></tr></thead><tbody>
 <tr><td style="text-align: left">PLIC Memory Map</td><td style="text-align: left">0x0C00_0000</td></tr>
 </tbody></table>
@@ -709,14 +710,14 @@ remove ARCH_MMU_EXT_THEAD</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f">arch/risc-v/src/sg2000/sg2000_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define MMU_IO_BASE      (0x00000000ul)
 #define MMU_IO_SIZE      (0x80000000ul)</code></pre></div>
-<p>We derived the above from the EIC7700X Memory Map…</p>
+<p>We derived the above from the <strong>EIC7700X Memory Map</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 1</th><th style="text-align: left">Page 380</th></tr></thead><tbody>
 <tr><td style="text-align: left">System Memory Map</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">System Space (Low)</td><td style="text-align: left">0000_0000 to 8000_0000</td></tr>
 <tr><td style="text-align: left">Memory Space</td><td style="text-align: left">8000_0000 to 10_0000_0000</td></tr>
 </tbody></table>
 </div>
-<p>Removed all T-Head MMU Extensions, including mmu_flush_cache</p>
+<p>We removed all <strong>T-Head MMU Extensions</strong>, including <strong>mmu_flush_cache</strong>.</p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7">arch/risc-v/src/sg2000/sg2000_start.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//// TODO
@@ -953,7 +954,7 @@ CONFIG_DEBUG_SCHED=y
 CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
-<p>16550_REGINCR is 4 because the UART Registers are spaced 4 bytes apart…</p>
+<p><strong>16550_REGINCR</strong> is 4 because the UART Registers are spaced 4 bytes apart…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 4</th><th style="text-align: left">Page 524</th></tr></thead><tbody>
 <tr><td style="text-align: left">UART Register Offset</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">RBR 0x0</td><td style="text-align: left">Receive Buffer Register</td></tr>
@@ -961,18 +962,18 @@ CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
 <tr><td style="text-align: left">IIR 0x8</td><td style="text-align: left">Interrupt Identification Register</td></tr>
 </tbody></table>
 </div>
-<p>UART0 lives at this Base Address…</p>
+<p><strong>UART0 Base Address</strong> is here…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 4</th><th style="text-align: left">Page 353</th></tr></thead><tbody>
 <tr><td style="text-align: left">Peripheral Address Space</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left">UART0</td><td style="text-align: left">0x5090_0000</td></tr>
 </tbody></table>
 </div>
-<p>Why IRQ 125? UART0 Interrupt Number is 100, we add 25 because of TODO…</p>
+<p><strong>Why IRQ 125?</strong> UART0 Interrupt Number is 100, we add 25 because of TODO…</p>
 <div><table><thead><tr><th style="text-align: left">EIC7700X Tech Ref 1</th><th style="text-align: left">Page 366</th></tr></thead><tbody>
 <tr><td style="text-align: left">UART0 Interrupt Number</td><td style="text-align: left">100 <em>(lsp_uart0_intr)</em></td></tr>
 </tbody></table>
 </div>
-<p>TODO: 16550_UART0_CLOCK</p>
+<p>TODO: <strong>16550_UART0_CLOCK</strong></p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">drivers/serial/uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
