@@ -240,7 +240,7 @@ Based on the [__Official Doc__](TODO)...
 
 ![TODO](https://lupyuen.org/images/starpro64-fan.jpg)
 
-# StarPro64 is Smokin' Hot!
+# StarPro64 Gets Smokin' Hot!
 
 _Something is smelling like barbecue?_
 
@@ -260,7 +260,7 @@ critical temperature reached, shutting down
 reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 ```
 
-Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64! (Pic above)
+Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64! (Pic above, boxed up with IKEA 365+)
 
 _Anything else we should worry about?_
 
