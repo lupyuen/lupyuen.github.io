@@ -513,6 +513,142 @@ Power Jenga
 
 TODO
 
+We may download the NuttX Image File __`Image`__ from the Latest Daily Build of __NuttX for SG2000__...
+
+- [__Daily Build: NuttX for SG2000__](https://github.com/lupyuen/nuttx-sg2000/tags)
+
+If we prefer to build NuttX ourselves, please read on...
+
+In this article we took NuttX for [__Ox64 BL808 RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S...
+
+1.  [__"Set the NuttX Memory Map"__](https://lupyuen.github.io/articles/sg2000#nuttx-memory-map)
+
+1.  [__"Select the 16550 UART Driver"__](https://lupyuen.github.io/articles/sg2000#select-the-16550-uart-driver)
+
+1.  [__"Enable Logging for Scheduler"__](https://lupyuen.github.io/articles/sg2000#enable-logging-for-scheduler)
+
+1.  [__"Fix the NuttX Driver for PLIC"__](https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic)
+
+Follow these steps to build Apache NuttX RTOS (Mainline) for __SG2000 and Milk-V Duo S__, based on the [__Official NuttX Docs__](https://nuttx.apache.org/docs/latest/platforms/risc-v/sg2000/boards/milkv_duos/index.html)...
+
+Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+- [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+Download the RISC-V Toolchain for __riscv-none-elf__ (xPack)...
+    
+- [__"xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v)
+
+Then Download and Build NuttX...
+
+```bash
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Download the Source Code for NuttX Kernel and NuttX Apps
+git clone https://github.com/apache/incubator-nuttx nuttx
+git clone https://github.com/apache/incubator-nuttx-apps apps
+cd nuttx
+
+## Pull updates
+git pull && git status && hash1=`git rev-parse HEAD`
+pushd ../apps
+git pull && git status && hash2=`git rev-parse HEAD`
+popd
+echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
+echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
+
+## Show the version of GCC
+riscv-none-elf-gcc -v
+
+## Configure the build
+tools/configure.sh milkv_duos:nsh
+
+## Preserve the build config
+cp .config nuttx.config
+
+## Run the build
+make
+
+## Build the Apps Filesystem
+make export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+
+## Append the Padding and Initial RAM Disk to the NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  >Image
+
+## Copy the NuttX Image and Device Tree to our TFTP Server
+cp Image Image-sg2000
+wget https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
+scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
+scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
+
+## [For Debugging Only] Show the size
+riscv-none-elf-size nuttx
+
+## [For Debugging Only] Dump the NuttX Kernel disassembly to nuttx.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+## [For Debugging Only] Dump the NSH Shell disassembly to init.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/init \
+  >init.S \
+  2>&1
+
+## [For Debugging Only] Dump the Hello App disassembly to hello.S
+riscv-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  >hello.S \
+  2>&1
+```
+
+[(See the __Build Script__)](https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml#L25-L119)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2024-06-18)
+
+The steps above assume that we've installed our TFTP Server, according to the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server).
+
+Then follow these steps to boot NuttX on Milk-V Duo S...
+
+- [__"Boot NuttX over TFTP"__](https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp)
+
+  (How to boot from MicroSD instead of TFTP?)
+
+![Virtual Memory for NuttX Apps](https://lupyuen.github.io/images/mmu-l3user.jpg)
+
+_Why the RAM Disk? Isn't NuttX an RTOS?_
+
+SG2000 uses a RAM Disk because it runs in __NuttX Kernel Mode__ (instead of the typical Flat Mode). This means we can do __Memory Protection__ and __Virtual Memory__ for Apps. (Pic above)
+
+But it also means we need to bundle the __NuttX Apps as ELF Files__, hence the RAM Disk...
+
+- [__"NuttX Apps and Initial RAM Disk"__](https://lupyuen.github.io/articles/app)
+
+Most of the NuttX Platforms run on __NuttX Flat Mode__, which has NuttX Apps Statically-Linked into the NuttX Kernel.
+
+NuttX Flat Mode works well for Small Microcontrollers. But SG2000 and other SoCs will need the more sophisticated __NuttX Kernel Mode__...
+
+- [__"NuttX Flat Mode vs Kernel Mode"__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+
 # Appendix: Port NuttX to StarPro64
 
 We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
