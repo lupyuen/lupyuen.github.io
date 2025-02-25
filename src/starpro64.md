@@ -423,6 +423,10 @@ _How to boot NuttX over TFTP?_
     TODO
     ```
 
+1.  How did we port NuttX to StarPro64? Check the details here...
+
+    [__"TODO"__](TODO)
+
 _We type these commands EVERY TIME we boot?_
 
 We can automate: Just do this once, and NuttX will __Auto-Boot__ whenever we power up...
@@ -454,6 +458,8 @@ TODO: [(What about __Static IP__?)](https://github.com/lupyuen/nuttx-sg2000/issu
 TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245)
 
 TODO: Press Ctrl-C to stop
+
+TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 # Smart Power Plug
 
