@@ -275,7 +275,8 @@ pll failed.</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>thermal thermal_zone0: thermal0:
 critical temperature reached, shutting down
 reboot: HARDWARE PROTECTION shutdown (Temperature too high)</code></pre></div>
-<p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>. But don’t power it with USB Port on StarPro64! (Pic above, boxed up with IKEA 365+)</p>
+<p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>, preferably something stronger. <em>(Pic above, boxed up with IKEA 365+)</em></p>
+<p>But don’t power it with the USB Port on StarPro64! Instead, connect it to our <a href="TODO"><strong>Smart Power Plug</strong></a>.</p>
 <p><em>Anything else we should worry about?</em></p>
 <p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
 <p>Hence the <strong>Headless Ironman</strong>: USB Drive on StarPro64…</p>
@@ -434,6 +435,8 @@ saveenv</code></pre></div>
 <p>TODO: Press Ctrl-C to stop</p>
 <p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>9 Smart Power Plug</h1>
+<p><em>Powering StarPro64 on and off: Gets so tiresome ain’t it?</em></p>
+<p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script…</p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
@@ -469,7 +472,7 @@ curl \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
-<p>Power Jenga</p>
+<p>Remember the <a href="TODO"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-power3.jpg" alt="TODO" /></p>
 </blockquote>
