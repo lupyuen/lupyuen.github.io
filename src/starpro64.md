@@ -112,7 +112,7 @@ _HDMI Output will show U-Boot, but not OpenSBI_
 
 _Is there a Linux Image for StarPro64?_
 
-The fine folks at [__RockOS__](TODO) are busy preparing the __Linux Image__ for StarPro64. Thanks to [__@icenowy__](https://nightcord.de/@icenowy/114027871300585376), we have a [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of the Linux Image...
+The fine folks at [__PLCT Lab RockOS__](https://github.com/rockos-riscv) are busy preparing the __Linux Image__ for StarPro64. Thanks to [__@icenowy__](https://nightcord.de/@icenowy/114027871300585376), we have a [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of the Linux Image...
 
 1. __Bootloader (OpenSBI + U-Boot)__
 
