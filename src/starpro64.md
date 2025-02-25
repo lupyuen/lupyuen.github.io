@@ -614,6 +614,7 @@ config ARCH_CHIP_SG2000
 	select ARCH_RV_CPUID_MAP
 ```
 
+TODO
 disable thead mmu flags
 app addr env
 nuttx/arch/risc-v/Kconfig
@@ -627,7 +628,7 @@ remove ARCH_MMU_EXT_THEAD
 #define NR_IRQS (RISCV_IRQ_SEXT + 458)
 ```
 
-EIC7700X supports 458 External Interrupts...
+EIC7700X supports __458 External Interrupts__...
 
 | EIC7700X Tech Ref 1 | Page 374 |
 |:--------------------------------|:---------|
@@ -641,7 +642,7 @@ EIC7700X supports 458 External Interrupts...
 #define SG2000_PLIC_BASE 0x0C000000ul
 ```
 
-PLIC Base Address is specified here...
+__PLIC Base Address__ is specified here...
 
 | EIC7700X Tech Ref 1 | Page 239 |
 |:--------------------------------|:---------|
@@ -822,7 +823,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 #define MMU_IO_SIZE      (0x80000000ul)
 ```
 
-We derived the above from the EIC7700X Memory Map...
+We derived the above from the __EIC7700X Memory Map__...
 
 | EIC7700X Tech Ref 1 | Page 380 |
 |:--------------------------------|:---------|
@@ -830,8 +831,7 @@ We derived the above from the EIC7700X Memory Map...
 | System Space (Low) | 0000_0000 to 8000_0000
 | Memory Space | 8000_0000 to 10_0000_0000
 
-
-Removed all T-Head MMU Extensions, including mmu_flush_cache
+We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
 <hr>
 
@@ -1086,7 +1086,7 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 ```
 
-16550_REGINCR is 4 because the UART Registers are spaced 4 bytes apart...
+__16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 
 | EIC7700X Tech Ref 4 | Page 524 |
 |:--------------------------------|:---------|
@@ -1095,20 +1095,20 @@ CONFIG_DEBUG_SCHED_WARN=y
 | IER 0x4 | Interrupt Enable Register 
 | IIR 0x8 | Interrupt Identification Register
 
-UART0 lives at this Base Address...
+__UART0 Base Address__ is here...
 
 | EIC7700X Tech Ref 4 | Page 353 |
 |:--------------------------------|:---------|
 | Peripheral Address Space
 | UART0 | 0x5090_0000
 
-Why IRQ 125? UART0 Interrupt Number is 100, we add 25 because of TODO...
+__Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
 
 | EIC7700X Tech Ref 1 | Page 366 |
 |:--------------------------------|:---------|
 |UART0 Interrupt Number | 100 _(lsp_uart0_intr)_
 
-TODO: 16550_UART0_CLOCK
+TODO: __16550_UART0_CLOCK__
 
 <hr>
 
