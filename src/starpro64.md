@@ -511,133 +511,79 @@ Power Jenga
 
 # Appendix: Build NuttX for StarPro64
 
-TODO
+_Earlier we booted Image-starpro64 over TFTP. How to get the file?_
 
-We may download the NuttX Image File __`Image`__ from the Latest Daily Build of __NuttX for SG2000__...
+We may download the NuttX Image File __`Image-starpro64`__ from here...
 
 - [__Daily Build: NuttX for SG2000__](https://github.com/lupyuen/nuttx-sg2000/tags)
 
-If we prefer to build NuttX ourselves, please read on...
+If we prefer to build NuttX ourselves...
 
-In this article we took NuttX for [__Ox64 BL808 RISC-V SBC__](https://www.hackster.io/lupyuen/8-risc-v-sbc-on-a-real-time-operating-system-ox64-nuttx-474358). Then made a few tweaks, and it boots on SG2000 and Milk-V Duo S...
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
-1.  [__"Set the NuttX Memory Map"__](https://lupyuen.github.io/articles/sg2000#nuttx-memory-map)
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  [__"Select the 16550 UART Driver"__](https://lupyuen.github.io/articles/sg2000#select-the-16550-uart-driver)
-
-1.  [__"Enable Logging for Scheduler"__](https://lupyuen.github.io/articles/sg2000#enable-logging-for-scheduler)
-
-1.  [__"Fix the NuttX Driver for PLIC"__](https://lupyuen.github.io/articles/sg2000#fix-the-nuttx-driver-for-plic)
-
-Follow these steps to build Apache NuttX RTOS (Mainline) for __SG2000 and Milk-V Duo S__, based on the [__Official NuttX Docs__](https://nuttx.apache.org/docs/latest/platforms/risc-v/sg2000/boards/milkv_duos/index.html)...
-
-Install the Build Prerequisites, skip the RISC-V Toolchain...
-
-- [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
-
-Download the RISC-V Toolchain for __riscv-none-elf__ (xPack)...
+1.  Download the RISC-V Toolchain for __riscv-none-elf__ (xPack)...
     
-- [__"xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v)
+    [__"xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v)
 
-Then Download and Build NuttX...
+1.  Download and Build __NuttX for StarPro64__ (work-in-progress)...
 
-```bash
-set -e  #  Exit when any command fails
-set -x  #  Echo commands
+    ```bash
+    git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch starpro64
+    git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch starpro64
+    cd nuttx
+    tools/configure.sh milkv_duos:nsh
 
-## Download the Source Code for NuttX Kernel and NuttX Apps
-git clone https://github.com/apache/incubator-nuttx nuttx
-git clone https://github.com/apache/incubator-nuttx-apps apps
-cd nuttx
+    ## Build the NuttX Kernel and Apps
+    make -j
+    make -j export
+    pushd ../apps
+    ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+    make -j import
+    popd
 
-## Pull updates
-git pull && git status && hash1=`git rev-parse HEAD`
-pushd ../apps
-git pull && git status && hash2=`git rev-parse HEAD`
-popd
-echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
-echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
+    ## Generate Initial RAM Disk
+    ## Prepare a Padding with 64 KB of zeroes
+    ## Append Padding and Initial RAM Disk to NuttX Kernel
+    genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+    head -c 65536 /dev/zero >/tmp/nuttx.pad
+    cat nuttx.bin /tmp/nuttx.pad initrd \
+      >Image
 
-## Show the version of GCC
-riscv-none-elf-gcc -v
+    ## Copy NuttX Image to TFTP Server
+    scp Image tftpserver:/tftpboot/Image-starpro64
+    ssh tftpserver ls -l /tftpboot/Image-starpro64
 
-## Configure the build
-tools/configure.sh milkv_duos:nsh
+    ## In U-Boot: Boot NuttX over TFTP
+    ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+    ```
 
-## Preserve the build config
-cp .config nuttx.config
+    [(See the __Build Script__)](TODO)
 
-## Run the build
-make
+    [(See the __Build Log__)](TODO)
 
-## Build the Apps Filesystem
-make export
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make import
-popd
+    [(See the __Build Outputs__)](TODO)
 
-## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+1.  The steps above assume that we've installed our TFTP Server, according to the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server)
 
-## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.pad
+1.  Then follow these steps to boot NuttX on StarPro64...
 
-## Append the Padding and Initial RAM Disk to the NuttX Kernel
-cat nuttx.bin /tmp/nuttx.pad initrd \
-  >Image
+    [__"Boot NuttX over TFTP"__](TODO)
 
-## Copy the NuttX Image and Device Tree to our TFTP Server
-cp Image Image-sg2000
-wget https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/cv181x_milkv_duos_sd.dtb
-scp Image-sg2000 tftpserver:/tftpboot/Image-sg2000
-scp cv181x_milkv_duos_sd.dtb tftpserver:/tftpboot/cv181x_milkv_duos_sd.dtb
+1.  Powering StarPro64 on and off can get tiresome. Try a Smart Power Plug, integrated with our Build Script...
 
-## [For Debugging Only] Show the size
-riscv-none-elf-size nuttx
+    [__"TODO"__](TODO)
 
-## [For Debugging Only] Dump the NuttX Kernel disassembly to nuttx.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  nuttx \
-  >nuttx.S \
-  2>&1
+1.  How did we port NuttX to StarPro64? Check the details here...
 
-## [For Debugging Only] Dump the NSH Shell disassembly to init.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  ../apps/bin/init \
-  >init.S \
-  2>&1
-
-## [For Debugging Only] Dump the Hello App disassembly to hello.S
-riscv-none-elf-objdump \
-  --syms --source --reloc --demangle --line-numbers --wide \
-  --debugging \
-  ../apps/bin/hello \
-  >hello.S \
-  2>&1
-```
-
-[(See the __Build Script__)](https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml#L25-L119)
-
-[(See the __Build Outputs__)](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2024-06-18)
-
-The steps above assume that we've installed our TFTP Server, according to the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server).
-
-Then follow these steps to boot NuttX on Milk-V Duo S...
-
-- [__"Boot NuttX over TFTP"__](https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp)
-
-  (How to boot from MicroSD instead of TFTP?)
+    [__"TODO"__](TODO)
 
 ![Virtual Memory for NuttX Apps](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
 _Why the RAM Disk? Isn't NuttX an RTOS?_
 
-SG2000 uses a RAM Disk because it runs in __NuttX Kernel Mode__ (instead of the typical Flat Mode). This means we can do __Memory Protection__ and __Virtual Memory__ for Apps. (Pic above)
+StarPro64 uses a RAM Disk because it runs in __NuttX Kernel Mode__ (instead of the typical Flat Mode). This means we can do __Memory Protection__ and __Virtual Memory__ for Apps. (Pic above)
 
 But it also means we need to bundle the __NuttX Apps as ELF Files__, hence the RAM Disk...
 
@@ -645,44 +591,65 @@ But it also means we need to bundle the __NuttX Apps as ELF Files__, hence the R
 
 Most of the NuttX Platforms run on __NuttX Flat Mode__, which has NuttX Apps Statically-Linked into the NuttX Kernel.
 
-NuttX Flat Mode works well for Small Microcontrollers. But SG2000 and other SoCs will need the more sophisticated __NuttX Kernel Mode__...
+NuttX Flat Mode works well for Small Microcontrollers. But StarPro64 and other SoCs will need the more sophisticated __NuttX Kernel Mode__...
 
 - [__"NuttX Flat Mode vs Kernel Mode"__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
 
 # Appendix: Port NuttX to StarPro64
 
+_How did we port NuttX to StarPro64? In under One Week?_
+
 We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files
+- [__Modified Files: NuttX for StarPro64__](https://github.com/lupyuen2/wip-nuttx/pull/93/files)
 
-arch/risc-v/Kconfig
+Here's what we changed...
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb
+<hr>
+
+[arch/risc-v/Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 ```bash
 config ARCH_CHIP_SG2000
 	select ARCH_RV_CPUID_MAP
 ```
 
-arch/risc-v/include/sg2000/irq.h
+disable thead mmu flags
+app addr env
+nuttx/arch/risc-v/Kconfig
+remove ARCH_MMU_EXT_THEAD
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f
+<hr>
+
+[arch/risc-v/include/sg2000/irq.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
 
 ```c
 #define NR_IRQS (RISCV_IRQ_SEXT + 458)
 ```
 
-arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h
+EIC7700X supports 458 External Interrupts...
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767
+| EIC7700X Tech Ref 1 | Page 374 |
+|:--------------------------------|:---------|
+|Max Interrupts | 458
+
+<hr>
+
+[arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
 
 ```c
 #define SG2000_PLIC_BASE 0x0C000000ul
 ```
 
-arch/risc-v/src/sg2000/hardware/sg2000_plic.h
+PLIC Base Address is specified here...
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28
+| EIC7700X Tech Ref 1 | Page 239 |
+|:--------------------------------|:---------|
+|PLIC Memory Map | 0x0C00_0000 
+
+<hr>
+
+[arch/risc-v/src/sg2000/hardware/sg2000_plic.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
 ```c
 /* Interrupt Priority */
@@ -705,9 +672,11 @@ https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2
 #define SG2000_PLIC_CLAIM_HART (0x2000)
 ```
 
-arch/risc-v/src/sg2000/sg2000_head.S
+TODO
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58
+<hr>
+
+[arch/risc-v/src/sg2000/sg2000_head.S](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
 
 ```c
   .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
@@ -759,9 +728,10 @@ TODO
   */
 ```
 
-arch/risc-v/src/sg2000/sg2000_irq.c
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366
+[arch/risc-v/src/sg2000/sg2000_irq.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
+
 
 ```c
   /* Disable all global interrupts */
@@ -825,9 +795,9 @@ void up_enable_irq(int irq) {
         }
 ```
 
-arch/risc-v/src/sg2000/sg2000_irq_dispatch.c
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea
+[arch/risc-v/src/sg2000/sg2000_irq_dispatch.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
 ```c
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
@@ -843,15 +813,29 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
       putreg32(irq - RISCV_IRQ_EXT, claim);
 ```
 
-arch/risc-v/src/sg2000/sg2000_mm_init.c
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f
+[arch/risc-v/src/sg2000/sg2000_mm_init.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
+
+```c
+#define MMU_IO_BASE      (0x00000000ul)
+#define MMU_IO_SIZE      (0x80000000ul)
+```
+
+We derived the above from the EIC7700X Memory Map...
+
+| EIC7700X Tech Ref 1 | Page 380 |
+|:--------------------------------|:---------|
+| System Memory Map
+| System Space (Low) | 0000_0000 to 8000_0000
+| Memory Space | 8000_0000 to 10_0000_0000
+
 
 Removed all T-Head MMU Extensions, including mmu_flush_cache
 
-arch/risc-v/src/sg2000/sg2000_start.c
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7
+[arch/risc-v/src/sg2000/sg2000_start.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
 ```c
 //// TODO
@@ -1078,19 +1062,20 @@ static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
 }
 ```
 
-arch/risc-v/src/sg2000/sg2000_timerisr.c
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe
+[arch/risc-v/src/sg2000/sg2000_timerisr.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
 
 ```c
 #define MTIMER_FREQ 1000000ul
 ```
 
-boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig
+<hr>
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b
+[boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
 
 ```bash
+CONFIG_16550_REGINCR=4
 CONFIG_16550_UART0_BASE=0x50900000
 CONFIG_16550_UART0_CLOCK=23040000
 CONFIG_16550_UART0_IRQ=125
@@ -1101,9 +1086,33 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 ```
 
-drivers/serial/uart_16550.c
+16550_REGINCR is 4 because the UART Registers are spaced 4 bytes apart...
 
-https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1
+| EIC7700X Tech Ref 4 | Page 524 |
+|:--------------------------------|:---------|
+| UART Register Offset
+| RBR 0x0 | Receive Buffer Register 
+| IER 0x4 | Interrupt Enable Register 
+| IIR 0x8 | Interrupt Identification Register
+
+UART0 lives at this Base Address...
+
+| EIC7700X Tech Ref 4 | Page 353 |
+|:--------------------------------|:---------|
+| Peripheral Address Space
+| UART0 | 0x5090_0000
+
+Why IRQ 125? UART0 Interrupt Number is 100, we add 25 because of TODO...
+
+| EIC7700X Tech Ref 1 | Page 366 |
+|:--------------------------------|:---------|
+|UART0 Interrupt Number | 100 _(lsp_uart0_intr)_
+
+TODO: 16550_UART0_CLOCK
+
+<hr>
+
+[drivers/serial/uart_16550.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
 
 ```c
 #ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
@@ -1115,75 +1124,6 @@ https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0f
 
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
 #endif  // TODO
-```
-
-# Tech Ref
-
-```text
-disable thead mmu flags
-app addr env
-nuttx/arch/risc-v/Kconfig
-remove ARCH_MMU_EXT_THEAD
-
-# Tech Ref 1
-
-## Page 380
-System Memory Map
-
-System Space (Low)
-0000_0000 to 8000_0000
-
-Memory Space
-8000_0000 to 10_0000_0000
-
-## Page 239
-Table 3-74 PLIC Memory Map Address Width Attr. Description 
-0x0C00_0000 
-
-## Page 237
-CLINT Memory Map Address Width Attr. Description Notes 
-0x0200_0000 
-
-## Page 366
-uart interrupt
-UART 100 lsp_uart0_intr
-
-## Page 374
-max interrupts = 458
-
-# Tech Ref 4
-
-uart clock?
-
-## Page 353
-Table 12-1 Peripheral address space. Name Address space Size Remarks 
-wdt0 0x5080_0000~0x5080_3FFF 16k LSP APB2 
-wdt1 0x5080_4000~0x5080_7FFF 16k LSP APB2 
-wdt2 0x5080_8000~0x5080_BFFF 16k LSP APB2 
-wdt3 0x5080_C000~0x5080_FFFF 16k LSP APB2 
-spi0 0x5081_0000~0x5081_3FFF 16k LSP APB2 
-spi1 0x5081_4000~0x5081_7FFF 16k LSP APB2 
-pwm 0x5081_8000~0x5081_BFFF 16k LSP APB2 
-uart0 0x5090_0000~0x5090_FFFF 64k LSP APB3 
-uart1 0x5091_0000~0x5091_FFFF 64k LSP APB3 
-uart2 0x5092_0000~0x5092_FFFF 64k LSP APB3 
-uart3 0x5093_0000~0x5093_FFFF 64k LSP APB3 
-uart4 0x5094_0000~0x5094_FFFF 64k LSP APB3 i2c0 0x5095_0000~0x5095_FFFF 64k LSP APB3 
-i2c1 0x5096_0000~0x5096_FFFF 
-
-## Page 524
-Register Offset Description 
-RBR 0x0 Receive Buffer Register 
-THR 0x0 Transmit Holding Register 
-DLL 0x0 Divisor Latch (Low) 
-IER 0x4 Interrupt Enable Register 
-DLH 0x4 Divisor Latch High 
-IIR 0x8 Interrupt Identification Register FCR 0x8 FIFO Control Register 
-LCR 0xc Line Control Register 
-MCR 0x10 Modem Control Register 
-LSR 0x14 Line Status Register 
-MSR 0x18 Modem Status Register SCR 
-
 ```
 
 # ESWIN AI Sample User Guide
