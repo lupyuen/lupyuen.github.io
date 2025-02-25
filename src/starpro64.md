@@ -1132,7 +1132,7 @@ TODO: __16550_UART0_CLOCK__
 #endif  // TODO
 ```
 
-# Muliple Harts on StarPro64
+# Appendix: Multiple Harts on StarPro64
 
 TODO
 
