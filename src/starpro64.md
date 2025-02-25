@@ -36,6 +36,10 @@ _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
 TODO: NPU
 
+![TODO](https://lupyuen.org/images/starpro64-fan2.jpg)
+
+TODO
+
 ![TODO](https://lupyuen.org/images/starpro64-uart.jpg)
 
 # Boot Without MicroSD
@@ -355,7 +359,132 @@ Thanks U-Boot! You told us everything we need to Boot NuttX...
 
 # Boot NuttX over TFTP
 
+![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
+
+https://lupyuen.github.io/articles/sg2000
+
+```bash
+$ net list
+eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
+
+## Set the U-Boot TFTP Server
+## TODO: Change to your TFTP Server
+setenv tftp_server 192.168.31.10
+
+## Save the U-Boot Config for future reboots
+saveenv
+
+## Fetch the IP Address over DHCP
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x80200000
+dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
+
+## Load the Device Tree from TFTP Server
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+
+## Set the RAM Address of Device Tree
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+fdt addr ${fdt_addr_r}
+
+## Boot the NuttX Image with the Device Tree
+## kernel_addr_r=0x80200000
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
+booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
+_We type these commands EVERY TIME we boot?_
+
+We can automate: Just do this once, and NuttX will __Auto-Boot__ whenever we power up...
+
+```bash
+## Add the Boot Command for TFTP
+setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
+
+## Save it for future reboots
+saveenv
+
+## Test the Boot Command for TFTP, then reboot
+run bootcmd_tftp
+
+## Remember the Original Boot Command: `bootflow scan -lb`
+setenv orig_bootcmd "$bootcmd"
+
+## Prepend TFTP to the Boot Command: `run bootcmd_tftp ; bootflow scan -lb`
+setenv bootcmd "run bootcmd_tftp ; $bootcmd"
+
+## Save it for future reboots
+saveenv
+```
+
+Press Ctrl-C to stop
+
+(Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
+
+https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9
+
+```text
+=> booti ${kernel_addr_r} - ${fdt_addr_r}
+Moving Image from 0x84000000 to 0x80200000, end=80408000
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+Working FDT set to 88000000
+   Using Device Tree in place at 0000000088000000, end 0000000088008446
+Working FDT set to 88000000
+
+Starting kernel ...
+```
+
+# Smart Power Plug
+
+![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
+
 TODO
+
+![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
+
+https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163
+
+```bash
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+## export token=xxxx
+. $HOME/home-assistant-token.sh
+
+## Power Off the SBC"
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.starpro64_off"}' \
+  http://localhost:8123/api/services/automation/trigger
+
+## Power On the SBC
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.starpro64_on"}' \
+  http://localhost:8123/api/services/automation/trigger
+
+## Wait for SBC Testing to complete
+echo Press Enter to Power Off
+read
+
+## Power Off the SBC"
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.starpro64_off"}' \
+  http://localhost:8123/api/services/automation/trigger
+```
+
+Power Jenga
+
+> ![TODO](https://lupyuen.org/images/starpro64-power3.jpg)
 
 # Appendix: Build NuttX for StarPro64
 
@@ -517,121 +646,6 @@ Garbage: Compute CONFIG_16550_UART0_CLOCK
 CONFIG_16550_UART0_IRQ=125
 
 100 + 25
-
-# Power Plug
-
-![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
-
-![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
-
-```bash
-## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
-## token=xxxx
-set +x  ##  Disable echo
-. $HOME/home-assistant-token.sh
-set -x  ##  Enable echo
-
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-
-set +x  ##  Disable echo
-echo "----- Power On the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_on"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-```
-
-# Boot NuttX over TFTP
-
-![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
-
-https://lupyuen.github.io/articles/sg2000
-
-```bash
-$ net list
-eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
-
-## Set the U-Boot TFTP Server
-## TODO: Change to your TFTP Server
-setenv tftp_server 192.168.31.10
-
-## Save the U-Boot Config for future reboots
-saveenv
-
-## Fetch the IP Address over DHCP
-## Load the NuttX Image from TFTP Server
-## kernel_addr_r=0x80200000
-dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
-
-## Load the Device Tree from TFTP Server
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
-
-## Set the RAM Address of Device Tree
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-fdt addr ${fdt_addr_r}
-
-## Boot the NuttX Image with the Device Tree
-## kernel_addr_r=0x80200000
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-booti ${kernel_addr_r} - ${fdt_addr_r}
-```
-
-_We type these commands EVERY TIME we boot?_
-
-We can automate: Just do this once, and NuttX will __Auto-Boot__ whenever we power up...
-
-```bash
-## Add the Boot Command for TFTP
-setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
-
-## Save it for future reboots
-saveenv
-
-## Test the Boot Command for TFTP, then reboot
-run bootcmd_tftp
-
-## Remember the Original Boot Command: `bootflow scan -lb`
-setenv orig_bootcmd "$bootcmd"
-
-## Prepend TFTP to the Boot Command: `run bootcmd_tftp ; bootflow scan -lb`
-setenv bootcmd "run bootcmd_tftp ; $bootcmd"
-
-## Save it for future reboots
-saveenv
-```
-
-Press Ctrl-C to stop
-
-(Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
-
-https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9
-
-```text
-=> booti ${kernel_addr_r} - ${fdt_addr_r}
-Moving Image from 0x84000000 to 0x80200000, end=80408000
-## Flattened Device Tree blob at 88000000
-   Booting using the fdt blob at 0x88000000
-Working FDT set to 88000000
-   Using Device Tree in place at 0000000088000000, end 0000000088008446
-Working FDT set to 88000000
-
-Starting kernel ...
-```
 
 # Multiple CPU
 
