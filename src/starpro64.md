@@ -151,15 +151,19 @@ $ ls -lh *.bin *.ext4
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
 ```
 
-(We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64)
+We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64.
 
 ![TODO](https://lupyuen.org/images/starpro64-emmc.jpg)
 
-_How to load them into eMMC?_
+# Prepare the Linux Image
+
+_How to load the Linux Image into eMMC?_
 
 Based on the [__Official Doc__](TODO)...
 
 1. Connect our __eMMC to StarPro64__ (pic above)
+
+1. Connect our __USB Drive__ from previous section
 
 1. __At U-Boot:__ Press __Ctrl-C__ to stop Autoboot
 
@@ -186,12 +190,16 @@ Based on the [__Official Doc__](TODO)...
    TODO
    ```
 
-1. Install the __Bootloader, Boot Image and Root Image__ to eMMC...
+1. Verify that our __USB Drive__ works...
 
    ```bash
    $ ls usb 0
    TODO
+   ```
 
+1. Install the __Bootloader, Boot Image and Root Image__, from USB Drive to eMMC...
+
+   ```bash
    $ es_fs update usb 0 boot.ext4 mmc 0:1
    TODO
 
@@ -232,7 +240,7 @@ reboot:
   HARDWARE PROTECTION shutdown (Temperature too high)
 ```
 
-Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64!
+Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64! (Pic above)
 
 _Anything else we should worry about?_
 
@@ -259,6 +267,12 @@ Sadly the [__Preview Version__](TODO) of RockOS won't boot correctly on our boar
 TODO: Photo of Linux Boot
 
 # Settings for U-Boot Bootloader
+
+_Bummer. What else can we boot on StarPro64?_
+
+Let's snoop around [__U-Boot Bootloader__](TODO). And figure out how to boot [__Apache NuttX RTOS__](TODO).
+
+TODO
 
 # Boot NuttX over TFTP
 
