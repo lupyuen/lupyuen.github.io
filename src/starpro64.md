@@ -515,7 +515,7 @@ TODO
 
 # Appendix: Port NuttX to StarPro64
 
-We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with the following modifications...
+We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
 https://github.com/lupyuen2/wip-nuttx/pull/93/files
 
