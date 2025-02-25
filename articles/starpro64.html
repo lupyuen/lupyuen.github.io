@@ -76,17 +76,18 @@
 <li><a href="#smart-power-plug" title="Smart Power Plug">9 Smart Power Plug</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-starpro64" title="Appendix: Build NuttX for StarPro64">10 Appendix: Build NuttX for StarPro64</a><ul></ul></li>
 <li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">11 Appendix: Port NuttX to StarPro64</a><ul></ul></li>
-<li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">12 ESWIN AI Sample User Guide</a><ul></ul></li>
-<li><a href="#uart" title="UART">13 UART</a><ul></ul></li>
-<li><a href="#multiple-cpu" title="Multiple CPU">14 Multiple CPU</a><ul></ul></li>
-<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">15 PLIC Multiple Harts</a><ul></ul></li>
-<li><a href="#build-loop" title="Build Loop">16 Build Loop</a><ul></ul></li>
-<li><a href="#semaphore-fail" title="Semaphore Fail">17 Semaphore Fail</a><ul></ul></li>
-<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">18 Thread 1 isn’t started!</a><ul></ul></li>
-<li><a href="#multiple-cpu-1" title="Multiple CPU">19 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">20 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">21 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">22 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#muliple-harts-on-starpro64" title="Muliple Harts on StarPro64">12 Muliple Harts on StarPro64</a><ul></ul></li>
+<li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">13 ESWIN AI Sample User Guide</a><ul></ul></li>
+<li><a href="#uart" title="UART">14 UART</a><ul></ul></li>
+<li><a href="#multiple-cpu" title="Multiple CPU">15 Multiple CPU</a><ul></ul></li>
+<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">16 PLIC Multiple Harts</a><ul></ul></li>
+<li><a href="#build-loop" title="Build Loop">17 Build Loop</a><ul></ul></li>
+<li><a href="#semaphore-fail" title="Semaphore Fail">18 Semaphore Fail</a><ul></ul></li>
+<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">19 Thread 1 isn’t started!</a><ul></ul></li>
+<li><a href="#multiple-cpu-1" title="Multiple CPU">20 Multiple CPU</a><ul></ul></li>
+<li><a href="#disable-smp" title="Disable SMP">21 Disable SMP</a><ul></ul></li>
+<li><a href="#todo" title="TODO">22 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">23 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -987,7 +988,9 @@ CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
   /* Clear DLAB */
 
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
-#endif  // TODO</code></pre></div><h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>12 ESWIN AI Sample User Guide</h1>
+#endif  // TODO</code></pre></div><h1 id="muliple-harts-on-starpro64"><a class="doc-anchor" href="#muliple-harts-on-starpro64">§</a>12 Muliple Harts on StarPro64</h1>
+<p>TODO</p>
+<h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>13 ESWIN AI Sample User Guide</h1>
 <p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
 <p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
 <div class="example-wrap"><pre class="language-text"><code>ESWIN provides users with the desktop version of the Debian image files. the default username and
@@ -998,7 +1001,7 @@ EIC7x_Release_Images_p550_20241230
 └── hifive-premier-p550
  ├── bootloader_P550.bin
  ├── boot-P550-20250126-011559.ext4
-└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>13 UART</h1><div class="example-wrap"><pre class="language-text"><code>## First Time Only
+└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>14 UART</h1><div class="example-wrap"><pre class="language-text"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
 set -x
@@ -1010,7 +1013,7 @@ done</code></pre></div>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
 <p>CONFIG_16550_UART0_IRQ=125</p>
 <p>100 + 25</p>
-<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>14 Multiple CPU</h1>
+<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>15 Multiple CPU</h1>
 <p>https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
@@ -1047,7 +1050,7 @@ Hello, World!!   </code></pre></div></li>
 [CPU0] nx_start: CPU0: Beginning Idle Loop
 [ Stuck here ]</code></pre></div></li>
 </ul>
-<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>15 PLIC Multiple Harts</h1>
+<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>16 PLIC Multiple Harts</h1>
 <p>Page 240 (Skip the M-Modes)</p>
 <div class="example-wrap"><pre class="language-text"><code>Address Width Attr. Description
 0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
@@ -1082,14 +1085,14 @@ Hello, World!!   </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65">waiter_func: Thread 2 waiting on semaphore</a></p>
 <p><a href="https://youtu.be/70DQ4YlQMMw"><strong>Watch the Demo on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>See the NuttX Log</strong></a></p>
-<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>16 Build Loop</h1>
+<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>17 Build Loop</h1>
 <p>make</p>
 <p>make app</p>
 <p>power off</p>
 <p>power on</p>
 <p>read</p>
 <p>power off</p>
-<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>17 Semaphore Fail</h1>
+<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>18 Semaphore Fail</h1>
 <p>https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6</p>
 <div class="example-wrap"><pre class="language-text"><code>user_main: semaphore test
 sem_test: Initializing semaphore to 0
@@ -1426,7 +1429,7 @@ up_switch_context():
        * task is again ready to run and has execution priority.
        */
     }
-}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>18 Thread 1 isn’t started!</h1>
+}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>19 Thread 1 isn’t started!</h1>
 <p>pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93</p>
 <div class="example-wrap"><pre class="language-c"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
                    pthread_startroutine_t pthread_entry, pthread_addr_t arg)
@@ -1670,7 +1673,7 @@ up_switch_context():
     }
 #endif</code></pre></div>
 <p>How to set affinity?</p>
-<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>19 Multiple CPU</h1>
+<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>20 Multiple CPU</h1>
 <p>boot_hartid=2
 hart=0, cpu=1
 hart=1, cpu=2
@@ -1794,7 +1797,7 @@ VeCCP[UC0P]U 0]r isdcuvm_p_capsus_ebroto_t:i nfCPoU: 0C uStrraertnte d
 [CPU0] dump_task:       0     0     0   0 FIFO     Kthread -   Running            0000000000000000 0x8040b010      3056       712    23.2%    CPU0 IDLE
 [CPU0] dump_task:       1     0     1   0 FIFO     Kthread -   Running            0000000000000000 0x8040bc10      3056       528    17.2%    CPU1 IDLE
 [CPU0] dump_task:       2     0     2   0 FIFO     Kthread -   Running            0000000000000000 0x8040c810      3056      2824    92.4%!   CPU2 IDLE
-[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>20 Disable SMP</h1>
+[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>21 Disable SMP</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
 <p>Remove these from defconfig:</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
@@ -1805,7 +1808,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
 <p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>21 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>22 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1850,7 +1853,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>22 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>23 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
