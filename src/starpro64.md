@@ -264,7 +264,9 @@ critical temperature reached, shutting down
 reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 ```
 
-Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html). But don't power it with USB Port on StarPro64! (Pic above, boxed up with IKEA 365+)
+Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html), preferably something stronger. _(Pic above, boxed up with IKEA 365+)_
+
+But don't power it with the USB Port on StarPro64! Instead, connect it to our [__Smart Power Plug__](TODO).
 
 _Anything else we should worry about?_
 
@@ -463,6 +465,10 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 # Smart Power Plug
 
+_Powering StarPro64 on and off: Gets so tiresome ain't it?_
+
+Try a __Smart Power Plug__, integrated with our Build Script...
+
 ![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
 
 TODO
@@ -505,7 +511,7 @@ curl \
   http://localhost:8123/api/services/automation/trigger
 ```
 
-Power Jenga
+Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power Jenga like so...
 
 > ![TODO](https://lupyuen.org/images/starpro64-power3.jpg)
 
