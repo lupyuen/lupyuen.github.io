@@ -349,11 +349,30 @@ loadaddr=0x80200000</code></pre></div>
 </li>
 </ul>
 <p>Thanks U-Boot! You told us everything we need to Boot NuttX…</p>
-<h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>8 Boot NuttX over TFTP</h1>
+<blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-nuttx.png" alt="TODO" /></p>
-<p>https://lupyuen.github.io/articles/sg2000</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ net list
-eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
+</blockquote>
+<h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>8 Boot NuttX over TFTP</h1>
+<p><em>How to boot NuttX over TFTP?</em></p>
+<ol>
+<li>
+<p>Install our <strong>TFTP Server</strong>: Follow the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a></p>
+</li>
+<li>
+<p>Copy these files to our TFTP Server…</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>NuttX Image: Image-starpro64</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p><a href="TODO">(How to <strong>Build NuttX</strong> ourselves)</a></p>
+</li>
+<li>
+<p>Power up StarPro64 and press <strong>Ctrl-C</strong></p>
+</li>
+<li>
+<p>At the <strong>U-Boot Prompt</strong>: Enter these commands…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Check if the Network Adapter is alive
+## &quot;eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active&quot;
+net list
 
 ## Set the U-Boot TFTP Server
 ## TODO: Change to your TFTP Server
@@ -364,24 +383,30 @@ saveenv
 
 ## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
-## kernel_addr_r=0x80200000
+## kernel_addr_r=TODO
 dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
 
 ## Load the Device Tree from TFTP Server
-## fdt_addr_r=0x81200000
+## fdt_addr_r=TODO
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 
 ## Set the RAM Address of Device Tree
-## fdt_addr_r=0x81200000
+## fdt_addr_r=TODO
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
 fdt addr ${fdt_addr_r}
 
 ## Boot the NuttX Image with the Device Tree
-## kernel_addr_r=0x80200000
-## fdt_addr_r=0x81200000
+## kernel_addr_r=TODO
+## fdt_addr_r=TODO
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
 booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
+<p><a href="TODO"><em>(U-Boot dropping chars? Try <strong>iTerm &gt; Edit &gt; Paste Special &gt; Paste Slowly</strong>)</em></a></p>
+</li>
+<li>
+<p>NuttX boots OK on StarPro64 yay! (Pic above)</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div></li>
+</ol>
 <p><em>We type these commands EVERY TIME we boot?</em></p>
 <p>We can automate: Just do this once, and NuttX will <strong>Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
@@ -401,18 +426,11 @@ setenv bootcmd &quot;run bootcmd_tftp ; $bootcmd&quot;
 
 ## Save it for future reboots
 saveenv</code></pre></div>
-<p>Press Ctrl-C to stop</p>
-<p>(Dropping Chars? Try <strong>Edit &gt; Paste Special &gt; Paste Slowly</strong>)</p>
-<p>https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9</p>
-<div class="example-wrap"><pre class="language-text"><code>=&gt; booti ${kernel_addr_r} - ${fdt_addr_r}
-Moving Image from 0x84000000 to 0x80200000, end=80408000
-## Flattened Device Tree blob at 88000000
-   Booting using the fdt blob at 0x88000000
-Working FDT set to 88000000
-   Using Device Tree in place at 0000000088000000, end 0000000088008446
-Working FDT set to 88000000
-
-Starting kernel ...</code></pre></div><h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>9 Smart Power Plug</h1>
+<p><a href="TODO"><em>(U-Boot dropping chars? Try <strong>iTerm &gt; Edit &gt; Paste Special &gt; Paste Slowly</strong>)</em></a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
+<p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
+<p>TODO: Press Ctrl-C to stop</p>
+<h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>9 Smart Power Plug</h1>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
