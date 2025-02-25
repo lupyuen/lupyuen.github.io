@@ -357,44 +357,71 @@ A-ha! This says...
 
 Thanks U-Boot! You told us everything we need to Boot NuttX...
 
+> ![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
+
 # Boot NuttX over TFTP
 
-![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
+_How to boot NuttX over TFTP?_
 
-https://lupyuen.github.io/articles/sg2000
+1.  Install our __TFTP Server__: Follow the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server)
 
-```bash
-$ net list
-eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
+1.  Copy these files to our TFTP Server...
 
-## Set the U-Boot TFTP Server
-## TODO: Change to your TFTP Server
-setenv tftp_server 192.168.31.10
+    [__NuttX Image: Image-starpro64__](https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO)
 
-## Save the U-Boot Config for future reboots
-saveenv
+    [__Device Tree: jh7110-star64-pine64.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO)
 
-## Fetch the IP Address over DHCP
-## Load the NuttX Image from TFTP Server
-## kernel_addr_r=0x80200000
-dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
+    ```bash
+    TODO
+    ```
 
-## Load the Device Tree from TFTP Server
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+    [(How to __Build NuttX__ ourselves)](TODO)
 
-## Set the RAM Address of Device Tree
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-fdt addr ${fdt_addr_r}
+1.  Power up StarPro64 and press __Ctrl-C__
 
-## Boot the NuttX Image with the Device Tree
-## kernel_addr_r=0x80200000
-## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree, it's not needed by NuttX
-booti ${kernel_addr_r} - ${fdt_addr_r}
-```
+1.  At the __U-Boot Prompt__: Enter these commands...
+
+    ```bash
+    ## Check if the Network Adapter is alive
+    ## "eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active"
+    net list
+
+    ## Set the U-Boot TFTP Server
+    ## TODO: Change to your TFTP Server
+    setenv tftp_server 192.168.31.10
+
+    ## Save the U-Boot Config for future reboots
+    saveenv
+
+    ## Fetch the IP Address over DHCP
+    ## Load the NuttX Image from TFTP Server
+    ## kernel_addr_r=TODO
+    dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
+
+    ## Load the Device Tree from TFTP Server
+    ## fdt_addr_r=TODO
+    ## TODO: Fix the Device Tree, it's not needed by NuttX
+    tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+
+    ## Set the RAM Address of Device Tree
+    ## fdt_addr_r=TODO
+    ## TODO: Fix the Device Tree, it's not needed by NuttX
+    fdt addr ${fdt_addr_r}
+
+    ## Boot the NuttX Image with the Device Tree
+    ## kernel_addr_r=TODO
+    ## fdt_addr_r=TODO
+    ## TODO: Fix the Device Tree, it's not needed by NuttX
+    booti ${kernel_addr_r} - ${fdt_addr_r}
+    ```
+
+    [_(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)_](TODO)
+
+1.  NuttX boots OK on StarPro64 yay! (Pic above)
+
+    ```text
+    TODO
+    ```
 
 _We type these commands EVERY TIME we boot?_
 
@@ -420,23 +447,13 @@ setenv bootcmd "run bootcmd_tftp ; $bootcmd"
 saveenv
 ```
 
-Press Ctrl-C to stop
+[_(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)_](TODO)
 
-(Dropping Chars? Try __Edit > Paste Special > Paste Slowly__)
+TODO: [(What about __Static IP__?)](https://github.com/lupyuen/nuttx-sg2000/issues/1)
 
-https://gist.github.com/lupyuen/b03a16604f3e9465e2fd9d63d08734a9
+TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245)
 
-```text
-=> booti ${kernel_addr_r} - ${fdt_addr_r}
-Moving Image from 0x84000000 to 0x80200000, end=80408000
-## Flattened Device Tree blob at 88000000
-   Booting using the fdt blob at 0x88000000
-Working FDT set to 88000000
-   Using Device Tree in place at 0000000088000000, end 0000000088008446
-Working FDT set to 88000000
-
-Starting kernel ...
-```
+TODO: Press Ctrl-C to stop
 
 # Smart Power Plug
 
