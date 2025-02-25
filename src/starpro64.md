@@ -240,7 +240,7 @@ Based on the [__Official Doc__](TODO)...
 
 ![TODO](https://lupyuen.org/images/starpro64-fan.jpg)
 
-# StarPro64 is (Literally) Hot!
+# StarPro64 is Smokin' Hot!
 
 _Something is smelling like barbecue?_
 
