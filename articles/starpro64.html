@@ -102,7 +102,8 @@
 <p>Well documented</p>
 <p>NuttX: Power efficient AI</p>
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
-<p>TODO: Pic of UART</p>
+<p>TODO: NPU</p>
+<p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="TODO" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
 <p><em>What happens if we boot StarPro64? Fresh from the box?</em></p>
 <p>We monitor the <strong>UART0 Port</strong> for Debug Messages. Connect our <strong>USB UART Dongle</strong> (CH340 or CP2102) to these pins (pic above)…</p>
@@ -117,12 +118,49 @@
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
 <p>Power up the board with a <strong>Power Adapter</strong>. <a href="TODO">(Same one as <strong>Star64 JH7110</strong>)</a></p>
 <p>We’ll see <a href="TODO"><strong>OpenSBI</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.5
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name             : ESWIN EIC7700 EVB
+Platform Features         : medeleg
+Platform HART Count       : 4
+Platform Console Device   : uart8250
+Firmware Base             : 0x80000000
+
+Domain0 Boot HART         : 2
+Domain0 HARTs             : 0*,1*,2*,3*
+Domain0 Next Address      : 0x0000000080200000
+
+Boot HART ID              : 2
+Boot HART Base ISA        : rv64imafdchx
+Boot HART ISA Extensions  : sscofpmf,zihpm,sdtrig
+Boot HART MIDELEG         : 0x0000000000002666
+Boot HART MEDELEG         : 0x0000000000f0b509</code></pre></div>
 <p>Then <a href="TODO"><strong>U-Boot Bootloader</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2024.01-gaa36f0b4 (Jan 23 2025 - 02:49:59 +0000)
+
+CPU:     rv64imafdc_zba_zbb
+Model:   ESWIN EIC7700 EVB
+DRAM:    32 GiB (effective 16 GiB)
+llCore:  143 devices, 31 uclasses, devicetree: separate
+Warning: Device tree includes old &#39;u-boot,dm-&#39; tags: please fix by 2023.07!
+MMC:    sdhci@50450000: 0, sd@50460000: 1
+Loading Environment from SPIFlash...
+SF: Detected w25q128fw with page size 256 Bytes, erase size 4 KiB, total 16 MiB
+*** Warning - bad CRC, using default environment
+No SATA device found!
+Hit any key to stop autoboot:  0
+=&gt;</code></pre></div>
 <p>And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let’s init our eMMC…</p>
-<p>(<strong>HDMI Output</strong> will show U-Boot, but not OpenSBI)</p>
-<p>TODO: Pic of HDMI Output</p>
+<p><a href="https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7">(See the <strong>Boot Log</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/starpro64-hdmi.jpg" alt="TODO" /></p>
+<p><em>HDMI Output will show U-Boot, but not OpenSBI</em></p>
 <h1 id="download-the-linux-image"><a class="doc-anchor" href="#download-the-linux-image">§</a>3 Download the Linux Image</h1>
 <p><em>Is there a Linux Image for StarPro64?</em></p>
 <p>The fine folks at <a href="TODO"><strong>RockOS</strong></a> are busy preparing the <strong>Linux Image</strong> for StarPro64. Thanks to <a href="https://nightcord.de/@icenowy/114027871300585376"><strong>@icenowy</strong></a>, we have a <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/"><strong>Preview Version</strong></a> of the Linux Image…</p>
@@ -161,8 +199,8 @@ $ ls -lh *.bin *.ext4
 7.0G  root.ext4
 
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
-<p>(We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a> because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on StarPro64)</p>
-<p>TODO: Pic of eMMC</p>
+<p>(We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on StarPro64)</p>
+<p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="TODO" /></p>
 <p><em>How to load them into eMMC?</em></p>
 <p>Based on the <a href="TODO"><strong>Official Doc</strong></a>…</p>
 <ol>
@@ -225,7 +263,7 @@ reboot:
 <p><em>Anything else we should worry about?</em></p>
 <p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
 <p>Hence the <strong>Headless Ironman</strong>: USB Drive on StarPro64…</p>
-<p>TODO: Headless Ironman</p>
+<p><img src="https://lupyuen.org/images/starpro64-ironman.jpg" alt="TODO" /></p>
 <h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>5 Boot the Linux Image</h1>
 <p><em>Earlier we flashed Linux to eMMC. Can we boot Linux now?</em></p>
 <p>Yep just power up StarPro64 and emmC will <strong>Boot Linux</strong>…</p>
@@ -623,7 +661,10 @@ done</code></pre></div>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
 <p>CONFIG_16550_UART0_IRQ=125</p>
 <p>100 + 25</p>
-<h1 id="power-plug"><a class="doc-anchor" href="#power-plug">§</a>15 Power Plug</h1><div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+<h1 id="power-plug"><a class="doc-anchor" href="#power-plug">§</a>15 Power Plug</h1>
+<p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## token=xxxx
 set +x  ##  Disable echo
 . $HOME/home-assistant-token.sh
@@ -648,6 +689,7 @@ curl \
     -d &#39;{&quot;entity_id&quot;: &quot;automation.pi_power_on&quot;}&#39; \
     http://localhost:8123/api/services/automation/trigger
 set -x  ##  Enable echo</code></pre></div><h1 id="boot-nuttx-over-tftp-1"><a class="doc-anchor" href="#boot-nuttx-over-tftp-1">§</a>16 Boot NuttX over TFTP</h1>
+<p><img src="https://lupyuen.org/images/starpro64-nuttx.png" alt="TODO" /></p>
 <p>https://lupyuen.github.io/articles/sg2000</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ net list
 eth0 : ethernet@50400000 f6:70:f9:6e:73:ae active
