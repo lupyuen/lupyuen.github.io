@@ -26,7 +26,9 @@ NuttX: Power efficient AI
 
 # ESWIN EIC7700X RISC-V SoC
 
-TODO: Pic of UART
+TODO: NPU
+
+![TODO](https://lupyuen.org/images/starpro64-uart.jpg)
 
 # Boot Without MicroSD
 
@@ -53,20 +55,58 @@ Power up the board with a __Power Adapter__. [(Same one as __Star64 JH7110__)](T
 We'll see [__OpenSBI__](TODO)...
 
 ```text
-TODO
+OpenSBI v1.5
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name             : ESWIN EIC7700 EVB
+Platform Features         : medeleg
+Platform HART Count       : 4
+Platform Console Device   : uart8250
+Firmware Base             : 0x80000000
+
+Domain0 Boot HART         : 2
+Domain0 HARTs             : 0*,1*,2*,3*
+Domain0 Next Address      : 0x0000000080200000
+
+Boot HART ID              : 2
+Boot HART Base ISA        : rv64imafdchx
+Boot HART ISA Extensions  : sscofpmf,zihpm,sdtrig
+Boot HART MIDELEG         : 0x0000000000002666
+Boot HART MEDELEG         : 0x0000000000f0b509
 ```
 
 Then [__U-Boot Bootloader__](TODO)...
 
 ```text
-TODO
+U-Boot 2024.01-gaa36f0b4 (Jan 23 2025 - 02:49:59 +0000)
+
+CPU:     rv64imafdc_zba_zbb
+Model:   ESWIN EIC7700 EVB
+DRAM:    32 GiB (effective 16 GiB)
+llCore:  143 devices, 31 uclasses, devicetree: separate
+Warning: Device tree includes old 'u-boot,dm-' tags: please fix by 2023.07!
+MMC:    sdhci@50450000: 0, sd@50460000: 1
+Loading Environment from SPIFlash...
+SF: Detected w25q128fw with page size 256 Bytes, erase size 4 KiB, total 16 MiB
+*** Warning - bad CRC, using default environment
+No SATA device found!
+Hit any key to stop autoboot:  0
+=>
 ```
 
 And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let's init our eMMC...
 
-(__HDMI Output__ will show U-Boot, but not OpenSBI)
+[(See the __Boot Log__)](https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7)
 
-TODO: Pic of HDMI Output
+![TODO](https://lupyuen.org/images/starpro64-hdmi.jpg)
+
+_HDMI Output will show U-Boot, but not OpenSBI_
 
 # Download the Linux Image
 
@@ -111,9 +151,9 @@ $ ls -lh *.bin *.ext4
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
 ```
 
-(We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst) because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64)
+(We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on StarPro64)
 
-TODO: Pic of eMMC
+![TODO](https://lupyuen.org/images/starpro64-emmc.jpg)
 
 _How to load them into eMMC?_
 
@@ -200,7 +240,7 @@ The [__MicroSD Interface__](TODO) wasn't working well on our StarPro64. The Micr
 
 Hence the __Headless Ironman__: USB Drive on StarPro64...
 
-TODO: Headless Ironman
+![TODO](https://lupyuen.org/images/starpro64-ironman.jpg)
 
 # Boot the Linux Image
 
@@ -671,6 +711,10 @@ CONFIG_16550_UART0_IRQ=125
 
 # Power Plug
 
+![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
+
+![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
+
 ```bash
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## token=xxxx
@@ -701,8 +745,9 @@ set -x  ##  Enable echo
 
 # Boot NuttX over TFTP
 
-https://lupyuen.github.io/articles/sg2000
+![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
 
+https://lupyuen.github.io/articles/sg2000
 
 ```bash
 $ net list
