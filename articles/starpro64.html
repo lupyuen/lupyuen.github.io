@@ -566,10 +566,15 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 <h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>11.1 RISC-V Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58"><em>arch/risc-v/src/sg2000/sg2000_head.S</em></a></p>
 <p>This is the <strong>RISC-V Boot Code</strong> that runs first when U-Boot Bootloader starts NuttX.</p>
-<p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>real_start:
+<p>In the <strong>Linux Kernel Header</strong>: We modified the Kernel Size based on U-Boot <code>fdt_addr_r - kernel_addr_r</code>.</p>
+<p>This ensures that the <strong>Entire NuttX Image</strong> (including Initial RAM Disk) will be copied correctly from <code>kernel_addr_r</code> <em>(0x8400_0000)</em> to <code>loadaddr</code> <em>(0x8020_0000)</em></p>
+<div class="example-wrap"><pre class="language-c"><code>## Linux Kernel Header
+__start:
+  ...
+  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */</code></pre></div>
+<p>We inserted this code to print “<code>123</code>” to UART0 at startup…</p>
+<div class="example-wrap"><pre class="language-c"><code>## NuttX Boots Here
+real_start:
 
   /* Print `123` to UART */
   /* Load UART Base Address to Register t0 */
@@ -592,7 +597,7 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* If a0 (hartid) &gt;= t1 (the number of CPUs), stop here */
 
-  /* TODO: Enable this for SMP
+  /* TODO SMP: Enable this for SMP
   blt  a0, t1, 3f
   csrw CSR_SIE, zero
   wfi
@@ -603,9 +608,11 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
   li a2, 0
   riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a2
 
-  /* TODO: Enable this for SMP
+  /* TODO SMP: Enable this for SMP
   riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a0
-  */</code></pre></div><hr>
+  */</code></pre></div>
+<p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
+<hr>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>11.2 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7"><em>arch/risc-v/src/sg2000/sg2000_start.c</em></a></p>
 <p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
