@@ -4,11 +4,9 @@
 
 ![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
-TODO
-
 [(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
 
-StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.
+[__StarPro64 EIC7700X__](TODO) is the (literally) _Hot_ New RISC-V SBC by PINE64.
 
 Well documented
 
@@ -722,7 +720,7 @@ That's why we [__Renumber the CPUs__](TODO): Boot Hart is always __CPU 0__. Othe
 
 _Can't we use One Hart and ignore the Other Harts?_
 
-We tried [__Enabling One Hart Only (CPU 0)__](https://github.com/lupyuen2/wip-nuttx/commits/starpro64c). But OSTest [__hangs at sem_test__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)..
+OK Mister Cold-Harted... We tried [__Enabling One Hart Only (CPU 0)__](https://github.com/lupyuen2/wip-nuttx/commits/starpro64c). But OSTest [__hangs at sem_test__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)..
 
 ```bash
 ## OSTest hangs for StarPro64 when we enable One Hart only...
