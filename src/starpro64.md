@@ -489,7 +489,7 @@ Hear me out...
 
 1.  Teraflops. Not our grandparents' TensorFlow Lite.
 
-1.  Qwen LLM is already running on EIC7700X
+1.  Qwen LLM is already running on EIC7700X. Probably Llama and DeekSeek next.
 
 1.  Why Offline Disconnected LLM? Home Security
 
