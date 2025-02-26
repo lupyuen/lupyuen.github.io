@@ -507,7 +507,8 @@ ollama</p>
 <p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
-<p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script. In our <a href="TODO"><strong>Demo Video</strong></a>: Skip to <a href="TODO"><strong>??:??</strong></a> and watch our Build Script powering up StarPro64.</p>
+<p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script. In our <a href="TODO"><strong>Demo Video</strong></a>: Skip to <a href="TODO"><strong>??:??</strong></a> and watch our Build Script powering up StarPro64…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p>How it works? Here’s our <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build NuttX Image
 TODO
@@ -546,6 +547,7 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Build Log</strong></a></p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
@@ -763,7 +765,7 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 ## In U-Boot: Boot NuttX over TFTP
 ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="TODO">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Build Log</strong></a></p>
 <p><a href="TODO">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 <li>
