@@ -535,17 +535,31 @@ curl \
   mv   sp, t0
 .endm</code></pre></div>
 <p><em>How to fix this?</em></p>
-<p>Our workaround is to <strong>Always Reboot NuttX on Hart 0</strong>.</p>
-<p>TODO</p>
+<p>Our workaround is to <a href="TODO"><strong>Always Reboot NuttX on Hart 0</strong></a>…</p>
+<ul>
+<li>
+<p><strong>If Boot Hart is Not 0:</strong></p>
+<p>Restart NuttX with Hart 0</p>
+</li>
+<li>
+<p><strong>If Boot Hart is 0:</strong></p>
+<p>Continue Starting NuttX</p>
+</li>
+</ul>
 <p><em>Harts vs CPUs: What’s the difference?</em></p>
 <p>NuttX insists on booting with CPU 0. Otherwise it fails with this <a href="https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef"><strong>nx_start Error</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>[CPU2] dump_assert_info:
 Assertion failed up_cpu_index() == 0: 
 at file: init/nx_start.c:745 task(CPU2):
 CPU2 IDLE process: Kernel 0x802019a6</code></pre></div>
-<p>That’s why we <strong>Renumber the CPUs</strong>: Boot Hart is always <strong>CPU 0</strong>. Other Harts become <strong>CPUs 1 to 3</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
-<p><em>Can’t we start One Hart and ignore the Other Harts?</em></p>
+<p>That’s why we <a href="TODO"><strong>Renumber the CPUs</strong></a>: Boot Hart is always <strong>CPU 0</strong>. Other Harts become <strong>CPUs 1 to 3</strong>. For Example: If <em>boot_hartid=2</em> then…</p>
+<ul>
+<li><em>hart=0, cpu=1</em></li>
+<li><em>hart=1, cpu=2</em></li>
+<li><em>hart=2, cpu=0</em></li>
+<li><em>hart=3, cpu=3</em></li>
+</ul>
+<p><em>Can’t we use One Hart and ignore the Other Harts?</em></p>
 <p>We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>..</p>
 <div class="example-wrap"><pre class="language-bash"><code>## OSTest hangs for StarPro64 when we enable One Hart only...
 user_main: semaphore test
@@ -562,7 +576,7 @@ waiter_func: Thread 2 Started
 waiter_func: Thread 2 initial semaphore value = 0
 waiter_func: Thread 2 waiting on semaphore
 ## Hangs here</code></pre></div>
-<p>Compare the above with <a href="https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23"><strong>SG2000 sem_test</strong></a></p>
+<p>Compare the above with <a href="https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23"><strong>SG2000 sem_test</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## OSTest runs OK for SG2000...
 user_main: semaphore test
 sem_test: Initializing semaphore to 0
@@ -740,10 +754,12 @@ real_start:
 <p>NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow <a href="TODO"><strong>Booting from Any Hart</strong></a>…</p>
 <ul>
 <li>
-<p><strong>If Boot Hart is Not 0:</strong> Restart NuttX with Hart 0</p>
+<p><strong>If Boot Hart is Not 0:</strong></p>
+<p>Restart NuttX with Hart 0</p>
 </li>
 <li>
-<p><strong>If Boot Hart is 0:</strong> Continue Starting NuttX</p>
+<p><strong>If Boot Hart is 0:</strong></p>
+<p>Continue Starting NuttX</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-c"><code>// We remember the Boot Hart ID (0 to 3)
@@ -780,6 +796,7 @@ void sg2000_start(int mhartid) {
 
   // If Boot Hart is not 0: Restart NuttX with Hart 0
   if (mhartid != 0) {
+
     //  Clear the BSS and Restart with Hart 0
     //  __start points to our RISC-V Assembly Start Code
     sg2000_clear_bss();
@@ -807,7 +824,7 @@ void sg2000_start(int mhartid) {
     riscv_percpu_add_hart(mhartid);
   }
   // Omitted: Call sg2000_start_s</code></pre></div>
-<p>The code below will be used (in future) to support [<strong>Multiple Harts</strong>]…</p>
+<p>The code below will be used (in future) to support <a href="TODO"><strong>Multiple Harts</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Boot NuttX on the Hart
 void sg2000_start_s(int mhartid) {
 
@@ -815,7 +832,9 @@ void sg2000_start_s(int mhartid) {
   // If this is not the Boot Hart: Jump to cpux
   riscv_fpuconfig();
   if (mhartid != boot_hartid) { goto cpux; }
+
   // Omitted: Boot Hart starts here and calls nx_start()
+  ...
 
 cpux:
   // TODO SMP: Non-Boot Hart starts here.
