@@ -254,7 +254,7 @@ reboot: HARDWARE PROTECTION shutdown (Temperature too high)
 
 Install a [__USB Fan__](https://www.lazada.sg/products/i2932991583-s20178422377.html), preferably something stronger. _(Pic above, boxed up with IKEA 365+)_
 
-But don't power it with the USB Port on StarPro64! Instead, connect it to our [__Smart Power Plug__](TODO).
+But don't power it with the USB Port on StarPro64! Instead, connect it to our [__Smart Power Plug__](https://lupyuen.github.io/articles/starpro64#smart-power-plug).
 
 _Anything else we should worry about?_
 
@@ -303,7 +303,7 @@ mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
 
 </span>
 
-Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of RockOS won't boot correctly on our Prototype StarPro64 (pic below). Hopefully we'll sort this out real soon and do some [__Serious NPU LLM__](TODO)!
+Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of RockOS won't boot correctly on our Prototype StarPro64 (pic below). Hopefully we'll sort this out real soon and do some [__Serious NPU LLM__](https://lupyuen.github.io/articles/starpro64#llm-on-npu-on-nuttx)!
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
 
@@ -364,11 +364,11 @@ _How to boot NuttX over TFTP?_
     ```bash
     ## Copy NuttX Image and Device Tree to TFTP Server
     scp Image tftpserver:/tftpboot/Image-starpro64
-    ## TODO
-    ssh tftpserver ls -l /tftpboot/Image-starpro64
+    scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+    ssh tftpserver ls -l /tftpboot/
     ```
 
-    [(How to __Build NuttX__ ourselves)](TODO)
+    [(How to __Build NuttX__ ourselves)](https://lupyuen.github.io/articles/starpro64#appendix-build-nuttx-for-starpro64)
 
     (NuttX won't read the __Device Tree__)
 
@@ -390,29 +390,29 @@ _How to boot NuttX over TFTP?_
 
     ## Fetch the IP Address over DHCP
     ## Load the NuttX Image from TFTP Server
-    ## kernel_addr_r=TODO
+    ## kernel_addr_r=0x84000000
     dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
 
     ## Load the Device Tree from TFTP Server
-    ## fdt_addr_r=TODO
+    ## fdt_addr_r=0x88000000
     ## TODO: Fix the Device Tree, it's not needed by NuttX
     tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 
     ## Set the RAM Address of Device Tree
-    ## fdt_addr_r=TODO
+    ## fdt_addr_r=0x88000000
     ## TODO: Fix the Device Tree, it's not needed by NuttX
     fdt addr ${fdt_addr_r}
 
     ## Boot the NuttX Image with the Device Tree
-    ## kernel_addr_r=TODO
-    ## fdt_addr_r=TODO
+    ## kernel_addr_r=0x84000000
+    ## fdt_addr_r=0x88000000
     ## TODO: Fix the Device Tree, it's not needed by NuttX
     booti ${kernel_addr_r} - ${fdt_addr_r}
     ```
 
     <span style="font-size:80%">
 
-    [(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](TODO)
+    [(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](https://lupyuen.github.io/articles/starpro64#paste-slowly)
 
     </span>
 
@@ -439,9 +439,9 @@ _How to boot NuttX over TFTP?_
 
 1.  How did we port NuttX to StarPro64? Check the details here...
 
-    [__"TODO"__](TODO)
+    [__"Port NuttX to StarPro64"__](https://lupyuen.github.io/articles/starpro64#appendix-port-nuttx-to-starpro64)
 
-![TODO](https://lupyuen.org/images/starpro64-ostest.png)
+![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
 
 _We type these commands EVERY TIME we boot?_
 
@@ -469,7 +469,7 @@ saveenv
 
 <span style="font-size:80%">
 
-[(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](TODO)
+[(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](https://lupyuen.github.io/articles/starpro64#paste-slowly)
 
 </span>
 
@@ -575,7 +575,7 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
-Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](TODO): Skip to [__??:??__](TODO) and watch our Build Script powering up StarPro64...
+Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our Build Script power up StarPro64...
 
 ```bash
 TODO
@@ -626,11 +626,11 @@ curl \
 
 [(See the __Build Log__](TODO)
 
-![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
+![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
 
 TODO
 
-![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
+![Smart Power Plug in Home Assistant](https://lupyuen.org/images/starpro64-power2.jpg)
 
 
 
@@ -664,9 +664,9 @@ read
 power off
 
 
-Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power Jenga like so...
+Remember the [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
 
-> ![TODO](https://lupyuen.org/images/starpro64-power3.jpg)
+> ![USB Fan goes into our Smart Power Plug as a Power Jenga](https://lupyuen.org/images/starpro64-power3.jpg)
 
 # What's Next
 
@@ -694,7 +694,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/starpro64.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md)
 
-![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
+![NuttX boots only on Hart 0](https://lupyuen.org/images/starpro64-hartid0.png)
 
 # Appendix: Multiple Harts on StarPro64
 
@@ -733,7 +733,7 @@ This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp
 
 _How to fix this?_
 
-Our workaround is to [__Always Reboot NuttX on Hart 0__](TODO)...
+Our workaround is to [__Always Reboot NuttX on Hart 0__](https://lupyuen.github.io/articles/starpro64#nuttx-start-code)...
 
 - __If Boot Hart is Not 0:__
 
@@ -754,7 +754,7 @@ at file: init/nx_start.c:745 task(CPU2):
 CPU2 IDLE process: Kernel 0x802019a6
 ```
 
-That's why we [__Renumber the CPUs__](TODO): Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__. For Example: If _boot_hartid=2_ then...
+That's why we [__Renumber the CPUs__](https://lupyuen.github.io/articles/starpro64#nuttx-start-code): Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__. For Example: If _boot_hartid=2_ then...
 - _hart=0, cpu=1_
 - _hart=1, cpu=2_
 - _hart=2, cpu=0_
@@ -908,15 +908,15 @@ If we prefer to build NuttX ourselves...
 
 1.  Then follow these steps to boot NuttX on StarPro64...
 
-    [__"Boot NuttX over TFTP"__](TODO)
+    [__"Boot NuttX over TFTP"__](https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp)
 
 1.  Powering StarPro64 on and off can get tiresome. Try a Smart Power Plug, integrated with our Build Script...
 
-    [__"TODO"__](TODO)
+    [__"Smart Power Plug"__](https://lupyuen.github.io/articles/starpro64#smart-power-plug)
 
 1.  How did we port NuttX to StarPro64? Check the details here...
 
-    [__"TODO"__](TODO)
+    [__"Port NuttX to StarPro64"__](https://lupyuen.github.io/articles/starpro64#appendix-port-nuttx-to-starpro64)
 
 ![Virtual Memory for NuttX Apps](https://lupyuen.github.io/images/mmu-l3user.jpg)
 
@@ -987,7 +987,7 @@ real_start:
   sb  t1, 0(t0)
 ```
 
-The Original Code assumes that we always __Boot at Hart 0__. But EIC7700X will [__Boot From Any Hart__](TODO). (0 to 3)
+The Original Code assumes that we always __Boot at Hart 0__. But EIC7700X will [__Boot From Any Hart__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). (0 to 3)
 
 This modification allows NuttX to Boot from any Hart...
 
@@ -1011,13 +1011,13 @@ This modification allows NuttX to Boot from any Hart...
 
 Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 ## NuttX Start Code
 
 [_arch/risc-v/src/sg2000/sg2000_start.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
-NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow [__Booting from Any Hart__](TODO)...
+NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow [__Booting from Any Hart__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)...
 
 - __If Boot Hart is Not 0:__
 
@@ -1092,7 +1092,7 @@ void sg2000_start(int mhartid) {
   // Omitted: Call sg2000_start_s
 ```
 
-The code below will be used (in future) to support [__Multiple Harts__](TODO)...
+The code below will be used (in future) to support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)...
 
 ```c
 // Boot NuttX on the Hart
@@ -1173,7 +1173,7 @@ typedef struct sbiret_s sbiret_t;
 #define SBI_EXT_HSM_HART_START (0x0)
 ```
 
-[__For Multiple Harts__](TODO) in future: We shall start the other Non-Boot Harts by calling OpenSBI...
+[__For Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64) in future: We shall start the other Non-Boot Harts by calling OpenSBI...
 
 ```c
 // TODO SMP: Start the other Non-Boot Harts by calling OpenSBI
@@ -1185,7 +1185,7 @@ static void sg2000_boot_secondary(void) {
 }
 ```
 
-[__For Multiple Harts__](TODO) in future: NuttX insists on [__Booting with CPU 0 Only__](TODO). Thus we set __Boot Hart as CPU 0__, and we Renumber the Other Harts...
+[__For Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64) in future: NuttX insists on [__Booting with CPU 0 Only__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). Thus we set __Boot Hart as CPU 0__, and we Renumber the Other Harts...
 
 ```c
 // TODO SMP: Convert Hart ID to CPU ID.
@@ -1217,7 +1217,7 @@ __For Example:__ If _boot_hartid=2_ then...
 - _hart=2, cpu=0_
 - _hart=3, cpu=3_
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 ## PLIC Interrupt Controller
 
@@ -1318,13 +1318,13 @@ Which comes from this...
 </div>
 </p>
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
-In future we shall support [__Multiple Harts__](TODO). That's why we extended this code to __Initialize the Interrupts__ for Harts 0 to 3...
+In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). That's why we extended this code to __Initialize the Interrupts__ for Harts 0 to 3...
 
 ```c
 // Initialize the Interrupts
@@ -1382,13 +1382,13 @@ void up_enable_irq(int irq) { ...
   }
 ```
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_irq_dispatch.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
-In future we shall support [__Multiple Harts__](TODO). That's why we extended this code to __Dispatch the Interrupt__ for Boot Hart 0 to 3...
+In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). That's why we extended this code to __Dispatch the Interrupt__ for Boot Hart 0 to 3...
 
 ```c
 // Dispatch the Interrupt
@@ -1404,7 +1404,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   putreg32(irq - RISCV_IRQ_EXT, claim);
 ```
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 ## Memory Map
 
@@ -1436,7 +1436,7 @@ The rest of the Memory Map is identical to SG2000. We removed all __T-Head MMU E
 
 [_arch/risc-v/Kconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
-In future we shall support [__Multiple Harts__](TODO). This __Arch Config__ will enable the __Hart-To-CPU Mapping__ we saw earlier: _riscv_hartid_to_cpuid, riscv_cpuid_to_hartid_
+In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). This __Arch Config__ will enable the __Hart-To-CPU Mapping__ we saw earlier: _riscv_hartid_to_cpuid, riscv_cpuid_to_hartid_
 
 ```bash
 config ARCH_CHIP_SG2000
@@ -1445,7 +1445,7 @@ config ARCH_CHIP_SG2000
 
 Also we removed __ARCH_MMU_EXT_THEAD__. (T-Head MMU Extensions)
 
-[(__Multiple Harts__ explained)](TODO)
+[(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 <hr>
 
@@ -1560,4 +1560,4 @@ __But Before That:__ Click __Settings > Advanced > Pasteboard__
 
 And that's how we ported NuttX to StarPro64! [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
 
-![TODO](https://lupyuen.org/images/starpro64-ostest.png)
+![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
