@@ -477,7 +477,7 @@ TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issu
 
 TODO: Press Ctrl-C to stop
 
-TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
+TODO: Pic of touchscreen
 
 # LLM on NPU on NuttX?
 
@@ -544,6 +544,8 @@ ghidra
 npu driver
 ollama
 
+TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
+
 # Smart Power Plug
 
 _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
@@ -557,11 +559,14 @@ TODO
 ![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
 
 ```bash
+## Omitted: Build NuttX Image
+TODO
+
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
-## Power Off the SBC"
+## Power Off the SBC
 curl \
   -X POST \
   -H "Authorization: Bearer $token" \
@@ -577,11 +582,11 @@ curl \
   -d '{"entity_id": "automation.starpro64_on"}' \
   http://localhost:8123/api/services/automation/trigger
 
-## Wait for SBC Testing to complete
+## Wait Manually for SBC Testing to complete
 echo Press Enter to Power Off
 read
 
-## Power Off the SBC"
+## Power Off the SBC
 curl \
   -X POST \
   -H "Authorization: Bearer $token" \
@@ -593,10 +598,12 @@ curl \
 [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
 
-```text
+```bash
 ## First Time Only
 echo "defscrollback 1000000" >> ~/.screenrc
 
+## On Power Off: USB Serial might disconnect
+## So we reconnect forever
 set -x
 for (( ; ; )) do 
   screen /dev/ttyUSB* 115200
@@ -623,8 +630,6 @@ Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power J
 
 > ![TODO](https://lupyuen.org/images/starpro64-power3.jpg)
 
-![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
-
 # What's Next
 
 TODO
@@ -648,6 +653,8 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/starpro64.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md)
+
+![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
 
 # Appendix: Multiple Harts on StarPro64
 
