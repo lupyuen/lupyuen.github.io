@@ -304,7 +304,7 @@ mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000
 
 </span>
 
-Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of RockOS won't boot correctly on our Prototype StarPro64. Hopefully we'll sort this out real soon! (Pic below)
+Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/) of RockOS won't boot correctly on our Prototype StarPro64 (pic below). Hopefully we'll sort this out real soon and do some [__Serious NPU LLM__](TODO)!
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
 
