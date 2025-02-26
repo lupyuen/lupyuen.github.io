@@ -1095,7 +1095,9 @@ sem_test: Starting poster thread 3
     ptcb-&gt;cmn.affinity = attr-&gt;affinity;
   }
 #endif</code></pre></div>
-<p>But the New Thread defaults to <strong>No Affinity</strong>, it doesn’t have <strong>Affinity for CPU 0</strong>. So it gets allocated to <strong>Another CPU</strong>. Which never runs! Hence <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
+<p>But the New Thread defaults to <strong>No CPU Affinity</strong>, it <strong>Lacks Affinity for CPU 0</strong>.</p>
+<p>So it gets allocated to <strong>Another CPU</strong>. Which never runs!</p>
+<p>Hence <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
 <p><a href="https://youtu.be/70DQ4YlQMMw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong></a></p>
 <p><em>How to enable Multple Harts?</em></p>
