@@ -83,7 +83,8 @@
 <li><a href="#nuttx-start-code" title="NuttX Start Code">14.2 NuttX Start Code</a><ul></ul></li>
 <li><a href="#plic-interrupt-controller" title="PLIC Interrupt Controller">14.3 PLIC Interrupt Controller</a><ul></ul></li>
 <li><a href="#memory-map" title="Memory Map">14.4 Memory Map</a><ul></ul></li>
-<li><a href="#nuttx-config" title="NuttX Config">14.5 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#nuttx-config" title="NuttX Config">14.5 NuttX Config</a><ul></ul></li>
+<li><a href="#paste-slowly" title="Paste Slowly">14.6 Paste Slowly</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -93,10 +94,6 @@
 <p><em>StarPro64 is just an upgraded Star64?</em></p>
 <p>Nope it’s a totally different beast!</p>
 <p>Docs are so much better! (??? pages)</p>
-<p>iTerm: Edit &gt; Paste Special &gt; Paste Slowly</p>
-<p>Settings &gt; Advanced &gt; Pasteboard</p>
-<p>Delay in seconds between chunks when Pasting Slowly: 1 second</p>
-<p>Number of bytes to paste in each chunk when Pasting Slowly: 16</p>
 <p><em>(Thanks to PINE64 for providing the Prototype StarPro64)</em></p>
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
 <p>TODO: NPU</p>
@@ -447,22 +444,35 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
 <p>TODO: Press Ctrl-C to stop</p>
 <p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
-<h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1>
-<p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
-<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
-<p>https://github.com/rockos-riscv</p>
-<p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
-<p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
-<p>#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)</p>
-<p>https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual</p>
-<p>#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)</p>
-<p>Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
-<p>#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)</p>
-<p>https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu</p>
-<p><strong>llama.cpp</strong> <em>(C++)</em></p>
-<p>https://github.com/ggml-org/llama.cpp</p>
-<p>or <strong>ollama</strong> <em>(GoLang)</em></p>
-<p>https://github.com/ollama/ollama/blob/main/model/models/llama/model.go</p>
+<h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
+
+https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
+
+https://github.com/rockos-riscv
+
+🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)
+
+Source: https://pine64.org/2024/10/02/september_2024/#starpro64
+
+#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)
+
+https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual
+
+#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)
+
+Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
+
+#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)
+
+https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
+
+__llama.cpp__ _(C++)_
+
+https://github.com/ggml-org/llama.cpp
+
+or __ollama__ _(GoLang)_
+
+https://github.com/ollama/ollama/blob/main/model/models/llama/model.go</code></pre></div>
 <p><em>Qwen is an odd name innit?</em></p>
 <p>Qwen will sound confusing to Bilingual Folks…</p>
 <ul>
@@ -1233,7 +1243,21 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe"><em>arch/risc-v/src/sg2000/sg2000_timerisr.c</em></a></p>
 <p>Finally we changed the <strong>RISC-V Timer Frequency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Previously for SG2000: 25000000ul
-#define MTIMER_FREQ 1000000ul</code></pre></div>
+#define MTIMER_FREQ 1000000ul</code></pre></div><h2 id="paste-slowly"><a class="doc-anchor" href="#paste-slowly">§</a>14.6 Paste Slowly</h2>
+<p><em>U-Boot Bootloader is dropping chars when we paste long lines. How now brown cow?</em></p>
+<p><strong>In iTerm</strong>: Try <strong>Edit &gt; Paste Special &gt; Paste Slowly</strong></p>
+<p><strong>But Before That:</strong> Click <strong>Settings &gt; Advanced &gt; Pasteboard</strong></p>
+<ul>
+<li>
+<p><em>“Delay in seconds between chunks when Pasting Slowly”</em></p>
+<p>Set to <strong>1 second</strong></p>
+</li>
+<li>
+<p><em>“Number of bytes to paste in each chunk when Pasting Slowly”</em></p>
+<p>Set to <strong>16 bytes</strong></p>
+</li>
+</ul>
+<hr>
 <p>And that’s how we ported NuttX to StarPro64! <a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
 
