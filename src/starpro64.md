@@ -658,7 +658,7 @@ __PLIC Base Address__ is specified here...
 
 [arch/risc-v/src/sg2000/hardware/sg2000_plic.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
-[(__Multiple Harts__ explained here)](TODO)
+[(__Multiple Harts__ explained)](TODO)
 
 ```c
 /* Interrupt Priority */
@@ -681,13 +681,36 @@ __PLIC Base Address__ is specified here...
 #define SG2000_PLIC_CLAIM_HART (0x2000)
 ```
 
-TODO
+__Interrupt Enable: PLIC_ENABLE_HART__ is 0x100 because we skip 0x100 bytes per Hart...
+
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 240 |
+|:--------------------------------|:---------|
+| _(Skip the M-Modes)_
+| 0x0C00_2080 | Start Hart 0 S-Mode interrupt enables
+| 0x0C00_2180 | Start Hart 1 S-Mode interrupt enables
+| 0x0C00_2280 | Start Hart 2 S-Mode interrupt enables
+
+__Priority Threshold: PLIC_THRESHOLD_HART__ is 0x2000 because we skip 0x2000 bytes per Hart
+
+__Claim / Complete: PLIC_CLAIM_HART__ is 0x2000 because we skip 0x2000 per Hart
+
+Which comes from this...
+
+| [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 241 |
+|:--------------------------------|:---------|
+| _(Skip the M-Modes)_
+| 0x0C20_1000 | Hart 0 S-Mode Priority Threshold
+| 0x0C20_1004 | Hart 0 S-Mode Claim / Complete
+| 0x0C20_3000 | Hart 1 S-Mode Priority Threshold
+| 0x0C20_3004 | Hart 1 S-Mode Claim / Complete
+| 0x0C20_5000 | Hart 2 S-Mode Priority Threshold
+| 0x0C20_5004 | Hart 2 S-Mode Claim / Complete
 
 <hr>
 
 [arch/risc-v/src/sg2000/sg2000_head.S](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
 
-[(__Multiple Harts__ explained here)](TODO)
+[(__Multiple Harts__ explained)](TODO)
 
 ```c
   .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
@@ -743,7 +766,7 @@ TODO
 
 [arch/risc-v/src/sg2000/sg2000_irq.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
-[(__Multiple Harts__ explained here)](TODO)
+[(__Multiple Harts__ explained)](TODO)
 
 ```c
   /* Disable all global interrupts */
@@ -811,7 +834,7 @@ void up_enable_irq(int irq) {
 
 [arch/risc-v/src/sg2000/sg2000_irq_dispatch.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
-[(__Multiple Harts__ explained here)](TODO)
+[(__Multiple Harts__ explained)](TODO)
 
 ```c
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
@@ -850,7 +873,7 @@ We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
 [arch/risc-v/src/sg2000/sg2000_start.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
-[(__Multiple Harts__ explained here)](TODO)
+[(__Multiple Harts__ explained)](TODO)
 
 ```c
 //// TODO
@@ -1159,7 +1182,26 @@ Our workaround is to __Always Reboot NuttX on Hart 0__.
 
 TODO
 
+_Harts vs CPUs: What's the difference?_
+
+NuttX insists on booting with CPU 0. Otherwise it fails with this [__nx_start Error__](https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef)...
+
+```bash
+[CPU2] dump_assert_info:
+Assertion failed up_cpu_index() == 0: 
+at file: init/nx_start.c:745 task(CPU2):
+CPU2 IDLE process: Kernel 0x802019a6
+```
+
+That's why we __Renumber the CPUs__: Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__...
+
+```c
+TODO
+```
+
 _Can't we start One Hart and ignore the Other Harts?_
+
+We tried here.
 
 TODO: Affinity
 
@@ -1261,43 +1303,7 @@ We need to fix the PLIC Driver in NuttX, which only works on Hart 0...
 
 # PLIC Multiple Harts
 
-Page 240 (Skip the M-Modes)
 
-```text
-Address Width Attr. Description
-0x0C00_2080 4B RW Start Hart 0 S-Mode interrupt enables
-0x0C00_20C0 4B RW End Hart 0 S-Mode interrupt enables
-
-0x0C00_2180 4B RW Start Hart 1 S-Mode interrupt enables
-0x0C00_21C0 4B RW End Hart 1 S-Mode interrupt enables
-
-0x0C00_2280 4B RW Start Hart 2 S-Mode interrupt enables
-0x0C00_22C0 4B RW End Hart 2 S-Mode interrupt enables
-```
-
-- 0x0C00_2080: Hart 0 S-Mode Interrupt Enable
-- 0x0C00_2180: Hart 1 S-Mode Interrupt Enable
-- 0x0C00_2280: Hart 2 S-Mode Interrupt Enable
-
-Interrupt Enable: Skip 0x100 per hart
-
-Page 241 (Skip the M-Modes)
-
-```text
-Address Width Attr. Description
-0x0C20_1000 4B RW Hart 0 S-Mode priority threshold
-0x0C20_1004 4B RW Hart 0 S-Mode claim/ complete
-
-0x0C20_3000 4B RW Hart 1 S-Mode priority threshold
-0x0C20_3004 4B RW Hart 1 S-Mode claim/ complete
-
-0x0C20_5000 4B RW Hart 2 S-Mode priority threshold
-0x0C20_5004 4B RW Hart 2 S-Mode claim/ complete
-```
-
-priority threshold: Skip 0x2000 per hart
-
-claim/ complete: Skip 0x2000 per hart
 
 [Hart ID 2. OK yay!](https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0)
 
