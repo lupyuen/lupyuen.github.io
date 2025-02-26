@@ -483,6 +483,10 @@ TODO: Pic of touchscreen
 
 # LLM on NPU on NuttX?
 
+_Oh really? LLM on an SBC? (Eyes roll)_
+
+Hear me out...
+
 ```text
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
 
