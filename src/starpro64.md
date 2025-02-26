@@ -550,7 +550,11 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
-Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](TODO): Skip to [__??:??__](TODO) and watch our Build Script powering up StarPro64.
+Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](TODO): Skip to [__??:??__](TODO) and watch our Build Script powering up StarPro64...
+
+```bash
+TODO
+```
 
 How it works? Here's our __Build Script__: [run.sh](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
@@ -595,6 +599,7 @@ curl \
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
+[(See the __Build Log__](TODO)
 
 ![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
 
@@ -874,7 +879,7 @@ If we prefer to build NuttX ourselves...
 
     [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
 
-    [(See the __Build Log__)](TODO)
+    [(See the __Build Log__](TODO)
 
     [(See the __Build Outputs__)](TODO)
 
