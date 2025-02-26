@@ -875,54 +875,16 @@ We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
 [(__Multiple Harts__ explained)](TODO)
 
+TODO: NuttX boots here, called by the RISC-V Assembly Start Code
+
 ```c
-//// TODO
-struct sbiret_s
-{
-  intreg_t    error;
-  uintreg_t   value;
-};
-typedef struct sbiret_s sbiret_t;
-static void sg2000_boot_secondary(void);
-static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr);
-static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
-                          uintreg_t parm0, uintreg_t parm1,
-                          uintreg_t parm2, uintreg_t parm3,
-                          uintreg_t parm4, uintreg_t parm5);
-
-#define SBI_EXT_HSM (0x0048534D)
-#define SBI_EXT_HSM_HART_START (0x0)
-
+// We remember the Boot Hart ID (0 to 3)
 int boot_hartid = -1;
 
-void sg2000_start_s(int mhartid)
-{
-  /* Configure FPU */
+// NuttX boots here, called by the RISC-V Assembly Start Code
+void sg2000_start(int mhartid) {
 
-  riscv_fpuconfig();
-
-  if (mhartid != boot_hartid)
-    {
-      goto cpux;
-    }
-    ...
-
-cpux:
-
-  /* Non-Boot Hart starts here */
-
-  *(volatile uint8_t *) 0x50900000ul = 'H';
-  *(volatile uint8_t *) 0x50900000ul = 'a';
-  *(volatile uint8_t *) 0x50900000ul = 'r';
-  *(volatile uint8_t *) 0x50900000ul = 't';
-  *(volatile uint8_t *) 0x50900000ul = '0' + mhartid;
-  *(volatile uint8_t *) 0x50900000ul = '\r';
-  *(volatile uint8_t *) 0x50900000ul = '\n';
-
-  ...
-
-void sg2000_start(int mhartid)
-{
+  // UART Driver is not up yet. We print the primitive way.
   *(volatile uint8_t *) 0x50900000ul = 'H';
   *(volatile uint8_t *) 0x50900000ul = 'e';
   *(volatile uint8_t *) 0x50900000ul = 'l';
@@ -938,6 +900,7 @@ void sg2000_start(int mhartid)
   *(volatile uint8_t *) 0x50900000ul = '\r';
   *(volatile uint8_t *) 0x50900000ul = '\n';
 
+  // Print the Hart ID (0 to 4)
   *(volatile uint8_t *) 0x50900000ul = 'H';
   *(volatile uint8_t *) 0x50900000ul = 'a';
   *(volatile uint8_t *) 0x50900000ul = 'r';
@@ -947,134 +910,80 @@ void sg2000_start(int mhartid)
   *(volatile uint8_t *) 0x50900000ul = '\n';
   up_mdelay(1000);  // Wait a while for UART Queue to flush
 
-  /* If Boot Hart is not 0, restart with Hart 0 */
+  // If Boot Hart is not 0: Restart NuttX with Hart 0
+  if (mhartid != 0) {
+    //  Clear the BSS and Restart with Hart 0
+    //  __start points to our RISC-V Assembly Start Code
+    sg2000_clear_bss();
+    riscv_sbi_boot_secondary(0, (uintptr_t)&__start);
 
-  if (mhartid != 0)
-    {
-      /* Clear the BSS */
+    // Let this Hart idle forever (while Hart 0 runs)
+    while (true) { asm("WFI"); }  
+    PANIC();  // Should never come here
+  }
 
-      sg2000_clear_bss();
+  // Else Boot Hart is 0: We have successfully booted NuttX on Hart 0!
+  // Init the globals once only. Remember the Boot Hart.
+  if (boot_hartid < 0) {
+    boot_hartid = mhartid;
 
-      /* Restart with Hart 0 */
+    // Clear the BSS
+    sg2000_clear_bss();
 
-      riscv_sbi_boot_secondary(0, (uintptr_t)&__start);
+    // TODO SMP: Boot the Other Harts
+    // sg2000_boot_secondary();
 
-      /* Let this Hart idle forever */
+    // Copy the RAM Disk
+    // Initialize the per CPU areas
+    sg2000_copy_ramdisk();
+    riscv_percpu_add_hart(mhartid);
+  }
+  // Omitted: Call sg2000_start_s
+```
 
-      while (true)
-        {
-          asm("WFI");
-        }  
-      PANIC(); /* Should not come here */
-    }
+TODO: Boot NuttX on the Hart
 
-  /* Init the globals once only. Remember the Boot Hart. */
+```c
+// Boot NuttX on the Hart
+void sg2000_start_s(int mhartid) {
 
-  if (boot_hartid < 0)
-    {
-      boot_hartid = mhartid;
+  // Configure the FPU
+  // If this is not the Boot Hart: Jump to cpux
+  riscv_fpuconfig();
+  if (mhartid != boot_hartid) { goto cpux; }
+  // Omitted: Boot Hart starts here and calls nx_start()
 
-      /* Clear the BSS */
+cpux:
+  // TODO SMP: Non-Boot Hart starts here.
+  // We print the Hart ID and init the NuttX CPU
+  *(volatile uint8_t *) 0x50900000ul = 'H';
+  *(volatile uint8_t *) 0x50900000ul = 'a';
+  *(volatile uint8_t *) 0x50900000ul = 'r';
+  *(volatile uint8_t *) 0x50900000ul = 't';
+  *(volatile uint8_t *) 0x50900000ul = '0' + mhartid;
+  *(volatile uint8_t *) 0x50900000ul = '\r';
+  *(volatile uint8_t *) 0x50900000ul = '\n';
+  riscv_cpu_boot(mhartid);
+```
 
-      sg2000_clear_bss();
+TODO: We boot a Hart (0 to 3) by calling OpenSBI
 
-      /* Boot the other cores */
+```c
+// We boot a Hart (0 to 3) by calling OpenSBI
+// addr points to our RISC-V Assembly Start Code
+static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr) {
 
-      // TODO: sg2000_boot_secondary();
+  sbiret_t ret = sbi_ecall(
+    SBI_EXT_HSM, SBI_EXT_HSM_HART_START,
+    hartid, addr, 0, 0, 0, 0
+  );
 
-      /* Copy the RAM Disk */
-
-      sg2000_copy_ramdisk();
-      /* Initialize the per CPU areas */
-      riscv_percpu_add_hart(mhartid);
-    }
-
-/****************************************************************************
- * Name: riscv_hartid_to_cpuid
- *
- * Description:
- *   Convert physical core number to logical core number.
- *
- ****************************************************************************/
-
-int weak_function riscv_hartid_to_cpuid(int hart)
-{
-  /* Boot Hart is CPU 0. Renumber the Other Harts. */
-
-  if (hart == boot_hartid)
-    {
-      return 0;
-    }
-  else if (hart < boot_hartid)
-    {
-      return hart + 1;
-    }
-  else
-    {
-      return hart;
-    }
-}
-
-/****************************************************************************
- * Name: riscv_cpuid_to_hartid
- *
- * Description:
- *   Convert logical core number to physical core number.
- *
- ****************************************************************************/
-
-int weak_function riscv_cpuid_to_hartid(int cpu)
-{
-  /* Boot Hart is CPU 0. Renumber the Other Harts. */
-
-  if (cpu == 0)
-    {
-      return boot_hartid;
-    }
-  else if (cpu < boot_hartid + 1)
-    {
-      return cpu - 1;
-    }
-  else
-    {
-      return cpu;
-    }
-}
-
-static void sg2000_boot_secondary(void)
-{
-  int i;
-
-  for (i = 0; i < CONFIG_SMP_NCPUS; i++)
-    {
-      if (i == boot_hartid)
-        {
-          continue;
-        }
-
-      riscv_sbi_boot_secondary(i, (uintptr_t)&__start);
-    }
-}
-
-static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr)
-{
-  sbiret_t ret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_START,
-                           hartid, addr, 0, 0, 0, 0);
-
-  if (ret.error < 0)
-    {
-      _err("Boot Hart %d failed\n", hartid);
-      PANIC();
-    }
-
+  if (ret.error < 0) { _err("Boot Hart %d failed\n", hartid); PANIC(); }
   return 0;
 }
 
-static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
-                          uintreg_t parm0, uintreg_t parm1,
-                          uintreg_t parm2, uintreg_t parm3,
-                          uintreg_t parm4, uintreg_t parm5)
-{
+// Make an ECALL to OpenSBI
+static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid, uintreg_t parm0, uintreg_t parm1, uintreg_t parm2, uintreg_t parm3, uintreg_t parm4, uintreg_t parm5) {
   register long r0 asm("a0") = (long)(parm0);
   register long r1 asm("a1") = (long)(parm1);
   register long r2 asm("a2") = (long)(parm2);
@@ -1092,13 +1001,66 @@ static sbiret_t sbi_ecall(unsigned int extid, unsigned int fid,
      : "r"(r2), "r"(r3), "r"(r4), "r"(r5), "r"(r6), "r"(r7)
      : "memory"
      );
-
   ret.error = r0;
   ret.value = (uintreg_t)r1;
-
   return ret;
 }
+
+// OpenSBI returns an Error Code and Result Value
+struct sbiret_s {
+  intreg_t    error;
+  uintreg_t   value;
+};
+typedef struct sbiret_s sbiret_t;
+
+// These are the Standard OpenSBI Extension Codes
+#define SBI_EXT_HSM (0x0048534D)
+#define SBI_EXT_HSM_HART_START (0x0)
 ```
+
+TODO: Start the other Non-Boot Harts
+
+```c
+// TODO SMP: Start the other Non-Boot Harts
+static void sg2000_boot_secondary(void) {
+  for (int i = 0; i < CONFIG_SMP_NCPUS; i++) {
+    if (i == boot_hartid) { continue; }
+    riscv_sbi_boot_secondary(i, (uintptr_t)&__start);
+  }
+}
+```
+
+TODO: Convert Hart ID to CPU ID and Back
+
+```c
+// TODO SMP: Convert Hart ID to CPU ID.
+// Boot Hart is CPU 0. Renumber the Other Harts.
+int weak_function riscv_hartid_to_cpuid(int hart) {
+  if (hart == boot_hartid)
+    { return 0; }
+  else if (hart < boot_hartid)
+    { return hart + 1; }
+  else
+    { return hart; }
+}
+
+// TODO SMP: Convert CPU ID to Hart ID.
+// Boot Hart is CPU 0. Renumber the Other Harts.
+int weak_function riscv_cpuid_to_hartid(int cpu) {
+  if (cpu == 0)
+    { return boot_hartid; }
+  else if (cpu < boot_hartid + 1)
+    { return cpu - 1; }
+  else
+    { return cpu; }
+}
+```
+
+So if boot_hartid=2:
+- hart=0, cpu=1
+- hart=1, cpu=2
+- hart=2, cpu=0
+- hart=3, cpu=3
 
 <hr>
 
@@ -1355,16 +1317,6 @@ power off
 
 # Multiple CPU
 
-boot_hartid=2
-hart=0, cpu=1
-hart=1, cpu=2
-hart=2, cpu=0
-hart=3, cpu=3
-
-cpu=0, hart=2
-cpu=1, hart=0
-cpu=2, hart=1
-cpu=3, hart=3
 
 # Disable SMP
 
