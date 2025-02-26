@@ -355,6 +355,7 @@ loadaddr=0x80200000</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p><a href="TODO">(How to <strong>Build NuttX</strong> ourselves)</a></p>
+<p>(NuttX won’t read the <strong>Device Tree</strong>)</p>
 </li>
 <li>
 <p>Power up StarPro64 and press <strong>Ctrl-C</strong></p>
@@ -506,10 +507,8 @@ ollama</p>
 <p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
-<p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script…</p>
-<p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
+<p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script. In our <a href="TODO"><strong>Demo Video</strong></a>: Skip to <a href="TODO"><strong>??:??</strong></a> and watch our Build Script powering up StarPro64.</p>
+<p>How it works? Here’s our <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build NuttX Image
 TODO
 
@@ -534,10 +533,12 @@ curl \
   http://localhost:8123/api/services/automation/trigger
 
 ## Wait Manually for SBC Testing to complete
+## Don&#39;t wait too long, it will overheat!
 echo Press Enter to Power Off
 read
 
-## Power Off the SBC
+## Power Off the SBC, because it will overheat!
+## Excessive Heatiness needs Oldenlandia Cooling Water?  
 curl \
   -X POST \
   -H &quot;Authorization: Bearer $token&quot; \
@@ -545,6 +546,9 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-bash"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
