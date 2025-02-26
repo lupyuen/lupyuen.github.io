@@ -368,6 +368,8 @@ _How to boot NuttX over TFTP?_
 
     [(How to __Build NuttX__ ourselves)](TODO)
 
+    (NuttX won't read the __Device Tree__)
+
 1.  Power up StarPro64 and press __Ctrl-C__
 
 1.  At the __U-Boot Prompt__: Enter these commands...
@@ -548,13 +550,9 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
-Try a __Smart Power Plug__, integrated with our Build Script...
+Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](TODO): Skip to [__??:??__](TODO) and watch our Build Script powering up StarPro64.
 
-![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
-
-TODO
-
-![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
+How it works? Here's our __Build Script__: [run.sh](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
 ```bash
 ## Omitted: Build NuttX Image
@@ -581,10 +579,12 @@ curl \
   http://localhost:8123/api/services/automation/trigger
 
 ## Wait Manually for SBC Testing to complete
+## Don't wait too long, it will overheat!
 echo Press Enter to Power Off
 read
 
-## Power Off the SBC
+## Power Off the SBC, because it will overheat!
+## Excessive Heatiness needs Oldenlandia Cooling Water?  
 curl \
   -X POST \
   -H "Authorization: Bearer $token" \
@@ -594,6 +594,14 @@ curl \
 ```
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
+
+
+![TODO](https://lupyuen.org/images/starpro64-power1.jpg)
+
+TODO
+
+![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
+
 
 
 ```bash
