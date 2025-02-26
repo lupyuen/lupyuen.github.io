@@ -73,24 +73,20 @@
 <li><a href="#boot-the-linux-image" title="Boot the Linux Image">6 Boot the Linux Image</a><ul></ul></li>
 <li><a href="#settings-for-u-boot-bootloader" title="Settings for U-Boot Bootloader">7 Settings for U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#boot-nuttx-over-tftp" title="Boot NuttX over TFTP">8 Boot NuttX over TFTP</a><ul></ul></li>
-<li><a href="#smart-power-plug" title="Smart Power Plug">9 Smart Power Plug</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-multiple-harts-on-starpro64" title="Appendix: Multiple Harts on StarPro64">11 Appendix: Multiple Harts on StarPro64</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-starpro64" title="Appendix: Build NuttX for StarPro64">12 Appendix: Build NuttX for StarPro64</a><ul></ul></li>
-<li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">13 Appendix: Port NuttX to StarPro64</a><ul>
-<li><a href="#risc-v-boot-code" title="RISC-V Boot Code">13.1 RISC-V Boot Code</a><ul></ul></li>
-<li><a href="#nuttx-start-code" title="NuttX Start Code">13.2 NuttX Start Code</a><ul></ul></li>
-<li><a href="#plic-interrupt-controller" title="PLIC Interrupt Controller">13.3 PLIC Interrupt Controller</a><ul></ul></li>
-<li><a href="#memory-map" title="Memory Map">13.4 Memory Map</a><ul></ul></li>
-<li><a href="#nuttx-config" title="NuttX Config">13.5 NuttX Config</a><ul></ul></li></ul></li>
-<li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">14 ESWIN AI Sample User Guide</a><ul></ul></li>
-<li><a href="#uart" title="UART">15 UART</a><ul></ul></li>
-<li><a href="#build-loop" title="Build Loop">16 Build Loop</a><ul></ul></li>
-<li><a href="#multiple-cpu" title="Multiple CPU">17 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">18 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">19 TODO</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#llm-on-npu-on-nuttx" title="LLM on NPU on NuttX?">9 LLM on NPU on NuttX?</a><ul></ul></li>
+<li><a href="#smart-power-plug" title="Smart Power Plug">10 Smart Power Plug</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-multiple-harts-on-starpro64" title="Appendix: Multiple Harts on StarPro64">12 Appendix: Multiple Harts on StarPro64</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-starpro64" title="Appendix: Build NuttX for StarPro64">13 Appendix: Build NuttX for StarPro64</a><ul></ul></li>
+<li><a href="#appendix-port-nuttx-to-starpro64" title="Appendix: Port NuttX to StarPro64">14 Appendix: Port NuttX to StarPro64</a><ul>
+<li><a href="#risc-v-boot-code" title="RISC-V Boot Code">14.1 RISC-V Boot Code</a><ul></ul></li>
+<li><a href="#nuttx-start-code" title="NuttX Start Code">14.2 NuttX Start Code</a><ul></ul></li>
+<li><a href="#plic-interrupt-controller" title="PLIC Interrupt Controller">14.3 PLIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#memory-map" title="Memory Map">14.4 Memory Map</a><ul></ul></li>
+<li><a href="#nuttx-config" title="NuttX Config">14.5 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
+<p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
 <p>Well documented</p>
 <p>NuttX: Power efficient AI</p>
@@ -208,7 +204,7 @@ $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
 <p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="TODO" /></p>
 <h1 id="prepare-the-linux-image"><a class="doc-anchor" href="#prepare-the-linux-image">§</a>4 Prepare the Linux Image</h1>
 <p><em>How to load the Linux Image into eMMC?</em></p>
-<p>Based on the <a href="TODO"><strong>Official Doc</strong></a>…</p>
+<p>Based on the <a href="https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/Development_board_image_installation_and_upgrade_manual.pdf"><strong>ESWIN Official Doc</strong></a>…</p>
 <ol>
 <li>
 <p>Connect our <strong>eMMC to StarPro64</strong> (pic above)</p>
@@ -404,13 +400,28 @@ booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div><span style="font-size:
 </span>
 </li>
 <li>
-<p>NuttX boots OK on StarPro64 yay! (Pic above)</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div></li>
+<p>NuttX boots OK on StarPro64 yay! (Pic below)</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
+nsh&gt; uname -a
+NuttX 12.4.0 83424f8d26 Feb 24 2025 06:50:22 risc-v milkv_duos
+
+nsh&gt; hello
+Hello, World!!
+
+nsh&gt; getprime
+getprime took 148 msec    
+
+user_main: Exiting
+ostest_main: Exiting with status 0</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+</li>
 <li>
 <p>How did we port NuttX to StarPro64? Check the details here…</p>
 <p><a href="TODO"><strong>“TODO”</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
 <p><em>We type these commands EVERY TIME we boot?</em></p>
 <p>We can automate: Just do this once, and NuttX will <strong>Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
@@ -436,7 +447,54 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
 <p>TODO: Press Ctrl-C to stop</p>
 <p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
-<h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>9 Smart Power Plug</h1>
+<h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1>
+<p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
+<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
+<p>https://github.com/rockos-riscv</p>
+<p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
+<p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
+<p>#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)</p>
+<p>https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual</p>
+<p>#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)</p>
+<p>Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
+<p>#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)</p>
+<p>https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu</p>
+<p><strong>llama.cpp</strong> <em>(C++)</em></p>
+<p>https://github.com/ggml-org/llama.cpp</p>
+<p>or <strong>ollama</strong> <em>(GoLang)</em></p>
+<p>https://github.com/ollama/ollama/blob/main/model/models/llama/model.go</p>
+<p><em>Qwen is an odd name innit?</em></p>
+<p>Qwen will sound confusing to Bilingual Folks…</p>
+<ul>
+<li>
+<p>It’s NOT supposed to rhyme with Gwen Stefani / Gwen Stacy</p>
+</li>
+<li>
+<p>Instead it’s pronounced <strong>“Q Wen”</strong></p>
+</li>
+<li>
+<p>And it confuses me: <em>“Q = Question”</em> and <em>“Wen = 问 = Question”</em>, thus contracting to <em>“QQ”</em>, which means <em>“Bouncy”</em></p>
+</li>
+<li>
+<p>Thankfully <em>“Q Wen”</em> actually means something: <strong>“千问”</strong> <em>(Ask a Thousand Questions, “Qian1 Wen4”)</em></p>
+</li>
+<li>
+<p>Which is short for <strong>“通义千问”</strong> <em>(Tong1 Yi4 Qian1 Wen4)</em>, meaning <a href="https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178"><strong>“通情，达义”</strong></a></p>
+</li>
+</ul>
+<span style="font-size:80%">
+<p><em>(Here’s an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: “EVIL”, “DEATH”, “DOOM”…)</em></p>
+</span>
+<p>southern islands of singapore
+identify pic of creatures or sea life
+rainforest critters or underwater creatures
+in one word
+“DUCK”, “OCTOPUS”</p>
+<p>strings
+ghidra
+npu driver
+ollama</p>
+<h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
 <p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script…</p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
@@ -473,13 +531,27 @@ curl \
   -H &quot;Authorization: Bearer $token&quot; \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
-  http://localhost:8123/api/services/automation/trigger</code></pre></div>
+  http://localhost:8123/api/services/automation/trigger</code></pre></div><div class="example-wrap"><pre class="language-text"><code>## First Time Only
+echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
+
+set -x
+for (( ; ; )) do 
+  screen /dev/ttyUSB* 115200
+  sleep 5
+done</code></pre></div>
+<p>Build Loop:</p>
+<p>make</p>
+<p>make app</p>
+<p>power off</p>
+<p>power on</p>
+<p>read</p>
+<p>power off</p>
 <p>Remember the <a href="TODO"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-power3.jpg" alt="TODO" /></p>
 </blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -509,7 +581,7 @@ curl \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md"><strong>lupyuen.org/src/starpro64.md</strong></a></p>
-<h1 id="appendix-multiple-harts-on-starpro64"><a class="doc-anchor" href="#appendix-multiple-harts-on-starpro64">§</a>11 Appendix: Multiple Harts on StarPro64</h1>
+<h1 id="appendix-multiple-harts-on-starpro64"><a class="doc-anchor" href="#appendix-multiple-harts-on-starpro64">§</a>12 Appendix: Multiple Harts on StarPro64</h1>
 <p><em>Multiple Harts are problematic. Why?</em></p>
 <p>Inside EIC7700X SoC: We have <strong>Four Harts</strong> (RISC-V CPU Cores) numbered 0 to 3.</p>
 <p>This SoC will boot OpenSBI on <strong>Any Random Hart</strong>, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the <strong>Same Random Hart</strong>.</p>
@@ -613,9 +685,18 @@ sem_test: Starting poster thread 3
 <p>Hence <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
 <p><a href="https://youtu.be/70DQ4YlQMMw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong></a></p>
-<p><em>How to enable Multple Harts?</em></p>
-<p>TODO</p>
-<h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>12 Appendix: Build NuttX for StarPro64</h1>
+<p><em>In Future: How to enable Multiple Harts?</em></p>
+<p>To <strong>Enable Multiple Harts</strong> in future, we undo these changes…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b"><strong>“StarPro64: Disable SMP”</strong></a></li>
+</ul>
+<p>Remember to update the <a href="https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b"><strong>StarPro64 defconfig</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Enable SMP with 4 CPUs
+CONFIG_SMP=y
+CONFIG_SMP_NCPUS=4</code></pre></div>
+<p>Apache NuttX RTOS on StarPro64: Build Script</p>
+<p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
+<h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>13 Appendix: Build NuttX for StarPro64</h1>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
 <p>We may download the NuttX Image File <strong><code>Image-starpro64</code></strong> from here…</p>
 <ul>
@@ -660,7 +741,7 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 
 ## In U-Boot: Boot NuttX over TFTP
 ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
-<p><a href="TODO">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="TODO">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="TODO">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
@@ -692,14 +773,14 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>13 Appendix: Port NuttX to StarPro64</h1>
+<h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>14 Appendix: Port NuttX to StarPro64</h1>
 <p><em>How did we port NuttX to StarPro64? In under One Week?</em></p>
 <p>We took the NuttX Port of <strong>Milk-V Duo S (Oz64 SG2000)</strong> and tweaked it for <strong>StarPro64 EIC7700X</strong>, with these minor modifications…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files"><strong>Modified Files: NuttX for StarPro64</strong></a></li>
 </ul>
 <p>Here’s what we changed…</p>
-<h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>13.1 RISC-V Boot Code</h2>
+<h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>14.1 RISC-V Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58"><em>arch/risc-v/src/sg2000/sg2000_head.S</em></a></p>
 <p>This is the <strong>RISC-V Boot Code</strong> that runs first when U-Boot Bootloader starts NuttX.</p>
 <p>In the <strong>Linux Kernel Header</strong>: We modified the Kernel Size based on U-Boot <code>fdt_addr_r</code> - <code>kernel_addr_r</code>.</p>
@@ -749,7 +830,7 @@ real_start:
   */</code></pre></div>
 <p>Right now we support <strong>One Single Hart</strong> for EIC7700X. “<code>TODO</code> <code>SMP</code>” flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.</p>
 <p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
-<h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>13.2 NuttX Start Code</h2>
+<h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>14.2 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7"><em>arch/risc-v/src/sg2000/sg2000_start.c</em></a></p>
 <p>NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow <a href="TODO"><strong>Booting from Any Hart</strong></a>…</p>
 <ul>
@@ -935,7 +1016,7 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 <li><em>hart=3, cpu=3</em></li>
 </ul>
 <p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
-<h2 id="plic-interrupt-controller"><a class="doc-anchor" href="#plic-interrupt-controller">§</a>13.3 PLIC Interrupt Controller</h2>
+<h2 id="plic-interrupt-controller"><a class="doc-anchor" href="#plic-interrupt-controller">§</a>14.3 PLIC Interrupt Controller</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f"><em>arch/risc-v/include/sg2000/irq.h</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of External Interrupts
 // Offset by RISCV_IRQ_SEXT
@@ -1068,7 +1149,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   // Write PLIC_CLAIM to clear pending for Boot Hart
   putreg32(irq - RISCV_IRQ_EXT, claim);</code></pre></div>
 <p><a href="TODO">(<strong>Multiple Harts</strong> explained)</a></p>
-<h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>13.4 Memory Map</h2>
+<h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>14.4 Memory Map</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f"><em>arch/risc-v/src/sg2000/sg2000_mm_init.c</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Memory Map
 #define MMU_IO_BASE (0x00000000ul)
@@ -1084,7 +1165,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 </div></div>
 </p>
 <p>The rest of the Memory Map is identical to SG2000. We removed all <strong>T-Head MMU Extensions</strong>, including <strong>mmu_flush_cache</strong>.</p>
-<h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>13.5 NuttX Config</h2>
+<h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>14.5 NuttX Config</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb"><em>arch/risc-v/Kconfig</em></a></p>
 <p>In future we shall support <a href="TODO"><strong>Multiple Harts</strong></a>. This <strong>Arch Config</strong> will enable the <strong>Hart-To-CPU Mapping</strong> we saw earlier: <em>riscv_hartid_to_cpuid, riscv_cpuid_to_hartid</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>config ARCH_CHIP_SG2000
@@ -1133,105 +1214,28 @@ CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
 </tbody></table>
 </div></div>
 </p>
-<p>TODO: <strong>16550_UART0_CLOCK</strong></p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1"><em>drivers/serial/uart_16550.c</em></a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
-  /* Enter DLAB=1 */
+<p>We commented out this code that <strong>Configures the UART Clock</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Configure the UART Clock
+static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 
+#ifdef TODO
+  // Enter DLAB=1
   u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
+  // Omitted: Configure the UART Clock
   ...
-  /* Clear DLAB */
-
+  // Clear DLAB
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
-#endif  // TODO</code></pre></div><hr>
+#endif</code></pre></div>
+<p>This will be restored when we have computed <a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110"><strong>16550_UART0_CLOCK</strong></a>.</p>
+<hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe"><em>arch/risc-v/src/sg2000/sg2000_timerisr.c</em></a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define MTIMER_FREQ 1000000ul</code></pre></div><h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>14 ESWIN AI Sample User Guide</h1>
-<p>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230</p>
-<p>https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
-<div class="example-wrap"><pre class="language-text"><code>ESWIN provides users with the desktop version of the Debian image files. the default username and
-password for the system are both &quot;eswin / eswin&quot;.
-Download the Debian-v1.0.0-p550-20241230 version system image via the link
-https://github.com/eswincomputing/eic7x-images/releases. The image file is as follows:
-EIC7x_Release_Images_p550_20241230
-└── hifive-premier-p550
- ├── bootloader_P550.bin
- ├── boot-P550-20250126-011559.ext4
-└── root-P550-20250126-011559.ext4</code></pre></div><h1 id="uart"><a class="doc-anchor" href="#uart">§</a>15 UART</h1><div class="example-wrap"><pre class="language-text"><code>## First Time Only
-echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
-
-set -x
-for (( ; ; )) do 
-  screen /dev/ttyUSB* 115200
-  sleep 5
-done</code></pre></div>
-<p>Same pins as Star64 and Oz64 SG2000</p>
-<p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
-<p>CONFIG_16550_UART0_IRQ=125</p>
-<p>100 + 25</p>
-<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>16 Build Loop</h1>
-<p>make</p>
-<p>make app</p>
-<p>power off</p>
-<p>power on</p>
-<p>read</p>
-<p>power off</p>
-<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>17 Multiple CPU</h1><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>18 Disable SMP</h1>
-<p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
-<p>Remove these from defconfig:</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
-CONFIG_SMP_NCPUS=4</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">Apache NuttX RTOS on StarPro64: OSTest runs OK yay! (ESWIN EIC7700X)</a></p>
-<p><a href="https://youtu.be/Yr7aYNIMUsw"><strong>Watch the Demo on YouTube</strong></a></p>
-<p>Apache NuttX RTOS on StarPro64: Build Script</p>
-<p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
-<p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
+<p>Finally we changed the <strong>RISC-V Timer Frequency</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Previously for SG2000: 25000000ul
+#define MTIMER_FREQ 1000000ul</code></pre></div>
+<p>And that’s how we ported NuttX to StarPro64! <a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>19 TODO</h1>
-<p>https://github.com/rockos-riscv</p>
-<p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
-<p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
-<p>#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)</p>
-<p>https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual</p>
-<p>#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)</p>
-<p>Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf</p>
-<p>#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)</p>
-<p>https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu</p>
-<p><strong>llama.cpp</strong> <em>(C++)</em></p>
-<p>https://github.com/ggml-org/llama.cpp</p>
-<p>or <strong>ollama</strong> <em>(GoLang)</em></p>
-<p>https://github.com/ollama/ollama/blob/main/model/models/llama/model.go</p>
-<p><em>Qwen is an odd name innit?</em></p>
-<p>Qwen will sound confusing to Bilingual Folks…</p>
-<ul>
-<li>
-<p>It’s NOT supposed to rhyme with Gwen Stefani / Gwen Stacy</p>
-</li>
-<li>
-<p>Instead it’s pronounced <strong>“Q Wen”</strong></p>
-</li>
-<li>
-<p>And it confuses me: <em>“Q = Question”</em> and <em>“Wen = 问 = Question”</em>, thus contracting to <em>“QQ”</em>, which means <em>“Bouncy”</em></p>
-</li>
-<li>
-<p>Thankfully <em>“Q Wen”</em> actually means something: <strong>“千问”</strong> <em>(Ask a Thousand Questions, “Qian1 Wen4”)</em></p>
-</li>
-<li>
-<p>Which is short for <strong>“通义千问”</strong> <em>(Tong1 Yi4 Qian1 Wen4)</em>, meaning <a href="https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178"><strong>“通情，达义”</strong></a></p>
-</li>
-</ul>
-<span style="font-size:80%">
-<p><em>(Here’s an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: “EVIL”, “DEATH”, “DOOM”…)</em></p>
-</span>
-<p>southern islands of singapore
-identify pic of creatures or sea life
-rainforest critters or underwater creatures
-in one word
-“DUCK”, “OCTOPUS”</p>
-<p>strings
-ghidra
-npu driver
-ollama</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
