@@ -556,8 +556,6 @@ TODO
 
 ![TODO](https://lupyuen.org/images/starpro64-power2.jpg)
 
-https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163
-
 ```bash
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
@@ -591,6 +589,9 @@ curl \
   -d '{"entity_id": "automation.starpro64_off"}' \
   http://localhost:8123/api/services/automation/trigger
 ```
+
+[(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
+
 
 ```text
 ## First Time Only
