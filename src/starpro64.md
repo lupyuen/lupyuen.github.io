@@ -619,15 +619,21 @@ Here's what we changed...
 
 This is the __RISC-V Boot Code__ that runs first when U-Boot Bootloader starts NuttX.
 
-[(__Multiple Harts__ explained)](TODO)
+In the __Linux Kernel Header__: We modified the Kernel Size based on U-Boot `fdt_addr_r - kernel_addr_r`.
+
+This ensures that the __Entire NuttX Image__ (including Initial RAM Disk) will be copied correctly from `kernel_addr_r` _(0x8400_0000)_ to `loadaddr` _(0x8020_0000)_
 
 ```c
+## Linux Kernel Header
+__start:
+  ...
   .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
 ```
 
-TODO
+We inserted this code to print "`123`" to UART0 at startup...
 
 ```c
+## NuttX Boots Here
 real_start:
 
   /* Print `123` to UART */
@@ -655,7 +661,7 @@ TODO
 ```c
   /* If a0 (hartid) >= t1 (the number of CPUs), stop here */
 
-  /* TODO: Enable this for SMP
+  /* TODO SMP: Enable this for SMP
   blt  a0, t1, 3f
   csrw CSR_SIE, zero
   wfi
@@ -666,10 +672,12 @@ TODO
   li a2, 0
   riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a2
 
-  /* TODO: Enable this for SMP
+  /* TODO SMP: Enable this for SMP
   riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a0
   */
 ```
+
+[(__Multiple Harts__ explained)](TODO)
 
 <hr>
 
