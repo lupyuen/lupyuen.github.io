@@ -617,21 +617,21 @@ Here's what we changed...
 
 This is the __RISC-V Boot Code__ that runs first when U-Boot Bootloader starts NuttX.
 
-In the __Linux Kernel Header__: We modified the Kernel Size based on U-Boot `fdt_addr_r - kernel_addr_r`.
+In the __Linux Kernel Header__: We modified the Kernel Size based on U-Boot `fdt_addr_r` - `kernel_addr_r`.
 
 This ensures that the __Entire NuttX Image__ (including Initial RAM Disk) will be copied correctly from `kernel_addr_r` _(0x8400_0000)_ to `loadaddr` _(0x8020_0000)_
 
 ```c
-## Linux Kernel Header
+/* Linux Kernel Header*/
 __start:
   ...
-  .quad   0x4000000            /* Kernel size (fdt_addr_r-kernel_addr_r) */
+  .quad  0x4000000  /* Kernel size (fdt_addr_r-kernel_addr_r) */
 ```
 
 We inserted this code to print "`123`" to UART0 at startup...
 
 ```c
-## NuttX Boots Here
+/* NuttX Boots Here */
 real_start:
 
   /* Print `123` to UART */
@@ -654,12 +654,13 @@ real_start:
   sb  t1, 0(t0)
 ```
 
-TODO
+The Original Code assumes that we always __Boot at Hart 0__. But EIC7700X will [__Boot From Any Hart__](TODO). (0 to 3)
+
+This modification allows NuttX to Boot from any Hart...
 
 ```c
-  /* If a0 (hartid) >= t1 (the number of CPUs), stop here */
-
   /* TODO SMP: Enable this for SMP
+  /* If a0 (hartid) >= t1 (the number of CPUs), stop here
   blt  a0, t1, 3f
   csrw CSR_SIE, zero
   wfi
@@ -674,6 +675,8 @@ TODO
   riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a0
   */
 ```
+
+Right now we support __One Single Hart__ for EIC7700X. "`TODO SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
 
 [(__Multiple Harts__ explained)](TODO)
 
