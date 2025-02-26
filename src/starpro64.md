@@ -622,6 +622,8 @@ for (( ; ; )) do
 done
 ```
 
+_(We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!)_
+
 Build Loop:
 
 make
@@ -681,7 +683,7 @@ _What's the problem?_
 
 NuttX assumes that it always __Boots on Hart 0__. (Pic above)
 
-This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423)
+This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423)
 
 ```bash
 ## Set inital sp for riscv core. This function should be only called when initing.
@@ -779,7 +781,7 @@ sem_test: Starting poster thread 3
 ## Completes successfully
 ```
 
-Here's the problem: [__sem_test__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253) calls [__nx_pthread_create__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412) to create a PThread for Thread #1...
+Here's the problem: [__sem_test__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253) calls [__nx_pthread_create__](https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179-L412) to create a PThread for Thread #1...
 
 ```c
 int nx_pthread_create(...) { ...
@@ -799,7 +801,7 @@ But the New Thread defaults to __No CPU Affinity__, it __Lacks Affinity for CPU 
 
 So it gets allocated to __Another CPU__. Which never runs! 
 
-Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
+Hence [__sem_test loops forever__](https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/70DQ4YlQMMw)
 
@@ -819,13 +821,7 @@ CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4
 ```
 
-
-Apache NuttX RTOS on StarPro64: Build Script
-
-
-
-We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!
-
+And remember to fix [__riscv_set_inital_sp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423).
 
 # Appendix: Build NuttX for StarPro64
 
