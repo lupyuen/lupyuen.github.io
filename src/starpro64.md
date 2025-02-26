@@ -582,9 +582,15 @@ This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp
 
 _How to fix this?_
 
-Our workaround is to __Always Reboot NuttX on Hart 0__.
+Our workaround is to [__Always Reboot NuttX on Hart 0__](TODO)...
 
-TODO
+- __If Boot Hart is Not 0:__
+
+  Restart NuttX with Hart 0
+
+- __If Boot Hart is 0:__
+
+  Continue Starting NuttX
 
 _Harts vs CPUs: What's the difference?_
 
@@ -597,13 +603,13 @@ at file: init/nx_start.c:745 task(CPU2):
 CPU2 IDLE process: Kernel 0x802019a6
 ```
 
-That's why we __Renumber the CPUs__: Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__...
+That's why we [__Renumber the CPUs__](TODO): Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__. For Example: If _boot_hartid=2_ then...
+- _hart=0, cpu=1_
+- _hart=1, cpu=2_
+- _hart=2, cpu=0_
+- _hart=3, cpu=3_
 
-```c
-TODO
-```
-
-_Can't we start One Hart and ignore the Other Harts?_
+_Can't we use One Hart and ignore the Other Harts?_
 
 We tried [__Enabling One Hart Only (CPU 0)__](https://github.com/lupyuen2/wip-nuttx/commits/starpro64c). But OSTest [__hangs at sem_test__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)..
 
@@ -625,7 +631,7 @@ waiter_func: Thread 2 waiting on semaphore
 ## Hangs here
 ```
 
-Compare the above with [__SG2000 sem_test__](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23)
+Compare the above with [__SG2000 sem_test__](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23)...
 
 ```bash
 ## OSTest runs OK for SG2000...
@@ -850,9 +856,13 @@ Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the 
 
 NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow [__Booting from Any Hart__](TODO)...
 
-- __If Boot Hart is Not 0:__ Restart NuttX with Hart 0
+- __If Boot Hart is Not 0:__
 
-- __If Boot Hart is 0:__ Continue Starting NuttX
+  Restart NuttX with Hart 0
+
+- __If Boot Hart is 0:__
+
+  Continue Starting NuttX
 
 ```c
 // We remember the Boot Hart ID (0 to 3)
@@ -889,6 +899,7 @@ void sg2000_start(int mhartid) {
 
   // If Boot Hart is not 0: Restart NuttX with Hart 0
   if (mhartid != 0) {
+
     //  Clear the BSS and Restart with Hart 0
     //  __start points to our RISC-V Assembly Start Code
     sg2000_clear_bss();
@@ -918,7 +929,7 @@ void sg2000_start(int mhartid) {
   // Omitted: Call sg2000_start_s
 ```
 
-The code below will be used (in future) to support [__Multiple Harts__]...
+The code below will be used (in future) to support [__Multiple Harts__](TODO)...
 
 ```c
 // Boot NuttX on the Hart
@@ -928,7 +939,9 @@ void sg2000_start_s(int mhartid) {
   // If this is not the Boot Hart: Jump to cpux
   riscv_fpuconfig();
   if (mhartid != boot_hartid) { goto cpux; }
+
   // Omitted: Boot Hart starts here and calls nx_start()
+  ...
 
 cpux:
   // TODO SMP: Non-Boot Hart starts here.
