@@ -20,13 +20,6 @@ Nope it's a totally different beast!
 
 Docs are so much better! (??? pages)
 
-iTerm: Edit > Paste Special > Paste Slowly
-
-Settings > Advanced > Pasteboard
-
-Delay in seconds between chunks when Pasting Slowly: 1 second
-
-Number of bytes to paste in each chunk when Pasting Slowly: 16
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
@@ -488,6 +481,7 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 # LLM on NPU on NuttX?
 
+```text
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
 
 https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
@@ -517,6 +511,7 @@ https://github.com/ggml-org/llama.cpp
 or __ollama__ _(GoLang)_
 
 https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
+```
 
 _Qwen is an odd name innit?_
 
@@ -1502,6 +1497,24 @@ Finally we changed the __RISC-V Timer Frequency__...
 // Previously for SG2000: 25000000ul
 #define MTIMER_FREQ 1000000ul
 ```
+
+## Paste Slowly
+
+_U-Boot Bootloader is dropping chars when we paste long lines. How now brown cow?_
+
+__In iTerm__: Try __Edit > Paste Special > Paste Slowly__
+
+__But Before That:__ Click __Settings > Advanced > Pasteboard__
+
+- _"Delay in seconds between chunks when Pasting Slowly"_
+
+  Set to __1 second__
+
+- _"Number of bytes to paste in each chunk when Pasting Slowly"_
+
+  Set to __16 bytes__
+
+<hr>
 
 And that's how we ported NuttX to StarPro64! [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
 
