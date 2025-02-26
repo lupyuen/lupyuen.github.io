@@ -1286,7 +1286,11 @@ int nx_pthread_create(...) { ...
 #endif
 ```
 
-But the New Thread defaults to __No Affinity__, it doesn't have __Affinity for CPU 0__. So it gets allocated to __Another CPU__. Which never runs! Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
+But the New Thread defaults to __No CPU Affinity__, it __Lacks Affinity for CPU 0__.
+
+So it gets allocated to __Another CPU__. Which never runs! 
+
+Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/70DQ4YlQMMw)
 
