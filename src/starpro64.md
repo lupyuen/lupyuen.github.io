@@ -6,36 +6,35 @@
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
 
-[__StarPro64 EIC7700X__](TODO) is the (literally) _Hot_ New RISC-V SBC by PINE64.
+[__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the (literally) _Hot_ New RISC-V SBC by PINE64.
+
+TODO
+
+_(Thanks to PINE64 for providing the Prototype StarPro64)_
+
+![StarPro64 EIC7700X RISC-V SBC](https://lupyuen.org/images/starpro64-fan2.jpg)
+
+# ESWIN EIC7700X RISC-V SoC
+
+_StarPro64: Isn't it a souped-up Star64?_
+
+Nope it's a totally different beast! (From a different maker)
+
+Docs are so much better! (??? pages)
 
 Well documented
 
 NuttX: Power efficient AI
 
-_StarPro64 is just an upgraded Star64?_
-
-Nope it's a totally different beast!
-
-Docs are so much better! (??? pages)
-
-
-_(Thanks to PINE64 for providing the Prototype StarPro64)_
-
-# ESWIN EIC7700X RISC-V SoC
-
 TODO: NPU
 
-![TODO](https://lupyuen.org/images/starpro64-fan2.jpg)
-
-TODO
-
-![TODO](https://lupyuen.org/images/starpro64-uart.jpg)
+![Connecting USB UART Dongle to StarPro64](https://lupyuen.org/images/starpro64-uart.jpg)
 
 # Boot Without MicroSD
 
 _What happens if we boot StarPro64? Fresh from the box?_
 
-We monitor the __UART0 Port__ for Debug Messages. Connect our __USB UART Dongle__ (CH340 or CP2102) to these pins (pic above)...
+We monitor the __UART0 Port__ for Debug Messages. Connect our [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to these pins (pic above)...
 
 | StarPro64 | USB UART | Colour |
 |:------------:|:--------:|:------:|
@@ -51,9 +50,9 @@ Connect to the USB UART at __115.2 kbps__...
 screen /dev/ttyUSB0 115200
 ```
 
-Power up the board with a __Power Adapter__. [(Same one as __Star64 JH7110__)](TODO)
+Power up the board with a __Power Adapter__. [(Same one as __Star64 JH7110__)](https://pine64.com/product/12v-5a-us-power-supply/)
 
-We'll see [__OpenSBI__](TODO)...
+We'll see [__OpenSBI__](https://lupyuen.github.io/articles/sbi)...
 
 <span style="font-size:80%">
 
@@ -86,7 +85,7 @@ Boot HART MEDELEG         : 0x0000000000f0b509
 
 </span>
 
-Then [__U-Boot Bootloader__](TODO)...
+Then [__U-Boot Bootloader__](https://docs.u-boot.org/en/latest/index.html)...
 
 <span style="font-size:80%">
 
@@ -113,7 +112,7 @@ And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let's init our eMM
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7)
 
-![TODO](https://lupyuen.org/images/starpro64-hdmi.jpg)
+![HDMI Output will show U-Boot, but not OpenSBI](https://lupyuen.org/images/starpro64-hdmi.jpg)
 
 _HDMI Output will show U-Boot, but not OpenSBI_
 
@@ -135,7 +134,7 @@ The fine folks at [__PLCT Lab RockOS__](https://github.com/rockos-riscv) are bus
 
    [_root-rockos-20250123-210346.ext4.zst_](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/root-rockos-20250123-210346.ext4.zst)
 
-Uncompress the files and rename them. Copy them to a [__USB Drive__](TODO) (not MicroSD)
+Uncompress the files and rename them. Copy them to a [__USB Drive__](https://qoto.org/@lupyuen/114036829364673417) (not MicroSD)
 
 ```bash
 $ ls -lh *.bin *.zst
@@ -160,9 +159,9 @@ $ ls -lh *.bin *.ext4
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
 ```
 
-We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](TODO) wasn't working reliably on our Prototype StarPro64.
+We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](https://qoto.org/@lupyuen/114036829364673417) wasn't working reliably on our Prototype StarPro64.
 
-![TODO](https://lupyuen.org/images/starpro64-emmc.jpg)
+![StarPro64 with eMMC](https://lupyuen.org/images/starpro64-emmc.jpg)
 
 # Prepare the Linux Image
 
@@ -231,7 +230,7 @@ Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-im
 
 1. __Beware of Overheating!__ Keep StarPro64 cool, or the previous step might corrupt the __SPI Boot Flash__ and cause unspeakable agony...
 
-![TODO](https://lupyuen.org/images/starpro64-fan.jpg)
+![StarPro64 with USB Fan](https://lupyuen.org/images/starpro64-fan.jpg)
 
 # StarPro64 Gets Smokin' Hot!
 
@@ -259,11 +258,11 @@ But don't power it with the USB Port on StarPro64! Instead, connect it to our [_
 
 _Anything else we should worry about?_
 
-The [__MicroSD Interface__](TODO) wasn't working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.
+The [__MicroSD Interface__](https://qoto.org/@lupyuen/114036829364673417) wasn't working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.
 
 Hence the __Headless Ironman__: USB Drive on StarPro64...
 
-![TODO](https://lupyuen.org/images/starpro64-ironman.jpg)
+![Headless Ironman: USB Drive on StarPro64](https://lupyuen.org/images/starpro64-ironman.jpg)
 
 # Boot the Linux Image
 
@@ -308,13 +307,13 @@ Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/gen
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
 
-![TODO](https://lupyuen.org/images/starpro64-linux.jpg)
+![RockOS won't boot correctly on our Prototype StarPro64](https://lupyuen.org/images/starpro64-linux.jpg)
 
 # Settings for U-Boot Bootloader
 
 _Bummer. What else can we boot on StarPro64?_
 
-Let's snoop around [__U-Boot Bootloader__](TODO). And figure out how to boot [__Apache NuttX RTOS__](TODO).
+Let's snoop around [__U-Boot Bootloader__](https://docs.u-boot.org/en/latest/index.html). And figure out how to boot [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
 Power up StarPro64 and press __Ctrl-C__. At the __U-Boot Prompt__: We enter these commands...
 
@@ -338,7 +337,7 @@ loadaddr=0x80200000
 
 A-ha! This says...
 
-- U-Boot supports booting over TFTP: [__Trivial File Transfer Protocol__](TODO)
+- U-Boot supports booting over TFTP: [__Trivial File Transfer Protocol__](https://lupyuen.github.io/articles/tftp)
 
 - It will load the __Kernel Image__ _(Linux / NuttX)_ into RAM at __`0x8400` `0000`__
 
@@ -348,7 +347,7 @@ A-ha! This says...
 
 Thanks U-Boot! You told us everything we need to Boot NuttX...
 
-> ![TODO](https://lupyuen.org/images/starpro64-nuttx.png)
+> ![Boot NuttX over TFTP](https://lupyuen.org/images/starpro64-nuttx.png)
 
 # Boot NuttX over TFTP
 
@@ -363,7 +362,10 @@ _How to boot NuttX over TFTP?_
     [__Device Tree: jh7110-star64-pine64.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO)
 
     ```bash
-    TODO
+    ## Copy NuttX Image and Device Tree to TFTP Server
+    scp Image tftpserver:/tftpboot/Image-starpro64
+    ## TODO
+    ssh tftpserver ls -l /tftpboot/Image-starpro64
     ```
 
     [(How to __Build NuttX__ ourselves)](TODO)
