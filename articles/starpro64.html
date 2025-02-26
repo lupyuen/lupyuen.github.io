@@ -82,12 +82,10 @@
 <li><a href="#multiple-cpu" title="Multiple CPU">15 Multiple CPU</a><ul></ul></li>
 <li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">16 PLIC Multiple Harts</a><ul></ul></li>
 <li><a href="#build-loop" title="Build Loop">17 Build Loop</a><ul></ul></li>
-<li><a href="#semaphore-fail" title="Semaphore Fail">18 Semaphore Fail</a><ul></ul></li>
-<li><a href="#thread-1-isnt-started" title="Thread 1 isn’t started!">19 Thread 1 isn’t started!</a><ul></ul></li>
-<li><a href="#multiple-cpu-1" title="Multiple CPU">20 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">21 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">22 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">23 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#multiple-cpu-1" title="Multiple CPU">18 Multiple CPU</a><ul></ul></li>
+<li><a href="#disable-smp" title="Disable SMP">19 Disable SMP</a><ul></ul></li>
+<li><a href="#todo" title="TODO">20 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -1017,7 +1015,25 @@ CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
 <p>Inside EIC7700X SoC: We have <strong>Four Harts</strong> (RISC-V CPU Cores) numbered 0 to 3.</p>
 <p>This SoC will boot OpenSBI on <strong>Any Random Hart</strong>, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the <strong>Same Random Hart</strong>.</p>
 <p><em>What’s the problem?</em></p>
-<p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. This code <strong>will fail</strong> when it boots on Harts 1 to 3: <a href="TODO"><strong>TODO</strong></a></p>
+<p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set inital sp for riscv core. This function should be only called when initing.
+## TODO: Support Non-Zero Boot Hart.
+.macro riscv_set_inital_sp base, size, hartid
+  la      t0, \base
+  li      t1, \size
+  mul     t1, \hartid, t1
+  add     t0, t0, t1
+
+  ## Ensure the last XCPTCONTEXT_SIZE is reserved for non boot CPU
+  bnez \hartid, 998f
+  li   t1, STACK_ALIGN_DOWN(\size)
+  j    999f
+998:
+  li   t1, STACK_ALIGN_DOWN(\size - XCPTCONTEXT_SIZE)
+999:
+  add  t0, t0, t1
+  mv   sp, t0
+.endm</code></pre></div>
 <p><em>How to fix this?</em></p>
 <p>Our workaround is to <strong>Always Reboot NuttX on Hart 0</strong>.</p>
 <p>TODO</p>
@@ -1030,8 +1046,57 @@ CPU2 IDLE process: Kernel 0x802019a6</code></pre></div>
 <p>That’s why we <strong>Renumber the CPUs</strong>: Boot Hart is always <strong>CPU 0</strong>. Other Harts become <strong>CPUs 1 to 3</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>TODO</code></pre></div>
 <p><em>Can’t we start One Hart and ignore the Other Harts?</em></p>
-<p>We tried here.</p>
-<p>TODO: Affinity</p>
+<p>We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>..</p>
+<div class="example-wrap"><pre class="language-bash"><code>## OSTest hangs for StarPro64 when we enable One Hart only...
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+## Oops: Thread 1 is NOT started!
+
+sem_test: Starting waiter thread 2
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 2 Started
+
+## Oops: Semaphore Value should be -1!
+waiter_func: Thread 2 initial semaphore value = 0
+waiter_func: Thread 2 waiting on semaphore
+## Hangs here</code></pre></div>
+<p>Compare the above with <a href="https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23"><strong>SG2000 sem_test</strong></a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## OSTest runs OK for SG2000...
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+## Yep Thread 1 is started
+waiter_func: Thread 1 Started
+
+sem_test: Starting waiter thread 2
+waiter_func: Thread 1 initial semaphore value = 0
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 1 waiting on semaphore
+waiter_func: Thread 2 Started
+
+## Yep Semaphore Value is -1
+waiter_func: Thread 2 initial semaphore value = -1
+waiter_func: Thread 2 waiting on semaphore
+sem_test: Starting poster thread 3
+## Completes successfully</code></pre></div>
+<p>Here’s the problem: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253"><strong>sem_test</strong></a> calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412"><strong>nx_pthread_create</strong></a> to create a PThread for Thread #1…</p>
+<div class="example-wrap"><pre class="language-c"><code>int nx_pthread_create(...) { ...
+#ifdef CONFIG_SMP
+  // pthread_setup_scheduler() will set the affinity mask by inheriting the
+  // setting from the parent task.  We need to override this setting
+  // with the value from the pthread attributes unless that value is
+  // zero:  Zero is the default value and simply means to inherit the
+  // parent thread&#39;s affinity mask.
+  if (attr-&gt;affinity != 0) {
+    ptcb-&gt;cmn.affinity = attr-&gt;affinity;
+  }
+#endif</code></pre></div>
+<p>But the New Thread defaults to <strong>No Affinity</strong>, it doesn’t have <strong>Affinity for CPU 0</strong>. So it gets allocated to <strong>Another CPU</strong>. Which never runs! Hence <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
+<p><a href="https://youtu.be/70DQ4YlQMMw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong></a></p>
 <p><em>How to enable Multple Harts?</em></p>
 <p>TODO</p>
 <h1 id="eswin-ai-sample-user-guide"><a class="doc-anchor" href="#eswin-ai-sample-user-guide">§</a>13 ESWIN AI Sample User Guide</h1>
@@ -1108,588 +1173,7 @@ Hello, World!!   </code></pre></div></li>
 <p>power on</p>
 <p>read</p>
 <p>power off</p>
-<h1 id="semaphore-fail"><a class="doc-anchor" href="#semaphore-fail">§</a>18 Semaphore Fail</h1>
-<p>https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6</p>
-<div class="example-wrap"><pre class="language-text"><code>user_main: semaphore test
-sem_test: Initializing semaphore to 0
-sem_test: Starting waiter thread 1
-sem_test: Set thread 1 priority to 191
-
-&lt;&lt;
-???
-&gt;&gt;
-
-sem_test: Starting waiter thread 2
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 2 Started
-&lt;&lt;&lt;
-waiter_func: Thread 2 initial semaphore value = 0
-&gt;&gt;&gt;
-waiter_func: Thread 2 waiting on semaphore</code></pre></div>
-<p>Compare with SG2000: https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23</p>
-<div class="example-wrap"><pre class="language-text"><code>user_main: semaphore test
-sem_test: Initializing semaphore to 0
-sem_test: Starting waiter thread 1
-sem_test: Set thread 1 priority to 191
-
-&lt;&lt;
-waiter_func: Thread 1 Started
-&gt;&gt;
-
-sem_test: Starting waiter thread 2
-waiter_func: Thread 1 initial semaphore value = 0
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 1 waiting on semaphore
-waiter_func: Thread 2 Started
-&lt;&lt;&lt;
-waiter_func: Thread 2 initial semaphore value = -1
-&gt;&gt;&gt;
-waiter_func: Thread 2 waiting on semaphore
-sem_test: Starting poster thread 3</code></pre></div>
-<p>Thread 1 isn’t started!</p>
-<p>https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/ostest_main.c#L435-L439</p>
-<div class="example-wrap"><pre class="language-c"><code>      /* Verify pthreads and semaphores */
-
-      printf(&quot;\nuser_main: semaphore test\n&quot;);
-      sem_test();
-      check_test_memory_usage();</code></pre></div>
-<p>https://github.com/lupyuen2/wip-nuttx-apps/blob/starpro64/testing/ostest/sem.c#L49-L73</p>
-<div class="example-wrap"><pre class="language-c"><code>static void *waiter_func(void *parameter)
-{
-  int id  = (int)((intptr_t)parameter);
-  int status;
-  int value;
-
-  printf(&quot;waiter_func: Thread %d Started\n&quot;,  id);
-
-  /* Take the semaphore */
-
-  status = sem_getvalue(&amp;sem, &amp;value);
-  if (status &lt; 0)
-    {
-      printf(&quot;waiter_func: &quot;
-             &quot;ERROR thread %d could not get semaphore value\n&quot;,  id);
-      ASSERT(false);
-    }
-  else
-    {
-      printf(&quot;waiter_func: &quot;
-             &quot;Thread %d initial semaphore value = %d\n&quot;,  id, value);
-    }
-
-  printf(&quot;waiter_func: Thread %d waiting on semaphore\n&quot;,  id);
-  status = sem_wait(&amp;sem);</code></pre></div>
-<p>sem_wait:</p>
-<p>https://github.com/apache/nuttx/blob/824dd706177444d020ebb20acdc08c294ab0db37/libs/libc/semaphore/sem_wait.c#L59</p>
-<div class="example-wrap"><pre class="language-c"><code>int sem_wait(FAR sem_t *sem)
-{
-  int errcode;
-  int ret;
-
-  if (sem == NULL)
-    {
-      set_errno(EINVAL);
-      return ERROR;
-    }
-
-  /* sem_wait() is a cancellation point */
-
-  if (enter_cancellation_point())
-    {
-#ifdef CONFIG_CANCELLATION_POINTS
-      /* If there is a pending cancellation, then do not perform
-       * the wait.  Exit now with ECANCELED.
-       */
-
-      errcode = ECANCELED;
-      goto errout_with_cancelpt;
-#endif
-    }
-
-  /* Let nxsem_wait() do the real work */
-
-  ret = nxsem_wait(sem);
-  if (ret &lt; 0)
-    {
-      errcode = -ret;
-      goto errout_with_cancelpt;
-    }
-
-  leave_cancellation_point();
-  return OK;
-
-errout_with_cancelpt:
-  set_errno(errcode);
-  leave_cancellation_point();
-  return ERROR;
-}</code></pre></div>
-<p>nxsem_wait: https://github.com/lupyuen2/wip-nuttx/blob/starpro64/sched/semaphore/sem_wait.c#L248-L271</p>
-<div class="example-wrap"><pre class="language-c"><code>int nxsem_wait(FAR sem_t *sem)
-{
-  /* This API should not be called from interrupt handlers &amp; idleloop */
-
-  DEBUGASSERT(sem != NULL &amp;&amp; up_interrupt_context() == false);
-  DEBUGASSERT(!OSINIT_IDLELOOP() || !sched_idletask());
-
-  /* If this is a mutex, we can try to get the mutex in fast mode,
-   * else try to get it in slow mode.
-   */
-
-#if !defined(CONFIG_PRIORITY_INHERITANCE) &amp;&amp; !defined(CONFIG_PRIORITY_PROTECT)
-  if (sem-&gt;flags &amp; SEM_TYPE_MUTEX)
-    {
-      int32_t old = 1;
-      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &amp;old, 0))
-        {
-          return OK;
-        }
-    }
-#endif
-
-  return nxsem_wait_slow(sem);
-}</code></pre></div>
-<p>nxsem_wait in disassembly: nuttx.S</p>
-<div class="example-wrap"><pre class="language-text"><code>/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:260
-  /* If this is a mutex, we can try to get the mutex in fast mode,
-   * else try to get it in slow mode.
-   */
-
-#if !defined(CONFIG_PRIORITY_INHERITANCE) &amp;&amp; !defined(CONFIG_PRIORITY_PROTECT)
-  if (sem-&gt;flags &amp; SEM_TYPE_MUTEX)
-    80204f96:	0044c783          	lbu	a5,4(s1)
-    80204f9a:	8b91                	and	a5,a5,4
-    80204f9c:	e7a1                	bnez	a5,80204fe4 &lt;nxsem_wait+0xbc&gt;
-nxsem_wait_slow():
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:82
-  flags = enter_critical_section();
-    80204f9e:	b5bfc0ef          	jal	80201af8 &lt;enter_critical_section_wo_note&gt;
-    80204fa2:	89aa                	mv	s3,a0
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:88
-  if (atomic_fetch_sub(NXSEM_COUNT(sem), 1) &gt; 0)
-    80204fa4:	577d                	li	a4,-1
-    80204fa6:	0f50000f          	fence	iorw,ow
-    80204faa:	04e4a7af          	amoadd.w.aq	a5,a4,(s1)
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:88 (discriminator 1)
-    80204fae:	2781                	sext.w	a5,a5
-    80204fb0:	04f04e63          	bgtz	a5,8020500c &lt;nxsem_wait+0xe4&gt;
-up_irq_save():
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:766
-  __asm__ __volatile__
-    80204fb4:	4a09                	li	s4,2
-    80204fb6:	100a3a73          	csrrc	s4,sstatus,s4
-this_task():
-/Users/luppy/starpro64/nuttx/sched/sched/sched.h:381
-    80204fba:	80efc0ef          	jal	80200fc8 &lt;up_this_cpu&gt;
-/Users/luppy/starpro64/nuttx/sched/sched/sched.h:381 (discriminator 1)
-    80204fbe:	001fe917          	auipc	s2,0x1fe
-    80204fc2:	ef290913          	add	s2,s2,-270 # 80402eb0 &lt;g_assignedtasks&gt;
-    80204fc6:	00451793          	sll	a5,a0,0x4
-    80204fca:	97ca                	add	a5,a5,s2
-    80204fcc:	6380                	ld	s0,0(a5)
-up_irq_restore():
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:792
-  __asm__ __volatile__
-    80204fce:	100a1073          	csrw	sstatus,s4
-nxsem_wait_slow():
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:118 (discriminator 1)
-      DEBUGASSERT(rtcb-&gt;waitobj == NULL);
-    80204fd2:	6c7c                	ld	a5,216(s0)
-    80204fd4:	c3a9                	beqz	a5,80205016 &lt;nxsem_wait+0xee&gt;
-    80204fd6:	0001b617          	auipc	a2,0x1b
-    80204fda:	1a260613          	add	a2,a2,418 # 80220178 &lt;_srodata+0x1200&gt;
-    80204fde:	07600593          	li	a1,118
-    80204fe2:	b78d                	j	80204f44 &lt;nxsem_wait+0x1c&gt;
-nxsem_wait():
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:263
-    {
-      int32_t old = 1;
-      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &amp;old, 0))
-    80204fe4:	4705                	li	a4,1
-    80204fe6:	1004a7af          	lr.w	a5,(s1)
-    80204fea:	00e79563          	bne	a5,a4,80204ff4 &lt;nxsem_wait+0xcc&gt;
-    80204fee:	1c04a6af          	sc.w.aq	a3,zero,(s1)
-    80204ff2:	faf5                	bnez	a3,80204fe6 &lt;nxsem_wait+0xbe&gt;
-    80204ff4:	37fd                	addw	a5,a5,-1
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:265
-        {
-          return OK;
-    80204ff6:	4401                	li	s0,0
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:263
-      if (atomic_try_cmpxchg_acquire(NXSEM_COUNT(sem), &amp;old, 0))
-    80204ff8:	f3dd                	bnez	a5,80204f9e &lt;nxsem_wait+0x76&gt;
-/Users/luppy/starpro64/nuttx/sched/semaphore/sem_wait.c:271
-        }
-    }
-#endif
-
-  return nxsem_wait_slow(sem);
-}</code></pre></div>
-<p>Log sem_wait</p>
-<p>https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/semaphore/sem_wait.c#L170-L172</p>
-<div class="example-wrap"><pre class="language-c"><code>      *(volatile uint8_t *) 0x50900000ul = &#39;3&#39;; ////
-      up_switch_context(this_task(), rtcb);
-      *(volatile uint8_t *) 0x50900000ul = &#39;4&#39;; ////</code></pre></div>
-<p>Output log:</p>
-<div class="example-wrap"><pre class="language-text"><code>430101010101010101010101010101010100
-4343E43n43d43 43o43f43 43t43e43s43t43 43m43e43m43o43r43y43 43u43s43a43g43e43:43
-4343V43A43R43I43A43B43L401013E43 43 43B43E43F43O43R43E43 43 43 43A43F43T43E43R43
-4343=43=43=43=43=43=43=43=43 43=43=43=43=43=43=43=43=401013 43=43=43=43=43=43=43=43=43
-4343a43r43e43n43a43 43 43 43 43 43 43 43843143043043043 43 43 43 43843143043043043
-  43o40101010101010101[CPU0] nxtask_activate: ostest pid=21,TCB=0x80413028
-430133r43d43b43l43k43s43 43 43 43 43 43 43 43 43 43343 43 43 43 43 43 43 43 43343
-4343m43x43o43r43d43b43l43k43 401013 43 43 43743843f43f43843 43 43 43 43743843f43f43843
-  43u43o43r43d43b43l43k43s43 43 43 43 43 43443543843843 43 43 43 40101010101[CPU0] nxtask_activate: ostest pid=25,TCB=0x80413e08
-43013 43443543843843
-4343f43o43r43d43b43l43k43s43 43 43 43 43743c43a43743843 43 43 43 43743c43a401013743843
-4343
-4343u43s43e43r43_43m43a43i43n43:43 43s43e43m43a43p43h43o43r43e43 43t43e43s43t43
-  43s43e43m43_43t43e43s43t43:43 43I43n43i43t43i43a43l43i401013z43i43n43g43 43s43e43m43a43p43h43o43r43e43 43t43o43 43043
-  43s43e43m43_43t43e43s43t43:43 43S43t43a43r43t43i43n43g43 43w43a43i43t43er thread 1
-sem_test: Set thread 1 priority to 191
-sem_test: Starting waiter thread 2
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 2 Started
-waiter_func: Thread 2 initial semaphore value = 0
-waiter_func: Thread 2 waiting on semaphore</code></pre></div>
-<p>https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/semaphore/sem_wait.c#L76-L84</p>
-<div class="example-wrap"><pre class="language-c"><code>
-  /* The following operations must be performed with interrupts
-   * disabled because nxsem_post() may be called from an interrupt
-   * handler.
-   */
-
-   *(volatile uint8_t *) 0x50900000ul = &#39;5&#39;; ////
-   flags = enter_critical_section();
-   *(volatile uint8_t *) 0x50900000ul = &#39;6&#39;; ////</code></pre></div>
-<p>Output log:</p>
-<div class="example-wrap"><pre class="language-text"><code>84565631456563045656304565630456563 456563 456563 456563 456563845656314565630456563045656304565456563
-      456563o40101010101010101[CPU0] nxtask_activate: ostest pid=21,TCB=0x80413028
-010156563563r456563d456563b456563l456563k456563s456563 456563 456563 456563 456563 456563 4565634565633 456563 4565633456563 456563 456563 456563 456563 456563 456563 456563 4565633456563
-      456563m456563x456563o456563r456563d456563b456563l456563k456563 4010156563 456563 456563 45656374565638456563f456563f4565638456563 456563 456563 456563 45656374565638456563f456563f4565638456563
-      456563u456563o456563r456563d456563b456563l456563k456563s456563 456563 456563 456563 456563 4565634456563545656384565638456563 456563 456563 456563 40101010101[CPU0] nxtask_activate: ostest pid=25,TCB=0x80413e08
-456563563 4565634456563545656384565638456563
-      456563f456563o456563r456563d456563b456563l456563k456563s456563 456563 456563 456563 4565637456563c456563a45656374565638456563 456563 456563 456563 4565637456563c456563a401015656374565638456563
-456563456563
-      456563u456563s456563e456563r456563_456563m456563a456563i456563n456563:456563 456563s4565634565633m456563a456563p456563h456563o456563r456563e456563 456563t456563e456563s456563t456563
-      456563s456563e456563m456563_456563t456563e456563s456563t456563:456563 456563I456563n456563i456563t456563i456563a456563l456563i4010156563z456563i456563n456563g456563 456563s456563e456563m456563a456563p456563h456563o456563r456563e456563 456563t456563o456563 4565630456563
-      456563s456563e456563m456563_456563t456563e456563s456563t456563:456563 456563S456563t456563a456563r456563t456563i456563n456563g456563 456563w456563a456563i456563t4563er thread 1
-sem_test: Set thread 1 priority to 191
-sem_test: Starting waiter thread 2
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 2 Started
-waiter_func: Thread 2 initial semaphore value = 0
-waiter_func: Thread 2 waiting on semaphore</code></pre></div>
-<p>Hang in up_switch_context:</p>
-<p>up_switch_context:</p>
-<div class="example-wrap"><pre class="language-text"><code>000000008020d362 &lt;up_switch_context&gt;:
-up_switch_context():
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:61
- *   rtcb: Refers to the running task which will be blocked.
- *
- ****************************************************************************/
-
-void up_switch_context(struct tcb_s *tcb, struct tcb_s *rtcb)
-{
-    8020d362:	1101                	add	sp,sp,-32
-    8020d364:	e822                	sd	s0,16(sp)
-    8020d366:	e426                	sd	s1,8(sp)
-    8020d368:	e04a                	sd	s2,0(sp)
-    8020d36a:	ec06                	sd	ra,24(sp)
-    8020d36c:	842a                	mv	s0,a0
-    8020d36e:	84ae                	mv	s1,a1
-up_irq_save():
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:766
-    8020d370:	4909                	li	s2,2
-    8020d372:	10093973          	csrrc	s2,sstatus,s2
-up_interrupt_context():
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:832
-  bool ret = g_interrupt_context[up_this_cpu()];
-    8020d376:	c53f30ef          	jal	80200fc8 &lt;up_this_cpu&gt;
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:832 (discriminator 1)
-    8020d37a:	001f9797          	auipc	a5,0x1f9
-    8020d37e:	5de78793          	add	a5,a5,1502 # 80406958 &lt;g_interrupt_context&gt;
-    8020d382:	97aa                	add	a5,a5,a0
-    8020d384:	0007c783          	lbu	a5,0(a5)
-    8020d388:	0ff7f793          	zext.b	a5,a5
-up_irq_restore():
-/Users/luppy/starpro64/nuttx/include/arch/irq.h:792
-  __asm__ __volatile__
-    8020d38c:	10091073          	csrw	sstatus,s2
-up_switch_context():
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:64 (discriminator 1)
-  /* Are we in an interrupt handler? */
-
-  if (up_interrupt_context())
-    8020d390:	c785                	beqz	a5,8020d3b8 &lt;up_switch_context+0x56&gt;
-riscv_savecontext():
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:262
-  riscv_savefpu(tcb-&gt;xcp.regs, riscv_fpuregs(tcb));
-    8020d392:	1504b503          	ld	a0,336(s1)
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:262 (discriminator 1)
-    8020d396:	10850593          	add	a1,a0,264
-    8020d39a:	868f30ef          	jal	80200402 &lt;riscv_savefpu&gt;
-riscv_restorecontext():
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:277
-  riscv_restorefpu(tcb-&gt;xcp.regs, riscv_fpuregs(tcb));
-    8020d39e:	15043503          	ld	a0,336(s0)
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:277 (discriminator 1)
-    8020d3a2:	10850593          	add	a1,a0,264
-    8020d3a6:	8f8f30ef          	jal	8020049e &lt;riscv_restorefpu&gt;
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_internal.h:289
-  __asm__ __volatile__(&quot;mv tp, %0&quot; : : &quot;r&quot;(tcb));
-    8020d3aa:	8222                	mv	tp,s0
-up_switch_context():
-/Users/luppy/starpro64/nuttx/arch/risc-v/src/common/riscv_switchcontext.c:93
-       * head of the ready-to-run list.  It does not &#39;return&#39; in the
-       * normal sense.  When it does return, it is because the blocked
-       * task is again ready to run and has execution priority.
-       */
-    }
-}</code></pre></div><h1 id="thread-1-isnt-started"><a class="doc-anchor" href="#thread-1-isnt-started">§</a>19 Thread 1 isn’t started!</h1>
-<p>pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/libs/libc/pthread/pthread_create.c#L88-L93</p>
-<div class="example-wrap"><pre class="language-c"><code>int pthread_create(FAR pthread_t *thread, FAR const pthread_attr_t *attr,
-                   pthread_startroutine_t pthread_entry, pthread_addr_t arg)
-{
-  return nx_pthread_create(pthread_startup, thread, attr, pthread_entry,
-                           arg);
-}</code></pre></div>
-<p>nx_pthread_create: https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412</p>
-<div class="example-wrap"><pre class="language-c"><code>int nx_pthread_create(pthread_trampoline_t trampoline, FAR pthread_t *thread,
-                      FAR const pthread_attr_t *attr,
-                      pthread_startroutine_t entry, pthread_addr_t arg)
-{
-  pthread_attr_t default_attr = g_default_pthread_attr;
-  FAR struct pthread_tcb_s *ptcb;
-  struct sched_param param;
-  FAR struct tcb_s *parent;
-  int policy;
-  int errcode;
-  int ret;
-
-  DEBUGASSERT(trampoline != NULL);
-
-  parent = this_task();
-  DEBUGASSERT(parent != NULL);
-
-  /* If attributes were not supplied, use the default attributes */
-
-  if (!attr)
-    {
-      /* Inherit parent priority by default. except idle */
-
-      if (!is_idle_task(parent))
-        {
-          default_attr.priority = parent-&gt;sched_priority;
-        }
-
-      attr = &amp;default_attr;
-    }
-
-  /* Allocate a TCB for the new task. */
-
-  ptcb = kmm_zalloc(sizeof(struct pthread_tcb_s));
-  if (!ptcb)
-    {
-      serr(&quot;ERROR: Failed to allocate TCB\n&quot;);
-      return ENOMEM;
-    }
-
-  ptcb-&gt;cmn.flags |= TCB_FLAG_FREE_TCB;
-
-  /* Initialize the task join */
-
-  nxtask_joininit(&amp;ptcb-&gt;cmn);
-
-#ifndef CONFIG_PTHREAD_MUTEX_UNSAFE
-  spin_lock_init(&amp;ptcb-&gt;cmn.mutex_lock);
-#endif
-
-  /* Bind the parent&#39;s group to the new TCB (we have not yet joined the
-   * group).
-   */
-
-  group_bind(ptcb);
-
-#ifdef CONFIG_ARCH_ADDRENV
-  /* Share the address environment of the parent task group. */
-
-  ret = addrenv_join(this_task(), (FAR struct tcb_s *)ptcb);
-  if (ret &lt; 0)
-    {
-      errcode = -ret;
-      goto errout_with_tcb;
-    }
-#endif
-
-  if (attr-&gt;detachstate == PTHREAD_CREATE_DETACHED)
-    {
-      ptcb-&gt;cmn.flags |= TCB_FLAG_DETACHED;
-    }
-
-  if (attr-&gt;stackaddr)
-    {
-      /* Use pre-allocated stack */
-
-      ret = up_use_stack((FAR struct tcb_s *)ptcb, attr-&gt;stackaddr,
-                         attr-&gt;stacksize);
-    }
-  else
-    {
-      /* Allocate the stack for the TCB */
-
-      ret = up_create_stack((FAR struct tcb_s *)ptcb, attr-&gt;stacksize,
-                            TCB_FLAG_TTYPE_PTHREAD);
-    }
-
-  if (ret != OK)
-    {
-      errcode = ENOMEM;
-      goto errout_with_tcb;
-    }
-
-#if defined(CONFIG_ARCH_ADDRENV) &amp;&amp; \
-    defined(CONFIG_BUILD_KERNEL) &amp;&amp; defined(CONFIG_ARCH_KERNEL_STACK)
-  /* Allocate the kernel stack */
-
-  ret = up_addrenv_kstackalloc(&amp;ptcb-&gt;cmn);
-  if (ret &lt; 0)
-    {
-      errcode = ENOMEM;
-      goto errout_with_tcb;
-    }
-#endif
-
-  /* Initialize thread local storage */
-
-  ret = tls_init_info(&amp;ptcb-&gt;cmn);
-  if (ret != OK)
-    {
-      errcode = -ret;
-      goto errout_with_tcb;
-    }
-
-  /* Should we use the priority and scheduler specified in the pthread
-   * attributes?  Or should we use the current thread&#39;s priority and
-   * scheduler?
-   */
-
-  if (attr-&gt;inheritsched == PTHREAD_INHERIT_SCHED)
-    {
-      /* Get the priority (and any other scheduling parameters) for this
-       * thread.
-       */
-
-      ret = nxsched_get_param(0, &amp;param);
-      if (ret &lt; 0)
-        {
-          errcode = -ret;
-          goto errout_with_tcb;
-        }
-
-      /* Get the scheduler policy for this thread */
-
-      policy = nxsched_get_scheduler(0);
-      if (policy &lt; 0)
-        {
-          errcode = -policy;
-          goto errout_with_tcb;
-        }
-    }
-  else
-    {
-      /* Use the scheduler policy and policy the attributes */
-
-      policy                             = attr-&gt;policy;
-      param.sched_priority               = attr-&gt;priority;
-
-#ifdef CONFIG_SCHED_SPORADIC
-      param.sched_ss_low_priority        = attr-&gt;low_priority;
-      param.sched_ss_max_repl            = attr-&gt;max_repl;
-      param.sched_ss_repl_period.tv_sec  = attr-&gt;repl_period.tv_sec;
-      param.sched_ss_repl_period.tv_nsec = attr-&gt;repl_period.tv_nsec;
-      param.sched_ss_init_budget.tv_sec  = attr-&gt;budget.tv_sec;
-      param.sched_ss_init_budget.tv_nsec = attr-&gt;budget.tv_nsec;
-#endif
-    }
-
-#ifdef CONFIG_SCHED_SPORADIC
-  if (policy == SCHED_SPORADIC)
-    {
-      FAR struct sporadic_s *sporadic;
-      sclock_t repl_ticks;
-      sclock_t budget_ticks;
-
-      /* Convert timespec values to system clock ticks */
-
-      repl_ticks = clock_time2ticks(&amp;param.sched_ss_repl_period);
-      budget_ticks = clock_time2ticks(&amp;param.sched_ss_init_budget);
-
-      /* The replenishment period must be greater than or equal to the
-       * budget period.
-       */
-
-      if (repl_ticks &lt; budget_ticks)
-        {
-          errcode = EINVAL;
-          goto errout_with_tcb;
-        }
-
-      /* Initialize the sporadic policy */
-
-      ret = nxsched_initialize_sporadic(&amp;ptcb-&gt;cmn);
-      if (ret &gt;= 0)
-        {
-          sporadic               = ptcb-&gt;cmn.sporadic;
-          DEBUGASSERT(sporadic != NULL);
-
-          /* Save the sporadic scheduling parameters */
-
-          sporadic-&gt;hi_priority  = param.sched_priority;
-          sporadic-&gt;low_priority = param.sched_ss_low_priority;
-          sporadic-&gt;max_repl     = param.sched_ss_max_repl;
-          sporadic-&gt;repl_period  = repl_ticks;
-          sporadic-&gt;budget       = budget_ticks;
-
-          /* And start the first replenishment interval */
-
-          ret = nxsched_start_sporadic(&amp;ptcb-&gt;cmn);
-        }
-
-      /* Handle any failures */
-
-      if (ret &lt; 0)
-        {
-          errcode = -ret;
-          goto errout_with_tcb;
-        }
-    }
-#endif
-
-  /* Initialize the task control block */
-
-  ret = pthread_setup_scheduler(ptcb, param.sched_priority, pthread_start,
-                                entry);
-  if (ret != OK)
-    {
-      errcode = EBUSY;
-      goto errout_with_tcb;
-    }
-
-#ifdef CONFIG_SMP
-  /* pthread_setup_scheduler() will set the affinity mask by inheriting the
-   * setting from the parent task.  We need to override this setting
-   * with the value from the pthread attributes unless that value is
-   * zero:  Zero is the default value and simply means to inherit the
-   * parent thread&#39;s affinity mask.
-   */
-
-  if (attr-&gt;affinity != 0)
-    {
-      ptcb-&gt;cmn.affinity = attr-&gt;affinity;
-    }
-#endif</code></pre></div>
-<p>How to set affinity?</p>
-<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>20 Multiple CPU</h1>
+<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>18 Multiple CPU</h1>
 <p>boot_hartid=2
 hart=0, cpu=1
 hart=1, cpu=2
@@ -1699,121 +1183,7 @@ hart=3, cpu=3</p>
 cpu=1, hart=0
 cpu=2, hart=1
 cpu=3, hart=3</p>
-<div class="example-wrap"><pre class="language-text"><code>123Hello NuttX!
-Hart1
-ABC[123Hello NuttX!
-Hart0
-Hart0
-CPU0] nx_start: Entry
-[CPU0] uart_register: Registering /dev/console
-[CPU0] uart_register: Registering /dev/ttyS0
-[CPU0] up_cpu_start: CPU=1
-V[CCP[UC0P]U 0]r idsucvm_pc_pauss_ebroto_t:in CfPo:U0  CSurtarretnetd
-2er[sCPioU0n]:  nNxu_titdX l e1_2t.r4am.p0o 0l2i6n5e:46 C7P5Ucb0-: diBregtiyn nFeibn g 23I dl20e 2L5o o20p:
- 9:44 risc-v
-[CPU0] dump_assert_info: Assertion failed (g_cpu_irqset &amp; (1 &lt;&lt; cpu)) == 0: at file: irq/irq_csection.c:232 task(CPU0): CPU0 IDLE process: Kernel 0x80201dfa
-[CPU0] up_dump_register: EPC: 0000000080202d1a</code></pre></div>
-<p>TODO: Support non-zero boot hart.</p>
-<p>https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423</p>
-<div class="example-wrap"><pre class="language-text"><code>/****************************************************************************
- * Name: riscv_set_inital_sp
- *
- * Description:
- *   Set inital sp for riscv core. This function should be only called
- *   when initing.
- *
- *   sp (stack top) = sp base + idle stack size * hart id
- *   sp (stack base) = sp (stack top) + idle stack size * - XCPTCONTEXT_SIZE
- *
- *   Note: The XCPTCONTEXT_SIZE byte after stack base is reserved for
- *         up_initial_state since we are already running and using
- *         the per CPU idle stack.
- *
- *   TODO: Support non-zero boot hart.
- *
- * Parameter:
- *   base - Pointer to where the stack is allocated (e.g. _ebss)
- *   size - Stack size for pre cpu to allocate
- *   hartid - Hart id register of this hart (Usually a0)
- *
- ****************************************************************************/
-.macro riscv_set_inital_sp base, size, hartid
-  la      t0, \base
-  li      t1, \size
-  mul     t1, \hartid, t1
-  add     t0, t0, t1
-
-  /* ensure the last XCPTCONTEXT_SIZE is reserved for non boot CPU */
-
-  bnez \hartid, 998f
-  li   t1, STACK_ALIGN_DOWN(\size)
-  j    999f
-
-998:
-  li   t1, STACK_ALIGN_DOWN(\size - XCPTCONTEXT_SIZE)
-
-999:
-  add  t0, t0, t1
-  mv   sp, t0
-.endm</code></pre></div>
-<p>Stack is full:</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-
-123Hello NuttX!
-Hart2
-123123123ABC[CPU0] nx_start: Entry
-[CPU0] uart_register: Registering /dev/console
-[CPU0] uart_register: Registering /dev/ttyS0
-[CPU0] up_cpu_start: CPU=1
-VeCCP[UC0P]U 0]r isdcuvm_p_capsus_ebroto_t:i nfCPoU: 0C uStrraertnte d
-: [rCsPioU0n:]  Nnuxt_tiXd l e_1t2r.a4m.p0o 9l8ian4e:d 65CPaU601:-d iBretgiy nFnienbg  23I d2le02 5Lo 2op1
- 13:42 risc-v
-[CPU0] dump_assert_info: Assertion failed (g_cpu_irqset &amp; (1 &lt;&lt; cpu)) == 0: at file: irq/irq_csection.c:232 task(CPU0): CPU0 IDLE process: Kernel 0x80201dfa
-[CPU0] up_dump_register: EPC: 0000000080202d1a
-[CPU0] up_dump_register: A0: 0000000080404d30 A1: 00000000000000e8 A2: 000000008021fc28 A3: 0000000000000000
-[CPU0] up_dump_register: A4: 0000000080402740 A5: 0000000000000002 A6: 0000000000000000 A7: 0000000000735049
-[CPU0] up_dump_register: T0: 00000000802000c0 T1: 0000000000000007 T2: 0000000000000000 T3: 000000008040d090
-[CPU0] up_dump_register: T4: 000000008040d088 T5: 0000000080200000 T6: 00000000ed4ec178
-[CPU0] up_dump_register: S0: 0000000000000210 S1: 0000000080402760 S2: 0000000000000000 S3: 000000008021fc28
-[CPU0] up_dump_register: S4: 000000008021fb50 S5: 0000000080406968 S6: 00000000000000e8 S7: 0000000000000004
-[CPU0] up_dump_register: S8: 0000000080404d30 S9: 8000000200046020 S10: 0000000080201dfa S11: 00000000802022da
-[CPU0] up_dump_register: SP: 000000008040cd00 FP: 0000000000000210 TP: 0000000080402760 RA: 0000000080202d1a
-[CPU0] dump_stacks: ERROR: Stack pointer is not within the stack
-[CPU0] dump_stackinfo: IRQ Stack:
-[CPU0] dump_stackinfo:   base: 0x80401e60
-[CPU0] dump_stackinfo:   size: 00002048
-[CPU0] stack_dump: 0x80402660: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[CPU0] dump_stackinfo: Kernel Stack:
-[CPU0] dump_stackinfo:   base: 0
-[CPU0] dump_stackinfo:   size: 00003072
-[CPU0] stack_dump: 0xc00: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[CPU0] dump_stackinfo: User Stack:
-[CPU0] dump_stackinfo:   base: 0x8040b010
-[CPU0] dump_stackinfo:   size: 00003056
-[CPU0] stack_dump: 0x8040b938: 000000008040b9d0 0000000000000020 0000000080209e02 deadbeefdeadbeef 000000008040b9d0 000000008040b9d0 000000008021f0ea deadbeefdeadbeef
-[CPU0] stack_dump: 0x8040b978: 0000000080228928 0000000000000001 000000008040ba20 000000000000000a 0000000080209e02 fffffffffffffffc 000000008040ba20 000000008040ba20
-[CPU0] stack_dump: 0x8040b9b8: 000000008021f0ea deadbeefdeadbeef 000000008021fabf 0000000000000001 0000000000000000 000000008040bb80 0000000000000000 fffffffffffffffc
-[CPU0] stack_dump: 0x8040b9f8: 000000000000000a 000000008040bae8 000000008021dacc deadbeefdeadbeef 0a0000008022a320 0000000000000000 000000000000002e 000000008040bae8
-[CPU0] stack_dump: 0x8040ba38: 000000008020b02a 0000000000002000 0000000000000004 8000000a00006800 0000000000000030 fffffffffffffff3 0000000000000000 000000008040bb38
-[CPU0] stack_dump: 0x8040ba78: 0000000000000000 0000000000000000 0000000080043710 0000000000002000 0000000000000004 8000000a00006800 0000000000000000 fffffffffffffff3
-[CPU0] stack_dump: 0x8040bab8: 0000000000000000 000000008040bb38 000000008021faa0 0000000000000007 000000008021beb0 deadbeefdeadbeef deadbeef00000035 000000008021da8c
-[CPU0] stack_dump: 0x8040baf8: 000000008021da2a 000000008020bdc6 deadbeef0000000a 0000000080200000 0000000000000000 deadbeefdeadbeef 000000008020c052 deadbeefdeadbeef
-[CPU0] stack_dump: 0x8040bb38: 000000008040bb70 deadbeefdeadbeef 000000008020c072 0000000000000002 000000008040bb70 0000000080402760 0000000080202310 000000008022a320
-[CPU0] stack_dump: 0x8040bb78: 0000000000000000 0000000080402740 0000000000000002 0000000000000009 000000000000000f deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef
-[CPU0] stack_dump: 0x8040bbb8: deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef deadbeefdeadbeef
-[CPU0] stack_dump: 0x8040bbf8: deadbeefdeadbeef 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[CPU0] dump_fatal_info: Dump CPU1: RUNNING
-[CPU0] dump_fatal_info: Dump CPU2: RUNNING
-[CPU0] dump_fatal_info: Dump CPU3: RUNNING
-[CPU0] dump_tasks:    PID GROUP   CPU PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-[CPU0] dump_tasks:   ----   ---     0 --- -------- ------- --- ------- ---------- ---------------- 0x80401e60      2048         0     0.0%    irq
-[CPU0] dump_tasks:   ----   ---     1 --- -------- ------- --- ------- ---------- ---------------- 0x80401660      2048         0     0.0%    irq
-[CPU0] dump_tasks:   ----   ---     2 --- -------- ------- --- ------- ---------- ---------------- 0x80400e60      2048         0     0.0%    irq
-[CPU0] dump_tasks:   ----   ---     3 --- -------- ------- --- ------- ---------- ---------------- 0x80400660      2048         0     0.0%    irq
-[CPU0] dump_task:       0     0     0   0 FIFO     Kthread -   Running            0000000000000000 0x8040b010      3056       712    23.2%    CPU0 IDLE
-[CPU0] dump_task:       1     0     1   0 FIFO     Kthread -   Running            0000000000000000 0x8040bc10      3056       528    17.2%    CPU1 IDLE
-[CPU0] dump_task:       2     0     2   0 FIFO     Kthread -   Running            0000000000000000 0x8040c810      3056      2824    92.4%!   CPU2 IDLE
-[CPU0] dump_task:       3     0     3   0 FIFO     Kthread -   Running            0000000000000000 0x8040d410      3056      3056   100.0%!   CPU3 IDLE</code></pre></div><h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>21 Disable SMP</h1>
+<h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>19 Disable SMP</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
 <p>Remove these from defconfig:</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
@@ -1824,7 +1194,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
 <p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>22 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>20 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1869,7 +1239,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>23 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
