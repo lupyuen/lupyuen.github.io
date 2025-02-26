@@ -79,13 +79,11 @@
 <li><a href="#appendix-multiple-harts-on-starpro64" title="Appendix: Multiple Harts on StarPro64">12 Appendix: Multiple Harts on StarPro64</a><ul></ul></li>
 <li><a href="#eswin-ai-sample-user-guide" title="ESWIN AI Sample User Guide">13 ESWIN AI Sample User Guide</a><ul></ul></li>
 <li><a href="#uart" title="UART">14 UART</a><ul></ul></li>
-<li><a href="#multiple-cpu" title="Multiple CPU">15 Multiple CPU</a><ul></ul></li>
-<li><a href="#plic-multiple-harts" title="PLIC Multiple Harts">16 PLIC Multiple Harts</a><ul></ul></li>
-<li><a href="#build-loop" title="Build Loop">17 Build Loop</a><ul></ul></li>
-<li><a href="#multiple-cpu-1" title="Multiple CPU">18 Multiple CPU</a><ul></ul></li>
-<li><a href="#disable-smp" title="Disable SMP">19 Disable SMP</a><ul></ul></li>
-<li><a href="#todo" title="TODO">20 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#build-loop" title="Build Loop">15 Build Loop</a><ul></ul></li>
+<li><a href="#multiple-cpu" title="Multiple CPU">16 Multiple CPU</a><ul></ul></li>
+<li><a href="#disable-smp" title="Disable SMP">17 Disable SMP</a><ul></ul></li>
+<li><a href="#todo" title="TODO">18 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p>TODO</p>
 <p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
@@ -1010,12 +1008,15 @@ CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
   /* Clear DLAB */
 
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
-#endif  // TODO</code></pre></div><h1 id="appendix-multiple-harts-on-starpro64"><a class="doc-anchor" href="#appendix-multiple-harts-on-starpro64">§</a>12 Appendix: Multiple Harts on StarPro64</h1>
+#endif  // TODO</code></pre></div>
+<p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
+<h1 id="appendix-multiple-harts-on-starpro64"><a class="doc-anchor" href="#appendix-multiple-harts-on-starpro64">§</a>12 Appendix: Multiple Harts on StarPro64</h1>
 <p><em>Multiple Harts are problematic. Why?</em></p>
 <p>Inside EIC7700X SoC: We have <strong>Four Harts</strong> (RISC-V CPU Cores) numbered 0 to 3.</p>
 <p>This SoC will boot OpenSBI on <strong>Any Random Hart</strong>, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the <strong>Same Random Hart</strong>.</p>
 <p><em>What’s the problem?</em></p>
-<p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
+<p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. (Pic above)</p>
+<p>This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set inital sp for riscv core. This function should be only called when initing.
 ## TODO: Support Non-Zero Boot Hart.
 .macro riscv_set_inital_sp base, size, hartid
@@ -1122,58 +1123,14 @@ done</code></pre></div>
 <p>Garbage: Compute CONFIG_16550_UART0_CLOCK</p>
 <p>CONFIG_16550_UART0_IRQ=125</p>
 <p>100 + 25</p>
-<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>15 Multiple CPU</h1>
-<p>https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-
-123Hello NuttX!
-2ABC[CPU2] nx_start: Entry
-[CPU2] uart_register: Registering /dev/console
-[CPU2] uart_register: Registering /dev/ttyS0
-[CPU2] dump_assert_info: Current Version: NuttX  12.4.0 01cbd0ca38-dirty Feb 20 2025 19:56:29 risc-v
-[CPU2] dump_assert_info: Assertion failed up_cpu_index() == 0: at file: init/nx_start.c:745 task(CPU2): CPU2 IDLE process: Kernel 0x802019a6
-[CPU2] up_dump_register: EPC: 0000000080216ffc</code></pre></div>
-<p>Boot HART ID = 0. OSTest OK yay!</p>
-<p>https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b</p>
-<p>Boot HART ID = 2. Boot fail :-(</p>
-<p>https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95</p>
-<p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
-<p>StarPro64 will boot on a Random Hart: 0 to 3. But NuttX only boots on Hart 0!</p>
-<p>We need to fix the PLIC Driver in NuttX, which only works on Hart 0…</p>
-<ul>
-<li>
-<p><a href="https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b">NuttX boots OK on Hart 0</a></p>
-<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 0
-...
-[CPU0] nx_start: Entry
-[CPU0] nx_start: CPU0: Beginning Idle Loop
-
-NuttShell (NSH) NuttX-12.4.0
-nsh&gt; hello
-Hello, World!!   </code></pre></div></li>
-<li>
-<p><a href="https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95">NuttX won’t boot on other Harts</a></p>
-<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 2
-...
-[CPU0] nx_start: Entry
-[CPU0] nx_start: CPU0: Beginning Idle Loop
-[ Stuck here ]</code></pre></div></li>
-</ul>
-<h1 id="plic-multiple-harts"><a class="doc-anchor" href="#plic-multiple-harts">§</a>16 PLIC Multiple Harts</h1>
-<p><a href="https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0">Hart ID 2. OK yay!</a></p>
-<p><a href="https://gist.github.com/lupyuen/9bdfad6d283945effc994923ae99117a">Hart ID 1. OK yay!</a></p>
-<p>Fix the sleep. too slow. factor of 25</p>
-<p><a href="https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65">waiter_func: Thread 2 waiting on semaphore</a></p>
-<p><a href="https://youtu.be/70DQ4YlQMMw"><strong>Watch the Demo on YouTube</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>See the NuttX Log</strong></a></p>
-<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>17 Build Loop</h1>
+<h1 id="build-loop"><a class="doc-anchor" href="#build-loop">§</a>15 Build Loop</h1>
 <p>make</p>
 <p>make app</p>
 <p>power off</p>
 <p>power on</p>
 <p>read</p>
 <p>power off</p>
-<h1 id="multiple-cpu-1"><a class="doc-anchor" href="#multiple-cpu-1">§</a>18 Multiple CPU</h1>
+<h1 id="multiple-cpu"><a class="doc-anchor" href="#multiple-cpu">§</a>16 Multiple CPU</h1>
 <p>boot_hartid=2
 hart=0, cpu=1
 hart=1, cpu=2
@@ -1183,7 +1140,7 @@ hart=3, cpu=3</p>
 cpu=1, hart=0
 cpu=2, hart=1
 cpu=3, hart=3</p>
-<h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>19 Disable SMP</h1>
+<h1 id="disable-smp"><a class="doc-anchor" href="#disable-smp">§</a>17 Disable SMP</h1>
 <p>https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b</p>
 <p>Remove these from defconfig:</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_SMP=y
@@ -1194,7 +1151,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac</p>
 <p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
 <p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="TODO" /></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>20 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>18 TODO</h1>
 <p>https://github.com/rockos-riscv</p>
 <p>🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)</p>
 <p>Source: https://pine64.org/2024/10/02/september_2024/#starpro64</p>
@@ -1239,7 +1196,7 @@ in one word
 ghidra
 npu driver
 ollama</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
