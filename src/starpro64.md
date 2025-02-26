@@ -638,7 +638,9 @@ Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power J
 
 # What's Next
 
-TODO
+We're upstreaming StarPro64 to __NuttX Mainline__ right now! Stay tuned for updates.
+
+Many Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
