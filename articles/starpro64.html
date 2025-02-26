@@ -561,6 +561,7 @@ for (( ; ; )) do
   screen /dev/ttyUSB* 115200
   sleep 5
 done</code></pre></div>
+<p><em>(We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!)</em></p>
 <p>Build Loop:</p>
 <p>make</p>
 <p>make app</p>
@@ -610,7 +611,7 @@ done</code></pre></div>
 <p>This SoC will boot OpenSBI on <strong>Any Random Hart</strong>, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the <strong>Same Random Hart</strong>.</p>
 <p><em>What’s the problem?</em></p>
 <p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. (Pic above)</p>
-<p>This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
+<p>This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set inital sp for riscv core. This function should be only called when initing.
 ## TODO: Support Non-Zero Boot Hart.
 .macro riscv_set_inital_sp base, size, hartid
@@ -691,7 +692,7 @@ waiter_func: Thread 2 initial semaphore value = -1
 waiter_func: Thread 2 waiting on semaphore
 sem_test: Starting poster thread 3
 ## Completes successfully</code></pre></div>
-<p>Here’s the problem: <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253"><strong>sem_test</strong></a> calls <a href="https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412"><strong>nx_pthread_create</strong></a> to create a PThread for Thread #1…</p>
+<p>Here’s the problem: <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253"><strong>sem_test</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179-L412"><strong>nx_pthread_create</strong></a> to create a PThread for Thread #1…</p>
 <div class="example-wrap"><pre class="language-c"><code>int nx_pthread_create(...) { ...
 #ifdef CONFIG_SMP
   // pthread_setup_scheduler() will set the affinity mask by inheriting the
@@ -705,7 +706,7 @@ sem_test: Starting poster thread 3
 #endif</code></pre></div>
 <p>But the New Thread defaults to <strong>No CPU Affinity</strong>, it <strong>Lacks Affinity for CPU 0</strong>.</p>
 <p>So it gets allocated to <strong>Another CPU</strong>. Which never runs!</p>
-<p>Hence <a href="https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
+<p>Hence <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
 <p><a href="https://youtu.be/70DQ4YlQMMw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong></a></p>
 <p><em>In Future: How to enable Multiple Harts?</em></p>
@@ -717,8 +718,7 @@ sem_test: Starting poster thread 3
 <div class="example-wrap"><pre class="language-bash"><code>## Enable SMP with 4 CPUs
 CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4</code></pre></div>
-<p>Apache NuttX RTOS on StarPro64: Build Script</p>
-<p>We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!</p>
+<p>And remember to fix <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>.</p>
 <h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>13 Appendix: Build NuttX for StarPro64</h1>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
 <p>We may download the NuttX Image File <strong><code>Image-starpro64</code></strong> from here…</p>
