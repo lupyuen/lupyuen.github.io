@@ -87,21 +87,21 @@
 <li><a href="#paste-slowly" title="Paste Slowly">14.6 Paste Slowly</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="TODO"><strong>StarPro64 EIC7700X</strong></a> is the (literally) <em>Hot</em> New RISC-V SBC by PINE64.</p>
+<p><a href="https://pine64.org/2024/10/02/september_2024/#starpro64"><strong>StarPro64 EIC7700X</strong></a> is the (literally) <em>Hot</em> New RISC-V SBC by PINE64.</p>
+<p>TODO</p>
+<p><em>(Thanks to PINE64 for providing the Prototype StarPro64)</em></p>
+<p><img src="https://lupyuen.org/images/starpro64-fan2.jpg" alt="StarPro64 EIC7700X RISC-V SBC" /></p>
+<h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
+<p><em>StarPro64: Isn’t it a souped-up Star64?</em></p>
+<p>Nope it’s a totally different beast! (From a different maker)</p>
+<p>Docs are so much better! (??? pages)</p>
 <p>Well documented</p>
 <p>NuttX: Power efficient AI</p>
-<p><em>StarPro64 is just an upgraded Star64?</em></p>
-<p>Nope it’s a totally different beast!</p>
-<p>Docs are so much better! (??? pages)</p>
-<p><em>(Thanks to PINE64 for providing the Prototype StarPro64)</em></p>
-<h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
 <p>TODO: NPU</p>
-<p><img src="https://lupyuen.org/images/starpro64-fan2.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="Connecting USB UART Dongle to StarPro64" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
 <p><em>What happens if we boot StarPro64? Fresh from the box?</em></p>
-<p>We monitor the <strong>UART0 Port</strong> for Debug Messages. Connect our <strong>USB UART Dongle</strong> (CH340 or CP2102) to these pins (pic above)…</p>
+<p>We monitor the <strong>UART0 Port</strong> for Debug Messages. Connect our <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center">StarPro64</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><em>Yellow</em></td></tr>
 <tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><em>Blue</em></td></tr>
@@ -111,8 +111,8 @@
 <p>(Same Pins as the <strong>GPIO Header</strong> on Oz64 SG2000 and Star64 JH7110)</p>
 <p>Connect to the USB UART at <strong>115.2 kbps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
-<p>Power up the board with a <strong>Power Adapter</strong>. <a href="TODO">(Same one as <strong>Star64 JH7110</strong>)</a></p>
-<p>We’ll see <a href="TODO"><strong>OpenSBI</strong></a>…</p>
+<p>Power up the board with a <strong>Power Adapter</strong>. <a href="https://pine64.com/product/12v-5a-us-power-supply/">(Same one as <strong>Star64 JH7110</strong>)</a></p>
+<p>We’ll see <a href="https://lupyuen.github.io/articles/sbi"><strong>OpenSBI</strong></a>…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.5
    ____                    _____ ____ _____
@@ -138,7 +138,7 @@ Boot HART Base ISA        : rv64imafdchx
 Boot HART ISA Extensions  : sscofpmf,zihpm,sdtrig
 Boot HART MIDELEG         : 0x0000000000002666
 Boot HART MEDELEG         : 0x0000000000f0b509</code></pre></div></span>
-<p>Then <a href="TODO"><strong>U-Boot Bootloader</strong></a>…</p>
+<p>Then <a href="https://docs.u-boot.org/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2024.01-gaa36f0b4 (Jan 23 2025 - 02:49:59 +0000)
 CPU:     rv64imafdc_zba_zbb
@@ -156,7 +156,7 @@ Hit any key to stop autoboot:  0
 =&gt;</code></pre></div></span>
 <p>And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let’s init our eMMC…</p>
 <p><a href="https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7">(See the <strong>Boot Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/starpro64-hdmi.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-hdmi.jpg" alt="HDMI Output will show U-Boot, but not OpenSBI" /></p>
 <p><em>HDMI Output will show U-Boot, but not OpenSBI</em></p>
 <h1 id="download-the-linux-image"><a class="doc-anchor" href="#download-the-linux-image">§</a>3 Download the Linux Image</h1>
 <p><em>Is there a Linux Image for StarPro64?</em></p>
@@ -175,7 +175,7 @@ Hit any key to stop autoboot:  0
 <p><a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/root-rockos-20250123-210346.ext4.zst"><em>root-rockos-20250123-210346.ext4.zst</em></a></p>
 </li>
 </ol>
-<p>Uncompress the files and rename them. Copy them to a <a href="TODO"><strong>USB Drive</strong></a> (not MicroSD)</p>
+<p>Uncompress the files and rename them. Copy them to a <a href="https://qoto.org/@lupyuen/114036829364673417"><strong>USB Drive</strong></a> (not MicroSD)</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls -lh *.bin *.zst
 4.2M  bootloader_secboot_ddr5_pine64-starpro64.bin
 154M  boot-rockos-20250123-210346.ext4.zst
@@ -196,8 +196,8 @@ $ ls -lh *.bin *.ext4
 7.0G  root.ext4
 
 $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
-<p>We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working reliably on our Prototype StarPro64.</p>
-<p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="TODO" /></p>
+<p>We’ll skip the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst"><strong>MicroSD Image</strong></a>, because <a href="https://qoto.org/@lupyuen/114036829364673417"><strong>MicroSD Interface</strong></a> wasn’t working reliably on our Prototype StarPro64.</p>
+<p><img src="https://lupyuen.org/images/starpro64-emmc.jpg" alt="StarPro64 with eMMC" /></p>
 <h1 id="prepare-the-linux-image"><a class="doc-anchor" href="#prepare-the-linux-image">§</a>4 Prepare the Linux Image</h1>
 <p><em>How to load the Linux Image into eMMC?</em></p>
 <p>Based on the <a href="https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/Development_board_image_installation_and_upgrade_manual.pdf"><strong>ESWIN Official Doc</strong></a>…</p>
@@ -256,7 +256,7 @@ bootloader write OK</code></pre></div>
 <p><strong>Beware of Overheating!</strong> Keep StarPro64 cool, or the previous step might corrupt the <strong>SPI Boot Flash</strong> and cause unspeakable agony…</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/starpro64-fan.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-fan.jpg" alt="StarPro64 with USB Fan" /></p>
 <h1 id="starpro64-gets-smokin-hot"><a class="doc-anchor" href="#starpro64-gets-smokin-hot">§</a>5 StarPro64 Gets Smokin’ Hot!</h1>
 <p><em>Something is smelling like barbecue?</em></p>
 <p>Whoa StarPro64 is on fire: Drop it, stop it and <strong>power off</strong>! StarPro64 will show <a href="https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b#file-gistfile1-txt-L796-L894"><strong>PLL Errors</strong></a> when it overheats…</p>
@@ -270,9 +270,9 @@ reboot: HARDWARE PROTECTION shutdown (Temperature too high)</code></pre></div>
 <p>Install a <a href="https://www.lazada.sg/products/i2932991583-s20178422377.html"><strong>USB Fan</strong></a>, preferably something stronger. <em>(Pic above, boxed up with IKEA 365+)</em></p>
 <p>But don’t power it with the USB Port on StarPro64! Instead, connect it to our <a href="TODO"><strong>Smart Power Plug</strong></a>.</p>
 <p><em>Anything else we should worry about?</em></p>
-<p>The <a href="TODO"><strong>MicroSD Interface</strong></a> wasn’t working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
+<p>The <a href="https://qoto.org/@lupyuen/114036829364673417"><strong>MicroSD Interface</strong></a> wasn’t working well on our Prototype StarPro64. The MicroSD Card deactivated itself after a bit of U-Boot Access.</p>
 <p>Hence the <strong>Headless Ironman</strong>: USB Drive on StarPro64…</p>
-<p><img src="https://lupyuen.org/images/starpro64-ironman.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-ironman.jpg" alt="Headless Ironman: USB Drive on StarPro64" /></p>
 <h1 id="boot-the-linux-image"><a class="doc-anchor" href="#boot-the-linux-image">§</a>6 Boot the Linux Image</h1>
 <p><em>Earlier we flashed Linux to eMMC. Can we boot Linux now?</em></p>
 <p>Yep just power up StarPro64. eMMC will <strong>Boot Linux</strong>…</p>
@@ -305,10 +305,10 @@ mmc0: sdhci: Sys addr:  0x00000008 | Version:  0x00000005
 mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000</code></pre></div></span>
 <p>Sadly the <a href="https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/"><strong>Preview Version</strong></a> of RockOS won’t boot correctly on our Prototype StarPro64 (pic below). Hopefully we’ll sort this out real soon and do some <a href="TODO"><strong>Serious NPU LLM</strong></a>!</p>
 <p><a href="https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f">(See the <strong>Boot Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/starpro64-linux.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-linux.jpg" alt="RockOS won’t boot correctly on our Prototype StarPro64" /></p>
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>7 Settings for U-Boot Bootloader</h1>
 <p><em>Bummer. What else can we boot on StarPro64?</em></p>
-<p>Let’s snoop around <a href="TODO"><strong>U-Boot Bootloader</strong></a>. And figure out how to boot <a href="TODO"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p>Let’s snoop around <a href="https://docs.u-boot.org/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>. And figure out how to boot <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Power up StarPro64 and press <strong>Ctrl-C</strong>. At the <strong>U-Boot Prompt</strong>: We enter these commands…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ help
 printenv  - print environment variables
@@ -327,7 +327,7 @@ loadaddr=0x80200000</code></pre></div>
 <p>A-ha! This says…</p>
 <ul>
 <li>
-<p>U-Boot supports booting over TFTP: <a href="TODO"><strong>Trivial File Transfer Protocol</strong></a></p>
+<p>U-Boot supports booting over TFTP: <a href="https://lupyuen.github.io/articles/tftp"><strong>Trivial File Transfer Protocol</strong></a></p>
 </li>
 <li>
 <p>It will load the <strong>Kernel Image</strong> <em>(Linux / NuttX)</em> into RAM at <strong><code>0x8400</code> <code>0000</code></strong></p>
@@ -341,7 +341,7 @@ loadaddr=0x80200000</code></pre></div>
 </ul>
 <p>Thanks U-Boot! You told us everything we need to Boot NuttX…</p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/starpro64-nuttx.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/starpro64-nuttx.png" alt="Boot NuttX over TFTP" /></p>
 </blockquote>
 <h1 id="boot-nuttx-over-tftp"><a class="doc-anchor" href="#boot-nuttx-over-tftp">§</a>8 Boot NuttX over TFTP</h1>
 <p><em>How to boot NuttX over TFTP?</em></p>
@@ -353,7 +353,10 @@ loadaddr=0x80200000</code></pre></div>
 <p>Copy these files to our TFTP Server…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>NuttX Image: Image-starpro64</strong></a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image and Device Tree to TFTP Server
+scp Image tftpserver:/tftpboot/Image-starpro64
+## TODO
+ssh tftpserver ls -l /tftpboot/Image-starpro64</code></pre></div>
 <p><a href="TODO">(How to <strong>Build NuttX</strong> ourselves)</a></p>
 <p>(NuttX won’t read the <strong>Device Tree</strong>)</p>
 </li>
