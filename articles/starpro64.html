@@ -86,9 +86,8 @@
 <li><a href="#nuttx-config" title="NuttX Config">14.5 NuttX Config</a><ul></ul></li>
 <li><a href="#paste-slowly" title="Paste Slowly">14.6 Paste Slowly</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
-<p>TODO</p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p>StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.</p>
+<p><a href="TODO"><strong>StarPro64 EIC7700X</strong></a> is the (literally) <em>Hot</em> New RISC-V SBC by PINE64.</p>
 <p>Well documented</p>
 <p>NuttX: Power efficient AI</p>
 <p><em>StarPro64 is just an upgraded Star64?</em></p>
@@ -649,7 +648,7 @@ CPU2 IDLE process: Kernel 0x802019a6</code></pre></div>
 <li><em>hart=3, cpu=3</em></li>
 </ul>
 <p><em>Can’t we use One Hart and ignore the Other Harts?</em></p>
-<p>We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>..</p>
+<p>OK Mister Cold-Harted… We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>..</p>
 <div class="example-wrap"><pre class="language-bash"><code>## OSTest hangs for StarPro64 when we enable One Hart only...
 user_main: semaphore test
 sem_test: Initializing semaphore to 0
