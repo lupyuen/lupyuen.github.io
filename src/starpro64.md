@@ -676,7 +676,7 @@ This modification allows NuttX to Boot from any Hart...
   */
 ```
 
-Right now we support __One Single Hart__ for EIC7700X. "`TODO SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
+Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -684,15 +684,17 @@ Right now we support __One Single Hart__ for EIC7700X. "`TODO SMP`" flags the co
 
 [_arch/risc-v/src/sg2000/sg2000_start.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
-[(__Multiple Harts__ explained)](TODO)
+NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow [__Booting from Any Hart__](TODO)...
 
-TODO: NuttX boots here, called by the RISC-V Assembly Start Code
+- __If Boot Hart is Not 0:__ Restart NuttX with Hart 0
+
+- __If Boot Hart is 0:__ Continue Starting NuttX
 
 ```c
 // We remember the Boot Hart ID (0 to 3)
 int boot_hartid = -1;
 
-// NuttX boots here, called by the RISC-V Assembly Start Code
+// NuttX boots here, called by the RISC-V Assembly Boot Code
 void sg2000_start(int mhartid) {
 
   // UART Driver is not up yet. We print the primitive way.
@@ -752,7 +754,7 @@ void sg2000_start(int mhartid) {
   // Omitted: Call sg2000_start_s
 ```
 
-TODO: Boot NuttX on the Hart
+The code below will be used (in future) to support [__Multiple Harts__]...
 
 ```c
 // Boot NuttX on the Hart
@@ -777,18 +779,20 @@ cpux:
   riscv_cpu_boot(mhartid);
 ```
 
-TODO: We boot a Hart (0 to 3) by calling OpenSBI
+How to __Restart NuttX on Hart 0__? By calling __OpenSBI__...
 
 ```c
 // We start a Hart (0 to 3) by calling OpenSBI
 // addr points to our RISC-V Assembly Start Code
 static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr) {
 
+  // Make an ECALL to OpenSBI
   sbiret_t ret = sbi_ecall(
     SBI_EXT_HSM, SBI_EXT_HSM_HART_START,
     hartid, addr, 0, 0, 0, 0
   );
 
+  // Check for OpenSBI Errors
   if (ret.error < 0) { _err("Boot Hart %d failed\n", hartid); PANIC(); }
   return 0;
 }
@@ -829,7 +833,7 @@ typedef struct sbiret_s sbiret_t;
 #define SBI_EXT_HSM_HART_START (0x0)
 ```
 
-TODO: Start the other Non-Boot Harts by calling OpenSBI
+[__For Multiple Harts__](TODO) in future: We shall start the other Non-Boot Harts by calling OpenSBI...
 
 ```c
 // TODO SMP: Start the other Non-Boot Harts by calling OpenSBI
@@ -841,7 +845,7 @@ static void sg2000_boot_secondary(void) {
 }
 ```
 
-TODO: Convert Hart ID to CPU ID and Back
+[__For Multiple Harts__](TODO) in future: NuttX insists on [__Booting with CPU 0 Only__](TODO). Thus we set __Boot Hart as CPU 0__, and we Renumber the Other Harts...
 
 ```c
 // TODO SMP: Convert Hart ID to CPU ID.
@@ -867,21 +871,25 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 }
 ```
 
-So if boot_hartid=2:
-- hart=0, cpu=1
-- hart=1, cpu=2
-- hart=2, cpu=0
-- hart=3, cpu=3
+__For Example:__ If _boot_hartid=2_ then...
+- _hart=0, cpu=1_
+- _hart=1, cpu=2_
+- _hart=2, cpu=0_
+- _hart=3, cpu=3_
+
+[(__Multiple Harts__ explained)](TODO)
 
 ## PLIC Interrupt Controller
 
 [_arch/risc-v/include/sg2000/irq.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
 
 ```c
+// Number of External Interrupts
+// Offset by RISCV_IRQ_SEXT
 #define NR_IRQS (RISCV_IRQ_SEXT + 458)
 ```
 
-EIC7700X supports __458 External Interrupts__...
+That's because EIC7700X supports __458 External Interrupts__...
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -897,6 +905,7 @@ EIC7700X supports __458 External Interrupts__...
 [_arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
 
 ```c
+// PLIC Base Address
 #define SG2000_PLIC_BASE 0x0C000000ul
 ```
 
@@ -915,25 +924,19 @@ __PLIC Base Address__ is specified here...
 
 [_arch/risc-v/src/sg2000/hardware/sg2000_plic.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
-[(__Multiple Harts__ explained)](TODO)
-
 ```c
-/* Interrupt Priority */
-
+// PLIC Interrupt Priority: Single Global Register
 #define SG2000_PLIC_PRIORITY (SG2000_PLIC_BASE + 0x000000)
 
-/* Hart 0 S-Mode Interrupt Enable */
-
+// Hart 0 S-Mode Interrupt Enable and Offset Between Harts
 #define SG2000_PLIC_ENABLE0     (SG2000_PLIC_BASE + 0x002080)
 #define SG2000_PLIC_ENABLE_HART (0x100)
 
-/* Hart 0 S-Mode Priority Threshold */
-
+// Hart 0 S-Mode Priority Threshold and Offset Between Harts
 #define SG2000_PLIC_THRESHOLD0     (SG2000_PLIC_BASE + 0x201000)
 #define SG2000_PLIC_THRESHOLD_HART (0x2000)
 
-/* Hart 0 S-Mode Claim / Complete */
-
+// Hart 0 S-Mode Claim / Complete and Offset Between Harts
 #define SG2000_PLIC_CLAIM0     (SG2000_PLIC_BASE + 0x201004)
 #define SG2000_PLIC_CLAIM_HART (0x2000)
 ```
@@ -974,101 +977,103 @@ Which comes from this...
 
 </div>
 </p>
+
+[(__Multiple Harts__ explained)](TODO)
+
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
+In future we shall support [__Multiple Harts__](TODO). That's why we extended this code to __Initialize the Interrupts__ for Harts 0 to 3...
+
+```c
+// Initialize the Interrupts
+void up_irqinitialize(void) { ...
+
+  // Disable all global interrupts
+  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
+    addr = SG2000_PLIC_ENABLE0 + (hart * SG2000_PLIC_ENABLE_HART);
+    for (offset = 0; offset < (NR_IRQS - RISCV_IRQ_EXT) >> 3; offset += 4) {
+      putreg32(0x0, addr + offset);          
+    }
+  }
+
+  // Clear pendings in PLIC
+  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
+    addr = SG2000_PLIC_CLAIM0 + (hart * SG2000_PLIC_CLAIM_HART);
+    claim = getreg32(addr);
+    putreg32(claim, addr);
+  }
+
+  // Set irq threshold to 0 (permits all global interrupts)
+  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
+    addr = SG2000_PLIC_THRESHOLD0 + (hart * SG2000_PLIC_THRESHOLD_HART);
+    putreg32(0, addr);
+  }
+```
+
+We do this to __Disable the Interrupts__ for Boot Hart 0 to 3 (in future)
+
+```c
+// Disable the Interrupt
+void up_disable_irq(int irq) { ...
+
+  // Clear enable bit for the irq
+  if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
+    addr = SG2000_PLIC_ENABLE0 + 
+           (boot_hartid * SG2000_PLIC_ENABLE_HART);
+    modifyreg32(addr + (4 * (extirq / 32)),
+                1 << (extirq % 32), 0);
+  }
+```
+
+And this to __Enable the Interrupts__ for Boot Hart 0 to 3 (in future)
+
+```c
+// Enable the Interrupt
+void up_enable_irq(int irq) { ...
+
+  // Set enable bit for the irq
+  if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
+    addr = SG2000_PLIC_ENABLE0 + 
+           (boot_hartid * SG2000_PLIC_ENABLE_HART);
+    modifyreg32(addr + (4 * (extirq / 32)),
+                0, 1 << (extirq % 32));
+  }
+```
+
 [(__Multiple Harts__ explained)](TODO)
-
-```c
-  /* Disable all global interrupts */
-
-  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++)
-    {
-      addr = SG2000_PLIC_ENABLE0 + (hart * SG2000_PLIC_ENABLE_HART);
-      for (offset = 0; offset < (NR_IRQS - RISCV_IRQ_EXT) >> 3; offset += 4)
-        {
-          putreg32(0x0, addr + offset);          
-        }
-    }
-
-  /* Clear pendings in PLIC */
-
-  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++)
-    {
-      addr = SG2000_PLIC_CLAIM0 + (hart * SG2000_PLIC_CLAIM_HART);
-      claim = getreg32(addr);
-      putreg32(claim, addr);
-    }
-
-  /* Set irq threshold to 0 (permits all global interrupts) */
-
-  for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++)
-    {
-      addr = SG2000_PLIC_THRESHOLD0 +
-             (hart * SG2000_PLIC_THRESHOLD_HART);
-      putreg32(0, addr);
-    }
-```
-
-TODO
-
-```c
-void up_disable_irq(int irq) {
-      ...
-      /* Clear enable bit for the irq */
-
-      if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT)
-        {
-          addr = SG2000_PLIC_ENABLE0 + 
-                 (boot_hartid * SG2000_PLIC_ENABLE_HART);
-          modifyreg32(addr + (4 * (extirq / 32)),
-                      1 << (extirq % 32), 0);
-        }
-```
-TODO
-
-```c
-void up_enable_irq(int irq) {
-      ...
-      /* Set enable bit for the irq */
-
-      if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT)
-        {
-          addr = SG2000_PLIC_ENABLE0 + 
-                 (boot_hartid * SG2000_PLIC_ENABLE_HART);
-          modifyreg32(addr + (4 * (extirq / 32)),
-                      0, 1 << (extirq % 32));
-        }
-```
 
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_irq_dispatch.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
-[(__Multiple Harts__ explained)](TODO)
+In future we shall support [__Multiple Harts__](TODO). That's why we extended this code to __Dispatch the Interrupt__ for Boot Hart 0 to 3...
 
 ```c
-void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
-{
+// Dispatch the Interrupt
+void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
   uintptr_t claim = SG2000_PLIC_CLAIM0 + 
                     (boot_hartid * SG2000_PLIC_CLAIM_HART);
-      ...
-      uintptr_t val = getreg32(claim);
-      ...
-      /* Then write PLIC_CLAIM to clear pending in PLIC */
-
-      putreg32(irq - RISCV_IRQ_EXT, claim);
+  ...
+  // Read the PLIC_CLAIM for the Boot Hart
+  uintptr_t val = getreg32(claim);
+  ...
+  // Write PLIC_CLAIM to clear pending for Boot Hart
+  putreg32(irq - RISCV_IRQ_EXT, claim);
 ```
+
+[(__Multiple Harts__ explained)](TODO)
 
 ## Memory Map
 
 [_arch/risc-v/src/sg2000/sg2000_mm_init.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
 
 ```c
-#define MMU_IO_BASE      (0x00000000ul)
-#define MMU_IO_SIZE      (0x80000000ul)
+// I/O Memory Map
+#define MMU_IO_BASE (0x00000000ul)
+#define MMU_IO_SIZE (0x80000000ul)
 ```
 
 We derived the above from the __EIC7700X Memory Map__...
@@ -1085,33 +1090,37 @@ We derived the above from the __EIC7700X Memory Map__...
 </div>
 </p>
 
-We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
+The rest of the Memory Map is identical to SG2000. We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
 ## NuttX Config
 
 [_arch/risc-v/Kconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+
+In future we shall support [__Multiple Harts__](TODO). This __Arch Config__ will enable the __Hart-To-CPU Mapping__ we saw earlier: _riscv_hartid_to_cpuid, riscv_cpuid_to_hartid_
 
 ```bash
 config ARCH_CHIP_SG2000
 	select ARCH_RV_CPUID_MAP
 ```
 
-TODO
-disable thead mmu flags
-app addr env
-nuttx/arch/risc-v/Kconfig
-remove ARCH_MMU_EXT_THEAD
+Also we removed __ARCH_MMU_EXT_THEAD__. (T-Head MMU Extensions)
+
+[(__Multiple Harts__ explained)](TODO)
 
 <hr>
 
 [_boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
 
+We modified the __NuttX Board Config__ for UART...
+
 ```bash
+## UART0 Configuration
 CONFIG_16550_REGINCR=4
 CONFIG_16550_UART0_BASE=0x50900000
 CONFIG_16550_UART0_CLOCK=23040000
 CONFIG_16550_UART0_IRQ=125
 
+## Enable Scheduler Debugging
 CONFIG_DEBUG_SCHED=y
 CONFIG_DEBUG_SCHED_ERROR=y
 CONFIG_DEBUG_SCHED_INFO=y
@@ -1146,7 +1155,7 @@ __UART0 Base Address__ is here...
 </div>
 </p>
 
-__Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
+__Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of _RISCV_IRQ_SEXT_...
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
