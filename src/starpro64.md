@@ -477,6 +477,8 @@ TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issu
 
 TODO: Press Ctrl-C to stop
 
+Now comes the really fun part, that turns StarPro64 EIC7700X into a totally different beast from Star64 JH7110...
+
 TODO: Pic of touchscreen
 
 # LLM on NPU on NuttX?
