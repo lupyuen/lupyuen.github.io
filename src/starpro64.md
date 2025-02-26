@@ -1164,6 +1164,8 @@ TODO: __16550_UART0_CLOCK__
 #endif  // TODO
 ```
 
+![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
+
 # Appendix: Multiple Harts on StarPro64
 
 _Multiple Harts are problematic. Why?_
@@ -1174,7 +1176,9 @@ This SoC will boot OpenSBI on __Any Random Hart__, 0 to 3! Which means U-Boot an
 
 _What's the problem?_
 
-NuttX assumes that it always __Boots on Hart 0__. This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423)
+NuttX assumes that it always __Boots on Hart 0__. (Pic above)
+
+This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423)
 
 ```bash
 ## Set inital sp for riscv core. This function should be only called when initing.
@@ -1330,75 +1334,6 @@ Garbage: Compute CONFIG_16550_UART0_CLOCK
 CONFIG_16550_UART0_IRQ=125
 
 100 + 25
-
-# Multiple CPU
-
-https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef
-
-```text
-Starting kernel ...
-
-123Hello NuttX!
-2ABC[CPU2] nx_start: Entry
-[CPU2] uart_register: Registering /dev/console
-[CPU2] uart_register: Registering /dev/ttyS0
-[CPU2] dump_assert_info: Current Version: NuttX  12.4.0 01cbd0ca38-dirty Feb 20 2025 19:56:29 risc-v
-[CPU2] dump_assert_info: Assertion failed up_cpu_index() == 0: at file: init/nx_start.c:745 task(CPU2): CPU2 IDLE process: Kernel 0x802019a6
-[CPU2] up_dump_register: EPC: 0000000080216ffc
-```
-
-Boot HART ID = 0. OSTest OK yay!
-
-https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b
-
-Boot HART ID = 2. Boot fail :-(
-
-https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95
-
-![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
-
-StarPro64 will boot on a Random Hart: 0 to 3. But NuttX only boots on Hart 0!
-
-We need to fix the PLIC Driver in NuttX, which only works on Hart 0...
-
-- [NuttX boots OK on Hart 0](https://gist.github.com/lupyuen/47170b4c4d7117ac495c5faede48280b)
-
-   ```text
-   Boot HART ID              : 0
-   ...
-   [CPU0] nx_start: Entry
-   [CPU0] nx_start: CPU0: Beginning Idle Loop
-
-   NuttShell (NSH) NuttX-12.4.0
-   nsh> hello
-   Hello, World!!   
-   ```
-
-- [NuttX won't boot on other Harts](https://gist.github.com/lupyuen/66f93f69b29ba77f9b0c9eb7f78f1f95)
-
-   ```text
-   Boot HART ID              : 2
-   ...
-   [CPU0] nx_start: Entry
-   [CPU0] nx_start: CPU0: Beginning Idle Loop
-   [ Stuck here ]
-   ```
-
-# PLIC Multiple Harts
-
-
-
-[Hart ID 2. OK yay!](https://gist.github.com/lupyuen/0f5d4ad0697bef7839cb92875abba1b0)
-
-[Hart ID 1. OK yay!](https://gist.github.com/lupyuen/9bdfad6d283945effc994923ae99117a)
-
-Fix the sleep. too slow. factor of 25
-
-[waiter_func: Thread 2 waiting on semaphore](https://gist.github.com/lupyuen/5553ee833440ceb3e2a85cdb5515ed65)
-
-[__Watch the Demo on YouTube__](https://youtu.be/70DQ4YlQMMw)
-
-[__See the NuttX Log__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)
 
 # Build Loop
 
