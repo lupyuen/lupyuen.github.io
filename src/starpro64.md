@@ -8,18 +8,6 @@ TODO
 
 StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.
 
-Star64 power
-
-IKEA Smart Power Plug
-
-iTerm: Edit > Paste Special > Paste Slowly
-
-Settings > Advanced > Pasteboard
-
-Delay in seconds between chunks when Pasting Slowly: 1 second
-
-Number of bytes to paste in each chunk when Pasting Slowly: 16
-
 Well documented
 
 NuttX: Power efficient AI
@@ -29,6 +17,14 @@ _StarPro64 is just an upgraded Star64?_
 Nope it's a totally different beast!
 
 Docs are so much better! (??? pages)
+
+iTerm: Edit > Paste Special > Paste Slowly
+
+Settings > Advanced > Pasteboard
+
+Delay in seconds between chunks when Pasting Slowly: 1 second
+
+Number of bytes to paste in each chunk when Pasting Slowly: 16
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
@@ -417,7 +413,11 @@ _How to boot NuttX over TFTP?_
     booti ${kernel_addr_r} - ${fdt_addr_r}
     ```
 
-    [_(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)_](TODO)
+    <span style="font-size:80%">
+
+    [(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](TODO)
+
+    </span>
 
 1.  NuttX boots OK on StarPro64 yay! (Pic above)
 
@@ -453,7 +453,11 @@ setenv bootcmd "run bootcmd_tftp ; $bootcmd"
 saveenv
 ```
 
-[_(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)_](TODO)
+<span style="font-size:80%">
+
+[(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](TODO)
+
+</span>
 
 TODO: [(What about __Static IP__?)](https://github.com/lupyuen/nuttx-sg2000/issues/1)
 
@@ -465,7 +469,7 @@ TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
 # Smart Power Plug
 
-_Powering StarPro64 on and off: Gets so tiresome ain't it?_
+_Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
 Try a __Smart Power Plug__, integrated with our Build Script...
 
@@ -514,6 +518,166 @@ curl \
 Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power Jenga like so...
 
 > ![TODO](https://lupyuen.org/images/starpro64-power3.jpg)
+
+![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
+
+# What's Next
+
+TODO
+
+- [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
+
+- [__Discuss this article on Hacker News__](TODO)
+
+- [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
+
+- [__My Other Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
+
+- [__Older Project: "NuttX for Star64 JH7110"__](https://nuttx-forge.org/lupyuen/nuttx-star64)
+
+- [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
+
+- [__Check out my articles__](https://lupyuen.org)
+
+- [__RSS Feed__](https://lupyuen.org/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.org/src/starpro64.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md)
+
+# Appendix: Multiple Harts on StarPro64
+
+_Multiple Harts are problematic. Why?_
+
+Inside EIC7700X SoC: We have __Four Harts__ (RISC-V CPU Cores) numbered 0 to 3.
+
+This SoC will boot OpenSBI on __Any Random Hart__, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the __Same Random Hart__.
+
+_What's the problem?_
+
+NuttX assumes that it always __Boots on Hart 0__. (Pic above)
+
+This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423)
+
+```bash
+## Set inital sp for riscv core. This function should be only called when initing.
+## TODO: Support Non-Zero Boot Hart.
+.macro riscv_set_inital_sp base, size, hartid
+  la      t0, \base
+  li      t1, \size
+  mul     t1, \hartid, t1
+  add     t0, t0, t1
+
+  ## Ensure the last XCPTCONTEXT_SIZE is reserved for non boot CPU
+  bnez \hartid, 998f
+  li   t1, STACK_ALIGN_DOWN(\size)
+  j    999f
+998:
+  li   t1, STACK_ALIGN_DOWN(\size - XCPTCONTEXT_SIZE)
+999:
+  add  t0, t0, t1
+  mv   sp, t0
+.endm
+```
+
+_How to fix this?_
+
+Our workaround is to __Always Reboot NuttX on Hart 0__.
+
+TODO
+
+_Harts vs CPUs: What's the difference?_
+
+NuttX insists on booting with CPU 0. Otherwise it fails with this [__nx_start Error__](https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef)...
+
+```bash
+[CPU2] dump_assert_info:
+Assertion failed up_cpu_index() == 0: 
+at file: init/nx_start.c:745 task(CPU2):
+CPU2 IDLE process: Kernel 0x802019a6
+```
+
+That's why we __Renumber the CPUs__: Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__...
+
+```c
+TODO
+```
+
+_Can't we start One Hart and ignore the Other Harts?_
+
+We tried [__Enabling One Hart Only (CPU 0)__](https://github.com/lupyuen2/wip-nuttx/commits/starpro64c). But OSTest [__hangs at sem_test__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)..
+
+```bash
+## OSTest hangs for StarPro64 when we enable One Hart only...
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+## Oops: Thread 1 is NOT started!
+
+sem_test: Starting waiter thread 2
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 2 Started
+
+## Oops: Semaphore Value should be -1!
+waiter_func: Thread 2 initial semaphore value = 0
+waiter_func: Thread 2 waiting on semaphore
+## Hangs here
+```
+
+Compare the above with [__SG2000 sem_test__](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23)
+
+```bash
+## OSTest runs OK for SG2000...
+user_main: semaphore test
+sem_test: Initializing semaphore to 0
+sem_test: Starting waiter thread 1
+sem_test: Set thread 1 priority to 191
+## Yep Thread 1 is started
+waiter_func: Thread 1 Started
+
+sem_test: Starting waiter thread 2
+waiter_func: Thread 1 initial semaphore value = 0
+sem_test: Set thread 2 priority to 128
+waiter_func: Thread 1 waiting on semaphore
+waiter_func: Thread 2 Started
+
+## Yep Semaphore Value is -1
+waiter_func: Thread 2 initial semaphore value = -1
+waiter_func: Thread 2 waiting on semaphore
+sem_test: Starting poster thread 3
+## Completes successfully
+```
+
+Here's the problem: [__sem_test__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253) calls [__nx_pthread_create__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412) to create a PThread for Thread #1...
+
+```c
+int nx_pthread_create(...) { ...
+#ifdef CONFIG_SMP
+  // pthread_setup_scheduler() will set the affinity mask by inheriting the
+  // setting from the parent task.  We need to override this setting
+  // with the value from the pthread attributes unless that value is
+  // zero:  Zero is the default value and simply means to inherit the
+  // parent thread's affinity mask.
+  if (attr->affinity != 0) {
+    ptcb->cmn.affinity = attr->affinity;
+  }
+#endif
+```
+
+But the New Thread defaults to __No CPU Affinity__, it __Lacks Affinity for CPU 0__.
+
+So it gets allocated to __Another CPU__. Which never runs! 
+
+Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/70DQ4YlQMMw)
+
+[(See the __NuttX Log__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)
+
+_How to enable Multple Harts?_
+
+TODO
 
 # Appendix: Build NuttX for StarPro64
 
@@ -1193,142 +1357,6 @@ TODO: __16550_UART0_CLOCK__
 #define MTIMER_FREQ 1000000ul
 ```
 
-![TODO](https://lupyuen.org/images/starpro64-hartid0.png)
-
-# Appendix: Multiple Harts on StarPro64
-
-_Multiple Harts are problematic. Why?_
-
-Inside EIC7700X SoC: We have __Four Harts__ (RISC-V CPU Cores) numbered 0 to 3.
-
-This SoC will boot OpenSBI on __Any Random Hart__, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the __Same Random Hart__.
-
-_What's the problem?_
-
-NuttX assumes that it always __Boots on Hart 0__. (Pic above)
-
-This code __will fail__ when NuttX boots on Harts 1 to 3: [__riscv_set_inital_sp__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64c/arch/risc-v/src/common/riscv_macros.S#L383-L423)
-
-```bash
-## Set inital sp for riscv core. This function should be only called when initing.
-## TODO: Support Non-Zero Boot Hart.
-.macro riscv_set_inital_sp base, size, hartid
-  la      t0, \base
-  li      t1, \size
-  mul     t1, \hartid, t1
-  add     t0, t0, t1
-
-  ## Ensure the last XCPTCONTEXT_SIZE is reserved for non boot CPU
-  bnez \hartid, 998f
-  li   t1, STACK_ALIGN_DOWN(\size)
-  j    999f
-998:
-  li   t1, STACK_ALIGN_DOWN(\size - XCPTCONTEXT_SIZE)
-999:
-  add  t0, t0, t1
-  mv   sp, t0
-.endm
-```
-
-_How to fix this?_
-
-Our workaround is to __Always Reboot NuttX on Hart 0__.
-
-TODO
-
-_Harts vs CPUs: What's the difference?_
-
-NuttX insists on booting with CPU 0. Otherwise it fails with this [__nx_start Error__](https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef)...
-
-```bash
-[CPU2] dump_assert_info:
-Assertion failed up_cpu_index() == 0: 
-at file: init/nx_start.c:745 task(CPU2):
-CPU2 IDLE process: Kernel 0x802019a6
-```
-
-That's why we __Renumber the CPUs__: Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__...
-
-```c
-TODO
-```
-
-_Can't we start One Hart and ignore the Other Harts?_
-
-We tried [__Enabling One Hart Only (CPU 0)__](https://github.com/lupyuen2/wip-nuttx/commits/starpro64c). But OSTest [__hangs at sem_test__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)..
-
-```bash
-## OSTest hangs for StarPro64 when we enable One Hart only...
-user_main: semaphore test
-sem_test: Initializing semaphore to 0
-sem_test: Starting waiter thread 1
-sem_test: Set thread 1 priority to 191
-## Oops: Thread 1 is NOT started!
-
-sem_test: Starting waiter thread 2
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 2 Started
-
-## Oops: Semaphore Value should be -1!
-waiter_func: Thread 2 initial semaphore value = 0
-waiter_func: Thread 2 waiting on semaphore
-## Hangs here
-```
-
-Compare the above with [__SG2000 sem_test__](https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-02-23)
-
-```bash
-## OSTest runs OK for SG2000...
-user_main: semaphore test
-sem_test: Initializing semaphore to 0
-sem_test: Starting waiter thread 1
-sem_test: Set thread 1 priority to 191
-## Yep Thread 1 is started
-waiter_func: Thread 1 Started
-
-sem_test: Starting waiter thread 2
-waiter_func: Thread 1 initial semaphore value = 0
-sem_test: Set thread 2 priority to 128
-waiter_func: Thread 1 waiting on semaphore
-waiter_func: Thread 2 Started
-
-## Yep Semaphore Value is -1
-waiter_func: Thread 2 initial semaphore value = -1
-waiter_func: Thread 2 waiting on semaphore
-sem_test: Starting poster thread 3
-## Completes successfully
-```
-
-Here's the problem: [__sem_test__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253) calls [__nx_pthread_create__](https://github.com/lupyuen2/wip-nuttx/blob/starpro64b/sched/pthread/pthread_create.c#L179-L412) to create a PThread for Thread #1...
-
-```c
-int nx_pthread_create(...) { ...
-#ifdef CONFIG_SMP
-  // pthread_setup_scheduler() will set the affinity mask by inheriting the
-  // setting from the parent task.  We need to override this setting
-  // with the value from the pthread attributes unless that value is
-  // zero:  Zero is the default value and simply means to inherit the
-  // parent thread's affinity mask.
-  if (attr->affinity != 0) {
-    ptcb->cmn.affinity = attr->affinity;
-  }
-#endif
-```
-
-But the New Thread defaults to __No CPU Affinity__, it __Lacks Affinity for CPU 0__.
-
-So it gets allocated to __Another CPU__. Which never runs! 
-
-Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253) waiting for the Semaphore Value to change.
-
-[(Watch the __Demo on YouTube__)](https://youtu.be/70DQ4YlQMMw)
-
-[(See the __NuttX Log__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)
-
-_How to enable Multple Harts?_
-
-TODO
-
 # ESWIN AI Sample User Guide
 
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
@@ -1466,27 +1494,3 @@ strings
 ghidra
 npu driver
 ollama
-
-# What's Next
-
-TODO
-
-- [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
-
-- [__Discuss this article on Hacker News__](TODO)
-
-- [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
-
-- [__My Other Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
-
-- [__Older Project: "NuttX for Star64 JH7110"__](https://nuttx-forge.org/lupyuen/nuttx-star64)
-
-- [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
-
-- [__Check out my articles__](https://lupyuen.org)
-
-- [__RSS Feed__](https://lupyuen.org/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.org/src/starpro64.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md)
