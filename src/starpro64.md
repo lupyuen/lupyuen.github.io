@@ -495,6 +495,25 @@ Hear me out...
 
 1.  Creature Sensor
 
+1.  We hear that StarPro64 will be priced _super affordably_. This is the right time to experiment with an __Offline Disconnected LLM__!
+
+<span style="font-size:80%">
+
+_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
+
+</span>
+
+southern islands of singapore
+identify pic of creatures or sea life
+rainforest critters or underwater creatures
+in one word
+"DUCK", "OCTOPUS"
+
+strings
+ghidra
+npu driver
+ollama
+
 _Isn't Linux a little wonky on StarPro64?_
 
 Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX!
@@ -547,22 +566,6 @@ Qwen will sound confusing to Bilingual Folks...
 
 - Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
 
-<span style="font-size:80%">
-
-_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
-
-</span>
-
-southern islands of singapore
-identify pic of creatures or sea life
-rainforest critters or underwater creatures
-in one word
-"DUCK", "OCTOPUS"
-
-strings
-ghidra
-npu driver
-ollama
 
 TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
 
