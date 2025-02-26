@@ -487,6 +487,20 @@ _Oh really? LLM on an SBC? (Eyes roll)_
 
 Hear me out...
 
+1.  Teraflops. Not our grandparents' TensorFlow Lite.
+
+1.  Qwen LLM is already running on EIC7700X
+
+1.  Why Offline Disconnected LLM? Home Security
+
+1.  Creature Sensor
+
+_Isn't Linux a little wonky on StarPro64?_
+
+Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX!
+
+Dual licensed
+
 ```text
 https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
 
