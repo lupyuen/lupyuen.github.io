@@ -443,7 +443,7 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
 <p>TODO: Press Ctrl-C to stop</p>
-<p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
+<p>TODO: Pic of touchscreen</p>
 <h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1><div class="example-wrap"><pre class="language-text"><code>https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
 
 https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
@@ -504,17 +504,21 @@ in one word
 ghidra
 npu driver
 ollama</p>
+<p>TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server</p>
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
 <p>Try a <strong>Smart Power Plug</strong>, integrated with our Build Script…</p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+<div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build NuttX Image
+TODO
+
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
-## Power Off the SBC&quot;
+## Power Off the SBC
 curl \
   -X POST \
   -H &quot;Authorization: Bearer $token&quot; \
@@ -530,11 +534,11 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_on&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger
 
-## Wait for SBC Testing to complete
+## Wait Manually for SBC Testing to complete
 echo Press Enter to Power Off
 read
 
-## Power Off the SBC&quot;
+## Power Off the SBC
 curl \
   -X POST \
   -H &quot;Authorization: Bearer $token&quot; \
@@ -542,9 +546,11 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
-<div class="example-wrap"><pre class="language-text"><code>## First Time Only
+<div class="example-wrap"><pre class="language-bash"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
+## On Power Off: USB Serial might disconnect
+## So we reconnect forever
 set -x
 for (( ; ; )) do 
   screen /dev/ttyUSB* 115200
@@ -561,7 +567,6 @@ done</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-power3.jpg" alt="TODO" /></p>
 </blockquote>
-<p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <ul>
@@ -592,6 +597,7 @@ done</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md"><strong>lupyuen.org/src/starpro64.md</strong></a></p>
+<p><img src="https://lupyuen.org/images/starpro64-hartid0.png" alt="TODO" /></p>
 <h1 id="appendix-multiple-harts-on-starpro64"><a class="doc-anchor" href="#appendix-multiple-harts-on-starpro64">§</a>12 Appendix: Multiple Harts on StarPro64</h1>
 <p><em>Multiple Harts are problematic. Why?</em></p>
 <p>Inside EIC7700X SoC: We have <strong>Four Harts</strong> (RISC-V CPU Cores) numbered 0 to 3.</p>
