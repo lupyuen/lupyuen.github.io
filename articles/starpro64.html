@@ -510,7 +510,6 @@ ollama</p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="TODO" /></p>
-<p>https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
@@ -541,7 +540,9 @@ curl \
   -H &quot;Authorization: Bearer $token&quot; \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
-  http://localhost:8123/api/services/automation/trigger</code></pre></div><div class="example-wrap"><pre class="language-text"><code>## First Time Only
+  http://localhost:8123/api/services/automation/trigger</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
 set -x
