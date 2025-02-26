@@ -615,7 +615,9 @@ Here's what we changed...
 
 ## RISC-V Boot Code
 
-[arch/risc-v/src/sg2000/sg2000_head.S](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
+[_arch/risc-v/src/sg2000/sg2000_head.S_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
+
+This is the __RISC-V Boot Code__ that runs first when U-Boot Bootloader starts NuttX.
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -673,7 +675,7 @@ TODO
 
 ## NuttX Start Code
 
-[arch/risc-v/src/sg2000/sg2000_start.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
+[_arch/risc-v/src/sg2000/sg2000_start.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -868,7 +870,7 @@ So if boot_hartid=2:
 
 ## PLIC Interrupt Controller
 
-[arch/risc-v/include/sg2000/irq.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
+[_arch/risc-v/include/sg2000/irq.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
 
 ```c
 #define NR_IRQS (RISCV_IRQ_SEXT + 458)
@@ -886,7 +888,7 @@ EIC7700X supports __458 External Interrupts__...
 
 <hr>
 
-[arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
+[_arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
 
 ```c
 #define SG2000_PLIC_BASE 0x0C000000ul
@@ -894,13 +896,17 @@ EIC7700X supports __458 External Interrupts__...
 
 __PLIC Base Address__ is specified here...
 
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 239 |
 |:--------------------------------|:---------|
 |PLIC Memory Map | 0x0C00_0000 
 
+</div>
+
 <hr>
 
-[arch/risc-v/src/sg2000/hardware/sg2000_plic.h](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
+[_arch/risc-v/src/sg2000/hardware/sg2000_plic.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -927,6 +933,8 @@ __PLIC Base Address__ is specified here...
 
 __Interrupt Enable: PLIC_ENABLE_HART__ is 0x100 because we skip 0x100 bytes per Hart...
 
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 240 |
 |:--------------------------------|:---------|
 | _(Skip the M-Modes)_
@@ -934,11 +942,15 @@ __Interrupt Enable: PLIC_ENABLE_HART__ is 0x100 because we skip 0x100 bytes per 
 | 0x0C00_2180 | Start Hart 1 S-Mode interrupt enables
 | 0x0C00_2280 | Start Hart 2 S-Mode interrupt enables
 
+</div>
+
 __Priority Threshold: PLIC_THRESHOLD_HART__ is 0x2000 because we skip 0x2000 bytes per Hart
 
 __Claim / Complete: PLIC_CLAIM_HART__ is 0x2000 because we skip 0x2000 per Hart
 
 Which comes from this...
+
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 241 |
 |:--------------------------------|:---------|
@@ -950,9 +962,11 @@ Which comes from this...
 | 0x0C20_5000 | Hart 2 S-Mode Priority Threshold
 | 0x0C20_5004 | Hart 2 S-Mode Claim / Complete
 
+</div>
+
 <hr>
 
-[arch/risc-v/src/sg2000/sg2000_irq.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
+[_arch/risc-v/src/sg2000/sg2000_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -1020,7 +1034,7 @@ void up_enable_irq(int irq) {
 
 <hr>
 
-[arch/risc-v/src/sg2000/sg2000_irq_dispatch.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
+[_arch/risc-v/src/sg2000/sg2000_irq_dispatch.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
 
 [(__Multiple Harts__ explained)](TODO)
 
@@ -1042,7 +1056,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
 ## Memory Map
 
-[arch/risc-v/src/sg2000/sg2000_mm_init.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
+[_arch/risc-v/src/sg2000/sg2000_mm_init.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
 
 ```c
 #define MMU_IO_BASE      (0x00000000ul)
@@ -1051,11 +1065,15 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
 We derived the above from the __EIC7700X Memory Map__...
 
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 380 |
 |:--------------------------------|:---------|
 | System Memory Map
 | System Space (Low) | 0000_0000 to 8000_0000
 | Memory Space | 8000_0000 to 10_0000_0000
+
+</div>
 
 We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
@@ -1063,7 +1081,7 @@ We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
 
 ## NuttX Config
 
-[arch/risc-v/Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+[_arch/risc-v/Kconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 ```bash
 config ARCH_CHIP_SG2000
@@ -1078,7 +1096,7 @@ remove ARCH_MMU_EXT_THEAD
 
 <hr>
 
-[boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
+[_boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
 
 ```bash
 CONFIG_16550_REGINCR=4
@@ -1094,6 +1112,8 @@ CONFIG_DEBUG_SCHED_WARN=y
 
 __16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 524 |
 |:--------------------------------|:---------|
 | UART Register Offset
@@ -1101,24 +1121,34 @@ __16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 | 0x4 | Interrupt Enable Register (IER)
 | 0x8 | Interrupt Identification Register (IIR)
 
+</div>
+
 __UART0 Base Address__ is here...
+
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 353 |
 |:--------------------------------|:---------|
 | Peripheral Address Space
 | UART0 | 0x5090_0000
 
+</div>
+
 __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
+
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 366 |
 |:--------------------------------|:---------|
 |UART0 Interrupt Number | 100 _(lsp_uart0_intr)_
 
+</div>
+
 TODO: __16550_UART0_CLOCK__
 
 <hr>
 
-[drivers/serial/uart_16550.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+[_drivers/serial/uart_16550.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
 
 ```c
 #ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
@@ -1134,7 +1164,7 @@ TODO: __16550_UART0_CLOCK__
 
 <hr>
 
-[arch/risc-v/src/sg2000/sg2000_timerisr.c](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
+[_arch/risc-v/src/sg2000/sg2000_timerisr.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
 
 ```c
 #define MTIMER_FREQ 1000000ul
