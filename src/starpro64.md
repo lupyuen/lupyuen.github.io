@@ -900,7 +900,7 @@ void sg2000_start(int mhartid) {
   *(volatile uint8_t *) 0x50900000ul = '\r';
   *(volatile uint8_t *) 0x50900000ul = '\n';
 
-  // Print the Hart ID (0 to 4)
+  // Print the Hart ID (0 to 3)
   *(volatile uint8_t *) 0x50900000ul = 'H';
   *(volatile uint8_t *) 0x50900000ul = 'a';
   *(volatile uint8_t *) 0x50900000ul = 'r';
@@ -923,14 +923,14 @@ void sg2000_start(int mhartid) {
   }
 
   // Else Boot Hart is 0: We have successfully booted NuttX on Hart 0!
-  // Init the globals once only. Remember the Boot Hart.
   if (boot_hartid < 0) {
-    boot_hartid = mhartid;
 
+    // Init the globals once only. Remember the Boot Hart.
     // Clear the BSS
+    boot_hartid = mhartid;
     sg2000_clear_bss();
 
-    // TODO SMP: Boot the Other Harts
+    // TODO SMP: Start the Other Harts by calling OpenSBI
     // sg2000_boot_secondary();
 
     // Copy the RAM Disk
@@ -969,7 +969,7 @@ cpux:
 TODO: We boot a Hart (0 to 3) by calling OpenSBI
 
 ```c
-// We boot a Hart (0 to 3) by calling OpenSBI
+// We start a Hart (0 to 3) by calling OpenSBI
 // addr points to our RISC-V Assembly Start Code
 static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr) {
 
@@ -1018,10 +1018,10 @@ typedef struct sbiret_s sbiret_t;
 #define SBI_EXT_HSM_HART_START (0x0)
 ```
 
-TODO: Start the other Non-Boot Harts
+TODO: Start the other Non-Boot Harts by calling OpenSBI
 
 ```c
-// TODO SMP: Start the other Non-Boot Harts
+// TODO SMP: Start the other Non-Boot Harts by calling OpenSBI
 static void sg2000_boot_secondary(void) {
   for (int i = 0; i < CONFIG_SMP_NCPUS; i++) {
     if (i == boot_hartid) { continue; }
