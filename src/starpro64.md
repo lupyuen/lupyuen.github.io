@@ -6,6 +6,8 @@
 
 TODO
 
+[(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
+
 StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64.
 
 Well documented
@@ -175,7 +177,7 @@ We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/
 
 _How to load the Linux Image into eMMC?_
 
-Based on the [__Official Doc__](TODO)...
+Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/Development_board_image_installation_and_upgrade_manual.pdf)...
 
 1. Connect our __eMMC to StarPro64__ (pic above)
 
@@ -419,15 +421,32 @@ _How to boot NuttX over TFTP?_
 
     </span>
 
-1.  NuttX boots OK on StarPro64 yay! (Pic above)
+1.  NuttX boots OK on StarPro64 yay! (Pic below)
 
-    ```text
-    TODO
+    ```bash
+    NuttShell (NSH) NuttX-12.4.0
+    nsh> uname -a
+    NuttX 12.4.0 83424f8d26 Feb 24 2025 06:50:22 risc-v milkv_duos
+
+    nsh> hello
+    Hello, World!!
+
+    nsh> getprime
+    getprime took 148 msec    
+
+    user_main: Exiting
+    ostest_main: Exiting with status 0
     ```
+
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
+
+    [(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
 
 1.  How did we port NuttX to StarPro64? Check the details here...
 
     [__"TODO"__](TODO)
+
+![TODO](https://lupyuen.org/images/starpro64-ostest.png)
 
 _We type these commands EVERY TIME we boot?_
 
@@ -466,6 +485,69 @@ TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issu
 TODO: Press Ctrl-C to stop
 
 TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
+
+# LLM on NPU on NuttX?
+
+https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
+
+https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
+
+https://github.com/rockos-riscv
+
+🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)
+
+Source: https://pine64.org/2024/10/02/september_2024/#starpro64
+
+#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)
+
+https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual
+
+#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)
+
+Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
+
+#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)
+
+https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
+
+__llama.cpp__ _(C++)_
+
+https://github.com/ggml-org/llama.cpp
+
+or __ollama__ _(GoLang)_
+
+https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
+
+_Qwen is an odd name innit?_
+
+Qwen will sound confusing to Bilingual Folks...
+
+- It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
+
+- Instead it's pronounced __"Q Wen"__
+
+- And it confuses me: _"Q = Question"_ and _"Wen = 问 = Question"_, thus contracting to _"QQ"_, which means _"Bouncy"_
+
+- Thankfully _"Q Wen"_ actually means something: __"千问"__ _(Ask a Thousand Questions, "Qian1 Wen4")_
+
+- Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
+
+<span style="font-size:80%">
+
+_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
+
+</span>
+
+southern islands of singapore
+identify pic of creatures or sea life
+rainforest critters or underwater creatures
+in one word
+"DUCK", "OCTOPUS"
+
+strings
+ghidra
+npu driver
+ollama
 
 # Smart Power Plug
 
@@ -514,6 +596,32 @@ curl \
   -d '{"entity_id": "automation.starpro64_off"}' \
   http://localhost:8123/api/services/automation/trigger
 ```
+
+```text
+## First Time Only
+echo "defscrollback 1000000" >> ~/.screenrc
+
+set -x
+for (( ; ; )) do 
+  screen /dev/ttyUSB* 115200
+  sleep 5
+done
+```
+
+Build Loop:
+
+make
+
+make app
+
+power off
+
+power on
+
+read
+
+power off
+
 
 Remember the [__USB Fan__](TODO)? It goes into our Smart Power Plug as a Power Jenga like so...
 
@@ -681,9 +789,27 @@ Hence [__sem_test loops forever__](https://github.com/lupyuen2/wip-nuttx-apps/bl
 
 [(See the __NuttX Log__](https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6)
 
-_How to enable Multple Harts?_
+_In Future: How to enable Multiple Harts?_
 
-TODO
+To __Enable Multiple Harts__ in future, we undo these changes...
+
+- [__"StarPro64: Disable SMP"__](https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b)
+
+Remember to update the [__StarPro64 defconfig__](https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)...
+
+```bash
+## Enable SMP with 4 CPUs
+CONFIG_SMP=y
+CONFIG_SMP_NCPUS=4
+```
+
+
+Apache NuttX RTOS on StarPro64: Build Script
+
+
+
+We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!
+
 
 # Appendix: Build NuttX for StarPro64
 
@@ -735,7 +861,7 @@ If we prefer to build NuttX ourselves...
     ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
     ```
 
-    [(See the __Build Script__)](TODO)
+    [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
 
     [(See the __Build Log__)](TODO)
 
@@ -1344,166 +1470,39 @@ __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of _RISCV_IRQ_
 </div>
 </p>
 
-TODO: __16550_UART0_CLOCK__
-
 <hr>
 
 [_drivers/serial/uart_16550.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
 
+We commented out this code that __Configures the UART Clock__...
+
 ```c
-#ifdef TODO  //  Compute CONFIG_16550_UART0_CLOCK
-  /* Enter DLAB=1 */
+// Configure the UART Clock
+static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 
+#ifdef TODO
+  // Enter DLAB=1
   u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
+  // Omitted: Configure the UART Clock
   ...
-  /* Clear DLAB */
-
+  // Clear DLAB
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
-#endif  // TODO
+#endif
 ```
+
+This will be restored when we have computed [__16550_UART0_CLOCK__](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110).
 
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_timerisr.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
 
+Finally we changed the __RISC-V Timer Frequency__...
+
 ```c
+// Previously for SG2000: 25000000ul
 #define MTIMER_FREQ 1000000ul
 ```
 
-# ESWIN AI Sample User Guide
-
-https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
-
-https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
-
-```text
-ESWIN provides users with the desktop version of the Debian image files. the default username and
-password for the system are both "eswin / eswin".
-Download the Debian-v1.0.0-p550-20241230 version system image via the link
-https://github.com/eswincomputing/eic7x-images/releases. The image file is as follows:
-EIC7x_Release_Images_p550_20241230
-└── hifive-premier-p550
- ├── bootloader_P550.bin
- ├── boot-P550-20250126-011559.ext4
-└── root-P550-20250126-011559.ext4
-```
-
-# UART
-
-```text
-## First Time Only
-echo "defscrollback 1000000" >> ~/.screenrc
-
-set -x
-for (( ; ; )) do 
-  screen /dev/ttyUSB* 115200
-  sleep 5
-done
-```
-
-Same pins as Star64 and Oz64 SG2000
-
-Garbage: Compute CONFIG_16550_UART0_CLOCK
-
-CONFIG_16550_UART0_IRQ=125
-
-100 + 25
-
-# Build Loop
-
-make
-
-make app
-
-power off
-
-power on
-
-read
-
-power off
-
-# Multiple CPU
-
-
-# Disable SMP
-
-https://github.com/lupyuen2/wip-nuttx/commit/6b321e1cd56bf74b0529711bfad62780291f841b
-
-Remove these from defconfig:
-
-```bash
-CONFIG_SMP=y
-CONFIG_SMP_NCPUS=4
-```
-
-[Apache NuttX RTOS on StarPro64: OSTest runs OK yay! (ESWIN EIC7700X)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
-
-[__Watch the Demo on YouTube__](https://youtu.be/Yr7aYNIMUsw)
-
-Apache NuttX RTOS on StarPro64: Build Script
-
-https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac
-
-We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!
+And that's how we ported NuttX to StarPro64! [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
 
 ![TODO](https://lupyuen.org/images/starpro64-ostest.png)
-
-# TODO
-
-https://github.com/rockos-riscv
-
-🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)
-
-Source: https://pine64.org/2024/10/02/september_2024/#starpro64
-
-#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)
-
-https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual
-
-#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)
-
-Source: https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
-
-#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)
-
-https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
-
-__llama.cpp__ _(C++)_
-
-https://github.com/ggml-org/llama.cpp
-
-or __ollama__ _(GoLang)_
-
-https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
-
-_Qwen is an odd name innit?_
-
-Qwen will sound confusing to Bilingual Folks...
-
-- It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
-
-- Instead it's pronounced __"Q Wen"__
-
-- And it confuses me: _"Q = Question"_ and _"Wen = 问 = Question"_, thus contracting to _"QQ"_, which means _"Bouncy"_
-
-- Thankfully _"Q Wen"_ actually means something: __"千问"__ _(Ask a Thousand Questions, "Qian1 Wen4")_
-
-- Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
-
-<span style="font-size:80%">
-
-_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
-
-</span>
-
-southern islands of singapore
-identify pic of creatures or sea life
-rainforest critters or underwater creatures
-in one word
-"DUCK", "OCTOPUS"
-
-strings
-ghidra
-npu driver
-ollama
