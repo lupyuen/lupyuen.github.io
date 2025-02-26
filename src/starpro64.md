@@ -876,9 +876,13 @@ So if boot_hartid=2:
 
 EIC7700X supports __458 External Interrupts__...
 
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 374 |
 |:--------------------------------|:---------|
 |Max Interrupts | 458
+
+</div>
 
 <hr>
 
