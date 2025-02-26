@@ -611,8 +611,6 @@ We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __St
 
 Here's what we changed...
 
-<hr>
-
 ## RISC-V Boot Code
 
 [_arch/risc-v/src/sg2000/sg2000_head.S_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
@@ -678,8 +676,6 @@ TODO
 ```
 
 [(__Multiple Harts__ explained)](TODO)
-
-<hr>
 
 ## NuttX Start Code
 
@@ -874,8 +870,6 @@ So if boot_hartid=2:
 - hart=2, cpu=0
 - hart=3, cpu=3
 
-<hr>
-
 ## PLIC Interrupt Controller
 
 [_arch/risc-v/include/sg2000/irq.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
@@ -886,6 +880,7 @@ So if boot_hartid=2:
 
 EIC7700X supports __458 External Interrupts__...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 374 |
@@ -893,7 +888,7 @@ EIC7700X supports __458 External Interrupts__...
 |Max Interrupts | 458
 
 </div>
-
+</p>
 <hr>
 
 [_arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
@@ -904,14 +899,15 @@ EIC7700X supports __458 External Interrupts__...
 
 __PLIC Base Address__ is specified here...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 239 |
 |:--------------------------------|:---------|
-|PLIC Memory Map | 0x0C00_0000 
+|PLIC Memory Map | _0x0C00_0000_ 
 
 </div>
-
+</p>
 <hr>
 
 [_arch/risc-v/src/sg2000/hardware/sg2000_plic.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
@@ -939,39 +935,42 @@ __PLIC Base Address__ is specified here...
 #define SG2000_PLIC_CLAIM_HART (0x2000)
 ```
 
-__Interrupt Enable: PLIC_ENABLE_HART__ is 0x100 because we skip 0x100 bytes per Hart...
+__Interrupt Enable: PLIC_ENABLE_HART__ is _0x100_ because we skip _0x100_ bytes per Hart...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 240 |
 |:--------------------------------|:---------|
 | _(Skip the M-Modes)_
-| 0x0C00_2080 | Start Hart 0 S-Mode interrupt enables
-| 0x0C00_2180 | Start Hart 1 S-Mode interrupt enables
-| 0x0C00_2280 | Start Hart 2 S-Mode interrupt enables
+| _0x0C00_2080_ | Start Hart 0 S-Mode interrupt enables
+| _0x0C00_2180_ | Start Hart 1 S-Mode interrupt enables
+| _0x0C00_2280_ | Start Hart 2 S-Mode interrupt enables
 
 </div>
+</p>
 
-__Priority Threshold: PLIC_THRESHOLD_HART__ is 0x2000 because we skip 0x2000 bytes per Hart
+__Priority Threshold: PLIC_THRESHOLD_HART__ is _0x2000_ because we skip _0x2000_ bytes per Hart
 
-__Claim / Complete: PLIC_CLAIM_HART__ is 0x2000 because we skip 0x2000 per Hart
+__Claim / Complete: PLIC_CLAIM_HART__ is _0x2000_ because we skip _0x2000_ bytes per Hart
 
 Which comes from this...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 241 |
 |:--------------------------------|:---------|
 | _(Skip the M-Modes)_
-| 0x0C20_1000 | Hart 0 S-Mode Priority Threshold
-| 0x0C20_1004 | Hart 0 S-Mode Claim / Complete
-| 0x0C20_3000 | Hart 1 S-Mode Priority Threshold
-| 0x0C20_3004 | Hart 1 S-Mode Claim / Complete
-| 0x0C20_5000 | Hart 2 S-Mode Priority Threshold
-| 0x0C20_5004 | Hart 2 S-Mode Claim / Complete
+| _0x0C20_1000_ | Hart 0 S-Mode Priority Threshold
+| _0x0C20_1004_ | Hart 0 S-Mode Claim / Complete
+| _0x0C20_3000_ | Hart 1 S-Mode Priority Threshold
+| _0x0C20_3004_ | Hart 1 S-Mode Claim / Complete
+| _0x0C20_5000_ | Hart 2 S-Mode Priority Threshold
+| _0x0C20_5004_ | Hart 2 S-Mode Claim / Complete
 
 </div>
-
+</p>
 <hr>
 
 [_arch/risc-v/src/sg2000/sg2000_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
@@ -1060,8 +1059,6 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
       putreg32(irq - RISCV_IRQ_EXT, claim);
 ```
 
-<hr>
-
 ## Memory Map
 
 [_arch/risc-v/src/sg2000/sg2000_mm_init.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
@@ -1073,19 +1070,19 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs)
 
 We derived the above from the __EIC7700X Memory Map__...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 380 |
 |:--------------------------------|:---------|
 | System Memory Map
-| System Space (Low) | 0000_0000 to 8000_0000
-| Memory Space | 8000_0000 to 10_0000_0000
+| System Space (Low) | _0x0000_0000_ to _0x8000_0000_
+| Memory Space | _0x8000_0000_ to _0x10_0000_0000_
 
 </div>
+</p>
 
 We removed all __T-Head MMU Extensions__, including __mmu_flush_cache__.
-
-<hr>
 
 ## NuttX Config
 
@@ -1120,30 +1117,35 @@ CONFIG_DEBUG_SCHED_WARN=y
 
 __16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 524 |
 |:--------------------------------|:---------|
 | UART Register Offset
-| 0x0 | Receive Buffer Register (RBR)
-| 0x4 | Interrupt Enable Register (IER)
-| 0x8 | Interrupt Identification Register (IIR)
+| _0x0_ | Receive Buffer Register (RBR)
+| _0x4_ | Interrupt Enable Register (IER)
+| _0x8_ | Interrupt Identification Register (IIR)
 
 </div>
+</p>
 
 __UART0 Base Address__ is here...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #4](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf) | Page 353 |
 |:--------------------------------|:---------|
 | Peripheral Address Space
-| UART0 | 0x5090_0000
+| UART0 | _0x5090_0000_
 
 </div>
+</p>
 
 __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
 
+<p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [EIC7700X Tech Ref #1](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf) | Page 366 |
@@ -1151,6 +1153,7 @@ __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of TODO...
 |UART0 Interrupt Number | 100 _(lsp_uart0_intr)_
 
 </div>
+</p>
 
 TODO: __16550_UART0_CLOCK__
 
