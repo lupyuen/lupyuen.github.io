@@ -485,36 +485,37 @@ TODO: Pic of touchscreen
 
 # LLM on NPU on NuttX?
 
-_Oh really? LLM on an SBC? (Eyes roll)_
+_Oh really? Large Language Model on Single-Board Computer? (Eyes roll)_
 
 Hear me out...
 
-1.  Teraflops. Not our grandparents' TensorFlow Lite.
+1.  [__20 TOPS INT8__](https://www.eswincomputing.com/en/bocupload/2024/06/19/17187920991529ene8q.pdf): That's the spec of the speedy __Neural Processing Unit__ (NPU) inside StarPro64. _(20 Trillion Ops Per Second for 8-bit Integers)_
 
-1.  Qwen LLM is already running on EIC7700X. Probably Llama and DeekSeek next.
+    Yeah an [__Offline Disconnected LLM__](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#description) will run _(somewhat)_ OK on any CPU. But this NPU is designed for such LLMs. _(Goodbye "TensorFlow Lite")_
 
-1.  Why Offline Disconnected LLM? Home Security
+1.  [__Qwen LLM__](TODO) runs locally on EIC7700X today. Probably Next: [__Llama LLM__](https://www.llama.com/) and [__DeepSeek LLM__](https://github.com/deepseek-ai/DeepSeek-LLM).
 
-1.  Creature Sensor
+    TODO: Pic of Qwen LLM
 
-1.  We hear that StarPro64 will be priced _super affordably_. This is the right time to experiment with an __Offline Disconnected LLM__!
+1.  __Offline Disconnected LLM on SBC__ might be useful for __Smart Home Security__...
+
+    _"Hi LLM: Please connect my Home Security System to this Doorbell Camera and my IKEA Zigbee Lights and Xiaomi Motion Sensor and Samsung TV"_
+
+1.  __Creature Sensor__ maybe: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees gets ultra-compressed into __16 bytes of text__...
+
+    _"DUCK!" "OCTOPUS!"_ (Pic below)
+
+1.  [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of platforms.
+
+1.  __Will it be Expensive?__ We hear that StarPro64 will be priced _super affordably_. This is the right time to experiment with an __Offline Disconnected LLM__!
+
+TODO: Pic of Creature Sensor
 
 <span style="font-size:80%">
 
-_(Here's an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: "EVIL", "DEATH", "DOOM"...)_
+(Here's an idea for Sci-Fi Horror: We install an LLM Sensor in a Remote Uninhabited Island. One day we receive sinister words from our LLM Sensor: "EVIL!", "DEATH!", "DOOM!"...)
 
 </span>
-
-southern islands of singapore
-identify pic of creatures or sea life
-rainforest critters or underwater creatures
-in one word
-"DUCK", "OCTOPUS"
-
-strings
-ghidra
-npu driver
-ollama
 
 _Isn't Linux a little wonky on StarPro64?_
 
