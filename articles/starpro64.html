@@ -449,37 +449,36 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>Now comes the really fun part, that turns StarPro64 EIC7700X into a totally different beast from Star64 JH7110…</p>
 <p>TODO: Pic of touchscreen</p>
 <h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1>
-<p><em>Oh really? LLM on an SBC? (Eyes roll)</em></p>
+<p><em>Oh really? Large Language Model on Single-Board Computer? (Eyes roll)</em></p>
 <p>Hear me out…</p>
 <ol>
 <li>
-<p>Teraflops. Not our grandparents’ TensorFlow Lite.</p>
+<p><a href="https://www.eswincomputing.com/en/bocupload/2024/06/19/17187920991529ene8q.pdf"><strong>20 TOPS INT8</strong></a>: That’s the spec of the speedy <strong>Neural Processing Unit</strong> (NPU) inside StarPro64. <em>(20 Trillion Ops Per Second for 8-bit Integers)</em></p>
+<p>Yeah an <a href="https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#description"><strong>Offline Disconnected LLM</strong></a> will run <em>(somewhat)</em> OK on any CPU. But this NPU is designed for such LLMs. <em>(Goodbye “TensorFlow Lite”)</em></p>
 </li>
 <li>
-<p>Qwen LLM is already running on EIC7700X. Probably Llama and DeekSeek next.</p>
+<p><a href="TODO"><strong>Qwen LLM</strong></a> runs locally on EIC7700X today. Probably Next: <a href="https://www.llama.com/"><strong>Llama LLM</strong></a> and <a href="https://github.com/deepseek-ai/DeepSeek-LLM"><strong>DeepSeek LLM</strong></a>.</p>
+<p>TODO: Pic of Qwen LLM</p>
 </li>
 <li>
-<p>Why Offline Disconnected LLM? Home Security</p>
+<p><strong>Offline Disconnected LLM on SBC</strong> might be useful for <strong>Smart Home Security</strong>…</p>
+<p><em>“Hi LLM: Please connect my Home Security System to this Doorbell Camera and my IKEA Zigbee Lights and Xiaomi Motion Sensor and Samsung TV”</em></p>
 </li>
 <li>
-<p>Creature Sensor</p>
+<p><strong>Creature Sensor</strong> maybe: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees gets ultra-compressed into <strong>16 bytes of text</strong>…</p>
+<p><em>“DUCK!” “OCTOPUS!”</em> (Pic below)</p>
 </li>
 <li>
-<p>We hear that StarPro64 will be priced <em>super affordably</em>. This is the right time to experiment with an <strong>Offline Disconnected LLM</strong>!</p>
+<p><a href="https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu"><strong>EIC7700X NPU Driver</strong></a> is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of platforms.</p>
+</li>
+<li>
+<p><strong>Will it be Expensive?</strong> We hear that StarPro64 will be priced <em>super affordably</em>. This is the right time to experiment with an <strong>Offline Disconnected LLM</strong>!</p>
 </li>
 </ol>
+<p>TODO: Pic of Creature Sensor</p>
 <span style="font-size:80%">
-<p><em>(Here’s an idea for Sci-Fi Horror: We installed an LLM Sensor in a Remote Uninhabited Island. One day our LLM Sensor sends us sinister words: “EVIL”, “DEATH”, “DOOM”…)</em></p>
+<p>(Here’s an idea for Sci-Fi Horror: We install an LLM Sensor in a Remote Uninhabited Island. One day we receive sinister words from our LLM Sensor: “EVIL!”, “DEATH!”, “DOOM!”…)</p>
 </span>
-<p>southern islands of singapore
-identify pic of creatures or sea life
-rainforest critters or underwater creatures
-in one word
-“DUCK”, “OCTOPUS”</p>
-<p>strings
-ghidra
-npu driver
-ollama</p>
 <p><em>Isn’t Linux a little wonky on StarPro64?</em></p>
 <p>Ah here’s our opportunity to create a <em>“Power Efficient” (?)</em> LLM with NuttX!</p>
 <p>Dual licensed</p>
