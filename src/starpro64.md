@@ -509,7 +509,7 @@ Hear me out...
 
 1.  __Will it be Expensive?__ We hear that StarPro64 will be priced _super affordably_. This is the right time to experiment with an __Offline Disconnected LLM__!
 
-TODO: Pic of Creature Sensor
+![TODO](https://lupyuen.org/images/starpro64-sensor.jpg)
 
 <span style="font-size:80%">
 
