@@ -18,17 +18,17 @@ _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
 _StarPro64: Isn't it a souped-up Star64?_
 
-Nope it's a totally different beast! (From a different SoC Maker)
+Nope it's a totally different beast! _(From a different SoC Maker)_
 
-Inside StarPro64 is the __ESWIN EIC7700X SoC__. Yes it has __4 RISC-V Cores__ and it's based on __SiFive Architecture__ (a bit like JH7110 SoC)...
+Inside StarPro64 is the __ESWIN EIC7700X SoC__. Yes it has __Four RISC-V Cores__ and it's based on __SiFive Architecture__ _(a bit like JH7110 SoC)_
 
-TODO: pic of arch
+![TODO](https://lupyuen.org/images/starpro64-arch.jpg)
 
-But its super speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
+But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EIC7700X.
+
+_(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
 > ![TODO](https://lupyuen.org/images/starpro64-npu.jpg)
-
-We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EIC7700X.
 
 [__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is probably the best among the RISC-V SoCs _(BL808, SG2000, JH7110)_
 
@@ -40,7 +40,7 @@ We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EI
 
 - [__Part 4: Peripherals, USB, PCI, Ethernet__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf)
 
-Let's go hands-on...
+We go hands-on...
 
 ![Connecting USB UART Dongle to StarPro64](https://lupyuen.org/images/starpro64-uart.jpg)
 
