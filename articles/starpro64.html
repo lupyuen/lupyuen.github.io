@@ -573,8 +573,28 @@ curl \
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="TODO">(See the <strong>Build Log</strong></a></p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
-<p>TODO</p>
+<p>This script assumes that we have…</p>
+<ul>
+<li>
+<p>Installed a <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Home Assistant Server</strong></a></p>
+<p><em>(Works fine with Docker)</em></p>
+</li>
+<li>
+<p>Added the Smart Power Plug to <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant</strong></a></p>
+<p><em>“StarPro64 Power” (pic above)</em></p>
+</li>
+<li>
+<p>Installed the <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>Google Assistant SDK</strong></a> for Home Assistant</p>
+<p><em>(So we don’t need Zigbee programming)</em></p>
+</li>
+<li>
+<p>Created the <a href="https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api"><strong>Power Automation</strong></a> in Home Assistant</p>
+<p><em>“StarPro64 Power On”</em> and <em>“StarPro64 Power Off” (pic below)</em></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="Smart Power Plug in Home Assistant" /></p>
+<p><em>Smart Power Plug might disconnect USB UART sometimes?</em></p>
+<p>To work around this: We run a loop for the <strong>UART Terminal</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## First Time Only
 echo &quot;defscrollback 1000000&quot; &gt;&gt; ~/.screenrc
 
@@ -585,14 +605,7 @@ for (( ; ; )) do
   screen /dev/ttyUSB* 115200
   sleep 5
 done</code></pre></div>
-<p><em>(We could actually allow a Remote Developer to boot and test NuttX on StarPro64 … From anywhere in the world!)</em></p>
-<p>Build Loop:</p>
-<p>make</p>
-<p>make app</p>
-<p>power off</p>
-<p>power on</p>
-<p>read</p>
-<p>power off</p>
+<p><em>(We could actually allow a Remote Developer to boot and test NuttX on StarPro64… From anywhere in the world!)</em></p>
 <p>Remember the <a href="https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-power3.jpg" alt="USB Fan goes into our Smart Power Plug as a Power Jenga" /></p>
