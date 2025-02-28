@@ -347,11 +347,11 @@ A-ha! This says...
 
 Thanks U-Boot! You told us everything we need to Boot NuttX...
 
-> ![Boot NuttX over TFTP](https://lupyuen.org/images/starpro64-nuttx.png)
+![TODO](https://lupyuen.org/images/starpro64-flow2.jpg)
 
 # Boot NuttX over TFTP
 
-_How to boot NuttX over TFTP?_
+_How to boot NuttX over TFTP? (Pic above)_
 
 1.  Install our __TFTP Server__: Follow the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server)
 
