@@ -24,17 +24,23 @@ Inside StarPro64 is the __ESWIN EIC7700X SoC__. Yes it has __4 RISC-V Cores__ an
 
 TODO: pic of arch
 
-But its super speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it totally different from other RISC-V SoCs. _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
+But its super speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
 > ![TODO](https://lupyuen.org/images/starpro64-npu.jpg)
 
 We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EIC7700X.
 
-[__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is a lot better than JH7110 Docs...
+[__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is probably the best among the RISC-V SoCs _(BL808, SG2000, JH7110)_
 
-- Part 1 to Part 4 (sections)
+- [__Part 1: Hardware, System, Interrupts__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part1.pdf)
 
-TODO: NPU
+- [__Part 2: Memory Interface, Image / Video Processors__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part2.pdf)
+
+- [__Part 3: Video Input / Output__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part3.pdf)
+
+- [__Part 4: Peripherals, USB, PCI, Ethernet__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf)
+
+Let's go hands-on...
 
 ![Connecting USB UART Dongle to StarPro64](https://lupyuen.org/images/starpro64-uart.jpg)
 
