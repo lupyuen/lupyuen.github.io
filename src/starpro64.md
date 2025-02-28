@@ -531,9 +531,9 @@ Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX...
 
 - To Execute the LLM Models: We'll require [__llama.cpp__](https://github.com/ggml-org/llama.cpp) _(C++)_ or [__ollama__](https://github.com/ollama/ollama/blob/main/model/models/llama/model.go) _(GoLang)_
 
-_Qwen is an odd name innit?_
+_Odd name innit: Qwen?_
 
-Qwen will sound confusing to Bilingual Folks...
+__Qwen__ will sound confusing to Bilingual Folks...
 
 - It's NOT supposed to rhyme with Gwen Stefani / Gwen Stacy
 
