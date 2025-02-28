@@ -18,15 +18,21 @@ _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
 _StarPro64: Isn't it a souped-up Star64?_
 
-Nope it's a totally different beast! (From a different maker)
+Nope it's a totally different beast! (From a different SoC Maker)
 
-Docs are so much better! (??? pages)
+Inside StarPro64 is the __ESWIN EIC7700X SoC__. Yes it has __4 RISC-V Cores__ and it's based on __SiFive Architecture__ (a bit like JH7110 SoC)...
 
-Well documented
+TODO: pic of arch
 
-NuttX: Power efficient AI
+But its super speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it totally different from other RISC-V SoCs. _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
-[ESWIN EIC7700X Technical Reference Manual](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual)
+> ![TODO](https://lupyuen.org/images/starpro64-npu.jpg)
+
+We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EIC7700X.
+
+[__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is a lot better than JH7110 Docs...
+
+- Part 1 to Part 4 (sections)
 
 TODO: NPU
 
@@ -527,9 +533,9 @@ _Isn't Linux a little wonky on StarPro64?_
 
 Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX...
 
-- We need to port the [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) to NuttX. _(Dual-Licensed: BSD and GPL)_
+- We port the [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) to NuttX. _(Dual-Licensed: BSD and GPL)_
 
-- To Execute the LLM Models: We'll require [__llama.cpp__](https://github.com/ggml-org/llama.cpp) _(C++)_ or [__ollama__](https://github.com/ollama/ollama/blob/main/model/models/llama/model.go) _(GoLang)_
+- To Execute the LLM Models: We'll need [__llama.cpp__](https://github.com/ggml-org/llama.cpp) _(C++)_ or [__ollama__](https://github.com/ollama/ollama/blob/main/model/models/llama/model.go) _(GoLang)_
 
 _Odd name innit: Qwen?_
 
