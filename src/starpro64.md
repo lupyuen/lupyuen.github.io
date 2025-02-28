@@ -26,6 +26,8 @@ Well documented
 
 NuttX: Power efficient AI
 
+[ESWIN EIC7700X Technical Reference Manual](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual)
+
 TODO: NPU
 
 ![Connecting USB UART Dongle to StarPro64](https://lupyuen.org/images/starpro64-uart.jpg)
@@ -507,7 +509,7 @@ Hear me out...
 
 1.  [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of platforms and build interesting apps.
 
-1.  __Will it be Expensive?__ We hear that StarPro64 will be priced _super affordably_. Works with a Touchscreen too! (Pic above)
+1.  __Will it be Expensive?__ We hear that StarPro64 will be priced _super affordably_. Works with a Touchscreen too. (Pic above)
 
     This is the right time to experiment with an __Offline Disconnected LLM__!
 
@@ -521,41 +523,11 @@ Hear me out...
 
 _Isn't Linux a little wonky on StarPro64?_
 
-Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX!
+Ah here's our opportunity to create a _"Power Efficient" (?)_ LLM with NuttX...
 
-Dual licensed
+- We need to port the [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) to NuttX. _(Dual-Licensed: BSD and GPL)_
 
-```text
-https://github.com/eswincomputing/eic7x-images/releases/tag/Debian-v1.0.0-p550-20241230
-
-https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf
-
-https://github.com/rockos-riscv
-
-🤔 Booting #StarPro64 @ThePine64 (#RISCV #ESWIN EIC7700X)
-
-Source: https://pine64.org/2024/10/02/september_2024/#starpro64
-
-#RISCV ESWIN EIC7700X Technical Reference Manual (#StarPro64)
-
-https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual
-
-#RISCV #ESWIN EIC7700X: Qwen #LLM on NPU (#StarPro64)
-
-Source: 
-
-#RISCV #ESWIN EIC7700X: NPU Driver (#StarPro64)
-
-https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu
-
-__llama.cpp__ _(C++)_
-
-https://github.com/ggml-org/llama.cpp
-
-or __ollama__ _(GoLang)_
-
-https://github.com/ollama/ollama/blob/main/model/models/llama/model.go
-```
+- To Execute the LLM Models: We'll require [__llama.cpp__](https://github.com/ggml-org/llama.cpp) _(C++)_ or [__ollama__](https://github.com/ollama/ollama/blob/main/model/models/llama/model.go) _(GoLang)_
 
 _Qwen is an odd name innit?_
 
@@ -577,7 +549,9 @@ Qwen will sound confusing to Bilingual Folks...
 
 _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
-Try a __Smart Power Plug__, integrated with our Build Script. In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our Build Script power up StarPro64...
+Try a __Smart Power Plug__ (pic above), integrated with our Build Script.
+
+In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our Build Script auto-power up StarPro64...
 
 ```bash
 TODO
