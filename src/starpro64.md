@@ -495,7 +495,9 @@ Hear me out...
 
     Yeah an [__Offline Disconnected LLM__](https://github.com/ggml-org/llama.cpp?tab=readme-ov-file#description) will run _(somewhat)_ OK on any CPU. But this NPU is designed for such LLMs. _(Goodbye "TensorFlow Lite")_
 
-1.  [__Qwen LLM__](https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf) runs locally on EIC7700X today. Probably Next: [__Llama LLM__](https://www.llama.com/) and [__DeepSeek LLM__](https://github.com/deepseek-ai/DeepSeek-LLM).
+1.  [__Qwen LLM__](https://github.com/eswincomputing/eic7x-images/releases/download/Debian-v1.0.0-p550-20241230/ESWIN_AI_Sample_User_Guide.pdf) runs locally on EIC7700X NPU today. Probably Next: [__Llama LLM__](https://www.llama.com/) and [__DeepSeek LLM__](https://github.com/deepseek-ai/DeepSeek-LLM)?
+
+    _(Qwen 2 with 0.5 Billion Parameters, pic below)_
 
     ![TODO](https://lupyuen.org/images/starpro64-qwen.jpg)
 
@@ -505,7 +507,7 @@ Hear me out...
 
 1.  __Creature Sensor__ Maybe? A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees becomes ultra-compressed into __16 bytes of text__...
 
-    _"DUCK!" "OCTOPUS!"_ (Pic below)
+    _"DUCK!" "OCTOPUS!" (Pic below)_
 
 1.  [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of platforms and build interesting apps.
 
