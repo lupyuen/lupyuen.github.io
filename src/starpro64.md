@@ -20,11 +20,11 @@ _StarPro64: Isn't it a souped-up Star64?_
 
 Nope it's a totally different beast! _(From a different SoC Maker)_
 
-Inside StarPro64 is the __ESWIN EIC7700X SoC__. Yes it has __Four RISC-V Cores__ and it's based on __SiFive Architecture__ _(a bit like JH7110 SoC)_
+Inside StarPro64 is the __ESWIN EIC7700X SoC__. It has __Four RISC-V Cores__ and it's based on __SiFive Architecture__ _(a bit like JH7110 SoC)_
 
 ![TODO](https://lupyuen.org/images/starpro64-arch.jpg)
 
-But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. We'll talk later about the [__Fun LLM Experiments__](TODO) that we can run on EIC7700X.
+But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. Later we'll talk about the [__Fun LLM Experiments__](TODO) that we can run on the NPU.
 
 _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
