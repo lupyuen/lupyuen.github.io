@@ -93,11 +93,18 @@
 <p><img src="https://lupyuen.org/images/starpro64-fan2.jpg" alt="StarPro64 EIC7700X RISC-V SBC" /></p>
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
 <p><em>StarPro64: Isn’t it a souped-up Star64?</em></p>
-<p>Nope it’s a totally different beast! (From a different maker)</p>
-<p>Docs are so much better! (??? pages)</p>
-<p>Well documented</p>
-<p>NuttX: Power efficient AI</p>
-<p><a href="https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual">ESWIN EIC7700X Technical Reference Manual</a></p>
+<p>Nope it’s a totally different beast! (From a different SoC Maker)</p>
+<p>Inside StarPro64 is the <strong>ESWIN EIC7700X SoC</strong>. Yes it has <strong>4 RISC-V Cores</strong> and it’s based on <strong>SiFive Architecture</strong> (a bit like JH7110 SoC)…</p>
+<p>TODO: pic of arch</p>
+<p>But its super speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it totally different from other RISC-V SoCs. <em>(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
+<blockquote>
+<p><img src="https://lupyuen.org/images/starpro64-npu.jpg" alt="TODO" /></p>
+</blockquote>
+<p>We’ll talk later about the <a href="TODO"><strong>Fun LLM Experiments</strong></a> that we can run on EIC7700X.</p>
+<p><a href="https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual"><strong>EIC7700X Technical Reference Manual</strong></a> is a lot better than JH7110 Docs…</p>
+<ul>
+<li>Part 1 to Part 4 (sections)</li>
+</ul>
 <p>TODO: NPU</p>
 <p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="Connecting USB UART Dongle to StarPro64" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
@@ -484,10 +491,10 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>Ah here’s our opportunity to create a <em>“Power Efficient” (?)</em> LLM with NuttX…</p>
 <ul>
 <li>
-<p>We need to port the <a href="https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu"><strong>EIC7700X NPU Driver</strong></a> to NuttX. <em>(Dual-Licensed: BSD and GPL)</em></p>
+<p>We port the <a href="https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu"><strong>EIC7700X NPU Driver</strong></a> to NuttX. <em>(Dual-Licensed: BSD and GPL)</em></p>
 </li>
 <li>
-<p>To Execute the LLM Models: We’ll require <a href="https://github.com/ggml-org/llama.cpp"><strong>llama.cpp</strong></a> <em>(C++)</em> or <a href="https://github.com/ollama/ollama/blob/main/model/models/llama/model.go"><strong>ollama</strong></a> <em>(GoLang)</em></p>
+<p>To Execute the LLM Models: We’ll need <a href="https://github.com/ggml-org/llama.cpp"><strong>llama.cpp</strong></a> <em>(C++)</em> or <a href="https://github.com/ollama/ollama/blob/main/model/models/llama/model.go"><strong>ollama</strong></a> <em>(GoLang)</em></p>
 </li>
 </ul>
 <p><em>Odd name innit: Qwen?</em></p>
