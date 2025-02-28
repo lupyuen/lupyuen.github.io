@@ -618,11 +618,29 @@ curl \
 
 ![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
 
-TODO
+This script assumes that we have...
+
+- Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+
+  _(Works fine with Docker)_
+
+- Added the Smart Power Plug to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+
+  _"StarPro64 Power" (pic above)_
+
+- Installed the [__Google Assistant SDK__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
+
+  _(So we don't need Zigbee programming)_
+
+- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant
+
+  _"StarPro64 Power On"_ and _"StarPro64 Power Off" (pic below)_
 
 ![Smart Power Plug in Home Assistant](https://lupyuen.org/images/starpro64-power2.jpg)
 
+_Smart Power Plug might disconnect USB UART sometimes?_
 
+To work around this: We run a loop for the __UART Terminal__...
 
 ```bash
 ## First Time Only
@@ -637,22 +655,7 @@ for (( ; ; )) do
 done
 ```
 
-_(We could actually allow a Remote Developer to boot and test NuttX on StarPro64 ... From anywhere in the world!)_
-
-Build Loop:
-
-make
-
-make app
-
-power off
-
-power on
-
-read
-
-power off
-
+_(We could actually allow a Remote Developer to boot and test NuttX on StarPro64... From anywhere in the world!)_
 
 Remember the [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
 
