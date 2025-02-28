@@ -569,8 +569,7 @@ Qwen will sound confusing to Bilingual Folks...
 
 - Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
 
-
-TODO: Pic of Smart Plug, Fan, Ubuntu PC, StarPro64, USB Serial, TFTP Server
+![TODO](https://lupyuen.org/images/starpro64-flow.jpg)
 
 # Smart Power Plug
 
