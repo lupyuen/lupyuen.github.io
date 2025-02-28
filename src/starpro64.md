@@ -4,7 +4,7 @@
 
 ![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
+[(Watch the __NuttX Demo__ on YouTube)](https://youtu.be/Yr7aYNIMUsw)
 
 [__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the (literally) _Hot_ New RISC-V SBC by PINE64.
 
