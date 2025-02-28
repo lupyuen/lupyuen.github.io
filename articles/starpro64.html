@@ -84,11 +84,11 @@
 <li><a href="#plic-interrupt-controller" title="PLIC Interrupt Controller">14.3 PLIC Interrupt Controller</a><ul></ul></li>
 <li><a href="#memory-map" title="Memory Map">14.4 Memory Map</a><ul></ul></li>
 <li><a href="#nuttx-config" title="NuttX Config">14.5 NuttX Config</a><ul></ul></li>
-<li><a href="#paste-slowly" title="Paste Slowly">14.6 Paste Slowly</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Apr 2025</em></p>
+<li><a href="#paste-slowly" title="Paste Slowly">14.6 Paste Slowly</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>2 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-title.jpg" alt="StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?" /></p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>NuttX Demo</strong> on YouTube)</a></p>
 <p><a href="https://pine64.org/2024/10/02/september_2024/#starpro64"><strong>StarPro64 EIC7700X</strong></a> is the (literally) <em>Hot</em> New RISC-V SBC by PINE64.</p>
-<p>TODO</p>
+<p>TODO: Intro</p>
 <p><em>(Thanks to PINE64 for providing the Prototype StarPro64)</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-fan2.jpg" alt="StarPro64 EIC7700X RISC-V SBC" /></p>
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
@@ -96,7 +96,7 @@
 <p>Nope it’s a totally different beast! <em>(From a different SoC Maker)</em></p>
 <p>Inside StarPro64 is the <strong>ESWIN EIC7700X SoC</strong>. It has <strong>Four RISC-V Cores</strong> and it’s based on <strong>SiFive Architecture</strong> <em>(a bit like JH7110 SoC)</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-arch.jpg" alt="ESWIN EIC7700X SoC" /></p>
-<p>But its super-speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it a very special <em>(llama?)</em> beast. Later we’ll talk about the <a href="TODO"><strong>Fun LLM Experiments</strong></a> that we can run on the NPU.</p>
+<p>But its super-speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it a very special <em>(llama?)</em> beast. Later we’ll talk about the <a href="https://lupyuen.github.io/articles/starpro64#llm-on-npu-on-nuttx"><strong>Fun LLM Experiments</strong></a> that we can run on the NPU.</p>
 <p><em>(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-npu.jpg" alt="ESWIN EIC7700X NPU" /></p>
@@ -368,9 +368,14 @@ loadaddr=0x80200000</code></pre></div>
 </li>
 <li>
 <p>Copy these files to our TFTP Server…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>NuttX Image: Image-starpro64</strong></a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image and Device Tree to TFTP Server
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image"><strong>NuttX Image: Image</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
+<p>Like so…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Image and Device Tree
+wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
+wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+
+## Copy the NuttX Image and Device Tree to our TFTP Server
 scp Image tftpserver:/tftpboot/Image-starpro64
 scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
 ssh tftpserver ls -l /tftpboot/</code></pre></div>
@@ -531,11 +536,19 @@ saveenv</code></pre></div><span style="font-size:80%">
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
 <p>Try a <strong>Smart Power Plug</strong> (pic above), integrated with our Build Script.</p>
-<p>In our <a href="https://youtu.be/Yr7aYNIMUsw"><strong>Demo Video</strong></a>: Skip to <a href="https://youtu.be/Yr7aYNIMUsw?t=35"><strong>00:35</strong></a> and watch our Build Script auto-power up StarPro64…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p>In our <a href="https://youtu.be/Yr7aYNIMUsw"><strong>Demo Video</strong></a>: Skip to <a href="https://youtu.be/Yr7aYNIMUsw?t=35"><strong>00:35</strong></a> and watch our <a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222"><strong>Build Script</strong></a> auto-power up StarPro64…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO: power off
+make ...
+scp Image tftpserver:/tftpboot/Image-starpro64
+
+Power Off the SBC
+Power On the SBC
+
+Press Enter to Power Off
+Power Off the SBC</code></pre></div>
 <p>How it works? Here’s our <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build NuttX Image
-TODO
+<div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build the NuttX Image and copy to TFTP Server
+## make -j ...
 
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
@@ -571,7 +584,7 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="TODO">(See the <strong>Build Log</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong></a></p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
 <p>This script assumes that we have…</p>
 <ul>
@@ -756,11 +769,12 @@ sem_test: Starting poster thread 3
 CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>And remember to fix <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>.</p>
+<p>TODO: Pic of ???</p>
 <h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>13 Appendix: Build NuttX for StarPro64</h1>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
-<p>We may download the NuttX Image File <strong><code>Image-starpro64</code></strong> from here…</p>
+<p>We may download the NuttX Image File <strong><code>Image</code></strong> (and rename it <strong><code>Image-starpro64</code></strong>) from here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/nuttx-sg2000/tags"><strong>Daily Build: NuttX for SG2000</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1"><strong>NuttX for StarPro64</strong></a></li>
 </ul>
 <p>If we prefer to build NuttX ourselves…</p>
 <ol>
@@ -795,15 +809,17 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
-## Copy NuttX Image to TFTP Server
+## Copy the NuttX Image and Device Tree to TFTP Server
+wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
 scp Image tftpserver:/tftpboot/Image-starpro64
-ssh tftpserver ls -l /tftpboot/Image-starpro64
+scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+ssh tftpserver ls -l /tftpboot
 
 ## In U-Boot: Boot NuttX over TFTP
 ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="TODO">(See the <strong>Build Log</strong></a></p>
-<p><a href="TODO">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 <li>
 <p>The steps above assume that we’ve installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a></p>
@@ -833,6 +849,7 @@ ssh tftpserver ls -l /tftpboot/Image-starpro64
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
+<p>TODO: Pic of ???</p>
 <h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>14 Appendix: Port NuttX to StarPro64</h1>
 <p><em>How did we port NuttX to StarPro64? In under One Week?</em></p>
 <p>We took the NuttX Port of <strong>Milk-V Duo S (Oz64 SG2000)</strong> and tweaked it for <strong>StarPro64 EIC7700X</strong>, with these minor modifications…</p>
