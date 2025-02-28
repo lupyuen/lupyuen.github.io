@@ -22,13 +22,13 @@ Nope it's a totally different beast! _(From a different SoC Maker)_
 
 Inside StarPro64 is the __ESWIN EIC7700X SoC__. It has __Four RISC-V Cores__ and it's based on __SiFive Architecture__ _(a bit like JH7110 SoC)_
 
-![TODO](https://lupyuen.org/images/starpro64-arch.jpg)
+![ESWIN EIC7700X SoC](https://lupyuen.org/images/starpro64-arch.jpg)
 
 But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. Later we'll talk about the [__Fun LLM Experiments__](TODO) that we can run on the NPU.
 
 _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
-> ![TODO](https://lupyuen.org/images/starpro64-npu.jpg)
+> ![ESWIN EIC7700X NPU](https://lupyuen.org/images/starpro64-npu.jpg)
 
 [__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is probably the best among the RISC-V SoCs _(BL808, SG2000, JH7110)_
 
@@ -361,7 +361,7 @@ A-ha! This says...
 
 Thanks U-Boot! You told us everything we need to Boot NuttX...
 
-![TODO](https://lupyuen.org/images/starpro64-flow2.jpg)
+![Booting NuttX over TFTP](https://lupyuen.org/images/starpro64-flow2.jpg)
 
 # Boot NuttX over TFTP
 
@@ -495,7 +495,7 @@ TODO: Press Ctrl-C to stop
 
 Now comes the really fun part, that turns StarPro64 EIC7700X into a totally different beast from Star64 JH7110...
 
-![TODO](https://lupyuen.org/images/starpro64-touchscreen.jpg)
+![StarPro64 with Touchscreen](https://lupyuen.org/images/starpro64-touchscreen.jpg)
 
 # LLM on NPU on NuttX?
 
@@ -511,7 +511,7 @@ Hear me out...
 
     _(Qwen 2 with 0.5 Billion Parameters, pic below)_
 
-    ![TODO](https://lupyuen.org/images/starpro64-qwen.jpg)
+    ![Qwen LLM on ETC7700X NPU](https://lupyuen.org/images/starpro64-qwen.jpg)
 
 1.  __Offline Disconnected LLM on SBC__ might be useful for __Smart Home Security__...
 
@@ -527,7 +527,7 @@ Hear me out...
 
     This is the right time to experiment with an __Offline Disconnected LLM__!
 
-![TODO](https://lupyuen.org/images/starpro64-sensor.jpg)
+![LLM Creature Sensor: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees becomes ultra-compressed into 16 bytes of text](https://lupyuen.org/images/starpro64-sensor.jpg)
 
 <span style="font-size:80%">
 
@@ -557,7 +557,7 @@ __Qwen__ will sound confusing to Bilingual Folks...
 
 - Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
 
-![TODO](https://lupyuen.org/images/starpro64-flow.jpg)
+![StarPro64 with Smart Power Plug](https://lupyuen.org/images/starpro64-flow.jpg)
 
 # Smart Power Plug
 
