@@ -1,6 +1,6 @@
 # StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?
 
-📝 _16 Apr 2025_
+📝 _2 Mar 2025_
 
 ![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
@@ -8,7 +8,7 @@
 
 [__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the (literally) _Hot_ New RISC-V SBC by PINE64.
 
-TODO
+TODO: Intro
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
@@ -24,7 +24,7 @@ Inside StarPro64 is the __ESWIN EIC7700X SoC__. It has __Four RISC-V Cores__ and
 
 ![ESWIN EIC7700X SoC](https://lupyuen.org/images/starpro64-arch.jpg)
 
-But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. Later we'll talk about the [__Fun LLM Experiments__](TODO) that we can run on the NPU.
+But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. Later we'll talk about the [__Fun LLM Experiments__](https://lupyuen.github.io/articles/starpro64#llm-on-npu-on-nuttx) that we can run on the NPU.
 
 _(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)_
 
@@ -371,12 +371,18 @@ _How to boot NuttX over TFTP? (Pic above)_
 
 1.  Copy these files to our TFTP Server...
 
-    [__NuttX Image: Image-starpro64__](https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO)
+    [__NuttX Image: Image__](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image)
 
-    [__Device Tree: jh7110-star64-pine64.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/sg2000-1/TODO)
+    [__Device Tree: jh7110-star64-pine64.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb)
+
+    Like so...
 
     ```bash
-    ## Copy NuttX Image and Device Tree to TFTP Server
+    ## Download the NuttX Image and Device Tree
+    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
+    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+
+    ## Copy the NuttX Image and Device Tree to our TFTP Server
     scp Image tftpserver:/tftpboot/Image-starpro64
     scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
     ssh tftpserver ls -l /tftpboot/
@@ -565,17 +571,25 @@ _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
 Try a __Smart Power Plug__ (pic above), integrated with our Build Script.
 
-In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our Build Script auto-power up StarPro64...
+In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our [__Build Script__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222) auto-power up StarPro64...
 
 ```bash
-TODO
+TODO: power off
+make ...
+scp Image tftpserver:/tftpboot/Image-starpro64
+
+Power Off the SBC
+Power On the SBC
+
+Press Enter to Power Off
+Power Off the SBC
 ```
 
 How it works? Here's our __Build Script__: [run.sh](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
 ```bash
-## Omitted: Build NuttX Image
-TODO
+## Omitted: Build the NuttX Image and copy to TFTP Server
+## make -j ...
 
 ## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
 ## export token=xxxx
@@ -614,7 +628,7 @@ curl \
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
-[(See the __Build Log__](TODO)
+[(See the __Build Log__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
 
 ![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
 
@@ -841,13 +855,15 @@ CONFIG_SMP_NCPUS=4
 
 And remember to fix [__riscv_set_inital_sp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423).
 
+TODO: Pic of ???
+
 # Appendix: Build NuttX for StarPro64
 
 _Earlier we booted Image-starpro64 over TFTP. How to get the file?_
 
-We may download the NuttX Image File __`Image-starpro64`__ from here...
+We may download the NuttX Image File __`Image`__ (and rename it __`Image-starpro64`__) from here...
 
-- [__Daily Build: NuttX for SG2000__](https://github.com/lupyuen/nuttx-sg2000/tags)
+- [__NuttX for StarPro64__](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1)
 
 If we prefer to build NuttX ourselves...
 
@@ -883,9 +899,11 @@ If we prefer to build NuttX ourselves...
     cat nuttx.bin /tmp/nuttx.pad initrd \
       >Image
 
-    ## Copy NuttX Image to TFTP Server
+    ## Copy the NuttX Image and Device Tree to TFTP Server
+    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
     scp Image tftpserver:/tftpboot/Image-starpro64
-    ssh tftpserver ls -l /tftpboot/Image-starpro64
+    scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+    ssh tftpserver ls -l /tftpboot
 
     ## In U-Boot: Boot NuttX over TFTP
     ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
@@ -893,9 +911,9 @@ If we prefer to build NuttX ourselves...
 
     [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
 
-    [(See the __Build Log__](TODO)
+    [(See the __Build Log__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
 
-    [(See the __Build Outputs__)](TODO)
+    [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1)
 
 1.  The steps above assume that we've installed our TFTP Server, according to the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server)
 
@@ -926,6 +944,8 @@ Most of the NuttX Platforms run on __NuttX Flat Mode__, which has NuttX Apps Sta
 NuttX Flat Mode works well for Small Microcontrollers. But StarPro64 and other SoCs will need the more sophisticated __NuttX Kernel Mode__...
 
 - [__"NuttX Flat Mode vs Kernel Mode"__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
+
+TODO: Pic of ???
 
 # Appendix: Port NuttX to StarPro64
 
