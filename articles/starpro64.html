@@ -93,14 +93,14 @@
 <p><img src="https://lupyuen.org/images/starpro64-fan2.jpg" alt="StarPro64 EIC7700X RISC-V SBC" /></p>
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
 <p><em>StarPro64: Isn’t it a souped-up Star64?</em></p>
-<p>Nope it’s a totally different beast! (From a different SoC Maker)</p>
-<p>Inside StarPro64 is the <strong>ESWIN EIC7700X SoC</strong>. Yes it has <strong>4 RISC-V Cores</strong> and it’s based on <strong>SiFive Architecture</strong> (a bit like JH7110 SoC)…</p>
-<p>TODO: pic of arch</p>
-<p>But its super speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it a very special <em>(llama?)</em> beast. <em>(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
+<p>Nope it’s a totally different beast! <em>(From a different SoC Maker)</em></p>
+<p>Inside StarPro64 is the <strong>ESWIN EIC7700X SoC</strong>. Yes it has <strong>Four RISC-V Cores</strong> and it’s based on <strong>SiFive Architecture</strong> <em>(a bit like JH7110 SoC)</em></p>
+<p><img src="https://lupyuen.org/images/starpro64-arch.jpg" alt="TODO" /></p>
+<p>But its super-speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it a very special <em>(llama?)</em> beast. We’ll talk later about the <a href="TODO"><strong>Fun LLM Experiments</strong></a> that we can run on EIC7700X.</p>
+<p><em>(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-npu.jpg" alt="TODO" /></p>
 </blockquote>
-<p>We’ll talk later about the <a href="TODO"><strong>Fun LLM Experiments</strong></a> that we can run on EIC7700X.</p>
 <p><a href="https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual"><strong>EIC7700X Technical Reference Manual</strong></a> is probably the best among the RISC-V SoCs <em>(BL808, SG2000, JH7110)</em></p>
 <ul>
 <li>
@@ -116,7 +116,7 @@
 <p><a href="https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases/download/v1.0.0-20250103/EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf"><strong>Part 4: Peripherals, USB, PCI, Ethernet</strong></a></p>
 </li>
 </ul>
-<p>Let’s go hands-on…</p>
+<p>We go hands-on…</p>
 <p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="Connecting USB UART Dongle to StarPro64" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
 <p><em>What happens if we boot StarPro64? Fresh from the box?</em></p>
