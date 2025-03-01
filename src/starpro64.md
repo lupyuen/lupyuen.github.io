@@ -507,15 +507,11 @@ saveenv
 
 [(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](https://lupyuen.github.io/articles/starpro64#paste-slowly)
 
+[(How to __Undo Auto-Boot__? Allow __Static IP__?)](https://github.com/lupyuen/nuttx-starpro64#auto-boot-and-static-ip-for-starpro64)
+
 </span>
 
-TODO: [(What about __Static IP__?)](https://github.com/lupyuen/nuttx-sg2000/issues/1)
-
-TODO: [(How to __Undo Auto-Boot__)](https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245)
-
-TODO: Press Ctrl-C to stop
-
-Now comes the really fun part, that turns StarPro64 into a totally different beast from Star64...
+Next comes the fun part that turns StarPro64 into a totally different beast from Star64...
 
 ![StarPro64 with Touchscreen](https://lupyuen.org/images/starpro64-touchscreen.jpg)
 
