@@ -72,7 +72,11 @@ We monitor the __UART0 Port__ for Debug Messages. Connect our [__USB UART Dongle
 | __TX__ (Pin 8) |	__RX__ | _Blue_ |
 | __RX__ (Pin 10)	| __TX__ | _Green_ |
 
+<span style="font-size:80%">
+
 _(Same Pins as the GPIO Header on Oz64 SG2000 and Star64 JH7110)_
+
+</span>
 
 Connect to the USB UART at __115.2 kbps__...
 
@@ -201,7 +205,7 @@ Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-im
 
 1. Connect our __eMMC to StarPro64__ (pic above)
 
-1. Connect our __USB Drive__ from Previous Section
+1. Connect our __USB Drive__ (Previous Section)
 
 1. __At U-Boot:__ Press __Ctrl-C__ to stop Autoboot
 
