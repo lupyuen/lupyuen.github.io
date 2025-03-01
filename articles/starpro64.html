@@ -271,9 +271,9 @@ partitions=
 
 $ run gpt_partition
 $ mmc part
-1 0x00000800 0x001007ff &quot;boot&quot;
-2 0x00100800 0x009007ff &quot;swap&quot;
-3 0x00900800 0x0e677fde &quot;root&quot;</code></pre></div></li>
+  1 0x00000800 0x001007ff &quot;boot&quot;
+  2 0x00100800 0x009007ff &quot;swap&quot;
+  3 0x00900800 0x0e677fde &quot;root&quot;</code></pre></div></li>
 <li>
 <p>Verify that our <strong>USB Drive</strong> works…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls usb 0
@@ -392,8 +392,8 @@ loadaddr=0x80200000</code></pre></div>
 </li>
 <li>
 <p>Copy these files to our TFTP Server…</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image"><strong>NuttX Image: Image</strong></a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb"><strong>Device Tree: jh7110-star64-pine64.dtb</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image"><strong>NuttX Image:</strong> <em>Image</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb"><strong>Device Tree:</strong> <em>jh7110-star64-pine64.dtb</em></a></p>
 <p>Like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Image and Device Tree
 wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
