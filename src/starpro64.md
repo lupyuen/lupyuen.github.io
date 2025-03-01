@@ -4,12 +4,6 @@
 
 ![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
-<span style="font-size:80%">
-
-[(Watch the __NuttX Demo__ on YouTube)](https://youtu.be/Yr7aYNIMUsw)
-
-</span>
-
 [__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the _(literally) Hot_ New RISC-V SBC by PINE64. In this article we chat about...
 
 - __ESWIN EIC7700X__, the RISC-V SoC inside StarPro64
@@ -25,6 +19,8 @@
 - Beware of __Overheating__!
 
 - __Smart Power Plug__ might be helpful
+
+[_(Watch the NuttX Demo on YouTube)_](https://youtu.be/Yr7aYNIMUsw)
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
