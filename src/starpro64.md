@@ -8,11 +8,13 @@
 
 - __ESWIN EIC7700X__, the RISC-V SoC inside StarPro64
 
-- Its __Neural Processing Unit__ that supports __Large Language Models__
+- Its __Neural Processing Unit (NPU)__ that supports __Large Language Models (LLM)__
 
 - Booting __RockOS Linux__ on StarPro64
 
 - Porting __Apache NuttX RTOS__ to StarPro64
+
+- How __LLM on NPU on NuttX__ might work 
 
 - __Multiple Harts__ are a little problematic
 
@@ -454,7 +456,7 @@ _How to boot NuttX over TFTP? (Pic above)_
 
     </span>
 
-1.  NuttX boots OK on StarPro64 yay! (Pic below)
+1.  NuttX boots OK on StarPro64 and passes OSTest yay! (Pic below)
 
     ```bash
     NuttShell (NSH) NuttX-12.4.0
@@ -689,11 +691,13 @@ Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro6
 
 We're upstreaming StarPro64 to __NuttX Mainline__ right now! Stay tuned for updates.
 
+Maybe we'll create a [__TinyEMU Emulator__](https://lupyuen.github.io/articles/sg2000b) for StarPro64?
+
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43222490)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
