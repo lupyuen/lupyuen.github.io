@@ -537,15 +537,20 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
 <p>Try a <strong>Smart Power Plug</strong> (pic above), integrated with our Build Script.</p>
 <p>In our <a href="https://youtu.be/Yr7aYNIMUsw"><strong>Demo Video</strong></a>: Skip to <a href="https://youtu.be/Yr7aYNIMUsw?t=35"><strong>00:35</strong></a> and watch our <a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222"><strong>Build Script</strong></a> auto-power up StarPro64…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO: power off
-make ...
-scp Image tftpserver:/tftpboot/Image-starpro64
-
-Power Off the SBC
-Power On the SBC
-
-Press Enter to Power Off
-Power Off the SBC</code></pre></div>
+<ol>
+<li>
+<p>Our Script will build the <strong>NuttX Image</strong> and copy to TFTP Server</p>
+</li>
+<li>
+<p>Power StarPro64 <strong>Off then On</strong></p>
+</li>
+<li>
+<p>Wait Manually for <strong>Testing to Complete</strong> <em>(“Press Enter”)</em></p>
+</li>
+<li>
+<p>And <strong>Power Off</strong> StarPro64</p>
+</li>
+</ol>
 <p>How it works? Here’s our <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build the NuttX Image and copy to TFTP Server
 ## make -j ...
@@ -619,7 +624,7 @@ for (( ; ; )) do
   sleep 5
 done</code></pre></div>
 <p><em>(We could actually allow a Remote Developer to boot and test NuttX on StarPro64… From anywhere in the world!)</em></p>
-<p>Remember the <a href="https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
+<p>Remember our <a href="https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-power3.jpg" alt="USB Fan goes into our Smart Power Plug as a Power Jenga" /></p>
 </blockquote>
@@ -769,7 +774,7 @@ sem_test: Starting poster thread 3
 CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4</code></pre></div>
 <p>And remember to fix <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>.</p>
-<p>TODO: Pic of ???</p>
+<p><img src="https://lupyuen.org/images/starpro64-build.png" alt="NuttX Build for StarPro64" /></p>
 <h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>13 Appendix: Build NuttX for StarPro64</h1>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
 <p>We may download the NuttX Image File <strong><code>Image</code></strong> (and rename it <strong><code>Image-starpro64</code></strong>) from here…</p>
@@ -849,12 +854,17 @@ ssh tftpserver ls -l /tftpboot
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>“NuttX Flat Mode vs Kernel Mode”</strong></a></li>
 </ul>
-<p>TODO: Pic of ???</p>
+<p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="NuttX boots OK on StarPro64 yay!" /></p>
 <h1 id="appendix-port-nuttx-to-starpro64"><a class="doc-anchor" href="#appendix-port-nuttx-to-starpro64">§</a>14 Appendix: Port NuttX to StarPro64</h1>
 <p><em>How did we port NuttX to StarPro64? In under One Week?</em></p>
 <p>We took the NuttX Port of <strong>Milk-V Duo S (Oz64 SG2000)</strong> and tweaked it for <strong>StarPro64 EIC7700X</strong>, with these minor modifications…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files"><strong>Modified Files: NuttX for StarPro64</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files"><strong>Modified Files: NuttX for StarPro64</strong></a></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5"><strong>NuttX Log for StarPro64</strong></a></p>
+</li>
 </ul>
 <p>Here’s what we changed…</p>
 <h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>14.1 RISC-V Boot Code</h2>
@@ -1324,9 +1334,6 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 <p>Set to <strong>16 bytes</strong></p>
 </li>
 </ul>
-<hr>
-<p>And that’s how we ported NuttX to StarPro64! <a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/starpro64-ostest.png" alt="NuttX boots OK on StarPro64 yay!" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
