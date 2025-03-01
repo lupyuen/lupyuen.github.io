@@ -573,17 +573,13 @@ Try a __Smart Power Plug__ (pic above), integrated with our Build Script.
 
 In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our [__Build Script__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222) auto-power up StarPro64...
 
-```bash
-TODO: power off
-make ...
-scp Image tftpserver:/tftpboot/Image-starpro64
+1.  Our Script will build the __NuttX Image__ and copy to TFTP Server
 
-Power Off the SBC
-Power On the SBC
+1.  Power StarPro64 __Off then On__
 
-Press Enter to Power Off
-Power Off the SBC
-```
+1.  Wait Manually for __Testing to Complete__ _("Press Enter")_
+
+1.  And __Power Off__ StarPro64
 
 How it works? Here's our __Build Script__: [run.sh](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
@@ -671,7 +667,7 @@ done
 
 _(We could actually allow a Remote Developer to boot and test NuttX on StarPro64... From anywhere in the world!)_
 
-Remember the [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
+Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
 
 > ![USB Fan goes into our Smart Power Plug as a Power Jenga](https://lupyuen.org/images/starpro64-power3.jpg)
 
@@ -855,7 +851,7 @@ CONFIG_SMP_NCPUS=4
 
 And remember to fix [__riscv_set_inital_sp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423).
 
-TODO: Pic of ???
+![NuttX Build for StarPro64](https://lupyuen.org/images/starpro64-build.png)
 
 # Appendix: Build NuttX for StarPro64
 
@@ -945,7 +941,7 @@ NuttX Flat Mode works well for Small Microcontrollers. But StarPro64 and other S
 
 - [__"NuttX Flat Mode vs Kernel Mode"__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
 
-TODO: Pic of ???
+![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
 
 # Appendix: Port NuttX to StarPro64
 
@@ -954,6 +950,8 @@ _How did we port NuttX to StarPro64? In under One Week?_
 We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
 - [__Modified Files: NuttX for StarPro64__](https://github.com/lupyuen2/wip-nuttx/pull/93/files)
+
+- [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
 
 Here's what we changed...
 
@@ -1568,9 +1566,3 @@ __But Before That:__ Click __Settings > Advanced > Pasteboard__
 - _"Number of bytes to paste in each chunk when Pasting Slowly"_
 
   Set to __16 bytes__
-
-<hr>
-
-And that's how we ported NuttX to StarPro64! [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
-
-![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
