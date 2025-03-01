@@ -20,7 +20,7 @@
 
 - Porting __Apache NuttX RTOS__ to StarPro64
 
-- Though the __Multiple Harts__ are a little problematic for NuttX
+- __Multiple Harts__ are a little problematic for NuttX
 
 - Beware of __Overheating__!
 
