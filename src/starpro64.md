@@ -14,7 +14,7 @@
 
 - __ESWIN EIC7700X__, the RISC-V SoC inside StarPro64
 
-- Its __Neural Processing Unit__ and how it supports __Large Language Models__
+- Its __Neural Processing Unit__ that supports __Large Language Models__
 
 - Booting __RockOS Linux__ on StarPro64
 
