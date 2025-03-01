@@ -94,10 +94,10 @@
 <h1 id="eswin-eic7700x-risc-v-soc"><a class="doc-anchor" href="#eswin-eic7700x-risc-v-soc">§</a>1 ESWIN EIC7700X RISC-V SoC</h1>
 <p><em>StarPro64: Isn’t it a souped-up Star64?</em></p>
 <p>Nope it’s a totally different beast! <em>(From a different SoC Maker)</em></p>
-<p>Inside StarPro64 is the <strong>ESWIN EIC7700X SoC</strong>. It has <strong>Four RISC-V Cores</strong> and it’s based on <strong>SiFive Architecture</strong> <em>(a bit like JH7110 SoC)</em></p>
+<p>Inside StarPro64 is the <a href="https://www.eswincomputing.com/en/products/index/36.html"><strong>ESWIN EIC7700X SoC</strong></a>. EIC7700X has <strong>Four RISC-V Cores</strong> and it’s based on <a href="https://www.sifive.com/cores/performance-p550"><strong>SiFive Architecture</strong></a> <em>(a bit like JH7110 SoC)</em></p>
 <p><img src="https://lupyuen.org/images/starpro64-arch.jpg" alt="ESWIN EIC7700X SoC" /></p>
 <p>But its super-speedy <a href="https://www.sifive.com/document-file/eic7700x-datasheet"><strong>Neural Processing Unit</strong></a> (NPU) makes it a very special <em>(llama?)</em> beast. Later we’ll talk about the <a href="https://lupyuen.github.io/articles/starpro64#llm-on-npu-on-nuttx"><strong>Fun LLM Experiments</strong></a> that we can run on the NPU.</p>
-<p><em>(20 TOPS INT8: 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
+<p><em>(20 TOPS INT8 = 20 Trillion Ops Per Second for 8-bit Integers)</em></p>
 <blockquote>
 <p><img src="https://lupyuen.org/images/starpro64-npu.jpg" alt="ESWIN EIC7700X NPU" /></p>
 </blockquote>
@@ -120,7 +120,7 @@
 <p><img src="https://lupyuen.org/images/starpro64-uart.jpg" alt="Connecting USB UART Dongle to StarPro64" /></p>
 <h1 id="boot-without-microsd"><a class="doc-anchor" href="#boot-without-microsd">§</a>2 Boot Without MicroSD</h1>
 <p><em>What happens if we boot StarPro64? Fresh from the box?</em></p>
-<p>We monitor the <strong>UART0 Port</strong> for Debug Messages. Connect our <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)…</p>
+<p>We monitor the <strong>UART0 Port</strong> for Debug Messages. Connect our <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)</p>
 <div><table><thead><tr><th style="text-align: center">StarPro64</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><em>Yellow</em></td></tr>
 <tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><em>Blue</em></td></tr>
@@ -225,7 +225,7 @@ $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
 <p>Connect our <strong>eMMC to StarPro64</strong> (pic above)</p>
 </li>
 <li>
-<p>Connect our <strong>USB Drive</strong> from previous section</p>
+<p>Connect our <strong>USB Drive</strong> from Previous Section</p>
 </li>
 <li>
 <p><strong>At U-Boot:</strong> Press <strong>Ctrl-C</strong> to stop Autoboot</p>
@@ -433,7 +433,7 @@ Hello, World!!
 nsh&gt; getprime
 getprime took 148 msec    
 
-user_main: Exiting
+nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
@@ -468,7 +468,7 @@ saveenv</code></pre></div><span style="font-size:80%">
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1">(What about <strong>Static IP</strong>?)</a></p>
 <p>TODO: <a href="https://github.com/lupyuen/nuttx-sg2000/issues/1#issuecomment-2114415245">(How to <strong>Undo Auto-Boot</strong>)</a></p>
 <p>TODO: Press Ctrl-C to stop</p>
-<p>Now comes the really fun part, that turns StarPro64 EIC7700X into a totally different beast from Star64 JH7110…</p>
+<p>Now comes the really fun part, that turns StarPro64 into a totally different beast from Star64…</p>
 <p><img src="https://lupyuen.org/images/starpro64-touchscreen.jpg" alt="StarPro64 with Touchscreen" /></p>
 <h1 id="llm-on-npu-on-nuttx"><a class="doc-anchor" href="#llm-on-npu-on-nuttx">§</a>9 LLM on NPU on NuttX?</h1>
 <p><em>Oh really? Large Language Model on Single-Board Computer? (Eyes roll)</em></p>
@@ -500,7 +500,7 @@ saveenv</code></pre></div><span style="font-size:80%">
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/starpro64-sensor.jpg" alt="LLM Creature Sensor: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees becomes ultra-compressed into 16 bytes of text" /></p>
-<span style="font-size:80%">
+<span style="font-size:60%">
 <p>(Here’s an idea for Sci-Fi Horror: We install an LLM Sensor in a Remote Uninhabited Island. One day we receive sinister words from our LLM Sensor: “EVIL!”, “DEATH!”, “DOOM!”…)</p>
 </span>
 <p><em>Isn’t Linux a little wonky on StarPro64?</em></p>
@@ -589,7 +589,7 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
 <p>This script assumes that we have…</p>
 <ul>
@@ -630,7 +630,7 @@ done</code></pre></div>
 </blockquote>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>We’re upstreaming StarPro64 to <strong>NuttX Mainline</strong> right now! Stay tuned for updates.</p>
-<p>Many Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing.</p>
+<p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
@@ -666,7 +666,7 @@ done</code></pre></div>
 <p>This SoC will boot OpenSBI on <strong>Any Random Hart</strong>, 0 to 3! Which means U-Boot and NuttX will subsequently boot on the <strong>Same Random Hart</strong>.</p>
 <p><em>What’s the problem?</em></p>
 <p>NuttX assumes that it always <strong>Boots on Hart 0</strong>. (Pic above)</p>
-<p>This code <strong>will fail</strong> when NuttX boots on Harts 1 to 3: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a></p>
+<p>When NuttX boots on <strong>Harts 1 to 3</strong>: Our <a href="https://lupyuen.github.io/articles/starpro64#risc-v-boot-code"><strong>RISC-V Boot Code</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>. Which <strong>will fail</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423">riscv_macros.S</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set inital sp for riscv core. This function should be only called when initing.
 ## TODO: Support Non-Zero Boot Hart.
 .macro riscv_set_inital_sp base, size, hartid
@@ -687,7 +687,7 @@ done</code></pre></div>
 .endm</code></pre></div>
 <p><em>How to fix this?</em></p>
 <p>Our workaround is to <a href="https://lupyuen.github.io/articles/starpro64#nuttx-start-code"><strong>Always Reboot NuttX on Hart 0</strong></a>…</p>
-<ul>
+<ol>
 <li>
 <p><strong>If Boot Hart is Not 0:</strong></p>
 <p>Restart NuttX with Hart 0</p>
@@ -696,7 +696,7 @@ done</code></pre></div>
 <p><strong>If Boot Hart is 0:</strong></p>
 <p>Continue Starting NuttX</p>
 </li>
-</ul>
+</ol>
 <p><em>Harts vs CPUs: What’s the difference?</em></p>
 <p>NuttX insists on booting with CPU 0. Otherwise it fails with this <a href="https://gist.github.com/lupyuen/7278c35c3d556a5d4574668b54272fef"><strong>nx_start Error</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>[CPU2] dump_assert_info:
@@ -705,13 +705,13 @@ at file: init/nx_start.c:745 task(CPU2):
 CPU2 IDLE process: Kernel 0x802019a6</code></pre></div>
 <p>That’s why we <a href="https://lupyuen.github.io/articles/starpro64#nuttx-start-code"><strong>Renumber the CPUs</strong></a>: Boot Hart is always <strong>CPU 0</strong>. Other Harts become <strong>CPUs 1 to 3</strong>. For Example: If <em>boot_hartid=2</em> then…</p>
 <ul>
+<li><em>hart=2, cpu=0</em></li>
 <li><em>hart=0, cpu=1</em></li>
 <li><em>hart=1, cpu=2</em></li>
-<li><em>hart=2, cpu=0</em></li>
 <li><em>hart=3, cpu=3</em></li>
 </ul>
 <p><em>Can’t we use One Hart and ignore the Other Harts?</em></p>
-<p>OK Mister Cold-Harted… We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>..</p>
+<p>OK Mister Cold-Harted: We tried <a href="https://github.com/lupyuen2/wip-nuttx/commits/starpro64c"><strong>Enabling One Hart Only (CPU 0)</strong></a>. But OSTest <a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6"><strong>hangs at sem_test</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## OSTest hangs for StarPro64 when we enable One Hart only...
 user_main: semaphore test
 sem_test: Initializing semaphore to 0
@@ -747,7 +747,7 @@ waiter_func: Thread 2 initial semaphore value = -1
 waiter_func: Thread 2 waiting on semaphore
 sem_test: Starting poster thread 3
 ## Completes successfully</code></pre></div>
-<p>Here’s the problem: <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253"><strong>sem_test</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179-L412"><strong>nx_pthread_create</strong></a> to create a PThread for Thread #1…</p>
+<p>Here’s the problem: <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L159-L253"><strong>sem_test</strong></a> calls <a href="https://github.com/apache/nuttx/blob/master/sched/pthread/pthread_create.c#L179-L412"><strong>nx_pthread_create</strong></a> to create <strong>Thread #1</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>int nx_pthread_create(...) { ...
 #ifdef CONFIG_SMP
   // pthread_setup_scheduler() will set the affinity mask by inheriting the
@@ -759,11 +759,24 @@ sem_test: Starting poster thread 3
     ptcb-&gt;cmn.affinity = attr-&gt;affinity;
   }
 #endif</code></pre></div>
-<p>But the New Thread defaults to <strong>No CPU Affinity</strong>, it <strong>Lacks Affinity for CPU 0</strong>.</p>
-<p>So it gets allocated to <strong>Another CPU</strong>. Which never runs!</p>
+<p>But…</p>
+<ul>
+<li>
+<p>Our New Thread defaults to <strong>No CPU Affinity</strong></p>
+</li>
+<li>
+<p>Thus it <strong>Lacks Affinity for CPU 0</strong></p>
+</li>
+<li>
+<p>So it gets allocated to <strong>Another CPU</strong></p>
+</li>
+<li>
+<p>Which <strong>never runs</strong>!</p>
+</li>
+</ul>
 <p>Hence <a href="https://github.com/apache/nuttx-apps/blob/master/testing/ostest/sem.c#L244-L253"><strong>sem_test loops forever</strong></a> waiting for the Semaphore Value to change.</p>
 <p><a href="https://youtu.be/70DQ4YlQMMw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/901365650d8f908a7caa431de4e84ff6">(See the <strong>NuttX Log</strong>)</a></p>
 <p><em>In Future: How to enable Multiple Harts?</em></p>
 <p>To <strong>Enable Multiple Harts</strong> in future, we undo these changes…</p>
 <ul>
@@ -773,13 +786,13 @@ sem_test: Starting poster thread 3
 <div class="example-wrap"><pre class="language-bash"><code>## Enable SMP with 4 CPUs
 CONFIG_SMP=y
 CONFIG_SMP_NCPUS=4</code></pre></div>
-<p>And remember to fix <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>.</p>
+<p>And remember to fix <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423"><strong>riscv_set_inital_sp</strong></a>. Meanwhile let’s run everything on Hart 0…</p>
 <p><img src="https://lupyuen.org/images/starpro64-build.png" alt="NuttX Build for StarPro64" /></p>
 <h1 id="appendix-build-nuttx-for-starpro64"><a class="doc-anchor" href="#appendix-build-nuttx-for-starpro64">§</a>13 Appendix: Build NuttX for StarPro64</h1>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
-<p>We may download the NuttX Image File <strong><code>Image</code></strong> (and rename it <strong><code>Image-starpro64</code></strong>) from here…</p>
+<p>Download the file <strong><code>Image</code></strong> from below and rename it <strong><code>Image-starpro64</code></strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1"><strong>NuttX for StarPro64</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1"><strong>NuttX Build for StarPro64</strong></a></li>
 </ul>
 <p>If we prefer to build NuttX ourselves…</p>
 <ol>
@@ -870,7 +883,7 @@ ssh tftpserver ls -l /tftpboot
 <h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>14.1 RISC-V Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58"><em>arch/risc-v/src/sg2000/sg2000_head.S</em></a></p>
 <p>This is the <strong>RISC-V Boot Code</strong> that runs first when U-Boot Bootloader starts NuttX.</p>
-<p>In the <strong>Linux Kernel Header</strong>: We modified the Kernel Size based on U-Boot <code>fdt_addr_r</code> - <code>kernel_addr_r</code>.</p>
+<p>In the <strong>Linux Kernel Header</strong>: We modified the Kernel Size based on U-Boot (<code>fdt_addr_r</code> - <code>kernel_addr_r</code>)</p>
 <p>This ensures that the <strong>Entire NuttX Image</strong> (including Initial RAM Disk) will be copied correctly from <code>kernel_addr_r</code> <em>(0x8400_0000)</em> to <code>loadaddr</code> <em>(0x8020_0000)</em></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linux Kernel Header*/
 __start:
@@ -920,7 +933,7 @@ real_start:
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>14.2 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7"><em>arch/risc-v/src/sg2000/sg2000_start.c</em></a></p>
 <p>NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Booting from Any Hart</strong></a>…</p>
-<ul>
+<ol>
 <li>
 <p><strong>If Boot Hart is Not 0:</strong></p>
 <p>Restart NuttX with Hart 0</p>
@@ -929,7 +942,7 @@ real_start:
 <p><strong>If Boot Hart is 0:</strong></p>
 <p>Continue Starting NuttX</p>
 </li>
-</ul>
+</ol>
 <div class="example-wrap"><pre class="language-c"><code>// We remember the Boot Hart ID (0 to 3)
 int boot_hartid = -1;
 
@@ -1015,7 +1028,7 @@ cpux:
   *(volatile uint8_t *) 0x50900000ul = &#39;\r&#39;;
   *(volatile uint8_t *) 0x50900000ul = &#39;\n&#39;;
   riscv_cpu_boot(mhartid);</code></pre></div>
-<p>How to <strong>Restart NuttX on Hart 0</strong>? By calling <strong>OpenSBI</strong>…</p>
+<p>How to <strong>Restart NuttX on Hart 0</strong>? By calling <strong>OpenSBI</strong>, adapted from <a href="https://github.com/apache/nuttx/blob/fb853be004c5960cd6bdd210e892ae88d96c9b9f/arch/risc-v/src/common/supervisor/riscv_sbi.c#L46-L158"><strong>riscv_sbi.c</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// We start a Hart (0 to 3) by calling OpenSBI
 // addr points to our RISC-V Assembly Start Code
 static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr) {
