@@ -92,13 +92,16 @@
 <p><strong>ESWIN EIC7700X</strong>, the RISC-V SoC inside StarPro64</p>
 </li>
 <li>
-<p>Its <strong>Neural Processing Unit</strong> that supports <strong>Large Language Models</strong></p>
+<p>Its <strong>Neural Processing Unit (NPU)</strong> that supports <strong>Large Language Models (LLM)</strong></p>
 </li>
 <li>
 <p>Booting <strong>RockOS Linux</strong> on StarPro64</p>
 </li>
 <li>
 <p>Porting <strong>Apache NuttX RTOS</strong> to StarPro64</p>
+</li>
+<li>
+<p>How <strong>LLM on NPU on NuttX</strong> might work</p>
 </li>
 <li>
 <p><strong>Multiple Harts</strong> are a little problematic</p>
@@ -446,7 +449,7 @@ booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div><span style="font-size:
 </span>
 </li>
 <li>
-<p>NuttX boots OK on StarPro64 yay! (Pic below)</p>
+<p>NuttX boots OK on StarPro64 and passes OSTest yay! (Pic below)</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt; uname -a
 NuttX 12.4.0 83424f8d26 Feb 24 2025 06:50:22 risc-v milkv_duos
@@ -653,13 +656,14 @@ done</code></pre></div>
 </blockquote>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>We’re upstreaming StarPro64 to <strong>NuttX Mainline</strong> right now! Stay tuned for updates.</p>
+<p>Maybe we’ll create a <a href="https://lupyuen.github.io/articles/sg2000b"><strong>TinyEMU Emulator</strong></a> for StarPro64?</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=43222490"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
