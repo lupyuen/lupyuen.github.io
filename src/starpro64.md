@@ -505,6 +505,8 @@ setenv bootcmd "run bootcmd_tftp ; $bootcmd"
 saveenv
 ```
 
+Next comes the fun part that turns StarPro64 into a totally different beast from Star64...
+
 <span style="font-size:80%">
 
 [(U-Boot dropping chars? Try __iTerm > Edit > Paste Special > Paste Slowly__)](https://lupyuen.github.io/articles/starpro64#paste-slowly)
@@ -512,8 +514,6 @@ saveenv
 [(How to __Undo Auto-Boot__? Allow __Static IP__?)](https://github.com/lupyuen/nuttx-starpro64#auto-boot-and-static-ip-for-starpro64)
 
 </span>
-
-Next comes the fun part that turns StarPro64 into a totally different beast from Star64...
 
 ![StarPro64 with Touchscreen](https://lupyuen.org/images/starpro64-touchscreen.jpg)
 
