@@ -226,9 +226,9 @@ Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-im
 
    $ run gpt_partition
    $ mmc part
-   1 0x00000800 0x001007ff "boot"
-   2 0x00100800 0x009007ff "swap"
-   3 0x00900800 0x0e677fde "root"
+     1 0x00000800 0x001007ff "boot"
+     2 0x00100800 0x009007ff "swap"
+     3 0x00900800 0x0e677fde "root"
    ```
 
 1. Verify that our __USB Drive__ works...
@@ -387,9 +387,9 @@ _How to boot NuttX over TFTP? (Pic above)_
 
 1.  Copy these files to our TFTP Server...
 
-    [__NuttX Image: Image__](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image)
+    [__NuttX Image:__ _Image_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image)
 
-    [__Device Tree: jh7110-star64-pine64.dtb__](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb)
+    [__Device Tree:__ _jh7110-star64-pine64.dtb_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb)
 
     Like so...
 
