@@ -541,7 +541,7 @@ Hear me out...
 
     _"DUCK!" "OCTOPUS!" (Pic below)_
 
-1.  [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of platforms and build interesting apps.
+1.  [__EIC7700X NPU Driver__](https://github.com/eswincomputing/linux-stable/tree/linux-6.6.18-EIC7X/drivers/soc/eswin/ai_driver/npu) is Dual-Licensed: BSD and GPL. Which means we can run it on all kinds of software platforms and create interesting apps.
 
 1.  __Will it be Expensive?__ We hear that StarPro64 will be priced _super affordably_. Works with a Touchscreen too. (Pic above)
 
@@ -927,7 +927,7 @@ If we prefer to build NuttX ourselves...
 
     [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
 
-    [(See the __Build Log__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
 
     [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1)
 
