@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2025-03-02",
+      "website": "https://lupyuen.github.io/articles/starpro64",
+      "summary": "StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64. Let's chat about ESWIN EIC7700X, the RISC-V SoC inside, how its Neural Processing Unit supports Large Language Models. And how we port Apache NuttX RTOS to StarPro64."
+    },
+    {
       "name": "QEMU Test Bot for Pull Requests: Beware of Semihosting Breakout (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-02-23",
