@@ -72,7 +72,7 @@ We monitor the __UART0 Port__ for Debug Messages. Connect our [__USB UART Dongle
 | __TX__ (Pin 8) |	__RX__ | _Blue_ |
 | __RX__ (Pin 10)	| __TX__ | _Green_ |
 
-(Same Pins as the __GPIO Header__ on Oz64 SG2000 and Star64 JH7110)
+_(Same Pins as the GPIO Header on Oz64 SG2000 and Star64 JH7110)_
 
 Connect to the USB UART at __115.2 kbps__...
 
