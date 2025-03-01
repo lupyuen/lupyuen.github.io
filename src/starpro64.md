@@ -4,11 +4,27 @@
 
 ![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
 
+<span style="font-size:80%">
+
 [(Watch the __NuttX Demo__ on YouTube)](https://youtu.be/Yr7aYNIMUsw)
 
-[__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the (literally) _Hot_ New RISC-V SBC by PINE64.
+</span>
 
-TODO: Intro
+[__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the _(literally) Hot_ New RISC-V SBC by PINE64. In this article we chat about...
+
+- __ESWIN EIC7700X__, the RISC-V SoC inside StarPro64
+
+- Its __Neural Processing Unit__ and how it supports __Large Language Models__
+
+- Booting __RockOS Linux__ on StarPro64
+
+- Porting __Apache NuttX RTOS__ to StarPro64
+
+- Though the __Multiple Harts__ are a little problematic for NuttX
+
+- Beware of __Overheating__!
+
+- __Smart Power Plug__ might be helpful
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
