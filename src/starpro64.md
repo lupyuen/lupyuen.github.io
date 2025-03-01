@@ -691,7 +691,7 @@ Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro6
 
 We're upstreaming StarPro64 to __NuttX Mainline__ right now! Stay tuned for updates.
 
-Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing...
+Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
