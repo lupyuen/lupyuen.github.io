@@ -20,6 +20,8 @@
 
 - __Smart Power Plug__ might be helpful
 
+We begin with the RISC-V SoC...
+
 [_(Watch the NuttX Demo on YouTube)_](https://youtu.be/Yr7aYNIMUsw)
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
