@@ -681,6 +681,23 @@ for (( ; ; )) do
 done
 ```
 
+_How to save the Entire Console Log from `screen`?_
+
+Inside `screen`: Press this Magic Konami Sequence...
+
+<span style="font-size:150%">
+
+```text
+Ctrl-a [
+g <Space>
+G <Enter>
+Ctrl-a :writebuf
+```
+
+</span>
+
+Everything gets saved into __/tmp/screen-exchange__
+
 _(We could actually allow a Remote Developer to boot and test NuttX on StarPro64... From anywhere in the world!)_
 
 Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
