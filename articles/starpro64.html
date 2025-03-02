@@ -649,6 +649,14 @@ for (( ; ; )) do
   screen /dev/ttyUSB* 115200
   sleep 5
 done</code></pre></div>
+<p><em>How to save the Entire Console Log from <code>screen</code>?</em></p>
+<p>Inside <code>screen</code>: Press this Magic Konami Sequence…</p>
+<span style="font-size:150%">
+<div class="example-wrap"><pre class="language-text"><code>Ctrl-a [
+g &lt;Space&gt;
+G &lt;Enter&gt;
+Ctrl-a :writebuf</code></pre></div></span>
+<p>Everything gets saved into <strong>/tmp/screen-exchange</strong></p>
 <p><em>(We could actually allow a Remote Developer to boot and test NuttX on StarPro64… From anywhere in the world!)</em></p>
 <p>Remember our <a href="https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot"><strong>USB Fan</strong></a>? It goes into our Smart Power Plug as a Power Jenga like so…</p>
 <blockquote>
