@@ -1356,7 +1356,7 @@ void up_irqinitialize(void) { ...
   // Disable all global interrupts
   for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
     addr = EIC7700X_PLIC_ENABLE0 + (hart * EIC7700X_PLIC_ENABLE_HART);
-    for (offset = 0; offset < (NR_IRQS - RISCV_IRQ_EXT) >> 3; offset += 4) {
+    for (offset = 0; offset < EIC7700X_PLIC_IRQS >> 3; offset += 4) {
       putreg32(0x0, addr + offset);          
     }
   }
@@ -1384,7 +1384,7 @@ We do this to __Disable the Interrupts__ for Boot Hart 0 to 3 (in future)
 void up_disable_irq(int irq) { ...
 
   // Clear enable bit for the irq
-  if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
+  if (0 <= extirq && extirq <= EIC7700X_PLIC_IRQS) {
     addr = EIC7700X_PLIC_ENABLE0 + 
            (g_eic7700x_boot_hart * EIC7700X_PLIC_ENABLE_HART);
     modifyreg32(addr + (4 * (extirq / 32)),
@@ -1401,7 +1401,7 @@ And this to __Enable the Interrupts__ for Boot Hart 0 to 3 (in future)
 void up_enable_irq(int irq) { ...
 
   // Set enable bit for the irq
-  if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
+  if (0 <= extirq && extirq <= EIC7700X_PLIC_IRQS) {
     addr = EIC7700X_PLIC_ENABLE0 + 
            (g_eic7700x_boot_hart * EIC7700X_PLIC_ENABLE_HART);
     modifyreg32(addr + (4 * (extirq / 32)),
