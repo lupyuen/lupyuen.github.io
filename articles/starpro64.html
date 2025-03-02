@@ -1280,7 +1280,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>In future we shall support <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Multiple Harts</strong></a>. This <strong>Arch Config</strong> will enable the <strong>Hart-To-CPU Mapping</strong> we saw earlier: <em>riscv_hartid_to_cpuid, riscv_cpuid_to_hartid</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>config ARCH_CHIP_EIC7700X
   ## TODO SMP: Enable Hart-To-CPU Mapping
-	## select ARCH_RV_CPUID_MAP</code></pre></div>
+  ## select ARCH_RV_CPUID_MAP</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb">(Previously here)</a></p>
 <p>Also we removed <strong>ARCH_MMU_EXT_THEAD</strong>. (T-Head MMU Extensions)</p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
