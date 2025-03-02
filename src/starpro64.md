@@ -994,7 +994,7 @@ NuttX Flat Mode works well for Small Microcontrollers. But StarPro64 and other S
 
 _How did we port NuttX to StarPro64? In under One Week?_
 
-We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
+We took the NuttX Port of [__Milk-V Duo S (Oz64 SG2000)__](https://lupyuen.github.io/articles/sg2000) and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
