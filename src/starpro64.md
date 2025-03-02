@@ -1047,7 +1047,7 @@ This modification allows NuttX to Boot from any Hart...
 
 [(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
 
-Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
+Right now we support [__One Single Hart__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64) for EIC7700X. "`TODO` `SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
 
 [(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
