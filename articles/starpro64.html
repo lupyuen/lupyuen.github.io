@@ -255,7 +255,7 @@ $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE</code></pre></div>
 <p>Connect our <strong>USB Drive</strong> (Previous Section)</p>
 </li>
 <li>
-<p><strong>At U-Boot:</strong> Press <strong>Ctrl-C</strong> to stop Autoboot</p>
+<p><strong>At U-Boot:</strong> Press <strong>Ctrl-C</strong> until U-Boot stops</p>
 </li>
 <li>
 <p>Verify that the <strong>eMMC is OK</strong>…</p>
@@ -355,7 +355,7 @@ mmc0: sdhci: Blk size:  0x00007200 | Blk cnt:  0x00000000</code></pre></div></sp
 <h1 id="settings-for-u-boot-bootloader"><a class="doc-anchor" href="#settings-for-u-boot-bootloader">§</a>7 Settings for U-Boot Bootloader</h1>
 <p><em>Bummer. What else can we boot on StarPro64?</em></p>
 <p>Let’s snoop around <a href="https://docs.u-boot.org/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>. And figure out how to boot <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>.</p>
-<p>Power up StarPro64 and press <strong>Ctrl-C</strong>. At the <strong>U-Boot Prompt</strong>: We enter these commands…</p>
+<p>Power up StarPro64 and press <strong>Ctrl-C</strong> until U-Boot stops. At the <strong>U-Boot Prompt</strong>: We enter these commands…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ help
 printenv  - print environment variables
 saveenv   - save environment variables to persistent storage
@@ -396,21 +396,21 @@ loadaddr=0x80200000</code></pre></div>
 <li>
 <p>Copy these files to our TFTP Server…</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image"><strong>NuttX Image:</strong> <em>Image</em></a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb"><strong>Device Tree:</strong> <em>jh7110-star64-pine64.dtb</em></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb"><strong>Device Tree:</strong> <em>eic7700-evb.dtb</em></a></p>
 <p>Like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the NuttX Image and Device Tree
 wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
-wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+wget https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb
 
 ## Copy the NuttX Image and Device Tree to our TFTP Server
 scp Image tftpserver:/tftpboot/Image-starpro64
-scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+scp eic7700-evb.dtb tftpserver:/tftpboot/
 ssh tftpserver ls -l /tftpboot/</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-build-nuttx-for-starpro64">(How to <strong>Build NuttX</strong> ourselves)</a></p>
 <p>(NuttX won’t read the <strong>Device Tree</strong>)</p>
 </li>
 <li>
-<p>Power up StarPro64 and press <strong>Ctrl-C</strong></p>
+<p>Power up StarPro64 and press <strong>Ctrl-C</strong> until U-Boot stops</p>
 </li>
 <li>
 <p>At the <strong>U-Boot Prompt</strong>: Enter these commands…</p>
@@ -433,7 +433,7 @@ dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64
 ## Load the Device Tree from TFTP Server
 ## fdt_addr_r=0x88000000
 ## TODO: Fix the Device Tree, it&#39;s not needed by NuttX
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb
 
 ## Set the RAM Address of Device Tree
 ## fdt_addr_r=0x88000000
@@ -474,7 +474,7 @@ ostest_main: Exiting with status 0</code></pre></div>
 <p><em>We type these commands EVERY TIME we boot?</em></p>
 <p>We can automate: Just do this once, and NuttX will <strong>Auto-Boot</strong> whenever we power up…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Add the Boot Command for TFTP
-setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
+setenv bootcmd_tftp &#39;dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}&#39;
 
 ## Save it for future reboots
 saveenv
@@ -855,13 +855,13 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
 ## Copy the NuttX Image and Device Tree to TFTP Server
-wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+wget https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb
 scp Image tftpserver:/tftpboot/Image-starpro64
-scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+scp eic7700-evb.dtb tftpserver:/tftpboot/
 ssh tftpserver ls -l /tftpboot
 
 ## In U-Boot: Boot NuttX over TFTP
-## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
+## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac">(See the <strong>Build Script</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1">(See the <strong>Build Outputs</strong>)</a></p>
