@@ -207,7 +207,7 @@ Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-im
 
 1. Connect our __USB Drive__ (Previous Section)
 
-1. __At U-Boot:__ Press __Ctrl-C__ to stop Autoboot
+1. __At U-Boot:__ Press __Ctrl-C__ until U-Boot stops
 
 1. Verify that the __eMMC is OK__...
 
@@ -349,7 +349,7 @@ _Bummer. What else can we boot on StarPro64?_
 
 Let's snoop around [__U-Boot Bootloader__](https://docs.u-boot.org/en/latest/index.html). And figure out how to boot [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html).
 
-Power up StarPro64 and press __Ctrl-C__. At the __U-Boot Prompt__: We enter these commands...
+Power up StarPro64 and press __Ctrl-C__ until U-Boot stops. At the __U-Boot Prompt__: We enter these commands...
 
 ```bash
 $ help
@@ -393,18 +393,18 @@ _How to boot NuttX over TFTP? (Pic above)_
 
     [__NuttX Image:__ _Image_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image)
 
-    [__Device Tree:__ _jh7110-star64-pine64.dtb_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb)
+    [__Device Tree:__ _eic7700-evb.dtb_](https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb)
 
     Like so...
 
     ```bash
     ## Download the NuttX Image and Device Tree
     wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
-    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+    wget https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb
 
     ## Copy the NuttX Image and Device Tree to our TFTP Server
     scp Image tftpserver:/tftpboot/Image-starpro64
-    scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+    scp eic7700-evb.dtb tftpserver:/tftpboot/
     ssh tftpserver ls -l /tftpboot/
     ```
 
@@ -412,7 +412,7 @@ _How to boot NuttX over TFTP? (Pic above)_
 
     (NuttX won't read the __Device Tree__)
 
-1.  Power up StarPro64 and press __Ctrl-C__
+1.  Power up StarPro64 and press __Ctrl-C__ until U-Boot stops
 
 1.  At the __U-Boot Prompt__: Enter these commands...
 
@@ -436,7 +436,7 @@ _How to boot NuttX over TFTP? (Pic above)_
     ## Load the Device Tree from TFTP Server
     ## fdt_addr_r=0x88000000
     ## TODO: Fix the Device Tree, it's not needed by NuttX
-    tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+    tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb
 
     ## Set the RAM Address of Device Tree
     ## fdt_addr_r=0x88000000
@@ -489,7 +489,7 @@ We can automate: Just do this once, and NuttX will __Auto-Boot__ whenever we pow
 
 ```bash
 ## Add the Boot Command for TFTP
-setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
+setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
 
 ## Save it for future reboots
 saveenv
@@ -920,13 +920,13 @@ If we prefer to build NuttX ourselves...
       >Image
 
     ## Copy the NuttX Image and Device Tree to TFTP Server
-    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/jh7110-star64-pine64.dtb
+    wget https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb
     scp Image tftpserver:/tftpboot/Image-starpro64
-    scp jh7110-star64-pine64.dtb tftpserver:/tftpboot/
+    scp eic7700-evb.dtb tftpserver:/tftpboot/
     ssh tftpserver ls -l /tftpboot
 
     ## In U-Boot: Boot NuttX over TFTP
-    ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+    ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
     ```
 
     [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
