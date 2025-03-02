@@ -461,7 +461,7 @@ _How to boot NuttX over TFTP? (Pic above)_
     ```bash
     NuttShell (NSH) NuttX-12.4.0
     nsh> uname -a
-    NuttX 12.4.0 83424f8d26 Feb 24 2025 06:50:22 risc-v milkv_duos
+    NuttX 12.4.0 83424f8d26 Feb 24 2025 06:50:22 risc-v starpro64
 
     nsh> hello
     Hello, World!!
@@ -775,7 +775,7 @@ at file: init/nx_start.c:745 task(CPU2):
 CPU2 IDLE process: Kernel 0x802019a6
 ```
 
-That's why we [__Renumber the CPUs__](https://lupyuen.github.io/articles/starpro64#nuttx-start-code): Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__. For Example: If _boot_hartid=2_ then...
+That's why we [__Renumber the CPUs__](https://lupyuen.github.io/articles/starpro64#nuttx-start-code): Boot Hart is always __CPU 0__. Other Harts become __CPUs 1 to 3__. For Example: If _boot\_hart=2_ then...
 - _hart=2, cpu=0_
 - _hart=0, cpu=1_
 - _hart=1, cpu=2_
@@ -973,15 +973,19 @@ _How did we port NuttX to StarPro64? In under One Week?_
 
 We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
-- [__Modified Files: NuttX for StarPro64__](https://github.com/lupyuen2/wip-nuttx/pull/93/files)
+- [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/lupyuen2/wip-nuttx/pull/95/files)
 
-- [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
+- [__Board Source Code for StarPro64__](https://github.com/lupyuen2/wip-nuttx/pull/94/files)
+
+- [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15)
+
+- [__Build Log for StarPro64__](https://gist.github.com/lupyuen/91d74fc9e6641edf69adc56a9386b0ca)
 
 Here's what we changed...
 
 ## RISC-V Boot Code
 
-[_arch/risc-v/src/sg2000/sg2000_head.S_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
+[_arch/risc-v/src/eic7700x/eic7700x_head.S_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-e0f0445a19eb5c5bf056253844e6494e0a5a63bb7c2aa1620df4a9095d558c06)
 
 This is the __RISC-V Boot Code__ that runs first when U-Boot Bootloader starts NuttX.
 
@@ -994,32 +998,6 @@ This ensures that the __Entire NuttX Image__ (including Initial RAM Disk) will b
 __start:
   ...
   .quad  0x4000000  /* Kernel size (fdt_addr_r-kernel_addr_r) */
-```
-
-We inserted this code to print "`123`" to UART0 at startup...
-
-```c
-/* NuttX Boots Here */
-real_start:
-
-  /* Print `123` to UART */
-  /* Load UART Base Address to Register t0 */
-  li  t0, 0x50900000
-
-  /* Load `1` to Register t1 */
-  li  t1, 0x31
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
-
-  /* Load `2` to Register t1 */
-  li  t1, 0x32
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
-
-  /* Load `3` to Register t1 */
-  li  t1, 0x33
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
 ```
 
 The Original Code assumes that we always __Boot at Hart 0__. But EIC7700X will [__Boot From Any Hart__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). (0 to 3)
@@ -1035,14 +1013,16 @@ This modification allows NuttX to Boot from any Hart...
   */
 
 3:
-  /* Set stack pointer to the idle thread stack */
+  /* Set stack pointer to the idle thread stack. Assume Hart 0. */
   li a2, 0
-  riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a2
+  riscv_set_inital_sp EIC7700X_IDLESTACK_BASE, SMP_STACK_SIZE, a2
 
   /* TODO SMP: Enable this for SMP
-  riscv_set_inital_sp SG2000_IDLESTACK_BASE, SMP_STACK_SIZE, a0
+  riscv_set_inital_sp EIC7700X_IDLESTACK_BASE, SMP_STACK_SIZE, a0
   */
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58)
 
 Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.
 
@@ -1050,7 +1030,7 @@ Right now we support __One Single Hart__ for EIC7700X. "`TODO` `SMP`" flags the 
 
 ## NuttX Start Code
 
-[_arch/risc-v/src/sg2000/sg2000_start.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
+[_arch/risc-v/src/eic7700x/eic7700x_start.c_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-5414ca2a7f6263093c60cc0d65898b115f1c670786926df65d9806ee3e4ac4fc)
 
 NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow [__Booting from Any Hart__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)...
 
@@ -1064,44 +1044,18 @@ NuttX boots here, called by the RISC-V Boot Code (from above). We made these cha
 
 ```c
 // We remember the Boot Hart ID (0 to 3)
-int boot_hartid = -1;
+int g_eic7700x_boot_hart = -1;
 
 // NuttX boots here, called by the RISC-V Assembly Boot Code
-void sg2000_start(int mhartid) {
-
-  // UART Driver is not up yet. We print the primitive way.
-  *(volatile uint8_t *) 0x50900000ul = 'H';
-  *(volatile uint8_t *) 0x50900000ul = 'e';
-  *(volatile uint8_t *) 0x50900000ul = 'l';
-  *(volatile uint8_t *) 0x50900000ul = 'l';
-  *(volatile uint8_t *) 0x50900000ul = 'o';
-  *(volatile uint8_t *) 0x50900000ul = ' ';
-  *(volatile uint8_t *) 0x50900000ul = 'N';
-  *(volatile uint8_t *) 0x50900000ul = 'u';
-  *(volatile uint8_t *) 0x50900000ul = 't';
-  *(volatile uint8_t *) 0x50900000ul = 't';
-  *(volatile uint8_t *) 0x50900000ul = 'X';
-  *(volatile uint8_t *) 0x50900000ul = '!';
-  *(volatile uint8_t *) 0x50900000ul = '\r';
-  *(volatile uint8_t *) 0x50900000ul = '\n';
-
-  // Print the Hart ID (0 to 3)
-  *(volatile uint8_t *) 0x50900000ul = 'H';
-  *(volatile uint8_t *) 0x50900000ul = 'a';
-  *(volatile uint8_t *) 0x50900000ul = 'r';
-  *(volatile uint8_t *) 0x50900000ul = 't';
-  *(volatile uint8_t *) 0x50900000ul = '0' + mhartid;
-  *(volatile uint8_t *) 0x50900000ul = '\r';
-  *(volatile uint8_t *) 0x50900000ul = '\n';
-  up_mdelay(1000);  // Wait a while for UART Queue to flush
+void eic7700x_start(int mhartid) {
 
   // If Boot Hart is not 0: Restart NuttX with Hart 0
   if (mhartid != 0) {
 
     //  Clear the BSS and Restart with Hart 0
     //  __start points to our RISC-V Assembly Start Code
-    sg2000_clear_bss();
-    riscv_sbi_boot_secondary(0, (uintptr_t)&__start);
+    eic7700x_clear_bss();
+    boot_secondary(0, (uintptr_t)&__start);
 
     // Let this Hart idle forever (while Hart 0 runs)
     while (true) { asm("WFI"); }  
@@ -1109,57 +1063,54 @@ void sg2000_start(int mhartid) {
   }
 
   // Else Boot Hart is 0: We have successfully booted NuttX on Hart 0!
-  if (boot_hartid < 0) {
+  if (g_eic7700x_boot_hart < 0) {
 
     // Init the globals once only. Remember the Boot Hart.
     // Clear the BSS
-    boot_hartid = mhartid;
-    sg2000_clear_bss();
+    g_eic7700x_boot_hart = mhartid;
+    eic7700x_clear_bss();
 
     // TODO SMP: Start the Other Harts by calling OpenSBI
-    // sg2000_boot_secondary();
+    // eic7700x_boot_secondary();
 
     // Copy the RAM Disk
     // Initialize the per CPU areas
-    sg2000_copy_ramdisk();
+    eic7700x_copy_ramdisk();
     riscv_percpu_add_hart(mhartid);
   }
-  // Omitted: Call sg2000_start_s
+  // Omitted: Call eic7700x_start_s
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
 The code below will be used (in future) to support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)...
 
 ```c
 // Boot NuttX on the Hart
-void sg2000_start_s(int mhartid) {
+void eic7700x_start_s(int mhartid) {
 
   // Configure the FPU
   // If this is not the Boot Hart: Jump to cpux
   riscv_fpuconfig();
-  if (mhartid != boot_hartid) { goto cpux; }
+  if (mhartid != g_eic7700x_boot_hart) { goto cpux; }
 
   // Omitted: Boot Hart starts here and calls nx_start()
   ...
 
 cpux:
-  // TODO SMP: Non-Boot Hart starts here.
-  // We print the Hart ID and init the NuttX CPU
-  *(volatile uint8_t *) 0x50900000ul = 'H';
-  *(volatile uint8_t *) 0x50900000ul = 'a';
-  *(volatile uint8_t *) 0x50900000ul = 'r';
-  *(volatile uint8_t *) 0x50900000ul = 't';
-  *(volatile uint8_t *) 0x50900000ul = '0' + mhartid;
-  *(volatile uint8_t *) 0x50900000ul = '\r';
-  *(volatile uint8_t *) 0x50900000ul = '\n';
+  // TODO SMP: Non-Boot Hart starts here
+  // We init the NuttX CPU
   riscv_cpu_boot(mhartid);
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
 How to __Restart NuttX on Hart 0__? By calling __OpenSBI__, adapted from [__riscv_sbi.c__](https://github.com/apache/nuttx/blob/fb853be004c5960cd6bdd210e892ae88d96c9b9f/arch/risc-v/src/common/supervisor/riscv_sbi.c#L46-L158)...
 
 ```c
 // We start a Hart (0 to 3) by calling OpenSBI
 // addr points to our RISC-V Assembly Start Code
-static int riscv_sbi_boot_secondary(uintreg_t hartid, uintreg_t addr) {
+static int boot_secondary(uintreg_t hartid, uintreg_t addr) {
 
   // Make an ECALL to OpenSBI
   sbiret_t ret = sbi_ecall(
@@ -1208,17 +1159,21 @@ typedef struct sbiret_s sbiret_t;
 #define SBI_EXT_HSM_HART_START (0x0)
 ```
 
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
+
 [__For Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64) in future: We shall start the other Non-Boot Harts by calling OpenSBI...
 
 ```c
 // TODO SMP: Start the other Non-Boot Harts by calling OpenSBI
-static void sg2000_boot_secondary(void) {
+static void eic7700x_boot_secondary(void) {
   for (int i = 0; i < CONFIG_SMP_NCPUS; i++) {
-    if (i == boot_hartid) { continue; }
-    riscv_sbi_boot_secondary(i, (uintptr_t)&__start);
+    if (i == g_eic7700x_boot_hart) { continue; }
+    boot_secondary(i, (uintptr_t)&__start);
   }
 }
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
 
 [__For Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64) in future: NuttX insists on [__Booting with CPU 0 Only__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). Thus we set __Boot Hart as CPU 0__, and we Renumber the Other Harts...
 
@@ -1226,9 +1181,9 @@ static void sg2000_boot_secondary(void) {
 // TODO SMP: Convert Hart ID to CPU ID.
 // Boot Hart is CPU 0. Renumber the Other Harts.
 int weak_function riscv_hartid_to_cpuid(int hart) {
-  if (hart == boot_hartid)
+  if (hart == g_eic7700x_boot_hart)
     { return 0; }
-  else if (hart < boot_hartid)
+  else if (hart < g_eic7700x_boot_hart)
     { return hart + 1; }
   else
     { return hart; }
@@ -1238,15 +1193,17 @@ int weak_function riscv_hartid_to_cpuid(int hart) {
 // Boot Hart is CPU 0. Renumber the Other Harts.
 int weak_function riscv_cpuid_to_hartid(int cpu) {
   if (cpu == 0)
-    { return boot_hartid; }
-  else if (cpu < boot_hartid + 1)
+    { return g_eic7700x_boot_hart; }
+  else if (cpu < g_eic7700x_boot_hart + 1)
     { return cpu - 1; }
   else
     { return cpu; }
 }
 ```
 
-__For Example:__ If _boot_hartid=2_ then...
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-84111f6f800efef513a2420c571ea39fe2068d19cff6c1eab015da0f9755b9c7)
+
+__For Example:__ If _boot\_hart=2_ then...
 - _hart=0, cpu=1_
 - _hart=1, cpu=2_
 - _hart=2, cpu=0_
@@ -1256,13 +1213,17 @@ __For Example:__ If _boot_hartid=2_ then...
 
 ## PLIC Interrupt Controller
 
-[_arch/risc-v/include/sg2000/irq.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
+[_arch/risc-v/include/eic7700x/irq.h_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-ba7e40b796c75e06dd5ec10bc9bed4df928223796fd7010618ec3c3568582daa)
 
 ```c
-// Number of External Interrupts
+// Number of PLIC External Interrupts supported
+#define EIC7700X_PLIC_IRQS 458
+
 // Offset by RISCV_IRQ_SEXT
-#define NR_IRQS (RISCV_IRQ_SEXT + 458)
+#define NR_IRQS (RISCV_IRQ_SEXT + EIC7700X_PLIC_IRQS)
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-523f77920746a4b6cb3e02ef9dfb71223593ae328aa8019e8d8fd730b828ab9f)
 
 That's because EIC7700X supports __458 External Interrupts__...
 
@@ -1277,12 +1238,14 @@ That's because EIC7700X supports __458 External Interrupts__...
 </p>
 <hr>
 
-[_arch/risc-v/src/sg2000/hardware/sg2000_memorymap.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
+[_arch/risc-v/src/eic7700x/hardware/eic7700x_memorymap.h_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-5b3c3d372e385ac3d1c2a696217d7f8c340293448ab56d4122c93d1ef32dd18e)
 
 ```c
 // PLIC Base Address
-#define SG2000_PLIC_BASE 0x0C000000ul
+#define EIC7700X_PLIC_BASE 0x0C000000ul
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767)
 
 __PLIC Base Address__ is specified here...
 
@@ -1297,24 +1260,26 @@ __PLIC Base Address__ is specified here...
 </p>
 <hr>
 
-[_arch/risc-v/src/sg2000/hardware/sg2000_plic.h_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
+[_arch/risc-v/src/eic7700x/hardware/eic7700x_plic.h_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-16c0b7734d6a3d63f4bbb3bcfb94b1e47ea694a7c2c3bfd9d4d70c46e5cc4226)
 
 ```c
 // PLIC Interrupt Priority: Single Global Register
-#define SG2000_PLIC_PRIORITY (SG2000_PLIC_BASE + 0x000000)
+#define EIC7700X_PLIC_PRIORITY (EIC7700X_PLIC_BASE + 0x000000)
 
 // Hart 0 S-Mode Interrupt Enable and Offset Between Harts
-#define SG2000_PLIC_ENABLE0     (SG2000_PLIC_BASE + 0x002080)
-#define SG2000_PLIC_ENABLE_HART (0x100)
+#define EIC7700X_PLIC_ENABLE0     (EIC7700X_PLIC_BASE + 0x002080)
+#define EIC7700X_PLIC_ENABLE_HART 0x100
 
 // Hart 0 S-Mode Priority Threshold and Offset Between Harts
-#define SG2000_PLIC_THRESHOLD0     (SG2000_PLIC_BASE + 0x201000)
-#define SG2000_PLIC_THRESHOLD_HART (0x2000)
+#define EIC7700X_PLIC_THRESHOLD0     (EIC7700X_PLIC_BASE + 0x201000)
+#define EIC7700X_PLIC_THRESHOLD_HART 0x2000
 
 // Hart 0 S-Mode Claim / Complete and Offset Between Harts
-#define SG2000_PLIC_CLAIM0     (SG2000_PLIC_BASE + 0x201004)
-#define SG2000_PLIC_CLAIM_HART (0x2000)
+#define EIC7700X_PLIC_CLAIM0     (EIC7700X_PLIC_BASE + 0x201004)
+#define EIC7700X_PLIC_CLAIM_HART 0x2000
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-64c2a42d4a59409becf86f2967d2a27ff48635231437f56620d3e86a28002a28)
 
 __Interrupt Enable: PLIC_ENABLE_HART__ is _0x100_ because we skip _0x100_ bytes per Hart...
 
@@ -1357,7 +1322,7 @@ Which comes from this...
 
 <hr>
 
-[_arch/risc-v/src/sg2000/sg2000_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
+[_arch/risc-v/src/eic7700x/eic7700x_irq.c_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-2051024378978ef5f630d00498f37aa84cc3e94d64ae08e1c2b74483fabe0c3c)
 
 In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). That's why we extended this code to __Initialize the Interrupts__ for Harts 0 to 3...
 
@@ -1367,7 +1332,7 @@ void up_irqinitialize(void) { ...
 
   // Disable all global interrupts
   for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
-    addr = SG2000_PLIC_ENABLE0 + (hart * SG2000_PLIC_ENABLE_HART);
+    addr = EIC7700X_PLIC_ENABLE0 + (hart * EIC7700X_PLIC_ENABLE_HART);
     for (offset = 0; offset < (NR_IRQS - RISCV_IRQ_EXT) >> 3; offset += 4) {
       putreg32(0x0, addr + offset);          
     }
@@ -1375,17 +1340,19 @@ void up_irqinitialize(void) { ...
 
   // Clear pendings in PLIC
   for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
-    addr = SG2000_PLIC_CLAIM0 + (hart * SG2000_PLIC_CLAIM_HART);
+    addr = EIC7700X_PLIC_CLAIM0 + (hart * EIC7700X_PLIC_CLAIM_HART);
     claim = getreg32(addr);
     putreg32(claim, addr);
   }
 
   // Set irq threshold to 0 (permits all global interrupts)
   for (hart = 0; hart < CONFIG_SMP_NCPUS; hart++) {
-    addr = SG2000_PLIC_THRESHOLD0 + (hart * SG2000_PLIC_THRESHOLD_HART);
+    addr = EIC7700X_PLIC_THRESHOLD0 + (hart * EIC7700X_PLIC_THRESHOLD_HART);
     putreg32(0, addr);
   }
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
 We do this to __Disable the Interrupts__ for Boot Hart 0 to 3 (in future)
 
@@ -1395,12 +1362,14 @@ void up_disable_irq(int irq) { ...
 
   // Clear enable bit for the irq
   if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
-    addr = SG2000_PLIC_ENABLE0 + 
-           (boot_hartid * SG2000_PLIC_ENABLE_HART);
+    addr = EIC7700X_PLIC_ENABLE0 + 
+           (g_eic7700x_boot_hart * EIC7700X_PLIC_ENABLE_HART);
     modifyreg32(addr + (4 * (extirq / 32)),
                 1 << (extirq % 32), 0);
   }
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
 
 And this to __Enable the Interrupts__ for Boot Hart 0 to 3 (in future)
 
@@ -1410,18 +1379,20 @@ void up_enable_irq(int irq) { ...
 
   // Set enable bit for the irq
   if (0 <= extirq && extirq <= NR_IRQS - RISCV_IRQ_EXT) {
-    addr = SG2000_PLIC_ENABLE0 + 
-           (boot_hartid * SG2000_PLIC_ENABLE_HART);
+    addr = EIC7700X_PLIC_ENABLE0 + 
+           (g_eic7700x_boot_hart * EIC7700X_PLIC_ENABLE_HART);
     modifyreg32(addr + (4 * (extirq / 32)),
                 0, 1 << (extirq % 32));
   }
 ```
 
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366)
+
 [(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 <hr>
 
-[_arch/risc-v/src/sg2000/sg2000_irq_dispatch.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
+[_arch/risc-v/src/eic7700x/eic7700x_irq_dispatch.c_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-1275f03e6f816e5e4a30989025d8e48a5a209fca26bd138e19ae2e508b09a3cd)
 
 In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). That's why we extended this code to __Dispatch the Interrupt__ for Boot Hart 0 to 3...
 
@@ -1429,8 +1400,8 @@ In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articl
 // Dispatch the Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   int irq = (vector >> RV_IRQ_MASK) | (vector & 0xf);
-  uintptr_t claim = SG2000_PLIC_CLAIM0 + 
-                    (boot_hartid * SG2000_PLIC_CLAIM_HART);
+  uintptr_t claim = EIC7700X_PLIC_CLAIM0 + 
+                    (g_eic7700x_boot_hart * EIC7700X_PLIC_CLAIM_HART);
   ...
   // Read the PLIC_CLAIM for the Boot Hart
   uintptr_t val = getreg32(claim);
@@ -1439,17 +1410,21 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
   putreg32(irq - RISCV_IRQ_EXT, claim);
 ```
 
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea)
+
 [(__Multiple Harts__ explained)](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64)
 
 ## Memory Map
 
-[_arch/risc-v/src/sg2000/sg2000_mm_init.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
+[_arch/risc-v/src/eic7700x/eic7700x_mm_init.c_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-ae040dfcb02a2d62a152aa57b00cb5305779cc069dda548cfbd216d61c4b69e2)
 
 ```c
 // I/O Memory Map
 #define MMU_IO_BASE (0x00000000ul)
 #define MMU_IO_SIZE (0x80000000ul)
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-cacefdc3058a54e86027d411b0a6711d8a322b1750150521d5c640e72daa8b5f)
 
 We derived the above from the __EIC7700X Memory Map__...
 
@@ -1469,14 +1444,17 @@ The rest of the Memory Map is identical to SG2000. We removed all __T-Head MMU E
 
 ## NuttX Config
 
-[_arch/risc-v/Kconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
+[_arch/risc-v/Kconfig_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64). This __Arch Config__ will enable the __Hart-To-CPU Mapping__ we saw earlier: _riscv_hartid_to_cpuid, riscv_cpuid_to_hartid_
 
 ```bash
-config ARCH_CHIP_SG2000
-	select ARCH_RV_CPUID_MAP
+config ARCH_CHIP_EIC7700X
+  ## TODO SMP: Enable Hart-To-CPU Mapping
+	## select ARCH_RV_CPUID_MAP
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
 
 Also we removed __ARCH_MMU_EXT_THEAD__. (T-Head MMU Extensions)
 
@@ -1484,7 +1462,7 @@ Also we removed __ARCH_MMU_EXT_THEAD__. (T-Head MMU Extensions)
 
 <hr>
 
-[_boards/risc-v/sg2000/milkv_duos/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
+[_boards/risc-v/eic7700x/starpro64/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/94/files#diff-908c4106f8ca104d87acc9e346e523ff990bf1a107352f5c09728df2c13b0ce2)
 
 We modified the __NuttX Board Config__ for UART...
 
@@ -1492,15 +1470,11 @@ We modified the __NuttX Board Config__ for UART...
 ## UART0 Configuration
 CONFIG_16550_REGINCR=4
 CONFIG_16550_UART0_BASE=0x50900000
-CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_CLOCK=198144000
 CONFIG_16550_UART0_IRQ=125
-
-## Enable Scheduler Debugging
-CONFIG_DEBUG_SCHED=y
-CONFIG_DEBUG_SCHED_ERROR=y
-CONFIG_DEBUG_SCHED_INFO=y
-CONFIG_DEBUG_SCHED_WARN=y
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-82b3bf6ae151a2f4e1fb9b23de18af9fd683accc70aff2c88e0b5d6d0e26904b)
 
 __16550_REGINCR__ is 4 because the UART Registers are spaced 4 bytes apart...
 
@@ -1542,38 +1516,42 @@ __Why IRQ 125?__ UART0 Interrupt Number is 100, we add 25 because of _RISCV_IRQ_
 </div>
 </p>
 
-<hr>
+__16550_UART0_CLOCK__ was computed according to [__these instructions__](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110)...
 
-[_drivers/serial/uart_16550.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+```bash
+NuttX UART Debug Log shows:
+  dlm = 0x00
+  dll = 0x6c
 
-We commented out this code that __Configures the UART Clock__...
+We know that:
+  dlm = 0x00 = (div >> 8)
+  dll = 0x6c = (div & 0xff)
 
-```c
-// Configure the UART Clock
-static int u16550_setup(FAR struct uart_dev_s *dev) { ...
+Which means:
+  div = 0x6c
 
-#ifdef TODO
-  // Enter DLAB=1
-  u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
-  // Omitted: Configure the UART Clock
-  ...
-  // Clear DLAB
-  u16550_serialout(priv, UART_LCR_OFFSET, lcr);
-#endif
+We know that:
+  baud = 115200
+  div  = (uartclk + (baud << 3)) / (baud << 4)
+
+Therefore:
+  0x6c    = (uartclk + 921600) / 1843200
+  uartclk = (0x6c * 1843200) - 921600
+          = 198144000
 ```
 
-This will be restored when we have computed [__16550_UART0_CLOCK__](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110).
-
 <hr>
 
-[_arch/risc-v/src/sg2000/sg2000_timerisr.c_](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
+[_arch/risc-v/src/eic7700x/eic7700x_timerisr.c_](https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-bc84f9d1b6005de1b6be31b3828f9d0c04a0c7eea2df3459db186a542c8bc740)
 
-Finally we changed the __RISC-V Timer Frequency__...
+Finally we changed the __RISC-V Timer Frequency__. We executed the `sleep` `10` command in NSH and adjusted the frequency...
 
 ```c
 // Previously for SG2000: 25000000ul
 #define MTIMER_FREQ 1000000ul
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-1c190e766d71f3e5a43109b975405c9e43b2d01e50f748b0f0c19a8d942caffe)
 
 ## Paste Slowly
 
