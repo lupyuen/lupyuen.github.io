@@ -931,7 +931,7 @@ ssh tftpserver ls -l /tftpboot
 </ul>
 <p>Here’s what we changed…</p>
 <h2 id="risc-v-boot-code"><a class="doc-anchor" href="#risc-v-boot-code">§</a>14.1 RISC-V Boot Code</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-e0f0445a19eb5c5bf056253844e6494e0a5a63bb7c2aa1620df4a9095d558c06"><em>arch/risc-v/src/eic7700x/eic7700x_head.S</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-e0f0445a19eb5c5bf056253844e6494e0a5a63bb7c2aa1620df4a9095d558c06"><em>arch/risc-v/src/eic7700x/eic7700x_head.S</em></a></p>
 <p>This is the <strong>RISC-V Boot Code</strong> that runs first when U-Boot Bootloader starts NuttX.</p>
 <p>In the <strong>Linux Kernel Header</strong>: We modified the Kernel Size based on U-Boot (<code>fdt_addr_r</code> - <code>kernel_addr_r</code>)</p>
 <p>This ensures that the <strong>Entire NuttX Image</strong> (including Initial RAM Disk) will be copied correctly from <code>kernel_addr_r</code> <em>(0x8400_0000)</em> to <code>loadaddr</code> <em>(0x8020_0000)</em></p>
@@ -960,7 +960,7 @@ __start:
 <p>Right now we support <strong>One Single Hart</strong> for EIC7700X. “<code>TODO</code> <code>SMP</code>” flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.</p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>14.2 NuttX Start Code</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-5414ca2a7f6263093c60cc0d65898b115f1c670786926df65d9806ee3e4ac4fc"><em>arch/risc-v/src/eic7700x/eic7700x_start.c</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-5414ca2a7f6263093c60cc0d65898b115f1c670786926df65d9806ee3e4ac4fc"><em>arch/risc-v/src/eic7700x/eic7700x_start.c</em></a></p>
 <p>NuttX boots here, called by the RISC-V Boot Code (from above). We made these changes to allow <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Booting from Any Hart</strong></a>…</p>
 <ol>
 <li>
@@ -1118,7 +1118,7 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 </ul>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <h2 id="plic-interrupt-controller"><a class="doc-anchor" href="#plic-interrupt-controller">§</a>14.3 PLIC Interrupt Controller</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-ba7e40b796c75e06dd5ec10bc9bed4df928223796fd7010618ec3c3568582daa"><em>arch/risc-v/include/eic7700x/irq.h</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-ba7e40b796c75e06dd5ec10bc9bed4df928223796fd7010618ec3c3568582daa"><em>arch/risc-v/include/eic7700x/irq.h</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Number of PLIC External Interrupts supported
 #define EIC7700X_PLIC_IRQS 458
 
@@ -1134,7 +1134,7 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 </div></div>
 </p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-5b3c3d372e385ac3d1c2a696217d7f8c340293448ab56d4122c93d1ef32dd18e"><em>arch/risc-v/src/eic7700x/hardware/eic7700x_memorymap.h</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-abb568692ca0e96b97267591063dd0ac60748d5a685cf77833cb201736fef777"><em>arch/risc-v/src/eic7700x/hardware/eic7700x_memorymap.h</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PLIC Base Address
 #define EIC7700X_PLIC_BASE 0x0C000000ul</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-14db47e674d6ddcbffc6f855a536a173b5833e3bd96a3490a45f1ef94e3b2767">(Previously here)</a></p>
@@ -1147,7 +1147,7 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 </div></div>
 </p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-16c0b7734d6a3d63f4bbb3bcfb94b1e47ea694a7c2c3bfd9d4d70c46e5cc4226"><em>arch/risc-v/src/eic7700x/hardware/eic7700x_plic.h</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-16c0b7734d6a3d63f4bbb3bcfb94b1e47ea694a7c2c3bfd9d4d70c46e5cc4226"><em>arch/risc-v/src/eic7700x/hardware/eic7700x_plic.h</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PLIC Interrupt Priority: Single Global Register
 #define EIC7700X_PLIC_PRIORITY (EIC7700X_PLIC_BASE + 0x000000)
 
@@ -1192,7 +1192,7 @@ int weak_function riscv_cpuid_to_hartid(int cpu) {
 </p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-2051024378978ef5f630d00498f37aa84cc3e94d64ae08e1c2b74483fabe0c3c"><em>arch/risc-v/src/eic7700x/eic7700x_irq.c</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-2051024378978ef5f630d00498f37aa84cc3e94d64ae08e1c2b74483fabe0c3c"><em>arch/risc-v/src/eic7700x/eic7700x_irq.c</em></a></p>
 <p>In future we shall support <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Multiple Harts</strong></a>. That’s why we extended this code to <strong>Initialize the Interrupts</strong> for Harts 0 to 3…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize the Interrupts
 void up_irqinitialize(void) { ...
@@ -1244,7 +1244,7 @@ void up_enable_irq(int irq) { ...
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-0c39d310c3819d6b7bfecb05f6a203019d0f937b171abe539f299fa37805b366">(Previously here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-1275f03e6f816e5e4a30989025d8e48a5a209fca26bd138e19ae2e508b09a3cd"><em>arch/risc-v/src/eic7700x/eic7700x_irq_dispatch.c</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-1275f03e6f816e5e4a30989025d8e48a5a209fca26bd138e19ae2e508b09a3cd"><em>arch/risc-v/src/eic7700x/eic7700x_irq_dispatch.c</em></a></p>
 <p>In future we shall support <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Multiple Harts</strong></a>. That’s why we extended this code to <strong>Dispatch the Interrupt</strong> for Boot Hart 0 to 3…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Dispatch the Interrupt
 void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
@@ -1260,7 +1260,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-75ceaf9a0a70840fc2e15cea303fff5e9d2339d4f524574df94b5d0ec46e37ea">(Previously here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>14.4 Memory Map</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-ae040dfcb02a2d62a152aa57b00cb5305779cc069dda548cfbd216d61c4b69e2"><em>arch/risc-v/src/eic7700x/eic7700x_mm_init.c</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-ae040dfcb02a2d62a152aa57b00cb5305779cc069dda548cfbd216d61c4b69e2"><em>arch/risc-v/src/eic7700x/eic7700x_mm_init.c</em></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Memory Map
 #define MMU_IO_BASE (0x00000000ul)
 #define MMU_IO_SIZE (0x80000000ul)</code></pre></div>
@@ -1277,7 +1277,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 </p>
 <p>The rest of the Memory Map is identical to SG2000. We removed all <strong>T-Head MMU Extensions</strong>, including <strong>mmu_flush_cache</strong>.</p>
 <h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>14.5 NuttX Config</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb"><em>arch/risc-v/Kconfig</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb"><em>arch/risc-v/Kconfig</em></a></p>
 <p>In future we shall support <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>Multiple Harts</strong></a>. This <strong>Arch Config</strong> will enable the <strong>Hart-To-CPU Mapping</strong> we saw earlier: <em>riscv_hartid_to_cpuid, riscv_cpuid_to_hartid</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>config ARCH_CHIP_EIC7700X
   ## TODO SMP: Enable Hart-To-CPU Mapping
@@ -1342,7 +1342,7 @@ Therefore:
   0x6c    = (uartclk + 921600) / 1843200
   uartclk = (0x6c * 1843200) - 921600
           = 198144000</code></pre></div><hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/95/files#diff-bc84f9d1b6005de1b6be31b3828f9d0c04a0c7eea2df3459db186a542c8bc740"><em>arch/risc-v/src/eic7700x/eic7700x_timerisr.c</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-bc84f9d1b6005de1b6be31b3828f9d0c04a0c7eea2df3459db186a542c8bc740"><em>arch/risc-v/src/eic7700x/eic7700x_timerisr.c</em></a></p>
 <p>Finally we changed the <strong>RISC-V Timer Frequency</strong>. We executed the <code>sleep</code> <code>10</code> command in NSH and adjusted the frequency…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Previously for SG2000: 25000000ul
 #define MTIMER_FREQ 1000000ul</code></pre></div>
