@@ -996,9 +996,9 @@ _How did we port NuttX to StarPro64? In under One Week?_
 
 We took the NuttX Port of __Milk-V Duo S (Oz64 SG2000)__ and tweaked it for __StarPro64 EIC7700X__, with these minor modifications...
 
-- [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/lupyuen2/wip-nuttx/pull/95/files)
+- [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
-- [__Board Source Code for StarPro64__](https://github.com/lupyuen2/wip-nuttx/pull/94/files)
+- [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/lupyuen2/wip-nuttx/pull/94)
 
 - [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15)
 
