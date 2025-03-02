@@ -706,13 +706,15 @@ Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro6
 
 # What's Next
 
-We're upstreaming StarPro64 to __NuttX Mainline__ right now! Stay tuned for updates.
+We're seeking volunteers to build __NuttX Drivers for StarPro64__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, NPU, ...)_ Please lemme know!
+
+Right now we're upstreaming StarPro64 to __NuttX Mainline__...
 
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
 - [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/lupyuen2/wip-nuttx/pull/94)
 
-Maybe we'll create a [__TinyEMU Emulator__](https://lupyuen.github.io/articles/sg2000b) for StarPro64?
+Maybe we'll create a [__TinyEMU Emulator__](https://lupyuen.github.io/articles/sg2000b) for StarPro64? 🤔
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
