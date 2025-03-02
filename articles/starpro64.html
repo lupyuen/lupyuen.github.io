@@ -957,7 +957,7 @@ __start:
   riscv_set_inital_sp EIC7700X_IDLESTACK_BASE, SMP_STACK_SIZE, a0
   */</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-d8bd71e8ea93fc23ec348eeaca3d45f89dc896eff80311583d758d42e6e8fc58">(Previously here)</a></p>
-<p>Right now we support <strong>One Single Hart</strong> for EIC7700X. “<code>TODO</code> <code>SMP</code>” flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.</p>
+<p>Right now we support <a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64"><strong>One Single Hart</strong></a> for EIC7700X. “<code>TODO</code> <code>SMP</code>” flags the code that will be modified (in future) to support Multiple Harts for EIC7700X.</p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>14.2 NuttX Start Code</h2>
 <p><a href="https://github.com/apache/nuttx/pull/15921/files#diff-5414ca2a7f6263093c60cc0d65898b115f1c670786926df65d9806ee3e4ac4fc"><em>arch/risc-v/src/eic7700x/eic7700x_start.c</em></a></p>
