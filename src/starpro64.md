@@ -1472,7 +1472,7 @@ In future we shall support [__Multiple Harts__](https://lupyuen.github.io/articl
 ```bash
 config ARCH_CHIP_EIC7700X
   ## TODO SMP: Enable Hart-To-CPU Mapping
-	## select ARCH_RV_CPUID_MAP
+  ## select ARCH_RV_CPUID_MAP
 ```
 
 [(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/93/files#diff-9c348f27c59e1ed0d1d9c24e172d233747ee09835ab0aa7f156da1b7caa6a5fb)
