@@ -344,7 +344,7 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
     But there's hope for Automated Testing! We ordered a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/) that will (electrically) Swap a MicroSD between a Test Controller PC and the Arm64 Test Device.
     
-    We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](https://lupyuen.github.io/articles/what) real soon.
+    We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](https://lupyuen.github.io/articles/what) real soon. (Also: [__MicroSD Extender__](https://pine64.com/product/pinephone-microsd-extender/))
 
 1.  _Testing on Arm32 Hardware should be easier? STM32, nRF52, RP2040?_
 
