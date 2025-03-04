@@ -720,6 +720,8 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
+- [__Discuss this article on PINE64 Forum__](https://forum.pine64.org/showthread.php?tid=19718)
+
 - [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43222490)
 
 - [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
