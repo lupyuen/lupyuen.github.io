@@ -712,7 +712,7 @@ Right now we're upstreaming StarPro64 to __NuttX Mainline__...
 
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
-- [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/lupyuen2/wip-nuttx/pull/94)
+- [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/apache/nuttx/pull/15943)
 
 Maybe we'll create a [__TinyEMU Emulator__](https://lupyuen.github.io/articles/sg2000b) for StarPro64? 🤔
 
@@ -1000,7 +1000,7 @@ We took the NuttX Port of [__Milk-V Duo S (Oz64 SG2000)__](https://lupyuen.githu
 
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
-- [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/lupyuen2/wip-nuttx/pull/94)
+- [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/apache/nuttx/pull/15943)
 
 - [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15)
 
@@ -1487,7 +1487,7 @@ Also we removed __ARCH_MMU_EXT_THEAD__. (T-Head MMU Extensions)
 
 <hr>
 
-[_boards/risc-v/eic7700x/starpro64/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/94/files#diff-908c4106f8ca104d87acc9e346e523ff990bf1a107352f5c09728df2c13b0ce2)
+[_boards/risc-v/eic7700x/starpro64/configs/nsh/defconfig_](https://github.com/apache/nuttx/pull/15943/files#diff-908c4106f8ca104d87acc9e346e523ff990bf1a107352f5c09728df2c13b0ce2)
 
 We modified the __NuttX Board Config__ for UART...
 
