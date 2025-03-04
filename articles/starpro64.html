@@ -670,7 +670,7 @@ Ctrl-a :writebuf</code></pre></div></span>
 <p><a href="https://github.com/apache/nuttx/pull/15921"><strong>arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/94"><strong>boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15943"><strong>boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)</strong></a></p>
 </li>
 </ul>
 <p>Maybe we’ll create a <a href="https://lupyuen.github.io/articles/sg2000b"><strong>TinyEMU Emulator</strong></a> for StarPro64? 🤔</p>
@@ -923,7 +923,7 @@ ssh tftpserver ls -l /tftpboot
 <p><a href="https://github.com/apache/nuttx/pull/15921"><strong>arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/94"><strong>boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15943"><strong>boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)</strong></a></p>
 </li>
 <li>
 <p><a href="https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15"><strong>NuttX Log for StarPro64</strong></a></p>
@@ -1289,7 +1289,7 @@ void *riscv_dispatch_irq(uintptr_t vector, uintptr_t *regs) {
 <p>Also we removed <strong>ARCH_MMU_EXT_THEAD</strong>. (T-Head MMU Extensions)</p>
 <p><a href="https://lupyuen.github.io/articles/starpro64#appendix-multiple-harts-on-starpro64">(<strong>Multiple Harts</strong> explained)</a></p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/94/files#diff-908c4106f8ca104d87acc9e346e523ff990bf1a107352f5c09728df2c13b0ce2"><em>boards/risc-v/eic7700x/starpro64/configs/nsh/defconfig</em></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/15943/files#diff-908c4106f8ca104d87acc9e346e523ff990bf1a107352f5c09728df2c13b0ce2"><em>boards/risc-v/eic7700x/starpro64/configs/nsh/defconfig</em></a></p>
 <p>We modified the <strong>NuttX Board Config</strong> for UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## UART0 Configuration
 CONFIG_16550_REGINCR=4
