@@ -67,7 +67,8 @@
     <nav id="rustdoc"><ul>
 <li><a href="#install-linux" title="Install Linux">1 Install Linux</a><ul></ul></li>
 <li><a href="#usb-uart" title="USB UART">2 USB UART</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#connect-sdwire" title="Connect SDWire">3 Connect SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="PR Test Bot for PinePhone (Apache NuttX RTOS)" /></p>
 <p>TODO</p>
 <h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>1 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
@@ -156,7 +157,31 @@ BL3-1: Next image spsr = 0x3c5
 [    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div><h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>2 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
+logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>3 Connect SDWire</h1><div class="example-wrap"><pre class="language-text"><code>[  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
+[  206.746607] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
+[  206.746641] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[  206.755688] hub 1-1:1.0: USB hub found
+[  206.755793] hub 1-1:1.0: 3 ports detected
+[  207.042371] usb 1-1.1: new high-speed USB device number 3 using xhci-hcd
+[  207.152422] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
+[  207.152456] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  207.152476] usb 1-1.1: Product: Ultra Fast Media Reader
+[  207.152491] usb 1-1.1: Manufacturer: Generic
+[  207.152505] usb 1-1.1: SerialNumber: 000000264001
+[  207.154346] usb-storage 1-1.1:1.0: USB Mass Storage device detected
+[  207.155098] scsi host0: usb-storage 1-1.1:1.0
+[  207.242334] usb 1-1.2: new full-speed USB device number 4 using xhci-hcd
+[  207.348855] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
+[  207.348892] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  207.348911] usb 1-1.2: Product: sd-wire
+[  207.348925] usb 1-1.2: Manufacturer: SRPOL
+[  207.348940] usb 1-1.2: SerialNumber: sd-wire_02-09
+[  208.489961] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
+[  211.036252] sd 0:0:0:0: [sda] Spinning up disk...
+[  212.478440] .
+[  212.479627] sd 0:0:0:0: [sda] Media removed, stopped polling
+[  212.482893] sd 0:0:0:0: [sda] Attached SCSI removable disk
+avaota@avaota-a1:~$</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
