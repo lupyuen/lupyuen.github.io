@@ -155,7 +155,10 @@ BL3-1: Next image spsr = 0x3c5
 [    0.000000][    T0] OF: reserved mem: 0x0000000048000000..0x0000000048ffffff (16384 KiB) map non-reusable bl31
 [    0.000000][    T0] OF: reserved mem: 0x000000004a000000..0x000000004a9fffff (10240 KiB) nomap non-reusable dsp0ddr@4a000000
 [    0.000000][    T0] OF: reserved mem: 0x000000004ab00000..0x000000004ab0ffff (64 KiB) nomap non-reusable dsp_share_space@4ab00000
-[    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div><h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>2 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+[    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div>
+<p>Avaota A1: Default U-Boot in eMMC. No network :-(</p>
+<p>https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5</p>
+<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>2 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
 logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>3 Connect SDWire</h1>
