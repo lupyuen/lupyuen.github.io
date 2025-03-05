@@ -126,37 +126,113 @@ logout
 #SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC ... When was the last you saw a Micro-USB Data Cable 😂
 
 ```text
+## Disconnect then reconnect
 $ dmesg
-[  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
-[  206.746607] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
-[  206.746641] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[  206.755688] hub 1-1:1.0: USB hub found
-[  206.755793] hub 1-1:1.0: 3 ports detected
-[  207.042371] usb 1-1.1: new high-speed USB device number 3 using xhci-hcd
-[  207.152422] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
-[  207.152456] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  207.152476] usb 1-1.1: Product: Ultra Fast Media Reader
-[  207.152491] usb 1-1.1: Manufacturer: Generic
-[  207.152505] usb 1-1.1: SerialNumber: 000000264001
-[  207.154346] usb-storage 1-1.1:1.0: USB Mass Storage device detected
-[  207.155098] scsi host0: usb-storage 1-1.1:1.0
-[  207.242334] usb 1-1.2: new full-speed USB device number 4 using xhci-hcd
-[  207.348855] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
-[  207.348892] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  207.348911] usb 1-1.2: Product: sd-wire
-[  207.348925] usb 1-1.2: Manufacturer: SRPOL
-[  207.348940] usb 1-1.2: SerialNumber: sd-wire_02-09
-[  208.489961] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
-[  211.036252] sd 0:0:0:0: [sda] Spinning up disk...
-[  212.478440] .
-[  212.479627] sd 0:0:0:0: [sda] Media removed, stopped polling
-[  212.482893] sd 0:0:0:0: [sda] Attached SCSI removable disk
+
+[ 1829.473620] usb 1-1: USB disconnect, device number 2
+[ 1829.473656] usb 1-1.1: USB disconnect, device number 3
+[ 1829.535380] usb 1-1.2: USB disconnect, device number 4
+
+[ 1829.813511] usb 1-1: new full-speed USB device number 5 using xhci-hcd
+[ 1833.469452] usb 1-1: new high-speed USB device number 6 using xhci-hcd
+[ 1833.617735] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
+[ 1833.617771] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[ 1833.625490] hub 1-1:1.0: USB hub found
+[ 1833.625626] hub 1-1:1.0: 3 ports detected
+[ 1833.913607] usb 1-1.1: new high-speed USB device number 7 using xhci-hcd
+[ 1834.019412] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
+[ 1834.019446] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 1834.019465] usb 1-1.1: Product: Ultra Fast Media Reader
+[ 1834.019480] usb 1-1.1: Manufacturer: Generic
+[ 1834.019494] usb 1-1.1: SerialNumber: 000000264001
+[ 1834.021126] usb-storage 1-1.1:1.0: USB Mass Storage device detected
+[ 1834.023454] scsi host0: usb-storage 1-1.1:1.0
+[ 1834.101528] usb 1-1.2: new full-speed USB device number 8 using xhci-hcd
+[ 1834.209026] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
+[ 1834.209060] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 1834.209080] usb 1-1.2: Product: sd-wire
+[ 1834.209094] usb 1-1.2: Manufacturer: SRPOL
+[ 1834.209108] usb 1-1.2: SerialNumber: sd-wire_02-09
+[ 1835.034363] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
+[ 1835.036652] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+[ 1835.037460] sd 0:0:0:0: [sda] Write Protect is off
+[ 1835.037486] sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+[ 1835.038526] sd 0:0:0:0: [sda] No Caching mode page found
+[ 1835.044589] sd 0:0:0:0: [sda] Assuming drive cache: write through
+[ 1835.055251]  sda: sda1
+[ 1835.058244] sd 0:0:0:0: [sda] Attached SCSI removable disk
+
 avaota@avaota-a1:~$
 ```
 
 # Compile SDWire
 
+Getting Started
 
+https://docs.dasharo.com/transparent-validation/sd-wire/getting-started/
+
+Usage
+
+https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/
+
+```bash
+sudo apt-get install libftdi1-dev libpopt-dev cmake pkg-config
+git clone https://github.com/3mdeb/sd-mux
+cd sd-mux
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+Test SDWire. Default Blue LED, MicroSD Enabled. Open `dmesg -w` in a new window.
+
+```bash
+$ sudo sd-mux-ctrl --list
+Number of FTDI devices found: 1
+Dev: 0, Manufacturer: SRPOL, Serial: sd-wire_02-09, Description: sd-wire
+
+## Test Server: Blue LED
+$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+
+dmesg:
+[ 4132.212882] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+[ 4132.214999] sda: detected capacity change from 0 to 30318592
+[ 4132.216313]  sda: sda1
+
+## Test Device: Green LED
+$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+
+dmesg:
+[ 4089.816219] sda: detected capacity change from 30318592 to 0
+```
+
+# Mount MicroSD
+
+```bash
+avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
+avaota@avaota-a1:~/sd-mux/build$ sudo mount /dev/sda1 /tmp/sda1
+avaota@avaota-a1:~/sd-mux/build$ ls -l /tmp/sda1
+total 5453
+-rwxr-xr-x 1 root root  118737 Dec 31 06:18 Image.gz
+-rwxr-xr-x 1 root root 4275261 May 23  2021 Image.gz.old
+-rwxr-xr-x 1 root root     653 May 23  2021 boot.scr
+-rwxr-xr-x 1 root root 1078500 May 23  2021 initramfs.gz
+-rwxr-xr-x 1 root root   35865 May 23  2021 sun50i-a64-pinephone-1.0.dtb
+-rwxr-xr-x 1 root root   36080 May 23  2021 sun50i-a64-pinephone-1.1.dtb
+-rwxr-xr-x 1 root root   36162 May 23  2021 sun50i-a64-pinephone-1.2.dtb
+```
+
+Unmount:
+
+```bash
+$ sudo umount /tmp/sda1
+```
+
+# Inside SDWire
+
+https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp
 
 # What's Next
 
