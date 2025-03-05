@@ -119,6 +119,8 @@ logout
 
 # Connect SDWire
 
+#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC ... When was the last you saw a Micro-USB Data Cable 😂
+
 ```text
 [  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
 [  206.746607] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
