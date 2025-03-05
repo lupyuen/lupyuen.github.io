@@ -16,7 +16,20 @@ https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4
 
 xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
 Etcher
+
+标准用户：
+
+用户名：avaota
+密码：avaota
+根用户
+
+用户名：root
+密码：avaota
 ```
+
+Avaota A1: Boot to AvaotaOS Noble GNOME OK!
+
+https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b
 
 Armbian Ubuntu won't boot:
 
