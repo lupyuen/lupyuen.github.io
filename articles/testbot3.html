@@ -68,7 +68,8 @@
 <li><a href="#install-linux" title="Install Linux">1 Install Linux</a><ul></ul></li>
 <li><a href="#usb-uart" title="USB UART">2 USB UART</a><ul></ul></li>
 <li><a href="#connect-sdwire" title="Connect SDWire">3 Connect SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#compile-sdwire" title="Compile SDWire">4 Compile SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="PR Test Bot for PinePhone (Apache NuttX RTOS)" /></p>
 <p>TODO</p>
 <h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>1 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
@@ -159,7 +160,8 @@ sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
 logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>3 Connect SDWire</h1>
 <p>#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC … When was the last you saw a Micro-USB Data Cable 😂</p>
-<div class="example-wrap"><pre class="language-text"><code>[  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
+<div class="example-wrap"><pre class="language-text"><code>$ dmesg
+[  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
 [  206.746607] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
 [  206.746641] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
 [  206.755688] hub 1-1:1.0: USB hub found
@@ -183,7 +185,7 @@ logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#co
 [  212.478440] .
 [  212.479627] sd 0:0:0:0: [sda] Media removed, stopped polling
 [  212.482893] sd 0:0:0:0: [sda] Attached SCSI removable disk
-avaota@avaota-a1:~$</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>4 What’s Next</h1>
+avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>4 Compile SDWire</h1><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
