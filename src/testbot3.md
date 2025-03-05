@@ -6,6 +6,12 @@
 
 TODO
 
+# Install Linux
+
+Download Aembian-Ubuntu (not Debian) from https://www.armbian.com/avaota-a1/
+
+ xz -d Armbian_community_25.5.0-trunk.87_Avaota-a1_noble_legacy_5.15.154_gnome_desktop.img.xz
+
 # What's Next
 
 TODO
