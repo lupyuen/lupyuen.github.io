@@ -108,6 +108,10 @@ BL3-1: Next image spsr = 0x3c5
 [    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB
 ```
 
+Avaota A1: Default U-Boot in eMMC. No network :-(
+
+https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5
+
 # USB UART
 
 ```bash
