@@ -25,6 +25,8 @@ Etcher
 
 用户名：root
 密码：avaota
+
+ssh avaota@avaota-a1
 ```
 
 Avaota A1: Boot to AvaotaOS Noble GNOME OK!
