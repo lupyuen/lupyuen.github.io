@@ -72,8 +72,12 @@
 <p>TODO</p>
 <h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>1 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
 
-https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div>
+https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+
+xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+Etcher</code></pre></div>
 <p>Armbian Ubuntu won’t boot:</p>
+<p>https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4</p>
 <div class="example-wrap"><pre class="language-text"><code>ERROR:   Error initializing runtime service opteed_fast
 [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
 [    0.000000] Linux version 5.15.154-legacy-sun55iw3-syterkit (build@armbian) (aarch64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #1 SMP PREEMPT Mon Jan 6 07:05:34 UTC 2025
@@ -102,7 +106,41 @@ https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4
 [    0.000000]  setup_arch+0x264/0x57c
 [    0.000000]  start_kernel+0x7c/0x8f0
 [    0.000000]  __primary_switched+0xa0/0xa8
-[    0.000000] ---[ end Kernel panic - not syncing: Failed to allocate page table page ]---</code></pre></div><h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>2 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+[    0.000000] ---[ end Kernel panic - not syncing: Failed to allocate page table page ]---</code></pre></div>
+<p>Factory default: Boot to Android</p>
+<p>https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba</p>
+<div class="example-wrap"><pre class="language-text"><code>Hit any key to stop autoboot:  0
+ramdisk use init boot
+Android&#39;s image name: arm64
+[04.634]Starting kernel ...
+
+[04.637][mmc]: mmc exit start
+[04.654][mmc]: mmc 2 exit ok
+NOTICE:  [SCP] :wait arisc ready....
+NOTICE:  [SCP] :arisc version: [001bf1581dbae091dc22b8772b739ccafacdd4b5rid-]
+NOTICE:  [SCP] :arisc startup ready
+NOTICE:  [SCP] :arisc startup notify message feedback
+NOTICE:  [SCP] :sunxi-arisc driver is starting
+BL3-1: Next image address = 0x40080000
+BL3-1: Next image spsr = 0x3c5
+[    0.000000][    T0] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
+[    0.000000][    T0] Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo) (Android (8490178, based on r450784d) clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6), LLD 14.0.6) #22 SMP PREEMPT Sat Sep 14 19:49:30 CST 2024
+[    0.000000][    T0] Machine model: AvaotaSBC,Avaota A1
+[    0.000000][    T0] Stack Depot is disabled
+[    0.000000][    T0] KVM is not available. Ignoring kvm-arm.mode
+[    0.000000][    T0] earlycon: uart8250 at MMIO32 0x0000000002500000 (options &#39;&#39;)
+[    0.000000][    T0] printk: bootconsole [uart8250] enabled
+[    0.000000][    T0] efi: UEFI not found.
+[    0.000000][    T0] [Firmware Bug]: Kernel image misaligned at boot, please fix your bootloader!
+[    0.000000][    T0] OF: reserved mem: 0x0000000000020000..0x000000000002ffff (64 KiB) nomap non-reusable mcu0iram@20000
+[    0.000000][    T0] OF: reserved mem: 0x0000000000030000..0x0000000000037fff (32 KiB) nomap non-reusable mcu0dram0@30000
+[    0.000000][    T0] OF: reserved mem: 0x0000000000038000..0x000000000003ffff (32 KiB) nomap non-reusable mcu0dram1@38000
+[    0.000000][    T0] OF: reserved mem: 0x0000000007280000..0x00000000072bffff (256 KiB) nomap non-reusable riscvsram0@7280000
+[    0.000000][    T0] OF: reserved mem: 0x00000000072c0000..0x00000000072fffff (256 KiB) nomap non-reusable riscvsram1@72c0000
+[    0.000000][    T0] OF: reserved mem: 0x0000000048000000..0x0000000048ffffff (16384 KiB) map non-reusable bl31
+[    0.000000][    T0] OF: reserved mem: 0x000000004a000000..0x000000004a9fffff (10240 KiB) nomap non-reusable dsp0ddr@4a000000
+[    0.000000][    T0] OF: reserved mem: 0x000000004ab00000..0x000000004ab0ffff (64 KiB) nomap non-reusable dsp_share_space@4ab00000
+[    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div><h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>2 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
 logout</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
