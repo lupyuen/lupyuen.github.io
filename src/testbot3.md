@@ -117,6 +117,36 @@ sudo usermod -a -G dialout $USER
 logout
 ```
 
+# Connect SDWire
+
+```text
+[  206.598377] usb 1-1: new high-speed USB device number 2 using xhci-hcd
+[  206.746607] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
+[  206.746641] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[  206.755688] hub 1-1:1.0: USB hub found
+[  206.755793] hub 1-1:1.0: 3 ports detected
+[  207.042371] usb 1-1.1: new high-speed USB device number 3 using xhci-hcd
+[  207.152422] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
+[  207.152456] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  207.152476] usb 1-1.1: Product: Ultra Fast Media Reader
+[  207.152491] usb 1-1.1: Manufacturer: Generic
+[  207.152505] usb 1-1.1: SerialNumber: 000000264001
+[  207.154346] usb-storage 1-1.1:1.0: USB Mass Storage device detected
+[  207.155098] scsi host0: usb-storage 1-1.1:1.0
+[  207.242334] usb 1-1.2: new full-speed USB device number 4 using xhci-hcd
+[  207.348855] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
+[  207.348892] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  207.348911] usb 1-1.2: Product: sd-wire
+[  207.348925] usb 1-1.2: Manufacturer: SRPOL
+[  207.348940] usb 1-1.2: SerialNumber: sd-wire_02-09
+[  208.489961] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
+[  211.036252] sd 0:0:0:0: [sda] Spinning up disk...
+[  212.478440] .
+[  212.479627] sd 0:0:0:0: [sda] Media removed, stopped polling
+[  212.482893] sd 0:0:0:0: [sda] Attached SCSI removable disk
+avaota@avaota-a1:~$
+```
+
 # What's Next
 
 TODO
