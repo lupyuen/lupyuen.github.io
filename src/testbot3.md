@@ -8,9 +8,55 @@ TODO
 
 # Install Linux
 
-Download Aembian-Ubuntu (not Debian) from https://www.armbian.com/avaota-a1/
 
- xz -d Armbian_community_25.5.0-trunk.87_Avaota-a1_noble_legacy_5.15.154_gnome_desktop.img.xz
+```bash
+https://github.com/AvaotaSBC/AvaotaOS/releases
+
+https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+```
+
+Armbian Ubuntu won't boot:
+
+```text
+ERROR:   Error initializing runtime service opteed_fast
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
+[    0.000000] Linux version 5.15.154-legacy-sun55iw3-syterkit (build@armbian) (aarch64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #1 SMP PREEMPT Mon Jan 6 07:05:34 UTC 2025
+[    0.000000] Machine model: Avaota A1
+[    0.000000] earlycon: uart8250 at MMIO32 0x0000000002500000 (options '')
+[    0.000000] printk: bootconsole [uart8250] enabled
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node vdev0buffer@4ac00000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ae00000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node vdev0buffer@4ae00000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ae44000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node dsp0_rpbuf@4ae44000, compatible id shared-dma-pool
+[    0.000000] Kernel panic - not syncing: Failed to allocate page table page
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.15.154-legacy-sun55iw3-syterkit #1
+[    0.000000] Hardware name: Avaota A1 (DT)
+[    0.000000] Call trace:
+[    0.000000]  dump_backtrace+0x0/0x1b0
+[    0.000000]  show_stack+0x18/0x24
+[    0.000000]  dump_stack_lvl+0x7c/0xa8
+[    0.000000]  dump_stack+0x18/0x34
+[    0.000000]  panic+0x188/0x334
+[    0.000000]  early_pgtable_alloc+0x34/0xa8
+[    0.000000]  __create_pgd_mapping+0x3a8/0x6a4
+[    0.000000]  map_kernel_segment+0x74/0xdc
+[    0.000000]  paging_init+0x104/0x528
+[    0.000000]  setup_arch+0x264/0x57c
+[    0.000000]  start_kernel+0x7c/0x8f0
+[    0.000000]  __primary_switched+0xa0/0xa8
+[    0.000000] ---[ end Kernel panic - not syncing: Failed to allocate page table page ]---
+```
+
+# USB UART
+
+```bash
+##  Allow the user to access the USB UART ports
+sudo usermod -a -G dialout $USER
+##  Logout and login to refresh the permissions
+logout
+```
 
 # What's Next
 
