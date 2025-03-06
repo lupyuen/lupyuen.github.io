@@ -41,7 +41,7 @@ TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https:
 
 _MicroSD Multiplexer: What's that? (Pic above)_
 
-[__SDWire MicroSD Multiplexer__](TODO) is an ingenious gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
+[__SDWire MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/) is an ingenious gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
 
 _Why would we need it?_
 
@@ -53,11 +53,15 @@ To Test NuttX on __Arm64 Devices__ _(PinePhone)_, we need...
 
 Our Test Bot got no fingers and it can't __Physically Swap__ a MicroSD between Test Server and Test Device.
 
-Thus it needs a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines.
+Thus it needs a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines...
+
+TODO: Pic of mux
 
 _How does it work?_
 
 Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+
+Let's prepare our Test Server: Avaota-A1 SBC...
 
 ![TODO](https://lupyuen.org/images/testbot3-sbc.jpg)
 
@@ -90,7 +94,7 @@ While Booting: Our SBC shows a helpful message on the __Onboard LCD__, it should
 
 ![TODO](https://lupyuen.org/images/testbot3-lcd.jpg)
 
-_Hmmm our SBC is stuck at the above LCD Display?_
+_Hmmm our SBC is forever showing "Booting Linux"?_
 
 Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](TODO)! Which fails with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
 
@@ -109,7 +113,7 @@ clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c
 
 ![TODO](https://lupyuen.org/images/testbot3-uart.jpg)
 
-_How to troubleshoot? And see the logs above?_
+_How to troubleshoot? And see the Boot Logs above?_
 
 Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to these pins (pic above)
 
@@ -119,26 +123,181 @@ Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpe
 | __TX__ (Pin 8) |	__RX__ | _Orange_ |
 | __RX__ (Pin 10)	| __TX__ | _Red_ |
 
+__Boot Log__ will appear at _/dev/ttyUSB0_...
+
+```bash
+screen /dev/ttyUSB0 115200
+```
+
 _Why choose Avaota-A1?_
 
 It's [__Open Source Hardware__](https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/), available from Multiple Makers. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
 
 TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
 
-# TODO
-
-TODO: testbot3-mux2.jpg
-
 ![TODO](https://lupyuen.org/images/testbot3-mux2.jpg)
 
-TODO: testbot3-mux3.jpg
+# Connect SDWire to SBC
+
+With a __Micro-USB Data Cable__: Connect __SDWire MicroSD Multiplexer__ to our SBC (pic above). Check that it's a USB Data Cable, __Not Power Cable__. And Mini-USB won't work either.
+
+On our SBC, run __`dmesg`__ to watch the Magic of SDWire...
+
+<span style="font-size:80%">
+
+```bash
+## Show the Linux Kernel Log
+$ dmesg
+
+## Linux discovers our USB Device
+usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
+hub 1-1:1.0: USB hub found
+hub 1-1:1.0: 3 ports detected
+
+## Yep it's MicroSD Storage Device
+usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
+usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1.1: Product: Ultra Fast Media Reader
+usb-storage 1-1.1:1.0: USB Mass Storage device detected
+scsi host0: usb-storage 1-1.1:1.0
+
+## Aha! It's also an SDWire Multiplexer
+usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
+usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1.2: Product: sd-wire
+usb 1-1.2: Manufacturer: SRPOL
+usb 1-1.2: SerialNumber: sd-wire_02-09
+
+## MicroSD is now accessible at /dev/sda1
+scsi 0:0:0:0: Direct-Access Generic Ultra HS-SD/MMC 1.76 PQ: 0 ANSI: 0
+sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+sd 0:0:0:0: [sda] No Caching mode page found
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+sda: sda1
+```
+
+</span>
 
 ![TODO](https://lupyuen.org/images/testbot3-mux3.jpg)
 
-TODO: testbot3-pinephone.jpg
+# Compile the SDWire Tools
+
+_How to control SDWire? And flip the MicroSD from Test Server to Test Device?_
+
+Based on the [__SDWire Instructions__](https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/), we install the __SDWire Tools__...
+
+```bash
+## Download the Source Code for `sd-mux-ctrl`
+sudo apt-get install libftdi1-dev libpopt-dev cmake pkg-config
+git clone https://github.com/3mdeb/sd-mux
+cd sd-mux
+
+## Build and Install `sd-mux-ctrl`
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+When we connect SDWire to our SBC, the __Blue LED__ turns on. (Pic left above)
+
+By Default, SDWire runs in __Test Server Mode__: MicroSD is connected to our SBC. Let's flip this.
+
+Run __`dmesg` `-w`__ in a new window to observe the System Messages. Do this to enumerate the __SDWire Devices__...
+
+```bash
+$ sudo sd-mux-ctrl --list
+Number of FTDI devices found: 1
+Dev: 0, Manufacturer: SRPOL
+Serial: sd-wire_02-09, Description: sd-wire
+```
+
+Take Note of the __Serial ID__: _sd-wire_02-09_. We'll use it below.
+
+Now we Flip the MicroSD from Test Server to __Test Device__ _(DUT: "Device Under Test")_
+
+```bash
+## Flip the MicroSD to Test Device: 
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --dut
+
+## dmesg shows:
+## sda: detected capacity change from 30318592 to 0
+```
+
+__Green LED__ turns on (pic right above). And _/dev/sda1_ is no longer accessible. Yep our MicroSD has flipped to the Test Device!
+
+Finally do this...
+
+```bash
+## Flip the MicroSD to Test Server
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --ts
+
+## dmesg shows:
+## sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+## sda: detected capacity change from 0 to 30318592
+## sda: sda1
+```
+
+__Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everything works hunky dory yay!
+
+# Mount the MicroSD
+
+_How to access the MicroSD at /dev/sda1?_
+
+We mount _/dev/sda1_ like this, to read and write the __MicroSD Files__...
+
+```bash
+## Flip the MicroSD to Test Server
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --ts
+
+## Mount the MicroSD to /tmp/sda1
+$ mkdir /tmp/sda1
+$ sudo mount /dev/sda1 /tmp/sda1
+
+## MicroSD is now writeable at /tmp/sda1
+$ ls -l /tmp/sda1
+Image.gz
+boot.scr
+initramfs.gz
+sun50i-a64-pinephone-1.0.dtb
+```
+
+Remember to __Unmount the MicroSD__ before switching back, or the MicroSD Files might get corrupted...
+
+```bash
+## Unmount the MicroSD
+$ sudo umount /tmp/sda1
+
+## Flip the MicroSD to Test Device: 
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --dut
+```
 
 ![TODO](https://lupyuen.org/images/testbot3-pinephone.jpg)
 
+# Connect SDWire to PinePhone
+
+_SDWire works OK with our SBC. What next?_
+
+Moment of Truth! We slot SDWire MicroSD Multiplexer into __PinePhone as Test Device__. (Pic above)
+
+
+# U-Boot
 
 TODO: testbot3-uboot.jpg
 
@@ -154,114 +313,8 @@ sudo usermod -a -G dialout $USER
 logout
 ```
 
-# Connect SDWire
 
-#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC ... When was the last you saw a Micro-USB Data Cable 😂
 
-```text
-## Disconnect then reconnect
-$ dmesg
-
-[ 1829.473620] usb 1-1: USB disconnect, device number 2
-[ 1829.473656] usb 1-1.1: USB disconnect, device number 3
-[ 1829.535380] usb 1-1.2: USB disconnect, device number 4
-
-[ 1829.813511] usb 1-1: new full-speed USB device number 5 using xhci-hcd
-[ 1833.469452] usb 1-1: new high-speed USB device number 6 using xhci-hcd
-[ 1833.617735] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
-[ 1833.617771] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[ 1833.625490] hub 1-1:1.0: USB hub found
-[ 1833.625626] hub 1-1:1.0: 3 ports detected
-[ 1833.913607] usb 1-1.1: new high-speed USB device number 7 using xhci-hcd
-[ 1834.019412] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
-[ 1834.019446] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 1834.019465] usb 1-1.1: Product: Ultra Fast Media Reader
-[ 1834.019480] usb 1-1.1: Manufacturer: Generic
-[ 1834.019494] usb 1-1.1: SerialNumber: 000000264001
-[ 1834.021126] usb-storage 1-1.1:1.0: USB Mass Storage device detected
-[ 1834.023454] scsi host0: usb-storage 1-1.1:1.0
-[ 1834.101528] usb 1-1.2: new full-speed USB device number 8 using xhci-hcd
-[ 1834.209026] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
-[ 1834.209060] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 1834.209080] usb 1-1.2: Product: sd-wire
-[ 1834.209094] usb 1-1.2: Manufacturer: SRPOL
-[ 1834.209108] usb 1-1.2: SerialNumber: sd-wire_02-09
-[ 1835.034363] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
-[ 1835.036652] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
-[ 1835.037460] sd 0:0:0:0: [sda] Write Protect is off
-[ 1835.037486] sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
-[ 1835.038526] sd 0:0:0:0: [sda] No Caching mode page found
-[ 1835.044589] sd 0:0:0:0: [sda] Assuming drive cache: write through
-[ 1835.055251]  sda: sda1
-[ 1835.058244] sd 0:0:0:0: [sda] Attached SCSI removable disk
-
-avaota@avaota-a1:~$
-```
-
-# Compile SDWire
-
-Getting Started
-
-https://docs.dasharo.com/transparent-validation/sd-wire/getting-started/
-
-Usage
-
-https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/
-
-```bash
-sudo apt-get install libftdi1-dev libpopt-dev cmake pkg-config
-git clone https://github.com/3mdeb/sd-mux
-cd sd-mux
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-```
-
-Test SDWire. Default Blue LED, MicroSD Enabled. Open `dmesg -w` in a new window.
-
-```bash
-$ sudo sd-mux-ctrl --list
-Number of FTDI devices found: 1
-Dev: 0, Manufacturer: SRPOL, Serial: sd-wire_02-09, Description: sd-wire
-
-## Test Server: Blue LED
-$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
-
-dmesg:
-[ 4132.212882] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
-[ 4132.214999] sda: detected capacity change from 0 to 30318592
-[ 4132.216313]  sda: sda1
-
-## Test Device: Green LED
-$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
-
-dmesg:
-[ 4089.816219] sda: detected capacity change from 30318592 to 0
-```
-
-# Mount MicroSD
-
-```bash
-avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
-avaota@avaota-a1:~/sd-mux/build$ sudo mount /dev/sda1 /tmp/sda1
-avaota@avaota-a1:~/sd-mux/build$ ls -l /tmp/sda1
-total 5453
--rwxr-xr-x 1 root root  118737 Dec 31 06:18 Image.gz
--rwxr-xr-x 1 root root 4275261 May 23  2021 Image.gz.old
--rwxr-xr-x 1 root root     653 May 23  2021 boot.scr
--rwxr-xr-x 1 root root 1078500 May 23  2021 initramfs.gz
--rwxr-xr-x 1 root root   35865 May 23  2021 sun50i-a64-pinephone-1.0.dtb
--rwxr-xr-x 1 root root   36080 May 23  2021 sun50i-a64-pinephone-1.1.dtb
--rwxr-xr-x 1 root root   36162 May 23  2021 sun50i-a64-pinephone-1.2.dtb
-```
-
-Unmount:
-
-```bash
-$ sudo umount /tmp/sda1
-```
 
 # Inside SDWire
 
