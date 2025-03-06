@@ -4,10 +4,38 @@
 
 ![PR Test Bot for PinePhone (Apache NuttX RTOS)](https://lupyuen.org/images/testbot3-title.jpg)
 
-TODO
+Earlier we created a [__PR Test Bot__](TODO) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot goes into action when we post these PR Comments...
+
+```bash
+## For Oz64 SG2000 RISC-V SBC:
+@nuttxpr test oz64:nsh
+
+## For QEMU Emulator: Arm64 and RISC-V
+@nuttxpr test TODO
+@nuttxpr test TODO
+```
+
+Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 PinePhone__](TODO). Yep on the __Real PinePhone Hardware__!
+
+```bash
+@nuttxpr test pinephone:nsh
+```
+
+- We used Special Hardware: __MicroSD Multiplexer__ (pic above)
+
+- Controlled by a Single-Board Computer: __Yuzuki Avaota-A1__ (Open Hardware)
+
+- __PinePhone Test Bot__ kinda works!
+
+- Though __PinePhone Battery__ complicates Hardware Testing
+
+- We might pivot to another __Arm64 Single-Board Computer__
+
+- Maybe we'll port NuttX to __Allwinner A527 SoC__?
+
+TODO: Yuzuki Avaota-A1 is open hardware
 
 # Install Linux
-
 
 ```bash
 https://github.com/AvaotaSBC/AvaotaOS/releases
