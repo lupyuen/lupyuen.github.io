@@ -124,7 +124,16 @@
 <p>Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines…</p>
 <p>TODO: Pic of mux</p>
 <p><em>How does it work?</em></p>
-<p>Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
+<p><a href="TODO"><strong>Inside SDWire</strong></a> is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
+<p><strong>Micro-USB Port</strong> of SDWire exposes two functions…</p>
+<ol>
+<li>
+<p><strong>USB Mass Storage:</strong> For reading and writing the MicroSD</p>
+</li>
+<li>
+<p><strong>SDWire Multiplexer:</strong> For swapping the MicroSD between devices</p>
+</li>
+</ol>
 <p>Let’s prepare our Test Server: Avaota-A1 SBC…</p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="TODO" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
@@ -178,7 +187,7 @@ usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
 hub 1-1:1.0: USB hub found
 hub 1-1:1.0: 3 ports detected
 
-## Yep it&#39;s MicroSD Storage Device
+## Yep it&#39;s a MicroSD Storage Device
 usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
 usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
 usb 1-1.1: Product: Ultra Fast Media Reader
