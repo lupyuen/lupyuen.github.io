@@ -4,18 +4,18 @@
 
 ![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
 
-Earlier we created a [__PR Test Bot__](TODO) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot kicks into action when we post a [__PR Comment__](TODO)...
+Earlier we created a [__PR Test Bot__](https://lupyuen.github.io/articles/testbot) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot kicks into action when we post a [__PR Comment__](https://lupyuen.github.io/articles/testbot2)...
 
 ```bash
-## For Oz64 SG2000 RISC-V SBC:
+## For Oz64 SG2000 RISC-V SBC
 @nuttxpr test oz64:nsh
 
 ## For QEMU Emulator: Arm64 and RISC-V
-@nuttxpr test TODO
-@nuttxpr test TODO
+@nuttxpr test qemu-armv8a:netnsh
+@nuttxpr test rv-virt:knsh64
 ```
 
-Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 PinePhone__](TODO). Yep on the __Real PinePhone Hardware__!
+Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 PinePhone__](https://lupyuen.github.io/articles/what). Yep on the __Real PinePhone Hardware__!
 
 ```bash
 @nuttxpr test pinephone:nsh
@@ -53,11 +53,13 @@ Our Test Bot got no fingers and it can't __Physically Swap__ a MicroSD between T
 
 That's I bought a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines...
 
-TODO: Pic of mux
+![MicroSD Multiplexer for Test Bot](https://lupyuen.org/images/testbot2-flow.jpg)
 
 _How does it work?_
 
-[__Inside SDWire__](TODO) is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+According to [__SDWire Schematic__](https://docs.dasharo.com/transparent-validation/sd-wire/specification/#pcb-elements-and-scheme), the gadget has a [__TS3A27518EPWR__](https://www.ti.com/product/TS3A27518E) Multiplexer inside. _(Works like FTDI, but 6 Data Channels)_
+
+Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
 
 __Micro-USB Port__ of SDWire exposes two functions...
 
@@ -67,7 +69,7 @@ __Micro-USB Port__ of SDWire exposes two functions...
 
 Let's prepare our Test Server: Avaota-A1 SBC...
 
-![TODO](https://lupyuen.org/images/testbot3-sbc.jpg)
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
 # Yuzuki Avaota-A1 SBC
 
@@ -80,7 +82,7 @@ wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.
 xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
 ```
 
-Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](TODO). Boot our SBC with the MicroSD and __Login via SSH__...
+Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](https://etcher.balena.io/). Boot our SBC with the MicroSD and __Login via SSH__...
 
 ```bash
 ## User `avaota`, Password `avaota`
@@ -96,11 +98,11 @@ Password: avaota
 
 While Booting: Our SBC shows a helpful message on the __Onboard LCD__, it should disappear in a while...
 
-![TODO](https://lupyuen.org/images/testbot3-lcd.jpg)
+![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
 
 _Hmmm our SBC is forever showing "Booting Linux"?_
 
-Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](TODO). Armbian will fail with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
+Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](https://www.armbian.com/avaota-a1/). Armbian will fail with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
 
 ```text
 Kernel panic - not syncing:
@@ -115,7 +117,7 @@ Android (8490178, based on r450784d)
 clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6)
 ```
 
-![TODO](https://lupyuen.org/images/testbot3-uart.jpg)
+![Avaota-A1 SBC connected to USB UART](https://lupyuen.org/images/testbot3-uart.jpg)
 
 _How to troubleshoot? And see the Boot Logs above?_
 
@@ -143,9 +145,7 @@ _Why choose Avaota-A1?_
 
 It's [__Open Source Hardware__](https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/), available from Multiple Makers. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
 
-TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
-
-![TODO](https://lupyuen.org/images/testbot3-mux2.jpg)
+![SDWire connected to Avaota-A1 SBC](https://lupyuen.org/images/testbot3-mux2.jpg)
 
 # Connect SDWire to SBC
 
@@ -191,7 +191,7 @@ sda: sda1
 
 </span>
 
-![TODO](https://lupyuen.org/images/testbot3-mux3.jpg)
+![SDWire: Blue for Test Server, Green for Test Device](https://lupyuen.org/images/testbot3-mux3.jpg)
 
 # Compile the SDWire Tools
 
@@ -298,7 +298,7 @@ $ sudo sd-mux-ctrl \
   --dut
 ```
 
-![TODO](https://lupyuen.org/images/testbot3-pinephone.jpg)
+![SDWire connected to PinePhone](https://lupyuen.org/images/testbot3-pinephone.jpg)
 
 # Test SDWire with PinePhone
 
@@ -310,13 +310,13 @@ Moment of Truth! We connect __SDWire MicroSD Multiplexer__ into...
 
 - __Test Server: Avaota-A1 SBC__ _(Via Micro-USB)_
 
-Which is easier with [__PinePhone MicroSD Extender__](TODO)...
+Which is easier with [__PinePhone MicroSD Extender__](https://pine64.com/product/pinephone-microsd-extender/)...
 
 ![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
 
 _Does it work?_
 
-Let's assume our [__Build Server__](TODO) has compiled the PR Code into a __NuttX Image__...
+Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#control-our-oz64-sbc) has compiled the PR Code into a __NuttX Image__...
 
 1.  We flip the __MicroSD to SBC__ _(Test Server)_, and mount the MicroSD...
 
@@ -344,7 +344,7 @@ Let's assume our [__Build Server__](TODO) has compiled the PR Code into a __Nutt
     sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
     ```
 
-1.  Power on PinePhone with a [__Smart Power Plug__](TODO)
+1.  Power on PinePhone with a [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc)
 
     _(Thanks to Home Assistant API)_
 
@@ -381,6 +381,9 @@ There's another intriguing solution...
 # Port NuttX to Allwinner A527 SoC
 
 TODO
+
+TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
+
 
 Open-Source RTOS ... Running on Open-Source Hardware!
 
