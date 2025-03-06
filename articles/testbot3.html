@@ -70,7 +70,7 @@
 <li><a href="#connect-sdwire-to-sbc" title="Connect SDWire to SBC">3 Connect SDWire to SBC</a><ul></ul></li>
 <li><a href="#compile-the-sdwire-tools" title="Compile the SDWire Tools">4 Compile the SDWire Tools</a><ul></ul></li>
 <li><a href="#mount-the-microsd" title="Mount the MicroSD">5 Mount the MicroSD</a><ul></ul></li>
-<li><a href="#connect-sdwire-to-pinephone" title="Connect SDWire to PinePhone">6 Connect SDWire to PinePhone</a><ul></ul></li>
+<li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
 <li><a href="#u-boot" title="U-Boot">7 U-Boot</a><ul></ul></li>
 <li><a href="#usb-uart" title="USB UART">8 USB UART</a><ul></ul></li>
 <li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
@@ -275,9 +275,23 @@ $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --dut</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="TODO" /></p>
-<h1 id="connect-sdwire-to-pinephone"><a class="doc-anchor" href="#connect-sdwire-to-pinephone">§</a>6 Connect SDWire to PinePhone</h1>
+<h1 id="test-sdwire-with-pinephone"><a class="doc-anchor" href="#test-sdwire-with-pinephone">§</a>6 Test SDWire with PinePhone</h1>
 <p><em>SDWire works OK with our SBC. What next?</em></p>
-<p>Moment of Truth! We slot SDWire MicroSD Multiplexer into <strong>PinePhone as Test Device</strong>. (Pic above)</p>
+<p>Moment of Truth! We connect <strong>SDWire MicroSD Multiplexer</strong> into…</p>
+<ul>
+<li>
+<p><strong>Test Device: PinePhone</strong> <em>(Pic above)</em></p>
+</li>
+<li>
+<p><strong>Test Server: Avaota-A1 SBC</strong> <em>(Via Micro-USB)</em></p>
+</li>
+</ul>
+<p>Which is easier with <a href="TODO"><strong>PinePhone MicroSD Extender</strong></a>…</p>
+<p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
+<p>TODO: Test Server</p>
+<p>Copy MicroSD</p>
+<p>TODO: Test Device</p>
+<p>Boot NuttX</p>
 <h1 id="u-boot"><a class="doc-anchor" href="#u-boot">§</a>7 U-Boot</h1>
 <p>TODO: testbot3-uboot.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
