@@ -73,7 +73,36 @@
 <li><a href="#inside-sdwire" title="Inside SDWire">6 Inside SDWire</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="PR Test Bot for PinePhone (Apache NuttX RTOS)" /></p>
-<p>TODO</p>
+<p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot goes into action when we post these PR Comments…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
+@nuttxpr test oz64:nsh
+
+## For QEMU Emulator: Arm64 and RISC-V
+@nuttxpr test TODO
+@nuttxpr test TODO</code></pre></div>
+<p>Today we extend our Test Bot to Build and Test the Pull Requests for <a href="TODO"><strong>PINE64 PinePhone</strong></a>. Yep on the <strong>Real PinePhone Hardware</strong>!</p>
+<div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test pinephone:nsh</code></pre></div>
+<ul>
+<li>
+<p>We used Special Hardware: <strong>MicroSD Multiplexer</strong> (pic above)</p>
+</li>
+<li>
+<p>Controlled by a Single-Board Computer: <strong>Yuzuki Avaota-A1</strong> (Open Hardware)</p>
+</li>
+<li>
+<p><strong>PinePhone Test Bot</strong> kinda works!</p>
+</li>
+<li>
+<p>Though <strong>PinePhone Battery</strong> complicates Hardware Testing</p>
+</li>
+<li>
+<p>We might pivot to another <strong>Arm64 Single-Board Computer</strong></p>
+</li>
+<li>
+<p>Maybe we’ll port NuttX to <strong>Allwinner A527 SoC</strong>?</p>
+</li>
+</ul>
+<p>TODO: Yuzuki Avaota-A1 is open hardware</p>
 <h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>1 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
 
 https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
