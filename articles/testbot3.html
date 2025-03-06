@@ -71,10 +71,11 @@
 <li><a href="#compile-the-sdwire-tools" title="Compile the SDWire Tools">4 Compile the SDWire Tools</a><ul></ul></li>
 <li><a href="#mount-the-microsd" title="Mount the MicroSD">5 Mount the MicroSD</a><ul></ul></li>
 <li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
-<li><a href="#u-boot" title="U-Boot">7 U-Boot</a><ul></ul></li>
-<li><a href="#usb-uart" title="USB UART">8 USB UART</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
+<li><a href="#porting-nuttx-to-allwinner-a527-soc" title="Porting NuttX to Allwinner A527 SoC">8 Porting NuttX to Allwinner A527 SoC</a><ul></ul></li>
+<li><a href="#usb-uart" title="USB UART">9 USB UART</a><ul></ul></li>
+<li><a href="#inside-sdwire" title="Inside SDWire">10 Inside SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="TODO"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
@@ -105,7 +106,6 @@
 <p>Maybe we’ll port NuttX to <strong>Allwinner A527 SoC</strong>?</p>
 </li>
 </ul>
-<p>TODO: I ordered another <em>(batteryless)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
 <h1 id="sdwire-microsd-multiplexer"><a class="doc-anchor" href="#sdwire-microsd-multiplexer">§</a>1 SDWire MicroSD Multiplexer</h1>
 <p><em>MicroSD Multiplexer: What’s that? (Pic above)</em></p>
@@ -292,15 +292,17 @@ $ sudo sd-mux-ctrl \
 <p>Copy MicroSD</p>
 <p>TODO: Test Device</p>
 <p>Boot NuttX</p>
-<h1 id="u-boot"><a class="doc-anchor" href="#u-boot">§</a>7 U-Boot</h1>
-<p>TODO: testbot3-uboot.jpg</p>
+<h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
-<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>8 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+<h1 id="porting-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#porting-nuttx-to-allwinner-a527-soc">§</a>8 Porting NuttX to Allwinner A527 SoC</h1>
+<p>TODO: I ordered another <em>(batteryless)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
+<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>9 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
+logout</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>10 Inside SDWire</h1>
 <p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
