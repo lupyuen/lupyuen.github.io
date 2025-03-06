@@ -68,13 +68,12 @@
 <li><a href="#sdwire-microsd-multiplexer" title="SDWire MicroSD Multiplexer">1 SDWire MicroSD Multiplexer</a><ul></ul></li>
 <li><a href="#yuzuki-avaota-a1-sbc" title="Yuzuki Avaota-A1 SBC">2 Yuzuki Avaota-A1 SBC</a><ul></ul></li>
 <li><a href="#todo" title="TODO">3 TODO</a><ul></ul></li>
-<li><a href="#install-linux" title="Install Linux">4 Install Linux</a><ul></ul></li>
-<li><a href="#usb-uart" title="USB UART">5 USB UART</a><ul></ul></li>
-<li><a href="#connect-sdwire" title="Connect SDWire">6 Connect SDWire</a><ul></ul></li>
-<li><a href="#compile-sdwire" title="Compile SDWire">7 Compile SDWire</a><ul></ul></li>
-<li><a href="#mount-microsd" title="Mount MicroSD">8 Mount MicroSD</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#usb-uart" title="USB UART">4 USB UART</a><ul></ul></li>
+<li><a href="#connect-sdwire" title="Connect SDWire">5 Connect SDWire</a><ul></ul></li>
+<li><a href="#compile-sdwire" title="Compile SDWire">6 Compile SDWire</a><ul></ul></li>
+<li><a href="#mount-microsd" title="Mount MicroSD">7 Mount MicroSD</a><ul></ul></li>
+<li><a href="#inside-sdwire" title="Inside SDWire">8 Inside SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="TODO"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
@@ -120,116 +119,60 @@
 <p>Then boot it on the <strong>Arm64 Device</strong> <em>(“Test Device”)</em></p>
 </li>
 </ul>
-<p>Our Test Bot can’t <strong>Physically Swap</strong> a MicroSD between a Test Server and a Test Device. Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines.</p>
+<p>Our Test Bot got no fingers and it can’t <strong>Physically Swap</strong> a MicroSD between Test Server and Test Device.</p>
+<p>Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines.</p>
 <p><em>How does it work?</em></p>
 <p>Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="TODO" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
-<p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.</p>
-<p>TODO: is open hardware. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
-<p>TODO: testbot3-lcd.jpg</p>
+<p><em>What’s this Single-Board Computer? (Pic above)</em></p>
+<p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.  Download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
+<div class="example-wrap"><pre class="language-bash"><code>wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div>
+<p>Write the <strong><code>.img</code></strong> file to a MicroSD with <a href="TODO"><strong>Balena Etcher</strong></a>. Boot our SBC with the MicroSD and <strong>Login via SSH</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## User `avaota`, Password `avaota`
+$ ssh avaota@avaota-a1
+Password: avaota
+
+## Root Password is also `avaota`
+$ sudo 
+Password: 密码：avaota</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b">(See the <strong>Boot Log</strong>)</a></p>
+<p>While Booting: Our SBC shows a helpful message on the <strong>Onboard LCD</strong>, it should disappear in a while…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="TODO" /></p>
+<p><em>Hmmm our SBC is stuck at the above LCD Display?</em></p>
+<p>Make sure we’re booting Avaota OS, not <a href="TODO"><strong>Armbian Ubuntu</strong></a>! Which fails with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>Kernel panic - not syncing:
+Failed to allocate page table page</code></pre></div>
+<p>Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC boots to <a href="https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba"><strong>Android by Default</strong></a>!</p>
+<div class="example-wrap"><pre class="language-text"><code>Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
+Android (8490178, based on r450784d)
+clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6)</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="TODO" /></p>
+<p><em>How to troubleshoot? And see the logs above?</em></p>
+<p>Connect a <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)</p>
+<div><table><thead><tr><th style="text-align: center">Avaota-A1</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><em>Yellow</em></td></tr>
+<tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><em>Orange</em></td></tr>
+<tr><td style="text-align: center"><strong>RX</strong> (Pin 10)</td><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><em>Red</em></td></tr>
+</tbody></table>
+</div>
+<p><em>Why choose Avaota-A1?</em></p>
+<p>It’s <a href="https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/"><strong>Open Source Hardware</strong></a>, available from Multiple Makers. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5">Avaota A1: Default U-Boot in eMMC. No network :-(</a></p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
 <p>TODO: testbot3-mux2.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux2.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-mux3.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-pinephone.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="TODO" /></p>
-<p>TODO: testbot3-uart.jpg</p>
-<p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-uboot.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
-<h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>4 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
-
-https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
-
-xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
-Etcher
-
-标准用户：
-
-用户名：avaota
-密码：avaota
-根用户
-
-用户名：root
-密码：avaota
-
-ssh avaota@avaota-a1</code></pre></div>
-<p>Avaota A1: Boot to AvaotaOS Noble GNOME OK!</p>
-<p>https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b</p>
-<p>Armbian Ubuntu won’t boot:</p>
-<p>https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4</p>
-<div class="example-wrap"><pre class="language-text"><code>ERROR:   Error initializing runtime service opteed_fast
-[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
-[    0.000000] Linux version 5.15.154-legacy-sun55iw3-syterkit (build@armbian) (aarch64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #1 SMP PREEMPT Mon Jan 6 07:05:34 UTC 2025
-[    0.000000] Machine model: Avaota A1
-[    0.000000] earlycon: uart8250 at MMIO32 0x0000000002500000 (options &#39;&#39;)
-[    0.000000] printk: bootconsole [uart8250] enabled
-[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB
-[    0.000000] OF: reserved mem: initialized node vdev0buffer@4ac00000, compatible id shared-dma-pool
-[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ae00000, size 0 MiB
-[    0.000000] OF: reserved mem: initialized node vdev0buffer@4ae00000, compatible id shared-dma-pool
-[    0.000000] Reserved memory: created DMA memory pool at 0x000000004ae44000, size 0 MiB
-[    0.000000] OF: reserved mem: initialized node dsp0_rpbuf@4ae44000, compatible id shared-dma-pool
-[    0.000000] Kernel panic - not syncing: Failed to allocate page table page
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.15.154-legacy-sun55iw3-syterkit #1
-[    0.000000] Hardware name: Avaota A1 (DT)
-[    0.000000] Call trace:
-[    0.000000]  dump_backtrace+0x0/0x1b0
-[    0.000000]  show_stack+0x18/0x24
-[    0.000000]  dump_stack_lvl+0x7c/0xa8
-[    0.000000]  dump_stack+0x18/0x34
-[    0.000000]  panic+0x188/0x334
-[    0.000000]  early_pgtable_alloc+0x34/0xa8
-[    0.000000]  __create_pgd_mapping+0x3a8/0x6a4
-[    0.000000]  map_kernel_segment+0x74/0xdc
-[    0.000000]  paging_init+0x104/0x528
-[    0.000000]  setup_arch+0x264/0x57c
-[    0.000000]  start_kernel+0x7c/0x8f0
-[    0.000000]  __primary_switched+0xa0/0xa8
-[    0.000000] ---[ end Kernel panic - not syncing: Failed to allocate page table page ]---</code></pre></div>
-<p>Factory default: Boot to Android</p>
-<p>https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba</p>
-<div class="example-wrap"><pre class="language-text"><code>Hit any key to stop autoboot:  0
-ramdisk use init boot
-Android&#39;s image name: arm64
-[04.634]Starting kernel ...
-
-[04.637][mmc]: mmc exit start
-[04.654][mmc]: mmc 2 exit ok
-NOTICE:  [SCP] :wait arisc ready....
-NOTICE:  [SCP] :arisc version: [001bf1581dbae091dc22b8772b739ccafacdd4b5rid-]
-NOTICE:  [SCP] :arisc startup ready
-NOTICE:  [SCP] :arisc startup notify message feedback
-NOTICE:  [SCP] :sunxi-arisc driver is starting
-BL3-1: Next image address = 0x40080000
-BL3-1: Next image spsr = 0x3c5
-[    0.000000][    T0] Booting Linux on physical CPU 0x0000000000 [0x412fd050]
-[    0.000000][    T0] Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo) (Android (8490178, based on r450784d) clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6), LLD 14.0.6) #22 SMP PREEMPT Sat Sep 14 19:49:30 CST 2024
-[    0.000000][    T0] Machine model: AvaotaSBC,Avaota A1
-[    0.000000][    T0] Stack Depot is disabled
-[    0.000000][    T0] KVM is not available. Ignoring kvm-arm.mode
-[    0.000000][    T0] earlycon: uart8250 at MMIO32 0x0000000002500000 (options &#39;&#39;)
-[    0.000000][    T0] printk: bootconsole [uart8250] enabled
-[    0.000000][    T0] efi: UEFI not found.
-[    0.000000][    T0] [Firmware Bug]: Kernel image misaligned at boot, please fix your bootloader!
-[    0.000000][    T0] OF: reserved mem: 0x0000000000020000..0x000000000002ffff (64 KiB) nomap non-reusable mcu0iram@20000
-[    0.000000][    T0] OF: reserved mem: 0x0000000000030000..0x0000000000037fff (32 KiB) nomap non-reusable mcu0dram0@30000
-[    0.000000][    T0] OF: reserved mem: 0x0000000000038000..0x000000000003ffff (32 KiB) nomap non-reusable mcu0dram1@38000
-[    0.000000][    T0] OF: reserved mem: 0x0000000007280000..0x00000000072bffff (256 KiB) nomap non-reusable riscvsram0@7280000
-[    0.000000][    T0] OF: reserved mem: 0x00000000072c0000..0x00000000072fffff (256 KiB) nomap non-reusable riscvsram1@72c0000
-[    0.000000][    T0] OF: reserved mem: 0x0000000048000000..0x0000000048ffffff (16384 KiB) map non-reusable bl31
-[    0.000000][    T0] OF: reserved mem: 0x000000004a000000..0x000000004a9fffff (10240 KiB) nomap non-reusable dsp0ddr@4a000000
-[    0.000000][    T0] OF: reserved mem: 0x000000004ab00000..0x000000004ab0ffff (64 KiB) nomap non-reusable dsp_share_space@4ab00000
-[    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div>
-<p>Avaota A1: Default U-Boot in eMMC. No network :-(</p>
-<p>https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5</p>
-<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>5 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>4 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>6 Connect SDWire</h1>
+logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>5 Connect SDWire</h1>
 <p>#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC … When was the last you saw a Micro-USB Data Cable 😂</p>
 <div class="example-wrap"><pre class="language-text"><code>## Disconnect then reconnect
 $ dmesg
@@ -267,7 +210,7 @@ $ dmesg
 [ 1835.055251]  sda: sda1
 [ 1835.058244] sd 0:0:0:0: [sda] Attached SCSI removable disk
 
-avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>7 Compile SDWire</h1>
+avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>6 Compile SDWire</h1>
 <p>Getting Started</p>
 <p>https://docs.dasharo.com/transparent-validation/sd-wire/getting-started/</p>
 <p>Usage</p>
@@ -297,7 +240,7 @@ dmesg:
 $ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
 
 dmesg:
-[ 4089.816219] sda: detected capacity change from 30318592 to 0</code></pre></div><h1 id="mount-microsd"><a class="doc-anchor" href="#mount-microsd">§</a>8 Mount MicroSD</h1><div class="example-wrap"><pre class="language-bash"><code>avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
+[ 4089.816219] sda: detected capacity change from 30318592 to 0</code></pre></div><h1 id="mount-microsd"><a class="doc-anchor" href="#mount-microsd">§</a>7 Mount MicroSD</h1><div class="example-wrap"><pre class="language-bash"><code>avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
 avaota@avaota-a1:~/sd-mux/build$ sudo mount /dev/sda1 /tmp/sda1
 avaota@avaota-a1:~/sd-mux/build$ ls -l /tmp/sda1
 total 5453
@@ -309,9 +252,9 @@ total 5453
 -rwxr-xr-x 1 root root   36080 May 23  2021 sun50i-a64-pinephone-1.1.dtb
 -rwxr-xr-x 1 root root   36162 May 23  2021 sun50i-a64-pinephone-1.2.dtb</code></pre></div>
 <p>Unmount:</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sudo umount /tmp/sda1</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo umount /tmp/sda1</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>8 Inside SDWire</h1>
 <p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
