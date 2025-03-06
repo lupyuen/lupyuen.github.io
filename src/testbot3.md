@@ -4,7 +4,7 @@
 
 ![PR Test Bot for PinePhone (Apache NuttX RTOS)](https://lupyuen.org/images/testbot3-title.jpg)
 
-Earlier we created a [__PR Test Bot__](TODO) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot goes into action when we post these PR Comments...
+Earlier we created a [__PR Test Bot__](TODO) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot kicks into action when we post a [__PR Comment__](TODO)...
 
 ```bash
 ## For Oz64 SG2000 RISC-V SBC:
@@ -35,7 +35,7 @@ Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 P
 
 TODO: I bought. Yuzuki Avaota-A1 is open hardware. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
 
-TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot!
+TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
 
 TODO: Pic of SDWire
 
