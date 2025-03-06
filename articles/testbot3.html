@@ -67,13 +67,14 @@
     <nav id="rustdoc"><ul>
 <li><a href="#sdwire-microsd-multiplexer" title="SDWire MicroSD Multiplexer">1 SDWire MicroSD Multiplexer</a><ul></ul></li>
 <li><a href="#yuzuki-avaota-a1-sbc" title="Yuzuki Avaota-A1 SBC">2 Yuzuki Avaota-A1 SBC</a><ul></ul></li>
-<li><a href="#todo" title="TODO">3 TODO</a><ul></ul></li>
-<li><a href="#usb-uart" title="USB UART">4 USB UART</a><ul></ul></li>
-<li><a href="#connect-sdwire" title="Connect SDWire">5 Connect SDWire</a><ul></ul></li>
-<li><a href="#compile-sdwire" title="Compile SDWire">6 Compile SDWire</a><ul></ul></li>
-<li><a href="#mount-microsd" title="Mount MicroSD">7 Mount MicroSD</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">8 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#connect-sdwire-to-sbc" title="Connect SDWire to SBC">3 Connect SDWire to SBC</a><ul></ul></li>
+<li><a href="#compile-the-sdwire-tools" title="Compile the SDWire Tools">4 Compile the SDWire Tools</a><ul></ul></li>
+<li><a href="#mount-the-microsd" title="Mount the MicroSD">5 Mount the MicroSD</a><ul></ul></li>
+<li><a href="#connect-sdwire-to-pinephone" title="Connect SDWire to PinePhone">6 Connect SDWire to PinePhone</a><ul></ul></li>
+<li><a href="#u-boot" title="U-Boot">7 U-Boot</a><ul></ul></li>
+<li><a href="#usb-uart" title="USB UART">8 USB UART</a><ul></ul></li>
+<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="TODO"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
@@ -108,7 +109,7 @@
 <p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
 <h1 id="sdwire-microsd-multiplexer"><a class="doc-anchor" href="#sdwire-microsd-multiplexer">§</a>1 SDWire MicroSD Multiplexer</h1>
 <p><em>MicroSD Multiplexer: What’s that? (Pic above)</em></p>
-<p><a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> is an ingenious gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
+<p><a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>SDWire MicroSD Multiplexer</strong></a> is an ingenious gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
 <p><em>Why would we need it?</em></p>
 <p>To Test NuttX on <strong>Arm64 Devices</strong> <em>(PinePhone)</em>, we need…</p>
 <ul>
@@ -120,9 +121,11 @@
 </li>
 </ul>
 <p>Our Test Bot got no fingers and it can’t <strong>Physically Swap</strong> a MicroSD between Test Server and Test Device.</p>
-<p>Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines.</p>
+<p>Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines…</p>
+<p>TODO: Pic of mux</p>
 <p><em>How does it work?</em></p>
 <p>Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
+<p>Let’s prepare our Test Server: Avaota-A1 SBC…</p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="TODO" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
 <p><em>What’s this Single-Board Computer? (Pic above)</em></p>
@@ -140,7 +143,7 @@ Password: 密码：avaota</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b">(See the <strong>Boot Log</strong>)</a></p>
 <p>While Booting: Our SBC shows a helpful message on the <strong>Onboard LCD</strong>, it should disappear in a while…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="TODO" /></p>
-<p><em>Hmmm our SBC is stuck at the above LCD Display?</em></p>
+<p><em>Hmmm our SBC is forever showing “Booting Linux”?</em></p>
 <p>Make sure we’re booting Avaota OS, not <a href="TODO"><strong>Armbian Ubuntu</strong></a>! Which fails with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Kernel panic - not syncing:
 Failed to allocate page table page</code></pre></div>
@@ -149,7 +152,7 @@ Failed to allocate page table page</code></pre></div>
 Android (8490178, based on r450784d)
 clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6)</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="TODO" /></p>
-<p><em>How to troubleshoot? And see the logs above?</em></p>
+<p><em>How to troubleshoot? And see the Boot Logs above?</em></p>
 <p>Connect a <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)</p>
 <div><table><thead><tr><th style="text-align: center">Avaota-A1</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><em>Yellow</em></td></tr>
@@ -157,104 +160,133 @@ clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c
 <tr><td style="text-align: center"><strong>RX</strong> (Pin 10)</td><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><em>Red</em></td></tr>
 </tbody></table>
 </div>
+<p><strong>Boot Log</strong> will appear at <em>/dev/ttyUSB0</em>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
 <p><em>Why choose Avaota-A1?</em></p>
 <p>It’s <a href="https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/"><strong>Open Source Hardware</strong></a>, available from Multiple Makers. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5">Avaota A1: Default U-Boot in eMMC. No network :-(</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
-<p>TODO: testbot3-mux2.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux2.jpg" alt="TODO" /></p>
-<p>TODO: testbot3-mux3.jpg</p>
-<p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="TODO" /></p>
-<p>TODO: testbot3-pinephone.jpg</p>
-<p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="TODO" /></p>
-<p>TODO: testbot3-uboot.jpg</p>
-<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
-<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>4 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
-sudo usermod -a -G dialout $USER
-##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>5 Connect SDWire</h1>
-<p>#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC … When was the last you saw a Micro-USB Data Cable 😂</p>
-<div class="example-wrap"><pre class="language-text"><code>## Disconnect then reconnect
+<h1 id="connect-sdwire-to-sbc"><a class="doc-anchor" href="#connect-sdwire-to-sbc">§</a>3 Connect SDWire to SBC</h1>
+<p>With a <strong>Micro-USB Data Cable</strong>: Connect <strong>SDWire MicroSD Multiplexer</strong> to our SBC (pic above). Check that it’s a USB Data Cable, <strong>Not Power Cable</strong>. And Mini-USB won’t work either.</p>
+<p>On our SBC, run <strong><code>dmesg</code></strong> to watch the Magic of SDWire…</p>
+<span style="font-size:80%">
+<div class="example-wrap"><pre class="language-bash"><code>## Show the Linux Kernel Log
 $ dmesg
 
-[ 1829.473620] usb 1-1: USB disconnect, device number 2
-[ 1829.473656] usb 1-1.1: USB disconnect, device number 3
-[ 1829.535380] usb 1-1.2: USB disconnect, device number 4
+## Linux discovers our USB Device
+usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
+hub 1-1:1.0: USB hub found
+hub 1-1:1.0: 3 ports detected
 
-[ 1829.813511] usb 1-1: new full-speed USB device number 5 using xhci-hcd
-[ 1833.469452] usb 1-1: new high-speed USB device number 6 using xhci-hcd
-[ 1833.617735] usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
-[ 1833.617771] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
-[ 1833.625490] hub 1-1:1.0: USB hub found
-[ 1833.625626] hub 1-1:1.0: 3 ports detected
-[ 1833.913607] usb 1-1.1: new high-speed USB device number 7 using xhci-hcd
-[ 1834.019412] usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
-[ 1834.019446] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 1834.019465] usb 1-1.1: Product: Ultra Fast Media Reader
-[ 1834.019480] usb 1-1.1: Manufacturer: Generic
-[ 1834.019494] usb 1-1.1: SerialNumber: 000000264001
-[ 1834.021126] usb-storage 1-1.1:1.0: USB Mass Storage device detected
-[ 1834.023454] scsi host0: usb-storage 1-1.1:1.0
-[ 1834.101528] usb 1-1.2: new full-speed USB device number 8 using xhci-hcd
-[ 1834.209026] usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
-[ 1834.209060] usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 1834.209080] usb 1-1.2: Product: sd-wire
-[ 1834.209094] usb 1-1.2: Manufacturer: SRPOL
-[ 1834.209108] usb 1-1.2: SerialNumber: sd-wire_02-09
-[ 1835.034363] scsi 0:0:0:0: Direct-Access     Generic  Ultra HS-SD/MMC  1.76 PQ: 0 ANSI: 0
-[ 1835.036652] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
-[ 1835.037460] sd 0:0:0:0: [sda] Write Protect is off
-[ 1835.037486] sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
-[ 1835.038526] sd 0:0:0:0: [sda] No Caching mode page found
-[ 1835.044589] sd 0:0:0:0: [sda] Assuming drive cache: write through
-[ 1835.055251]  sda: sda1
-[ 1835.058244] sd 0:0:0:0: [sda] Attached SCSI removable disk
+## Yep it&#39;s MicroSD Storage Device
+usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
+usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1.1: Product: Ultra Fast Media Reader
+usb-storage 1-1.1:1.0: USB Mass Storage device detected
+scsi host0: usb-storage 1-1.1:1.0
 
-avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>6 Compile SDWire</h1>
-<p>Getting Started</p>
-<p>https://docs.dasharo.com/transparent-validation/sd-wire/getting-started/</p>
-<p>Usage</p>
-<p>https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo apt-get install libftdi1-dev libpopt-dev cmake pkg-config
+## Aha! It&#39;s also an SDWire Multiplexer
+usb 1-1.2: New USB device found, idVendor=04e8, idProduct=6001, bcdDevice=10.00
+usb 1-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1.2: Product: sd-wire
+usb 1-1.2: Manufacturer: SRPOL
+usb 1-1.2: SerialNumber: sd-wire_02-09
+
+## MicroSD is now accessible at /dev/sda1
+scsi 0:0:0:0: Direct-Access Generic Ultra HS-SD/MMC 1.76 PQ: 0 ANSI: 0
+sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+sd 0:0:0:0: [sda] No Caching mode page found
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+sda: sda1</code></pre></div></span>
+<p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="TODO" /></p>
+<h1 id="compile-the-sdwire-tools"><a class="doc-anchor" href="#compile-the-sdwire-tools">§</a>4 Compile the SDWire Tools</h1>
+<p><em>How to control SDWire? And flip the MicroSD from Test Server to Test Device?</em></p>
+<p>Based on the <a href="https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/"><strong>SDWire Instructions</strong></a>, we install the <strong>SDWire Tools</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code for `sd-mux-ctrl`
+sudo apt-get install libftdi1-dev libpopt-dev cmake pkg-config
 git clone https://github.com/3mdeb/sd-mux
 cd sd-mux
+
+## Build and Install `sd-mux-ctrl`
 mkdir build
 cd build
 cmake ..
 make
 sudo make install</code></pre></div>
-<p>Test SDWire. Default Blue LED, MicroSD Enabled. Open <code>dmesg -w</code> in a new window.</p>
+<p>When we connect SDWire to our SBC, the <strong>Blue LED</strong> turns on. (Pic left above)</p>
+<p>By Default, SDWire runs in <strong>Test Server Mode</strong>: MicroSD is connected to our SBC. Let’s flip this.</p>
+<p>Run <strong><code>dmesg</code> <code>-w</code></strong> in a new window to observe the System Messages. Do this to enumerate the <strong>SDWire Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo sd-mux-ctrl --list
 Number of FTDI devices found: 1
-Dev: 0, Manufacturer: SRPOL, Serial: sd-wire_02-09, Description: sd-wire
+Dev: 0, Manufacturer: SRPOL
+Serial: sd-wire_02-09, Description: sd-wire</code></pre></div>
+<p>Take Note of the <strong>Serial ID</strong>: <em>sd-wire_02-09</em>. We’ll use it below.</p>
+<p>Now we Flip the MicroSD from Test Server to <strong>Test Device</strong> <em>(DUT: “Device Under Test”)</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Device: 
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --dut
 
-## Test Server: Blue LED
-$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+## dmesg shows:
+## sda: detected capacity change from 30318592 to 0</code></pre></div>
+<p><strong>Green LED</strong> turns on (pic right above). And <em>/dev/sda1</em> is no longer accessible. Yep our MicroSD has flipped to the Test Device!</p>
+<p>Finally do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --ts
 
-dmesg:
-[ 4132.212882] sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
-[ 4132.214999] sda: detected capacity change from 0 to 30318592
-[ 4132.216313]  sda: sda1
+## dmesg shows:
+## sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
+## sda: detected capacity change from 0 to 30318592
+## sda: sda1</code></pre></div>
+<p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
+<h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
+<p><em>How to access the MicroSD at /dev/sda1?</em></p>
+<p>We mount <em>/dev/sda1</em> like this, to read and write the <strong>MicroSD Files</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --ts
 
-## Test Device: Green LED
-$ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+## Mount the MicroSD to /tmp/sda1
+$ mkdir /tmp/sda1
+$ sudo mount /dev/sda1 /tmp/sda1
 
-dmesg:
-[ 4089.816219] sda: detected capacity change from 30318592 to 0</code></pre></div><h1 id="mount-microsd"><a class="doc-anchor" href="#mount-microsd">§</a>7 Mount MicroSD</h1><div class="example-wrap"><pre class="language-bash"><code>avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
-avaota@avaota-a1:~/sd-mux/build$ sudo mount /dev/sda1 /tmp/sda1
-avaota@avaota-a1:~/sd-mux/build$ ls -l /tmp/sda1
-total 5453
--rwxr-xr-x 1 root root  118737 Dec 31 06:18 Image.gz
--rwxr-xr-x 1 root root 4275261 May 23  2021 Image.gz.old
--rwxr-xr-x 1 root root     653 May 23  2021 boot.scr
--rwxr-xr-x 1 root root 1078500 May 23  2021 initramfs.gz
--rwxr-xr-x 1 root root   35865 May 23  2021 sun50i-a64-pinephone-1.0.dtb
--rwxr-xr-x 1 root root   36080 May 23  2021 sun50i-a64-pinephone-1.1.dtb
--rwxr-xr-x 1 root root   36162 May 23  2021 sun50i-a64-pinephone-1.2.dtb</code></pre></div>
-<p>Unmount:</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sudo umount /tmp/sda1</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>8 Inside SDWire</h1>
+## MicroSD is now writeable at /tmp/sda1
+$ ls -l /tmp/sda1
+Image.gz
+boot.scr
+initramfs.gz
+sun50i-a64-pinephone-1.0.dtb</code></pre></div>
+<p>Remember to <strong>Unmount the MicroSD</strong> before switching back, or the MicroSD Files might get corrupted…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Unmount the MicroSD
+$ sudo umount /tmp/sda1
+
+## Flip the MicroSD to Test Device: 
+## Copy the Serial ID from above
+$ sudo sd-mux-ctrl \
+  --device-serial=sd-wire_02-09 \
+  --dut</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="TODO" /></p>
+<h1 id="connect-sdwire-to-pinephone"><a class="doc-anchor" href="#connect-sdwire-to-pinephone">§</a>6 Connect SDWire to PinePhone</h1>
+<p><em>SDWire works OK with our SBC. What next?</em></p>
+<p>Moment of Truth! We slot SDWire MicroSD Multiplexer into <strong>PinePhone as Test Device</strong>. (Pic above)</p>
+<h1 id="u-boot"><a class="doc-anchor" href="#u-boot">§</a>7 U-Boot</h1>
+<p>TODO: testbot3-uboot.jpg</p>
+<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
+<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>8 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+sudo usermod -a -G dialout $USER
+##  Logout and login to refresh the permissions
+logout</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
 <p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
