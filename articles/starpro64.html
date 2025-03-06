@@ -664,7 +664,7 @@ Ctrl-a :writebuf</code></pre></div></span>
 </blockquote>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>We’re seeking volunteers to build <strong>NuttX Drivers for StarPro64</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, NPU, …)</em> Please lemme know!</p>
-<p>Right now we’re upstreaming StarPro64 to <strong>NuttX Mainline</strong>…</p>
+<p>StarPro64 is now officially supported by <strong>NuttX Mainline</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/15921"><strong>arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC</strong></a></p>
@@ -852,11 +852,11 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v"><strong>“xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V”</strong></a></p>
 </li>
 <li>
-<p>Download and Build <strong>NuttX for StarPro64</strong> (work-in-progress)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch starpro64
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch starpro64
+<p>Download and Build <strong>NuttX for StarPro64</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/apache/nuttx
+git clone https://github.com/apache/nuttx-apps apps
 cd nuttx
-tools/configure.sh milkv_duos:nsh
+tools/configure.sh starpro64:nsh
 
 ## Build the NuttX Kernel and Apps
 make -j
