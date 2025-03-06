@@ -147,12 +147,12 @@ Password: avaota
 
 ## Root Password is also `avaota`
 $ sudo 
-Password: 密码：avaota</code></pre></div>
+Password: avaota</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b">(See the <strong>Boot Log</strong>)</a></p>
 <p>While Booting: Our SBC shows a helpful message on the <strong>Onboard LCD</strong>, it should disappear in a while…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="TODO" /></p>
 <p><em>Hmmm our SBC is forever showing “Booting Linux”?</em></p>
-<p>Make sure we’re booting Avaota OS, not <a href="TODO"><strong>Armbian Ubuntu</strong></a>! Which fails with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
+<p>Make sure we’re booting Avaota OS, not <a href="TODO"><strong>Armbian Ubuntu</strong></a>. Armbian will fail with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Kernel panic - not syncing:
 Failed to allocate page table page</code></pre></div>
 <p>Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC eMMC boots to <a href="https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba"><strong>Android by Default</strong></a>!</p>
