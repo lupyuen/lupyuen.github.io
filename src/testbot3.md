@@ -51,7 +51,7 @@ To Test NuttX on __Arm64 Devices__ _(PinePhone)_, we need...
 
 Our Test Bot got no fingers and it can't __Physically Swap__ a MicroSD between Test Server and Test Device.
 
-Thus it needs a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines...
+That's I bought a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines...
 
 TODO: Pic of mux
 
@@ -107,7 +107,7 @@ Kernel panic - not syncing:
 Failed to allocate page table page
 ```
 
-Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)!
+Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC eMMC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)!
 
 ```text
 Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
