@@ -49,6 +49,36 @@ _Why would we need it?_
 
 For Testing NuttX on __Arm64 Devices__ _(PinePhone)_: 
 
+# TODO
+
+TODO: testbot3-lcd.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-lcd.jpg)
+
+TODO: testbot3-mux2.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-mux2.jpg)
+
+TODO: testbot3-mux3.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-mux3.jpg)
+
+TODO: testbot3-pinephone.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-pinephone.jpg)
+
+TODO: testbot3-sbc.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-sbc.jpg)
+
+TODO: testbot3-uart.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-uart.jpg)
+
+TODO: testbot3-uboot.jpg
+
+![TODO](https://lupyuen.org/images/testbot3-uboot.jpg)
+
 # Install Linux
 
 ```bash
