@@ -710,6 +710,8 @@ We're seeking volunteers to build __NuttX Drivers for StarPro64__ _(GPIO, SPI, I
 
 StarPro64 is now officially supported by __NuttX Mainline__...
 
+- [__NuttX Docs for StarPro64__](https://nuttx.apache.org/docs/latest/platforms/risc-v/eic7700x/boards/starpro64/index.html)
+
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
 - [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/apache/nuttx/pull/15943)
