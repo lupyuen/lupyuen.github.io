@@ -33,8 +33,6 @@ Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 P
 
 - Maybe we'll port NuttX to __Allwinner A527 SoC__?
 
-TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
-
 ![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
 # SDWire MicroSD Multiplexer
@@ -312,12 +310,15 @@ TODO: Test Device
 
 Boot NuttX
 
-# U-Boot
+# Complications with PinePhone Battery
 
-TODO: testbot3-uboot.jpg
+TODO
 
 ![TODO](https://lupyuen.org/images/testbot3-uboot.jpg)
 
+# Porting NuttX to Allwinner A527 SoC
+
+TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
 
 # USB UART
 
