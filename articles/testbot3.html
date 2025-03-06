@@ -73,9 +73,8 @@
 <li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
 <li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
 <li><a href="#port-nuttx-to-allwinner-a527-soc" title="Port NuttX to Allwinner A527 SoC">8 Port NuttX to Allwinner A527 SoC</a><ul></ul></li>
-<li><a href="#usb-uart" title="USB UART">9 USB UART</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">10 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="TODO"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
@@ -170,7 +169,13 @@ clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c
 </tbody></table>
 </div>
 <p><strong>Boot Log</strong> will appear at <em>/dev/ttyUSB0</em>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Allow the user to access the USB UART port
+## Logout and login to refresh the permissions
+sudo usermod -a -G dialout $USER
+logout
+
+## Connect to USB UART Console
+screen /dev/ttyUSB0 115200</code></pre></div>
 <p><em>Why choose Avaota-A1?</em></p>
 <p>It’s <a href="https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/"><strong>Open Source Hardware</strong></a>, available from Multiple Makers. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5">Avaota A1: Default U-Boot in eMMC. No network :-(</a></p>
@@ -340,12 +345,10 @@ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
 <h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
 <p>TODO</p>
-<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>9 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
-sudo usermod -a -G dialout $USER
-##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>10 Inside SDWire</h1>
+<p>Open-Source RTOS … Running on Open-Source Hardware!</p>
+<h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
 <p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
