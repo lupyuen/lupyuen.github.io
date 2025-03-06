@@ -66,14 +66,15 @@
     <h1 class="title">PR Test Bot for PinePhone (Apache NuttX RTOS)</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#sdwire-microsd-multiplexer" title="SDWire MicroSD Multiplexer">1 SDWire MicroSD Multiplexer</a><ul></ul></li>
-<li><a href="#todo" title="TODO">2 TODO</a><ul></ul></li>
-<li><a href="#install-linux" title="Install Linux">3 Install Linux</a><ul></ul></li>
-<li><a href="#usb-uart" title="USB UART">4 USB UART</a><ul></ul></li>
-<li><a href="#connect-sdwire" title="Connect SDWire">5 Connect SDWire</a><ul></ul></li>
-<li><a href="#compile-sdwire" title="Compile SDWire">6 Compile SDWire</a><ul></ul></li>
-<li><a href="#mount-microsd" title="Mount MicroSD">7 Mount MicroSD</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">8 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#yuzuki-avaota-a1-sbc" title="Yuzuki Avaota-A1 SBC">2 Yuzuki Avaota-A1 SBC</a><ul></ul></li>
+<li><a href="#todo" title="TODO">3 TODO</a><ul></ul></li>
+<li><a href="#install-linux" title="Install Linux">4 Install Linux</a><ul></ul></li>
+<li><a href="#usb-uart" title="USB UART">5 USB UART</a><ul></ul></li>
+<li><a href="#connect-sdwire" title="Connect SDWire">6 Connect SDWire</a><ul></ul></li>
+<li><a href="#compile-sdwire" title="Compile SDWire">7 Compile SDWire</a><ul></ul></li>
+<li><a href="#mount-microsd" title="Mount MicroSD">8 Mount MicroSD</a><ul></ul></li>
+<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="TODO"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="TODO"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC:
@@ -104,15 +105,29 @@
 <p>Maybe we’ll port NuttX to <strong>Allwinner A527 SoC</strong>?</p>
 </li>
 </ul>
-<p>TODO: I bought. Yuzuki Avaota-A1 is open hardware. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
 <p>TODO: I ordered another <em>(batteryless)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
 <h1 id="sdwire-microsd-multiplexer"><a class="doc-anchor" href="#sdwire-microsd-multiplexer">§</a>1 SDWire MicroSD Multiplexer</h1>
 <p><em>MicroSD Multiplexer: What’s that? (Pic above)</em></p>
-<p><a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> is a brilliant gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
+<p><a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> is an ingenious gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
 <p><em>Why would we need it?</em></p>
-<p>For Testing NuttX on <strong>Arm64 Devices</strong> <em>(PinePhone)</em>:</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1>
+<p>To Test NuttX on <strong>Arm64 Devices</strong> <em>(PinePhone)</em>, we need…</p>
+<ul>
+<li>
+<p>A Computer <em>(“Test Server”)</em> to copy the NuttX Image to a <strong>MicroSD Card</strong></p>
+</li>
+<li>
+<p>Then boot it on the <strong>Arm64 Device</strong> <em>(“Test Device”)</em></p>
+</li>
+</ul>
+<p>Our Test Bot can’t <strong>Physically Swap</strong> a MicroSD between a Test Server and a Test Device. Thus it needs a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines.</p>
+<p><em>How does it work?</em></p>
+<p>Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
+<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="TODO" /></p>
+<h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
+<p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.</p>
+<p>TODO: is open hardware. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>3 TODO</h1>
 <p>TODO: testbot3-lcd.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-mux2.jpg</p>
@@ -121,13 +136,11 @@
 <p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-pinephone.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="TODO" /></p>
-<p>TODO: testbot3-sbc.jpg</p>
-<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-uart.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="TODO" /></p>
 <p>TODO: testbot3-uboot.jpg</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
-<h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>3 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
+<h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>4 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
 
 https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
 
@@ -213,10 +226,10 @@ BL3-1: Next image spsr = 0x3c5
 [    0.000000][    T0] Reserved memory: created DMA memory pool at 0x000000004ac00000, size 0 MiB</code></pre></div>
 <p>Avaota A1: Default U-Boot in eMMC. No network :-(</p>
 <p>https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5</p>
-<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>4 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
+<h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>5 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
-logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>5 Connect SDWire</h1>
+logout</code></pre></div><h1 id="connect-sdwire"><a class="doc-anchor" href="#connect-sdwire">§</a>6 Connect SDWire</h1>
 <p>#SDWire MicroSD Multiplexer connected to #Yuzuki Avaota-A1 SBC … When was the last you saw a Micro-USB Data Cable 😂</p>
 <div class="example-wrap"><pre class="language-text"><code>## Disconnect then reconnect
 $ dmesg
@@ -254,7 +267,7 @@ $ dmesg
 [ 1835.055251]  sda: sda1
 [ 1835.058244] sd 0:0:0:0: [sda] Attached SCSI removable disk
 
-avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>6 Compile SDWire</h1>
+avaota@avaota-a1:~$</code></pre></div><h1 id="compile-sdwire"><a class="doc-anchor" href="#compile-sdwire">§</a>7 Compile SDWire</h1>
 <p>Getting Started</p>
 <p>https://docs.dasharo.com/transparent-validation/sd-wire/getting-started/</p>
 <p>Usage</p>
@@ -284,7 +297,7 @@ dmesg:
 $ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
 
 dmesg:
-[ 4089.816219] sda: detected capacity change from 30318592 to 0</code></pre></div><h1 id="mount-microsd"><a class="doc-anchor" href="#mount-microsd">§</a>7 Mount MicroSD</h1><div class="example-wrap"><pre class="language-bash"><code>avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
+[ 4089.816219] sda: detected capacity change from 30318592 to 0</code></pre></div><h1 id="mount-microsd"><a class="doc-anchor" href="#mount-microsd">§</a>8 Mount MicroSD</h1><div class="example-wrap"><pre class="language-bash"><code>avaota@avaota-a1:~/sd-mux/build$ mkdir /tmp/sda1
 avaota@avaota-a1:~/sd-mux/build$ sudo mount /dev/sda1 /tmp/sda1
 avaota@avaota-a1:~/sd-mux/build$ ls -l /tmp/sda1
 total 5453
@@ -296,9 +309,9 @@ total 5453
 -rwxr-xr-x 1 root root   36080 May 23  2021 sun50i-a64-pinephone-1.1.dtb
 -rwxr-xr-x 1 root root   36162 May 23  2021 sun50i-a64-pinephone-1.2.dtb</code></pre></div>
 <p>Unmount:</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sudo umount /tmp/sda1</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>8 Inside SDWire</h1>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo umount /tmp/sda1</code></pre></div><h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
 <p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p>TODO</p>
 <ul>
 <li>
