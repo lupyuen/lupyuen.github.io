@@ -21,9 +21,9 @@ Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 P
 @nuttxpr test pinephone:nsh
 ```
 
-- We used Special Hardware: __MicroSD Multiplexer__ (pic above)
+- We used Special Hardware: __SDWire MicroSD Multiplexer__ _(pic above)_
 
-- Controlled by a Single-Board Computer: __Yuzuki Avaota-A1__ (Open Hardware)
+- Controlled by a Single-Board Computer: __Yuzuki Avaota-A1__ _(Open Hardware)_
 
 - __PinePhone Test Bot__ kinda works!
 
@@ -33,13 +33,19 @@ Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 P
 
 - Maybe we'll port NuttX to __Allwinner A527 SoC__?
 
-TODO: Yuzuki Avaota-A1 is open hardware
+TODO: Yuzuki Avaota-A1 is open hardware. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
+
+TODO: Pic of SDWire
 
 # SDWire MicroSD Multiplexer
 
 _MicroSD Multiplexer: What's that?_
 
+[__SDWire MicroSD Multiplexer__](TODO) (pic above) is a brilliant gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
 
+_Why would we need it?_
+
+For Testing NuttX on __Arm64 Devices__ _(PinePhone)_: 
 
 # Install Linux
 
