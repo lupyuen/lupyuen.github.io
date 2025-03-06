@@ -368,7 +368,7 @@ _What about the PinePhone Battery?_
 
 Yeah it gets complicated: USB-C Power __will charge up__ the PinePhone Battery. Which means PinePhone __won't shut down__ when we power off the USB-C Port!
 
-Thus we have an Automated Way to Power Up PinePhone. And it gets stuck there until the __PinePhone Battery totally drains__. This is _ungood_ for our Test Bot sigh.
+Thus we have an Automated Way to Power Up PinePhone. And it gets stuck there until the __PinePhone Battery totally drains__. This is _utterly ungood_ for our Test Bot sigh.
 
 _Why not do it on a Battery-Less Device?_
 
