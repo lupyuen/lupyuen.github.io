@@ -85,10 +85,10 @@
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test pinephone:nsh</code></pre></div>
 <ul>
 <li>
-<p>We used Special Hardware: <strong>MicroSD Multiplexer</strong> (pic above)</p>
+<p>We used Special Hardware: <strong>SDWire MicroSD Multiplexer</strong> <em>(pic above)</em></p>
 </li>
 <li>
-<p>Controlled by a Single-Board Computer: <strong>Yuzuki Avaota-A1</strong> (Open Hardware)</p>
+<p>Controlled by a Single-Board Computer: <strong>Yuzuki Avaota-A1</strong> <em>(Open Hardware)</em></p>
 </li>
 <li>
 <p><strong>PinePhone Test Bot</strong> kinda works!</p>
@@ -103,9 +103,13 @@
 <p>Maybe we’ll port NuttX to <strong>Allwinner A527 SoC</strong>?</p>
 </li>
 </ul>
-<p>TODO: Yuzuki Avaota-A1 is open hardware</p>
+<p>TODO: Yuzuki Avaota-A1 is open hardware. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
+<p>TODO: Pic of SDWire</p>
 <h1 id="sdwire-microsd-multiplexer"><a class="doc-anchor" href="#sdwire-microsd-multiplexer">§</a>1 SDWire MicroSD Multiplexer</h1>
 <p><em>MicroSD Multiplexer: What’s that?</em></p>
+<p><a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> (pic above) is a brilliant gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
+<p><em>Why would we need it?</em></p>
+<p>For Testing NuttX on <strong>Arm64 Devices</strong> <em>(PinePhone)</em>:</p>
 <h1 id="install-linux"><a class="doc-anchor" href="#install-linux">§</a>2 Install Linux</h1><div class="example-wrap"><pre class="language-bash"><code>https://github.com/AvaotaSBC/AvaotaOS/releases
 
 https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
