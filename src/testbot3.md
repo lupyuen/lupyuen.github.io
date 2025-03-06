@@ -89,7 +89,7 @@ Password: avaota
 
 ## Root Password is also `avaota`
 $ sudo 
-Password: 密码：avaota
+Password: avaota
 ```
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b)
@@ -100,7 +100,7 @@ While Booting: Our SBC shows a helpful message on the __Onboard LCD__, it should
 
 _Hmmm our SBC is forever showing "Booting Linux"?_
 
-Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](TODO)! Which fails with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
+Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](TODO). Armbian will fail with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
 
 ```text
 Kernel panic - not syncing:
