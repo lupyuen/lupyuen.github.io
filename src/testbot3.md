@@ -310,6 +310,8 @@ TODO: Test Device
 
 Boot NuttX
 
+![TODO](https://lupyuen.org/images/lvgl2-title.jpg)
+
 # Complications with PinePhone Battery
 
 TODO
