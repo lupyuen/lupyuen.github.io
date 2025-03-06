@@ -130,6 +130,12 @@ Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpe
 __Boot Log__ will appear at _/dev/ttyUSB0_...
 
 ```bash
+## Allow the user to access the USB UART port
+## Logout and login to refresh the permissions
+sudo usermod -a -G dialout $USER
+logout
+
+## Connect to USB UART Console
 screen /dev/ttyUSB0 115200
 ```
 
@@ -376,14 +382,7 @@ There's another intriguing solution...
 
 TODO
 
-# USB UART
-
-```bash
-##  Allow the user to access the USB UART ports
-sudo usermod -a -G dialout $USER
-##  Logout and login to refresh the permissions
-logout
-```
+Open-Source RTOS ... Running on Open-Source Hardware!
 
 # Inside SDWire
 
