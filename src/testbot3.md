@@ -290,12 +290,27 @@ $ sudo sd-mux-ctrl \
 
 ![TODO](https://lupyuen.org/images/testbot3-pinephone.jpg)
 
-# Connect SDWire to PinePhone
+# Test SDWire with PinePhone
 
 _SDWire works OK with our SBC. What next?_
 
-Moment of Truth! We slot SDWire MicroSD Multiplexer into __PinePhone as Test Device__. (Pic above)
+Moment of Truth! We connect __SDWire MicroSD Multiplexer__ into...
 
+- __Test Device: PinePhone__ _(Pic above)_
+
+- __Test Server: Avaota-A1 SBC__ _(Via Micro-USB)_
+
+Which is easier with [__PinePhone MicroSD Extender__](TODO)...
+
+![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
+
+TODO: Test Server
+
+Copy MicroSD
+
+TODO: Test Device
+
+Boot NuttX
 
 # U-Boot
 
