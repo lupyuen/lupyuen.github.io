@@ -708,7 +708,7 @@ Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro6
 
 We're seeking volunteers to build __NuttX Drivers for StarPro64__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, NPU, ...)_ Please lemme know!
 
-Right now we're upstreaming StarPro64 to __NuttX Mainline__...
+StarPro64 is now officially supported by __NuttX Mainline__...
 
 - [__arch/risc-v/eic7700x: Add support for ESWIN EIC7700X SoC__](https://github.com/apache/nuttx/pull/15921)
 
@@ -920,13 +920,13 @@ If we prefer to build NuttX ourselves...
     
     [__"xPack GNU RISC-V Embedded GCC Toolchain for 64-bit RISC-V"__](https://lupyuen.github.io/articles/riscv#appendix-xpack-gnu-risc-v-embedded-gcc-toolchain-for-64-bit-risc-v)
 
-1.  Download and Build __NuttX for StarPro64__ (work-in-progress)...
+1.  Download and Build __NuttX for StarPro64__...
 
     ```bash
-    git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch starpro64
-    git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch starpro64
+    git clone https://github.com/apache/nuttx
+    git clone https://github.com/apache/nuttx-apps apps
     cd nuttx
-    tools/configure.sh milkv_duos:nsh
+    tools/configure.sh starpro64:nsh
 
     ## Build the NuttX Kernel and Apps
     make -j
