@@ -72,7 +72,7 @@
 <li><a href="#mount-the-microsd" title="Mount the MicroSD">5 Mount the MicroSD</a><ul></ul></li>
 <li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
 <li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
-<li><a href="#porting-nuttx-to-allwinner-a527-soc" title="Porting NuttX to Allwinner A527 SoC">8 Porting NuttX to Allwinner A527 SoC</a><ul></ul></li>
+<li><a href="#port-nuttx-to-allwinner-a527-soc" title="Port NuttX to Allwinner A527 SoC">8 Port NuttX to Allwinner A527 SoC</a><ul></ul></li>
 <li><a href="#usb-uart" title="USB UART">9 USB UART</a><ul></ul></li>
 <li><a href="#inside-sdwire" title="Inside SDWire">10 Inside SDWire</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
@@ -234,7 +234,7 @@ Dev: 0, Manufacturer: SRPOL
 Serial: sd-wire_02-09, Description: sd-wire</code></pre></div>
 <p>Take Note of the <strong>Serial ID</strong>: <em>sd-wire_02-09</em>. We’ll use it below.</p>
 <p>Now we Flip the MicroSD from Test Server to <strong>Test Device</strong> <em>(DUT: “Device Under Test”)</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Device: 
+<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
 $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
@@ -278,7 +278,7 @@ sun50i-a64-pinephone-1.0.dtb</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## Unmount the MicroSD
 $ sudo umount /tmp/sda1
 
-## Flip the MicroSD to Test Device: 
+## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
 $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
@@ -297,16 +297,49 @@ $ sudo sd-mux-ctrl \
 </ul>
 <p>Which is easier with <a href="TODO"><strong>PinePhone MicroSD Extender</strong></a>…</p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
-<p>TODO: Test Server</p>
-<p>Copy MicroSD</p>
-<p>TODO: Test Device</p>
-<p>Boot NuttX</p>
+<p><em>Does it work?</em></p>
+<p>Let’s assume our <a href="TODO"><strong>Build Server</strong></a> has compiled the PR Code into a <strong>NuttX Image</strong>…</p>
+<ol>
+<li>
+<p>We flip the <strong>MicroSD to SBC</strong> <em>(Test Server)</em>, and mount the MicroSD…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
+## Mount the MicroSD to /tmp/sda1
+sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+mkdir /tmp/sda1
+sudo mount /dev/sda1 /tmp/sda1</code></pre></div></li>
+<li>
+<p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy the NuttX Image to MicroSD
+cp Image.gz /tmp/sda1</code></pre></div></li>
+<li>
+<p>Unmount the MicroSD, and flip the <strong>MicroSD to PinePhone</strong> <em>(Test Device)</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Unmount the MicroSD
+## Flip the MicroSD to Test Device
+sudo umount /tmp/sda1
+sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
+<li>
+<p>Power on PinePhone with a <a href="TODO"><strong>Smart Power Plug</strong></a></p>
+<p><em>(Thanks to Home Assistant API)</em></p>
+</li>
+<li>
+<p>PinePhone boots NuttX yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p><a href="TODO">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="TODO" /></p>
 <h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
-<p>TODO</p>
+<p><em>Huh! PinePhone will power up with a Smart Power Plug?</em></p>
+<p>OK our PinePhone is a little wonky: The <strong>Power Button</strong> won’t work any more. But powering up the <strong>USB-C Port</strong> on PinePhone will boot just fine.</p>
+<p><em>What about the PinePhone Battery?</em></p>
+<p>Yeah it gets complicated: USB-C Power <strong>will charge up</strong> the PinePhone Battery. Which means PinePhone <strong>won’t shut down</strong> when we power off the USB-C Port!</p>
+<p>Thus we have an Automated Way to Power Up PinePhone. And it gets stuck there until the <strong>PinePhone Battery totally drains</strong>. This is <em>ungood</em> for our Test Bot sigh.</p>
+<p><em>Why not do it on a Battery-Less Device?</em></p>
+<p>I ordered another <em>(battery-less)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
+<p>There’s another intriguing solution…</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
-<h1 id="porting-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#porting-nuttx-to-allwinner-a527-soc">§</a>8 Porting NuttX to Allwinner A527 SoC</h1>
-<p>TODO: I ordered another <em>(batteryless)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
+<h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
+<p>TODO</p>
 <h1 id="usb-uart"><a class="doc-anchor" href="#usb-uart">§</a>9 USB UART</h1><div class="example-wrap"><pre class="language-bash"><code>##  Allow the user to access the USB UART ports
 sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
