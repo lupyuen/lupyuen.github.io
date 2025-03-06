@@ -225,7 +225,7 @@ Take Note of the __Serial ID__: _sd-wire_02-09_. We'll use it below.
 Now we Flip the MicroSD from Test Server to __Test Device__ _(DUT: "Device Under Test")_
 
 ```bash
-## Flip the MicroSD to Test Device: 
+## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
 $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
@@ -285,7 +285,7 @@ Remember to __Unmount the MicroSD__ before switching back, or the MicroSD Files 
 ## Unmount the MicroSD
 $ sudo umount /tmp/sda1
 
-## Flip the MicroSD to Test Device: 
+## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
 $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
@@ -308,25 +308,73 @@ Which is easier with [__PinePhone MicroSD Extender__](TODO)...
 
 ![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
 
-TODO: Test Server
+_Does it work?_
 
-Copy MicroSD
+Let's assume our [__Build Server__](TODO) has compiled the PR Code into a __NuttX Image__...
 
-TODO: Test Device
+1.  We flip the __MicroSD to SBC__ _(Test Server)_, and mount the MicroSD...
 
-Boot NuttX
+    ```bash
+    ## Flip the MicroSD to Test Server
+    ## Mount the MicroSD to /tmp/sda1
+    sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+    mkdir /tmp/sda1
+    sudo mount /dev/sda1 /tmp/sda1
+    ```
+
+1.  Copy the __NuttX Image__ to MicroSD...
+
+    ```bash
+    ## Copy the NuttX Image to MicroSD
+    cp Image.gz /tmp/sda1
+    ```
+
+1.  Unmount the MicroSD, and flip the __MicroSD to PinePhone__ _(Test Device)_
+
+    ```bash
+    ## Unmount the MicroSD
+    ## Flip the MicroSD to Test Device
+    sudo umount /tmp/sda1
+    sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+    ```
+
+1.  Power on PinePhone with a [__Smart Power Plug__](TODO)
+
+    _(Thanks to Home Assistant API)_
+
+1.  PinePhone boots NuttX yay!
+
+    ```bash
+    TODO
+    ```
+
+    [(Watch the __Demo on YouTube__)](TODO)
 
 ![TODO](https://lupyuen.org/images/lvgl2-title.jpg)
 
 # Complications with PinePhone Battery
 
-TODO
+_Huh! PinePhone will power up with a Smart Power Plug?_
+
+OK our PinePhone is a little wonky: The __Power Button__ won't work any more. But powering up the __USB-C Port__ on PinePhone will boot just fine.
+
+_What about the PinePhone Battery?_
+
+Yeah it gets complicated: USB-C Power __will charge up__ the PinePhone Battery. Which means PinePhone __won't shut down__ when we power off the USB-C Port!
+
+Thus we have an Automated Way to Power Up PinePhone. And it gets stuck there until the __PinePhone Battery totally drains__. This is _ungood_ for our Test Bot sigh.
+
+_Why not do it on a Battery-Less Device?_
+
+I ordered another _(battery-less)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
+
+There's another intriguing solution...
 
 ![TODO](https://lupyuen.org/images/testbot3-uboot.jpg)
 
-# Porting NuttX to Allwinner A527 SoC
+# Port NuttX to Allwinner A527 SoC
 
-TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
+TODO
 
 # USB UART
 
@@ -336,9 +384,6 @@ sudo usermod -a -G dialout $USER
 ##  Logout and login to refresh the permissions
 logout
 ```
-
-
-
 
 # Inside SDWire
 
