@@ -33,8 +33,6 @@ Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 P
 
 - Maybe we'll port NuttX to __Allwinner A527 SoC__?
 
-TODO: I bought. Yuzuki Avaota-A1 is open hardware. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
-
 TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
 
 ![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
@@ -43,11 +41,29 @@ TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https:
 
 _MicroSD Multiplexer: What's that? (Pic above)_
 
-[__SDWire MicroSD Multiplexer__](TODO) is a brilliant gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
+[__SDWire MicroSD Multiplexer__](TODO) is an ingenious gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
 
 _Why would we need it?_
 
-For Testing NuttX on __Arm64 Devices__ _(PinePhone)_: 
+To Test NuttX on __Arm64 Devices__ _(PinePhone)_, we need...
+
+- A Computer _("Test Server")_ to copy the NuttX Image to a __MicroSD Card__
+
+- Then boot it on the __Arm64 Device__ _("Test Device")_
+
+Our Test Bot can't __Physically Swap__ a MicroSD between a Test Server and a Test Device. Thus it needs a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines.
+
+_How does it work?_
+
+Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+
+![TODO](https://lupyuen.org/images/testbot3-sbc.jpg)
+
+# Yuzuki Avaota-A1 SBC
+
+To assemble our Test Bot, I bought a [__Yuzuki Avaota-A1__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) Single-Board Computer.
+
+TODO: is open hardware. [_(Quite affordable too: $55)_](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
 
 # TODO
 
@@ -66,10 +82,6 @@ TODO: testbot3-mux3.jpg
 TODO: testbot3-pinephone.jpg
 
 ![TODO](https://lupyuen.org/images/testbot3-pinephone.jpg)
-
-TODO: testbot3-sbc.jpg
-
-![TODO](https://lupyuen.org/images/testbot3-sbc.jpg)
 
 TODO: testbot3-uart.jpg
 
