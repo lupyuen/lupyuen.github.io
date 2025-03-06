@@ -57,7 +57,13 @@ TODO: Pic of mux
 
 _How does it work?_
 
-Inside SDWire is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+[__Inside SDWire__](TODO) is the TODO Multiplexer. Works like FTDI, supports TODO Data Lanes. Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+
+__Micro-USB Port__ of SDWire exposes two functions...
+
+1.  __USB Mass Storage:__ For reading and writing the MicroSD
+
+1.  __SDWire Multiplexer:__ For swapping the MicroSD between devices
 
 Let's prepare our Test Server: Avaota-A1 SBC...
 
@@ -152,7 +158,7 @@ usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
 hub 1-1:1.0: USB hub found
 hub 1-1:1.0: 3 ports detected
 
-## Yep it's MicroSD Storage Device
+## Yep it's a MicroSD Storage Device
 usb 1-1.1: New USB device found, idVendor=0424, idProduct=4050, bcdDevice= 1.76
 usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
 usb 1-1.1: Product: Ultra Fast Media Reader
