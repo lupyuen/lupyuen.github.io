@@ -2,7 +2,7 @@
 
 📝 _23 Mar 2025_
 
-![PR Test Bot for PinePhone (Apache NuttX RTOS)](https://lupyuen.org/images/testbot3-title.jpg)
+![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
 
 Earlier we created a [__PR Test Bot__](TODO) that will __Build and Test__ the Pull Requests for __Apache NuttX RTOS__. Our Test Bot kicks into action when we post a [__PR Comment__](TODO)...
 
@@ -37,13 +37,13 @@ TODO: I bought. Yuzuki Avaota-A1 is open hardware. [_(Quite affordable too: $55)
 
 TODO: I ordered another _(batteryless)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
 
-TODO: Pic of SDWire
+![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
 # SDWire MicroSD Multiplexer
 
-_MicroSD Multiplexer: What's that?_
+_MicroSD Multiplexer: What's that? (Pic above)_
 
-[__SDWire MicroSD Multiplexer__](TODO) (pic above) is a brilliant gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
+[__SDWire MicroSD Multiplexer__](TODO) is a brilliant gadget that allows __Two Devices__ to access One Single __MicroSD Card__. _(One device at a time, not simultaneously)_
 
 _Why would we need it?_
 
