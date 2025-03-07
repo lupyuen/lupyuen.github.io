@@ -318,6 +318,8 @@ _Does it work?_
 
 Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#control-our-oz64-sbc) has compiled the PR Code into a __NuttX Image__...
 
+![MicroSD Multiplexer for Test Bot](https://lupyuen.org/images/testbot2-flow.jpg)
+
 1.  We flip the __MicroSD to SBC__ _(Test Server)_, and mount the MicroSD...
 
     ```bash
