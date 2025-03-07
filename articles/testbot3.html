@@ -247,6 +247,7 @@ $ sudo sd-mux-ctrl \
 
 ## dmesg shows:
 ## sda: detected capacity change from 30318592 to 0</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="TODO" /></p>
 <p><strong>Green LED</strong> turns on (pic right above). And <em>/dev/sda1</em> is no longer accessible. Yep our MicroSD has flipped to the Test Device!</p>
 <p>Finally do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
@@ -259,6 +260,7 @@ $ sudo sd-mux-ctrl \
 ## sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
 ## sda: detected capacity change from 0 to 30318592
 ## sda: sda1</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="TODO" /></p>
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
 <h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
 <p><em>How to access the MicroSD at /dev/sda1?</em></p>
@@ -312,7 +314,9 @@ $ sudo sd-mux-ctrl \
 ## Mount the MicroSD to /tmp/sda1
 sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
 mkdir /tmp/sda1
-sudo mount /dev/sda1 /tmp/sda1</code></pre></div></li>
+sudo mount /dev/sda1 /tmp/sda1</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="TODO" /></p>
+</li>
 <li>
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the NuttX Image to MicroSD
@@ -322,10 +326,13 @@ cp Image.gz /tmp/sda1</code></pre></div></li>
 <div class="example-wrap"><pre class="language-bash"><code>## Unmount the MicroSD
 ## Flip the MicroSD to Test Device
 sudo umount /tmp/sda1
-sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
+sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
+<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="TODO" /></p>
+</li>
 <li>
 <p>Power on PinePhone with a <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a></p>
 <p><em>(Thanks to Home Assistant API)</em></p>
+<p><img src="https://lupyuen.org/images/testbot3-test3.png" alt="TODO" /></p>
 </li>
 <li>
 <p>PinePhone boots NuttX yay!</p>
