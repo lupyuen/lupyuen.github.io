@@ -380,6 +380,10 @@ There's another intriguing solution...
 
 # Port NuttX to Allwinner A527 SoC
 
+#SDWire MicroSD Multiplexer + #PinePhone ... Works great with Avaota-A1 SBC @ThePine64 and Apache #NuttX RTOS! 🎉
+
+Source: https://youtu.be/lYiIEip0zII
+
 TODO
 
 TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
