@@ -73,8 +73,7 @@
 <li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
 <li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
 <li><a href="#port-nuttx-to-allwinner-a527-soc" title="Port NuttX to Allwinner A527 SoC">8 Port NuttX to Allwinner A527 SoC</a><ul></ul></li>
-<li><a href="#inside-sdwire" title="Inside SDWire">9 Inside SDWire</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="https://lupyuen.github.io/articles/testbot"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="https://lupyuen.github.io/articles/testbot2"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC
@@ -247,7 +246,6 @@ $ sudo sd-mux-ctrl \
 
 ## dmesg shows:
 ## sda: detected capacity change from 30318592 to 0</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="TODO" /></p>
 <p><strong>Green LED</strong> turns on (pic right above). And <em>/dev/sda1</em> is no longer accessible. Yep our MicroSD has flipped to the Test Device!</p>
 <p>Finally do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
@@ -260,8 +258,8 @@ $ sudo sd-mux-ctrl \
 ## sd 0:0:0:0: [sda] 30318592 512-byte logical blocks: (15.5 GB/14.5 GiB)
 ## sda: detected capacity change from 0 to 30318592
 ## sda: sda1</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="TODO" /></p>
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
+<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 <h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
 <p><em>How to access the MicroSD at /dev/sda1?</em></p>
 <p>We mount <em>/dev/sda1</em> like this, to read and write the <strong>MicroSD Files</strong>…</p>
@@ -315,7 +313,7 @@ $ sudo sd-mux-ctrl \
 sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
 mkdir /tmp/sda1
 sudo mount /dev/sda1 /tmp/sda1</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 </li>
 <li>
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
@@ -327,20 +325,22 @@ cp Image.gz /tmp/sda1</code></pre></div></li>
 ## Flip the MicroSD to Test Device
 sudo umount /tmp/sda1
 sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="Flip the MicroSD to Test Device" /></p>
 </li>
 <li>
 <p>Power on PinePhone with a <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a></p>
 <p><em>(Thanks to Home Assistant API)</em></p>
-<p><img src="https://lupyuen.org/images/testbot3-test3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot3-test3.png" alt="PinePhone boots NuttX yay" /></p>
 </li>
 <li>
 <p>PinePhone boots NuttX yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.8.0
+nsh&gt; uname -a
+NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><a href="https://youtu.be/lYiIEip0zII">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="Complications with PinePhone Battery" /></p>
 <h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
 <p><em>Huh! PinePhone will power up with a Smart Power Plug?</em></p>
 <p>OK our PinePhone is a little wonky: The <strong>Power Button</strong> won’t work any more. But powering up the <strong>USB-C Port</strong> on PinePhone will boot just fine.</p>
@@ -350,20 +350,28 @@ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
 <p><em>Why not do it on a Battery-Less Device?</em></p>
 <p>I ordered another <em>(battery-less)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
 <p>There’s another intriguing solution…</p>
-<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
 <h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly!</p>
-<p>Open-Source RTOS … Running on Open-Source Hardware!</p>
-<p>Modern SBC</p>
-<p>Kernel Build</p>
-<p>iMX9</p>
-<p>TODO</p>
+<ul>
+<li>
+<p>TODO Modern SBC</p>
+</li>
+<li>
+<p>TODO Kernel Build</p>
+</li>
+<li>
+<p>TODO iMX9</p>
+</li>
+<li>
+<p><strong>Open-Source RTOS</strong> <em>(NuttX)</em> tested on <strong>Open-Source Hardware</strong> <em>(Avaota-A1)</em> … Makes perfect sense!</p>
+</li>
+</ul>
 <p>TODO: <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5">Avaota A1: Default U-Boot in eMMC. No network :-(</a></p>
-<h1 id="inside-sdwire"><a class="doc-anchor" href="#inside-sdwire">§</a>9 Inside SDWire</h1>
-<p>https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
-<p>TODO</p>
+<p>TODO: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp">Inside SDWire</a></p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
+<p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
@@ -372,13 +380,13 @@ sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
 <p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Current Project: “Apache NuttX RTOS for Sophgo SG2000”</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
 </li>
 <li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>My Other Project: “NuttX for Ox64 BL808”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Other Project: “NuttX for Oz64 SG2000”</strong></a></p>
 </li>
 <li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-star64"><strong>Older Project: “NuttX for Star64 JH7110”</strong></a></p>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>Older Project: “NuttX for Ox64 BL808”</strong></a></p>
 </li>
 <li>
 <p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
