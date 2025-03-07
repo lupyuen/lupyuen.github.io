@@ -241,8 +241,6 @@ $ sudo sd-mux-ctrl \
 ## sda: detected capacity change from 30318592 to 0
 ```
 
-![TODO](https://lupyuen.org/images/testbot3-test2.png)
-
 __Green LED__ turns on (pic right above). And _/dev/sda1_ is no longer accessible. Yep our MicroSD has flipped to the Test Device!
 
 Finally do this...
@@ -260,9 +258,9 @@ $ sudo sd-mux-ctrl \
 ## sda: sda1
 ```
 
-![TODO](https://lupyuen.org/images/testbot3-test1.png)
-
 __Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everything works hunky dory yay!
+
+![Flip the MicroSD to Test Server](https://lupyuen.org/images/testbot3-test1.png)
 
 # Mount the MicroSD
 
@@ -334,7 +332,7 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
     sudo mount /dev/sda1 /tmp/sda1
     ```
 
-    ![TODO](https://lupyuen.org/images/testbot3-test1.png)
+    ![Flip the MicroSD to Test Server](https://lupyuen.org/images/testbot3-test1.png)
 
 1.  Copy the __NuttX Image__ to MicroSD...
 
@@ -352,23 +350,25 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
     sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
     ```
 
-    ![TODO](https://lupyuen.org/images/testbot3-test2.png)
+    ![Flip the MicroSD to Test Device](https://lupyuen.org/images/testbot3-test2.png)
 
 1.  Power on PinePhone with a [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc)
 
     _(Thanks to Home Assistant API)_
 
-    ![TODO](https://lupyuen.org/images/testbot3-test3.png)
+    ![PinePhone boots NuttX yay](https://lupyuen.org/images/testbot3-test3.png)
 
 1.  PinePhone boots NuttX yay!
 
     ```bash
-    TODO
+    NuttShell (NSH) NuttX-12.8.0
+    nsh> uname -a
+    NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone
     ```
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/lYiIEip0zII)
 
-![TODO](https://lupyuen.org/images/lvgl2-title.jpg)
+![Complications with PinePhone Battery](https://lupyuen.org/images/lvgl2-title.jpg)
 
 # Complications with PinePhone Battery
 
@@ -388,7 +388,7 @@ I ordered another _(battery-less)_ [__Arm64 Single-Board Computer__](https://nut
 
 There's another intriguing solution...
 
-![TODO](https://lupyuen.org/images/testbot3-uboot.jpg)
+![Avaota A1: Default U-Boot in eMMC. No network :-(](https://lupyuen.org/images/testbot3-uboot.jpg)
 
 # Port NuttX to Allwinner A527 SoC
 
@@ -396,38 +396,31 @@ _How about booting and testing NuttX on Avaota-A1 SBC?_
 
 Exactly!
 
-Open-Source RTOS ... Running on Open-Source Hardware!
+- TODO Modern SBC
 
-Modern SBC
+- TODO Kernel Build
 
-Kernel Build
+- TODO iMX9
 
-iMX9
-
-
-
-TODO
+- __Open-Source RTOS__ _(NuttX)_ tested on __Open-Source Hardware__ _(Avaota-A1)_ ... Makes perfect sense!
 
 TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
 
-
-# Inside SDWire
-
-https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp
+TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
 
 # What's Next
 
-TODO
+Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
 - [__Discuss this article on Hacker News__](TODO)
 
-- [__My Current Project: "Apache NuttX RTOS for Sophgo SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
+- [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
 
-- [__My Other Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
+- [__My Other Project: "NuttX for Oz64 SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
-- [__Older Project: "NuttX for Star64 JH7110"__](https://nuttx-forge.org/lupyuen/nuttx-star64)
+- [__Older Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
 
 - [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
 
