@@ -15,7 +15,7 @@ Earlier we created a [__PR Test Bot__](https://lupyuen.github.io/articles/testbo
 @nuttxpr test rv-virt:knsh64
 ```
 
-Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 PinePhone__](https://lupyuen.github.io/articles/what). Yep on the __Real PinePhone Hardware__!
+Today we extend our Test Bot to Build and Test the Pull Requests for [__PINE64 PinePhone__](https://lupyuen.github.io/articles/what). Yep on the __Real Arm64 PinePhone Hardware__!
 
 ```bash
 @nuttxpr test pinephone:nsh
