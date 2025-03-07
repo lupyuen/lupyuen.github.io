@@ -241,6 +241,8 @@ $ sudo sd-mux-ctrl \
 ## sda: detected capacity change from 30318592 to 0
 ```
 
+![TODO](https://lupyuen.org/images/testbot3-test2.png)
+
 __Green LED__ turns on (pic right above). And _/dev/sda1_ is no longer accessible. Yep our MicroSD has flipped to the Test Device!
 
 Finally do this...
@@ -257,6 +259,8 @@ $ sudo sd-mux-ctrl \
 ## sda: detected capacity change from 0 to 30318592
 ## sda: sda1
 ```
+
+![TODO](https://lupyuen.org/images/testbot3-test1.png)
 
 __Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everything works hunky dory yay!
 
@@ -330,6 +334,8 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
     sudo mount /dev/sda1 /tmp/sda1
     ```
 
+    ![TODO](https://lupyuen.org/images/testbot3-test1.png)
+
 1.  Copy the __NuttX Image__ to MicroSD...
 
     ```bash
@@ -346,9 +352,13 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
     sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
     ```
 
+    ![TODO](https://lupyuen.org/images/testbot3-test2.png)
+
 1.  Power on PinePhone with a [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc)
 
     _(Thanks to Home Assistant API)_
+
+    ![TODO](https://lupyuen.org/images/testbot3-test3.png)
 
 1.  PinePhone boots NuttX yay!
 
