@@ -388,7 +388,7 @@ I ordered another _(battery-less)_ [__Arm64 Single-Board Computer__](https://nut
 
 There's another intriguing solution...
 
-![Avaota A1: Default U-Boot in eMMC. No network :-(](https://lupyuen.org/images/testbot3-uboot.jpg)
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
 # Port NuttX to Allwinner A527 SoC
 
@@ -416,7 +416,13 @@ Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
 I'll take the NuttX Kernel Build for [__QEMU Arm64__](TODO), boot it on Avaota-A1 SBC. And watch what happens :-)
 
-TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
+![Avaota A1: Default U-Boot in eMMC. No network :-(](https://lupyuen.org/images/testbot3-uboot.jpg)
+
+_Isn't it faster to port NuttX with U-Boot TFTP?_
+
+Yeah for RISC-V Ports we boot [__NuttX over TFTP__](TODO). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5) sigh.
+
+Well at least we now have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier!
 
 TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
 
