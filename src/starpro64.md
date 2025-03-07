@@ -391,7 +391,7 @@ _How to boot NuttX over TFTP? (Pic above)_
 
 1.  Copy these files to our TFTP Server...
 
-    [__NuttX Image:__ _Image_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image)
+    [__NuttX Image:__ _Image_](https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-2/Image)
 
     [__Device Tree:__ _eic7700-evb.dtb_](https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb)
 
@@ -399,7 +399,7 @@ _How to boot NuttX over TFTP? (Pic above)_
 
     ```bash
     ## Download the NuttX Image and Device Tree
-    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-1/Image
+    wget https://github.com/lupyuen2/wip-nuttx/releases/download/starpro64-2/Image
     wget https://github.com/lupyuen/nuttx-starpro64/raw/refs/heads/main/eic7700-evb.dtb
 
     ## Copy the NuttX Image and Device Tree to our TFTP Server
