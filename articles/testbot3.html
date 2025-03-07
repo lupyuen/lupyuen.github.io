@@ -350,7 +350,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><em>Why not do it on a Battery-Less Device?</em></p>
 <p>I ordered another <em>(battery-less)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
 <p>There’s another intriguing solution…</p>
-<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
+<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -376,7 +376,10 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 </li>
 </ul>
 <p>I’ll take the NuttX Kernel Build for <a href="TODO"><strong>QEMU Arm64</strong></a>, boot it on Avaota-A1 SBC. And watch what happens :-)</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5">Avaota A1: Default U-Boot in eMMC. No network :-(</a></p>
+<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
+<p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
+<p>Yeah for RISC-V Ports we boot <a href="TODO"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a> sigh.</p>
+<p>Well at least we now have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier!</p>
 <p>TODO: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp">Inside SDWire</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
