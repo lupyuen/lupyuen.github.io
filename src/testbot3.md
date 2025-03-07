@@ -394,17 +394,23 @@ There's another intriguing solution...
 
 _How about booting and testing NuttX on Avaota-A1 SBC?_
 
-Exactly!
+Exactly! Here's why Avaota-A1 should run NuttX...
 
-- TODO Modern SBC
+- __Avaota-A1__ has the latest Octa-Core Arm64 SoC: __Allwinner A527__
 
-- TODO Kernel Build
+  _(Bonus: There's a tiny RISC-V Core inside too)_
 
-- TODO iMX9
+- [__NuttX Kernel Build__](TODO) sounds ideal for Allwinner A527 SoC
 
-- __SDWire MicroSD Multiplexer__: Avaota SBC was previously the __Test Server__, now it becomes the __Test Device__.
+  _(Instead of the restrictive Flat Build)_
 
-  Which makes NuttX Porting a lot quicker!
+- __Avaota-A1__ could be the first Arm64 Port of NuttX Kernel Build
+
+  [_(NXP i.MX93 might be another)_](https://github.com/apache/nuttx/pull/15556)
+
+- __SDWire MicroSD Multiplexer__: Avaota SBC was previously the __Test Server__, now it becomes the __Test Device__
+
+  _(Porting NuttX gets a lot quicker)_
 
 - __Open-Source RTOS__ _(NuttX)_ tested on __Open-Source Hardware__ _(Avaota-A1)_ ... Perfectly sensible!
 
