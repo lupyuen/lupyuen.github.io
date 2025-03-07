@@ -420,9 +420,9 @@ I'll take the NuttX Kernel Build for [__QEMU Arm64__](TODO), boot it on Avaota-A
 
 _Isn't it faster to port NuttX with U-Boot TFTP?_
 
-Yeah for RISC-V Ports we boot [__NuttX over TFTP__](TODO). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5) sigh.
+Yeah for RISC-V Ports we boot [__NuttX over TFTP__](TODO). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5), so it's back to MicroSD sigh. (Pic above)
 
-Well at least we now have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier!
+Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier!
 
 TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
 
