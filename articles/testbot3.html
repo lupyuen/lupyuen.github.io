@@ -353,20 +353,23 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
 <h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
-<p>Exactly!</p>
+<p>Exactly! Here’s why Avaota-A1 should run NuttX…</p>
 <ul>
 <li>
-<p>TODO Modern SBC</p>
+<p><strong>Avaota-A1</strong> has the latest Octa-Core Arm64 SoC: <strong>Allwinner A527</strong></p>
+<p><em>(Bonus: There’s a tiny RISC-V Core inside too)</em></p>
 </li>
 <li>
-<p>TODO Kernel Build</p>
+<p><a href="TODO"><strong>NuttX Kernel Build</strong></a> sounds ideal for Allwinner A527 SoC</p>
+<p><em>(Instead of the restrictive Flat Build)</em></p>
 </li>
 <li>
-<p>TODO iMX9</p>
+<p><strong>Avaota-A1</strong> could be the first Arm64 Port of NuttX Kernel Build</p>
+<p><a href="https://github.com/apache/nuttx/pull/15556"><em>(NXP i.MX93 might be another)</em></a></p>
 </li>
 <li>
-<p><strong>SDWire MicroSD Multiplexer</strong>: Avaota SBC was previously the <strong>Test Server</strong>, now it becomes the <strong>Test Device</strong>.</p>
-<p>Which makes NuttX Porting a lot quicker!</p>
+<p><strong>SDWire MicroSD Multiplexer</strong>: Avaota SBC was previously the <strong>Test Server</strong>, now it becomes the <strong>Test Device</strong></p>
+<p><em>(Porting NuttX gets a lot quicker)</em></p>
 </li>
 <li>
 <p><strong>Open-Source RTOS</strong> <em>(NuttX)</em> tested on <strong>Open-Source Hardware</strong> <em>(Avaota-A1)</em> … Perfectly sensible!</p>
