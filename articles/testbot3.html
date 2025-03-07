@@ -360,7 +360,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><em>(Bonus: There’s a tiny RISC-V Core inside)</em></p>
 </li>
 <li>
-<p><a href="TODO"><strong>NuttX Kernel Build</strong></a> sounds ideal for Allwinner A527 SoC</p>
+<p><a href="https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode"><strong>NuttX Kernel Build</strong></a> sounds ideal for Allwinner A527 SoC</p>
 <p><em>(Instead of the restrictive Flat Build)</em></p>
 </li>
 <li>
@@ -375,10 +375,10 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><strong>Open-Source RTOS</strong> <em>(NuttX)</em> tested on <strong>Open-Source Hardware</strong> <em>(Avaota-A1)</em> … Perfectly sensible!</p>
 </li>
 </ul>
-<p>I’ll take the NuttX Kernel Build for <a href="TODO"><strong>QEMU Arm64</strong></a>, boot it on Avaota-A1 SBC. And watch what happens :-)</p>
+<p>I’ll take the NuttX Kernel Build for <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig"><strong>QEMU Arm64</strong></a>, boot it on Avaota-A1 SBC. And watch what happens :-)</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
-<p>Yeah for RISC-V Ports we boot <a href="TODO"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic above)</p>
+<p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic above)</p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier!</p>
 <p>TODO: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp">Inside SDWire</a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
