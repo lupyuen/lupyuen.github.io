@@ -394,11 +394,11 @@ There's another intriguing solution...
 
 _How about booting and testing NuttX on Avaota-A1 SBC?_
 
-Exactly! Here's why Avaota-A1 should run NuttX...
+Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
 - __Avaota-A1__ has the latest Octa-Core Arm64 SoC: __Allwinner A527__
 
-  _(Bonus: There's a tiny RISC-V Core inside too)_
+  _(Bonus: There's a tiny RISC-V Core inside)_
 
 - [__NuttX Kernel Build__](TODO) sounds ideal for Allwinner A527 SoC
 
