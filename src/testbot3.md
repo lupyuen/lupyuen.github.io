@@ -414,6 +414,8 @@ Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
 - __Open-Source RTOS__ _(NuttX)_ tested on __Open-Source Hardware__ _(Avaota-A1)_ ... Perfectly sensible!
 
+I'll take the NuttX Kernel Build for [__QEMU Arm64__](TODO), boot it on Avaota-A1 SBC. And watch what happens :-)
+
 TODO: [Avaota A1: Default U-Boot in eMMC. No network :-(](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5)
 
 TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
