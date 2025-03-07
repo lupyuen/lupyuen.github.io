@@ -462,7 +462,7 @@ getprime took 148 msec
 
 nsh&gt; ostest
 ostest_main: Exiting with status 0</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/7984c464d5ba938102f8c9ab6d3f1011">(See the <strong>NuttX Log</strong>)</a></p>
 <p><a href="https://youtu.be/Yr7aYNIMUsw">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 <li>
@@ -562,7 +562,7 @@ saveenv</code></pre></div>
 <h1 id="smart-power-plug"><a class="doc-anchor" href="#smart-power-plug">§</a>10 Smart Power Plug</h1>
 <p><em>Flipping StarPro64 on and off. Again and again. Must be an easier way?</em></p>
 <p>Try a <strong>Smart Power Plug</strong> (pic above), integrated with our Build Script.</p>
-<p>In our <a href="https://youtu.be/Yr7aYNIMUsw"><strong>Demo Video</strong></a>: Skip to <a href="https://youtu.be/Yr7aYNIMUsw?t=35"><strong>00:35</strong></a> and watch our <a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222"><strong>Build Script</strong></a> auto-power up StarPro64…</p>
+<p>In our <a href="https://youtu.be/Yr7aYNIMUsw"><strong>Demo Video</strong></a>: Skip to <a href="https://youtu.be/Yr7aYNIMUsw?t=35"><strong>00:35</strong></a> and watch our <a href="https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98#file-build-nuttx-starpro64-log-L1211-L1222"><strong>Build Script</strong></a> auto-power up StarPro64…</p>
 <ol>
 <li>
 <p>Our Script will build the <strong>NuttX Image</strong> and copy to TFTP Server</p>
@@ -615,7 +615,7 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98">(See the <strong>Build Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/starpro64-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
 <p>This script assumes that we have…</p>
 <ul>
@@ -842,7 +842,7 @@ CONFIG_SMP_NCPUS=4</code></pre></div>
 <p><em>Earlier we booted Image-starpro64 over TFTP. How to get the file?</em></p>
 <p>Download the file <strong><code>Image</code></strong> from below and rename it <strong><code>Image-starpro64</code></strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1"><strong>NuttX Build for StarPro64</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-2"><strong>NuttX Build for StarPro64</strong></a></li>
 </ul>
 <p>If we prefer to build NuttX ourselves…</p>
 <ol>
@@ -886,8 +886,8 @@ ssh tftpserver ls -l /tftpboot
 ## In U-Boot: Boot NuttX over TFTP
 ## setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-starpro64 ; tftpboot ${fdt_addr_r} ${tftp_server}:eic7700-evb.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac">(See the <strong>Build Script</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f">(See the <strong>Build Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1">(See the <strong>Build Outputs</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-2">(See the <strong>Build Outputs</strong>)</a></p>
 </li>
 <li>
 <p>The steps above assume that we’ve installed our TFTP Server, according to the <a href="https://lupyuen.github.io/articles/tftp#install-tftp-server"><strong>instructions here</strong></a></p>
@@ -929,10 +929,10 @@ ssh tftpserver ls -l /tftpboot
 <p><a href="https://github.com/apache/nuttx/pull/15943"><strong>boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)</strong></a></p>
 </li>
 <li>
-<p><a href="https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15"><strong>NuttX Log for StarPro64</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/7984c464d5ba938102f8c9ab6d3f1011"><strong>NuttX Log for StarPro64</strong></a></p>
 </li>
 <li>
-<p><a href="https://gist.github.com/lupyuen/91d74fc9e6641edf69adc56a9386b0ca"><strong>Build Log for StarPro64</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98"><strong>Build Log for StarPro64</strong></a></p>
 </li>
 </ul>
 <p>Here’s what we changed…</p>
