@@ -473,7 +473,7 @@ _How to boot NuttX over TFTP? (Pic above)_
     ostest_main: Exiting with status 0
     ```
 
-    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/2823528f7b53375f080256bc798b2bf5)
+    [(See the __NuttX Log__)](https://gist.github.com/lupyuen/7984c464d5ba938102f8c9ab6d3f1011)
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/Yr7aYNIMUsw)
 
@@ -587,7 +587,7 @@ _Flipping StarPro64 on and off. Again and again. Must be an easier way?_
 
 Try a __Smart Power Plug__ (pic above), integrated with our Build Script.
 
-In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our [__Build Script__](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f#file-build-nuttx-starpro64-log-L1211-L1222) auto-power up StarPro64...
+In our [__Demo Video__](https://youtu.be/Yr7aYNIMUsw): Skip to [__00:35__](https://youtu.be/Yr7aYNIMUsw?t=35) and watch our [__Build Script__](https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98#file-build-nuttx-starpro64-log-L1211-L1222) auto-power up StarPro64...
 
 1.  Our Script will build the __NuttX Image__ and copy to TFTP Server
 
@@ -640,7 +640,7 @@ curl \
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac#file-run-sh-L118-L163)
 
-[(See the __Build Log__)](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
+[(See the __Build Log__)](https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98)
 
 ![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
 
@@ -910,7 +910,7 @@ _Earlier we booted Image-starpro64 over TFTP. How to get the file?_
 
 Download the file __`Image`__ from below and rename it __`Image-starpro64`__...
 
-- [__NuttX Build for StarPro64__](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1)
+- [__NuttX Build for StarPro64__](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-2)
 
 If we prefer to build NuttX ourselves...
 
@@ -958,9 +958,9 @@ If we prefer to build NuttX ourselves...
 
     [(See the __Build Script__)](https://gist.github.com/lupyuen/16cd1ba3a56de1928cb956503ebdb9ac)
 
-    [(See the __Build Log__)](https://gist.github.com/lupyuen/d13b000da6bb0004121685f80a2a845f)
+    [(See the __Build Log__)](https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98)
 
-    [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-1)
+    [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-nuttx/releases/tag/starpro64-2)
 
 1.  The steps above assume that we've installed our TFTP Server, according to the [__instructions here__](https://lupyuen.github.io/articles/tftp#install-tftp-server)
 
@@ -1004,9 +1004,9 @@ We took the NuttX Port of [__Milk-V Duo S (Oz64 SG2000)__](https://lupyuen.githu
 
 - [__boards/risc-v/eic7700x/starpro64: Add support for PINE64 StarPro64 SBC (ESWIN EIC7700X SoC)__](https://github.com/apache/nuttx/pull/15943)
 
-- [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/9bfa9f0d023b92f5f20a61d07c2c1c15)
+- [__NuttX Log for StarPro64__](https://gist.github.com/lupyuen/7984c464d5ba938102f8c9ab6d3f1011)
 
-- [__Build Log for StarPro64__](https://gist.github.com/lupyuen/91d74fc9e6641edf69adc56a9386b0ca)
+- [__Build Log for StarPro64__](https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98)
 
 Here's what we changed...
 
