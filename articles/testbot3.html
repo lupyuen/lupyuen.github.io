@@ -12,10 +12,10 @@
     content="PR Test Bot for PinePhone (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Earlier we created a PR Test Bot that will Build and Test the Pull Requests for Apache NuttX RTOS. Today we extend our Test Bot to Build and Test the Pull Requests for PINE64 PinePhone. Yep on the Real Arm64 PinePhone Hardware!"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Earlier we created a PR Test Bot that will Build and Test the Pull Requests for Apache NuttX RTOS. Today we extend our Test Bot to Build and Test the Pull Requests for PINE64 PinePhone. Yep on the Real Arm64 PinePhone Hardware!">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/testbot3-title.jpg">
 <meta property="og:type" 
@@ -73,7 +73,7 @@
 <li><a href="#test-sdwire-with-pinephone" title="Test SDWire with PinePhone">6 Test SDWire with PinePhone</a><ul></ul></li>
 <li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
 <li><a href="#port-nuttx-to-allwinner-a527-soc" title="Port NuttX to Allwinner A527 SoC">8 Port NuttX to Allwinner A527 SoC</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Mar 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="https://lupyuen.github.io/articles/testbot"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="https://lupyuen.github.io/articles/testbot2"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC
@@ -180,8 +180,8 @@ screen /dev/ttyUSB0 115200</code></pre></div>
 <p>It’s <a href="https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/"><strong>Open Source Hardware</strong></a>, available from Multiple Makers. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
 <p><img src="https://lupyuen.org/images/testbot3-mux2.jpg" alt="SDWire connected to Avaota-A1 SBC" /></p>
 <h1 id="connect-sdwire-to-sbc"><a class="doc-anchor" href="#connect-sdwire-to-sbc">§</a>3 Connect SDWire to SBC</h1>
-<p>With a <strong>Micro-USB Data Cable</strong>: Connect <strong>SDWire MicroSD Multiplexer</strong> to our SBC (pic above). Check that it’s a USB Data Cable, <strong>Not Power Cable</strong>. And Mini-USB won’t work either.</p>
-<p>On our SBC, run <strong><code>dmesg</code></strong> to watch the Magic of SDWire…</p>
+<p>With a <strong>Micro-USB Data Cable</strong>: Connect <strong>SDWire MicroSD Multiplexer</strong> to our SBC (pic above). Check that it’s a USB Data Cable, <strong>Not Power Cable</strong>. Mini-USB won’t work either.</p>
+<p>On our SBC, run “<strong><code>sudo</code> <code>dmesg</code></strong>” to watch the Magic of SDWire…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Show the Linux Kernel Log
 $ sudo dmesg
@@ -262,17 +262,17 @@ $ sudo sd-mux-ctrl \
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
 <p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 <p><em>What’s inside sd-mux-ctrl?</em></p>
-<p><strong>sd-mux-ctrl</strong> calls the <strong>FTDI Library</strong> to flip the multiplexer. Single, elegant and very clever: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556">sd-mux/main.cpp</a></p>
+<p><strong>sd-mux-ctrl</strong> calls the <strong>FTDI Library</strong> to flip the multiplexer. Simple, elegant and very clever: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556">sd-mux/main.cpp</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When we select a Mux Target: Test Server or Test Device...
 int selectTarget(Target target, CCOptionValue options[]) { ...
 
   // Compute the Pin State based on Mux Target
-  pinState = 0x00;
-  pinState |= 0xF0; // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
-  pinState |=       // Lower half of the byte sets state of output pins.
-    (target == T_DUT)
-    ? 0x00
-    : 0x01;
+  pinState =  0x00;
+  pinState |= 0xF0;   // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
+  pinState |=         // Lower half of the byte sets state of output pins.
+    (target == T_DUT) // Is Mux Target = Test Device?
+    ? 0x00  // For Test Device: Bit 0 becomes 0
+    : 0x01; // For Test Server: Bit 0 becomes 1
 
   // Call FTDI Library to apply the Pin State
   ftdi_set_bitmode(ftdi, pinState, BITMODE_CBUS);</code></pre></div><h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
