@@ -272,7 +272,7 @@ __sd-mux-ctrl__ calls the __FTDI Library__ to flip the multiplexer. Simple, eleg
 int selectTarget(Target target, CCOptionValue options[]) { ...
 
   // Compute the Pin State based on Mux Target
-  pinState = 0xF0;   // Upper half of byte: Sets all Pins to Output (SDWire has only one bit - 0)
+  pinState = 0xF0;    // Upper half of byte: Sets all Pins to Output (SDWire has only one bit - 0)
   pinState |=         // Lower half of byte: Sets state of Output Pins
     (target == T_DUT) // Is Mux Target = Test Device?
     ? 0x00  // For Test Device: Bit 0 becomes 0
@@ -410,10 +410,12 @@ umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
 ```
 
-Configure __visudo__ so that our script will run as [__Sudo Without password__](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)...
+Configure __visudo__ so that our script will run as [__Sudo Without Password__](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)...
 
 ```bash
+## Start the Sudoers Editor
 sudo visudo
+
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
 ```
@@ -424,8 +426,10 @@ Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh
+ssh thinkcentre \
+  ls -l /tmp/Image
+ssh thinkcentre \
+  sudo /home/user/copy-image.sh
 ```
 
 We have a problem with the battery...
@@ -478,7 +482,7 @@ Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
 We'll take the NuttX Kernel Build for [__QEMU Arm64__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig), boot it on Avaota-A1 SBC. We're making terrific progress with [__NuttX on Avaota SBC__](https://github.com/lupyuen/nuttx-avaota-a1)...
 
-> ![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
+![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
 
 _Isn't it faster to port NuttX with U-Boot TFTP?_
 
@@ -496,7 +500,7 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43303287)
 
 - [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
 
@@ -513,3 +517,5 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/testbot3.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot3.md)
+
+![Porting NuttX to Avaota-A1 SBC](https://lupyuen.org/images/avaota-title.jpg)

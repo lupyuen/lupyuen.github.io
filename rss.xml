@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PR Test Bot for PinePhone (Apache NuttX RTOS)</title>
+            <link>https://lupyuen.github.io/articles/testbot3</link>
+            <description><![CDATA[Earlier we created a PR Test Bot that will Build and Test the Pull Requests for Apache NuttX RTOS. Today we extend our Test Bot to Build and Test the Pull Requests for PINE64 PinePhone. Yep on the Real Arm64 PinePhone Hardware!]]></description>
+            <guid>https://lupyuen.github.io/articles/testbot3</guid>
+            <pubDate>Sun, 09 Mar 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?</title>
             <link>https://lupyuen.github.io/articles/starpro64</link>
             <description><![CDATA[StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64. Let's chat about ESWIN EIC7700X, the RISC-V SoC inside, how its Neural Processing Unit supports Large Language Models. And how we port Apache NuttX RTOS to StarPro64.]]></description>
