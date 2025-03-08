@@ -265,7 +265,7 @@ sudo sd-mux-ctrl \
 int selectTarget(Target target, CCOptionValue options[]) { ...
 
   // Compute the Pin State based on Mux Target
-  pinState = 0xF0;   // Upper half of byte: Sets all Pins to Output (SDWire has only one bit - 0)
+  pinState = 0xF0;    // Upper half of byte: Sets all Pins to Output (SDWire has only one bit - 0)
   pinState |=         // Lower half of byte: Sets state of Output Pins
     (target == T_DUT) // Is Mux Target = Test Device?
     ? 0x00  // For Test Device: Bit 0 becomes 0
@@ -369,16 +369,20 @@ ls -l /tmp/sda1
 ## Unmount MicroSD and flip it to the Test Device (PinePhone)
 umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>Sudo Without password</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo visudo
+<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>Sudo Without Password</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
+sudo visudo
+
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
 <p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
+ssh thinkcentre \
+  ls -l /tmp/Image
+ssh thinkcentre \
+  sudo /home/user/copy-image.sh</code></pre></div>
 <p>We have a problem with the battery…</p>
 <p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="Complications with PinePhone Battery" /></p>
 <h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
@@ -416,9 +420,7 @@ ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
 </li>
 </ul>
 <p>We’ll take the NuttX Kernel Build for <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig"><strong>QEMU Arm64</strong></a>, boot it on Avaota-A1 SBC. We’re making terrific progress with <a href="https://github.com/lupyuen/nuttx-avaota-a1"><strong>NuttX on Avaota SBC</strong></a>…</p>
-<blockquote>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
-</blockquote>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
@@ -431,7 +433,7 @@ ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=43303287"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
@@ -454,6 +456,7 @@ ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot3.md"><strong>lupyuen.org/src/testbot3.md</strong></a></p>
+<p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Porting NuttX to Avaota-A1 SBC" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
