@@ -262,6 +262,26 @@ __Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everythi
 
 ![Flip the MicroSD to Test Server](https://lupyuen.org/images/testbot3-test1.png)
 
+_What's inside sd-mux-ctrl?_
+
+__sd-mux-ctrl__ calls the __FTDI Library__ to flip the multiplexer. Single, elegant and very clever: [sd-mux/main.cpp](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556)
+
+```c
+// When we select a Mux Target: Test Server or Test Device...
+int selectTarget(Target target, CCOptionValue options[]) { ...
+
+  // Compute the Pin State based on Mux Target
+  pinState = 0x00;
+  pinState |= 0xF0; // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
+  pinState |=       // Lower half of the byte sets state of output pins.
+    (target == T_DUT)
+    ? 0x00
+    : 0x01;
+
+  // Call FTDI Library to apply the Pin State
+  ftdi_set_bitmode(ftdi, pinState, BITMODE_CBUS);
+```
+
 # Mount the MicroSD
 
 _How to access the MicroSD at /dev/sda1?_
@@ -429,6 +449,8 @@ Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swappin
 # What's Next
 
 TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
+
+Next Article: We chat about porting [__NuttX to Avaota-A1 SBC__](TODO). Stay tuned!
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
