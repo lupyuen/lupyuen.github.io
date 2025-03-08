@@ -390,7 +390,7 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
 
 _Whoa that's a lot of sudo passwords. Any simpler way?_
 
-Wrap all the __sudo Commands__ into a script: [copy-image.sh](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)
+Wrap all the __Sudo Commands__ into a script: [copy-image.sh](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)
 
 ```bash
 set -e  ## Exit when any command fails
@@ -410,7 +410,7 @@ umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
 ```
 
-Configure __visudo__ so that our script will run as [__sudo without password__](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)...
+Configure __visudo__ so that our script will run as [__Sudo Without password__](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)...
 
 ```bash
 sudo visudo
@@ -418,7 +418,7 @@ sudo visudo
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
 ```
 
-Then we can trigger our script remotely via SSH, __without sudo Password__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120)
+Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120)
 
 ```bash
 ## Copy NuttX Image to MicroSD
