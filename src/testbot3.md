@@ -51,7 +51,7 @@ To Test NuttX on __Arm64 Devices__ _(PinePhone)_, we need...
 
 Our Test Bot got no fingers and it can't __Physically Swap__ a MicroSD between Test Server and Test Device.
 
-That's I bought a MicroSD Multiplexer to __Electically Swap__ the MicroSD between the two machines...
+That's I bought a MicroSD Multiplexer to __Electrically Swap__ the MicroSD between the two machines...
 
 ![MicroSD Multiplexer for Test Bot](https://lupyuen.org/images/testbot2-flow.jpg)
 
@@ -59,7 +59,7 @@ _How does it work?_
 
 According to [__SDWire Schematic__](https://docs.dasharo.com/transparent-validation/sd-wire/specification/#pcb-elements-and-scheme), the gadget has a [__TS3A27518EPWR__](https://www.ti.com/product/TS3A27518E) Multiplexer inside. _(Works like FTDI, but 6 Data Channels)_
 
-Our Test Bot will run a Command-Line Tool (provided by SDWire) to "swap" the MicroSD between our Test Server and Test Device.
+Our Test Bot will run a Command-Line Tool _(provided by SDWire)_ to "Swap" the MicroSD between our Test Server and Test Device.
 
 __Micro-USB Port__ of SDWire exposes two functions...
 
@@ -75,7 +75,7 @@ Let's prepare our Test Server: Avaota-A1 SBC...
 
 _What's this Single-Board Computer? (Pic above)_ 
 
-To assemble our Test Bot, I bought a [__Yuzuki Avaota-A1__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) Single-Board Computer.  Download the [__Latest AvaotaOS Release__](https://github.com/AvaotaSBC/AvaotaOS/releases) _(Ubuntu Noble GNOME)_ and uncompress it...
+To assemble our Test Bot, I bought a [__Yuzuki Avaota-A1__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) Single-Board Computer.  We download the [__Latest AvaotaOS Release__](https://github.com/AvaotaSBC/AvaotaOS/releases) _(Ubuntu Noble GNOME)_ and uncompress it...
 
 ```bash
 wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
@@ -102,14 +102,14 @@ While Booting: Our SBC shows a helpful message on the __Onboard LCD__, it should
 
 _Hmmm our SBC is forever showing "Booting Linux"?_
 
-Make sure we're booting Avaota OS, not [__Armbian Ubuntu__](https://www.armbian.com/avaota-a1/). Armbian will fail with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
+Make sure we're booting AvaotaOS, not [__Armbian Ubuntu__](https://www.armbian.com/avaota-a1/). Armbian will fail with a [__Page Table Panic__](https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4)...
 
 ```text
 Kernel panic - not syncing:
 Failed to allocate page table page
 ```
 
-Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC eMMC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)!
+Also: Always boot Avaota OS from MicroSD. Fresh from the Factory, our SBC eMMC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)...
 
 ```text
 Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
@@ -157,7 +157,7 @@ On our SBC, run __`dmesg`__ to watch the Magic of SDWire...
 
 ```bash
 ## Show the Linux Kernel Log
-$ dmesg
+$ sudo dmesg
 
 ## Linux discovers our USB Device
 usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
@@ -191,6 +191,8 @@ sda: sda1
 
 </span>
 
+Next we test the SDWire Tools...
+
 ![SDWire: Blue for Test Server, Green for Test Device](https://lupyuen.org/images/testbot3-mux3.jpg)
 
 # Compile the SDWire Tools
@@ -217,7 +219,7 @@ When we connect SDWire to our SBC, the __Blue LED__ turns on. (Pic left above)
 
 By Default, SDWire runs in __Test Server Mode__: MicroSD is connected to our SBC. Let's flip this.
 
-Run __`dmesg` `-w`__ in a new window to observe the System Messages. Do this to enumerate the __SDWire Devices__...
+Run "__`sudo` `dmesg` `-w`__" in a new window to observe the System Messages. Do this to enumerate the __SDWire Devices__...
 
 ```bash
 $ sudo sd-mux-ctrl --list
@@ -358,7 +360,7 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
 
     ```bash
     ## Copy the NuttX Image to MicroSD
-    cp Image.gz /tmp/sda1
+    sudo cp Image.gz /tmp/sda1
     ```
 
 1.  Unmount the MicroSD, and flip the __MicroSD to PinePhone__ _(Test Device)_
@@ -388,6 +390,48 @@ Let's assume our [__Build Server__](https://lupyuen.github.io/articles/testbot#c
 
     [(Watch the __Demo on YouTube__)](https://youtu.be/lYiIEip0zII)
 
+_Whoa that's a lot of sudo passwords. Any simpler way?_
+
+Wrap all the __sudo Commands__ into a script: [copy-image.sh](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)
+
+```bash
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+whoami  ## I am root!
+
+## Copy /tmp/Image to MicroSD
+sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+sleep 5
+mkdir -p /tmp/sda1
+mount /dev/sda1 /tmp/sda1
+cp /tmp/Image /tmp/sda1/
+ls -l /tmp/sda1
+
+## Unmount MicroSD and flip it to the Test Device (PinePhone)
+umount /tmp/sda1
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+```
+
+Configure __visudo__ so that our script will run as [__sudo without password__](https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress)...
+
+```bash
+sudo visudo
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
+```
+
+Then we can trigger our script remotely via SSH, __without sudo Password__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120)
+
+```bash
+## Copy NuttX Image to MicroSD
+## No password needed for sudo yay!
+scp nuttx.bin thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+```
+
+We have a problem with the battery...
+
 ![Complications with PinePhone Battery](https://lupyuen.org/images/lvgl2-title.jpg)
 
 # Complications with PinePhone Battery
@@ -416,7 +460,7 @@ _How about booting and testing NuttX on Avaota-A1 SBC?_
 
 Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
-- __Avaota-A1__ has the latest Octa-Core Arm64 SoC: __Allwinner A527__
+- __Avaota-A1__ has the latest Octa-Core Arm64 SoC: [__Allwinner A527__](https://linux-sunxi.org/A523)
 
   _(Bonus: There's a tiny RISC-V Core inside)_
 
@@ -428,7 +472,7 @@ Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
   [_(NXP i.MX93 might be another)_](https://github.com/apache/nuttx/pull/15556)
 
-- __SDWire MicroSD Multiplexer__: Avaota SBC was previously the __Test Server__, now it becomes the __Test Device__
+- __SDWire MicroSD Multiplexer__? Avaota SBC was previously the __Test Server__, now it becomes the __Test Device__
 
   _(Porting NuttX gets a lot quicker)_
 
