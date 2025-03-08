@@ -67,7 +67,7 @@ __Micro-USB Port__ of SDWire exposes two functions...
 
 1.  __SDWire Multiplexer:__ For swapping the MicroSD between devices
 
-Let's prepare our Test Server: Avaota-A1 SBC...
+First we prepare our Test Server: Avaota-A1 SBC...
 
 ![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
@@ -232,7 +232,7 @@ Now we Flip the MicroSD from Test Server to __Test Device__ _(DUT: "Device Under
 ```bash
 ## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
-$ sudo sd-mux-ctrl \
+sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --dut
 
@@ -247,7 +247,7 @@ Finally do this...
 ```bash
 ## Flip the MicroSD to Test Server
 ## Copy the Serial ID from above
-$ sudo sd-mux-ctrl \
+sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --ts
 
@@ -258,6 +258,8 @@ $ sudo sd-mux-ctrl \
 ```
 
 __Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everything works hunky dory yay!
+
+[(We might simplify __`sudo`__, see below)](https://lupyuen.github.io/articles/testbot3#test-sdwire-with-pinephone)
 
 ![Flip the MicroSD to Test Server](https://lupyuen.org/images/testbot3-test1.png)
 
