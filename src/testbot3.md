@@ -448,8 +448,6 @@ Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swappin
 
 # What's Next
 
-TODO: [Inside SDWire](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp)
-
 Next Article: We chat about porting [__NuttX to Avaota-A1 SBC__](TODO). Stay tuned!
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
