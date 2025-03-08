@@ -448,7 +448,7 @@ _Why not do it on a Battery-Less Device?_
 
 I ordered another _(battery-less)_ [__Arm64 Single-Board Computer__](https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html). Hope it works better with Test Bot than PinePhone!
 
-There's an intriguing solution to the conundrum...
+There's an intriguing solution for the conundrum...
 
 ![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
