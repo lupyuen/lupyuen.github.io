@@ -1,6 +1,6 @@
 # PR Test Bot for PinePhone (Apache NuttX RTOS)
 
-📝 _23 Mar 2025_
+📝 _9 Mar 2025_
 
 ![SDWire MicroSD Multiplexer with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-title.jpg)
 
@@ -149,9 +149,9 @@ It's [__Open Source Hardware__](https://liliputing.com/yuzuki-avaota-a1-is-a-55-
 
 # Connect SDWire to SBC
 
-With a __Micro-USB Data Cable__: Connect __SDWire MicroSD Multiplexer__ to our SBC (pic above). Check that it's a USB Data Cable, __Not Power Cable__. And Mini-USB won't work either.
+With a __Micro-USB Data Cable__: Connect __SDWire MicroSD Multiplexer__ to our SBC (pic above). Check that it's a USB Data Cable, __Not Power Cable__. Mini-USB won't work either.
 
-On our SBC, run __`dmesg`__ to watch the Magic of SDWire...
+On our SBC, run "__`sudo` `dmesg`__" to watch the Magic of SDWire...
 
 <span style="font-size:80%">
 
@@ -266,19 +266,19 @@ __Blue LED__ turns on (pic left above), _/dev/sda1_ is back on our SBC. Everythi
 
 _What's inside sd-mux-ctrl?_
 
-__sd-mux-ctrl__ calls the __FTDI Library__ to flip the multiplexer. Single, elegant and very clever: [sd-mux/main.cpp](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556)
+__sd-mux-ctrl__ calls the __FTDI Library__ to flip the multiplexer. Simple, elegant and very clever: [sd-mux/main.cpp](https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556)
 
 ```c
 // When we select a Mux Target: Test Server or Test Device...
 int selectTarget(Target target, CCOptionValue options[]) { ...
 
   // Compute the Pin State based on Mux Target
-  pinState = 0x00;
-  pinState |= 0xF0; // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
-  pinState |=       // Lower half of the byte sets state of output pins.
-    (target == T_DUT)
-    ? 0x00
-    : 0x01;
+  pinState =  0x00;
+  pinState |= 0xF0;   // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
+  pinState |=         // Lower half of the byte sets state of output pins.
+    (target == T_DUT) // Is Mux Target = Test Device?
+    ? 0x00  // For Test Device: Bit 0 becomes 0
+    : 0x01; // For Test Server: Bit 0 becomes 1
 
   // Call FTDI Library to apply the Pin State
   ftdi_set_bitmode(ftdi, pinState, BITMODE_CBUS);
