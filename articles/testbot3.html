@@ -133,7 +133,7 @@
 <p><strong>SDWire Multiplexer:</strong> For swapping the MicroSD between devices</p>
 </li>
 </ol>
-<p>Let’s prepare our Test Server: Avaota-A1 SBC…</p>
+<p>First we prepare our Test Server: Avaota-A1 SBC…</p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
 <p><em>What’s this Single-Board Computer? (Pic above)</em></p>
@@ -238,7 +238,7 @@ Serial: sd-wire_02-09, Description: sd-wire</code></pre></div>
 <p>Now we Flip the MicroSD from Test Server to <strong>Test Device</strong> <em>(DUT: “Device Under Test”)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Device
 ## Copy the Serial ID from above
-$ sudo sd-mux-ctrl \
+sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --dut
 
@@ -248,7 +248,7 @@ $ sudo sd-mux-ctrl \
 <p>Finally do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
 ## Copy the Serial ID from above
-$ sudo sd-mux-ctrl \
+sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --ts
 
@@ -257,6 +257,7 @@ $ sudo sd-mux-ctrl \
 ## sda: detected capacity change from 0 to 30318592
 ## sda: sda1</code></pre></div>
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
+<p><a href="https://lupyuen.github.io/articles/testbot3#test-sdwire-with-pinephone">(We might simplify <strong><code>sudo</code></strong>, see below)</a></p>
 <p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 <p><em>What’s inside sd-mux-ctrl?</em></p>
 <p><strong>sd-mux-ctrl</strong> calls the <strong>FTDI Library</strong> to flip the multiplexer. Simple, elegant and very clever: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556">sd-mux/main.cpp</a></p>
