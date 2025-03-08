@@ -119,11 +119,11 @@
 </li>
 </ul>
 <p>Our Test Bot got no fingers and it can’t <strong>Physically Swap</strong> a MicroSD between Test Server and Test Device.</p>
-<p>That’s I bought a MicroSD Multiplexer to <strong>Electically Swap</strong> the MicroSD between the two machines…</p>
+<p>That’s I bought a MicroSD Multiplexer to <strong>Electrically Swap</strong> the MicroSD between the two machines…</p>
 <p><img src="https://lupyuen.org/images/testbot2-flow.jpg" alt="MicroSD Multiplexer for Test Bot" /></p>
 <p><em>How does it work?</em></p>
 <p>According to <a href="https://docs.dasharo.com/transparent-validation/sd-wire/specification/#pcb-elements-and-scheme"><strong>SDWire Schematic</strong></a>, the gadget has a <a href="https://www.ti.com/product/TS3A27518E"><strong>TS3A27518EPWR</strong></a> Multiplexer inside. <em>(Works like FTDI, but 6 Data Channels)</em></p>
-<p>Our Test Bot will run a Command-Line Tool (provided by SDWire) to “swap” the MicroSD between our Test Server and Test Device.</p>
+<p>Our Test Bot will run a Command-Line Tool <em>(provided by SDWire)</em> to “Swap” the MicroSD between our Test Server and Test Device.</p>
 <p><strong>Micro-USB Port</strong> of SDWire exposes two functions…</p>
 <ol>
 <li>
@@ -137,7 +137,7 @@
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
 <p><em>What’s this Single-Board Computer? (Pic above)</em></p>
-<p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.  Download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
+<p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.  We download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
 xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div>
 <p>Write the <strong><code>.img</code></strong> file to a MicroSD with <a href="https://etcher.balena.io/"><strong>Balena Etcher</strong></a>. Boot our SBC with the MicroSD and <strong>Login via SSH</strong>…</p>
@@ -152,10 +152,10 @@ Password: avaota</code></pre></div>
 <p>While Booting: Our SBC shows a helpful message on the <strong>Onboard LCD</strong>, it should disappear in a while…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
 <p><em>Hmmm our SBC is forever showing “Booting Linux”?</em></p>
-<p>Make sure we’re booting Avaota OS, not <a href="https://www.armbian.com/avaota-a1/"><strong>Armbian Ubuntu</strong></a>. Armbian will fail with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
+<p>Make sure we’re booting AvaotaOS, not <a href="https://www.armbian.com/avaota-a1/"><strong>Armbian Ubuntu</strong></a>. Armbian will fail with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Kernel panic - not syncing:
 Failed to allocate page table page</code></pre></div>
-<p>Also: Always boot Avaota OS from MicroSD! Fresh from the Factory, our SBC eMMC boots to <a href="https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba"><strong>Android by Default</strong></a>!</p>
+<p>Also: Always boot Avaota OS from MicroSD. Fresh from the Factory, our SBC eMMC boots to <a href="https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba"><strong>Android by Default</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
 Android (8490178, based on r450784d)
 clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6)</code></pre></div>
@@ -184,7 +184,7 @@ screen /dev/ttyUSB0 115200</code></pre></div>
 <p>On our SBC, run <strong><code>dmesg</code></strong> to watch the Magic of SDWire…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## Show the Linux Kernel Log
-$ dmesg
+$ sudo dmesg
 
 ## Linux discovers our USB Device
 usb 1-1: New USB device found, idVendor=0424, idProduct=2640, bcdDevice= 0.00
@@ -214,6 +214,7 @@ sd 0:0:0:0: [sda] No Caching mode page found
 sd 0:0:0:0: [sda] Assuming drive cache: write through
 sd 0:0:0:0: [sda] Attached SCSI removable disk
 sda: sda1</code></pre></div></span>
+<p>Next we test the SDWire Tools…</p>
 <p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="SDWire: Blue for Test Server, Green for Test Device" /></p>
 <h1 id="compile-the-sdwire-tools"><a class="doc-anchor" href="#compile-the-sdwire-tools">§</a>4 Compile the SDWire Tools</h1>
 <p><em>How to control SDWire? And flip the MicroSD from Test Server to Test Device?</em></p>
@@ -231,7 +232,7 @@ make
 sudo make install</code></pre></div>
 <p>When we connect SDWire to our SBC, the <strong>Blue LED</strong> turns on. (Pic left above)</p>
 <p>By Default, SDWire runs in <strong>Test Server Mode</strong>: MicroSD is connected to our SBC. Let’s flip this.</p>
-<p>Run <strong><code>dmesg</code> <code>-w</code></strong> in a new window to observe the System Messages. Do this to enumerate the <strong>SDWire Devices</strong>…</p>
+<p>Run “<strong><code>sudo</code> <code>dmesg</code> <code>-w</code></strong>” in a new window to observe the System Messages. Do this to enumerate the <strong>SDWire Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo sd-mux-ctrl --list
 Number of FTDI devices found: 1
 Dev: 0, Manufacturer: SRPOL
@@ -332,7 +333,7 @@ sudo mount /dev/sda1 /tmp/sda1</code></pre></div>
 <li>
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the NuttX Image to MicroSD
-cp Image.gz /tmp/sda1</code></pre></div></li>
+sudo cp Image.gz /tmp/sda1</code></pre></div></li>
 <li>
 <p>Unmount the MicroSD, and flip the <strong>MicroSD to PinePhone</strong> <em>(Test Device)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Unmount the MicroSD
@@ -354,6 +355,34 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><a href="https://youtu.be/lYiIEip0zII">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 </li>
 </ol>
+<p><em>Whoa that’s a lot of sudo passwords. Any simpler way?</em></p>
+<p>Wrap all the <strong>sudo Commands</strong> into a script: <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress">copy-image.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>set -e  ## Exit when any command fails
+set -x  ## Echo commands
+whoami  ## I am root!
+
+## Copy /tmp/Image to MicroSD
+sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+sleep 5
+mkdir -p /tmp/sda1
+mount /dev/sda1 /tmp/sda1
+cp /tmp/Image /tmp/sda1/
+ls -l /tmp/sda1
+
+## Unmount MicroSD and flip it to the Test Device (PinePhone)
+umount /tmp/sda1
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
+<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>sudo without password</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo visudo
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
+<p>Then we can trigger our script remotely via SSH, <strong>without sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
+## No password needed for sudo yay!
+scp nuttx.bin thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
+<p>We have a problem with the battery…</p>
 <p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="Complications with PinePhone Battery" /></p>
 <h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
 <p><em>Huh! PinePhone will power up with a Smart Power Plug?</em></p>
@@ -370,7 +399,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
 <ul>
 <li>
-<p><strong>Avaota-A1</strong> has the latest Octa-Core Arm64 SoC: <strong>Allwinner A527</strong></p>
+<p><strong>Avaota-A1</strong> has the latest Octa-Core Arm64 SoC: <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527</strong></a></p>
 <p><em>(Bonus: There’s a tiny RISC-V Core inside)</em></p>
 </li>
 <li>
@@ -382,7 +411,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/15556"><em>(NXP i.MX93 might be another)</em></a></p>
 </li>
 <li>
-<p><strong>SDWire MicroSD Multiplexer</strong>: Avaota SBC was previously the <strong>Test Server</strong>, now it becomes the <strong>Test Device</strong></p>
+<p><strong>SDWire MicroSD Multiplexer</strong>? Avaota SBC was previously the <strong>Test Server</strong>, now it becomes the <strong>Test Device</strong></p>
 <p><em>(Porting NuttX gets a lot quicker)</em></p>
 </li>
 <li>
