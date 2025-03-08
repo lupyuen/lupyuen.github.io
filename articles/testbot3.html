@@ -353,7 +353,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 </li>
 </ol>
 <p><em>Whoa that’s a lot of sudo passwords. Any simpler way?</em></p>
-<p>Wrap all the <strong>sudo Commands</strong> into a script: <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress">copy-image.sh</a></p>
+<p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress">copy-image.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>set -e  ## Exit when any command fails
 set -x  ## Echo commands
 whoami  ## I am root!
@@ -369,11 +369,11 @@ ls -l /tmp/sda1
 ## Unmount MicroSD and flip it to the Test Device (PinePhone)
 umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>sudo without password</strong></a>…</p>
+<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>Sudo Without password</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo visudo
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
-<p>Then we can trigger our script remotely via SSH, <strong>without sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
+<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp nuttx.bin thinkcentre:/tmp/Image
