@@ -59,7 +59,7 @@ _How does it work?_
 
 According to [__SDWire Schematic__](https://docs.dasharo.com/transparent-validation/sd-wire/specification/#pcb-elements-and-scheme), the gadget has a [__TS3A27518EPWR__](https://www.ti.com/product/TS3A27518E) Multiplexer inside. _(Works like FTDI, but 6 Data Channels)_
 
-Our Test Bot will run a Command-Line Tool _(provided by SDWire)_ to "Swap" the MicroSD between our Test Server and Test Device.
+Our Test Bot will run a __Command-Line Tool__ _(provided by SDWire)_ to "Swap" the MicroSD between our Test Server and Test Device.
 
 __Micro-USB Port__ of SDWire exposes two functions...
 
@@ -86,11 +86,8 @@ Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](https://etcher.b
 
 ```bash
 ## User `avaota`, Password `avaota`
-$ ssh avaota@avaota-a1
-Password: avaota
-
 ## Root Password is also `avaota`
-$ sudo 
+$ ssh avaota@avaota-a1
 Password: avaota
 ```
 
@@ -109,7 +106,7 @@ Kernel panic - not syncing:
 Failed to allocate page table page
 ```
 
-Also: Always boot Avaota OS from MicroSD. Fresh from the Factory, our SBC eMMC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)...
+Also: Always boot AvaotaOS from MicroSD. Fresh from the Factory, our SBC eMMC boots to [__Android by Default__](https://gist.github.com/lupyuen/f0195a2ccdd40906b80e2a360b1782ba)...
 
 ```text
 Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
@@ -119,7 +116,7 @@ clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c
 
 ![Avaota-A1 SBC connected to USB UART](https://lupyuen.org/images/testbot3-uart.jpg)
 
-_How to troubleshoot? And see the Boot Logs above?_
+_How to troubleshoot? And see the Boot Logs?_
 
 Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to these pins (pic above)
 
@@ -273,9 +270,8 @@ __sd-mux-ctrl__ calls the __FTDI Library__ to flip the multiplexer. Simple, eleg
 int selectTarget(Target target, CCOptionValue options[]) { ...
 
   // Compute the Pin State based on Mux Target
-  pinState =  0x00;
-  pinState |= 0xF0;   // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
-  pinState |=         // Lower half of the byte sets state of output pins.
+  pinState = 0xF0;   // Upper half of byte: Sets all Pins to Output (SDWire has only one bit - 0)
+  pinState |=         // Lower half of byte: Sets state of Output Pins
     (target == T_DUT) // Is Mux Target = Test Device?
     ? 0x00  // For Test Device: Bit 0 becomes 0
     : 0x01; // For Test Server: Bit 0 becomes 1
