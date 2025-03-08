@@ -260,7 +260,21 @@ $ sudo sd-mux-ctrl \
 ## sda: sda1</code></pre></div>
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
 <p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
-<h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
+<p><em>What’s inside sd-mux-ctrl?</em></p>
+<p><strong>sd-mux-ctrl</strong> calls the <strong>FTDI Library</strong> to flip the multiplexer. Single, elegant and very clever: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556">sd-mux/main.cpp</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// When we select a Mux Target: Test Server or Test Device...
+int selectTarget(Target target, CCOptionValue options[]) { ...
+
+  // Compute the Pin State based on Mux Target
+  pinState = 0x00;
+  pinState |= 0xF0; // Upper half of the byte sets all pins to output (SDWire has only one bit - 0)
+  pinState |=       // Lower half of the byte sets state of output pins.
+    (target == T_DUT)
+    ? 0x00
+    : 0x01;
+
+  // Call FTDI Library to apply the Pin State
+  ftdi_set_bitmode(ftdi, pinState, BITMODE_CBUS);</code></pre></div><h1 id="mount-the-microsd"><a class="doc-anchor" href="#mount-the-microsd">§</a>5 Mount the MicroSD</h1>
 <p><em>How to access the MicroSD at /dev/sda1?</em></p>
 <p>We mount <em>/dev/sda1</em> like this, to read and write the <strong>MicroSD Files</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Flip the MicroSD to Test Server
@@ -384,7 +398,7 @@ NuttX 12.8.0 3bf704ad13 Dec 31 2024 14:18:14 arm64 pinephone</code></pre></div>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
 <p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
-<p>TODO: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp">Inside SDWire</a></p>
+<p>Next Article: We chat about porting <a href="TODO"><strong>NuttX to Avaota-A1 SBC</strong></a>. Stay tuned!</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
