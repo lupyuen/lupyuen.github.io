@@ -6,6 +6,19 @@
 
 TODO
 
+Why?
+Pr test bot
+New soc
+Kernel build
+How to turn qemu into real hardware 
+Why a mux will complete in 48 hours
+Including sleep
+
+Here's the story 
+
+Build NuttX for 
+Port NuttX to 
+
 # What's Next
 
 TODO
