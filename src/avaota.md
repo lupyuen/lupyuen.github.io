@@ -6,6 +6,10 @@
 
 TODO
 
+_Why are we doing this?_
+
+- Anyone porting NuttX from __QEMU to Real SBC__? This walkthrough shall be mighty helpful!
+
 Why?
 Pr test bot
 New soc
