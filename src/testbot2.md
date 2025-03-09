@@ -344,7 +344,9 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
     But there's hope for Automated Testing! We ordered a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/) that will (electrically) Swap a MicroSD between a Test Controller PC and the Arm64 Test Device.
     
-    We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](https://lupyuen.github.io/articles/what) real soon. (Also: [__MicroSD Extender__](https://pine64.com/product/pinephone-microsd-extender/))
+    We'll test the MicroSD Multiplexer with [__PinePhone NuttX__](https://lupyuen.github.io/articles/what) real soon. Check out the article...
+
+    [__"PR Test Bot for PinePhone (Apache NuttX RTOS)"__](https://lupyuen.org/articles/testbot3.html)
 
 1.  _Testing on Arm32 Hardware should be easier? STM32, nRF52, RP2040?_
 
@@ -358,7 +360,9 @@ OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly
 
 # What's Next
 
-Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: __StarPro64 EIC7700X__. Maybe LLM on NPU on NuttX? Stay tuned!
+Next week we take a break from Continuous Integration. We'll chat about the (literally) Hot New RISC-V SBC: __StarPro64 EIC7700X__...
+
+- [__"StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?"__](https://lupyuen.org/articles/starpro64.html)
 
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
