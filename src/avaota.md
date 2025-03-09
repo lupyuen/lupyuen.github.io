@@ -10,6 +10,8 @@ _Why are we doing this?_
 
 - Anyone porting NuttX from __QEMU to Real SBC__? This walkthrough shall be mighty helpful!
 
+TODO: Before Porting NuttX, we observe the SBC and its Natural Behaviour: How does it boot Linux?
+
 Why?
 Pr test bot
 New soc
