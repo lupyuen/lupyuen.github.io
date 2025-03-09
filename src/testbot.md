@@ -584,6 +584,12 @@ And our Test Bot is complete! Except for these security issues...
 
 # What's Next
 
+More Test Bots! Check the updates...
+
+- [__"QEMU Test Bot for Pull Requests: Beware of Semihosting Breakout (Apache NuttX RTOS)"__](https://lupyuen.org/articles/testbot2.html)
+
+- [__"PR Test Bot for PinePhone (Apache NuttX RTOS)"__](https://lupyuen.org/articles/testbot3.html)
+
 Special Thanks to __Mr Gregory Nutt__ for your guidance and kindness. I'm also grateful to [__My Sponsors__](https://lupyuen.org/articles/sponsor), for supporting my writing. 
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
