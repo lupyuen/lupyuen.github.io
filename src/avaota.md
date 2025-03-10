@@ -192,7 +192,7 @@ Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/com
 
 But let's do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
 
-```text
+```c
 /* Bootloader starts NuttX here */
 __start:
   add x13, x18, #0x16 /* "MZ": Magic Number for Linux Kernel Header */
@@ -256,40 +256,49 @@ Kernel addr: 0x40800000
 123
 ```
 
-Remember the [__Boot Log__](TODO) from earlier? It says that the [__SyterKit Bootloader__](https://github.com/YuzukiHD/SyterKit) starts NuttX at __Address `0x4080_0000`__. We fix it here: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca)
+1.  Remember the [__Boot Log__](TODO) from earlier? It says that the [__SyterKit Bootloader__](https://github.com/YuzukiHD/SyterKit) starts NuttX at __Address `0x4080_0000`__. We fix it here: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca)
 
-```c
-MEMORY {
-  /* Previously: QEMU boots at 0x4028_0000 */
-  dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
+    ```c
+    MEMORY {
+      /* Previously: QEMU boots at 0x4028_0000 */
+      dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
 
-  /* Previously: QEMU Paged Memory is at 0x4028_0000 */
-  pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
-}
-```
+      /* Previously: QEMU Paged Memory is at 0x4028_0000 */
+      pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
+    }
+    ```
 
-Since we changed the __Paged Memory Pool__ _(pgram)_, we update _CONFIG_ARCH_PGPOOL_PBASE_ and _CONFIG_ARCH_PGPOOL_VBASE_ too: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
+1.  Since we changed the __Paged Memory Pool__ _(pgram)_, we update _CONFIG_ARCH_PGPOOL_PBASE_ and _CONFIG_ARCH_PGPOOL_VBASE_ too: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
 
-```bash
-## Physical Address of Paged Memory Pool
-## Previously: QEMU Paged Memory is at 0x4028_0000
-CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
+    ```bash
+    ## Physical Address of Paged Memory Pool
+    ## Previously: QEMU Paged Memory is at 0x4028_0000
+    CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 
-## Virtual Address of Paged Memory Pool
-## Previously: QEMU Paged Memory is at 0x4028_0000
-CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
-```
+    ## Virtual Address of Paged Memory Pool
+    ## Previously: QEMU Paged Memory is at 0x4028_0000
+    CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
+    ```
 
-__Linux Kernel Header__ needs patching. We set the __Image Load Offset__ to _0x80\_0000_: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+1.  NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) _(CONFIG_RAMBANK1_SIZE)_. We set _CONFIG_RAM_SIZE_ to match _CONFIG_RAMBANK1_SIZE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca)
 
-```c
-/* Bootloader starts NuttX here, followed by Linux Kernel Header */
-__start:
-  ...
-  /* Image Load Offset from Start of RAM          */
-  /* Previously: QEMU set this to 0x480000 (why?) */
-  .quad 0x800000
-```
+    ```bash
+    ## RAM Size is a paltry 128 MB
+    CONFIG_RAM_SIZE=134217728
+    ```
+
+    _(Kinda tiny, but sufficient)_
+
+1.  __Linux Kernel Header__ needs patching. We set the __Image Load Offset__ to _0x80\_0000_: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+
+    ```c
+    /* Bootloader starts NuttX here, followed by Linux Kernel Header */
+    __start:
+      ...
+      /* Image Load Offset from Start of RAM          */
+      /* Previously: QEMU set this to 0x480000 (why?) */
+      .quad 0x800000
+    ```
 
 That's because...
 
@@ -772,7 +781,7 @@ Ah much clearer! Now we see the __Names of Memory Regions__...
 
 </p>
 
-Couple of problems...
+Two Tweaks...
 
 - __DEVICE_REGION__: This says I/O Memory Space ends at _0x2700_0000_. Based on the earlier __A527 Memory Map__, we extend this to _0x4000_0000 (1 GB)_: [qemu/chip.h](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45)
 
@@ -790,8 +799,6 @@ Couple of problems...
   // #define CONFIG_PCI_IO_SIZE      KB(64)
   ```
 
-- __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, let's embiggen.
-
 - __PCI__: Let's remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
 
   ```c
@@ -803,13 +810,17 @@ Couple of problems...
     // MMU_REGION_FLAT_ENTRY("PCI_IO", ...
   ```
 
-- __nx_code__ _(0x4080_0000)_: Kernel Code begins here. Looks correct.
+The rest are hunky dory...
 
-- __nx_rodata__ _(0x4082_A000)_: Read-Only Data for Kernel. Also OK.
+- TODO __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, let's embiggen.
 
-- __nx_data__ _(0x4083_0000)_: Read-Write Data for Kernel. Ditto.
+- __nx_code__ _(0x4080_0000)_: Kernel Code begins here
 
-- __nx_pgpool__ _(0x40A0_0000)_: Remember the __Paged Memory Pool__? That will be dished out as __Virtual Memory__ to NuttX Apps? This looks legit.
+- __nx_rodata__ _(0x4082_A000)_: Read-Only Data for Kernel
+
+- __nx_data__ _(0x4083_0000)_: Read-Write Data for Kernel
+
+- __nx_pgpool__ _(0x40A0_0000)_: Remember the __Paged Memory Pool__? This will be dished out as __Virtual Memory__ to NuttX Apps
 
 Rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14)...
 
@@ -828,91 +839,74 @@ Rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https:
 
 Though it crashes elsewhere...
 
-# Whoa Heap Size is wrong! Let's find out why
+# Arm64 Global Interrupt Controller
 
-_Why is NuttX crashing with ridiculous sizes?_
-
-```bash
-up_allocate_kheap:
-  heap_start=0x0x40843000
-  heap_size=0xfffffffffffbd000
-
-mm_initialize: Heap:
-  name=Kmem
-  start=0x40843000
-  size=18446744073709277184
-
-mm_addregion:
-  [Kmem] Region 1:
-  base=0x408432a8 
-  size=18446744073709276504
-
-Assertion failed : at file: mm_heap/mm_malloc.c:323
-```
-
-NuttX now crashes when [__Allocating the Kernel Heap__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14). The numbers above are way too huge, this looks like an __Arithmetic Underflow__...
+_Why is NuttX failing with an Undefined Instruction?_
 
 ```bash
-## Heap Size looks negative
-up_allocate_kheap:
-  heap_start=0x0x40843000
-  heap_size=0xfffffffffffbd000
-```
-
-We add an Assertion Check: [__CONFIG_RAM_END > g_idle_topstack__](https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5). Yep [__Our Assertion Fails__](https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92)...
-
-```text
-up_allocate_kheap:
-  CONFIG_RAM_END=0x40800000,
-  g_idle_topstack=0x40843000
-dump_assert_info: Assertion failed
-```
-
-# Oops CONFIG_RAM_END is too small. Let's enlarge
-
-CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE
-- https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca
-
-GIC Failed
-- https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f
-
-```text
 gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
+...
+nx_start_application: Starting init task: /system/bin/init
+arm64_el1_undef: Undefined instruction at 0x408276e4, dump:
+Assertion failed panic: at file: common/arm64_fatal.c:572
 ```
 
-# Ah we forgot the GIC Address!
+Yeah this failure is [__totally misleading__](https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f). Real Culprit: NuttX couldn't __Init the GIC__...
 
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 263
-
-```text
-Module Name Base Address Comments
-GIC
-GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
-
-Register Name Offset Description
-GICD_CTLR 0x00000 Distributor Control Register
-GICR_CTLR_C0 0x60000 Redistributor Control Register
-GICR_CTLR_C1 0x80000 Redistributor Control Register
-GICR_CTLR_C2 0xA0000 Redistributor Control Register
-GICR_CTLR_C3 0xC0000 Redistributor Control Register
-GICR_CTLR_C4 0xE0000 Redistributor Control Register
-GICR_CTLR_C5 0x100000 Redistributor Control Register
-GICR_CTLR_C6 0x120000 Redistributor Control Register
-GICR_CTLR_C7 0x140000 Redistributor Control Register
-GICDA_CTLR 0x160000 Distributor Control Register
+```bash
+No GIC version detect
+No distributor detected, giving up
 ```
 
-Set Address of GICD, GICR
-- https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76
+_What's this GIC?_
 
-Disable MM Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83
+It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC will...
+
+- Receive __I/O Interrupts__ _(like keypresses)_
+
+- And forward them to an __Arm64 CPU Core__ for processing. _(Works like RISC-V PLIC)_
+
+GIC is here...
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+|:--------------------------------|:---------|
+| __Module__ | __Base Address__
+| GIC | _0x0340_0000_
+
+With these __GIC Registers__, handling 8 Arm64 Cores...
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+|:--------------------------------|:---------|
+| __Offset__ | __Register__
+| _0x00_0000_ | GICD_CTLR  _(Distributor Control Register)_
+| _0x06_0000_ | GICR_CTLR_C0  _(Redistributor Control Register, Core 0)_
+| _0x08_0000_ | GICR_CTLR_C1  _(Ditto, Core 1)_
+| _0x0A_0000_ | GICR_CTLR_C2  _(Ditto, Core 2)_
+| _0x0C_0000_ | GICR_CTLR_C3  _(Ditto, Core 3)_
+| _0x0E_0000_ | GICR_CTLR_C4  _(Ditto, Core 4)_
+| _0x10_0000_ | GICR_CTLR_C5  _(Ditto, Core 5)_
+| _0x12_0000_ | GICR_CTLR_C6  _(Ditto, Core 6)_
+| _0x14_0000_ | GICR_CTLR_C7  _(Ditto, Core 7)_
+| _0x16_0000_ | GICDA_CTLR  _(Ditto, Core 1)_
+
+Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Redistributor)_: [qemu/chip.h](https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76)
+
+```c
+// Base Address of GIC Distributor and Redistributor
+#define CONFIG_GICD_BASE   0x3400000
+#define CONFIG_GICR_BASE   0x3460000
+
+// Spaced 0x20000 bytes per Arm64 Core
+#define CONFIG_GICR_OFFSET 0x20000
+```
+
+[_(And Disable Memory Manager Logging)_](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83)
+
+# Load the NuttX Apps Filesystem into RAM
 
 /system/bin/init is missing yay!
 - https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c
-
-# Load the NuttX Apps Filesystem into RAM
 
 Remove HostFS for Semihosting
 - https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
