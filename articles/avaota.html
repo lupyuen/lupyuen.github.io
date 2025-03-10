@@ -76,7 +76,7 @@
 <li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
 <li><a href="#arm64-global-interrupt-controller" title="Arm64 Global Interrupt Controller">11 Arm64 Global Interrupt Controller</a><ul></ul></li>
-<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">12 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
+<li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">12 NuttX Apps Filesystem</a><ul></ul></li>
 <li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">13 Mount the RAM Disk</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">14 Fix the UART Interrupt</a><ul></ul></li>
 <li><a href="#todo" title="TODO">15 TODO</a><ul></ul></li>
@@ -800,7 +800,7 @@ No distributor detected, giving up</code></pre></div>
 gic_validate_dist_version:
   GICv3 version detect
   GICD_TYPER = 0x7b0408
-  256 SPIs implemented</code></pre></div><h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
+  256 SPIs implemented</code></pre></div><h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>12 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
 <p>If we’re doing a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats we’re done!</p>
 <p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
@@ -811,6 +811,7 @@ arm64_el1_undef:
 Assertion failed panic:
   common/arm64_fatal.c:572</code></pre></div>
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/97/files</p>
 <p>Remove HostFS for Semihosting</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
