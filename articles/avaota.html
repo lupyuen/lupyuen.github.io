@@ -67,27 +67,26 @@
     <nav id="rustdoc"><ul>
 <li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">1 Boot Linux on our SBC</a><ul></ul></li>
 <li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul>
-<li><a href="#uart0-port-is-here" title="UART0 Port is here">3.1 UART0 Port is here</a><ul></ul></li>
-<li><a href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it" title="Bootloader Log says that Start Address is 0x40800000. We change it">3.2 Bootloader Log says that Start Address is 0x40800000. We change it</a><ul></ul></li></ul></li>
-<li><a href="#16650-uart-driver" title="16650 UART Driver">4 16650 UART Driver</a><ul>
-<li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">4.1 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li></ul></li>
-<li><a href="#todo" title="TODO">5 TODO</a><ul></ul></li>
-<li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">6 Build NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">7 Boot NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">8 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#work-in-progress" title="Work In Progress">9 Work In Progress</a><ul>
-<li><a href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux" title="Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux">9.1 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</a><ul></ul></li>
-<li><a href="#config_arch_pgpool_pbase-is-different-from-pgram-in-linker-script-lets-fix-it" title="CONFIG_ARCH_PGPOOL_PBASE is different from pgram in Linker Script. Let’s fix it">9.2 CONFIG_ARCH_PGPOOL_PBASE is different from pgram in Linker Script. Let’s fix it</a><ul></ul></li>
-<li><a href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash" title="Hmmm the Peripheral Address Space is missing. UART0 will crash!">9.3 Hmmm the Peripheral Address Space is missing. UART0 will crash!</a><ul></ul></li>
-<li><a href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb" title="Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB">9.4 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</a><ul></ul></li>
-<li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">9.5 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
-<li><a href="#oops-config_ram_end-is-too-small-lets-enlarge" title="Oops CONFIG_RAM_END is too small. Let’s enlarge">9.6 Oops CONFIG_RAM_END is too small. Let’s enlarge</a><ul></ul></li>
-<li><a href="#ah-we-forgot-the-gic-address" title="Ah we forgot the GIC Address!">9.7 Ah we forgot the GIC Address!</a><ul></ul></li>
-<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">9.8 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
-<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">9.9 Mount the RAM Disk</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">9.10 Fix the UART Interrupt</a><ul></ul></li></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
+<li><a href="#uart0-port-is-here" title="UART0 Port is here">4 UART0 Port is here</a><ul></ul></li>
+<li><a href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it" title="Bootloader Log says that Start Address is 0x40800000. We change it">5 Bootloader Log says that Start Address is 0x40800000. We change it</a><ul></ul></li>
+<li><a href="#16650-uart-driver" title="16650 UART Driver">6 16650 UART Driver</a><ul></ul></li>
+<li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">7 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li>
+<li><a href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash" title="Hmmm the Peripheral Address Space is missing. UART0 will crash!">8 Hmmm the Peripheral Address Space is missing. UART0 will crash!</a><ul></ul></li>
+<li><a href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb" title="Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB">9 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</a><ul></ul></li>
+<li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">10 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
+<li><a href="#oops-config_ram_end-is-too-small-lets-enlarge" title="Oops CONFIG_RAM_END is too small. Let’s enlarge">11 Oops CONFIG_RAM_END is too small. Let’s enlarge</a><ul></ul></li>
+<li><a href="#ah-we-forgot-the-gic-address" title="Ah we forgot the GIC Address!">12 Ah we forgot the GIC Address!</a><ul></ul></li>
+<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">13 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
+<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">14 Mount the RAM Disk</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">15 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#todo" title="TODO">16 TODO</a><ul></ul></li>
+<li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">17 Build NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">18 Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">19 Allwinner A527 Docs</a><ul></ul></li>
+<li><a href="#work-in-progress" title="Work In Progress">20 Work In Progress</a><ul>
+<li><a href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux" title="Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux">20.1 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</a><ul></ul></li></ul></li>
+<li><a href="#whats-next" title="What’s Next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -188,7 +187,7 @@ cp nuttx.bin /TODO/Image
 ls -l /TODO/Image
 ## Should be a lot smaller</code></pre></div>
 <p>Nothing happens. Let’s print something…</p>
-<h2 id="uart0-port-is-here"><a class="doc-anchor" href="#uart0-port-is-here">§</a>3.1 UART0 Port is here</h2>
+<h1 id="uart0-port-is-here"><a class="doc-anchor" href="#uart0-port-is-here">§</a>4 UART0 Port is here</h1>
 <p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 1839</p>
 <div class="example-wrap"><pre class="language-text"><code>Module Name Base Address
 UART0 0x02500000
@@ -202,6 +201,7 @@ UART_LCR 0x000C UART Line Control </code></pre></div>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01</li>
 </ul>
+<p>Address Independent Code</p>
 <div class="example-wrap"><pre class="language-c"><code>real_start:
 
     /* TODO */
@@ -223,7 +223,7 @@ sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast
 123</code></pre></div>
 <p>(Don’t worry about the opteed_fast error)</p>
-<h2 id="bootloader-log-says-that-start-address-is-0x40800000-we-change-it"><a class="doc-anchor" href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it">§</a>3.2 Bootloader Log says that Start Address is 0x40800000. We change it</h2>
+<h1 id="bootloader-log-says-that-start-address-is-0x40800000-we-change-it"><a class="doc-anchor" href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it">§</a>5 Bootloader Log says that Start Address is 0x40800000. We change it</h1>
 <p>https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
@@ -240,7 +240,11 @@ ERROR: Error initializing runtime service opteed_fast
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01</li>
 </ul>
-<h1 id="16650-uart-driver"><a class="doc-anchor" href="#16650-uart-driver">§</a>4 16650 UART Driver</h1>
+<p>CONFIG_ARCH_PGPOOL_PBASE should match pgram</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86</li>
+</ul>
+<h1 id="16650-uart-driver"><a class="doc-anchor" href="#16650-uart-driver">§</a>6 16650 UART Driver</h1>
 <p>Enable 16650 UART</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f</li>
@@ -266,7 +270,7 @@ ERROR: Error initializing runtime service opteed_fast
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-AB</code></pre></div><h2 id="troubleboot-the-mmu-why-wont-it-start"><a class="doc-anchor" href="#troubleboot-the-mmu-why-wont-it-start">§</a>4.1 Troubleboot the MMU. Why won’t it start?</h2>
+AB</code></pre></div><h1 id="troubleboot-the-mmu-why-wont-it-start"><a class="doc-anchor" href="#troubleboot-the-mmu-why-wont-it-start">§</a>7 Troubleboot the MMU. Why won’t it start?</h1>
 <p>Enable Logging for Scheduler and MMU</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58</li>
@@ -283,11 +287,197 @@ AB</code></pre></div><h2 id="troubleboot-the-mmu-why-wont-it-start"><a class="do
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d</li>
 </ul>
-<p>Now stuck at: <code>enable_mmu_el1: Enable the MMU and data cache</code></p>
+<p>Still stuck at: <code>enable_mmu_el1: Enable the MMU and data cache</code></p>
 <ul>
-<li>https://gist.github.com/lupyuen/9e3d1325dc90abc5b695a849a16e9560</li>
+<li>https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362</li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>5 TODO</h1>
+<h1 id="hmmm-the-peripheral-address-space-is-missing-uart0-will-crash"><a class="doc-anchor" href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash">§</a>8 Hmmm the Peripheral Address Space is missing. UART0 will crash!</h1>
+<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Memory Map: Page 42</p>
+<div class="example-wrap"><pre class="language-text"><code>BROM &amp; SRAM
+S_BROM 0x0000 0000---0x0000 AFFF 44 K
+
+PCIE
+PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
+
+DRAM Space
+DRAM SPACE 0x4000 0000---0x13FFF FFFF
+4 GB
+RISC-V core accesses theDRAM address:
+0x4004 0000---0x7FFFFFFF</code></pre></div><h1 id="lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb"><a class="doc-anchor" href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb">§</a>9 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</h1>
+<p>Add MMU Logging</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843</li>
+</ul>
+<p>Remove PCI from MMU Regions</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7</li>
+</ul>
+<p>Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45</li>
+</ul>
+<p><code>up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000</code></p>
+<ul>
+<li>https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14</li>
+</ul>
+<h1 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>10 Whoa Heap Size is wrong! Let’s find out why</h1>
+<p>Assert CONFIG_RAM_END &gt; g_idle_topstack</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5</li>
+</ul>
+<p>Assertion fails</p>
+<ul>
+<li>https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
+dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>11 Oops CONFIG_RAM_END is too small. Let’s enlarge</h1>
+<p>CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca</li>
+</ul>
+<p>GIC Failed</p>
+<ul>
+<li>https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div><h1 id="ah-we-forgot-the-gic-address"><a class="doc-anchor" href="#ah-we-forgot-the-gic-address">§</a>12 Ah we forgot the GIC Address!</h1>
+<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 263</p>
+<div class="example-wrap"><pre class="language-text"><code>Module Name Base Address Comments
+GIC
+GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
+
+Register Name Offset Description
+GICD_CTLR 0x00000 Distributor Control Register
+GICR_CTLR_C0 0x60000 Redistributor Control Register
+GICR_CTLR_C1 0x80000 Redistributor Control Register
+GICR_CTLR_C2 0xA0000 Redistributor Control Register
+GICR_CTLR_C3 0xC0000 Redistributor Control Register
+GICR_CTLR_C4 0xE0000 Redistributor Control Register
+GICR_CTLR_C5 0x100000 Redistributor Control Register
+GICR_CTLR_C6 0x120000 Redistributor Control Register
+GICR_CTLR_C7 0x140000 Redistributor Control Register
+GICDA_CTLR 0x160000 Distributor Control Register</code></pre></div>
+<p>Set Address of GICD, GICR</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76</li>
+</ul>
+<p>Disable MM Logging</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83</li>
+</ul>
+<p>/system/bin/init is missing yay!</p>
+<ul>
+<li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
+</ul>
+<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>13 Load the NuttX Apps Filesystem into RAM</h1>
+<p>Remove HostFS for Semihosting</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
+</ul>
+<p>OK the Initial Filesystem is no longer available:</p>
+<ul>
+<li>https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507</li>
+</ul>
+<p>Add the Initial RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13</li>
+</ul>
+<p>Enable Logging for RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337</li>
+</ul>
+<p><code>default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault</code></p>
+<ul>
+<li>https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949</li>
+</ul>
+<p>Our RAM Disk Copier is accessing misligned addresses. Let’s fix the alignment…</p>
+<p>Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109</li>
+</ul>
+<p>Log the Mount Error</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6</li>
+</ul>
+<p>Mounting of ROMFS fails</p>
+<ul>
+<li>https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>nx_start_application: ret=-15
+dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361</code></pre></div>
+<p>Which is…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define ENOTBLK             15
+#define ENOTBLK_STR         &quot;Block device required&quot;</code></pre></div>
+<p>Why is /dev/ram0 not a Block Device?</p>
+<div class="example-wrap"><pre class="language-c"><code>$ grep INIT .config
+# CONFIG_BOARDCTL_FINALINIT is not set
+# CONFIG_INIT_NONE is not set
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=&quot;&quot;
+CONFIG_INIT_STACKSIZE=8192
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE=&quot;/dev/ram0&quot;
+CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
+CONFIG_INIT_MOUNT_FSTYPE=&quot;romfs&quot;
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=&quot;&quot;</code></pre></div>
+<p>We check the logs…</p>
+<p>Enable Filesystem Logging</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496</li>
+</ul>
+<p><code>Failed to find /dev/ram0</code></p>
+<ul>
+<li>https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>find_blockdriver: pathname=&quot;/dev/ram0&quot;
+find_blockdriver: ERROR: Failed to find /dev/ram0
+nx_mount: ERROR: Failed to find block driver /dev/ram0
+nx_start_application: ret=-15</code></pre></div>
+<p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
+<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>14 Mount the RAM Disk</h1>
+<p>Let’s mount the RAM Disk…</p>
+<p>Mount the RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2</li>
+</ul>
+<p>/system/bin/init starts successfully yay!</p>
+<ul>
+<li>https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>qemu_bringup:
+mount_ramdisk:
+nx_start_application: ret=0
+nx_start_application: Starting init task: /system/bin/init
+nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
+nxtask_exit: AppBringUp pid=3,TCB=0x40846190
+board_app_initialize:
+nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+<p>NSH Prompt won’t appear until we fix the UART Interrupt…</p>
+<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>15 Fix the UART Interrupt</h1>
+<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 256</p>
+<div class="example-wrap"><pre class="language-text"><code>Interrupt Number Interrupt Source Interrupt Vector Description
+34 UART0 0x0088</code></pre></div>
+<p>So we set the UART0 Interrupt…</p>
+<p>Set UART0 Interrupt to 34</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf</li>
+</ul>
+<p>Disable Logging for MM and Scheduler</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee</li>
+</ul>
+<p>Disable MMU Debugging</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88</li>
+</ul>
+<p>NSH Prompt appears! And passes OSTest yay!</p>
+<ul>
+<li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
+</ul>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>16 TODO</h1>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)" /></p>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -317,7 +507,7 @@ AB</code></pre></div><h2 id="troubleboot-the-mmu-why-wont-it-start"><a class="do
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
-<h1 id="build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#build-nuttx-for-avaota-a1">§</a>6 Build NuttX for Avaota-A1</h1>
+<h1 id="build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#build-nuttx-for-avaota-a1">§</a>17 Build NuttX for Avaota-A1</h1>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do <strong>everything</strong> for us:</p>
 <ul>
@@ -403,7 +593,7 @@ curl \
 set -x  ##  Enable echo</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p>(<strong>copy-image.sh</strong> is explained below)</p>
-<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>7 Boot NuttX for Avaota-A1</h1>
+<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>18 Boot NuttX for Avaota-A1</h1>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
@@ -544,16 +734,16 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p>How did we get here? Let’s walk through the steps…</p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>8 Allwinner A527 Docs</h1>
+<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>19 Allwinner A527 Docs</h1>
 <p>We used these docs (A527 is a variant of A523)</p>
 <ul>
 <li>https://linux-sunxi.org/A523</li>
 <li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
 <li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
 </ul>
-<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>9 Work In Progress</h1>
+<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>20 Work In Progress</h1>
 <p>We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC…</p>
-<h2 id="lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux"><a class="doc-anchor" href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux">§</a>9.1 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</h2>
+<h2 id="lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux"><a class="doc-anchor" href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux">§</a>20.1 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</h2>
 <p>SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.</p>
 <p>Let’s make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
@@ -588,202 +778,7 @@ scp nuttx.bin thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
-<h2 id="config_arch_pgpool_pbase-is-different-from-pgram-in-linker-script-lets-fix-it"><a class="doc-anchor" href="#config_arch_pgpool_pbase-is-different-from-pgram-in-linker-script-lets-fix-it">§</a>9.2 CONFIG_ARCH_PGPOOL_PBASE is different from pgram in Linker Script. Let’s fix it</h2>
-<p>CONFIG_ARCH_PGPOOL_PBASE should match pgram</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86</li>
-</ul>
-<p>Still stuck at: <code>enable_mmu_el1: Enable the MMU and data cache</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362</li>
-</ul>
-<h2 id="hmmm-the-peripheral-address-space-is-missing-uart0-will-crash"><a class="doc-anchor" href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash">§</a>9.3 Hmmm the Peripheral Address Space is missing. UART0 will crash!</h2>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Memory Map: Page 42</p>
-<div class="example-wrap"><pre class="language-text"><code>BROM &amp; SRAM
-S_BROM 0x0000 0000---0x0000 AFFF 44 K
-
-PCIE
-PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
-
-DRAM Space
-DRAM SPACE 0x4000 0000---0x13FFF FFFF
-4 GB
-RISC-V core accesses theDRAM address:
-0x4004 0000---0x7FFFFFFF</code></pre></div><h2 id="lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb"><a class="doc-anchor" href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb">§</a>9.4 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</h2>
-<p>Add MMU Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843</li>
-</ul>
-<p>Remove PCI from MMU Regions</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7</li>
-</ul>
-<p>Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45</li>
-</ul>
-<p><code>up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14</li>
-</ul>
-<h2 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>9.5 Whoa Heap Size is wrong! Let’s find out why</h2>
-<p>Assert CONFIG_RAM_END &gt; g_idle_topstack</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5</li>
-</ul>
-<p>Assertion fails</p>
-<ul>
-<li>https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
-dump_assert_info: Assertion failed</code></pre></div><h2 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>9.6 Oops CONFIG_RAM_END is too small. Let’s enlarge</h2>
-<p>CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca</li>
-</ul>
-<p>GIC Failed</p>
-<ul>
-<li>https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div><h2 id="ah-we-forgot-the-gic-address"><a class="doc-anchor" href="#ah-we-forgot-the-gic-address">§</a>9.7 Ah we forgot the GIC Address!</h2>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 263</p>
-<div class="example-wrap"><pre class="language-text"><code>Module Name Base Address Comments
-GIC
-GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
-
-Register Name Offset Description
-GICD_CTLR 0x00000 Distributor Control Register
-GICR_CTLR_C0 0x60000 Redistributor Control Register
-GICR_CTLR_C1 0x80000 Redistributor Control Register
-GICR_CTLR_C2 0xA0000 Redistributor Control Register
-GICR_CTLR_C3 0xC0000 Redistributor Control Register
-GICR_CTLR_C4 0xE0000 Redistributor Control Register
-GICR_CTLR_C5 0x100000 Redistributor Control Register
-GICR_CTLR_C6 0x120000 Redistributor Control Register
-GICR_CTLR_C7 0x140000 Redistributor Control Register
-GICDA_CTLR 0x160000 Distributor Control Register</code></pre></div>
-<p>Set Address of GICD, GICR</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76</li>
-</ul>
-<p>Disable MM Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83</li>
-</ul>
-<p>/system/bin/init is missing yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
-</ul>
-<h2 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>9.8 Load the NuttX Apps Filesystem into RAM</h2>
-<p>Remove HostFS for Semihosting</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
-</ul>
-<p>OK the Initial Filesystem is no longer available:</p>
-<ul>
-<li>https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507</li>
-</ul>
-<p>Add the Initial RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13</li>
-</ul>
-<p>Enable Logging for RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337</li>
-</ul>
-<p><code>default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949</li>
-</ul>
-<p>Our RAM Disk Copier is accessing misligned addresses. Let’s fix the alignment…</p>
-<p>Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109</li>
-</ul>
-<p>Log the Mount Error</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6</li>
-</ul>
-<p>Mounting of ROMFS fails</p>
-<ul>
-<li>https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>nx_start_application: ret=-15
-dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361</code></pre></div>
-<p>Which is…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define ENOTBLK             15
-#define ENOTBLK_STR         &quot;Block device required&quot;</code></pre></div>
-<p>Why is /dev/ram0 not a Block Device?</p>
-<div class="example-wrap"><pre class="language-c"><code>$ grep INIT .config
-# CONFIG_BOARDCTL_FINALINIT is not set
-# CONFIG_INIT_NONE is not set
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=&quot;&quot;
-CONFIG_INIT_STACKSIZE=8192
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE=&quot;/dev/ram0&quot;
-CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
-CONFIG_INIT_MOUNT_FSTYPE=&quot;romfs&quot;
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=&quot;&quot;</code></pre></div>
-<p>We check the logs…</p>
-<p>Enable Filesystem Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496</li>
-</ul>
-<p><code>Failed to find /dev/ram0</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>find_blockdriver: pathname=&quot;/dev/ram0&quot;
-find_blockdriver: ERROR: Failed to find /dev/ram0
-nx_mount: ERROR: Failed to find block driver /dev/ram0
-nx_start_application: ret=-15</code></pre></div>
-<p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
-<h2 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>9.9 Mount the RAM Disk</h2>
-<p>Let’s mount the RAM Disk…</p>
-<p>Mount the RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2</li>
-</ul>
-<p>/system/bin/init starts successfully yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-nx_start_application: Starting init task: /system/bin/init
-nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
-nxtask_exit: AppBringUp pid=3,TCB=0x40846190
-board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>NSH Prompt won’t appear until we fix the UART Interrupt…</p>
-<h2 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>9.10 Fix the UART Interrupt</h2>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 256</p>
-<div class="example-wrap"><pre class="language-text"><code>Interrupt Number Interrupt Source Interrupt Vector Description
-34 UART0 0x0088</code></pre></div>
-<p>So we set the UART0 Interrupt…</p>
-<p>Set UART0 Interrupt to 34</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf</li>
-</ul>
-<p>Disable Logging for MM and Scheduler</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee</li>
-</ul>
-<p>Disable MMU Debugging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88</li>
-</ul>
-<p>NSH Prompt appears! And passes OSTest yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
-</ul>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
 <p>TODO</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
