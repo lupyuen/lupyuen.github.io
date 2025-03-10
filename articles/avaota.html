@@ -77,13 +77,14 @@
 <li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
 <li><a href="#arm64-global-interrupt-controller" title="Arm64 Global Interrupt Controller">11 Arm64 Global Interrupt Controller</a><ul></ul></li>
 <li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">12 NuttX Apps Filesystem</a><ul></ul></li>
-<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">13 Mount the RAM Disk</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">14 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#todo" title="TODO">15 TODO</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">16 Boot NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">17 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#work-in-progress" title="Work In Progress">18 Work In Progress</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">13 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#todo" title="TODO">14 TODO</a><ul></ul></li>
+<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">15 Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">16 Allwinner A527 Docs</a><ul></ul></li>
+<li><a href="#work-in-progress" title="Work In Progress">17 Work In Progress</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">18 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">19 Appendix: NuttX Apps Filesystem</a><ul></ul></li>
+<li><a href="#appendix-mount-the-ram-disk" title="Appendix: Mount the RAM Disk">20 Appendix: Mount the RAM Disk</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -189,21 +190,21 @@ umount /TODO</code></pre></div>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
-<tr><td style="text-align: left">UART0</td><td style="text-align: left"><em>0x0250_0000</em></td></tr>
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: center">UART0</td><td style="text-align: left"><em>0x0250_0000</em></td></tr>
 </tbody></table>
 </div></div>
 </p>
 <p>16550 Transmit Register is at <strong>Offset 0</strong>…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
-<tr><td style="text-align: left"><em>0x0000</em></td><td style="text-align: left">UART_THR <em>(Transmit Holding Register)</em></td></tr>
-<tr><td style="text-align: left"><em>0x0004</em></td><td style="text-align: left">UART_DLH <em>(Divisor Latch High Register)</em></td></tr>
-<tr><td style="text-align: left"><em>0x0008</em></td><td style="text-align: left">UART_IIR <em>(Interrupt Identity Register)</em></td></tr>
-<tr><td style="text-align: left"><em>0x000C</em></td><td style="text-align: left">UART_LCR <em>(Line Control)</em></td></tr>
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: center"><em>0x0000</em></td><td style="text-align: left">UART_THR <em>(Transmit Holding Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0004</em></td><td style="text-align: left">UART_DLH <em>(Divisor Latch High Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0008</em></td><td style="text-align: left">UART_IIR <em>(Interrupt Identity Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x000C</em></td><td style="text-align: left">UART_LCR <em>(Line Control)</em></td></tr>
 </tbody></table>
 </div></div>
 </p>
@@ -768,24 +769,24 @@ No distributor detected, giving up</code></pre></div>
 </li>
 </ul>
 <p>GIC is here…</p>
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
-<tr><td style="text-align: left">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: center">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
 </tbody></table>
 </div>
 <p>With these <strong>GIC Registers</strong>, handling 8 Arm64 Cores…</p>
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
-<tr><td style="text-align: left"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
-<tr><td style="text-align: left"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
-<tr><td style="text-align: left"><em>0x06_0000</em></td><td style="text-align: left">GICR_CTLR_C0  <em>(Redistributor Control Register, Core 0)</em></td></tr>
-<tr><td style="text-align: left"><em>0x08_0000</em></td><td style="text-align: left">GICR_CTLR_C1  <em>(Ditto, Core 1)</em></td></tr>
-<tr><td style="text-align: left"><em>0x0A_0000</em></td><td style="text-align: left">GICR_CTLR_C2  <em>(Ditto, Core 2)</em></td></tr>
-<tr><td style="text-align: left"><em>0x0C_0000</em></td><td style="text-align: left">GICR_CTLR_C3  <em>(Ditto, Core 3)</em></td></tr>
-<tr><td style="text-align: left"><em>0x0E_0000</em></td><td style="text-align: left">GICR_CTLR_C4  <em>(Ditto, Core 4)</em></td></tr>
-<tr><td style="text-align: left"><em>0x10_0000</em></td><td style="text-align: left">GICR_CTLR_C5  <em>(Ditto, Core 5)</em></td></tr>
-<tr><td style="text-align: left"><em>0x12_0000</em></td><td style="text-align: left">GICR_CTLR_C6  <em>(Ditto, Core 6)</em></td></tr>
-<tr><td style="text-align: left"><em>0x14_0000</em></td><td style="text-align: left">GICR_CTLR_C7  <em>(Ditto, Core 7)</em></td></tr>
-<tr><td style="text-align: left"><em>0x16_0000</em></td><td style="text-align: left">GICDA_CTLR  <em>(Ditto, Core 1)</em></td></tr>
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: center"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x06_0000</em></td><td style="text-align: left">GICR_CTLR_C0  <em>(Redistributor Control Register, Core 0)</em></td></tr>
+<tr><td style="text-align: center"><em>0x08_0000</em></td><td style="text-align: left">GICR_CTLR_C1  <em>(Ditto, Core 1)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0A_0000</em></td><td style="text-align: left">GICR_CTLR_C2  <em>(Ditto, Core 2)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0C_0000</em></td><td style="text-align: left">GICR_CTLR_C3  <em>(Ditto, Core 3)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0E_0000</em></td><td style="text-align: left">GICR_CTLR_C4  <em>(Ditto, Core 4)</em></td></tr>
+<tr><td style="text-align: center"><em>0x10_0000</em></td><td style="text-align: left">GICR_CTLR_C5  <em>(Ditto, Core 5)</em></td></tr>
+<tr><td style="text-align: center"><em>0x12_0000</em></td><td style="text-align: left">GICR_CTLR_C6  <em>(Ditto, Core 6)</em></td></tr>
+<tr><td style="text-align: center"><em>0x14_0000</em></td><td style="text-align: left">GICR_CTLR_C7  <em>(Ditto, Core 7)</em></td></tr>
+<tr><td style="text-align: center"><em>0x16_0000</em></td><td style="text-align: left">GICDA_CTLR  <em>(Ditto, Core 1)</em></td></tr>
 </tbody></table>
 </div>
 <p>Based on the above, we set the <strong>Addresses of GICD and GICR</strong> <em>(Distributor / Redistributor)</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76">qemu/chip.h</a></p>
@@ -811,98 +812,21 @@ arm64_el1_undef:
 Assertion failed panic:
   common/arm64_fatal.c:572</code></pre></div>
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
-<p>https://github.com/lupyuen2/wip-nuttx/pull/97/files</p>
-<p>Remove HostFS for Semihosting</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
-</ul>
-<p>OK the Initial Filesystem is no longer available:</p>
-<ul>
-<li>https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507</li>
-</ul>
-<p>Add the Initial RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13</li>
-</ul>
-<p>Enable Logging for RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337</li>
-</ul>
-<p><code>default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949</li>
-</ul>
-<p>Our RAM Disk Copier is accessing misligned addresses. Let’s fix the alignment…</p>
-<p>Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109</li>
-</ul>
-<p>Log the Mount Error</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6</li>
-</ul>
-<p>Mounting of ROMFS fails</p>
-<ul>
-<li>https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>nx_start_application: ret=-15
-dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361</code></pre></div>
-<p>Which is…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define ENOTBLK             15
-#define ENOTBLK_STR         &quot;Block device required&quot;</code></pre></div>
-<p>Why is /dev/ram0 not a Block Device?</p>
-<div class="example-wrap"><pre class="language-c"><code>$ grep INIT .config
-# CONFIG_BOARDCTL_FINALINIT is not set
-# CONFIG_INIT_NONE is not set
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=&quot;&quot;
-CONFIG_INIT_STACKSIZE=8192
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE=&quot;/dev/ram0&quot;
-CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
-CONFIG_INIT_MOUNT_FSTYPE=&quot;romfs&quot;
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=&quot;&quot;</code></pre></div>
-<p>We check the logs…</p>
-<p>Enable Filesystem Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496</li>
-</ul>
-<p><code>Failed to find /dev/ram0</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>find_blockdriver: pathname=&quot;/dev/ram0&quot;
-find_blockdriver: ERROR: Failed to find /dev/ram0
-nx_mount: ERROR: Failed to find block driver /dev/ram0
-nx_start_application: ret=-15</code></pre></div>
-<p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
-<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>13 Mount the RAM Disk</h1>
-<p>Let’s mount the RAM Disk…</p>
-<p>Mount the RAM Disk</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2</li>
-</ul>
-<p>/system/bin/init starts successfully yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-nx_start_application: Starting init task: /system/bin/init
-nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
-nxtask_exit: AppBringUp pid=3,TCB=0x40846190
-board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+<p><em>/system/bin/init</em> is NSH Shell. That’s how <strong>NuttX Kernel Build</strong> works: It loads NuttX Apps from a <strong>Local Filesystem</strong>. <em>(Instead of bundling Apps into Kernel)</em></p>
+<p>TODO: Bundle into Image</p>
+<p>TODO: Appendix</p>
 <p>NSH Prompt won’t appear until we fix the UART Interrupt…</p>
-<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>14 Fix the UART Interrupt</h1>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 256</p>
-<div class="example-wrap"><pre class="language-text"><code>Interrupt Number Interrupt Source Interrupt Vector Description
-34 UART0 0x0088</code></pre></div>
-<p>So we set the UART0 Interrupt…</p>
+<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>13 Fix the UART Interrupt</h1>
+<p>One Last Thing for today: Fix the <strong>UART Interrupt</strong> and we’re done!</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: center">Page 256</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Interrupt Number</strong></td><td style="text-align: center"><strong>Interrupt Source</strong></td></tr>
+<tr><td style="text-align: center">34</td><td style="text-align: center">UART0</td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>This is how we set the <strong>UART0 Interrupt</strong> and watch for keypresses:</p>
 <p>Set UART0 Interrupt to 34</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf</li>
@@ -919,7 +843,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <ul>
 <li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>15 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>14 TODO</h1>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)" /></p>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -948,7 +872,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
-<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>16 Boot NuttX for Avaota-A1</h1>
+<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>15 Boot NuttX for Avaota-A1</h1>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
@@ -1089,16 +1013,16 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p>How did we get here? Let’s walk through the steps…</p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>17 Allwinner A527 Docs</h1>
+<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>16 Allwinner A527 Docs</h1>
 <p>We used these docs (A527 is a variant of A523)</p>
 <ul>
 <li>https://linux-sunxi.org/A523</li>
 <li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
 <li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
 </ul>
-<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>18 Work In Progress</h1>
+<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>17 Work In Progress</h1>
 <p>We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC…</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>18 What’s Next</h1>
 <p>TODO</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
@@ -1129,7 +1053,93 @@ nsh&gt;</code></pre></div></span>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md"><strong>lupyuen.org/src/avaota.md</strong></a></p>
-
+<h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>19 Appendix: NuttX Apps Filesystem</h1>
+<p>https://github.com/lupyuen2/wip-nuttx/pull/97/files</p>
+<p>Remove HostFS for Semihosting</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
+</ul>
+<p>OK the Initial Filesystem is no longer available:</p>
+<ul>
+<li>https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507</li>
+</ul>
+<p>Add the Initial RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13</li>
+</ul>
+<p>Enable Logging for RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337</li>
+</ul>
+<p><code>default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault</code></p>
+<ul>
+<li>https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949</li>
+</ul>
+<p>Our RAM Disk Copier is accessing misligned addresses. Let’s fix the alignment…</p>
+<p>Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109</li>
+</ul>
+<p>Log the Mount Error</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6</li>
+</ul>
+<p>Mounting of ROMFS fails</p>
+<ul>
+<li>https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>nx_start_application: ret=-15
+dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361</code></pre></div>
+<p>Which is…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define ENOTBLK             15
+#define ENOTBLK_STR         &quot;Block device required&quot;</code></pre></div>
+<p>Why is /dev/ram0 not a Block Device?</p>
+<div class="example-wrap"><pre class="language-c"><code>$ grep INIT .config
+# CONFIG_BOARDCTL_FINALINIT is not set
+# CONFIG_INIT_NONE is not set
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=&quot;&quot;
+CONFIG_INIT_STACKSIZE=8192
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE=&quot;/dev/ram0&quot;
+CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
+CONFIG_INIT_MOUNT_FSTYPE=&quot;romfs&quot;
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=&quot;&quot;</code></pre></div>
+<p>We check the logs…</p>
+<p>Enable Filesystem Logging</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496</li>
+</ul>
+<p><code>Failed to find /dev/ram0</code></p>
+<ul>
+<li>https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>find_blockdriver: pathname=&quot;/dev/ram0&quot;
+find_blockdriver: ERROR: Failed to find /dev/ram0
+nx_mount: ERROR: Failed to find block driver /dev/ram0
+nx_start_application: ret=-15</code></pre></div>
+<p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
+<h1 id="appendix-mount-the-ram-disk"><a class="doc-anchor" href="#appendix-mount-the-ram-disk">§</a>20 Appendix: Mount the RAM Disk</h1>
+<p>Let’s mount the RAM Disk…</p>
+<p>Mount the RAM Disk</p>
+<ul>
+<li>https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2</li>
+</ul>
+<p>/system/bin/init starts successfully yay!</p>
+<ul>
+<li>https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>qemu_bringup:
+mount_ramdisk:
+nx_start_application: ret=0
+nx_start_application: Starting init task: /system/bin/init
+nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
+nxtask_exit: AppBringUp pid=3,TCB=0x40846190
+board_app_initialize:
+nx_start: CPU0: Beginning Idle Loop</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
