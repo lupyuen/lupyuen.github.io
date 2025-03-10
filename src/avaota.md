@@ -442,6 +442,8 @@ OK the repeated rebuilding, recopying and rebooting of NuttX is getting really t
 
 # Build NuttX for Avaota-A1
 
+_What if we could rebuild-recopy-reboot NuttX... In One Single Script?_
+
 [(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
 
 Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
