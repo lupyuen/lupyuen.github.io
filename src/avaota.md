@@ -708,38 +708,100 @@ enable_mmu_el1: UP_MB
 enable_mmu_el1: Enable the MMU and data cache
 ```
 
-# Hmmm the Peripheral Address Space is missing. UART0 will crash!
+Something sus about the above [__Mystery Addresses__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362), what are they?
 
-_Maybe our Memory Map is incorrect?_
+<p>
 
-Let's verify.
+| Virtual | Physical | Size |
+|:-------:|:--------:|:----:|
+| _0x0700_0000_ | 0x0700_0000    | _0x2000_0000_
+| _0x4000_0000_ | 0x4000_0000    | _0x0800_0000_
+| _0x40_1000_0000_ | 0x40_1000_0000 | _0x1000_0000_
+| _0x80_0000_0000_ | 0x80_0000_0000 | _0x80_0000_0000_
+| _0x3EFF_0000_ | 0x3EFF_0000 | _0x0001_0000_
+| _0x4080_0000_ | 0x4080_0000 | _0x0002_A000_
+| _0x4082_A000_ | 0x4082_A000 | _0x0000_6000_
+| _0x4083_0000_ | 0x4083_0000 | _0x0001_3000_
+| _0x40A0_0000_ | 0x40A0_0000 | _0x0040_0000_
 
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Memory Map: Page 42
+</p>
 
-```text
-BROM & SRAM
-S_BROM 0x0000 0000---0x0000 AFFF 44 K
+# Fix the NuttX Memory Map
 
-PCIE
-PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
+_Arm64 MMU won't turn on. Maybe our Memory Map is incorrect?_
 
-DRAM Space
-DRAM SPACE 0x4000 0000---0x13FFF FFFF
-4 GB
-RISC-V core accesses theDRAM address:
-0x4004 0000---0x7FFFFFFF
+Let's verify our __Memory Map__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 42 |
+|:--------------------------------|:---------|
+| __Module__ | __Address__
+| Boot ROM & SRAM | 0x0000 0000
+| PCIE | 0x2000 0000 to 0x2FFF FFFF
+| DRAM | 0x4000 0000 to 0x13FFF FFFF
+
+</div>
+</p>
+
+How does this compare with NuttX? We do extra logging for __Memory Management Unit (MMU)__: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843)
+
+```c
+// Log the Names of the Memory Regions
+static void init_xlat_tables(const struct arm_mmu_region *region) { ...
+  _info("name=%s\n", region->name);
+  sinfo("mmap: virt %p phys %p size %p\n", virt, phys, size);
 ```
 
-# Let's fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB
+Ah much clearer! Now we see the __Names of Memory Regions__...
 
-Add MMU Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843
+<p>
 
-Remove PCI from MMU Regions
-- https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7
+| Name | Physical | Size |
+|:--------|:--------:|:----:|
+| _DEVICE_REGION_ | 0x0700_0000 | _0x2000_0000_
+| _DRAM0_S0_ | 0x4000_0000 | _0x0800_0000_
+| _PCI_CFG_ | 0x40_1000_0000 | _0x1000_0000_
+| _PCI_MEM_ | 0x80_0000_0000 | _0x80_0000_0000_
+| _PCI_IO_ | 0x3EFF_0000 | _0x0001_0000_
+| _nx_code_ | 0x4080_0000 | _0x0002_A000_
+| _nx_rodata_ | 0x4082_A000 | _0x0000_6000_
+| _nx_data_ | 0x4083_0000 | _0x0001_3000_
+| _nx_pgpool_ | 0x40A0_0000 | _0x0040_0000_
 
-Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)
-- https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45
+</p>
+
+Couple of problems...
+
+- __DEVICE_REGION__: This says I/O Memory Space ends at _0x2700_0000_. Based on the earlier __A527 Memory Map__, we extend this to _0x4000_0000 (1 GB)_: [qemu/chip.h](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45)
+
+  ```c
+  // Fix the I/O Memory Space: Base Address and Size
+  #define CONFIG_DEVICEIO_BASEADDR 0x00000000
+  #define CONFIG_DEVICEIO_SIZE     MB(1024)
+
+  // We don't need PCI, for now
+  // #define CONFIG_PCI_CFG_BASEADDR    0x4010000000
+  // #define CONFIG_PCI_CFG_SIZE        MB(256)
+  // #define CONFIG_PCI_MEM_BASEADDR    0x8000000000
+  // #define CONFIG_PCI_MEM_SIZE        GB(512)
+  // #define CONFIG_PCI_IO_BASEADDR     0x3eff0000
+  // #define CONFIG_PCI_IO_SIZE         KB(64)
+  ```
+
+- __DRAM0_S0__: RAM Space ends at _0x0800_0000_? Utterly incorrect! We fix this in a while.
+
+- __PCI__: Let's remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
+
+  ```c
+  static const struct arm_mmu_region g_mmu_regions[] = {
+    ...
+    // We don't need PCI, for now
+    // MMU_REGION_FLAT_ENTRY("PCI_CFG", ...
+    // MMU_REGION_FLAT_ENTRY("PCI_MEM", ...
+    // MMU_REGION_FLAT_ENTRY("PCI_IO", ...
+  ```
 
 `up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000`
 - https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14
