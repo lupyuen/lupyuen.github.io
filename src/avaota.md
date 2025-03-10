@@ -149,41 +149,80 @@ ls -l /TODO/Image
 
 Nothing happens. Let's print something...
 
-# UART0 Port is here
+# Print to UART in Arm64 Assembly
 
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 1839
+_How will we know that NuttX is actually booting?_
 
-```text
-Module Name Base Address
-UART0 0x02500000
+Let's print something. __UART0 Base Address__ is here...
 
-Register Name Offset Description
-UART_THR 0x0000 UART Transmit Holding Register
-UART_DLH 0x0004 UART Divisor Latch High Register
-UART_IIR 0x0008 UART Interrupt Identity Register
-UART_LCR 0x000C UART Line Control 
-```
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-Print 123
-- https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
+|:--------------------------------|:---------|
+| __Module__ | __Base Address__
+| UART0 | _0x0250\_0000_
 
-Address Independent Code
+</div>
+</p>
+
+16550 Transmit Register is at __Offset 0__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
+|:--------------------------------|:---------|
+| __Offset__ | __Register__
+| _0x0000_ | UART_THR _(Transmit Holding Register)_
+| _0x0004_ | UART_DLH _(Divisor Latch High Register)_
+| _0x0008_ | UART_IIR _(Interrupt Identity Register)_
+| _0x000C_ | UART_LCR _(Line Control)_
+
+</div>
+</p>
+
+Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/blob/avaota/arch/arm64/src/qemu/qemu_boot.c#L269-L283) like this...
 
 ```c
-real_start:
-
-    /* TODO */
-    mov  x15, #0x02500000
-    mov  w16, #0x31
-    strb w16, [x15]
-    mov  w16, #0x32
-    strb w16, [x15]
-    mov  w16, #0x33
-    strb w16, [x15]
+// Print `123` to UART0
+*(volatile uint8_t *) 0x02500000 = '1';
+*(volatile uint8_t *) 0x02500000 = '2';
+*(volatile uint8_t *) 0x02500000 = '3';
 ```
 
-Prints 123 yay!
-- https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
+Let's do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+
+```text
+/* Bootloader starts NuttX here */
+__start:
+  add x13, x18, #0x16 /* "MZ": Magic Number for Linux Kernel Header */
+  b   real_start      /* Jump to Executable Code      */
+  ...                 /* Omitted: Linux Kernel Header */
+
+/* Executable Code begins here */
+/* We print `123` to UART0     */
+real_start:
+
+  /* Load UART0 Base Address into Register X15 */
+  mov  x15, #0x02500000
+
+  /* Load character `1` into Register W16 */
+  mov  w16, #0x31
+
+  /* Store the lower byte from Register W16 (`1`) to UART0 Base Address */
+  strb w16, [x15]
+
+  /* Load and Store the lower byte from Register W16 (`2`) to UART0 Base Address */
+  mov  w16, #0x32
+  strb w16, [x15]
+
+  /* Load and Store the lower byte from Register W16 (`3`) to UART0 Base Address */
+  mov  w16, #0x33
+  strb w16, [x15]
+```
+
+Rebuild NuttX and recopy __`nuttx.bin`__ to MicroSD, overwriting the __`Image`__ file. NuttX boot and [__prints `123` yay__](https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8)!
 
 ```bash
 read /Image addr=40800000
@@ -194,7 +233,10 @@ ERROR: Error initializing runtime service opteed_fast
 123
 ```
 
-(Don't worry about the opteed_fast error)
+(Ignore the _opteed_fast_ error)
+
+Address Independent Code
+
 
 # Bootloader Log says that Start Address is 0x40800000. We change it
 
