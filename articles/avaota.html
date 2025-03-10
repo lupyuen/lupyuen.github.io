@@ -70,7 +70,7 @@
 <li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
 <li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
 <li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
-<li><a href="#uart-driver-for-16650" title="UART Driver for 16650">6 UART Driver for 16650</a><ul></ul></li>
+<li><a href="#uart-driver-for-16550" title="UART Driver for 16550">6 UART Driver for 16550</a><ul></ul></li>
 <li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">7 Build NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux" title="Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux">8 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</a><ul></ul></li>
 <li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">9 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li>
@@ -209,12 +209,12 @@ ls -l /TODO/Image
 </tbody></table>
 </div></div>
 </p>
-<p>Which means we can <a href="https://github.com/lupyuen2/wip-nuttx/blob/avaota/arch/arm64/src/qemu/qemu_boot.c#L269-L283"><strong>Print to UART</strong></a> like this…</p>
+<p>Which means we can <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333"><strong>Print to UART</strong></a> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `123` to UART0
 *(volatile uint8_t *) 0x02500000 = &#39;1&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;2&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;3&#39;;</code></pre></div>
-<p>Let’s do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
+<p>But let’s do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Bootloader starts NuttX here */
 __start:
   add x13, x18, #0x16 /* &quot;MZ&quot;: Magic Number for Linux Kernel Header */
@@ -252,7 +252,7 @@ ERROR: Error initializing runtime service opteed_fast
 <p><em>Why print in Arm64 Assembly? Why not C?</em></p>
 <ol>
 <li>
-<p>Arm64 Assembly is the <strong>very first thing that boots</strong> when our SBC Bootloader starts NuttX</p>
+<p>Arm64 Assembly is the <strong>very first thing that boots</strong> when Bootloader starts NuttX</p>
 </li>
 <li>
 <p>This happens <strong>before anything complicated</strong> begins: UART Driver, Memory Management Unit, Task Scheduler, …</p>
@@ -261,7 +261,7 @@ ERROR: Error initializing runtime service opteed_fast
 <p>The Arm64 Assembly above is <strong>Address-Independent Code</strong>: It will execute at Any Arm64 Address</p>
 </li>
 </ol>
-<p>Next we move our code…</p>
+<p>Next we move our code and make it Address-Dependent…</p>
 <h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>5 Set the Start Address</h1>
 <p><em>NuttX boots a tiny bit on our SBC. Where’s the rest?</em></p>
 <p>Our SBC boots NuttX at a different address from QEMU. We fix the <strong>Start Address</strong> inside NuttX…</p>
@@ -305,7 +305,7 @@ __start:
 </ul>
 <p>With these fixes, our C Code in NuttX shall boot correctly.</p>
 <p>TODO: LCD also</p>
-<h1 id="uart-driver-for-16650"><a class="doc-anchor" href="#uart-driver-for-16650">§</a>6 UART Driver for 16650</h1>
+<h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
 <p>To watch the <strong>Boot Progress</strong> <em>(Sesame Street-style)</em>, we can print primitively to UART like this: <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// 0x0250_0000 is the UART0 Base Address
