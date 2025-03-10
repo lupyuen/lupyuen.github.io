@@ -143,13 +143,14 @@ mv /TODO/Image /TODO/Image.old
 cp nuttx.bin /TODO/Image
 ls -l /TODO/Image
 ## Should be a lot smaller
+umount /TODO
 ```
 
-Nothing happens. Let's print something...
+Nothing happens. We do some logging...
 
 # Print to UART in Arm64 Assembly
 
-_How will we know that NuttX is actually booting?_
+_Is NuttX actually booting?_
 
 Let's print something. __UART0 Base Address__ is here...
 
