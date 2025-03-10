@@ -75,17 +75,15 @@
 <li><a href="#passwordless-sudo" title="Passwordless Sudo">8 Passwordless Sudo</a><ul></ul></li>
 <li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
-<li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">11 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
-<li><a href="#oops-config_ram_end-is-too-small-lets-enlarge" title="Oops CONFIG_RAM_END is too small. Let’s enlarge">12 Oops CONFIG_RAM_END is too small. Let’s enlarge</a><ul></ul></li>
-<li><a href="#ah-we-forgot-the-gic-address" title="Ah we forgot the GIC Address!">13 Ah we forgot the GIC Address!</a><ul></ul></li>
-<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">14 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
-<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">15 Mount the RAM Disk</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">16 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#todo" title="TODO">17 TODO</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">18 Boot NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">19 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#work-in-progress" title="Work In Progress">20 Work In Progress</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#arm64-global-interrupt-controller" title="Arm64 Global Interrupt Controller">11 Arm64 Global Interrupt Controller</a><ul></ul></li>
+<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">12 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
+<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">13 Mount the RAM Disk</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">14 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#todo" title="TODO">15 TODO</a><ul></ul></li>
+<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">16 Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">17 Allwinner A527 Docs</a><ul></ul></li>
+<li><a href="#work-in-progress" title="Work In Progress">18 Work In Progress</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -215,7 +213,7 @@ umount /TODO</code></pre></div>
 *(volatile uint8_t *) 0x02500000 = &#39;2&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;3&#39;;</code></pre></div>
 <p>But let’s do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Bootloader starts NuttX here */
+<div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here */
 __start:
   add x13, x18, #0x16 /* &quot;MZ&quot;: Magic Number for Linux Kernel Header */
   b   real_start      /* Jump to Executable Code      */
@@ -268,6 +266,8 @@ ERROR: Error initializing runtime service opteed_fast
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
 123</code></pre></div>
+<ol>
+<li>
 <p>Remember the <a href="TODO"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We fix it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY {
   /* Previously: QEMU boots at 0x4028_0000 */
@@ -275,7 +275,8 @@ Kernel addr: 0x40800000
 
   /* Previously: QEMU Paged Memory is at 0x4028_0000 */
   pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
-}</code></pre></div>
+}</code></pre></div></li>
+<li>
 <p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>CONFIG_ARCH_PGPOOL_PBASE</em> and <em>CONFIG_ARCH_PGPOOL_VBASE</em> too: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
@@ -283,14 +284,22 @@ CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 
 ## Virtual Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
-CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div></li>
+<li>
+<p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> <em>(CONFIG_RAMBANK1_SIZE)</em>. We set <em>CONFIG_RAM_SIZE</em> to match <em>CONFIG_RAMBANK1_SIZE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca">configs/knsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## RAM Size is a paltry 128 MB
+CONFIG_RAM_SIZE=134217728</code></pre></div>
+<p><em>(Kinda tiny, but sufficient)</em></p>
+</li>
+<li>
 <p><strong>Linux Kernel Header</strong> needs patching. We set the <strong>Image Load Offset</strong> to <em>0x80_0000</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
 __start:
   ...
   /* Image Load Offset from Start of RAM          */
   /* Previously: QEMU set this to 0x480000 (why?) */
-  .quad 0x800000</code></pre></div>
+  .quad 0x800000</code></pre></div></li>
+</ol>
 <p>That’s because…</p>
 <ul>
 <li>
@@ -681,7 +690,7 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 <tr><td style="text-align: left"><em>nx_pgpool</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
 </tbody></table>
 </div></p>
-<p>Couple of problems…</p>
+<p>Two Tweaks…</p>
 <ul>
 <li>
 <p><strong>DEVICE_REGION</strong>: This says I/O Memory Space ends at <em>0x2700_0000</em>. Based on the earlier <strong>A527 Memory Map</strong>, we extend this to <em>0x4000_0000 (1 GB)</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45">qemu/chip.h</a></p>
@@ -697,9 +706,6 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 // #define CONFIG_PCI_IO_BASEADDR  0x3eff0000
 // #define CONFIG_PCI_IO_SIZE      KB(64)</code></pre></div></li>
 <li>
-<p><strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em>. Which is kinda small, let’s embiggen.</p>
-</li>
-<li>
 <p><strong>PCI</strong>: Let’s remove these for now: <a href="https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct arm_mmu_region g_mmu_regions[] = {
   ...
@@ -707,17 +713,23 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_CFG&quot;, ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_MEM&quot;, ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_IO&quot;, ...</code></pre></div></li>
+</ul>
+<p>The rest are hunky dory…</p>
+<ul>
 <li>
-<p><strong>nx_code</strong> <em>(0x4080_0000)</em>: Kernel Code begins here. Looks correct.</p>
+<p>TODO <strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em>. Which is kinda small, let’s embiggen.</p>
 </li>
 <li>
-<p><strong>nx_rodata</strong> <em>(0x4082_A000)</em>: Read-Only Data for Kernel. Also OK.</p>
+<p><strong>nx_code</strong> <em>(0x4080_0000)</em>: Kernel Code begins here</p>
 </li>
 <li>
-<p><strong>nx_data</strong> <em>(0x4083_0000)</em>: Read-Write Data for Kernel. Ditto.</p>
+<p><strong>nx_rodata</strong> <em>(0x4082_A000)</em>: Read-Only Data for Kernel</p>
 </li>
 <li>
-<p><strong>nx_pgpool</strong> <em>(0x40A0_0000)</em>: Remember the <strong>Paged Memory Pool</strong>? That will be dished out as <strong>Virtual Memory</strong> to NuttX Apps? This looks legit.</p>
+<p><strong>nx_data</strong> <em>(0x4083_0000)</em>: Read-Write Data for Kernel</p>
+</li>
+<li>
+<p><strong>nx_pgpool</strong> <em>(0x40A0_0000)</em>: Remember the <strong>Paged Memory Pool</strong>? This will be dished out as <strong>Virtual Memory</strong> to NuttX Apps</p>
 </li>
 </ul>
 <p>Rebuild, recopy, reboot NuttX. Our Memory Map looks <a href="https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14"><strong>much better now</strong></a>…</p>
@@ -732,72 +744,61 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 </tbody></table>
 </div></p>
 <p>Though it crashes elsewhere…</p>
-<h1 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>11 Whoa Heap Size is wrong! Let’s find out why</h1>
-<p><em>Why is NuttX crashing with ridiculous sizes?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>up_allocate_kheap:
-  heap_start=0x0x40843000
-  heap_size=0xfffffffffffbd000
-
-mm_initialize: Heap:
-  name=Kmem
-  start=0x40843000
-  size=18446744073709277184
-
-mm_addregion:
-  [Kmem] Region 1:
-  base=0x408432a8 
-  size=18446744073709276504
-
-Assertion failed : at file: mm_heap/mm_malloc.c:323</code></pre></div>
-<p>NuttX now crashes when <a href="https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14"><strong>Allocating the Kernel Heap</strong></a>. The numbers above are way too huge, this looks like an <strong>Arithmetic Underflow</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Heap Size looks negative
-up_allocate_kheap:
-  heap_start=0x0x40843000
-  heap_size=0xfffffffffffbd000</code></pre></div>
-<p>We add an Assertion Check: <a href="https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5"><strong>CONFIG_RAM_END &gt; g_idle_topstack</strong></a>. Yep <a href="https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92"><strong>Our Assertion Fails</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap:
-  CONFIG_RAM_END=0x40800000,
-  g_idle_topstack=0x40843000
-dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>12 Oops CONFIG_RAM_END is too small. Let’s enlarge</h1>
-<p>CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE</p>
+<h1 id="arm64-global-interrupt-controller"><a class="doc-anchor" href="#arm64-global-interrupt-controller">§</a>11 Arm64 Global Interrupt Controller</h1>
+<p><em>Why is NuttX failing with an Undefined Instruction?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19
+...
+nx_start_application: Starting init task: /system/bin/init
+arm64_el1_undef: Undefined instruction at 0x408276e4, dump:
+Assertion failed panic: at file: common/arm64_fatal.c:572</code></pre></div>
+<p>Yeah this failure is <a href="https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f"><strong>totally misleading</strong></a>. Real Culprit: NuttX couldn’t <strong>Init the GIC</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>No GIC version detect
+No distributor detected, giving up</code></pre></div>
+<p><em>What’s this GIC?</em></p>
+<p>It’s the Arm64 <a href="TODO"><strong>Generic Interrupt Controller (GIC)</strong></a>, version 3. GIC will…</p>
 <ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca</li>
+<li>
+<p>Receive <strong>I/O Interrupts</strong> <em>(like keypresses)</em></p>
+</li>
+<li>
+<p>And forward them to an <strong>Arm64 CPU Core</strong> for processing. <em>(Works like RISC-V PLIC)</em></p>
+</li>
 </ul>
-<p>GIC Failed</p>
-<ul>
-<li>https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div><h1 id="ah-we-forgot-the-gic-address"><a class="doc-anchor" href="#ah-we-forgot-the-gic-address">§</a>13 Ah we forgot the GIC Address!</h1>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 263</p>
-<div class="example-wrap"><pre class="language-text"><code>Module Name Base Address Comments
-GIC
-GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
+<p>GIC is here…</p>
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: left">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
+</tbody></table>
+</div>
+<p>With these <strong>GIC Registers</strong>, handling 8 Arm64 Cores…</p>
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: left"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
+<tr><td style="text-align: left"><em>0x06_0000</em></td><td style="text-align: left">GICR_CTLR_C0  <em>(Redistributor Control Register, Core 0)</em></td></tr>
+<tr><td style="text-align: left"><em>0x08_0000</em></td><td style="text-align: left">GICR_CTLR_C1  <em>(Ditto, Core 1)</em></td></tr>
+<tr><td style="text-align: left"><em>0x0A_0000</em></td><td style="text-align: left">GICR_CTLR_C2  <em>(Ditto, Core 2)</em></td></tr>
+<tr><td style="text-align: left"><em>0x0C_0000</em></td><td style="text-align: left">GICR_CTLR_C3  <em>(Ditto, Core 3)</em></td></tr>
+<tr><td style="text-align: left"><em>0x0E_0000</em></td><td style="text-align: left">GICR_CTLR_C4  <em>(Ditto, Core 4)</em></td></tr>
+<tr><td style="text-align: left"><em>0x10_0000</em></td><td style="text-align: left">GICR_CTLR_C5  <em>(Ditto, Core 5)</em></td></tr>
+<tr><td style="text-align: left"><em>0x12_0000</em></td><td style="text-align: left">GICR_CTLR_C6  <em>(Ditto, Core 6)</em></td></tr>
+<tr><td style="text-align: left"><em>0x14_0000</em></td><td style="text-align: left">GICR_CTLR_C7  <em>(Ditto, Core 7)</em></td></tr>
+<tr><td style="text-align: left"><em>0x16_0000</em></td><td style="text-align: left">GICDA_CTLR  <em>(Ditto, Core 1)</em></td></tr>
+</tbody></table>
+</div>
+<p>Based on the above, we set the <strong>Addresses of GICD and GICR</strong> <em>(Distributor / Redistributor)</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76">qemu/chip.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Base Address of GIC Distributor and Redistributor
+#define CONFIG_GICD_BASE   0x3400000
+#define CONFIG_GICR_BASE   0x3460000
 
-Register Name Offset Description
-GICD_CTLR 0x00000 Distributor Control Register
-GICR_CTLR_C0 0x60000 Redistributor Control Register
-GICR_CTLR_C1 0x80000 Redistributor Control Register
-GICR_CTLR_C2 0xA0000 Redistributor Control Register
-GICR_CTLR_C3 0xC0000 Redistributor Control Register
-GICR_CTLR_C4 0xE0000 Redistributor Control Register
-GICR_CTLR_C5 0x100000 Redistributor Control Register
-GICR_CTLR_C6 0x120000 Redistributor Control Register
-GICR_CTLR_C7 0x140000 Redistributor Control Register
-GICDA_CTLR 0x160000 Distributor Control Register</code></pre></div>
-<p>Set Address of GICD, GICR</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76</li>
-</ul>
-<p>Disable MM Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83</li>
-</ul>
+// Spaced 0x20000 bytes per Arm64 Core
+#define CONFIG_GICR_OFFSET 0x20000</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><em>(And Disable Memory Manager Logging)</em></a></p>
+<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
 <p>/system/bin/init is missing yay!</p>
 <ul>
 <li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
 </ul>
-<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>14 Load the NuttX Apps Filesystem into RAM</h1>
 <p>Remove HostFS for Semihosting</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
@@ -865,7 +866,7 @@ find_blockdriver: ERROR: Failed to find /dev/ram0
 nx_mount: ERROR: Failed to find block driver /dev/ram0
 nx_start_application: ret=-15</code></pre></div>
 <p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
-<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>15 Mount the RAM Disk</h1>
+<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>13 Mount the RAM Disk</h1>
 <p>Let’s mount the RAM Disk…</p>
 <p>Mount the RAM Disk</p>
 <ul>
@@ -884,7 +885,7 @@ nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>NSH Prompt won’t appear until we fix the UART Interrupt…</p>
-<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>16 Fix the UART Interrupt</h1>
+<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>14 Fix the UART Interrupt</h1>
 <p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 256</p>
 <div class="example-wrap"><pre class="language-text"><code>Interrupt Number Interrupt Source Interrupt Vector Description
 34 UART0 0x0088</code></pre></div>
@@ -905,7 +906,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <ul>
 <li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>17 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>15 TODO</h1>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)" /></p>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -934,7 +935,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
-<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>18 Boot NuttX for Avaota-A1</h1>
+<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>16 Boot NuttX for Avaota-A1</h1>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
@@ -1075,16 +1076,16 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p>How did we get here? Let’s walk through the steps…</p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>19 Allwinner A527 Docs</h1>
+<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>17 Allwinner A527 Docs</h1>
 <p>We used these docs (A527 is a variant of A523)</p>
 <ul>
 <li>https://linux-sunxi.org/A523</li>
 <li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
 <li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
 </ul>
-<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>20 Work In Progress</h1>
+<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>18 Work In Progress</h1>
 <p>We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC…</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
 <p>TODO</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
