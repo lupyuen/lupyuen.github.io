@@ -74,19 +74,18 @@
 <li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">7 Build NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#passwordless-sudo" title="Passwordless Sudo">8 Passwordless Sudo</a><ul></ul></li>
 <li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
-<li><a href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash" title="Hmmm the Peripheral Address Space is missing. UART0 will crash!">10 Hmmm the Peripheral Address Space is missing. UART0 will crash!</a><ul></ul></li>
-<li><a href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb" title="Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB">11 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</a><ul></ul></li>
-<li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">12 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
-<li><a href="#oops-config_ram_end-is-too-small-lets-enlarge" title="Oops CONFIG_RAM_END is too small. Let’s enlarge">13 Oops CONFIG_RAM_END is too small. Let’s enlarge</a><ul></ul></li>
-<li><a href="#ah-we-forgot-the-gic-address" title="Ah we forgot the GIC Address!">14 Ah we forgot the GIC Address!</a><ul></ul></li>
-<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">15 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
-<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">16 Mount the RAM Disk</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">17 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#todo" title="TODO">18 TODO</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">19 Boot NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">20 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#work-in-progress" title="Work In Progress">21 Work In Progress</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">22 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
+<li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">11 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
+<li><a href="#oops-config_ram_end-is-too-small-lets-enlarge" title="Oops CONFIG_RAM_END is too small. Let’s enlarge">12 Oops CONFIG_RAM_END is too small. Let’s enlarge</a><ul></ul></li>
+<li><a href="#ah-we-forgot-the-gic-address" title="Ah we forgot the GIC Address!">13 Ah we forgot the GIC Address!</a><ul></ul></li>
+<li><a href="#load-the-nuttx-apps-filesystem-into-ram" title="Load the NuttX Apps Filesystem into RAM">14 Load the NuttX Apps Filesystem into RAM</a><ul></ul></li>
+<li><a href="#mount-the-ram-disk" title="Mount the RAM Disk">15 Mount the RAM Disk</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">16 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#todo" title="TODO">17 TODO</a><ul></ul></li>
+<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">18 Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">19 Allwinner A527 Docs</a><ul></ul></li>
+<li><a href="#work-in-progress" title="Work In Progress">20 Work In Progress</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -635,38 +634,85 @@ init_xlat_tables: mmap: virt 0x40830000 phys 0x40830000 size 0x13000
 init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
 enable_mmu_el1:
 enable_mmu_el1: UP_MB
-enable_mmu_el1: Enable the MMU and data cache</code></pre></div><h1 id="hmmm-the-peripheral-address-space-is-missing-uart0-will-crash"><a class="doc-anchor" href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash">§</a>10 Hmmm the Peripheral Address Space is missing. UART0 will crash!</h1>
-<p><em>Maybe our Memory Map is incorrect?</em></p>
-<p>Let’s verify.</p>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Memory Map: Page 42</p>
-<div class="example-wrap"><pre class="language-text"><code>BROM &amp; SRAM
-S_BROM 0x0000 0000---0x0000 AFFF 44 K
+enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
+<p>Something sus about the above <a href="https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362"><strong>Mystery Addresses</strong></a>, what are they?</p>
+<p>
+<div><table><thead><tr><th style="text-align: center">Virtual</th><th style="text-align: center">Physical</th><th style="text-align: center">Size</th></tr></thead><tbody>
+<tr><td style="text-align: center"><em>0x0700_0000</em></td><td style="text-align: center">0x0700_0000</td><td style="text-align: center"><em>0x2000_0000</em></td></tr>
+<tr><td style="text-align: center"><em>0x4000_0000</em></td><td style="text-align: center">0x4000_0000</td><td style="text-align: center"><em>0x0800_0000</em></td></tr>
+<tr><td style="text-align: center"><em>0x40_1000_0000</em></td><td style="text-align: center">0x40_1000_0000</td><td style="text-align: center"><em>0x1000_0000</em></td></tr>
+<tr><td style="text-align: center"><em>0x80_0000_0000</em></td><td style="text-align: center">0x80_0000_0000</td><td style="text-align: center"><em>0x80_0000_0000</em></td></tr>
+<tr><td style="text-align: center"><em>0x3EFF_0000</em></td><td style="text-align: center">0x3EFF_0000</td><td style="text-align: center"><em>0x0001_0000</em></td></tr>
+<tr><td style="text-align: center"><em>0x4080_0000</em></td><td style="text-align: center">0x4080_0000</td><td style="text-align: center"><em>0x0002_A000</em></td></tr>
+<tr><td style="text-align: center"><em>0x4082_A000</em></td><td style="text-align: center">0x4082_A000</td><td style="text-align: center"><em>0x0000_6000</em></td></tr>
+<tr><td style="text-align: center"><em>0x4083_0000</em></td><td style="text-align: center">0x4083_0000</td><td style="text-align: center"><em>0x0001_3000</em></td></tr>
+<tr><td style="text-align: center"><em>0x40A0_0000</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
+</tbody></table>
+</div></p>
+<h1 id="fix-the-nuttx-memory-map"><a class="doc-anchor" href="#fix-the-nuttx-memory-map">§</a>10 Fix the NuttX Memory Map</h1>
+<p><em>Arm64 MMU won’t turn on. Maybe our Memory Map is incorrect?</em></p>
+<p>Let’s verify our <strong>Memory Map</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 42</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Address</strong></td></tr>
+<tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left">0x0000 0000</td></tr>
+<tr><td style="text-align: left">PCIE</td><td style="text-align: left">0x2000 0000 to 0x2FFF FFFF</td></tr>
+<tr><td style="text-align: left">DRAM</td><td style="text-align: left">0x4000 0000 to 0x13FFF FFFF</td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>How does this compare with NuttX? We do extra logging for <strong>Memory Management Unit (MMU)</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843">arm64_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Log the Names of the Memory Regions
+static void init_xlat_tables(const struct arm_mmu_region *region) { ...
+  _info(&quot;name=%s\n&quot;, region-&gt;name);
+  sinfo(&quot;mmap: virt %p phys %p size %p\n&quot;, virt, phys, size);</code></pre></div>
+<p>Ah much clearer! Now we see the <strong>Names of Memory Regions</strong>…</p>
+<p>
+<div><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: center">Physical</th><th style="text-align: center">Size</th></tr></thead><tbody>
+<tr><td style="text-align: left"><em>DEVICE_REGION</em></td><td style="text-align: center">0x0700_0000</td><td style="text-align: center"><em>0x2000_0000</em></td></tr>
+<tr><td style="text-align: left"><em>DRAM0_S0</em></td><td style="text-align: center">0x4000_0000</td><td style="text-align: center"><em>0x0800_0000</em></td></tr>
+<tr><td style="text-align: left"><em>PCI_CFG</em></td><td style="text-align: center">0x40_1000_0000</td><td style="text-align: center"><em>0x1000_0000</em></td></tr>
+<tr><td style="text-align: left"><em>PCI_MEM</em></td><td style="text-align: center">0x80_0000_0000</td><td style="text-align: center"><em>0x80_0000_0000</em></td></tr>
+<tr><td style="text-align: left"><em>PCI_IO</em></td><td style="text-align: center">0x3EFF_0000</td><td style="text-align: center"><em>0x0001_0000</em></td></tr>
+<tr><td style="text-align: left"><em>nx_code</em></td><td style="text-align: center">0x4080_0000</td><td style="text-align: center"><em>0x0002_A000</em></td></tr>
+<tr><td style="text-align: left"><em>nx_rodata</em></td><td style="text-align: center">0x4082_A000</td><td style="text-align: center"><em>0x0000_6000</em></td></tr>
+<tr><td style="text-align: left"><em>nx_data</em></td><td style="text-align: center">0x4083_0000</td><td style="text-align: center"><em>0x0001_3000</em></td></tr>
+<tr><td style="text-align: left"><em>nx_pgpool</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
+</tbody></table>
+</div></p>
+<p>Couple of problems…</p>
+<ul>
+<li>
+<p><strong>DEVICE_REGION</strong>: This says I/O Memory Space ends at <em>0x2700_0000</em>. Based on the earlier <strong>A527 Memory Map</strong>, we extend this to <em>0x4000_0000 (1 GB)</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45">qemu/chip.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Fix the I/O Memory Space: Base Address and Size
+#define CONFIG_DEVICEIO_BASEADDR 0x00000000
+#define CONFIG_DEVICEIO_SIZE     MB(1024)
 
-PCIE
-PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
-
-DRAM Space
-DRAM SPACE 0x4000 0000---0x13FFF FFFF
-4 GB
-RISC-V core accesses theDRAM address:
-0x4004 0000---0x7FFFFFFF</code></pre></div><h1 id="lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb"><a class="doc-anchor" href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb">§</a>11 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</h1>
-<p>Add MMU Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843</li>
-</ul>
-<p>Remove PCI from MMU Regions</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7</li>
-</ul>
-<p>Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45</li>
+// We don&#39;t need PCI, for now
+// #define CONFIG_PCI_CFG_BASEADDR    0x4010000000
+// #define CONFIG_PCI_CFG_SIZE        MB(256)
+// #define CONFIG_PCI_MEM_BASEADDR    0x8000000000
+// #define CONFIG_PCI_MEM_SIZE        GB(512)
+// #define CONFIG_PCI_IO_BASEADDR     0x3eff0000
+// #define CONFIG_PCI_IO_SIZE         KB(64)</code></pre></div></li>
+<li>
+<p><strong>DRAM0_S0</strong>: RAM Space ends at <em>0x0800_0000</em>? Utterly incorrect! We fix this in a while.</p>
+</li>
+<li>
+<p><strong>PCI</strong>: Let’s remove these for now: <a href="https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7">qemu_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct arm_mmu_region g_mmu_regions[] = {
+  ...
+  // We don&#39;t need PCI, for now
+  // MMU_REGION_FLAT_ENTRY(&quot;PCI_CFG&quot;, ...
+  // MMU_REGION_FLAT_ENTRY(&quot;PCI_MEM&quot;, ...
+  // MMU_REGION_FLAT_ENTRY(&quot;PCI_IO&quot;, ...</code></pre></div></li>
 </ul>
 <p><code>up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000</code></p>
 <ul>
 <li>https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14</li>
 </ul>
-<h1 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>12 Whoa Heap Size is wrong! Let’s find out why</h1>
+<h1 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>11 Whoa Heap Size is wrong! Let’s find out why</h1>
 <p>Assert CONFIG_RAM_END &gt; g_idle_topstack</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5</li>
@@ -676,7 +722,7 @@ RISC-V core accesses theDRAM address:
 <li>https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
-dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>13 Oops CONFIG_RAM_END is too small. Let’s enlarge</h1>
+dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>12 Oops CONFIG_RAM_END is too small. Let’s enlarge</h1>
 <p>CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca</li>
@@ -686,7 +732,7 @@ dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end
 <li>https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div><h1 id="ah-we-forgot-the-gic-address"><a class="doc-anchor" href="#ah-we-forgot-the-gic-address">§</a>14 Ah we forgot the GIC Address!</h1>
+arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div><h1 id="ah-we-forgot-the-gic-address"><a class="doc-anchor" href="#ah-we-forgot-the-gic-address">§</a>13 Ah we forgot the GIC Address!</h1>
 <p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 263</p>
 <div class="example-wrap"><pre class="language-text"><code>Module Name Base Address Comments
 GIC
@@ -715,7 +761,7 @@ GICDA_CTLR 0x160000 Distributor Control Register</code></pre></div>
 <ul>
 <li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
 </ul>
-<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>15 Load the NuttX Apps Filesystem into RAM</h1>
+<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>14 Load the NuttX Apps Filesystem into RAM</h1>
 <p>Remove HostFS for Semihosting</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
@@ -783,7 +829,7 @@ find_blockdriver: ERROR: Failed to find /dev/ram0
 nx_mount: ERROR: Failed to find block driver /dev/ram0
 nx_start_application: ret=-15</code></pre></div>
 <p>Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!</p>
-<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>16 Mount the RAM Disk</h1>
+<h1 id="mount-the-ram-disk"><a class="doc-anchor" href="#mount-the-ram-disk">§</a>15 Mount the RAM Disk</h1>
 <p>Let’s mount the RAM Disk…</p>
 <p>Mount the RAM Disk</p>
 <ul>
@@ -802,7 +848,7 @@ nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>NSH Prompt won’t appear until we fix the UART Interrupt…</p>
-<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>17 Fix the UART Interrupt</h1>
+<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>16 Fix the UART Interrupt</h1>
 <p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 256</p>
 <div class="example-wrap"><pre class="language-text"><code>Interrupt Number Interrupt Source Interrupt Vector Description
 34 UART0 0x0088</code></pre></div>
@@ -823,7 +869,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <ul>
 <li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
 </ul>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>18 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>17 TODO</h1>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)" /></p>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -852,7 +898,7 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
-<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>19 Boot NuttX for Avaota-A1</h1>
+<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>18 Boot NuttX for Avaota-A1</h1>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
@@ -993,16 +1039,16 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p>How did we get here? Let’s walk through the steps…</p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>20 Allwinner A527 Docs</h1>
+<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>19 Allwinner A527 Docs</h1>
 <p>We used these docs (A527 is a variant of A523)</p>
 <ul>
 <li>https://linux-sunxi.org/A523</li>
 <li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
 <li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
 </ul>
-<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>21 Work In Progress</h1>
+<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>20 Work In Progress</h1>
 <p>We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC…</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>22 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>21 What’s Next</h1>
 <p>TODO</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
