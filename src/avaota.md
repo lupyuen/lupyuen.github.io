@@ -908,15 +908,33 @@ Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Re
 Remember to [__Disable Memory Manager Logging__](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83). NuttX GIC Driver [__complains no more__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)!
 
 ```bash
-gic_validate_dist_version: GICv3 version detect
-gic_validate_dist_version: GICD_TYPER = 0x7b0408
-gic_validate_dist_version: 256 SPIs implemented
+## SPI = Physical Interrupt Signal (not the typical SPI)
+gic_validate_dist_version:
+  GICv3 version detect
+  GICD_TYPER = 0x7b0408
+  256 SPIs implemented
 ```
 
 # Load the NuttX Apps Filesystem into RAM
 
-/system/bin/init is missing yay!
-- https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c
+_Are we done yet?_
+
+If we're doing a __Simple NuttX Port__ _(Flat Build)_: Congrats we're done!
+
+However we're doing __NuttX Kernel Build__. Which [__needs more work__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)...
+
+```bash
+nx_start_application:
+  Starting init task: /system/bin/init
+arm64_el1_undef:
+  Undefined instruction at 0x408274a4
+Assertion failed panic:
+  common/arm64_fatal.c:572
+```
+
+_What's /system/bin/init? Why is it failing?_
+
+
 
 Remove HostFS for Semihosting
 - https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
