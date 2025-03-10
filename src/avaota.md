@@ -790,8 +790,6 @@ Couple of problems...
   // #define CONFIG_PCI_IO_SIZE         KB(64)
   ```
 
-- __DRAM0_S0__: RAM Space ends at _0x0800_0000_? Utterly incorrect! We fix this in a while.
-
 - __PCI__: Let's remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
 
   ```c
@@ -803,8 +801,32 @@ Couple of problems...
     // MMU_REGION_FLAT_ENTRY("PCI_IO", ...
   ```
 
-`up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000`
-- https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14
+- __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, as we'll see.
+
+- __nx_code__ _(0x4080_0000)_: Kernel Code begins here. Looks correct.
+
+- __nx_rodata__ _(0x4082_A000)_: Read-Only Data for Kernel. Also OK.
+
+- __nx_data__ _(0x4083_0000)_: Read-Write Data for Kernel. Ditto.
+
+- __nx_pgpool__ _(0x40A0_0000)_: Remember the __Paged Memory Pool__? That will be dished out as __Virtual Memory__ to NuttX Apps? This looks legit.
+
+Rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14)...
+
+<p>
+
+| Name | Physical | Size |
+|:--------|:--------:|:----:|
+| _DEVICE_REGION_ | 0x0000_0000 | _0x4000_0000_
+| _DRAM0_S0_ | 0x4000_0000 | _0x0800_0000_
+| _nx_code_ | 0x4080_0000 | _0x0002_A000_
+| _nx_rodata_ | 0x4082_A000 | _0x0000_6000_
+| _nx_data_ | 0x4083_0000 | _0x0001_3000_
+| _nx_pgpool_ | 0x40A0_0000 | _0x0040_0000_
+
+</p>
+
+Though it crashes elsewhere...
 
 # Whoa Heap Size is wrong! Let's find out why
 
