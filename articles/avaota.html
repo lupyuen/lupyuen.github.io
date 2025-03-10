@@ -184,10 +184,11 @@ drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
 <div class="example-wrap"><pre class="language-bash"><code>mv /TODO/Image /TODO/Image.old
 cp nuttx.bin /TODO/Image
 ls -l /TODO/Image
-## Should be a lot smaller</code></pre></div>
-<p>Nothing happens. Let’s print something…</p>
+## Should be a lot smaller
+umount /TODO</code></pre></div>
+<p>Nothing happens. We do some logging…</p>
 <h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
-<p><em>How will we know that NuttX is actually booting?</em></p>
+<p><em>Is NuttX actually booting?</em></p>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
