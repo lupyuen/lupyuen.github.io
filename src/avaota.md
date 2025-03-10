@@ -738,9 +738,9 @@ Let's verify our __Memory Map__...
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 42 |
 |:--------------------------------|:---------|
 | __Module__ | __Address__
-| Boot ROM & SRAM | 0x0000 0000
-| PCIE | 0x2000 0000 to 0x2FFF FFFF
-| DRAM | 0x4000 0000 to 0x13FFF FFFF
+| Boot ROM & SRAM | _0x0000_0000_ to ...
+| PCIE | _0x2000_0000_ to _0x2FFF_FFFF_
+| DRAM | _0x4000_0000_ to ...
 
 </div>
 </p>
@@ -782,13 +782,15 @@ Couple of problems...
   #define CONFIG_DEVICEIO_SIZE     MB(1024)
 
   // We don't need PCI, for now
-  // #define CONFIG_PCI_CFG_BASEADDR    0x4010000000
-  // #define CONFIG_PCI_CFG_SIZE        MB(256)
-  // #define CONFIG_PCI_MEM_BASEADDR    0x8000000000
-  // #define CONFIG_PCI_MEM_SIZE        GB(512)
-  // #define CONFIG_PCI_IO_BASEADDR     0x3eff0000
-  // #define CONFIG_PCI_IO_SIZE         KB(64)
+  // #define CONFIG_PCI_CFG_BASEADDR 0x4010000000
+  // #define CONFIG_PCI_CFG_SIZE     MB(256)
+  // #define CONFIG_PCI_MEM_BASEADDR 0x8000000000
+  // #define CONFIG_PCI_MEM_SIZE     GB(512)
+  // #define CONFIG_PCI_IO_BASEADDR  0x3eff0000
+  // #define CONFIG_PCI_IO_SIZE      KB(64)
   ```
+
+- __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, let's embiggen.
 
 - __PCI__: Let's remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
 
@@ -800,8 +802,6 @@ Couple of problems...
     // MMU_REGION_FLAT_ENTRY("PCI_MEM", ...
     // MMU_REGION_FLAT_ENTRY("PCI_IO", ...
   ```
-
-- __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, as we'll see.
 
 - __nx_code__ _(0x4080_0000)_: Kernel Code begins here. Looks correct.
 
