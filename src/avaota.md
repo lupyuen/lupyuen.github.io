@@ -59,8 +59,6 @@ TODO: Download
 
 TODO: MicroSD
 
-TODO: SyterKit: https://github.com/YuzukiHD/SyterKit
-
 TODO: Load Address
 
 TODO: LCD Screen too
@@ -235,32 +233,78 @@ ERROR: Error initializing runtime service opteed_fast
 
 (Ignore the _opteed_fast_ error)
 
-Address Independent Code
+_Why print in Arm64 Assembly? Why not C?_
 
+1.  Arm64 Assembly is the __very first thing that boots__ when our SBC Bootloader starts NuttX
 
-# Bootloader Log says that Start Address is 0x40800000. We change it
+1.  This happens __before anything complicated__ begins: UART Driver, Memory Management Unit, Task Scheduler, ...
 
-https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
+1.  The Arm64 Assembly above is __Address-Independent Code__: It will execute at Any Arm64 Address
+
+Next we move our code...
+
+# Set the Start Address
+
+_NuttX boots a tiny bit on our SBC. Where's the rest?_
+
+Our SBC boots NuttX at a different address from QEMU. We fix the __Start Address__ inside NuttX...
 
 ```bash
 read /Image addr=40800000
 Kernel addr: 0x40800000
-BL31: v2.5(debug):9241004a9
-sunxi-arisc driver is starting
-ERROR: Error initializing runtime service opteed_fast
 123
 ```
 
+Remember the [__Boot Log__](TODO) from earlier? It says that the [__SyterKit Bootloader__](https://github.com/YuzukiHD/SyterKit) starts NuttX at __Address `0x4080_0000`__. We fix it here: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca)
+
+```c
+MEMORY {
+  /* Previously: QEMU boots at 0x4028_0000 */
+  dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
+
+  /* Previously: QEMU Paged Memory is at 0x4028_0000 */
+  pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
+}
+```
+
+Since we changed the __Paged Memory Pool__ _(pgram)_, we update _CONFIG_ARCH_PGPOOL_PBASE_ and _CONFIG_ARCH_PGPOOL_VBASE_ too: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
+
+```bash
+## Physical Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
+
+## Virtual Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
+```
+
+__Linux Kernel Header__ needs patching. We set the __Image Load Offset__ to _0x80\_0000_: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+
+```c
+/* Bootloader starts NuttX here, followed by Linux Kernel Header */
+__start:
+  ...
+  /* Image Load Offset from Start of RAM          */
+  /* Previously: QEMU set this to 0x480000 (why?) */
+  .quad 0x800000
+```
+
+That's because...
+
+- [__Start of RAM__](https://github.com/lupyuen2/wip-nuttx/blob/avaota/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig#L85) is _0x4000\_0000_
+
+  ```bash
+  CONFIG_RAM_START=0x40000000
+  ```
+
+- Bootloader starts NuttX at _0x4080\_0000_
+
+- Subtract the above to get __Image Load Offset__: _0x80\_0000_
+
+With these fixes, our C Code in NuttX shall boot correctly.
+
 TODO: LCD also
-
-Change start address to 0x40800000
-- https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca
-
-Fix Image Load Offset
-- https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
-
-CONFIG_ARCH_PGPOOL_PBASE should match pgram
-- https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86
 
 # 16650 UART Driver
 
