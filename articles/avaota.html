@@ -733,15 +733,31 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 </div></p>
 <p>Though it crashes elsewhere…</p>
 <h1 id="whoa-heap-size-is-wrong-lets-find-out-why"><a class="doc-anchor" href="#whoa-heap-size-is-wrong-lets-find-out-why">§</a>11 Whoa Heap Size is wrong! Let’s find out why</h1>
-<p>Assert CONFIG_RAM_END &gt; g_idle_topstack</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5</li>
-</ul>
-<p>Assertion fails</p>
-<ul>
-<li>https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92</li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
+<p><em>Why is NuttX crashing with ridiculous sizes?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>up_allocate_kheap:
+  heap_start=0x0x40843000
+  heap_size=0xfffffffffffbd000
+
+mm_initialize: Heap:
+  name=Kmem
+  start=0x40843000
+  size=18446744073709277184
+
+mm_addregion:
+  [Kmem] Region 1:
+  base=0x408432a8 
+  size=18446744073709276504
+
+Assertion failed : at file: mm_heap/mm_malloc.c:323</code></pre></div>
+<p>NuttX now crashes when <a href="https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14"><strong>Allocating the Kernel Heap</strong></a>. The numbers above are way too huge, this looks like an <strong>Arithmetic Underflow</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Heap Size looks negative
+up_allocate_kheap:
+  heap_start=0x0x40843000
+  heap_size=0xfffffffffffbd000</code></pre></div>
+<p>We add an Assertion Check: <a href="https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5"><strong>CONFIG_RAM_END &gt; g_idle_topstack</strong></a>. Yep <a href="https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92"><strong>Our Assertion Fails</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>up_allocate_kheap:
+  CONFIG_RAM_END=0x40800000,
+  g_idle_topstack=0x40843000
 dump_assert_info: Assertion failed</code></pre></div><h1 id="oops-config_ram_end-is-too-small-lets-enlarge"><a class="doc-anchor" href="#oops-config_ram_end-is-too-small-lets-enlarge">§</a>12 Oops CONFIG_RAM_END is too small. Let’s enlarge</h1>
 <p>CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE</p>
 <ul>
