@@ -26,18 +26,14 @@ I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting because:
 
 Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.
 
-Why?
-Pr test bot
-New soc
-Kernel build
-How to turn qemu into real hardware 
-Why a mux will complete in 48 hours
-Including sleep
+Octa-Core CPU
 
 Here's the story 
 
 Build NuttX for 
 Port NuttX to 
+
+Schematic: https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf
 
 # What's Next
 
