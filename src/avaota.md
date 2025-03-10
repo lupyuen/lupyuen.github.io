@@ -863,9 +863,13 @@ _What's this GIC?_
 
 It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC will...
 
-- Receive __I/O Interrupts__ _(like keypresses)_
+- Receive __I/O Interrupts__
 
-- And forward them to an __Arm64 CPU Core__ for processing. _(Works like RISC-V PLIC)_
+  _(Like keypresses)_
+
+- And forward them to an __Arm64 CPU Core__ for processing
+
+  _(Works like RISC-V PLIC)_
 
 GIC is here...
 
@@ -901,7 +905,13 @@ Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Re
 #define CONFIG_GICR_OFFSET 0x20000
 ```
 
-[_(And Disable Memory Manager Logging)_](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83)
+Remember to [__Disable Memory Manager Logging__](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83). NuttX GIC Driver [__complains no more__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)!
+
+```bash
+gic_validate_dist_version: GICv3 version detect
+gic_validate_dist_version: GICD_TYPER = 0x7b0408
+gic_validate_dist_version: 256 SPIs implemented
+```
 
 # Load the NuttX Apps Filesystem into RAM
 
