@@ -72,8 +72,8 @@
 <li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
 <li><a href="#uart-driver-for-16550" title="UART Driver for 16550">6 UART Driver for 16550</a><ul></ul></li>
 <li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">7 Build NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux" title="Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux">8 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</a><ul></ul></li>
-<li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">9 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li>
+<li><a href="#passwordless-sudo" title="Passwordless Sudo">8 Passwordless Sudo</a><ul></ul></li>
+<li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
 <li><a href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash" title="Hmmm the Peripheral Address Space is missing. UART0 will crash!">10 Hmmm the Peripheral Address Space is missing. UART0 will crash!</a><ul></ul></li>
 <li><a href="#lets-fix-the-peripheral-address-space-0x0-to-0x40000000-1-gb" title="Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB">11 Let’s fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB</a><ul></ul></li>
 <li><a href="#whoa-heap-size-is-wrong-lets-find-out-why" title="Whoa Heap Size is wrong! Let’s find out why">12 Whoa Heap Size is wrong! Let’s find out why</a><ul></ul></li>
@@ -333,7 +333,7 @@ void arm64_chip_boot(void) {
 
   *(volatile uint8_t *) 0x02500000 = &#39;G&#39;;
   up_perf_init(..);  // Init the Performance Counters</code></pre></div>
-<p>Beyond Sesame Street: We need the <strong>16550 UART Driver</strong>…</p>
+<p>Beyond Big Bird: We need the <strong>16550 UART Driver</strong>…</p>
 <ol>
 <li>
 <p><strong>NuttX Boot Code</strong> <em>(Arm64 Assembly)</em> will print to UART. We patch it: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-60cebb895326dea641e32d31ff39511acf127a30c9ac8f275590e7524737366e">qemu_lowputc.S</a></p>
@@ -370,7 +370,7 @@ void arm64_serialinit(void) {
   u16550_serialinit();
 }</code></pre></div></li>
 <li>
-<p>We configure <strong>16550 UART</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
+<p><strong>16550 UART</strong> shall be configured: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_REGINCR=4
 CONFIG_16550_UART0=y
@@ -382,7 +382,7 @@ CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div></li>
 <li>
-<p>And <strong>remove PL011 UART</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987">configs/knsh/defconfig</a></p>
+<p><strong>PL011 UART</strong> shall be removed: <a href="https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remove PL011 UART from NuttX Config:
 ## CONFIG_UART1_BASE=0x9000000
 ## CONFIG_UART1_IRQ=33
@@ -500,7 +500,8 @@ curl \
 set -x  ##  Enable echo</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p>(<strong>copy-image.sh</strong> is explained below)</p>
-<h1 id="lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux"><a class="doc-anchor" href="#lets-make-our-build-test-cycle-quicker-we-do-passwordless-sudo-for-flipping-our-sdwire-mux">§</a>8 Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</h1>
+<h1 id="passwordless-sudo"><a class="doc-anchor" href="#passwordless-sudo">§</a>8 Passwordless Sudo</h1>
+<p>Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</p>
 <p>SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.</p>
 <p>Let’s make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
@@ -535,28 +536,108 @@ scp nuttx.bin thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
-<h1 id="troubleboot-the-mmu-why-wont-it-start"><a class="doc-anchor" href="#troubleboot-the-mmu-why-wont-it-start">§</a>9 Troubleboot the MMU. Why won’t it start?</h1>
-<p>Enable Logging for Scheduler and MMU</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58</li>
-</ul>
-<p>Disable CONFIG_MMU_DUMP_PTE</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/27faa28d0e70b3cf488bccc8d4b95e08b60fde9e</li>
-</ul>
-<p>init_xlat_tables: mmap: virt 1082130432x phys 1082130432x size 4194304x</p>
-<ul>
-<li>https://gist.github.com/lupyuen/40b12ab106e890fb0706fabdbead09d9</li>
-</ul>
-<p>Fix MMU Logging</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d</li>
-</ul>
-<p>Still stuck at: <code>enable_mmu_el1: Enable the MMU and data cache</code></p>
-<ul>
-<li>https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362</li>
-</ul>
-<h1 id="hmmm-the-peripheral-address-space-is-missing-uart0-will-crash"><a class="doc-anchor" href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash">§</a>10 Hmmm the Peripheral Address Space is missing. UART0 will crash!</h1>
+<h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>9 Arm64 Memory Management Unit</h1>
+<p>Earlier we saw NuttX <a href="TODO"><strong>stuck at “<code>AB</code>”</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>123
+- Ready to Boot Primary CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+AB</code></pre></div>
+<p>Which says that NuttX is stuck inside <strong>arm64_mmu_init</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333">qemu_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// 0x0250_0000 is the UART0 Base Address
+void arm64_boot_primary_c_routine(void) {
+  *(volatile uint8_t *) 0x02500000 = &#39;A&#39;;
+  arm64_chip_boot();
+  ...
+
+// `AB` means that NuttX is stuck inside arm64_mmu_init()
+void arm64_chip_boot(void) {
+  *(volatile uint8_t *) 0x02500000 = &#39;B&#39;;
+  arm64_mmu_init(true);  // Init the Memory Mgmt Unit
+
+  // Stuck above, never came here
+  *(volatile uint8_t *) 0x02500000 = &#39;C&#39;;
+  arm64_enable_mte();    // TODO</code></pre></div>
+<p><em>What’s arm64_mmu_init?</em></p>
+<p>NuttX calls <strong>arm64_mmu_init</strong> to initialise the Arm64 <strong>Memory Management Unit (MMU)</strong>. We add some logs inside: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9">arm64_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Enable debugging for MMU.
+#define CONFIG_MMU_ASSERT 1
+#define CONFIG_MMU_DEBUG  1
+#define trace_printf _info
+
+// We fix the debug output, changing `%lux` to `%p`
+static void init_xlat_tables(const struct arm_mmu_region *region) {
+  ...
+  sinfo(&quot;mmap: virt %p phys %p size %p\n&quot;, virt, phys, size);
+
+// To enable the MMU at EL1...
+static void enable_mmu_el1(unsigned int flags) {
+  ...
+  // Ensure these changes are seen before MMU is enabled
+  _info(&quot;UP_MB&quot;);
+  UP_MB();
+
+  // Enable the MMU and Data Cache
+  _info(&quot;Enable the MMU and data cache&quot;);
+  write_sysreg(value | SCTLR_M_BIT | SCTLR_C_BIT, sctlr_el1);
+
+  // Ensure the MMU Enable takes effect immediately
+  _info(&quot;UP_ISB&quot;);
+  UP_ISB();</code></pre></div>
+<p>And we Enable the Logs for <strong>Scheduler and Memory Manager</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Enable Logging for Memory Manager
+CONFIG_DEBUG_MM=y
+CONFIG_DEBUG_MM_ERROR=y
+CONFIG_DEBUG_MM_INFO=y
+CONFIG_DEBUG_MM_WARN=y
+
+## Enable Logging for Scheduler
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y</code></pre></div>
+<p>Ah OK we’re stuck just before <a href="https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362"><strong>Enabling the MMU and Data Cache</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: xlat tables:
+arm64_mmu_init: base table(L0): 0x4083c000, 512 entries
+arm64_mmu_init: 0: 0x40832000
+arm64_mmu_init: 1: 0x40833000
+arm64_mmu_init: 2: 0x40834000
+arm64_mmu_init: 3: 0x40835000
+arm64_mmu_init: 4: 0x40836000
+arm64_mmu_init: 5: 0x40837000
+arm64_mmu_init: 6: 0x40838000
+arm64_mmu_init: 7: 0x40839000
+arm64_mmu_init: 8: 0x4083a000
+arm64_mmu_init: 9: 0x4083b000
+setup_page_tables:
+init_xlat_tables: mmap: virt 0x7000000 phys 0x7000000 size 0x20000000
+set_pte_table_desc:
+set_pte_table_desc: 0x4083c000: [Table] 0x40832000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832000: [Table] 0x40833000
+init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832008: [Table] 0x40834000
+init_xlat_tables: mmap: virt 0x4010000000 phys 0x4010000000 size 0x10000000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832800: [Table] 0x40835000
+init_xlat_tables: mmap: virt 0x8000000000 phys 0x8000000000 size 0x8000000000
+init_xlat_tables: mmap: virt 0x3eff0000 phys 0x3eff0000 size 0x10000
+set_pte_table_desc:
+set_pte_table_desc: 0x40833fb8: [Table] 0x40836000
+init_xlat_tables: mmap: virt 0x40800000 phys 0x40800000 size 0x2a000
+split_pte_block_desc: Splitting existing PTE 0x40834020(L2)
+set_pte_table_desc:
+set_pte_table_desc: 0x40834020: [Table] 0x40837000
+init_xlat_tables: mmap: virt 0x4082a000 phys 0x4082a000 size 0x6000
+init_xlat_tables: mmap: virt 0x40830000 phys 0x40830000 size 0x13000
+init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
+enable_mmu_el1:
+enable_mmu_el1: UP_MB
+enable_mmu_el1: Enable the MMU and data cache</code></pre></div><h1 id="hmmm-the-peripheral-address-space-is-missing-uart0-will-crash"><a class="doc-anchor" href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash">§</a>10 Hmmm the Peripheral Address Space is missing. UART0 will crash!</h1>
+<p><em>Maybe our Memory Map is incorrect?</em></p>
+<p>Let’s verify.</p>
 <p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Memory Map: Page 42</p>
 <div class="example-wrap"><pre class="language-text"><code>BROM &amp; SRAM
 S_BROM 0x0000 0000---0x0000 AFFF 44 K
