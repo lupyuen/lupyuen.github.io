@@ -340,7 +340,7 @@ void arm64_chip_boot(void) {
   up_perf_init(..);  // Init the Performance Counters
 ```
 
-Beyond Sesame Street: We need the __16550 UART Driver__...
+Beyond Big Bird: We need the __16550 UART Driver__...
 
 1.  __NuttX Boot Code__ _(Arm64 Assembly)_ will print to UART. We patch it: [qemu_lowputc.S](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-60cebb895326dea641e32d31ff39511acf127a30c9ac8f275590e7524737366e)
 
@@ -385,7 +385,7 @@ Beyond Sesame Street: We need the __16550 UART Driver__...
     }
     ```
 
-1.  We configure __16550 UART__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+1.  __16550 UART__ shall be configured: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
     ```bash
     CONFIG_16550_ADDRWIDTH=0
@@ -400,7 +400,7 @@ Beyond Sesame Street: We need the __16550 UART Driver__...
     CONFIG_SERIAL_UART_ARCH_MMIO=y
     ```
 
-1.  And __remove PL011 UART__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987)
+1.  __PL011 UART__ shall be removed: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987)
 
     ```bash
     ## Remove PL011 UART from NuttX Config:
@@ -533,7 +533,9 @@ set -x  ##  Enable echo
 
 (__copy-image.sh__ is explained below)
 
-# Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
+# Passwordless Sudo
+
+Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
 
 SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.
 
@@ -584,24 +586,133 @@ ssh thinkcentre sudo /home/user/copy-image.sh
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
-# Troubleboot the MMU. Why won't it start?
+# Arm64 Memory Management Unit
 
-Enable Logging for Scheduler and MMU
-- https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58
+Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
 
-Disable CONFIG_MMU_DUMP_PTE
-- https://github.com/lupyuen2/wip-nuttx/commit/27faa28d0e70b3cf488bccc8d4b95e08b60fde9e
+```bash
+123
+- Ready to Boot Primary CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+AB
+```
 
-init_xlat_tables: mmap: virt 1082130432x phys 1082130432x size 4194304x
-- https://gist.github.com/lupyuen/40b12ab106e890fb0706fabdbead09d9
+Which says that NuttX is stuck inside __arm64_mmu_init__: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333)
 
-Fix MMU Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d
+```c
+// 0x0250_0000 is the UART0 Base Address
+void arm64_boot_primary_c_routine(void) {
+  *(volatile uint8_t *) 0x02500000 = 'A';
+  arm64_chip_boot();
+  ...
 
-Still stuck at: `enable_mmu_el1: Enable the MMU and data cache`
-- https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362
+// `AB` means that NuttX is stuck inside arm64_mmu_init()
+void arm64_chip_boot(void) {
+  *(volatile uint8_t *) 0x02500000 = 'B';
+  arm64_mmu_init(true);  // Init the Memory Mgmt Unit
+
+  // Stuck above, never came here
+  *(volatile uint8_t *) 0x02500000 = 'C';
+  arm64_enable_mte();    // TODO
+```
+
+_What's arm64_mmu_init?_
+
+NuttX calls __arm64_mmu_init__ to initialise the Arm64 __Memory Management Unit (MMU)__. We add some logs inside: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
+
+```c
+// Enable debugging for MMU.
+#define CONFIG_MMU_ASSERT 1
+#define CONFIG_MMU_DEBUG  1
+#define trace_printf _info
+
+// We fix the debug output, changing `%lux` to `%p`
+static void init_xlat_tables(const struct arm_mmu_region *region) {
+  ...
+  sinfo("mmap: virt %p phys %p size %p\n", virt, phys, size);
+
+// To enable the MMU at EL1...
+static void enable_mmu_el1(unsigned int flags) {
+  ...
+  // Ensure these changes are seen before MMU is enabled
+  _info("UP_MB");
+  UP_MB();
+
+  // Enable the MMU and Data Cache
+  _info("Enable the MMU and data cache");
+  write_sysreg(value | SCTLR_M_BIT | SCTLR_C_BIT, sctlr_el1);
+
+  // Ensure the MMU Enable takes effect immediately
+  _info("UP_ISB");
+  UP_ISB();
+```
+
+And we Enable the Logs for __Scheduler and Memory Manager__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+
+```bash
+## Enable Logging for Memory Manager
+CONFIG_DEBUG_MM=y
+CONFIG_DEBUG_MM_ERROR=y
+CONFIG_DEBUG_MM_INFO=y
+CONFIG_DEBUG_MM_WARN=y
+
+## Enable Logging for Scheduler
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y
+```
+
+Ah OK we're stuck just before [__Enabling the MMU and Data Cache__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362)...
+
+```bash
+arm64_mmu_init: xlat tables:
+arm64_mmu_init: base table(L0): 0x4083c000, 512 entries
+arm64_mmu_init: 0: 0x40832000
+arm64_mmu_init: 1: 0x40833000
+arm64_mmu_init: 2: 0x40834000
+arm64_mmu_init: 3: 0x40835000
+arm64_mmu_init: 4: 0x40836000
+arm64_mmu_init: 5: 0x40837000
+arm64_mmu_init: 6: 0x40838000
+arm64_mmu_init: 7: 0x40839000
+arm64_mmu_init: 8: 0x4083a000
+arm64_mmu_init: 9: 0x4083b000
+setup_page_tables:
+init_xlat_tables: mmap: virt 0x7000000 phys 0x7000000 size 0x20000000
+set_pte_table_desc:
+set_pte_table_desc: 0x4083c000: [Table] 0x40832000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832000: [Table] 0x40833000
+init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832008: [Table] 0x40834000
+init_xlat_tables: mmap: virt 0x4010000000 phys 0x4010000000 size 0x10000000
+set_pte_table_desc:
+set_pte_table_desc: 0x40832800: [Table] 0x40835000
+init_xlat_tables: mmap: virt 0x8000000000 phys 0x8000000000 size 0x8000000000
+init_xlat_tables: mmap: virt 0x3eff0000 phys 0x3eff0000 size 0x10000
+set_pte_table_desc:
+set_pte_table_desc: 0x40833fb8: [Table] 0x40836000
+init_xlat_tables: mmap: virt 0x40800000 phys 0x40800000 size 0x2a000
+split_pte_block_desc: Splitting existing PTE 0x40834020(L2)
+set_pte_table_desc:
+set_pte_table_desc: 0x40834020: [Table] 0x40837000
+init_xlat_tables: mmap: virt 0x4082a000 phys 0x4082a000 size 0x6000
+init_xlat_tables: mmap: virt 0x40830000 phys 0x40830000 size 0x13000
+init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
+enable_mmu_el1:
+enable_mmu_el1: UP_MB
+enable_mmu_el1: Enable the MMU and data cache
+```
 
 # Hmmm the Peripheral Address Space is missing. UART0 will crash!
+
+_Maybe our Memory Map is incorrect?_
+
+Let's verify.
 
 From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Memory Map: Page 42
 
