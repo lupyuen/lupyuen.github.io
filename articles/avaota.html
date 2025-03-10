@@ -796,13 +796,21 @@ No distributor detected, giving up</code></pre></div>
 // Spaced 0x20000 bytes per Arm64 Core
 #define CONFIG_GICR_OFFSET 0x20000</code></pre></div>
 <p>Remember to <a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><strong>Disable Memory Manager Logging</strong></a>. NuttX GIC Driver <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>complains no more</strong></a>!</p>
-<div class="example-wrap"><pre class="language-bash"><code>gic_validate_dist_version: GICv3 version detect
-gic_validate_dist_version: GICD_TYPER = 0x7b0408
-gic_validate_dist_version: 256 SPIs implemented</code></pre></div><h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
-<p>/system/bin/init is missing yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
-</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## SPI = Physical Interrupt Signal (not the typical SPI)
+gic_validate_dist_version:
+  GICv3 version detect
+  GICD_TYPER = 0x7b0408
+  256 SPIs implemented</code></pre></div><h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
+<p><em>Are we done yet?</em></p>
+<p>If we’re doing a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats we’re done!</p>
+<p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nx_start_application:
+  Starting init task: /system/bin/init
+arm64_el1_undef:
+  Undefined instruction at 0x408274a4
+Assertion failed panic:
+  common/arm64_fatal.c:572</code></pre></div>
+<p><em>What’s /system/bin/init? Why is it failing?</em></p>
 <p>Remove HostFS for Semihosting</p>
 <ul>
 <li>https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e</li>
