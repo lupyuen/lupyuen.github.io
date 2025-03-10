@@ -68,7 +68,7 @@
 <li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">1 Boot Linux on our SBC</a><ul></ul></li>
 <li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
-<li><a href="#uart0-port-is-here" title="UART0 Port is here">4 UART0 Port is here</a><ul></ul></li>
+<li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
 <li><a href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it" title="Bootloader Log says that Start Address is 0x40800000. We change it">5 Bootloader Log says that Start Address is 0x40800000. We change it</a><ul></ul></li>
 <li><a href="#16650-uart-driver" title="16650 UART Driver">6 16650 UART Driver</a><ul></ul></li>
 <li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">7 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li>
@@ -187,42 +187,70 @@ cp nuttx.bin /TODO/Image
 ls -l /TODO/Image
 ## Should be a lot smaller</code></pre></div>
 <p>Nothing happens. Let’s print something…</p>
-<h1 id="uart0-port-is-here"><a class="doc-anchor" href="#uart0-port-is-here">§</a>4 UART0 Port is here</h1>
-<p>From <a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a>, Page 1839</p>
-<div class="example-wrap"><pre class="language-text"><code>Module Name Base Address
-UART0 0x02500000
+<h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
+<p><em>How will we know that NuttX is actually booting?</em></p>
+<p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: left">UART0</td><td style="text-align: left"><em>0x0250_0000</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>16550 Transmit Register is at <strong>Offset 0</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: left"><em>0x0000</em></td><td style="text-align: left">UART_THR <em>(Transmit Holding Register)</em></td></tr>
+<tr><td style="text-align: left"><em>0x0004</em></td><td style="text-align: left">UART_DLH <em>(Divisor Latch High Register)</em></td></tr>
+<tr><td style="text-align: left"><em>0x0008</em></td><td style="text-align: left">UART_IIR <em>(Interrupt Identity Register)</em></td></tr>
+<tr><td style="text-align: left"><em>0x000C</em></td><td style="text-align: left">UART_LCR <em>(Line Control)</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>Which means we can <a href="https://github.com/lupyuen2/wip-nuttx/blob/avaota/arch/arm64/src/qemu/qemu_boot.c#L269-L283"><strong>Print to UART</strong></a> like this…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Print `123` to UART0
+*(volatile uint8_t *) 0x02500000 = &#39;1&#39;;
+*(volatile uint8_t *) 0x02500000 = &#39;2&#39;;
+*(volatile uint8_t *) 0x02500000 = &#39;3&#39;;</code></pre></div>
+<p>Let’s do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Bootloader starts NuttX here */
+__start:
+  add x13, x18, #0x16 /* &quot;MZ&quot;: Magic Number for Linux Kernel Header */
+  b   real_start      /* Jump to Executable Code      */
+  ...                 /* Omitted: Linux Kernel Header */
 
-Register Name Offset Description
-UART_THR 0x0000 UART Transmit Holding Register
-UART_DLH 0x0004 UART Divisor Latch High Register
-UART_IIR 0x0008 UART Interrupt Identity Register
-UART_LCR 0x000C UART Line Control </code></pre></div>
-<p>Print 123</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01</li>
-</ul>
-<p>Address Independent Code</p>
-<div class="example-wrap"><pre class="language-c"><code>real_start:
+/* Executable Code begins here */
+/* We print `123` to UART0     */
+real_start:
 
-    /* TODO */
-    mov  x15, #0x02500000
-    mov  w16, #0x31
-    strb w16, [x15]
-    mov  w16, #0x32
-    strb w16, [x15]
-    mov  w16, #0x33
-    strb w16, [x15]</code></pre></div>
-<p>Prints 123 yay!</p>
-<ul>
-<li>https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8</li>
-</ul>
+  /* Load UART0 Base Address into Register X15 */
+  mov  x15, #0x02500000
+
+  /* Load character `1` into Register W16 */
+  mov  w16, #0x31
+
+  /* Store the lower byte from Register W16 (`1`) to UART0 Base Address */
+  strb w16, [x15]
+
+  /* Load and Store the lower byte from Register W16 (`2`) to UART0 Base Address */
+  mov  w16, #0x32
+  strb w16, [x15]
+
+  /* Load and Store the lower byte from Register W16 (`3`) to UART0 Base Address */
+  mov  w16, #0x33
+  strb w16, [x15]</code></pre></div>
+<p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>prints <code>123</code> yay</strong></a>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
 BL31: v2.5(debug):9241004a9
 sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast
 123</code></pre></div>
-<p>(Don’t worry about the opteed_fast error)</p>
+<p>(Ignore the <em>opteed_fast</em> error)</p>
+<p>Address Independent Code</p>
 <h1 id="bootloader-log-says-that-start-address-is-0x40800000-we-change-it"><a class="doc-anchor" href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it">§</a>5 Bootloader Log says that Start Address is 0x40800000. We change it</h1>
 <p>https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
