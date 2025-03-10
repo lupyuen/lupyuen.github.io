@@ -76,7 +76,7 @@ Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](https://etcher.b
 
 We'll overwrite the `Image` file by `nuttx.bin`...
 
-# NuttX for Arm64 QEMU (Kernel Build)
+# NuttX Kernel Build for Arm64 QEMU
 
 Follow these steps to Build and Run NuttX for [__Arm64 QEMU (Kernel Build)__](TODO)
 
@@ -115,6 +115,149 @@ TODO
 ```
 
 TODO: Why Kernel Build
+
+# Boot NuttX Kernel on our SBC
+
+TODO: Kernel Only, no apps
+
+TODO: 28 MB Linux Kernel
+
+[Build Log](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+
+```bash
+$ ls -l /TODO
+total 40261
+-rwxr-xr-x 1 root root    78769 Feb 22 01:06 bl31.bin
+-rwxr-xr-x 1 root root   180233 Feb 21 22:21 config-5.15.154-ga464bc4feaff
+drwxr-xr-x 3 root root      512 Feb 21 22:56 dtb
+drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
+-rwxr-xr-x 1 root root 27783176 Mar  7 21:24 Image
+-rwxr-xr-x 1 root root   180228 Feb 22 01:06 scp.bin
+-rwxr-xr-x 1 root root    12960 Feb 22 01:06 splash.bin
+-rwxr-xr-x 1 root root  5193581 Feb 21 22:21 System.map-5.15.154-ga464bc4feaff
+-rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd
+```
+
+TODO: We'll overwrite the `Image` file by `nuttx.bin`...
+
+```bash
+mv /TODO/Image /TODO/Image.old
+cp nuttx.bin /TODO/Image
+ls -l /TODO/Image
+## Should be a lot smaller
+```
+
+Nothing happens. Let's print something...
+
+## UART0 Port is here
+
+From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 1839
+
+```text
+Module Name Base Address
+UART0 0x02500000
+
+Register Name Offset Description
+UART_THR 0x0000 UART Transmit Holding Register
+UART_DLH 0x0004 UART Divisor Latch High Register
+UART_IIR 0x0008 UART Interrupt Identity Register
+UART_LCR 0x000C UART Line Control 
+```
+
+Print 123
+- https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
+
+```c
+real_start:
+
+    /* TODO */
+    mov  x15, #0x02500000
+    mov  w16, #0x31
+    strb w16, [x15]
+    mov  w16, #0x32
+    strb w16, [x15]
+    mov  w16, #0x33
+    strb w16, [x15]
+```
+
+Prints 123 yay!
+- https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
+
+```bash
+read /Image addr=40800000
+Kernel addr: 0x40800000
+BL31: v2.5(debug):9241004a9
+sunxi-arisc driver is starting
+ERROR: Error initializing runtime service opteed_fast
+123
+```
+
+(Don't worry about the opteed_fast error)
+
+## Bootloader Log says that Start Address is 0x40800000. We change it
+
+https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
+
+```bash
+read /Image addr=40800000
+Kernel addr: 0x40800000
+BL31: v2.5(debug):9241004a9
+sunxi-arisc driver is starting
+ERROR: Error initializing runtime service opteed_fast
+123
+```
+
+TODO: LCD also
+
+Change start address to 0x40800000
+- https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca
+
+Fix Image Load Offset
+- https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
+
+# 16650 UART Driver
+
+Enable 16650 UART
+- https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f
+
+Remove UART1
+- https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987
+
+UART Buffer overflows. Let's wait for UART Ready:
+
+Wait for 16550 UART to be ready to transmit
+- https://github.com/lupyuen2/wip-nuttx/commit/544323e7c0e66c4df0d1312d4837147d420bc19d
+
+Add boot logging
+- https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333
+
+Prints more yay!
+- https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b
+
+```text
+- Ready to Boot Primary CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+AB
+```
+
+## Troubleboot the MMU. Why won't it start?
+
+Enable Logging for Scheduler and MMU
+- https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58
+
+Disable CONFIG_MMU_DUMP_PTE
+- https://github.com/lupyuen2/wip-nuttx/commit/27faa28d0e70b3cf488bccc8d4b95e08b60fde9e
+
+init_xlat_tables: mmap: virt 1082130432x phys 1082130432x size 4194304x
+- https://gist.github.com/lupyuen/40b12ab106e890fb0706fabdbead09d9
+
+Fix MMU Logging
+- https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d
+
+Now stuck at: `enable_mmu_el1: Enable the MMU and data cache`
+- https://gist.github.com/lupyuen/9e3d1325dc90abc5b695a849a16e9560
 
 # TODO
 
@@ -453,75 +596,6 @@ ssh thinkcentre sudo /home/user/copy-image.sh
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
-## UART0 Port is here
-
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 1839
-
-```text
-Module Name Base Address
-UART0 0x02500000
-
-Register Name Offset Description
-UART_RBR 0x0000 UART Receive Buffer Register
-UART_THR 0x0000 UART Transmit Holding Register
-UART_DLL 0x0000 UART Divisor Latch Low Register
-UART_DLH 0x0004 UART Divisor Latch High Register
-UART_IER 0x0004 UART Interrupt Enable Register
-UART_IIR 0x0008 UART Interrupt Identity Register
-UART_FCR 0x0008 UART FIFO Control Register
-UART_LCR 0x000C UART Line Control 
-```
-
-## Bootloader Log says that Start Address is 0x40800000. We change it
-
-Change start address to 0x40800000
-- https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca
-
-Fix Image Load Offset. Print 123
-- https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
-
-Prints 123 yay!
-- https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
-
-Enable 16650 UART
-- https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f
-
-## UART Buffer overflows. Let's wait for UART Ready
-
-Wait for 16550 UART to be ready to transmit
-- https://github.com/lupyuen2/wip-nuttx/commit/544323e7c0e66c4df0d1312d4837147d420bc19d
-
-Add boot logging
-- https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333
-
-Prints more yay!
-- https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b
-
-```text
-- Ready to Boot Primary CPU
-- Boot from EL2
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-AB
-```
-
-## Troubleboot the MMU. Why won't it start?
-
-Enable Logging for Scheduler and MMU
-- https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58
-
-Disable CONFIG_MMU_DUMP_PTE
-- https://github.com/lupyuen2/wip-nuttx/commit/27faa28d0e70b3cf488bccc8d4b95e08b60fde9e
-
-init_xlat_tables: mmap: virt 1082130432x phys 1082130432x size 4194304x
-- https://gist.github.com/lupyuen/40b12ab106e890fb0706fabdbead09d9
-
-Fix MMU Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d
-
-Now stuck at: `enable_mmu_el1: Enable the MMU and data cache`
-- https://gist.github.com/lupyuen/9e3d1325dc90abc5b695a849a16e9560
-
 ## CONFIG_ARCH_PGPOOL_PBASE is different from pgram in Linker Script. Let's fix it
 
 CONFIG_ARCH_PGPOOL_PBASE should match pgram
@@ -549,9 +623,6 @@ RISC-V core accesses theDRAM address:
 ```
 
 ## Let's fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB
-
-Remove UART1
-- https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987
 
 Add MMU Logging
 - https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843
