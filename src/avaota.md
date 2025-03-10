@@ -988,6 +988,16 @@ TODO
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
 
+_Very odd. NSH Prompt won't appear if UART Interrupt is disabled?_
+
+That's because NSH runs as a __NuttX App in User Space__. When NSH Shell prints this...
+
+```bash
+nsh>
+```
+
+It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to signal that the Transmit Buffer is empty. Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
+
 # TODO
 
 ![Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)](https://lupyuen.org/images/testbot2-flow3.jpg)
