@@ -306,32 +306,280 @@ With these fixes, our C Code in NuttX shall boot correctly.
 
 TODO: LCD also
 
-# 16650 UART Driver
+# UART Driver for 16650
 
-Enable 16650 UART
-- https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f
+_Our C Code can print to UART now?_
 
-Remove UART1
-- https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987
+To watch the __Boot Progress__ _(Sesame Street-style)_, we can print primitively to UART like this: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333)
 
-UART Buffer overflows. Let's wait for UART Ready:
+```c
+// 0x0250_0000 is the UART0 Base Address
+void arm64_boot_primary_c_routine(void) {
+  *(volatile uint8_t *) 0x02500000 = 'A';
+  arm64_chip_boot();
+  ...
 
-Wait for 16550 UART to be ready to transmit
-- https://github.com/lupyuen2/wip-nuttx/commit/544323e7c0e66c4df0d1312d4837147d420bc19d
+void arm64_chip_boot(void) {
+  *(volatile uint8_t *) 0x02500000 = 'B';
+  arm64_mmu_init(true);  // Init the Memory Mgmt Unit
 
-Add boot logging
-- https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333
+  *(volatile uint8_t *) 0x02500000 = 'C';
+  arm64_enable_mte();    // TODO
 
-Prints more yay!
-- https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b
+  *(volatile uint8_t *) 0x02500000 = 'D';
+  qemu_board_initialize();  // Init the Board
 
-```text
+  *(volatile uint8_t *) 0x02500000 = 'E';
+  arm64_earlyserialinit();  // Init the Serial Driver
+
+  *(volatile uint8_t *) 0x02500000 = 'F';
+  syslog_rpmsg_init_early(...);  // Init the System Logger
+
+  *(volatile uint8_t *) 0x02500000 = 'G';
+  up_perf_init(..);  // Init the Performance Counters
+```
+
+Beyond Sesame Street: We need the __16550 UART Driver__...
+
+1.  __NuttX Boot Code__ _(Arm64 Assembly)_ will print to UART. We patch it: [qemu_lowputc.S](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-60cebb895326dea641e32d31ff39511acf127a30c9ac8f275590e7524737366e)
+
+    ```c
+    // Base Address and Baud Rate for 16550 UART
+    #define UART1_BASE_ADDRESS          0x02500000
+    #define EARLY_UART_PL011_BAUD_RATE  115200
+    ```
+
+1. __NuttX Boot Code__ will drop UART Output, unless we wait for UART Ready: [qemu_lowputc.S](https://github.com/lupyuen2/wip-nuttx/commit/544323e7c0e66c4df0d1312d4837147d420bc19d)
+
+    ```c
+    /* Wait for 16550 UART to be ready to transmit
+    * xb: Register that contains the UART Base Address
+    * wt: Scratch register number */
+    .macro early_uart_ready xb, wt
+    1:
+      ldrh  \wt, [\xb, #0x14] /* UART_LSR (Line Status Register) */
+      tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
+      b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
+    .endm
+    ```
+
+    [_(Thanks to PinePhone)_](TODO)
+
+1.  QEMU uses PL011 UART. We switch to __16550 UART__: [qemu_serial.c](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-aefbee7ddc3221be7383185346b81cff77d382eb6f308ecdccb44466d0437108)
+
+    ```c
+    // Switch from PL011 UART (QEMU) to 16550 UART
+    #include <nuttx/serial/uart_16550.h>
+
+    // Enable the 16550 Console UART at Startup
+    void arm64_earlyserialinit(void) {
+      // Previously for QEMU: pl011_earlyserialinit
+      u16550_earlyserialinit();
+    }
+
+    // TODO
+    void arm64_serialinit(void) {
+      // Previous for QEMU: pl011_serialinit
+      u16550_serialinit();
+    }
+    ```
+
+1.  We configure __16550 UART__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+
+    ```bash
+    CONFIG_16550_ADDRWIDTH=0
+    CONFIG_16550_REGINCR=4
+    CONFIG_16550_UART0=y
+    CONFIG_16550_UART0_BASE=0x02500000
+    CONFIG_16550_UART0_CLOCK=198144000
+    CONFIG_16550_UART0_IRQ=125
+    CONFIG_16550_UART0_SERIAL_CONSOLE=y
+    CONFIG_16550_UART=y
+    CONFIG_16550_WAIT_LCR=y
+    CONFIG_SERIAL_UART_ARCH_MMIO=y
+    ```
+
+1.  And __remove PL011 UART__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/8fc8ed6ba84cfea86184f61d9c4d7c8e21329987)
+
+    ```bash
+    ## Remove PL011 UART from NuttX Config:
+    ## CONFIG_UART1_BASE=0x9000000
+    ## CONFIG_UART1_IRQ=33
+    ## CONFIG_UART1_PL011=y
+    ## CONFIG_UART1_SERIAL_CONSOLE=y
+    ## CONFIG_UART_PL011=y
+    ```
+
+1.  __16550_UART0_CLOCK__ isn't quite correct, we'll [__fix it later__](TODO). Meanwhile we disable the __UART Clock Configuration__: [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+
+    ```c
+    // We disable the UART Clock Configuration...
+    static int u16550_setup(FAR struct uart_dev_s *dev) { ...
+    #ifdef TODO  // We'll fix it later
+      // Enter DLAB=1
+      u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
+
+      // Omitted: Set the UART Baud Divisor
+      // ...
+
+      // Clear DLAB
+      u16550_serialout(priv, UART_LCR_OFFSET, lcr);
+    #endif
+    ```
+
+Same old drill: Rebuild, recopy and reboot NuttX. We see plenty more [__debug output yay__](https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b)!
+
+```bash
+123
 - Ready to Boot Primary CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
 AB
 ```
+
+OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let's automate...
+
+# Build NuttX for Avaota-A1
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
+
+Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
+
+Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do __everything__ for us:
+
+- Copy NuttX to MicroSD
+
+- Swap MicroSD from our Test PC to SBC
+
+- Power up SBC and boot NuttX!
+
+See the Build Script:
+- https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587
+
+```bash
+## Build NuttX and Apps (NuttX Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
+cd nuttx
+tools/configure.sh qemu-armv8a:knsh
+make -j
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  >Image
+
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+## token=xxxx
+set +x  ##  Disable echo
+. $HOME/home-assistant-token.sh
+set -x  ##  Enable echo
+
+set +x  ##  Disable echo
+echo "----- Power Off the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_off"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+set +x  ##  Disable echo
+echo "----- Power On the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_on"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Wait for SBC to finish booting
+sleep 30
+
+set +x  ##  Disable echo
+echo "----- Power Off the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_off"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+```
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+
+(__copy-image.sh__ is explained below)
+
+# Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
+
+SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.
+
+Let's make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers
+
+```bash
+## Start the Sudoers Editor
+sudo visudo
+
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
+```
+
+Edit /home/user/copy-image.sh...
+
+```bash
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+whoami  ## I am root!
+
+## Copy /tmp/Image to MicroSD
+sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+sleep 5
+mkdir -p /tmp/sda1
+mount /dev/sda1 /tmp/sda1
+cp /tmp/Image /tmp/sda1/
+ls -l /tmp/sda1
+
+## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
+umount /tmp/sda1
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+```
+
+(Remember to `chmod +x /home/user/copy-image.sh`)
+
+Now we can run copy-image.sh without a password yay!
+
+```bash
+## Sudo will NOT prompt for password yay!
+sudo /home/user/copy-image.sh
+
+## Also works over SSH: Copy NuttX Image to MicroSD
+## No password needed for sudo yay!
+scp nuttx.bin thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+```
+
+[(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 # Troubleboot the MMU. Why won't it start?
 
@@ -595,96 +843,6 @@ _Isn't it faster to port NuttX with U-Boot TFTP?_
 
 Yeah for RISC-V Ports we boot [__NuttX over TFTP__](https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5), so it's back to MicroSD sigh. (Pic below)
 
-Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
-
-# Build NuttX for Avaota-A1
-
-[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
-
-Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do __everything__ for us:
-
-- Copy NuttX to MicroSD
-
-- Swap MicroSD from our Test PC to SBC
-
-- Power up SBC and boot NuttX!
-
-See the Build Script:
-- https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587
-
-```bash
-## Build NuttX and Apps (NuttX Kernel Build)
-git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
-cd nuttx
-tools/configure.sh qemu-armv8a:knsh
-make -j
-make -j export
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make -j import
-popd
-
-## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
-
-## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.pad
-
-## Append Padding and Initial RAM Disk to the NuttX Kernel
-cat nuttx.bin /tmp/nuttx.pad initrd \
-  >Image
-
-## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
-## token=xxxx
-set +x  ##  Disable echo
-. $HOME/home-assistant-token.sh
-set -x  ##  Enable echo
-
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-
-## Copy NuttX Image to MicroSD
-## No password needed for sudo, see below
-scp Image thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh
-
-set +x  ##  Disable echo
-echo "----- Power On the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_on"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-
-## Wait for SBC to finish booting
-sleep 30
-
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-```
-
-[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
-
-(__copy-image.sh__ is explained below)
-
 # Boot NuttX for Avaota-A1
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
@@ -847,56 +1005,6 @@ We used these docs (A527 is a variant of A523)
 
 We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC...
 
-## Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
-
-SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.
-
-Let's make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers
-
-```bash
-## Start the Sudoers Editor
-sudo visudo
-
-## Add this line:
-user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
-```
-
-Edit /home/user/copy-image.sh...
-
-```bash
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-whoami  ## I am root!
-
-## Copy /tmp/Image to MicroSD
-sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
-sleep 5
-mkdir -p /tmp/sda1
-mount /dev/sda1 /tmp/sda1
-cp /tmp/Image /tmp/sda1/
-ls -l /tmp/sda1
-
-## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
-umount /tmp/sda1
-sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
-```
-
-(Remember to `chmod +x /home/user/copy-image.sh`)
-
-Now we can run copy-image.sh without a password yay!
-
-```bash
-## Sudo will NOT prompt for password yay!
-sudo /home/user/copy-image.sh
-
-## Also works over SSH: Copy NuttX Image to MicroSD
-## No password needed for sudo yay!
-scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh
-```
-
-[(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 # What's Next
 
