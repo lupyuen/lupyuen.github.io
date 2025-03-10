@@ -158,7 +158,7 @@ Let's print something. __UART0 Base Address__ is here...
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
-|:--------------------------------|:---------|
+|:-------------------------------:|:---------|
 | __Module__ | __Base Address__
 | UART0 | _0x0250\_0000_
 
@@ -171,7 +171,7 @@ Let's print something. __UART0 Base Address__ is here...
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
-|:--------------------------------|:---------|
+|:-------------------------------:|:---------|
 | __Offset__ | __Register__
 | _0x0000_ | UART_THR _(Transmit Holding Register)_
 | _0x0004_ | UART_DLH _(Divisor Latch High Register)_
@@ -874,14 +874,14 @@ It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC wi
 GIC is here...
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
-|:--------------------------------|:---------|
+|:-------------------------------:|:---------|
 | __Module__ | __Base Address__
 | GIC | _0x0340_0000_
 
 With these __GIC Registers__, handling 8 Arm64 Cores...
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
-|:--------------------------------|:---------|
+|:-------------------------------:|:---------|
 | __Offset__ | __Register__
 | _0x00_0000_ | GICD_CTLR  _(Distributor Control Register)_
 | _0x06_0000_ | GICR_CTLR_C0  _(Redistributor Control Register, Core 0)_
@@ -934,115 +934,31 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-https://github.com/lupyuen2/wip-nuttx/pull/97/files
+_/system/bin/init_ is NSH Shell. That's how __NuttX Kernel Build__ works: It loads NuttX Apps from a __Local Filesystem__. _(Instead of bundling Apps into Kernel)_
 
-Remove HostFS for Semihosting
-- https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
+TODO: Bundle into Image
 
-OK the Initial Filesystem is no longer available:
-- https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507
-
-Add the Initial RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13
-
-Enable Logging for RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337
-
-`default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault`
-- https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949
-
-Our RAM Disk Copier is accessing misligned addresses. Let's fix the alignment...
-
-Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.
-- https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109
-
-Log the Mount Error
-- https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6
-
-Mounting of ROMFS fails
-- https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738
-
-```text
-nx_start_application: ret=-15
-dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361
-```
-
-Which is...
-
-```c
-#define ENOTBLK             15
-#define ENOTBLK_STR         "Block device required"
-```
-
-Why is /dev/ram0 not a Block Device?
-
-```c
-$ grep INIT .config
-# CONFIG_BOARDCTL_FINALINIT is not set
-# CONFIG_INIT_NONE is not set
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=""
-CONFIG_INIT_STACKSIZE=8192
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE="/dev/ram0"
-CONFIG_INIT_MOUNT_TARGET="/system/bin"
-CONFIG_INIT_MOUNT_FSTYPE="romfs"
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=""
-```
-
-We check the logs...
-
-Enable Filesystem Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496
-
-`Failed to find /dev/ram0`
-- https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc
-
-```text
-find_blockdriver: pathname="/dev/ram0"
-find_blockdriver: ERROR: Failed to find /dev/ram0
-nx_mount: ERROR: Failed to find block driver /dev/ram0
-nx_start_application: ret=-15
-```
-
-Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!
-
-# Mount the RAM Disk
-
-Let's mount the RAM Disk...
-
-Mount the RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2
-
-/system/bin/init starts successfully yay!
-- https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac
-
-```text
-qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-nx_start_application: Starting init task: /system/bin/init
-nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
-nxtask_exit: AppBringUp pid=3,TCB=0x40846190
-board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop
-```
+TODO: Appendix
 
 NSH Prompt won't appear until we fix the UART Interrupt...
 
 # Fix the UART Interrupt
 
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 256
+One Last Thing for today: Fix the __UART Interrupt__ and we're done!
 
-```text
-Interrupt Number Interrupt Source Interrupt Vector Description
-34 UART0 0x0088
-```
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-So we set the UART0 Interrupt...
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 256 |
+|:-------------------------------:|:--------:|
+| __Interrupt Number__ | __Interrupt Source__
+| 34 | UART0
+
+</div>
+</p>
+
+This is how we set the __UART0 Interrupt__ and watch for keypresses:
+
 
 Set UART0 Interrupt to 34
 - https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf
@@ -1278,3 +1194,102 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/avaota.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md)
+
+# Appendix: NuttX Apps Filesystem
+
+https://github.com/lupyuen2/wip-nuttx/pull/97/files
+
+Remove HostFS for Semihosting
+- https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
+
+OK the Initial Filesystem is no longer available:
+- https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507
+
+Add the Initial RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13
+
+Enable Logging for RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337
+
+`default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault`
+- https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949
+
+Our RAM Disk Copier is accessing misligned addresses. Let's fix the alignment...
+
+Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.
+- https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109
+
+Log the Mount Error
+- https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6
+
+Mounting of ROMFS fails
+- https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738
+
+```text
+nx_start_application: ret=-15
+dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361
+```
+
+Which is...
+
+```c
+#define ENOTBLK             15
+#define ENOTBLK_STR         "Block device required"
+```
+
+Why is /dev/ram0 not a Block Device?
+
+```c
+$ grep INIT .config
+# CONFIG_BOARDCTL_FINALINIT is not set
+# CONFIG_INIT_NONE is not set
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=""
+CONFIG_INIT_STACKSIZE=8192
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH="/system/bin/init"
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE="/dev/ram0"
+CONFIG_INIT_MOUNT_TARGET="/system/bin"
+CONFIG_INIT_MOUNT_FSTYPE="romfs"
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=""
+```
+
+We check the logs...
+
+Enable Filesystem Logging
+- https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496
+
+`Failed to find /dev/ram0`
+- https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc
+
+```text
+find_blockdriver: pathname="/dev/ram0"
+find_blockdriver: ERROR: Failed to find /dev/ram0
+nx_mount: ERROR: Failed to find block driver /dev/ram0
+nx_start_application: ret=-15
+```
+
+Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!
+
+# Appendix: Mount the RAM Disk
+
+Let's mount the RAM Disk...
+
+Mount the RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2
+
+/system/bin/init starts successfully yay!
+- https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac
+
+```text
+qemu_bringup:
+mount_ramdisk:
+nx_start_application: ret=0
+nx_start_application: Starting init task: /system/bin/init
+nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
+nxtask_exit: AppBringUp pid=3,TCB=0x40846190
+board_app_initialize:
+nx_start: CPU0: Beginning Idle Loop
+```
