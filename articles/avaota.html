@@ -69,7 +69,7 @@
 <li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
 <li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
 <li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
-<li><a href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it" title="Bootloader Log says that Start Address is 0x40800000. We change it">5 Bootloader Log says that Start Address is 0x40800000. We change it</a><ul></ul></li>
+<li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
 <li><a href="#16650-uart-driver" title="16650 UART Driver">6 16650 UART Driver</a><ul></ul></li>
 <li><a href="#troubleboot-the-mmu-why-wont-it-start" title="Troubleboot the MMU. Why won’t it start?">7 Troubleboot the MMU. Why won’t it start?</a><ul></ul></li>
 <li><a href="#hmmm-the-peripheral-address-space-is-missing-uart0-will-crash" title="Hmmm the Peripheral Address Space is missing. UART0 will crash!">8 Hmmm the Peripheral Address Space is missing. UART0 will crash!</a><ul></ul></li>
@@ -128,7 +128,6 @@ Port NuttX to</p>
 <p>To begin, we observe our SBC and its <em>Natural Behaviour</em>: How does it <strong>Boot Linux?</strong></p>
 <p>TODO: Download</p>
 <p>TODO: MicroSD</p>
-<p>TODO: SyterKit: https://github.com/YuzukiHD/SyterKit</p>
 <p>TODO: Load Address</p>
 <p>TODO: LCD Screen too</p>
 <p>Download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
@@ -250,28 +249,62 @@ sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast
 123</code></pre></div>
 <p>(Ignore the <em>opteed_fast</em> error)</p>
-<p>Address Independent Code</p>
-<h1 id="bootloader-log-says-that-start-address-is-0x40800000-we-change-it"><a class="doc-anchor" href="#bootloader-log-says-that-start-address-is-0x40800000-we-change-it">§</a>5 Bootloader Log says that Start Address is 0x40800000. We change it</h1>
-<p>https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8</p>
+<p><em>Why print in Arm64 Assembly? Why not C?</em></p>
+<ol>
+<li>
+<p>Arm64 Assembly is the <strong>very first thing that boots</strong> when our SBC Bootloader starts NuttX</p>
+</li>
+<li>
+<p>This happens <strong>before anything complicated</strong> begins: UART Driver, Memory Management Unit, Task Scheduler, …</p>
+</li>
+<li>
+<p>The Arm64 Assembly above is <strong>Address-Independent Code</strong>: It will execute at Any Arm64 Address</p>
+</li>
+</ol>
+<p>Next we move our code…</p>
+<h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>5 Set the Start Address</h1>
+<p><em>NuttX boots a tiny bit on our SBC. Where’s the rest?</em></p>
+<p>Our SBC boots NuttX at a different address from QEMU. We fix the <strong>Start Address</strong> inside NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
-BL31: v2.5(debug):9241004a9
-sunxi-arisc driver is starting
-ERROR: Error initializing runtime service opteed_fast
 123</code></pre></div>
+<p>Remember the <a href="TODO"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We fix it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
+<div class="example-wrap"><pre class="language-c"><code>MEMORY {
+  /* Previously: QEMU boots at 0x4028_0000 */
+  dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
+
+  /* Previously: QEMU Paged Memory is at 0x4028_0000 */
+  pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
+}</code></pre></div>
+<p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>CONFIG_ARCH_PGPOOL_PBASE</em> and <em>CONFIG_ARCH_PGPOOL_VBASE</em> too: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
+
+## Virtual Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
+<p><strong>Linux Kernel Header</strong> needs patching. We set the <strong>Image Load Offset</strong> to <em>0x80_0000</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
+__start:
+  ...
+  /* Image Load Offset from Start of RAM          */
+  /* Previously: QEMU set this to 0x480000 (why?) */
+  .quad 0x800000</code></pre></div>
+<p>That’s because…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/avaota/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig#L85"><strong>Start of RAM</strong></a> is <em>0x4000_0000</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_RAM_START=0x40000000</code></pre></div></li>
+<li>
+<p>Bootloader starts NuttX at <em>0x4080_0000</em></p>
+</li>
+<li>
+<p>Subtract the above to get <strong>Image Load Offset</strong>: <em>0x80_0000</em></p>
+</li>
+</ul>
+<p>With these fixes, our C Code in NuttX shall boot correctly.</p>
 <p>TODO: LCD also</p>
-<p>Change start address to 0x40800000</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca</li>
-</ul>
-<p>Fix Image Load Offset</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01</li>
-</ul>
-<p>CONFIG_ARCH_PGPOOL_PBASE should match pgram</p>
-<ul>
-<li>https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86</li>
-</ul>
 <h1 id="16650-uart-driver"><a class="doc-anchor" href="#16650-uart-driver">§</a>6 16650 UART Driver</h1>
 <p>Enable 16650 UART</p>
 <ul>
