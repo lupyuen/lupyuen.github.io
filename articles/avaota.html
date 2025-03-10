@@ -759,10 +759,12 @@ No distributor detected, giving up</code></pre></div>
 <p>It’s the Arm64 <a href="TODO"><strong>Generic Interrupt Controller (GIC)</strong></a>, version 3. GIC will…</p>
 <ul>
 <li>
-<p>Receive <strong>I/O Interrupts</strong> <em>(like keypresses)</em></p>
+<p>Receive <strong>I/O Interrupts</strong></p>
+<p><em>(Like keypresses)</em></p>
 </li>
 <li>
-<p>And forward them to an <strong>Arm64 CPU Core</strong> for processing. <em>(Works like RISC-V PLIC)</em></p>
+<p>And forward them to an <strong>Arm64 CPU Core</strong> for processing</p>
+<p><em>(Works like RISC-V PLIC)</em></p>
 </li>
 </ul>
 <p>GIC is here…</p>
@@ -793,8 +795,10 @@ No distributor detected, giving up</code></pre></div>
 
 // Spaced 0x20000 bytes per Arm64 Core
 #define CONFIG_GICR_OFFSET 0x20000</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><em>(And Disable Memory Manager Logging)</em></a></p>
-<h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
+<p>Remember to <a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><strong>Disable Memory Manager Logging</strong></a>. NuttX GIC Driver <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>complains no more</strong></a>!</p>
+<div class="example-wrap"><pre class="language-bash"><code>gic_validate_dist_version: GICv3 version detect
+gic_validate_dist_version: GICD_TYPER = 0x7b0408
+gic_validate_dist_version: 256 SPIs implemented</code></pre></div><h1 id="load-the-nuttx-apps-filesystem-into-ram"><a class="doc-anchor" href="#load-the-nuttx-apps-filesystem-into-ram">§</a>12 Load the NuttX Apps Filesystem into RAM</h1>
 <p>/system/bin/init is missing yay!</p>
 <ul>
 <li>https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c</li>
