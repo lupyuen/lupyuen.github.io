@@ -919,7 +919,7 @@ gic_validate_dist_version:
 
 _Are we done yet?_
 
-If we're doing a __Simple NuttX Port__ _(Flat Build)_: Congrats we're done!
+If we're doing a __Simple NuttX Port__ _(Flat Build)_: Congrats just fix the [__UART Interrupt__](TODO) and we're done!
 
 However we're doing __NuttX Kernel Build__. Which [__needs more work__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)...
 
@@ -934,17 +934,31 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-_/system/bin/init_ is NSH Shell. That's how __NuttX Kernel Build__ works: It loads NuttX Apps from a __Local Filesystem__. _(Instead of bundling Apps into Kernel)_
+_/system/bin/init_ is __NSH Shell__. That's how NuttX Kernel Build works: It loads NuttX Apps from a __Local Filesystem__. _(Instead of binding Apps into Kernel)_
 
-TODO: Bundle into Image
+We bundle the NuttX Apps together into a __ROM FS Filesystem__...
 
-TODO: Appendix
+```bash
+TODO
+```
 
-NSH Prompt won't appear until we fix the UART Interrupt...
+Then we package NuttX Kernel + NuttX Apps into a __NuttX Image__...
+
+```bash
+TODO
+```
+
+[(See the __Build Script__)](TODO)
+
+When NuttX Boots: It will find the ROM FS Filesystem, and Mount it as a __RAM Disk__. Which will allow NuttX Kernel to start __NSH Shell__ and other NuttX Apps. Everything is explained here...
+
+- TODO: Appendix
+
+NSH Prompt still missing? It won't appear until we fix the UART Interrupt...
 
 # Fix the UART Interrupt
 
-One Last Thing for today: Fix the __UART Interrupt__ and we're done!
+One Last Thing: Fix the __UART Interrupt__ and we're done!
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -957,20 +971,22 @@ One Last Thing for today: Fix the __UART Interrupt__ and we're done!
 </div>
 </p>
 
-This is how we set the __UART0 Interrupt__ and watch for keypresses:
+This is how we set the __UART0 Interrupt__ and watch for keypresses: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
+```bash
+## Set the UART0 Interrupt to 34
+CONFIG_16550_UART0_IRQ=34
+```
 
-Set UART0 Interrupt to 34
-- https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf
+To Wrap Up: We Disable Logging for [__Memory Manager and Scheduler__](https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee). And [__Disable MMU Debugging__](https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88).
 
-Disable Logging for MM and Scheduler
-- https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee
+__NSH Prompt__ finally appears. And __OSTest completes successfully__ yay!
 
-Disable MMU Debugging
-- https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88
+```bash
+TODO
+```
 
-NSH Prompt appears! And passes OSTest yay!
-- https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
 
 # TODO
 
