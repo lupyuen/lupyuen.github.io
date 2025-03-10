@@ -656,9 +656,9 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 42</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Address</strong></td></tr>
-<tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left">0x0000 0000</td></tr>
-<tr><td style="text-align: left">PCIE</td><td style="text-align: left">0x2000 0000 to 0x2FFF FFFF</td></tr>
-<tr><td style="text-align: left">DRAM</td><td style="text-align: left">0x4000 0000 to 0x13FFF FFFF</td></tr>
+<tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left"><em>0x0000_0000</em> to …</td></tr>
+<tr><td style="text-align: left">PCIE</td><td style="text-align: left"><em>0x2000_0000</em> to <em>0x2FFF_FFFF</em></td></tr>
+<tr><td style="text-align: left">DRAM</td><td style="text-align: left"><em>0x4000_0000</em> to …</td></tr>
 </tbody></table>
 </div></div>
 </p>
@@ -690,12 +690,15 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 #define CONFIG_DEVICEIO_SIZE     MB(1024)
 
 // We don&#39;t need PCI, for now
-// #define CONFIG_PCI_CFG_BASEADDR    0x4010000000
-// #define CONFIG_PCI_CFG_SIZE        MB(256)
-// #define CONFIG_PCI_MEM_BASEADDR    0x8000000000
-// #define CONFIG_PCI_MEM_SIZE        GB(512)
-// #define CONFIG_PCI_IO_BASEADDR     0x3eff0000
-// #define CONFIG_PCI_IO_SIZE         KB(64)</code></pre></div></li>
+// #define CONFIG_PCI_CFG_BASEADDR 0x4010000000
+// #define CONFIG_PCI_CFG_SIZE     MB(256)
+// #define CONFIG_PCI_MEM_BASEADDR 0x8000000000
+// #define CONFIG_PCI_MEM_SIZE     GB(512)
+// #define CONFIG_PCI_IO_BASEADDR  0x3eff0000
+// #define CONFIG_PCI_IO_SIZE      KB(64)</code></pre></div></li>
+<li>
+<p><strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em>. Which is kinda small, let’s embiggen.</p>
+</li>
 <li>
 <p><strong>PCI</strong>: Let’s remove these for now: <a href="https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct arm_mmu_region g_mmu_regions[] = {
@@ -704,9 +707,6 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_CFG&quot;, ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_MEM&quot;, ...
   // MMU_REGION_FLAT_ENTRY(&quot;PCI_IO&quot;, ...</code></pre></div></li>
-<li>
-<p><strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em>. Which is kinda small, as we’ll see.</p>
-</li>
 <li>
 <p><strong>nx_code</strong> <em>(0x4080_0000)</em>: Kernel Code begins here. Looks correct.</p>
 </li>
