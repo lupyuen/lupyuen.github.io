@@ -180,7 +180,7 @@ Let's print something. __UART0 Base Address__ is here...
 </div>
 </p>
 
-Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/blob/avaota/arch/arm64/src/qemu/qemu_boot.c#L269-L283) like this...
+Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333) like so...
 
 ```c
 // Print `123` to UART0
@@ -189,7 +189,7 @@ Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/blo
 *(volatile uint8_t *) 0x02500000 = '3';
 ```
 
-Let's do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+But let's do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
 
 ```text
 /* Bootloader starts NuttX here */
@@ -235,13 +235,13 @@ ERROR: Error initializing runtime service opteed_fast
 
 _Why print in Arm64 Assembly? Why not C?_
 
-1.  Arm64 Assembly is the __very first thing that boots__ when our SBC Bootloader starts NuttX
+1.  Arm64 Assembly is the __very first thing that boots__ when Bootloader starts NuttX
 
 1.  This happens __before anything complicated__ begins: UART Driver, Memory Management Unit, Task Scheduler, ...
 
 1.  The Arm64 Assembly above is __Address-Independent Code__: It will execute at Any Arm64 Address
 
-Next we move our code...
+Next we move our code and make it Address-Dependent...
 
 # Set the Start Address
 
@@ -306,7 +306,7 @@ With these fixes, our C Code in NuttX shall boot correctly.
 
 TODO: LCD also
 
-# UART Driver for 16650
+# UART Driver for 16550
 
 _Our C Code can print to UART now?_
 
