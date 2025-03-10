@@ -915,7 +915,7 @@ gic_validate_dist_version:
   256 SPIs implemented
 ```
 
-# Load the NuttX Apps Filesystem into RAM
+# NuttX Apps Filesystem
 
 _Are we done yet?_
 
@@ -934,7 +934,7 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-
+https://github.com/lupyuen2/wip-nuttx/pull/97/files
 
 Remove HostFS for Semihosting
 - https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
