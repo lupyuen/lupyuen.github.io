@@ -149,7 +149,7 @@ ls -l /TODO/Image
 
 Nothing happens. Let's print something...
 
-## UART0 Port is here
+# UART0 Port is here
 
 From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 1839
 
@@ -166,6 +166,8 @@ UART_LCR 0x000C UART Line Control
 
 Print 123
 - https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
+
+Address Independent Code
 
 ```c
 real_start:
@@ -194,7 +196,7 @@ ERROR: Error initializing runtime service opteed_fast
 
 (Don't worry about the opteed_fast error)
 
-## Bootloader Log says that Start Address is 0x40800000. We change it
+# Bootloader Log says that Start Address is 0x40800000. We change it
 
 https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8
 
@@ -214,6 +216,9 @@ Change start address to 0x40800000
 
 Fix Image Load Offset
 - https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01
+
+CONFIG_ARCH_PGPOOL_PBASE should match pgram
+- https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86
 
 # 16650 UART Driver
 
@@ -242,7 +247,7 @@ Prints more yay!
 AB
 ```
 
-## Troubleboot the MMU. Why won't it start?
+# Troubleboot the MMU. Why won't it start?
 
 Enable Logging for Scheduler and MMU
 - https://github.com/lupyuen2/wip-nuttx/commit/6f98f8a7cd214baa07288f581e58725aa76e4e58
@@ -256,8 +261,219 @@ init_xlat_tables: mmap: virt 1082130432x phys 1082130432x size 4194304x
 Fix MMU Logging
 - https://github.com/lupyuen2/wip-nuttx/commit/a4d1b7c9f37e331607f80f2ad4556904ecb69b9d
 
-Now stuck at: `enable_mmu_el1: Enable the MMU and data cache`
-- https://gist.github.com/lupyuen/9e3d1325dc90abc5b695a849a16e9560
+Still stuck at: `enable_mmu_el1: Enable the MMU and data cache`
+- https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362
+
+# Hmmm the Peripheral Address Space is missing. UART0 will crash!
+
+From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Memory Map: Page 42
+
+```text
+BROM & SRAM
+S_BROM 0x0000 0000---0x0000 AFFF 44 K
+
+PCIE
+PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
+
+DRAM Space
+DRAM SPACE 0x4000 0000---0x13FFF FFFF
+4 GB
+RISC-V core accesses theDRAM address:
+0x4004 0000---0x7FFFFFFF
+```
+
+# Let's fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB
+
+Add MMU Logging
+- https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843
+
+Remove PCI from MMU Regions
+- https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7
+
+Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)
+- https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45
+
+`up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000`
+- https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14
+
+# Whoa Heap Size is wrong! Let's find out why
+
+Assert CONFIG_RAM_END > g_idle_topstack
+- https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5
+
+Assertion fails
+- https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92
+
+```text
+up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
+dump_assert_info: Assertion failed
+```
+
+# Oops CONFIG_RAM_END is too small. Let's enlarge
+
+CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE
+- https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca
+
+GIC Failed
+- https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f
+
+```text
+gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19
+```
+
+# Ah we forgot the GIC Address!
+
+From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 263
+
+```text
+Module Name Base Address Comments
+GIC
+GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
+
+Register Name Offset Description
+GICD_CTLR 0x00000 Distributor Control Register
+GICR_CTLR_C0 0x60000 Redistributor Control Register
+GICR_CTLR_C1 0x80000 Redistributor Control Register
+GICR_CTLR_C2 0xA0000 Redistributor Control Register
+GICR_CTLR_C3 0xC0000 Redistributor Control Register
+GICR_CTLR_C4 0xE0000 Redistributor Control Register
+GICR_CTLR_C5 0x100000 Redistributor Control Register
+GICR_CTLR_C6 0x120000 Redistributor Control Register
+GICR_CTLR_C7 0x140000 Redistributor Control Register
+GICDA_CTLR 0x160000 Distributor Control Register
+```
+
+Set Address of GICD, GICR
+- https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76
+
+Disable MM Logging
+- https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83
+
+/system/bin/init is missing yay!
+- https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c
+
+# Load the NuttX Apps Filesystem into RAM
+
+Remove HostFS for Semihosting
+- https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
+
+OK the Initial Filesystem is no longer available:
+- https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507
+
+Add the Initial RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13
+
+Enable Logging for RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337
+
+`default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault`
+- https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949
+
+Our RAM Disk Copier is accessing misligned addresses. Let's fix the alignment...
+
+Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.
+- https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109
+
+Log the Mount Error
+- https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6
+
+Mounting of ROMFS fails
+- https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738
+
+```text
+nx_start_application: ret=-15
+dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361
+```
+
+Which is...
+
+```c
+#define ENOTBLK             15
+#define ENOTBLK_STR         "Block device required"
+```
+
+Why is /dev/ram0 not a Block Device?
+
+```c
+$ grep INIT .config
+# CONFIG_BOARDCTL_FINALINIT is not set
+# CONFIG_INIT_NONE is not set
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=""
+CONFIG_INIT_STACKSIZE=8192
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH="/system/bin/init"
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE="/dev/ram0"
+CONFIG_INIT_MOUNT_TARGET="/system/bin"
+CONFIG_INIT_MOUNT_FSTYPE="romfs"
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=""
+```
+
+We check the logs...
+
+Enable Filesystem Logging
+- https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496
+
+`Failed to find /dev/ram0`
+- https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc
+
+```text
+find_blockdriver: pathname="/dev/ram0"
+find_blockdriver: ERROR: Failed to find /dev/ram0
+nx_mount: ERROR: Failed to find block driver /dev/ram0
+nx_start_application: ret=-15
+```
+
+Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!
+
+# Mount the RAM Disk
+
+Let's mount the RAM Disk...
+
+Mount the RAM Disk
+- https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2
+
+/system/bin/init starts successfully yay!
+- https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac
+
+```text
+qemu_bringup:
+mount_ramdisk:
+nx_start_application: ret=0
+nx_start_application: Starting init task: /system/bin/init
+nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
+nxtask_exit: AppBringUp pid=3,TCB=0x40846190
+board_app_initialize:
+nx_start: CPU0: Beginning Idle Loop
+```
+
+NSH Prompt won't appear until we fix the UART Interrupt...
+
+# Fix the UART Interrupt
+
+From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 256
+
+```text
+Interrupt Number Interrupt Source Interrupt Vector Description
+34 UART0 0x0088
+```
+
+So we set the UART0 Interrupt...
+
+Set UART0 Interrupt to 34
+- https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf
+
+Disable Logging for MM and Scheduler
+- https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee
+
+Disable MMU Debugging
+- https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88
+
+NSH Prompt appears! And passes OSTest yay!
+- https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6
 
 # TODO
 
@@ -595,225 +811,6 @@ ssh thinkcentre sudo /home/user/copy-image.sh
 ```
 
 [(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
-
-## CONFIG_ARCH_PGPOOL_PBASE is different from pgram in Linker Script. Let's fix it
-
-CONFIG_ARCH_PGPOOL_PBASE should match pgram
-- https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86
-
-Still stuck at: `enable_mmu_el1: Enable the MMU and data cache`
-- https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362
-
-## Hmmm the Peripheral Address Space is missing. UART0 will crash!
-
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Memory Map: Page 42
-
-```text
-BROM & SRAM
-S_BROM 0x0000 0000---0x0000 AFFF 44 K
-
-PCIE
-PCIE_SLV 0x2000 0000---0x2FFF FFFF 256 MB
-
-DRAM Space
-DRAM SPACE 0x4000 0000---0x13FFF FFFF
-4 GB
-RISC-V core accesses theDRAM address:
-0x4004 0000---0x7FFFFFFF
-```
-
-## Let's fix the Peripheral Address Space: 0x0 to 0x40000000, 1 GB
-
-Add MMU Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843
-
-Remove PCI from MMU Regions
-- https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7
-
-Set CONFIG_DEVICEIO_BASEADDR to 0x00000000, size 1 GB (0x40000000)
-- https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45
-
-`up_allocate_kheap: heap_start=0x0x40843000, heap_size=0xfffffffffffbd000`
-- https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14
-
-## Whoa Heap Size is wrong! Let's find out why
-
-Assert CONFIG_RAM_END > g_idle_topstack
-- https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5
-
-Assertion fails
-- https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92
-
-```text
-up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
-dump_assert_info: Assertion failed
-```
-
-## Oops CONFIG_RAM_END is too small. Let's enlarge
-
-CONFIG_RAM_SIZE should match CONFIG_RAMBANK1_SIZE
-- https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca
-
-GIC Failed
-- https://gist.github.com/lupyuen/3a7d1e791ac14905532db2d768ae230f
-
-```text
-gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19
-```
-
-## Ah we forgot the GIC Address!
-
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 263
-
-```text
-Module Name Base Address Comments
-GIC
-GIC600_MON_4 0x03400000 General interrupt controller(23*64KB)
-
-Register Name Offset Description
-GICD_CTLR 0x00000 Distributor Control Register
-GICR_CTLR_C0 0x60000 Redistributor Control Register
-GICR_CTLR_C1 0x80000 Redistributor Control Register
-GICR_CTLR_C2 0xA0000 Redistributor Control Register
-GICR_CTLR_C3 0xC0000 Redistributor Control Register
-GICR_CTLR_C4 0xE0000 Redistributor Control Register
-GICR_CTLR_C5 0x100000 Redistributor Control Register
-GICR_CTLR_C6 0x120000 Redistributor Control Register
-GICR_CTLR_C7 0x140000 Redistributor Control Register
-GICDA_CTLR 0x160000 Distributor Control Register
-```
-
-Set Address of GICD, GICR
-- https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76
-
-Disable MM Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83
-
-/system/bin/init is missing yay!
-- https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c
-
-## Load the NuttX Apps Filesystem into RAM
-
-Remove HostFS for Semihosting
-- https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
-
-OK the Initial Filesystem is no longer available:
-- https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507
-
-Add the Initial RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13
-
-Enable Logging for RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337
-
-`default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault`
-- https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949
-
-Our RAM Disk Copier is accessing misligned addresses. Let's fix the alignment...
-
-Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.
-- https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109
-
-Log the Mount Error
-- https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6
-
-Mounting of ROMFS fails
-- https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738
-
-```text
-nx_start_application: ret=-15
-dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361
-```
-
-Which is...
-
-```c
-#define ENOTBLK             15
-#define ENOTBLK_STR         "Block device required"
-```
-
-Why is /dev/ram0 not a Block Device?
-
-```c
-$ grep INIT .config
-# CONFIG_BOARDCTL_FINALINIT is not set
-# CONFIG_INIT_NONE is not set
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=""
-CONFIG_INIT_STACKSIZE=8192
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE="/dev/ram0"
-CONFIG_INIT_MOUNT_TARGET="/system/bin"
-CONFIG_INIT_MOUNT_FSTYPE="romfs"
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=""
-```
-
-We check the logs...
-
-Enable Filesystem Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496
-
-`Failed to find /dev/ram0`
-- https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc
-
-```text
-find_blockdriver: pathname="/dev/ram0"
-find_blockdriver: ERROR: Failed to find /dev/ram0
-nx_mount: ERROR: Failed to find block driver /dev/ram0
-nx_start_application: ret=-15
-```
-
-Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!
-
-## Mount the RAM Disk
-
-Let's mount the RAM Disk...
-
-Mount the RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2
-
-/system/bin/init starts successfully yay!
-- https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac
-
-```text
-qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-nx_start_application: Starting init task: /system/bin/init
-nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
-nxtask_exit: AppBringUp pid=3,TCB=0x40846190
-board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop
-```
-
-NSH Prompt won't appear until we fix the UART Interrupt...
-
-## Fix the UART Interrupt
-
-From [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf), Page 256
-
-```text
-Interrupt Number Interrupt Source Interrupt Vector Description
-34 UART0 0x0088
-```
-
-So we set the UART0 Interrupt...
-
-Set UART0 Interrupt to 34
-- https://github.com/lupyuen2/wip-nuttx/commit/cd6da8f5378eb493528e57c61f887b6585ab8eaf
-
-Disable Logging for MM and Scheduler
-- https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee
-
-Disable MMU Debugging
-- https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88
-
-NSH Prompt appears! And passes OSTest yay!
-- https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6
 
 # What's Next
 
