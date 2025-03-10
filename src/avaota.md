@@ -830,14 +830,41 @@ Though it crashes elsewhere...
 
 # Whoa Heap Size is wrong! Let's find out why
 
-Assert CONFIG_RAM_END > g_idle_topstack
-- https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5
+_Why is NuttX crashing with ridiculous sizes?_
 
-Assertion fails
-- https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92
+```bash
+up_allocate_kheap:
+  heap_start=0x0x40843000
+  heap_size=0xfffffffffffbd000
+
+mm_initialize: Heap:
+  name=Kmem
+  start=0x40843000
+  size=18446744073709277184
+
+mm_addregion:
+  [Kmem] Region 1:
+  base=0x408432a8 
+  size=18446744073709276504
+
+Assertion failed : at file: mm_heap/mm_malloc.c:323
+```
+
+NuttX now crashes when [__Allocating the Kernel Heap__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14). The numbers above are way too huge, this looks like an __Arithmetic Underflow__...
+
+```bash
+## Heap Size looks negative
+up_allocate_kheap:
+  heap_start=0x0x40843000
+  heap_size=0xfffffffffffbd000
+```
+
+We add an Assertion Check: [__CONFIG_RAM_END > g_idle_topstack__](https://github.com/lupyuen2/wip-nuttx/commit/480bbc64af4ca64c104964c24f430c6de48326b5). Yep [__Our Assertion Fails__](https://gist.github.com/lupyuen/5f97773dcafc345a3510851629095c92)...
 
 ```text
-up_allocate_kheap: CONFIG_RAM_END=0x40800000, g_idle_topstack=0x40843000
+up_allocate_kheap:
+  CONFIG_RAM_END=0x40800000,
+  g_idle_topstack=0x40843000
 dump_assert_info: Assertion failed
 ```
 
