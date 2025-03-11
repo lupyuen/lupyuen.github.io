@@ -1467,7 +1467,7 @@ default_fatal_handler:
 <p><a href="TODO">(Explained here)</a></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.3 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
-<p><strong>At NuttX Startup:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This happens just after Bootloader starts NuttX…</p>
+<p><strong>At NuttX Startup:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This code came from <a href="TODO"><strong>NuttX EIC7700X</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for the `aligned_data` macro
 #include &lt;nuttx/compiler.h&gt;
 
