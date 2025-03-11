@@ -153,7 +153,7 @@ drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
 -rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd
 ```
 
-Let's replace __Linux by NuttX__...
+Let's replace it with NuttX...
 
 1.  Take the NuttX Kernel __`nuttx.bin`__ from the previous section
 
