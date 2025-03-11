@@ -1625,8 +1625,66 @@ default_fatal_handler:
 
 # Appendix: Port NuttX to Avaota-A1
 
-In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for Avaota-A1 SBC. This section explains the modified code...
+In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for __Avaota-A1 SBC__. This section explains the Modified Code...
 
-- [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/98/files)
+- [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
+
+## Arm64 Boot Code
+
+[_arch/arm64/src/a527/a527_lowputc.S_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
+
+[(Explained here)](TODO)
+
+## NuttX Start Code
+
+[_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0)
 
 TODO
+
+[(Explained here)](TODO)
+
+<hr>
+
+[_boards/arm64/a527/avaota-a1/src/a527_bringup.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2)
+
+TODO
+
+[(Explained here)](TODO)
+
+<hr>
+
+[_boards/arm64/a527/avaota-a1/scripts/ld-kernel.script_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
+
+TODO
+
+[(Explained here)](TODO)
+
+## Memory Map
+
+[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+
+TODO
+
+[(Explained here)](TODO)
+
+## GIC Interrupt Controller
+
+[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+
+TODO
+
+[(Explained here)](TODO)
+
+## NuttX Config
+
+[_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
+
+TODO
+
+[(Explained here)](TODO)
+
+[_arch/arm64/src/a527/a527_serial.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6)
+
+TODO
+
+[(Explained here)](TODO)
