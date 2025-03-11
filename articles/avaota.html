@@ -337,7 +337,7 @@ Kernel addr: 0x40800000
 
   /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000 */</code></pre></div></li>
 <li>
-<p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>CONFIG_ARCH_PGPOOL_PBASE</em> and <em>CONFIG_ARCH_PGPOOL_VBASE</em> too: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
+<p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
 CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
@@ -346,7 +346,7 @@ CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 ## Previously: QEMU Paged Memory is at 0x4028_0000
 CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div></li>
 <li>
-<p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> <em>(CONFIG_RAMBANK1_SIZE)</em>. We set <em>CONFIG_RAM_SIZE</em> to match <em>CONFIG_RAMBANK1_SIZE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca">configs/knsh/defconfig</a></p>
+<p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> in <em>RAMBANK1_SIZE</em>. We set <em>RAM_SIZE</em> accordingly: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## RAM Size is a paltry 128 MB
 CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
@@ -372,8 +372,8 @@ __start:
 <p>Subtract the above to get <strong>Image Load Offset</strong>: <em>0x80_0000</em></p>
 </li>
 </ul>
-<p>With these fixes, our C Code in NuttX shall boot correctly.</p>
-<p>TODO: LCD also</p>
+<p>With these fixes, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD…</p>
+<p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
 <h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
 <p>To watch the <strong>Boot Progress</strong> <em>(Sesame Street-style)</em>, we can print primitively to UART like this: <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333">qemu_boot.c</a></p>
@@ -479,7 +479,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 - Boot from EL1
 - Boot to C runtime for OS Initialize
 AB</code></pre></div>
-<p>OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let’s automate…</p>
+<p>OK the <em>repeated rebuilding, recopying and rebooting</em> of NuttX is getting really tiresome. Let’s automate…</p>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>7 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
@@ -901,6 +901,7 @@ nsh&gt;</code></pre></div>
 <p>It calls the <strong>Serial Driver</strong>. Which will wait for a <strong>UART Interrupt</strong> to signal that the <strong>Transmit Buffer</strong> is empty and available.</p>
 <p>Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. <a href="TODO">(Explained here)</a></p>
 <p>TODO: Pic of T527 Cutie</p>
+<p><a href="TODO"><em>NuttX might run OK on T527 Cutie</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
