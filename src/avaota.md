@@ -4,33 +4,19 @@
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
-<span style="font-size:80%">
-
 [_(Watch the Demo on YouTube)_](https://youtu.be/PxaMcmMAzlM)
 
-</span>
-
-TODO
-
-TODO: Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.
+This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](TODO) to [__PINE64 Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
 
 _Why are we doing this?_
 
 - Anyone porting NuttX from __QEMU to Real SBC__? This walkthrough shall be mighty helpful!
 
-I ported NuttX to a simpler A527 board, the [Avaota-A1 SBC by PINE64 ($55)](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
+- Avaota-A1 SBC is [__Open Source Hardware__](https://github.com/AvaotaSBC/Avaota-A1) _(CERN OHL Licensed)_. PINE64 sells it today, maybe we'll see more manufacturers.
 
-TODO: Avaota-A1 SBC is [Open Source Hardware](https://github.com/AvaotaSBC/Avaota-A1) (CERN OHL Licensed). PINE64 sells it today, maybe we'll see more manufacturers with the same design: 
+- This could be the First Port of [__Arm64 in NuttX Kernel Build__](TODO). _(NXP i.MX93 might be another?)_
 
-TODO: I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting because:
-
-(1) It's one of the first ports of Arm64 in NuttX Kernel Build (NXP i.MX93 might be another?)
-
-(2) We'll run it as PR Test Bot for Validating Arm64 PRs
-
-(3) PR Test Bot will be fully automated thanks to [SDWire MicroSD Multiplexer](https://lupyuen.org/articles/testbot3.html)
-
-TODO: Octa-Core CPU
+- We'll run it as [__PR Test Bot__](TODO) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to a [__MicroSD Multiplexer__](https://lupyuen.org/articles/testbot3.html).
 
 We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know! 🙏
 
@@ -62,7 +48,7 @@ Nifty Trick for Booting NuttX on __Any Arm64 SBC__ (RISC-V too)
 
 To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot Linux?__
 
-1.  Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to these pins (pic above)
+1.  Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to the __UART0 Port__ (pic above)
 
     | Avaota-A1 | USB UART | Colour |
     |:------------:|:--------:|:------:|
@@ -497,19 +483,21 @@ AB
 
 OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let's automate...
 
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/testbot2-flow3.jpg)
+
 # MicroSD Multiplexer + Smart Power Plug
 
 _What if we could rebuild-recopy-reboot NuttX... In One Single Script?_
 
-Well thankfully we have a [__MicroSD Multiplexer__](TODO) that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
-
-Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do __everything__ for us:
+Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc) (pic above). Our Build Script will do __everything__ for us...
 
 1.  Copy __NuttX to MicroSD__
 
 1.  __Swap the MicroSD__ from our Test PC to SBC
 
 1.  __Power up SBC__ and boot NuttX
+
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
 Here's our nifty __Build Script__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
@@ -606,7 +594,7 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 _OK can get back to NuttX now?_
 
-Of course. Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
+Of course. Earlier we saw NuttX [__Stuck at "AB"__](TODO)...
 
 ```bash
 123
@@ -617,7 +605,7 @@ Of course. Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
 AB
 ```
 
-Which says that NuttX is stuck inside __arm64_mmu_init__: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333)
+Which says that NuttX is stranded inside __arm64_mmu_init__: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333)
 
 ```c
 // 0x0250_0000 is the UART0 Base Address
@@ -638,7 +626,7 @@ void arm64_chip_boot(void) {
 
 _What's arm64_mmu_init?_
 
-NuttX calls __arm64_mmu_init__ to initialise the Arm64 __Memory Management Unit (MMU)__. We add some logs inside: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
+NuttX calls __arm64_mmu_init__ to start the Arm64 __Memory Management Unit (MMU)__. We add some logs inside: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
 
 ```c
 // Enable debugging for MMU.
@@ -683,45 +671,18 @@ CONFIG_DEBUG_SCHED_INFO=y
 CONFIG_DEBUG_SCHED_WARN=y
 ```
 
-Ah OK we're stuck just before [__Enabling the MMU and Data Cache__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362)...
+Ah OK we're stuck just before [__Enabling the MMU__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362)...
 
 ```bash
-arm64_mmu_init: xlat tables:
-arm64_mmu_init: base table(L0): 0x4083c000, 512 entries
-arm64_mmu_init: 0: 0x40832000
-arm64_mmu_init: 1: 0x40833000
-arm64_mmu_init: 2: 0x40834000
-arm64_mmu_init: 3: 0x40835000
-arm64_mmu_init: 4: 0x40836000
-arm64_mmu_init: 5: 0x40837000
-arm64_mmu_init: 6: 0x40838000
-arm64_mmu_init: 7: 0x40839000
-arm64_mmu_init: 8: 0x4083a000
-arm64_mmu_init: 9: 0x4083b000
-setup_page_tables:
 init_xlat_tables: mmap: virt 0x7000000 phys 0x7000000 size 0x20000000
-set_pte_table_desc:
-set_pte_table_desc: 0x4083c000: [Table] 0x40832000
-set_pte_table_desc:
-set_pte_table_desc: 0x40832000: [Table] 0x40833000
 init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
-set_pte_table_desc:
-set_pte_table_desc: 0x40832008: [Table] 0x40834000
 init_xlat_tables: mmap: virt 0x4010000000 phys 0x4010000000 size 0x10000000
-set_pte_table_desc:
-set_pte_table_desc: 0x40832800: [Table] 0x40835000
 init_xlat_tables: mmap: virt 0x8000000000 phys 0x8000000000 size 0x8000000000
 init_xlat_tables: mmap: virt 0x3eff0000 phys 0x3eff0000 size 0x10000
-set_pte_table_desc:
-set_pte_table_desc: 0x40833fb8: [Table] 0x40836000
 init_xlat_tables: mmap: virt 0x40800000 phys 0x40800000 size 0x2a000
-split_pte_block_desc: Splitting existing PTE 0x40834020(L2)
-set_pte_table_desc:
-set_pte_table_desc: 0x40834020: [Table] 0x40837000
 init_xlat_tables: mmap: virt 0x4082a000 phys 0x4082a000 size 0x6000
 init_xlat_tables: mmap: virt 0x40830000 phys 0x40830000 size 0x13000
 init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
-enable_mmu_el1:
 enable_mmu_el1: UP_MB
 enable_mmu_el1: Enable the MMU and data cache
 ```
@@ -1022,39 +983,7 @@ It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to sign
 
 Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
 
-# TODO
-
-![Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)](https://lupyuen.org/images/testbot2-flow3.jpg)
-
-_How about booting and testing NuttX on Avaota-A1 SBC?_
-
-Exactly! Here's why Avaota-A1 SBC should run NuttX...
-
-- __Avaota-A1__ has the latest Octa-Core Arm64 SoC: __Allwinner A527__
-
-  _(Bonus: There's a tiny RISC-V Core inside)_
-
-- [__NuttX Kernel Build__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode) sounds ideal for Allwinner A527 SoC
-
-  _(Instead of the restrictive Flat Build)_
-
-- __Avaota-A1__ could be the first Arm64 Port of NuttX Kernel Build
-
-  [_(NXP i.MX93 might be another)_](https://github.com/apache/nuttx/pull/15556)
-
-- __SDWire MicroSD Multiplexer__: Avaota SBC was previously the __Test Server__, now it becomes the __Test Device__
-
-  _(Porting NuttX gets a lot quicker)_
-
-- __Open-Source RTOS__ _(NuttX)_ tested on __Open-Source Hardware__ _(Avaota-A1)_ ... Perfectly sensible!
-
-We'll take the NuttX Kernel Build for [__QEMU Arm64__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig), boot it on Avaota-A1 SBC. We're making terrific progress with __NuttX on Avaota SBC__...
-
-![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
-
-_Isn't it faster to port NuttX with U-Boot TFTP?_
-
-Yeah for RISC-V Ports we boot [__NuttX over TFTP__](https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5), so it's back to MicroSD sigh. (Pic below)
+TODO: Pic of T527 Cutie
 
 # What's Next
 
