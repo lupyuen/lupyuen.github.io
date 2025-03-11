@@ -87,7 +87,7 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
     ERROR: Error initializing runtime service opteed_fast
     ```
 
-1.  __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
+1.  Aha! __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
 
 # NuttX Kernel Build for Arm64 QEMU
 
@@ -1022,9 +1022,9 @@ It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to sign
 
 Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
 
-TODO: Pic of T527 Cutie
+![NuttX might run OK on Radxa Cubie A5E (Allwinner T527)](https://lupyuen.org/images/avaota-cubie.jpg)
 
-[_NuttX might run OK on T527 Cutie_](TODO)
+[_NuttX might run OK on Radxa Cubie A5E (Allwinner T527)_](TODO)
 
 # What's Next
 
