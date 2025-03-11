@@ -862,12 +862,21 @@ It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC sh
 
 GIC is here...
 
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
 |:-------------------------------:|:---------|
 | __Module__ | __Base Address__
 | GIC | _0x0340_0000_
 
+</div>
+</p>
+
 Which has these __GIC Registers__ inside, handling 8 Arm64 Cores...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
 |:-------------------------------:|:---------|
@@ -882,6 +891,9 @@ Which has these __GIC Registers__ inside, handling 8 Arm64 Cores...
 | _0x12_0000_ | GICR_CTLR_C6  _(Ditto, Core 6)_
 | _0x14_0000_ | GICR_CTLR_C7  _(Ditto, Core 7)_
 | _0x16_0000_ | GICDA_CTLR  _(Distributor Control Register A)_
+
+</div>
+</p>
 
 Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Redistributor)_: [qemu/chip.h](https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76)
 
@@ -1636,7 +1648,7 @@ In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweake
 
 [_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
 
-TODO
+We define the __I/O Memory Space__...
 
 ```c
 // I/O Memory Space
@@ -1647,11 +1659,127 @@ TODO
 #define CONFIG_LOAD_BASE           0x40800000
 ```
 
+Based on the __A527 Memory Map__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 42 |
+|:--------------------------------|:---------|
+| __Module__ | __Address__
+| Boot ROM & SRAM | _0x0000_0000_ to ...
+| PCIE | _0x2000_0000_ to _0x2FFF_FFFF_
+| DRAM | _0x4000_0000_ to ...
+
+</div>
+</p>
+
+[(Explained here)](TODO)
+
+## GIC Interrupt Controller
+
+[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+
+We set the __GIC Base Addresses__...
+
+```c
+// GICD and GICD Base Addresses
+#define CONFIG_GICD_BASE           0x3400000
+#define CONFIG_GICR_BASE           0x3460000
+```
+
+Based on the __GIC Doc__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+|:-------------------------------:|:---------|
+| __Module__ | __Base Address__
+| GIC | _0x0340_0000_
+
+</div>
+</p>
+
+And __GIC Registers__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+|:-------------------------------:|:---------|
+| __Offset__ | __Register__
+| _0x00_0000_ | GICD_CTLR  _(Distributor Control Register)_
+| _0x06_0000_ | GICR_CTLR_C0  _(Redistributor Control Register, Core 0)_
+| _0x08_0000_ | GICR_CTLR_C1  _(Ditto, Core 1)_
+| _0x0A_0000_ | GICR_CTLR_C2  _(Ditto, Core 2)_
+| _0x0C_0000_ | GICR_CTLR_C3  _(Ditto, Core 3)_
+| _0x0E_0000_ | GICR_CTLR_C4  _(Ditto, Core 4)_
+| _0x10_0000_ | GICR_CTLR_C5  _(Ditto, Core 5)_
+| _0x12_0000_ | GICR_CTLR_C6  _(Ditto, Core 6)_
+| _0x14_0000_ | GICR_CTLR_C7  _(Ditto, Core 7)_
+| _0x16_0000_ | GICDA_CTLR  _(Distributor Control Register A)_
+
+</div>
+</p>
+
 [(Explained here)](TODO)
 
 ## Arm64 Boot Code
 
 [_arch/arm64/src/a527/a527_lowputc.S_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
+
+We updated the Arm64 Boot Code for __16550 UART Driver__...
+
+1.  We modified the __UART Base Address__...
+
+    ```c
+    // Base Address for 16550 UART
+    #define UART0_BASE_ADDRESS 0x02500000
+    ```
+
+1.  QEMU was using PL011 UART. We fixed this for 16550 UART, to __Wait for UART Ready__ [(derived from NuttX A64)](TODO)
+
+    ```c
+    /* Wait for 16550 UART to be ready to transmit
+    * xb: Register that contains the UART Base Address
+    * wt: Scratch register number */
+    .macro early_uart_ready xb, wt
+    1:
+      ldrh  \wt, [\xb, #0x14] /* UART_LSR (Line Status Register) */
+      tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
+      b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
+    .endm
+    ```
+
+__UART Base Address__ came from the A527 Doc...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
+|:-------------------------------:|:---------|
+| __Module__ | __Base Address__
+| UART0 | _0x0250\_0000_
+
+</div>
+</p>
+
+With these __UART Registers__...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 1839 |
+|:-------------------------------:|:---------|
+| __Offset__ | __Register__
+| _0x0000_ | UART_THR _(Transmit Holding Register)_
+| _0x0004_ | UART_DLH _(Divisor Latch High Register)_
+| _0x0008_ | UART_IIR _(Interrupt Identity Register)_
+| _0x000C_ | UART_LCR _(Line Control)_
+
+</div>
+</p>
 
 [(Explained here)](TODO)
 
@@ -1811,10 +1939,16 @@ static int mount_ramdisk(void) {
 We reserve __16 MB of RAM__ for the ROMFS Filesystem that will host the NuttX Apps...
 
 ```c
-/* Linker Script: We added the RAM Disk (16 MB) */
+/* Linker Script: We moved the Paged Pool and added the RAM Disk (16 MB) */
 MEMORY {
-  dram (rwx)    : ORIGIN = 0x40800000, LENGTH = 2M
-  pgram (rwx)   : ORIGIN = 0x40A00000, LENGTH = 4M    /* w/ cache */
+  /* Previously: QEMU boots at 0x4028_0000 */
+  dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
+
+  /* Previously: QEMU Paged Memory is at 0x4028_0000 */
+  /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000   */
+  pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
+
+  /* Added the RAM Disk */
   ramdisk (rwx) : ORIGIN = 0x40E00000, LENGTH = 16M   /* w/ cache */
 }
 
@@ -1824,19 +1958,7 @@ __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 ```
 
-[(Explained here)](TODO)
-
-## GIC Interrupt Controller
-
-[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
-
-TODO
-
-```c
-// GICD and GICD Base Addresses
-#define CONFIG_GICD_BASE           0x3400000
-#define CONFIG_GICR_BASE           0x3460000
-```
+Also we moved the __Paged Pool__ because the Boot Address has changed to _0x4080_0000_.
 
 [(Explained here)](TODO)
 
@@ -1844,7 +1966,65 @@ TODO
 
 [_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
 
-TODO
+Based on the __16550 UART Registers__ above: We configured the 16550 UART and removed PL011 UART...
+
+```bash
+CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x02500000
+CONFIG_16550_UART0_CLOCK=198144000
+CONFIG_16550_UART0_IRQ=125
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y
+```
+
+[(Explained here)](TODO)
+
+Since we changed the __Paged Memory Pool__ _(pgram)_, we update _ARCH_PGPOOL_PBASE_ and _VBASE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
+
+```bash
+## Physical Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
+
+## Virtual Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
+```
+
+[(Explained here)](TODO)
+
+NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) in _RAMBANK1_SIZE_. We set _RAM_SIZE_ accordingly...
+
+```bash
+## RAM Size is 128 MB
+CONFIG_RAM_SIZE=134217728
+```
+
+[(Explained here)](TODO)
+
+We set the __UART0 Interrupt__...
+
+```bash
+## Set the UART0 Interrupt to 34
+CONFIG_16550_UART0_IRQ=34
+```
+
+Based on the A527 Doc...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 256 |
+|:-------------------------------:|:--------:|
+| __Interrupt Number__ | __Interrupt Source__
+| 34 | UART0
+
+</div>
+</p>
 
 [(Explained here)](TODO)
 
@@ -1852,6 +2032,23 @@ TODO
 
 [_arch/arm64/src/a527/a527_serial.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6)
 
-TODO
+QEMU was using PL011 UART. We switched the Serial Driver to __16550 UART__...
+
+```c
+// Switch from PL011 UART (QEMU) to 16550 UART
+#include <nuttx/serial/uart_16550.h>
+
+// Enable the 16550 Console UART at Startup
+void arm64_earlyserialinit(void) {
+  // Previously for QEMU: pl011_earlyserialinit
+  u16550_earlyserialinit();
+}
+
+// Ditto but not so early
+void arm64_serialinit(void) {
+  // Previous for QEMU: pl011_serialinit
+  u16550_serialinit();
+}
+```
 
 [(Explained here)](TODO)
