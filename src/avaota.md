@@ -12,13 +12,15 @@
 
 TODO
 
+TODO: Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.
+
 _Why are we doing this?_
 
 - Anyone porting NuttX from __QEMU to Real SBC__? This walkthrough shall be mighty helpful!
 
-I ported NuttX to a simpler A527 board, the Avaota-A1 SBC by PINE64 ($55): https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/
+I ported NuttX to a simpler A527 board, the [Avaota-A1 SBC by PINE64 ($55)](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/)
 
-TODO: Avaota-A1 SBC is Open Source Hardware (CERN OHL Licensed). PINE64 sells it today, maybe we'll see more manufacturers with the same design: https://github.com/AvaotaSBC/Avaota-A1
+TODO: Avaota-A1 SBC is [Open Source Hardware](https://github.com/AvaotaSBC/Avaota-A1) (CERN OHL Licensed). PINE64 sells it today, maybe we'll see more manufacturers with the same design: 
 
 TODO: I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting because:
 
@@ -26,9 +28,7 @@ TODO: I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting beca
 
 (2) We'll run it as PR Test Bot for Validating Arm64 PRs
 
-(3) PR Test Bot will be fully automated thanks to SDWire MicroSD Mux: https://lupyuen.org/articles/testbot3.html
-
-TODO: Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.
+(3) PR Test Bot will be fully automated thanks to [SDWire MicroSD Multiplexer](https://lupyuen.org/articles/testbot3.html)
 
 TODO: Octa-Core CPU
 
