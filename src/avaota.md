@@ -32,19 +32,19 @@ TODO: Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Ava
 
 TODO: Octa-Core CPU
 
-We're seeking volunteers to build __NuttX Drivers for Avaota-A1__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know!
+We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know! 🙏
 
-[Schematic](https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf)
+- [__Sunxi Docs on Allwinner A527__](https://linux-sunxi.org/A523)
+
+- [__Allwinner A527 Datasheet__](https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf)
+
+- [__Allwinner A523 User Manual__](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) _(A527 is similar to A523)_
+
+- [__Avaota-A1 Schematic__](https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf)
 
 _(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
-# Allwinner A527 Docs
-
-We used these docs (A527 is a variant of A523)
-
-- https://linux-sunxi.org/A523
-- https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf
-- https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf
+![Avaota-A1 SBC connected to USB UART](https://lupyuen.org/images/testbot3-uart.jpg)
 
 # Boot Linux on our SBC
 
@@ -60,26 +60,48 @@ Nifty Trick for Booting NuttX on __Any Arm64 SBC__ (RISC-V too)
 
 - That's why we have a [__Linux Kernel Header__](TODO) at the top of NuttX
 
-To begin, we observe our SBC and its _Natural Behaviour_: How does it __Boot Linux?__
+To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot Linux?__
 
-TODO: Download
+1.  Connect a [__USB UART Dongle__](https://pine64.com/product/serial-console-woodpecker-edition/) (CH340 or CP2102) to these pins (pic above)
 
-TODO: MicroSD
+    | Avaota-A1 | USB UART | Colour |
+    |:------------:|:--------:|:------:|
+    | __GND__ (Pin 6)	| __GND__ | _Yellow_ |
+    | __TX__ (Pin 8) |	__RX__ | _Orange_ |
+    | __RX__ (Pin 10)	| __TX__ | _Red_ |
 
-TODO: Load Address
+    __Boot Log__ will appear at _/dev/ttyUSB0_...
 
-TODO: LCD Screen too
+    ```bash
+    ## Allow the user to access the USB UART port
+    ## Logout and login to refresh the permissions
+    sudo usermod -a -G dialout $USER
+    logout
 
-Download the [__Latest AvaotaOS Release__](https://github.com/AvaotaSBC/AvaotaOS/releases) _(Ubuntu Noble GNOME)_ and uncompress it...
+    ## Connect to USB UART Console
+    screen /dev/ttyUSB0 115200
+    ```
 
-```bash
-wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
-xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
-```
+1.  Download the [__Latest AvaotaOS Release__](https://github.com/AvaotaSBC/AvaotaOS/releases) _(Ubuntu Noble GNOME)_ and uncompress it...
 
-Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](https://etcher.balena.io/).
+    ```bash
+    wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+    xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
+    ```
 
-We'll overwrite the `Image` file by `nuttx.bin`...
+1.  Write the __`.img`__ file to a MicroSD with [__Balena Etcher__](https://etcher.balena.io/).
+
+1.  Insert the MicroSD into our SBC and [__Boot AvaotaOS__](https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b). We'll see the Boot Log...
+
+    ```bash
+    read /Image addr=40800000
+    Kernel addr: 0x40800000
+    BL31: v2.5(debug):9241004a9
+    sunxi-arisc driver is starting
+    ERROR: Error initializing runtime service opteed_fast
+    ```
+
+1.  __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
 
 # NuttX Kernel Build for Arm64 QEMU
 
@@ -119,15 +141,17 @@ Check that it works...
 TODO
 ```
 
-TODO: Why Kernel Build
+We're ready to boot this to our SBC!
+
+_Why start with NuttX Kernel Build? Not NuttX Flat Build?_
+
+Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It makes more sense to boot [__NuttX Kernel Build__](TODO) and run lots of cool powerful NuttX Apps with [__Virtual Memory__](TODO).
+
+_(NuttX Flat Mode was created for Simpler Microcontrollers with Limited RAM)_
 
 # Boot NuttX Kernel on our SBC
 
-TODO: Kernel Only, no apps
-
-TODO: 28 MB Linux Kernel
-
-[Build Log](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+Remember the [__MicroSD we downloaded__](TODO)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
 
 ```bash
 $ ls -l /TODO
@@ -143,21 +167,37 @@ drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
 -rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd
 ```
 
-TODO: We'll overwrite the `Image` file by `nuttx.bin`...
+Let's replace __Linux by NuttX__...
 
-```bash
-mv /TODO/Image /TODO/Image.old
-cp nuttx.bin /TODO/Image
-ls -l /TODO/Image
-## Should be a lot smaller
-umount /TODO
-```
+1.  Take the NuttX Kernel __`nuttx.bin`__ from the previous section
 
-Nothing happens. We do some logging...
+    _(Yes the QEMU one)_
+
+1.  Overwrite the __`Image`__ file by __`nuttx.bin`__...
+
+    ```bash
+    mv /TODO/Image /TODO/Image.old
+    cp nuttx.bin /TODO/Image
+    ls -l /TODO/Image
+    ## Should be a lot smaller
+    umount /TODO
+    ```
+
+1.  Insert the MicroSD into our SBC. Boot it...
+
+    ```bash
+    read /Image addr=40800000
+    Kernel addr: 0x40800000
+    BL31: v2.5(debug):9241004a9
+    sunxi-arisc driver is starting
+    ERROR: Error initializing runtime service opteed_fast
+    ```
+
+Nothing happens. Let's fix this iteratively, in tiny steps...
 
 # Print to UART in Arm64 Assembly
 
-_Is NuttX actually booting?_
+_Is NuttX actually booting on our SBC?_
 
 Let's print something. __UART0 Base Address__ is here...
 
@@ -245,7 +285,7 @@ _Why print in Arm64 Assembly? Why not C?_
 
 1.  Arm64 Assembly is the __very first thing that boots__ when Bootloader starts NuttX
 
-1.  This happens __before anything complicated__ begins: UART Driver, Memory Management Unit, Task Scheduler, ...
+1.  This happens __before anything complicated__ and crash-prone begins: UART Driver, Memory Management Unit, Task Scheduler, ...
 
 1.  The Arm64 Assembly above is __Address-Independent Code__: It will execute at Any Arm64 Address
 
