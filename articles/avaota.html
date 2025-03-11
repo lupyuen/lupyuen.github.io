@@ -354,28 +354,8 @@ CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
 CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
 </li>
-<li>
-<p><strong>Linux Kernel Header</strong> needs patching. We set the <strong>Image Load Offset</strong> to <em>0x80_0000</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
-__start:
-  ...
-  /* Image Load Offset from Start of RAM          */
-  /* Previously: QEMU set this to 0x480000 (why?) */
-  .quad 0x800000</code></pre></div></li>
 </ol>
-<p>That’s because…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/avaota/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig#L85"><strong>Start of RAM</strong></a> is <em>0x4000_0000</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_RAM_START=0x40000000</code></pre></div></li>
-<li>
-<p>Bootloader starts NuttX at <em>0x4080_0000</em></p>
-</li>
-<li>
-<p>Subtract the above to get <strong>Image Load Offset</strong>: <em>0x80_0000</em></p>
-</li>
-</ul>
-<p>With these mods, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD…</p>
+<p>With these mods, our C Code in NuttX shall boot correctly. FYI: Boot Address also appears on the Onboard LCD…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
 <h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
