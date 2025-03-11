@@ -36,6 +36,14 @@ Octa-Core CPU
 
 _(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
+# Allwinner A527 Docs
+
+We used these docs (A527 is a variant of A523)
+
+- https://linux-sunxi.org/A523
+- https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf
+- https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf
+
 # Boot Linux on our SBC
 
 Nifty Trick for Booting NuttX on __Any Arm64 SBC__ (RISC-V too)
@@ -539,59 +547,6 @@ set -x  ##  Enable echo
 
 (__copy-image.sh__ is explained below)
 
-# Passwordless Sudo
-
-Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
-
-SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.
-
-Let's make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers
-
-```bash
-## Start the Sudoers Editor
-sudo visudo
-
-## Add this line:
-user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
-```
-
-Edit /home/user/copy-image.sh...
-
-```bash
-set -e  ## Exit when any command fails
-set -x  ## Echo commands
-whoami  ## I am root!
-
-## Copy /tmp/Image to MicroSD
-sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
-sleep 5
-mkdir -p /tmp/sda1
-mount /dev/sda1 /tmp/sda1
-cp /tmp/Image /tmp/sda1/
-ls -l /tmp/sda1
-
-## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
-umount /tmp/sda1
-sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
-```
-
-(Remember to `chmod +x /home/user/copy-image.sh`)
-
-Now we can run copy-image.sh without a password yay!
-
-```bash
-## Sudo will NOT prompt for password yay!
-sudo /home/user/copy-image.sh
-
-## Also works over SSH: Copy NuttX Image to MicroSD
-## No password needed for sudo yay!
-scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh
-```
-
-[(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
-
 # Arm64 Memory Management Unit
 
 Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
@@ -1032,7 +987,116 @@ _Isn't it faster to port NuttX with U-Boot TFTP?_
 
 Yeah for RISC-V Ports we boot [__NuttX over TFTP__](https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp). But Avaota U-Boot [__doesn't support TFTP__](https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5), so it's back to MicroSD sigh. (Pic below)
 
-# Boot NuttX for Avaota-A1
+# What's Next
+
+TODO
+
+Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
+
+- [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
+
+- [__Discuss this article on Hacker News__](TODO)
+
+- [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
+
+- [__My Other Project: "NuttX for Oz64 SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
+
+- [__Older Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
+
+- [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
+
+- [__Check out my articles__](https://lupyuen.org)
+
+- [__RSS Feed__](https://lupyuen.org/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.org/src/avaota.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md)
+
+# Appendix: Build NuttX for Avaota-A1
+
+TODO
+
+
+See the Build Script:
+- https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587
+
+```bash
+## Build NuttX and Apps (NuttX Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
+cd nuttx
+tools/configure.sh qemu-armv8a:knsh
+make -j
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  >Image
+
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+## token=xxxx
+set +x  ##  Disable echo
+. $HOME/home-assistant-token.sh
+set -x  ##  Enable echo
+
+set +x  ##  Disable echo
+echo "----- Power Off the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_off"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+set +x  ##  Disable echo
+echo "----- Power On the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_on"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Wait for SBC to finish booting
+sleep 30
+
+set +x  ##  Disable echo
+echo "----- Power Off the SBC"
+curl \
+    -X POST \
+    -H "Authorization: Bearer $token" \
+    -H "Content-Type: application/json" \
+    -d '{"entity_id": "automation.starpro64_power_off"}' \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+```
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+
+(__copy-image.sh__ is explained below)
+
+# Appendix: Boot NuttX for Avaota-A1
+
+TODO
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
 
@@ -1180,46 +1244,58 @@ nsh>
 
 </span>
 
-How did we get here? Let's walk through the steps...
+# Appendix: Passwordless Sudo
 
-# Allwinner A527 Docs
+Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
 
-We used these docs (A527 is a variant of A523)
+SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.
 
-- https://linux-sunxi.org/A523
-- https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf
-- https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf
+Let's make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers
 
-# Work In Progress
+```bash
+## Start the Sudoers Editor
+sudo visudo
 
-We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC...
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
+```
 
+Edit /home/user/copy-image.sh...
 
-# What's Next
+```bash
+set -e  ## Exit when any command fails
+set -x  ## Echo commands
+whoami  ## I am root!
 
-TODO
+## Copy /tmp/Image to MicroSD
+sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+sleep 5
+mkdir -p /tmp/sda1
+mount /dev/sda1 /tmp/sda1
+cp /tmp/Image /tmp/sda1/
+ls -l /tmp/sda1
 
-Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
+## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
+umount /tmp/sda1
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
+```
 
-- [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
+(Remember to `chmod +x /home/user/copy-image.sh`)
 
-- [__Discuss this article on Hacker News__](TODO)
+Now we can run copy-image.sh without a password yay!
 
-- [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
+```bash
+## Sudo will NOT prompt for password yay!
+sudo /home/user/copy-image.sh
 
-- [__My Other Project: "NuttX for Oz64 SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
+## Also works over SSH: Copy NuttX Image to MicroSD
+## No password needed for sudo yay!
+scp nuttx.bin thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+```
 
-- [__Older Project: "NuttX for Ox64 BL808"__](https://nuttx-forge.org/lupyuen/nuttx-ox64)
-
-- [__Olderer Project: "NuttX for PinePhone"__](https://nuttx-forge.org/lupyuen/pinephone-nuttx)
-
-- [__Check out my articles__](https://lupyuen.org)
-
-- [__RSS Feed__](https://lupyuen.org/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.org/src/avaota.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md)
+[(See the __Build Script__)](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 # Appendix: NuttX Apps Filesystem
 
@@ -1409,4 +1485,4 @@ default_fatal_handler:
   alignment fault
 ```
 
-_(Strangely: This alignment isn't needed for RISC-V)_
+[_(Strangely: This Alignment isn't needed for RISC-V)_](TODO)
