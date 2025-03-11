@@ -127,7 +127,7 @@ Check that it works...
 TODO
 ```
 
-We're ready to boot this to our SBC!
+We're ready to boot __`nuttx.bin`__ on our SBC!
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
@@ -298,7 +298,8 @@ Kernel addr: 0x40800000
 
       /* Previously: QEMU Paged Memory is at 0x4028_0000 */
       pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
-    }
+
+      /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000 */
     ```
 
 1.  Since we changed the __Paged Memory Pool__ _(pgram)_, we update _CONFIG_ARCH_PGPOOL_PBASE_ and _CONFIG_ARCH_PGPOOL_VBASE_ too: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
@@ -420,7 +421,7 @@ Beyond Big Bird: We need the __16550 UART Driver__...
       u16550_earlyserialinit();
     }
 
-    // TODO
+    // Ditto but not so early
     void arm64_serialinit(void) {
       // Previous for QEMU: pl011_serialinit
       u16550_serialinit();
@@ -674,8 +675,9 @@ CONFIG_DEBUG_SCHED_WARN=y
 Ah OK we're stuck just before [__Enabling the MMU__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362)...
 
 ```bash
-init_xlat_tables: mmap: virt 0x7000000 phys 0x7000000 size 0x20000000
-init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
+## Init the MMU Page Translation Tables
+init_xlat_tables: mmap: virt 0x7000000    phys 0x7000000    size 0x20000000
+init_xlat_tables: mmap: virt 0x40000000   phys 0x40000000   size 0x8000000
 init_xlat_tables: mmap: virt 0x4010000000 phys 0x4010000000 size 0x10000000
 init_xlat_tables: mmap: virt 0x8000000000 phys 0x8000000000 size 0x8000000000
 init_xlat_tables: mmap: virt 0x3eff0000 phys 0x3eff0000 size 0x10000
@@ -683,6 +685,8 @@ init_xlat_tables: mmap: virt 0x40800000 phys 0x40800000 size 0x2a000
 init_xlat_tables: mmap: virt 0x4082a000 phys 0x4082a000 size 0x6000
 init_xlat_tables: mmap: virt 0x40830000 phys 0x40830000 size 0x13000
 init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
+
+## Enable the MMU at Exception Level 1
 enable_mmu_el1: UP_MB
 enable_mmu_el1: Enable the MMU and data cache
 ```
@@ -707,9 +711,27 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 # Fix the Memory Map
 
+_Why do we need Arm64 MMU anyway? (Memory Management Unit)_
+
+We require MMU for...
+
+- __Memory Protection__: Prevent Applications _(and Kernel)_ from meddling with things _(in System Memory)_ that they're not supposed to
+
+- __Virtual Memory__: Allow Applications to access chunks of _"Imaginary Memory"_ at Exotic Addresses _(0x8000_0000!)_
+
+  But in reality: They're System RAM recycled from boring old addresses _(like 0x40A0_4000)_
+
+  _(Kinda like "The Matrix")_
+
+If we don't configure MMU with the correct __Memory Map__...
+
+- __NuttX Kernel__ won't boot: _"Help! I can't access my Kernel Code and Data!"_
+
+- __NuttX Apps__ won't run: _"Whoops where's the App Code and Data that Kernel promised?"_
+
 _Arm64 MMU won't turn on. Maybe our Memory Map is incorrect?_
 
-Let's verify our __Memory Map__...
+Let's verify our __A527 Memory Map__...
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -724,16 +746,16 @@ Let's verify our __Memory Map__...
 </div>
 </p>
 
-How does this compare with NuttX? We do extra logging for __Memory Management Unit (MMU)__: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843)
+How does this compare with NuttX? We do extra __MMU Logging__: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/commit/9488ecb5d8eb199bdbe16adabef483cf9cf04843)
 
 ```c
-// Log the Names of the Memory Regions
+// Print the Names of the MMU Memory Regions
 static void init_xlat_tables(const struct arm_mmu_region *region) { ...
   _info("name=%s\n", region->name);
   sinfo("mmap: virt %p phys %p size %p\n", virt, phys, size);
 ```
 
-Ah much clearer! Now we see the __Names of Memory Regions__...
+Ah much clearer! Now we see the __Names of Memory Regions__ for the MMU...
 
 <p>
 
@@ -794,7 +816,7 @@ The rest are hunky dory...
 
 - __nx_pgpool__ _(0x40A0_0000)_: Remember the __Paged Memory Pool__? This will be dished out as __Virtual Memory__ to NuttX Apps
 
-Rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14)...
+We rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14)...
 
 <p>
 
