@@ -98,14 +98,15 @@
 <ul>
 <li>Anyone porting NuttX from <strong>QEMU to Real SBC</strong>? This walkthrough shall be mighty helpful!</li>
 </ul>
-<p>TI ported NuttX to a simpler A527 board, the Avaota-A1 SBC by PINE64 ($55): https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/</p>
-<p>Avaota-A1 SBC is Open Source Hardware (CERN OHL Licensed). PINE64 sells it today, maybe we’ll see more manufacturers with the same design: https://github.com/AvaotaSBC/Avaota-A1</p>
-<p>I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting because:</p>
+<p>I ported NuttX to a simpler A527 board, the Avaota-A1 SBC by PINE64 ($55): https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/</p>
+<p>TODO: Avaota-A1 SBC is Open Source Hardware (CERN OHL Licensed). PINE64 sells it today, maybe we’ll see more manufacturers with the same design: https://github.com/AvaotaSBC/Avaota-A1</p>
+<p>TODO: I think NuttX on Avaota-A1 (Allwinner A527) will be super interesting because:</p>
 <p>(1) It’s one of the first ports of Arm64 in NuttX Kernel Build (NXP i.MX93 might be another?)</p>
 <p>(2) We’ll run it as PR Test Bot for Validating Arm64 PRs</p>
 <p>(3) PR Test Bot will be fully automated thanks to SDWire MicroSD Mux: https://lupyuen.org/articles/testbot3.html</p>
-<p>Next article I’ll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.</p>
-<p>Octa-Core CPU</p>
+<p>TODO: Next article I’ll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.</p>
+<p>TODO: Octa-Core CPU</p>
+<p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
 <p><a href="https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf">Schematic</a></p>
 <p><em>(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)</em></p>
 <h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>1 Allwinner A527 Docs</h1>
@@ -874,7 +875,7 @@ nsh&gt;</code></pre></div>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
-<p>TODO</p>
+<p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1120,16 +1121,18 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>18 Appendix: SDWire MicroSD Multiplexer</h1>
-<p>Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</p>
-<p>SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.</p>
-<p>Let’s make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
-sudo visudo
+<p>Let’s make our Build-Test Cycle quicker for NuttX. We’re using the <strong>SDWire MicroSD Multiplexer</strong>…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>SDWire needs <a href="TODO"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. Let’s make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
+<ol>
+<li>
+<p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a">copy-image.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Bash Script: copy-image.sh
+## Containing these commands...
 
-## Add this line:
-user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
-<p>Edit /home/user/copy-image.sh…</p>
-<div class="example-wrap"><pre class="language-bash"><code>set -e  ## Exit when any command fails
+set -e  ## Exit when any command fails
 set -x  ## Echo commands
 whoami  ## I am root!
 
@@ -1141,20 +1144,31 @@ mount /dev/sda1 /tmp/sda1
 cp /tmp/Image /tmp/sda1/
 ls -l /tmp/sda1
 
-## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
+## Unmount MicroSD and flip it to the Test Device (PinePhone)
 umount /tmp/sda1
-sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p>(Remember to <code>chmod +x /home/user/copy-image.sh</code>)</p>
-<p>Now we can run copy-image.sh without a password yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Sudo will NOT prompt for password yay!
-sudo /home/user/copy-image.sh
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
+<li>
+<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>Sudo Without Password</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Make our script executable
+## Start the Sudoers Editor
+chmod +x /home/user/copy-image.sh
+sudo visudo
 
-## Also works over SSH: Copy NuttX Image to MicroSD
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div></li>
+<li>
+<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
-scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre \
+  ls -l /tmp/Image
+ssh thinkcentre \
+  sudo /home/user/copy-image.sh</code></pre></div></li>
+<li>
+<p>Watch how we call it in our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
+</li>
+</ol>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>19 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the NuttX Apps Filesystem…</p>
 <ul>
