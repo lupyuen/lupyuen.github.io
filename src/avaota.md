@@ -597,7 +597,7 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 # Arm64 Memory Management Unit
 
-_OK can get back to NuttX now?_
+_OK can we get back to NuttX now?_
 
 Of course. Earlier we saw NuttX [__Stuck at "AB"__](TODO)...
 
@@ -1003,6 +1003,10 @@ TODO
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+
+Here are the Modified Source Files for __NuttX on Avatoa-A1 SBC__...
+
+- TODO
 
 _NSH Prompt won't appear if UART Interrupt is disabled?_
 
