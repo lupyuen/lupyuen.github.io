@@ -886,7 +886,7 @@ Which has these __GIC Registers__ inside, handling 8 Arm64 Cores...
 | _0x10_0000_ | GICR_CTLR_C5  _(Ditto, Core 5)_
 | _0x12_0000_ | GICR_CTLR_C6  _(Ditto, Core 6)_
 | _0x14_0000_ | GICR_CTLR_C7  _(Ditto, Core 7)_
-| _0x16_0000_ | GICDA_CTLR  _(Ditto, Core 1)_
+| _0x16_0000_ | GICDA_CTLR  _(Distributor Control Register A)_
 
 Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Redistributor)_: [qemu/chip.h](https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76)
 
