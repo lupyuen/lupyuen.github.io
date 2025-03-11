@@ -455,7 +455,7 @@ AB
 
 OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let's automate...
 
-# Build NuttX for Avaota-A1
+# MicroSD Multiplexer + Smart Power Plug
 
 _What if we could rebuild-recopy-reboot NuttX... In One Single Script?_
 
@@ -687,7 +687,7 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 </p>
 
-# Fix the NuttX Memory Map
+# Fix the Memory Map
 
 _Arm64 MMU won't turn on. Maybe our Memory Map is incorrect?_
 
@@ -791,7 +791,7 @@ Rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https:
 
 Though it crashes elsewhere...
 
-# Arm64 Global Interrupt Controller
+# Arm64 Generic Interrupt Controller
 
 _Why is NuttX failing with an Undefined Instruction?_
 
@@ -1094,7 +1094,7 @@ set -x  ##  Enable echo
 
 (__copy-image.sh__ is explained below)
 
-# Appendix: Boot NuttX for Avaota-A1
+# Appendix: Boot NuttX on Avaota-A1
 
 TODO
 
@@ -1472,17 +1472,34 @@ extern uint8_t __ramdisk_size[];
 _Why the aligned addresses?_
 
 ```c
-char header[8] __attribute__((aligned(8))) = "-rom1fs-";
-...
-for (addr = g_idle_topstack; addr < limit; addr += 8) { ... }
+// Header is aligned to 8 bytes
+char header[8]
+  __attribute__((aligned(8))) =
+  "-rom1fs-";
+
+// Address is aligned to 8 bytes
+for (
+  addr = g_idle_topstack;
+  addr < limit;
+  addr += 8
+) {
+  // Otherwise this will hit Alignment Fault
+  memcmp(addr, header, sizeof(header));
+  ...
+}
 ```
 
 We align our Memory Accesses to __8 Bytes__. Otherwise we'll hit an [__Alignment Fault__](https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949)...
 
 ```bash
+## Alignment Fault at `memcmp(addr, header, sizeof(header))`
 default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault
 ```
 
 [_(Strangely: This Alignment isn't needed for RISC-V)_](TODO)
+
+# Appendix: Port NuttX to Avaota-A1
+
+TODO
