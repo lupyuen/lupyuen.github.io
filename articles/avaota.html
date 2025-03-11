@@ -472,7 +472,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
   u16550_serialout(priv, UART_LCR_OFFSET, lcr);
 #endif</code></pre></div></li>
 </ol>
-<p>Same old drill: Rebuild, recopy and reboot NuttX. We see plenty more <a href="https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b"><strong>debug output yay</strong></a>!</p>
+<p>Same old drill: Rebuild, recopy and reboot NuttX. We see <a href="https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b"><strong>plenty more debug output</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
 - Ready to Boot Primary CPU
 - Boot from EL2
@@ -900,9 +900,18 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <div class="example-wrap"><pre class="language-bash"><code>## Set the UART0 Interrupt to 34
 CONFIG_16550_UART0_IRQ=34</code></pre></div>
 <p>To Wrap Up: We Disable Logging for <a href="https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee"><strong>Memory Manager and Scheduler</strong></a>. And <a href="https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88"><strong>Disable MMU Debugging</strong></a>.</p>
-<p><strong>NSH Prompt</strong> finally appears. And <strong>OSTest completes successfully</strong> yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<p><strong>NSH Prompt</strong> finally appears and <strong>OSTest completes successfully</strong>. Our NuttX Porting is complete yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
+nsh&gt; uname -a
+NuttX 12.4.0 6c5c1a5f9f-dirty Mar  8 2025 21:57:02 arm64 qemu-armv8a
+
+nsh&gt; ostest
+...
+user_main: Exiting
+ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="TODO">(See the <strong>Final Code</strong>)</a></p>
+<p><a href="TODO">(Ready for <strong>NuttX Upstreaming</strong>)</a></p>
 <p><em>NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
 <p>That’s because NSH runs as a <strong>NuttX App in User Space</strong>. When NSH Shell prints this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
