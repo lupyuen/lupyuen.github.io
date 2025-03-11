@@ -242,7 +242,7 @@ BL31: v2.5(debug):9241004a9
 sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 </ol>
-<p>Nothing happens. Let’s fix this iteratively, in tiny steps…</p>
+<p>Nothing happens. Let’s tweak this iteratively, in tiny steps…</p>
 <h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
 <p><em>Is NuttX actually booting on our SBC?</em></p>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
@@ -298,7 +298,8 @@ real_start:
   /* Load and Store the lower byte from Register W16 (`3`) to UART0 Base Address */
   mov  w16, #0x33
   strb w16, [x15]</code></pre></div>
-<p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>prints <code>123</code> yay</strong></a>!</p>
+<p><a href="TODO"><em>(RISC-V? Same same)</em></a></p>
+<p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>prints <code>123</code></strong></a>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
 BL31: v2.5(debug):9241004a9
@@ -321,13 +322,13 @@ ERROR: Error initializing runtime service opteed_fast
 <p>Next we move our code and make it Address-Dependent…</p>
 <h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>5 Set the Start Address</h1>
 <p><em>NuttX boots a tiny bit on our SBC. Where’s the rest?</em></p>
-<p>Our SBC boots NuttX at a different address from QEMU. We fix the <strong>Start Address</strong> inside NuttX…</p>
+<p>Our SBC boots NuttX at a different address from QEMU. We set the <strong>Start Address</strong> inside NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
 123</code></pre></div>
 <ol>
 <li>
-<p>Remember the <a href="TODO"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We fix it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
+<p>Remember the <a href="TODO"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We set it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY {
   /* Previously: QEMU boots at 0x4028_0000 */
   dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
@@ -374,7 +375,7 @@ __start:
 <p>Subtract the above to get <strong>Image Load Offset</strong>: <em>0x80_0000</em></p>
 </li>
 </ul>
-<p>With these fixes, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD…</p>
+<p>With these mods, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
 <h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
@@ -460,7 +461,7 @@ CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div></li>
 ## CONFIG_UART1_SERIAL_CONSOLE=y
 ## CONFIG_UART_PL011=y</code></pre></div></li>
 <li>
-<p><strong>16550_UART0_CLOCK</strong> isn’t quite correct, we’ll <a href="TODO"><strong>fix it later</strong></a>. Meanwhile we disable the <strong>UART Clock Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">uart_16550.c</a></p>
+<p><strong>16550_UART0_CLOCK</strong> isn’t quite correct, we’ll <a href="TODO"><strong>settle later</strong></a>. Meanwhile we disable the <strong>UART Clock Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// We disable the UART Clock Configuration...
 static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 #ifdef TODO  // We&#39;ll fix it later
@@ -878,9 +879,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <ul>
 <li>TODO: Appendix</li>
 </ul>
-<p>NSH Prompt still missing? It won’t appear until we fix the UART Interrupt…</p>
+<p>NSH Prompt still missing? It won’t appear until we handle the UART Interrupt…</p>
 <h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>12 Fix the UART Interrupt</h1>
-<p>One Last Thing: Fix the <strong>UART Interrupt</strong> and we’re done!</p>
+<p>One Last Thing: Settle the <strong>UART Interrupt</strong> and we’re done!</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: center">Page 256</th></tr></thead><tbody>
