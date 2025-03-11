@@ -464,7 +464,7 @@ Beyond Big Bird: We need the __16550 UART Driver__...
     #endif
     ```
 
-Same old drill: Rebuild, recopy and reboot NuttX. We see plenty more [__debug output yay__](https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b)!
+Same old drill: Rebuild, recopy and reboot NuttX. We see [__plenty more debug output__](https://gist.github.com/lupyuen/563ed00d3f6e9f7fb9b27268d4eae26b)...
 
 ```bash
 123
@@ -1001,13 +1001,24 @@ CONFIG_16550_UART0_IRQ=34
 
 To Wrap Up: We Disable Logging for [__Memory Manager and Scheduler__](https://github.com/lupyuen2/wip-nuttx/commit/6c5c1a5f9fb1c939d8e75a5e9544b1a5261165ee). And [__Disable MMU Debugging__](https://github.com/lupyuen2/wip-nuttx/commit/e5c1b0449d3764d63d447eb96eb7186a27f77c88).
 
-__NSH Prompt__ finally appears. And __OSTest completes successfully__ yay!
+__NSH Prompt__ finally appears and __OSTest completes successfully__. Our NuttX Porting is complete yay!
 
 ```bash
-TODO
+NuttShell (NSH) NuttX-12.4.0
+nsh> uname -a
+NuttX 12.4.0 6c5c1a5f9f-dirty Mar  8 2025 21:57:02 arm64 qemu-armv8a
+
+nsh> ostest
+...
+user_main: Exiting
+ostest_main: Exiting with status 0
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+
+[(See the __Final Code__)](TODO)
+
+[(Ready for __NuttX Upstreaming__)](TODO)
 
 _NSH Prompt won't appear if UART Interrupt is disabled?_
 
