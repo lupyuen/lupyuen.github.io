@@ -87,7 +87,12 @@
 <li><a href="#linker-script" title="Linker Script">18.2 Linker Script</a><ul></ul></li>
 <li><a href="#mount-the-romfs" title="Mount the ROMFS">18.3 Mount the ROMFS</a><ul></ul></li>
 <li><a href="#copy-the-romfs" title="Copy the ROMFS">18.4 Copy the ROMFS</a><ul></ul></li></ul></li>
-<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">19 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">19 Appendix: Port NuttX to Avaota-A1</a><ul>
+<li><a href="#arm64-boot-code" title="Arm64 Boot Code">19.1 Arm64 Boot Code</a><ul></ul></li>
+<li><a href="#nuttx-start-code" title="NuttX Start Code">19.2 NuttX Start Code</a><ul></ul></li>
+<li><a href="#memory-map" title="Memory Map">19.3 Memory Map</a><ul></ul></li>
+<li><a href="#gic-interrupt-controller" title="GIC Interrupt Controller">19.4 GIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#nuttx-config" title="NuttX Config">19.5 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
 <p>This article explains how we ported NuttX from <a href="TODO"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
@@ -1438,11 +1443,40 @@ default_fatal_handler:
   alignment fault</code></pre></div>
 <p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
 <h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
-<p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and tweaked it for Avaota-A1 SBC. This section explains the modified code…</p>
+<p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and tweaked it for <strong>Avaota-A1 SBC</strong>. This section explains the Modified Code…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/98/files"><strong>Modified Files</strong> for Avaota-A1</a></li>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c"><strong>Modified Files</strong> for Avaota-A1</a></li>
 </ul>
+<h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.1 Arm64 Boot Code</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><em>arch/arm64/src/a527/a527_lowputc.S</em></a></p>
+<p><a href="TODO">(Explained here)</a></p>
+<h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.2 NuttX Start Code</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
 <p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<hr>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2"><em>boards/arm64/a527/avaota-a1/src/a527_bringup.c</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<hr>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld-kernel.script</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>19.3 Memory Map</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<h2 id="gic-interrupt-controller"><a class="doc-anchor" href="#gic-interrupt-controller">§</a>19.4 GIC Interrupt Controller</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>19.5 NuttX Config</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6"><em>arch/arm64/src/a527/a527_serial.c</em></a></p>
+<p>TODO</p>
+<p><a href="TODO">(Explained here)</a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
