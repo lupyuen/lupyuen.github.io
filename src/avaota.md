@@ -179,7 +179,7 @@ Let's replace it with NuttX...
     ERROR: Error initializing runtime service opteed_fast
     ```
 
-Nothing happens. Let's fix this iteratively, in tiny steps...
+Nothing happens. Let's tweak this iteratively, in tiny steps...
 
 # Print to UART in Arm64 Assembly
 
@@ -254,7 +254,9 @@ real_start:
   strb w16, [x15]
 ```
 
-Rebuild NuttX and recopy __`nuttx.bin`__ to MicroSD, overwriting the __`Image`__ file. NuttX boot and [__prints `123` yay__](https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8)!
+[_(RISC-V? Same same)_](TODO)
+
+Rebuild NuttX and recopy __`nuttx.bin`__ to MicroSD, overwriting the __`Image`__ file. NuttX boot and [__prints `123`__](https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8)!
 
 ```bash
 read /Image addr=40800000
@@ -281,7 +283,7 @@ Next we move our code and make it Address-Dependent...
 
 _NuttX boots a tiny bit on our SBC. Where's the rest?_
 
-Our SBC boots NuttX at a different address from QEMU. We fix the __Start Address__ inside NuttX...
+Our SBC boots NuttX at a different address from QEMU. We set the __Start Address__ inside NuttX...
 
 ```bash
 read /Image addr=40800000
@@ -289,7 +291,7 @@ Kernel addr: 0x40800000
 123
 ```
 
-1.  Remember the [__Boot Log__](TODO) from earlier? It says that the [__SyterKit Bootloader__](https://github.com/YuzukiHD/SyterKit) starts NuttX at __Address `0x4080_0000`__. We fix it here: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca)
+1.  Remember the [__Boot Log__](TODO) from earlier? It says that the [__SyterKit Bootloader__](https://github.com/YuzukiHD/SyterKit) starts NuttX at __Address `0x4080_0000`__. We set it here: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca)
 
     ```c
     MEMORY {
@@ -348,7 +350,7 @@ That's because...
 
 - Subtract the above to get __Image Load Offset__: _0x80\_0000_
 
-With these fixes, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD...
+With these mods, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD...
 
 ![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
 
@@ -456,7 +458,7 @@ Beyond Big Bird: We need the __16550 UART Driver__...
     ## CONFIG_UART_PL011=y
     ```
 
-1.  __16550_UART0_CLOCK__ isn't quite correct, we'll [__fix it later__](TODO). Meanwhile we disable the __UART Clock Configuration__: [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
+1.  __16550_UART0_CLOCK__ isn't quite correct, we'll [__settle later__](TODO). Meanwhile we disable the __UART Clock Configuration__: [uart_16550.c](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1)
 
     ```c
     // We disable the UART Clock Configuration...
@@ -968,11 +970,11 @@ Everything is explained here...
 
 - TODO: Appendix
 
-NSH Prompt still missing? It won't appear until we fix the UART Interrupt...
+NSH Prompt still missing? It won't appear until we handle the UART Interrupt...
 
 # Fix the UART Interrupt
 
-One Last Thing: Fix the __UART Interrupt__ and we're done!
+One Last Thing: Settle the __UART Interrupt__ and we're done!
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
