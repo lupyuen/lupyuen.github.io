@@ -327,30 +327,7 @@ Kernel addr: 0x40800000
 
     _(Kinda tiny, but sufficient)_
 
-1.  __Linux Kernel Header__ needs patching. We set the __Image Load Offset__ to _0x80\_0000_: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
-
-    ```c
-    /* Bootloader starts NuttX here, followed by Linux Kernel Header */
-    __start:
-      ...
-      /* Image Load Offset from Start of RAM          */
-      /* Previously: QEMU set this to 0x480000 (why?) */
-      .quad 0x800000
-    ```
-
-That's because...
-
-- [__Start of RAM__](https://github.com/lupyuen2/wip-nuttx/blob/avaota/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig#L85) is _0x4000\_0000_
-
-  ```bash
-  CONFIG_RAM_START=0x40000000
-  ```
-
-- Bootloader starts NuttX at _0x4080\_0000_
-
-- Subtract the above to get __Image Load Offset__: _0x80\_0000_
-
-With these mods, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD...
+With these mods, our C Code in NuttX shall boot correctly. FYI: Boot Address also appears on the Onboard LCD...
 
 ![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
 
