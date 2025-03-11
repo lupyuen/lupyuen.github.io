@@ -72,22 +72,23 @@
 <li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">5 Print to UART in Arm64 Assembly</a><ul></ul></li>
 <li><a href="#set-the-start-address" title="Set the Start Address">6 Set the Start Address</a><ul></ul></li>
 <li><a href="#uart-driver-for-16550" title="UART Driver for 16550">7 UART Driver for 16550</a><ul></ul></li>
-<li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">8 Build NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#microsd-multiplexer--smart-power-plug" title="MicroSD Multiplexer + Smart Power Plug">8 MicroSD Multiplexer + Smart Power Plug</a><ul></ul></li>
 <li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
-<li><a href="#arm64-global-interrupt-controller" title="Arm64 Global Interrupt Controller">11 Arm64 Global Interrupt Controller</a><ul></ul></li>
+<li><a href="#fix-the-memory-map" title="Fix the Memory Map">10 Fix the Memory Map</a><ul></ul></li>
+<li><a href="#arm64-generic-interrupt-controller" title="Arm64 Generic Interrupt Controller">11 Arm64 Generic Interrupt Controller</a><ul></ul></li>
 <li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">12 NuttX Apps Filesystem</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">13 Fix the UART Interrupt</a><ul></ul></li>
 <li><a href="#todo" title="TODO">14 TODO</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-avaota-a1" title="Appendix: Build NuttX for Avaota-A1">16 Appendix: Build NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#appendix-boot-nuttx-for-avaota-a1" title="Appendix: Boot NuttX for Avaota-A1">17 Appendix: Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-boot-nuttx-on-avaota-a1" title="Appendix: Boot NuttX on Avaota-A1">17 Appendix: Boot NuttX on Avaota-A1</a><ul></ul></li>
 <li><a href="#appendix-passwordless-sudo" title="Appendix: Passwordless Sudo">18 Appendix: Passwordless Sudo</a><ul></ul></li>
 <li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">19 Appendix: NuttX Apps Filesystem</a><ul>
 <li><a href="#semihosting-hostfs-becomes-romfs" title="Semihosting HostFS becomes ROMFS">19.1 Semihosting HostFS becomes ROMFS</a><ul></ul></li>
 <li><a href="#linker-script" title="Linker Script">19.2 Linker Script</a><ul></ul></li>
 <li><a href="#mount-the-romfs" title="Mount the ROMFS">19.3 Mount the ROMFS</a><ul></ul></li>
-<li><a href="#copy-the-romfs" title="Copy the ROMFS">19.4 Copy the ROMFS</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#copy-the-romfs" title="Copy the ROMFS">19.4 Copy the ROMFS</a><ul></ul></li></ul></li>
+<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">20 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -429,7 +430,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 - Boot to C runtime for OS Initialize
 AB</code></pre></div>
 <p>OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let’s automate…</p>
-<h1 id="build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#build-nuttx-for-avaota-a1">§</a>8 Build NuttX for Avaota-A1</h1>
+<h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>8 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
@@ -631,7 +632,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <tr><td style="text-align: center"><em>0x40A0_0000</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
 </tbody></table>
 </div></p>
-<h1 id="fix-the-nuttx-memory-map"><a class="doc-anchor" href="#fix-the-nuttx-memory-map">§</a>10 Fix the NuttX Memory Map</h1>
+<h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>10 Fix the Memory Map</h1>
 <p><em>Arm64 MMU won’t turn on. Maybe our Memory Map is incorrect?</em></p>
 <p>Let’s verify our <strong>Memory Map</strong>…</p>
 <p>
@@ -717,7 +718,7 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 </tbody></table>
 </div></p>
 <p>Though it crashes elsewhere…</p>
-<h1 id="arm64-global-interrupt-controller"><a class="doc-anchor" href="#arm64-global-interrupt-controller">§</a>11 Arm64 Global Interrupt Controller</h1>
+<h1 id="arm64-generic-interrupt-controller"><a class="doc-anchor" href="#arm64-generic-interrupt-controller">§</a>11 Arm64 Generic Interrupt Controller</h1>
 <p><em>Why is NuttX failing with an Undefined Instruction?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
@@ -952,7 +953,7 @@ curl \
 set -x  ##  Enable echo</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p>(<strong>copy-image.sh</strong> is explained below)</p>
-<h1 id="appendix-boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-for-avaota-a1">§</a>17 Appendix: Boot NuttX for Avaota-A1</h1>
+<h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>17 Appendix: Boot NuttX on Avaota-A1</h1>
 <p>TODO</p>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
@@ -1273,14 +1274,29 @@ static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
 extern uint8_t __ramdisk_start[];
 extern uint8_t __ramdisk_size[];</code></pre></div>
 <p><em>Why the aligned addresses?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>char header[8] __attribute__((aligned(8))) = &quot;-rom1fs-&quot;;
-...
-for (addr = g_idle_topstack; addr &lt; limit; addr += 8) { ... }</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>// Header is aligned to 8 bytes
+char header[8]
+  __attribute__((aligned(8))) =
+  &quot;-rom1fs-&quot;;
+
+// Address is aligned to 8 bytes
+for (
+  addr = g_idle_topstack;
+  addr &lt; limit;
+  addr += 8
+) {
+  // Otherwise this will hit Alignment Fault
+  memcmp(addr, header, sizeof(header));
+  ...
+}</code></pre></div>
 <p>We align our Memory Accesses to <strong>8 Bytes</strong>. Otherwise we’ll hit an <a href="https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949"><strong>Alignment Fault</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>default_fatal_handler:
+<div class="example-wrap"><pre class="language-bash"><code>## Alignment Fault at `memcmp(addr, header, sizeof(header))`
+default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
 <p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
+<h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>20 Appendix: Port NuttX to Avaota-A1</h1>
+<p>TODO</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
