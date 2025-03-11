@@ -302,7 +302,7 @@ Kernel addr: 0x40800000
       /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000 */
     ```
 
-1.  Since we changed the __Paged Memory Pool__ _(pgram)_, we update _CONFIG_ARCH_PGPOOL_PBASE_ and _CONFIG_ARCH_PGPOOL_VBASE_ too: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
+1.  Since we changed the __Paged Memory Pool__ _(pgram)_, we update _ARCH_PGPOOL_PBASE_ and _VBASE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
 
     ```bash
     ## Physical Address of Paged Memory Pool
@@ -314,7 +314,7 @@ Kernel addr: 0x40800000
     CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
     ```
 
-1.  NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) _(CONFIG_RAMBANK1_SIZE)_. We set _CONFIG_RAM_SIZE_ to match _CONFIG_RAMBANK1_SIZE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca)
+1.  NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) in _RAMBANK1_SIZE_. We set _RAM_SIZE_ accordingly: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca)
 
     ```bash
     ## RAM Size is a paltry 128 MB
@@ -346,9 +346,9 @@ That's because...
 
 - Subtract the above to get __Image Load Offset__: _0x80\_0000_
 
-With these fixes, our C Code in NuttX shall boot correctly.
+With these fixes, our C Code in NuttX shall boot correctly. In case we forget: Boot Address also appears on the Onboard LCD...
 
-TODO: LCD also
+![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
 
 # UART Driver for 16550
 
@@ -482,7 +482,7 @@ Same old drill: Rebuild, recopy and reboot NuttX. We see plenty more [__debug ou
 AB
 ```
 
-OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let's automate...
+OK the _repeated rebuilding, recopying and rebooting_ of NuttX is getting really tiresome. Let's automate...
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/testbot2-flow3.jpg)
 
@@ -1014,6 +1014,8 @@ It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to sign
 Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
 
 TODO: Pic of T527 Cutie
+
+[_NuttX might run OK on T527 Cutie_](TODO)
 
 # What's Next
 
