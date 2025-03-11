@@ -854,8 +854,8 @@ arm64_el1_undef:
 Assertion failed panic:
   common/arm64_fatal.c:572</code></pre></div>
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
-<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>. <em>(Instead of binding binary Apps into Kernel)</em></p>
-<p>We bundle the NuttX Apps together into a <strong>ROMFS Filesystem</strong>…</p>
+<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>, which is missing right now. <em>(NuttX Flat Build will bind binary Apps directly into Kernel)</em></p>
+<p>To solve this: We bundle the NuttX Apps together into a <strong>ROMFS Filesystem</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Generate the Initial RAM Disk
 genromfs \
   -f initrd \
