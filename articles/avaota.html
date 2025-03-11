@@ -180,7 +180,7 @@ BL31: v2.5(debug):9241004a9
 sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 <li>
-<p><strong>Kernel Boot Address</strong> <em>0x4080_0000</em> is super important, we’ll use it in a while</p>
+<p>Aha! <strong>Kernel Boot Address</strong> <em>0x4080_0000</em> is super important, we’ll use it in a while</p>
 </li>
 </ol>
 <h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
@@ -909,8 +909,8 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 nsh&gt;</code></pre></div>
 <p>It calls the <strong>Serial Driver</strong>. Which will wait for a <strong>UART Interrupt</strong> to signal that the <strong>Transmit Buffer</strong> is empty and available.</p>
 <p>Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. <a href="TODO">(Explained here)</a></p>
-<p>TODO: Pic of T527 Cutie</p>
-<p><a href="TODO"><em>NuttX might run OK on T527 Cutie</em></a></p>
+<p><img src="https://lupyuen.org/images/avaota-cubie.jpg" alt="NuttX might run OK on Radxa Cubie A5E (Allwinner T527)" /></p>
+<p><a href="TODO"><em>NuttX might run OK on Radxa Cubie A5E (Allwinner T527)</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Right now we’re upstreaming Avatoa-A1 SBC to <strong>NuttX Mainline</strong>…</p>
 <ul>
