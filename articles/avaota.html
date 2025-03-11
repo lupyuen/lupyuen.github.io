@@ -89,11 +89,11 @@
 <li><a href="#copy-the-romfs" title="Copy the ROMFS">18.4 Copy the ROMFS</a><ul></ul></li></ul></li>
 <li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">19 Appendix: Port NuttX to Avaota-A1</a><ul>
 <li><a href="#memory-map" title="Memory Map">19.1 Memory Map</a><ul></ul></li>
-<li><a href="#arm64-boot-code" title="Arm64 Boot Code">19.2 Arm64 Boot Code</a><ul></ul></li>
-<li><a href="#nuttx-start-code" title="NuttX Start Code">19.3 NuttX Start Code</a><ul></ul></li>
-<li><a href="#board-bringup-code" title="Board Bringup Code">19.4 Board Bringup Code</a><ul></ul></li>
-<li><a href="#linker-script-1" title="Linker Script">19.5 Linker Script</a><ul></ul></li>
-<li><a href="#gic-interrupt-controller" title="GIC Interrupt Controller">19.6 GIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#gic-interrupt-controller" title="GIC Interrupt Controller">19.2 GIC Interrupt Controller</a><ul></ul></li>
+<li><a href="#arm64-boot-code" title="Arm64 Boot Code">19.3 Arm64 Boot Code</a><ul></ul></li>
+<li><a href="#nuttx-start-code" title="NuttX Start Code">19.4 NuttX Start Code</a><ul></ul></li>
+<li><a href="#board-bringup-code" title="Board Bringup Code">19.5 Board Bringup Code</a><ul></ul></li>
+<li><a href="#linker-script-1" title="Linker Script">19.6 Linker Script</a><ul></ul></li>
 <li><a href="#nuttx-config" title="NuttX Config">19.7 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -803,12 +803,17 @@ No distributor detected, giving up</code></pre></div>
 </li>
 </ul>
 <p>GIC is here…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
 <tr><td style="text-align: center">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
 </tbody></table>
-</div>
+</div></div>
+</p>
 <p>Which has these <strong>GIC Registers</strong> inside, handling 8 Arm64 Cores…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
 <tr><td style="text-align: center"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
@@ -822,7 +827,8 @@ No distributor detected, giving up</code></pre></div>
 <tr><td style="text-align: center"><em>0x14_0000</em></td><td style="text-align: left">GICR_CTLR_C7  <em>(Ditto, Core 7)</em></td></tr>
 <tr><td style="text-align: center"><em>0x16_0000</em></td><td style="text-align: left">GICDA_CTLR  <em>(Distributor Control Register A)</em></td></tr>
 </tbody></table>
-</div>
+</div></div>
+</p>
 <p>Based on the above, we set the <strong>Addresses of GICD and GICR</strong> <em>(Distributor / Redistributor)</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/f3a26dbba69a0714bc91d0c345b8fba5e0835b76">qemu/chip.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Base Address of GIC Distributor and Redistributor
 #define CONFIG_GICD_BASE   0x3400000
@@ -1454,18 +1460,102 @@ default_fatal_handler:
 </ul>
 <h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>19.1 Memory Map</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
-<p>TODO</p>
+<p>We define the <strong>I/O Memory Space</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Memory Space
 #define CONFIG_DEVICEIO_BASEADDR   0x00000000
 #define CONFIG_DEVICEIO_SIZE       MB(1024)
 
 // Kernel Boot Address from SBC Bootloader
 #define CONFIG_LOAD_BASE           0x40800000</code></pre></div>
+<p>Based on the <strong>A527 Memory Map</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 42</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Address</strong></td></tr>
+<tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left"><em>0x0000_0000</em> to …</td></tr>
+<tr><td style="text-align: left">PCIE</td><td style="text-align: left"><em>0x2000_0000</em> to <em>0x2FFF_FFFF</em></td></tr>
+<tr><td style="text-align: left">DRAM</td><td style="text-align: left"><em>0x4000_0000</em> to …</td></tr>
+</tbody></table>
+</div></div>
+</p>
 <p><a href="TODO">(Explained here)</a></p>
-<h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.2 Arm64 Boot Code</h2>
+<h2 id="gic-interrupt-controller"><a class="doc-anchor" href="#gic-interrupt-controller">§</a>19.2 GIC Interrupt Controller</h2>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
+<p>We set the <strong>GIC Base Addresses</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// GICD and GICD Base Addresses
+#define CONFIG_GICD_BASE           0x3400000
+#define CONFIG_GICR_BASE           0x3460000</code></pre></div>
+<p>Based on the <strong>GIC Doc</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: center">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>And <strong>GIC Registers</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: center"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x06_0000</em></td><td style="text-align: left">GICR_CTLR_C0  <em>(Redistributor Control Register, Core 0)</em></td></tr>
+<tr><td style="text-align: center"><em>0x08_0000</em></td><td style="text-align: left">GICR_CTLR_C1  <em>(Ditto, Core 1)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0A_0000</em></td><td style="text-align: left">GICR_CTLR_C2  <em>(Ditto, Core 2)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0C_0000</em></td><td style="text-align: left">GICR_CTLR_C3  <em>(Ditto, Core 3)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0E_0000</em></td><td style="text-align: left">GICR_CTLR_C4  <em>(Ditto, Core 4)</em></td></tr>
+<tr><td style="text-align: center"><em>0x10_0000</em></td><td style="text-align: left">GICR_CTLR_C5  <em>(Ditto, Core 5)</em></td></tr>
+<tr><td style="text-align: center"><em>0x12_0000</em></td><td style="text-align: left">GICR_CTLR_C6  <em>(Ditto, Core 6)</em></td></tr>
+<tr><td style="text-align: center"><em>0x14_0000</em></td><td style="text-align: left">GICR_CTLR_C7  <em>(Ditto, Core 7)</em></td></tr>
+<tr><td style="text-align: center"><em>0x16_0000</em></td><td style="text-align: left">GICDA_CTLR  <em>(Distributor Control Register A)</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p><a href="TODO">(Explained here)</a></p>
+<h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.3 Arm64 Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><em>arch/arm64/src/a527/a527_lowputc.S</em></a></p>
+<p>We updated the Arm64 Boot Code for <strong>16550 UART Driver</strong>…</p>
+<ol>
+<li>
+<p>We modified the <strong>UART Base Address</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Base Address for 16550 UART
+#define UART0_BASE_ADDRESS 0x02500000</code></pre></div></li>
+<li>
+<p>QEMU was using PL011 UART. We fixed this for 16550 UART, to <strong>Wait for UART Ready</strong> <a href="TODO">(derived from NuttX A64)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Wait for 16550 UART to be ready to transmit
+* xb: Register that contains the UART Base Address
+* wt: Scratch register number */
+.macro early_uart_ready xb, wt
+1:
+  ldrh  \wt, [\xb, #0x14] /* UART_LSR (Line Status Register) */
+  tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
+  b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
+.endm</code></pre></div></li>
+</ol>
+<p><strong>UART Base Address</strong> came from the A527 Doc…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Module</strong></td><td style="text-align: left"><strong>Base Address</strong></td></tr>
+<tr><td style="text-align: center">UART0</td><td style="text-align: left"><em>0x0250_0000</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>With these <strong>UART Registers</strong>…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 1839</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
+<tr><td style="text-align: center"><em>0x0000</em></td><td style="text-align: left">UART_THR <em>(Transmit Holding Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0004</em></td><td style="text-align: left">UART_DLH <em>(Divisor Latch High Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x0008</em></td><td style="text-align: left">UART_IIR <em>(Interrupt Identity Register)</em></td></tr>
+<tr><td style="text-align: center"><em>0x000C</em></td><td style="text-align: left">UART_LCR <em>(Line Control)</em></td></tr>
+</tbody></table>
+</div></div>
+</p>
 <p><a href="TODO">(Explained here)</a></p>
-<h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.3 NuttX Start Code</h2>
+<h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.4 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
 <p><strong>At NuttX Startup:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This code came from <a href="TODO"><strong>NuttX EIC7700X</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for the `aligned_data` macro
@@ -1558,7 +1648,7 @@ default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
-<h2 id="board-bringup-code"><a class="doc-anchor" href="#board-bringup-code">§</a>19.4 Board Bringup Code</h2>
+<h2 id="board-bringup-code"><a class="doc-anchor" href="#board-bringup-code">§</a>19.5 Board Bringup Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2"><em>boards/arm64/a527/avaota-a1/src/a527_bringup.c</em></a></p>
 <p><strong>At Board Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(inside RAM)</em> as <em>/dev/ram0</em>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// At NuttX Startup...
@@ -1592,13 +1682,19 @@ static int mount_ramdisk(void) {
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
 #define RAMDISK_DEVICE_MINOR 0</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
-<h2 id="linker-script-1"><a class="doc-anchor" href="#linker-script-1">§</a>19.5 Linker Script</h2>
+<h2 id="linker-script-1"><a class="doc-anchor" href="#linker-script-1">§</a>19.6 Linker Script</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld-kernel.script</em></a></p>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps…</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We added the RAM Disk (16 MB) */
+<div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We moved the Paged Pool and added the RAM Disk (16 MB) */
 MEMORY {
-  dram (rwx)    : ORIGIN = 0x40800000, LENGTH = 2M
-  pgram (rwx)   : ORIGIN = 0x40A00000, LENGTH = 4M    /* w/ cache */
+  /* Previously: QEMU boots at 0x4028_0000 */
+  dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
+
+  /* Previously: QEMU Paged Memory is at 0x4028_0000 */
+  /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000   */
+  pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
+
+  /* Added the RAM Disk */
   ramdisk (rwx) : ORIGIN = 0x40E00000, LENGTH = 16M   /* w/ cache */
 }
 
@@ -1606,21 +1702,65 @@ MEMORY {
 __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
-<h2 id="gic-interrupt-controller"><a class="doc-anchor" href="#gic-interrupt-controller">§</a>19.6 GIC Interrupt Controller</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// GICD and GICD Base Addresses
-#define CONFIG_GICD_BASE           0x3400000
-#define CONFIG_GICR_BASE           0x3460000</code></pre></div>
+<p>Also we moved the <strong>Paged Pool</strong> because the Boot Address has changed to <em>0x4080_0000</em>.</p>
 <p><a href="TODO">(Explained here)</a></p>
 <h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>19.7 NuttX Config</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
-<p>TODO</p>
+<p>Based on the <strong>16550 UART Registers</strong> above: We configured the 16550 UART and removed PL011 UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x02500000
+CONFIG_16550_UART0_CLOCK=198144000
+CONFIG_16550_UART0_IRQ=125
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
+
+## Virtual Address of Paged Memory Pool
+## Previously: QEMU Paged Memory is at 0x4028_0000
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> in <em>RAMBANK1_SIZE</em>. We set <em>RAM_SIZE</em> accordingly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## RAM Size is 128 MB
+CONFIG_RAM_SIZE=134217728</code></pre></div>
+<p><a href="TODO">(Explained here)</a></p>
+<p>We set the <strong>UART0 Interrupt</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the UART0 Interrupt to 34
+CONFIG_16550_UART0_IRQ=34</code></pre></div>
+<p>Based on the A527 Doc…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: center">Page 256</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Interrupt Number</strong></td><td style="text-align: center"><strong>Interrupt Source</strong></td></tr>
+<tr><td style="text-align: center">34</td><td style="text-align: center">UART0</td></tr>
+</tbody></table>
+</div></div>
+</p>
 <p><a href="TODO">(Explained here)</a></p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6"><em>arch/arm64/src/a527/a527_serial.c</em></a></p>
-<p>TODO</p>
+<p>QEMU was using PL011 UART. We switched the Serial Driver to <strong>16550 UART</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Switch from PL011 UART (QEMU) to 16550 UART
+#include &lt;nuttx/serial/uart_16550.h&gt;
+
+// Enable the 16550 Console UART at Startup
+void arm64_earlyserialinit(void) {
+  // Previously for QEMU: pl011_earlyserialinit
+  u16550_earlyserialinit();
+}
+
+// Ditto but not so early
+void arm64_serialinit(void) {
+  // Previous for QEMU: pl011_serialinit
+  u16550_serialinit();
+}</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 
     
