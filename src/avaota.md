@@ -16,7 +16,7 @@ _Why are we doing this?_
 
 - This could be the First Port of [__Arm64 in NuttX Kernel Build__](TODO). _(NXP i.MX93 might be another?)_
 
-- We'll run it as [__PR Test Bot__](TODO) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to a [__MicroSD Multiplexer__](https://lupyuen.org/articles/testbot3.html).
+- We'll run it as [__PR Test Bot__](TODO) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to the [__MicroSD Multiplexer__](https://lupyuen.org/articles/testbot3.html).
 
 We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know! 🙏
 
@@ -1499,5 +1499,7 @@ default_fatal_handler:
 # Appendix: Port NuttX to Avaota-A1
 
 In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for Avaota-A1 SBC. This section explains the modified code...
+
+- [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/98/files)
 
 TODO
