@@ -82,7 +82,7 @@
 <li><a href="#appendix-boot-nuttx-on-avaota-a1" title="Appendix: Boot NuttX on Avaota-A1">15 Appendix: Boot NuttX on Avaota-A1</a><ul></ul></li>
 <li><a href="#appendix-sdwire-microsd-multiplexer" title="Appendix: SDWire MicroSD Multiplexer">16 Appendix: SDWire MicroSD Multiplexer</a><ul></ul></li>
 <li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">17 Appendix: NuttX Apps Filesystem</a><ul>
-<li><a href="#semihosting-hostfs-becomes-romfs" title="Semihosting HostFS becomes ROMFS">17.1 Semihosting HostFS becomes ROMFS</a><ul></ul></li>
+<li><a href="#hostfs-becomes-romfs" title="HostFS becomes ROMFS">17.1 HostFS becomes ROMFS</a><ul></ul></li>
 <li><a href="#linker-script" title="Linker Script">17.2 Linker Script</a><ul></ul></li>
 <li><a href="#mount-the-romfs" title="Mount the ROMFS">17.3 Mount the ROMFS</a><ul></ul></li>
 <li><a href="#copy-the-romfs" title="Copy the ROMFS">17.4 Copy the ROMFS</a><ul></ul></li></ul></li>
@@ -795,7 +795,7 @@ No distributor detected, giving up</code></pre></div>
 <p>It’s the Arm64 <a href="TODO"><strong>Generic Interrupt Controller (GIC)</strong></a>, version 3. GIC shall…</p>
 <ul>
 <li>
-<p>Receive <strong>I/O Interrupts</strong></p>
+<p>Receive <strong>Input / Output Interrupts</strong></p>
 <p><em>(Like keypresses)</em></p>
 </li>
 <li>
@@ -1166,7 +1166,7 @@ nx_start_application: Starting init task: /system/bin/init
 nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="semihosting-hostfs-becomes-romfs"><a class="doc-anchor" href="#semihosting-hostfs-becomes-romfs">§</a>17.1 Semihosting HostFS becomes ROMFS</h2>
+nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="hostfs-becomes-romfs"><a class="doc-anchor" href="#hostfs-becomes-romfs">§</a>17.1 HostFS becomes ROMFS</h2>
 <p>QEMU uses <a href="TODO"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added ROMFS...
 CONFIG_BOARDCTL_ROMDISK=y
@@ -1181,7 +1181,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
 ## CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 ## CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;</code></pre></div>
-<p><em>CONFIG_BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup()</em>. (See below)</p>
+<p><em>BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup()</em>. (See below)</p>
 <h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>17.2 Linker Script</h2>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We added the RAM Disk (16 MB) */
