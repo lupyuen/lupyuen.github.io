@@ -997,10 +997,6 @@ TODO
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
 
-Here are the Modified Source Files for __NuttX on Avatoa-A1 SBC__...
-
-- TODO
-
 _NSH Prompt won't appear if UART Interrupt is disabled?_
 
 That's because NSH runs as a __NuttX App in User Space__. When NSH Shell prints this...
@@ -1019,6 +1015,12 @@ TODO: Pic of T527 Cutie
 [_NuttX might run OK on T527 Cutie_](TODO)
 
 # What's Next
+
+Right now we're upstreaming Avatoa-A1 SBC to __NuttX Mainline__...
+
+- TODO: Porting NuttX
+
+- TODO: Upstream NuttX
 
 We're seeking volunteers to build __NuttX Drivers for Avaota-A1__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know!
 
@@ -1232,6 +1234,130 @@ nsh>
 </span>
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+
+# Appendix: Upstream NuttX for Avaota-A1
+
+In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What's Next: Upstreaming our code to __NuttX Mainline__!
+
+Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits) into a proper __NuttX Arch__ _(Allwinner A527)_ and __NuttX Board__ _(Avaota-A1)_
+
+1.  [Copy qemu folders to a527. Copy qemu-armv8a folder to avaota-a1.](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/7de76c10aef43fef010eb002eae9330c4333650a)
+
+1.  [Rename qemu files to a527. Rename qemu-armv8a files to avaota-a1.](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/740f0a0c57439fc39dc216476021fad114f6e6b2)
+
+1.  [Rewrite "qemu-armv8a" to "avaota-a1". Rewrite "qemu" to "a527".](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/1011208093b294c36399b7a04a135c08a18b7186)
+
+1.  [Rewrite "A527_ARMV8A" to "AVAOTA_A1"](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/ddf662a9036e7cc6742a034a3983f3b0f9b5bf07)
+
+1.  [Add Arch and Board](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/fe65a2d43f896b7eaeb996c463a99d5244a9b67d)
+
+1.  [Apply the changes from _github.com/lupyuen2/wip-nuttx/pull/98/files_ <br> OSTest passes yay!](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
+
+1.  [Remove unused NuttX Configs](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/837e0478617da7d8c886cbb3291ff90e3fc07c33)
+
+1.  [Rename knsh to nsh](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/1934b999880c37f67c0dfa456555b160a945145c)
+
+1.  [Clean up the alignment](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a)
+
+1.  [Clean up for nxstyle](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f51d3173c33a5e70af5156daae13e8732207f635)
+
+We created a __Staging PR__ in our own repo...
+
+- [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
+
+Then dumped the list of __Modified Files__...
+
+<span style="font-size:60%">
+
+```bash
+## Change this to our Staging PR
+$ pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/99
+$ curl -L $pr.diff \
+  | grep "diff --git" \
+  | sort \
+  | cut -d" " -f3 \
+  | cut -c3-
+
+## Here are the Modified Files for our PR
+arch/arm64/Kconfig
+arch/arm64/include/a527/chip.h
+arch/arm64/include/a527/irq.h
+arch/arm64/src/a527/CMakeLists.txt
+arch/arm64/src/a527/Kconfig
+arch/arm64/src/a527/Make.defs
+arch/arm64/src/a527/a527_boot.c
+arch/arm64/src/a527/a527_boot.h
+arch/arm64/src/a527/a527_initialize.c
+arch/arm64/src/a527/a527_lowputc.S
+arch/arm64/src/a527/a527_serial.c
+arch/arm64/src/a527/a527_serial.h
+arch/arm64/src/a527/a527_textheap.c
+arch/arm64/src/a527/a527_timer.c
+arch/arm64/src/a527/chip.h
+boards/Kconfig
+boards/arm64/a527/avaota-a1/CMakeLists.txt
+boards/arm64/a527/avaota-a1/Kconfig
+boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+boards/arm64/a527/avaota-a1/include/board.h
+boards/arm64/a527/avaota-a1/include/board_memorymap.h
+boards/arm64/a527/avaota-a1/scripts/Make.defs
+boards/arm64/a527/avaota-a1/scripts/dramboot.ld
+boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+boards/arm64/a527/avaota-a1/src/Makefile
+boards/arm64/a527/avaota-a1/src/a527_appinit.c
+boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+boards/arm64/a527/avaota-a1/src/a527_bringup.c
+boards/arm64/a527/avaota-a1/src/a527_power.c
+boards/arm64/a527/avaota-a1/src/avaota-a1.h
+```
+
+</span>
+
+And checked __nxstyle__ on the Modified Files...
+
+<span style="font-size:60%">
+
+```bash
+## Run nxstyle on the Modified Files
+nxstyle arch/arm64/Kconfig
+nxstyle arch/arm64/include/a527/chip.h
+nxstyle arch/arm64/include/a527/irq.h
+nxstyle arch/arm64/src/a527/CMakeLists.txt
+nxstyle arch/arm64/src/a527/Kconfig
+nxstyle arch/arm64/src/a527/Make.defs
+nxstyle arch/arm64/src/a527/a527_boot.c
+nxstyle arch/arm64/src/a527/a527_boot.h
+nxstyle arch/arm64/src/a527/a527_initialize.c
+nxstyle arch/arm64/src/a527/a527_lowputc.S
+nxstyle arch/arm64/src/a527/a527_serial.c
+nxstyle arch/arm64/src/a527/a527_serial.h
+nxstyle arch/arm64/src/a527/a527_textheap.c
+nxstyle arch/arm64/src/a527/a527_timer.c
+nxstyle arch/arm64/src/a527/chip.h
+nxstyle boards/Kconfig
+nxstyle boards/arm64/a527/avaota-a1/CMakeLists.txt
+nxstyle boards/arm64/a527/avaota-a1/Kconfig
+nxstyle boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+nxstyle boards/arm64/a527/avaota-a1/include/board.h
+nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
+nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
+nxstyle boards/arm64/a527/avaota-a1/scripts/dramboot.ld
+nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+nxstyle boards/arm64/a527/avaota-a1/src/Makefile
+nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
+nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h
+```
+
+</span>
+
+All ready for upstreaming! (Remember to add the Arch and Board Docs)
 
 TODO: Pic of SDWire
 
