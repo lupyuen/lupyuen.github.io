@@ -32,12 +32,9 @@ Next article I'll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1
 
 Octa-Core CPU
 
-Here's the story 
+[Schematic](https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf)
 
-Build NuttX for 
-Port NuttX to 
-
-Schematic: https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf
+_(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
 # Boot Linux on our SBC
 
@@ -936,7 +933,7 @@ _What's /system/bin/init? Why is it failing?_
 
 _/system/bin/init_ is __NSH Shell__. That's how NuttX Kernel Build works: It loads NuttX Apps from a __Local Filesystem__. _(Instead of binding Apps into Kernel)_
 
-We bundle the NuttX Apps together into a __ROM FS Filesystem__...
+We bundle the NuttX Apps together into a __ROMFS Filesystem__...
 
 ```bash
 TODO
@@ -950,7 +947,7 @@ TODO
 
 [(See the __Build Script__)](TODO)
 
-When NuttX Boots: It will find the ROM FS Filesystem, and Mount it as a __RAM Disk__. Which will allow NuttX Kernel to start __NSH Shell__ and other NuttX Apps. Everything is explained here...
+When NuttX Boots: It will find the ROMFS Filesystem, and Mount it as a __RAM Disk__. Which will allow NuttX Kernel to start __NSH Shell__ and other NuttX Apps. Everything is explained here...
 
 - TODO: Appendix
 
@@ -993,10 +990,13 @@ _Very odd. NSH Prompt won't appear if UART Interrupt is disabled?_
 That's because NSH runs as a __NuttX App in User Space__. When NSH Shell prints this...
 
 ```bash
+NuttShell (NSH) NuttX-12.4.0
 nsh>
 ```
 
-It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to signal that the Transmit Buffer is empty and available. Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
+It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to signal that the __Transmit Buffer__ is empty and available.
+
+Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](TODO)
 
 # TODO
 
@@ -1223,314 +1223,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: NuttX Apps Filesystem
 
-https://github.com/lupyuen2/wip-nuttx/pull/97/files
+Earlier we talked about the NuttX Apps Filesystem...
 
+- TODO
 
-arch/arm64/src/qemu/qemu_boot.c
+This section explains how we implemented the NuttX Apps Filesystem...
 
-https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431
+- [__Modified Files__ for NuttX Apps Filesystem](https://github.com/lupyuen2/wip-nuttx/pull/97/files)
 
-```c
-extern uint8_t __ramdisk_start[];
-extern uint8_t __ramdisk_size[];
-
-/****************************************************************************
- * Name: qemu_copy_overlap
- *
- * Description:
- *   Copy an overlapping memory region.  dest overlaps with src + count.
- *
- * Input Parameters:
- *   dest  - Destination address
- *   src   - Source address
- *   count - Number of bytes to copy
- *
- ****************************************************************************/
-
-static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src,
-                              size_t count)
-{
-  uint8_t *d = dest + count - 1;
-  const uint8_t *s = src + count - 1;
-
-  if (dest <= src)
-    {
-      _err("dest and src should overlap");
-      PANIC();
-    }
-
-  while (count--)
-    {
-      volatile uint8_t c = *s;  /* Prevent compiler optimization */
-      *d = c;
-      d--;
-      s--;
-    }
-} 
-
-/****************************************************************************
- * Name: qemu_copy_ramdisk
- *
- * Description:
- *   Copy the RAM Disk from NuttX Image to RAM Disk Region.
- *
- ****************************************************************************/
-
-static void qemu_copy_ramdisk(void)
-{
-  char header[8] __attribute__((aligned(8))) = "-rom1fs-";
-  const uint8_t *limit = (uint8_t *)g_idle_topstack + (256 * 1024);
-  uint8_t *ramdisk_addr = NULL;
-  uint8_t *addr;
-  uint32_t size;
-
-  /* After _edata, search for "-rom1fs-". This is the RAM Disk Address.
-   * Limit search to 256 KB after Idle Stack Top.
-   */
-
-  binfo("_edata=%p, _sbss=%p, _ebss=%p, idlestack_top=%p\n",
-        (void *)_edata, (void *)_sbss, (void *)_ebss,
-        (void *)g_idle_topstack);
-  for (addr = g_idle_topstack; addr < limit; addr += 8)
-    {
-      if (addr == _edata) { _info("addr=%p, header=%p, sizeof(header)=%d\n", addr, header, sizeof(header)); } ////
-      if (memcmp(addr, header, sizeof(header)) == 0)
-        {
-          ramdisk_addr = addr;
-          break;
-        }
-    }
-
-  /* Stop if RAM Disk is missing */
-
-  binfo("ramdisk_addr=%p\n", ramdisk_addr);
-  if (ramdisk_addr == NULL)
-    {
-      _err("Missing RAM Disk. Check the initrd padding.");
-      PANIC();
-    }
-
-  /* RAM Disk must be after Idle Stack, to prevent overwriting */
-
-  // if (ramdisk_addr <= (uint8_t *)g_idle_topstack)
-  //   {
-  //     const size_t pad = (size_t)g_idle_topstack - (size_t)ramdisk_addr;
-  //     _err("RAM Disk must be after Idle Stack. Increase initrd padding "
-  //           "by %d bytes.", pad);
-  //     PANIC();
-  //   }
-
-  /* Read the Filesystem Size from the next 4 bytes (Big Endian) */
-
-  size = (ramdisk_addr[8] << 24) + (ramdisk_addr[9] << 16) +
-         (ramdisk_addr[10] << 8) + ramdisk_addr[11] + 0x1f0;
-  binfo("size=%d\n", size);
-
-  /* Filesystem Size must be less than RAM Disk Memory Region */
-
-  if (size > (size_t)__ramdisk_size)
-    {
-      _err("RAM Disk Region too small. Increase by %ul bytes.\n",
-            size - (size_t)__ramdisk_size);
-      PANIC();
-    }
-
-  /* Copy the RAM Disk from NuttX Image to RAM Disk Region.
-   * __ramdisk_start overlaps with ramdisk_addr + size.
-   */
-
-  qemu_copy_overlap(__ramdisk_start, ramdisk_addr, size);
-}
-
-void arm64_chip_boot(void)
-{
-  /* Copy the RAM Disk */
-
-  qemu_copy_ramdisk();
-  /* MAP IO and DRAM, enable MMU. */
-
-  *(volatile uint8_t *) 0x02500000 = 'B'; ////
-  arm64_mmu_init(true);
-```
-
-boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig
-
-https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64
-
-```bash
-## CONFIG_FS_HOSTFS=y
-## CONFIG_ARM64_SEMIHOSTING_HOSTFS=y
-## CONFIG_ARM64_SEMIHOSTING_HOSTFS_CACHE_COHERENCE=y
-
-## CONFIG_INIT_MOUNT_DATA="fs=../apps"
-## CONFIG_INIT_MOUNT_FSTYPE="hostfs"
-## CONFIG_INIT_MOUNT_SOURCE=""
-## CONFIG_INIT_MOUNT_TARGET="/system"
-
-
-CONFIG_BOARDCTL_ROMDISK=y
-CONFIG_BOARD_LATE_INITIALIZE=y
-CONFIG_INIT_MOUNT_TARGET="/system/bin"
-```
-
-boards/arm64/qemu/qemu-armv8a/scripts/ld-kernel.script
-
-https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc
-
-```c
-MEMORY
-{
-  dram (rwx)    : ORIGIN = 0x40800000, LENGTH = 2M
-  pgram (rwx)   : ORIGIN = 0x40A00000, LENGTH = 4M    /* w/ cache */
-  ramdisk (rwx) : ORIGIN = 0x40E00000, LENGTH = 16M   /* w/ cache */
-}
-
-/* Application ramdisk */
-
-__ramdisk_start = ORIGIN(ramdisk);
-__ramdisk_size  = LENGTH(ramdisk);
-__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
-```
-
-boards/arm64/qemu/qemu-armv8a/src/qemu_bringup.c
-
-https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f8d388b76b0b37563184a5a174f18970ff6771d6a048e0e792967ab265d6f7eb
-
-```c
-/* RAM Disk Definition */
-
-#define SECTORSIZE   512
-#define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
-#define RAMDISK_DEVICE_MINOR 0
-
-/****************************************************************************
- * Name: mount_ramdisk
- *
- * Description:
- *  Mount a RAM Disk defined in ld.script to /dev/ramX.  The RAM Disk
- *  contains a ROMFS filesystem with applications that can be spawned at
- *  runtime.
- *
- * Returned Value:
- *   OK is returned on success.
- *   -ERRORNO is returned on failure.
- *
- ****************************************************************************/
-
-static int mount_ramdisk(void)
-{
-  _info("\n"); ////
-  int ret;
-  struct boardioc_romdisk_s desc;
-
-  desc.minor    = RAMDISK_DEVICE_MINOR;
-  desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
-  desc.sectsize = SECTORSIZE;
-  desc.image    = __ramdisk_start;
-
-  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "Ramdisk register failed: %s\n", strerror(errno));
-      syslog(LOG_ERR, "Ramdisk mountpoint /dev/ram%d\n",
-             RAMDISK_DEVICE_MINOR);
-      syslog(LOG_ERR, "Ramdisk length %lu, origin %lx\n",
-             (ssize_t)__ramdisk_size, (uintptr_t)__ramdisk_start);
-    }
-
-  return ret;
-}
-
-int qemu_bringup(void)
-{
-  /* Mount the RAM Disk */
-
-  mount_ramdisk();
-```
-
-Remove HostFS for Semihosting
-- https://github.com/lupyuen2/wip-nuttx/commit/40c4ab530dad2b7db0f354a2fa4b5e0f5263fb4e
-
-OK the Initial Filesystem is no longer available:
-- https://gist.github.com/lupyuen/e74c29049f20c76a2c4fe6f863d55507
-
-Add the Initial RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/cf5fe66b97f4526fb8dfc993415ac04ce96f4c13
-
-Enable Logging for RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/60007f1b97b6af4445c793904c30d65ebbebb337
-
-`default_fatal_handler: (IFSC/DFSC) for Data/Instruction aborts: alignment fault`
-- https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949
-
-Our RAM Disk Copier is accessing misligned addresses. Let's fix the alignment...
-
-Align RAM Disk Address to 8 bytes. Search from Idle Stack Top instead of EDATA.
-- https://github.com/lupyuen2/wip-nuttx/commit/07d9c387a7cb06ccec53e20eecd0c4bb9bad7109
-
-Log the Mount Error
-- https://github.com/lupyuen2/wip-nuttx/commit/38538f99333868f85b67e2cb22958fe496e285d6
-
-Mounting of ROMFS fails
-- https://gist.github.com/lupyuen/d12e44f653d5c5597ecae6845e49e738
-
-```text
-nx_start_application: ret=-15
-dump_assert_info: Assertion failed : at file: init/nx_bringup.c:361
-```
-
-Which is...
-
-```c
-#define ENOTBLK             15
-#define ENOTBLK_STR         "Block device required"
-```
-
-Why is /dev/ram0 not a Block Device?
-
-```c
-$ grep INIT .config
-# CONFIG_BOARDCTL_FINALINIT is not set
-# CONFIG_INIT_NONE is not set
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=""
-CONFIG_INIT_STACKSIZE=8192
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE="/dev/ram0"
-CONFIG_INIT_MOUNT_TARGET="/system/bin"
-CONFIG_INIT_MOUNT_FSTYPE="romfs"
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=""
-```
-
-We check the logs...
-
-Enable Filesystem Logging
-- https://github.com/lupyuen2/wip-nuttx/commit/cc4dffd60fd223a7c1f6b513dc99e1fa98a48496
-
-`Failed to find /dev/ram0`
-- https://gist.github.com/lupyuen/805c2be2a3333a90c96926a26ec2d8cc
-
-```text
-find_blockdriver: pathname="/dev/ram0"
-find_blockdriver: ERROR: Failed to find /dev/ram0
-nx_mount: ERROR: Failed to find block driver /dev/ram0
-nx_start_application: ret=-15
-```
-
-Is /dev/ram0 created? Ah we forgot to Mount the RAM Disk!
-
-# Appendix: Mount the RAM Disk
-
-Let's mount the RAM Disk...
-
-Mount the RAM Disk
-- https://github.com/lupyuen2/wip-nuttx/commit/65ae74507e95189e96816161b0c1a820722ca8a2
-
-/system/bin/init starts successfully yay!
-- https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac
+After this implementation, _/system/bin/init_ (NSH Shell) shall [__start successfully__](https://gist.github.com/lupyuen/ccb645efa72f6793743c033fade0b3ac)...
 
 ```text
 qemu_bringup:
@@ -1541,4 +1242,169 @@ nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop
+```
+
+## Semihosting HostFS becomes ROMFS
+
+QEMU uses [__Semihosting and HostFS__](TODO) to access the NuttX Apps Filesystem. We change to __ROMFS__... [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+
+```bash
+## We added ROMFS...
+CONFIG_BOARDCTL_ROMDISK=y
+CONFIG_BOARD_LATE_INITIALIZE=y
+CONFIG_INIT_MOUNT_TARGET="/system/bin"
+
+## And removed Semihosting HostFS...
+## CONFIG_FS_HOSTFS=y
+## CONFIG_ARM64_SEMIHOSTING_HOSTFS=y
+## CONFIG_ARM64_SEMIHOSTING_HOSTFS_CACHE_COHERENCE=y
+## CONFIG_INIT_MOUNT_DATA="fs=../apps"
+## CONFIG_INIT_MOUNT_FSTYPE="hostfs"
+## CONFIG_INIT_MOUNT_SOURCE=""
+## CONFIG_INIT_MOUNT_TARGET="/system"
+```
+
+_CONFIG_BOARD_LATE_INITIALIZE_ is needed because we'll __Mount the ROMFS Filesystem__ inside _qemu_bringup()_. (See below)
+
+## Linker Script
+
+We reserve __16 MB of RAM__ for the ROMFS Filesystem that will host the NuttX Apps: [ld-kernel.script](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc)
+
+```c
+/* Linker Script: We added the RAM Disk (16 MB) */
+MEMORY {
+  dram (rwx)    : ORIGIN = 0x40800000, LENGTH = 2M
+  pgram (rwx)   : ORIGIN = 0x40A00000, LENGTH = 4M    /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x40E00000, LENGTH = 16M   /* w/ cache */
+}
+
+/* We'll reference these in our code */
+__ramdisk_start = ORIGIN(ramdisk);
+__ramdisk_size  = LENGTH(ramdisk);
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
+```
+
+## Mount the ROMFS
+
+__At Startup:__ We mount the __ROMFS Filesystem__ _(inside RAM)_ as _/dev/ram0_: [qemu_bringup.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f8d388b76b0b37563184a5a174f18970ff6771d6a048e0e792967ab265d6f7eb)
+
+```c
+// At NuttX Startup...
+int qemu_bringup(void) {
+  // We Mount the RAM Disk
+  mount_ramdisk();
+  ...
+}
+
+// Mount a RAM Disk defined in ld.script to /dev/ramX.  The RAM Disk
+// contains a ROMFS filesystem with applications that can be spawned at
+// runtime.
+static int mount_ramdisk(void) {
+  struct boardioc_romdisk_s desc;
+  desc.minor    = RAMDISK_DEVICE_MINOR;
+  desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
+  desc.sectsize = SECTORSIZE;
+  desc.image    = __ramdisk_start;
+
+  int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
+  if (ret < 0) {
+    syslog(LOG_ERR, "Ramdisk register failed: %s\n", strerror(errno));
+    syslog(LOG_ERR, "Ramdisk mountpoint /dev/ram%d\n",RAMDISK_DEVICE_MINOR);
+    syslog(LOG_ERR, "Ramdisk length %lu, origin %lx\n", (ssize_t)__ramdisk_size, (uintptr_t)__ramdisk_start);
+  }
+  return ret;
+}
+
+// RAM Disk Definition
+#define SECTORSIZE   512
+#define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
+#define RAMDISK_DEVICE_MINOR 0
+```
+
+## Copy the ROMFS
+
+__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
+
+```c
+// Just after Bootloader has started NuttX...
+void arm64_chip_boot(void) {
+
+  // We copy the RAM Disk
+  qemu_copy_ramdisk();
+
+  // Omitted: Other initialisation (MMU, ...)
+  arm64_mmu_init(true);
+  ...
+}
+
+// Copy the RAM Disk from NuttX Image to RAM Disk Region.
+static void qemu_copy_ramdisk(void) {
+  char header[8] __attribute__((aligned(8))) = "-rom1fs-";
+  const uint8_t *limit = (uint8_t *)g_idle_topstack + (256 * 1024);
+  uint8_t *ramdisk_addr = NULL;
+  uint8_t *addr;
+  uint32_t size;
+
+  // After _edata, search for "-rom1fs-". This is the RAM Disk Address.
+  // Limit search to 256 KB after Idle Stack Top.
+  for (addr = g_idle_topstack; addr < limit; addr += 8) {
+      if (memcmp(addr, header, sizeof(header)) == 0) {
+        ramdisk_addr = addr;
+        break;
+      }
+  }
+
+  // Stop if RAM Disk is missing
+  if (ramdisk_addr == NULL) {
+    _err("Missing RAM Disk. Check the initrd padding.");
+    PANIC();
+  }
+
+  // Read the Filesystem Size from the next 4 bytes (Big Endian)
+  size = (ramdisk_addr[8] << 24) + (ramdisk_addr[9] << 16) +
+         (ramdisk_addr[10] << 8) + ramdisk_addr[11] + 0x1f0;
+
+  // Filesystem Size must be less than RAM Disk Memory Region
+  if (size > (size_t)__ramdisk_size) {
+    _err("RAM Disk Region too small. Increase by %ul bytes.\n", size - (size_t)__ramdisk_size);
+    PANIC();
+  }
+
+  // Copy the RAM Disk from NuttX Image to RAM Disk Region.
+  // __ramdisk_start overlaps with ramdisk_addr + size.
+  qemu_copy_overlap(__ramdisk_start, ramdisk_addr, size);
+}
+
+// Copy an overlapping memory region.  dest overlaps with src + count.
+static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
+  uint8_t *d = dest + count - 1;
+  const uint8_t *s = src + count - 1;
+  if (dest <= src) { _err("dest and src should overlap"); PANIC(); }
+  while (count--) {
+    volatile uint8_t c = *s;  // Prevent compiler optimization
+    *d = c;
+    d--;
+    s--;
+  }
+} 
+
+// Defined in Linker Script
+extern uint8_t __ramdisk_start[];
+extern uint8_t __ramdisk_size[];
+```
+
+_Why the aligned addresses?_
+
+```c
+char header[8] __attribute__((aligned(8))) = "-rom1fs-";
+...
+for (addr = g_idle_topstack; addr < limit; addr += 8) { ... }
+```
+
+We align our Memory Accesses to __8 Bytes__. Otherwise we'll hit an [__Alignment Fault__](https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949)...
+
+```bash
+default_fatal_handler:
+  (IFSC/DFSC) for Data/Instruction aborts:
+  alignment fault
 ```
