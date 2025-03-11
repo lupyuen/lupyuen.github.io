@@ -1066,7 +1066,17 @@ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
 head -c 65536 /dev/zero >/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
+```
 
+Read on to boot the NuttX Image on our SBC...
+
+[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+
+# Appendix: Boot NuttX on Avaota-A1
+
+TODO
+
+```bash
 ## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
 ## Boot it on Avaota-A1
@@ -1075,8 +1085,6 @@ cp Image /TODO/Image
 ls -l /TODO/Image
 umount /TODO
 ```
-
-[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
 
 We can automate the last step with a [__MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](TODO)...
 
@@ -1127,12 +1135,6 @@ curl \
 [(__copy-image.sh__ is explained here)](TODO)
 
 [(__Smart Power Plug__ also)](TODO)
-
-# Appendix: Boot NuttX on Avaota-A1
-
-TODO
-
-[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
 
 NuttX boots to NSH Shell. And passes OSTest yay!
 
