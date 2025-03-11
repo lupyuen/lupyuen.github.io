@@ -1629,6 +1629,23 @@ In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweake
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
+## Memory Map
+
+[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+
+TODO
+
+```c
+// I/O Memory Space
+#define CONFIG_DEVICEIO_BASEADDR   0x00000000
+#define CONFIG_DEVICEIO_SIZE       MB(1024)
+
+// Kernel Boot Address from SBC Bootloader
+#define CONFIG_LOAD_BASE           0x40800000
+```
+
+[(Explained here)](TODO)
+
 ## Arm64 Boot Code
 
 [_arch/arm64/src/a527/a527_lowputc.S_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
@@ -1659,19 +1676,17 @@ TODO
 
 [(Explained here)](TODO)
 
-## Memory Map
-
-[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
-
-TODO
-
-[(Explained here)](TODO)
-
 ## GIC Interrupt Controller
 
 [_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
 
 TODO
+
+```c
+// GICD and GICD Base Addresses
+#define CONFIG_GICD_BASE           0x3400000
+#define CONFIG_GICR_BASE           0x3460000
+```
 
 [(Explained here)](TODO)
 
@@ -1682,6 +1697,8 @@ TODO
 TODO
 
 [(Explained here)](TODO)
+
+<hr>
 
 [_arch/arm64/src/a527/a527_serial.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6)
 
