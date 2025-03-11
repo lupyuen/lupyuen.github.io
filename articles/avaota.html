@@ -354,6 +354,15 @@ CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
 CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
 </li>
+<li>
+<p><strong>Linux Kernel Header</strong> seems to have an incorrect <strong>Image Load Offset</strong>. But it’s unused by Arm64 Bootloaders, so we won’t change it…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
+__start:
+  ...
+  /* Image Load Offset from Start of RAM         */
+  /* Boot Address - CONFIG_RAM_START = 0x800000  */
+  /* But we won&#39;t change this, since it&#39;s unused */
+  .quad 0x800000</code></pre></div></li>
 </ol>
 <p>With these mods, our C Code in NuttX shall boot correctly. FYI: Boot Address also appears on the Onboard LCD…</p>
 <p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
