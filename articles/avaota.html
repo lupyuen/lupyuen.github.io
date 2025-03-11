@@ -65,24 +65,24 @@
 
     <h1 class="title">Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">1 Boot Linux on our SBC</a><ul></ul></li>
-<li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
-<li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
-<li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
-<li><a href="#uart-driver-for-16550" title="UART Driver for 16550">6 UART Driver for 16550</a><ul></ul></li>
-<li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">7 Build NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#passwordless-sudo" title="Passwordless Sudo">8 Passwordless Sudo</a><ul></ul></li>
+<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">1 Allwinner A527 Docs</a><ul></ul></li>
+<li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">2 Boot Linux on our SBC</a><ul></ul></li>
+<li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">3 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
+<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">4 Boot NuttX Kernel on our SBC</a><ul></ul></li>
+<li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">5 Print to UART in Arm64 Assembly</a><ul></ul></li>
+<li><a href="#set-the-start-address" title="Set the Start Address">6 Set the Start Address</a><ul></ul></li>
+<li><a href="#uart-driver-for-16550" title="UART Driver for 16550">7 UART Driver for 16550</a><ul></ul></li>
+<li><a href="#build-nuttx-for-avaota-a1" title="Build NuttX for Avaota-A1">8 Build NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-memory-map" title="Fix the NuttX Memory Map">10 Fix the NuttX Memory Map</a><ul></ul></li>
 <li><a href="#arm64-global-interrupt-controller" title="Arm64 Global Interrupt Controller">11 Arm64 Global Interrupt Controller</a><ul></ul></li>
 <li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">12 NuttX Apps Filesystem</a><ul></ul></li>
 <li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">13 Fix the UART Interrupt</a><ul></ul></li>
 <li><a href="#todo" title="TODO">14 TODO</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-avaota-a1" title="Boot NuttX for Avaota-A1">15 Boot NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">16 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#work-in-progress" title="Work In Progress">17 Work In Progress</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">18 What’s Next</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-avaota-a1" title="Appendix: Build NuttX for Avaota-A1">16 Appendix: Build NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-boot-nuttx-for-avaota-a1" title="Appendix: Boot NuttX for Avaota-A1">17 Appendix: Boot NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-passwordless-sudo" title="Appendix: Passwordless Sudo">18 Appendix: Passwordless Sudo</a><ul></ul></li>
 <li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">19 Appendix: NuttX Apps Filesystem</a><ul>
 <li><a href="#semihosting-hostfs-becomes-romfs" title="Semihosting HostFS becomes ROMFS">19.1 Semihosting HostFS becomes ROMFS</a><ul></ul></li>
 <li><a href="#linker-script" title="Linker Script">19.2 Linker Script</a><ul></ul></li>
@@ -107,7 +107,14 @@
 <p>Octa-Core CPU</p>
 <p><a href="https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf">Schematic</a></p>
 <p><em>(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)</em></p>
-<h1 id="boot-linux-on-our-sbc"><a class="doc-anchor" href="#boot-linux-on-our-sbc">§</a>1 Boot Linux on our SBC</h1>
+<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>1 Allwinner A527 Docs</h1>
+<p>We used these docs (A527 is a variant of A523)</p>
+<ul>
+<li>https://linux-sunxi.org/A523</li>
+<li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
+<li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
+</ul>
+<h1 id="boot-linux-on-our-sbc"><a class="doc-anchor" href="#boot-linux-on-our-sbc">§</a>2 Boot Linux on our SBC</h1>
 <p>Nifty Trick for Booting NuttX on <strong>Any Arm64 SBC</strong> (RISC-V too)</p>
 <ul>
 <li>
@@ -134,7 +141,7 @@
 xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div>
 <p>Write the <strong><code>.img</code></strong> file to a MicroSD with <a href="https://etcher.balena.io/"><strong>Balena Etcher</strong></a>.</p>
 <p>We’ll overwrite the <code>Image</code> file by <code>nuttx.bin</code>…</p>
-<h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
+<h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>3 NuttX Kernel Build for Arm64 QEMU</h1>
 <p>Follow these steps to Build and Run NuttX for <a href="TODO"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel (NuttX Kernel Build)
 git clone https://github.com/apache/nuttx
@@ -164,7 +171,7 @@ qemu-system-aarch64 \
 <p>Check that it works…</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p>TODO: Why Kernel Build</p>
-<h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>3 Boot NuttX Kernel on our SBC</h1>
+<h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>4 Boot NuttX Kernel on our SBC</h1>
 <p>TODO: Kernel Only, no apps</p>
 <p>TODO: 28 MB Linux Kernel</p>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">Build Log</a></p>
@@ -186,7 +193,7 @@ ls -l /TODO/Image
 ## Should be a lot smaller
 umount /TODO</code></pre></div>
 <p>Nothing happens. We do some logging…</p>
-<h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
+<h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>5 Print to UART in Arm64 Assembly</h1>
 <p><em>Is NuttX actually booting?</em></p>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
 <p>
@@ -262,7 +269,7 @@ ERROR: Error initializing runtime service opteed_fast
 </li>
 </ol>
 <p>Next we move our code and make it Address-Dependent…</p>
-<h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>5 Set the Start Address</h1>
+<h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>6 Set the Start Address</h1>
 <p><em>NuttX boots a tiny bit on our SBC. Where’s the rest?</em></p>
 <p>Our SBC boots NuttX at a different address from QEMU. We fix the <strong>Start Address</strong> inside NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
@@ -316,7 +323,7 @@ __start:
 </ul>
 <p>With these fixes, our C Code in NuttX shall boot correctly.</p>
 <p>TODO: LCD also</p>
-<h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
+<h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>7 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
 <p>To watch the <strong>Boot Progress</strong> <em>(Sesame Street-style)</em>, we can print primitively to UART like this: <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// 0x0250_0000 is the UART0 Base Address
@@ -422,7 +429,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 - Boot to C runtime for OS Initialize
 AB</code></pre></div>
 <p>OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let’s automate…</p>
-<h1 id="build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#build-nuttx-for-avaota-a1">§</a>7 Build NuttX for Avaota-A1</h1>
+<h1 id="build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#build-nuttx-for-avaota-a1">§</a>8 Build NuttX for Avaota-A1</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
@@ -510,42 +517,6 @@ curl \
 set -x  ##  Enable echo</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p>(<strong>copy-image.sh</strong> is explained below)</p>
-<h1 id="passwordless-sudo"><a class="doc-anchor" href="#passwordless-sudo">§</a>8 Passwordless Sudo</h1>
-<p>Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</p>
-<p>SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.</p>
-<p>Let’s make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
-sudo visudo
-
-## Add this line:
-user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
-<p>Edit /home/user/copy-image.sh…</p>
-<div class="example-wrap"><pre class="language-bash"><code>set -e  ## Exit when any command fails
-set -x  ## Echo commands
-whoami  ## I am root!
-
-## Copy /tmp/Image to MicroSD
-sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
-sleep 5
-mkdir -p /tmp/sda1
-mount /dev/sda1 /tmp/sda1
-cp /tmp/Image /tmp/sda1/
-ls -l /tmp/sda1
-
-## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
-umount /tmp/sda1
-sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p>(Remember to <code>chmod +x /home/user/copy-image.sh</code>)</p>
-<p>Now we can run copy-image.sh without a password yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Sudo will NOT prompt for password yay!
-sudo /home/user/copy-image.sh
-
-## Also works over SSH: Copy NuttX Image to MicroSD
-## No password needed for sudo yay!
-scp nuttx.bin thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
 <h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>9 Arm64 Memory Management Unit</h1>
 <p>Earlier we saw NuttX <a href="TODO"><strong>stuck at “<code>AB</code>”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
@@ -876,7 +847,113 @@ nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
-<h1 id="boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#boot-nuttx-for-avaota-a1">§</a>15 Boot NuttX for Avaota-A1</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+<p>TODO</p>
+<p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Other Project: “NuttX for Oz64 SG2000”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>Older Project: “NuttX for Ox64 BL808”</strong></a></p>
+</li>
+<li>
+<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md"><strong>lupyuen.org/src/avaota.md</strong></a></p>
+<h1 id="appendix-build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-build-nuttx-for-avaota-a1">§</a>16 Appendix: Build NuttX for Avaota-A1</h1>
+<p>TODO</p>
+<p>See the Build Script:</p>
+<ul>
+<li>https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587</li>
+</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX and Apps (NuttX Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
+cd nuttx
+tools/configure.sh qemu-armv8a:knsh
+make -j
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Generate the Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image
+
+## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
+## token=xxxx
+set +x  ##  Disable echo
+. $HOME/home-assistant-token.sh
+set -x  ##  Enable echo
+
+set +x  ##  Disable echo
+echo &quot;----- Power Off the SBC&quot;
+curl \
+    -X POST \
+    -H &quot;Authorization: Bearer $token&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_power_off&quot;}&#39; \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+set +x  ##  Disable echo
+echo &quot;----- Power On the SBC&quot;
+curl \
+    -X POST \
+    -H &quot;Authorization: Bearer $token&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_power_on&quot;}&#39; \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo
+
+## Wait for SBC to finish booting
+sleep 30
+
+set +x  ##  Disable echo
+echo &quot;----- Power Off the SBC&quot;
+curl \
+    -X POST \
+    -H &quot;Authorization: Bearer $token&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    -d &#39;{&quot;entity_id&quot;: &quot;automation.starpro64_power_off&quot;}&#39; \
+    http://localhost:8123/api/services/automation/trigger
+set -x  ##  Enable echo</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
+<p>(<strong>copy-image.sh</strong> is explained below)</p>
+<h1 id="appendix-boot-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-for-avaota-a1">§</a>17 Appendix: Boot NuttX for Avaota-A1</h1>
+<p>TODO</p>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
@@ -1016,47 +1093,42 @@ fordblks     7818    1f900
 user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
-<p>How did we get here? Let’s walk through the steps…</p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>16 Allwinner A527 Docs</h1>
-<p>We used these docs (A527 is a variant of A523)</p>
-<ul>
-<li>https://linux-sunxi.org/A523</li>
-<li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
-<li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
-</ul>
-<h1 id="work-in-progress"><a class="doc-anchor" href="#work-in-progress">§</a>17 Work In Progress</h1>
-<p>We take NuttX for Arm64 QEMU knsh (Kernel Build) and tweak it iteratively for Avaota-A1 SBC, based on Allwinner A527 SoC…</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>18 What’s Next</h1>
-<p>TODO</p>
-<p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Other Project: “NuttX for Oz64 SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>Older Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md"><strong>lupyuen.org/src/avaota.md</strong></a></p>
+<h1 id="appendix-passwordless-sudo"><a class="doc-anchor" href="#appendix-passwordless-sudo">§</a>18 Appendix: Passwordless Sudo</h1>
+<p>Let’s make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux</p>
+<p>SDWire Mux needs plenty of Sudo Passwords to flip the mux, mount the filesystem, copy to MicroSD.</p>
+<p>Let’s make it Sudo Password-Less with visudo: https://help.ubuntu.com/community/Sudoers</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start the Sudoers Editor
+sudo visudo
+
+## Add this line:
+user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div>
+<p>Edit /home/user/copy-image.sh…</p>
+<div class="example-wrap"><pre class="language-bash"><code>set -e  ## Exit when any command fails
+set -x  ## Echo commands
+whoami  ## I am root!
+
+## Copy /tmp/Image to MicroSD
+sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
+sleep 5
+mkdir -p /tmp/sda1
+mount /dev/sda1 /tmp/sda1
+cp /tmp/Image /tmp/sda1/
+ls -l /tmp/sda1
+
+## Unmount MicroSD and flip it to the Test Device (Avaota-A1 SBC)
+umount /tmp/sda1
+sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
+<p>(Remember to <code>chmod +x /home/user/copy-image.sh</code>)</p>
+<p>Now we can run copy-image.sh without a password yay!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Sudo will NOT prompt for password yay!
+sudo /home/user/copy-image.sh
+
+## Also works over SSH: Copy NuttX Image to MicroSD
+## No password needed for sudo yay!
+scp nuttx.bin thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>19 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the NuttX Apps Filesystem…</p>
 <ul>
@@ -1208,7 +1280,7 @@ for (addr = g_idle_topstack; addr &lt; limit; addr += 8) { ... }</code></pre></d
 <div class="example-wrap"><pre class="language-bash"><code>default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
-<p><em>(Strangely: This alignment isn’t needed for RISC-V)</em></p>
+<p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
