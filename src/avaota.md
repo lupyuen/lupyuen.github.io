@@ -1408,3 +1408,5 @@ default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault
 ```
+
+_(Strangely: This alignment isn't needed for RISC-V)_
