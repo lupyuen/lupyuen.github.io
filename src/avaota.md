@@ -859,7 +859,7 @@ _What's this GIC?_
 
 It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC shall...
 
-- Receive __I/O Interrupts__
+- Receive __Input / Output Interrupts__
 
   _(Like keypresses)_
 
@@ -1314,7 +1314,7 @@ board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-## Semihosting HostFS becomes ROMFS
+## HostFS becomes ROMFS
 
 QEMU uses [__Semihosting and HostFS__](TODO) to access the NuttX Apps Filesystem. We change to __ROMFS__... [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
@@ -1334,7 +1334,7 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_INIT_MOUNT_TARGET="/system"
 ```
 
-_CONFIG_BOARD_LATE_INITIALIZE_ is needed because we'll __Mount the ROMFS Filesystem__ inside _qemu_bringup()_. (See below)
+_BOARD_LATE_INITIALIZE_ is needed because we'll __Mount the ROMFS Filesystem__ inside _qemu_bringup()_. (See below)
 
 ## Linker Script
 
