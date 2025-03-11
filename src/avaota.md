@@ -314,6 +314,8 @@ Kernel addr: 0x40800000
     CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
     ```
 
+    _(Paged Memory Pool shall be dished out as Virtual Memory to NuttX Apps)_
+
 1.  NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) in _RAMBANK1_SIZE_. We set _RAM_SIZE_ accordingly: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca)
 
     ```bash
@@ -490,7 +492,7 @@ OK the _repeated rebuilding, recopying and rebooting_ of NuttX is getting really
 
 _What if we could rebuild-recopy-reboot NuttX... In One Single Script?_
 
-Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc) (pic above). Our Build Script will do __everything__ for us...
+Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc) (pic above). Our Build Script shall do __everything__ for us...
 
 1.  Copy __NuttX to MicroSD__
 
@@ -520,7 +522,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 
 ## Get the Home Assistant Token
-## Which we copied from http://localhost:8123/profile/security
+## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
@@ -630,20 +632,20 @@ _What's arm64_mmu_init?_
 NuttX calls __arm64_mmu_init__ to start the Arm64 __Memory Management Unit (MMU)__. We add some logs inside: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
 
 ```c
-// Enable debugging for MMU.
+// Enable Debugging for MMU
 #define CONFIG_MMU_ASSERT 1
 #define CONFIG_MMU_DEBUG  1
 #define trace_printf _info
 
-// We fix the debug output, changing `%lux` to `%p`
+// We fix the Debug Output, changing `%lux` to `%p`
 static void init_xlat_tables(const struct arm_mmu_region *region) {
   ...
   sinfo("mmap: virt %p phys %p size %p\n", virt, phys, size);
 
-// To enable the MMU at EL1...
+// To enable the MMU at Exception Level 1...
 static void enable_mmu_el1(unsigned int flags) {
   ...
-  // Ensure these changes are seen before MMU is enabled
+  // Flush the Cached Data before Enabling MMU
   _info("UP_MB");
   UP_MB();
 
@@ -651,7 +653,7 @@ static void enable_mmu_el1(unsigned int flags) {
   _info("Enable the MMU and data cache");
   write_sysreg(value | SCTLR_M_BIT | SCTLR_C_BIT, sctlr_el1);
 
-  // Ensure the MMU Enable takes effect immediately
+  // Ensure that MMU Enable takes effect immediately
   _info("UP_ISB");
   UP_ISB();
 ```
@@ -711,7 +713,7 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 # Fix the Memory Map
 
-_Why do we need Arm64 MMU anyway? (Memory Management Unit)_
+_Why do we need Arm64 MMU? (Memory Management Unit)_
 
 We require MMU for...
 
@@ -1101,7 +1103,7 @@ We can automate the last two steps with a [__MicroSD Multiplexer__](TODO) and [_
 
 ```bash
 ## Get the Home Assistant Token
-## Which we copied from http://localhost:8123/profile/security
+## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
