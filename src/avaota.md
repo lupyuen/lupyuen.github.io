@@ -911,13 +911,21 @@ _/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps fro
 We bundle the NuttX Apps together into a __ROMFS Filesystem__...
 
 ```bash
-TODO
+## Generate the Initial RAM Disk
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
 ```
 
 Then we package NuttX Kernel + NuttX Apps into a __NuttX Image__...
 
 ```bash
-TODO
+## Prepare a Padding with 64 KB of zeroes
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  >Image
 ```
 
 [(See the __Build Script__)](TODO)
@@ -1045,19 +1053,27 @@ Read on to boot the NuttX Image on our SBC...
 
 # Appendix: Boot NuttX on Avaota-A1
 
-TODO
+Earlier we built [__NuttX for Avaota-A1__](TODO) and created the __`Image`__ file, containing the NuttX Kernel + NuttX Apps. Let's boot it on MicroSD...
 
-```bash
-## Copy NuttX Image to AvaotaOS MicroSD
-## Overwrite the `Image` file
-## Boot it on Avaota-A1
-mv /TODO/Image /TODO/Image.old
-cp Image /TODO/Image
-ls -l /TODO/Image
-umount /TODO
-```
+1.  Prepare the __AvaotaOS MicrosSD__...
 
-We can automate the last step with a [__MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](TODO)...
+    TODO
+
+1.  Copy the __NuttX Image__ to MicroSD...
+
+    ```bash
+    ## Copy NuttX Image to AvaotaOS MicroSD
+    ## Overwrite the `Image` file
+    ## Boot it on Avaota-A1
+    mv /TODO/Image /TODO/Image.old
+    cp Image /TODO/Image
+    ls -l /TODO/Image
+    umount /TODO
+    ```
+
+1.  __Boot the MicroSD__ on our SBC
+
+We can automate the last two steps with a [__MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](TODO)...
 
 ```bash
 ## Get the Home Assistant Token
