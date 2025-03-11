@@ -80,13 +80,14 @@
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-avaota-a1" title="Appendix: Build NuttX for Avaota-A1">14 Appendix: Build NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#appendix-boot-nuttx-on-avaota-a1" title="Appendix: Boot NuttX on Avaota-A1">15 Appendix: Boot NuttX on Avaota-A1</a><ul></ul></li>
-<li><a href="#appendix-sdwire-microsd-multiplexer" title="Appendix: SDWire MicroSD Multiplexer">16 Appendix: SDWire MicroSD Multiplexer</a><ul></ul></li>
-<li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">17 Appendix: NuttX Apps Filesystem</a><ul>
-<li><a href="#hostfs-becomes-romfs" title="HostFS becomes ROMFS">17.1 HostFS becomes ROMFS</a><ul></ul></li>
-<li><a href="#linker-script" title="Linker Script">17.2 Linker Script</a><ul></ul></li>
-<li><a href="#mount-the-romfs" title="Mount the ROMFS">17.3 Mount the ROMFS</a><ul></ul></li>
-<li><a href="#copy-the-romfs" title="Copy the ROMFS">17.4 Copy the ROMFS</a><ul></ul></li></ul></li>
-<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">18 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#appendix-upstream-nuttx-for-avaota-a1" title="Appendix: Upstream NuttX for Avaota-A1">16 Appendix: Upstream NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-sdwire-microsd-multiplexer" title="Appendix: SDWire MicroSD Multiplexer">17 Appendix: SDWire MicroSD Multiplexer</a><ul></ul></li>
+<li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">18 Appendix: NuttX Apps Filesystem</a><ul>
+<li><a href="#hostfs-becomes-romfs" title="HostFS becomes ROMFS">18.1 HostFS becomes ROMFS</a><ul></ul></li>
+<li><a href="#linker-script" title="Linker Script">18.2 Linker Script</a><ul></ul></li>
+<li><a href="#mount-the-romfs" title="Mount the ROMFS">18.3 Mount the ROMFS</a><ul></ul></li>
+<li><a href="#copy-the-romfs" title="Copy the ROMFS">18.4 Copy the ROMFS</a><ul></ul></li></ul></li>
+<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">19 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
 <p>This article explains how we ported NuttX from <a href="TODO"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
@@ -889,10 +890,6 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 <p><strong>NSH Prompt</strong> finally appears. And <strong>OSTest completes successfully</strong> yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>Complete Log</strong>)</a></p>
-<p>Here are the Modified Source Files for <strong>NuttX on Avatoa-A1 SBC</strong>…</p>
-<ul>
-<li>TODO</li>
-</ul>
 <p><em>NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
 <p>That’s because NSH runs as a <strong>NuttX App in User Space</strong>. When NSH Shell prints this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
@@ -902,6 +899,15 @@ nsh&gt;</code></pre></div>
 <p>TODO: Pic of T527 Cutie</p>
 <p><a href="TODO"><em>NuttX might run OK on T527 Cutie</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
+<p>Right now we’re upstreaming Avatoa-A1 SBC to <strong>NuttX Mainline</strong>…</p>
+<ul>
+<li>
+<p>TODO: Porting NuttX</p>
+</li>
+<li>
+<p>TODO: Upstream NuttX</p>
+</li>
+</ul>
 <p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
@@ -1097,8 +1103,126 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>NuttX Log</strong>)</a></p>
+<h1 id="appendix-upstream-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-upstream-nuttx-for-avaota-a1">§</a>16 Appendix: Upstream NuttX for Avaota-A1</h1>
+<p>In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What’s Next: Upstreaming our code to <strong>NuttX Mainline</strong>!</p>
+<p>Here’s how we copy-n-pasted our <a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits"><strong>Modified Files</strong></a> into a proper <strong>NuttX Arch</strong> <em>(Allwinner A527)</em> and <strong>NuttX Board</strong> <em>(Avaota-A1)</em></p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/7de76c10aef43fef010eb002eae9330c4333650a">Copy qemu folders to a527. Copy qemu-armv8a folder to avaota-a1.</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/740f0a0c57439fc39dc216476021fad114f6e6b2">Rename qemu files to a527. Rename qemu-armv8a files to avaota-a1.</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/1011208093b294c36399b7a04a135c08a18b7186">Rewrite “qemu-armv8a” to “avaota-a1”. Rewrite “qemu” to “a527”.</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/ddf662a9036e7cc6742a034a3983f3b0f9b5bf07">Rewrite “A527_ARMV8A” to “AVAOTA_A1”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/fe65a2d43f896b7eaeb996c463a99d5244a9b67d">Add Arch and Board</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c">Apply the changes from <em>github.com/lupyuen2/wip-nuttx/pull/98/files</em> <br> OSTest passes yay!</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/837e0478617da7d8c886cbb3291ff90e3fc07c33">Remove unused NuttX Configs</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/1934b999880c37f67c0dfa456555b160a945145c">Rename knsh to nsh</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a">Clean up the alignment</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f51d3173c33a5e70af5156daae13e8732207f635">Clean up for nxstyle</a></p>
+</li>
+</ol>
+<p>We created a <strong>Staging PR</strong> in our own repo…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99"><em>github.com/lupyuen2/wip-nuttx/pull/99</em></a></li>
+</ul>
+<p>Then dumped the list of <strong>Modified Files</strong>…</p>
+<span style="font-size:60%">
+<div class="example-wrap"><pre class="language-bash"><code>## Change this to our Staging PR
+$ pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/99
+$ curl -L $pr.diff \
+  | grep &quot;diff --git&quot; \
+  | sort \
+  | cut -d&quot; &quot; -f3 \
+  | cut -c3-
+
+## Here are the Modified Files for our PR
+arch/arm64/Kconfig
+arch/arm64/include/a527/chip.h
+arch/arm64/include/a527/irq.h
+arch/arm64/src/a527/CMakeLists.txt
+arch/arm64/src/a527/Kconfig
+arch/arm64/src/a527/Make.defs
+arch/arm64/src/a527/a527_boot.c
+arch/arm64/src/a527/a527_boot.h
+arch/arm64/src/a527/a527_initialize.c
+arch/arm64/src/a527/a527_lowputc.S
+arch/arm64/src/a527/a527_serial.c
+arch/arm64/src/a527/a527_serial.h
+arch/arm64/src/a527/a527_textheap.c
+arch/arm64/src/a527/a527_timer.c
+arch/arm64/src/a527/chip.h
+boards/Kconfig
+boards/arm64/a527/avaota-a1/CMakeLists.txt
+boards/arm64/a527/avaota-a1/Kconfig
+boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+boards/arm64/a527/avaota-a1/include/board.h
+boards/arm64/a527/avaota-a1/include/board_memorymap.h
+boards/arm64/a527/avaota-a1/scripts/Make.defs
+boards/arm64/a527/avaota-a1/scripts/dramboot.ld
+boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+boards/arm64/a527/avaota-a1/src/Makefile
+boards/arm64/a527/avaota-a1/src/a527_appinit.c
+boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+boards/arm64/a527/avaota-a1/src/a527_bringup.c
+boards/arm64/a527/avaota-a1/src/a527_power.c
+boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
+<p>And checked <strong>nxstyle</strong> on the Modified Files…</p>
+<span style="font-size:60%">
+<div class="example-wrap"><pre class="language-bash"><code>## Run nxstyle on the Modified Files
+nxstyle arch/arm64/Kconfig
+nxstyle arch/arm64/include/a527/chip.h
+nxstyle arch/arm64/include/a527/irq.h
+nxstyle arch/arm64/src/a527/CMakeLists.txt
+nxstyle arch/arm64/src/a527/Kconfig
+nxstyle arch/arm64/src/a527/Make.defs
+nxstyle arch/arm64/src/a527/a527_boot.c
+nxstyle arch/arm64/src/a527/a527_boot.h
+nxstyle arch/arm64/src/a527/a527_initialize.c
+nxstyle arch/arm64/src/a527/a527_lowputc.S
+nxstyle arch/arm64/src/a527/a527_serial.c
+nxstyle arch/arm64/src/a527/a527_serial.h
+nxstyle arch/arm64/src/a527/a527_textheap.c
+nxstyle arch/arm64/src/a527/a527_timer.c
+nxstyle arch/arm64/src/a527/chip.h
+nxstyle boards/Kconfig
+nxstyle boards/arm64/a527/avaota-a1/CMakeLists.txt
+nxstyle boards/arm64/a527/avaota-a1/Kconfig
+nxstyle boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+nxstyle boards/arm64/a527/avaota-a1/include/board.h
+nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
+nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
+nxstyle boards/arm64/a527/avaota-a1/scripts/dramboot.ld
+nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+nxstyle boards/arm64/a527/avaota-a1/src/Makefile
+nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
+nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
+nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
+<p>All ready for upstreaming! (Remember to add the Arch and Board Docs)</p>
 <p>TODO: Pic of SDWire</p>
-<h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>16 Appendix: SDWire MicroSD Multiplexer</h1>
+<h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>17 Appendix: SDWire MicroSD Multiplexer</h1>
 <p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
 <ul>
 <li>TODO</li>
@@ -1148,7 +1272,7 @@ ssh thinkcentre \
 </li>
 </ol>
 <p>TODO: Pic of Apps Filesystem</p>
-<h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>17 Appendix: NuttX Apps Filesystem</h1>
+<h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>18 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the NuttX Apps Filesystem…</p>
 <ul>
 <li>TODO</li>
@@ -1165,7 +1289,7 @@ nx_start_application: Starting init task: /system/bin/init
 nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="hostfs-becomes-romfs"><a class="doc-anchor" href="#hostfs-becomes-romfs">§</a>17.1 HostFS becomes ROMFS</h2>
+nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="hostfs-becomes-romfs"><a class="doc-anchor" href="#hostfs-becomes-romfs">§</a>18.1 HostFS becomes ROMFS</h2>
 <p>QEMU uses <a href="TODO"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added ROMFS...
 CONFIG_BOARDCTL_ROMDISK=y
@@ -1181,7 +1305,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 ## CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;</code></pre></div>
 <p><em>BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup()</em>. (See below)</p>
-<h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>17.2 Linker Script</h2>
+<h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>18.2 Linker Script</h2>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We added the RAM Disk (16 MB) */
 MEMORY {
@@ -1193,7 +1317,7 @@ MEMORY {
 /* We&#39;ll reference these in our code */
 __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size  = LENGTH(ramdisk);
-__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div><h2 id="mount-the-romfs"><a class="doc-anchor" href="#mount-the-romfs">§</a>17.3 Mount the ROMFS</h2>
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div><h2 id="mount-the-romfs"><a class="doc-anchor" href="#mount-the-romfs">§</a>18.3 Mount the ROMFS</h2>
 <p><strong>At Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(inside RAM)</em> as <em>/dev/ram0</em>: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f8d388b76b0b37563184a5a174f18970ff6771d6a048e0e792967ab265d6f7eb">qemu_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At NuttX Startup...
 int qemu_bringup(void) {
@@ -1224,7 +1348,7 @@ static int mount_ramdisk(void) {
 // RAM Disk Definition
 #define SECTORSIZE   512
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
-#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>17.4 Copy the ROMFS</h2>
+#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
 <p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This happens just after Bootloader starts NuttX: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Just after Bootloader has started NuttX...
 void arm64_chip_boot(void) {
@@ -1313,7 +1437,7 @@ default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
 <p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
-<h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>18 Appendix: Port NuttX to Avaota-A1</h1>
+<h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
 <p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and tweaked it for Avaota-A1 SBC. This section explains the modified code…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/98/files"><strong>Modified Files</strong> for Avaota-A1</a></li>
