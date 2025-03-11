@@ -562,7 +562,9 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 # Arm64 Memory Management Unit
 
-Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
+_OK can get back to NuttX now?_
+
+Of course. Earlier we saw NuttX [__stuck at "`AB`"__](TODO)...
 
 ```bash
 123
@@ -777,7 +779,9 @@ Two Tweaks...
 
 The rest are hunky dory...
 
-- TODO __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_. Which is kinda small, let's embiggen.
+- __DRAM0_S0__ says that RAM Address Space ends at _0x4800_0000 (128 MB)_ 
+  
+  _(Kinda small, but sufficient for now)_
 
 - __nx_code__ _(0x4080_0000)_: Kernel Code begins here
 
@@ -843,7 +847,7 @@ GIC is here...
 | __Module__ | __Base Address__
 | GIC | _0x0340_0000_
 
-With these __GIC Registers__, handling 8 Arm64 Cores...
+Which has these __GIC Registers__ inside, handling 8 Arm64 Cores...
 
 | [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
 |:-------------------------------:|:---------|
@@ -870,7 +874,7 @@ Based on the above, we set the __Addresses of GICD and GICR__ _(Distributor / Re
 #define CONFIG_GICR_OFFSET 0x20000
 ```
 
-Remember to [__Disable Memory Manager Logging__](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83). NuttX GIC Driver [__complains no more__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)!
+Remember to [__Disable Memory Manager Logging__](https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83). NuttX GIC Driver starts correctly and [__complains no more__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)!
 
 ```bash
 ## SPI = Physical Interrupt Signal (not the typical SPI)
@@ -884,7 +888,7 @@ gic_validate_dist_version:
 
 _Are we done yet?_
 
-If we're doing a __Simple NuttX Port__ _(Flat Build)_: Congrats just fix the [__UART Interrupt__](TODO) and we're done!
+For a __Simple NuttX Port__ _(Flat Build)_: Congrats, just fix the [__UART Interrupt__](TODO) and we're done!
 
 However we're doing __NuttX Kernel Build__. Which [__needs more work__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)...
 
@@ -899,7 +903,7 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-_/system/bin/init_ is __NSH Shell__. That's how NuttX Kernel Build works: It loads NuttX Apps from a __Local Filesystem__. _(Instead of binding Apps into Kernel)_
+_/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps from a __Local Filesystem__. _(Instead of binding binary Apps into Kernel)_
 
 We bundle the NuttX Apps together into a __ROMFS Filesystem__...
 
@@ -915,7 +919,17 @@ TODO
 
 [(See the __Build Script__)](TODO)
 
-When NuttX Boots: It will find the ROMFS Filesystem, and Mount it as a __RAM Disk__. Which will allow NuttX Kernel to start __NSH Shell__ and other NuttX Apps. Everything is explained here...
+When NuttX Boots: It will...
+
+1.  Find the __ROMFS Filesystem__
+
+1.  Mount it as a __RAM Disk__
+
+1.  Allowing NuttX Kernel to start __NSH Shell__
+
+    _(And other NuttX Apps)_
+
+Everything is explained here...
 
 - TODO: Appendix
 
@@ -953,7 +967,7 @@ TODO
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
 
-_Very odd. NSH Prompt won't appear if UART Interrupt is disabled?_
+_NSH Prompt won't appear if UART Interrupt is disabled?_
 
 That's because NSH runs as a __NuttX App in User Space__. When NSH Shell prints this...
 
