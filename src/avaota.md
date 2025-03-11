@@ -1522,4 +1522,6 @@ default_fatal_handler:
 
 # Appendix: Port NuttX to Avaota-A1
 
+In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for Avaota-A1 SBC. This section explains the modified code...
+
 TODO
