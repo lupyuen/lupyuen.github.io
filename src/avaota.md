@@ -816,7 +816,7 @@ The rest are hunky dory...
 
 - __nx_data__ _(0x4083_0000)_: Read-Write Data for Kernel
 
-- __nx_pgpool__ _(0x40A0_0000)_: Remember the __Paged Memory Pool__? This will be dished out as __Virtual Memory__ to NuttX Apps
+- __nx_pgpool__ _(0x40A0_0000)_: Remember the [__Paged Memory Pool__](TODO)? This shall be dished out as __Virtual Memory__ to NuttX Apps
 
 We rebuild, recopy, reboot NuttX. Our Memory Map looks [__much better now__](https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14)...
 
