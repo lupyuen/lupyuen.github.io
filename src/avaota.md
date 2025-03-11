@@ -937,9 +937,9 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-_/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps from a __Local Filesystem__. _(Instead of binding binary Apps into Kernel)_
+_/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps from a __Local Filesystem__, which is missing right now. _(NuttX Flat Build will bind binary Apps directly into Kernel)_
 
-We bundle the NuttX Apps together into a __ROMFS Filesystem__...
+To solve this: We bundle the NuttX Apps together into a __ROMFS Filesystem__...
 
 ```bash
 ## Generate the Initial RAM Disk
