@@ -926,16 +926,18 @@ popd
 genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
-  &gt;Image
-
-## Copy NuttX Image to AvaotaOS MicroSD
+  &gt;Image</code></pre></div>
+<p>Read on to boot the NuttX Image on our SBC…</p>
+<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
+<h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>17 Appendix: Boot NuttX on Avaota-A1</h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
 ## Boot it on Avaota-A1
 mv /TODO/Image /TODO/Image.old
 cp Image /TODO/Image
 ls -l /TODO/Image
 umount /TODO</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p>We can automate the last step with a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> and <a href="TODO"><strong>Smart Power Plug</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token
 ## Which we copied from http://localhost:8123/profile/security
@@ -979,9 +981,6 @@ curl \
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="TODO">(<strong>copy-image.sh</strong> is explained here)</a></p>
 <p><a href="TODO">(<strong>Smart Power Plug</strong> also)</a></p>
-<h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>17 Appendix: Boot NuttX on Avaota-A1</h1>
-<p>TODO</p>
-<p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <p>Here’s the latest NuttX Boot Log:</p>
 <ul>
