@@ -65,30 +65,29 @@
 
     <h1 class="title">Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#allwinner-a527-docs" title="Allwinner A527 Docs">1 Allwinner A527 Docs</a><ul></ul></li>
-<li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">2 Boot Linux on our SBC</a><ul></ul></li>
-<li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">3 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">4 Boot NuttX Kernel on our SBC</a><ul></ul></li>
-<li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">5 Print to UART in Arm64 Assembly</a><ul></ul></li>
-<li><a href="#set-the-start-address" title="Set the Start Address">6 Set the Start Address</a><ul></ul></li>
-<li><a href="#uart-driver-for-16550" title="UART Driver for 16550">7 UART Driver for 16550</a><ul></ul></li>
-<li><a href="#microsd-multiplexer--smart-power-plug" title="MicroSD Multiplexer + Smart Power Plug">8 MicroSD Multiplexer + Smart Power Plug</a><ul></ul></li>
-<li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">9 Arm64 Memory Management Unit</a><ul></ul></li>
-<li><a href="#fix-the-memory-map" title="Fix the Memory Map">10 Fix the Memory Map</a><ul></ul></li>
-<li><a href="#arm64-generic-interrupt-controller" title="Arm64 Generic Interrupt Controller">11 Arm64 Generic Interrupt Controller</a><ul></ul></li>
-<li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">12 NuttX Apps Filesystem</a><ul></ul></li>
-<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">13 Fix the UART Interrupt</a><ul></ul></li>
-<li><a href="#todo" title="TODO">14 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-avaota-a1" title="Appendix: Build NuttX for Avaota-A1">16 Appendix: Build NuttX for Avaota-A1</a><ul></ul></li>
-<li><a href="#appendix-boot-nuttx-on-avaota-a1" title="Appendix: Boot NuttX on Avaota-A1">17 Appendix: Boot NuttX on Avaota-A1</a><ul></ul></li>
-<li><a href="#appendix-sdwire-microsd-multiplexer" title="Appendix: SDWire MicroSD Multiplexer">18 Appendix: SDWire MicroSD Multiplexer</a><ul></ul></li>
-<li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">19 Appendix: NuttX Apps Filesystem</a><ul>
-<li><a href="#semihosting-hostfs-becomes-romfs" title="Semihosting HostFS becomes ROMFS">19.1 Semihosting HostFS becomes ROMFS</a><ul></ul></li>
-<li><a href="#linker-script" title="Linker Script">19.2 Linker Script</a><ul></ul></li>
-<li><a href="#mount-the-romfs" title="Mount the ROMFS">19.3 Mount the ROMFS</a><ul></ul></li>
-<li><a href="#copy-the-romfs" title="Copy the ROMFS">19.4 Copy the ROMFS</a><ul></ul></li></ul></li>
-<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">20 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">1 Boot Linux on our SBC</a><ul></ul></li>
+<li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
+<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
+<li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
+<li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
+<li><a href="#uart-driver-for-16550" title="UART Driver for 16550">6 UART Driver for 16550</a><ul></ul></li>
+<li><a href="#microsd-multiplexer--smart-power-plug" title="MicroSD Multiplexer + Smart Power Plug">7 MicroSD Multiplexer + Smart Power Plug</a><ul></ul></li>
+<li><a href="#arm64-memory-management-unit" title="Arm64 Memory Management Unit">8 Arm64 Memory Management Unit</a><ul></ul></li>
+<li><a href="#fix-the-memory-map" title="Fix the Memory Map">9 Fix the Memory Map</a><ul></ul></li>
+<li><a href="#arm64-generic-interrupt-controller" title="Arm64 Generic Interrupt Controller">10 Arm64 Generic Interrupt Controller</a><ul></ul></li>
+<li><a href="#nuttx-apps-filesystem" title="NuttX Apps Filesystem">11 NuttX Apps Filesystem</a><ul></ul></li>
+<li><a href="#fix-the-uart-interrupt" title="Fix the UART Interrupt">12 Fix the UART Interrupt</a><ul></ul></li>
+<li><a href="#todo" title="TODO">13 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-avaota-a1" title="Appendix: Build NuttX for Avaota-A1">15 Appendix: Build NuttX for Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-boot-nuttx-on-avaota-a1" title="Appendix: Boot NuttX on Avaota-A1">16 Appendix: Boot NuttX on Avaota-A1</a><ul></ul></li>
+<li><a href="#appendix-sdwire-microsd-multiplexer" title="Appendix: SDWire MicroSD Multiplexer">17 Appendix: SDWire MicroSD Multiplexer</a><ul></ul></li>
+<li><a href="#appendix-nuttx-apps-filesystem" title="Appendix: NuttX Apps Filesystem">18 Appendix: NuttX Apps Filesystem</a><ul>
+<li><a href="#semihosting-hostfs-becomes-romfs" title="Semihosting HostFS becomes ROMFS">18.1 Semihosting HostFS becomes ROMFS</a><ul></ul></li>
+<li><a href="#linker-script" title="Linker Script">18.2 Linker Script</a><ul></ul></li>
+<li><a href="#mount-the-romfs" title="Mount the ROMFS">18.3 Mount the ROMFS</a><ul></ul></li>
+<li><a href="#copy-the-romfs" title="Copy the ROMFS">18.4 Copy the ROMFS</a><ul></ul></li></ul></li>
+<li><a href="#appendix-port-nuttx-to-avaota-a1" title="Appendix: Port NuttX to Avaota-A1">19 Appendix: Port NuttX to Avaota-A1</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <span style="font-size:80%">
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
@@ -106,17 +105,24 @@
 <p>(3) PR Test Bot will be fully automated thanks to SDWire MicroSD Mux: https://lupyuen.org/articles/testbot3.html</p>
 <p>TODO: Next article I’ll explain how I ported NuttX from QEMU Arm64 (knsh) to Avaota-A1, completed within 24 hours.</p>
 <p>TODO: Octa-Core CPU</p>
-<p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
-<p><a href="https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf">Schematic</a></p>
-<p><em>(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)</em></p>
-<h1 id="allwinner-a527-docs"><a class="doc-anchor" href="#allwinner-a527-docs">§</a>1 Allwinner A527 Docs</h1>
-<p>We used these docs (A527 is a variant of A523)</p>
+<p>We’re ready for volunteers to build <strong>NuttX Drivers for Avaota-A1 / Allwinner A527</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know! 🙏</p>
 <ul>
-<li>https://linux-sunxi.org/A523</li>
-<li>https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf</li>
-<li>https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf</li>
+<li>
+<p><a href="https://linux-sunxi.org/A523"><strong>Sunxi Docs on Allwinner A527</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/File:A527_Datasheet_V0.93.pdf"><strong>Allwinner A527 Datasheet</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf"><strong>Allwinner A523 User Manual</strong></a> <em>(A527 is similar to A523)</em></p>
+</li>
+<li>
+<p><a href="https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf"><strong>Avaota-A1 Schematic</strong></a></p>
+</li>
 </ul>
-<h1 id="boot-linux-on-our-sbc"><a class="doc-anchor" href="#boot-linux-on-our-sbc">§</a>2 Boot Linux on our SBC</h1>
+<p><em>(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)</em></p>
+<p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="Avaota-A1 SBC connected to USB UART" /></p>
+<h1 id="boot-linux-on-our-sbc"><a class="doc-anchor" href="#boot-linux-on-our-sbc">§</a>1 Boot Linux on our SBC</h1>
 <p>Nifty Trick for Booting NuttX on <strong>Any Arm64 SBC</strong> (RISC-V too)</p>
 <ul>
 <li>
@@ -133,17 +139,43 @@
 <p>That’s why we have a <a href="TODO"><strong>Linux Kernel Header</strong></a> at the top of NuttX</p>
 </li>
 </ul>
-<p>To begin, we observe our SBC and its <em>Natural Behaviour</em>: How does it <strong>Boot Linux?</strong></p>
-<p>TODO: Download</p>
-<p>TODO: MicroSD</p>
-<p>TODO: Load Address</p>
-<p>TODO: LCD Screen too</p>
+<p>To begin, we observe our SBC and its <em>Natural Behaviour</em>… How does it <strong>Boot Linux?</strong></p>
+<ol>
+<li>
+<p>Connect a <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)</p>
+<div><table><thead><tr><th style="text-align: center">Avaota-A1</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>GND</strong> (Pin 6)</td><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center"><em>Yellow</em></td></tr>
+<tr><td style="text-align: center"><strong>TX</strong> (Pin 8)</td><td style="text-align: center"><strong>RX</strong></td><td style="text-align: center"><em>Orange</em></td></tr>
+<tr><td style="text-align: center"><strong>RX</strong> (Pin 10)</td><td style="text-align: center"><strong>TX</strong></td><td style="text-align: center"><em>Red</em></td></tr>
+</tbody></table>
+</div>
+<p><strong>Boot Log</strong> will appear at <em>/dev/ttyUSB0</em>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Allow the user to access the USB UART port
+## Logout and login to refresh the permissions
+sudo usermod -a -G dialout $USER
+logout
+
+## Connect to USB UART Console
+screen /dev/ttyUSB0 115200</code></pre></div></li>
+<li>
 <p>Download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>wget https://github.com/AvaotaSBC/AvaotaOS/releases/download/0.3.0.4/AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz
-xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div>
+xz -d AvaotaOS-0.3.0.4-noble-gnome-arm64-avaota-a1.img.xz</code></pre></div></li>
+<li>
 <p>Write the <strong><code>.img</code></strong> file to a MicroSD with <a href="https://etcher.balena.io/"><strong>Balena Etcher</strong></a>.</p>
-<p>We’ll overwrite the <code>Image</code> file by <code>nuttx.bin</code>…</p>
-<h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>3 NuttX Kernel Build for Arm64 QEMU</h1>
+</li>
+<li>
+<p>Insert the MicroSD into our SBC and <a href="https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b"><strong>Boot AvaotaOS</strong></a>. We’ll see the Boot Log…</p>
+<div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
+Kernel addr: 0x40800000
+BL31: v2.5(debug):9241004a9
+sunxi-arisc driver is starting
+ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
+<li>
+<p><strong>Kernel Boot Address</strong> <em>0x4080_0000</em> is super important, we’ll use it in a while</p>
+</li>
+</ol>
+<h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
 <p>Follow these steps to Build and Run NuttX for <a href="TODO"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel (NuttX Kernel Build)
 git clone https://github.com/apache/nuttx
@@ -172,11 +204,12 @@ qemu-system-aarch64 \
   -kernel ./nuttx</code></pre></div>
 <p>Check that it works…</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
-<p>TODO: Why Kernel Build</p>
-<h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>4 Boot NuttX Kernel on our SBC</h1>
-<p>TODO: Kernel Only, no apps</p>
-<p>TODO: 28 MB Linux Kernel</p>
-<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">Build Log</a></p>
+<p>We’re ready to boot this to our SBC!</p>
+<p><em>Why start with NuttX Kernel Build? Not NuttX Flat Build?</em></p>
+<p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM. It makes more sense to boot <a href="TODO"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX Apps with <a href="TODO"><strong>Virtual Memory</strong></a>.</p>
+<p><em>(NuttX Flat Mode was created for Simpler Microcontrollers with Limited RAM)</em></p>
+<h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>3 Boot NuttX Kernel on our SBC</h1>
+<p>Remember the <a href="TODO"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls -l /TODO
 total 40261
 -rwxr-xr-x 1 root root    78769 Feb 22 01:06 bl31.bin
@@ -188,15 +221,30 @@ drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
 -rwxr-xr-x 1 root root    12960 Feb 22 01:06 splash.bin
 -rwxr-xr-x 1 root root  5193581 Feb 21 22:21 System.map-5.15.154-ga464bc4feaff
 -rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd</code></pre></div>
-<p>TODO: We’ll overwrite the <code>Image</code> file by <code>nuttx.bin</code>…</p>
+<p>Let’s replace <strong>Linux by NuttX</strong>…</p>
+<ol>
+<li>
+<p>Take the NuttX Kernel <strong><code>nuttx.bin</code></strong> from the previous section</p>
+<p><em>(Yes the QEMU one)</em></p>
+</li>
+<li>
+<p>Overwrite the <strong><code>Image</code></strong> file by <strong><code>nuttx.bin</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mv /TODO/Image /TODO/Image.old
 cp nuttx.bin /TODO/Image
 ls -l /TODO/Image
 ## Should be a lot smaller
-umount /TODO</code></pre></div>
-<p>Nothing happens. We do some logging…</p>
-<h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>5 Print to UART in Arm64 Assembly</h1>
-<p><em>Is NuttX actually booting?</em></p>
+umount /TODO</code></pre></div></li>
+<li>
+<p>Insert the MicroSD into our SBC. Boot it…</p>
+<div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
+Kernel addr: 0x40800000
+BL31: v2.5(debug):9241004a9
+sunxi-arisc driver is starting
+ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
+</ol>
+<p>Nothing happens. Let’s fix this iteratively, in tiny steps…</p>
+<h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
+<p><em>Is NuttX actually booting on our SBC?</em></p>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -264,14 +312,14 @@ ERROR: Error initializing runtime service opteed_fast
 <p>Arm64 Assembly is the <strong>very first thing that boots</strong> when Bootloader starts NuttX</p>
 </li>
 <li>
-<p>This happens <strong>before anything complicated</strong> begins: UART Driver, Memory Management Unit, Task Scheduler, …</p>
+<p>This happens <strong>before anything complicated</strong> and crash-prone begins: UART Driver, Memory Management Unit, Task Scheduler, …</p>
 </li>
 <li>
 <p>The Arm64 Assembly above is <strong>Address-Independent Code</strong>: It will execute at Any Arm64 Address</p>
 </li>
 </ol>
 <p>Next we move our code and make it Address-Dependent…</p>
-<h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>6 Set the Start Address</h1>
+<h1 id="set-the-start-address"><a class="doc-anchor" href="#set-the-start-address">§</a>5 Set the Start Address</h1>
 <p><em>NuttX boots a tiny bit on our SBC. Where’s the rest?</em></p>
 <p>Our SBC boots NuttX at a different address from QEMU. We fix the <strong>Start Address</strong> inside NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
@@ -325,7 +373,7 @@ __start:
 </ul>
 <p>With these fixes, our C Code in NuttX shall boot correctly.</p>
 <p>TODO: LCD also</p>
-<h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>7 UART Driver for 16550</h1>
+<h1 id="uart-driver-for-16550"><a class="doc-anchor" href="#uart-driver-for-16550">§</a>6 UART Driver for 16550</h1>
 <p><em>Our C Code can print to UART now?</em></p>
 <p>To watch the <strong>Boot Progress</strong> <em>(Sesame Street-style)</em>, we can print primitively to UART like this: <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// 0x0250_0000 is the UART0 Base Address
@@ -431,7 +479,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 - Boot to C runtime for OS Initialize
 AB</code></pre></div>
 <p>OK the repeated rebuilding, recopying and rebooting of NuttX is getting really tiresome. Let’s automate…</p>
-<h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>8 MicroSD Multiplexer + Smart Power Plug</h1>
+<h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>7 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
 <p>Well thankfully we have a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
 <p>Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do <strong>everything</strong> for us:</p>
@@ -529,7 +577,7 @@ curl \
 <ul>
 <li>TODO: Appendix SDWire</li>
 </ul>
-<h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>9 Arm64 Memory Management Unit</h1>
+<h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>8 Arm64 Memory Management Unit</h1>
 <p><em>OK can get back to NuttX now?</em></p>
 <p>Of course. Earlier we saw NuttX <a href="TODO"><strong>stuck at “<code>AB</code>”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
@@ -644,7 +692,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <tr><td style="text-align: center"><em>0x40A0_0000</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
 </tbody></table>
 </div></p>
-<h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>10 Fix the Memory Map</h1>
+<h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>9 Fix the Memory Map</h1>
 <p><em>Arm64 MMU won’t turn on. Maybe our Memory Map is incorrect?</em></p>
 <p>Let’s verify our <strong>Memory Map</strong>…</p>
 <p>
@@ -731,7 +779,7 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 </tbody></table>
 </div></p>
 <p>Though it crashes elsewhere…</p>
-<h1 id="arm64-generic-interrupt-controller"><a class="doc-anchor" href="#arm64-generic-interrupt-controller">§</a>11 Arm64 Generic Interrupt Controller</h1>
+<h1 id="arm64-generic-interrupt-controller"><a class="doc-anchor" href="#arm64-generic-interrupt-controller">§</a>10 Arm64 Generic Interrupt Controller</h1>
 <p><em>Why is NuttX failing with an Undefined Instruction?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
@@ -787,7 +835,7 @@ No distributor detected, giving up</code></pre></div>
 gic_validate_dist_version:
   GICv3 version detect
   GICD_TYPER = 0x7b0408
-  256 SPIs implemented</code></pre></div><h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>12 NuttX Apps Filesystem</h1>
+  256 SPIs implemented</code></pre></div><h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>11 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
 <p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
 <p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
@@ -822,7 +870,7 @@ Assertion failed panic:
 <li>TODO: Appendix</li>
 </ul>
 <p>NSH Prompt still missing? It won’t appear until we fix the UART Interrupt…</p>
-<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>13 Fix the UART Interrupt</h1>
+<h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>12 Fix the UART Interrupt</h1>
 <p>One Last Thing: Fix the <strong>UART Interrupt</strong> and we’re done!</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -845,7 +893,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 nsh&gt;</code></pre></div>
 <p>It calls the <strong>Serial Driver</strong>. Which will wait for a <strong>UART Interrupt</strong> to signal that the <strong>Transmit Buffer</strong> is empty and available.</p>
 <p>Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. <a href="TODO">(Explained here)</a></p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>14 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>13 TODO</h1>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Apache NuttX RTOS for Avaota-A1 SBC (Allwinner A527 SoC)" /></p>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -874,7 +922,7 @@ nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
@@ -905,7 +953,7 @@ nsh&gt;</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md"><strong>lupyuen.org/src/avaota.md</strong></a></p>
-<h1 id="appendix-build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-build-nuttx-for-avaota-a1">§</a>16 Appendix: Build NuttX for Avaota-A1</h1>
+<h1 id="appendix-build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-build-nuttx-for-avaota-a1">§</a>15 Appendix: Build NuttX for Avaota-A1</h1>
 <p>Follow these steps to compile our <em>(Work-In-Progress)</em> <strong>NuttX for Avaota-A1</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download Source Code for NuttX and Apps
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
@@ -930,7 +978,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image</code></pre></div>
 <p>Read on to boot the NuttX Image on our SBC…</p>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
-<h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>17 Appendix: Boot NuttX on Avaota-A1</h1>
+<h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>16 Appendix: Boot NuttX on Avaota-A1</h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
@@ -1120,7 +1168,7 @@ fordblks     7818    1f900
 user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
-<h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>18 Appendix: SDWire MicroSD Multiplexer</h1>
+<h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>17 Appendix: SDWire MicroSD Multiplexer</h1>
 <p>Let’s make our Build-Test Cycle quicker for NuttX. We’re using the <strong>SDWire MicroSD Multiplexer</strong>…</p>
 <ul>
 <li>TODO</li>
@@ -1169,7 +1217,7 @@ ssh thinkcentre \
 <p>Watch how we call it in our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>19 Appendix: NuttX Apps Filesystem</h1>
+<h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>18 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the NuttX Apps Filesystem…</p>
 <ul>
 <li>TODO</li>
@@ -1186,7 +1234,7 @@ nx_start_application: Starting init task: /system/bin/init
 nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
-nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="semihosting-hostfs-becomes-romfs"><a class="doc-anchor" href="#semihosting-hostfs-becomes-romfs">§</a>19.1 Semihosting HostFS becomes ROMFS</h2>
+nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="semihosting-hostfs-becomes-romfs"><a class="doc-anchor" href="#semihosting-hostfs-becomes-romfs">§</a>18.1 Semihosting HostFS becomes ROMFS</h2>
 <p>QEMU uses <a href="TODO"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added ROMFS...
 CONFIG_BOARDCTL_ROMDISK=y
@@ -1202,7 +1250,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 ## CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;</code></pre></div>
 <p><em>CONFIG_BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup()</em>. (See below)</p>
-<h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>19.2 Linker Script</h2>
+<h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>18.2 Linker Script</h2>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We added the RAM Disk (16 MB) */
 MEMORY {
@@ -1214,7 +1262,7 @@ MEMORY {
 /* We&#39;ll reference these in our code */
 __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size  = LENGTH(ramdisk);
-__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div><h2 id="mount-the-romfs"><a class="doc-anchor" href="#mount-the-romfs">§</a>19.3 Mount the ROMFS</h2>
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div><h2 id="mount-the-romfs"><a class="doc-anchor" href="#mount-the-romfs">§</a>18.3 Mount the ROMFS</h2>
 <p><strong>At Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(inside RAM)</em> as <em>/dev/ram0</em>: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f8d388b76b0b37563184a5a174f18970ff6771d6a048e0e792967ab265d6f7eb">qemu_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// At NuttX Startup...
 int qemu_bringup(void) {
@@ -1245,7 +1293,7 @@ static int mount_ramdisk(void) {
 // RAM Disk Definition
 #define SECTORSIZE   512
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
-#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>19.4 Copy the ROMFS</h2>
+#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
 <p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This happens just after Bootloader starts NuttX: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Just after Bootloader has started NuttX...
 void arm64_chip_boot(void) {
@@ -1334,7 +1382,7 @@ default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
 <p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
-<h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>20 Appendix: Port NuttX to Avaota-A1</h1>
+<h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
 <p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and tweaked it for Avaota-A1 SBC. This section explains the modified code…</p>
 <p>TODO</p>
 
