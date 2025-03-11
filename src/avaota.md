@@ -1071,7 +1071,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for Avaota-A1
 
-Follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
+To boot __NuttX on Avatoa-A1__: We may download __`Image`__ from here...
+
+- TODO
+
+Or follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 ```bash
 ## Download Source Code for NuttX and Apps
@@ -1171,7 +1175,7 @@ curl \
 
 [(__copy-image.sh__ is explained here)](TODO)
 
-[(__Smart Power Plug__ also)](TODO)
+[(__Smart Power Plug__ explained)](TODO)
 
 NuttX boots to NSH Shell. And passes OSTest yay!
 
@@ -1545,7 +1549,7 @@ static int mount_ramdisk(void) {
 
 ## Copy the ROMFS
 
-__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a)
+__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
 
 ```c
 // Needed for the `aligned_data` macro
