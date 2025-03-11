@@ -822,9 +822,17 @@ Assertion failed panic:
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
 <p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>. <em>(Instead of binding binary Apps into Kernel)</em></p>
 <p>We bundle the NuttX Apps together into a <strong>ROMFS Filesystem</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Generate the Initial RAM Disk
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V &quot;NuttXBootVol&quot;</code></pre></div>
 <p>Then we package NuttX Kernel + NuttX Apps into a <strong>NuttX Image</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>## Prepare a Padding with 64 KB of zeroes
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  &gt;Image</code></pre></div>
 <p><a href="TODO">(See the <strong>Build Script</strong>)</a></p>
 <p>When NuttX Boots: It will…</p>
 <ol>
@@ -925,15 +933,26 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p>Read on to boot the NuttX Image on our SBC…</p>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>15 Appendix: Boot NuttX on Avaota-A1</h1>
+<p>Earlier we built <a href="TODO"><strong>NuttX for Avaota-A1</strong></a> and created the <strong><code>Image</code></strong> file, containing the NuttX Kernel + NuttX Apps. Let’s boot it on MicroSD…</p>
+<ol>
+<li>
+<p>Prepare the <strong>AvaotaOS MicrosSD</strong>…</p>
 <p>TODO</p>
+</li>
+<li>
+<p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
 ## Boot it on Avaota-A1
 mv /TODO/Image /TODO/Image.old
 cp Image /TODO/Image
 ls -l /TODO/Image
-umount /TODO</code></pre></div>
-<p>We can automate the last step with a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> and <a href="TODO"><strong>Smart Power Plug</strong></a>…</p>
+umount /TODO</code></pre></div></li>
+<li>
+<p><strong>Boot the MicroSD</strong> on our SBC</p>
+</li>
+</ol>
+<p>We can automate the last two steps with a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> and <a href="TODO"><strong>Smart Power Plug</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token
 ## Which we copied from http://localhost:8123/profile/security
 ## export token=xxxx
