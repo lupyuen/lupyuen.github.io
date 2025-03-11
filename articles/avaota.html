@@ -1021,67 +1021,8 @@ curl \
 <p><a href="TODO">(<strong>copy-image.sh</strong> is explained here)</a></p>
 <p><a href="TODO">(<strong>Smart Power Plug</strong> also)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
-<p>Here’s the latest NuttX Boot Log:</p>
-<ul>
-<li>https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6</li>
-</ul>
 <span style="font-size:60%">
-<div class="example-wrap"><pre class="language-text"><code>[    0.000255][I]  _____     _           _____ _ _
-[    0.006320][I] |   __|_ _| |_ ___ ___|  |  |_| |_
-[    0.012456][I] |__   | | |  _| -_|  _|    -| | _|
-[    0.018566][I] |_____|_  |_| |___|_| |__|__|_|_|
-[    0.024719][I]       |___|
-[    0.030820][I] ***********************************
-[    0.036948][I]  SyterKit v0.4.0 Commit: e4c0651
-[    0.042781][I]  github.com/YuzukiHD/SyterKit
-[    0.048882][I] ***********************************
-[    0.054992][I]  Built by: arm-none-eabi-gcc 13.2.1
-[    0.061119][I]
-[    0.063943][I] Model: AvaotaSBC Avaota A1 board.
-[    0.069856][I] Core: Arm Octa-Core Cortex-A55 v65 r2p0
-[    0.076356][I] Chip SID = 0300ff1071c048247590d120506d1ed4
-[    0.083280][I] Chip type = A527M000000H Chip Version = 2
-[    0.091391][I] PMU: Found AXP717 PMU, Addr 0x35
-[    0.098200][I] PMU: Found AXP323 PMU
-[    0.112870][I] DRAM BOOT DRIVE INFO: V0.6581
-[    0.118326][I] Set DRAM Voltage to 1160mv
-[    0.123524][I] DRAM_VCC set to 1160 mv
-[    0.247920][I] DRAM retraining ten
-[    0.266135][I] [AUTO DEBUG]32bit,2 ranks training success!
-[    0.296290][I] Soft Training Version: T2.0
-[    1.819657][I] [SOFT TRAINING] CLK=1200M Stable memtest pass
-[    1.826565][I] DRAM CLK =1200 MHZ
-[    1.830992][I] DRAM Type =8 (3:DDR3,4:DDR4,6:LPDDR2,7:LPDDR3,8:LPDDR4)
-[    1.843100][I] DRAM SIZE =4096 MBytes, para1 = 310a, para2 = 10001000, tpr13 = 6061
-[    1.853431][I] DRAM simple test OK.
-[    1.858011][I] Init DRAM Done, DRAM Size = 4096M
-[    2.278300][I] SMHC: sdhci0 controller initialized
-[    2.305826][I]   Capacity: 59.48GB
-[    2.310439][I] SHMC: SD card detected
-[    2.319537][I] FATFS: read bl31.bin addr=48000000
-[    2.339744][I] FATFS: read in 13ms at 5.92MB/S
-[    2.345498][I] FATFS: read scp.bin addr=48100000
-[    2.374729][I] FATFS: read in 22ms at 8.00MB/S
-[    2.380481][I] FATFS: read extlinux/extlinux.conf addr=40020000
-[    2.389436][I] FATFS: read in 1ms at 0.29MB/S
-[    2.395095][I] FATFS: read splash.bin addr=40080000
-[    2.403142][I] FATFS: read in 1ms at 12.66MB/S
-[    3.193943][I] FATFS: read /Image addr=40800000
-[    3.341455][I] FATFS: read in 143ms at 8.86MB/S
-[    3.347308][I] FATFS: read /dtb/allwinner/sun55i-t527-avaota-a1.dtb addr=40400000
-[    3.400140][I] FATFS: read in 19ms at 7.46MB/S
-[    3.405891][I] FATFS: read /uInitrd addr=43000000
-[    4.113508][I] FATFS: read in 702ms at 9.04MB/S
-[    4.119356][I] Initrd load 0x43000000, Size 0x00632414
-[    5.376346][W] FDT: bootargs is null, using extlinux.conf append.
-[    5.688989][I] EXTLINUX: load extlinux done, now booting...
-[    5.695984][I] ATF: Kernel addr: 0x40800000
-[    5.701523][I] ATF: Kernel DTB addr: 0x40400000
-[    5.891085][I] disable mmu ok...
-[    5.895615][I] disable dcache ok...
-[    5.900478][I] disable icache ok...
-[    5.905342][I] free interrupt ok...
-NOTICE:  BL31: v2.5(debug):9241004a9
+<div class="example-wrap"><pre class="language-text"><code>NOTICE:  BL31: v2.5(debug):9241004a9
 NOTICE:  BL31: Built : 13:37:46, Nov 16 2023
 NOTICE:  BL31: No DTB found.
 NOTICE:  [SCP] :wait arisc ready....
@@ -1090,7 +1031,8 @@ NOTICE:  [SCP] :arisc startup ready
 NOTICE:  [SCP] :arisc startup notify message feedback
 NOTICE:  [SCP] :sunxi-arisc driver is starting
 ERROR:   Error initializing runtime service opteed_fast
-123- Ready to Boot Primary CPU
+123
+- Ready to Boot Primary CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
@@ -1108,16 +1050,19 @@ board_app_initialize:
 NuttShell (NSH) NuttX-12.4.0
 nsh&gt; uname -a
 NuttX 12.4.0 6c5c1a5f9f-dirty Mar  8 2025 21:57:02 arm64 qemu-armv8a
+
 nsh&gt; free
       total       used       free    maxused    maxfree  nused  nfree name
   125538304      33848  125504456      52992  125484976     58      5 Kmem
     4194304     245760    3948544               3948544               Page
+
 nsh&gt; ps
   PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
     0     0   0 FIFO     Kthread   - Ready              0000000000000000 0008176 0000928  11.3%  Idle_Task
     1     0 192 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  hpwork 0x40834568 0x408345b8
     2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  lpwork 0x408344e8 0x40834538
     4     4 100 RR       Task      - Running            0000000000000000 0008128 0002192  26.9%  /system/bin/init
+
 nsh&gt; ls -l /dev
 /dev:
  crw-rw-rw-           0 console
@@ -1125,8 +1070,10 @@ nsh&gt; ls -l /dev
  brw-rw-rw-    16777216 ram0
  crw-rw-rw-           0 ttyS0
  crw-rw-rw-           0 zero
+
 nsh&gt; hello
 Hello, World!!
+
 nsh&gt; getprime
 Set thread priority to 10
 Set thread policy to SCHED_RR
@@ -1135,16 +1082,7 @@ thread #0 started, looking for primes &lt; 10000, doing 10 run(s)
 thread #0 finished, found 1230 primes, last one was 9973
 Done
 getprime took 162 msec
-nsh&gt; hello
-Hello, World!!
-nsh&gt; getprime
-Set thread priority to 10
-Set thread policy to SCHED_RR
-Start thread #0
-thread #0 started, looking for primes &lt; 10000, doing 10 run(s)
-thread #0 finished, found 1230 primes, last one was 9973
-Done
-getprime took 162 msec
+
 nsh&gt; ostest
 ...
 Final memory usage:
@@ -1158,8 +1096,9 @@ fordblks     7818    1f900
 user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
+<p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>NuttX Log</strong>)</a></p>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>16 Appendix: SDWire MicroSD Multiplexer</h1>
-<p>Let’s make our Build-Test Cycle quicker for NuttX. We’re using the <strong>SDWire MicroSD Multiplexer</strong>…</p>
+<p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
 <ul>
 <li>TODO</li>
 </ul>
@@ -1186,7 +1125,7 @@ ls -l /tmp/sda1
 umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
 <li>
-<p>Configure <strong>visudo</strong> so that our script will run as <a href="https://github.com/lupyuen/nuttx-avaota-a1#work-in-progress"><strong>Sudo Without Password</strong></a>…</p>
+<p>Configure <strong>visudo</strong> so that our script will run as <strong>Sudo Without Password</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Make our script executable
 ## Start the Sudoers Editor
 chmod +x /home/user/copy-image.sh
@@ -1195,7 +1134,7 @@ sudo visudo
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div></li>
 <li>
-<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587#file-run-sh-L115-L120">run.sh</a></p>
+<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="TODO">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp Image thinkcentre:/tmp/Image
@@ -1204,7 +1143,7 @@ ssh thinkcentre \
 ssh thinkcentre \
   sudo /home/user/copy-image.sh</code></pre></div></li>
 <li>
-<p>Watch how we call it in our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
+<p>Everything goes into our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>17 Appendix: NuttX Apps Filesystem</h1>
