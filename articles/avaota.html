@@ -673,6 +673,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <tr><td style="text-align: center"><em>0x40A0_0000</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
 </tbody></table>
 </div></p>
+<p>TODO: Pic of Memory Map</p>
 <h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>9 Fix the Memory Map</h1>
 <p><em>Why do we need Arm64 MMU? (Memory Management Unit)</em></p>
 <p>We require MMU for…</p>
@@ -837,7 +838,9 @@ No distributor detected, giving up</code></pre></div>
 gic_validate_dist_version:
   GICv3 version detect
   GICD_TYPER = 0x7b0408
-  256 SPIs implemented</code></pre></div><h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>11 NuttX Apps Filesystem</h1>
+  256 SPIs implemented</code></pre></div>
+<p>TODO: Pic of Apps Filesystem</p>
+<h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>11 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
 <p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
 <p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
@@ -1105,6 +1108,7 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>NuttX Log</strong>)</a></p>
+<p>TODO: Pic of SDWire</p>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>16 Appendix: SDWire MicroSD Multiplexer</h1>
 <p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
 <ul>
@@ -1154,6 +1158,7 @@ ssh thinkcentre \
 <p>Everything goes into our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
 </li>
 </ol>
+<p>TODO: Pic of Apps Filesystem</p>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>17 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the NuttX Apps Filesystem…</p>
 <ul>
