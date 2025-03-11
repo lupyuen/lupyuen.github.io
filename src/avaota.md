@@ -1820,7 +1820,7 @@ void arm64_chip_boot(void) {
 }
 
 // Copy the RAM Disk from NuttX Image to RAM Disk Region.
-static void qemu_copy_ramdisk(void) {
+static void a527_copy_ramdisk(void) {
   const uint8_t aligned_data(8) header[8] = "-rom1fs-";
   const uint8_t *limit = (uint8_t *)g_idle_topstack + (256 * 1024);
   uint8_t *ramdisk_addr = NULL;
@@ -1854,11 +1854,11 @@ static void qemu_copy_ramdisk(void) {
 
   // Copy the RAM Disk from NuttX Image to RAM Disk Region.
   // __ramdisk_start overlaps with ramdisk_addr + size.
-  qemu_copy_overlap(__ramdisk_start, ramdisk_addr, size);
+  a527_copy_overlap(__ramdisk_start, ramdisk_addr, size);
 }
 
 // Copy an overlapping memory region.  dest overlaps with src + count.
-static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
+static void a527_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
   uint8_t *d = dest + count - 1;
   const uint8_t *s = src + count - 1;
   if (dest <= src) { _err("dest and src should overlap"); PANIC(); }
@@ -1914,7 +1914,7 @@ __At Board Startup:__ We mount the __ROMFS Filesystem__ _(inside RAM)_ as _/dev/
 
 ```c
 // At NuttX Startup...
-int qemu_bringup(void) {
+int a527_bringup(void) {
   // We Mount the RAM Disk
   mount_ramdisk();
   ...
