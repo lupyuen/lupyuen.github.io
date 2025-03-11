@@ -1522,9 +1522,12 @@ static int mount_ramdisk(void) {
 
 ## Copy the ROMFS
 
-__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
+__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a)
 
 ```c
+// Needed for the `aligned_data` macro
+#include <nuttx/compiler.h>
+
 // Just after Bootloader has started NuttX...
 void arm64_chip_boot(void) {
 
@@ -1538,13 +1541,13 @@ void arm64_chip_boot(void) {
 
 // Copy the RAM Disk from NuttX Image to RAM Disk Region.
 static void qemu_copy_ramdisk(void) {
-  char header[8] __attribute__((aligned(8))) = "-rom1fs-";
+  const uint8_t aligned_data(8) header[8] = "-rom1fs-";
   const uint8_t *limit = (uint8_t *)g_idle_topstack + (256 * 1024);
   uint8_t *ramdisk_addr = NULL;
   uint8_t *addr;
   uint32_t size;
 
-  // After _edata, search for "-rom1fs-". This is the RAM Disk Address.
+  // After Idle Stack Top, search for "-rom1fs-". This is the RAM Disk Address.
   // Limit search to 256 KB after Idle Stack Top.
   for (addr = g_idle_topstack; addr < limit; addr += 8) {
       if (memcmp(addr, header, sizeof(header)) == 0) {
@@ -1596,11 +1599,11 @@ _Why the aligned addresses?_
 
 ```c
 // Header is aligned to 8 bytes
-char header[8]
-  __attribute__((aligned(8))) =
+const uint8_t
+  aligned_data(8) header[8] =
   "-rom1fs-";
 
-// Address is aligned to 8 bytes
+// Address is also aligned to 8 bytes
 for (
   addr = g_idle_topstack;
   addr < limit;
@@ -1656,23 +1659,170 @@ TODO
 
 [_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0)
 
-TODO
+__At NuttX Startup:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX...
+
+```c
+// Needed for the `aligned_data` macro
+#include <nuttx/compiler.h>
+
+// Just after Bootloader has started NuttX...
+void arm64_chip_boot(void) {
+
+  // We copy the RAM Disk
+  qemu_copy_ramdisk();
+
+  // Omitted: Other initialisation (MMU, ...)
+  arm64_mmu_init(true);
+  ...
+}
+
+// Copy the RAM Disk from NuttX Image to RAM Disk Region.
+static void qemu_copy_ramdisk(void) {
+  const uint8_t aligned_data(8) header[8] = "-rom1fs-";
+  const uint8_t *limit = (uint8_t *)g_idle_topstack + (256 * 1024);
+  uint8_t *ramdisk_addr = NULL;
+  uint8_t *addr;
+  uint32_t size;
+
+  // After Idle Stack Top, search for "-rom1fs-". This is the RAM Disk Address.
+  // Limit search to 256 KB after Idle Stack Top.
+  for (addr = g_idle_topstack; addr < limit; addr += 8) {
+      if (memcmp(addr, header, sizeof(header)) == 0) {
+        ramdisk_addr = addr;
+        break;
+      }
+  }
+
+  // Stop if RAM Disk is missing
+  if (ramdisk_addr == NULL) {
+    _err("Missing RAM Disk. Check the initrd padding.");
+    PANIC();
+  }
+
+  // Read the Filesystem Size from the next 4 bytes (Big Endian)
+  size = (ramdisk_addr[8] << 24) + (ramdisk_addr[9] << 16) +
+         (ramdisk_addr[10] << 8) + ramdisk_addr[11] + 0x1f0;
+
+  // Filesystem Size must be less than RAM Disk Memory Region
+  if (size > (size_t)__ramdisk_size) {
+    _err("RAM Disk Region too small. Increase by %ul bytes.\n", size - (size_t)__ramdisk_size);
+    PANIC();
+  }
+
+  // Copy the RAM Disk from NuttX Image to RAM Disk Region.
+  // __ramdisk_start overlaps with ramdisk_addr + size.
+  qemu_copy_overlap(__ramdisk_start, ramdisk_addr, size);
+}
+
+// Copy an overlapping memory region.  dest overlaps with src + count.
+static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
+  uint8_t *d = dest + count - 1;
+  const uint8_t *s = src + count - 1;
+  if (dest <= src) { _err("dest and src should overlap"); PANIC(); }
+  while (count--) {
+    volatile uint8_t c = *s;  // Prevent compiler optimization
+    *d = c;
+    d--;
+    s--;
+  }
+} 
+
+// Defined in Linker Script
+extern uint8_t __ramdisk_start[];
+extern uint8_t __ramdisk_size[];
+```
+
+_Why the aligned addresses?_
+
+```c
+// Header is aligned to 8 bytes
+const uint8_t
+  aligned_data(8) header[8] =
+  "-rom1fs-";
+
+// Address is also aligned to 8 bytes
+for (
+  addr = g_idle_topstack;
+  addr < limit;
+  addr += 8
+) {
+  // Otherwise this will hit Alignment Fault
+  memcmp(addr, header, sizeof(header));
+  ...
+}
+```
+
+We align our Memory Accesses to __8 Bytes__. Otherwise we'll hit an [__Alignment Fault__](https://gist.github.com/lupyuen/f10af7903461f44689203d0e02fb9949)...
+
+```bash
+## Alignment Fault at `memcmp(addr, header, sizeof(header))`
+default_fatal_handler:
+  (IFSC/DFSC) for Data/Instruction aborts:
+  alignment fault
+```
 
 [(Explained here)](TODO)
 
-<hr>
+## Board Bringup Code
 
 [_boards/arm64/a527/avaota-a1/src/a527_bringup.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2)
 
-TODO
+__At Board Startup:__ We mount the __ROMFS Filesystem__ _(inside RAM)_ as _/dev/ram0_...
+
+```c
+// At NuttX Startup...
+int qemu_bringup(void) {
+  // We Mount the RAM Disk
+  mount_ramdisk();
+  ...
+}
+
+// Mount a RAM Disk defined in ld.script to /dev/ramX.  The RAM Disk
+// contains a ROMFS filesystem with applications that can be spawned at
+// runtime.
+static int mount_ramdisk(void) {
+  struct boardioc_romdisk_s desc;
+  desc.minor    = RAMDISK_DEVICE_MINOR;
+  desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
+  desc.sectsize = SECTORSIZE;
+  desc.image    = __ramdisk_start;
+
+  int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
+  if (ret < 0) {
+    syslog(LOG_ERR, "Ramdisk register failed: %s\n", strerror(errno));
+    syslog(LOG_ERR, "Ramdisk mountpoint /dev/ram%d\n",RAMDISK_DEVICE_MINOR);
+    syslog(LOG_ERR, "Ramdisk length %lu, origin %lx\n", (ssize_t)__ramdisk_size, (uintptr_t)__ramdisk_start);
+  }
+  return ret;
+}
+
+// RAM Disk Definition
+#define SECTORSIZE   512
+#define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
+#define RAMDISK_DEVICE_MINOR 0
+```
 
 [(Explained here)](TODO)
 
-<hr>
+## Linker Script
 
 [_boards/arm64/a527/avaota-a1/scripts/ld-kernel.script_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
 
-TODO
+We reserve __16 MB of RAM__ for the ROMFS Filesystem that will host the NuttX Apps...
+
+```c
+/* Linker Script: We added the RAM Disk (16 MB) */
+MEMORY {
+  dram (rwx)    : ORIGIN = 0x40800000, LENGTH = 2M
+  pgram (rwx)   : ORIGIN = 0x40A00000, LENGTH = 4M    /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x40E00000, LENGTH = 16M   /* w/ cache */
+}
+
+/* We'll reference these in our code */
+__ramdisk_start = ORIGIN(ramdisk);
+__ramdisk_size  = LENGTH(ramdisk);
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
+```
 
 [(Explained here)](TODO)
 
