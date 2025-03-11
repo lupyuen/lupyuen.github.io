@@ -529,7 +529,8 @@ curl \
 <li>TODO: Appendix SDWire</li>
 </ul>
 <h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>9 Arm64 Memory Management Unit</h1>
-<p>Earlier we saw NuttX <a href="TODO"><strong>stuck at “<code>AB</code>”</strong></a>…</p>
+<p><em>OK can get back to NuttX now?</em></p>
+<p>Of course. Earlier we saw NuttX <a href="TODO"><strong>stuck at “<code>AB</code>”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
 - Ready to Boot Primary CPU
 - Boot from EL2
@@ -701,7 +702,8 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 <p>The rest are hunky dory…</p>
 <ul>
 <li>
-<p>TODO <strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em>. Which is kinda small, let’s embiggen.</p>
+<p><strong>DRAM0_S0</strong> says that RAM Address Space ends at <em>0x4800_0000 (128 MB)</em></p>
+<p><em>(Kinda small, but sufficient for now)</em></p>
 </li>
 <li>
 <p><strong>nx_code</strong> <em>(0x4080_0000)</em>: Kernel Code begins here</p>
@@ -757,7 +759,7 @@ No distributor detected, giving up</code></pre></div>
 <tr><td style="text-align: center">GIC</td><td style="text-align: left"><em>0x0340_0000</em></td></tr>
 </tbody></table>
 </div>
-<p>With these <strong>GIC Registers</strong>, handling 8 Arm64 Cores…</p>
+<p>Which has these <strong>GIC Registers</strong> inside, handling 8 Arm64 Cores…</p>
 <div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 263</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Offset</strong></td><td style="text-align: left"><strong>Register</strong></td></tr>
 <tr><td style="text-align: center"><em>0x00_0000</em></td><td style="text-align: left">GICD_CTLR  <em>(Distributor Control Register)</em></td></tr>
@@ -779,14 +781,14 @@ No distributor detected, giving up</code></pre></div>
 
 // Spaced 0x20000 bytes per Arm64 Core
 #define CONFIG_GICR_OFFSET 0x20000</code></pre></div>
-<p>Remember to <a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><strong>Disable Memory Manager Logging</strong></a>. NuttX GIC Driver <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>complains no more</strong></a>!</p>
+<p>Remember to <a href="https://github.com/lupyuen2/wip-nuttx/commit/10c7173b142f4a0480d742688c72499b76f66f83"><strong>Disable Memory Manager Logging</strong></a>. NuttX GIC Driver starts correctly and <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>complains no more</strong></a>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## SPI = Physical Interrupt Signal (not the typical SPI)
 gic_validate_dist_version:
   GICv3 version detect
   GICD_TYPER = 0x7b0408
   256 SPIs implemented</code></pre></div><h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>12 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
-<p>If we’re doing a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
+<p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
 <p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nx_start_application:
   Starting init task: /system/bin/init
@@ -795,13 +797,26 @@ arm64_el1_undef:
 Assertion failed panic:
   common/arm64_fatal.c:572</code></pre></div>
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
-<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. That’s how NuttX Kernel Build works: It loads NuttX Apps from a <strong>Local Filesystem</strong>. <em>(Instead of binding Apps into Kernel)</em></p>
+<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>. <em>(Instead of binding binary Apps into Kernel)</em></p>
 <p>We bundle the NuttX Apps together into a <strong>ROMFS Filesystem</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p>Then we package NuttX Kernel + NuttX Apps into a <strong>NuttX Image</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p><a href="TODO">(See the <strong>Build Script</strong>)</a></p>
-<p>When NuttX Boots: It will find the ROMFS Filesystem, and Mount it as a <strong>RAM Disk</strong>. Which will allow NuttX Kernel to start <strong>NSH Shell</strong> and other NuttX Apps. Everything is explained here…</p>
+<p>When NuttX Boots: It will…</p>
+<ol>
+<li>
+<p>Find the <strong>ROMFS Filesystem</strong></p>
+</li>
+<li>
+<p>Mount it as a <strong>RAM Disk</strong></p>
+</li>
+<li>
+<p>Allowing NuttX Kernel to start <strong>NSH Shell</strong></p>
+<p><em>(And other NuttX Apps)</em></p>
+</li>
+</ol>
+<p>Everything is explained here…</p>
 <ul>
 <li>TODO: Appendix</li>
 </ul>
@@ -823,7 +838,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 <p><strong>NSH Prompt</strong> finally appears. And <strong>OSTest completes successfully</strong> yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>Complete Log</strong>)</a></p>
-<p><em>Very odd. NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
+<p><em>NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
 <p>That’s because NSH runs as a <strong>NuttX App in User Space</strong>. When NSH Shell prints this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt;</code></pre></div>
