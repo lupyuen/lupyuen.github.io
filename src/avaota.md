@@ -713,6 +713,8 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 </p>
 
+TODO: Pic of Memory Map
+
 # Fix the Memory Map
 
 _Why do we need Arm64 MMU? (Memory Management Unit)_
@@ -912,6 +914,8 @@ gic_validate_dist_version:
   GICD_TYPER = 0x7b0408
   256 SPIs implemented
 ```
+
+TODO: Pic of Apps Filesystem
 
 # NuttX Apps Filesystem
 
@@ -1240,6 +1244,8 @@ nsh>
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
 
+TODO: Pic of SDWire
+
 # Appendix: SDWire MicroSD Multiplexer
 
 Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD Multiplexer__ to flip our MicroSD between __Test PC and SBC__...
@@ -1296,6 +1302,8 @@ SDWire needs [__Plenty of Sudo Passwords__](TODO) to flip the multiplexer, mount
     ```
 
 1.  Everything goes into our [__Build Script for NuttX__](TODO)
+
+TODO: Pic of Apps Filesystem
 
 # Appendix: NuttX Apps Filesystem
 
