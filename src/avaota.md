@@ -857,13 +857,13 @@ No distributor detected, giving up
 
 _What's this GIC?_
 
-It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC will...
+It's the Arm64 [__Generic Interrupt Controller (GIC)__](TODO), version 3. GIC shall...
 
 - Receive __I/O Interrupts__
 
   _(Like keypresses)_
 
-- And forward them to an __Arm64 CPU Core__ for processing
+- Forward them to a __CPU Core__ for processing
 
   _(Works like RISC-V PLIC)_
 
