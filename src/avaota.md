@@ -133,7 +133,7 @@ _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
 Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It makes more sense to boot [__NuttX Kernel Build__](TODO) and run lots of cool powerful NuttX Apps with [__Virtual Memory__](TODO).
 
-_(NuttX Flat Mode was created for Simpler Microcontrollers with Limited RAM)_
+_(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
 # Boot NuttX Kernel on our SBC
 
