@@ -327,6 +327,18 @@ Kernel addr: 0x40800000
 
     _(Kinda tiny, but sufficient)_
 
+1.  __Linux Kernel Header__ seems to have an incorrect __Image Load Offset__. But it's unused by Arm64 Bootloaders, so we won't change it...
+
+    ```c
+    /* Bootloader starts NuttX here, followed by Linux Kernel Header */
+    __start:
+      ...
+      /* Image Load Offset from Start of RAM         */
+      /* Boot Address - CONFIG_RAM_START = 0x800000  */
+      /* But we won't change this, since it's unused */
+      .quad 0x800000
+    ```
+
 With these mods, our C Code in NuttX shall boot correctly. FYI: Boot Address also appears on the Onboard LCD...
 
 ![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
