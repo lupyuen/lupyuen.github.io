@@ -237,7 +237,7 @@ ERROR: Error initializing runtime service opteed_fast
 123
 ```
 
-(Ignore the _opteed_fast_ error)
+(Ignore the error: _opteed_fast_)
 
 _Why print in Arm64 Assembly? Why not C?_
 
@@ -459,27 +459,20 @@ OK the repeated rebuilding, recopying and rebooting of NuttX is getting really t
 
 _What if we could rebuild-recopy-reboot NuttX... In One Single Script?_
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
-
-Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
+Well thankfully we have a [__MicroSD Multiplexer__](TODO) that will make MicroSD Swapping a lot easier! (Not forgetting our [__Smart Power Plug__](https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc))
 
 Our Avaota-A1 SBC is connected to SDWire MicroSD Multiplexer and Smart Power Plug (pic above). So our Build Script will do __everything__ for us:
 
-- Copy NuttX to MicroSD
+1.  Copy __NuttX to MicroSD__
 
-- Swap MicroSD from our Test PC to SBC
+1.  __Swap the MicroSD__ from our Test PC to SBC
 
-- Power up SBC and boot NuttX!
+1.  __Power up SBC__ and boot NuttX
 
-See the Build Script:
-- https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587
+Here's our nifty __Build Script__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 ```bash
 ## Build NuttX and Apps (NuttX Kernel Build)
-git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
-cd nuttx
-tools/configure.sh qemu-armv8a:knsh
 make -j
 make -j export
 pushd ../apps
@@ -488,64 +481,84 @@ make -j import
 popd
 
 ## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
-
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.pad
-
 ## Append Padding and Initial RAM Disk to the NuttX Kernel
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+head -c 65536 /dev/zero >/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 
-## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
-## token=xxxx
-set +x  ##  Disable echo
+## Get the Home Assistant Token
+## Which we copied from http://localhost:8123/profile/security
+## export token=xxxx
 . $HOME/home-assistant-token.sh
-set -x  ##  Enable echo
 
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
+## Power Off the SBC
 curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_off"}' \
+  http://localhost:8123/api/services/automation/trigger
 
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
+## Change `thinkcentre` to your Test PC
 scp Image thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh
 
-set +x  ##  Disable echo
-echo "----- Power On the SBC"
+## Power On the SBC
 curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_on"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_on"}' \
+  http://localhost:8123/api/services/automation/trigger
 
 ## Wait for SBC to finish booting
 sleep 30
 
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
+## Power Off the SBC
 curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_off"}' \
+  http://localhost:8123/api/services/automation/trigger
 ```
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
 
-(__copy-image.sh__ is explained below)
+[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
+
+![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
+
+This script assumes that we have...
+
+- Installed a [__Home Assistant Server__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+
+  _(Works fine with Docker)_
+
+- Added the Smart Power Plug to [__Google Assistant__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug)
+
+  _"Avaota Power" (pic above)_
+
+- Installed the [__Google Assistant SDK__](https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug) for Home Assistant
+
+  _(So we don't need Zigbee programming)_
+
+- Created the [__Power Automation__](https://lupyuen.github.io/articles/sg2000a#call-the-home-assistant-api) in Home Assistant
+
+  _"Avaota Power On"_ and _"Avaota Power Off" (pic below)_
+
+![Smart Power Plug in Home Assistant](https://lupyuen.org/images/starpro64-power2.jpg)
+
+_What's copy_image.sh?_
+
+This is the script that copies our NuttX Image to MicroSD, via the __SDWire MicroSD Multiplexer__...
+
+- TODO: Appendix SDWire
 
 # Arm64 Memory Management Unit
 
@@ -1015,17 +1028,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX for Avaota-A1
 
-TODO
-
-
-See the Build Script:
-- https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587
+Follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
 ```bash
-## Build NuttX and Apps (NuttX Kernel Build)
+## Download Source Code for NuttX and Apps
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
 cd nuttx
+
+## Build NuttX and Apps (NuttX Kernel Build)
 tools/configure.sh qemu-armv8a:knsh
 make -j
 make -j export
@@ -1035,64 +1046,73 @@ make -j import
 popd
 
 ## Generate the Initial RAM Disk
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
-
 ## Prepare a Padding with 64 KB of zeroes
-head -c 65536 /dev/zero >/tmp/nuttx.pad
-
 ## Append Padding and Initial RAM Disk to the NuttX Kernel
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+head -c 65536 /dev/zero >/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   >Image
 
-## Get the Home Assistant Token, copied from http://localhost:8123/profile/security
-## token=xxxx
-set +x  ##  Disable echo
-. $HOME/home-assistant-token.sh
-set -x  ##  Enable echo
-
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-
-## Copy NuttX Image to MicroSD
-## No password needed for sudo, see below
-scp Image thinkcentre:/tmp/Image
-ssh thinkcentre ls -l /tmp/Image
-ssh thinkcentre sudo /home/user/copy-image.sh
-
-set +x  ##  Disable echo
-echo "----- Power On the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_on"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
-
-## Wait for SBC to finish booting
-sleep 30
-
-set +x  ##  Disable echo
-echo "----- Power Off the SBC"
-curl \
-    -X POST \
-    -H "Authorization: Bearer $token" \
-    -H "Content-Type: application/json" \
-    -d '{"entity_id": "automation.starpro64_power_off"}' \
-    http://localhost:8123/api/services/automation/trigger
-set -x  ##  Enable echo
+## Copy NuttX Image to AvaotaOS MicroSD
+## Overwrite the `Image` file
+## Boot it on Avaota-A1
+mv /TODO/Image /TODO/Image.old
+cp Image /TODO/Image
+ls -l /TODO/Image
+umount /TODO
 ```
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
 
-(__copy-image.sh__ is explained below)
+We can automate the last step with a [__MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](TODO)...
+
+```bash
+## Get the Home Assistant Token
+## Which we copied from http://localhost:8123/profile/security
+## export token=xxxx
+. $HOME/home-assistant-token.sh
+
+## Power Off the SBC
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_off"}' \
+  http://localhost:8123/api/services/automation/trigger
+
+## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+## Change `thinkcentre` to your Test PC
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+## Power On the SBC
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_on"}' \
+  http://localhost:8123/api/services/automation/trigger
+
+## Wait for SBC to finish testing
+echo Press Enter to Power Off
+read
+
+## Power Off the SBC
+curl \
+  -X POST \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d '{"entity_id": "automation.avaota_power_off"}' \
+  http://localhost:8123/api/services/automation/trigger
+```
+
+[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
+
+[(__copy-image.sh__ is explained here)](TODO)
+
+[(__Smart Power Plug__ also)](TODO)
 
 # Appendix: Boot NuttX on Avaota-A1
 
@@ -1244,7 +1264,7 @@ nsh>
 
 </span>
 
-# Appendix: Passwordless Sudo
+# Appendix: SDWire MicroSD Multiplexer
 
 Let's make our Build-Test Cycle quicker. We do Passwordless Sudo for flipping our SDWire Mux
 
