@@ -1073,7 +1073,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 To boot __NuttX on Avatoa-A1__: We may download __`Image`__ from here...
 
-- TODO
+- [__NuttX Release for Avatoa-A1 SBC__](https://github.com/lupyuen2/wip-nuttx/releases/tag/avaota2-1)
 
 Or follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
