@@ -1659,7 +1659,7 @@ TODO
 
 [_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0)
 
-__At NuttX Startup:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX...
+__At NuttX Startup:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This code came from [__NuttX EIC7700X__](TODO)...
 
 ```c
 // Needed for the `aligned_data` macro
