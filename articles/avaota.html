@@ -344,7 +344,9 @@ CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 
 ## Virtual Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
-CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div></li>
+CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
+<p><em>(Paged Memory Pool shall be dished out as Virtual Memory to NuttX Apps)</em></p>
+</li>
 <li>
 <p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> in <em>RAMBANK1_SIZE</em>. We set <em>RAM_SIZE</em> accordingly: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c8fbc5b86c2bf1dd7b8243b301b0790115c9c4ca">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## RAM Size is a paltry 128 MB
@@ -483,7 +485,7 @@ AB</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>7 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
-<p>Thankfully our Avaota-A1 SBC is connected to <a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a> (pic above). Our Build Script will do <strong>everything</strong> for us…</p>
+<p>Thankfully our Avaota-A1 SBC is connected to <a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a> (pic above). Our Build Script shall do <strong>everything</strong> for us…</p>
 <ol>
 <li>
 <p>Copy <strong>NuttX to MicroSD</strong></p>
@@ -514,7 +516,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image
 
 ## Get the Home Assistant Token
-## Which we copied from http://localhost:8123/profile/security
+## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
@@ -605,20 +607,20 @@ void arm64_chip_boot(void) {
   arm64_enable_mte();    // TODO</code></pre></div>
 <p><em>What’s arm64_mmu_init?</em></p>
 <p>NuttX calls <strong>arm64_mmu_init</strong> to start the Arm64 <strong>Memory Management Unit (MMU)</strong>. We add some logs inside: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9">arm64_mmu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Enable debugging for MMU.
+<div class="example-wrap"><pre class="language-c"><code>// Enable Debugging for MMU
 #define CONFIG_MMU_ASSERT 1
 #define CONFIG_MMU_DEBUG  1
 #define trace_printf _info
 
-// We fix the debug output, changing `%lux` to `%p`
+// We fix the Debug Output, changing `%lux` to `%p`
 static void init_xlat_tables(const struct arm_mmu_region *region) {
   ...
   sinfo(&quot;mmap: virt %p phys %p size %p\n&quot;, virt, phys, size);
 
-// To enable the MMU at EL1...
+// To enable the MMU at Exception Level 1...
 static void enable_mmu_el1(unsigned int flags) {
   ...
-  // Ensure these changes are seen before MMU is enabled
+  // Flush the Cached Data before Enabling MMU
   _info(&quot;UP_MB&quot;);
   UP_MB();
 
@@ -626,7 +628,7 @@ static void enable_mmu_el1(unsigned int flags) {
   _info(&quot;Enable the MMU and data cache&quot;);
   write_sysreg(value | SCTLR_M_BIT | SCTLR_C_BIT, sctlr_el1);
 
-  // Ensure the MMU Enable takes effect immediately
+  // Ensure that MMU Enable takes effect immediately
   _info(&quot;UP_ISB&quot;);
   UP_ISB();</code></pre></div>
 <p>And we Enable the Logs for <strong>Scheduler and Memory Manager</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
@@ -671,7 +673,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 </tbody></table>
 </div></p>
 <h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>9 Fix the Memory Map</h1>
-<p><em>Why do we need Arm64 MMU anyway? (Memory Management Unit)</em></p>
+<p><em>Why do we need Arm64 MMU? (Memory Management Unit)</em></p>
 <p>We require MMU for…</p>
 <ul>
 <li>
@@ -980,7 +982,7 @@ umount /TODO</code></pre></div></li>
 </ol>
 <p>We can automate the last two steps with a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> and <a href="TODO"><strong>Smart Power Plug</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token
-## Which we copied from http://localhost:8123/profile/security
+## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
 . $HOME/home-assistant-token.sh
 
