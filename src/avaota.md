@@ -495,6 +495,8 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](TO
 
 1.  __Power up SBC__ and boot NuttX
 
+1.  Watch the [__Demo on YouTube__](https://youtu.be/PxaMcmMAzlM)
+
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
 Here's our nifty __Build Script__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
@@ -590,9 +592,9 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 # Arm64 Memory Management Unit
 
-_OK can we get back to NuttX now?_
+_It's getting late. Can we get back to NuttX now?_
 
-Of course. Earlier we saw NuttX [__Stuck at "AB"__](TODO)...
+[__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota) is all we need no worries! Earlier we saw NuttX [__stuck at "AB"__](TODO)...
 
 ```bash
 123
@@ -1272,6 +1274,8 @@ In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-
 
 Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits) into a proper __NuttX Arch__ _(Allwinner A527)_ and __NuttX Board__ _(Avaota-A1)_
 
+<span style="font-size:80%">
+
 1.  [Copy qemu folders to a527. Copy qemu-armv8a folder to avaota-a1.](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/7de76c10aef43fef010eb002eae9330c4333650a)
 
 1.  [Rename qemu files to a527. Rename qemu-armv8a files to avaota-a1.](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/740f0a0c57439fc39dc216476021fad114f6e6b2)
@@ -1291,6 +1295,18 @@ Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2
 1.  [Clean up the alignment](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a)
 
 1.  [Clean up for nxstyle](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f51d3173c33a5e70af5156daae13e8732207f635)
+
+1.  [Clean up Copy RAM Disk](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f578a24b7694c92e9d3d71b9d2abed5b776a5f3a)
+
+1.  [Clean up A527 Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cd2d11815175377e9f5c8e5eeaa47933b5148059)
+
+1.  [Clean up Arm64 Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cc8dfa294c46e59d08039d1fed28ee305841be3a)
+
+1.  [Clean up Linker Script](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/57f6ddff5ce14496e73635b221afefcc3b383a38)
+
+1.  [Add the Arch and Board Docs](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/5d9b19fd314a342167948245e9cfb002d82a8802)
+
+</span>
 
 We created a __Staging PR__ in our own repo...
 
@@ -1387,6 +1403,18 @@ nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h
 ```
 
 </span>
+
+TODO: Copy arch
+
+TODO: Copy board
+
+TODO: Arch Doc
+
+TODO: Board Doc
+
+TODO: Remove ToC
+
+TODO: Copy doc again because of ToC
 
 All ready for upstreaming! (Remember to add the Arch and Board Docs)
 
