@@ -1347,7 +1347,6 @@ Wait there's more...
     arch/arm64/src/a527/a527_initialize.c
     arch/arm64/src/a527/a527_lowputc.S
     arch/arm64/src/a527/a527_serial.c
-    arch/arm64/src/a527/a527_serial.h
     arch/arm64/src/a527/a527_textheap.c
     arch/arm64/src/a527/a527_timer.c
     arch/arm64/src/a527/chip.h
@@ -1359,7 +1358,7 @@ Wait there's more...
     boards/arm64/a527/avaota-a1/include/board_memorymap.h
     boards/arm64/a527/avaota-a1/scripts/Make.defs
     boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-    boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+    boards/arm64/a527/avaota-a1/scripts/ld.script
     boards/arm64/a527/avaota-a1/src/CMakeLists.txt
     boards/arm64/a527/avaota-a1/src/Makefile
     boards/arm64/a527/avaota-a1/src/a527_appinit.c
@@ -1391,7 +1390,6 @@ Wait there's more...
     nxstyle arch/arm64/src/a527/a527_initialize.c
     nxstyle arch/arm64/src/a527/a527_lowputc.S
     nxstyle arch/arm64/src/a527/a527_serial.c
-    nxstyle arch/arm64/src/a527/a527_serial.h
     nxstyle arch/arm64/src/a527/a527_textheap.c
     nxstyle arch/arm64/src/a527/a527_timer.c
     nxstyle arch/arm64/src/a527/chip.h
@@ -1403,7 +1401,7 @@ Wait there's more...
     nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
     nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
     nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-    nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+    nxstyle boards/arm64/a527/avaota-a1/scripts/ld.script
     nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
     nxstyle boards/arm64/a527/avaota-a1/src/Makefile
     nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
@@ -1796,6 +1794,32 @@ And __GIC Registers__...
 
 [(Explained here)](TODO)
 
+<hr>
+
+[_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
+
+We set the __UART0 Interrupt__...
+
+```bash
+## Set the UART0 Interrupt to 34
+CONFIG_16550_UART0_IRQ=34
+```
+
+Based on the A527 Doc...
+
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 256 |
+|:-------------------------------:|:--------:|
+| __Interrupt Number__ | __Interrupt Source__
+| 34 | UART0
+
+</div>
+</p>
+
+[(Explained here)](TODO)
+
 ## Arm64 Boot Code
 
 [_arch/arm64/src/a527/a527_lowputc.S_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
@@ -2005,7 +2029,7 @@ static int mount_ramdisk(void) {
 
 ## Linker Script
 
-[_boards/arm64/a527/avaota-a1/scripts/ld-kernel.script_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
+[_boards/arm64/a527/avaota-a1/scripts/ld.script_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
 
 We reserve __16 MB of RAM__ for the ROMFS Filesystem that will host the NuttX Apps...
 
@@ -2037,23 +2061,6 @@ Also we moved the __Paged Pool__ because the Boot Address has changed to _0x4080
 
 [_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
 
-Based on the __16550 UART Registers__ above: We configured the 16550 UART and removed PL011 UART...
-
-```bash
-CONFIG_16550_ADDRWIDTH=0
-CONFIG_16550_REGINCR=4
-CONFIG_16550_UART0=y
-CONFIG_16550_UART0_BASE=0x02500000
-CONFIG_16550_UART0_CLOCK=198144000
-CONFIG_16550_UART0_IRQ=125
-CONFIG_16550_UART0_SERIAL_CONSOLE=y
-CONFIG_16550_UART=y
-CONFIG_16550_WAIT_LCR=y
-CONFIG_SERIAL_UART_ARCH_MMIO=y
-```
-
-[(Explained here)](TODO)
-
 Since we changed the __Paged Memory Pool__ _(pgram)_, we update _ARCH_PGPOOL_PBASE_ and _VBASE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
 
 ```bash
@@ -2077,27 +2084,46 @@ CONFIG_RAM_SIZE=134217728
 
 [(Explained here)](TODO)
 
-We set the __UART0 Interrupt__...
+Based on the __16550 UART Registers__ above: We configured the 16550 UART and removed PL011 UART...
 
 ```bash
-## Set the UART0 Interrupt to 34
-CONFIG_16550_UART0_IRQ=34
+CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x02500000
+CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_IRQ=125
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y
 ```
 
-Based on the A527 Doc...
-
-<p>
-<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-
-| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 256 |
-|:-------------------------------:|:--------:|
-| __Interrupt Number__ | __Interrupt Source__
-| 34 | UART0
-
-</div>
-</p>
-
 [(Explained here)](TODO)
+
+__16550_UART0_CLOCK__ was computed according to [__these instructions__](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110)...
+
+```bash
+NuttX UART Debug Log shows:
+  dlm = 0x00
+  dll = 0x0D
+
+We know that:
+  dlm = 0x00 = (div >> 8)
+  dll = 0x0D = (div & 0xFF)
+
+Which means:
+  div = 0x0D
+
+We know that:
+  baud = 115200
+  div  = (uartclk + (baud << 3)) / (baud << 4)
+
+Therefore:
+  0x0D    = (uartclk + 921600) / 1843200
+  uartclk = (0x0D * 1843200) - 921600
+          = 23040000
+```
 
 <hr>
 
