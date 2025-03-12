@@ -139,6 +139,8 @@ Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It mak
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
+
 # Boot NuttX Kernel on our SBC
 
 Remember the [__MicroSD we downloaded__](TODO)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
