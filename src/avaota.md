@@ -693,6 +693,8 @@ enable_mmu_el1: UP_MB
 enable_mmu_el1: Enable the MMU and data cache
 ```
 
+[(__Exception Level__ explained)](TODO)
+
 Something sus about the above [__Mystery Addresses__](https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362), what are they?
 
 <p>
