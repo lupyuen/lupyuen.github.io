@@ -1311,109 +1311,122 @@ Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2
 
 </span>
 
-We created a __Staging PR__ in our own repo...
+Wait there's more...
 
-- [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
+1.  We created a __Staging PR__ in our own repo...
 
-Then dumped the list of __Modified Files__...
+    - [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
-<span style="font-size:60%">
+1.  Dumped the list of __Modified Files__...
 
-```bash
-## Change this to our Staging PR
-$ pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/99
-$ curl -L $pr.diff \
-  | grep "diff --git" \
-  | sort \
-  | cut -d" " -f3 \
-  | cut -c3-
+    <span style="font-size:60%">
 
-## Here are the Modified Files for our PR
-Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
-Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
-Documentation/platforms/arm64/a527/index.rst
-arch/arm64/Kconfig
-arch/arm64/include/a527/chip.h
-arch/arm64/include/a527/irq.h
-arch/arm64/src/a527/CMakeLists.txt
-arch/arm64/src/a527/Kconfig
-arch/arm64/src/a527/Make.defs
-arch/arm64/src/a527/a527_boot.c
-arch/arm64/src/a527/a527_boot.h
-arch/arm64/src/a527/a527_initialize.c
-arch/arm64/src/a527/a527_lowputc.S
-arch/arm64/src/a527/a527_serial.c
-arch/arm64/src/a527/a527_serial.h
-arch/arm64/src/a527/a527_textheap.c
-arch/arm64/src/a527/a527_timer.c
-arch/arm64/src/a527/chip.h
-boards/Kconfig
-boards/arm64/a527/avaota-a1/CMakeLists.txt
-boards/arm64/a527/avaota-a1/Kconfig
-boards/arm64/a527/avaota-a1/configs/nsh/defconfig
-boards/arm64/a527/avaota-a1/include/board.h
-boards/arm64/a527/avaota-a1/include/board_memorymap.h
-boards/arm64/a527/avaota-a1/scripts/Make.defs
-boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
-boards/arm64/a527/avaota-a1/src/CMakeLists.txt
-boards/arm64/a527/avaota-a1/src/Makefile
-boards/arm64/a527/avaota-a1/src/a527_appinit.c
-boards/arm64/a527/avaota-a1/src/a527_boardinit.c
-boards/arm64/a527/avaota-a1/src/a527_bringup.c
-boards/arm64/a527/avaota-a1/src/a527_power.c
-boards/arm64/a527/avaota-a1/src/avaota-a1.h
-```
+    ```bash
+    ## Change this to our Staging PR
+    $ pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/99
+    $ curl -L $pr.diff \
+      | grep "diff --git" \
+      | sort \
+      | cut -d" " -f3 \
+      | cut -c3-
 
-</span>
+    ## Here are the Modified Files for our PR
+    Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
+    Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
+    Documentation/platforms/arm64/a527/index.rst
+    arch/arm64/Kconfig
+    arch/arm64/include/a527/chip.h
+    arch/arm64/include/a527/irq.h
+    arch/arm64/src/a527/CMakeLists.txt
+    arch/arm64/src/a527/Kconfig
+    arch/arm64/src/a527/Make.defs
+    arch/arm64/src/a527/a527_boot.c
+    arch/arm64/src/a527/a527_boot.h
+    arch/arm64/src/a527/a527_initialize.c
+    arch/arm64/src/a527/a527_lowputc.S
+    arch/arm64/src/a527/a527_serial.c
+    arch/arm64/src/a527/a527_serial.h
+    arch/arm64/src/a527/a527_textheap.c
+    arch/arm64/src/a527/a527_timer.c
+    arch/arm64/src/a527/chip.h
+    boards/Kconfig
+    boards/arm64/a527/avaota-a1/CMakeLists.txt
+    boards/arm64/a527/avaota-a1/Kconfig
+    boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+    boards/arm64/a527/avaota-a1/include/board.h
+    boards/arm64/a527/avaota-a1/include/board_memorymap.h
+    boards/arm64/a527/avaota-a1/scripts/Make.defs
+    boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+    boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+    boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+    boards/arm64/a527/avaota-a1/src/Makefile
+    boards/arm64/a527/avaota-a1/src/a527_appinit.c
+    boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+    boards/arm64/a527/avaota-a1/src/a527_bringup.c
+    boards/arm64/a527/avaota-a1/src/a527_power.c
+    boards/arm64/a527/avaota-a1/src/avaota-a1.h
+    ```
 
-And checked __nxstyle__ on the Modified Files...
+    </span>
 
-<span style="font-size:60%">
+1.  Checked __nxstyle__ on the Modified Files...
 
-```bash
-## Run nxstyle on the Modified Files
-nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
-nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
-nxstyle Documentation/platforms/arm64/a527/index.rst
-nxstyle arch/arm64/Kconfig
-nxstyle arch/arm64/include/a527/chip.h
-nxstyle arch/arm64/include/a527/irq.h
-nxstyle arch/arm64/src/a527/CMakeLists.txt
-nxstyle arch/arm64/src/a527/Kconfig
-nxstyle arch/arm64/src/a527/Make.defs
-nxstyle arch/arm64/src/a527/a527_boot.c
-nxstyle arch/arm64/src/a527/a527_boot.h
-nxstyle arch/arm64/src/a527/a527_initialize.c
-nxstyle arch/arm64/src/a527/a527_lowputc.S
-nxstyle arch/arm64/src/a527/a527_serial.c
-nxstyle arch/arm64/src/a527/a527_serial.h
-nxstyle arch/arm64/src/a527/a527_textheap.c
-nxstyle arch/arm64/src/a527/a527_timer.c
-nxstyle arch/arm64/src/a527/chip.h
-nxstyle boards/Kconfig
-nxstyle boards/arm64/a527/avaota-a1/CMakeLists.txt
-nxstyle boards/arm64/a527/avaota-a1/Kconfig
-nxstyle boards/arm64/a527/avaota-a1/configs/nsh/defconfig
-nxstyle boards/arm64/a527/avaota-a1/include/board.h
-nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
-nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
-nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
-nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
-nxstyle boards/arm64/a527/avaota-a1/src/Makefile
-nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
-nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
-nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
-nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
-nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h
-```
+    <span style="font-size:60%">
 
-</span>
+    ```bash
+    ## Run nxstyle on the Modified Files
+    nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
+    nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
+    nxstyle Documentation/platforms/arm64/a527/index.rst
+    nxstyle arch/arm64/Kconfig
+    nxstyle arch/arm64/include/a527/chip.h
+    nxstyle arch/arm64/include/a527/irq.h
+    nxstyle arch/arm64/src/a527/CMakeLists.txt
+    nxstyle arch/arm64/src/a527/Kconfig
+    nxstyle arch/arm64/src/a527/Make.defs
+    nxstyle arch/arm64/src/a527/a527_boot.c
+    nxstyle arch/arm64/src/a527/a527_boot.h
+    nxstyle arch/arm64/src/a527/a527_initialize.c
+    nxstyle arch/arm64/src/a527/a527_lowputc.S
+    nxstyle arch/arm64/src/a527/a527_serial.c
+    nxstyle arch/arm64/src/a527/a527_serial.h
+    nxstyle arch/arm64/src/a527/a527_textheap.c
+    nxstyle arch/arm64/src/a527/a527_timer.c
+    nxstyle arch/arm64/src/a527/chip.h
+    nxstyle boards/Kconfig
+    nxstyle boards/arm64/a527/avaota-a1/CMakeLists.txt
+    nxstyle boards/arm64/a527/avaota-a1/Kconfig
+    nxstyle boards/arm64/a527/avaota-a1/configs/nsh/defconfig
+    nxstyle boards/arm64/a527/avaota-a1/include/board.h
+    nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
+    nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
+    nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
+    nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+    nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
+    nxstyle boards/arm64/a527/avaota-a1/src/Makefile
+    nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
+    nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
+    nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
+    nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
+    nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h
+    ```
 
-TODO: Copy arch
+    </span>
 
-TODO: Copy board
+1.  Copy the Arch Files into the Arch PR
+
+    TODO
+
+
+1.  Copy the Board Files into the Board PR
+
+    TODO
+
+1.  Remember to create __Two Commits Per PR__: One Commit for Code, Another Commit for Docs
+
+1.  Need to __Squash the Commits__? Try __Reordering the Commits__ to the top, before squashing...
+
+    TODO: Pic of reorder
 
 TODO: Arch Doc
 
