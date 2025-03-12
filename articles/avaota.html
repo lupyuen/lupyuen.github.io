@@ -1188,11 +1188,16 @@ nsh&gt;</code></pre></div></span>
 </li>
 </ol>
 </span>
+<p>Wait there’s more…</p>
+<ol>
+<li>
 <p>We created a <strong>Staging PR</strong> in our own repo…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99"><em>github.com/lupyuen2/wip-nuttx/pull/99</em></a></li>
 </ul>
-<p>Then dumped the list of <strong>Modified Files</strong>…</p>
+</li>
+<li>
+<p>Dumped the list of <strong>Modified Files</strong>…</p>
 <span style="font-size:60%">
 <div class="example-wrap"><pre class="language-bash"><code>## Change this to our Staging PR
 $ pr=https://github.com/lupyuen2/wip-pinephone-nuttx/pull/99
@@ -1237,7 +1242,9 @@ boards/arm64/a527/avaota-a1/src/a527_boardinit.c
 boards/arm64/a527/avaota-a1/src/a527_bringup.c
 boards/arm64/a527/avaota-a1/src/a527_power.c
 boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
-<p>And checked <strong>nxstyle</strong> on the Modified Files…</p>
+</li>
+<li>
+<p>Checked <strong>nxstyle</strong> on the Modified Files…</p>
 <span style="font-size:60%">
 <div class="example-wrap"><pre class="language-bash"><code>## Run nxstyle on the Modified Files
 nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
@@ -1274,8 +1281,23 @@ nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
 nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
 nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
 nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
-<p>TODO: Copy arch</p>
-<p>TODO: Copy board</p>
+</li>
+<li>
+<p>Copy the Arch Files into the Arch PR</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Copy the Board Files into the Board PR</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Remember to create <strong>Two Commits Per PR</strong>: One Commit for Code, Another Commit for Docs</p>
+</li>
+<li>
+<p>Need to <strong>Squash the Commits</strong>? Try <strong>Reordering the Commits</strong> to the top, before squashing…</p>
+<p>TODO: Pic of reorder</p>
+</li>
+</ol>
 <p>TODO: Arch Doc</p>
 <p>TODO: Board Doc</p>
 <p>TODO: Remove ToC</p>
