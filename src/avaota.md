@@ -1328,6 +1328,9 @@ $ curl -L $pr.diff \
   | cut -c3-
 
 ## Here are the Modified Files for our PR
+Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
+Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
+Documentation/platforms/arm64/a527/index.rst
 arch/arm64/Kconfig
 arch/arm64/include/a527/chip.h
 arch/arm64/include/a527/irq.h
@@ -1350,7 +1353,6 @@ boards/arm64/a527/avaota-a1/configs/nsh/defconfig
 boards/arm64/a527/avaota-a1/include/board.h
 boards/arm64/a527/avaota-a1/include/board_memorymap.h
 boards/arm64/a527/avaota-a1/scripts/Make.defs
-boards/arm64/a527/avaota-a1/scripts/dramboot.ld
 boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
 boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
 boards/arm64/a527/avaota-a1/src/CMakeLists.txt
@@ -1370,6 +1372,9 @@ And checked __nxstyle__ on the Modified Files...
 
 ```bash
 ## Run nxstyle on the Modified Files
+nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg
+nxstyle Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst
+nxstyle Documentation/platforms/arm64/a527/index.rst
 nxstyle arch/arm64/Kconfig
 nxstyle arch/arm64/include/a527/chip.h
 nxstyle arch/arm64/include/a527/irq.h
@@ -1392,7 +1397,6 @@ nxstyle boards/arm64/a527/avaota-a1/configs/nsh/defconfig
 nxstyle boards/arm64/a527/avaota-a1/include/board.h
 nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
 nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
-nxstyle boards/arm64/a527/avaota-a1/scripts/dramboot.ld
 nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
 nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
 nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
