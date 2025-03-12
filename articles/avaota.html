@@ -496,6 +496,9 @@ AB</code></pre></div>
 <li>
 <p><strong>Power up SBC</strong> and boot NuttX</p>
 </li>
+<li>
+<p>Watch the <a href="https://youtu.be/PxaMcmMAzlM"><strong>Demo on YouTube</strong></a></p>
+</li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p>Here’s our nifty <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
@@ -582,8 +585,8 @@ curl \
 <li>TODO: Appendix SDWire</li>
 </ul>
 <h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>8 Arm64 Memory Management Unit</h1>
-<p><em>OK can we get back to NuttX now?</em></p>
-<p>Of course. Earlier we saw NuttX <a href="TODO"><strong>Stuck at “AB”</strong></a>…</p>
+<p><em>It’s getting late. Can we get back to NuttX now?</em></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a> is all we need no worries! Earlier we saw NuttX <a href="TODO"><strong>stuck at “AB”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
 - Ready to Boot Primary CPU
 - Boot from EL2
@@ -1134,6 +1137,7 @@ nsh&gt;</code></pre></div></span>
 <h1 id="appendix-upstream-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-upstream-nuttx-for-avaota-a1">§</a>16 Appendix: Upstream NuttX for Avaota-A1</h1>
 <p>In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What’s Next: Upstreaming our code to <strong>NuttX Mainline</strong>!</p>
 <p>Here’s how we copy-n-pasted our <a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits"><strong>Modified Files</strong></a> into a proper <strong>NuttX Arch</strong> <em>(Allwinner A527)</em> and <strong>NuttX Board</strong> <em>(Avaota-A1)</em></p>
+<span style="font-size:80%">
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/7de76c10aef43fef010eb002eae9330c4333650a">Copy qemu folders to a527. Copy qemu-armv8a folder to avaota-a1.</a></p>
@@ -1165,7 +1169,23 @@ nsh&gt;</code></pre></div></span>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f51d3173c33a5e70af5156daae13e8732207f635">Clean up for nxstyle</a></p>
 </li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f578a24b7694c92e9d3d71b9d2abed5b776a5f3a">Clean up Copy RAM Disk</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cd2d11815175377e9f5c8e5eeaa47933b5148059">Clean up A527 Kconfig</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cc8dfa294c46e59d08039d1fed28ee305841be3a">Clean up Arm64 Kconfig</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/57f6ddff5ce14496e73635b221afefcc3b383a38">Clean up Linker Script</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/5d9b19fd314a342167948245e9cfb002d82a8802">Add the Arch and Board Docs</a></p>
+</li>
 </ol>
+</span>
 <p>We created a <strong>Staging PR</strong> in our own repo…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99"><em>github.com/lupyuen2/wip-nuttx/pull/99</em></a></li>
@@ -1248,6 +1268,12 @@ nxstyle boards/arm64/a527/avaota-a1/src/a527_boardinit.c
 nxstyle boards/arm64/a527/avaota-a1/src/a527_bringup.c
 nxstyle boards/arm64/a527/avaota-a1/src/a527_power.c
 nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
+<p>TODO: Copy arch</p>
+<p>TODO: Copy board</p>
+<p>TODO: Arch Doc</p>
+<p>TODO: Board Doc</p>
+<p>TODO: Remove ToC</p>
+<p>TODO: Copy doc again because of ToC</p>
 <p>All ready for upstreaming! (Remember to add the Arch and Board Docs)</p>
 <p>TODO: Pic of SDWire</p>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>17 Appendix: SDWire MicroSD Multiplexer</h1>
