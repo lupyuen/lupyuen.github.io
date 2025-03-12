@@ -1289,35 +1289,25 @@ Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2
 
 1.  [Rewrite "A527_ARMV8A" to "AVAOTA_A1"](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/ddf662a9036e7cc6742a034a3983f3b0f9b5bf07)
 
-1.  [Add Arch and Board](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/fe65a2d43f896b7eaeb996c463a99d5244a9b67d)
+1.  [Add the Arch and Board](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/fe65a2d43f896b7eaeb996c463a99d5244a9b67d)
 
 1.  [Apply the changes from _github.com/lupyuen2/wip-nuttx/pull/98/files_ <br> OSTest passes yay!](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
-1.  [Remove unused NuttX Configs](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/837e0478617da7d8c886cbb3291ff90e3fc07c33)
+1.  [Remove the unused NuttX Configs](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/837e0478617da7d8c886cbb3291ff90e3fc07c33)
 
 1.  [Rename knsh to nsh](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/1934b999880c37f67c0dfa456555b160a945145c)
 
-1.  [Clean up the alignment](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/b1d21e33c67bcdf45adc73192bc2e2b2a1b4db9a)
-
-1.  [Clean up for nxstyle](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f51d3173c33a5e70af5156daae13e8732207f635)
-
-1.  [Clean up Copy RAM Disk](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/f578a24b7694c92e9d3d71b9d2abed5b776a5f3a)
-
-1.  [Clean up A527 Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cd2d11815175377e9f5c8e5eeaa47933b5148059)
-
-1.  [Clean up Arm64 Kconfig](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/cc8dfa294c46e59d08039d1fed28ee305841be3a)
-
-1.  [Clean up Linker Script](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/57f6ddff5ce14496e73635b221afefcc3b383a38)
-
 1.  [Add the Arch and Board Docs](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/5d9b19fd314a342167948245e9cfb002d82a8802)
+
+1.  [And Much More](https://github.com/lupyuen2/wip-nuttx/pull/99/commits)
 
 </span>
 
-Wait there's more...
+__Upstreaming__ becomes copypasta...
 
 1.  We created a __Staging PR__ in our own repo...
 
-    - [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
+    [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
 1.  Dumped the list of __Modified Files__...
 
@@ -1413,12 +1403,12 @@ Wait there's more...
 
     </span>
 
-1.  Copy the Arch Files into the Arch PR
+1.  Copy the Arch Files into the __Arch Pull Request__
 
     TODO
 
 
-1.  Copy the Board Files into the Board PR
+1.  Copy the Board Files into the __Board Pull Request__
 
     TODO
 
@@ -1428,15 +1418,9 @@ Wait there's more...
 
     TODO: Pic of reorder
 
-TODO: Arch Doc
-
-TODO: Board Doc
-
 TODO: Remove ToC
 
 TODO: Copy doc again because of ToC
-
-All ready for upstreaming! (Remember to add the Arch and Board Docs)
 
 TODO: Pic of SDWire
 
