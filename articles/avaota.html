@@ -221,17 +221,16 @@ qemu-system-aarch64 \
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>3 Boot NuttX Kernel on our SBC</h1>
 <p>Remember the <a href="TODO"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ ls -l /TODO
-total 40261
--rwxr-xr-x 1 root root    78769 Feb 22 01:06 bl31.bin
--rwxr-xr-x 1 root root   180233 Feb 21 22:21 config-5.15.154-ga464bc4feaff
-drwxr-xr-x 3 root root      512 Feb 21 22:56 dtb
-drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
--rwxr-xr-x 1 root root 27783176 Mar  7 21:24 Image
--rwxr-xr-x 1 root root   180228 Feb 22 01:06 scp.bin
--rwxr-xr-x 1 root root    12960 Feb 22 01:06 splash.bin
--rwxr-xr-x 1 root root  5193581 Feb 21 22:21 System.map-5.15.154-ga464bc4feaff
--rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>$ ls -l /media/$USER/YOUR_SD
+   78769  bl31.bin
+  180233  config-5.15.154-ga464bc4feaff
+     512  dtb
+     512  extlinux
+27783176  Image
+  180228  scp.bin
+   12960  splash.bin
+ 5193581  System.map-5.15.154-ga464bc4feaff
+ 6497300  uInitrd</code></pre></div>
 <p>Let’s replace it with NuttX…</p>
 <ol>
 <li>
@@ -240,11 +239,13 @@ drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
 </li>
 <li>
 <p>Overwrite the <strong><code>Image</code></strong> file by <strong><code>nuttx.bin</code></strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>mv /TODO/Image /TODO/Image.old
-cp nuttx.bin /TODO/Image
-ls -l /TODO/Image
-## Should be a lot smaller
-umount /TODO</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy and overwrite `Image` on MicroSD
+mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
+cp nuttx.bin /media/$USER/YOUR_SD/Image
+
+## `Image` should be a lot smaller now
+ls -l /media/$USER/YOUR_SD/Image
+umount /media/$USER/YOUR_SD</code></pre></div></li>
 <li>
 <p>Insert the MicroSD into our SBC. Boot it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
@@ -498,7 +499,7 @@ AB</code></pre></div>
 <p><strong>Power up SBC</strong> and boot NuttX</p>
 </li>
 <li>
-<p>Watch the <a href="https://youtu.be/PxaMcmMAzlM"><strong>Demo on YouTube</strong></a></p>
+<p>How it looks? <a href="https://youtu.be/PxaMcmMAzlM"><strong>Watch the Demo</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
@@ -1007,10 +1008,10 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
 ## Boot it on Avaota-A1
-mv /TODO/Image /TODO/Image.old
-cp Image /TODO/Image
-ls -l /TODO/Image
-umount /TODO</code></pre></div></li>
+mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
+cp Image /media/$USER/YOUR_SD/Image
+ls -l /media/$USER/YOUR_SD/Image
+umount /media/$USER/YOUR_SD</code></pre></div></li>
 <li>
 <p><strong>Boot the MicroSD</strong> on our SBC</p>
 </li>
