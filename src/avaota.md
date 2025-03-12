@@ -146,17 +146,16 @@ _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 Remember the [__MicroSD we downloaded__](TODO)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
 
 ```bash
-$ ls -l /TODO
-total 40261
--rwxr-xr-x 1 root root    78769 Feb 22 01:06 bl31.bin
--rwxr-xr-x 1 root root   180233 Feb 21 22:21 config-5.15.154-ga464bc4feaff
-drwxr-xr-x 3 root root      512 Feb 21 22:56 dtb
-drwxr-xr-x 2 root root      512 Feb 22 01:06 extlinux
--rwxr-xr-x 1 root root 27783176 Mar  7 21:24 Image
--rwxr-xr-x 1 root root   180228 Feb 22 01:06 scp.bin
--rwxr-xr-x 1 root root    12960 Feb 22 01:06 splash.bin
--rwxr-xr-x 1 root root  5193581 Feb 21 22:21 System.map-5.15.154-ga464bc4feaff
--rwxr-xr-x 1 root root  6497300 Feb 22 01:06 uInitrd
+$ ls -l /media/$USER/YOUR_SD
+   78769  bl31.bin
+  180233  config-5.15.154-ga464bc4feaff
+     512  dtb
+     512  extlinux
+27783176  Image
+  180228  scp.bin
+   12960  splash.bin
+ 5193581  System.map-5.15.154-ga464bc4feaff
+ 6497300  uInitrd
 ```
 
 Let's replace it with NuttX...
@@ -168,11 +167,13 @@ Let's replace it with NuttX...
 1.  Overwrite the __`Image`__ file by __`nuttx.bin`__...
 
     ```bash
-    mv /TODO/Image /TODO/Image.old
-    cp nuttx.bin /TODO/Image
-    ls -l /TODO/Image
-    ## Should be a lot smaller
-    umount /TODO
+    ## Copy and overwrite `Image` on MicroSD
+    mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
+    cp nuttx.bin /media/$USER/YOUR_SD/Image
+
+    ## `Image` should be a lot smaller now
+    ls -l /media/$USER/YOUR_SD/Image
+    umount /media/$USER/YOUR_SD
     ```
 
 1.  Insert the MicroSD into our SBC. Boot it...
@@ -497,7 +498,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](TO
 
 1.  __Power up SBC__ and boot NuttX
 
-1.  Watch the [__Demo on YouTube__](https://youtu.be/PxaMcmMAzlM)
+1.  How it looks? [__Watch the Demo__](https://youtu.be/PxaMcmMAzlM)
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
@@ -1127,10 +1128,10 @@ Earlier we built [__NuttX for Avaota-A1__](TODO) and created the __`Image`__ fil
     ## Copy NuttX Image to AvaotaOS MicroSD
     ## Overwrite the `Image` file
     ## Boot it on Avaota-A1
-    mv /TODO/Image /TODO/Image.old
-    cp Image /TODO/Image
-    ls -l /TODO/Image
-    umount /TODO
+    mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
+    cp Image /media/$USER/YOUR_SD/Image
+    ls -l /media/$USER/YOUR_SD/Image
+    umount /media/$USER/YOUR_SD
     ```
 
 1.  __Boot the MicroSD__ on our SBC
