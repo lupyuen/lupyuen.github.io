@@ -1405,6 +1405,8 @@ __Upstreaming__ becomes copypasta...
 
 1.  Copy the Arch Files into the __Arch Pull Request__
 
+    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
+
     TODO
 
 
