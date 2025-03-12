@@ -89,6 +89,8 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
 
 1.  Aha! __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
 
+TODO: Pic of Semihosting
+
 # NuttX Kernel Build for Arm64 QEMU
 
 Follow these steps to Build and Run NuttX for [__Arm64 QEMU (Kernel Build)__](TODO)
@@ -128,6 +130,8 @@ TODO
 ```
 
 We're ready to boot __`nuttx.bin`__ on our SBC!
+
+NuttX Kernel Build will call out to [__HostFS Semihosting__](TODO) (pic above). We'll change this for our SBC.
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
@@ -1658,6 +1662,8 @@ default_fatal_handler:
 In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for __Avaota-A1 SBC__. This section explains the Modified Code...
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
+
+_(This section is kinda redundant? But it's meant to help our PR Reviewers understand our modified code)_
 
 ## Memory Map
 
