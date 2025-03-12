@@ -1223,7 +1223,6 @@ arch/arm64/src/a527/a527_boot.h
 arch/arm64/src/a527/a527_initialize.c
 arch/arm64/src/a527/a527_lowputc.S
 arch/arm64/src/a527/a527_serial.c
-arch/arm64/src/a527/a527_serial.h
 arch/arm64/src/a527/a527_textheap.c
 arch/arm64/src/a527/a527_timer.c
 arch/arm64/src/a527/chip.h
@@ -1235,7 +1234,7 @@ boards/arm64/a527/avaota-a1/include/board.h
 boards/arm64/a527/avaota-a1/include/board_memorymap.h
 boards/arm64/a527/avaota-a1/scripts/Make.defs
 boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+boards/arm64/a527/avaota-a1/scripts/ld.script
 boards/arm64/a527/avaota-a1/src/CMakeLists.txt
 boards/arm64/a527/avaota-a1/src/Makefile
 boards/arm64/a527/avaota-a1/src/a527_appinit.c
@@ -1262,7 +1261,6 @@ nxstyle arch/arm64/src/a527/a527_boot.h
 nxstyle arch/arm64/src/a527/a527_initialize.c
 nxstyle arch/arm64/src/a527/a527_lowputc.S
 nxstyle arch/arm64/src/a527/a527_serial.c
-nxstyle arch/arm64/src/a527/a527_serial.h
 nxstyle arch/arm64/src/a527/a527_textheap.c
 nxstyle arch/arm64/src/a527/a527_timer.c
 nxstyle arch/arm64/src/a527/chip.h
@@ -1274,7 +1272,7 @@ nxstyle boards/arm64/a527/avaota-a1/include/board.h
 nxstyle boards/arm64/a527/avaota-a1/include/board_memorymap.h
 nxstyle boards/arm64/a527/avaota-a1/scripts/Make.defs
 nxstyle boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld
-nxstyle boards/arm64/a527/avaota-a1/scripts/ld-kernel.script
+nxstyle boards/arm64/a527/avaota-a1/scripts/ld.script
 nxstyle boards/arm64/a527/avaota-a1/src/CMakeLists.txt
 nxstyle boards/arm64/a527/avaota-a1/src/Makefile
 nxstyle boards/arm64/a527/avaota-a1/src/a527_appinit.c
@@ -1584,6 +1582,21 @@ default_fatal_handler:
 </div></div>
 </p>
 <p><a href="TODO">(Explained here)</a></p>
+<hr>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
+<p>We set the <strong>UART0 Interrupt</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the UART0 Interrupt to 34
+CONFIG_16550_UART0_IRQ=34</code></pre></div>
+<p>Based on the A527 Doc…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: center">Page 256</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Interrupt Number</strong></td><td style="text-align: center"><strong>Interrupt Source</strong></td></tr>
+<tr><td style="text-align: center">34</td><td style="text-align: center">UART0</td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p><a href="TODO">(Explained here)</a></p>
 <h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.3 Arm64 Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><em>arch/arm64/src/a527/a527_lowputc.S</em></a></p>
 <p>We updated the Arm64 Boot Code for <strong>16550 UART Driver</strong>…</p>
@@ -1754,7 +1767,7 @@ static int mount_ramdisk(void) {
 #define RAMDISK_DEVICE_MINOR 0</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 <h2 id="linker-script-1"><a class="doc-anchor" href="#linker-script-1">§</a>19.6 Linker Script</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld-kernel.script</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld.script</em></a></p>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We moved the Paged Pool and added the RAM Disk (16 MB) */
 MEMORY {
@@ -1777,18 +1790,6 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
 <h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>19.7 NuttX Config</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
-<p>Based on the <strong>16550 UART Registers</strong> above: We configured the 16550 UART and removed PL011 UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
-CONFIG_16550_REGINCR=4
-CONFIG_16550_UART0=y
-CONFIG_16550_UART0_BASE=0x02500000
-CONFIG_16550_UART0_CLOCK=198144000
-CONFIG_16550_UART0_IRQ=125
-CONFIG_16550_UART0_SERIAL_CONSOLE=y
-CONFIG_16550_UART=y
-CONFIG_16550_WAIT_LCR=y
-CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
 <p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
@@ -1802,20 +1803,38 @@ CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## RAM Size is 128 MB
 CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
-<p>We set the <strong>UART0 Interrupt</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Set the UART0 Interrupt to 34
-CONFIG_16550_UART0_IRQ=34</code></pre></div>
-<p>Based on the A527 Doc…</p>
-<p>
-<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: center"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: center">Page 256</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong>Interrupt Number</strong></td><td style="text-align: center"><strong>Interrupt Source</strong></td></tr>
-<tr><td style="text-align: center">34</td><td style="text-align: center">UART0</td></tr>
-</tbody></table>
-</div></div>
-</p>
+<p>Based on the <strong>16550 UART Registers</strong> above: We configured the 16550 UART and removed PL011 UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x02500000
+CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_IRQ=125
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
 <p><a href="TODO">(Explained here)</a></p>
-<hr>
+<p><strong>16550_UART0_CLOCK</strong> was computed according to <a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110"><strong>these instructions</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>NuttX UART Debug Log shows:
+  dlm = 0x00
+  dll = 0x0D
+
+We know that:
+  dlm = 0x00 = (div &gt;&gt; 8)
+  dll = 0x0D = (div &amp; 0xFF)
+
+Which means:
+  div = 0x0D
+
+We know that:
+  baud = 115200
+  div  = (uartclk + (baud &lt;&lt; 3)) / (baud &lt;&lt; 4)
+
+Therefore:
+  0x0D    = (uartclk + 921600) / 1843200
+  uartclk = (0x0D * 1843200) - 921600
+          = 23040000</code></pre></div><hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6"><em>arch/arm64/src/a527/a527_serial.c</em></a></p>
 <p>QEMU was using PL011 UART. We switched the Serial Driver to <strong>16550 UART</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Switch from PL011 UART (QEMU) to 16550 UART
