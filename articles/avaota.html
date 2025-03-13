@@ -389,7 +389,7 @@ CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
 </li>
 <li>
-<p><strong>Linux Kernel Header</strong> has an incorrect <strong>Image Load Offset</strong>. Arm64 Bootloaders don’t care, hence we’ll let it be…</p>
+<p><strong>Linux Kernel Header</strong> has an incorrect <strong>Image Load Offset</strong>. Arm64 Bootloaders don’t care, we’ll let it be…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
 __start:
   ...
