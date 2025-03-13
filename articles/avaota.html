@@ -236,7 +236,7 @@ qemu-system-aarch64 \
   -semihosting ...</code></pre></div>
 <p>NuttX Kernel Build will call out to <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>HostFS Semihosting</strong></a> (pic above) to access NSH Shell and NuttX Apps. We’ll change this for our SBC.</p>
 <p><em>Why start with NuttX Kernel Build? Not NuttX Flat Build?</em></p>
-<p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM. It makes more sense to boot <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX Apps with <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>Virtual Memory</strong></a>.</p>
+<p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM <em>(2 GB)</em>. It makes more sense to boot <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX App, thanks to <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>Virtual Memory</strong></a>.</p>
 <p><em>(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="boot-nuttx-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-on-our-sbc">§</a>3 Boot NuttX on our SBC</h1>
