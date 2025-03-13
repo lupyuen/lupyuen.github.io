@@ -277,7 +277,7 @@ real_start:
 
 [_(RISC-V? Same same)_](https://lupyuen.github.io/articles/sg2000#print-to-uart-in-risc-v-assembly)
 
-Rebuild NuttX and recopy __`nuttx.bin`__ to MicroSD, overwriting the __`Image`__ file. NuttX boot and [__prints `123`__](https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8)!
+Rebuild NuttX and recopy __`nuttx.bin`__ to MicroSD, overwriting the __`Image`__ file. NuttX will boot and [__print `123`__](https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8)! 🎉
 
 ```bash
 read /Image addr=40800000
@@ -288,7 +288,7 @@ ERROR: Error initializing runtime service opteed_fast
 123
 ```
 
-(Ignore the error: _opteed_fast_)
+Indeed NuttX is booting on our SBC, then crashing later. _(Ignore the error: opteed_fast)_
 
 _Why print in Arm64 Assembly? Why not C?_
 
@@ -1097,6 +1097,8 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/avaota.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md)
+
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
 # Appendix: Build NuttX for Avaota-A1
 
