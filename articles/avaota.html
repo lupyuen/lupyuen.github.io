@@ -127,6 +127,9 @@
 <li>
 <p><a href="https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf"><strong>Avaota-A1 Schematic</strong></a></p>
 </li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/sun55i-t527-avaota-a1.dts"><strong>Avaota-A1 Device Tree</strong></a></p>
+</li>
 </ul>
 <p><em>(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="Avaota-A1 SBC connected to USB UART" /></p>
@@ -525,7 +528,7 @@ AB</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
-<p>Here’s our nifty <strong>Build Script</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
+<p>Here’s our nifty <strong>Build Script</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX and Apps (NuttX Kernel Build)
 make -j
 make -j export
@@ -558,6 +561,7 @@ curl \
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
 ## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
 scp Image thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh
@@ -997,7 +1001,7 @@ nsh&gt;</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/releases/tag/avaota2-1"><strong>NuttX Release for Avatoa-A1 SBC</strong></a></li>
 </ul>
-<p>Or follow these steps to compile our <em>(Work-In-Progress)</em> <strong>NuttX for Avaota-A1</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
+<p>Or follow these steps to compile our <em>(Work-In-Progress)</em> <strong>NuttX for Avaota-A1</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download Source Code for NuttX and Apps
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
@@ -1060,6 +1064,7 @@ curl \
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
 ## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
 scp Image thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh
@@ -1409,7 +1414,7 @@ code /tmp/avaota-board</code></pre></div></span>
 <p>SDWire needs <a href="https://lupyuen.github.io/articles/testbot3#mount-the-microsd"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. We make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
 <ol>
 <li>
-<p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a">copy-image.sh</a></p>
+<p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh">copy-image.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create a Bash Script: copy-image.sh
 ## Containing these commands...
 
@@ -1425,7 +1430,7 @@ mount /dev/sda1 /tmp/sda1
 cp /tmp/Image /tmp/sda1/
 ls -l /tmp/sda1
 
-## Unmount MicroSD and flip it to the Test Device (PinePhone)
+## Unmount MicroSD and flip it to the Test Device (Avaota-A1)
 umount /tmp/sda1
 sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div></li>
 <li>
@@ -1438,7 +1443,7 @@ sudo visudo
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div></li>
 <li>
-<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
+<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp Image thinkcentre:/tmp/Image
