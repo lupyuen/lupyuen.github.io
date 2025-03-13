@@ -358,7 +358,7 @@ Kernel addr: 0x40800000
 
     _(Kinda tiny, but sufficient)_
 
-1.  __Linux Kernel Header__ has an incorrect __Image Load Offset__. Arm64 Bootloaders don't care, so we'll let it be...
+1.  __Linux Kernel Header__ has an incorrect __Image Load Offset__. Arm64 Bootloaders don't care, hence we'll let it be...
 
     ```c
     /* Bootloader starts NuttX here, followed by Linux Kernel Header */
