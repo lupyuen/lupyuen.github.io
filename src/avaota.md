@@ -157,7 +157,7 @@ NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.git
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
-Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It makes more sense to boot [__NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode) and run lots of cool powerful NuttX Apps with [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
+Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)_. It makes more sense to boot [__NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode) and run lots of cool powerful NuttX App, thanks to [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
