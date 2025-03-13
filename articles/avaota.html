@@ -1622,12 +1622,13 @@ default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/b92f051e337d095491f8406b2d99fdd2f6fa5b3e/arch/risc-v/src/eic7700x/eic7700x_start.c#L110-L144"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
+<p><img src="https://lupyuen.org/images/avaota-pr2.png" alt="Porting NuttX to Avaota-A1" /></p>
 <h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
 <p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and changed it slightly for <strong>Avaota-A1 SBC</strong>. To help our PR Reviewers: This section explains the <strong>Modified Code</strong> in our Pull Request…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c"><strong>Modified Files</strong> for Avaota-A1</a></li>
 </ul>
-<p><strong>Only Seven Files</strong> were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1.</p>
+<p><strong>Only Seven Files</strong> were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1. (Pic above)</p>
 <h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>19.1 Memory Map</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
 <p>We define the <strong>I/O Memory Space</strong>…</p>
