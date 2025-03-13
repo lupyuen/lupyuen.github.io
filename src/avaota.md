@@ -89,7 +89,7 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
 
 1.  Aha! __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
 
-TODO: Pic of Semihosting
+> ![NuttX Kernel Build will call out to HostFS Semihosting](https://lupyuen.org/images/semihost-qemu.jpg)
 
 # NuttX Kernel Build for Arm64 QEMU
 
@@ -713,7 +713,7 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 </p>
 
-TODO: Pic of Memory Map
+![A527 Memory Map](https://lupyuen.org/images/avaota-memory.jpg)
 
 # Fix the Memory Map
 
@@ -727,8 +727,6 @@ We require MMU for...
 
   But in reality: They're System RAM recycled from boring old addresses _(like 0x40A0_4000)_
 
-  _(Kinda like "The Matrix")_
-
 If we don't configure MMU with the correct __Memory Map__...
 
 - __NuttX Kernel__ won't boot: _"Help! I can't access my Kernel Code and Data!"_
@@ -737,12 +735,12 @@ If we don't configure MMU with the correct __Memory Map__...
 
 _Arm64 MMU won't turn on. Maybe our Memory Map is incorrect?_
 
-Let's verify our __A527 Memory Map__...
+Let's verify our __A527 Memory Map__ (pic above)
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 42 |
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 40 |
 |:--------------------------------|:---------|
 | __Module__ | __Address__
 | Boot ROM & SRAM | _0x0000_0000_ to ...
@@ -927,7 +925,7 @@ gic_validate_dist_version:
   256 SPIs implemented
 ```
 
-TODO: Pic of Apps Filesystem
+![NuttX Apps Filesystem on ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
 # NuttX Apps Filesystem
 
@@ -987,6 +985,8 @@ Everything is explained here...
 - TODO: Appendix
 
 NSH Prompt still missing? It won't appear until we handle the UART Interrupt...
+
+![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
 
 # Fix the UART Interrupt
 
@@ -1520,11 +1520,13 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![After Reordering the Commit](https://lupyuen.org/images/avaota-commit3.png)
 
-TODO: Pic of SDWire
+1.  Now we're finally ready to Submit our Pull Requests!
+
+![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
 # Appendix: SDWire MicroSD Multiplexer
 
-Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD Multiplexer__ to flip our MicroSD between __Test PC and SBC__...
+Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD Multiplexer__ (pic above) to flip our MicroSD between __Test PC and SBC__...
 
 - TODO
 
@@ -1579,11 +1581,11 @@ SDWire needs [__Plenty of Sudo Passwords__](TODO) to flip the multiplexer, mount
 
 1.  Everything goes into our [__Build Script for NuttX__](TODO)
 
-TODO: Pic of Apps Filesystem
+![NuttX Apps Filesystem in ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
 # Appendix: NuttX Apps Filesystem
 
-Earlier we talked about the NuttX Apps Filesystem...
+Earlier we talked about the NuttX Apps Filesystem (pic above)
 
 - TODO
 
@@ -1681,9 +1683,13 @@ static int mount_ramdisk(void) {
 #define RAMDISK_DEVICE_MINOR 0
 ```
 
+![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
+
 ## Copy the ROMFS
 
-__But Before That:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
+__But Before That:__ We safely copy the __ROMFS Filesystem__ _(Initial RAM Disk)_ from the NuttX Image into the __`ramdisk` Memory Region__. (Pic above)
+
+This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
 
 ```c
 // Needed for the `aligned_data` macro
@@ -1815,7 +1821,7 @@ Based on the __A527 Memory Map__...
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 42 |
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 40 |
 |:--------------------------------|:---------|
 | __Module__ | __Address__
 | Boot ROM & SRAM | _0x0000_0000_ to ...
@@ -1960,11 +1966,13 @@ With these __UART Registers__...
 
 [(Explained here)](TODO)
 
+![Mounting the ROMFS Filesystem containing the NuttX Apps](https://lupyuen.org/images/avaota-initrd2.jpg)
+
 ## NuttX Start Code
 
 [_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
 
-__At NuttX Startup:__ We mount the __ROMFS Filesystem__ containing the __NuttX Apps__...
+__At NuttX Startup:__ We mount the __ROMFS Filesystem__ _(Initial RAM Disk)_ containing the __NuttX Apps__ (pic above)
 
 - TODO
 
