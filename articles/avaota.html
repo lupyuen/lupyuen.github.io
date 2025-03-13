@@ -251,7 +251,7 @@ qemu-system-aarch64 \
    12960  splash.bin
  5193581  System.map-5.15.154-ga464bc4feaff
  6497300  uInitrd</code></pre></div>
-<p>Let’s replace it with NuttX…</p>
+<p>We replace it with NuttX…</p>
 <ol>
 <li>
 <p>Take the NuttX Kernel <strong><code>nuttx.bin</code></strong> from the previous section</p>
@@ -274,7 +274,7 @@ BL31: v2.5(debug):9241004a9
 sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 </ol>
-<p>Nothing happens. Let’s tweak this iteratively, in tiny steps…</p>
+<p>Nothing happens. We tweak this iteratively, in tiny steps…</p>
 <h1 id="print-to-uart-in-arm64-assembly"><a class="doc-anchor" href="#print-to-uart-in-arm64-assembly">§</a>4 Print to UART in Arm64 Assembly</h1>
 <p><em>Is NuttX actually booting on our SBC?</em></p>
 <p>Let’s print something. <strong>UART0 Base Address</strong> is here…</p>
@@ -303,7 +303,7 @@ ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 *(volatile uint8_t *) 0x02500000 = &#39;1&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;2&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;3&#39;;</code></pre></div>
-<p>But let’s do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
+<p>But we’ll do it in <strong>Arm64 Assembly</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01">arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here */
 __start:
   add x13, x18, #0x16 /* &quot;MZ&quot;: Magic Number for Linux Kernel Header */
@@ -389,7 +389,7 @@ CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
 </li>
 <li>
-<p><strong>Linux Kernel Header</strong> seems to have an incorrect <strong>Image Load Offset</strong>. But it’s unused by Arm64 Bootloaders, so we won’t change it…</p>
+<p><strong>Linux Kernel Header</strong> seems to have an incorrect <strong>Image Load Offset</strong>. Arm64 Bootloaders don’t care, so we won’t change it…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
 __start:
   ...
@@ -505,7 +505,7 @@ static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 - Boot from EL1
 - Boot to C runtime for OS Initialize
 AB</code></pre></div>
-<p>OK the <em>repeated rebuilding, recopying and rebooting</em> of NuttX is getting really tiresome. Let’s automate…</p>
+<p>OK the <em>repeated rebuilding, recopying and rebooting</em> of NuttX is getting really tiresome. We automate…</p>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>7 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
@@ -723,7 +723,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 </li>
 </ul>
 <p><em>Arm64 MMU won’t turn on. Maybe our Memory Map is incorrect?</em></p>
-<p>Let’s verify our <strong>A527 Memory Map</strong> (pic above)</p>
+<p>We verify our <strong>A527 Memory Map</strong> (pic above)</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 40</th></tr></thead><tbody>
@@ -769,7 +769,7 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 // #define CONFIG_PCI_IO_BASEADDR  0x3eff0000
 // #define CONFIG_PCI_IO_SIZE      KB(64)</code></pre></div></li>
 <li>
-<p><strong>PCI</strong>: Let’s remove these for now: <a href="https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7">qemu_boot.c</a></p>
+<p><strong>PCI</strong>: We remove these for now: <a href="https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct arm_mmu_region g_mmu_regions[] = {
   ...
   // We don&#39;t need PCI, for now
@@ -1406,7 +1406,7 @@ code /tmp/avaota-board</code></pre></div></span>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/testbot3#sdwire-microsd-multiplexer"><strong>“SDWire MicroSD Multiplexer”</strong></a></li>
 </ul>
-<p>SDWire needs <a href="https://lupyuen.github.io/articles/testbot3#mount-the-microsd"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. Let’s make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
+<p>SDWire needs <a href="https://lupyuen.github.io/articles/testbot3#mount-the-microsd"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. We make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
 <ol>
 <li>
 <p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a">copy-image.sh</a></p>
