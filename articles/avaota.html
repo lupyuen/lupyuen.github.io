@@ -138,7 +138,7 @@
 <p><em>(Containing the Linux Kernel)</em></p>
 </li>
 <li>
-<p>Thus we <strong>“Hijack” the <code>Image</code> File</strong>, replace it by <strong>NuttX Kernel</strong></p>
+<p>Thus we <strong>“Hijack” the <code>Image</code> file</strong>, replace it by <strong>NuttX Kernel</strong></p>
 </li>
 <li>
 <p>Which means <strong>NuttX Kernel</strong> shall look and feel like a <strong>Linux Kernel</strong></p>
@@ -389,7 +389,7 @@ CONFIG_RAM_SIZE=134217728</code></pre></div>
 <p><em>(Kinda tiny, but sufficient)</em></p>
 </li>
 <li>
-<p><strong>Linux Kernel Header</strong> seems to have an incorrect <strong>Image Load Offset</strong>. Arm64 Bootloaders don’t care, so we won’t change it…</p>
+<p><strong>Linux Kernel Header</strong> has an incorrect <strong>Image Load Offset</strong>. Arm64 Bootloaders don’t care, so we’ll let it be…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Bootloader starts NuttX here, followed by Linux Kernel Header */
 __start:
   ...
