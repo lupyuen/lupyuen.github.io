@@ -986,7 +986,7 @@ Everything is explained here...
 
 NSH Prompt still missing? It won't appear until we handle the UART Interrupt...
 
-![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
+![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
 
 # Fix the UART Interrupt
 
