@@ -1266,7 +1266,7 @@ nxstyle boards/arm64/a527/avaota-a1/src/avaota-a1.h</code></pre></div></span>
 </li>
 <li>
 <p>Copy the Arch Files into the <strong>Arch Pull Request</strong></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99"><strong>“arch/arm64/a527: Add support for Allwinner A527 SoC”</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/100"><strong>“arch/arm64/a527: Add support for Allwinner A527 SoC”</strong></a></p>
 <span style="font-size:60%">
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Branch for Avaota Arch (initially empty)
 pushd /tmp 
@@ -1274,7 +1274,6 @@ git clone https://github.com/lupyuen2/wip-nuttx avaota-arch --branch avaota-arch
 popd
 
 ## Copy the Arch Files from src to dest
-## Remove the Table of Contents from Arch Doc
 function copy_files() {
   src=.
   dest=/tmp/avaota-arch
@@ -1306,8 +1305,10 @@ function copy_files() {
   done
 }
 
-## Remember to commit /tmp/avaota-arch
-copy_files</code></pre></div></span>
+## Copy and commit /tmp/avaota-arch
+## Remove the &quot;Supported Boards&quot; (toctree) from Arch Doc
+copy_files
+code /tmp/avaota-arch</code></pre></div></span>
 </li>
 <li>
 <p>Copy the Board Files into the <strong>Board Pull Request</strong></p>
@@ -1318,8 +1319,7 @@ git clone https://github.com/lupyuen2/wip-nuttx avaota-board --branch avaota-boa
 popd
 
 ## Copy the Board Files from src to dest
-## Copy the Arch Doc again because we restored the Table of Contents
-function copy_files() {
+## Copy the Arch Doc again because we restored the &quot;Supported Boards&quot; function copy_files() {
   src=.
   dest=/tmp/avaota-board
   for file in \
@@ -1354,14 +1354,15 @@ function copy_files() {
   done
 }
 
-## Remember to commit /tmp/avaota-board
-copy_files</code></pre></div></span>
+## Copy and commit /tmp/avaota-board
+copy_files
+code /tmp/avaota-board</code></pre></div></span>
 </li>
 <li>
 <p>Remember to create <strong>Two Commits Per PR</strong>: One Commit for Code, Another Commit for Docs</p>
 </li>
 <li>
-<p>Need to <a href="TODO"><strong>Squash the Commits</strong></a>, but another Code or Doc Commit is stuck in between? Try <a href="https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop"><strong>Reordering the Commits</strong></a> to the top, before squashing</p>
+<p>Need to <a href="TODO"><strong>Squash the Commits</strong></a> (or amend), but another Code or Doc Commit is stuck in between? Try <a href="https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop"><strong>Reordering the Commits</strong></a> to the top, before squashing</p>
 </li>
 </ol>
 <p>TODO: Pic of SDWire</p>
