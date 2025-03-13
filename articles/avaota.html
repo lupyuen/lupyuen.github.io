@@ -183,7 +183,9 @@ ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 <p>Aha! <strong>Kernel Boot Address</strong> <em>0x4080_0000</em> is super important, we’ll use it in a while</p>
 </li>
 </ol>
-<p>TODO: Pic of Semihosting</p>
+<blockquote>
+<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="NuttX Kernel Build will call out to HostFS Semihosting" /></p>
+</blockquote>
 <h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
 <p>Follow these steps to Build and Run NuttX for <a href="TODO"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel (NuttX Kernel Build)
@@ -678,7 +680,7 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <tr><td style="text-align: center"><em>0x40A0_0000</em></td><td style="text-align: center">0x40A0_0000</td><td style="text-align: center"><em>0x0040_0000</em></td></tr>
 </tbody></table>
 </div></p>
-<p>TODO: Pic of Memory Map</p>
+<p><img src="https://lupyuen.org/images/avaota-memory.jpg" alt="A527 Memory Map" /></p>
 <h1 id="fix-the-memory-map"><a class="doc-anchor" href="#fix-the-memory-map">§</a>9 Fix the Memory Map</h1>
 <p><em>Why do we need Arm64 MMU? (Memory Management Unit)</em></p>
 <p>We require MMU for…</p>
@@ -689,7 +691,6 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 <li>
 <p><strong>Virtual Memory</strong>: Allow Applications to access chunks of <em>“Imaginary Memory”</em> at Exotic Addresses <em>(0x8000_0000!)</em></p>
 <p>But in reality: They’re System RAM recycled from boring old addresses <em>(like 0x40A0_4000)</em></p>
-<p><em>(Kinda like “The Matrix”)</em></p>
 </li>
 </ul>
 <p>If we don’t configure MMU with the correct <strong>Memory Map</strong>…</p>
@@ -702,10 +703,10 @@ enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
 </li>
 </ul>
 <p><em>Arm64 MMU won’t turn on. Maybe our Memory Map is incorrect?</em></p>
-<p>Let’s verify our <strong>A527 Memory Map</strong>…</p>
+<p>Let’s verify our <strong>A527 Memory Map</strong> (pic above)</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 42</th></tr></thead><tbody>
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 40</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Address</strong></td></tr>
 <tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left"><em>0x0000_0000</em> to …</td></tr>
 <tr><td style="text-align: left">PCIE</td><td style="text-align: left"><em>0x2000_0000</em> to <em>0x2FFF_FFFF</em></td></tr>
@@ -850,7 +851,7 @@ gic_validate_dist_version:
   GICv3 version detect
   GICD_TYPER = 0x7b0408
   256 SPIs implemented</code></pre></div>
-<p>TODO: Pic of Apps Filesystem</p>
+<p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem on ROMFS" /></p>
 <h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>11 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
 <p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
@@ -894,6 +895,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <li>TODO: Appendix</li>
 </ul>
 <p>NSH Prompt still missing? It won’t appear until we handle the UART Interrupt…</p>
+<p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem" /></p>
 <h1 id="fix-the-uart-interrupt"><a class="doc-anchor" href="#fix-the-uart-interrupt">§</a>12 Fix the UART Interrupt</h1>
 <p>One Last Thing: Settle the <strong>UART Interrupt</strong> and we’re done!</p>
 <p>
@@ -1368,10 +1370,13 @@ code /tmp/avaota-board</code></pre></div></span>
 <p>Try <a href="https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop"><strong>Reordering the Commits</strong></a> to the top, before squashing or amending.</p>
 <p><img src="https://lupyuen.org/images/avaota-commit3.png" alt="After Reordering the Commit" /></p>
 </li>
+<li>
+<p>Now we’re finally ready to Submit our Pull Requests!</p>
+</li>
 </ol>
-<p>TODO: Pic of SDWire</p>
+<p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>17 Appendix: SDWire MicroSD Multiplexer</h1>
-<p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
+<p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> (pic above) to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
 <ul>
 <li>TODO</li>
 </ul>
@@ -1419,9 +1424,9 @@ ssh thinkcentre \
 <p>Everything goes into our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
 </li>
 </ol>
-<p>TODO: Pic of Apps Filesystem</p>
+<p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem in ROMFS" /></p>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>18 Appendix: NuttX Apps Filesystem</h1>
-<p>Earlier we talked about the NuttX Apps Filesystem…</p>
+<p>Earlier we talked about the NuttX Apps Filesystem (pic above)</p>
 <ul>
 <li>TODO</li>
 </ul>
@@ -1496,8 +1501,11 @@ static int mount_ramdisk(void) {
 // RAM Disk Definition
 #define SECTORSIZE   512
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
-#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
-<p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This happens just after Bootloader starts NuttX: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431">qemu_boot.c</a></p>
+#define RAMDISK_DEVICE_MINOR 0</code></pre></div>
+<p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem" /></p>
+<h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
+<p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk)</em> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. (Pic above)</p>
+<p>This happens just after Bootloader starts NuttX: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for the `aligned_data` macro
 #include &lt;nuttx/compiler.h&gt;
 
@@ -1606,7 +1614,7 @@ default_fatal_handler:
 <p>Based on the <strong>A527 Memory Map</strong>…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 42</th></tr></thead><tbody>
+<div><table><thead><tr><th style="text-align: left"><a href="https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf">A523 User Manual</a></th><th style="text-align: left">Page 40</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>Module</strong></td><td style="text-align: left"><strong>Address</strong></td></tr>
 <tr><td style="text-align: left">Boot ROM &amp; SRAM</td><td style="text-align: left"><em>0x0000_0000</em> to …</td></tr>
 <tr><td style="text-align: left">PCIE</td><td style="text-align: left"><em>0x2000_0000</em> to <em>0x2FFF_FFFF</em></td></tr>
@@ -1706,9 +1714,10 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 </div></div>
 </p>
 <p><a href="TODO">(Explained here)</a></p>
+<p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem containing the NuttX Apps" /></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.4 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
-<p><strong>At NuttX Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> containing the <strong>NuttX Apps</strong>…</p>
+<p><strong>At NuttX Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk)</em> containing the <strong>NuttX Apps</strong> (pic above)</p>
 <ul>
 <li>TODO</li>
 </ul>
