@@ -1000,6 +1000,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image</code></pre></div>
 <p>Read on to boot the NuttX Image on our SBC…</p>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>15 Appendix: Boot NuttX on Avaota-A1</h1>
 <p>Earlier we built <a href="TODO"><strong>NuttX for Avaota-A1</strong></a> and created the <strong><code>Image</code></strong> file, containing the NuttX Kernel + NuttX Apps. Let’s boot it on MicroSD…</p>
 <ol>
@@ -1140,6 +1141,7 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>NuttX Log</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/avaota-pr.png" alt="Upstreaming NuttX for Avaota-A1" /></p>
 <h1 id="appendix-upstream-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-upstream-nuttx-for-avaota-a1">§</a>16 Appendix: Upstream NuttX for Avaota-A1</h1>
 <p>In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What’s Next: Upstreaming our code to <strong>NuttX Mainline</strong>!</p>
 <p>Here’s how we copy-n-pasted our <a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits"><strong>Modified Files</strong></a> into a proper <strong>NuttX Arch</strong> <em>(Allwinner A527)</em> and <strong>NuttX Board</strong> <em>(Avaota-A1)</em></p>
@@ -1502,10 +1504,9 @@ static int mount_ramdisk(void) {
 // RAM Disk Definition
 #define SECTORSIZE   512
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
-#define RAMDISK_DEVICE_MINOR 0</code></pre></div>
+#define RAMDISK_DEVICE_MINOR 0</code></pre></div><h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
+<p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk)</em> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>…</p>
 <p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem" /></p>
-<h2 id="copy-the-romfs"><a class="doc-anchor" href="#copy-the-romfs">§</a>18.4 Copy the ROMFS</h2>
-<p><strong>But Before That:</strong> We safely copy the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk)</em> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. (Pic above)</p>
 <p>This happens just after Bootloader starts NuttX: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for the `aligned_data` macro
 #include &lt;nuttx/compiler.h&gt;
@@ -1599,7 +1600,7 @@ default_fatal_handler:
   alignment fault</code></pre></div>
 <p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
 <h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
-<p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and tweaked it for <strong>Avaota-A1 SBC</strong>. To help our PR Reviewers: This section explains the Modified Code…</p>
+<p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and changed it slightly for <strong>Avaota-A1 SBC</strong>. To help our PR Reviewers: This section explains the <strong>Modified Code</strong> in our Pull Request…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c"><strong>Modified Files</strong> for Avaota-A1</a></li>
 </ul>
