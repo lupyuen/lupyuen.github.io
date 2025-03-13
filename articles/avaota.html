@@ -1630,7 +1630,7 @@ default_fatal_handler:
 </ul>
 <p><strong>Only Seven Files</strong> were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1. (Pic above)</p>
 <h2 id="memory-map"><a class="doc-anchor" href="#memory-map">§</a>19.1 Memory Map</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><strong>arch/arm64/include/a527/chip.h</strong></a></p>
 <p>We define the <strong>I/O Memory Space</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Memory Space
 #define CONFIG_DEVICEIO_BASEADDR   0x00000000
@@ -1651,7 +1651,7 @@ default_fatal_handler:
 </p>
 <p><a href="https://lupyuen.github.io/articles/avaota#fix-the-memory-map">(Explained here)</a></p>
 <h2 id="gic-interrupt-controller"><a class="doc-anchor" href="#gic-interrupt-controller">§</a>19.2 GIC Interrupt Controller</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><strong>arch/arm64/include/a527/chip.h</strong></a></p>
 <p>We set the <strong>GIC Base Addresses</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// GICD and GICD Base Addresses
 #define CONFIG_GICD_BASE           0x3400000
@@ -1685,7 +1685,7 @@ default_fatal_handler:
 </p>
 <p><a href="https://lupyuen.github.io/articles/avaota#arm64-generic-interrupt-controller">(Explained here)</a></p>
 <hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><strong>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</strong></a></p>
 <p>We set the <strong>UART0 Interrupt</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the UART0 Interrupt to 34
 CONFIG_16550_UART0_IRQ=34</code></pre></div>
@@ -1700,7 +1700,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 </p>
 <p><a href="https://lupyuen.github.io/articles/avaota#fix-the-uart-interrupt">(Explained here)</a></p>
 <h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.3 Arm64 Boot Code</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><em>arch/arm64/src/a527/a527_lowputc.S</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><strong>arch/arm64/src/a527/a527_lowputc.S</strong></a></p>
 <p>We updated the Arm64 Boot Code for <strong>16550 UART Driver</strong>…</p>
 <ol>
 <li>
@@ -1743,7 +1743,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly">(Explained here)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem containing the NuttX Apps" /></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.4 NuttX Start Code</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170"><strong>arch/arm64/src/a527/a527_boot.c</strong></a></p>
 <p><strong>At NuttX Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk, pic above)</em> containing the <strong>NuttX Apps</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem"><strong>“NuttX Apps Filesystem”</strong></a></li>
@@ -1841,7 +1841,7 @@ default_fatal_handler:
   alignment fault</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem">(Explained here)</a></p>
 <h2 id="board-bringup-code"><a class="doc-anchor" href="#board-bringup-code">§</a>19.5 Board Bringup Code</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2"><em>boards/arm64/a527/avaota-a1/src/a527_bringup.c</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2"><strong>boards/arm64/a527/avaota-a1/src/a527_bringup.c</strong></a></p>
 <p><strong>At Board Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(inside RAM)</em> as <em>/dev/ram0</em>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// At NuttX Startup...
 int a527_bringup(void) {
@@ -1875,7 +1875,7 @@ static int mount_ramdisk(void) {
 #define RAMDISK_DEVICE_MINOR 0</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/avaota#mount-the-romfs">(Explained here)</a></p>
 <h2 id="linker-script-1"><a class="doc-anchor" href="#linker-script-1">§</a>19.6 Linker Script</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld.script</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><strong>boards/arm64/a527/avaota-a1/scripts/ld.script</strong></a></p>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We moved the Paged Pool and added the RAM Disk (16 MB) */
 MEMORY {
@@ -1897,7 +1897,7 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div>
 <p>Also we moved the <strong>Paged Pool</strong> because the Boot Address has changed to <em>0x4080_0000</em>.</p>
 <p><a href="https://lupyuen.github.io/articles/avaota#linker-script">(Explained here)</a></p>
 <h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>19.7 NuttX Config</h2>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><strong>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</strong></a></p>
 <p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
@@ -1943,7 +1943,7 @@ Therefore:
   0x0D    = (uartclk + 921600) / 1843200
   uartclk = (0x0D * 1843200) - 921600
           = 23040000</code></pre></div><hr>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6"><em>arch/arm64/src/a527/a527_serial.c</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6"><strong>arch/arm64/src/a527/a527_serial.c</strong></a></p>
 <p>QEMU was using PL011 UART. We switched the Serial Driver to <strong>16550 UART</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Switch from PL011 UART (QEMU) to 16550 UART
 #include &lt;nuttx/serial/uart_16550.h&gt;
