@@ -6,7 +6,7 @@
 
 [_(Watch the Demo on YouTube)_](https://youtu.be/PxaMcmMAzlM)
 
-This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig) to [__PINE64 Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
+This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig) to [__PINE64 Yuzuki Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
 
 _Why are we doing this?_
 
