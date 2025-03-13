@@ -1405,7 +1405,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  Copy the Arch Files into the __Arch Pull Request__
 
-    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
+    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/100)
 
     <span style="font-size:60%">
 
@@ -1416,7 +1416,6 @@ __Upstreaming__ becomes lotsa copypasta...
     popd
 
     ## Copy the Arch Files from src to dest
-    ## Remove the Table of Contents from Arch Doc
     function copy_files() {
       src=.
       dest=/tmp/avaota-arch
@@ -1448,8 +1447,10 @@ __Upstreaming__ becomes lotsa copypasta...
       done
     }
 
-    ## Remember to commit /tmp/avaota-arch
+    ## Copy and commit /tmp/avaota-arch
+    ## Remove the "Supported Boards" (toctree) from Arch Doc
     copy_files
+    code /tmp/avaota-arch
     ```
 
     </span>
@@ -1465,8 +1466,7 @@ __Upstreaming__ becomes lotsa copypasta...
     popd
 
     ## Copy the Board Files from src to dest
-    ## Copy the Arch Doc again because we restored the Table of Contents
-    function copy_files() {
+    ## Copy the Arch Doc again because we restored the "Supported Boards" function copy_files() {
       src=.
       dest=/tmp/avaota-board
       for file in \
@@ -1501,15 +1501,16 @@ __Upstreaming__ becomes lotsa copypasta...
       done
     }
 
-    ## Remember to commit /tmp/avaota-board
+    ## Copy and commit /tmp/avaota-board
     copy_files
+    code /tmp/avaota-board
     ```
 
     </span>
 
 1.  Remember to create __Two Commits Per PR__: One Commit for Code, Another Commit for Docs
 
-1.  Need to [__Squash the Commits__](TODO), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing
+1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing
 
 TODO: Pic of SDWire
 
