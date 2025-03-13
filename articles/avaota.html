@@ -1276,9 +1276,8 @@ popd
 ## Copy the Arch Files from src to dest
 ## Remove the Table of Contents from Arch Doc
 function copy_files() {
-  src=/tmp/avaota-arch
-  src=/tmp/avaota-board
-  dest=.
+  src=.
+  dest=/tmp/avaota-arch
   for file in \
     Documentation/platforms/arm64/a527/index.rst \
     arch/arm64/Kconfig \
@@ -1303,6 +1302,7 @@ function copy_files() {
     set -x
     mkdir -p $dest_dir
     cp $src_file $dest_file
+    set +x
   done
 }
 
@@ -1320,8 +1320,8 @@ popd
 ## Copy the Board Files from src to dest
 ## Copy the Arch Doc again because we restored the Table of Contents
 function copy_files() {
-  src=/tmp/avaota-board
-  dest=.
+  src=.
+  dest=/tmp/avaota-board
   for file in \
     Documentation/platforms/arm64/a527/index.rst \
     Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg \
@@ -1350,6 +1350,7 @@ function copy_files() {
     set -x
     mkdir -p $dest_dir
     cp $src_file $dest_file
+    set +x
   done
 }
 
@@ -1360,7 +1361,7 @@ copy_files</code></pre></div></span>
 <p>Remember to create <strong>Two Commits Per PR</strong>: One Commit for Code, Another Commit for Docs</p>
 </li>
 <li>
-<p>Need to <strong>Squash the Commits</strong>? Try <strong>Reordering the Commits</strong> to the top, before squashing</p>
+<p>Need to <a href="TODO"><strong>Squash the Commits</strong></a>, but another Code or Doc Commit is stuck in between? Try <a href="https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop"><strong>Reordering the Commits</strong></a> to the top, before squashing</p>
 </li>
 </ol>
 <p>TODO: Pic of SDWire</p>
