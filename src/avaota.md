@@ -139,7 +139,7 @@ NuttX 12.8.0 96eb5e7819 Mar 13 2025 15:45:11 arm64 qemu-armv8a
 nsh> hello
 Hello, World!!
 
-## Don't worry about `nxposix_spawn_exec`
+## No worries about `nxposix_spawn_exec`
 ## To Quit: Press Ctrl-a then x
 ```
 
@@ -399,7 +399,7 @@ void arm64_chip_boot(void) {
   up_perf_init(..);  // Init the Performance Counters
 ```
 
-Beyond Big Bird: We need the __16550 UART Driver__...
+Beyond Big Bird: We need the __16550 UART Driver__. Based on the [__A527 UART Doc__](https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly)...
 
 1.  __NuttX Boot Code__ _(Arm64 Assembly)_ will print to UART. We patch it: [qemu_lowputc.S](https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-60cebb895326dea641e32d31ff39511acf127a30c9ac8f275590e7524737366e)
 
@@ -475,7 +475,7 @@ Beyond Big Bird: We need the __16550 UART Driver__...
     ```c
     // We disable the UART Clock Configuration...
     static int u16550_setup(FAR struct uart_dev_s *dev) { ...
-    #ifdef TODO  // We'll fix it later
+    #ifdef FIX_LATER  // We'll fix it later
       // Enter DLAB=1
       u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
 
@@ -1138,27 +1138,28 @@ Read on to boot the NuttX Image on our SBC...
 
 # Appendix: Boot NuttX on Avaota-A1
 
-Earlier we built [__NuttX for Avaota-A1__](TODO) and created the __`Image`__ file, containing the NuttX Kernel + NuttX Apps. Let's boot it on MicroSD...
+Earlier we built [__NuttX for Avaota-A1__](https://lupyuen.github.io/articles/avaota#appendix-build-nuttx-for-avaota-a1) and created the __`Image`__ file, containing the NuttX Kernel + NuttX Apps. Let's boot it on MicroSD...
 
-1.  Prepare the __AvaotaOS MicrosSD__...
+1.  Prepare the __AvaotaOS MicroSD__...
 
-    TODO
+    [__"Boot NuttX Kernel on our SBC"__](https://lupyuen.github.io/articles/avaota#boot-nuttx-kernel-on-our-sbc)
 
 1.  Copy the __NuttX Image__ to MicroSD...
 
     ```bash
     ## Copy NuttX Image to AvaotaOS MicroSD
     ## Overwrite the `Image` file
-    ## Boot it on Avaota-A1
     mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
     cp Image /media/$USER/YOUR_SD/Image
+
+    ## Unmount and boot it on Avaota-A1
     ls -l /media/$USER/YOUR_SD/Image
     umount /media/$USER/YOUR_SD
     ```
 
 1.  __Boot the MicroSD__ on our SBC
 
-We can automate the last two steps with a [__MicroSD Multiplexer__](TODO) and [__Smart Power Plug__](TODO)...
+We can automate the last two steps with a [__MicroSD Multiplexer__](https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug) and [__Smart Power Plug__](https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug)...
 
 ```bash
 ## Get the Home Assistant Token
@@ -1204,9 +1205,9 @@ curl \
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
 
-[(__copy-image.sh__ is explained here)](TODO)
+[(__copy-image.sh__ is explained here)](https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug)
 
-[(__Smart Power Plug__ explained)](TODO)
+[(__Smart Power Plug__ also)](https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug)
 
 NuttX boots to NSH Shell. And passes OSTest yay!
 
@@ -1535,7 +1536,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.org/images/avaota-commit.png)
 
-1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between?
+1.  Need to [__Squash the Commits__](https://lupyuen.github.io/articles/pr#squash-the-commits) (or amend them), but another Code or Doc Commit is stuck in between?
 
     ![Before Reordering the Commit](https://lupyuen.org/images/avaota-commit2.png)
 
@@ -1551,9 +1552,9 @@ __Upstreaming__ becomes lotsa copypasta...
 
 Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD Multiplexer__ (pic above) to flip our MicroSD between __Test PC and SBC__...
 
-- TODO
+- [__"SDWire MicroSD Multiplexer"__](https://lupyuen.github.io/articles/testbot3#sdwire-microsd-multiplexer)
 
-SDWire needs [__Plenty of Sudo Passwords__](TODO) to flip the multiplexer, mount the filesystem, copy to MicroSD. Let's make it Sudo Password-Less with [__visudo__](https://help.ubuntu.com/community/Sudoers)...
+SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/testbot3#mount-the-microsd) to flip the multiplexer, mount the filesystem, copy to MicroSD. Let's make it Sudo Password-Less with [__visudo__](https://help.ubuntu.com/community/Sudoers)...
 
 1.  Wrap all the __Sudo Commands__ into a script: [copy-image.sh](https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a)
 
@@ -1590,7 +1591,7 @@ SDWire needs [__Plenty of Sudo Passwords__](TODO) to flip the multiplexer, mount
     user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
     ```
 
-1.  Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run.sh](TODO)
+1.  Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
     ```bash
     ## Copy NuttX Image to MicroSD
@@ -1608,9 +1609,9 @@ SDWire needs [__Plenty of Sudo Passwords__](TODO) to flip the multiplexer, mount
 
 # Appendix: NuttX Apps Filesystem
 
-Earlier we talked about the NuttX Apps Filesystem (pic above)
+Earlier we talked about the __ROMFS Filesystem for NuttX Apps__ _(Initial RAM Disk, pic above)_
 
-- TODO
+- [__"NuttX Apps Filesystem"__](https://lupyuen.github.io/articles/avaota#nuttx-apps-filesystem)
 
 This section explains how we implemented the NuttX Apps Filesystem...
 
@@ -1631,7 +1632,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 ## HostFS becomes ROMFS
 
-QEMU uses [__Semihosting and HostFS__](TODO) to access the NuttX Apps Filesystem. We change to __ROMFS__... [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+QEMU uses [__Semihosting and HostFS__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) to access the NuttX Apps Filesystem. We change to __ROMFS__... [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
 ```bash
 ## We added ROMFS...
@@ -1816,7 +1817,7 @@ default_fatal_handler:
   alignment fault
 ```
 
-[_(Strangely: This Alignment isn't needed for RISC-V)_](TODO)
+[_(Strangely: This Alignment isn't needed for RISC-V)_](https://github.com/lupyuen2/wip-nuttx/blob/b92f051e337d095491f8406b2d99fdd2f6fa5b3e/arch/risc-v/src/eic7700x/eic7700x_start.c#L110-L144)
 
 # Appendix: Port NuttX to Avaota-A1
 
@@ -1856,7 +1857,7 @@ Based on the __A527 Memory Map__...
 </div>
 </p>
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#fix-the-memory-map)
 
 ## GIC Interrupt Controller
 
@@ -1905,7 +1906,7 @@ And __GIC Registers__...
 </div>
 </p>
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#arm64-generic-interrupt-controller)
 
 <hr>
 
@@ -1931,7 +1932,7 @@ Based on the A527 Doc...
 </div>
 </p>
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#fix-the-uart-interrupt)
 
 ## Arm64 Boot Code
 
@@ -1946,7 +1947,7 @@ We updated the Arm64 Boot Code for __16550 UART Driver__...
     #define UART0_BASE_ADDRESS 0x02500000
     ```
 
-1.  QEMU was using PL011 UART. We fixed this for 16550 UART, to __Wait for UART Ready__ [(derived from NuttX A64)](TODO)
+1.  QEMU was using PL011 UART. We fixed this for 16550 UART, to __Wait for UART Ready__ [(derived from NuttX A64)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L62-L74)
 
     ```c
     /* Wait for 16550 UART to be ready to transmit
@@ -1989,7 +1990,7 @@ With these __UART Registers__...
 </div>
 </p>
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly)
 
 ![Mounting the ROMFS Filesystem containing the NuttX Apps](https://lupyuen.org/images/avaota-initrd2.jpg)
 
@@ -1997,11 +1998,11 @@ With these __UART Registers__...
 
 [_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
 
-__At NuttX Startup:__ We mount the __ROMFS Filesystem__ _(Initial RAM Disk)_ containing the __NuttX Apps__ (pic above)
+__At NuttX Startup:__ We mount the __ROMFS Filesystem__ _(Initial RAM Disk, pic above)_ containing the __NuttX Apps__...
 
-- TODO
+- [__"NuttX Apps Filesystem"__](https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem)
 
-How? We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This code came from [__NuttX EIC7700X__](TODO)...
+How? We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This code comes from [__NuttX EIC7700X__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/eic7700x/eic7700x_start.c#L72-L183)...
 
 ```c
 // Needed for the `aligned_data` macro
@@ -2105,7 +2106,7 @@ default_fatal_handler:
   alignment fault
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem)
 
 ## Board Bringup Code
 
@@ -2146,7 +2147,7 @@ static int mount_ramdisk(void) {
 #define RAMDISK_DEVICE_MINOR 0
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#mount-the-romfs)
 
 ## Linker Script
 
@@ -2176,7 +2177,7 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 
 Also we moved the __Paged Pool__ because the Boot Address has changed to _0x4080_0000_.
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#linker-script)
 
 ## NuttX Config
 
@@ -2194,7 +2195,7 @@ CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 CONFIG_ARCH_PGPOOL_VBASE=0x40A00000
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#set-the-start-address)
 
 NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45) in _RAMBANK1_SIZE_. We set _RAM_SIZE_ accordingly...
 
@@ -2203,7 +2204,7 @@ NuttX QEMU declares the [__RAM Size as 128 MB__](https://github.com/lupyuen2/wip
 CONFIG_RAM_SIZE=134217728
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#set-the-start-address)
 
 Based on the __16550 UART Registers__ above: We configured the 16550 UART and removed PL011 UART...
 
@@ -2220,7 +2221,7 @@ CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#uart-driver-for-16550)
 
 __16550_UART0_CLOCK__ was computed according to [__these instructions__](https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110)...
 
@@ -2269,4 +2270,4 @@ void arm64_serialinit(void) {
 }
 ```
 
-[(Explained here)](TODO)
+[(Explained here)](https://lupyuen.github.io/articles/avaota#uart-driver-for-16550)
