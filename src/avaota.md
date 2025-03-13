@@ -1841,7 +1841,7 @@ __Only Seven Files__ were modified from QEMU NuttX. All other files were simply 
 
 ## Memory Map
 
-[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+[__arch/arm64/include/a527/chip.h__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
 
 We define the __I/O Memory Space__...
 
@@ -1873,7 +1873,7 @@ Based on the __A527 Memory Map__...
 
 ## GIC Interrupt Controller
 
-[_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
+[__arch/arm64/include/a527/chip.h__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
 
 We set the __GIC Base Addresses__...
 
@@ -1922,7 +1922,7 @@ And __GIC Registers__...
 
 <hr>
 
-[_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
+[__boards/arm64/a527/avaota-a1/configs/nsh/defconfig__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
 
 We set the __UART0 Interrupt__...
 
@@ -1948,7 +1948,7 @@ Based on the A527 Doc...
 
 ## Arm64 Boot Code
 
-[_arch/arm64/src/a527/a527_lowputc.S_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
+[__arch/arm64/src/a527/a527_lowputc.S__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d)
 
 We updated the Arm64 Boot Code for __16550 UART Driver__...
 
@@ -2008,7 +2008,7 @@ With these __UART Registers__...
 
 ## NuttX Start Code
 
-[_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
+[__arch/arm64/src/a527/a527_boot.c__](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
 
 __At NuttX Startup:__ We mount the __ROMFS Filesystem__ _(Initial RAM Disk, pic above)_ containing the __NuttX Apps__...
 
@@ -2122,7 +2122,7 @@ default_fatal_handler:
 
 ## Board Bringup Code
 
-[_boards/arm64/a527/avaota-a1/src/a527_bringup.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2)
+[__boards/arm64/a527/avaota-a1/src/a527_bringup.c__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2)
 
 __At Board Startup:__ We mount the __ROMFS Filesystem__ _(inside RAM)_ as _/dev/ram0_...
 
@@ -2163,7 +2163,7 @@ static int mount_ramdisk(void) {
 
 ## Linker Script
 
-[_boards/arm64/a527/avaota-a1/scripts/ld.script_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
+[__boards/arm64/a527/avaota-a1/scripts/ld.script__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a)
 
 We reserve __16 MB of RAM__ for the ROMFS Filesystem that will host the NuttX Apps...
 
@@ -2193,7 +2193,7 @@ Also we moved the __Paged Pool__ because the Boot Address has changed to _0x4080
 
 ## NuttX Config
 
-[_boards/arm64/a527/avaota-a1/configs/nsh/defconfig_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
+[__boards/arm64/a527/avaota-a1/configs/nsh/defconfig__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1)
 
 Since we changed the __Paged Memory Pool__ _(pgram)_, we update _ARCH_PGPOOL_PBASE_ and _VBASE_: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86)
 
@@ -2261,7 +2261,7 @@ Therefore:
 
 <hr>
 
-[_arch/arm64/src/a527/a527_serial.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6)
+[__arch/arm64/src/a527/a527_serial.c__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-7a8c921d26a5ea6904550ec7769d456e91598786ed4f7aacfed2642f53227dc6)
 
 QEMU was using PL011 UART. We switched the Serial Driver to __16550 UART__...
 
