@@ -6,7 +6,7 @@
 
 [_(Watch the Demo on YouTube)_](https://youtu.be/PxaMcmMAzlM)
 
-This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](TODO) to [__PINE64 Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
+This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig) to [__PINE64 Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
 
 _Why are we doing this?_
 
@@ -14,9 +14,9 @@ _Why are we doing this?_
 
 - Avaota-A1 SBC is [__Open Source Hardware__](https://github.com/AvaotaSBC/Avaota-A1) _(CERN OHL Licensed)_. PINE64 sells it today, maybe we'll see more manufacturers.
 
-- This could be the First Port of [__Arm64 in NuttX Kernel Build__](TODO). _(NXP i.MX93 might be another?)_
+- This could be the First Port of [__Arm64 in NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode). _(NXP i.MX93 might be another?)_
 
-- We'll run it as [__PR Test Bot__](TODO) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to the [__MicroSD Multiplexer__](https://lupyuen.org/articles/testbot3.html).
+- We'll run it as [__PR Test Bot__](https://lupyuen.github.io/articles/testbot3) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to the [__MicroSD Multiplexer__](https://lupyuen.org/articles/testbot3.html).
 
 We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know! 🙏
 
@@ -44,7 +44,7 @@ Nifty Trick for Booting NuttX on __Any Arm64 SBC__ (RISC-V too)
 
 - Which means __NuttX Kernel__ shall look and feel like a __Linux Kernel__
 
-- That's why we have a [__Linux Kernel Header__](TODO) at the top of NuttX
+- That's why we have a [__Linux Kernel Header__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L89-L116) at the top of NuttX
 
 To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot Linux?__
 
@@ -93,7 +93,7 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
 
 # NuttX Kernel Build for Arm64 QEMU
 
-Follow these steps to Build and Run NuttX for [__Arm64 QEMU (Kernel Build)__](TODO)
+Follow these steps to Build and Run NuttX for [__Arm64 QEMU (Kernel Build)__](https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html)
 
 ```bash
 ## Build NuttX Kernel (NuttX Kernel Build)
@@ -126,24 +126,38 @@ qemu-system-aarch64 \
 Check that it works...
 
 ```bash
-TODO
+- Ready to Boot Primary CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+NuttShell (NSH) NuttX-12.8.0
+nsh> uname -a
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.8.0 96eb5e7819 Mar 13 2025 15:45:11 arm64 qemu-armv8a
+
+nsh> hello
+Hello, World!!
+
+## Don't worry about `nxposix_spawn_exec`
+## To Quit: Press Ctrl-a then x
 ```
 
-We're ready to boot __`nuttx.bin`__ on our SBC!
+We're ready to boot __`nuttx.bin`__ on our SBC.
 
-NuttX Kernel Build will call out to [__HostFS Semihosting__](TODO) (pic above). We'll change this for our SBC.
+NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) (pic above). We'll change this for our SBC.
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
-Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It makes more sense to boot [__NuttX Kernel Build__](TODO) and run lots of cool powerful NuttX Apps with [__Virtual Memory__](TODO).
+Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM. It makes more sense to boot [__NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode) and run lots of cool powerful NuttX Apps with [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
 ![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
 
-# Boot NuttX Kernel on our SBC
+# Boot NuttX on our SBC
 
-Remember the [__MicroSD we downloaded__](TODO)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
+Remember the [__MicroSD we downloaded__](https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
 
 ```bash
 $ ls -l /media/$USER/YOUR_SD
@@ -1472,7 +1486,8 @@ __Upstreaming__ becomes lotsa copypasta...
     popd
 
     ## Copy the Board Files from src to dest
-    ## Copy the Arch Doc again because we restored the "Supported Boards" function copy_files() {
+    ## Copy the Arch Doc again because we restored the "Supported Boards" 
+    function copy_files() {
       src=.
       dest=/tmp/avaota-board
       for file in \
