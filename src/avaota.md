@@ -28,6 +28,8 @@ We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A5
 
 - [__Avaota-A1 Schematic__](https://github.com/AvaotaSBC/Avaota-A1/blob/master/hardware/v1.4/01_SCH/SCH_Avaota%20Pi%20A_2024-05-20.pdf)
 
+- [__Avaota-A1 Device Tree__](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/sun55i-t527-avaota-a1.dts)
+
 _(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
 ![Avaota-A1 SBC connected to USB UART](https://lupyuen.org/images/testbot3-uart.jpg)
@@ -526,7 +528,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
-Here's our nifty __Build Script__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
+Here's our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
 ```bash
 ## Build NuttX and Apps (NuttX Kernel Build)
@@ -561,6 +563,7 @@ curl \
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
 ## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
 scp Image thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh
@@ -1114,7 +1117,7 @@ To boot __NuttX on Avatoa-A1__: We may download __`Image`__ from here...
 
 - [__NuttX Release for Avatoa-A1 SBC__](https://github.com/lupyuen2/wip-nuttx/releases/tag/avaota2-1)
 
-Or follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
+Or follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
 ```bash
 ## Download Source Code for NuttX and Apps
@@ -1188,6 +1191,7 @@ curl \
 ## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
 ## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
 scp Image thinkcentre:/tmp/Image
 ssh thinkcentre ls -l /tmp/Image
 ssh thinkcentre sudo /home/user/copy-image.sh
@@ -1566,7 +1570,7 @@ Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD
 
 SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/testbot3#mount-the-microsd) to flip the multiplexer, mount the filesystem, copy to MicroSD. We make it Sudo Password-Less with [__visudo__](https://help.ubuntu.com/community/Sudoers)...
 
-1.  Wrap all the __Sudo Commands__ into a script: [copy-image.sh](https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a)
+1.  Wrap all the __Sudo Commands__ into a script: [copy-image.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh)
 
     ```bash
     ## Create a Bash Script: copy-image.sh
@@ -1584,7 +1588,7 @@ SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/t
     cp /tmp/Image /tmp/sda1/
     ls -l /tmp/sda1
 
-    ## Unmount MicroSD and flip it to the Test Device (PinePhone)
+    ## Unmount MicroSD and flip it to the Test Device (Avaota-A1)
     umount /tmp/sda1
     sd-mux-ctrl --device-serial=sd-wire_02-09 --dut
     ```
@@ -1601,7 +1605,7 @@ SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/t
     user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh
     ```
 
-1.  Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run.sh](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
+1.  Then we can trigger our script remotely via SSH, __Without Sudo Password__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
     ```bash
     ## Copy NuttX Image to MicroSD
