@@ -227,7 +227,7 @@ NuttX 12.8.0 96eb5e7819 Mar 13 2025 15:45:11 arm64 qemu-armv8a
 nsh&gt; hello
 Hello, World!!
 
-## Don&#39;t worry about `nxposix_spawn_exec`
+## No worries about `nxposix_spawn_exec`
 ## To Quit: Press Ctrl-a then x</code></pre></div>
 <p>We’re ready to boot <strong><code>nuttx.bin</code></strong> on our SBC.</p>
 <p>NuttX Kernel Build will call out to <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>HostFS Semihosting</strong></a> (pic above). We’ll change this for our SBC.</p>
@@ -423,7 +423,7 @@ void arm64_chip_boot(void) {
 
   *(volatile uint8_t *) 0x02500000 = &#39;G&#39;;
   up_perf_init(..);  // Init the Performance Counters</code></pre></div>
-<p>Beyond Big Bird: We need the <strong>16550 UART Driver</strong>…</p>
+<p>Beyond Big Bird: We need the <strong>16550 UART Driver</strong>. Based on the <a href="https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly"><strong>A527 UART Doc</strong></a>…</p>
 <ol>
 <li>
 <p><strong>NuttX Boot Code</strong> <em>(Arm64 Assembly)</em> will print to UART. We patch it: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-60cebb895326dea641e32d31ff39511acf127a30c9ac8f275590e7524737366e">qemu_lowputc.S</a></p>
@@ -483,7 +483,7 @@ CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div></li>
 <p><strong>16550_UART0_CLOCK</strong> isn’t quite correct, we’ll <a href="https://lupyuen.github.io/articles/avaota#nuttx-config"><strong>settle later</strong></a>. Meanwhile we disable the <strong>UART Clock Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// We disable the UART Clock Configuration...
 static int u16550_setup(FAR struct uart_dev_s *dev) { ...
-#ifdef TODO  // We&#39;ll fix it later
+#ifdef FIX_LATER  // We&#39;ll fix it later
   // Enter DLAB=1
   u16550_serialout(priv, UART_LCR_OFFSET, (lcr | UART_LCR_DLAB));
 
@@ -1018,26 +1018,27 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>15 Appendix: Boot NuttX on Avaota-A1</h1>
-<p>Earlier we built <a href="TODO"><strong>NuttX for Avaota-A1</strong></a> and created the <strong><code>Image</code></strong> file, containing the NuttX Kernel + NuttX Apps. Let’s boot it on MicroSD…</p>
+<p>Earlier we built <a href="https://lupyuen.github.io/articles/avaota#appendix-build-nuttx-for-avaota-a1"><strong>NuttX for Avaota-A1</strong></a> and created the <strong><code>Image</code></strong> file, containing the NuttX Kernel + NuttX Apps. Let’s boot it on MicroSD…</p>
 <ol>
 <li>
-<p>Prepare the <strong>AvaotaOS MicrosSD</strong>…</p>
-<p>TODO</p>
+<p>Prepare the <strong>AvaotaOS MicroSD</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/avaota#boot-nuttx-kernel-on-our-sbc"><strong>“Boot NuttX Kernel on our SBC”</strong></a></p>
 </li>
 <li>
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
-## Boot it on Avaota-A1
 mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
 cp Image /media/$USER/YOUR_SD/Image
+
+## Unmount and boot it on Avaota-A1
 ls -l /media/$USER/YOUR_SD/Image
 umount /media/$USER/YOUR_SD</code></pre></div></li>
 <li>
 <p><strong>Boot the MicroSD</strong> on our SBC</p>
 </li>
 </ol>
-<p>We can automate the last two steps with a <a href="TODO"><strong>MicroSD Multiplexer</strong></a> and <a href="TODO"><strong>Smart Power Plug</strong></a>…</p>
+<p>We can automate the last two steps with a <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>Smart Power Plug</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token
 ## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
@@ -1078,8 +1079,8 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.avaota_power_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="TODO">(<strong>copy-image.sh</strong> is explained here)</a></p>
-<p><a href="TODO">(<strong>Smart Power Plug</strong> explained)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>copy-image.sh</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>Smart Power Plug</strong> also)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
 <span style="font-size:60%">
 <div class="example-wrap"><pre class="language-text"><code>NOTICE:  BL31: v2.5(debug):9241004a9
@@ -1385,7 +1386,7 @@ code /tmp/avaota-board</code></pre></div></span>
 <p><img src="https://lupyuen.org/images/avaota-commit.png" alt="Two Commits Per PR: One Commit for Code, Another Commit for Docs" /></p>
 </li>
 <li>
-<p>Need to <a href="TODO"><strong>Squash the Commits</strong></a> (or amend), but another Code or Doc Commit is stuck in between?</p>
+<p>Need to <a href="https://lupyuen.github.io/articles/pr#squash-the-commits"><strong>Squash the Commits</strong></a> (or amend them), but another Code or Doc Commit is stuck in between?</p>
 <p><img src="https://lupyuen.org/images/avaota-commit2.png" alt="Before Reordering the Commit" /></p>
 <p>Try <a href="https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop"><strong>Reordering the Commits</strong></a> to the top, before squashing or amending.</p>
 <p><img src="https://lupyuen.org/images/avaota-commit3.png" alt="After Reordering the Commit" /></p>
@@ -1398,9 +1399,9 @@ code /tmp/avaota-board</code></pre></div></span>
 <h1 id="appendix-sdwire-microsd-multiplexer"><a class="doc-anchor" href="#appendix-sdwire-microsd-multiplexer">§</a>17 Appendix: SDWire MicroSD Multiplexer</h1>
 <p>Let’s make our Tweak-Build-Test Cycle quicker for NuttX. We use <strong>SDWire MicroSD Multiplexer</strong> (pic above) to flip our MicroSD between <strong>Test PC and SBC</strong>…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/testbot3#sdwire-microsd-multiplexer"><strong>“SDWire MicroSD Multiplexer”</strong></a></li>
 </ul>
-<p>SDWire needs <a href="TODO"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. Let’s make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
+<p>SDWire needs <a href="https://lupyuen.github.io/articles/testbot3#mount-the-microsd"><strong>Plenty of Sudo Passwords</strong></a> to flip the multiplexer, mount the filesystem, copy to MicroSD. Let’s make it Sudo Password-Less with <a href="https://help.ubuntu.com/community/Sudoers"><strong>visudo</strong></a>…</p>
 <ol>
 <li>
 <p>Wrap all the <strong>Sudo Commands</strong> into a script: <a href="https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a">copy-image.sh</a></p>
@@ -1432,7 +1433,7 @@ sudo visudo
 ## Add this line:
 user ALL=(ALL) NOPASSWD: /home/user/copy-image.sh</code></pre></div></li>
 <li>
-<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="TODO">run.sh</a></p>
+<p>Then we can trigger our script remotely via SSH, <strong>Without Sudo Password</strong>: <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo yay!
 scp Image thinkcentre:/tmp/Image
@@ -1446,9 +1447,9 @@ ssh thinkcentre \
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem in ROMFS" /></p>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>18 Appendix: NuttX Apps Filesystem</h1>
-<p>Earlier we talked about the NuttX Apps Filesystem (pic above)</p>
+<p>Earlier we talked about the <strong>ROMFS Filesystem for NuttX Apps</strong> <em>(Initial RAM Disk, pic above)</em></p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/avaota#nuttx-apps-filesystem"><strong>“NuttX Apps Filesystem”</strong></a></li>
 </ul>
 <p>This section explains how we implemented the NuttX Apps Filesystem…</p>
 <ul>
@@ -1463,7 +1464,7 @@ nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="hostfs-becomes-romfs"><a class="doc-anchor" href="#hostfs-becomes-romfs">§</a>18.1 HostFS becomes ROMFS</h2>
-<p>QEMU uses <a href="TODO"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
+<p>QEMU uses <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added ROMFS...
 CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
@@ -1615,7 +1616,7 @@ for (
 default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
-<p><a href="TODO"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/b92f051e337d095491f8406b2d99fdd2f6fa5b3e/arch/risc-v/src/eic7700x/eic7700x_start.c#L110-L144"><em>(Strangely: This Alignment isn’t needed for RISC-V)</em></a></p>
 <h1 id="appendix-port-nuttx-to-avaota-a1"><a class="doc-anchor" href="#appendix-port-nuttx-to-avaota-a1">§</a>19 Appendix: Port NuttX to Avaota-A1</h1>
 <p>In this article, we took NuttX for <strong>Arm64 QEMU knsh (Kernel Build)</strong> and changed it slightly for <strong>Avaota-A1 SBC</strong>. To help our PR Reviewers: This section explains the <strong>Modified Code</strong> in our Pull Request…</p>
 <ul>
@@ -1642,7 +1643,7 @@ default_fatal_handler:
 </tbody></table>
 </div></div>
 </p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#fix-the-memory-map">(Explained here)</a></p>
 <h2 id="gic-interrupt-controller"><a class="doc-anchor" href="#gic-interrupt-controller">§</a>19.2 GIC Interrupt Controller</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe"><em>arch/arm64/include/a527/chip.h</em></a></p>
 <p>We set the <strong>GIC Base Addresses</strong>…</p>
@@ -1676,7 +1677,7 @@ default_fatal_handler:
 </tbody></table>
 </div></div>
 </p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#arm64-generic-interrupt-controller">(Explained here)</a></p>
 <hr>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
 <p>We set the <strong>UART0 Interrupt</strong>…</p>
@@ -1691,7 +1692,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 </tbody></table>
 </div></div>
 </p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#fix-the-uart-interrupt">(Explained here)</a></p>
 <h2 id="arm64-boot-code"><a class="doc-anchor" href="#arm64-boot-code">§</a>19.3 Arm64 Boot Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-faa554bbda31c1c014a2df5f83ab406dd9e57d39fff982ce45fdb627f63e468d"><em>arch/arm64/src/a527/a527_lowputc.S</em></a></p>
 <p>We updated the Arm64 Boot Code for <strong>16550 UART Driver</strong>…</p>
@@ -1701,7 +1702,7 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>// Base Address for 16550 UART
 #define UART0_BASE_ADDRESS 0x02500000</code></pre></div></li>
 <li>
-<p>QEMU was using PL011 UART. We fixed this for 16550 UART, to <strong>Wait for UART Ready</strong> <a href="TODO">(derived from NuttX A64)</a></p>
+<p>QEMU was using PL011 UART. We fixed this for 16550 UART, to <strong>Wait for UART Ready</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L62-L74">(derived from NuttX A64)</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Wait for 16550 UART to be ready to transmit
 * xb: Register that contains the UART Base Address
 * wt: Scratch register number */
@@ -1733,15 +1734,15 @@ CONFIG_16550_UART0_IRQ=34</code></pre></div>
 </tbody></table>
 </div></div>
 </p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly">(Explained here)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-initrd2.jpg" alt="Mounting the ROMFS Filesystem containing the NuttX Apps" /></p>
 <h2 id="nuttx-start-code"><a class="doc-anchor" href="#nuttx-start-code">§</a>19.4 NuttX Start Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170"><em>arch/arm64/src/a527/a527_boot.c</em></a></p>
-<p><strong>At NuttX Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk)</em> containing the <strong>NuttX Apps</strong> (pic above)</p>
+<p><strong>At NuttX Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(Initial RAM Disk, pic above)</em> containing the <strong>NuttX Apps</strong>…</p>
 <ul>
-<li>TODO</li>
+<li><a href="https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem"><strong>“NuttX Apps Filesystem”</strong></a></li>
 </ul>
-<p>How? We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This code came from <a href="TODO"><strong>NuttX EIC7700X</strong></a>…</p>
+<p>How? We safely copy the <strong>ROMFS Filesystem</strong> from the NuttX Image into the <strong><code>ramdisk</code> Memory Region</strong>. This code comes from <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/eic7700x/eic7700x_start.c#L72-L183"><strong>NuttX EIC7700X</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for the `aligned_data` macro
 #include &lt;nuttx/compiler.h&gt;
 
@@ -1832,7 +1833,7 @@ for (
 default_fatal_handler:
   (IFSC/DFSC) for Data/Instruction aborts:
   alignment fault</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem">(Explained here)</a></p>
 <h2 id="board-bringup-code"><a class="doc-anchor" href="#board-bringup-code">§</a>19.5 Board Bringup Code</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-5c21dc796c75ebe2ddd15175015333e013d3966e6e779432eda183363ae1d7b2"><em>boards/arm64/a527/avaota-a1/src/a527_bringup.c</em></a></p>
 <p><strong>At Board Startup:</strong> We mount the <strong>ROMFS Filesystem</strong> <em>(inside RAM)</em> as <em>/dev/ram0</em>…</p>
@@ -1866,7 +1867,7 @@ static int mount_ramdisk(void) {
 #define SECTORSIZE   512
 #define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
 #define RAMDISK_DEVICE_MINOR 0</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#mount-the-romfs">(Explained here)</a></p>
 <h2 id="linker-script-1"><a class="doc-anchor" href="#linker-script-1">§</a>19.6 Linker Script</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-239ddf89006a4d4e2858b9f3c4fa8165245fd7d21ed0a33a971c70c4deaf9d4a"><em>boards/arm64/a527/avaota-a1/scripts/ld.script</em></a></p>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps…</p>
@@ -1888,7 +1889,7 @@ __ramdisk_start = ORIGIN(ramdisk);
 __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);</code></pre></div>
 <p>Also we moved the <strong>Paged Pool</strong> because the Boot Address has changed to <em>0x4080_0000</em>.</p>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#linker-script">(Explained here)</a></p>
 <h2 id="nuttx-config"><a class="doc-anchor" href="#nuttx-config">§</a>19.7 NuttX Config</h2>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-89d849e89568645806e7cde6f80877786891ed21659d281b9413db67e6eff0c1"><em>boards/arm64/a527/avaota-a1/configs/nsh/defconfig</em></a></p>
 <p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
@@ -1899,11 +1900,11 @@ CONFIG_ARCH_PGPOOL_PBASE=0x40A00000
 ## Virtual Address of Paged Memory Pool
 ## Previously: QEMU Paged Memory is at 0x4028_0000
 CONFIG_ARCH_PGPOOL_VBASE=0x40A00000</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#set-the-start-address">(Explained here)</a></p>
 <p>NuttX QEMU declares the <a href="https://github.com/lupyuen2/wip-nuttx/commit/005900ef7e1a1480b8df975d0dcd190fbfc60a45"><strong>RAM Size as 128 MB</strong></a> in <em>RAMBANK1_SIZE</em>. We set <em>RAM_SIZE</em> accordingly…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## RAM Size is 128 MB
 CONFIG_RAM_SIZE=134217728</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#set-the-start-address">(Explained here)</a></p>
 <p>Based on the <strong>16550 UART Registers</strong> above: We configured the 16550 UART and removed PL011 UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_REGINCR=4
@@ -1915,7 +1916,7 @@ CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#uart-driver-for-16550">(Explained here)</a></p>
 <p><strong>16550_UART0_CLOCK</strong> was computed according to <a href="https://lupyuen.github.io/articles/release#appendix-uart-clock-for-jh7110"><strong>these instructions</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttX UART Debug Log shows:
   dlm = 0x00
@@ -1952,7 +1953,7 @@ void arm64_serialinit(void) {
   // Previous for QEMU: pl011_serialinit
   u16550_serialinit();
 }</code></pre></div>
-<p><a href="TODO">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#uart-driver-for-16550">(Explained here)</a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
