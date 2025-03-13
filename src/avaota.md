@@ -617,8 +617,6 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 - [__"SDWire MicroSD Multiplexer"__](https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer)
 
-_(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 hmmm...)_
-
 # Arm64 Memory Management Unit
 
 _It's getting late. Can we get back to NuttX now?_
@@ -1616,6 +1614,8 @@ SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/t
     ```
 
 1.  Everything goes into our [__Build Script for NuttX__](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
+
+_(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 hmmm...)_
 
 ![NuttX Apps Filesystem in ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
