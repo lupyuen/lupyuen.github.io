@@ -1807,6 +1807,8 @@ In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and change
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
+__Only Seven Files__ were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1.
+
 ## Memory Map
 
 [_arch/arm64/include/a527/chip.h_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-90c2e9d244c0b30507a1c22d2374875c4672d39fe84e280f4a73c4935eede8fe)
