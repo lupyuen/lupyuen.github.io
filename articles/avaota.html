@@ -67,7 +67,7 @@
     <nav id="rustdoc"><ul>
 <li><a href="#boot-linux-on-our-sbc" title="Boot Linux on our SBC">1 Boot Linux on our SBC</a><ul></ul></li>
 <li><a href="#nuttx-kernel-build-for-arm64-qemu" title="NuttX Kernel Build for Arm64 QEMU">2 NuttX Kernel Build for Arm64 QEMU</a><ul></ul></li>
-<li><a href="#boot-nuttx-kernel-on-our-sbc" title="Boot NuttX Kernel on our SBC">3 Boot NuttX Kernel on our SBC</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-our-sbc" title="Boot NuttX on our SBC">3 Boot NuttX on our SBC</a><ul></ul></li>
 <li><a href="#print-to-uart-in-arm64-assembly" title="Print to UART in Arm64 Assembly">4 Print to UART in Arm64 Assembly</a><ul></ul></li>
 <li><a href="#set-the-start-address" title="Set the Start Address">5 Set the Start Address</a><ul></ul></li>
 <li><a href="#uart-driver-for-16550" title="UART Driver for 16550">6 UART Driver for 16550</a><ul></ul></li>
@@ -97,7 +97,7 @@
 <li><a href="#nuttx-config" title="NuttX Config">19.7 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
-<p>This article explains how we ported NuttX from <a href="TODO"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
+<p>This article explains how we ported NuttX from <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
 <p><em>Why are we doing this?</em></p>
 <ul>
 <li>
@@ -107,10 +107,10 @@
 <p>Avaota-A1 SBC is <a href="https://github.com/AvaotaSBC/Avaota-A1"><strong>Open Source Hardware</strong></a> <em>(CERN OHL Licensed)</em>. PINE64 sells it today, maybe we’ll see more manufacturers.</p>
 </li>
 <li>
-<p>This could be the First Port of <a href="TODO"><strong>Arm64 in NuttX Kernel Build</strong></a>. <em>(NXP i.MX93 might be another?)</em></p>
+<p>This could be the First Port of <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>Arm64 in NuttX Kernel Build</strong></a>. <em>(NXP i.MX93 might be another?)</em></p>
 </li>
 <li>
-<p>We’ll run it as <a href="TODO"><strong>PR Test Bot</strong></a> for validating <strong>Arm64 Pull Requests</strong> on Real Hardware. PR Test Bot will be fully automated thanks to the <a href="https://lupyuen.org/articles/testbot3.html"><strong>MicroSD Multiplexer</strong></a>.</p>
+<p>We’ll run it as <a href="https://lupyuen.github.io/articles/testbot3"><strong>PR Test Bot</strong></a> for validating <strong>Arm64 Pull Requests</strong> on Real Hardware. PR Test Bot will be fully automated thanks to the <a href="https://lupyuen.org/articles/testbot3.html"><strong>MicroSD Multiplexer</strong></a>.</p>
 </li>
 </ul>
 <p>We’re ready for volunteers to build <strong>NuttX Drivers for Avaota-A1 / Allwinner A527</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know! 🙏</p>
@@ -144,7 +144,7 @@
 <p>Which means <strong>NuttX Kernel</strong> shall look and feel like a <strong>Linux Kernel</strong></p>
 </li>
 <li>
-<p>That’s why we have a <a href="TODO"><strong>Linux Kernel Header</strong></a> at the top of NuttX</p>
+<p>That’s why we have a <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L89-L116"><strong>Linux Kernel Header</strong></a> at the top of NuttX</p>
 </li>
 </ul>
 <p>To begin, we observe our SBC and its <em>Natural Behaviour</em>… How does it <strong>Boot Linux?</strong></p>
@@ -187,7 +187,7 @@ ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 <p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="NuttX Kernel Build will call out to HostFS Semihosting" /></p>
 </blockquote>
 <h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
-<p>Follow these steps to Build and Run NuttX for <a href="TODO"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
+<p>Follow these steps to Build and Run NuttX for <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel (NuttX Kernel Build)
 git clone https://github.com/apache/nuttx
 git clone https://github.com/apache/nuttx-apps apps
@@ -214,15 +214,29 @@ qemu-system-aarch64 \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx</code></pre></div>
 <p>Check that it works…</p>
-<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
-<p>We’re ready to boot <strong><code>nuttx.bin</code></strong> on our SBC!</p>
-<p>NuttX Kernel Build will call out to <a href="TODO"><strong>HostFS Semihosting</strong></a> (pic above). We’ll change this for our SBC.</p>
+<div class="example-wrap"><pre class="language-bash"><code>- Ready to Boot Primary CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+NuttShell (NSH) NuttX-12.8.0
+nsh&gt; uname -a
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.8.0 96eb5e7819 Mar 13 2025 15:45:11 arm64 qemu-armv8a
+
+nsh&gt; hello
+Hello, World!!
+
+## Don&#39;t worry about `nxposix_spawn_exec`
+## To Quit: Press Ctrl-a then x</code></pre></div>
+<p>We’re ready to boot <strong><code>nuttx.bin</code></strong> on our SBC.</p>
+<p>NuttX Kernel Build will call out to <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>HostFS Semihosting</strong></a> (pic above). We’ll change this for our SBC.</p>
 <p><em>Why start with NuttX Kernel Build? Not NuttX Flat Build?</em></p>
-<p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM. It makes more sense to boot <a href="TODO"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX Apps with <a href="TODO"><strong>Virtual Memory</strong></a>.</p>
+<p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM. It makes more sense to boot <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX Apps with <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>Virtual Memory</strong></a>.</p>
 <p><em>(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
-<h1 id="boot-nuttx-kernel-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-kernel-on-our-sbc">§</a>3 Boot NuttX Kernel on our SBC</h1>
-<p>Remember the <a href="TODO"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”</p>
+<h1 id="boot-nuttx-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-on-our-sbc">§</a>3 Boot NuttX on our SBC</h1>
+<p>Remember the <a href="https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls -l /media/$USER/YOUR_SD
    78769  bl31.bin
   180233  config-5.15.154-ga464bc4feaff
@@ -1324,7 +1338,8 @@ git clone https://github.com/lupyuen2/wip-nuttx avaota-board --branch avaota-boa
 popd
 
 ## Copy the Board Files from src to dest
-## Copy the Arch Doc again because we restored the &quot;Supported Boards&quot; function copy_files() {
+## Copy the Arch Doc again because we restored the &quot;Supported Boards&quot; 
+function copy_files() {
   src=.
   dest=/tmp/avaota-board
   for file in \
