@@ -925,7 +925,7 @@ gic_validate_dist_version:
   256 SPIs implemented
 ```
 
-UART Interrupt shall be handled in a while...
+We'll call GIC to handle UART Interrupts. Before that: We need NSH Shell...
 
 ![NuttX Apps Filesystem on ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
