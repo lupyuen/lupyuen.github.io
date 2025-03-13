@@ -589,7 +589,7 @@ curl \
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
 
-![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
+![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/avaota-power1.jpg)
 
 This script assumes that we have...
 
@@ -609,7 +609,7 @@ This script assumes that we have...
 
   _"Avaota Power On"_ and _"Avaota Power Off" (pic below)_
 
-![Smart Power Plug in Home Assistant](https://lupyuen.org/images/starpro64-power2.jpg)
+![Smart Power Plug in Home Assistant](https://lupyuen.org/images/avaota-power2.jpg)
 
 _What's copy_image.sh?_
 
