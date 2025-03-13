@@ -89,8 +89,6 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
 
 1.  Aha! __Kernel Boot Address__ _0x4080_0000_ is super important, we'll use it in a while
 
-> ![NuttX Kernel Build will call out to HostFS Semihosting](https://lupyuen.org/images/semihost-qemu.jpg)
-
 # NuttX Kernel Build for Arm64 QEMU
 
 Follow these steps to Build and Run NuttX for [__Arm64 QEMU (Kernel Build)__](https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html)
@@ -145,7 +143,17 @@ Hello, World!!
 
 We're ready to boot __`nuttx.bin`__ on our SBC.
 
-NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) (pic above). We'll change this for our SBC.
+> ![NuttX Kernel Build will call out to HostFS Semihosting](https://lupyuen.org/images/semihost-qemu.jpg)
+
+_What's this semihosting business in QEMU?_
+
+```bash
+## Boot NuttX on QEMU, needs Semihosting
+qemu-system-aarch64 \
+  -semihosting ...
+```
+
+NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) (pic above) to access NSH Shell and NuttX Apps. We'll change this for our SBC.
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
