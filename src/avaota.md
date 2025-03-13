@@ -1512,7 +1512,13 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.org/images/avaota-commit.png)
 
-1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing or amending.
+1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between?
+
+    ![Before Reordering the Commit](https://lupyuen.org/images/avaota-commit2.png)
+
+    Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing or amending.
+
+    ![After Reordering the Commit](https://lupyuen.org/images/avaota-commit3.png)
 
 TODO: Pic of SDWire
 
@@ -1723,7 +1729,7 @@ static void qemu_copy_ramdisk(void) {
 
   // Filesystem Size must be less than RAM Disk Memory Region
   if (size > (size_t)__ramdisk_size) {
-    _err("RAM Disk Region too small. Increase by %ul bytes.\n", size - (size_t)__ramdisk_size);
+    _err("RAM Disk Region too small. Increase by %lu bytes.\n", size - (size_t)__ramdisk_size);
     PANIC();
   }
 
@@ -1745,10 +1751,12 @@ static void qemu_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
   }
 } 
 
-// Defined in Linker Script
+// RAM Disk Region is defined in Linker Script
 extern uint8_t __ramdisk_start[];
 extern uint8_t __ramdisk_size[];
 ```
+
+[(Moved here)](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
 
 _Why the aligned addresses?_
 
@@ -1783,11 +1791,9 @@ default_fatal_handler:
 
 # Appendix: Port NuttX to Avaota-A1
 
-In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for __Avaota-A1 SBC__. This section explains the Modified Code...
+In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the Modified Code...
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
-
-_(This section is kinda redundant? But it's meant to help our PR Reviewers understand our modified code)_
 
 ## Memory Map
 
@@ -1956,9 +1962,13 @@ With these __UART Registers__...
 
 ## NuttX Start Code
 
-[_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0)
+[_arch/arm64/src/a527/a527_boot.c_](https://github.com/lupyuen2/wip-nuttx/blob/71b0ea678c08d9d1390e4d669876f99d93496ecf/arch/arm64/src/a527/a527_boot.c#L69-L170)
 
-__At NuttX Startup:__ We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This code came from [__NuttX EIC7700X__](TODO)...
+__At NuttX Startup:__ We mount the __ROMFS Filesystem__ containing the __NuttX Apps__...
+
+- TODO
+
+How? We safely copy the __ROMFS Filesystem__ from the NuttX Image into the __`ramdisk` Memory Region__. This code came from [__NuttX EIC7700X__](TODO)...
 
 ```c
 // Needed for the `aligned_data` macro
@@ -2004,7 +2014,7 @@ static void a527_copy_ramdisk(void) {
 
   // Filesystem Size must be less than RAM Disk Memory Region
   if (size > (size_t)__ramdisk_size) {
-    _err("RAM Disk Region too small. Increase by %ul bytes.\n", size - (size_t)__ramdisk_size);
+    _err("RAM Disk Region too small. Increase by %lu bytes.\n", size - (size_t)__ramdisk_size);
     PANIC();
   }
 
@@ -2026,10 +2036,12 @@ static void a527_copy_overlap(uint8_t *dest, const uint8_t *src, size_t count) {
   }
 } 
 
-// Defined in Linker Script
+// RAM Disk Region is defined in Linker Script
 extern uint8_t __ramdisk_start[];
 extern uint8_t __ramdisk_size[];
 ```
+
+[(Previously here)](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c#diff-29f9a5b9711e05525c0f249e0b9096a1e613bbde5783436f448a21b36ced2de0)
 
 _Why the aligned addresses?_
 
