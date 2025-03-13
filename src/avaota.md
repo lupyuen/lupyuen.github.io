@@ -524,6 +524,8 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 1.  __Power up SBC__ and boot NuttX
 
+1.  __Run OSTest__ and verify the result
+
 1.  How it looks? [__Watch the Demo__](https://youtu.be/PxaMcmMAzlM)
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
@@ -620,7 +622,9 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 - [__"SDWire MicroSD Multiplexer"__](https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer)
 
-To __Automate Everything__ including __OSTest__, we run an Expect Script: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
+_Can we automate everything? Including OSTest?_
+
+Yep we have an [__Expect Script__](https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp) that will execute and verify __OSTest__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
 ```bash
 ## Copy NuttX Image to MicroSD
