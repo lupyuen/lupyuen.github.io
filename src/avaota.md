@@ -180,7 +180,7 @@ $ ls -l /media/$USER/YOUR_SD
  6497300  uInitrd
 ```
 
-Let's replace it with NuttX...
+We replace it with NuttX...
 
 1.  Take the NuttX Kernel __`nuttx.bin`__ from the previous section
 
@@ -208,7 +208,7 @@ Let's replace it with NuttX...
     ERROR: Error initializing runtime service opteed_fast
     ```
 
-Nothing happens. Let's tweak this iteratively, in tiny steps...
+Nothing happens. We tweak this iteratively, in tiny steps...
 
 # Print to UART in Arm64 Assembly
 
@@ -252,7 +252,7 @@ Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/com
 *(volatile uint8_t *) 0x02500000 = '3';
 ```
 
-But let's do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
+But we'll do it in __Arm64 Assembly__: [arm64_head.S](https://github.com/lupyuen2/wip-nuttx/commit/be2f1c55aa24eda9cd8652aa0bf38251335e9d01)
 
 ```c
 /* Bootloader starts NuttX here */
@@ -358,7 +358,7 @@ Kernel addr: 0x40800000
 
     _(Kinda tiny, but sufficient)_
 
-1.  __Linux Kernel Header__ seems to have an incorrect __Image Load Offset__. But it's unused by Arm64 Bootloaders, so we won't change it...
+1.  __Linux Kernel Header__ seems to have an incorrect __Image Load Offset__. Arm64 Bootloaders don't care, so we won't change it...
 
     ```c
     /* Bootloader starts NuttX here, followed by Linux Kernel Header */
@@ -506,7 +506,7 @@ Same old drill: Rebuild, recopy and reboot NuttX. We see [__plenty more debug ou
 AB
 ```
 
-OK the _repeated rebuilding, recopying and rebooting_ of NuttX is getting really tiresome. Let's automate...
+OK the _repeated rebuilding, recopying and rebooting_ of NuttX is getting really tiresome. We automate...
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/testbot2-flow3.jpg)
 
@@ -759,7 +759,7 @@ If we don't configure MMU with the correct __Memory Map__...
 
 _Arm64 MMU won't turn on. Maybe our Memory Map is incorrect?_
 
-Let's verify our __A527 Memory Map__ (pic above)
+We verify our __A527 Memory Map__ (pic above)
 
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -819,7 +819,7 @@ Two Tweaks...
   // #define CONFIG_PCI_IO_SIZE      KB(64)
   ```
 
-- __PCI__: Let's remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
+- __PCI__: We remove these for now: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/commit/ca273d05e015089a33072997738bf588b899f8e7)
 
   ```c
   static const struct arm_mmu_region g_mmu_regions[] = {
@@ -1564,7 +1564,7 @@ Let's make our Tweak-Build-Test Cycle quicker for NuttX. We use __SDWire MicroSD
 
 - [__"SDWire MicroSD Multiplexer"__](https://lupyuen.github.io/articles/testbot3#sdwire-microsd-multiplexer)
 
-SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/testbot3#mount-the-microsd) to flip the multiplexer, mount the filesystem, copy to MicroSD. Let's make it Sudo Password-Less with [__visudo__](https://help.ubuntu.com/community/Sudoers)...
+SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/testbot3#mount-the-microsd) to flip the multiplexer, mount the filesystem, copy to MicroSD. We make it Sudo Password-Less with [__visudo__](https://help.ubuntu.com/community/Sudoers)...
 
 1.  Wrap all the __Sudo Commands__ into a script: [copy-image.sh](https://gist.github.com/lupyuen/5000c86cbdda0d5e564f244d1d87076a)
 
