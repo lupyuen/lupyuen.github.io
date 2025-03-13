@@ -1508,9 +1508,11 @@ __Upstreaming__ becomes lotsa copypasta...
 
     </span>
 
-1.  Remember to create __Two Commits Per PR__: One Commit for Code, Another Commit for Docs
+1.  Remember to create [__Two Commits Per PR__](https://github.com/lupyuen2/wip-nuttx/pull/100/commits): One Commit for Code, Another Commit for Docs
 
-1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing
+    ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.org/images/avaota-commit.png)
+
+1.  Need to [__Squash the Commits__](TODO) (or amend), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing or amending.
 
 TODO: Pic of SDWire
 
