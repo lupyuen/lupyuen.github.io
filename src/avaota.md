@@ -40,7 +40,7 @@ Nifty Trick for Booting NuttX on __Any Arm64 SBC__ (RISC-V too)
 
   _(Containing the Linux Kernel)_
 
-- Thus we __"Hijack" the `Image` File__, replace it by __NuttX Kernel__
+- Thus we __"Hijack" the `Image` file__, replace it by __NuttX Kernel__
 
 - Which means __NuttX Kernel__ shall look and feel like a __Linux Kernel__
 
@@ -358,7 +358,7 @@ Kernel addr: 0x40800000
 
     _(Kinda tiny, but sufficient)_
 
-1.  __Linux Kernel Header__ seems to have an incorrect __Image Load Offset__. Arm64 Bootloaders don't care, so we won't change it...
+1.  __Linux Kernel Header__ has an incorrect __Image Load Offset__. Arm64 Bootloaders don't care, so we'll let it be...
 
     ```c
     /* Bootloader starts NuttX here, followed by Linux Kernel Header */
