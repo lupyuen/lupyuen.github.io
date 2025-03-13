@@ -1303,13 +1303,13 @@ Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2
 
 </span>
 
-__Upstreaming__ becomes copypasta...
+__Upstreaming__ becomes lotsa copypasta...
 
-1.  We created a __Staging PR__ in our own repo...
+1.  We create a __Staging PR__ in our own repo...
 
     [_github.com/lupyuen2/wip-nuttx/pull/99_](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
-1.  Dumped the list of __Modified Files__...
+1.  Dump the list of __Modified Files__...
 
     <span style="font-size:60%">
 
@@ -1360,7 +1360,7 @@ __Upstreaming__ becomes copypasta...
 
     </span>
 
-1.  Checked __nxstyle__ on the Modified Files...
+1.  Check __nxstyle__ on the Modified Files...
 
     <span style="font-size:60%">
 
@@ -1407,22 +1407,108 @@ __Upstreaming__ becomes copypasta...
 
     [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
-    TODO
+    <span style="font-size:60%">
 
+    ```bash
+    ## Download the Branch for Avaota Arch (initially empty)
+    pushd /tmp 
+    git clone https://github.com/lupyuen2/wip-nuttx avaota-arch --branch avaota-arch
+    popd
+
+    ## Copy the Arch Files from src to dest
+    ## Remove the Table of Contents from Arch Doc
+    function copy_files() {
+      src=/tmp/avaota-arch
+      src=/tmp/avaota-board
+      dest=.
+      for file in \
+        Documentation/platforms/arm64/a527/index.rst \
+        arch/arm64/Kconfig \
+        arch/arm64/include/a527/chip.h \
+        arch/arm64/include/a527/irq.h \
+        arch/arm64/src/a527/CMakeLists.txt \
+        arch/arm64/src/a527/Kconfig \
+        arch/arm64/src/a527/Make.defs \
+        arch/arm64/src/a527/a527_boot.c \
+        arch/arm64/src/a527/a527_boot.h \
+        arch/arm64/src/a527/a527_initialize.c \
+        arch/arm64/src/a527/a527_lowputc.S \
+        arch/arm64/src/a527/a527_serial.c \
+        arch/arm64/src/a527/a527_textheap.c \
+        arch/arm64/src/a527/a527_timer.c \
+        arch/arm64/src/a527/chip.h \
+
+      do
+        src_file=$src/$file
+        dest_file=$dest/$file
+        dest_dir=$(dirname -- "$dest_file")
+        set -x
+        mkdir -p $dest_dir
+        cp $src_file $dest_file
+      done
+    }
+
+    ## Remember to commit /tmp/avaota-arch
+    copy_files
+    ```
+
+    </span>
 
 1.  Copy the Board Files into the __Board Pull Request__
 
-    TODO
+    <span style="font-size:60%">
+
+    ```bash
+    ## Download the Branch for Avaota Board (initially empty)
+    pushd /tmp 
+    git clone https://github.com/lupyuen2/wip-nuttx avaota-board --branch avaota-board
+    popd
+
+    ## Copy the Board Files from src to dest
+    ## Copy the Arch Doc again because we restored the Table of Contents
+    function copy_files() {
+      src=/tmp/avaota-board
+      dest=.
+      for file in \
+        Documentation/platforms/arm64/a527/index.rst \
+        Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg \
+        Documentation/platforms/arm64/a527/boards/avaota-a1/index.rst \
+        boards/Kconfig \
+        boards/arm64/a527/avaota-a1/CMakeLists.txt \
+        boards/arm64/a527/avaota-a1/Kconfig \
+        boards/arm64/a527/avaota-a1/configs/nsh/defconfig \
+        boards/arm64/a527/avaota-a1/include/board.h \
+        boards/arm64/a527/avaota-a1/include/board_memorymap.h \
+        boards/arm64/a527/avaota-a1/scripts/Make.defs \
+        boards/arm64/a527/avaota-a1/scripts/gnu-elf.ld \
+        boards/arm64/a527/avaota-a1/scripts/ld.script \
+        boards/arm64/a527/avaota-a1/src/CMakeLists.txt \
+        boards/arm64/a527/avaota-a1/src/Makefile \
+        boards/arm64/a527/avaota-a1/src/a527_appinit.c \
+        boards/arm64/a527/avaota-a1/src/a527_boardinit.c \
+        boards/arm64/a527/avaota-a1/src/a527_bringup.c \
+        boards/arm64/a527/avaota-a1/src/a527_power.c \
+        boards/arm64/a527/avaota-a1/src/avaota-a1.h \
+
+      do
+        src_file=$src/$file
+        dest_file=$dest/$file
+        dest_dir=$(dirname -- "$dest_file")
+        set -x
+        mkdir -p $dest_dir
+        cp $src_file $dest_file
+      done
+    }
+
+    ## Remember to commit /tmp/avaota-board
+    copy_files
+    ```
+
+    </span>
 
 1.  Remember to create __Two Commits Per PR__: One Commit for Code, Another Commit for Docs
 
-1.  Need to __Squash the Commits__? Try __Reordering the Commits__ to the top, before squashing...
-
-    TODO: Pic of reorder
-
-TODO: Remove ToC
-
-TODO: Copy doc again because of ToC
+1.  Need to __Squash the Commits__? Try __Reordering the Commits__ to the top, before squashing
 
 TODO: Pic of SDWire
 
