@@ -326,7 +326,7 @@ real_start:
   /* Load and Store the lower byte from Register W16 (`3`) to UART0 Base Address */
   mov  w16, #0x33
   strb w16, [x15]</code></pre></div>
-<p><a href="TODO"><em>(RISC-V? Same same)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/sg2000#print-to-uart-in-risc-v-assembly"><em>(RISC-V? Same same)</em></a></p>
 <p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>prints <code>123</code></strong></a>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
@@ -356,7 +356,7 @@ Kernel addr: 0x40800000
 123</code></pre></div>
 <ol>
 <li>
-<p>Remember the <a href="TODO"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We set it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
+<p>Remember the <a href="https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc"><strong>Boot Log</strong></a> from earlier? It says that the <a href="https://github.com/YuzukiHD/SyterKit"><strong>SyterKit Bootloader</strong></a> starts NuttX at <strong>Address <code>0x4080_0000</code></strong>. We set it here: <a href="https://github.com/lupyuen2/wip-nuttx/commit/c38e1f7c014e1af648a33847fc795930ba995bca">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>MEMORY {
   /* Previously: QEMU boots at 0x4028_0000 */
   dram (rwx)  : ORIGIN = 0x40800000, LENGTH = 2M
@@ -364,7 +364,9 @@ Kernel addr: 0x40800000
   /* Previously: QEMU Paged Memory is at 0x4028_0000 */
   pgram (rwx) : ORIGIN = 0x40A00000, LENGTH = 4M   /* w/ cache */
 
-  /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000 */</code></pre></div></li>
+  /* Why? Because 0x4080_0000 + 2 MB = 0x40A0_0000 */</code></pre></div>
+<p><em>(Note that Paged Memory Pool shifts down)</em></p>
+</li>
 <li>
 <p>Since we changed the <strong>Paged Memory Pool</strong> <em>(pgram)</em>, we update <em>ARCH_PGPOOL_PBASE</em> and <em>VBASE</em>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/eb33ac06f88dda557bc8ac97bec7d6cbad4ccb86">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Physical Address of Paged Memory Pool
@@ -408,7 +410,7 @@ void arm64_chip_boot(void) {
   arm64_mmu_init(true);  // Init the Memory Mgmt Unit
 
   *(volatile uint8_t *) 0x02500000 = &#39;C&#39;;
-  arm64_enable_mte();    // TODO
+  arm64_enable_mte();    // Init the Memory Tag Extension
 
   *(volatile uint8_t *) 0x02500000 = &#39;D&#39;;
   qemu_board_initialize();  // Init the Board
@@ -439,7 +441,7 @@ void arm64_chip_boot(void) {
   tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
   b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
 .endm</code></pre></div>
-<p><a href="TODO"><em>(Thanks to PinePhone)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#wait-for-uart-ready"><em>(Thanks to PinePhone)</em></a></p>
 </li>
 <li>
 <p>QEMU uses PL011 UART. We switch to <strong>16550 UART</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-aefbee7ddc3221be7383185346b81cff77d382eb6f308ecdccb44466d0437108">qemu_serial.c</a></p>
@@ -478,7 +480,7 @@ CONFIG_SERIAL_UART_ARCH_MMIO=y</code></pre></div></li>
 ## CONFIG_UART1_SERIAL_CONSOLE=y
 ## CONFIG_UART_PL011=y</code></pre></div></li>
 <li>
-<p><strong>16550_UART0_CLOCK</strong> isn’t quite correct, we’ll <a href="TODO"><strong>settle later</strong></a>. Meanwhile we disable the <strong>UART Clock Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">uart_16550.c</a></p>
+<p><strong>16550_UART0_CLOCK</strong> isn’t quite correct, we’ll <a href="https://lupyuen.github.io/articles/avaota#nuttx-config"><strong>settle later</strong></a>. Meanwhile we disable the <strong>UART Clock Configuration</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/commit/0cde58d84c16f255cb12e5a647ebeee3b6a8dd5f#diff-f208234edbfb636de240a0fef1c85f9cecb37876d5bc91ffb759f70a1e96b1d1">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// We disable the UART Clock Configuration...
 static int u16550_setup(FAR struct uart_dev_s *dev) { ...
 #ifdef TODO  // We&#39;ll fix it later
@@ -503,7 +505,7 @@ AB</code></pre></div>
 <p><img src="https://lupyuen.org/images/testbot2-flow3.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="microsd-multiplexer--smart-power-plug"><a class="doc-anchor" href="#microsd-multiplexer--smart-power-plug">§</a>7 MicroSD Multiplexer + Smart Power Plug</h1>
 <p><em>What if we could rebuild-recopy-reboot NuttX… In One Single Script?</em></p>
-<p>Thankfully our Avaota-A1 SBC is connected to <a href="TODO"><strong>SDWire MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a> (pic above). Our Build Script shall do <strong>everything</strong> for us…</p>
+<p>Thankfully our Avaota-A1 SBC is connected to <a href="https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer"><strong>SDWire MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a> (pic above). Our Build Script shall do <strong>everything</strong> for us…</p>
 <ol>
 <li>
 <p>Copy <strong>NuttX to MicroSD</strong></p>
@@ -598,13 +600,13 @@ curl \
 </ul>
 <p><img src="https://lupyuen.org/images/starpro64-power2.jpg" alt="Smart Power Plug in Home Assistant" /></p>
 <p><em>What’s copy_image.sh?</em></p>
-<p>This is the script that copies our NuttX Image to MicroSD, via the <strong>SDWire MicroSD Multiplexer</strong>…</p>
+<p>This is the script that copies our NuttX Image to MicroSD, via the <strong>SDWire MicroSD Multiplexer</strong>, explained here…</p>
 <ul>
-<li>TODO: Appendix SDWire</li>
+<li><a href="https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer"><strong>“SDWire MicroSD Multiplexer”</strong></a></li>
 </ul>
 <h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>8 Arm64 Memory Management Unit</h1>
 <p><em>It’s getting late. Can we get back to NuttX now?</em></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a> is all we need no worries! Earlier we saw NuttX <a href="TODO"><strong>stuck at “AB”</strong></a>…</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a> is all we need no worries! Earlier we saw NuttX <a href="https://lupyuen.github.io/articles/avaota#uart-driver-for-16550"><strong>stuck at “AB”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
 - Ready to Boot Primary CPU
 - Boot from EL2
@@ -625,7 +627,7 @@ void arm64_chip_boot(void) {
 
   // Stuck above, never came here
   *(volatile uint8_t *) 0x02500000 = &#39;C&#39;;
-  arm64_enable_mte();    // TODO</code></pre></div>
+  arm64_enable_mte();    // Init the Memory Tag Extension</code></pre></div>
 <p><em>What’s arm64_mmu_init?</em></p>
 <p>NuttX calls <strong>arm64_mmu_init</strong> to start the Arm64 <strong>Memory Management Unit (MMU)</strong>. We add some logs inside: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable Debugging for MMU
@@ -679,7 +681,7 @@ init_xlat_tables: mmap: virt 0x40a00000 phys 0x40a00000 size 0x400000
 ## Enable the MMU at Exception Level 1
 enable_mmu_el1: UP_MB
 enable_mmu_el1: Enable the MMU and data cache</code></pre></div>
-<p><a href="TODO">(<strong>Exception Level</strong> explained)</a></p>
+<p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(<strong>Exception Level</strong> explained)</a></p>
 <p>Something sus about the above <a href="https://gist.github.com/lupyuen/544a5d8f3fab2ab7c9d06d2e1583f362"><strong>Mystery Addresses</strong></a>, what are they?</p>
 <p>
 <div><table><thead><tr><th style="text-align: center">Virtual</th><th style="text-align: center">Physical</th><th style="text-align: center">Size</th></tr></thead><tbody>
@@ -787,7 +789,7 @@ static void init_xlat_tables(const struct arm_mmu_region *region) { ...
 <p><strong>nx_data</strong> <em>(0x4083_0000)</em>: Read-Write Data for Kernel</p>
 </li>
 <li>
-<p><strong>nx_pgpool</strong> <em>(0x40A0_0000)</em>: Remember the <a href="TODO"><strong>Paged Memory Pool</strong></a>? This shall be dished out as <strong>Virtual Memory</strong> to NuttX Apps</p>
+<p><strong>nx_pgpool</strong> <em>(0x40A0_0000)</em>: Remember the <a href="https://lupyuen.github.io/articles/avaota#set-the-start-address"><strong>Paged Memory Pool</strong></a>? This shall be dished out as <strong>Virtual Memory</strong> to NuttX Apps</p>
 </li>
 </ul>
 <p>We rebuild, recopy, reboot NuttX. Our Memory Map looks <a href="https://gist.github.com/lupyuen/ad4cec0dee8a21f3f404144be180fa14"><strong>much better now</strong></a>…</p>
@@ -814,7 +816,7 @@ Assertion failed panic: at file: common/arm64_fatal.c:572</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>No GIC version detect
 No distributor detected, giving up</code></pre></div>
 <p><em>What’s this GIC?</em></p>
-<p>It’s the Arm64 <a href="TODO"><strong>Generic Interrupt Controller (GIC)</strong></a>, version 3. GIC shall…</p>
+<p>It’s the Arm64 <a href="https://developer.arm.com/documentation/198123/0302/What-is-a-Generic-Interrupt-Controller-"><strong>Generic Interrupt Controller (GIC)</strong></a>, version 3. GIC shall…</p>
 <ul>
 <li>
 <p>Receive <strong>Input / Output Interrupts</strong></p>
@@ -869,7 +871,7 @@ gic_validate_dist_version:
 <p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem on ROMFS" /></p>
 <h1 id="nuttx-apps-filesystem"><a class="doc-anchor" href="#nuttx-apps-filesystem">§</a>11 NuttX Apps Filesystem</h1>
 <p><em>Are we done yet?</em></p>
-<p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="TODO"><strong>UART Interrupt</strong></a> and we’re done!</p>
+<p>For a <strong>Simple NuttX Port</strong> <em>(Flat Build)</em>: Congrats, just fix the <a href="https://lupyuen.github.io/articles/avaota#fix-the-uart-interrupt"><strong>UART Interrupt</strong></a> and we’re done!</p>
 <p>However we’re doing <strong>NuttX Kernel Build</strong>. Which <a href="https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c"><strong>needs more work</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nx_start_application:
   Starting init task: /system/bin/init
@@ -891,7 +893,7 @@ genromfs \
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image</code></pre></div>
-<p><a href="TODO">(See the <strong>Build Script</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587">(See the <strong>Build Script</strong>)</a></p>
 <p>When NuttX Boots: It will…</p>
 <ol>
 <li>
@@ -907,7 +909,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 </ol>
 <p>Everything is explained here…</p>
 <ul>
-<li>TODO: Appendix</li>
+<li><a href="https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem"><strong>“NuttX Apps Filesystem”</strong></a></li>
 </ul>
 <p>NSH Prompt still missing? It won’t appear until we handle the UART Interrupt…</p>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
@@ -935,24 +937,24 @@ nsh&gt; ostest
 user_main: Exiting
 ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="TODO">(See the <strong>Final Code</strong>)</a></p>
-<p><a href="TODO">(Ready for <strong>NuttX Upstreaming</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1">(See the <strong>Final Code</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1">(Ready for <strong>NuttX Upstreaming</strong>)</a></p>
 <p><em>NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
 <p>That’s because NSH runs as a <strong>NuttX App in User Space</strong>. When NSH Shell prints this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>NuttShell (NSH) NuttX-12.4.0
 nsh&gt;</code></pre></div>
 <p>It calls the <strong>Serial Driver</strong>. Which will wait for a <strong>UART Interrupt</strong> to signal that the <strong>Transmit Buffer</strong> is empty and available.</p>
-<p>Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. <a href="TODO">(Explained here)</a></p>
+<p>Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. <a href="https://lupyuen.github.io/articles/plic#no-console-output-from-nuttx-apps">(Explained here)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-cubie.jpg" alt="NuttX might run OK on Radxa Cubie A5E (Allwinner T527)" /></p>
-<p><a href="TODO"><em>NuttX might run OK on Radxa Cubie A5E (Allwinner T527)</em></a></p>
+<p><a href="https://arace.tech/products/radxa-cubie-a5e"><em>NuttX might run OK on Radxa Cubie A5E (Allwinner T527)</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Right now we’re upstreaming Avatoa-A1 SBC to <strong>NuttX Mainline</strong>…</p>
 <ul>
 <li>
-<p>TODO: Porting NuttX</p>
+<p><a href="https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1"><strong>“Port NuttX to Avaota-A1”</strong></a></p>
 </li>
 <li>
-<p>TODO: Upstream NuttX</p>
+<p><a href="https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1"><strong>“Upstream NuttX for Avaota-A1”</strong></a></p>
 </li>
 </ul>
 <p>We’re seeking volunteers to build <strong>NuttX Drivers for Avaota-A1</strong> <em>(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, …)</em> Please lemme know!</p>
@@ -1439,7 +1441,7 @@ ssh thinkcentre \
 ssh thinkcentre \
   sudo /home/user/copy-image.sh</code></pre></div></li>
 <li>
-<p>Everything goes into our <a href="TODO"><strong>Build Script for NuttX</strong></a></p>
+<p>Everything goes into our <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587"><strong>Build Script for NuttX</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem in ROMFS" /></p>
