@@ -925,6 +925,8 @@ gic_validate_dist_version:
   256 SPIs implemented
 ```
 
+UART Interrupt shall be handled in a while...
+
 ![NuttX Apps Filesystem on ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
 # NuttX Apps Filesystem
