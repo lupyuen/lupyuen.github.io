@@ -1418,9 +1418,8 @@ __Upstreaming__ becomes lotsa copypasta...
     ## Copy the Arch Files from src to dest
     ## Remove the Table of Contents from Arch Doc
     function copy_files() {
-      src=/tmp/avaota-arch
-      src=/tmp/avaota-board
-      dest=.
+      src=.
+      dest=/tmp/avaota-arch
       for file in \
         Documentation/platforms/arm64/a527/index.rst \
         arch/arm64/Kconfig \
@@ -1445,6 +1444,7 @@ __Upstreaming__ becomes lotsa copypasta...
         set -x
         mkdir -p $dest_dir
         cp $src_file $dest_file
+        set +x
       done
     }
 
@@ -1467,8 +1467,8 @@ __Upstreaming__ becomes lotsa copypasta...
     ## Copy the Board Files from src to dest
     ## Copy the Arch Doc again because we restored the Table of Contents
     function copy_files() {
-      src=/tmp/avaota-board
-      dest=.
+      src=.
+      dest=/tmp/avaota-board
       for file in \
         Documentation/platforms/arm64/a527/index.rst \
         Documentation/platforms/arm64/a527/boards/avaota-a1/avaota-a1.jpg \
@@ -1497,6 +1497,7 @@ __Upstreaming__ becomes lotsa copypasta...
         set -x
         mkdir -p $dest_dir
         cp $src_file $dest_file
+        set +x
       done
     }
 
@@ -1508,7 +1509,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  Remember to create __Two Commits Per PR__: One Commit for Code, Another Commit for Docs
 
-1.  Need to __Squash the Commits__? Try __Reordering the Commits__ to the top, before squashing
+1.  Need to [__Squash the Commits__](TODO), but another Code or Doc Commit is stuck in between? Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing
 
 TODO: Pic of SDWire
 
