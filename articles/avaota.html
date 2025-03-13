@@ -327,14 +327,14 @@ real_start:
   mov  w16, #0x33
   strb w16, [x15]</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#print-to-uart-in-risc-v-assembly"><em>(RISC-V? Same same)</em></a></p>
-<p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>prints <code>123</code></strong></a>!</p>
+<p>Rebuild NuttX and recopy <strong><code>nuttx.bin</code></strong> to MicroSD, overwriting the <strong><code>Image</code></strong> file. NuttX will boot and <a href="https://gist.github.com/lupyuen/14188c44049a14e3581523c593fdf2d8"><strong>print <code>123</code></strong></a>! 🎉</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
 Kernel addr: 0x40800000
 BL31: v2.5(debug):9241004a9
 sunxi-arisc driver is starting
 ERROR: Error initializing runtime service opteed_fast
 123</code></pre></div>
-<p>(Ignore the error: <em>opteed_fast</em>)</p>
+<p>Indeed NuttX is booting on our SBC, then crashing later. <em>(Ignore the error: opteed_fast)</em></p>
 <p><em>Why print in Arm64 Assembly? Why not C?</em></p>
 <ol>
 <li>
@@ -987,6 +987,7 @@ nsh&gt;</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md"><strong>lupyuen.org/src/avaota.md</strong></a></p>
+<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="appendix-build-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-build-nuttx-for-avaota-a1">§</a>14 Appendix: Build NuttX for Avaota-A1</h1>
 <p>To boot <strong>NuttX on Avatoa-A1</strong>: We may download <strong><code>Image</code></strong> from here…</p>
 <ul>
