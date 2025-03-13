@@ -183,9 +183,6 @@ ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 <p>Aha! <strong>Kernel Boot Address</strong> <em>0x4080_0000</em> is super important, we’ll use it in a while</p>
 </li>
 </ol>
-<blockquote>
-<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="NuttX Kernel Build will call out to HostFS Semihosting" /></p>
-</blockquote>
 <h1 id="nuttx-kernel-build-for-arm64-qemu"><a class="doc-anchor" href="#nuttx-kernel-build-for-arm64-qemu">§</a>2 NuttX Kernel Build for Arm64 QEMU</h1>
 <p>Follow these steps to Build and Run NuttX for <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html"><strong>Arm64 QEMU (Kernel Build)</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Kernel (NuttX Kernel Build)
@@ -230,7 +227,14 @@ Hello, World!!
 ## No worries about `nxposix_spawn_exec`
 ## To Quit: Press Ctrl-a then x</code></pre></div>
 <p>We’re ready to boot <strong><code>nuttx.bin</code></strong> on our SBC.</p>
-<p>NuttX Kernel Build will call out to <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>HostFS Semihosting</strong></a> (pic above). We’ll change this for our SBC.</p>
+<blockquote>
+<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="NuttX Kernel Build will call out to HostFS Semihosting" /></p>
+</blockquote>
+<p><em>What’s this semihosting business in QEMU?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX on QEMU, needs Semihosting
+qemu-system-aarch64 \
+  -semihosting ...</code></pre></div>
+<p>NuttX Kernel Build will call out to <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>HostFS Semihosting</strong></a> (pic above) to access NSH Shell and NuttX Apps. We’ll change this for our SBC.</p>
 <p><em>Why start with NuttX Kernel Build? Not NuttX Flat Build?</em></p>
 <p>Our SBC is a mighty monster with <strong>Eight Arm64 Cores</strong> and plenty of RAM. It makes more sense to boot <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>NuttX Kernel Build</strong></a> and run lots of cool powerful NuttX Apps with <a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode"><strong>Virtual Memory</strong></a>.</p>
 <p><em>(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)</em></p>
