@@ -1829,13 +1829,15 @@ default_fatal_handler:
 
 [_(Strangely: This Alignment isn't needed for RISC-V)_](https://github.com/lupyuen2/wip-nuttx/blob/b92f051e337d095491f8406b2d99fdd2f6fa5b3e/arch/risc-v/src/eic7700x/eic7700x_start.c#L110-L144)
 
+![Porting NuttX to Avaota-A1](https://lupyuen.org/images/avaota-pr2.png)
+
 # Appendix: Port NuttX to Avaota-A1
 
 In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and changed it slightly for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the __Modified Code__ in our Pull Request...
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
-__Only Seven Files__ were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1.
+__Only Seven Files__ were modified from QEMU NuttX. All other files were simply copied and renamed, from QEMU NuttX to Avaota-A1. (Pic above)
 
 ## Memory Map
 
