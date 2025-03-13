@@ -1118,6 +1118,8 @@ Read on to boot the NuttX Image on our SBC...
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
 
+![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
+
 # Appendix: Boot NuttX on Avaota-A1
 
 Earlier we built [__NuttX for Avaota-A1__](TODO) and created the __`Image`__ file, containing the NuttX Kernel + NuttX Apps. Let's boot it on MicroSD...
@@ -1274,6 +1276,8 @@ nsh>
 </span>
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+
+![Upstreaming NuttX for Avaota-A1](https://lupyuen.org/images/avaota-pr.png)
 
 # Appendix: Upstream NuttX for Avaota-A1
 
@@ -1685,11 +1689,11 @@ static int mount_ramdisk(void) {
 #define RAMDISK_DEVICE_MINOR 0
 ```
 
-![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
-
 ## Copy the ROMFS
 
-__But Before That:__ We safely copy the __ROMFS Filesystem__ _(Initial RAM Disk)_ from the NuttX Image into the __`ramdisk` Memory Region__. (Pic above)
+__But Before That:__ We safely copy the __ROMFS Filesystem__ _(Initial RAM Disk)_ from the NuttX Image into the __`ramdisk` Memory Region__...
+
+![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
 
 This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
 
@@ -1799,7 +1803,7 @@ default_fatal_handler:
 
 # Appendix: Port NuttX to Avaota-A1
 
-In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and tweaked it for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the Modified Code...
+In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and changed it slightly for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the __Modified Code__ in our Pull Request...
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
