@@ -612,7 +612,21 @@ curl \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer"><strong>“SDWire MicroSD Multiplexer”</strong></a></li>
 </ul>
-<h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>8 Arm64 Memory Management Unit</h1>
+<p>To <strong>Automate Everything</strong> including <strong>OSTest</strong>, we run an Expect Script: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+## Boot and Test NuttX with OSTest
+## https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp
+export AVAOTA_SERVER=thinkcentre
+pushd $HOME/nuttx-build-farm
+expect ./avaota.exp
+popd</code></pre></div><h1 id="arm64-memory-management-unit"><a class="doc-anchor" href="#arm64-memory-management-unit">§</a>8 Arm64 Memory Management Unit</h1>
 <p><em>It’s getting late. Can we get back to NuttX now?</em></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a> is all we need no worries! Earlier we saw NuttX <a href="https://lupyuen.github.io/articles/avaota#uart-driver-for-16550"><strong>stuck at “AB”</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>123
@@ -1047,7 +1061,7 @@ umount /media/$USER/YOUR_SD</code></pre></div></li>
 <p><strong>Boot the MicroSD</strong> on our SBC</p>
 </li>
 </ol>
-<p>We can automate the last two steps with a <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>Smart Power Plug</strong></a>…</p>
+<p>We can automate the last two steps with a <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>MicroSD Multiplexer</strong></a> and <a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug"><strong>Smart Power Plug</strong></a>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Get the Home Assistant Token
 ## That we copied from http://localhost:8123/profile/security
 ## export token=xxxx
@@ -1088,6 +1102,21 @@ curl \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.avaota_power_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
+<p>Or to <strong>Automate Everything</strong> including <strong>OSTest</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
+## No password needed for sudo, see below
+## Change `thinkcentre` to your Test PC
+## https://github.com/lupyuen/nuttx-avaota-a1/blob/main/copy-image.sh
+scp Image thinkcentre:/tmp/Image
+ssh thinkcentre ls -l /tmp/Image
+ssh thinkcentre sudo /home/user/copy-image.sh
+
+## Boot and Test NuttX with OSTest
+## https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp
+export AVAOTA_SERVER=thinkcentre
+pushd $HOME/nuttx-build-farm
+expect ./avaota.exp
+popd</code></pre></div>
 <p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>copy-image.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>Smart Power Plug</strong> also)</a></p>
