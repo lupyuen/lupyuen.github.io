@@ -18,7 +18,7 @@ _Why are we doing this?_
 
 - We'll run it as [__PR Test Bot__](https://lupyuen.github.io/articles/testbot3) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to the [__MicroSD Multiplexer__](https://lupyuen.github.io/articles/testbot3).
 
-We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know! 🙏
+We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A527__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know, maybe we can draw something on the Onboard LCD! 🙏
 
 - [__Sunxi Docs on Allwinner A527__](https://linux-sunxi.org/A523)
 
@@ -1108,7 +1108,7 @@ Right now we're upstreaming Avatoa-A1 SBC to __NuttX Mainline__...
 
 - [__"Upstream NuttX for Avaota-A1"__](https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1)
 
-We're seeking volunteers to build __NuttX Drivers for Avaota-A1__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know!
+We're seeking volunteers to build __NuttX Drivers for Avaota-A1__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know, maybe we can draw something on the Onboard LCD!
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
