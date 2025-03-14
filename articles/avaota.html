@@ -246,7 +246,7 @@ qemu-system-aarch64 \
 <p><em>(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)</em></p>
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="boot-nuttx-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-on-our-sbc">§</a>3 Boot NuttX on our SBC</h1>
-<p>Remember the <a href="https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”</p>
+<p>Remember the <a href="https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ ls -l /media/$USER/YOUR_SD
    78769  bl31.bin
   180233  config-5.15.154-ga464bc4feaff
@@ -265,11 +265,16 @@ qemu-system-aarch64 \
 </li>
 <li>
 <p>Overwrite the <strong><code>Image</code></strong> file by <strong><code>nuttx.bin</code></strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Copy and overwrite `Image` on MicroSD
-mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
-cp nuttx.bin /media/$USER/YOUR_SD/Image
+<div class="example-wrap"><pre class="language-bash"><code>## Backup and overwrite `Image` on MicroSD
+mv \
+  /media/$USER/YOUR_SD/Image \
+  /media/$USER/YOUR_SD/Image.old
+cp \
+  nuttx.bin \
+  /media/$USER/YOUR_SD/Image
 
 ## `Image` should be a lot smaller now
+## Remember to Unmount and prevent filesystem corruption
 ls -l /media/$USER/YOUR_SD/Image
 umount /media/$USER/YOUR_SD</code></pre></div></li>
 <li>
@@ -304,7 +309,7 @@ ERROR: Error initializing runtime service opteed_fast</code></pre></div></li>
 </tbody></table>
 </div></div>
 </p>
-<p>Which means we can <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333"><strong>Print to UART</strong></a> like so…</p>
+<p>This says we can <a href="https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333"><strong>Print to UART</strong></a> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `123` to UART0
 *(volatile uint8_t *) 0x02500000 = &#39;1&#39;;
 *(volatile uint8_t *) 0x02500000 = &#39;2&#39;;
@@ -351,7 +356,7 @@ ERROR: Error initializing runtime service opteed_fast
 <p>Arm64 Assembly is the <strong>very first thing that boots</strong> when Bootloader starts NuttX</p>
 </li>
 <li>
-<p>This happens <strong>before anything complicated</strong> and crash-prone begins: UART Driver, Memory Management Unit, Task Scheduler, …</p>
+<p>This happens <strong>before anything complicated</strong> and crash-prone begins: UART Driver, Memory Management, Task Scheduler, …</p>
 </li>
 <li>
 <p>The Arm64 Assembly above is <strong>Address-Independent Code</strong>: It will execute at Any Arm64 Address</p>
@@ -420,7 +425,7 @@ void arm64_chip_boot(void) {
   arm64_mmu_init(true);  // Init the Memory Mgmt Unit
 
   *(volatile uint8_t *) 0x02500000 = &#39;C&#39;;
-  arm64_enable_mte();    // Init the Memory Tag Extension
+  arm64_enable_mte();    // Init the Memory Tagging Extension
 
   *(volatile uint8_t *) 0x02500000 = &#39;D&#39;;
   qemu_board_initialize();  // Init the Board
@@ -656,7 +661,7 @@ void arm64_chip_boot(void) {
 
   // Stuck above, never came here
   *(volatile uint8_t *) 0x02500000 = &#39;C&#39;;
-  arm64_enable_mte();    // Init the Memory Tag Extension</code></pre></div>
+  arm64_enable_mte();    // Init the Memory Tagging Extension</code></pre></div>
 <p><em>What’s arm64_mmu_init?</em></p>
 <p>NuttX calls <strong>arm64_mmu_init</strong> to start the Arm64 <strong>Memory Management Unit (MMU)</strong>. We add some logs inside: <a href="https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable Debugging for MMU
@@ -909,7 +914,7 @@ arm64_el1_undef:
 Assertion failed panic:
   common/arm64_fatal.c:572</code></pre></div>
 <p><em>What’s /system/bin/init? Why is it failing?</em></p>
-<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>, which is missing right now. <em>(NuttX Flat Build will bind binary Apps directly into Kernel)</em></p>
+<p><em>/system/bin/init</em> is <strong>NSH Shell</strong>. NuttX Kernel Build will load NuttX Apps from a <strong>Local Filesystem</strong>, and it’s missing right now. <em>(NuttX Flat Build will bind binary Apps directly into Kernel)</em></p>
 <p>To solve this: We bundle the NuttX Apps together into a <strong>ROMFS Filesystem</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Generate the Initial RAM Disk
 genromfs \
