@@ -49,7 +49,13 @@
       "startDate": "2022-09-22",
       "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System)",
       "highlights": [
-        "Ported Apache NuttX RTOS to PINE64 PinePhone (Allwinner A64 SoC / Arm Cortex-A53), PINE64 Star64 64-bit RISC-V Single-Board Computer (StarFive JH7110 SoC) and PINE64 Ox64 64-bit RISC-V Single-Board Computer (BouffaloLab BL808 SoC)"
+        "Ported Apache NuttX RTOS to:",
+        "PINE64 PinePhone (Allwinner A64 SoC / Arm Cortex-A53)",
+        "PINE64 Star64 64-bit RISC-V Single-Board Computer (StarFive JH7110 SoC)",
+        "PINE64 Ox64 64-bit RISC-V Single-Board Computer (BouffaloLab BL808 SoC)",
+        "PINE64 Oz64 SG2000 64-bit RISC-V Single-Board Computer (Sophgo SG2000 SoC)",
+        "PINE64 StarPro64 64-bit RISC-V Single-Board Computer (ESWIN EIC7700X SoC)",
+        "PINE64 Yuzuki Avaota-A1 Arm64 Single-Board Computer (Allwinner A527 SoC / Arm Cortex-A55)"
       ]
     },
     {
