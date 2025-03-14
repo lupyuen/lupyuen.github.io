@@ -14,7 +14,7 @@ _Why are we doing this?_
 
 - Avaota-A1 SBC is [__Open Source Hardware__](https://github.com/AvaotaSBC/Avaota-A1) _(CERN OHL Licensed)_. PINE64 sells it today, maybe we'll see more manufacturers.
 
-- This could be the First Port of [__Arm64 in NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode). _(NXP i.MX93 might be another?)_
+- This could be the First Port of [__Arm64 in NuttX Kernel Build__](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=139629512#MemoryConfigurations-KernelBuild). _(NXP i.MX93 might be another?)_
 
 - We'll run it as [__PR Test Bot__](https://lupyuen.github.io/articles/testbot3) for validating __Arm64 Pull Requests__ on Real Hardware. PR Test Bot will be fully automated thanks to the [__MicroSD Multiplexer__](https://lupyuen.github.io/articles/testbot3).
 
@@ -58,7 +58,9 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
     | __TX__ (Pin 8) |	__RX__ | _Orange_ |
     | __RX__ (Pin 10)	| __TX__ | _Red_ |
 
-    __Boot Log__ will appear at _/dev/ttyUSB0_...
+    ![UART0 Port of Avaota-A1 SBC](https://lupyuen.org/images/avaota-uart.jpg)
+
+1.  __Boot Log__ will appear at _/dev/ttyUSB0_...
 
     ```bash
     ## Allow the user to access the USB UART port
@@ -159,7 +161,7 @@ NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.git
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
-Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)_. It makes more sense to boot [__NuttX Kernel Build__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode) and run lots of cool powerful NuttX App, thanks to [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
+Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)_. It makes more sense to boot [__NuttX Kernel Build__]https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=139629512#MemoryConfigurations-KernelBuild) and run lots of cool powerful NuttX App, thanks to [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
@@ -985,7 +987,7 @@ _Are we done yet?_
 
 For a __Simple NuttX Port__ _(Flat Build)_: Congrats, just fix the [__UART Interrupt__](https://lupyuen.github.io/articles/avaota#fix-the-uart-interrupt) and we're done!
 
-However we're doing __NuttX Kernel Build__. Which [__needs more work__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)...
+However we're doing [__NuttX Kernel Build__](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=139629512#MemoryConfigurations-KernelBuild). Which [__needs more work__](https://gist.github.com/lupyuen/3c587ac0f32be155c8f9a9e4ca18676c)...
 
 ```bash
 nx_start_application:
@@ -1881,7 +1883,7 @@ default_fatal_handler:
 
 # Appendix: Port NuttX to Avaota-A1
 
-In this article, we took NuttX for __Arm64 QEMU knsh (Kernel Build)__ and changed it slightly for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the __Modified Code__ in our Pull Request...
+In this article, we took NuttX for [__Arm64 QEMU Kernel Build__](https://nuttx.apache.org/docs/latest/platforms/arm64/qemu/boards/qemu-armv8a/index.html) _(qemu-armv8a:knsh)_ and changed it slightly for __Avaota-A1 SBC__. To help our PR Reviewers: This section explains the __Modified Code__ in our Pull Request...
 
 - [__Modified Files__ for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/99/commits/61d055d5040e6aee8d99507b00dbfb5b47c6cd3c)
 
