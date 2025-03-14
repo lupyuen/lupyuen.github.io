@@ -96,7 +96,7 @@
 <li><a href="#linker-script-1" title="Linker Script">19.6 Linker Script</a><ul></ul></li>
 <li><a href="#nuttx-config" title="NuttX Config">19.7 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
-<p><a href="https://youtu.be/PxaMcmMAzlM"><em>(Watch the Demo on YouTube)</em></a></p>
+<p><a href="https://youtu.be/XTDw245n5tM"><em>(Watch the Demo on YouTube)</em></a></p>
 <p>This article explains how we ported NuttX from <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Yuzuki Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
 <p><em>Why are we doing this?</em></p>
 <ul>
@@ -527,7 +527,7 @@ AB</code></pre></div>
 <p><strong>Run OSTest</strong> and verify the result</p>
 </li>
 <li>
-<p>How it looks? <a href="https://youtu.be/PxaMcmMAzlM"><strong>Watch the Demo</strong></a></p>
+<p>How it looks? <a href="https://youtu.be/XTDw245n5tM"><strong>Watch the Demo</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
@@ -588,7 +588,7 @@ curl \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.avaota_power_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
-<p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://youtu.be/XTDw245n5tM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
 <p>This script assumes that we have…</p>
 <ul>
@@ -1121,7 +1121,7 @@ export AVAOTA_SERVER=thinkcentre
 pushd $HOME/nuttx-build-farm
 expect ./avaota.exp
 popd</code></pre></div>
-<p><a href="https://youtu.be/PxaMcmMAzlM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://youtu.be/XTDw245n5tM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>copy-image.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug">(<strong>Smart Power Plug</strong> also)</a></p>
 <p>NuttX boots to NSH Shell. And passes OSTest yay!</p>
