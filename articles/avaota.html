@@ -539,7 +539,7 @@ AB</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
-<p>Here’s our nifty <strong>Build Script</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
+<p>Everything happens in our nifty <strong>Build Script</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX and Apps (NuttX Kernel Build)
 make -j
 make -j export
@@ -595,7 +595,7 @@ curl \
   -H &quot;Content-Type: application/json&quot; \
   -d &#39;{&quot;entity_id&quot;: &quot;automation.avaota_power_off&quot;}&#39; \
   http://localhost:8123/api/services/automation/trigger</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/7296022328dadcfac88a38d4b3eec892">(See the <strong>Build Log</strong>)</a></p>
 <p><a href="https://youtu.be/XTDw245n5tM">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-power1.jpg" alt="Smart Power Plug in IKEA App and Google Home" /></p>
 <p>This script assumes that we have…</p>
@@ -931,7 +931,10 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p>When NuttX Boots: It will…</p>
 <ol>
 <li>
-<p>Find the <strong>ROMFS Filesystem</strong></p>
+<p>Locate the <strong>ROMFS Filesystem</strong> in memory</p>
+</li>
+<li>
+<p>Copy it to the designated <strong>Memory Region</strong></p>
 </li>
 <li>
 <p>Mount it as a <strong>RAM Disk</strong></p>
@@ -970,7 +973,7 @@ nsh&gt; ostest
 ...
 user_main: Exiting
 ostest_main: Exiting with status 0</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/6365762343133a843276bb87d2da17a1">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1">(See the <strong>Final Code</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1">(Ready for <strong>NuttX Upstreaming</strong>)</a></p>
 <p><em>NSH Prompt won’t appear if UART Interrupt is disabled?</em></p>
@@ -1029,12 +1032,12 @@ nsh&gt;</code></pre></div>
 </ul>
 <p>Or follow these steps to compile our <em>(Work-In-Progress)</em> <strong>NuttX for Avaota-A1</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download Source Code for NuttX and Apps
-git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota2
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota2
 cd nuttx
 
 ## Build NuttX and Apps (NuttX Kernel Build)
-tools/configure.sh qemu-armv8a:knsh
+tools/configure.sh avaota-a1:nsh
 make -j
 make -j export
 pushd ../apps
@@ -1050,7 +1053,7 @@ head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad initrd \
   &gt;Image</code></pre></div>
 <p>Read on to boot the NuttX Image on our SBC…</p>
-<p><a href="https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/7296022328dadcfac88a38d4b3eec892">(See the <strong>Build Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <h1 id="appendix-boot-nuttx-on-avaota-a1"><a class="doc-anchor" href="#appendix-boot-nuttx-on-avaota-a1">§</a>15 Appendix: Boot NuttX on Avaota-A1</h1>
 <p>Earlier we built <a href="https://lupyuen.github.io/articles/avaota#appendix-build-nuttx-for-avaota-a1"><strong>NuttX for Avaota-A1</strong></a> and created the <strong><code>Image</code></strong> file, containing the NuttX Kernel + NuttX Apps. Let’s boot it on MicroSD…</p>
@@ -1063,8 +1066,12 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
-mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
-cp Image /media/$USER/YOUR_SD/Image
+mv \
+  /media/$USER/YOUR_SD/Image \
+  /media/$USER/YOUR_SD/Image.old
+cp \
+  Image \
+  /media/$USER/YOUR_SD/Image
 
 ## Unmount and boot it on Avaota-A1
 ls -l /media/$USER/YOUR_SD/Image
@@ -1143,37 +1150,14 @@ NOTICE:  [SCP] :arisc startup ready
 NOTICE:  [SCP] :arisc startup notify message feedback
 NOTICE:  [SCP] :sunxi-arisc driver is starting
 ERROR:   Error initializing runtime service opteed_fast
-123
 - Ready to Boot Primary CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-ABarm64_mmu_init:
-setup_page_tables:
-enable_mmu_el1:
-enable_mmu_el1: UP_MB
-enable_mmu_el1: Enable the MMU and data cache
-up_allocate_kheap: CONFIG_RAM_END=0x48000000, g_idle_topstack=0x40847000
-qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-board_app_initialize:
 
 NuttShell (NSH) NuttX-12.4.0
 nsh&gt; uname -a
-NuttX 12.4.0 6c5c1a5f9f-dirty Mar  8 2025 21:57:02 arm64 qemu-armv8a
-
-nsh&gt; free
-      total       used       free    maxused    maxfree  nused  nfree name
-  125538304      33848  125504456      52992  125484976     58      5 Kmem
-    4194304     245760    3948544               3948544               Page
-
-nsh&gt; ps
-  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
-    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0008176 0000928  11.3%  Idle_Task
-    1     0 192 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  hpwork 0x40834568 0x408345b8
-    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  lpwork 0x408344e8 0x40834538
-    4     4 100 RR       Task      - Running            0000000000000000 0008128 0002192  26.9%  /system/bin/init
+NuttX 12.4.0 42c0ed4a89 Mar 13 2025 09:13:56 arm64 avaota-a1
 
 nsh&gt; ls -l /dev
 /dev:
@@ -1182,6 +1166,18 @@ nsh&gt; ls -l /dev
  brw-rw-rw-    16777216 ram0
  crw-rw-rw-           0 ttyS0
  crw-rw-rw-           0 zero
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0008176 0000928  11.3%  Idle_Task
+    1     0 192 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  hpwork 0x40833568 0x408335b8
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  lpwork 0x408334e8 0x40833538
+    4     4 100 RR       Task      - Running            0000000000000000 0008128 0002192  26.9%  /system/bin/init
+
+nsh&gt; free
+      total       used       free    maxused    maxfree  nused  nfree name
+  125542400      33880  125508520      53032  125484976     58      5 Kmem
+    4194304     245760    3948544               3948544               Page
 
 nsh&gt; hello
 Hello, World!!
@@ -1208,10 +1204,10 @@ fordblks     7818    1f900
 user_main: Exiting
 ostest_main: Exiting with status 0
 nsh&gt;</code></pre></div></span>
-<p><a href="https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6">(See the <strong>NuttX Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/6365762343133a843276bb87d2da17a1">(See the <strong>NuttX Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/avaota-pr.png" alt="Upstreaming NuttX for Avaota-A1" /></p>
 <h1 id="appendix-upstream-nuttx-for-avaota-a1"><a class="doc-anchor" href="#appendix-upstream-nuttx-for-avaota-a1">§</a>16 Appendix: Upstream NuttX for Avaota-A1</h1>
-<p>In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What’s Next: Upstreaming our code to <strong>NuttX Mainline</strong>!</p>
+<p>In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. Up Next: Upstreaming our code to <strong>NuttX Mainline</strong>!</p>
 <p>Here’s how we copy-n-pasted our <a href="https://github.com/lupyuen2/wip-nuttx/pull/99/commits"><strong>Modified Files</strong></a> into a proper <strong>NuttX Arch</strong> <em>(Allwinner A527)</em> and <strong>NuttX Board</strong> <em>(Avaota-A1)</em></p>
 <span style="font-size:80%">
 <ol>
@@ -1443,7 +1439,8 @@ code /tmp/avaota-board</code></pre></div></span>
 <p><img src="https://lupyuen.org/images/avaota-commit3.png" alt="After Reordering the Commit" /></p>
 </li>
 <li>
-<p>Now we’re finally ready to Submit our Pull Requests!</p>
+<p>We’re finally ready to Submit our Pull Requests!</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/100"><strong>“arch/arm64/a527: Add support for Allwinner A527 SoC”</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
@@ -1494,9 +1491,10 @@ ssh thinkcentre \
   sudo /home/user/copy-image.sh</code></pre></div></li>
 <li>
 <p>Everything goes into our <a href="https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587"><strong>Build Script for NuttX</strong></a></p>
+<p>How it looks? <a href="https://youtu.be/XTDw245n5tM"><strong>Watch the Demo</strong></a></p>
 </li>
 </ol>
-<p><em>(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 hmmm…)</em></p>
+<p><em>(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 SBC hmmm…)</em></p>
 <p><img src="https://lupyuen.org/images/avaota-initrd1.jpg" alt="NuttX Apps Filesystem in ROMFS" /></p>
 <h1 id="appendix-nuttx-apps-filesystem"><a class="doc-anchor" href="#appendix-nuttx-apps-filesystem">§</a>18 Appendix: NuttX Apps Filesystem</h1>
 <p>Earlier we talked about the <strong>ROMFS Filesystem for NuttX Apps</strong> <em>(Initial RAM Disk, pic above)</em></p>
@@ -1516,7 +1514,7 @@ nxtask_activate: /system/bin/init pid=4,TCB=0x408469f0
 nxtask_exit: AppBringUp pid=3,TCB=0x40846190
 board_app_initialize:
 nx_start: CPU0: Beginning Idle Loop</code></pre></div><h2 id="hostfs-becomes-romfs"><a class="doc-anchor" href="#hostfs-becomes-romfs">§</a>18.1 HostFS becomes ROMFS</h2>
-<p>QEMU uses <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>… <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
+<p>QEMU uses <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting and HostFS</strong></a> to access the NuttX Apps Filesystem. We change to <strong>ROMFS</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64">configs/knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## We added ROMFS...
 CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
@@ -1530,7 +1528,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
 ## CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
 ## CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;</code></pre></div>
-<p><em>BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup()</em>. (See below)</p>
+<p><em>BOARD_LATE_INITIALIZE</em> is needed because we’ll <strong>Mount the ROMFS Filesystem</strong> inside <em>qemu_bringup</em>. (See below)</p>
 <h2 id="linker-script"><a class="doc-anchor" href="#linker-script">§</a>18.2 Linker Script</h2>
 <p>We reserve <strong>16 MB of RAM</strong> for the ROMFS Filesystem that will host the NuttX Apps: <a href="https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-f0706cd747d2f1be1eeb64d50821afb1e25d5bb26e964e2679268a83dcff0afc">ld-kernel.script</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Linker Script: We added the RAM Disk (16 MB) */
