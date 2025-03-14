@@ -4,7 +4,7 @@
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
-[_(Watch the Demo on YouTube)_](https://youtu.be/PxaMcmMAzlM)
+[_(Watch the Demo on YouTube)_](https://youtu.be/XTDw245n5tM)
 
 This article explains how we ported NuttX from [__QEMU Arm64 Kernel Build__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig) to [__PINE64 Yuzuki Avaota-A1 SBC__](https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/) based on [__Allwinner A527 SoC__](https://linux-sunxi.org/A523) ... Completed within [__24 Hours__](https://github.com/lupyuen2/wip-nuttx/commits/avaota)!
 
@@ -526,7 +526,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 1.  __Run OSTest__ and verify the result
 
-1.  How it looks? [__Watch the Demo__](https://youtu.be/PxaMcmMAzlM)
+1.  How it looks? [__Watch the Demo__](https://youtu.be/XTDw245n5tM)
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
@@ -592,7 +592,7 @@ curl \
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
+[(Watch the __Demo on YouTube__)](https://youtu.be/XTDw245n5tM)
 
 ![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/avaota-power1.jpg)
 
@@ -1259,7 +1259,7 @@ expect ./avaota.exp
 popd
 ```
 
-[(Watch the __Demo on YouTube__)](https://youtu.be/PxaMcmMAzlM)
+[(Watch the __Demo on YouTube__)](https://youtu.be/XTDw245n5tM)
 
 [(__copy-image.sh__ is explained here)](https://lupyuen.github.io/articles/avaota#microsd-multiplexer--smart-power-plug)
 
