@@ -1,6 +1,6 @@
 # Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)
 
-📝 _9 Apr 2025_
+📝 _16 Mar 2025_
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
