@@ -524,6 +524,9 @@ AB</code></pre></div>
 <p><strong>Power up SBC</strong> and boot NuttX</p>
 </li>
 <li>
+<p><strong>Run OSTest</strong> and verify the result</p>
+</li>
+<li>
 <p>How it looks? <a href="https://youtu.be/PxaMcmMAzlM"><strong>Watch the Demo</strong></a></p>
 </li>
 </ol>
@@ -612,7 +615,8 @@ curl \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer"><strong>“SDWire MicroSD Multiplexer”</strong></a></li>
 </ul>
-<p>To <strong>Automate Everything</strong> including <strong>OSTest</strong>, we run an Expect Script: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
+<p><em>Can we automate everything? Including OSTest?</em></p>
+<p>Yep we have an <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp"><strong>Expect Script</strong></a> that will execute and verify <strong>OSTest</strong>: <a href="https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to MicroSD
 ## No password needed for sudo, see below
 ## Change `thinkcentre` to your Test PC
