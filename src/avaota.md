@@ -537,7 +537,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
-Here's our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
+Everything happens in our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
 ```bash
 ## Build NuttX and Apps (NuttX Kernel Build)
@@ -597,7 +597,7 @@ curl \
   http://localhost:8123/api/services/automation/trigger
 ```
 
-[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+[(See the __Build Log__)](https://gist.github.com/lupyuen/7296022328dadcfac88a38d4b3eec892)
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/XTDw245n5tM)
 
@@ -1031,7 +1031,9 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 When NuttX Boots: It will...
 
-1.  Find the __ROMFS Filesystem__
+1.  Locate the __ROMFS Filesystem__ in memory
+
+1.  Copy it to the designated __Memory Region__
 
 1.  Mount it as a __RAM Disk__
 
@@ -1084,7 +1086,7 @@ user_main: Exiting
 ostest_main: Exiting with status 0
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/6365762343133a843276bb87d2da17a1)
 
 [(See the __Final Code__)](https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1)
 
@@ -1151,12 +1153,12 @@ Or follow these steps to compile our _(Work-In-Progress)_ __NuttX for Avaota-A1_
 
 ```bash
 ## Download Source Code for NuttX and Apps
-git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch avaota2
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch avaota2
 cd nuttx
 
 ## Build NuttX and Apps (NuttX Kernel Build)
-tools/configure.sh qemu-armv8a:knsh
+tools/configure.sh avaota-a1:nsh
 make -j
 make -j export
 pushd ../apps
@@ -1175,7 +1177,7 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 
 Read on to boot the NuttX Image on our SBC...
 
-[(See the __Build Log__)](https://gist.github.com/lupyuen/6c0607daa0a8f37bda37cc80e76259ee)
+[(See the __Build Log__)](https://gist.github.com/lupyuen/7296022328dadcfac88a38d4b3eec892)
 
 ![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
 
@@ -1192,8 +1194,12 @@ Earlier we built [__NuttX for Avaota-A1__](https://lupyuen.github.io/articles/av
     ```bash
     ## Copy NuttX Image to AvaotaOS MicroSD
     ## Overwrite the `Image` file
-    mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
-    cp Image /media/$USER/YOUR_SD/Image
+    mv \
+      /media/$USER/YOUR_SD/Image \
+      /media/$USER/YOUR_SD/Image.old
+    cp \
+      Image \
+      /media/$USER/YOUR_SD/Image
 
     ## Unmount and boot it on Avaota-A1
     ls -l /media/$USER/YOUR_SD/Image
@@ -1286,37 +1292,14 @@ NOTICE:  [SCP] :arisc startup ready
 NOTICE:  [SCP] :arisc startup notify message feedback
 NOTICE:  [SCP] :sunxi-arisc driver is starting
 ERROR:   Error initializing runtime service opteed_fast
-123
 - Ready to Boot Primary CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-ABarm64_mmu_init:
-setup_page_tables:
-enable_mmu_el1:
-enable_mmu_el1: UP_MB
-enable_mmu_el1: Enable the MMU and data cache
-up_allocate_kheap: CONFIG_RAM_END=0x48000000, g_idle_topstack=0x40847000
-qemu_bringup:
-mount_ramdisk:
-nx_start_application: ret=0
-board_app_initialize:
 
 NuttShell (NSH) NuttX-12.4.0
 nsh> uname -a
-NuttX 12.4.0 6c5c1a5f9f-dirty Mar  8 2025 21:57:02 arm64 qemu-armv8a
-
-nsh> free
-      total       used       free    maxused    maxfree  nused  nfree name
-  125538304      33848  125504456      52992  125484976     58      5 Kmem
-    4194304     245760    3948544               3948544               Page
-
-nsh> ps
-  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
-    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0008176 0000928  11.3%  Idle_Task
-    1     0 192 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  hpwork 0x40834568 0x408345b8
-    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  lpwork 0x408344e8 0x40834538
-    4     4 100 RR       Task      - Running            0000000000000000 0008128 0002192  26.9%  /system/bin/init
+NuttX 12.4.0 42c0ed4a89 Mar 13 2025 09:13:56 arm64 avaota-a1
 
 nsh> ls -l /dev
 /dev:
@@ -1325,6 +1308,18 @@ nsh> ls -l /dev
  brw-rw-rw-    16777216 ram0
  crw-rw-rw-           0 ttyS0
  crw-rw-rw-           0 zero
+
+nsh> ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0008176 0000928  11.3%  Idle_Task
+    1     0 192 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  hpwork 0x40833568 0x408335b8
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0008112 0000992  12.2%  lpwork 0x408334e8 0x40833538
+    4     4 100 RR       Task      - Running            0000000000000000 0008128 0002192  26.9%  /system/bin/init
+
+nsh> free
+      total       used       free    maxused    maxfree  nused  nfree name
+  125542400      33880  125508520      53032  125484976     58      5 Kmem
+    4194304     245760    3948544               3948544               Page
 
 nsh> hello
 Hello, World!!
@@ -1355,13 +1350,13 @@ nsh>
 
 </span>
 
-[(See the __NuttX Log__)](https://gist.github.com/lupyuen/c2248e7537ca98333d47e33b232217b6)
+[(See the __NuttX Log__)](https://gist.github.com/lupyuen/6365762343133a843276bb87d2da17a1)
 
 ![Upstreaming NuttX for Avaota-A1](https://lupyuen.org/images/avaota-pr.png)
 
 # Appendix: Upstream NuttX for Avaota-A1
 
-In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. What's Next: Upstreaming our code to __NuttX Mainline__!
+In this article we ported NuttX QEMU Arm64 (Kernel Build) iteratively to Avaota-A1. Up Next: Upstreaming our code to __NuttX Mainline__!
 
 Here's how we copy-n-pasted our [__Modified Files__](https://github.com/lupyuen2/wip-nuttx/pull/99/commits) into a proper __NuttX Arch__ _(Allwinner A527)_ and __NuttX Board__ _(Avaota-A1)_
 
@@ -1607,7 +1602,9 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![After Reordering the Commit](https://lupyuen.org/images/avaota-commit3.png)
 
-1.  Now we're finally ready to Submit our Pull Requests!
+1.  We're finally ready to Submit our Pull Requests!
+
+    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/100)
 
 ![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
@@ -1668,7 +1665,9 @@ SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/t
 
 1.  Everything goes into our [__Build Script for NuttX__](https://gist.github.com/lupyuen/a4ac110fb8610a976c0ce2621cbb8587)
 
-_(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 hmmm...)_
+    How it looks? [__Watch the Demo__](https://youtu.be/XTDw245n5tM)
+
+_(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 SBC hmmm...)_
 
 ![NuttX Apps Filesystem in ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
 
@@ -1697,7 +1696,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 ## HostFS becomes ROMFS
 
-QEMU uses [__Semihosting and HostFS__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) to access the NuttX Apps Filesystem. We change to __ROMFS__... [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+QEMU uses [__Semihosting and HostFS__](https://lupyuen.github.io/articles/testbot2#semihosting-breakout) to access the NuttX Apps Filesystem. We change to __ROMFS__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
 ```bash
 ## We added ROMFS...
@@ -1715,7 +1714,7 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_INIT_MOUNT_TARGET="/system"
 ```
 
-_BOARD_LATE_INITIALIZE_ is needed because we'll __Mount the ROMFS Filesystem__ inside _qemu_bringup()_. (See below)
+_BOARD_LATE_INITIALIZE_ is needed because we'll __Mount the ROMFS Filesystem__ inside _qemu_bringup_. (See below)
 
 ## Linker Script
 
