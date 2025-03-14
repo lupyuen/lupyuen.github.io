@@ -169,7 +169,7 @@ _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
 # Boot NuttX on our SBC
 
-Remember the [__MicroSD we downloaded__](https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"
+Remember the [__MicroSD we downloaded__](https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"...
 
 ```bash
 $ ls -l /media/$USER/YOUR_SD
@@ -193,11 +193,16 @@ We replace it with NuttX...
 1.  Overwrite the __`Image`__ file by __`nuttx.bin`__...
 
     ```bash
-    ## Copy and overwrite `Image` on MicroSD
-    mv /media/$USER/YOUR_SD/Image /media/$USER/YOUR_SD/Image.old
-    cp nuttx.bin /media/$USER/YOUR_SD/Image
+    ## Backup and overwrite `Image` on MicroSD
+    mv \
+      /media/$USER/YOUR_SD/Image \
+      /media/$USER/YOUR_SD/Image.old
+    cp \
+      nuttx.bin \
+      /media/$USER/YOUR_SD/Image
 
     ## `Image` should be a lot smaller now
+    ## Remember to Unmount and prevent filesystem corruption
     ls -l /media/$USER/YOUR_SD/Image
     umount /media/$USER/YOUR_SD
     ```
@@ -247,7 +252,7 @@ Let's print something. __UART0 Base Address__ is here...
 </div>
 </p>
 
-Which means we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333) like so...
+This says we can [__Print to UART__](https://github.com/lupyuen2/wip-nuttx/commit/029056c7e0da092e4d3a211b5f5b22b7014ba333) like so...
 
 ```c
 // Print `123` to UART0
@@ -306,7 +311,7 @@ _Why print in Arm64 Assembly? Why not C?_
 
 1.  Arm64 Assembly is the __very first thing that boots__ when Bootloader starts NuttX
 
-1.  This happens __before anything complicated__ and crash-prone begins: UART Driver, Memory Management Unit, Task Scheduler, ...
+1.  This happens __before anything complicated__ and crash-prone begins: UART Driver, Memory Management, Task Scheduler, ...
 
 1.  The Arm64 Assembly above is __Address-Independent Code__: It will execute at Any Arm64 Address
 
@@ -396,7 +401,7 @@ void arm64_chip_boot(void) {
   arm64_mmu_init(true);  // Init the Memory Mgmt Unit
 
   *(volatile uint8_t *) 0x02500000 = 'C';
-  arm64_enable_mte();    // Init the Memory Tag Extension
+  arm64_enable_mte();    // Init the Memory Tagging Extension
 
   *(volatile uint8_t *) 0x02500000 = 'D';
   qemu_board_initialize();  // Init the Board
@@ -676,7 +681,7 @@ void arm64_chip_boot(void) {
 
   // Stuck above, never came here
   *(volatile uint8_t *) 0x02500000 = 'C';
-  arm64_enable_mte();    // Init the Memory Tag Extension
+  arm64_enable_mte();    // Init the Memory Tagging Extension
 ```
 
 _What's arm64_mmu_init?_
@@ -1000,7 +1005,7 @@ Assertion failed panic:
 
 _What's /system/bin/init? Why is it failing?_
 
-_/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps from a __Local Filesystem__, which is missing right now. _(NuttX Flat Build will bind binary Apps directly into Kernel)_
+_/system/bin/init_ is __NSH Shell__. NuttX Kernel Build will load NuttX Apps from a __Local Filesystem__, and it's missing right now. _(NuttX Flat Build will bind binary Apps directly into Kernel)_
 
 To solve this: We bundle the NuttX Apps together into a __ROMFS Filesystem__...
 
