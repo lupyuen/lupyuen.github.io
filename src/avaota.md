@@ -161,7 +161,7 @@ NuttX Kernel Build will call out to [__HostFS Semihosting__](https://lupyuen.git
 
 _Why start with NuttX Kernel Build? Not NuttX Flat Build?_
 
-Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)_. It makes more sense to boot [__NuttX Kernel Build__]https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=139629512#MemoryConfigurations-KernelBuild) and run lots of cool powerful NuttX App, thanks to [__Virtual Memory__](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode).
+Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)_. It makes more sense to boot [__NuttX Kernel Build__](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=139629512#MemoryConfigurations-KernelBuild) and run lots of cool powerful NuttX App, thanks to __Virtual Memory__.
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
@@ -537,7 +537,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
-Everything happens in our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
+All this happens in our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
 ```bash
 ## Build NuttX and Apps (NuttX Kernel Build)
@@ -629,7 +629,7 @@ This is the script that copies our NuttX Image to MicroSD, via the __SDWire Micr
 
 - [__"SDWire MicroSD Multiplexer"__](https://lupyuen.github.io/articles/avaota#appendix-sdwire-microsd-multiplexer)
 
-_Can we automate everything? Including OSTest?_
+_Can we automate the testing? Including OSTest?_
 
 Yep we have an [__Expect Script__](https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp) that will execute and verify __OSTest__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
@@ -715,7 +715,7 @@ static void enable_mmu_el1(unsigned int flags) {
   UP_ISB();
 ```
 
-And we Enable the Logs for __Scheduler and Memory Manager__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
+And we enable the logs for __Scheduler and Memory Manager__: [configs/knsh/defconfig](https://github.com/lupyuen2/wip-nuttx/pull/96/files#diff-6adf2d1a1e5d57ee68c7493a2b52c07c4e260e60d846a9ee7b8f8a6df5d8cb64)
 
 ```bash
 ## Enable Logging for Memory Manager
@@ -944,7 +944,7 @@ Which has these __GIC Registers__ inside, handling 8 Arm64 Cores...
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 264 |
 |:-------------------------------:|:---------|
 | __Offset__ | __Register__
 | _0x00_0000_ | GICD_CTLR  _(Distributor Control Register)_
@@ -1041,7 +1041,7 @@ When NuttX Boots: It will...
 
     _(And other NuttX Apps)_
 
-Everything is explained here...
+How? See this...
 
 - [__"NuttX Apps Filesystem"__](https://lupyuen.github.io/articles/avaota#appendix-nuttx-apps-filesystem)
 
@@ -1187,7 +1187,7 @@ Earlier we built [__NuttX for Avaota-A1__](https://lupyuen.github.io/articles/av
 
 1.  Prepare the __AvaotaOS MicroSD__...
 
-    [__"Boot NuttX Kernel on our SBC"__](https://lupyuen.github.io/articles/avaota#boot-nuttx-kernel-on-our-sbc)
+    [__"Boot NuttX on our SBC"__](https://lupyuen.github.io/articles/avaota#boot-nuttx-on-our-sbc)
 
 1.  Copy the __NuttX Image__ to MicroSD...
 
@@ -1955,7 +1955,7 @@ And __GIC Registers__...
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 263 |
+| [A523 User Manual](https://linux-sunxi.org/File:A523_User_Manual_V1.1_merged_cleaned.pdf) | Page 264 |
 |:-------------------------------:|:---------|
 | __Offset__ | __Register__
 | _0x00_0000_ | GICD_CTLR  _(Distributor Control Register)_
