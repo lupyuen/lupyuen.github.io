@@ -1486,7 +1486,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  Copy the Arch Files into the __Arch Pull Request__
 
-    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/100)
+    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/apache/nuttx/pull/15996)
 
     <span style="font-size:60%">
 
@@ -1590,7 +1590,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
     </span>
 
-1.  Remember to create [__Two Commits Per PR__](https://github.com/lupyuen2/wip-nuttx/pull/100/commits): One Commit for Code, Another Commit for Docs
+1.  Remember to create [__Two Commits Per PR__](https://github.com/apache/nuttx/pull/15996/commits): One Commit for Code, Another Commit for Docs
 
     ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.org/images/avaota-commit.png)
 
@@ -1604,7 +1604,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  We're finally ready to Submit our Pull Requests!
 
-    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/lupyuen2/wip-nuttx/pull/100)
+    [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/apache/nuttx/pull/15996)
 
 ![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
