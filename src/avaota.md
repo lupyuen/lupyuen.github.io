@@ -172,7 +172,7 @@ _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 Remember the [__MicroSD we downloaded__](https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc)? Inside the MicroSD is a 28 MB Linux Kernel, named "__`Image`__"...
 
 ```bash
-$ ls -l /media/$USER/YOUR_SD
+$ ls -l /media/$USER/boot
    78769  bl31.bin
   180233  config-5.15.154-ga464bc4feaff
      512  dtb
@@ -195,16 +195,16 @@ We replace it with NuttX...
     ```bash
     ## Backup and overwrite `Image` on MicroSD
     mv \
-      /media/$USER/YOUR_SD/Image \
-      /media/$USER/YOUR_SD/Image.old
+      /media/$USER/boot/Image \
+      /media/$USER/boot/Image.old
     cp \
       nuttx.bin \
-      /media/$USER/YOUR_SD/Image
+      /media/$USER/boot/Image
 
     ## `Image` should be a lot smaller now
     ## Remember to Unmount and prevent filesystem corruption
-    ls -l /media/$USER/YOUR_SD/Image
-    umount /media/$USER/YOUR_SD
+    ls -l /media/$USER/boot/Image
+    umount /media/$USER/boot
     ```
 
 1.  Insert the MicroSD into our SBC. Boot it...
@@ -1123,7 +1123,7 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43375298)
 
 - [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
 
@@ -1195,15 +1195,15 @@ Earlier we built [__NuttX for Avaota-A1__](https://lupyuen.github.io/articles/av
     ## Copy NuttX Image to AvaotaOS MicroSD
     ## Overwrite the `Image` file
     mv \
-      /media/$USER/YOUR_SD/Image \
-      /media/$USER/YOUR_SD/Image.old
+      /media/$USER/boot/Image \
+      /media/$USER/boot/Image.old
     cp \
       Image \
-      /media/$USER/YOUR_SD/Image
+      /media/$USER/boot/Image
 
     ## Unmount and boot it on Avaota-A1
-    ls -l /media/$USER/YOUR_SD/Image
-    umount /media/$USER/YOUR_SD
+    ls -l /media/$USER/boot/Image
+    umount /media/$USER/boot
     ```
 
 1.  __Boot the MicroSD__ on our SBC

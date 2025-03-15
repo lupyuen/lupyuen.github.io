@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)</title>
+            <link>https://lupyuen.github.io/articles/avaota</link>
+            <description><![CDATA[This article explains how we ported NuttX from QEMU Arm64 Kernel Build to PINE64 Yuzuki Avaota-A1 SBC based on Allwinner A527 SoC ... Completed within 24 Hours!]]></description>
+            <guid>https://lupyuen.github.io/articles/avaota</guid>
+            <pubDate>Sun, 16 Mar 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PR Test Bot for PinePhone (Apache NuttX RTOS)</title>
             <link>https://lupyuen.github.io/articles/testbot3</link>
             <description><![CDATA[Earlier we created a PR Test Bot that will Build and Test the Pull Requests for Apache NuttX RTOS. Today we extend our Test Bot to Build and Test the Pull Requests for PINE64 PinePhone. Yep on the Real Arm64 PinePhone Hardware!]]></description>
