@@ -247,7 +247,7 @@ qemu-system-aarch64 \
 <p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="boot-nuttx-on-our-sbc"><a class="doc-anchor" href="#boot-nuttx-on-our-sbc">§</a>3 Boot NuttX on our SBC</h1>
 <p>Remember the <a href="https://lupyuen.github.io/articles/avaota#boot-linux-on-our-sbc"><strong>MicroSD we downloaded</strong></a>? Inside the MicroSD is a 28 MB Linux Kernel, named “<strong><code>Image</code></strong>”…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ ls -l /media/$USER/YOUR_SD
+<div class="example-wrap"><pre class="language-bash"><code>$ ls -l /media/$USER/boot
    78769  bl31.bin
   180233  config-5.15.154-ga464bc4feaff
      512  dtb
@@ -267,16 +267,16 @@ qemu-system-aarch64 \
 <p>Overwrite the <strong><code>Image</code></strong> file by <strong><code>nuttx.bin</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Backup and overwrite `Image` on MicroSD
 mv \
-  /media/$USER/YOUR_SD/Image \
-  /media/$USER/YOUR_SD/Image.old
+  /media/$USER/boot/Image \
+  /media/$USER/boot/Image.old
 cp \
   nuttx.bin \
-  /media/$USER/YOUR_SD/Image
+  /media/$USER/boot/Image
 
 ## `Image` should be a lot smaller now
 ## Remember to Unmount and prevent filesystem corruption
-ls -l /media/$USER/YOUR_SD/Image
-umount /media/$USER/YOUR_SD</code></pre></div></li>
+ls -l /media/$USER/boot/Image
+umount /media/$USER/boot</code></pre></div></li>
 <li>
 <p>Insert the MicroSD into our SBC. Boot it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read /Image addr=40800000
@@ -1001,7 +1001,7 @@ nsh&gt;</code></pre></div>
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=43375298"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
@@ -1067,15 +1067,15 @@ cat nuttx.bin /tmp/nuttx.pad initrd \
 <div class="example-wrap"><pre class="language-bash"><code>## Copy NuttX Image to AvaotaOS MicroSD
 ## Overwrite the `Image` file
 mv \
-  /media/$USER/YOUR_SD/Image \
-  /media/$USER/YOUR_SD/Image.old
+  /media/$USER/boot/Image \
+  /media/$USER/boot/Image.old
 cp \
   Image \
-  /media/$USER/YOUR_SD/Image
+  /media/$USER/boot/Image
 
 ## Unmount and boot it on Avaota-A1
-ls -l /media/$USER/YOUR_SD/Image
-umount /media/$USER/YOUR_SD</code></pre></div></li>
+ls -l /media/$USER/boot/Image
+umount /media/$USER/boot</code></pre></div></li>
 <li>
 <p><strong>Boot the MicroSD</strong> on our SBC</p>
 </li>
