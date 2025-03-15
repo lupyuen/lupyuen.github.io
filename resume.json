@@ -47,9 +47,8 @@
       "position": "Apache NuttX PMC (Project Management Committee)",
       "website": "https://nuttx.apache.org/",
       "startDate": "2022-09-22",
-      "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System)",
+      "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System). Ported Apache NuttX RTOS to:",
       "highlights": [
-        "Ported Apache NuttX RTOS to:",
         "PINE64 PinePhone (Allwinner A64 SoC / Arm Cortex-A53)",
         "PINE64 Star64 64-bit RISC-V Single-Board Computer (StarFive JH7110 SoC)",
         "PINE64 Ox64 64-bit RISC-V Single-Board Computer (BouffaloLab BL808 SoC)",
