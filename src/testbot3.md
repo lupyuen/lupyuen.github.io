@@ -480,7 +480,9 @@ Exactly! Here's why Avaota-A1 SBC should run NuttX...
 
 - __Open-Source RTOS__ _(NuttX)_ tested on __Open-Source Hardware__ _(Avaota-A1)_ ... Perfectly sensible!
 
-We'll take the NuttX Kernel Build for [__QEMU Arm64__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig), boot it on Avaota-A1 SBC. We're making terrific progress with [__NuttX on Avaota SBC__](https://github.com/lupyuen/nuttx-avaota-a1)...
+We'll take the NuttX Kernel Build for [__QEMU Arm64__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig), boot it on Avaota-A1 SBC. We're making terrific progress with __NuttX on Avaota SBC__...
+
+- [__"Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"__](https://lupyuen.org/articles/avaota.html)
 
 ![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
 
@@ -494,7 +496,9 @@ Well thankfully we have a __MicroSD Multiplexer__ that will make MicroSD Swappin
 
 # What's Next
 
-Next Article: We chat about porting [__NuttX to Avaota-A1 SBC__](https://github.com/lupyuen/nuttx-avaota-a1). Stay tuned!
+Next Article: We chat about porting [__NuttX to Avaota-A1 SBC__](https://github.com/lupyuen/nuttx-avaota-a1)...
+
+- [__"Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"__](https://lupyuen.org/articles/avaota.html)
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
