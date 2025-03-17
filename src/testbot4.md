@@ -6,6 +6,8 @@
 
 TODO
 
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+
 # TODO
 
 1.  Fetch the PR Code
