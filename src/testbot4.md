@@ -1,6 +1,6 @@
 # Avaota-A1 SBC becomes PR Test Bot for Arm64 (Apache NuttX RTOS)
 
-📝 _9 Mar 2025_
+📝 _9 Apr 2025_
 
 ![TODO](https://lupyuen.org/images/testbot4-title.jpg)
 
