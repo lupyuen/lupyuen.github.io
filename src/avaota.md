@@ -1538,6 +1538,8 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  Copy the Board Files into the __Board Pull Request__
 
+    [__"boards/arm64/a527/avaota-a1: Add support for PINE64 Yuzuki Avaota-A1 SBC (Allwinner A527 SoC)"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
+
     <span style="font-size:60%">
 
     ```bash
@@ -1602,9 +1604,15 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![After Reordering the Commit](https://lupyuen.org/images/avaota-commit3.png)
 
+1.  Meditate on our changes, take a Long Walk [__(50 km)__](https://www.strava.com/activities/13889602722), we're about to make NuttX History...
+
+    ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.org/images/avaota-hike.png)
+
 1.  We're finally ready to Submit our Pull Requests!
 
     [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/apache/nuttx/pull/15996)
+
+    [__"boards/arm64/a527/avaota-a1: Add support for PINE64 Yuzuki Avaota-A1 SBC (Allwinner A527 SoC)"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
 ![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
 
