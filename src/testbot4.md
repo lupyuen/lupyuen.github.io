@@ -28,6 +28,9 @@ TODO
 
 ![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
 
+1.  Email Notification
+
+1.  Manual Review
 
 1.  Please gimme 12 hours to respond. In case I'm out on a [__50 km hike__](https://www.strava.com/activities/13889602722)...
 
