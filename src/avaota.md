@@ -1608,7 +1608,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
     ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.org/images/avaota-hike.png)
 
-1.  We're finally ready to Submit our Pull Requests!
+1.  Finally we Submit our Pull Requests!
 
     [__"arch/arm64/a527: Add support for Allwinner A527 SoC"__](https://github.com/apache/nuttx/pull/15996)
 
