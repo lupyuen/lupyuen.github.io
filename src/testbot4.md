@@ -4,6 +4,12 @@
 
 ![TODO](https://lupyuen.org/images/testbot4-title.jpg)
 
+<span style="font-size:80%">
+
+_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :-)_
+
+</span>
+
 TODO
 
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
