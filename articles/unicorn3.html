@@ -65,11 +65,15 @@
 
     <h1 class="title">Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
-<li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#memory-management-unit" title="Memory Management Unit">1 Memory Management Unit</a><ul></ul></li>
+<li><a href="#todo" title="TODO">2 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
-<p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! (Pic above)</p>
+<p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
+<h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
+<p><em>What’s this MMU again?</em></p>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
@@ -96,7 +100,7 @@ isb
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
 ldr X2, [X0]
-b .</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>1 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+b .</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
@@ -605,7 +609,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>2 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
