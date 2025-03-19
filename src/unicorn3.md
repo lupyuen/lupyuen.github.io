@@ -4,7 +4,37 @@
 
 ![TODO](https://lupyuen.org/images/unicorn3-title.jpg)
 
-Only 18 lines of Arm64 Assembly Code (!)
+Only 18 lines of Arm64 Assembly (!)
+
+```c
+// Read data from physical address
+ldr X0, =0x40000000
+ldr X1, [X0]
+
+// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
+
+// Set translation table
+adr X0, ttb0_base
+msr TTBR0_EL1, X0
+
+// Enable caches and the MMU
+mrs X0, SCTLR_EL1
+orr X0, X0, #(0x1 << 2) // The C bit (data cache).
+orr X0, X0, #(0x1 << 12) // The I bit (instruction cache)
+orr X0, X0, #0x1 // The M bit (MMU).
+msr SCTLR_EL1, X0
+dsb SY
+isb
+
+// Read the same memory area through virtual address
+ldr X0, =0x80000000
+ldr X2, [X0]
+b .
+```
 
 # TODO
 
