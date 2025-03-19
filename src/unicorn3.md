@@ -4,9 +4,15 @@
 
 ![TODO](https://lupyuen.org/images/unicorn3-title.png)
 
-[__Unicorn Emulator__](TODO) has a fascinating demo of [__Arm64 MMU__](TODO) _(Memory Management Unit)_ ... Only [__18 Lines of Arm64 Assembly__](TODO)! (Pic above)
+[__Unicorn Emulator__](TODO) has a fascinating demo of [__Arm64 MMU__](TODO) _(Memory Management Unit)_ ... Only [__18 Lines of Arm64 Assembly__](TODO)! _(Pic above)_
 
 This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO) compiled for Arm64 SBCs!
+
+# Memory Management Unit
+
+_What's this MMU again?_
+
+TODO
 
 ```c
 // Read data from physical address
