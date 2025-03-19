@@ -14,6 +14,18 @@ _What's this MMU again?_
 
 TODO
 
+That's why we can do this with MMU...
+
+1.  MMU is disabled initially
+
+1.  Read from Physical Address 0x4000_0000
+
+1.  Enable MMU, map Virtual Address 0x8000_0000 to Physical Address 0x4000_0000
+
+1.  Read from Virtual Address 0x8000_0000
+
+1.  Same value as Physical Address 0x4000_0000!
+
 ```c
 // Read data from physical address
 ldr X0, =0x40000000
