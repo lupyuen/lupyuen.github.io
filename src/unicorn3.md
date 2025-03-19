@@ -9,6 +9,9 @@ Only 18 lines of Arm64 Assembly Code (!)
 # TODO
 
 ```text
+Arm Architecture Reference Manual for A-profile architecture
+https://developer.arm.com/documentation/ddi0487/latest/
+
 My Deepest darkest fantasy:
 Suppose we're in some wacky alternate universe 
 What would it look like 
