@@ -2,7 +2,7 @@
 
 📝 _9 Apr 2025_
 
-![TODO](https://lupyuen.org/images/unicorn3-title.jpg)
+![TODO](https://lupyuen.org/images/unicorn3-title.png)
 
 Only 18 lines of Arm64 Assembly (!)
 
