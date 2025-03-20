@@ -79,11 +79,9 @@ TODO
     ldr X2, [X0]
     ```
 
-1.  Both reads produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)!
+1.  Assume that Physical Address _0x4000_0000_ is filled with [_0x44 0x44 0x44 0x44_](TODO)...
 
-    _(Register X1 == Register X2)_
-
-1.  Assuming that Physical Address _0x4000_0000_ is filled with [_0x44 0x44 0x44 0x44_](TODO)...
+    Both reads will produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0): Register X1 == Register X2
 
     ```rust
     x1=0x4444_4444_4444_4444
