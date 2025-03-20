@@ -76,7 +76,6 @@
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
-<h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
 <p><em>What’s this MMU again?</em></p>
 <p>TODO</p>
 <p>That’s why we can do this with MMU…</p>
@@ -97,6 +96,8 @@
 <p>Both reads produce <strong>the same value</strong>!</p>
 </li>
 </ol>
+<p>TODO</p>
+<h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
 <p>TODO</p>
 <ol>
 <li>
@@ -146,7 +147,6 @@ ldr X2, [X0]</code></pre></div></li>
 </li>
 </ol>
 <p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable MMU”</em> are extremely cryptic. We break them down…</p>
-<p>TODO</p>
 <h1 id="map-virtual-address-to-physical-address"><a class="doc-anchor" href="#map-virtual-address-to-physical-address">§</a>2 Map Virtual Address to Physical Address</h1>
 <p>TODO</p>
 <p><strong>Map Virtual Address</strong> to Physical Address:</p>
@@ -202,6 +202,11 @@ Data @ 0x1028: 0x1_8080_3F20
 Data @ 0x1030: 0xFFFF_FFFF
 Data @ 0x1038: 0x8000_0000</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Complete Log</strong>)</a></p>
+<p><em>Why 741?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PTE descriptor can be Block descriptor or Table descriptor or Page descriptor
 #define PTE_BLOCK_DESC              1U
@@ -343,7 +348,9 @@ isb</code></pre></div>
 <p>EL0 then EL1. Show log</p>
 <h1 id="populate-the-ram"><a class="doc-anchor" href="#populate-the-ram">§</a>5 Populate the RAM</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+<div class="example-wrap"><pre class="language-c"><code>// Omitted: TODO
+
+// Omitted: Enable the MMU</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
