@@ -348,6 +348,14 @@ TODO
 // Omitted: Enable the MMU
 ```
 
+# NuttX vs Unicorn
+
+TODO: What's the diff?
+
+TODO: Changes to NuttX
+
+TODO: HostFS
+
 # TODO
 
 ```c
