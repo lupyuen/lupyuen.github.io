@@ -83,6 +83,8 @@ TODO
 
     _(Register X1 == Register X2)_
 
+1.  Assuming that Physical Address _0x4000_0000_ is filled with [_0x44 0x44 0x44 0x44_](TODO)...
+
     ```rust
     x1=0x4444_4444_4444_4444
     x2=0x4444_4444_4444_4444
@@ -194,6 +196,22 @@ TODO: Pic of Level 1 Page Table
 | __`0x4000_0000`__ | `0xA000_0000`
 | __`0x8000_0000`__ | `0x4000_0000`
 | __`0xC000_0000`__ | `0x8000_0000`
+
+_Why Inner vs Outer Shareable? Something about "Severance"?_
+
+```text
+Example B2-1 Use of shareability attributes
+In an implementation, a particular subsystem with two clusters of PEs has the requirement that:
+• In each cluster, the data caches or unified caches of the PEs in the cluster are transparent for all data accesses
+to memory locations with the Inner Shareable attribute.
+• However, between the two clusters, the caches:
+— Are not required to be coherent for data accesses that have only the Inner Shareable attribute.
+— Are coherent for data accesses that have the Outer Shareable attribute.
+In this system, each cluster is in a different shareability domain for the Inner Shareable attribute, but all components
+of the subsystem are in the same shareability domain for the Outer Shareable attribute.
+A system might implement two such subsystems. If the data caches or unified caches of one subsystem are not
+transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.
+```
 
 # Enable the MMU
 
