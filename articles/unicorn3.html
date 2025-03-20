@@ -66,8 +66,10 @@
     <h1 class="title">Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#memory-management-unit" title="Memory Management Unit">1 Memory Management Unit</a><ul></ul></li>
-<li><a href="#todo" title="TODO">2 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#map-virtual-address-to-physical-address" title="Map Virtual Address to Physical Address">2 Map Virtual Address to Physical Address</a><ul></ul></li>
+<li><a href="#enable-the-mmu" title="Enable the MMU">3 Enable the MMU</a><ul></ul></li>
+<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -77,21 +79,96 @@
 <p>That’s why we can do this with MMU…</p>
 <ol>
 <li>
-<p>MMU is disabled initially</p>
+<p><strong>MMU is Disabled</strong> initially</p>
 </li>
 <li>
-<p>Read from Physical Address 0x4000_0000</p>
+<p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
 </li>
 <li>
-<p>Enable MMU, map Virtual Address 0x8000_0000 to Physical Address 0x4000_0000</p>
+<p><strong>Enable MMU</strong>: Map Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em></p>
 </li>
 <li>
-<p>Read from Virtual Address 0x8000_0000</p>
+<p>Read from <strong>Virtual Address</strong> <em>0x8000_0000</em></p>
 </li>
 <li>
-<p>Same value as Physical Address 0x4000_0000!</p>
+<p>Both reads produce <strong>the same value</strong>!</p>
 </li>
 </ol>
+<p>TODO</p>
+<ol>
+<li>
+<p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+// Into Register X1
+ldr X0, =0x40000000
+ldr X1, [X0]</code></pre></div></li>
+<li>
+<p><strong>Map Virtual Address</strong> to Physical Address:</p>
+<p><em>0x8000_0000</em> becomes to <em>0x4000_0000</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
+
+// Set translation table
+adr X0, ttb0_base
+msr TTBR0_EL1, X0</code></pre></div></li>
+<li>
+<p><strong>Enable the MMU</strong></p>
+<div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
+mrs X0, SCTLR_EL1
+orr X0, X0, #(0x1 &lt;&lt; 2)  // The C bit (data cache).
+orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache).
+orr X0, X0, #0x1         // The M bit (MMU).
+msr SCTLR_EL1, X0
+dsb SY
+isb</code></pre></div></li>
+<li>
+<p>Read from <strong>Virtual Address</strong> <em>0x8000_0000</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Read the same memory area through virtual address
+// Into Regiser X2
+ldr X0, =0x80000000
+ldr X2, [X0]</code></pre></div></li>
+<li>
+<p>Both reads produce <strong>the same value</strong>!</p>
+<p><em>(Register X1 == Register X2)</em></p>
+</li>
+</ol>
+<p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable MMU”</em> are extremely cryptic. We break them down…</p>
+<p>TODO</p>
+<h1 id="map-virtual-address-to-physical-address"><a class="doc-anchor" href="#map-virtual-address-to-physical-address">§</a>2 Map Virtual Address to Physical Address</h1>
+<p>TODO</p>
+<ol>
+<li>
+<p><strong>Map Virtual Address</strong> to Physical Address:</p>
+<p><em>0x8000_0000</em> becomes to <em>0x4000_0000</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
+
+// Set translation table
+adr X0, ttb0_base
+msr TTBR0_EL1, X0</code></pre></div></li>
+</ol>
+<p>TODO</p>
+<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
+<p>TODO</p>
+<ol>
+<li>
+<p><strong>Enable the MMU</strong></p>
+<div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
+mrs X0, SCTLR_EL1
+orr X0, X0, #(0x1 &lt;&lt; 2)  // The C bit (data cache).
+orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache).
+orr X0, X0, #0x1         // The M bit (MMU).
+msr SCTLR_EL1, X0
+dsb SY
+isb</code></pre></div></li>
+</ol>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
@@ -108,17 +185,16 @@ msr TTBR0_EL1, X0
 
 // Enable caches and the MMU
 mrs X0, SCTLR_EL1
-orr X0, X0, #(0x1 &lt;&lt; 2) // The C bit (data cache).
-orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache)
-orr X0, X0, #0x1 // The M bit (MMU).
+orr X0, X0, #(0x1 &lt;&lt; 2)  // The C bit (data cache).
+orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache).
+orr X0, X0, #0x1         // The M bit (MMU).
 msr SCTLR_EL1, X0
 dsb SY
 isb
 
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
-ldr X2, [X0]
-b .</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>2 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+ldr X2, [X0]</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
@@ -627,7 +703,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>3 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
