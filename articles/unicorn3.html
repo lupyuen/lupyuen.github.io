@@ -135,11 +135,8 @@ isb</code></pre></div>
 ldr X0, =0x80000000
 ldr X2, [X0]</code></pre></div></li>
 <li>
-<p>Both reads produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>!</p>
-<p><em>(Register X1 == Register X2)</em></p>
-</li>
-<li>
-<p>Assuming that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 0x44 0x44 0x44</em></a>…</p>
+<p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 0x44 0x44 0x44</em></a>…</p>
+<p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>: Register X1 == Register X2</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>x1=<span class="number">0x4444_4444_4444_4444
 </span>x2=<span class="number">0x4444_4444_4444_4444</span></code></pre></div>
