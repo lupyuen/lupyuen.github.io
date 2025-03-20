@@ -75,9 +75,14 @@ TODO
     ldr X2, [X0]
     ```
 
-1.  Both reads produce __the same value__!
+1.  Both reads produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)!
 
     _(Register X1 == Register X2)_
+
+    ```rust
+    x1=0x4444_4444_4444_4444
+    x2=0x4444_4444_4444_4444
+    ```
 
 Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryptic. We break them down...
 
@@ -104,6 +109,62 @@ msr TTBR0_EL1, X0
 ```
 
 TODO
+
+_What's ttb0_base?_
+
+That's the [__Level 1 Page Table__]
+
+```bash
+## Level 1 Page Table with 4 Page Table Entries
+## Entry #0
+Page Table Entry @ 0x1000:
+  0x0000_0741
+Physical Address:
+  0x0000_0000
+Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06:    PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1
+
+## Entry #1
+Page Table Entry @ 0x1008:
+  0xA000_0741
+Physical Address:
+  0xA000_0000
+(Same Bits as above)
+
+## Entry #2
+Page Table Entry @ 0x1010:
+  0x4000_0741
+Physical Address:
+  0x4000_0000
+(Same Bits as above)
+
+## Entry #3
+Page Table Entry @ 0x1018:
+  0x8000_0741
+Physical Address:
+  0x8000_0000
+(Same Bits as above)
+
+## Data Referenced by our Assembly Code
+Data @ 0x1020: 0x4000_0000
+Data @ 0x1028: 0x1_8080_3F20
+Data @ 0x1030: 0xFFFF_FFFF
+Data @ 0x1038: 0x8000_0000
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
+
+
+TODO: Pic of Level 1 Page Table
+
+| Virtual Address | Physical Address |
+|:---------------:|:-----------------:
+| __`0x0000_0000`__ | `0x0000_0000`
+| __`0x4000_0000`__ | `0xA000_0000`
+| __`0x8000_0000`__ | `0x4000_0000`
+| __`0xC000_0000`__ | `0x8000_0000`
 
 # Enable the MMU
 
