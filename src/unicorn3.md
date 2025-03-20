@@ -8,8 +8,6 @@
 
 This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO) compiled for Arm64 SBCs!
 
-# Memory Management Unit
-
 _What's this MMU again?_
 
 TODO
@@ -25,6 +23,10 @@ That's why we can do this with MMU...
 1.  Read from __Virtual Address__ _0x8000_0000_
 
 1.  Both reads produce __the same value__!
+
+TODO
+
+# Memory Management Unit
 
 TODO
 
@@ -89,8 +91,6 @@ TODO
     ```
 
 Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryptic. We break them down...
-
-TODO
 
 # Map Virtual Address to Physical Address
 
@@ -161,6 +161,14 @@ Data @ 0x1038: 0x8000_0000
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
 
+_Why 741?_
+
+```text
+Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1
+```
 
 [arm64_mmu.h](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122)
 
@@ -333,6 +341,12 @@ EL0 then EL1. Show log
 # Populate the RAM
 
 TODO
+
+```c
+// Omitted: TODO
+
+// Omitted: Enable the MMU
+```
 
 # TODO
 
