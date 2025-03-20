@@ -53,6 +53,8 @@ TODO
     msr TTBR0_EL1, X0
     ```
 
+    _(We'll explain this)_
+
 1.  __Enable the MMU__
 
     ```c
@@ -65,6 +67,8 @@ TODO
     dsb SY
     isb
     ```
+
+    _(We'll explain this)_
 
 1.  Read from __Virtual Address__ _0x8000_0000_
 
@@ -157,6 +161,30 @@ Data @ 0x1038: 0x8000_0000
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
 
+
+[arm64_mmu.h](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122)
+
+```c
+// PTE descriptor can be Block descriptor or Table descriptor or Page descriptor
+#define PTE_BLOCK_DESC              1U
+#define PTE_TABLE_DESC              3U
+
+// Block and Page descriptor attributes fields
+#define PTE_BLOCK_DESC_MEMTYPE(x)   ((x) << 2)
+#define PTE_BLOCK_DESC_NS           (1ULL << 5) /* Non-secure */
+#define PTE_BLOCK_DESC_AP_USER      (1ULL << 6) /* User */
+#define PTE_BLOCK_DESC_AP_RO        (1ULL << 7) /* Read-only */
+#define PTE_BLOCK_DESC_AP_RW        (0ULL << 7) /* Read-write */
+#define PTE_BLOCK_DESC_AP_MASK      (3ULL << 6)
+#define PTE_BLOCK_DESC_NON_SHARE    (0ULL << 8)
+#define PTE_BLOCK_DESC_OUTER_SHARE  (2ULL << 8)
+#define PTE_BLOCK_DESC_INNER_SHARE  (3ULL << 8)
+#define PTE_BLOCK_DESC_AF           (1ULL << 10) /* A-flag */
+#define PTE_BLOCK_DESC_NG           (1ULL << 11) /* Non-global */
+#define PTE_BLOCK_DESC_DIRTY        (1ULL << 51) /* D-flag */
+#define PTE_BLOCK_DESC_PXN          (1ULL << 53) /* Kernel execute never */
+#define PTE_BLOCK_DESC_UXN          (1ULL << 54) /* User execute never */
+```
 
 TODO: Pic of Level 1 Page Table
 
