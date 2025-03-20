@@ -138,7 +138,7 @@ isb</code></pre></div>
 ldr X0, =0x80000000
 ldr X2, [X0]</code></pre></div></li>
 <li>
-<p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 0x44 0x44 0x44</em></a>…</p>
+<p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 44 44 44 …</em></a></p>
 <p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>: Register X1 == Register X2</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>x1=<span class="number">0x4444_4444_4444_4444
@@ -316,7 +316,7 @@ msr MAIR_EL1, X0</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>// Read SCTLR_EL1 into Register X0
 mrs X0, SCTLR_EL1
 
-// In X0: Set the bits for MMU, Data Cache and Instruction Cache
+// In X0: Set the bits to Enable MMU, Data Cache and Instruction Cache
 orr X0, X0, #0x1         // M bit (MMU)
 orr X0, X0, #(0x1 &lt;&lt; 2)  // C bit (Data Cache)
 orr X0, X0, #(0x1 &lt;&lt; 12) // I bit (Instruction Cache)
@@ -329,7 +329,7 @@ dsb SY
 isb</code></pre></div>
 <ul>
 <li>
-<p><strong>Bit 0:</strong> M = 1 <b> <em>Enable MMU for Address Translation</em></p>
+<p><strong>Bit 0:</strong> M = 1 <br> <em>Enable MMU for Address Translation</em></p>
 </li>
 <li>
 <p><strong>Bit 2:</strong> C = 1 <br> <em>Enable the Data Cache</em></p>
