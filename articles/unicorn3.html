@@ -70,9 +70,10 @@
 <li><a href="#translation-control-register" title="Translation Control Register">3 Translation Control Register</a><ul></ul></li>
 <li><a href="#enable-the-mmu" title="Enable the MMU">4 Enable the MMU</a><ul></ul></li>
 <li><a href="#populate-the-ram" title="Populate the RAM">5 Populate the RAM</a><ul></ul></li>
-<li><a href="#todo" title="TODO">6 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">7 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#nuttx-vs-unicorn" title="NuttX vs Unicorn">6 NuttX vs Unicorn</a><ul></ul></li>
+<li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -350,7 +351,11 @@ isb</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: TODO
 
-// Omitted: Enable the MMU</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+// Omitted: Enable the MMU</code></pre></div><h1 id="nuttx-vs-unicorn"><a class="doc-anchor" href="#nuttx-vs-unicorn">§</a>6 NuttX vs Unicorn</h1>
+<p>TODO: What’s the diff?</p>
+<p>TODO: Changes to NuttX</p>
+<p>TODO: HostFS</p>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
@@ -375,7 +380,7 @@ isb
 
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
-ldr X2, [X0]</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+ldr X2, [X0]</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>8 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
@@ -884,7 +889,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
