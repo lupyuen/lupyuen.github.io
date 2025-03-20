@@ -213,6 +213,8 @@ A system might implement two such subsystems. If the data caches or unified cach
 transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.
 ```
 
+[(PE = Processing Element = One Arm64 Core)](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
+
 # Enable the MMU
 
 TODO
