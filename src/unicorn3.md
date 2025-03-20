@@ -255,6 +255,8 @@ AP[2:1] Permissions
 RPSZJJ
 ```
 
+![TODO](https://lupyuen.org/images/unicorn3-access.png)
+
 # Enable the MMU
 
 TODO
