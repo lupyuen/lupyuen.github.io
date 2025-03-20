@@ -324,7 +324,7 @@ isb
 
 - __Bit 12:__ I = 1 <br> _Enable the Instruction Cache_
 
-_What's this EL?_
+_What's this EL1?_
 
 EL0 then EL1. Show log
 
