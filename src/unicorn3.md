@@ -79,7 +79,6 @@ TODO
 
     _(Register X1 == Register X2)_
 
-
 Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryptic. We break them down...
 
 TODO
@@ -88,21 +87,21 @@ TODO
 
 TODO
 
-1.  __Map Virtual Address__ to Physical Address:
+__Map Virtual Address__ to Physical Address:
 
-    _0x8000_0000_ becomes to _0x4000_0000_
+_0x8000_0000_ becomes to _0x4000_0000_
 
-    ```c
-    // Initialize translation table control registers
-    ldr X0, =0x180803F20
-    msr TCR_EL1, X0
-    ldr X0, =0xFFFFFFFF
-    msr MAIR_EL1, X0
+```c
+// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
 
-    // Set translation table
-    adr X0, ttb0_base
-    msr TTBR0_EL1, X0
-    ```
+// Set translation table
+adr X0, ttb0_base
+msr TTBR0_EL1, X0
+```
 
 TODO
 
@@ -110,18 +109,19 @@ TODO
 
 TODO
 
-1.  __Enable the MMU__
+__Enable the MMU__
 
-    ```c
-    // Enable caches and the MMU
-    mrs X0, SCTLR_EL1
-    orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
-    orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
-    orr X0, X0, #0x1         // The M bit (MMU).
-    msr SCTLR_EL1, X0
-    dsb SY
-    isb
-    ```
+```c
+// Enable caches and the MMU
+mrs X0, SCTLR_EL1
+orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
+orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
+orr X0, X0, #0x1         // The M bit (MMU).
+
+msr SCTLR_EL1, X0
+dsb SY
+isb
+```
 
 TODO
 
