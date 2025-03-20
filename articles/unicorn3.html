@@ -139,8 +139,6 @@ ldr X2, [X0]</code></pre></div></li>
 <p>TODO</p>
 <h1 id="map-virtual-address-to-physical-address"><a class="doc-anchor" href="#map-virtual-address-to-physical-address">§</a>2 Map Virtual Address to Physical Address</h1>
 <p>TODO</p>
-<ol>
-<li>
 <p><strong>Map Virtual Address</strong> to Physical Address:</p>
 <p><em>0x8000_0000</em> becomes to <em>0x4000_0000</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize translation table control registers
@@ -151,23 +149,20 @@ msr MAIR_EL1, X0
 
 // Set translation table
 adr X0, ttb0_base
-msr TTBR0_EL1, X0</code></pre></div></li>
-</ol>
+msr TTBR0_EL1, X0</code></pre></div>
 <p>TODO</p>
 <h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
 <p>TODO</p>
-<ol>
-<li>
 <p><strong>Enable the MMU</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
 mrs X0, SCTLR_EL1
 orr X0, X0, #(0x1 &lt;&lt; 2)  // The C bit (data cache).
 orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache).
 orr X0, X0, #0x1         // The M bit (MMU).
+
 msr SCTLR_EL1, X0
 dsb SY
-isb</code></pre></div></li>
-</ol>
+isb</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
