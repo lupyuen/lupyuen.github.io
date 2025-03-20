@@ -199,6 +199,8 @@ TODO: Pic of Level 1 Page Table
 
 _Why Inner vs Outer Shareable? Something about "Severance"?_
 
+![TODO](https://lupyuen.org/images/unicorn3-shareable.png)
+
 ```text
 Example B2-1 Use of shareability attributes
 In an implementation, a particular subsystem with two clusters of PEs has the requirement that:
@@ -213,7 +215,7 @@ A system might implement two such subsystems. If the data caches or unified cach
 transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.
 ```
 
-[(PE = Processing Element = One Arm64 Core)](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
+[_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
 
 # Enable the MMU
 
