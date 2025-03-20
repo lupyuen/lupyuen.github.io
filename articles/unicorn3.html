@@ -67,9 +67,12 @@
     <nav id="rustdoc"><ul>
 <li><a href="#memory-management-unit" title="Memory Management Unit">1 Memory Management Unit</a><ul></ul></li>
 <li><a href="#map-virtual-address-to-physical-address" title="Map Virtual Address to Physical Address">2 Map Virtual Address to Physical Address</a><ul></ul></li>
-<li><a href="#enable-the-mmu" title="Enable the MMU">3 Enable the MMU</a><ul></ul></li>
-<li><a href="#todo" title="TODO">4 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#translation-control-register" title="Translation Control Register">3 Translation Control Register</a><ul></ul></li>
+<li><a href="#enable-the-mmu" title="Enable the MMU">4 Enable the MMU</a><ul></ul></li>
+<li><a href="#populate-the-ram" title="Populate the RAM">5 Populate the RAM</a><ul></ul></li>
+<li><a href="#todo" title="TODO">6 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">7 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -268,20 +271,78 @@ See Stage 1 Indirect permissions.</code></pre></div>
 11 PrivRead, UnprivRead
 RPSZJJ</code></pre></div>
 <p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
-<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
-<p>TODO</p>
-<p><strong>Enable the MMU</strong></p>
-<div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
-mrs X0, SCTLR_EL1
-orr X0, X0, #(0x1 &lt;&lt; 2)  // The C bit (data cache).
-orr X0, X0, #(0x1 &lt;&lt; 12) // The I bit (instruction cache).
-orr X0, X0, #0x1         // The M bit (MMU).
+<h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>3 Translation Control Register</h1><div class="example-wrap"><pre class="language-c"><code>// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
 
+// TODO
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0</code></pre></div>
+<p>According to TODO</p>
+<ul>
+<li>
+<p><strong>Bits 00-05:</strong> T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></p>
+</li>
+<li>
+<p><strong>Bits 08-09:</strong> IRGN0 = 3 <br> <em>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable</em></p>
+</li>
+<li>
+<p><strong>Bits 10-11:</strong> ORGN0 = 3 <br> <em>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheabl.</em></p>
+</li>
+<li>
+<p><strong>Bits 12-13:</strong> TCR_SHARED_INNER = 3 <br> <em>TODO</em></p>
+</li>
+<li>
+<p><strong>Bits 14-15:</strong> TG0 = 0 <br> <em>TODO 4KB</em></p>
+</li>
+<li>
+<p><strong>Bit 23:</strong> TCR_EPD1_DISABLE = 1 <br> <em>TODO</em></p>
+</li>
+<li>
+<p><strong>Bits 30-31:</strong> TG1 = 2 <br> <em>TODO 4KB</em></p>
+</li>
+<li>
+<p><strong>Bits 32-34:</strong> IPS = 1 <br> <em>TODO 36 bits, 64 GB</em></p>
+</li>
+</ul>
+<p><em>What about MAIR?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// TODO
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0</code></pre></div>
+<p>Hmmm it looks fake? Unicorn Emulator probably ignores the bits. We’ll see a Real MAIR in a while.</p>
+<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>4 Enable the MMU</h1>
+<p>TODO</p>
+<p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Read SCTLR_EL1 into Register X0
+mrs X0, SCTLR_EL1
+
+// In X0: Set the bits for MMU, Data Cache and Instruction Cache
+orr X0, X0, #0x1         // M bit (MMU)
+orr X0, X0, #(0x1 &lt;&lt; 2)  // C bit (Data Cache)
+orr X0, X0, #(0x1 &lt;&lt; 12) // I bit (Instruction Cache)
+
+// Write Register X0 into SCTLR_EL1
 msr SCTLR_EL1, X0
+
+// TODO
 dsb SY
 isb</code></pre></div>
+<ul>
+<li>
+<p><strong>Bit 0:</strong> M = 1 <b> <em>Enable MMU for Address Translation</em></p>
+</li>
+<li>
+<p><strong>Bit 2:</strong> C = 1 <br> <em>Enable the Data Cache</em></p>
+</li>
+<li>
+<p><strong>Bit 12:</strong> I = 1 <br> <em>Enable the Instruction Cache</em></p>
+</li>
+</ul>
+<p><em>What’s this EL?</em></p>
+<p>EL0 then EL1. Show log</p>
+<h1 id="populate-the-ram"><a class="doc-anchor" href="#populate-the-ram">§</a>5 Populate the RAM</h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>6 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
@@ -306,7 +367,7 @@ isb
 
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
-ldr X2, [X0]</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>4 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+ldr X2, [X0]</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
@@ -815,7 +876,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>5 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
