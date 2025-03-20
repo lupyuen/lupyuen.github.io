@@ -255,25 +255,84 @@ RPSZJJ
 
 ![TODO](https://lupyuen.org/images/unicorn3-access.png)
 
+# Translation Control Register
+
+```c
+// Initialize translation table control registers
+ldr X0, =0x180803F20
+msr TCR_EL1, X0
+
+// TODO
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
+```
+
+According to TODO
+
+- __Bits 00-05:__ T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
+
+- __Bits 08-09:__ IRGN0 = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
+
+- __Bits 10-11:__ ORGN0 = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheabl._
+
+- __Bits 12-13:__ TCR_SHARED_INNER = 3 <br> _TODO_
+
+- __Bits 14-15:__ TG0 = 0 <br> _TODO 4KB_
+
+- __Bit 23:__ TCR_EPD1_DISABLE = 1 <br> _TODO_
+
+- __Bits 30-31:__ TG1 = 2 <br> _TODO 4KB_
+
+- __Bits 32-34:__ IPS = 1 <br> _TODO 36 bits, 64 GB_
+
+_What about MAIR?_
+
+```c
+// TODO
+ldr X0, =0xFFFFFFFF
+msr MAIR_EL1, X0
+```
+
+Hmmm it looks fake? Unicorn Emulator probably ignores the bits. We'll see a Real MAIR in a while.
+
 # Enable the MMU
 
 TODO
 
-__Enable the MMU__
+[SCTLR_EL1, System Control Register (EL1)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
 
 ```c
-// Enable caches and the MMU
+// Read SCTLR_EL1 into Register X0
 mrs X0, SCTLR_EL1
-orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
-orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
-orr X0, X0, #0x1         // The M bit (MMU).
 
+// In X0: Set the bits for MMU, Data Cache and Instruction Cache
+orr X0, X0, #0x1         // M bit (MMU)
+orr X0, X0, #(0x1 << 2)  // C bit (Data Cache)
+orr X0, X0, #(0x1 << 12) // I bit (Instruction Cache)
+
+// Write Register X0 into SCTLR_EL1
 msr SCTLR_EL1, X0
+
+// TODO
 dsb SY
 isb
 ```
 
+- __Bit 0:__ M = 1 <b> _Enable MMU for Address Translation_
+
+- __Bit 2:__ C = 1 <br> _Enable the Data Cache_
+
+- __Bit 12:__ I = 1 <br> _Enable the Instruction Cache_
+
+_What's this EL?_
+
+EL0 then EL1. Show log
+
+# Populate the RAM
+
 TODO
+
+# TODO
 
 ```c
 // Read data from physical address
