@@ -241,7 +241,9 @@ to memory locations with the Inner Shareable attribute.
 In this system, each cluster is in a different shareability domain for the Inner Shareable attribute, but all components
 of the subsystem are in the same shareability domain for the Outer Shareable attribute.
 A system might implement two such subsystems. If the data caches or unified caches of one subsystem are not
-transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.</code></pre></div><h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
+transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.</code></pre></div>
+<p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms">(PE = Processing Element = One Arm64 Core)</a></p>
+<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
 <p>TODO</p>
 <p><strong>Enable the MMU</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
