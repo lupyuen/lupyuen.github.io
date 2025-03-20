@@ -273,7 +273,7 @@ According to TODO
 
 - __Bits 08-09:__ IRGN0 = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
 
-- __Bits 10-11:__ ORGN0 = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheabl._
+- __Bits 10-11:__ ORGN0 = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
 
 - __Bits 12-13:__ TCR_SHARED_INNER = 3 <br> _TODO_
 
@@ -284,6 +284,8 @@ According to TODO
 - __Bits 30-31:__ TG1 = 2 <br> _TODO 4KB_
 
 - __Bits 32-34:__ IPS = 1 <br> _TODO 36 bits, 64 GB_
+
+  [_(We spoke about Innies and Outies earlier)_](TODO)
 
 _What about MAIR?_
 
