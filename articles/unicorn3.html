@@ -131,8 +131,11 @@ isb</code></pre></div></li>
 ldr X0, =0x80000000
 ldr X2, [X0]</code></pre></div></li>
 <li>
-<p>Both reads produce <strong>the same value</strong>!</p>
+<p>Both reads produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>!</p>
 <p><em>(Register X1 == Register X2)</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>x1=<span class="number">0x4444_4444_4444_4444
+</span>x2=<span class="number">0x4444_4444_4444_4444</span></code></pre></div>
 </li>
 </ol>
 <p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable MMU”</em> are extremely cryptic. We break them down…</p>
@@ -151,7 +154,54 @@ msr MAIR_EL1, X0
 adr X0, ttb0_base
 msr TTBR0_EL1, X0</code></pre></div>
 <p>TODO</p>
-<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
+<p><em>What’s ttb0_base?</em></p>
+<p>That’s the [<strong>Level 1 Page Table</strong>]</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
+## Entry #0
+Page Table Entry @ 0x1000:
+  0x0000_0741
+Physical Address:
+  0x0000_0000
+Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06:    PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1
+
+## Entry #1
+Page Table Entry @ 0x1008:
+  0xA000_0741
+Physical Address:
+  0xA000_0000
+(Same Bits as above)
+
+## Entry #2
+Page Table Entry @ 0x1010:
+  0x4000_0741
+Physical Address:
+  0x4000_0000
+(Same Bits as above)
+
+## Entry #3
+Page Table Entry @ 0x1018:
+  0x8000_0741
+Physical Address:
+  0x8000_0000
+(Same Bits as above)
+
+## Data Referenced by our Assembly Code
+Data @ 0x1020: 0x4000_0000
+Data @ 0x1028: 0x1_8080_3F20
+Data @ 0x1030: 0xFFFF_FFFF
+Data @ 0x1038: 0x8000_0000</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO: Pic of Level 1 Page Table</p>
+<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td></tr>
+<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td></tr>
+<tr><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td></tr>
+<tr><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: center"><code>0x8000_0000</code></td></tr>
+</tbody></table>
+</div><h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
 <p>TODO</p>
 <p><strong>Enable the MMU</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable caches and the MMU
