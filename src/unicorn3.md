@@ -128,7 +128,7 @@ Page Table Entry @ 0x1000:
 Physical Address:
   0x0000_0000
 Bit 00-01: PTE_BLOCK_DESC=1
-Bit 06:    PTE_BLOCK_DESC_AP_USER=1
+Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
 Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
 Bit 10:    PTE_BLOCK_DESC_AF=1
 
@@ -216,6 +216,44 @@ transparent to the accesses from the other subsystem, this system has two Outer 
 ```
 
 [_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
+
+
+```text
+D8.2.1 Translation table walk
+RBTTHB A translation table walk is the set of translation table lookups that are required to do all of the following:
+• For a single stage translation at stage 1, translate a VA to a PA.
+• For two translation stages and stage 1 is disabled, translate an IPA to a PA.
+• For a two stage translation, all of the following:
+— For a stage 1 translation, translate a VA to an IPA.
+— For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
+— For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.
+```
+
+TODO: PTE_BLOCK_DESC_AP_USER=1
+
+```text
+[7] AP[2] Stage 1 Indirect permissions are disabled.
+See Stage 1 data accesses using Direct permissions.
+
+[6] RES1 Stage 1 Indirect permissions are disabled and the translation regime supports a single privilege
+level.
+AP[1] Stage 1 Indirect permissions are disabled and the translation regime supports two privilege
+levels.
+See Stage 1 data accesses using Direct permissions.
+PIIndex[0] Stage 1 Indirect permissions are enabled.
+See Stage 1 Indirect permissions.
+```
+
+TODO: AP[2:1]
+
+```text
+AP[2:1] Permissions
+00 PrivRead, PrivWrite
+01 PrivRead, PrivWrite, UnprivRead, UnprivWrite
+10 PrivRead
+11 PrivRead, UnprivRead
+RPSZJJ
+```
 
 # Enable the MMU
 
