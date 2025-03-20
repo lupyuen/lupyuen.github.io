@@ -16,15 +16,114 @@ TODO
 
 That's why we can do this with MMU...
 
-1.  MMU is disabled initially
+1.  __MMU is Disabled__ initially
 
-1.  Read from Physical Address 0x4000_0000
+1.  Read from __Physical Address__ _0x4000_0000_
 
-1.  Enable MMU, map Virtual Address 0x8000_0000 to Physical Address 0x4000_0000
+1.  __Enable MMU__: Map Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_
 
-1.  Read from Virtual Address 0x8000_0000
+1.  Read from __Virtual Address__ _0x8000_0000_
 
-1.  Same value as Physical Address 0x4000_0000!
+1.  Both reads produce __the same value__!
+
+TODO
+
+1.  Read from __Physical Address__ _0x4000_0000_
+
+    ```c
+    // Read data from physical address
+    // Into Register X1
+    ldr X0, =0x40000000
+    ldr X1, [X0]
+    ```
+
+1.  __Map Virtual Address__ to Physical Address:
+
+    _0x8000_0000_ becomes to _0x4000_0000_
+
+    ```c
+    // Initialize translation table control registers
+    ldr X0, =0x180803F20
+    msr TCR_EL1, X0
+    ldr X0, =0xFFFFFFFF
+    msr MAIR_EL1, X0
+
+    // Set translation table
+    adr X0, ttb0_base
+    msr TTBR0_EL1, X0
+    ```
+
+1.  __Enable the MMU__
+
+    ```c
+    // Enable caches and the MMU
+    mrs X0, SCTLR_EL1
+    orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
+    orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
+    orr X0, X0, #0x1         // The M bit (MMU).
+    msr SCTLR_EL1, X0
+    dsb SY
+    isb
+    ```
+
+1.  Read from __Virtual Address__ _0x8000_0000_
+
+    ```c
+    // Read the same memory area through virtual address
+    // Into Regiser X2
+    ldr X0, =0x80000000
+    ldr X2, [X0]
+    ```
+
+1.  Both reads produce __the same value__!
+
+    _(Register X1 == Register X2)_
+
+
+Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryptic. We break them down...
+
+TODO
+
+# Map Virtual Address to Physical Address
+
+TODO
+
+1.  __Map Virtual Address__ to Physical Address:
+
+    _0x8000_0000_ becomes to _0x4000_0000_
+
+    ```c
+    // Initialize translation table control registers
+    ldr X0, =0x180803F20
+    msr TCR_EL1, X0
+    ldr X0, =0xFFFFFFFF
+    msr MAIR_EL1, X0
+
+    // Set translation table
+    adr X0, ttb0_base
+    msr TTBR0_EL1, X0
+    ```
+
+TODO
+
+# Enable the MMU
+
+TODO
+
+1.  __Enable the MMU__
+
+    ```c
+    // Enable caches and the MMU
+    mrs X0, SCTLR_EL1
+    orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
+    orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
+    orr X0, X0, #0x1         // The M bit (MMU).
+    msr SCTLR_EL1, X0
+    dsb SY
+    isb
+    ```
+
+TODO
 
 ```c
 // Read data from physical address
@@ -43,9 +142,9 @@ msr TTBR0_EL1, X0
 
 // Enable caches and the MMU
 mrs X0, SCTLR_EL1
-orr X0, X0, #(0x1 << 2) // The C bit (data cache).
-orr X0, X0, #(0x1 << 12) // The I bit (instruction cache)
-orr X0, X0, #0x1 // The M bit (MMU).
+orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
+orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
+orr X0, X0, #0x1         // The M bit (MMU).
 msr SCTLR_EL1, X0
 dsb SY
 isb
@@ -53,7 +152,6 @@ isb
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
 ldr X2, [X0]
-b .
 ```
 
 # TODO
