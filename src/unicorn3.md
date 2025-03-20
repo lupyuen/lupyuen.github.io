@@ -79,7 +79,7 @@ TODO
     ldr X2, [X0]
     ```
 
-1.  Assume that Physical Address _0x4000_0000_ is filled with [_0x44 0x44 0x44 0x44_](TODO)...
+1.  Assume that Physical Address _0x4000_0000_ is filled with [_0x44 44 44 44 ..._](TODO)
 
     Both reads will produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0): Register X1 == Register X2
 
@@ -305,7 +305,7 @@ TODO
 // Read SCTLR_EL1 into Register X0
 mrs X0, SCTLR_EL1
 
-// In X0: Set the bits for MMU, Data Cache and Instruction Cache
+// In X0: Set the bits to Enable MMU, Data Cache and Instruction Cache
 orr X0, X0, #0x1         // M bit (MMU)
 orr X0, X0, #(0x1 << 2)  // C bit (Data Cache)
 orr X0, X0, #(0x1 << 12) // I bit (Instruction Cache)
@@ -318,7 +318,7 @@ dsb SY
 isb
 ```
 
-- __Bit 0:__ M = 1 <b> _Enable MMU for Address Translation_
+- __Bit 0:__ M = 1 <br> _Enable MMU for Address Translation_
 
 - __Bit 2:__ C = 1 <br> _Enable the Data Cache_
 
