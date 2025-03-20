@@ -112,7 +112,7 @@ TODO
 
 _What's ttb0_base?_
 
-That's the [__Level 1 Page Table__]
+That's the [__Level 1 Page Table__](TODO)
 
 ```bash
 ## Level 1 Page Table with 4 Page Table Entries
@@ -147,6 +147,7 @@ Physical Address:
   0x8000_0000
 (Same Bits as above)
 
+## Not the Page Table, but
 ## Data Referenced by our Assembly Code
 Data @ 0x1020: 0x4000_0000
 Data @ 0x1028: 0x1_8080_3F20
