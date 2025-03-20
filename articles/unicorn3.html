@@ -155,7 +155,7 @@ adr X0, ttb0_base
 msr TTBR0_EL1, X0</code></pre></div>
 <p>TODO</p>
 <p><em>What’s ttb0_base?</em></p>
-<p>That’s the [<strong>Level 1 Page Table</strong>]</p>
+<p>That’s the <a href="TODO"><strong>Level 1 Page Table</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
 ## Entry #0
 Page Table Entry @ 0x1000:
@@ -188,6 +188,7 @@ Physical Address:
   0x8000_0000
 (Same Bits as above)
 
+## Not the Page Table, but
 ## Data Referenced by our Assembly Code
 Data @ 0x1020: 0x4000_0000
 Data @ 0x1028: 0x1_8080_3F20
