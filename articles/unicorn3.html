@@ -231,6 +231,7 @@ Data @ 0x1038: 0x8000_0000</code></pre></div>
 </tbody></table>
 </div>
 <p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
+<p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-text"><code>Example B2-1 Use of shareability attributes
 In an implementation, a particular subsystem with two clusters of PEs has the requirement that:
 • In each cluster, the data caches or unified caches of the PEs in the cluster are transparent for all data accesses
@@ -242,7 +243,7 @@ In this system, each cluster is in a different shareability domain for the Inner
 of the subsystem are in the same shareability domain for the Outer Shareable attribute.
 A system might implement two such subsystems. If the data caches or unified caches of one subsystem are not
 transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.</code></pre></div>
-<p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms">(PE = Processing Element = One Arm64 Core)</a></p>
+<p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms"><em>(PE = Processing Element = One Arm64 Core)</em></a></p>
 <h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>3 Enable the MMU</h1>
 <p>TODO</p>
 <p><strong>Enable the MMU</strong></p>
