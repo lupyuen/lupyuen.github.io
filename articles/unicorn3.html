@@ -356,19 +356,143 @@ isb</code></pre></div>
 <p>TODO: Why are we doing this?</p>
 <p>TODO: Changes to NuttX</p>
 <p>TODO: HostFS</p>
-<p>CONFIG_ARM64_VA_BITS=36</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a">Before Fix: QEMU Log</a></p>
-<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1">Before Fix: Unicorn Log</a></p>
-<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
-<p>Same same:</p>
-<p>{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
+<p><a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L4-L10">Enable Logging in nuttx/arch/arm64/src/common/arm64_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define CONFIG_MMU_ASSERT 1 ////
+#define CONFIG_MMU_DEBUG 1 ////
+#define CONFIG_MMU_DUMP_PTE 1 ////
+#define trace_printf _info ////
+#undef sinfo ////
+#define sinfo _info ////</code></pre></div>
+<p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
+arm64_mmu_init: xlat table #0: 0x402b1000
+
+init_xlat_tables: mmap: virt 0 phys 0 size 0x40000000
+set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
+set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
+set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_OUTER_SHAR=2
+set_pte_block_desc: Bit 53:    PTE_BLOCK_DESC_PXN=1
+set_pte_block_desc: Bit 54:    PTE_BLOCK_DESC_UXN=1
+set_pte_block_desc: addr_pa=0
+set_pte_block_desc: level=1
+set_pte_block_desc: pte=0x402b2000
+set_pte_block_desc: mem_type=DEV
+set_pte_block_desc: Bit 03:    MT_RW=RW
+set_pte_block_desc: Bit 04:    MT_NS=S
+set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
+set_pte_block_desc: PTE @ 0x402b2000 set to desc=0x60000000000601
+
+init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
+set_pte_table_desc:   
+set_pte_table_desc: 0x402b2008: [Table] 0x402b1000
+set_pte_table_desc: PTE @ 0x402b2008 points to Xlat Table 0x402b1000
+set_pte_table_desc: Bit 00-01: PTE_TABLE_DESC=3
+
+set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
+set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
+set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+set_pte_block_desc: addr_pa=0x40000000
+set_pte_block_desc: level=2
+set_pte_block_desc: pte=0x402b1000
+set_pte_block_desc: mem_type=MEM
+set_pte_block_desc: Bit 03:    MT_RW=RW
+set_pte_block_desc: Bit 04:    MT_NS=S
+set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
+set_pte_block_desc: PTE @ 0x402b1000 set to desc=0x40000711
+
+set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
+set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
+set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+set_pte_block_desc: addr_pa=0x40200000
+set_pte_block_desc: level=2
+set_pte_block_desc: pte=0x402b1008
+set_pte_block_desc: mem_type=MEM
+set_pte_block_desc: Bit 03:    MT_RW=RW
+set_pte_block_desc: Bit 04:    MT_NS=S
+set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
+set_pte_block_desc: PTE @ 0x402b1008 set to desc=0x40200711
+
+set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
+set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
+set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+set_pte_block_desc: addr_pa=0x40400000
+set_pte_block_desc: level=2
+set_pte_block_desc: pte=0x402b1010
+set_pte_block_desc: mem_type=MEM
+set_pte_block_desc: Bit 03:    MT_RW=RW
+set_pte_block_desc: Bit 04:    MT_NS=S
+set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
+set_pte_block_desc: PTE @ 0x402b1010 set to desc=0x40400711
+...
+get_tcr: va_bits: 0x24
+get_tcr: Bit 32-33: TCR_EL1_IPS=1
+get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
+get_tcr: Bit 00-05: TCR_T0SZ=0x1c
+get_tcr: Bit 08-09: TCR_IRGN_WBWA=1
+get_tcr: Bit 10-11: TCR_ORGN_WBWA=1
+get_tcr: Bit 12-13: TCR_SHARED_INNER=3
+get_tcr: Bit 14-15: TCR_TG0_4K=0
+get_tcr: Bit 30-31: TCR_TG1_4K=2
+get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
+
+enable_mmu_el1: tcr_el1=0x18080351c
+enable_mmu_el1: mair_el1=0xff440c0400
+enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754">Before Fix: Unicorn Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>call_graph:  init_xlat_tables --&gt; enable_mmu_el1
+call_graph:  click init_xlat_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
+call_graph:  enable_mmu_el1 --&gt; setup_page_tables
+call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
+hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
+hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
+hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
+hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
+err=Err(EXCEPTION)
+PC=0x402805f0
+WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
+CP_REG=Ok(0)
+ESR_EL0=Ok(0)
+ESR_EL1=Ok(0)
+ESR_EL2=Ok(0)
+ESR_EL3=Ok(0)
+call_graph:  setup_page_tables --&gt; ***_HALT_***
+call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
++ sleep 10
+
+env.exception=
+{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
-<p>CONFIG_ARM64_VA_BITS=32</p>
-<p>TODO: <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e">After Fix: QEMU Log</a></p>
-<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20">After Fix: Unicorn Log</a></p>
-<div class="example-wrap"><pre class="language-text"><code></code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+<p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
+<p>TODO: <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884">After Fix: QEMU Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>get_tcr: va_bits: 0x20
+get_tcr: Bit 32-33: TCR_EL1_IPS=1
+get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
+get_tcr: Bit 00-05: TCR_T0SZ=0x20
+get_tcr: Bit 08-09: TCR_IRGN_WBWA=1
+get_tcr: Bit 10-11: TCR_ORGN_WBWA=1
+get_tcr: Bit 12-13: TCR_SHARED_INNER=3
+get_tcr: Bit 14-15: TCR_TG0_4K=0
+get_tcr: Bit 30-31: TCR_TG1_4K=2
+get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
+
+enable_mmu_el1: tcr_el1=0x180803520
+enable_mmu_el1: mair_el1=0xff440c0400
+enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635">After Fix: Unicorn Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
+call_graph:  enable_mmu_el1 --&gt; setup_page_tables
+call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:608:3
+call_graph:  setup_page_tables --&gt; enable_mmu_el1
+call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:617:3
+hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
+call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
