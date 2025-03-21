@@ -1111,11 +1111,13 @@ Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explai
 
 # What's Next
 
-Right now we're upstreaming Avatoa-A1 SBC to __NuttX Mainline__...
+Avatoa-A1 SBC is now supported by __NuttX Mainline__!
 
-- [__"Port NuttX to Avaota-A1"__](https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1)
+- [__NuttX on Avaota-A1__](https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html)
 
-- [__"Upstream NuttX for Avaota-A1"__](https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1)
+- [__Port NuttX to Avaota-A1__](https://lupyuen.github.io/articles/avaota#appendix-port-nuttx-to-avaota-a1)
+
+- [__Upstream NuttX for Avaota-A1__](https://lupyuen.github.io/articles/avaota#appendix-upstream-nuttx-for-avaota-a1)
 
 We're seeking volunteers to build __NuttX Drivers for Avaota-A1__ _(GPIO, SPI, I2C, MIPI CSI / DSI, Ethernet, WiFi, ...)_ Please lemme know, maybe we can draw something on the Onboard LCD!
 
