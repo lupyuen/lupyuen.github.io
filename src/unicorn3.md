@@ -352,9 +352,37 @@ TODO
 
 TODO: What's the diff?
 
+TODO: Why are we doing this?
+
 TODO: Changes to NuttX
 
 TODO: HostFS
+
+TODO: [Before Fix: QEMU Log](TODO)
+
+```text
+```
+
+TODO: [Before Fix: Unicorn Log](TODO)
+
+```text
+```
+
+Same same:
+{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
+
+Change 36 bits of Virtual Address Space to 32 bits
+CONFIG_ARM64_VA_BITS=32
+
+TODO: [After Fix: QEMU Log](TODO)
+
+```text
+```
+
+TODO: [After Fix: Unicorn Log](TODO)
+
+```text
+```
 
 # TODO
 
