@@ -350,6 +350,10 @@ TODO
 
 # NuttX vs Unicorn
 
+_What's Unicorn got to do with NuttX?_
+
+TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing here...
+
 TODO: What's the diff?
 
 TODO: Why are we doing this?
@@ -1089,3 +1093,8 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/unicorn3.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md)
+
+# Appendix: Simplified NuttX for QEMU
+
+TODO: Simpler for debugging
+
