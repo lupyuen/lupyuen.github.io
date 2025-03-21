@@ -73,7 +73,8 @@
 <li><a href="#nuttx-vs-unicorn" title="NuttX vs Unicorn">6 NuttX vs Unicorn</a><ul></ul></li>
 <li><a href="#todo" title="TODO">7 TODO</a><ul></ul></li>
 <li><a href="#todo-1" title="TODO">8 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">10 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -352,6 +353,8 @@ isb</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: TODO
 
 // Omitted: Enable the MMU</code></pre></div><h1 id="nuttx-vs-unicorn"><a class="doc-anchor" href="#nuttx-vs-unicorn">§</a>6 NuttX vs Unicorn</h1>
+<p><em>What’s Unicorn got to do with NuttX?</em></p>
+<p>TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing here…</p>
 <p>TODO: What’s the diff?</p>
 <p>TODO: Why are we doing this?</p>
 <p>TODO: Changes to NuttX</p>
@@ -1056,6 +1059,8 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>10 Appendix: Simplified NuttX for QEMU</h1>
+<p>TODO: Simpler for debugging</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
