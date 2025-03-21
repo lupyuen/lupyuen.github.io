@@ -358,28 +358,32 @@ TODO: Changes to NuttX
 
 TODO: HostFS
 
-TODO: [Before Fix: QEMU Log](TODO)
+CONFIG_ARM64_VA_BITS=36
+
+TODO: [Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a)
 
 ```text
 ```
 
-TODO: [Before Fix: Unicorn Log](TODO)
+TODO: [Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1)
 
 ```text
 ```
 
 Same same:
+
 {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 
-Change 36 bits of Virtual Address Space to 32 bits
+Change 36 bits of Virtual Address Space to 32 bits:
+
 CONFIG_ARM64_VA_BITS=32
 
-TODO: [After Fix: QEMU Log](TODO)
+TODO: [After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e)
 
 ```text
 ```
 
-TODO: [After Fix: Unicorn Log](TODO)
+TODO: [After Fix: Unicorn Log](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20)
 
 ```text
 ```
