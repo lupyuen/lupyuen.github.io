@@ -353,9 +353,21 @@ isb</code></pre></div>
 
 // Omitted: Enable the MMU</code></pre></div><h1 id="nuttx-vs-unicorn"><a class="doc-anchor" href="#nuttx-vs-unicorn">§</a>6 NuttX vs Unicorn</h1>
 <p>TODO: What’s the diff?</p>
+<p>TODO: Why are we doing this?</p>
 <p>TODO: Changes to NuttX</p>
 <p>TODO: HostFS</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+<p>TODO: <a href="TODO">Before Fix: QEMU Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
+<p>TODO: <a href="TODO">Before Fix: Unicorn Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
+<p>Same same:
+{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</p>
+<p>Change 36 bits of Virtual Address Space to 32 bits
+CONFIG_ARM64_VA_BITS=32</p>
+<p>TODO: <a href="TODO">After Fix: QEMU Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code></code></pre></div>
+<p>TODO: <a href="TODO">After Fix: Unicorn Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code></code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>7 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
