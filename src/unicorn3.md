@@ -352,7 +352,9 @@ TODO
 
 _What's Unicorn got to do with NuttX?_
 
-TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing here...
+TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX...
+
+TODO Years Later: The bug stops here!
 
 TODO: What's the diff?
 
