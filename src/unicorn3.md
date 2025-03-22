@@ -441,20 +441,18 @@ TODO: vaddress doesn't offer any clues
 [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
 
 ```c
+// Enable the MMU for Exception Level 1
 static void enable_mmu_el1(unsigned int flags) {
 
-  /* Set MAIR, TCR and TBBR registers */
-
+  // Set the MAIR, TCR and TBBR registers
   write_sysreg(MEMORY_ATTRIBUTES, mair_el1);
   write_sysreg(get_tcr(1), tcr_el1);
   write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
 
-  /* Ensure these changes are seen before MMU is enabled */
-
+  // Ensure these changes are committed before we enable MMU
   UP_MB();
 
-  /* Enable the MMU and data cache */
-
+  // Enable the MMU, Data Cache and Instruction Cache
   uint64_t value = read_sysreg(sctlr_el1);
   write_sysreg(
     value 
@@ -463,6 +461,8 @@ static void enable_mmu_el1(unsigned int flags) {
     | (1 << 12), // Set Bit 12: I_BIT (Enable Instruction Cache)
     sctlr_el1
   );
+
+  // Oops! Unicorn Emulator crashes here
 ```
 
 [SCTLR_EL1, System Control Register (EL1) Doc](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
