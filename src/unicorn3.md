@@ -646,6 +646,16 @@ Change 36 bits of Virtual Address Space to 32 bits:
 
 [CONFIG_ARM64_VA_BITS=32](https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61)
 
+boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig
+
+```bash
+## Set the Virtual Address Space to 32 bits
+CONFIG_ARM64_VA_BITS=32
+
+## Previously: Virtual Address Space is 36 bits
+## CONFIG_ARM64_VA_BITS=36
+```
+
 TODO: [After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884)
 
 ```bash
@@ -678,6 +688,12 @@ hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/
 hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
+
+Maybe Unicorn doesn't support 36 bits
+
+Or maybe NuttX didn't populate the Page Tables correctly for 36 bits?
+
+Needs more investigation. But at least NuttX boots OK on Unicorn!
 
 # Boot Flow
 
