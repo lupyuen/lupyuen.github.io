@@ -36,9 +36,7 @@ _Ah so MMU will allow this switcheroo business?_
 
 1.  Both reads produce __the same value__!
 
-Indeed!
-
-TODO
+Indeed! Our [__MMU Demo__](TODO) above does precisely that...
 
 1.  Read from __Physical Address__ _0x4000_0000_
 
@@ -51,7 +49,7 @@ TODO
 
 1.  __Map Virtual Address__ to Physical Address:
 
-    _0x8000_0000_ becomes to _0x4000_0000_
+    _0x8000_0000_ becomes _0x4000_0000_
 
     ```c
     // Initialize translation table control registers
@@ -93,9 +91,10 @@ TODO
 
 1.  Assume that Physical Address _0x4000_0000_ is filled with [_0x44 44 44 44 ..._](TODO)
 
-    Both reads will produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0): Register X1 == Register X2
+    Both reads will produce [__the same value__](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)...
 
     ```rust
+    // Register X1 == Register X2
     x1=0x4444_4444_4444_4444
     x2=0x4444_4444_4444_4444
     ```
