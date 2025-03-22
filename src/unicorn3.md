@@ -348,7 +348,7 @@ TODO
 // Omitted: Enable the MMU
 ```
 
-# NuttX vs Unicorn
+# NuttX crashes in Unicorn
 
 _What's Unicorn got to do with NuttX?_
 
@@ -379,9 +379,44 @@ TODO: HostFS
 #define sinfo _info ////
 ```
 
+TODO: [Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)
+
+```bash
+call_graph:  init_xlat_tables --> enable_mmu_el1
+call_graph:  click init_xlat_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496" "arch/arm64/src/common/arm64_mmu.c " _blank
+hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
+call_graph:  enable_mmu_el1 --> setup_page_tables
+call_graph:  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616" "arch/arm64/src/common/arm64_mmu.c " _blank
+hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
+hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
+hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
+hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
+hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
+err=Err(EXCEPTION)
+PC=0x402805f0
+WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
+CP_REG=Ok(0)
+ESR_EL0=Ok(0)
+ESR_EL1=Ok(0)
+ESR_EL2=Ok(0)
+ESR_EL3=Ok(0)
+call_graph:  setup_page_tables --> ***_HALT_***
+call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
++ sleep 10
+
+env.exception=
+{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
+```
+
+TODO: Explain Syndrome
+
+TODO: vaddress doesn't offer any clues
+
 # Before Fixing NuttX
 
 Before Fix: CONFIG_ARM64_VA_BITS=36
+
+TODO: Pic of 2-Level Page Table
 
 TODO: [Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
 
@@ -462,35 +497,6 @@ enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000
 ```
 
-TODO: [Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)
-
-```bash
-call_graph:  init_xlat_tables --> enable_mmu_el1
-call_graph:  click init_xlat_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496" "arch/arm64/src/common/arm64_mmu.c " _blank
-hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
-call_graph:  enable_mmu_el1 --> setup_page_tables
-call_graph:  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616" "arch/arm64/src/common/arm64_mmu.c " _blank
-hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
-hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
-hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
-hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
-hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
-err=Err(EXCEPTION)
-PC=0x402805f0
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  setup_page_tables --> ***_HALT_***
-call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
-+ sleep 10
-
-env.exception=
-{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
-```
-
 TODO
 
 ```bash
@@ -530,7 +536,7 @@ According to TODO
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
 
-Diff?
+# NuttX vs Unicorn
 
 T0SZ = 0x1C vs T0SZ = 0x20
 36 bits vs 32 bits
