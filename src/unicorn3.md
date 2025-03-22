@@ -581,7 +581,7 @@ Bit 31
 Bit 32
 ```
 
-# NuttX vs Unicorn
+# NuttX vs MMU Demo
 
 - __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
 
