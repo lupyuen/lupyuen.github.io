@@ -1318,3 +1318,4 @@ TODO: Simpler for debugging
 
 (Could one of these changes, contribute to Unicorn Non-Crashing? It's possible)
 
+Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.
