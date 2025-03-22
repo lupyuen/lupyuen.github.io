@@ -283,15 +283,15 @@ According to TODO
 
 - __Bits 10-11:__ ORGN0 = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
 
-- __Bits 12-13:__ TCR_SHARED_INNER = 3 <br> _TODO_
+- __Bits 12-13:__ SHARED_INNER = 3 <br> _TODO_
 
-- __Bits 14-15:__ TG0 = 0 <br> _TODO 4KB_
+- __Bits 14-15:__ TG0_4K = 0 <br> _TODO 4KB_
 
-- __Bit 23:__ TCR_EPD1_DISABLE = 1 <br> _TODO_
+- __Bit 23:__ EPD1_DISABLE = 1 <br> _TODO_
 
-- __Bits 30-31:__ TG1 = 2 <br> _TODO 4KB_
+- __Bits 30-31:__ TG1_4K = 2 <br> _TODO 4KB_
 
-- __Bits 32-34:__ IPS = 1 <br> _TODO 36 bits, 64 GB_
+- __Bits 32-34:__ EL1_IPS = 1 <br> _TODO 36 bits, 64 GB_
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
 
@@ -379,11 +379,13 @@ TODO: HostFS
 #define sinfo _info ////
 ```
 
+# Before Fixing NuttX
+
 Before Fix: CONFIG_ARM64_VA_BITS=36
 
 TODO: [Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
 
-```text
+```bash
 arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
 arm64_mmu_init: xlat table #0: 0x402b1000
 
@@ -462,7 +464,7 @@ enable_mmu_el1: ttbr0_el1=0x402b2000
 
 TODO: [Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)
 
-```text
+```bash
 call_graph:  init_xlat_tables --> enable_mmu_el1
 call_graph:  click init_xlat_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496" "arch/arm64/src/common/arm64_mmu.c " _blank
 hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
@@ -489,13 +491,65 @@ env.exception=
 {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
 
+TODO
+
+```bash
+get_tcr: va_bits: 0x24
+get_tcr: Bit 32-33: TCR_EL1_IPS=1
+get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
+get_tcr: Bit 00-05: TCR_T0SZ=0x1c
+get_tcr: Bit 08-09: TCR_IRGN_WBWA=1
+get_tcr: Bit 10-11: TCR_ORGN_WBWA=1
+get_tcr: Bit 12-13: TCR_SHARED_INNER=3
+get_tcr: Bit 14-15: TCR_TG0_4K=0
+get_tcr: Bit 30-31: TCR_TG1_4K=2
+get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
+
+enable_mmu_el1: tcr_el1=0x18080351c
+enable_mmu_el1: mair_el1=0xff440c0400
+enable_mmu_el1: ttbr0_el1=0x402b2000
+```
+
+According to TODO
+
+- __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
+
+- __Bits 08-09:__ IRGN_WBWA = 1 <br> _TODO_
+
+- __Bits 10-11:__ ORGN_WBWA = 1 <br> _TODO_
+
+- __Bits 12-13:__ SHARED_INNER = 3 <br> _TODO_
+
+- __Bits 14-15:__ TG0_4K = 0 <br> _TODO 4KB_
+
+- __Bit 23:__ EPD1_DISABLE = 1 <br> _TODO_
+
+- __Bits 30-31:__ TG1_4K = 2 <br> _TODO 4KB_
+
+- __Bits 32-34:__ EL1_IPS = 1 <br> _TODO 36 bits, 64 GB_
+
+  [_(We spoke about Innies and Outies earlier)_](TODO)
+
+Diff?
+
+T0SZ = 0x1C vs T0SZ = 0x20
+36 bits vs 32 bits
+
+IRGN_WBWA = 1 vs IRGN0 = 3
+TODO vs Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable
+
+ORGN_WBWA = 1 vs ORGN0 = 3
+TODO vs Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable
+
+# After Fixing NuttX
+
 Change 36 bits of Virtual Address Space to 32 bits:
 
 [CONFIG_ARM64_VA_BITS=32](https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61)
 
 TODO: [After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884)
 
-```text
+```bash
 get_tcr: va_bits: 0x20
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
@@ -514,7 +568,7 @@ enable_mmu_el1: ttbr0_el1=0x402b2000
 
 TODO: [After Fix: Unicorn Log](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635)
 
-```text
+```bash
 hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
 call_graph:  enable_mmu_el1 --> setup_page_tables
 call_graph:  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616" "arch/arm64/src/common/arm64_mmu.c " _blank
@@ -525,6 +579,10 @@ hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/
 hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
+
+# Boot Flow
+
+TODO
 
 # TODO
 
