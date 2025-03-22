@@ -425,7 +425,7 @@ static void enable_mmu_el1(unsigned int flags) {
   // Set the MAIR, TCR and TBBR registers
   write_sysreg(MEMORY_ATTRIBUTES, mair_el1);
   write_sysreg(get_tcr(1), tcr_el1);
-  write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
+  write_sysreg(base_xlat_table, ttbr0_el1);
 
   // Ensure the above updates are committed
   // before we enable the MMU: `dsb sy ; isb`
