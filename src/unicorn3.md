@@ -227,7 +227,6 @@ transparent to the accesses from the other subsystem, this system has two Outer 
 
 [_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
 
-
 ```text
 D8.2.1 Translation table walk
 RBTTHB A translation table walk is the set of translation table lookups that are required to do all of the following:
@@ -283,25 +282,44 @@ ldr X0, =0xFFFFFFFF
 msr MAIR_EL1, X0
 ```
 
-According to TODO
+According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-)...
+
+![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
 - __Bits 00-05:__ T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
 
-- __Bits 08-09:__ IRGN0 = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
+- __Bits 08-09:__ IRGN0_WBNWA = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
 
-- __Bits 10-11:__ ORGN0 = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
+- __Bits 10-11:__ ORGN0_WBNWA = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
 
-- __Bits 12-13:__ SHARED_INNER = 3 <br> _TODO_
+- __Bits 12-13:__ SH0_SHARED_INNER = 3 <br> _Inner Shareable for TTBR0\_EL1_
 
-- __Bits 14-15:__ TG0_4K = 0 <br> _TODO 4KB_
+- __Bits 14-15:__ TG0_4K = 0 <br> _EL1 Granule Size is 4 KB for TTBR0\_EL1_
 
-- __Bit 23:__ EPD1_DISABLE = 1 <br> _TODO_
+- __Bits 23-23:__ EPD1_DISABLE = 1 <br> _Perform translation table walks using TTBR1\_EL1_
 
-- __Bits 30-31:__ TG1_4K = 2 <br> _TODO 4KB_
+- __Bits 30-31:__ TG1_4K = 2 <br> _EL1 Granule Size is 4 KB for TTBR1\_EL1_
 
-- __Bits 32-34:__ EL1_IPS = 1 <br> _TODO 36 bits, 64 GB_
+- __Bits 32-34:__ EL1_IPS = 1 <br> _36 bits, 64 GB of Physical Address Space_
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
+
+  [_(Decoding the Bits with JavaScript)_](TODO)
+
+```text
+a=0x180803F20n
+for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
+Bit 5
+Bit 8
+Bit 9
+Bit 10
+Bit 11
+Bit 12
+Bit 13
+Bit 23
+Bit 31
+Bit 32
+```
 
 _What about MAIR?_
 
@@ -524,36 +542,68 @@ enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000
 ```
 
-According to TODO
+According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-)...
+
+![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
 - __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
 
-- __Bits 08-09:__ IRGN_WBWA = 1 <br> _TODO_
+- __Bits 08-09:__ IRGN0_WBWA = 1 <br> _Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable_
 
-- __Bits 10-11:__ ORGN_WBWA = 1 <br> _TODO_
+- __Bits 10-11:__ ORGN0_WBWA = 1 <br> _Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable_
 
-- __Bits 12-13:__ SHARED_INNER = 3 <br> _TODO_
+- __Bits 12-13:__ SH0_SHARED_INNER = 3 <br> _Inner Shareable for TTBR0\_EL1_
 
-- __Bits 14-15:__ TG0_4K = 0 <br> _TODO 4KB_
+- __Bits 14-15:__ TG0_4K = 0 <br> _EL1 Granule Size is 4 KB for TTBR0\_EL1_
 
-- __Bit 23:__ EPD1_DISABLE = 1 <br> _TODO_
+- __Bits 23-23:__ EPD1_DISABLE = 1 <br> _Perform translation table walks using TTBR1\_EL1_
 
-- __Bits 30-31:__ TG1_4K = 2 <br> _TODO 4KB_
+- __Bits 30-31:__ TG1_4K = 2 <br> _EL1 Granule Size is 4 KB for TTBR1\_EL1_
 
-- __Bits 32-34:__ EL1_IPS = 1 <br> _TODO 36 bits, 64 GB_
+- __Bits 32-34:__ EL1_IPS = 1 <br> _36 bits, 64 GB of Physical Address Space_
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
 
+  [_(Decoding the Bits with JavaScript)_](TODO)
+
+```text
+a=0x18080351Cn
+for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
+Bit 2
+Bit 3
+Bit 4
+Bit 8
+Bit 10
+Bit 12
+Bit 13
+Bit 23
+Bit 31
+Bit 32
+```
+
 # NuttX vs Unicorn
 
-T0SZ = 0x1C vs T0SZ = 0x20
-36 bits vs 32 bits
+- __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
 
-IRGN_WBWA = 1 vs IRGN0 = 3
-TODO vs Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable
+vs
 
-ORGN_WBWA = 1 vs ORGN0 = 3
-TODO vs Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable
+- __Bits 00-05:__ T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
+
+<hr>
+
+- __Bits 08-09:__ IRGN0_WBWA = 1 <br> _Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable_
+
+vs
+
+- __Bits 08-09:__ IRGN0_WBNWA = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
+
+<hr>
+
+- __Bits 10-11:__ ORGN0_WBWA = 1 <br> _Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable_
+
+vs
+
+- __Bits 10-11:__ ORGN0_WBNWA = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
 
 # After Fixing NuttX
 
