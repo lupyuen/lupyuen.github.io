@@ -473,6 +473,18 @@ static void enable_mmu_el1(unsigned int flags) {
 
 ![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
 
+Unicorn Emulator fails with this [__Arm64 Exception__](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)...
+
+```bash
+env.exception =
+  Syndrome:        0x8600_0005
+  FSR:             0x0000_0205
+  Virtual Address: 0x5027_ffff (Why?)
+  Target Exception Level: 1
+```
+
+Which means: [__"Oops! Can't enable MMU"__](https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception)
+
 # Before Fixing NuttX
 
 Before Fix: CONFIG_ARM64_VA_BITS=36
@@ -691,7 +703,7 @@ call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 
 Maybe Unicorn doesn't support 36 bits
 
-Or maybe NuttX didn't populate the Page Tables correctly for 36 bits?
+Or maybe NuttX didn't populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)
 
 Needs more investigation. But at least NuttX boots OK on Unicorn!
 
