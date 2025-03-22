@@ -70,14 +70,15 @@
 <li><a href="#translation-control-register" title="Translation Control Register">3 Translation Control Register</a><ul></ul></li>
 <li><a href="#enable-the-mmu" title="Enable the MMU">4 Enable the MMU</a><ul></ul></li>
 <li><a href="#populate-the-ram" title="Populate the RAM">5 Populate the RAM</a><ul></ul></li>
-<li><a href="#nuttx-vs-unicorn" title="NuttX vs Unicorn">6 NuttX vs Unicorn</a><ul></ul></li>
+<li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">6 NuttX crashes in Unicorn</a><ul></ul></li>
 <li><a href="#before-fixing-nuttx" title="Before Fixing NuttX">7 Before Fixing NuttX</a><ul></ul></li>
-<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">8 After Fixing NuttX</a><ul></ul></li>
-<li><a href="#boot-flow" title="Boot Flow">9 Boot Flow</a><ul></ul></li>
-<li><a href="#todo" title="TODO">10 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">11 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">13 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#nuttx-vs-unicorn" title="NuttX vs Unicorn">8 NuttX vs Unicorn</a><ul></ul></li>
+<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">9 After Fixing NuttX</a><ul></ul></li>
+<li><a href="#boot-flow" title="Boot Flow">10 Boot Flow</a><ul></ul></li>
+<li><a href="#todo" title="TODO">11 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">12 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -355,7 +356,7 @@ isb</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: TODO
 
-// Omitted: Enable the MMU</code></pre></div><h1 id="nuttx-vs-unicorn"><a class="doc-anchor" href="#nuttx-vs-unicorn">§</a>6 NuttX vs Unicorn</h1>
+// Omitted: Enable the MMU</code></pre></div><h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>6 NuttX crashes in Unicorn</h1>
 <p><em>What’s Unicorn got to do with NuttX?</em></p>
 <p>TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX…</p>
 <p>TODO Years Later: The bug stops here!</p>
@@ -371,8 +372,37 @@ isb</code></pre></div>
 #define CONFIG_MMU_DUMP_PTE 1 ////
 #define trace_printf _info ////
 #undef sinfo ////
-#define sinfo _info ////</code></pre></div><h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
+#define sinfo _info ////</code></pre></div>
+<p>TODO: <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754">Before Fix: Unicorn Log</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>call_graph:  init_xlat_tables --&gt; enable_mmu_el1
+call_graph:  click init_xlat_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
+call_graph:  enable_mmu_el1 --&gt; setup_page_tables
+call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
+hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
+hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
+hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
+hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
+err=Err(EXCEPTION)
+PC=0x402805f0
+WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
+CP_REG=Ok(0)
+ESR_EL0=Ok(0)
+ESR_EL1=Ok(0)
+ESR_EL2=Ok(0)
+ESR_EL3=Ok(0)
+call_graph:  setup_page_tables --&gt; ***_HALT_***
+call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
++ sleep 10
+
+env.exception=
+{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
+<p>TODO: Explain Syndrome</p>
+<p>TODO: vaddress doesn’t offer any clues</p>
+<h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
 <p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
+<p>TODO: Pic of 2-Level Page Table</p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
 arm64_mmu_init: xlat table #0: 0x402b1000
@@ -448,31 +478,6 @@ get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
 enable_mmu_el1: tcr_el1=0x18080351c
 enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754">Before Fix: Unicorn Log</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>call_graph:  init_xlat_tables --&gt; enable_mmu_el1
-call_graph:  click init_xlat_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
-call_graph:  enable_mmu_el1 --&gt; setup_page_tables
-call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
-hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
-hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
-hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
-hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
-err=Err(EXCEPTION)
-PC=0x402805f0
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  setup_page_tables --&gt; ***_HALT_***
-call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-+ sleep 10
-
-env.exception=
-{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
@@ -516,14 +521,14 @@ enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
 <p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 </li>
 </ul>
-<p>Diff?</p>
+<h1 id="nuttx-vs-unicorn"><a class="doc-anchor" href="#nuttx-vs-unicorn">§</a>8 NuttX vs Unicorn</h1>
 <p>T0SZ = 0x1C vs T0SZ = 0x20
 36 bits vs 32 bits</p>
 <p>IRGN_WBWA = 1 vs IRGN0 = 3
 TODO vs Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable</p>
 <p>ORGN_WBWA = 1 vs ORGN0 = 3
 TODO vs Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable</p>
-<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>8 After Fixing NuttX</h1>
+<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>9 After Fixing NuttX</h1>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
 <p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884">After Fix: QEMU Log</a></p>
@@ -550,9 +555,9 @@ call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:617:3
 hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
-call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div><h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>9 Boot Flow</h1>
+call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div><h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>10 Boot Flow</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>10 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>11 TODO</h1><div class="example-wrap"><pre class="language-c"><code>// Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
 
@@ -577,7 +582,7 @@ isb
 
 // Read the same memory area through virtual address
 ldr X0, =0x80000000
-ldr X2, [X0]</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>11 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+ldr X2, [X0]</code></pre></div><h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
@@ -1086,7 +1091,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1116,7 +1121,7 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
-<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>13 Appendix: Simplified NuttX for QEMU</h1>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
 <p>TODO: Simpler for debugging</p>
 
     
