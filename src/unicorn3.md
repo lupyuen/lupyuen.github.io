@@ -8,6 +8,8 @@
 
 This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO) compiled for Arm64 SBCs!
 
+TODO: Aha it's a problem with the VM Addressable Size!
+
 _What's this MMU again?_
 
 TODO
