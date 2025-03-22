@@ -438,7 +438,7 @@ TODO: Explain Syndrome
 
 TODO: vaddress doesn't offer any clues
 
-[arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
+Our [__Simplified NuttX__](TODO) crashes here in Unicorn Emulator: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
 
 ```c
 // Enable the MMU for Exception Level 1
