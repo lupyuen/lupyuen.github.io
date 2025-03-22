@@ -455,7 +455,31 @@ static void enable_mmu_el1(unsigned int flags) {
   Target Exception Level: 1</code></pre></div>
 <p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
 <h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
+<p><em>How different is NuttX from MMU Demo?</em></p>
 <p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// NuttX Memory Regions for Arm64 MMU (Simplified)
+struct arm_mmu_region g_mmu_regions[] = {
+
+  // Memory Region for I/O Memory
+  MMU_REGION_FLAT_ENTRY(
+    &quot;DEVICE_REGION&quot;,  // Name
+    0x0000_0000,      // Start Address
+    0x4000_0000,      // Size: 1 GB
+    MT_DEVICE_NGNRNE | MT_RW),  // Read-Write I/O Memory
+
+  // Memory Region for RAM
+  MMU_REGION_FLAT_ENTRY(
+    &quot;DRAM0_S0&quot;,   // Name
+    0x4000_0000,  // Start Address
+    0x0080_0000,  // Size: 8 MB
+    MT_NORMAL | MT_RW | MT_EXECUTE),  // Allow Read, Write and Execute
+
+  // Other Memory Regions? We removed them all
+};</code></pre></div>
+<p>Which looks like this…</p>
+<p>TODO: Pic of Memory Map</p>
+<p>Which is mapped like this…</p>
 <p>TODO: Pic of 2-Level Page Table</p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
