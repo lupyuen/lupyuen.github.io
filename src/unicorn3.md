@@ -14,7 +14,7 @@ This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why
 
 1.  Somehow Unicorn won't __Enable the MMU__ for NuttX?
 
-1.  We simplify the __NuttX Kernel for QEMU__ and isolate
+1.  We simplify __NuttX Kernel for QEMU__ and isolate
 
 1.  Aha it's a problem with the __VM Addressable Size__!
 
@@ -22,7 +22,9 @@ _What's this MMU again?_
 
 TODO
 
-That's why we can do this with MMU...
+# Memory Management Unit
+
+_Ah so MMU will allow this switcheroo business?_
 
 1.  __MMU is Disabled__ initially
 
@@ -34,9 +36,7 @@ That's why we can do this with MMU...
 
 1.  Both reads produce __the same value__!
 
-TODO
-
-# Memory Management Unit
+Indeed!
 
 TODO
 
