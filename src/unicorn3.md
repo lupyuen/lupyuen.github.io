@@ -8,7 +8,15 @@
 
 This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO) compiled for Arm64 SBCs!
 
-TODO: Aha it's a problem with the VM Addressable Size!
+1.  We look inside the __Page Tables__ and __Control Registers__ for MMU Demo
+
+1.  Study a mysterious bug that crashes __NuttX on Unicorn Emulator__
+
+1.  Somehow Unicorn won't __Enable the MMU__ for NuttX?
+
+1.  We simplify the __NuttX Kernel for QEMU__ and isolate
+
+1.  Aha it's a problem with the __VM Addressable Size__!
 
 _What's this MMU again?_
 
