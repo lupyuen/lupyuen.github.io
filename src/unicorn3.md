@@ -161,6 +161,8 @@ Data @ 0x1038: 0x8000_0000
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
 
+![TODO](https://lupyuen.org/images/unicorn3-table.png)
+
 _Why 741?_
 
 ```text
@@ -169,6 +171,8 @@ Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
 Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
 Bit 10:    PTE_BLOCK_DESC_AF=1
 ```
+
+![TODO](https://lupyuen.org/images/unicorn3-block.png)
 
 [arm64_mmu.h](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122)
 
@@ -234,6 +238,10 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 — For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
 — For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.
 ```
+
+TODO: stage 1 vs stage 2
+
+![TODO](https://lupyuen.org/images/unicorn3-stage.png)
 
 TODO: PTE_BLOCK_DESC_AP_USER=1
 
