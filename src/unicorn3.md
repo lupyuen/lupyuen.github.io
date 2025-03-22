@@ -511,8 +511,7 @@ struct arm_mmu_region g_mmu_regions[] = {
     0x0080_0000,  // Size: 8 MB
     MT_NORMAL | MT_RW | MT_EXECUTE),  // Allow Read, Write and Execute
 
-  // Other Memory Regions? We removed them all
-};
+};  // Other Memory Regions? We removed them all
 ```
 
 Which looks like this...
