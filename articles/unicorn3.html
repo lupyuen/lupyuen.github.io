@@ -419,20 +419,18 @@ env.exception=
 <p>TODO: Explain Syndrome</p>
 <p>TODO: vaddress doesn’t offer any clues</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661">arm64_mmu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void enable_mmu_el1(unsigned int flags) {
+<div class="example-wrap"><pre class="language-c"><code>// Enable the MMU for Exception Level 1
+static void enable_mmu_el1(unsigned int flags) {
 
-  /* Set MAIR, TCR and TBBR registers */
-
+  // Set the MAIR, TCR and TBBR registers
   write_sysreg(MEMORY_ATTRIBUTES, mair_el1);
   write_sysreg(get_tcr(1), tcr_el1);
   write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
 
-  /* Ensure these changes are seen before MMU is enabled */
-
+  // Ensure these changes are committed before we enable MMU
   UP_MB();
 
-  /* Enable the MMU and data cache */
-
+  // Enable the MMU, Data Cache and Instruction Cache
   uint64_t value = read_sysreg(sctlr_el1);
   write_sysreg(
     value 
@@ -440,7 +438,9 @@ env.exception=
     | (1 &lt;&lt; 2)   // Set Bit 02: C_BIT (Enable Data Cache)
     | (1 &lt;&lt; 12), // Set Bit 12: I_BIT (Enable Instruction Cache)
     sctlr_el1
-  );</code></pre></div>
+  );
+
+  // Oops! Unicorn Emulator crashes here</code></pre></div>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1) Doc</a></p>
 <p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="TODO" /></p>
 <h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
