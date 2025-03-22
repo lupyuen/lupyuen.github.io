@@ -428,11 +428,14 @@ static void enable_mmu_el1(unsigned int flags) {
   write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
 
   // Ensure the above updates are committed
-  // before we enable the MMU
+  // before we enable the MMU: `dsb sy ; isb`
   UP_MB();
 
-  // Enable the MMU, Data Cache and Instruction Cache
+  // Read the System Control Register (Exception Level 1)
   uint64_t value = read_sysreg(sctlr_el1);
+
+  // Update the System Control Register (Exception Level 1)
+  // Enable the MMU, Data Cache and Instruction Cache
   write_sysreg(
     value 
     | (1 &lt;&lt;  0)  // Set Bit 00: M_BIT (Enable MMU)
