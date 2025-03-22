@@ -120,8 +120,7 @@
 <p>Both reads produce <strong>the same value</strong>!</p>
 </li>
 </ol>
-<p>Indeed!</p>
-<p>TODO</p>
+<p>Indeed! Our <a href="TODO"><strong>MMU Demo</strong></a> above does precisely that…</p>
 <ol>
 <li>
 <p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
@@ -131,7 +130,7 @@ ldr X0, =0x40000000
 ldr X1, [X0]</code></pre></div></li>
 <li>
 <p><strong>Map Virtual Address</strong> to Physical Address:</p>
-<p><em>0x8000_0000</em> becomes to <em>0x4000_0000</em></p>
+<p><em>0x8000_0000</em> becomes <em>0x4000_0000</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize translation table control registers
 ldr X0, =0x180803F20
 msr TCR_EL1, X0
@@ -163,9 +162,10 @@ ldr X0, =0x80000000
 ldr X2, [X0]</code></pre></div></li>
 <li>
 <p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 44 44 44 …</em></a></p>
-<p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>: Register X1 == Register X2</p>
+<p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>x1=<span class="number">0x4444_4444_4444_4444
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Register X1 == Register X2
+</span>x1=<span class="number">0x4444_4444_4444_4444
 </span>x2=<span class="number">0x4444_4444_4444_4444</span></code></pre></div>
 </li>
 </ol>
