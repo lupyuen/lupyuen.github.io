@@ -449,20 +449,21 @@ static void enable_mmu_el1(unsigned int flags) {
   write_sysreg(get_tcr(1), tcr_el1);
   write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
 
-  // Ensure these changes are committed before we enable MMU
+  // Ensure the above updates are committed
+  // before we enable the MMU
   UP_MB();
 
   // Enable the MMU, Data Cache and Instruction Cache
   uint64_t value = read_sysreg(sctlr_el1);
   write_sysreg(
     value 
-    | (1 << 0)   // Set Bit 00: M_BIT (Enable MMU)
-    | (1 << 2)   // Set Bit 02: C_BIT (Enable Data Cache)
+    | (1 <<  0)  // Set Bit 00: M_BIT (Enable MMU)
+    | (1 <<  2)  // Set Bit 02: C_BIT (Enable Data Cache)
     | (1 << 12), // Set Bit 12: I_BIT (Enable Instruction Cache)
     sctlr_el1
   );
 
-  // Oops! Unicorn Emulator crashes here
+  // Oops! Unicorn Emulator fails with an Arm64 Exception
 ```
 
 [SCTLR_EL1, System Control Register (EL1) Doc](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
