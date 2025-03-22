@@ -22,9 +22,11 @@ _What's this MMU again?_
 
 TODO
 
+TODO: Pic of Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_, 0x4444
+
 # Memory Management Unit
 
-_Ah so MMU will allow this switcheroo business?_
+_Ah so MMU will allow this switcheroo business? (Pic above)_
 
 1.  __MMU is Disabled__ initially
 
