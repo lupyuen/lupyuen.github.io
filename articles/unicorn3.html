@@ -447,6 +447,13 @@ static void enable_mmu_el1(unsigned int flags) {
   // Oops! Unicorn Emulator fails with an Arm64 Exception</code></pre></div>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1) Doc</a></p>
 <p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="TODO" /></p>
+<p>Unicorn Emulator fails with this <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754"><strong>Arm64 Exception</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>env.exception =
+  Syndrome:        0x8600_0005
+  FSR:             0x0000_0205
+  Virtual Address: 0x5027_ffff (Why?)
+  Target Exception Level: 1</code></pre></div>
+<p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
 <h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
 <p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
 <p>TODO: Pic of 2-Level Page Table</p>
@@ -640,7 +647,7 @@ hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/
 hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Maybe Unicorn doesn’t support 36 bits</p>
-<p>Or maybe NuttX didn’t populate the Page Tables correctly for 36 bits?</p>
+<p>Or maybe NuttX didn’t populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)</p>
 <p>Needs more investigation. But at least NuttX boots OK on Unicorn!</p>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>10 Boot Flow</h1>
 <p>TODO</p>
