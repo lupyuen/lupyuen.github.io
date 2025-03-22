@@ -62,9 +62,9 @@ TODO
     ```c
     // Enable caches and the MMU
     mrs X0, SCTLR_EL1
-    orr X0, X0, #(0x1 << 2)  // The C bit (data cache).
-    orr X0, X0, #(0x1 << 12) // The I bit (instruction cache).
-    orr X0, X0, #0x1         // The M bit (MMU).
+    orr X0, X0, #0x1         // M bit (MMU)
+    orr X0, X0, #(0x1 << 2)  // C bit (data cache)
+    orr X0, X0, #(0x1 << 12) // I bit (instruction cache)
     msr SCTLR_EL1, X0
     dsb SY
     isb
@@ -437,6 +437,37 @@ env.exception=
 TODO: Explain Syndrome
 
 TODO: vaddress doesn't offer any clues
+
+[arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
+
+```c
+static void enable_mmu_el1(unsigned int flags) {
+
+  /* Set MAIR, TCR and TBBR registers */
+
+  write_sysreg(MEMORY_ATTRIBUTES, mair_el1);
+  write_sysreg(get_tcr(1), tcr_el1);
+  write_sysreg((uint64_t)base_xlat_table, ttbr0_el1);
+
+  /* Ensure these changes are seen before MMU is enabled */
+
+  UP_MB();
+
+  /* Enable the MMU and data cache */
+
+  uint64_t value = read_sysreg(sctlr_el1);
+  write_sysreg(
+    value 
+    | (1 << 0)   // Set Bit 00: M_BIT (Enable MMU)
+    | (1 << 2)   // Set Bit 02: C_BIT (Enable Data Cache)
+    | (1 << 12), // Set Bit 12: I_BIT (Enable Instruction Cache)
+    sctlr_el1
+  );
+```
+
+[SCTLR_EL1, System Control Register (EL1) Doc](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
+
+![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
 
 # Before Fixing NuttX
 
