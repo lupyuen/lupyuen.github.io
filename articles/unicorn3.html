@@ -208,11 +208,13 @@ Data @ 0x1028: 0x1_8080_3F20
 Data @ 0x1030: 0xFFFF_FFFF
 Data @ 0x1038: 0x8000_0000</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Complete Log</strong>)</a></p>
+<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p><em>Why 741?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>Bit 00-01: PTE_BLOCK_DESC=1
 Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
 Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
 Bit 10:    PTE_BLOCK_DESC_AF=1</code></pre></div>
+<p><img src="https://lupyuen.org/images/unicorn3-block.png" alt="TODO" /></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PTE descriptor can be Block descriptor or Table descriptor or Page descriptor
 #define PTE_BLOCK_DESC              1U
@@ -263,6 +265,8 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 — For a stage 1 translation, translate a VA to an IPA.
 — For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
 — For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.</code></pre></div>
+<p>TODO: stage 1 vs stage 2</p>
+<p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="TODO" /></p>
 <p>TODO: PTE_BLOCK_DESC_AP_USER=1</p>
 <div class="example-wrap"><pre class="language-text"><code>[7] AP[2] Stage 1 Indirect permissions are disabled.
 See Stage 1 data accesses using Direct permissions.
