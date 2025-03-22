@@ -487,7 +487,39 @@ Which means: [__"Oops! Can't enable MMU"__](https://github.com/lupyuen/pinephone
 
 # Before Fixing NuttX
 
+_How different is NuttX from MMU Demo?_
+
 Before Fix: CONFIG_ARM64_VA_BITS=36
+
+[qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89)
+
+```c
+// NuttX Memory Regions for Arm64 MMU (Simplified)
+struct arm_mmu_region g_mmu_regions[] = {
+
+  // Memory Region for I/O Memory
+  MMU_REGION_FLAT_ENTRY(
+    "DEVICE_REGION",  // Name
+    0x0000_0000,      // Start Address
+    0x4000_0000,      // Size: 1 GB
+    MT_DEVICE_NGNRNE | MT_RW),  // Read-Write I/O Memory
+
+  // Memory Region for RAM
+  MMU_REGION_FLAT_ENTRY(
+    "DRAM0_S0",   // Name
+    0x4000_0000,  // Start Address
+    0x0080_0000,  // Size: 8 MB
+    MT_NORMAL | MT_RW | MT_EXECUTE),  // Allow Read, Write and Execute
+
+  // Other Memory Regions? We removed them all
+};
+```
+
+Which looks like this...
+
+TODO: Pic of Memory Map
+
+Which is mapped like this...
 
 TODO: Pic of 2-Level Page Table
 
