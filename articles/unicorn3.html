@@ -261,6 +261,8 @@ Bit 10:    PTE_BLOCK_DESC_AF=1</code></pre></div>
 <tr><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: center"><code>0x8000_0000</code></td></tr>
 </tbody></table>
 </div>
+<p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
+<p>We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
 <p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-text"><code>Example B2-1 Use of shareability attributes
