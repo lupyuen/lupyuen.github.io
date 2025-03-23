@@ -150,7 +150,6 @@ It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Ph
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-
 | Virtual Address | Physical Address | Size |
 |:---------------:|:----------------:|:----:|
 | __`0x0000_0000`__ | `0x0000_0000` | 1 GB
@@ -477,9 +476,9 @@ TODO
 
 # NuttX crashes in Unicorn
 
-_What's Unicorn got to do with NuttX?_
+_What's Unicorn Emulator got to do with NuttX RTOS?_
 
-Two Years Ago: We tried creating a [__PinePhone Emulator__](TODO) with Unicorn. But NuttX kept crashing while booting...
+Two Years Ago: We tried creating a [__PinePhone Emulator__](TODO) with NuttX and Unicorn. But NuttX kept crashing on Unicorn...
 
 ```bash
 ## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
@@ -560,7 +559,7 @@ static void enable_mmu_el1(unsigned int flags) {
   // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
 
-Which is super similar to the [__MMU Demo__](TODO) we saw earlier...
+Which is mighty similar to the [__MMU Demo__](TODO) we saw earlier...
 
 ```rust
 // MMU Demo Works OK:
@@ -604,30 +603,7 @@ To troubleshoot, we enable __MMU Logging__: [arch/arm64/src/common/arm64_mmu.c](
 #define sinfo _info
 ```
 
-
-
-TODO: What's the diff?
-
-TODO: Why are we doing this?
-
-TODO: Changes to NuttX
-
-TODO: HostFS
-
-[PR for Unicorn QEMU: Before Fix](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
-
-[PR for Unicorn QEMU: After Fix](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
-
-
-TODO: Explain Syndrome
-
-TODO: vaddress doesn't offer any clues
-
-_How different is NuttX from MMU Demo?_
-
-Before Fix: CONFIG_ARM64_VA_BITS=36
-
-[qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89)
+We simplify the __Memory Regions__: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89)
 
 ```c
 // NuttX Memory Regions for Arm64 MMU (Simplified)
@@ -650,11 +626,18 @@ struct arm_mmu_region g_mmu_regions[] = {
 };  // Other Memory Regions? We removed them all
 ```
 
-Which looks like this...
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
-TODO: Pic of Memory Map
+| Virtual Address | Physical Address | Size |
+|:---------------:|:----------------:|:----:|
+| __`0x0000_0000`__ | `0x0000_0000` | 1 GB
+| __`0x4000_0000`__ | `0x4000_0000` | 8 MB
 
-Which is mapped like this...
+</div>
+</p>
+
+According to the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884): We have a __Two-Level Page Table__...
 
 TODO: Pic of 2-Level Page Table
 
@@ -879,6 +862,14 @@ Needs more investigation. But at least NuttX boots OK on Unicorn!
 TODO
 
 # TODO
+
+TODO: What's the diff?
+
+TODO: Why are we doing this?
+
+TODO: Changes to NuttX
+
+TODO: HostFS
 
 TODO
 
@@ -1577,3 +1568,7 @@ cargo run
 ## call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
+
+[PR for Unicorn QEMU: Before Fix](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
+
+[PR for Unicorn QEMU: After Fix](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
