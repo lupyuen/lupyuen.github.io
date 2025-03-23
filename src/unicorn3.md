@@ -480,7 +480,7 @@ _What's Unicorn got to do with NuttX?_
 Two Years Ago: We tried creating a __PinePhone Emulator__ with Unicorn. But NuttX kept crashing while booting...
 
 ```bash
-## Compile NuttX for QEMU Arm64 (Kernel Build)
+## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
 cd nuttx
