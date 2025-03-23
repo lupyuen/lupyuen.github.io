@@ -523,6 +523,8 @@ qemu-system-aarch64 \
   -kernel ./nuttx
 
 ## But NuttX crashes in Unicorn Emulator
+git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+  $HOME/pinephone-emulator
 cp nuttx.bin nuttx.S \
   $HOME/pinephone-emulator/nuttx/
 cd $HOME/pinephone-emulator
@@ -531,49 +533,11 @@ cargo run
 ## err=Err(EXCEPTION)
 ## PC=0x402805f0
 ## call_graph:  setup_page_tables --&gt; ***_HALT_***
+## call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
-<p>Two Years Later: The bug stops here!</p>
-<p>TODO: What’s the diff?</p>
-<p>TODO: Why are we doing this?</p>
-<p>TODO: Changes to NuttX</p>
-<p>TODO: HostFS</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
-<p><a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L4-L10">Enable Logging in nuttx/arch/arm64/src/common/arm64_mmu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define CONFIG_MMU_ASSERT 1 ////
-#define CONFIG_MMU_DEBUG 1 ////
-#define CONFIG_MMU_DUMP_PTE 1 ////
-#define trace_printf _info ////
-#undef sinfo ////
-#define sinfo _info ////</code></pre></div>
-<p>TODO: <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754">Before Fix: Unicorn Log</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>call_graph:  init_xlat_tables --&gt; enable_mmu_el1
-call_graph:  click init_xlat_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L496&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
-call_graph:  enable_mmu_el1 --&gt; setup_page_tables
-call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-hook_block:  address=0x402805ac, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:14
-hook_block:  address=0x402805bc, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:545:25
-hook_block:  address=0x402805cc, size=12, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:10
-hook_block:  address=0x402805d8, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:559:24
-hook_block:  address=0x402805e0, size=16, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:561:11
-err=Err(EXCEPTION)
-PC=0x402805f0
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  setup_page_tables --&gt; ***_HALT_***
-call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-+ sleep 10
-
-env.exception=
-{syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
-<p>TODO: Explain Syndrome</p>
-<p>TODO: vaddress doesn’t offer any clues</p>
-<p>Our <a href="TODO"><strong>Simplified NuttX</strong></a> crashes here in Unicorn Emulator: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661">arm64_mmu.c</a></p>
+<p>Two Years Later: The bug stops here! Let’s fix it today.</p>
+<p><em>Where does it crash?</em></p>
+<p>According to <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754"><strong>Unicorn Log</strong></a>: Our <a href="TODO"><strong>Simplified NuttX</strong></a> crashes here in Unicorn Emulator: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the MMU for Exception Level 1
 static void enable_mmu_el1(unsigned int flags) {
 
@@ -600,6 +564,35 @@ static void enable_mmu_el1(unsigned int flags) {
   );
 
   // Oops! Unicorn Emulator fails with an Arm64 Exception</code></pre></div>
+<p>Which is super similar to the <a href="TODO"><strong>MMU Demo</strong></a> we saw earlier…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MMU Demo Works OK:
+// Read System Register SCTLR_EL1 into X0
+</span>mrs X0, SCTLR_EL1
+
+<span class="comment">// In X0: Set the bits to Enable MMU, Data Cache and Instruction Cache
+</span>orr X0, X0, #<span class="number">0x1         </span><span class="comment">// M bit (MMU)
+</span>orr X0, X0, #(<span class="number">0x1 </span>&lt;&lt; <span class="number">2</span>)  <span class="comment">// C bit (Data Cache)
+</span>orr X0, X0, #(<span class="number">0x1 </span>&lt;&lt; <span class="number">12</span>) <span class="comment">// I bit (Instruction Cache)
+
+// Write X0 into System Register SCTLR_EL1
+</span>msr SCTLR_EL1, X0</code></pre></div>
+<p>Maybe there’s a problem with the Page Tables? Or Translation Control Register? We investigate…</p>
+<p>TODO: What’s the diff?</p>
+<p>TODO: Why are we doing this?</p>
+<p>TODO: Changes to NuttX</p>
+<p>TODO: HostFS</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
+<p><a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L4-L10">Enable Logging in nuttx/arch/arm64/src/common/arm64_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define CONFIG_MMU_ASSERT 1 ////
+#define CONFIG_MMU_DEBUG 1 ////
+#define CONFIG_MMU_DUMP_PTE 1 ////
+#define trace_printf _info ////
+#undef sinfo ////
+#define sinfo _info ////</code></pre></div>
+<p>TODO: Explain Syndrome</p>
+<p>TODO: vaddress doesn’t offer any clues</p>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1) Doc</a></p>
 <p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="TODO" /></p>
 <p>Unicorn Emulator fails with this <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754"><strong>Arm64 Exception</strong></a>…</p>
