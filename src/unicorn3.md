@@ -119,7 +119,7 @@ Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryp
 
 # Map Virtual Address to Physical Address
 
-_What's this mystery code?_
+_What's this mystery code from above?_
 
 ```rust
 // Init the MMU Registers:
@@ -159,50 +159,6 @@ TODO: Pic of Level 1 Page Table
 [(And the __Unicorn Code__)](TODO)
 
 [(__TTBR0_EL1__ is _"Translation Table Base Register 0 for Exception Level 1"_)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-)
-
-```bash
-## Level 1 Page Table with 4 Page Table Entries
-## Entry #0
-Page Table Entry @ 0x1000:
-  0x0000_0741
-Physical Address:
-  0x0000_0000
-Bit 00-01: PTE_BLOCK_DESC=1
-Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
-Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-Bit 10:    PTE_BLOCK_DESC_AF=1
-
-## Entry #1
-Page Table Entry @ 0x1008:
-  0xA000_0741
-Physical Address:
-  0xA000_0000
-(Same Bits as above)
-
-## Entry #2
-Page Table Entry @ 0x1010:
-  0x4000_0741
-Physical Address:
-  0x4000_0000
-(Same Bits as above)
-
-## Entry #3
-Page Table Entry @ 0x1018:
-  0x8000_0741
-Physical Address:
-  0x8000_0000
-(Same Bits as above)
-
-## Not the Page Table, but
-## Data Referenced by our Assembly Code
-Data @ 0x1020: 0x4000_0000
-Data @ 0x1028: 0x1_8080_3F20
-Data @ 0x1030: 0xFFFF_FFFF
-Data @ 0x1038: 0x8000_0000
-```
-
-
-![TODO](https://lupyuen.org/images/unicorn3-table.png)
 
 _Why 741?_
 
@@ -307,6 +263,10 @@ AP[2:1] Permissions
 11 PrivRead, UnprivRead
 RPSZJJ
 ```
+
+![TODO](https://lupyuen.org/images/unicorn3-table.png)
+
+TODO
 
 ![TODO](https://lupyuen.org/images/unicorn3-access.png)
 
@@ -814,6 +774,49 @@ ldr X2, [X0]
 ```
 
 # TODO
+
+```bash
+## Level 1 Page Table with 4 Page Table Entries
+## Entry #0
+Page Table Entry @ 0x1000:
+  0x0000_0741
+Physical Address:
+  0x0000_0000
+Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1
+
+## Entry #1
+Page Table Entry @ 0x1008:
+  0xA000_0741
+Physical Address:
+  0xA000_0000
+(Same Bits as above)
+
+## Entry #2
+Page Table Entry @ 0x1010:
+  0x4000_0741
+Physical Address:
+  0x4000_0000
+(Same Bits as above)
+
+## Entry #3
+Page Table Entry @ 0x1018:
+  0x8000_0741
+Physical Address:
+  0x8000_0000
+(Same Bits as above)
+
+## Not the Page Table, but
+## Data Referenced by our Assembly Code
+Data @ 0x1020: 0x4000_0000
+Data @ 0x1028: 0x1_8080_3F20
+Data @ 0x1030: 0xFFFF_FFFF
+Data @ 0x1038: 0x8000_0000
+```
+
+TODO
 
 ```text
 Arm Architecture Reference Manual for A-profile architecture
