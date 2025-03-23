@@ -215,25 +215,27 @@ isb</code></pre></div>
 <p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>.</p>
 <p>Later we’ll explain TCR and MAIR, but first…</p>
 <p><em>What’s TTBR0_EL1? Why set it to ttb0_base?</em></p>
-<p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-"><strong>Translation Table Base Register 0</strong></a> for Exception Level 1.</p>
-<p>It points to the <a href="TODO"><strong>Level 1 Page Table</strong></a>, telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
-<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td></tr>
-<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td></tr>
-<tr><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td></tr>
-<tr><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: center"><code>0x8000_0000</code></td></tr>
+<p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-"><strong>Translation Table Base Register 0</strong></a> for Exception Level 1.</p>
+<p>It points to the <a href="TODO"><strong>Level 1 Page Table</strong></a>, telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping <strong>Four Chunks of 1 GB</strong>…</p>
+<p>
+<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: center"><code>0x8000_0000</code></td><td style="text-align: center">1 GB</td></tr>
 </tbody></table>
-</div>
-<p>Our <a href="TODO"><strong>Level 1 Page Table</strong></a> will be this…</p>
+</div></p>
+<p>Our <a href="TODO"><strong>Level 1 Page Table</strong></a> <em>(TTBR0_EL1)</em> will be this…</p>
 <p>TODO: Pic of Level 1 Page Table</p>
 <p>Which we <strong>Store in RAM</strong> <em>(ttb0_base)</em> as…</p>
+<p>
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">Value</th><th style="text-align: left">Because</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x1000</code></strong></td><td style="text-align: center"><code>0x0000_0741</code></td><td style="text-align: left"><em>Page Table Entry #0</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x1008</code></strong></td><td style="text-align: center"><code>0xA000_0741</code></td><td style="text-align: left"><em>Page Table Entry #1</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x1010</code></strong></td><td style="text-align: center"><code>0x4000_0741</code></td><td style="text-align: left"><em>Page Table Entry #2</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x1018</code></strong></td><td style="text-align: center"><code>0x8000_0741</code></td><td style="text-align: left"><em>Page Table Entry #3</em></td></tr>
 </tbody></table>
-</div>
+</div></p>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xA000_0000)</em></p>
@@ -241,11 +243,10 @@ isb</code></pre></div>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
 <p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
-<p>Our code <em>(NuttX Kernel)</em> runs at <a href="https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels"><strong>Exception Level 1</strong></a>. Later we’ll run NuttX Apps at <strong>Exception Level 0</strong>, which has Less Privilege.</p>
-<p>That’s how we protect NuttX Kernel from getting messed up by NuttX Apps.</p>
+<p>Our code <em>(NuttX Kernel)</em> runs at <a href="https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels"><strong>Exception Level 1</strong></a>. Later we’ll run NuttX Apps at <strong>Exception Level 0</strong>, which has Less Privilege. That’s how we protect NuttX Kernel from getting messed up by NuttX Apps.</p>
 <h1 id="page-table-entry"><a class="doc-anchor" href="#page-table-entry">§</a>3 Page Table Entry</h1>
 <p><em>In the Page Table Entries above: Why 741?</em></p>
-<p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>…</p>
+<p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>. <code>0x741</code> says…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-block.png" alt="TODO" /></p>
 <ul>
 <li>
@@ -284,34 +285,13 @@ isb</code></pre></div>
 #define PTE_BLOCK_DESC_DIRTY        (1ULL &lt;&lt; 51) // D Flag
 #define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) // Kernel Execute Never
 #define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) // User Execute Never</code></pre></div>
-<p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
-<p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
-<div class="example-wrap"><pre class="language-text"><code>Example B2-1 Use of shareability attributes
-In an implementation, a particular subsystem with two clusters of PEs has the requirement that:
-• In each cluster, the data caches or unified caches of the PEs in the cluster are transparent for all data accesses
-to memory locations with the Inner Shareable attribute.
-• However, between the two clusters, the caches:
-— Are not required to be coherent for data accesses that have only the Inner Shareable attribute.
-— Are coherent for data accesses that have the Outer Shareable attribute.
-In this system, each cluster is in a different shareability domain for the Inner Shareable attribute, but all components
-of the subsystem are in the same shareability domain for the Outer Shareable attribute.
-A system might implement two such subsystems. If the data caches or unified caches of one subsystem are not
-transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.</code></pre></div>
-<p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms"><em>(PE = Processing Element = One Arm64 Core)</em></a></p>
-<div class="example-wrap"><pre class="language-text"><code>D8.2.1 Translation table walk
-RBTTHB A translation table walk is the set of translation table lookups that are required to do all of the following:
-• For a single stage translation at stage 1, translate a VA to a PA.
-• For two translation stages and stage 1 is disabled, translate an IPA to a PA.
-• For a two stage translation, all of the following:
-— For a stage 1 translation, translate a VA to an IPA.
-— For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
-— For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.</code></pre></div>
-<p><em>Why are we doing Stage 1? Not Stage 2?</em></p>
+<p><em>Why Stage 1? Not Stage 2?</em></p>
+<p>We’re doing <strong>Stage 1 Only</strong>: Single-Stage Translation from <em>Virtual Address (VA)</em> to <em>Physical Address (PA)</em>. No need for Stage 2 and <em>Intermediate Physical Address (IPA)</em> <a href="TODO">(Page D8-6448)</a></p>
 <p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
+<p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
+<p><strong>Inner / Outer Sharing</strong> is for Multiple CPU Cores, which we’ll ignore for now <a href="TODO">(Page B2-293)</a></p>
+<p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
+<p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms"><em>(PE = Processing Element = One Arm64 Core)</em></a></p>
 <h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>4 Translation Control Register</h1>
 <p>We return to this mysterious code…</p>
 
@@ -324,8 +304,7 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 </span>ldr X0, =<span class="number">0xFFFF_FFFF  </span><span class="comment">// Load 0xFFFF_FFFF into Register X0
 </span>msr MAIR_EL1, X0      <span class="comment">// Write X0 into System Register MAIR_EL1</span></code></pre></div>
 <p><em>What’s TCR_EL1? Why set it to 0x1_8080_3F20?</em></p>
-<p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>Translation Control Register</strong></a> for Exception Level 1.</p>
-<p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_3F20</em> decodes as…</p>
+<p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>Translation Control Register</strong></a> for Exception Level 1. According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_3F20</em> decodes as…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="TODO" /></p>
 <ul>
 <li>
@@ -353,7 +332,7 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 <p><strong>Bits 32-34:</strong> EL1_IPS = 1 <br> <em>36 bits, 64 GB of Physical Address Space</em></p>
 </li>
 <li>
-<p>Which means our MMU will map <strong>32-bit Virtual Addresses</strong> into <strong>36-bit Physical Addresses</strong>. Each Physical Address points to a <strong>4 KB Memory Page</strong>.</p>
+<p>Thus our MMU shall map <strong>32-bit Virtual Addresses</strong> into <strong>36-bit Physical Addresses</strong>. Each Physical Address points to a <strong>4 KB Memory Page</strong>.</p>
 <p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 <p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
@@ -714,6 +693,10 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
 <p>TODO: PTE_BLOCK_DESC_AP_USER=1</p>
 <div class="example-wrap"><pre class="language-text"><code>[7] AP[2] Stage 1 Indirect permissions are disabled.
 See Stage 1 data accesses using Direct permissions.
