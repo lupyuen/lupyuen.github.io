@@ -143,22 +143,28 @@ Later we'll explain TCR and MAIR, but first...
 
 _What's TTBR0_EL1? Why set it to ttb0_base?_
 
-[__Translation Table Base Register 0__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-) for Exception Level 1.
+That's the [__Translation Table Base Register 0__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-) for Exception Level 1.
 
-It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping this...
+It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping __Four Chunks of 1 GB__...
 
-| Virtual Address | Physical Address |
-|:---------------:|:-----------------:
-| __`0x0000_0000`__ | `0x0000_0000`
-| __`0x4000_0000`__ | `0xA000_0000`
-| __`0x8000_0000`__ | `0x4000_0000`
-| __`0xC000_0000`__ | `0x8000_0000`
+<p>
 
-Our [__Level 1 Page Table__](TODO) will be this...
+| Virtual Address | Physical Address | Size |
+|:---------------:|:----------------:|:----:|
+| __`0x0000_0000`__ | `0x0000_0000` | 1 GB
+| __`0x4000_0000`__ | `0xA000_0000` | 1 GB
+| __`0x8000_0000`__ | `0x4000_0000` | 1 GB
+| __`0xC000_0000`__ | `0x8000_0000` | 1 GB
+
+</p>
+
+Our [__Level 1 Page Table__](TODO) _(TTBR0_EL1)_ will be this...
 
 TODO: Pic of Level 1 Page Table
 
 Which we __Store in RAM__ _(ttb0_base)_ as...
+
+<p>
 
 | Address | Value | Because |
 |:-------:|:-----:|:--------|
@@ -166,6 +172,8 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 | __`0x1008`__ | `0xA000_0741` | _Page Table Entry #1_
 | __`0x1010`__ | `0x4000_0741` | _Page Table Entry #2_
 | __`0x1018`__ | `0x8000_0741` | _Page Table Entry #3_
+
+</p>
 
 [(See the __Unicorn Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
 
@@ -181,15 +189,13 @@ Our code runs at _0x0000\_0000_. If we don't map _0x0000\_0000_ to itself, there
 
 _For TTBR0\_EL1: Why Exception Level 1?_
 
-Our code _(NuttX Kernel)_ runs at [__Exception Level 1__](https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels). Later we'll run NuttX Apps at __Exception Level 0__, which has Less Privilege.
-
-That's how we protect NuttX Kernel from getting messed up by NuttX Apps.
+Our code _(NuttX Kernel)_ runs at [__Exception Level 1__](https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels). Later we'll run NuttX Apps at __Exception Level 0__, which has Less Privilege. That's how we protect NuttX Kernel from getting messed up by NuttX Apps.
 
 # Page Table Entry
 
 _In the Page Table Entries above: Why 741?_
 
-We decode each __Page Table Entry__ based on [__VMSAv8-64 Block Descriptors__](TODO) _(Page D8-6491)_...
+We decode each __Page Table Entry__ based on [__VMSAv8-64 Block Descriptors__](TODO) _(Page D8-6491)_. `0x741` says...
 
 ![TODO](https://lupyuen.org/images/unicorn3-block.png)
 
@@ -227,48 +233,19 @@ NuttX defines the whole list here: [arm64_mmu.h](https://github.com/apache/nuttx
 #define PTE_BLOCK_DESC_UXN          (1ULL << 54) // User Execute Never
 ```
 
-_Why Inner vs Outer Shareable? Something about "Severance"?_
+_Why Stage 1? Not Stage 2?_
 
-![TODO](https://lupyuen.org/images/unicorn3-shareable.png)
-
-```text
-Example B2-1 Use of shareability attributes
-In an implementation, a particular subsystem with two clusters of PEs has the requirement that:
-• In each cluster, the data caches or unified caches of the PEs in the cluster are transparent for all data accesses
-to memory locations with the Inner Shareable attribute.
-• However, between the two clusters, the caches:
-— Are not required to be coherent for data accesses that have only the Inner Shareable attribute.
-— Are coherent for data accesses that have the Outer Shareable attribute.
-In this system, each cluster is in a different shareability domain for the Inner Shareable attribute, but all components
-of the subsystem are in the same shareability domain for the Outer Shareable attribute.
-A system might implement two such subsystems. If the data caches or unified caches of one subsystem are not
-transparent to the accesses from the other subsystem, this system has two Outer Shareable shareability domains.
-```
-
-[_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
-
-```text
-D8.2.1 Translation table walk
-RBTTHB A translation table walk is the set of translation table lookups that are required to do all of the following:
-• For a single stage translation at stage 1, translate a VA to a PA.
-• For two translation stages and stage 1 is disabled, translate an IPA to a PA.
-• For a two stage translation, all of the following:
-— For a stage 1 translation, translate a VA to an IPA.
-— For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
-— For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.
-```
-
-_Why are we doing Stage 1? Not Stage 2?_
+We're doing __Stage 1 Only__: Single-Stage Translation from _Virtual Address (VA)_ to _Physical Address (PA)_. No need for Stage 2 and _Intermediate Physical Address (IPA)_ [(Page D8-6448)](TODO)
 
 ![TODO](https://lupyuen.org/images/unicorn3-stage.png)
 
-TODO
+_Why Inner vs Outer Shareable? Something about "Severance"?_
 
-![TODO](https://lupyuen.org/images/unicorn3-table.png)
+__Inner / Outer Sharing__ is for Multiple CPU Cores, which we'll ignore for now [(Page B2-293)](TODO)
 
-TODO
+![TODO](https://lupyuen.org/images/unicorn3-shareable.png)
 
-![TODO](https://lupyuen.org/images/unicorn3-access.png)
+[_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
 
 # Translation Control Register
 
@@ -287,9 +264,7 @@ msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 
 _What's TCR_EL1? Why set it to 0x1_8080_3F20?_
 
-That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1.
-
-According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1_8080_3F20_ decodes as...
+That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1. According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1_8080_3F20_ decodes as...
 
 ![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
@@ -309,7 +284,7 @@ According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2
 
 - __Bits 32-34:__ EL1_IPS = 1 <br> _36 bits, 64 GB of Physical Address Space_
 
-- Which means our MMU will map __32-bit Virtual Addresses__ into __36-bit Physical Addresses__. Each Physical Address points to a __4 KB Memory Page__.
+- Thus our MMU shall map __32-bit Virtual Addresses__ into __36-bit Physical Addresses__. Each Physical Address points to a __4 KB Memory Page__.
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
 
@@ -752,6 +727,14 @@ Needs more investigation. But at least NuttX boots OK on Unicorn!
 TODO
 
 # TODO
+
+TODO
+
+![TODO](https://lupyuen.org/images/unicorn3-table.png)
+
+TODO
+
+![TODO](https://lupyuen.org/images/unicorn3-access.png)
 
 TODO: PTE_BLOCK_DESC_AP_USER=1
 
