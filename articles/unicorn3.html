@@ -1500,7 +1500,14 @@ cargo run
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
-
+<p>For Unicorn Emulator: Don’t enable <strong>MMU Logging</strong>: <a href="TODO">arch/arm64/src/common/arm64_mmu.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Enable MMU Logging
+#define CONFIG_MMU_ASSERT   1
+#define CONFIG_MMU_DEBUG    1
+#define CONFIG_MMU_DUMP_PTE 1
+#define trace_printf _info
+#undef  sinfo
+#define sinfo _info</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
