@@ -494,8 +494,8 @@ Bit 32</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
 <p><a href="TODO">(See the <strong>Unicorn Log</strong>)</a></p>
 <h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>7 NuttX crashes in Unicorn</h1>
-<p><em>What’s Unicorn got to do with NuttX?</em></p>
-<p>Two Years Ago: We tried creating a <a href="TODO"><strong>PinePhone Emulator</strong></a> with Unicorn. But NuttX kept crashing while booting…</p>
+<p><em>What’s Unicorn Emulator got to do with NuttX RTOS?</em></p>
+<p>Two Years Ago: We tried creating a <a href="TODO"><strong>PinePhone Emulator</strong></a> with NuttX and Unicorn. But NuttX kept crashing on Unicorn…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
@@ -566,7 +566,7 @@ static void enable_mmu_el1(unsigned int flags) {
 
   // Oops! Unicorn Emulator fails with an Arm64 Exception
   // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
-<p>Which is super similar to the <a href="TODO"><strong>MMU Demo</strong></a> we saw earlier…</p>
+<p>Which is mighty similar to the <a href="TODO"><strong>MMU Demo</strong></a> we saw earlier…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MMU Demo Works OK:
 // Read System Register SCTLR_EL1 into X0
@@ -596,17 +596,7 @@ static void enable_mmu_el1(unsigned int flags) {
 #define trace_printf _info
 #undef  sinfo
 #define sinfo _info</code></pre></div>
-<p>TODO: What’s the diff?</p>
-<p>TODO: Why are we doing this?</p>
-<p>TODO: Changes to NuttX</p>
-<p>TODO: HostFS</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
-<p>TODO: Explain Syndrome</p>
-<p>TODO: vaddress doesn’t offer any clues</p>
-<p><em>How different is NuttX from MMU Demo?</em></p>
-<p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
+<p>We simplify the <strong>Memory Regions</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Memory Regions for Arm64 MMU (Simplified)
 struct arm_mmu_region g_mmu_regions[] = {
 
@@ -624,10 +614,15 @@ struct arm_mmu_region g_mmu_regions[] = {
     0x0080_0000,  // Size: 8 MB
     MT_NORMAL | MT_RW | MT_EXECUTE),  // Allow Read, Write and Execute
 
-};  // Other Memory Regions? We removed them all</code></pre></div>
-<p>Which looks like this…</p>
-<p>TODO: Pic of Memory Map</p>
-<p>Which is mapped like this…</p>
+};  // Other Memory Regions? We removed them all</code></pre></div><p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td><td style="text-align: center">8 MB</td></tr>
+</tbody></table>
+</div></div>
+</p>
+<p>According to the <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>: We have a <strong>Two-Level Page Table</strong>…</p>
 <p>TODO: Pic of 2-Level Page Table</p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
@@ -824,6 +819,10 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+<p>TODO: What’s the diff?</p>
+<p>TODO: Why are we doing this?</p>
+<p>TODO: Changes to NuttX</p>
+<p>TODO: HostFS</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p>TODO</p>
@@ -1497,6 +1496,9 @@ cargo run
 ## call_graph:  setup_page_tables --&gt; ***_HALT_***
 ## call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/103/files">PR for Unicorn QEMU: Before Fix</a></p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">PR for Unicorn QEMU: After Fix</a></p>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
