@@ -605,6 +605,17 @@ To troubleshoot, we enable __MMU Logging__: [arch/arm64/src/common/arm64_mmu.c](
 
 We simplify the __Memory Regions__: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89)
 
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
+| Virtual Address | Physical Address | Size |
+|:---------------:|:----------------:|:----:|
+| __`0x0000_0000`__ | `0x0000_0000` | 1 GB
+| __`0x4000_0000`__ | `0x4000_0000` | 8 MB
+
+</div>
+</p>
+
 ```c
 // NuttX Memory Regions for Arm64 MMU (Simplified)
 struct arm_mmu_region g_mmu_regions[] = {
@@ -626,18 +637,7 @@ struct arm_mmu_region g_mmu_regions[] = {
 };  // Other Memory Regions? We removed them all
 ```
 
-<p>
-<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-
-| Virtual Address | Physical Address | Size |
-|:---------------:|:----------------:|:----:|
-| __`0x0000_0000`__ | `0x0000_0000` | 1 GB
-| __`0x4000_0000`__ | `0x4000_0000` | 8 MB
-
-</div>
-</p>
-
-According to the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884): We have a __Two-Level Page Table__...
+According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884): We have a __Two-Level Page Table__...
 
 TODO: Pic of 2-Level Page Table
 
@@ -721,6 +721,8 @@ enable_mmu_el1: ttbr0_el1=0x402b2000
 ```
 
 TODO
+
+# Translation Control Register for NuttX
 
 ```bash
 get_tcr: va_bits: 0x24
