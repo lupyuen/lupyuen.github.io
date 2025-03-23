@@ -344,6 +344,8 @@ _SCTLR_EL1 is for?_
 
 The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__...
 
+![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
+
 - __Bit 0:__ M = 1 <br> _Enable MMU for Address Translation_
 
 - __Bit 2:__ C = 1 <br> _Enable the Data Cache_
@@ -477,7 +479,7 @@ TODO
 
 _What's Unicorn got to do with NuttX?_
 
-Two Years Ago: We tried creating a __PinePhone Emulator__ with Unicorn. But NuttX kept crashing while booting...
+Two Years Ago: We tried creating a [__PinePhone Emulator__](TODO) with Unicorn. But NuttX kept crashing while booting...
 
 ```bash
 ## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
@@ -574,7 +576,35 @@ orr X0, X0, #(0x1 << 12) // I bit (Instruction Cache)
 msr SCTLR_EL1, X0
 ```
 
-Maybe there's a problem with the Page Tables? Or Translation Control Register? We investigate...
+Maybe our Page Tables are bad? Or Translation Control Register? We investigate...
+
+# Level 1 and 2 Page Tables
+
+NuttX on Unicorn Emulator will fail with this [__Arm64 Exception__](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)...
+
+```bash
+env.exception =
+  Syndrome:        0x8600_0005
+  FSR:             0x0000_0205
+  Virtual Address: 0x5027_ffff (Why?)
+  Target Exception Level: 1
+```
+
+Which means: [__"Oops! Can't enable MMU"__](https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception)
+
+To troubleshoot, we enable __MMU Logging__: [arch/arm64/src/common/arm64_mmu.c](TODO)
+
+```c
+// Enable MMU Logging
+#define CONFIG_MMU_ASSERT   1
+#define CONFIG_MMU_DEBUG    1
+#define CONFIG_MMU_DUMP_PTE 1
+#define trace_printf _info
+#undef  sinfo
+#define sinfo _info
+```
+
+
 
 TODO: What's the diff?
 
@@ -588,38 +618,10 @@ TODO: HostFS
 
 [PR for Unicorn QEMU: After Fix](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
 
-[Enable Logging in nuttx/arch/arm64/src/common/arm64_mmu.c](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L4-L10)
-
-```c
-#define CONFIG_MMU_ASSERT 1 ////
-#define CONFIG_MMU_DEBUG 1 ////
-#define CONFIG_MMU_DUMP_PTE 1 ////
-#define trace_printf _info ////
-#undef sinfo ////
-#define sinfo _info ////
-```
 
 TODO: Explain Syndrome
 
 TODO: vaddress doesn't offer any clues
-
-[SCTLR_EL1, System Control Register (EL1) Doc](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
-
-![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
-
-Unicorn Emulator fails with this [__Arm64 Exception__](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754)...
-
-```bash
-env.exception =
-  Syndrome:        0x8600_0005
-  FSR:             0x0000_0205
-  Virtual Address: 0x5027_ffff (Why?)
-  Target Exception Level: 1
-```
-
-Which means: [__"Oops! Can't enable MMU"__](https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception)
-
-# Before Fixing NuttX
 
 _How different is NuttX from MMU Demo?_
 
