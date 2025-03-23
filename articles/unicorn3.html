@@ -197,7 +197,7 @@ isb</code></pre></div>
 </ol>
 <p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable MMU”</em> are extremely cryptic. We break them down…</p>
 <h1 id="map-virtual-address-to-physical-address"><a class="doc-anchor" href="#map-virtual-address-to-physical-address">§</a>2 Map Virtual Address to Physical Address</h1>
-<p><em>What’s this mystery code?</em></p>
+<p><em>What’s this mystery code from above?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the MMU Registers:
 // TCR_EL1 becomes 0x1_8080_3F20
@@ -227,45 +227,6 @@ isb</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-">(<strong>TTBR0_EL1</strong> is <em>“Translation Table Base Register 0 for Exception Level 1”</em>)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
-## Entry #0
-Page Table Entry @ 0x1000:
-  0x0000_0741
-Physical Address:
-  0x0000_0000
-Bit 00-01: PTE_BLOCK_DESC=1
-Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
-Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-Bit 10:    PTE_BLOCK_DESC_AF=1
-
-## Entry #1
-Page Table Entry @ 0x1008:
-  0xA000_0741
-Physical Address:
-  0xA000_0000
-(Same Bits as above)
-
-## Entry #2
-Page Table Entry @ 0x1010:
-  0x4000_0741
-Physical Address:
-  0x4000_0000
-(Same Bits as above)
-
-## Entry #3
-Page Table Entry @ 0x1018:
-  0x8000_0741
-Physical Address:
-  0x8000_0000
-(Same Bits as above)
-
-## Not the Page Table, but
-## Data Referenced by our Assembly Code
-Data @ 0x1020: 0x4000_0000
-Data @ 0x1028: 0x1_8080_3F20
-Data @ 0x1030: 0xFFFF_FFFF
-Data @ 0x1038: 0x8000_0000</code></pre></div>
-<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p><em>Why 741?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>Bit 00-01: PTE_BLOCK_DESC=1
 Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
@@ -338,6 +299,8 @@ See Stage 1 Indirect permissions.</code></pre></div>
 10 PrivRead
 11 PrivRead, UnprivRead
 RPSZJJ</code></pre></div>
+<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
 <h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>3 Translation Control Register</h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Initialize translation table control registers
@@ -759,7 +722,46 @@ isb
 <span class="comment">// Read the same memory area through virtual address
 </span>ldr X0, =<span class="number">0x80000000
 </span>ldr X2, [X0]</code></pre></div>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
+## Entry #0
+Page Table Entry @ 0x1000:
+  0x0000_0741
+Physical Address:
+  0x0000_0000
+Bit 00-01: PTE_BLOCK_DESC=1
+Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+Bit 10:    PTE_BLOCK_DESC_AF=1
+
+## Entry #1
+Page Table Entry @ 0x1008:
+  0xA000_0741
+Physical Address:
+  0xA000_0000
+(Same Bits as above)
+
+## Entry #2
+Page Table Entry @ 0x1010:
+  0x4000_0741
+Physical Address:
+  0x4000_0000
+(Same Bits as above)
+
+## Entry #3
+Page Table Entry @ 0x1018:
+  0x8000_0741
+Physical Address:
+  0x8000_0000
+(Same Bits as above)
+
+## Not the Page Table, but
+## Data Referenced by our Assembly Code
+Data @ 0x1020: 0x4000_0000
+Data @ 0x1028: 0x1_8080_3F20
+Data @ 0x1030: 0xFFFF_FFFF
+Data @ 0x1038: 0x8000_0000</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Arm Architecture Reference Manual for A-profile architecture
 https://developer.arm.com/documentation/ddi0487/latest/
 
 My Deepest darkest fantasy:
