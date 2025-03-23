@@ -137,11 +137,15 @@ adr X0, ttb0_base  // Load ttb0_base into Register X0
 msr TTBR0_EL1, X0  // Write X0 into System Register TTBR0_EL1
 ```
 
-This code will __Map Virtual Address__ to Physical Address, so that _0x8000_0000_ (virtually) becomes _0x4000_0000_. Later we'll explain TCR and MAIR, but first...
+This code will __Map Virtual Address__ to Physical Address, so that _0x8000_0000_ (virtually) becomes _0x4000_0000_.
+
+Later we'll explain TCR and MAIR, but first...
 
 _What's TTBR0_EL1? Why set it to ttb0_base?_
 
-That's the [__Level 1 Page Table__](TODO) telling MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping this...
+[__Translation Table Base Register 0__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-) for Exception Level 1.
+
+It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping this...
 
 | Virtual Address | Physical Address |
 |:---------------:|:-----------------:
@@ -167,7 +171,17 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 
 [(And the __Unicorn Code__)](TODO)
 
-[(__TTBR0_EL1__ is _"Translation Table Base Register 0 for Exception Level 1"_)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-)
+_What if we read from 0x4000_0000 AFTER enabling MMU?_
+
+TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
+
+_Why map 0x0000_0000 to itself?_
+
+TODO
+
+_Why Exception Level 1?_
+
+TODO
 
 # Page Table Entry
 
@@ -184,6 +198,8 @@ We decode each __Page Table Entry__ based on [__VMSAv8-64 Block Descriptors__](T
 - __Bits 08-09:__ BLOCK_DESC_INNER_SHARE = 3 <br> _This Block is Inner Shareable (see below)_
 
 - __Bits 10-10:__ BLOCK_DESC_AF = 1 <br> _Allow this Virtual-to-Physical Mapping to be cached_
+
+- Which means each chunk of __Virtual-Physical Memory__ _(like 0x4000_0000)_ is a Memory Block that's accessible by Kernel and Apps.
 
 NuttX defines the whole list here: [arm64_mmu.h](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122)
 
@@ -208,14 +224,6 @@ NuttX defines the whole list here: [arm64_mmu.h](https://github.com/apache/nuttx
 #define PTE_BLOCK_DESC_PXN          (1ULL << 53) // Kernel Execute Never
 #define PTE_BLOCK_DESC_UXN          (1ULL << 54) // User Execute Never
 ```
-
-_What if we read from 0x4000_0000 AFTER enabling MMU?_
-
-TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
-
-_Why map 0x0000_0000 to itself?_
-
-TODO
 
 _Why Inner vs Outer Shareable? Something about "Severance"?_
 
@@ -262,17 +270,24 @@ TODO
 
 # Translation Control Register
 
-```rust
-// Initialize translation table control registers
-ldr X0, =0x180803F20
-msr TCR_EL1, X0
+We return to this mysterious code...
 
-// TODO
-ldr X0, =0xFFFFFFFF
-msr MAIR_EL1, X0
+```rust
+// Init the MMU Registers:
+// TCR_EL1 becomes 0x1_8080_3F20
+ldr X0, =0x1_8080_3F20  // Load 0x1_8080_3F20 into Register X0
+msr TCR_EL1, X0         // Write X0 into System Register TCR_EL1
+
+// MAIR_EL1 becomes 0xFFFF_FFFF
+ldr X0, =0xFFFF_FFFF  // Load 0xFFFF_FFFF into Register X0
+msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 ```
 
-According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-)...
+_What's TCR_EL1? Why set it to 0x1_8080_3F20?_
+
+That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1.
+
+According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1_8080_3F20_ decodes as...
 
 ![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
@@ -291,6 +306,8 @@ According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2
 - __Bits 30-31:__ TG1_4K = 2 <br> _EL1 Granule Size is 4 KB for TTBR1\_EL1_
 
 - __Bits 32-34:__ EL1_IPS = 1 <br> _36 bits, 64 GB of Physical Address Space_
+
+- Which means our MMU will map __32-bit Virtual Addresses__ into __36-bit Physical Addresses__. Each Physical Address points to a __4 KB Memory Page__.
 
   [_(We spoke about Innies and Outies earlier)_](TODO)
 
@@ -314,12 +331,12 @@ Bit 32
 _What about MAIR?_
 
 ```rust
-// TODO
-ldr X0, =0xFFFFFFFF
-msr MAIR_EL1, X0
+// MAIR_EL1 becomes 0xFFFF_FFFF
+ldr X0, =0xFFFF_FFFF  // Load 0xFFFF_FFFF into Register X0
+msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 ```
 
-Hmmm it looks fake? Unicorn Emulator probably ignores the bits. We'll see a Real MAIR in a while.
+Hmmm _0xFFFF_FFFF_ looks kinda fake? Unicorn Emulator probably ignores the [__MAIR Bits__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/MAIR-EL1--Memory-Attribute-Indirection-Register--EL1-). We'll see a Real MAIR in a while.
 
 # Enable the MMU
 
