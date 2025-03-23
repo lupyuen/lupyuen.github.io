@@ -354,180 +354,130 @@ We're ready to run MMU Demo!
 
 # Run the MMU Demo
 
-TODO: Populate the RAM
-
-TODO
-
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+This is how we run the MMU Demo in __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
 ```rust
-/// Unit Test for Arm64 MMU
+/// Run the Arm64 MMU Demo, based on
 /// https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
 fn test_arm64_mmu() {
-    /*
-     * Not exact the binary, but aarch64-linux-gnu-as generate this code and
-     reference sometimes data after ttb0_base.
-     * // Read data from physical address
-     * ldr X0, =0x40000000
-     * ldr X1, [X0]
 
-     * // Initialize translation table control registers
-     * ldr X0, =0x180803F20
-     * msr TCR_EL1, X0
-     * ldr X0, =0xFFFFFFFF
-     * msr MAIR_EL1, X0
+  // Arm64 Machine Code for our MMU Demo.
+  // Disassembly: https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L556-L583
+  let arm64_code = [
+    0x00, 0x81, 0x00, 0x58, 0x01, 0x00, 0x40, 0xf9, 0x00, 0x81, 0x00, 0x58, 0x40, 0x20, 0x18,
+    0xd5, 0x00, 0x81, 0x00, 0x58, 0x00, 0xa2, 0x18, 0xd5, 0x40, 0x7f, 0x00, 0x10, 0x00, 0x20,
+    0x18, 0xd5, 0x00, 0x10, 0x38, 0xd5, 0x00, 0x00, 0x7e, 0xb2, 0x00, 0x00, 0x74, 0xb2, 0x00,
+    0x00, 0x40, 0xb2, 0x00, 0x10, 0x18, 0xd5, 0x9f, 0x3f, 0x03, 0xd5, 0xdf, 0x3f, 0x03, 0xd5,
+    0xe0, 0x7f, 0x00, 0x58, 0x02, 0x00, 0x40, 0xf9, 0x00, 0x00, 0x00, 0x14, 0x1f, 0x20, 0x03,
+    0xd5, 0x1f, 0x20, 0x03, 0xd5, 0x1F, 0x20, 0x03, 0xD5, 0x1F, 0x20, 0x03, 0xD5,       
+  ];
 
-     * // Set translation table
-     * adr X0, ttb0_base
-     * msr TTBR0_EL1, X0
+  // Init Emulator in Arm64 mode
+  let mut unicorn = Unicorn::new(
+    Arch::ARM64,
+    Mode::LITTLE_ENDIAN
+  ).expect("failed to init Unicorn");
 
-     * // Enable caches and the MMU
-     * mrs X0, SCTLR_EL1
-     * orr X0, X0, #(0x1 << 2) // The C bit (data cache).
-     * orr X0, X0, #(0x1 << 12) // The I bit (instruction cache)
-     * orr X0, X0, #0x1 // The M bit (MMU).
-     * msr SCTLR_EL1, X0
-     * dsb SY
-     * isb
+  // Enable MMU Translation
+  let emu = &mut unicorn;
+  emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
 
-     * // Read the same memory area through virtual address
-     * ldr X0, =0x80000000
-     * ldr X2, [X0]
-     *
-     * // Stop
-     * b .
-     */
-    let arm64_code = [
-        0x00, 0x81, 0x00, 0x58, 0x01, 0x00, 0x40, 0xf9, 0x00, 0x81, 0x00, 0x58, 0x40, 0x20, 0x18,
-        0xd5, 0x00, 0x81, 0x00, 0x58, 0x00, 0xa2, 0x18, 0xd5, 0x40, 0x7f, 0x00, 0x10, 0x00, 0x20,
-        0x18, 0xd5, 0x00, 0x10, 0x38, 0xd5, 0x00, 0x00, 0x7e, 0xb2, 0x00, 0x00, 0x74, 0xb2, 0x00,
-        0x00, 0x40, 0xb2, 0x00, 0x10, 0x18, 0xd5, 0x9f, 0x3f, 0x03, 0xd5, 0xdf, 0x3f, 0x03, 0xd5,
-        0xe0, 0x7f, 0x00, 0x58, 0x02, 0x00, 0x40, 0xf9, 0x00, 0x00, 0x00, 0x14, 0x1f, 0x20, 0x03,
-        0xd5, 0x1f, 0x20, 0x03, 0xd5, 0x1F, 0x20, 0x03, 0xD5, 0x1F, 0x20, 0x03, 0xD5,       
-    ];
+  // Map Read/Write/Execute Memory at 0x0000 0000
+  emu.mem_map(
+    0,       // Address
+    0x2000,  // Size
+    Permission::ALL  // Read/Write/Execute Access
+  ).expect("failed to map memory");
 
-    // Init Emulator in Arm64 mode
-    // OK(uc_open(UC_ARCH_ARM64, UC_MODE_ARM, &uc));
-    let mut unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).expect("failed to init Unicorn");
+  // Write Arm64 Machine Code to emulated Executable Memory
+  const ADDRESS: u64 = 0;
+  emu.mem_write(
+    ADDRESS, 
+    &arm64_code
+  ).expect("failed to write instructions");
+```
 
-    // Magical horse mutates to bird
-    let emu = &mut unicorn;
+Our MMU Demo needs a [__Level 1 Page Table__](TODO): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
-    // Enable MMU Translation
-    // OK(uc_ctl_tlb_mode(uc, UC_TLB_CPU));
-    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+```rust
+  // Generate the Page Table Entries
+  // Page Table Entry @ 0x1000: 0x0000_0741
+  // Physical Address: 0x0000_0000
+  // Bit 00-01: PTE_BLOCK_DESC=1
+  // Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+  // Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+  // Bit 10:    PTE_BLOCK_DESC_AF=1  
+  let mut tlbe: [u8; 8] = [0; 8];
+  tlbe[0..2].copy_from_slice(&[0x41, 0x07]);
+  emu.mem_write(0x1000, &tlbe).unwrap();
 
-    // Map Read/Write/Execute Memory at 0x0000 0000
-    // OK(uc_mem_map(uc, 0, 0x2000, UC_PROT_ALL));
-    emu.mem_map(
-        0,       // Address
-        0x2000,  // Size
-        Permission::ALL  // Read/Write/Execute Access
-    ).expect("failed to map memory");
+  // Page Table Entry @ 0x1008: 0xA000_0741
+  // Page Table Entry @ 0x1010: 0x4000_0741
+  // Page Table Entry @ 0x1018: 0x8000_0741
 
-    // Write Arm64 Machine Code to emulated Executable Memory
-    // OK(uc_mem_write(uc, 0, code, sizeof(code) - 1));
-    const ADDRESS: u64 = 0;
-    emu.mem_write(
-        ADDRESS, 
-        &arm64_code
-    ).expect("failed to write instructions");
+  // Not the Page Table, but
+  // Data Referenced by our Assembly Code
+  // Data @ 0x1020: 0x4000_0000
+  tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x40]);
+  emu.mem_write(0x1020, &tlbe).unwrap();
 
-    // Generate the Page Table Entries
-    // Page Table Entry @ 0x1000: 0x0000_0741
-    // Physical Address: 0x0000_0000
-    // Bit 00-01: PTE_BLOCK_DESC=1
-    // Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
-    // Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-    // Bit 10:    PTE_BLOCK_DESC_AF=1  
-    let mut tlbe: [u8; 8] = [0; 8];
-    tlbe[0..2].copy_from_slice(&[0x41, 0x07]);
-    emu.mem_write(0x1000, &tlbe).unwrap();
-    log_tlbe(0x1000, &tlbe);
+  // Data @ 0x1028: 0x1_8080_3F20
+  // Data @ 0x1030: 0xFFFF_FFFF
+  // Data @ 0x1038: 0x8000_0000
+  ...
+```
 
-    // Page Table Entry @ 0x1008: 0xA000_0741
-    // Physical Address: 0xA000_0000 (Same Bits as above)
-    tlbe[3] = 0xa0;
-    emu.mem_write(0x1008, &tlbe).unwrap();
-    log_tlbe(0x1008, &tlbe);
+To Verify MMU Demo: We __Fill the Physical Memory__ with _0x44_ then _0x88_ then _0xCC_: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
-    // Page Table Entry @ 0x1010: 0x4000_0741
-    // Physical Address: 0x4000_0000 (Same Bits as above)  
-    tlbe[3] = 0x40;
-    emu.mem_write(0x1010, &tlbe).unwrap();
-    log_tlbe(0x1010, &tlbe);
+```rust
+  // 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
+  let mut data:  [u8; 0x1000] = [0x44; 0x1000];
+  let mut data2: [u8; 0x1000] = [0x88; 0x1000];
+  let mut data3: [u8; 0x1000] = [0xcc; 0x1000];
+  unsafe {
+    // 0x4000_0000 becomes 0x44 44 44 44...
+    emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ, data.as_mut_ptr() as _).unwrap();
 
-    // Page Table Entry @ 0x1018: 0x8000_0741
-    // Physical Address: 0x8000_0000 (Same Bits as above)
-    tlbe[3] = 0x80;
-    emu.mem_write(0x1018, &tlbe).unwrap();
-    log_tlbe(0x1018, &tlbe);
+    // 0x8000_0000 becomes 0x88 88 88 88...
+    emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ, data2.as_mut_ptr() as _).unwrap();
 
-    // Not the Page Table, but
-    // Data Referenced by our Assembly Code
-    // Data @ 0x1020: 0x4000_0000
-    tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x40]);
-    emu.mem_write(0x1020, &tlbe).unwrap();
-    log_tlbe(0x1020, &tlbe);
+    // 0xA000_0000 becomes 0xCC CC CC CC...
+    emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ, data3.as_mut_ptr() as _).unwrap();
+  }
+```
 
-    // Data @ 0x1028: 0x1_8080_3F20
-    tlbe[0..5].copy_from_slice(&[0x20, 0x3f, 0x80, 0x80, 0x1]);
-    emu.mem_write(0x1028, &tlbe).unwrap();
-    log_tlbe(0x1028, &tlbe);
+Finally we __Start the Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
-    // Data @ 0x1030: 0xFFFF_FFFF
-    tlbe[0..5].copy_from_slice(&[0xff, 0xff, 0xff, 0xff, 0x00]);
-    emu.mem_write(0x1030, &tlbe).unwrap();
-    log_tlbe(0x1030, &tlbe);
+```rust
+  // Start the Unicorn Emulator
+  let err = emu.emu_start(0, 0x44, 0, 0);
+  println!("\nerr={:?}", err);
 
-    // Data @ 0x1038: 0x8000_0000
-    tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x80]);
-    emu.mem_write(0x1038, &tlbe).unwrap();
-    log_tlbe(0x1038, &tlbe);
+  // Read registers X0, X1, X2
+  let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+  let x1 = emu.reg_read(RegisterARM64::X1).unwrap();
+  let x2 = emu.reg_read(RegisterARM64::X2).unwrap();
 
-    // 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
-    let mut data:  [u8; 0x1000] = [0x44; 0x1000];
-    let mut data2: [u8; 0x1000] = [0x88; 0x1000];
-    let mut data3: [u8; 0x1000] = [0xcc; 0x1000];
-
-    unsafe {
-        // 0x4000_0000 becomes 0x44 44 44 44...
-        emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ, data.as_mut_ptr() as _).unwrap();
-
-        // 0x8000_0000 becomes 0x88 88 88 88...
-        emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ, data2.as_mut_ptr() as _).unwrap();
-
-        // 0xA000_0000 becomes 0xCC CC CC CC...
-        emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ, data3.as_mut_ptr() as _).unwrap();
-    }
-
-    // OK(uc_emu_start(uc, 0, 0x44, 0, 0));
-    let err = emu.emu_start(0, 0x44, 0, 0);
-
-    // Print the Emulator Error
-    println!("\nerr={:?}", err);
-
-    // Read registers X0, X1, X2
-    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-    let x1 = emu.reg_read(RegisterARM64::X1).unwrap();
-    let x2 = emu.reg_read(RegisterARM64::X2).unwrap();
-    println!("x0=0x{x0:x}");
-    println!("x1=0x{x1:x}");
-    println!("x2=0x{x2:x}");
-
-    // Check the values
-    assert!(x0 == 0x80000000);
-    assert!(x1 == 0x4444444444444444);
-    assert!(x2 == 0x4444444444444444);
+  // Check the values
+  assert!(x0 == 0x80000000);
+  assert!(x1 == 0x4444444444444444);
+  assert!(x2 == 0x4444444444444444);
 }
 ```
+
+And it works!
+
+```text
+TODO
+```
+
+[(See the __Unicorn Log__)](TODO)
 
 # NuttX crashes in Unicorn
 
 _What's Unicorn got to do with NuttX?_
+
+TODO: git clone ; make
 
 TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX...
 
