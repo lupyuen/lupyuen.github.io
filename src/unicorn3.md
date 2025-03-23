@@ -173,15 +173,17 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 
 _What if we read from 0x4000_0000 AFTER enabling MMU?_
 
-TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
+TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways.
 
 _Why map 0x0000_0000 to itself?_
 
-TODO
+Our code runs at _0x0000\_0000_. If we don't map _0x0000\_0000_ to itself, there won't be no runway for our demo.
 
-_Why Exception Level 1?_
+_For TTBR0\_EL1: Why Exception Level 1?_
 
-TODO
+Our code _(NuttX Kernel)_ runs at [__Exception Level 1__](https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels). Later we'll run NuttX Apps at __Exception Level 0__, which has Less Privilege.
+
+That's how we protect NuttX Kernel from getting messed up by NuttX Apps.
 
 # Page Table Entry
 
