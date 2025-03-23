@@ -20,7 +20,21 @@ This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why
 
 _What's this MMU again?_
 
-TODO
+We require the Arm64 __Memory Management Unit__ for...
+
+- __Memory Protection__: Prevent Applications _(and Kernel)_ from meddling with things _(in System Memory)_ that they're not supposed to
+
+- __Virtual Memory__: Allow Applications to access chunks of _"Imaginary Memory"_ at Exotic Addresses _(0x8000_0000!)_
+
+  But in reality: They're System RAM recycled from boring old addresses _(like 0x40A0_4000)_
+
+If we don't configure MMU with the correct __Memory Map__...
+
+- __NuttX Kernel__ won't boot: _"Help! I can't access my Kernel Code and Data!"_
+
+- __NuttX Apps__ won't run: _"Whoops where's the App Code and Data that Kernel promised?"_
+
+Let's go deeper inside MMU...
 
 TODO: Pic of Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_, 0x4444
 
