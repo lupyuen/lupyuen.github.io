@@ -137,7 +137,7 @@ adr X0, ttb0_base  // Load ttb0_base into Register X0
 msr TTBR0_EL1, X0  // Write X0 into System Register TTBR0_EL1
 ```
 
-This code will __Map Virtual Address__ to Physical Address, so that _0x8000_0000_ (virtually) becomes _0x4000_0000_. We'll explain TCR and MAIR in the next section, but first...
+This code will __Map Virtual Address__ to Physical Address, so that _0x8000_0000_ (virtually) becomes _0x4000_0000_. Later we'll explain TCR and MAIR, but first...
 
 _What's TTBR0_EL1? Why set it to ttb0_base?_
 
