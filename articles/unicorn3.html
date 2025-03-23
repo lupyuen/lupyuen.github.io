@@ -236,8 +236,8 @@ isb</code></pre></div>
 </div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
-<p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
-<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways.</p>
+<p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xA000_0000)</em></p>
+<p>We’ll see <a href="TODO"><em>AA AA AA AA…</em></a> because that’s how we populated Physical Address <em>0xA000_0000</em>. Yep the MMU can remap memory in fun interesting ways.</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
 <p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
@@ -261,7 +261,7 @@ isb</code></pre></div>
 <p><strong>Bits 10-10:</strong> BLOCK_DESC_AF = 1 <br> <em>Allow this Virtual-to-Physical Mapping to be cached</em></p>
 </li>
 <li>
-<p>Which means each chunk of <strong>Virtual-Physical Memory</strong> <em>(like 0x4000_0000)</em> is a Memory Block that’s accessible by Kernel and Apps.</p>
+<p>Which means each chunk of <strong>Virtual-Physical Memory</strong> <em>(like 0x4000_0000)</em> is a Memory Block that’s accessible by Kernel and Apps</p>
 </li>
 </ul>
 <p>NuttX defines the whole list here: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
