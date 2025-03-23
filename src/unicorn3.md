@@ -322,12 +322,10 @@ Hmmm _0xFFFF_FFFF_ looks kinda fake? Unicorn Emulator probably ignores the [__MA
 
 # Enable the MMU
 
-TODO
-
-[SCTLR_EL1, System Control Register (EL1)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
+Wrapping up our Mystery Code: This is how we __Enable the MMU__...
 
 ```rust
-// Read SCTLR_EL1 into Register X0
+// Read System Register SCTLR_EL1 into X0
 mrs X0, SCTLR_EL1
 
 // In X0: Set the bits to Enable MMU, Data Cache and Instruction Cache
@@ -335,13 +333,16 @@ orr X0, X0, #0x1         // M bit (MMU)
 orr X0, X0, #(0x1 << 2)  // C bit (Data Cache)
 orr X0, X0, #(0x1 << 12) // I bit (Instruction Cache)
 
-// Write Register X0 into SCTLR_EL1
+// Write X0 into System Register SCTLR_EL1
 msr SCTLR_EL1, X0
 
-// TODO
-dsb SY
-isb
+// Flush the Data Cache and Instruction Cache
+dsb SY ; isb
 ```
+
+_SCTLR_EL1 is for?_
+
+It's the [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits...
 
 - __Bit 0:__ M = 1 <br> _Enable MMU for Address Translation_
 
@@ -349,11 +350,9 @@ isb
 
 - __Bit 12:__ I = 1 <br> _Enable the Instruction Cache_
 
-_What's this EL1?_
+We're ready to run MMU Demo!
 
-EL0 then EL1. Show log
-
-# Populate the RAM
+TODO: Populate the RAM
 
 TODO
 
