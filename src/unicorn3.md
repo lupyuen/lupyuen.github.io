@@ -148,6 +148,8 @@ That's the [__Translation Table Base Register 0__](https://developer.arm.com/doc
 It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping __Four Chunks of 1 GB__...
 
 <p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 
 | Virtual Address | Physical Address | Size |
 |:---------------:|:----------------:|:----:|
@@ -156,6 +158,7 @@ It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Ph
 | __`0x8000_0000`__ | `0x4000_0000` | 1 GB
 | __`0xC000_0000`__ | `0x8000_0000` | 1 GB
 
+</div>
 </p>
 
 Our [__Level 1 Page Table__](TODO) _(TTBR0_EL1)_ will be this...
@@ -165,6 +168,7 @@ TODO: Pic of Level 1 Page Table
 Which we __Store in RAM__ _(ttb0_base)_ as...
 
 <p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 
 | Address | Value | Because |
 |:-------:|:-----:|:--------|
@@ -173,6 +177,7 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 | __`0x1010`__ | `0x4000_0741` | _Page Table Entry #2_
 | __`0x1018`__ | `0x8000_0741` | _Page Table Entry #3_
 
+</div>
 </p>
 
 [(See the __Unicorn Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
