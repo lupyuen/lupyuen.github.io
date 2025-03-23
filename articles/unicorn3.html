@@ -701,7 +701,7 @@ get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
 enable_mmu_el1: tcr_el1=0x18080351c
 enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
-<p>TODO</p>
+<p>Looks legit, we move on…</p>
 <h1 id="translation-control-register-for-nuttx"><a class="doc-anchor" href="#translation-control-register-for-nuttx">§</a>9 Translation Control Register for NuttX</h1><div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
