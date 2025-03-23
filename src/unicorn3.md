@@ -555,6 +555,7 @@ static void enable_mmu_el1(unsigned int flags) {
   );
 
   // Oops! Unicorn Emulator fails with an Arm64 Exception
+  // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
 
 Which is super similar to the [__MMU Demo__](TODO) we saw earlier...
@@ -1531,3 +1532,46 @@ TODO: Simpler for debugging
 (Could one of these changes, contribute to Unicorn Non-Crashing? It's possible)
 
 Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.
+
+```bash
+## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
+cd nuttx
+tools/configure.sh qemu-armv8a:knsh
+make -j
+
+## Dump the disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+## NuttX boots OK on QEMU.
+## NSH Shell won't appear yet because we haven't compiled the NuttX Apps.
+qemu-system-aarch64 \
+  -semihosting \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=3 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+
+## But NuttX crashes in Unicorn Emulator
+git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+  $HOME/pinephone-emulator
+cp nuttx.bin nuttx.S \
+  $HOME/pinephone-emulator/nuttx/
+cd $HOME/pinephone-emulator
+cargo run
+
+## err=Err(EXCEPTION)
+## PC=0x402805f0
+## call_graph:  setup_page_tables --> ***_HALT_***
+## call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
+## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
+```
