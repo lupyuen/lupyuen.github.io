@@ -720,7 +720,7 @@ enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000
 ```
 
-TODO
+Looks legit, we move on...
 
 # Translation Control Register for NuttX
 
