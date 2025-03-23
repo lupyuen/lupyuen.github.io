@@ -1574,3 +1574,15 @@ cargo run
 [PR for Unicorn QEMU: Before Fix](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
 
 [PR for Unicorn QEMU: After Fix](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
+
+For Unicorn Emulator: Don't enable __MMU Logging__: [arch/arm64/src/common/arm64_mmu.c](TODO)
+
+```c
+// Enable MMU Logging
+#define CONFIG_MMU_ASSERT   1
+#define CONFIG_MMU_DEBUG    1
+#define CONFIG_MMU_DUMP_PTE 1
+#define trace_printf _info
+#undef  sinfo
+#define sinfo _info
+```
