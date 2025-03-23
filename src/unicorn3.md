@@ -400,10 +400,10 @@ fn test_arm64_mmu() {
   ).expect("failed to write instructions");
 ```
 
-Our MMU Demo needs a [__Level 1 Page Table__](TODO): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+We populate the [__Level 1 Page Table__](TODO) from earlier: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
 ```rust
-  // Generate the Page Table Entries
+  // Generate the Page Table Entries...
   // Page Table Entry @ 0x1000: 0x0000_0741
   // Physical Address: 0x0000_0000
   // Bit 00-01: PTE_BLOCK_DESC=1
@@ -419,7 +419,7 @@ Our MMU Demo needs a [__Level 1 Page Table__](TODO): [main.rs](https://github.co
   // Page Table Entry @ 0x1018: 0x8000_0741
 
   // Not the Page Table, but
-  // Data Referenced by our Assembly Code
+  // Data Referenced by our Assembly Code:
   // Data @ 0x1020: 0x4000_0000
   tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x40]);
   emu.mem_write(0x1020, &tlbe).unwrap();
