@@ -211,7 +211,7 @@ NuttX defines the whole list here: [arm64_mmu.h](https://github.com/apache/nuttx
 
 _What if we read from 0x4000_0000 AFTER enabling MMU?_
 
-We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
+TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
 
 _Why map 0x0000_0000 to itself?_
 
@@ -252,31 +252,7 @@ _Why are we doing Stage 1? Not Stage 2?_
 
 ![TODO](https://lupyuen.org/images/unicorn3-stage.png)
 
-TODO: PTE_BLOCK_DESC_AP_USER=1
-
-```text
-[7] AP[2] Stage 1 Indirect permissions are disabled.
-See Stage 1 data accesses using Direct permissions.
-
-[6] RES1 Stage 1 Indirect permissions are disabled and the translation regime supports a single privilege
-level.
-AP[1] Stage 1 Indirect permissions are disabled and the translation regime supports two privilege
-levels.
-See Stage 1 data accesses using Direct permissions.
-PIIndex[0] Stage 1 Indirect permissions are enabled.
-See Stage 1 Indirect permissions.
-```
-
-TODO: AP[2:1]
-
-```text
-AP[2:1] Permissions
-00 PrivRead, PrivWrite
-01 PrivRead, PrivWrite, UnprivRead, UnprivWrite
-10 PrivRead
-11 PrivRead, UnprivRead
-RPSZJJ
-```
+TODO
 
 ![TODO](https://lupyuen.org/images/unicorn3-table.png)
 
@@ -758,6 +734,34 @@ TODO
 
 # TODO
 
+TODO: PTE_BLOCK_DESC_AP_USER=1
+
+```text
+[7] AP[2] Stage 1 Indirect permissions are disabled.
+See Stage 1 data accesses using Direct permissions.
+
+[6] RES1 Stage 1 Indirect permissions are disabled and the translation regime supports a single privilege
+level.
+AP[1] Stage 1 Indirect permissions are disabled and the translation regime supports two privilege
+levels.
+See Stage 1 data accesses using Direct permissions.
+PIIndex[0] Stage 1 Indirect permissions are enabled.
+See Stage 1 Indirect permissions.
+```
+
+TODO: AP[2:1]
+
+```text
+AP[2:1] Permissions
+00 PrivRead, PrivWrite
+01 PrivRead, PrivWrite, UnprivRead, UnprivWrite
+10 PrivRead
+11 PrivRead, UnprivRead
+RPSZJJ
+```
+
+TODO
+
 ```rust
 // Read data from physical address
 ldr X0, =0x40000000
@@ -787,7 +791,7 @@ ldr X0, =0x80000000
 ldr X2, [X0]
 ```
 
-# TODO
+TODO
 
 ```bash
 ## Level 1 Page Table with 4 Page Table Entries
