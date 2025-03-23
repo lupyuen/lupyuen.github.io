@@ -435,9 +435,9 @@ Bit 32</code></pre></div>
     ADDRESS, 
     <span class="kw-2">&amp;</span>arm64_code
   ).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
-<p>Our MMU Demo needs a <a href="TODO"><strong>Level 1 Page Table</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>We populate the <a href="TODO"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Generate the Page Table Entries
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Generate the Page Table Entries...
   // Page Table Entry @ 0x1000: 0x0000_0741
   // Physical Address: 0x0000_0000
   // Bit 00-01: PTE_BLOCK_DESC=1
@@ -453,7 +453,7 @@ Bit 32</code></pre></div>
   // Page Table Entry @ 0x1018: 0x8000_0741
 
   // Not the Page Table, but
-  // Data Referenced by our Assembly Code
+  // Data Referenced by our Assembly Code:
   // Data @ 0x1020: 0x4000_0000
   </span>tlbe[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x40</span>]);
   emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
