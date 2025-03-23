@@ -100,7 +100,26 @@
 </li>
 </ol>
 <p><em>What’s this MMU again?</em></p>
-<p>TODO</p>
+<p>We require the Arm64 <strong>Memory Management Unit</strong> for…</p>
+<ul>
+<li>
+<p><strong>Memory Protection</strong>: Prevent Applications <em>(and Kernel)</em> from meddling with things <em>(in System Memory)</em> that they’re not supposed to</p>
+</li>
+<li>
+<p><strong>Virtual Memory</strong>: Allow Applications to access chunks of <em>“Imaginary Memory”</em> at Exotic Addresses <em>(0x8000_0000!)</em></p>
+<p>But in reality: They’re System RAM recycled from boring old addresses <em>(like 0x40A0_4000)</em></p>
+</li>
+</ul>
+<p>If we don’t configure MMU with the correct <strong>Memory Map</strong>…</p>
+<ul>
+<li>
+<p><strong>NuttX Kernel</strong> won’t boot: <em>“Help! I can’t access my Kernel Code and Data!”</em></p>
+</li>
+<li>
+<p><strong>NuttX Apps</strong> won’t run: <em>“Whoops where’s the App Code and Data that Kernel promised?”</em></p>
+</li>
+</ul>
+<p>Let’s go deeper inside MMU…</p>
 <p>TODO: Pic of Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em>, 0x4444</p>
 <h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
 <p><em>Ah so MMU will allow this switcheroo business? (Pic above)</em></p>
