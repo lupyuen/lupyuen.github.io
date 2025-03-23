@@ -218,6 +218,10 @@ TODO: Pic of Level 1 Page Table
 | __`0x8000_0000`__ | `0x4000_0000`
 | __`0xC000_0000`__ | `0x8000_0000`
 
+_What if we read from 0x4000_0000 AFTER enabling MMU?_
+
+We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
+
 _Why Inner vs Outer Shareable? Something about "Severance"?_
 
 ![TODO](https://lupyuen.org/images/unicorn3-shareable.png)
