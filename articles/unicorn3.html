@@ -77,9 +77,8 @@
 <li><a href="#after-fixing-nuttx" title="After Fixing NuttX">10 After Fixing NuttX</a><ul></ul></li>
 <li><a href="#boot-flow" title="Boot Flow">11 Boot Flow</a><ul></ul></li>
 <li><a href="#todo" title="TODO">12 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">13 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">15 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -213,7 +212,7 @@ isb</code></pre></div>
 // TTBR0_EL1 becomes ttb0_base
 </span>adr X0, ttb0_base  <span class="comment">// Load ttb0_base into Register X0
 </span>msr TTBR0_EL1, X0  <span class="comment">// Write X0 into System Register TTBR0_EL1</span></code></pre></div>
-<p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>. We’ll explain TCR and MAIR in the next section, but first…</p>
+<p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>. Later we’ll explain TCR and MAIR, but first…</p>
 <p><em>What’s TTBR0_EL1? Why set it to ttb0_base?</em></p>
 <p>That’s the <a href="TODO"><strong>Level 1 Page Table</strong></a> telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
 <div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th></tr></thead><tbody>
@@ -275,7 +274,7 @@ isb</code></pre></div>
 #define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) // Kernel Execute Never
 #define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) // User Execute Never</code></pre></div>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
-<p>We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
+<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>TODO</p>
 <p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
@@ -302,24 +301,7 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 — For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.</code></pre></div>
 <p><em>Why are we doing Stage 1? Not Stage 2?</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="TODO" /></p>
-<p>TODO: PTE_BLOCK_DESC_AP_USER=1</p>
-<div class="example-wrap"><pre class="language-text"><code>[7] AP[2] Stage 1 Indirect permissions are disabled.
-See Stage 1 data accesses using Direct permissions.
-
-[6] RES1 Stage 1 Indirect permissions are disabled and the translation regime supports a single privilege
-level.
-AP[1] Stage 1 Indirect permissions are disabled and the translation regime supports two privilege
-levels.
-See Stage 1 data accesses using Direct permissions.
-PIIndex[0] Stage 1 Indirect permissions are enabled.
-See Stage 1 Indirect permissions.</code></pre></div>
-<p>TODO: AP[2:1]</p>
-<div class="example-wrap"><pre class="language-text"><code>AP[2:1] Permissions
-00 PrivRead, PrivWrite
-01 PrivRead, PrivWrite, UnprivRead, UnprivWrite
-10 PrivRead
-11 PrivRead, UnprivRead
-RPSZJJ</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
@@ -717,6 +699,26 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+<p>TODO: PTE_BLOCK_DESC_AP_USER=1</p>
+<div class="example-wrap"><pre class="language-text"><code>[7] AP[2] Stage 1 Indirect permissions are disabled.
+See Stage 1 data accesses using Direct permissions.
+
+[6] RES1 Stage 1 Indirect permissions are disabled and the translation regime supports a single privilege
+level.
+AP[1] Stage 1 Indirect permissions are disabled and the translation regime supports two privilege
+levels.
+See Stage 1 data accesses using Direct permissions.
+PIIndex[0] Stage 1 Indirect permissions are enabled.
+See Stage 1 Indirect permissions.</code></pre></div>
+<p>TODO: AP[2:1]</p>
+<div class="example-wrap"><pre class="language-text"><code>AP[2:1] Permissions
+00 PrivRead, PrivWrite
+01 PrivRead, PrivWrite, UnprivRead, UnprivWrite
+10 PrivRead
+11 PrivRead, UnprivRead
+RPSZJJ</code></pre></div>
+<p>TODO</p>
+
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read data from physical address
 </span>ldr X0, =<span class="number">0x40000000
 </span>ldr X1, [X0]
@@ -743,7 +745,8 @@ isb
 <span class="comment">// Read the same memory area through virtual address
 </span>ldr X0, =<span class="number">0x80000000
 </span>ldr X2, [X0]</code></pre></div>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>13 TODO</h1><div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
 ## Entry #0
 Page Table Entry @ 0x1000:
   0x0000_0741
@@ -1291,7 +1294,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1321,7 +1324,7 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
-<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>15 Appendix: Simplified NuttX for QEMU</h1>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
 <p>TODO: Simpler for debugging</p>
 <p>(Could one of these changes, contribute to Unicorn Non-Crashing? It’s possible)</p>
 <p>Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.</p>
