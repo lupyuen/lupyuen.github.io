@@ -73,12 +73,13 @@
 <li><a href="#run-the-mmu-demo" title="Run the MMU Demo">6 Run the MMU Demo</a><ul></ul></li>
 <li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">7 NuttX crashes in Unicorn</a><ul></ul></li>
 <li><a href="#level-1-and-2-page-tables" title="Level 1 and 2 Page Tables">8 Level 1 and 2 Page Tables</a><ul></ul></li>
-<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">9 NuttX vs MMU Demo</a><ul></ul></li>
-<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">10 After Fixing NuttX</a><ul></ul></li>
-<li><a href="#boot-flow" title="Boot Flow">11 Boot Flow</a><ul></ul></li>
-<li><a href="#todo" title="TODO">12 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#translation-control-register-for-nuttx" title="Translation Control Register for NuttX">9 Translation Control Register for NuttX</a><ul></ul></li>
+<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">10 NuttX vs MMU Demo</a><ul></ul></li>
+<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">11 After Fixing NuttX</a><ul></ul></li>
+<li><a href="#boot-flow" title="Boot Flow">12 Boot Flow</a><ul></ul></li>
+<li><a href="#todo" title="TODO">13 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">15 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -597,6 +598,14 @@ static void enable_mmu_el1(unsigned int flags) {
 #undef  sinfo
 #define sinfo _info</code></pre></div>
 <p>We simplify the <strong>Memory Regions</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td><td style="text-align: center">8 MB</td></tr>
+</tbody></table>
+</div></div>
+</p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Memory Regions for Arm64 MMU (Simplified)
 struct arm_mmu_region g_mmu_regions[] = {
 
@@ -614,15 +623,8 @@ struct arm_mmu_region g_mmu_regions[] = {
     0x0080_0000,  // Size: 8 MB
     MT_NORMAL | MT_RW | MT_EXECUTE),  // Allow Read, Write and Execute
 
-};  // Other Memory Regions? We removed them all</code></pre></div><p>
-<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
-<div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td><td style="text-align: center">1 GB</td></tr>
-<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td><td style="text-align: center">8 MB</td></tr>
-</tbody></table>
-</div></div>
-</p>
-<p>According to the <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>: We have a <strong>Two-Level Page Table</strong>…</p>
+};  // Other Memory Regions? We removed them all</code></pre></div>
+<p>According to <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>: We have a <strong>Two-Level Page Table</strong>…</p>
 <p>TODO: Pic of 2-Level Page Table</p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
@@ -700,7 +702,7 @@ enable_mmu_el1: tcr_el1=0x18080351c
 enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
+<h1 id="translation-control-register-for-nuttx"><a class="doc-anchor" href="#translation-control-register-for-nuttx">§</a>9 Translation Control Register for NuttX</h1><div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
 get_tcr: Bit 00-05: TCR_T0SZ=0x1c
@@ -755,7 +757,7 @@ Bit 12
 Bit 13
 Bit 23
 Bit 31
-Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>9 NuttX vs MMU Demo</h1>
+Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
 <ul>
 <li><strong>Bits 00-05:</strong> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></li>
 </ul>
@@ -779,7 +781,7 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <ul>
 <li><strong>Bits 10-11:</strong> ORGN0_WBNWA = 3 <br> <em>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable</em></li>
 </ul>
-<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>10 After Fixing NuttX</h1>
+<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>11 After Fixing NuttX</h1>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
 <p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
 <p>boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig</p>
@@ -816,9 +818,9 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Maybe Unicorn doesn’t support 36 bits</p>
 <p>Or maybe NuttX didn’t populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)</p>
 <p>Needs more investigation. But at least NuttX boots OK on Unicorn!</p>
-<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
+<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>12 Boot Flow</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>13 TODO</h1>
 <p>TODO: What’s the diff?</p>
 <p>TODO: Why are we doing this?</p>
 <p>TODO: Changes to NuttX</p>
@@ -1422,7 +1424,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1452,7 +1454,7 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
-<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>15 Appendix: Simplified NuttX for QEMU</h1>
 <p>TODO: Simpler for debugging</p>
 <p>(Could one of these changes, contribute to Unicorn Non-Crashing? It’s possible)</p>
 <p>Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.</p>
