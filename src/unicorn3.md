@@ -352,11 +352,13 @@ The [__System Control Register__](https://developer.arm.com/documentation/ddi060
 
 We're ready to run MMU Demo!
 
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+# Run the MMU Demo
 
 TODO: Populate the RAM
 
 TODO
+
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
 
 ```rust
 /// Unit Test for Arm64 MMU
@@ -434,82 +436,72 @@ fn test_arm64_mmu() {
         &arm64_code
     ).expect("failed to write instructions");
 
-    // generate tlb entries
+    // Generate the Page Table Entries
+    // Page Table Entry @ 0x1000: 0x0000_0741
+    // Physical Address: 0x0000_0000
+    // Bit 00-01: PTE_BLOCK_DESC=1
+    // Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+    // Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+    // Bit 10:    PTE_BLOCK_DESC_AF=1  
     let mut tlbe: [u8; 8] = [0; 8];
-    tlbe[0] = 0x41;
-    tlbe[1] = 0x07;
-    tlbe[2] = 0;
-    tlbe[3] = 0;
-    tlbe[4] = 0;
-    tlbe[5] = 0;
-    tlbe[6] = 0;
-    tlbe[7] = 0;
+    tlbe[0..2].copy_from_slice(&[0x41, 0x07]);
     emu.mem_write(0x1000, &tlbe).unwrap();
     log_tlbe(0x1000, &tlbe);
 
+    // Page Table Entry @ 0x1008: 0xA000_0741
+    // Physical Address: 0xA000_0000 (Same Bits as above)
     tlbe[3] = 0xa0;
     emu.mem_write(0x1008, &tlbe).unwrap();
     log_tlbe(0x1008, &tlbe);
 
+    // Page Table Entry @ 0x1010: 0x4000_0741
+    // Physical Address: 0x4000_0000 (Same Bits as above)  
     tlbe[3] = 0x40;
     emu.mem_write(0x1010, &tlbe).unwrap();
     log_tlbe(0x1010, &tlbe);
 
+    // Page Table Entry @ 0x1018: 0x8000_0741
+    // Physical Address: 0x8000_0000 (Same Bits as above)
     tlbe[3] = 0x80;
     emu.mem_write(0x1018, &tlbe).unwrap();
     log_tlbe(0x1018, &tlbe);
 
-    // mentioned data referenced by the asm generated my aarch64-linux-gnu-as
-    tlbe[0] = 0x00;
-    tlbe[1] = 0x00;
-    tlbe[2] = 0x00;
-    tlbe[3] = 0x40;
-
-    // OK(uc_mem_write(uc, 0x1020, tlbe, sizeof(tlbe)));
+    // Not the Page Table, but
+    // Data Referenced by our Assembly Code
+    // Data @ 0x1020: 0x4000_0000
+    tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x40]);
     emu.mem_write(0x1020, &tlbe).unwrap();
     log_tlbe(0x1020, &tlbe);
 
-    tlbe[0] = 0x20;
-    tlbe[1] = 0x3f;
-    tlbe[2] = 0x80;
-    tlbe[3] = 0x80;
-    tlbe[4] = 0x1;
-
-    // OK(uc_mem_write(uc, 0x1028, tlbe, sizeof(tlbe)));
+    // Data @ 0x1028: 0x1_8080_3F20
+    tlbe[0..5].copy_from_slice(&[0x20, 0x3f, 0x80, 0x80, 0x1]);
     emu.mem_write(0x1028, &tlbe).unwrap();
     log_tlbe(0x1028, &tlbe);
 
-    tlbe[0] = 0xff;
-    tlbe[1] = 0xff;
-    tlbe[2] = 0xff;
-    tlbe[3] = 0xff;
-    tlbe[4] = 0x00;
-
-    // OK(uc_mem_write(uc, 0x1030, tlbe, sizeof(tlbe)));
+    // Data @ 0x1030: 0xFFFF_FFFF
+    tlbe[0..5].copy_from_slice(&[0xff, 0xff, 0xff, 0xff, 0x00]);
     emu.mem_write(0x1030, &tlbe).unwrap();
     log_tlbe(0x1030, &tlbe);
 
-    tlbe[0] = 0x00;
-    tlbe[1] = 0x00;
-    tlbe[2] = 0x00;
-    tlbe[3] = 0x80;
-
-    // OK(uc_mem_write(uc, 0x1038, tlbe, sizeof(tlbe)));
+    // Data @ 0x1038: 0x8000_0000
+    tlbe[0..4].copy_from_slice(&[0x00, 0x00, 0x00, 0x80]);
     emu.mem_write(0x1038, &tlbe).unwrap();
     log_tlbe(0x1038, &tlbe);
 
-    let mut data: [u8; 0x1000] = [0x44; 0x1000];
+    // 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
+    let mut data:  [u8; 0x1000] = [0x44; 0x1000];
     let mut data2: [u8; 0x1000] = [0x88; 0x1000];
     let mut data3: [u8; 0x1000] = [0xcc; 0x1000];
 
-    // OK(uc_mem_map_ptr(uc, 0x40000000, 0x1000, UC_PROT_READ, data));
     unsafe {
-        emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ, data.as_mut_ptr() as _)
-            .unwrap();
-        emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ, data2.as_mut_ptr() as _)
-            .unwrap();
-        emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ, data3.as_mut_ptr() as _)
-            .unwrap();
+        // 0x4000_0000 becomes 0x44 44 44 44...
+        emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ, data.as_mut_ptr() as _).unwrap();
+
+        // 0x8000_0000 becomes 0x88 88 88 88...
+        emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ, data2.as_mut_ptr() as _).unwrap();
+
+        // 0xA000_0000 becomes 0xCC CC CC CC...
+        emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ, data3.as_mut_ptr() as _).unwrap();
     }
 
     // OK(uc_emu_start(uc, 0, 0x44, 0, 0));
@@ -526,6 +518,7 @@ fn test_arm64_mmu() {
     println!("x1=0x{x1:x}");
     println!("x2=0x{x2:x}");
 
+    // Check the values
     assert!(x0 == 0x80000000);
     assert!(x1 == 0x4444444444444444);
     assert!(x2 == 0x4444444444444444);
