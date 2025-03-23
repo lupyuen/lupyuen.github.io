@@ -212,9 +212,11 @@ isb</code></pre></div>
 // TTBR0_EL1 becomes ttb0_base
 </span>adr X0, ttb0_base  <span class="comment">// Load ttb0_base into Register X0
 </span>msr TTBR0_EL1, X0  <span class="comment">// Write X0 into System Register TTBR0_EL1</span></code></pre></div>
-<p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>. Later we’ll explain TCR and MAIR, but first…</p>
+<p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>.</p>
+<p>Later we’ll explain TCR and MAIR, but first…</p>
 <p><em>What’s TTBR0_EL1? Why set it to ttb0_base?</em></p>
-<p>That’s the <a href="TODO"><strong>Level 1 Page Table</strong></a> telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
+<p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-"><strong>Translation Table Base Register 0</strong></a> for Exception Level 1.</p>
+<p>It points to the <a href="TODO"><strong>Level 1 Page Table</strong></a>, telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
 <div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td></tr>
 <tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td></tr>
@@ -234,7 +236,12 @@ isb</code></pre></div>
 </div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
-<p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-">(<strong>TTBR0_EL1</strong> is <em>“Translation Table Base Register 0 for Exception Level 1”</em>)</a></p>
+<p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
+<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
+<p><em>Why map 0x0000_0000 to itself?</em></p>
+<p>TODO</p>
+<p><em>Why Exception Level 1?</em></p>
+<p>TODO</p>
 <h1 id="page-table-entry"><a class="doc-anchor" href="#page-table-entry">§</a>3 Page Table Entry</h1>
 <p><em>In the Page Table Entries above: Why 741?</em></p>
 <p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>…</p>
@@ -251,6 +258,9 @@ isb</code></pre></div>
 </li>
 <li>
 <p><strong>Bits 10-10:</strong> BLOCK_DESC_AF = 1 <br> <em>Allow this Virtual-to-Physical Mapping to be cached</em></p>
+</li>
+<li>
+<p>Which means each chunk of <strong>Virtual-Physical Memory</strong> <em>(like 0x4000_0000)</em> is a Memory Block that’s accessible by Kernel and Apps.</p>
 </li>
 </ul>
 <p>NuttX defines the whole list here: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
@@ -273,10 +283,6 @@ isb</code></pre></div>
 #define PTE_BLOCK_DESC_DIRTY        (1ULL &lt;&lt; 51) // D Flag
 #define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) // Kernel Execute Never
 #define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) // User Execute Never</code></pre></div>
-<p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
-<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
-<p><em>Why map 0x0000_0000 to itself?</em></p>
-<p>TODO</p>
 <p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
 <div class="example-wrap"><pre class="language-text"><code>Example B2-1 Use of shareability attributes
@@ -306,14 +312,19 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
 <h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>4 Translation Control Register</h1>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Initialize translation table control registers
-</span>ldr X0, =<span class="number">0x180803F20
-</span>msr TCR_EL1, X0
+<p>We return to this mysterious code…</p>
 
-<span class="comment">// TODO
-</span>ldr X0, =<span class="number">0xFFFFFFFF
-</span>msr MAIR_EL1, X0</code></pre></div>
-<p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>…</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the MMU Registers:
+// TCR_EL1 becomes 0x1_8080_3F20
+</span>ldr X0, =<span class="number">0x1_8080_3F20  </span><span class="comment">// Load 0x1_8080_3F20 into Register X0
+</span>msr TCR_EL1, X0         <span class="comment">// Write X0 into System Register TCR_EL1
+
+// MAIR_EL1 becomes 0xFFFF_FFFF
+</span>ldr X0, =<span class="number">0xFFFF_FFFF  </span><span class="comment">// Load 0xFFFF_FFFF into Register X0
+</span>msr MAIR_EL1, X0      <span class="comment">// Write X0 into System Register MAIR_EL1</span></code></pre></div>
+<p><em>What’s TCR_EL1? Why set it to 0x1_8080_3F20?</em></p>
+<p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>Translation Control Register</strong></a> for Exception Level 1.</p>
+<p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_3F20</em> decodes as…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="TODO" /></p>
 <ul>
 <li>
@@ -339,6 +350,9 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 </li>
 <li>
 <p><strong>Bits 32-34:</strong> EL1_IPS = 1 <br> <em>36 bits, 64 GB of Physical Address Space</em></p>
+</li>
+<li>
+<p>Which means our MMU will map <strong>32-bit Virtual Addresses</strong> into <strong>36-bit Physical Addresses</strong>. Each Physical Address points to a <strong>4 KB Memory Page</strong>.</p>
 <p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 <p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
@@ -357,10 +371,10 @@ Bit 31
 Bit 32</code></pre></div>
 <p><em>What about MAIR?</em></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// TODO
-</span>ldr X0, =<span class="number">0xFFFFFFFF
-</span>msr MAIR_EL1, X0</code></pre></div>
-<p>Hmmm it looks fake? Unicorn Emulator probably ignores the bits. We’ll see a Real MAIR in a while.</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MAIR_EL1 becomes 0xFFFF_FFFF
+</span>ldr X0, =<span class="number">0xFFFF_FFFF  </span><span class="comment">// Load 0xFFFF_FFFF into Register X0
+</span>msr MAIR_EL1, X0      <span class="comment">// Write X0 into System Register MAIR_EL1</span></code></pre></div>
+<p>Hmmm <em>0xFFFF_FFFF</em> looks kinda fake? Unicorn Emulator probably ignores the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/MAIR-EL1--Memory-Attribute-Indirection-Register--EL1-"><strong>MAIR Bits</strong></a>. We’ll see a Real MAIR in a while.</p>
 <h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>5 Enable the MMU</h1>
 <p>TODO</p>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1)</a></p>
