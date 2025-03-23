@@ -70,14 +70,15 @@
 <li><a href="#page-table-entry" title="Page Table Entry">3 Page Table Entry</a><ul></ul></li>
 <li><a href="#translation-control-register" title="Translation Control Register">4 Translation Control Register</a><ul></ul></li>
 <li><a href="#enable-the-mmu" title="Enable the MMU">5 Enable the MMU</a><ul></ul></li>
-<li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">6 NuttX crashes in Unicorn</a><ul></ul></li>
-<li><a href="#before-fixing-nuttx" title="Before Fixing NuttX">7 Before Fixing NuttX</a><ul></ul></li>
-<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">8 NuttX vs MMU Demo</a><ul></ul></li>
-<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">9 After Fixing NuttX</a><ul></ul></li>
-<li><a href="#boot-flow" title="Boot Flow">10 Boot Flow</a><ul></ul></li>
-<li><a href="#todo" title="TODO">11 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">13 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#run-the-mmu-demo" title="Run the MMU Demo">6 Run the MMU Demo</a><ul></ul></li>
+<li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">7 NuttX crashes in Unicorn</a><ul></ul></li>
+<li><a href="#before-fixing-nuttx" title="Before Fixing NuttX">8 Before Fixing NuttX</a><ul></ul></li>
+<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">9 NuttX vs MMU Demo</a><ul></ul></li>
+<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">10 After Fixing NuttX</a><ul></ul></li>
+<li><a href="#boot-flow" title="Boot Flow">11 Boot Flow</a><ul></ul></li>
+<li><a href="#todo" title="TODO">12 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -388,9 +389,10 @@ Bit 32</code></pre></div>
 </li>
 </ul>
 <p>We’re ready to run MMU Demo!</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<h1 id="run-the-mmu-demo"><a class="doc-anchor" href="#run-the-mmu-demo">§</a>6 Run the MMU Demo</h1>
 <p>TODO: Populate the RAM</p>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Unit Test for Arm64 MMU
 /// https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
@@ -467,82 +469,72 @@ Bit 32</code></pre></div>
         <span class="kw-2">&amp;</span>arm64_code
     ).expect(<span class="string">"failed to write instructions"</span>);
 
-    <span class="comment">// generate tlb entries
+    <span class="comment">// Generate the Page Table Entries
+    // Page Table Entry @ 0x1000: 0x0000_0741
+    // Physical Address: 0x0000_0000
+    // Bit 00-01: PTE_BLOCK_DESC=1
+    // Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+    // Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+    // Bit 10:    PTE_BLOCK_DESC_AF=1  
     </span><span class="kw">let </span><span class="kw-2">mut </span>tlbe: [u8; <span class="number">8</span>] = [<span class="number">0</span>; <span class="number">8</span>];
-    tlbe[<span class="number">0</span>] = <span class="number">0x41</span>;
-    tlbe[<span class="number">1</span>] = <span class="number">0x07</span>;
-    tlbe[<span class="number">2</span>] = <span class="number">0</span>;
-    tlbe[<span class="number">3</span>] = <span class="number">0</span>;
-    tlbe[<span class="number">4</span>] = <span class="number">0</span>;
-    tlbe[<span class="number">5</span>] = <span class="number">0</span>;
-    tlbe[<span class="number">6</span>] = <span class="number">0</span>;
-    tlbe[<span class="number">7</span>] = <span class="number">0</span>;
+    tlbe[<span class="number">0</span>..<span class="number">2</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x41</span>, <span class="number">0x07</span>]);
     emu.mem_write(<span class="number">0x1000</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1000</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">3</span>] = <span class="number">0xa0</span>;
+    <span class="comment">// Page Table Entry @ 0x1008: 0xA000_0741
+    // Physical Address: 0xA000_0000 (Same Bits as above)
+    </span>tlbe[<span class="number">3</span>] = <span class="number">0xa0</span>;
     emu.mem_write(<span class="number">0x1008</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1008</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">3</span>] = <span class="number">0x40</span>;
+    <span class="comment">// Page Table Entry @ 0x1010: 0x4000_0741
+    // Physical Address: 0x4000_0000 (Same Bits as above)  
+    </span>tlbe[<span class="number">3</span>] = <span class="number">0x40</span>;
     emu.mem_write(<span class="number">0x1010</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1010</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">3</span>] = <span class="number">0x80</span>;
+    <span class="comment">// Page Table Entry @ 0x1018: 0x8000_0741
+    // Physical Address: 0x8000_0000 (Same Bits as above)
+    </span>tlbe[<span class="number">3</span>] = <span class="number">0x80</span>;
     emu.mem_write(<span class="number">0x1018</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1018</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    <span class="comment">// mentioned data referenced by the asm generated my aarch64-linux-gnu-as
-    </span>tlbe[<span class="number">0</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">1</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">2</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">3</span>] = <span class="number">0x40</span>;
-
-    <span class="comment">// OK(uc_mem_write(uc, 0x1020, tlbe, sizeof(tlbe)));
-    </span>emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+    <span class="comment">// Not the Page Table, but
+    // Data Referenced by our Assembly Code
+    // Data @ 0x1020: 0x4000_0000
+    </span>tlbe[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x40</span>]);
+    emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">0</span>] = <span class="number">0x20</span>;
-    tlbe[<span class="number">1</span>] = <span class="number">0x3f</span>;
-    tlbe[<span class="number">2</span>] = <span class="number">0x80</span>;
-    tlbe[<span class="number">3</span>] = <span class="number">0x80</span>;
-    tlbe[<span class="number">4</span>] = <span class="number">0x1</span>;
-
-    <span class="comment">// OK(uc_mem_write(uc, 0x1028, tlbe, sizeof(tlbe)));
-    </span>emu.mem_write(<span class="number">0x1028</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+    <span class="comment">// Data @ 0x1028: 0x1_8080_3F20
+    </span>tlbe[<span class="number">0</span>..<span class="number">5</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x20</span>, <span class="number">0x3f</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x1</span>]);
+    emu.mem_write(<span class="number">0x1028</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1028</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">0</span>] = <span class="number">0xff</span>;
-    tlbe[<span class="number">1</span>] = <span class="number">0xff</span>;
-    tlbe[<span class="number">2</span>] = <span class="number">0xff</span>;
-    tlbe[<span class="number">3</span>] = <span class="number">0xff</span>;
-    tlbe[<span class="number">4</span>] = <span class="number">0x00</span>;
-
-    <span class="comment">// OK(uc_mem_write(uc, 0x1030, tlbe, sizeof(tlbe)));
-    </span>emu.mem_write(<span class="number">0x1030</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+    <span class="comment">// Data @ 0x1030: 0xFFFF_FFFF
+    </span>tlbe[<span class="number">0</span>..<span class="number">5</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="number">0xff</span>, <span class="number">0xff</span>, <span class="number">0xff</span>, <span class="number">0x00</span>]);
+    emu.mem_write(<span class="number">0x1030</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1030</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    tlbe[<span class="number">0</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">1</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">2</span>] = <span class="number">0x00</span>;
-    tlbe[<span class="number">3</span>] = <span class="number">0x80</span>;
-
-    <span class="comment">// OK(uc_mem_write(uc, 0x1038, tlbe, sizeof(tlbe)));
-    </span>emu.mem_write(<span class="number">0x1038</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+    <span class="comment">// Data @ 0x1038: 0x8000_0000
+    </span>tlbe[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x80</span>]);
+    emu.mem_write(<span class="number">0x1038</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
     log_tlbe(<span class="number">0x1038</span>, <span class="kw-2">&amp;</span>tlbe);
 
-    <span class="kw">let </span><span class="kw-2">mut </span>data: [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
+    <span class="comment">// 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
+    </span><span class="kw">let </span><span class="kw-2">mut </span>data:  [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
     <span class="kw">let </span><span class="kw-2">mut </span>data2: [u8; <span class="number">0x1000</span>] = [<span class="number">0x88</span>; <span class="number">0x1000</span>];
     <span class="kw">let </span><span class="kw-2">mut </span>data3: [u8; <span class="number">0x1000</span>] = [<span class="number">0xcc</span>; <span class="number">0x1000</span>];
 
-    <span class="comment">// OK(uc_mem_map_ptr(uc, 0x40000000, 0x1000, UC_PROT_READ, data));
-    </span><span class="kw">unsafe </span>{
-        emu.mem_map_ptr(<span class="number">0x40000000</span>, <span class="number">0x1000</span>, Permission::READ, data.as_mut_ptr() <span class="kw">as _</span>)
-            .unwrap();
-        emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1000</span>, Permission::READ, data2.as_mut_ptr() <span class="kw">as _</span>)
-            .unwrap();
-        emu.mem_map_ptr(<span class="number">0xa0000000</span>, <span class="number">0x1000</span>, Permission::READ, data3.as_mut_ptr() <span class="kw">as _</span>)
-            .unwrap();
+    <span class="kw">unsafe </span>{
+        <span class="comment">// 0x4000_0000 becomes 0x44 44 44 44...
+        </span>emu.mem_map_ptr(<span class="number">0x40000000</span>, <span class="number">0x1000</span>, Permission::READ, data.as_mut_ptr() <span class="kw">as _</span>).unwrap();
+
+        <span class="comment">// 0x8000_0000 becomes 0x88 88 88 88...
+        </span>emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1000</span>, Permission::READ, data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
+
+        <span class="comment">// 0xA000_0000 becomes 0xCC CC CC CC...
+        </span>emu.mem_map_ptr(<span class="number">0xa0000000</span>, <span class="number">0x1000</span>, Permission::READ, data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();
     }
 
     <span class="comment">// OK(uc_emu_start(uc, 0, 0x44, 0, 0));
@@ -559,11 +551,12 @@ Bit 32</code></pre></div>
     <span class="macro">println!</span>(<span class="string">"x1=0x{x1:x}"</span>);
     <span class="macro">println!</span>(<span class="string">"x2=0x{x2:x}"</span>);
 
-    <span class="macro">assert!</span>(x0 == <span class="number">0x80000000</span>);
+    <span class="comment">// Check the values
+    </span><span class="macro">assert!</span>(x0 == <span class="number">0x80000000</span>);
     <span class="macro">assert!</span>(x1 == <span class="number">0x4444444444444444</span>);
     <span class="macro">assert!</span>(x2 == <span class="number">0x4444444444444444</span>);
 }</code></pre></div>
-<h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>6 NuttX crashes in Unicorn</h1>
+<h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>7 NuttX crashes in Unicorn</h1>
 <p><em>What’s Unicorn got to do with NuttX?</em></p>
 <p>TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX…</p>
 <p>TODO Years Later: The bug stops here!</p>
@@ -643,7 +636,7 @@ static void enable_mmu_el1(unsigned int flags) {
   Virtual Address: 0x5027_ffff (Why?)
   Target Exception Level: 1</code></pre></div>
 <p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
-<h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
+<h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>8 Before Fixing NuttX</h1>
 <p><em>How different is NuttX from MMU Demo?</em></p>
 <p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
@@ -800,7 +793,7 @@ Bit 12
 Bit 13
 Bit 23
 Bit 31
-Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>8 NuttX vs MMU Demo</h1>
+Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>9 NuttX vs MMU Demo</h1>
 <ul>
 <li><strong>Bits 00-05:</strong> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></li>
 </ul>
@@ -824,7 +817,7 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <ul>
 <li><strong>Bits 10-11:</strong> ORGN0_WBNWA = 3 <br> <em>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable</em></li>
 </ul>
-<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>9 After Fixing NuttX</h1>
+<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>10 After Fixing NuttX</h1>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
 <p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
 <p>boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig</p>
@@ -861,9 +854,9 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Maybe Unicorn doesn’t support 36 bits</p>
 <p>Or maybe NuttX didn’t populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)</p>
 <p>Needs more investigation. But at least NuttX boots OK on Unicorn!</p>
-<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>10 Boot Flow</h1>
+<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>11 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p>TODO</p>
@@ -1463,7 +1456,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>12 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1493,7 +1486,7 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
-<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>13 Appendix: Simplified NuttX for QEMU</h1>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
 <p>TODO: Simpler for debugging</p>
 <p>(Could one of these changes, contribute to Unicorn Non-Crashing? It’s possible)</p>
 <p>Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.</p>
