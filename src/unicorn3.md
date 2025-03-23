@@ -18,6 +18,8 @@ This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why
 
 1.  Aha it's a problem with the __VM Addressable Size__!
 
+1.  Soon we might have a Unicorn Emulator for __Avaota-A1 SBC__
+
 _What's this MMU again?_
 
 We require the Arm64 __Memory Management Unit__ for...
@@ -341,7 +343,7 @@ dsb SY ; isb
 
 _SCTLR_EL1 is for?_
 
-The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__...
+The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__... _(oh yes another bikini brief)_
 
 ![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
 
