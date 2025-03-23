@@ -237,11 +237,12 @@ isb</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
-<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
+<p>TODO: We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways.</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
-<p>TODO</p>
-<p><em>Why Exception Level 1?</em></p>
-<p>TODO</p>
+<p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
+<p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
+<p>Our code <em>(NuttX Kernel)</em> runs at <a href="https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels"><strong>Exception Level 1</strong></a>. Later we’ll run NuttX Apps at <strong>Exception Level 0</strong>, which has Less Privilege.</p>
+<p>That’s how we protect NuttX Kernel from getting messed up by NuttX Apps.</p>
 <h1 id="page-table-entry"><a class="doc-anchor" href="#page-table-entry">§</a>3 Page Table Entry</h1>
 <p><em>In the Page Table Entries above: Why 741?</em></p>
 <p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>…</p>
