@@ -342,7 +342,7 @@ dsb SY ; isb
 
 _SCTLR_EL1 is for?_
 
-It's the [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits...
+The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__...
 
 - __Bit 0:__ M = 1 <br> _Enable MMU for Address Translation_
 
@@ -352,14 +352,184 @@ It's the [__System Control Register__](https://developer.arm.com/documentation/d
 
 We're ready to run MMU Demo!
 
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+
 TODO: Populate the RAM
 
 TODO
 
 ```rust
-// Omitted: TODO
+/// Unit Test for Arm64 MMU
+/// https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
+fn test_arm64_mmu() {
+    /*
+     * Not exact the binary, but aarch64-linux-gnu-as generate this code and
+     reference sometimes data after ttb0_base.
+     * // Read data from physical address
+     * ldr X0, =0x40000000
+     * ldr X1, [X0]
 
-// Omitted: Enable the MMU
+     * // Initialize translation table control registers
+     * ldr X0, =0x180803F20
+     * msr TCR_EL1, X0
+     * ldr X0, =0xFFFFFFFF
+     * msr MAIR_EL1, X0
+
+     * // Set translation table
+     * adr X0, ttb0_base
+     * msr TTBR0_EL1, X0
+
+     * // Enable caches and the MMU
+     * mrs X0, SCTLR_EL1
+     * orr X0, X0, #(0x1 << 2) // The C bit (data cache).
+     * orr X0, X0, #(0x1 << 12) // The I bit (instruction cache)
+     * orr X0, X0, #0x1 // The M bit (MMU).
+     * msr SCTLR_EL1, X0
+     * dsb SY
+     * isb
+
+     * // Read the same memory area through virtual address
+     * ldr X0, =0x80000000
+     * ldr X2, [X0]
+     *
+     * // Stop
+     * b .
+     */
+    let arm64_code = [
+        0x00, 0x81, 0x00, 0x58, 0x01, 0x00, 0x40, 0xf9, 0x00, 0x81, 0x00, 0x58, 0x40, 0x20, 0x18,
+        0xd5, 0x00, 0x81, 0x00, 0x58, 0x00, 0xa2, 0x18, 0xd5, 0x40, 0x7f, 0x00, 0x10, 0x00, 0x20,
+        0x18, 0xd5, 0x00, 0x10, 0x38, 0xd5, 0x00, 0x00, 0x7e, 0xb2, 0x00, 0x00, 0x74, 0xb2, 0x00,
+        0x00, 0x40, 0xb2, 0x00, 0x10, 0x18, 0xd5, 0x9f, 0x3f, 0x03, 0xd5, 0xdf, 0x3f, 0x03, 0xd5,
+        0xe0, 0x7f, 0x00, 0x58, 0x02, 0x00, 0x40, 0xf9, 0x00, 0x00, 0x00, 0x14, 0x1f, 0x20, 0x03,
+        0xd5, 0x1f, 0x20, 0x03, 0xd5, 0x1F, 0x20, 0x03, 0xD5, 0x1F, 0x20, 0x03, 0xD5,       
+    ];
+
+    // Init Emulator in Arm64 mode
+    // OK(uc_open(UC_ARCH_ARM64, UC_MODE_ARM, &uc));
+    let mut unicorn = Unicorn::new(
+        Arch::ARM64,
+        Mode::LITTLE_ENDIAN
+    ).expect("failed to init Unicorn");
+
+    // Magical horse mutates to bird
+    let emu = &mut unicorn;
+
+    // Enable MMU Translation
+    // OK(uc_ctl_tlb_mode(uc, UC_TLB_CPU));
+    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+
+    // Map Read/Write/Execute Memory at 0x0000 0000
+    // OK(uc_mem_map(uc, 0, 0x2000, UC_PROT_ALL));
+    emu.mem_map(
+        0,       // Address
+        0x2000,  // Size
+        Permission::ALL  // Read/Write/Execute Access
+    ).expect("failed to map memory");
+
+    // Write Arm64 Machine Code to emulated Executable Memory
+    // OK(uc_mem_write(uc, 0, code, sizeof(code) - 1));
+    const ADDRESS: u64 = 0;
+    emu.mem_write(
+        ADDRESS, 
+        &arm64_code
+    ).expect("failed to write instructions");
+
+    // generate tlb entries
+    let mut tlbe: [u8; 8] = [0; 8];
+    tlbe[0] = 0x41;
+    tlbe[1] = 0x07;
+    tlbe[2] = 0;
+    tlbe[3] = 0;
+    tlbe[4] = 0;
+    tlbe[5] = 0;
+    tlbe[6] = 0;
+    tlbe[7] = 0;
+    emu.mem_write(0x1000, &tlbe).unwrap();
+    log_tlbe(0x1000, &tlbe);
+
+    tlbe[3] = 0xa0;
+    emu.mem_write(0x1008, &tlbe).unwrap();
+    log_tlbe(0x1008, &tlbe);
+
+    tlbe[3] = 0x40;
+    emu.mem_write(0x1010, &tlbe).unwrap();
+    log_tlbe(0x1010, &tlbe);
+
+    tlbe[3] = 0x80;
+    emu.mem_write(0x1018, &tlbe).unwrap();
+    log_tlbe(0x1018, &tlbe);
+
+    // mentioned data referenced by the asm generated my aarch64-linux-gnu-as
+    tlbe[0] = 0x00;
+    tlbe[1] = 0x00;
+    tlbe[2] = 0x00;
+    tlbe[3] = 0x40;
+
+    // OK(uc_mem_write(uc, 0x1020, tlbe, sizeof(tlbe)));
+    emu.mem_write(0x1020, &tlbe).unwrap();
+    log_tlbe(0x1020, &tlbe);
+
+    tlbe[0] = 0x20;
+    tlbe[1] = 0x3f;
+    tlbe[2] = 0x80;
+    tlbe[3] = 0x80;
+    tlbe[4] = 0x1;
+
+    // OK(uc_mem_write(uc, 0x1028, tlbe, sizeof(tlbe)));
+    emu.mem_write(0x1028, &tlbe).unwrap();
+    log_tlbe(0x1028, &tlbe);
+
+    tlbe[0] = 0xff;
+    tlbe[1] = 0xff;
+    tlbe[2] = 0xff;
+    tlbe[3] = 0xff;
+    tlbe[4] = 0x00;
+
+    // OK(uc_mem_write(uc, 0x1030, tlbe, sizeof(tlbe)));
+    emu.mem_write(0x1030, &tlbe).unwrap();
+    log_tlbe(0x1030, &tlbe);
+
+    tlbe[0] = 0x00;
+    tlbe[1] = 0x00;
+    tlbe[2] = 0x00;
+    tlbe[3] = 0x80;
+
+    // OK(uc_mem_write(uc, 0x1038, tlbe, sizeof(tlbe)));
+    emu.mem_write(0x1038, &tlbe).unwrap();
+    log_tlbe(0x1038, &tlbe);
+
+    let mut data: [u8; 0x1000] = [0x44; 0x1000];
+    let mut data2: [u8; 0x1000] = [0x88; 0x1000];
+    let mut data3: [u8; 0x1000] = [0xcc; 0x1000];
+
+    // OK(uc_mem_map_ptr(uc, 0x40000000, 0x1000, UC_PROT_READ, data));
+    unsafe {
+        emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ, data.as_mut_ptr() as _)
+            .unwrap();
+        emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ, data2.as_mut_ptr() as _)
+            .unwrap();
+        emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ, data3.as_mut_ptr() as _)
+            .unwrap();
+    }
+
+    // OK(uc_emu_start(uc, 0, 0x44, 0, 0));
+    let err = emu.emu_start(0, 0x44, 0, 0);
+
+    // Print the Emulator Error
+    println!("\nerr={:?}", err);
+
+    // Read registers X0, X1, X2
+    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+    let x1 = emu.reg_read(RegisterARM64::X1).unwrap();
+    let x2 = emu.reg_read(RegisterARM64::X2).unwrap();
+    println!("x0=0x{x0:x}");
+    println!("x1=0x{x1:x}");
+    println!("x2=0x{x2:x}");
+
+    assert!(x0 == 0x80000000);
+    assert!(x1 == 0x4444444444444444);
+    assert!(x2 == 0x4444444444444444);
+}
 ```
 
 # NuttX crashes in Unicorn
