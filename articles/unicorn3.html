@@ -494,9 +494,45 @@ Bit 32</code></pre></div>
 <p><a href="TODO">(See the <strong>Unicorn Log</strong>)</a></p>
 <h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>7 NuttX crashes in Unicorn</h1>
 <p><em>What’s Unicorn got to do with NuttX?</em></p>
-<p>TODO: git clone ; make</p>
-<p>TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX…</p>
-<p>TODO Years Later: The bug stops here!</p>
+<p>Two Years Ago: We tried creating a <strong>PinePhone Emulator</strong> with Unicorn. But NuttX kept crashing while booting…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile NuttX for QEMU Arm64 (Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
+cd nuttx
+tools/configure.sh qemu-armv8a:knsh
+make -j
+
+## Dump the disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide --debugging \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+## NuttX boots OK on QEMU.
+## NSH Shell won&#39;t appear yet because we haven&#39;t compiled the NuttX Apps.
+qemu-system-aarch64 \
+  -semihosting \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=3 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+
+## But NuttX crashes in Unicorn Emulator
+cp nuttx.bin nuttx.S \
+  $HOME/pinephone-emulator/nuttx/
+cd $HOME/pinephone-emulator
+cargo run
+
+## err=Err(EXCEPTION)
+## PC=0x402805f0
+## call_graph:  setup_page_tables --&gt; ***_HALT_***
+## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
+<p>Two Years Later: The bug stops here!</p>
 <p>TODO: What’s the diff?</p>
 <p>TODO: Why are we doing this?</p>
 <p>TODO: Changes to NuttX</p>
