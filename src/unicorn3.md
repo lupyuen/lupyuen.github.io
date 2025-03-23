@@ -171,9 +171,9 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 
 [(And the __Unicorn Code__)](TODO)
 
-_What if we read from 0x4000_0000 AFTER enabling MMU?_
+_What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xA000_0000)_
 
-TODO: We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways.
+We'll see [_AA AA AA AA..._](TODO) because that's how we populated Physical Address _0xA000_0000_. Yep the MMU can remap memory in fun interesting ways.
 
 _Why map 0x0000_0000 to itself?_
 
@@ -201,7 +201,7 @@ We decode each __Page Table Entry__ based on [__VMSAv8-64 Block Descriptors__](T
 
 - __Bits 10-10:__ BLOCK_DESC_AF = 1 <br> _Allow this Virtual-to-Physical Mapping to be cached_
 
-- Which means each chunk of __Virtual-Physical Memory__ _(like 0x4000_0000)_ is a Memory Block that's accessible by Kernel and Apps.
+- Which means each chunk of __Virtual-Physical Memory__ _(like 0x4000_0000)_ is a Memory Block that's accessible by Kernel and Apps
 
 NuttX defines the whole list here: [arm64_mmu.h](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122)
 
