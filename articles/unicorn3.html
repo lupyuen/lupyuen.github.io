@@ -66,19 +66,20 @@
     <h1 class="title">Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#memory-management-unit" title="Memory Management Unit">1 Memory Management Unit</a><ul></ul></li>
-<li><a href="#map-virtual-address-to-physical-address" title="Map Virtual Address to Physical Address">2 Map Virtual Address to Physical Address</a><ul></ul></li>
-<li><a href="#translation-control-register" title="Translation Control Register">3 Translation Control Register</a><ul></ul></li>
-<li><a href="#enable-the-mmu" title="Enable the MMU">4 Enable the MMU</a><ul></ul></li>
-<li><a href="#populate-the-ram" title="Populate the RAM">5 Populate the RAM</a><ul></ul></li>
-<li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">6 NuttX crashes in Unicorn</a><ul></ul></li>
-<li><a href="#before-fixing-nuttx" title="Before Fixing NuttX">7 Before Fixing NuttX</a><ul></ul></li>
-<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">8 NuttX vs MMU Demo</a><ul></ul></li>
-<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">9 After Fixing NuttX</a><ul></ul></li>
-<li><a href="#boot-flow" title="Boot Flow">10 Boot Flow</a><ul></ul></li>
-<li><a href="#todo" title="TODO">11 TODO</a><ul></ul></li>
-<li><a href="#todo-1" title="TODO">12 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#level-1-page-table" title="Level 1 Page Table">2 Level 1 Page Table</a><ul></ul></li>
+<li><a href="#page-table-entry" title="Page Table Entry">3 Page Table Entry</a><ul></ul></li>
+<li><a href="#translation-control-register" title="Translation Control Register">4 Translation Control Register</a><ul></ul></li>
+<li><a href="#enable-the-mmu" title="Enable the MMU">5 Enable the MMU</a><ul></ul></li>
+<li><a href="#populate-the-ram" title="Populate the RAM">6 Populate the RAM</a><ul></ul></li>
+<li><a href="#nuttx-crashes-in-unicorn" title="NuttX crashes in Unicorn">7 NuttX crashes in Unicorn</a><ul></ul></li>
+<li><a href="#before-fixing-nuttx" title="Before Fixing NuttX">8 Before Fixing NuttX</a><ul></ul></li>
+<li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">9 NuttX vs MMU Demo</a><ul></ul></li>
+<li><a href="#after-fixing-nuttx" title="After Fixing NuttX">10 After Fixing NuttX</a><ul></ul></li>
+<li><a href="#boot-flow" title="Boot Flow">11 Boot Flow</a><ul></ul></li>
+<li><a href="#todo" title="TODO">12 TODO</a><ul></ul></li>
+<li><a href="#todo-1" title="TODO">13 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">15 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a> has a fascinating demo of <a href="TODO"><strong>Arm64 MMU</strong></a> <em>(Memory Management Unit)</em> … Only <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>This article deciphers the code inside <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a> compiled for Arm64 SBCs!</p>
@@ -196,7 +197,7 @@ isb</code></pre></div>
 </li>
 </ol>
 <p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable MMU”</em> are extremely cryptic. We break them down…</p>
-<h1 id="map-virtual-address-to-physical-address"><a class="doc-anchor" href="#map-virtual-address-to-physical-address">§</a>2 Map Virtual Address to Physical Address</h1>
+<h1 id="level-1-page-table"><a class="doc-anchor" href="#level-1-page-table">§</a>2 Level 1 Page Table</h1>
 <p><em>What’s this mystery code from above?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init the MMU Registers:
@@ -214,7 +215,7 @@ isb</code></pre></div>
 </span>msr TTBR0_EL1, X0  <span class="comment">// Write X0 into System Register TTBR0_EL1</span></code></pre></div>
 <p>This code will <strong>Map Virtual Address</strong> to Physical Address, so that <em>0x8000_0000</em> (virtually) becomes <em>0x4000_0000</em>. We’ll explain TCR and MAIR in the next section, but first…</p>
 <p><em>What’s TTBR0_EL1? Why set it to ttb0_base?</em></p>
-<p>That’s the <a href="TODO"><strong>Level 1 Page Table</strong></a> that describes to MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
+<p>That’s the <a href="TODO"><strong>Level 1 Page Table</strong></a> telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping this…</p>
 <div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td></tr>
 <tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td></tr>
@@ -224,35 +225,55 @@ isb</code></pre></div>
 </div>
 <p>Our <a href="TODO"><strong>Level 1 Page Table</strong></a> will be this…</p>
 <p>TODO: Pic of Level 1 Page Table</p>
+<p>Which we <strong>Store in RAM</strong> <em>(ttb0_base)</em> as…</p>
+<div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">Value</th><th style="text-align: left">Because</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0x1000</code></strong></td><td style="text-align: center"><code>0x0000_0741</code></td><td style="text-align: left"><em>Page Table Entry #0</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x1008</code></strong></td><td style="text-align: center"><code>0xA000_0741</code></td><td style="text-align: left"><em>Page Table Entry #1</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x1010</code></strong></td><td style="text-align: center"><code>0x4000_0741</code></td><td style="text-align: left"><em>Page Table Entry #2</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x1018</code></strong></td><td style="text-align: center"><code>0x8000_0741</code></td><td style="text-align: left"><em>Page Table Entry #3</em></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-">(<strong>TTBR0_EL1</strong> is <em>“Translation Table Base Register 0 for Exception Level 1”</em>)</a></p>
-<p><em>Why 741?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>Bit 00-01: PTE_BLOCK_DESC=1
-Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
-Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-Bit 10:    PTE_BLOCK_DESC_AF=1</code></pre></div>
+<h1 id="page-table-entry"><a class="doc-anchor" href="#page-table-entry">§</a>3 Page Table Entry</h1>
+<p><em>In the Page Table Entries above: Why 741?</em></p>
+<p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-block.png" alt="TODO" /></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
+<ul>
+<li>
+<p><strong>Bits 00-01:</strong> BLOCK_DESC = 1 <br> <em>This Page Table Entry describes a Block, not a Page</em></p>
+</li>
+<li>
+<p><strong>Bits 06-07:</strong> BLOCK_DESC_AP_USER = 1 <br> <em>This Block is Read-Writeable by Kernel, Read-Writeable by Apps</em></p>
+</li>
+<li>
+<p><strong>Bits 08-09:</strong> BLOCK_DESC_INNER_SHARE = 3 <br> <em>This Block is Inner Shareable (see below)</em></p>
+</li>
+<li>
+<p><strong>Bits 10-10:</strong> BLOCK_DESC_AF = 1 <br> <em>Allow this Virtual-to-Physical Mapping to be cached</em></p>
+</li>
+</ul>
+<p>NuttX defines the whole list here: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.h#L95-L122">arm64_mmu.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PTE descriptor can be Block descriptor or Table descriptor or Page descriptor
 #define PTE_BLOCK_DESC              1U
 #define PTE_TABLE_DESC              3U
 
 // Block and Page descriptor attributes fields
 #define PTE_BLOCK_DESC_MEMTYPE(x)   ((x) &lt;&lt; 2)
-#define PTE_BLOCK_DESC_NS           (1ULL &lt;&lt; 5) /* Non-secure */
-#define PTE_BLOCK_DESC_AP_USER      (1ULL &lt;&lt; 6) /* User */
-#define PTE_BLOCK_DESC_AP_RO        (1ULL &lt;&lt; 7) /* Read-only */
-#define PTE_BLOCK_DESC_AP_RW        (0ULL &lt;&lt; 7) /* Read-write */
+#define PTE_BLOCK_DESC_NS           (1ULL &lt;&lt; 5) // Non-Secure
+#define PTE_BLOCK_DESC_AP_USER      (1ULL &lt;&lt; 6) // User Read-Write
+#define PTE_BLOCK_DESC_AP_RO        (1ULL &lt;&lt; 7) // Kernel Read-Only
+#define PTE_BLOCK_DESC_AP_RW        (0ULL &lt;&lt; 7) // Kernel Read-Write
 #define PTE_BLOCK_DESC_AP_MASK      (3ULL &lt;&lt; 6)
 #define PTE_BLOCK_DESC_NON_SHARE    (0ULL &lt;&lt; 8)
 #define PTE_BLOCK_DESC_OUTER_SHARE  (2ULL &lt;&lt; 8)
 #define PTE_BLOCK_DESC_INNER_SHARE  (3ULL &lt;&lt; 8)
-#define PTE_BLOCK_DESC_AF           (1ULL &lt;&lt; 10) /* A-flag */
-#define PTE_BLOCK_DESC_NG           (1ULL &lt;&lt; 11) /* Non-global */
-#define PTE_BLOCK_DESC_DIRTY        (1ULL &lt;&lt; 51) /* D-flag */
-#define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) /* Kernel execute never */
-#define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) /* User execute never */</code></pre></div>
+#define PTE_BLOCK_DESC_AF           (1ULL &lt;&lt; 10) // A Flag
+#define PTE_BLOCK_DESC_NG           (1ULL &lt;&lt; 11) // Non-Global
+#define PTE_BLOCK_DESC_DIRTY        (1ULL &lt;&lt; 51) // D Flag
+#define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) // Kernel Execute Never
+#define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) // User Execute Never</code></pre></div>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU?</em></p>
 <p>We’ll see <a href="TODO"><em>0xAA AA AA AA…</em></a>. Yep the MMU can remap memory in fun interesting ways!</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
@@ -279,7 +300,7 @@ RBTTHB A translation table walk is the set of translation table lookups that are
 — For a stage 1 translation, translate a VA to an IPA.
 — For a stage 2 translation, translate an IPA to a PA for each of the stage 1 translation table lookups.
 — For a stage 2 translation, translate an IPA to a PA for the stage 1 OA.</code></pre></div>
-<p>TODO: stage 1 vs stage 2</p>
+<p><em>Why are we doing Stage 1? Not Stage 2?</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="TODO" /></p>
 <p>TODO: PTE_BLOCK_DESC_AP_USER=1</p>
 <div class="example-wrap"><pre class="language-text"><code>[7] AP[2] Stage 1 Indirect permissions are disabled.
@@ -302,7 +323,7 @@ RPSZJJ</code></pre></div>
 <p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-access.png" alt="TODO" /></p>
-<h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>3 Translation Control Register</h1>
+<h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>4 Translation Control Register</h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Initialize translation table control registers
 </span>ldr X0, =<span class="number">0x180803F20
 </span>msr TCR_EL1, X0
@@ -358,7 +379,7 @@ Bit 32</code></pre></div>
 </span>ldr X0, =<span class="number">0xFFFFFFFF
 </span>msr MAIR_EL1, X0</code></pre></div>
 <p>Hmmm it looks fake? Unicorn Emulator probably ignores the bits. We’ll see a Real MAIR in a while.</p>
-<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>4 Enable the MMU</h1>
+<h1 id="enable-the-mmu"><a class="doc-anchor" href="#enable-the-mmu">§</a>5 Enable the MMU</h1>
 <p>TODO</p>
 <p><a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">SCTLR_EL1, System Control Register (EL1)</a></p>
 
@@ -389,13 +410,13 @@ isb</code></pre></div>
 </ul>
 <p><em>What’s this EL1?</em></p>
 <p>EL0 then EL1. Show log</p>
-<h1 id="populate-the-ram"><a class="doc-anchor" href="#populate-the-ram">§</a>5 Populate the RAM</h1>
+<h1 id="populate-the-ram"><a class="doc-anchor" href="#populate-the-ram">§</a>6 Populate the RAM</h1>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Omitted: TODO
 
 // Omitted: Enable the MMU</span></code></pre></div>
-<h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>6 NuttX crashes in Unicorn</h1>
+<h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>7 NuttX crashes in Unicorn</h1>
 <p><em>What’s Unicorn got to do with NuttX?</em></p>
 <p>TODO Years Ago: We tried creating a PinePhone Emulator with Unicorn. But it kept crashing while booting NuttX…</p>
 <p>TODO Years Later: The bug stops here!</p>
@@ -475,7 +496,7 @@ static void enable_mmu_el1(unsigned int flags) {
   Virtual Address: 0x5027_ffff (Why?)
   Target Exception Level: 1</code></pre></div>
 <p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
-<h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>7 Before Fixing NuttX</h1>
+<h1 id="before-fixing-nuttx"><a class="doc-anchor" href="#before-fixing-nuttx">§</a>8 Before Fixing NuttX</h1>
 <p><em>How different is NuttX from MMU Demo?</em></p>
 <p>Before Fix: CONFIG_ARM64_VA_BITS=36</p>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/qemu/qemu_boot.c#L59-L89">qemu_boot.c</a></p>
@@ -632,7 +653,7 @@ Bit 12
 Bit 13
 Bit 23
 Bit 31
-Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>8 NuttX vs MMU Demo</h1>
+Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>9 NuttX vs MMU Demo</h1>
 <ul>
 <li><strong>Bits 00-05:</strong> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></li>
 </ul>
@@ -656,7 +677,7 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <ul>
 <li><strong>Bits 10-11:</strong> ORGN0_WBNWA = 3 <br> <em>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable</em></li>
 </ul>
-<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>9 After Fixing NuttX</h1>
+<h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>10 After Fixing NuttX</h1>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
 <p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
 <p>boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig</p>
@@ -693,9 +714,9 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Maybe Unicorn doesn’t support 36 bits</p>
 <p>Or maybe NuttX didn’t populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)</p>
 <p>Needs more investigation. But at least NuttX boots OK on Unicorn!</p>
-<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>10 Boot Flow</h1>
+<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>11 Boot Flow</h1>
 <p>TODO</p>
-<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>11 TODO</h1>
+<h1 id="todo"><a class="doc-anchor" href="#todo">§</a>12 TODO</h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read data from physical address
 </span>ldr X0, =<span class="number">0x40000000
 </span>ldr X1, [X0]
@@ -722,7 +743,7 @@ isb
 <span class="comment">// Read the same memory area through virtual address
 </span>ldr X0, =<span class="number">0x80000000
 </span>ldr X2, [X0]</code></pre></div>
-<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>12 TODO</h1><div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
+<h1 id="todo-1"><a class="doc-anchor" href="#todo-1">§</a>13 TODO</h1><div class="example-wrap"><pre class="language-bash"><code>## Level 1 Page Table with 4 Page Table Entries
 ## Entry #0
 Page Table Entry @ 0x1000:
   0x0000_0741
@@ -1270,7 +1291,7 @@ hook_block:  address=0x402818c0, size=08, gic_validate_redist_version, arch/arm6
 call_graph:  tasklist_initialize --&gt; gic_validate_redist_version
 call_graph:  click tasklist_initialize href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L313&quot; &quot;sched/init/nx_start.c &quot; _blank
 hook_block:  address=0x40281514, size=32, arm64_syscall, arch/arm64/src/common/arm64_syscall.c:299:32
-call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
+call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
@@ -1300,7 +1321,7 @@ call_graph:  gic_validate_redist_version --&gt; arm64_syscall</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
-<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
+<h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>15 Appendix: Simplified NuttX for QEMU</h1>
 <p>TODO: Simpler for debugging</p>
 <p>(Could one of these changes, contribute to Unicorn Non-Crashing? It’s possible)</p>
 <p>Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.</p>
