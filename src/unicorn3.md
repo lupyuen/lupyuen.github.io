@@ -50,16 +50,16 @@ _Ah so MMU will allow this switcheroo business? (Pic above)_
 
 1.  Read from __Virtual Address__ _0x8000_0000_
 
-1.  Both reads produce __the same value__!
+1.  Both reads produce __the same value__
 
-Indeed! Our [__MMU Demo__](TODO) above does precisely that...
+Indeed! That's precisely what our [__MMU Demo__](TODO) above shall do...
 
 1.  Read from __Physical Address__ _0x4000_0000_
 
-    ```c
+    ```rust
     // Read data from physical address
     // Into Register X1
-    ldr X0, =0x40000000
+    ldr X0, =0x4000_0000
     ldr X1, [X0]
     ```
 
@@ -67,14 +67,14 @@ Indeed! Our [__MMU Demo__](TODO) above does precisely that...
 
     _0x8000_0000_ becomes _0x4000_0000_
 
-    ```c
-    // Initialize translation table control registers
-    ldr X0, =0x180803F20
+    ```rust
+    // Init the MMU Registers
+    ldr X0, =0x1_8080_3F20
     msr TCR_EL1, X0
-    ldr X0, =0xFFFFFFFF
+    ldr X0, =0xFFFF_FFFF
     msr MAIR_EL1, X0
 
-    // Set translation table
+    // Set the MMU Page Table
     adr X0, ttb0_base
     msr TTBR0_EL1, X0
     ```
@@ -83,7 +83,7 @@ Indeed! Our [__MMU Demo__](TODO) above does precisely that...
 
 1.  __Enable the MMU__
 
-    ```c
+    ```rust
     // Enable caches and the MMU
     mrs X0, SCTLR_EL1
     orr X0, X0, #0x1         // M bit (MMU)
@@ -98,10 +98,10 @@ Indeed! Our [__MMU Demo__](TODO) above does precisely that...
 
 1.  Read from __Virtual Address__ _0x8000_0000_
 
-    ```c
+    ```rust
     // Read the same memory area through virtual address
     // Into Regiser X2
-    ldr X0, =0x80000000
+    ldr X0, =0x8000_0000
     ldr X2, [X0]
     ```
 
@@ -119,29 +119,46 @@ Yeah the steps for _"Map Virtual Address"_ and _"Enable MMU"_ are extremely cryp
 
 # Map Virtual Address to Physical Address
 
-TODO
+_What's this mystery code?_
 
-__Map Virtual Address__ to Physical Address:
+```rust
+// Init the MMU Registers:
+// TCR_EL1 becomes 0x1_8080_3F20
+ldr X0, =0x1_8080_3F20  // Load 0x1_8080_3F20 into Register X0
+msr TCR_EL1, X0         // Write X0 into System Register TCR_EL1
 
-_0x8000_0000_ becomes to _0x4000_0000_
+// MAIR_EL1 becomes 0xFFFF_FFFF
+ldr X0, =0xFFFF_FFFF  // Load 0xFFFF_FFFF into Register X0
+msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 
-```c
-// Initialize translation table control registers
-ldr X0, =0x180803F20
-msr TCR_EL1, X0
-ldr X0, =0xFFFFFFFF
-msr MAIR_EL1, X0
-
-// Set translation table
-adr X0, ttb0_base
-msr TTBR0_EL1, X0
+// Set the MMU Page Table:
+// TTBR0_EL1 becomes ttb0_base
+adr X0, ttb0_base  // Load ttb0_base into Register X0
+msr TTBR0_EL1, X0  // Write X0 into System Register TTBR0_EL1
 ```
 
-TODO
+This code will __Map Virtual Address__ to Physical Address, so that _0x8000_0000_ (virtually) becomes _0x4000_0000_. We'll explain TCR and MAIR in the next section, but first...
 
-_What's ttb0_base?_
+_What's TTBR0_EL1? Why set it to ttb0_base?_
 
-That's the [__Level 1 Page Table__](TODO)
+That's the [__Level 1 Page Table__](TODO) that describes to MMU our __Virtual-to-Physical Mapping__. Suppose we're mapping this...
+
+| Virtual Address | Physical Address |
+|:---------------:|:-----------------:
+| __`0x0000_0000`__ | `0x0000_0000`
+| __`0x4000_0000`__ | `0xA000_0000`
+| __`0x8000_0000`__ | `0x4000_0000`
+| __`0xC000_0000`__ | `0x8000_0000`
+
+Our [__Level 1 Page Table__](TODO) will be this...
+
+TODO: Pic of Level 1 Page Table
+
+[(See the __Unicorn Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
+
+[(And the __Unicorn Code__)](TODO)
+
+[(__TTBR0_EL1__ is _"Translation Table Base Register 0 for Exception Level 1"_)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-)
 
 ```bash
 ## Level 1 Page Table with 4 Page Table Entries
@@ -184,7 +201,6 @@ Data @ 0x1030: 0xFFFF_FFFF
 Data @ 0x1038: 0x8000_0000
 ```
 
-[(See the __Complete Log__)](https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0)
 
 ![TODO](https://lupyuen.org/images/unicorn3-table.png)
 
@@ -223,18 +239,13 @@ Bit 10:    PTE_BLOCK_DESC_AF=1
 #define PTE_BLOCK_DESC_UXN          (1ULL << 54) /* User execute never */
 ```
 
-TODO: Pic of Level 1 Page Table
-
-| Virtual Address | Physical Address |
-|:---------------:|:-----------------:
-| __`0x0000_0000`__ | `0x0000_0000`
-| __`0x4000_0000`__ | `0xA000_0000`
-| __`0x8000_0000`__ | `0x4000_0000`
-| __`0xC000_0000`__ | `0x8000_0000`
-
 _What if we read from 0x4000_0000 AFTER enabling MMU?_
 
 We'll see [_0xAA AA AA AA..._](TODO). Yep the MMU can remap memory in fun interesting ways!
+
+_Why map 0x0000_0000 to itself?_
+
+TODO
 
 _Why Inner vs Outer Shareable? Something about "Severance"?_
 
@@ -301,7 +312,7 @@ RPSZJJ
 
 # Translation Control Register
 
-```c
+```rust
 // Initialize translation table control registers
 ldr X0, =0x180803F20
 msr TCR_EL1, X0
@@ -352,7 +363,7 @@ Bit 32
 
 _What about MAIR?_
 
-```c
+```rust
 // TODO
 ldr X0, =0xFFFFFFFF
 msr MAIR_EL1, X0
@@ -366,7 +377,7 @@ TODO
 
 [SCTLR_EL1, System Control Register (EL1)](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
 
-```c
+```rust
 // Read SCTLR_EL1 into Register X0
 mrs X0, SCTLR_EL1
 
@@ -397,7 +408,7 @@ EL0 then EL1. Show log
 
 TODO
 
-```c
+```rust
 // Omitted: TODO
 
 // Omitted: Enable the MMU
@@ -773,7 +784,7 @@ TODO
 
 # TODO
 
-```c
+```rust
 // Read data from physical address
 ldr X0, =0x40000000
 ldr X1, [X0]
