@@ -767,7 +767,7 @@ Bit 13
 Bit 23
 Bit 31
 Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
-<p><em>MMU Demo works OK, but not NuttX. How are they different?</em></p>
+<p><em>MMU Demo works OK, but NuttX doesn’t. How are they different?</em></p>
 <p>Based on the info above, we compare <strong>NuttX vs MMU Demo</strong> for the Translation Control Register…</p>
 <div><table><thead><tr><th style="text-align: left">NuttX</th><th style="text-align: left">MMU Demo</th></tr></thead><tbody>
 <tr><td style="text-align: left">T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></td><td style="text-align: left">T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></td></tr>
@@ -776,7 +776,16 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <tr><td style="text-align: left">Won’t Boot On Unicorn</td><td style="text-align: left">Works OK On Unicorn</td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
+<p>Ah we see a major discrepancy…</p>
+<ul>
+<li>
+<p><strong>Virtual Address:</strong> NuttX uses <strong>36 bits</strong>, MMU Demo uses <strong>32 bits</strong></p>
+</li>
+<li>
+<p><strong>Inner / Outer Caching?</strong> Probably won’t matter for our Unicorn Emulator</p>
+</li>
+</ul>
+<p>We fix the Virtual Addresses…</p>
 <h1 id="after-fixing-nuttx"><a class="doc-anchor" href="#after-fixing-nuttx">§</a>11 After Fixing NuttX</h1>
 <p>Change 36 bits of Virtual Address Space to 32 bits:</p>
 <p><a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">CONFIG_ARM64_VA_BITS=32</a></p>
