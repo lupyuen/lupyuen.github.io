@@ -380,7 +380,7 @@ Bit 32</code></pre></div>
 <span class="comment">// Flush the Data Cache and Instruction Cache
 </span>dsb SY ; isb</code></pre></div>
 <p><em>SCTLR_EL1 is for?</em></p>
-<p>The <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register</strong></a> for Exception Level 1. We set these bits to <strong>Enable the MMU with Caching</strong>… <em>(oh yes another bikini brief)</em></p>
+<p>The <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register</strong></a> for Exception Level 1. We set these bits to <strong>Enable the MMU with Caching</strong>…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="TODO" /></p>
 <ul>
 <li>
@@ -391,6 +391,7 @@ Bit 32</code></pre></div>
 </li>
 <li>
 <p><strong>Bit 12:</strong> I = 1 <br> <em>Enable the Instruction Cache</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123">(NuttX defines them in <strong>arm64_arch.h</strong>)</a></p>
 </li>
 </ul>
 <p>We’re ready to run MMU Demo!</p>
@@ -570,6 +571,7 @@ static void enable_mmu_el1(unsigned int flags) {
 
   // Oops! Unicorn Emulator fails with an Arm64 Exception
   // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123">(NuttX defines SCTLR_EL1 in <strong>arm64_arch.h</strong>)</a></p>
 <p>Which is mighty similar to the <a href="TODO"><strong>MMU Demo</strong></a> we saw earlier…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MMU Demo Works OK:
@@ -705,7 +707,10 @@ enable_mmu_el1: tcr_el1=0x18080351c
 enable_mmu_el1: mair_el1=0xff440c0400
 enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
 <p>Looks legit, we move on…</p>
-<h1 id="translation-control-register-for-nuttx"><a class="doc-anchor" href="#translation-control-register-for-nuttx">§</a>9 Translation Control Register for NuttX</h1><div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
+<h1 id="translation-control-register-for-nuttx"><a class="doc-anchor" href="#translation-control-register-for-nuttx">§</a>9 Translation Control Register for NuttX</h1>
+<p><em>What about the Translation Control Register?</em></p>
+<p>We check the <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>, with <a href="TODO"><strong>MMU Logging Enabled</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>get_tcr: va_bits: 0x24
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
 get_tcr: Bit 00-05: TCR_T0SZ=0x1c
@@ -716,10 +721,10 @@ get_tcr: Bit 14-15: TCR_TG0_4K=0
 get_tcr: Bit 30-31: TCR_TG1_4K=2
 get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
 
-enable_mmu_el1: tcr_el1=0x18080351c
-enable_mmu_el1: mair_el1=0xff440c0400
-enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
-<p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>…</p>
+enable_mmu_el1: tcr_el1   = 0x1_8080_351C
+enable_mmu_el1: mair_el1  = 0xFF_440C_0400
+enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
+<p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_351C</em> decodes as…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="TODO" /></p>
 <ul>
 <li>
@@ -745,10 +750,11 @@ enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
 </li>
 <li>
 <p><strong>Bits 32-34:</strong> EL1_IPS = 1 <br> <em>36 bits, 64 GB of Physical Address Space</em></p>
-<p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
-<p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
 </ul>
+<p>Hmmm something looks different…</p>
+<p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
+<p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 <div class="example-wrap"><pre class="language-text"><code>a=0x18080351Cn
 for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }
 Bit 2
@@ -761,6 +767,8 @@ Bit 13
 Bit 23
 Bit 31
 Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
+<p><em>MMU Demo works OK, but not NuttX. How are they different?</em></p>
+<p>TODO</p>
 <ul>
 <li><strong>Bits 00-05:</strong> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></li>
 </ul>
