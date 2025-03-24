@@ -771,8 +771,8 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <p>Based on the info above, we compare <strong>NuttX vs MMU Demo</strong> for the Translation Control Register…</p>
 <div><table><thead><tr><th style="text-align: left">NuttX</th><th style="text-align: left">MMU Demo</th></tr></thead><tbody>
 <tr><td style="text-align: left">T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></td><td style="text-align: left">T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></td></tr>
-<tr><td style="text-align: left">IRGN0_WBWA = 1 <br> <em>Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable</em></td><td style="text-align: left">IRGN0_WBNWA = 3 <br> <em>Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable</em></td></tr>
-<tr><td style="text-align: left">ORGN0_WBWA = 1 <br> <em>Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable</em></td><td style="text-align: left">ORGN0_WBNWA = 3 <br> <em>Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable</em></td></tr>
+<tr><td style="text-align: left">IRGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Inner)</em></td><td style="text-align: left">IRGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Inner)</em></td></tr>
+<tr><td style="text-align: left">ORGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Outer)</em></td><td style="text-align: left">ORGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Outer)</em></td></tr>
 <tr><td style="text-align: left">Won’t Boot On Unicorn</td><td style="text-align: left">Works OK On Unicorn</td></tr>
 </tbody></table>
 </div>
