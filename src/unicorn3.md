@@ -794,7 +794,7 @@ Bit 32
 
 # NuttX vs MMU Demo
 
-_MMU Demo works OK, but not NuttX. How are they different?_
+_MMU Demo works OK, but NuttX doesn't. How are they different?_
 
 Based on the info above, we compare __NuttX vs MMU Demo__ for the Translation Control Register...
 
@@ -805,7 +805,13 @@ Based on the info above, we compare __NuttX vs MMU Demo__ for the Translation Co
 | ORGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Outer)_ | ORGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Outer)_
 | Won't Boot On Unicorn | Works OK On Unicorn
 
-TODO
+Ah we see a major discrepancy...
+
+- __Virtual Address:__ NuttX uses __36 bits__, MMU Demo uses __32 bits__
+
+- __Inner / Outer Caching?__ Probably won't matter for our Unicorn Emulator
+
+We fix the Virtual Addresses...
 
 # After Fixing NuttX
 
