@@ -801,8 +801,8 @@ Based on the info above, we compare __NuttX vs MMU Demo__ for the Translation Co
 | NuttX | MMU Demo |
 |:------|:---------|
 | T0SZ = 0x1C <br> _36 bits of Virtual Address Space_ | T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
-| IRGN0_WBWA = 1 <br> _Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable_ | IRGN0_WBNWA = 3 <br> _Normal memory, Inner Write-Back Read-Allocate No Write-Allocate Cacheable_
-| ORGN0_WBWA = 1 <br> _Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable_ | ORGN0_WBNWA = 3 <br> _Normal memory, Outer Write-Back Read-Allocate No Write-Allocate Cacheable_
+| IRGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Inner)_ | IRGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Inner)_
+| ORGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Outer)_ | ORGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Outer)_
 | Won't Boot On Unicorn | Works OK On Unicorn
 
 TODO
