@@ -270,7 +270,7 @@ msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 
 _What's TCR_EL1? Why set it to 0x1_8080_3F20?_
 
-That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1. According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1_8080_3F20_ decodes as...
+That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1. According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1\_8080\_3F20_ decodes as...
 
 ![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
@@ -343,7 +343,7 @@ dsb SY ; isb
 
 _SCTLR_EL1 is for?_
 
-The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__... _(oh yes another bikini brief)_
+The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__...
 
 ![TODO](https://lupyuen.org/images/unicorn3-sctlr.png)
 
@@ -352,6 +352,8 @@ The [__System Control Register__](https://developer.arm.com/documentation/ddi060
 - __Bit 2:__ C = 1 <br> _Enable the Data Cache_
 
 - __Bit 12:__ I = 1 <br> _Enable the Instruction Cache_
+
+  [(NuttX defines them in __arm64_arch.h__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123)
 
 We're ready to run MMU Demo!
 
@@ -561,6 +563,8 @@ static void enable_mmu_el1(unsigned int flags) {
   // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
 
+[(NuttX defines SCTLR_EL1 in __arm64_arch.h__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123)
+
 Which is mighty similar to the [__MMU Demo__](TODO) we saw earlier...
 
 ```rust
@@ -726,6 +730,10 @@ Looks legit, we move on...
 
 # Translation Control Register for NuttX
 
+_What about the Translation Control Register?_
+
+We check the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884), with [__MMU Logging Enabled__](TODO)...
+
 ```bash
 get_tcr: va_bits: 0x24
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
@@ -738,12 +746,12 @@ get_tcr: Bit 14-15: TCR_TG0_4K=0
 get_tcr: Bit 30-31: TCR_TG1_4K=2
 get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
 
-enable_mmu_el1: tcr_el1=0x18080351c
-enable_mmu_el1: mair_el1=0xff440c0400
-enable_mmu_el1: ttbr0_el1=0x402b2000
+enable_mmu_el1: tcr_el1   = 0x1_8080_351C
+enable_mmu_el1: mair_el1  = 0xFF_440C_0400
+enable_mmu_el1: ttbr0_el1 = 0x402B_2000
 ```
 
-According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-)...
+According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1\_8080\_351C_ decodes as...
 
 ![TODO](https://lupyuen.org/images/unicorn3-tcr.png)
 
@@ -763,9 +771,11 @@ According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2
 
 - __Bits 32-34:__ EL1_IPS = 1 <br> _36 bits, 64 GB of Physical Address Space_
 
-  [_(We spoke about Innies and Outies earlier)_](TODO)
+Hmmm something looks different...
 
-  [_(Decoding the Bits with JavaScript)_](TODO)
+[_(We spoke about Innies and Outies earlier)_](TODO)
+
+[_(Decoding the Bits with JavaScript)_](TODO)
 
 ```text
 a=0x18080351Cn
@@ -783,6 +793,10 @@ Bit 32
 ```
 
 # NuttX vs MMU Demo
+
+_MMU Demo works OK, but not NuttX. How are they different?_
+
+TODO
 
 - __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
 
