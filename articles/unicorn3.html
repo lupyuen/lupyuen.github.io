@@ -393,107 +393,103 @@ Bit 32</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123">(NuttX defines them in <strong>arm64_arch.h</strong>)</a></p>
 </li>
 </ul>
-<p>We’re ready to run MMU Demo!</p>
+<p>We’re ready to run the demo…</p>
 <h1 id="run-the-mmu-demo"><a class="doc-anchor" href="#run-the-mmu-demo">§</a>6 Run the MMU Demo</h1>
 <p>This is how we run the MMU Demo in <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Run the Arm64 MMU Demo, based on
-/// https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
-</span><span class="kw">fn </span>test_arm64_mmu() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for our MMU Demo, based on https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
+// Disassembly: https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L556-L583
+</span><span class="kw">let </span>arm64_code = [
+  <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x01</span>, <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xf9</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x40</span>, <span class="number">0x20</span>, <span class="number">0x18</span>,
+  <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x00</span>, <span class="number">0xa2</span>, <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x40</span>, <span class="number">0x7f</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x00</span>, <span class="number">0x20</span>,
+  <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x38</span>, <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x7e</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x74</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>,
+  <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x9f</span>, <span class="number">0x3f</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>, <span class="number">0xdf</span>, <span class="number">0x3f</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>,
+  <span class="number">0xe0</span>, <span class="number">0x7f</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x02</span>, <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xf9</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x14</span>, <span class="number">0x1f</span>, <span class="number">0x20</span>, <span class="number">0x03</span>,
+  <span class="number">0xd5</span>, <span class="number">0x1f</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>,       
+];
 
-  <span class="comment">// Arm64 Machine Code for our MMU Demo.
-  // Disassembly: https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L556-L583
-  </span><span class="kw">let </span>arm64_code = [
-    <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x01</span>, <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xf9</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x40</span>, <span class="number">0x20</span>, <span class="number">0x18</span>,
-    <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x00</span>, <span class="number">0xa2</span>, <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x40</span>, <span class="number">0x7f</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x00</span>, <span class="number">0x20</span>,
-    <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x38</span>, <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x7e</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x74</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>,
-    <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xb2</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x9f</span>, <span class="number">0x3f</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>, <span class="number">0xdf</span>, <span class="number">0x3f</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>,
-    <span class="number">0xe0</span>, <span class="number">0x7f</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x02</span>, <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xf9</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x14</span>, <span class="number">0x1f</span>, <span class="number">0x20</span>, <span class="number">0x03</span>,
-    <span class="number">0xd5</span>, <span class="number">0x1f</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>,       
-  ];
+<span class="comment">// Init Emulator in Arm64 mode
+</span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
+  Arch::ARM64,
+  Mode::LITTLE_ENDIAN
+).expect(<span class="string">"failed to init Unicorn"</span>);
 
-  <span class="comment">// Init Emulator in Arm64 mode
-  </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
-    Arch::ARM64,
-    Mode::LITTLE_ENDIAN
-  ).expect(<span class="string">"failed to init Unicorn"</span>);
+<span class="comment">// Enable MMU Translation
+</span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
+emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
 
-  <span class="comment">// Enable MMU Translation
-  </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
-  emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+<span class="comment">// Map Read/Write/Execute Memory at 0x0000 0000
+</span>emu.mem_map(
+  <span class="number">0</span>,       <span class="comment">// Address
+  </span><span class="number">0x2000</span>,  <span class="comment">// Size
+  </span>Permission::ALL  <span class="comment">// Read/Write/Execute Access
+</span>).expect(<span class="string">"failed to map memory"</span>);
 
-  <span class="comment">// Map Read/Write/Execute Memory at 0x0000 0000
-  </span>emu.mem_map(
-    <span class="number">0</span>,       <span class="comment">// Address
-    </span><span class="number">0x2000</span>,  <span class="comment">// Size
-    </span>Permission::ALL  <span class="comment">// Read/Write/Execute Access
-  </span>).expect(<span class="string">"failed to map memory"</span>);
-
-  <span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
-  </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0</span>;
-  emu.mem_write(
-    ADDRESS, 
-    <span class="kw-2">&amp;</span>arm64_code
-  ).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
+<span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
+</span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0</span>;
+emu.mem_write(
+  ADDRESS, 
+  <span class="kw-2">&amp;</span>arm64_code
+).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
 <p>We populate the <a href="TODO"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Generate the Page Table Entries...
-  // Page Table Entry @ 0x1000: 0x0000_0741
-  // Physical Address: 0x0000_0000
-  // Bit 00-01: PTE_BLOCK_DESC=1
-  // Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
-  // Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-  // Bit 10:    PTE_BLOCK_DESC_AF=1  
-  </span><span class="kw">let </span><span class="kw-2">mut </span>tlbe: [u8; <span class="number">8</span>] = [<span class="number">0</span>; <span class="number">8</span>];
-  tlbe[<span class="number">0</span>..<span class="number">2</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x41</span>, <span class="number">0x07</span>]);
-  emu.mem_write(<span class="number">0x1000</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Generate the Page Table Entries...
+// Page Table Entry @ 0x1000: 0x0000_0741
+// Physical Address: 0x0000_0000
+// Bit 00-01: PTE_BLOCK_DESC=1
+// Bit 06-07: PTE_BLOCK_DESC_AP_USER=1
+// Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
+// Bit 10:    PTE_BLOCK_DESC_AF=1  
+</span><span class="kw">let </span><span class="kw-2">mut </span>tlbe: [u8; <span class="number">8</span>] = [<span class="number">0</span>; <span class="number">8</span>];
+tlbe[<span class="number">0</span>..<span class="number">2</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x41</span>, <span class="number">0x07</span>]);
+emu.mem_write(<span class="number">0x1000</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
 
-  <span class="comment">// Page Table Entry @ 0x1008: 0xA000_0741
-  // Page Table Entry @ 0x1010: 0x4000_0741
-  // Page Table Entry @ 0x1018: 0x8000_0741
+<span class="comment">// Page Table Entry @ 0x1008: 0xA000_0741
+// Page Table Entry @ 0x1010: 0x4000_0741
+// Page Table Entry @ 0x1018: 0x8000_0741
+</span>...
 
-  // Not the Page Table, but
-  // Data Referenced by our Assembly Code:
-  // Data @ 0x1020: 0x4000_0000
-  </span>tlbe[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x40</span>]);
-  emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
+<span class="comment">// Not the Page Table, but
+// Data Referenced by our Assembly Code:
+// Data @ 0x1020: 0x4000_0000
+</span>tlbe[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x40</span>]);
+emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
 
-  <span class="comment">// Data @ 0x1028: 0x1_8080_3F20
-  // Data @ 0x1030: 0xFFFF_FFFF
-  // Data @ 0x1038: 0x8000_0000
-  </span>...</code></pre></div>
+<span class="comment">// Data @ 0x1028: 0x1_8080_3F20
+// Data @ 0x1030: 0xFFFF_FFFF
+// Data @ 0x1038: 0x8000_0000
+</span>...</code></pre></div>
 <p>To Verify MMU Demo: We <strong>Fill the Physical Memory</strong> with <em>0x44</em> then <em>0x88</em> then <em>0xCC</em>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
-  </span><span class="kw">let </span><span class="kw-2">mut </span>data:  [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
-  <span class="kw">let </span><span class="kw-2">mut </span>data2: [u8; <span class="number">0x1000</span>] = [<span class="number">0x88</span>; <span class="number">0x1000</span>];
-  <span class="kw">let </span><span class="kw-2">mut </span>data3: [u8; <span class="number">0x1000</span>] = [<span class="number">0xcc</span>; <span class="number">0x1000</span>];
-  <span class="kw">unsafe </span>{
-    <span class="comment">// 0x4000_0000 becomes 0x44 44 44 44...
-    </span>emu.mem_map_ptr(<span class="number">0x40000000</span>, <span class="number">0x1000</span>, Permission::READ, data.as_mut_ptr() <span class="kw">as _</span>).unwrap();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
+</span><span class="kw">let </span><span class="kw-2">mut </span>data:  [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
+<span class="kw">let </span><span class="kw-2">mut </span>data2: [u8; <span class="number">0x1000</span>] = [<span class="number">0x88</span>; <span class="number">0x1000</span>];
+<span class="kw">let </span><span class="kw-2">mut </span>data3: [u8; <span class="number">0x1000</span>] = [<span class="number">0xcc</span>; <span class="number">0x1000</span>];
 
-    <span class="comment">// 0x8000_0000 becomes 0x88 88 88 88...
-    </span>emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1000</span>, Permission::READ, data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
-
-    <span class="comment">// 0xA000_0000 becomes 0xCC CC CC CC...
-    </span>emu.mem_map_ptr(<span class="number">0xa0000000</span>, <span class="number">0x1000</span>, Permission::READ, data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();
-  }</code></pre></div>
+<span class="comment">// 0x4000_0000 becomes 0x44 44 44 44...
+// 0x8000_0000 becomes 0x88 88 88 88...
+// 0xA000_0000 becomes 0xCC CC CC CC...
+</span>emu.mem_map_ptr(<span class="number">0x40000000</span>, <span class="number">0x1000</span>, Permission::READ,
+  data.as_mut_ptr() <span class="kw">as _</span>).unwrap();
+emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1000</span>, Permission::READ,
+  data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
+emu.mem_map_ptr(<span class="number">0xa0000000</span>, <span class="number">0x1000</span>, Permission::READ,
+  data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();</code></pre></div>
 <p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Start the Unicorn Emulator
-  </span><span class="kw">let </span>err = emu.emu_start(<span class="number">0</span>, <span class="number">0x44</span>, <span class="number">0</span>, <span class="number">0</span>);
-  <span class="macro">println!</span>(<span class="string">"\nerr={:?}"</span>, err);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Start the Unicorn Emulator
+</span><span class="kw">let </span>err = emu.emu_start(<span class="number">0</span>, <span class="number">0x44</span>, <span class="number">0</span>, <span class="number">0</span>);
+<span class="macro">println!</span>(<span class="string">"\nerr={:?}"</span>, err);
 
-  <span class="comment">// Read registers X0, X1, X2
-  </span><span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-  <span class="kw">let </span>x1 = emu.reg_read(RegisterARM64::X1).unwrap();
-  <span class="kw">let </span>x2 = emu.reg_read(RegisterARM64::X2).unwrap();
+<span class="comment">// Read registers X0, X1, X2
+</span><span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+<span class="kw">let </span>x1 = emu.reg_read(RegisterARM64::X1).unwrap();
+<span class="kw">let </span>x2 = emu.reg_read(RegisterARM64::X2).unwrap();
 
-  <span class="comment">// Check the values
-  </span><span class="macro">assert!</span>(x0 == <span class="number">0x80000000</span>);
-  <span class="macro">assert!</span>(x1 == <span class="number">0x4444444444444444</span>);
-  <span class="macro">assert!</span>(x2 == <span class="number">0x4444444444444444</span>);
-}</code></pre></div>
+<span class="comment">// Check the values
+</span><span class="macro">assert!</span>(x0 == <span class="number">0x80000000</span>);
+<span class="macro">assert!</span>(x1 == <span class="number">0x4444444444444444</span>);
+<span class="macro">assert!</span>(x2 == <span class="number">0x4444444444444444</span>);</code></pre></div>
 <p>And it works!</p>
 <div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
 <p><a href="TODO">(See the <strong>Unicorn Log</strong>)</a></p>
