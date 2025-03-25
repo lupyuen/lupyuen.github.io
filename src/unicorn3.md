@@ -798,12 +798,18 @@ _MMU Demo works OK, but NuttX doesn't. How are they different?_
 
 Based on the info above, we compare __NuttX vs MMU Demo__ for the Translation Control Register...
 
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
+
 | NuttX | MMU Demo |
 |:------|:---------|
-| T0SZ = 0x1C <br> _36 bits of Virtual Address Space_ | T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
-| IRGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Inner)_ | IRGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Inner)_
-| ORGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Outer)_ | ORGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Outer)_
-| Won't Boot On Unicorn | Works OK On Unicorn
+| <hr> T0SZ = 0x1C <br> _36 bits of Virtual Address Space_ | <hr> T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
+| <hr> IRGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Inner)_ | <hr> IRGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Inner)_
+| <hr> ORGN0_WBWA = 1 <br> _Write-Allocate Cacheable (Outer)_ | <hr> ORGN0_WBNWA = 3 <br> _No Write-Allocate Cacheable (Outer)_ 
+| <hr> Won't Boot On Unicorn | <hr> Works OK On Unicorn
+
+</div>
+</p>
 
 Ah we see a major discrepancy...
 
