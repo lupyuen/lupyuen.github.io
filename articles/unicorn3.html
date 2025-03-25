@@ -224,7 +224,7 @@ isb</code></pre></div>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x0000_0000</code></strong></td><td style="text-align: center"><code>0x0000_0000</code></td><td style="text-align: center">1 GB</td></tr>
-<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xA000_0000</code></td><td style="text-align: center">1 GB</td></tr>
+<tr><td style="text-align: center"><strong><code>0x4000_0000</code></strong></td><td style="text-align: center"><code>0xC000_0000</code></td><td style="text-align: center">1 GB</td></tr>
 <tr><td style="text-align: center"><strong><code>0x8000_0000</code></strong></td><td style="text-align: center"><code>0x4000_0000</code></td><td style="text-align: center">1 GB</td></tr>
 <tr><td style="text-align: center"><strong><code>0xC000_0000</code></strong></td><td style="text-align: center"><code>0x8000_0000</code></td><td style="text-align: center">1 GB</td></tr>
 </tbody></table>
@@ -237,7 +237,7 @@ isb</code></pre></div>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center">Address</th><th style="text-align: center">Value</th><th style="text-align: left">Because</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0x1000</code></strong></td><td style="text-align: center"><code>0x0000_0741</code></td><td style="text-align: left"><em>Page Table Entry #0</em></td></tr>
-<tr><td style="text-align: center"><strong><code>0x1008</code></strong></td><td style="text-align: center"><code>0xA000_0741</code></td><td style="text-align: left"><em>Page Table Entry #1</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0x1008</code></strong></td><td style="text-align: center"><code>0xC000_0741</code></td><td style="text-align: left"><em>Page Table Entry #1</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x1010</code></strong></td><td style="text-align: center"><code>0x4000_0741</code></td><td style="text-align: left"><em>Page Table Entry #2</em></td></tr>
 <tr><td style="text-align: center"><strong><code>0x1018</code></strong></td><td style="text-align: center"><code>0x8000_0741</code></td><td style="text-align: left"><em>Page Table Entry #3</em></td></tr>
 </tbody></table>
@@ -245,8 +245,8 @@ isb</code></pre></div>
 </p>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
-<p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xA000_0000)</em></p>
-<p>We’ll see <a href="TODO"><em>AA AA AA AA…</em></a> because that’s how we populated Physical Address <em>0xA000_0000</em>. Yep the MMU can remap memory in fun interesting ways.</p>
+<p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xC000_0000)</em></p>
+<p>We’ll see <a href="TODO"><em>CC CC CC CC…</em></a> because that’s how we populated Physical Address <em>0xC000_0000</em>. Yep the MMU can remap memory in fun interesting ways.</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
 <p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
@@ -444,7 +444,7 @@ emu.mem_write(
 tlbe[<span class="number">0</span>..<span class="number">2</span>].copy_from_slice(<span class="kw-2">&amp;</span>[<span class="number">0x41</span>, <span class="number">0x07</span>]);
 emu.mem_write(<span class="number">0x1000</span>, <span class="kw-2">&amp;</span>tlbe).unwrap();
 
-<span class="comment">// Page Table Entry @ 0x1008: 0xA000_0741
+<span class="comment">// Page Table Entry @ 0x1008: 0xC000_0741
 // Page Table Entry @ 0x1010: 0x4000_0741
 // Page Table Entry @ 0x1018: 0x8000_0741
 </span>...
@@ -468,12 +468,12 @@ emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span
 
 <span class="comment">// 0x4000_0000 becomes 0x44 44 44 44...
 // 0x8000_0000 becomes 0x88 88 88 88...
-// 0xA000_0000 becomes 0xCC CC CC CC...
+// 0xC000_0000 becomes 0xCC CC CC CC...
 </span>emu.mem_map_ptr(<span class="number">0x40000000</span>, <span class="number">0x1000</span>, Permission::READ,
   data.as_mut_ptr() <span class="kw">as _</span>).unwrap();
 emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1000</span>, Permission::READ,
   data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
-emu.mem_map_ptr(<span class="number">0xa0000000</span>, <span class="number">0x1000</span>, Permission::READ,
+emu.mem_map_ptr(<span class="number">0xc0000000</span>, <span class="number">0x1000</span>, Permission::READ,
   data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();</code></pre></div>
 <p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
