@@ -483,7 +483,7 @@ Two Years Ago: We tried creating a [__PinePhone Emulator__](TODO) with NuttX and
 ```bash
 ## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-qemu
 cd nuttx
 tools/configure.sh qemu-armv8a:knsh
 make -j
@@ -918,9 +918,11 @@ TODO: Simpler for debugging
 Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.
 
 ```bash
-## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
-git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
-git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch /unicorn-qemu
+## Before Fixing: Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx \
+  --branch unicorn-qemu-before
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
+  --branch unicorn-qemu
 cd nuttx
 tools/configure.sh qemu-armv8a:knsh
 make -j
@@ -945,7 +947,8 @@ qemu-system-aarch64 \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx
 
-## But NuttX crashes in Unicorn Emulator
+## But NuttX crashes in Unicorn Emulator.
+## Remember to Disable MMU Logging.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
 cp nuttx.bin nuttx.S \
@@ -958,6 +961,16 @@ cargo run
 ## call_graph:  setup_page_tables --> ***_HALT_***
 ## call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
+```
+
+The fixed version is here...
+
+```bash
+## After Fixing: Simplified NuttX for QEMU Arm64 (Kernel Build)
+git clone https://github.com/lupyuen2/wip-nuttx nuttx \
+  --branch unicorn-qemu-after
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
+  --branch unicorn-qemu
 ```
 
 [PR for Unicorn QEMU: Before Fix](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
@@ -975,3 +988,37 @@ For Unicorn Emulator: Don't enable __MMU Logging__: [arch/arm64/src/common/arm64
 #undef  sinfo
 #define sinfo _info
 ```
+
+Here are the fixes we made...
+
+1.  [__Remove MMU Regions: PCI*, nx*__](https://github.com/lupyuen2/wip-nuttx/commit/b024360cc3e4018ed3e80c60add1ea6a205d52b5)
+
+    _(Simplify the Memory Map)_
+
+1.  [__Set RAM Size to 8 MB__](https://github.com/lupyuen2/wip-nuttx/commit/5ac9404d0a3a8f40d252a8bc8e926736add1865a)
+
+    _(Simplify the Page Tables)_
+
+1.  [__Add TCR_TG1_4K__](https://github.com/lupyuen2/wip-nuttx/commit/cab2373720e615e6bf2539bbc444ddf23d6f673f)
+
+    _(Missing from NuttX. Should this be fixed?)_
+
+1.  [__Change Physical Address from 48 to 36 bits__](https://github.com/lupyuen2/wip-nuttx/commit/19a95b066ff7dc8388e1c67e3e18d4c19f0406d6)
+
+    _(Sync with MMU Demo)_
+
+1.  [__Reduce MMU Translation Tables from 10 to 1__](https://github.com/lupyuen2/wip-nuttx/commit/2d9e4aad8ce187dd2efe38a833c8b19a5174b10f)
+
+    _(Simplify the Page Tables)_
+
+1.  [__Disable Device Tree__](https://github.com/lupyuen2/wip-nuttx/commit/4409999739c52560ad523be4094221d41f3849c9)
+
+    _(Unicorn won't boot with Device Tree)_
+
+1.  [__Disable PSCI__](https://github.com/lupyuen2/wip-nuttx/commit/c6b13b4a02dc3bcae9b332e3adad7ce7719d2391)
+
+    _(Unicorn won't boot with PSCI)_
+
+1.  [__Added MMU Logging__](https://github.com/lupyuen2/wip-nuttx/pull/102/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
+
+    _(See arch/arm64/src/common/arm64_mmu.c)_
