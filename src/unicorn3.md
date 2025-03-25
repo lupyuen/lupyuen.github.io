@@ -868,7 +868,7 @@ call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 
 _Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?_
 
-Needs a bit more investigation: Maybe NuttX didn't populate the Page Tables completely for 36 Bits? _(Something about 0x5027\_FFFF?)_
+Needs More Investigation: Maybe NuttX didn't populate the Page Tables completely for 36 Bits? _(Something about 0x5027\_FFFF?)_
 
 For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!
 
@@ -877,6 +877,8 @@ _Why are we doing all this?_
 TODO: Avaota-A1 Emulator
 
 # Boot Flow
+
+_Inside the Unicorn Log: Why the funny arrows?_
 
 TODO
 
