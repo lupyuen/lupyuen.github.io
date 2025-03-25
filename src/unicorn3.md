@@ -879,6 +879,10 @@ _Why are we doing all this?_
 
 TODO: Avaota-A1 Emulator
 
+_Any change to the Page Tables?_
+
+TODO
+
 # Boot Flow
 
 _Inside the Unicorn Log: Why the funny arrows?_
