@@ -155,7 +155,7 @@ It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Ph
 | Virtual Address | Physical Address | Size |
 |:---------------:|:----------------:|:----:|
 | __`0x0000_0000`__ | `0x0000_0000` | 1 GB
-| __`0x4000_0000`__ | `0xA000_0000` | 1 GB
+| __`0x4000_0000`__ | `0xC000_0000` | 1 GB
 | __`0x8000_0000`__ | `0x4000_0000` | 1 GB
 | __`0xC000_0000`__ | `0x8000_0000` | 1 GB
 
@@ -174,7 +174,7 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 | Address | Value | Because |
 |:-------:|:-----:|:--------|
 | __`0x1000`__ | `0x0000_0741` | _Page Table Entry #0_
-| __`0x1008`__ | `0xA000_0741` | _Page Table Entry #1_
+| __`0x1008`__ | `0xC000_0741` | _Page Table Entry #1_
 | __`0x1010`__ | `0x4000_0741` | _Page Table Entry #2_
 | __`0x1018`__ | `0x8000_0741` | _Page Table Entry #3_
 
@@ -185,9 +185,9 @@ Which we __Store in RAM__ _(ttb0_base)_ as...
 
 [(And the __Unicorn Code__)](TODO)
 
-_What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xA000_0000)_
+_What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xC000_0000)_
 
-We'll see [_AA AA AA AA..._](TODO) because that's how we populated Physical Address _0xA000_0000_. Yep the MMU can remap memory in fun interesting ways.
+We'll see [_CC CC CC CC..._](TODO) because that's how we populated Physical Address _0xC000_0000_. Yep the MMU can remap memory in fun interesting ways.
 
 _Why map 0x0000_0000 to itself?_
 
@@ -412,7 +412,7 @@ let mut tlbe: [u8; 8] = [0; 8];
 tlbe[0..2].copy_from_slice(&[0x41, 0x07]);
 emu.mem_write(0x1000, &tlbe).unwrap();
 
-// Page Table Entry @ 0x1008: 0xA000_0741
+// Page Table Entry @ 0x1008: 0xC000_0741
 // Page Table Entry @ 0x1010: 0x4000_0741
 // Page Table Entry @ 0x1018: 0x8000_0741
 ...
@@ -439,12 +439,12 @@ let mut data3: [u8; 0x1000] = [0xcc; 0x1000];
 
 // 0x4000_0000 becomes 0x44 44 44 44...
 // 0x8000_0000 becomes 0x88 88 88 88...
-// 0xA000_0000 becomes 0xCC CC CC CC...
+// 0xC000_0000 becomes 0xCC CC CC CC...
 emu.mem_map_ptr(0x40000000, 0x1000, Permission::READ,
   data.as_mut_ptr() as _).unwrap();
 emu.mem_map_ptr(0x80000000, 0x1000, Permission::READ,
   data2.as_mut_ptr() as _).unwrap();
-emu.mem_map_ptr(0xa0000000, 0x1000, Permission::READ,
+emu.mem_map_ptr(0xc0000000, 0x1000, Permission::READ,
   data3.as_mut_ptr() as _).unwrap();
 ```
 
