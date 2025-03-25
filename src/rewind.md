@@ -580,7 +580,7 @@ Via [__Ubuntu Cron__](https://help.ubuntu.com/community/CronHowto). Every Day it
 $ crontab -e
 
 ## Then insert this...
-## Test and Rewind: Every Day at 00:00 UTC
+## Test and Rewind: Every Day at 00:00 Local Time
 0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2>&1 | logger -t nuttx-rewind-build
 
 ## Or For Testing...
