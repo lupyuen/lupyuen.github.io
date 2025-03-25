@@ -4,25 +4,25 @@
 
 ![TODO](https://lupyuen.org/images/unicorn3-title.png)
 
-[__Unicorn Emulator__](TODO) has a fascinating demo of [__Arm64 MMU__](TODO) _(Memory Management Unit)_ ... Only [__18 Lines of Arm64 Assembly__](TODO)! _(Pic above)_
+A Demo of __Arm64 Memory Management Unit__ (MMU)... in [__18 Lines of Arm64 Assembly__](TODO)! _(Pic above)_
 
-This article deciphers the code inside __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO) compiled for Arm64 SBCs!
+This fascinating demo comes from [__Unicorn Emulator__](TODO). In today's article, we decipher the code inside the __Arm64 MMU Demo__, how it works. And why it's super helpful for emulating [__Apache NuttX RTOS__](TODO), compiled for Arm64 SBCs!
 
-1.  We look inside the __Page Tables__ and __Control Registers__ for MMU Demo
+- We look inside the __Page Tables__ and __Control Registers__ for MMU Demo
 
-1.  Study a mysterious bug that crashes __NuttX on Unicorn Emulator__
+- Study a mysterious bug that crashes __NuttX on Unicorn Emulator__
 
-1.  Somehow Unicorn won't __Enable the MMU__ for NuttX?
+- Somehow Unicorn won't __Enable the MMU__ for NuttX?
 
-1.  We simplify __NuttX Kernel for QEMU__ and isolate
+- We simplify __NuttX Kernel for QEMU__ and isolate
 
-1.  Aha it's a problem with the __VM Addressable Size__!
+- Aha it's a problem with the __VM Addressable Size__!
 
-1.  Soon we might have a Unicorn Emulator for __Avaota-A1 SBC__
+- Soon we might have a Unicorn Emulator for __Avaota-A1 SBC__
 
 _What's this MMU again?_
 
-We require the Arm64 __Memory Management Unit__ for...
+We need the Arm64 __Memory Management Unit__ for...
 
 - __Memory Protection__: Prevent Applications _(and Kernel)_ from meddling with things _(in System Memory)_ that they're not supposed to
 
