@@ -534,7 +534,7 @@ $ curl -L \
 $ crontab -e
 
 ## Then insert this...
-## Test and Rewind: Every Day at 00:00 UTC
+## Test and Rewind: Every Day at 00:00 Local Time
 0 0 * * * /home/luppy/nuttx-build-farm/cron.sh 2&gt;&amp;1 | logger -t nuttx-rewind-build
 
 ## Or For Testing...
