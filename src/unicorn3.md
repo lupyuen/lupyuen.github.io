@@ -644,7 +644,7 @@ According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097
 
 ![TODO](https://lupyuen.org/images/unicorn3-table2.jpg)
 
-TODO
+That's for Level 1. It points to the __Level 2 Page Table__...
 
 ![TODO](https://lupyuen.org/images/unicorn3-table3.jpg)
 
