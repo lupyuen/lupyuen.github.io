@@ -825,11 +825,12 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635">(See the <strong>Unicorn Log</strong>)</a></p>
 <p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
 <p><em>Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?</em></p>
-<p>Needs a bit more investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
+<p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
 <p><em>Why are we doing all this?</em></p>
 <p>TODO: Avaota-A1 Emulator</p>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>12 Boot Flow</h1>
+<p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>13 TODO</h1>
 <p>TODO</p>
