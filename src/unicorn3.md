@@ -642,7 +642,11 @@ struct arm_mmu_region g_mmu_regions[] = {
 
 According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884): We have a __Two-Level Page Table__...
 
-TODO: Pic of 2-Level Page Table
+![TODO](https://lupyuen.org/images/unicorn3-table2.jpg)
+
+TODO
+
+![TODO](https://lupyuen.org/images/unicorn3-table3.jpg)
 
 TODO: [Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
 
