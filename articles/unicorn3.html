@@ -769,13 +769,16 @@ Bit 31
 Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
 <p><em>MMU Demo works OK, but NuttX doesn’t. How are they different?</em></p>
 <p>Based on the info above, we compare <strong>NuttX vs MMU Demo</strong> for the Translation Control Register…</p>
+<p>
+<div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: left">NuttX</th><th style="text-align: left">MMU Demo</th></tr></thead><tbody>
-<tr><td style="text-align: left">T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></td><td style="text-align: left">T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></td></tr>
-<tr><td style="text-align: left">IRGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Inner)</em></td><td style="text-align: left">IRGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Inner)</em></td></tr>
-<tr><td style="text-align: left">ORGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Outer)</em></td><td style="text-align: left">ORGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Outer)</em></td></tr>
-<tr><td style="text-align: left">Won’t Boot On Unicorn</td><td style="text-align: left">Works OK On Unicorn</td></tr>
+<tr><td style="text-align: left"><hr> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></td><td style="text-align: left"><hr> T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></td></tr>
+<tr><td style="text-align: left"><hr> IRGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Inner)</em></td><td style="text-align: left"><hr> IRGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Inner)</em></td></tr>
+<tr><td style="text-align: left"><hr> ORGN0_WBWA = 1 <br> <em>Write-Allocate Cacheable (Outer)</em></td><td style="text-align: left"><hr> ORGN0_WBNWA = 3 <br> <em>No Write-Allocate Cacheable (Outer)</em></td></tr>
+<tr><td style="text-align: left"><hr> Won’t Boot On Unicorn</td><td style="text-align: left"><hr> Works OK On Unicorn</td></tr>
 </tbody></table>
-</div>
+</div></div>
+</p>
 <p>Ah we see a major discrepancy…</p>
 <ul>
 <li>
