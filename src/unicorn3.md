@@ -735,7 +735,7 @@ _What about the Translation Control Register?_
 We check the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884), with [__MMU Logging Enabled__](TODO)...
 
 ```bash
-get_tcr: va_bits: 0x24
+get_tcr: Virtual Address Bits: 36
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
 get_tcr: Bit 00-05: TCR_T0SZ=0x1c
@@ -807,32 +807,30 @@ Based on the info above, we compare __NuttX vs MMU Demo__ for the Translation Co
 
 Ah we see a major discrepancy...
 
-- __Virtual Address:__ NuttX uses __36 bits__, MMU Demo uses __32 bits__
+- __Virtual Address:__ NuttX uses __36 Bits__, MMU Demo uses __32 Bits__
 
 - __Inner / Outer Caching?__ Probably won't matter for our Unicorn Emulator
 
+- Though truthfully: We already made [__plenty of fixes__](TODO)
+
 We fix the Virtual Addresses...
 
-# After Fixing NuttX
+# 32 Bits of Virtual Address
 
-Change 36 bits of Virtual Address Space to 32 bits:
-
-[CONFIG_ARM64_VA_BITS=32](https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61)
-
-boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig
+Remember NuttX was using 36 Bits for __Virtual Address Space__? We cut down to __32 Bits__: [knsh/defconfig](https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61)
 
 ```bash
 ## Set the Virtual Address Space to 32 bits
 CONFIG_ARM64_VA_BITS=32
 
-## Previously: Virtual Address Space is 36 bits
+## Previously: Virtual Address Space was 36 bits
 ## CONFIG_ARM64_VA_BITS=36
 ```
 
-TODO: [After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884)
+Inside [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) (TCR_EL1): __T0SZ__ becomes 32 bits...
 
 ```bash
-get_tcr: va_bits: 0x20
+get_tcr: Virtual Address Bits: 32
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
 get_tcr: Bit 00-05: TCR_T0SZ=0x20
@@ -843,12 +841,14 @@ get_tcr: Bit 14-15: TCR_TG0_4K=0
 get_tcr: Bit 30-31: TCR_TG1_4K=2
 get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
 
-enable_mmu_el1: tcr_el1=0x180803520
-enable_mmu_el1: mair_el1=0xff440c0400
-enable_mmu_el1: ttbr0_el1=0x402b2000
+enable_mmu_el1: tcr_el1   = 0x1_8080_3520
+enable_mmu_el1: mair_el1  = 0xFF_440C_0400
+enable_mmu_el1: ttbr0_el1 = 0x402B_2000
 ```
 
-TODO: [After Fix: Unicorn Log](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635)
+[(See the __QEMU Log__)](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884)
+
+NuttX now __enables MMU successfully__ in Unicorn yay!
 
 ```bash
 hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
@@ -862,11 +862,19 @@ hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/co
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
 
-Maybe Unicorn doesn't support 36 bits
+[(See the __Unicorn Log__)](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635)
 
-Or maybe NuttX didn't populate the Page Tables correctly for 36 bits? (Something about 0x5027ffff)
+![TODO](https://lupyuen.org/images/unicorn3-table.png)
 
-Needs more investigation. But at least NuttX boots OK on Unicorn!
+_Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?_
+
+Needs a bit more investigation: Maybe NuttX didn't populate the Page Tables completely for 36 Bits? _(Something about 0x5027\_FFFF?)_
+
+For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!
+
+_Why are we doing all this?_
+
+TODO: Avaota-A1 Emulator
 
 # Boot Flow
 
@@ -874,17 +882,6 @@ TODO
 
 # TODO
 
-TODO: What's the diff?
-
-TODO: Why are we doing this?
-
-TODO: Changes to NuttX
-
-TODO: HostFS
-
-TODO
-
-![TODO](https://lupyuen.org/images/unicorn3-table.png)
 
 TODO
 
