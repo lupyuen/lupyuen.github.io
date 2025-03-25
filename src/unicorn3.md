@@ -644,7 +644,7 @@ According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097
 
 ![TODO](https://lupyuen.org/images/unicorn3-table2.jpg)
 
-That's for Level 1. It points to the __Level 2 Page Table__...
+Why Two Levels? Because we're mapping __8 MB of RAM__, instead of a Complete 1 GB Chunk. Thus we break up into Level 2 with __Smaller 2 MB Chunks__...
 
 ![TODO](https://lupyuen.org/images/unicorn3-table3.jpg)
 
