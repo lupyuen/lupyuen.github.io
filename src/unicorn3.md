@@ -164,7 +164,7 @@ It points to the [__Level 1 Page Table__](TODO), telling MMU our __Virtual-to-Ph
 
 Our [__Level 1 Page Table__](TODO) _(TTBR0_EL1)_ will be this...
 
-TODO: Pic of Level 1 Page Table
+![TODO](https://lupyuen.org/images/unicorn3-table1.jpg)
 
 Which we __Store in RAM__ _(ttb0_base)_ as...
 
