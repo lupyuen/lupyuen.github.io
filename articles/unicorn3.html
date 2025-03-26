@@ -850,6 +850,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
+cd $HOME/pinephone-emulator
 cargo run | grep call_graph | colrm 1 13 \
   &gt;$HOME/pinephone-emulator/nuttx-boot-flow.mmd
 
@@ -871,7 +872,7 @@ sudo docker run \
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
 <p>We haven’t emulated the <strong>PL011 UART Hardware</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday!</p>
 <p><em>That will keep us busy for a loooong while?</em></p>
-<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="TODO"><strong>arm64_mmu.c</strong></a> look like? Might be super fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em>!</p>
+<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="TODO"><strong>arm64_mmu.c</strong></a> look like? Might be super fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
