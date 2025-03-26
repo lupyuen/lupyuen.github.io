@@ -365,7 +365,7 @@ We're ready to run the demo...
 
 # Run the MMU Demo
 
-This is how we run the MMU Demo in __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+This is how we run the MMU Demo in __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L451)
 
 ```rust
 // Arm64 Machine Code for our MMU Demo, based on https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
@@ -404,7 +404,7 @@ emu.mem_write(
 ).expect("failed to write instructions");
 ```
 
-We populate the [__Level 1 Page Table__](https://lupyuen.github.io/articles/unicorn3#level-1-page-table) from earlier: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+We populate the [__Level 1 Page Table__](https://lupyuen.github.io/articles/unicorn3#level-1-page-table) from earlier: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L451-L503)
 
 ```rust
 // Generate the Page Table Entries...
@@ -435,7 +435,7 @@ emu.mem_write(0x1020, &tlbe).unwrap();
 ...
 ```
 
-To Verify MMU Demo: We __Fill the Physical Memory__ with _0x44_ then _0x88_ then _0xCC_: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+To Verify MMU Demo: We __Fill the Physical Memory__ with _0x44_ then _0x88_ then _0xCC_: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519)
 
 ```rust
 // 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
@@ -454,7 +454,7 @@ emu.mem_map_ptr(0xc0000000, 0x1000, Permission::READ,
   data3.as_mut_ptr() as _).unwrap();
 ```
 
-Finally we __Start the Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565)
+Finally we __Start the Emulator__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L519-L539)
 
 ```rust
 // Start the Unicorn Emulator
@@ -474,7 +474,8 @@ assert!(x2 == 0x4444444444444444);
 
 And it works!
 
-```text
+```bash
+## Registers X0, X1 and X2
 err=Ok(())
 x0=0x80000000
 x1=0x4444444444444444
@@ -954,7 +955,7 @@ _Why won't Unicorn boot to NSH Shell?_
 
 We haven't emulated the __PL011 UART Hardware__, that's why Unicorn is looping forever while printing System Messages. Hope to fix it someday!
 
-_That will keep us busy for a loooong while?_
+_That should keep us busy for a loooong while?_
 
 One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c) look like? Might be super fun to take a peek at the Alternate Version of _arm64_mmu.c_.
 
