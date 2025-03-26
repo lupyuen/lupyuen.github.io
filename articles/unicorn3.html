@@ -79,9 +79,9 @@
 <li><a href="#nuttx-boot-flow" title="NuttX Boot Flow">12 NuttX Boot Flow</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
-<p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
-<p>A Demo of <strong>Arm64 Memory Management Unit</strong> (MMU)… in <a href="TODO"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
-<p>This fascinating demo comes from <a href="TODO"><strong>Unicorn Emulator</strong></a>. In today’s article, we decipher the code inside the <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, compiled for Arm64 SBCs!</p>
+<p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!" /></p>
+<p>A Demo of <strong>Arm64 Memory Management Unit</strong> (MMU)… in <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
+<p>This fascinating demo comes from <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>. In today’s article, we decipher the code inside the <strong>Arm64 MMU Demo</strong>, how it works. And why it’s super helpful for emulating <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, compiled for Arm64 SBCs!</p>
 <ul>
 <li>
 <p>We look inside the <strong>Page Tables</strong> and <strong>Control Registers</strong> for MMU Demo</p>
@@ -148,7 +148,7 @@
 <p>Both reads produce <strong>the same value</strong></p>
 </li>
 </ol>
-<p>Indeed! That’s precisely what our <a href="TODO"><strong>MMU Demo</strong></a> above shall do…</p>
+<p>Indeed! That’s precisely what our <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583"><strong>MMU Demo</strong></a> above shall do…</p>
 <ol>
 <li>
 <p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
@@ -195,7 +195,7 @@ isb</code></pre></div>
 </span>ldr X2, [X0]</code></pre></div>
 </li>
 <li>
-<p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="TODO"><em>0x44 44 44 44 …</em></a></p>
+<p>Assume that Physical Address <em>0x4000_0000</em> is filled with <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519"><em>44 44 44 44 …</em></a></p>
 <p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Register X1 == Register X2
@@ -224,7 +224,7 @@ isb</code></pre></div>
 <p>Later we’ll explain TCR and MAIR, but first…</p>
 <p><em>What’s TTBR0_EL1? Why set it to ttb0_base?</em></p>
 <p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TTBR0-EL1--Translation-Table-Base-Register-0--EL1-"><strong>Translation Table Base Register 0</strong></a> for Exception Level 1.</p>
-<p>It points to the <a href="TODO"><strong>Level 1 Page Table</strong></a>, telling MMU our <strong>Virtual-to-Physical Mapping</strong>. Suppose we’re mapping <strong>Four Chunks of 1 GB</strong>…</p>
+<p>It points to the <strong>Level 1 Page Table</strong>, telling MMU our Virtual-to-Physical Mapping. Suppose we’re mapping <strong>Four Chunks of 1 GB</strong>…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
 <div><table><thead><tr><th style="text-align: center">Virtual Address</th><th style="text-align: center">Physical Address</th><th style="text-align: center">Size</th></tr></thead><tbody>
@@ -235,8 +235,8 @@ isb</code></pre></div>
 </tbody></table>
 </div></div>
 </p>
-<p>Our <a href="TODO"><strong>Level 1 Page Table</strong></a> <em>(TTBR0_EL1)</em> will be this…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-table1.jpg" alt="TODO" /></p>
+<p>Our <strong>Level 1 Page Table</strong> <em>(TTBR0_EL1)</em> will be this…</p>
+<p><img src="https://lupyuen.org/images/unicorn3-table1.jpg" alt="Level 1 Page Table" /></p>
 <p>Which we <strong>Store in RAM</strong> <em>(ttb0_base)</em> as…</p>
 <p>
 <div style="border: 2px solid #a0a0a0; max-width: fit-content;">
@@ -249,17 +249,17 @@ isb</code></pre></div>
 </div></div>
 </p>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
-<p><a href="TODO">(And the <strong>Unicorn Code</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xC000_0000)</em></p>
-<p>We’ll see <a href="TODO"><em>CC CC CC CC…</em></a> because that’s how we populated Physical Address <em>0xC000_0000</em>. Yep the MMU can remap memory in fun interesting ways.</p>
+<p>We’ll see <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519"><em>CC CC CC CC…</em></a> because that’s how we populated Physical Address <em>0xC000_0000</em>. Yep the MMU can remap memory in fun convoluted ways.</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
 <p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
 <p>Our code <em>(NuttX Kernel)</em> runs at <a href="https://developer.arm.com/documentation/102412/0103/Privilege-and-Exception-levels/Exception-levels"><strong>Exception Level 1</strong></a>. Later we’ll run NuttX Apps at <strong>Exception Level 0</strong>, which has Less Privilege. That’s how we protect NuttX Kernel from getting messed up by NuttX Apps.</p>
 <h1 id="page-table-entry"><a class="doc-anchor" href="#page-table-entry">§</a>3 Page Table Entry</h1>
 <p><em>In the Page Table Entries above: Why 741?</em></p>
-<p>We decode each <strong>Page Table Entry</strong> based on <a href="TODO"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>. <code>0x741</code> says…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-block.png" alt="TODO" /></p>
+<p>We decode each <strong>Page Table Entry</strong> based on <a href="https://developer.arm.com/documentation/ddi0487/latest/"><strong>VMSAv8-64 Block Descriptors</strong></a> <em>(Page D8-6491)</em>. <code>0x741</code> says…</p>
+<p><img src="https://lupyuen.org/images/unicorn3-block.png" alt="VMSAv8-64 Block Descriptors" /></p>
 <ul>
 <li>
 <p><strong>Bits 00-01:</strong> BLOCK_DESC = 1 <br> <em>This Page Table Entry describes a Block, not a Page</em></p>
@@ -298,11 +298,11 @@ isb</code></pre></div>
 #define PTE_BLOCK_DESC_PXN          (1ULL &lt;&lt; 53) // Kernel Execute Never
 #define PTE_BLOCK_DESC_UXN          (1ULL &lt;&lt; 54) // User Execute Never</code></pre></div>
 <p><em>Why Stage 1? Not Stage 2?</em></p>
-<p>We’re doing <strong>Stage 1 Only</strong>: Single-Stage Translation from <em>Virtual Address (VA)</em> to <em>Physical Address (PA)</em>. No need for Stage 2 and <em>Intermediate Physical Address (IPA)</em> <a href="TODO">(Page D8-6448)</a></p>
-<p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="TODO" /></p>
+<p>We’re doing <strong>Stage 1 Only</strong>: Single-Stage Translation from <em>Virtual Address (VA)</em> to <em>Physical Address (PA)</em>. No need for Stage 2 and <em>Intermediate Physical Address (IPA)</em> <a href="https://developer.arm.com/documentation/ddi0487/latest/">(Page D8-6448)</a></p>
+<p><img src="https://lupyuen.org/images/unicorn3-stage.png" alt="Translation Table Walk" /></p>
 <p><em>Why Inner vs Outer Shareable? Something about “Severance”?</em></p>
-<p><strong>Inner / Outer Sharing</strong> is for Multiple CPU Cores, which we’ll ignore for now <a href="TODO">(Page B2-293)</a></p>
-<p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="TODO" /></p>
+<p><strong>Inner / Outer Sharing</strong> is for Multiple CPU Cores, which we’ll ignore for now <a href="https://developer.arm.com/documentation/ddi0487/latest/">(Page B2-293)</a></p>
+<p><img src="https://lupyuen.org/images/unicorn3-shareable.png" alt="Inner / Outer Sharing" /></p>
 <p><a href="https://developer.arm.com/documentation/102404/0202/Common-architecture-terms"><em>(PE = Processing Element = One Arm64 Core)</em></a></p>
 <h1 id="translation-control-register"><a class="doc-anchor" href="#translation-control-register">§</a>4 Translation Control Register</h1>
 <p>We return to this mysterious code…</p>
@@ -317,7 +317,7 @@ isb</code></pre></div>
 </span>msr MAIR_EL1, X0      <span class="comment">// Write X0 into System Register MAIR_EL1</span></code></pre></div>
 <p><em>What’s TCR_EL1? Why set it to 0x1_8080_3F20?</em></p>
 <p>That’s the <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>Translation Control Register</strong></a> for Exception Level 1. According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_3F20</em> decodes as…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="Translation Control Register" /></p>
 <ul>
 <li>
 <p><strong>Bits 00-05:</strong> T0SZ = 0x20 <br> <em>32 bits of Virtual Address Space</em></p>
@@ -345,7 +345,7 @@ isb</code></pre></div>
 </li>
 <li>
 <p>Thus our MMU shall map <strong>32-bit Virtual Addresses</strong> into <strong>36-bit Physical Addresses</strong>. Each Physical Address points to a <strong>4 KB Memory Page</strong>.</p>
-<p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn3#page-table-entry"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 <p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
 </ul>
@@ -385,7 +385,7 @@ Bit 32</code></pre></div>
 </span>dsb SY ; isb</code></pre></div>
 <p><em>SCTLR_EL1 is for?</em></p>
 <p>The <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register</strong></a> for Exception Level 1. We set these bits to <strong>Enable the MMU with Caching</strong>…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="System Control Register" /></p>
 <ul>
 <li>
 <p><strong>Bit 0:</strong> M = 1 <br> <em>Enable MMU for Address Translation</em></p>
@@ -436,7 +436,7 @@ emu.mem_write(
   ADDRESS, 
   <span class="kw-2">&amp;</span>arm64_code
 ).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
-<p>We populate the <a href="TODO"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>We populate the <a href="https://lupyuen.github.io/articles/unicorn3#level-1-page-table"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Generate the Page Table Entries...
 // Page Table Entry @ 0x1000: 0x0000_0741
@@ -496,11 +496,14 @@ emu.mem_map_ptr(<span class="number">0xc0000000</span>, <span class="number">0x1
 <span class="macro">assert!</span>(x1 == <span class="number">0x4444444444444444</span>);
 <span class="macro">assert!</span>(x2 == <span class="number">0x4444444444444444</span>);</code></pre></div>
 <p>And it works!</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
-<p><a href="TODO">(See the <strong>Unicorn Log</strong>)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>err=Ok(())
+x0=0x80000000
+x1=0x4444444444444444
+x2=0x4444444444444444</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
 <h1 id="nuttx-crashes-in-unicorn"><a class="doc-anchor" href="#nuttx-crashes-in-unicorn">§</a>7 NuttX crashes in Unicorn</h1>
 <p><em>What’s Unicorn Emulator got to do with NuttX RTOS?</em></p>
-<p>Two Years Ago: We tried creating a <a href="TODO"><strong>PinePhone Emulator</strong></a> with NuttX and Unicorn. But NuttX kept crashing on Unicorn…</p>
+<p>Two Years Ago: We tried creating a <a href="https://lupyuen.github.io/articles/unicorn"><strong>PinePhone Emulator</strong></a> with NuttX and Unicorn. But NuttX kept crashing on Unicorn…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-qemu-before
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-qemu
@@ -544,7 +547,7 @@ cargo run
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
 <p>Two Years Later: The bug stops here! Let’s fix it today.</p>
 <p><em>Where does it crash?</em></p>
-<p>According to <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754"><strong>Unicorn Log</strong></a>: Our <a href="TODO"><strong>Simplified NuttX</strong></a> crashes here in Unicorn Emulator: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661">arm64_mmu.c</a></p>
+<p>According to <a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754"><strong>Unicorn Log</strong></a>: Our <a href="https://lupyuen.github.io/articles/unicorn3#appendix-simplified-nuttx-for-qemu"><strong>Simplified NuttX</strong></a> crashes here in Unicorn Emulator: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the MMU for Exception Level 1
 static void enable_mmu_el1(unsigned int flags) {
 
@@ -573,7 +576,7 @@ static void enable_mmu_el1(unsigned int flags) {
   // Oops! Unicorn Emulator fails with an Arm64 Exception
   // {syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123">(NuttX defines SCTLR_EL1 in <strong>arm64_arch.h</strong>)</a></p>
-<p>Which is mighty similar to the <a href="TODO"><strong>MMU Demo</strong></a> we saw earlier…</p>
+<p>Which is mighty similar to the <a href="https://lupyuen.github.io/articles/unicorn3#enable-the-mmu"><strong>MMU Demo</strong></a> that we saw earlier…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MMU Demo Works OK:
 // Read System Register SCTLR_EL1 into X0
@@ -595,7 +598,7 @@ static void enable_mmu_el1(unsigned int flags) {
   Virtual Address: 0x5027_ffff (Why?)
   Target Exception Level: 1</code></pre></div>
 <p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
-<p>To troubleshoot, we enable <strong>MMU Logging</strong>: <a href="TODO">arch/arm64/src/common/arm64_mmu.c</a></p>
+<p>To troubleshoot, we enable <strong>MMU Logging</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c#L54-L61">arch/arm64/src/common/arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable MMU Logging
 #define CONFIG_MMU_ASSERT   1
 #define CONFIG_MMU_DEBUG    1
@@ -631,10 +634,10 @@ struct arm_mmu_region g_mmu_regions[] = {
 
 };  // Other Memory Regions? We removed them all</code></pre></div>
 <p>According to <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>: We have a <strong>Two-Level Page Table</strong>…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-table2.jpg" alt="TODO" /></p>
-<p><a href="TODO"><em>(PXN / UXN = Privileged / User Non-Execute)</em></a></p>
+<p><img src="https://lupyuen.org/images/unicorn3-table2.jpg" alt="Level 1 Page Table for NuttX" /></p>
+<p><a href="https://developer.arm.com/documentation/102376/0200/Permissions/Execution-permissions"><em>(PXN / UXN = Privileged / User Never-Execute)</em></a></p>
 <p>Why Two Levels? Because we’re mapping <strong>8 MB of RAM</strong>, instead of a Complete 1 GB Chunk. Thus we break up into Level 2 with <strong>Smaller 2 MB Chunks</strong>…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-table3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-table3.jpg" alt="Level 2 Page Table for NuttX" /></p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
 arm64_mmu_init: xlat table #0: 0x402b1000
@@ -713,7 +716,7 @@ enable_mmu_el1: ttbr0_el1=0x402b2000</code></pre></div>
 <p>Looks legit, we move on…</p>
 <h1 id="translation-control-register-for-nuttx"><a class="doc-anchor" href="#translation-control-register-for-nuttx">§</a>9 Translation Control Register for NuttX</h1>
 <p><em>What about the Translation Control Register?</em></p>
-<p>We check the <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>, with <a href="TODO"><strong>MMU Logging Enabled</strong></a>…</p>
+<p>We check the <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>, with <a href="https://lupyuen.github.io/articles/unicorn3#level-1-and-2-page-tables"><strong>MMU Logging Enabled</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>get_tcr: Virtual Address Bits: 36
 get_tcr: Bit 32-33: TCR_EL1_IPS=1
 get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
@@ -729,7 +732,7 @@ enable_mmu_el1: tcr_el1   = 0x1_8080_351C
 enable_mmu_el1: mair_el1  = 0xFF_440C_0400
 enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
 <p>According to <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-"><strong>TCR_EL1 Doc</strong></a>, <em>0x1_8080_351C</em> decodes as…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-tcr.png" alt="Translation Control Register for NuttX" /></p>
 <ul>
 <li>
 <p><strong>Bits 00-05:</strong> T0SZ = 0x1C <br> <em>36 bits of Virtual Address Space</em></p>
@@ -757,7 +760,7 @@ enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
 </li>
 </ul>
 <p>Hmmm something looks different…</p>
-<p><a href="TODO"><em>(We spoke about Innies and Outies earlier)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn3#page-table-entry"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 <p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
 <div class="example-wrap"><pre class="language-text"><code>a=0x18080351Cn
 for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }
@@ -792,11 +795,11 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 <p><strong>Inner / Outer Caching?</strong> Probably won’t matter for our Unicorn Emulator</p>
 </li>
 <li>
-<p>Though truthfully: We already made <a href="TODO"><strong>plenty of fixes</strong></a></p>
+<p>Though truthfully: We already made <a href="https://lupyuen.github.io/articles/unicorn3#appendix-simplified-nuttx-for-qemu"><strong>plenty of fixes</strong></a></p>
 </li>
 </ul>
 <p>We fix the Virtual Addresses…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-bootflow2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-bootflow2.png" alt="NuttX Boot Flow with MMU Enabled" /></p>
 <h1 id="32-bits-of-virtual-address"><a class="doc-anchor" href="#32-bits-of-virtual-address">§</a>11 32 Bits of Virtual Address</h1>
 <p>Remember NuttX was using 36 Bits for <strong>Virtual Address Space</strong>? We cut down to <strong>32 Bits</strong>: <a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the Virtual Address Space to 32 bits
@@ -831,15 +834,15 @@ hook_block:  address=0x4028062c, size=04, enable_mmu_el1, arch/arm64/src/common/
 hook_block:  address=0x40280380, size=88, arm64_boot_el1_init, arch/arm64/src/common/arm64_boot.c:215:1
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635">(See the <strong>Unicorn Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-table.png" alt="Arm64 Page Tables" /></p>
 <p><em>Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?</em></p>
 <p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
 <p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
 <p>TODO: Any change to Page Tables</p>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
-<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="TODO"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without touching the Actual Hardware.</p>
-<p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="TODO" /></p>
+<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without touching the Actual Hardware.</p>
+<p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
 <h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>call_graph:  enable_mmu_el1 --&gt; setup_page_tables
@@ -848,7 +851,8 @@ hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/
 call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
-<p>TODO: Download the PDF / PNG / SVG</p>
+<p>Our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> as a Mermaid Flowchart: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf">Download the PDF</a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png">PNG</a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg">SVG</a></p>
+<p>Here are the steps to produce the <strong>Mermaid Flowchart</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
@@ -869,12 +873,16 @@ sudo docker run \
   -o nuttx-boot-flow.pdf
 
 ## Or change &quot;.pdf&quot; above to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
-<p><a href="TODO">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
-<p><img src="https://lupyuen.org/images/unicorn3-bootflow3.png" alt="TODO" /></p>
+<p><a href="https://raw.githubusercontent.com/lupyuen/pinephone-emulator/refs/heads/qemu/nuttx-boot-flow.mmd">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
+<p>How did we create the Mermaid Flowchart? Check the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.org/images/unicorn3-bootflow3.png" alt="Unicorn is stuck forever in PL011 UART Driver" /></p>
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
 <p>We haven’t emulated the <strong>PL011 UART Hardware</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday!</p>
 <p><em>That will keep us busy for a loooong while?</em></p>
-<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="TODO"><strong>arm64_mmu.c</strong></a> look like? Might be super fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em>.</p>
+<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be super fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
@@ -906,7 +914,8 @@ sudo docker run \
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn3.md"><strong>lupyuen.org/src/unicorn3.md</strong></a></p>
 <h1 id="appendix-simplified-nuttx-for-qemu"><a class="doc-anchor" href="#appendix-simplified-nuttx-for-qemu">§</a>14 Appendix: Simplified NuttX for QEMU</h1>
-<p>Why did we <strong>Simplify NuttX</strong> for this article? So we can be as close to MMU Demo as possible, and isolate the crashing problem. This is how we Build and Test our simpler version of <strong>NuttX for QEMU Arm64</strong> (Kernel Build)…</p>
+<p>In this article we took <strong>NuttX for QEMU Arm64</strong> (Kernel Build) and made it smaller and simpler.</p>
+<p>Why did we <strong>Simplify NuttX</strong>? So we can be as close to MMU Demo as possible, and isolate the crashing problem. This is how we Build and Test our simpler version of <strong>NuttX for QEMU Arm64</strong> (Kernel Build)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Before Fixing: Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
 git clone https://github.com/lupyuen2/wip-nuttx nuttx \
   --branch unicorn-qemu-before
@@ -962,7 +971,7 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 <p><a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e">(After Fix: QEMU Log)</a></p>
 <p><strong>For QEMU Testing:</strong> Enable MMU Logging by uncommenting the lines below.</p>
 <p><strong>For Unicorn Emulator:</strong> Don’t enable MMU Logging, because the PL011 UART Driver will get stuck. Comment out the lines below.</p>
-<p>From <a href="TODO">arch/arm64/src/common/arm64_mmu.c</a>:</p>
+<p>From <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c#L54-L61">arch/arm64/src/common/arm64_mmu.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable MMU Logging
 #define CONFIG_MMU_ASSERT   1
 #define CONFIG_MMU_DEBUG    1
