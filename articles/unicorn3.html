@@ -76,7 +76,7 @@
 <li><a href="#translation-control-register-for-nuttx" title="Translation Control Register for NuttX">9 Translation Control Register for NuttX</a><ul></ul></li>
 <li><a href="#nuttx-vs-mmu-demo" title="NuttX vs MMU Demo">10 NuttX vs MMU Demo</a><ul></ul></li>
 <li><a href="#32-bits-of-virtual-address" title="32 Bits of Virtual Address">11 32 Bits of Virtual Address</a><ul></ul></li>
-<li><a href="#boot-flow" title="Boot Flow">12 Boot Flow</a><ul></ul></li>
+<li><a href="#nuttx-boot-flow" title="NuttX Boot Flow">12 NuttX Boot Flow</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="TODO" /></p>
@@ -835,7 +835,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Any change to the Page Tables?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="TODO" /></p>
-<h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>12 Boot Flow</h1>
+<h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>call_graph:  enable_mmu_el1 --&gt; setup_page_tables
 call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
@@ -844,12 +844,16 @@ call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep call_graph | colrm 1 13 \
-  &gt;/home/luppy/pinephone-emulator/nuttx-boot-flow.mmd
+<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+  $HOME/pinephone-emulator
+$ cargo run | grep call_graph | colrm 1 13 \
+  &gt;$HOME/pinephone-emulator/nuttx-boot-flow.mmd
+## Omitted: Clean up nuttx-boot-flow.mmd
+
 $ sudo docker pull minlag/mermaid-cli
 $ sudo docker run \
   --rm -u `id -u`:`id -g` -v \
-  /home/luppy/pinephone-emulator:/data minlag/mermaid-cli \
+  $HOME/pinephone-emulator:/data minlag/mermaid-cli \
   --configFile=&quot;mermaidRenderConfig.json&quot; \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
