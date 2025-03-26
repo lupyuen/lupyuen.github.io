@@ -971,11 +971,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Simplified NuttX for QEMU
 
-TODO: Simpler for debugging
-
-(Could one of these changes, contribute to Unicorn Non-Crashing? It's possible)
-
-Why did we simplify? So we can be as close to MMU Demo as possible. And isolate the crashing problem.
+Why did we __Simplify NuttX__ for this article? So we can be as close to MMU Demo as possible, and isolate the crashing problem. This is how we Build and Test our simpler version of __NuttX for QEMU Arm64__ (Kernel Build)...
 
 ```bash
 ## Before Fixing: Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
@@ -1023,7 +1019,11 @@ cargo run
 ## env.exception={syndrome:2248146949, fsr:517, vaddress:1344798719, target_el:1}
 ```
 
-The fixed version is here...
+[(Before Fix: Unicorn Log)](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1)
+
+[(Before Fix: QEMU Log)](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
+
+The fixed version (that won't crash in Unicorn) is here...
 
 ```bash
 ## After Fixing: Simplified NuttX for QEMU Arm64 (Kernel Build)
@@ -1033,11 +1033,15 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
   --branch unicorn-qemu
 ```
 
-[PR for Unicorn QEMU: Before Fix](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
+[(After Fix: Unicorn Log)](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20)
 
-[PR for Unicorn QEMU: After Fix](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
+[(After Fix: QEMU Log)](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e)
 
-For Unicorn Emulator: Don't enable __MMU Logging__: [arch/arm64/src/common/arm64_mmu.c](TODO)
+__For QEMU Testing:__ Enable MMU Logging by uncommenting the lines below.
+
+__For Unicorn Emulator:__ Don't enable MMU Logging, because the PL011 UART Driver will get stuck. Comment out the lines below.
+
+From [arch/arm64/src/common/arm64_mmu.c](TODO):
 
 ```c
 // Enable MMU Logging
@@ -1049,7 +1053,7 @@ For Unicorn Emulator: Don't enable __MMU Logging__: [arch/arm64/src/common/arm64
 #define sinfo _info
 ```
 
-Here are the fixes we made...
+Here's the [__Complete List of Changes__](https://github.com/lupyuen2/wip-nuttx/pull/103/commits) for our Simplified NuttX. Below are the highlights...
 
 1.  [__Remove MMU Regions: PCI*, nx*__](https://github.com/lupyuen2/wip-nuttx/commit/b024360cc3e4018ed3e80c60add1ea6a205d52b5)
 
@@ -1058,6 +1062,10 @@ Here are the fixes we made...
 1.  [__Set RAM Size to 8 MB__](https://github.com/lupyuen2/wip-nuttx/commit/5ac9404d0a3a8f40d252a8bc8e926736add1865a)
 
     _(Simplify the Page Tables)_
+
+1.  [__Enable the Data Cache and Instruction Cache__](https://github.com/lupyuen2/wip-nuttx/commit/19107b4f253d5c0f552eafc4a89fb8ede7254117)
+
+    _(Sync with MMU Demo)_
 
 1.  [__Add TCR_TG1_4K__](https://github.com/lupyuen2/wip-nuttx/commit/cab2373720e615e6bf2539bbc444ddf23d6f673f)
 
@@ -1083,10 +1091,8 @@ Here are the fixes we made...
 
     _(See arch/arm64/src/common/arm64_mmu.c)_
 
-[Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1)
+1.  Could one of the above changes, contribute to NuttX booting successfully on Unicorn? It's possible.
 
-[Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
+    [(Before Fix: See the Modified Files)](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
 
-[After Fix: Unicorn Log](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20)
-
-[After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e)
+    [(After Fix: See the Modified Files)](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
