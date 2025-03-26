@@ -824,6 +824,8 @@ Ah we see a major discrepancy...
 
 We fix the Virtual Addresses...
 
+![TODO](https://lupyuen.org/images/unicorn3-bootflow2.png)
+
 # 32 Bits of Virtual Address
 
 Remember NuttX was using 36 Bits for __Virtual Address Space__? We cut down to __32 Bits__: [knsh/defconfig](https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61)
@@ -857,7 +859,7 @@ enable_mmu_el1: ttbr0_el1 = 0x402B_2000
 
 [(See the __QEMU Log__)](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884)
 
-NuttX now __enables MMU successfully__ in Unicorn yay!
+NuttX now __enables MMU successfully__ in Unicorn yay! (Pic above)
 
 ```bash
 hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
@@ -889,9 +891,36 @@ _Any change to the Page Tables?_
 
 TODO
 
+![TODO](https://lupyuen.org/images/unicorn3-bootflow.jpg)
+
 # Boot Flow
 
 _Inside the Unicorn Log: Why the funny arrows?_
+
+```bash
+call_graph:  enable_mmu_el1 --> setup_page_tables
+call_graph:  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616" "arch/arm64/src/common/arm64_mmu.c " _blank
+hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:608:3
+call_graph:  setup_page_tables --> enable_mmu_el1
+call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
+call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
+```
+
+TODO
+
+```bash
+$ cargo run | grep call_graph | colrm 1 13 \
+  >/home/luppy/pinephone-emulator/nuttx-boot-flow.mmd
+$ sudo docker pull minlag/mermaid-cli
+$ sudo docker run \
+  --rm -u `id -u`:`id -g` -v \
+  /home/luppy/pinephone-emulator:/data minlag/mermaid-cli \
+  --configFile="mermaidRenderConfig.json" \
+  -i nuttx-boot-flow.mmd \
+  -o nuttx-boot-flow.pdf
+
+## Or change ".pdf" to ".png" or ".svg"
+```
 
 TODO
 
@@ -1032,3 +1061,11 @@ Here are the fixes we made...
 1.  [__Added MMU Logging__](https://github.com/lupyuen2/wip-nuttx/pull/102/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
 
     _(See arch/arm64/src/common/arm64_mmu.c)_
+
+[Before Fix: Unicorn Log](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1)
+
+[Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
+
+[After Fix: Unicorn Log](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20)
+
+[After Fix: QEMU Log](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e)
