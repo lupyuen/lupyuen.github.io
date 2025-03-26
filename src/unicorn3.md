@@ -20,6 +20,8 @@ This fascinating demo comes from [__Unicorn Emulator__](TODO). In today's articl
 
 - Soon we might have a Unicorn Emulator for __Avaota-A1 SBC__
 
+- Thanks to Unicorn, we have a __NuttX Boot Flow__ that's highly detailed
+
 _What's this MMU again?_
 
 We need the Arm64 __Memory Management Unit__ for...
@@ -906,27 +908,39 @@ call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
 
-TODO
+TODO: Download the PDF / PNG / SVG
 
 ```bash
-$ git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
+git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
-$ cargo run | grep call_graph | colrm 1 13 \
+cargo run | grep call_graph | colrm 1 13 \
   >$HOME/pinephone-emulator/nuttx-boot-flow.mmd
-## Omitted: Clean up nuttx-boot-flow.mmd
 
-$ sudo docker pull minlag/mermaid-cli
-$ sudo docker run \
+## Omitted: Clean up the bad syntax in nuttx-boot-flow.mmd
+vi $HOME/pinephone-emulator/nuttx-boot-flow.mmd
+
+## Convert the Mermaid Output to PDF
+sudo docker pull minlag/mermaid-cli
+sudo docker run \
   --rm -u `id -u`:`id -g` -v \
   $HOME/pinephone-emulator:/data minlag/mermaid-cli \
   --configFile="mermaidRenderConfig.json" \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
 
-## Or change ".pdf" to ".png" or ".svg"
+## Or change ".pdf" above to ".png" or ".svg"
 ```
 
-TODO
+[(__nuttx-boot-flow.mmd__ is here)](TODO)
+
+_Why won't Unicorn boot to NSH Shell?_
+
+We haven't emulated the __PL011 UART Peripheral__, that's why Unicorn is looping forever while printing System Messages. Hope to fix it someday!
+
+_That will keep us busy for a loooong while?_
+
+One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](TODO) look like? Might be super interesting to take a peek at the Alternative Version of _arm64_mmu.c_!
 
 # What's Next
 
