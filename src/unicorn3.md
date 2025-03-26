@@ -934,13 +934,15 @@ sudo docker run \
 
 [(__nuttx-boot-flow.mmd__ is here)](TODO)
 
+![TODO](https://lupyuen.org/images/unicorn3-bootflow3.png)
+
 _Why won't Unicorn boot to NSH Shell?_
 
-We haven't emulated the __PL011 UART Peripheral__, that's why Unicorn is looping forever while printing System Messages. Hope to fix it someday!
+We haven't emulated the __PL011 UART Hardware__, that's why Unicorn is looping forever while printing System Messages. Hope to fix it someday!
 
 _That will keep us busy for a loooong while?_
 
-One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](TODO) look like? Might be super interesting to take a peek at the Alternative Version of _arm64_mmu.c_!
+One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](TODO) look like? Might be super fun to take a peek at the Alternate Version of _arm64_mmu.c_!
 
 # What's Next
 
