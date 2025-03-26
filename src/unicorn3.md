@@ -22,6 +22,8 @@ This fascinating demo comes from [__Unicorn Emulator__](TODO). In today's articl
 
 - Thanks to Unicorn, we have a __NuttX Boot Flow__ that's highly detailed
 
+TODO: Pic of MMU
+
 _What's this MMU again?_
 
 We need the Arm64 __Memory Management Unit__ for...
@@ -40,19 +42,21 @@ If we don't configure MMU with the correct __Memory Map__...
 
 Let's go deeper inside MMU...
 
-TODO: Pic of Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_, 0x4444
-
 # Memory Management Unit
 
 _Ah so MMU will allow this switcheroo business? (Pic above)_
 
 1.  __MMU is Disabled__ initially
 
-1.  Read from __Physical Address__ _0x4000_0000_
+    TODO: Pic before MMU
 
-1.  __Enable MMU__: Map Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_
+1.  We read from __Physical Address__ _0x4000_0000_
 
-1.  Read from __Virtual Address__ _0x8000_0000_
+1.  __Enable the MMU__: Map Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_
+
+    TODO: Pic of Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_, 0x4444
+
+1.  We read from __Virtual Address__ _0x8000_0000_
 
 1.  Both reads produce __the same value__
 
@@ -885,13 +889,13 @@ Needs More Investigation: Maybe NuttX didn't populate the Page Tables completely
 
 For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!
 
-_Why are we doing all this?_
+_After switching to 32-bit Virtual Address: Any change to the Page Tables?_
 
-TODO: Avaota-A1 Emulator
+TODO: Any change to Page Tables
 
-_Any change to the Page Tables?_
+_Why are we doing all this: NuttX on Unicorn?_
 
-TODO
+We're about to create a __NuttX Emulator__ for [__Avaota-A1 Arm64 SBC__](TODO) (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without touching the Actual Hardware.
 
 ![TODO](https://lupyuen.org/images/unicorn3-bootflow.jpg)
 
