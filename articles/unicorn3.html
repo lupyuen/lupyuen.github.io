@@ -791,6 +791,7 @@ Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="
 </li>
 </ul>
 <p>We fix the Virtual Addresses…</p>
+<p><img src="https://lupyuen.org/images/unicorn3-bootflow2.png" alt="TODO" /></p>
 <h1 id="32-bits-of-virtual-address"><a class="doc-anchor" href="#32-bits-of-virtual-address">§</a>11 32 Bits of Virtual Address</h1>
 <p>Remember NuttX was using 36 Bits for <strong>Virtual Address Space</strong>? We cut down to <strong>32 Bits</strong>: <a href="https://github.com/apache/nuttx/commit/ce18a505fb295fc95167f505261f060c7601ce61">knsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the Virtual Address Space to 32 bits
@@ -814,7 +815,7 @@ enable_mmu_el1: tcr_el1   = 0x1_8080_3520
 enable_mmu_el1: mair_el1  = 0xFF_440C_0400
 enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L869-L884">(See the <strong>QEMU Log</strong>)</a></p>
-<p>NuttX now <strong>enables MMU successfully</strong> in Unicorn yay!</p>
+<p>NuttX now <strong>enables MMU successfully</strong> in Unicorn yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-bash"><code>hook_block:  address=0x402805a4, size=08, setup_page_tables, arch/arm64/src/common/arm64_mmu.c:547:29
 call_graph:  enable_mmu_el1 --&gt; setup_page_tables
 call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
@@ -833,8 +834,27 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>TODO: Avaota-A1 Emulator</p>
 <p><em>Any change to the Page Tables?</em></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="TODO" /></p>
 <h1 id="boot-flow"><a class="doc-anchor" href="#boot-flow">§</a>12 Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>call_graph:  enable_mmu_el1 --&gt; setup_page_tables
+call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:608:3
+call_graph:  setup_page_tables --&gt; enable_mmu_el1
+call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
+call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep call_graph | colrm 1 13 \
+  &gt;/home/luppy/pinephone-emulator/nuttx-boot-flow.mmd
+$ sudo docker pull minlag/mermaid-cli
+$ sudo docker run \
+  --rm -u `id -u`:`id -g` -v \
+  /home/luppy/pinephone-emulator:/data minlag/mermaid-cli \
+  --configFile=&quot;mermaidRenderConfig.json&quot; \
+  -i nuttx-boot-flow.mmd \
+  -o nuttx-boot-flow.pdf
+
+## Or change &quot;.pdf&quot; to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
 <p>TODO</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
@@ -964,6 +984,10 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 <p><em>(See arch/arm64/src/common/arm64_mmu.c)</em></p>
 </li>
 </ol>
+<p><a href="https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1">Before Fix: Unicorn Log</a></p>
+<p><a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
+<p><a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20">After Fix: Unicorn Log</a></p>
+<p><a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e">After Fix: QEMU Log</a></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
