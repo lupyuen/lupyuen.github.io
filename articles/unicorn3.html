@@ -105,6 +105,7 @@
 <p>Thanks to Unicorn, we have a <strong>NuttX Boot Flow</strong> that’s highly detailed</p>
 </li>
 </ul>
+<p>TODO: Pic of MMU</p>
 <p><em>What’s this MMU again?</em></p>
 <p>We need the Arm64 <strong>Memory Management Unit</strong> for…</p>
 <ul>
@@ -126,21 +127,22 @@
 </li>
 </ul>
 <p>Let’s go deeper inside MMU…</p>
-<p>TODO: Pic of Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em>, 0x4444</p>
 <h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
 <p><em>Ah so MMU will allow this switcheroo business? (Pic above)</em></p>
 <ol>
 <li>
 <p><strong>MMU is Disabled</strong> initially</p>
+<p>TODO: Pic before MMU</p>
 </li>
 <li>
-<p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
+<p>We read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
 </li>
 <li>
-<p><strong>Enable MMU</strong>: Map Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em></p>
+<p><strong>Enable the MMU</strong>: Map Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em></p>
+<p>TODO: Pic of Virtual Address <em>0x8000_0000</em> to Physical Address <em>0x4000_0000</em>, 0x4444</p>
 </li>
 <li>
-<p>Read from <strong>Virtual Address</strong> <em>0x8000_0000</em></p>
+<p>We read from <strong>Virtual Address</strong> <em>0x8000_0000</em></p>
 </li>
 <li>
 <p>Both reads produce <strong>the same value</strong></p>
@@ -833,10 +835,10 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?</em></p>
 <p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
-<p><em>Why are we doing all this?</em></p>
-<p>TODO: Avaota-A1 Emulator</p>
-<p><em>Any change to the Page Tables?</em></p>
-<p>TODO</p>
+<p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
+<p>TODO: Any change to Page Tables</p>
+<p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
+<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="TODO"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without touching the Actual Hardware.</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="TODO" /></p>
 <h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
