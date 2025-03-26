@@ -914,6 +914,7 @@ TODO: Download the PDF / PNG / SVG
 ## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
+cd $HOME/pinephone-emulator
 cargo run | grep call_graph | colrm 1 13 \
   >$HOME/pinephone-emulator/nuttx-boot-flow.mmd
 
@@ -942,7 +943,7 @@ We haven't emulated the __PL011 UART Hardware__, that's why Unicorn is looping f
 
 _That will keep us busy for a loooong while?_
 
-One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](TODO) look like? Might be super fun to take a peek at the Alternate Version of _arm64_mmu.c_!
+One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](TODO) look like? Might be super fun to take a peek at the Alternate Version of _arm64_mmu.c_.
 
 # What's Next
 
