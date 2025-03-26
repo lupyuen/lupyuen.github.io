@@ -893,7 +893,7 @@ TODO
 
 ![TODO](https://lupyuen.org/images/unicorn3-bootflow.jpg)
 
-# Boot Flow
+# NuttX Boot Flow
 
 _Inside the Unicorn Log: Why the funny arrows?_
 
@@ -909,12 +909,16 @@ call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 TODO
 
 ```bash
+$ git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+  $HOME/pinephone-emulator
 $ cargo run | grep call_graph | colrm 1 13 \
-  >/home/luppy/pinephone-emulator/nuttx-boot-flow.mmd
+  >$HOME/pinephone-emulator/nuttx-boot-flow.mmd
+## Omitted: Clean up nuttx-boot-flow.mmd
+
 $ sudo docker pull minlag/mermaid-cli
 $ sudo docker run \
   --rm -u `id -u`:`id -g` -v \
-  /home/luppy/pinephone-emulator:/data minlag/mermaid-cli \
+  $HOME/pinephone-emulator:/data minlag/mermaid-cli \
   --configFile="mermaidRenderConfig.json" \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
