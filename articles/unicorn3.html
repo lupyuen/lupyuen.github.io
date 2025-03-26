@@ -627,6 +627,7 @@ struct arm_mmu_region g_mmu_regions[] = {
 };  // Other Memory Regions? We removed them all</code></pre></div>
 <p>According to <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884"><strong>NuttX QEMU Log</strong></a>: We have a <strong>Two-Level Page Table</strong>…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-table2.jpg" alt="TODO" /></p>
+<p><a href="TODO"><em>(PXN / UXN = Privileged / User Non-Execute)</em></a></p>
 <p>Why Two Levels? Because we’re mapping <strong>8 MB of RAM</strong>, instead of a Complete 1 GB Chunk. Thus we break up into Level 2 with <strong>Smaller 2 MB Chunks</strong>…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-table3.jpg" alt="TODO" /></p>
 <p>TODO: <a href="https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884">Before Fix: QEMU Log</a></p>
