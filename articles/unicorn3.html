@@ -101,6 +101,9 @@
 <li>
 <p>Soon we might have a Unicorn Emulator for <strong>Avaota-A1 SBC</strong></p>
 </li>
+<li>
+<p>Thanks to Unicorn, we have a <strong>NuttX Boot Flow</strong> that’s highly detailed</p>
+</li>
 </ul>
 <p><em>What’s this MMU again?</em></p>
 <p>We need the Arm64 <strong>Memory Management Unit</strong> for…</p>
@@ -843,23 +846,31 @@ hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/
 call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
+<p>TODO: Download the PDF / PNG / SVG</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
+git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
-$ cargo run | grep call_graph | colrm 1 13 \
+cargo run | grep call_graph | colrm 1 13 \
   &gt;$HOME/pinephone-emulator/nuttx-boot-flow.mmd
-## Omitted: Clean up nuttx-boot-flow.mmd
 
-$ sudo docker pull minlag/mermaid-cli
-$ sudo docker run \
+## Omitted: Clean up the bad syntax in nuttx-boot-flow.mmd
+vi $HOME/pinephone-emulator/nuttx-boot-flow.mmd
+
+## Convert the Mermaid Output to PDF
+sudo docker pull minlag/mermaid-cli
+sudo docker run \
   --rm -u `id -u`:`id -g` -v \
   $HOME/pinephone-emulator:/data minlag/mermaid-cli \
   --configFile=&quot;mermaidRenderConfig.json&quot; \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
 
-## Or change &quot;.pdf&quot; to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
-<p>TODO</p>
+## Or change &quot;.pdf&quot; above to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
+<p><a href="TODO">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
+<p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
+<p>We haven’t emulated the <strong>PL011 UART Peripheral</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday!</p>
+<p><em>That will keep us busy for a loooong while?</em></p>
+<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="TODO"><strong>arm64_mmu.c</strong></a> look like? Might be super interesting to take a peek at the Alternative Version of <em>arm64_mmu.c</em>!</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
