@@ -400,7 +400,7 @@ Bit 32</code></pre></div>
 </ul>
 <p>We’re ready to run the demo…</p>
 <h1 id="run-the-mmu-demo"><a class="doc-anchor" href="#run-the-mmu-demo">§</a>6 Run the MMU Demo</h1>
-<p>This is how we run the MMU Demo in <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>This is how we run the MMU Demo in <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L451">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for our MMU Demo, based on https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
 // Disassembly: https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L556-L583
@@ -436,7 +436,7 @@ emu.mem_write(
   ADDRESS, 
   <span class="kw-2">&amp;</span>arm64_code
 ).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
-<p>We populate the <a href="https://lupyuen.github.io/articles/unicorn3#level-1-page-table"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>We populate the <a href="https://lupyuen.github.io/articles/unicorn3#level-1-page-table"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L451-L503">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Generate the Page Table Entries...
 // Page Table Entry @ 0x1000: 0x0000_0741
@@ -464,7 +464,7 @@ emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span
 // Data @ 0x1030: 0xFFFF_FFFF
 // Data @ 0x1038: 0x8000_0000
 </span>...</code></pre></div>
-<p>To Verify MMU Demo: We <strong>Fill the Physical Memory</strong> with <em>0x44</em> then <em>0x88</em> then <em>0xCC</em>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>To Verify MMU Demo: We <strong>Fill the Physical Memory</strong> with <em>0x44</em> then <em>0x88</em> then <em>0xCC</em>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
 </span><span class="kw">let </span><span class="kw-2">mut </span>data:  [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
@@ -480,7 +480,7 @@ emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1
   data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
 emu.mem_map_ptr(<span class="number">0xc0000000</span>, <span class="number">0x1000</span>, Permission::READ,
   data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();</code></pre></div>
-<p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L565">main.rs</a></p>
+<p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L519-L539">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Start the Unicorn Emulator
 </span><span class="kw">let </span>err = emu.emu_start(<span class="number">0</span>, <span class="number">0x44</span>, <span class="number">0</span>, <span class="number">0</span>);
@@ -496,7 +496,8 @@ emu.mem_map_ptr(<span class="number">0xc0000000</span>, <span class="number">0x1
 <span class="macro">assert!</span>(x1 == <span class="number">0x4444444444444444</span>);
 <span class="macro">assert!</span>(x2 == <span class="number">0x4444444444444444</span>);</code></pre></div>
 <p>And it works!</p>
-<div class="example-wrap"><pre class="language-text"><code>err=Ok(())
+<div class="example-wrap"><pre class="language-bash"><code>## Registers X0, X1 and X2
+err=Ok(())
 x0=0x80000000
 x1=0x4444444444444444
 x2=0x4444444444444444</code></pre></div>
@@ -881,7 +882,7 @@ sudo docker run \
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow3.png" alt="Unicorn is stuck forever in PL011 UART Driver" /></p>
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
 <p>We haven’t emulated the <strong>PL011 UART Hardware</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday!</p>
-<p><em>That will keep us busy for a loooong while?</em></p>
+<p><em>That should keep us busy for a loooong while?</em></p>
 <p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be super fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em>.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
