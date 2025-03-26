@@ -117,7 +117,7 @@
 <p>But in reality: They’re System RAM recycled from boring old addresses <em>(like 0x40A0_4000)</em></p>
 </li>
 </ul>
-<p>If we don’t configure MMU with the correct <strong>Memory Map</strong>…</p>
+<p>If we don’t configure MMU correctly…</p>
 <ul>
 <li>
 <p><strong>NuttX Kernel</strong> won’t boot: <em>“Help! I can’t access my Kernel Code and Data!”</em></p>
@@ -126,7 +126,7 @@
 <p><strong>NuttX Apps</strong> won’t run: <em>“Whoops where’s the App Code and Data that Kernel promised?”</em></p>
 </li>
 </ul>
-<p>Let’s go deeper inside MMU…</p>
+<p>We dive deeper inside MMU…</p>
 <h1 id="memory-management-unit"><a class="doc-anchor" href="#memory-management-unit">§</a>1 Memory Management Unit</h1>
 <p><em>Ah so MMU will allow this switcheroo business? (Pic above)</em></p>
 <ol>
