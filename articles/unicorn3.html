@@ -372,7 +372,7 @@ isb</code></pre></div>
 <span class="comment">// Flush the Data Cache and Instruction Cache
 </span>dsb SY ; isb</code></pre></div>
 <p><em>SCTLR_EL1 is for?</em></p>
-<p>The <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register</strong></a> for Exception Level 1. We set these bits to <strong>Enable the MMU with Caching</strong>…</p>
+<p>The <a href="https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register</strong></a> in Exception Level 1. We set these bits to <strong>Enable the MMU with Caching</strong>…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-sctlr.png" alt="System Control Register" /></p>
 <ul>
 <li>
@@ -401,24 +401,24 @@ isb</code></pre></div>
   <span class="number">0xd5</span>, <span class="number">0x1f</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xd5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>, <span class="number">0x1F</span>, <span class="number">0x20</span>, <span class="number">0x03</span>, <span class="number">0xD5</span>,       
 ];
 
-<span class="comment">// Init Emulator in Arm64 mode
+<span class="comment">// Init the Emulator in Arm64 mode
 </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
   Arch::ARM64,
   Mode::LITTLE_ENDIAN
 ).expect(<span class="string">"failed to init Unicorn"</span>);
 
-<span class="comment">// Enable MMU Translation
+<span class="comment">// Enable the MMU Translation
 </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
 emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
 
-<span class="comment">// Map Read/Write/Execute Memory at 0x0000 0000
+<span class="comment">// Map the Read/Write/Execute Memory at 0x0000 0000
 </span>emu.mem_map(
   <span class="number">0</span>,       <span class="comment">// Address
   </span><span class="number">0x2000</span>,  <span class="comment">// Size
   </span>Permission::ALL  <span class="comment">// Read/Write/Execute Access
 </span>).expect(<span class="string">"failed to map memory"</span>);
 
-<span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
+<span class="comment">// Write the Arm64 Machine Code to the emulated Executable Memory
 </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0</span>;
 emu.mem_write(
   ADDRESS, 
@@ -744,7 +744,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
 <p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware.</p>
 <p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
-<p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>. Thanks to Unicorn, we learnt so much about <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> today! One more fun thing to do…</p>
+<p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>. Thanks to Unicorn, we learnt so much about <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a>! One more fun thing to do…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
 <h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
@@ -788,7 +788,7 @@ sudo docker run \
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
 <p>We haven’t emulated the <strong>PL011 UART Hardware</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday! (Pic above)</p>
 <p><em>That should keep us busy for a loooong while?</em></p>
-<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em> 🤔</p>
+<p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em> 🤔</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
