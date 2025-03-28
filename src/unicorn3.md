@@ -22,9 +22,9 @@ Today we decipher the code inside the __Arm64 MMU Demo__, figure out how it work
 
 - Thanks to Unicorn: We render a detailed __NuttX Boot Flow__
 
-TODO: Pic of MMU
+![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
 
-_What's this MMU again?_
+_What's this MMU again? (Pic above)_
 
 We need the Arm64 __Memory Management Unit__ for...
 
@@ -48,13 +48,13 @@ _Ah so MMU will allow this switcheroo business?_
 
 1.  __MMU is Disabled__ initially
 
-    TODO: Pic before MMU
+    ![Without MMU](https://lupyuen.org/images/unicorn3-mmu2.jpg)
 
 1.  We read from __Physical Address__ _0x4000_0000_
 
 1.  __Enable the MMU__: Map Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_
 
-    TODO: Pic of Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_, 0x4444
+    ![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
 
 1.  We read from __Virtual Address__ _0x8000_0000_
 
