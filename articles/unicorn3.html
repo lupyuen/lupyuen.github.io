@@ -777,7 +777,7 @@ hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/
 call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
-<p>That’s because our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> (pic above) as a Mermaid Flowchart…</p>
+<p>That’s because our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> (pic above) as a Clickable Mermaid Flowchart…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf"><strong>Download the PDF</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png"><strong>PNG</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg"><strong>SVG</strong></a></li>
 </ul>
@@ -948,7 +948,7 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9"><strong>Added MMU Logging</strong></a></p>
-<p><em>(See arch/arm64/src/common/arm64_mmu.c)</em></p>
+<p><em>(Lotsa logs in arch/arm64/src/common/arm64_mmu.c)</em></p>
 </li>
 <li>
 <p>The changes above: Could they contribute to NuttX booting successfully on Unicorn? It’s possible, we might have missed something.</p>
