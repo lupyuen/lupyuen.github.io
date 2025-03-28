@@ -835,7 +835,7 @@ call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
 
-That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Mermaid Flowchart...
+That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Clickable Mermaid Flowchart...
 
 - [__Download the PDF__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf) / [__PNG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png) / [__SVG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg)
 
@@ -1030,7 +1030,7 @@ Here's the [__Complete List of Changes__](https://github.com/lupyuen2/wip-nuttx/
 
 1.  [__Added MMU Logging__](https://github.com/lupyuen2/wip-nuttx/pull/102/files#diff-230f2ffd9be0a8ce48d4c9fb79df8f003b0c31fa0a18b6c0876ede5b4e334bb9)
 
-    _(See arch/arm64/src/common/arm64_mmu.c)_
+    _(Lotsa logs in arch/arm64/src/common/arm64_mmu.c)_
 
 1.  The changes above: Could they contribute to NuttX booting successfully on Unicorn? It's possible, we might have missed something.
 
