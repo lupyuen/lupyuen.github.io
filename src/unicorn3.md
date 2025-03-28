@@ -4,9 +4,9 @@
 
 ![A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!](https://lupyuen.org/images/unicorn3-title.png)
 
-A Demo of __Arm64 Memory Management Unit__ (MMU)... in [__18 Lines of Arm64 Assembly__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583)! _(Pic above)_
+Spotted in [__Unicorn Emulator__](https://www.unicorn-engine.org/): A Demo of __Arm64 Memory Management Unit__ (MMU)... in [__18 Lines of Arm64 Assembly__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583)! _(Pic above)_
 
-This fascinating demo comes from [__Unicorn Emulator__](https://www.unicorn-engine.org/). In today's article, we decipher the code inside the __Arm64 MMU Demo__, figure out how it works. And we explain why it's super helpful for emulating [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html), compiled for Arm64 SBCs...
+Today we decipher the code inside the __Arm64 MMU Demo__, figure out how it works. Which turns out to be surprisingly helpful for emulating [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html), compiled for Arm64 SBCs...
 
 - We look inside the __Page Tables__ and __Control Registers__ for MMU Demo
 
