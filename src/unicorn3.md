@@ -119,8 +119,8 @@ Indeed! That's precisely what our [__MMU Demo__](https://github.com/lupyuen/pine
 
     ```rust
     // Register X1 == Register X2
-    x1=0x4444_4444_4444_4444
-    x2=0x4444_4444_4444_4444
+    x1 = 0x4444_4444_4444_4444
+    x2 = 0x4444_4444_4444_4444
     ```
 
 Yeah the steps for _"Map Virtual Address"_ and _"Enable The MMU"_ are extremely cryptic. We break them down...
@@ -299,21 +299,6 @@ That's the [__Translation Control Register__](https://developer.arm.com/document
   [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
 
   [_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
-
-```text
-a=0x180803F20n
-for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
-Bit 5
-Bit 8
-Bit 9
-Bit 10
-Bit 11
-Bit 12
-Bit 13
-Bit 23
-Bit 31
-Bit 32
-```
 
 _What about MAIR?_
 
@@ -708,21 +693,6 @@ Hmmm something looks different...
 [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
 
 [_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
-
-```text
-a=0x18080351Cn
-for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
-Bit 2
-Bit 3
-Bit 4
-Bit 8
-Bit 10
-Bit 12
-Bit 13
-Bit 23
-Bit 31
-Bit 32
-```
 
 # NuttX vs MMU Demo
 
