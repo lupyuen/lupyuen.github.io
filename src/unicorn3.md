@@ -20,7 +20,7 @@ Today we decipher the code inside the __Arm64 MMU Demo__, figure out how it work
 
 - Soon we'll have a Unicorn Emulator for __Avaota-A1 SBC__
 
-- Thanks to Unicorn: We rendered a detailed __NuttX Boot Flow__
+- Thanks to Unicorn: We render a detailed __NuttX Boot Flow__
 
 TODO: Pic of MMU
 
