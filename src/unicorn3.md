@@ -298,7 +298,7 @@ That's the [__Translation Control Register__](https://developer.arm.com/document
 
   [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
 
-  [_(Decoding the Bits with JavaScript)_](TODO)
+  [_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
 
 ```text
 a=0x180803F20n
@@ -786,7 +786,7 @@ Hmmm something looks different...
 
 [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
 
-[_(Decoding the Bits with JavaScript)_](TODO)
+[_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
 
 ```text
 a=0x18080351Cn
@@ -891,13 +891,13 @@ Needs More Investigation: Maybe NuttX didn't populate the Page Tables completely
 
 For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!
 
-_After switching to 32-bit Virtual Address: Any change to the Page Tables?_
-
-TODO: Any change to Page Tables
-
 _Why are we doing all this: NuttX on Unicorn?_
 
 We're about to create a __NuttX Emulator__ for [__Avaota-A1 Arm64 SBC__](https://lupyuen.github.io/articles/avaota) (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware.
+
+_After switching to 32-bit Virtual Address: Any change to the Page Tables?_
+
+The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884).
 
 ![NuttX Boot Flow](https://lupyuen.org/images/unicorn3-bootflow.jpg)
 
@@ -1055,7 +1055,7 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 
 [(After Fix: Unicorn Log)](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20)
 
-[(After Fix: QEMU Log)](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e)
+[(After Fix: QEMU Log)](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884)
 
 __For QEMU Testing:__ Enable MMU Logging by uncommenting the lines below.
 
@@ -1125,7 +1125,7 @@ Here's a nifty tricky to __Decode The Bits__ for our Arm64 MMU Registers...
 
     Click _Menu > More Tools > Developer Tools_
 
-1.  To decode _0x1\_8080\_3F20_, we enter this...
+1.  To decode _0x1\_8080\_3F20_ for MMU Demo, we enter this...
 
     ```javascript
     a=0x180803F20n
@@ -1147,7 +1147,7 @@ Here's a nifty tricky to __Decode The Bits__ for our Arm64 MMU Registers...
     Bit 32
     ```
 
-1.  To decode _0x1\_8080\_351C_, we enter this...
+1.  To decode _0x1\_8080\_351C_ for NuttX QEMU, we enter this...
 
     ```javascript
     a=0x18080351Cn
