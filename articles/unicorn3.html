@@ -200,8 +200,8 @@ isb</code></pre></div>
 <p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Register X1 == Register X2
-</span>x1=<span class="number">0x4444_4444_4444_4444
-</span>x2=<span class="number">0x4444_4444_4444_4444</span></code></pre></div>
+</span>x1 = <span class="number">0x4444_4444_4444_4444
+</span>x2 = <span class="number">0x4444_4444_4444_4444</span></code></pre></div>
 </li>
 </ol>
 <p>Yeah the steps for <em>“Map Virtual Address”</em> and <em>“Enable The MMU”</em> are extremely cryptic. We break them down…</p>
@@ -349,18 +349,6 @@ isb</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>a=0x180803F20n
-for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }
-Bit 5
-Bit 8
-Bit 9
-Bit 10
-Bit 11
-Bit 12
-Bit 13
-Bit 23
-Bit 31
-Bit 32</code></pre></div>
 <p><em>What about MAIR?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// MAIR_EL1 becomes 0xFFFF_FFFF
@@ -688,18 +676,7 @@ enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
 <p>Hmmm something looks different…</p>
 <p><a href="https://lupyuen.github.io/articles/unicorn3#page-table-entry"><em>(We spoke about Innies and Outies earlier)</em></a></p>
 <p><a href="https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript"><em>(Decoding the Bits with JavaScript)</em></a></p>
-<div class="example-wrap"><pre class="language-text"><code>a=0x18080351Cn
-for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }
-Bit 2
-Bit 3
-Bit 4
-Bit 8
-Bit 10
-Bit 12
-Bit 13
-Bit 23
-Bit 31
-Bit 32</code></pre></div><h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
+<h1 id="nuttx-vs-mmu-demo"><a class="doc-anchor" href="#nuttx-vs-mmu-demo">§</a>10 NuttX vs MMU Demo</h1>
 <p><em>MMU Demo works OK, but NuttX doesn’t. How are they different?</em></p>
 <p>Based on the info above, we compare <strong>NuttX vs MMU Demo</strong> for the Translation Control Register…</p>
 <p>
