@@ -78,7 +78,8 @@
 <li><a href="#32-bits-of-virtual-address" title="32 Bits of Virtual Address">11 32 Bits of Virtual Address</a><ul></ul></li>
 <li><a href="#nuttx-boot-flow" title="NuttX Boot Flow">12 NuttX Boot Flow</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
+<li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li>
+<li><a href="#appendix-decoding-the-bits-with-javascript" title="Appendix: Decoding the Bits with JavaScript">15 Appendix: Decoding the Bits with JavaScript</a><ul></ul></li></ul></nav><p>📝 <em>9 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!" /></p>
 <p>Spotted in <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>: A Demo of <strong>Arm64 Memory Management Unit</strong> (MMU)… in <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>Today we decipher the code inside the <strong>Arm64 MMU Demo</strong>, figure out how it works. Which turns out to be surprisingly helpful for emulating <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, compiled for Arm64 SBCs…</p>
@@ -1030,6 +1031,48 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">(After Fix: See the Modified Files)</a></p>
 </li>
 </ol>
+<h1 id="appendix-decoding-the-bits-with-javascript"><a class="doc-anchor" href="#appendix-decoding-the-bits-with-javascript">§</a>15 Appendix: Decoding the Bits with JavaScript</h1>
+<p>Here’s a nifty tricky to <strong>Decode The Bits</strong> for our Arm64 MMU Registers…</p>
+<ol>
+<li>
+<p>In our <strong>Web Browser</strong>, launch the <strong>JavaScript Console</strong>…</p>
+<p>Click <em>Menu &gt; More Tools &gt; Developer Tools</em></p>
+</li>
+<li>
+<p>To decode <em>0x1_8080_3F20</em>, we enter this…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>a=0x180803F20n
+for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }</code></pre></div></li>
+<li>
+<p>We’ll see the <strong>Decoded Bits</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Bit 5
+Bit 8
+Bit 9
+Bit 10
+Bit 11
+Bit 12
+Bit 13
+Bit 23
+Bit 31
+Bit 32</code></pre></div></li>
+<li>
+<p>To decode <em>0x1_8080_351C</em>, we enter this…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>a=0x18080351Cn
+for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }</code></pre></div></li>
+<li>
+<p>And we’ll see the <strong>Decoded Bits</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Bit 2
+Bit 3
+Bit 4
+Bit 8
+Bit 10
+Bit 12
+Bit 13
+Bit 23
+Bit 31
+Bit 32</code></pre></div></li>
+</ol>
+<p><em>Why the “n”?</em></p>
+<p>The <strong>“<code>n</code>”</strong> suffix will enable <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt"><strong>BigInt Support</strong></a> in JavaScript. Without this, our Decoded Bits will overflow.</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
