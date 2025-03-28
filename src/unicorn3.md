@@ -1116,3 +1116,59 @@ Here's the [__Complete List of Changes__](https://github.com/lupyuen2/wip-nuttx/
     [(Before Fix: See the Modified Files)](https://github.com/lupyuen2/wip-nuttx/pull/103/files)
 
     [(After Fix: See the Modified Files)](https://github.com/lupyuen2/wip-nuttx/pull/102/files)
+
+# Appendix: Decoding the Bits with JavaScript
+
+Here's a nifty tricky to __Decode The Bits__ for our Arm64 MMU Registers...
+
+1.  In our __Web Browser__, launch the __JavaScript Console__...
+
+    Click _Menu > More Tools > Developer Tools_
+
+1.  To decode _0x1\_8080\_3F20_, we enter this...
+
+    ```javascript
+    a=0x180803F20n
+    for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
+    ```
+
+1.  We'll see the __Decoded Bits__...
+
+    ```bash
+    Bit 5
+    Bit 8
+    Bit 9
+    Bit 10
+    Bit 11
+    Bit 12
+    Bit 13
+    Bit 23
+    Bit 31
+    Bit 32
+    ```
+
+1.  To decode _0x1\_8080\_351C_, we enter this...
+
+    ```javascript
+    a=0x18080351Cn
+    for (i = 0n; i < 63n; i++) { if (a & (1n << i)) { console.log(`Bit ${i}`); } }
+    ```
+
+1.  And we'll see the __Decoded Bits__...
+
+    ```bash
+    Bit 2
+    Bit 3
+    Bit 4
+    Bit 8
+    Bit 10
+    Bit 12
+    Bit 13
+    Bit 23
+    Bit 31
+    Bit 32
+    ```
+
+_Why the "n"?_
+
+The __"`n`"__ suffix will enable [__BigInt Support__](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) in JavaScript. Without this, our Decoded Bits will overflow.
