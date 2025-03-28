@@ -346,7 +346,7 @@ isb</code></pre></div>
 <li>
 <p>Thus our MMU shall map <strong>32-bit Virtual Addresses</strong> into <strong>36-bit Physical Addresses</strong>. Each Physical Address points to a <strong>4 KB Memory Page</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/unicorn3#page-table-entry"><em>(We spoke about Innies and Outies earlier)</em></a></p>
-<p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript"><em>(Decoding the Bits with JavaScript)</em></a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>a=0x180803F20n
@@ -762,7 +762,7 @@ enable_mmu_el1: ttbr0_el1 = 0x402B_2000</code></pre></div>
 </ul>
 <p>Hmmm something looks different…</p>
 <p><a href="https://lupyuen.github.io/articles/unicorn3#page-table-entry"><em>(We spoke about Innies and Outies earlier)</em></a></p>
-<p><a href="TODO"><em>(Decoding the Bits with JavaScript)</em></a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript"><em>(Decoding the Bits with JavaScript)</em></a></p>
 <div class="example-wrap"><pre class="language-text"><code>a=0x18080351Cn
 for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }
 Bit 2
@@ -839,10 +839,10 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?</em></p>
 <p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
-<p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
-<p>TODO: Any change to Page Tables</p>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
 <p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware.</p>
+<p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
+<p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>.</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
 <h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
@@ -976,7 +976,7 @@ git clone https://github.com/lupyuen2/wip-nuttx nuttx \
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
   --branch unicorn-qemu</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20">(After Fix: Unicorn Log)</a></p>
-<p><a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e">(After Fix: QEMU Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884">(After Fix: QEMU Log)</a></p>
 <p><strong>For QEMU Testing:</strong> Enable MMU Logging by uncommenting the lines below.</p>
 <p><strong>For Unicorn Emulator:</strong> Don’t enable MMU Logging, because the PL011 UART Driver will get stuck. Comment out the lines below.</p>
 <p>From <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c#L54-L61">arch/arm64/src/common/arm64_mmu.c</a>:</p>
@@ -1039,7 +1039,7 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 <p>Click <em>Menu &gt; More Tools &gt; Developer Tools</em></p>
 </li>
 <li>
-<p>To decode <em>0x1_8080_3F20</em>, we enter this…</p>
+<p>To decode <em>0x1_8080_3F20</em> for MMU Demo, we enter this…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>a=0x180803F20n
 for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }</code></pre></div></li>
 <li>
@@ -1055,7 +1055,7 @@ Bit 23
 Bit 31
 Bit 32</code></pre></div></li>
 <li>
-<p>To decode <em>0x1_8080_351C</em>, we enter this…</p>
+<p>To decode <em>0x1_8080_351C</em> for NuttX QEMU, we enter this…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>a=0x18080351Cn
 for (i = 0n; i &lt; 63n; i++) { if (a &amp; (1n &lt;&lt; i)) { console.log(`Bit ${i}`); } }</code></pre></div></li>
 <li>
