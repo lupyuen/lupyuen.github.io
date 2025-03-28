@@ -750,16 +750,15 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>call_graph:  enable_mmu_el1 --&gt; setup_page_tables
 call_graph:  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
-hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:608:3
 call_graph:  setup_page_tables --&gt; enable_mmu_el1
 call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot; _blank
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
-<p>That’s because our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> (pic above) as a Clickable Mermaid Flowchart, that describes how NuttX boots on Arm64…</p>
+<p>That’s because our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> (pic above) as a Clickable Mermaid Flowchart. It describes how NuttX boots on Arm64…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf"><strong>Download the PDF</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png"><strong>PNG</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg"><strong>SVG</strong></a></li>
 </ul>
 <p>Here are the steps to produce the <strong>Mermaid Flowchart</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Flowchart.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
 cd $HOME/pinephone-emulator
@@ -769,7 +768,7 @@ cargo run | grep call_graph | colrm 1 13 \
 ## Omitted: Clean up the bad syntax in nuttx-boot-flow.mmd
 vi $HOME/pinephone-emulator/nuttx-boot-flow.mmd
 
-## Convert the Mermaid Output to PDF
+## Convert the Mermaid Flowchart to PDF
 sudo docker pull minlag/mermaid-cli
 sudo docker run \
   --rm -u `id -u`:`id -g` -v \
@@ -778,7 +777,7 @@ sudo docker run \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
 
-## Or change &quot;.pdf&quot; above to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
+## Then change &quot;.pdf&quot; above to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
 <p><a href="https://raw.githubusercontent.com/lupyuen/pinephone-emulator/refs/heads/qemu/nuttx-boot-flow.mmd">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
 <p>How did we create the Mermaid Flowchart? Check the details here…</p>
 <ul>
