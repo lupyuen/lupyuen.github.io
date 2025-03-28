@@ -532,8 +532,8 @@ qemu-system-aarch64 \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx
 
-## But NuttX crashes in Unicorn Emulator.
-## Remember to Disable MMU Logging.
+## But NuttX crashes in Unicorn Emulator (Remember to Disable MMU Logging)
+## Here&#39;s the funny thing: Unicorn is actually based on QEMU!
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
 cp nuttx.bin nuttx.S \
