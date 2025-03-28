@@ -818,7 +818,7 @@ We're about to create a __NuttX Emulator__ for [__Avaota-A1 Arm64 SBC__](https:/
 
 _After switching to 32-bit Virtual Address: Any change to the Page Tables?_
 
-The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884).
+The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884). Thanks to Unicorn, we learnt so much about [__arm64_mmu.c__](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c) today! One more fun thing to do...
 
 ![NuttX Boot Flow](https://lupyuen.org/images/unicorn3-bootflow.jpg)
 
