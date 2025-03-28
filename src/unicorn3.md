@@ -332,7 +332,7 @@ dsb SY ; isb
 
 _SCTLR_EL1 is for?_
 
-The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) for Exception Level 1. We set these bits to __Enable the MMU with Caching__...
+The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) in Exception Level 1. We set these bits to __Enable the MMU with Caching__...
 
 ![System Control Register](https://lupyuen.org/images/unicorn3-sctlr.png)
 
@@ -362,24 +362,24 @@ let arm64_code = [
   0xd5, 0x1f, 0x20, 0x03, 0xd5, 0x1F, 0x20, 0x03, 0xD5, 0x1F, 0x20, 0x03, 0xD5,       
 ];
 
-// Init Emulator in Arm64 mode
+// Init the Emulator in Arm64 mode
 let mut unicorn = Unicorn::new(
   Arch::ARM64,
   Mode::LITTLE_ENDIAN
 ).expect("failed to init Unicorn");
 
-// Enable MMU Translation
+// Enable the MMU Translation
 let emu = &mut unicorn;
 emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
 
-// Map Read/Write/Execute Memory at 0x0000 0000
+// Map the Read/Write/Execute Memory at 0x0000 0000
 emu.mem_map(
   0,       // Address
   0x2000,  // Size
   Permission::ALL  // Read/Write/Execute Access
 ).expect("failed to map memory");
 
-// Write Arm64 Machine Code to emulated Executable Memory
+// Write the Arm64 Machine Code to the emulated Executable Memory
 const ADDRESS: u64 = 0;
 emu.mem_write(
   ADDRESS, 
@@ -788,7 +788,7 @@ We're about to create a __NuttX Emulator__ for [__Avaota-A1 Arm64 SBC__](https:/
 
 _After switching to 32-bit Virtual Address: Any change to the Page Tables?_
 
-The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884). Thanks to Unicorn, we learnt so much about [__arm64_mmu.c__](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c) today! One more fun thing to do...
+The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884). Thanks to Unicorn, we learnt so much about [__arm64_mmu.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c)! One more fun thing to do...
 
 ![NuttX Boot Flow](https://lupyuen.org/images/unicorn3-bootflow.jpg)
 
@@ -848,7 +848,7 @@ We haven't emulated the __PL011 UART Hardware__, that's why Unicorn is looping f
 
 _That should keep us busy for a loooong while?_
 
-One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c) look like? Might be fun to take a peek at the Alternate Version of _arm64_mmu.c_ 🤔
+One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c) look like? Might be fun to take a peek at the Alternate Version of _arm64_mmu.c_ 🤔
 
 # What's Next
 
