@@ -767,7 +767,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
 <p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware.</p>
 <p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
-<p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>.</p>
+<p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>. Thanks to Unicorn, we learnt so much about <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> today! One more fun thing to do…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
 <h1 id="nuttx-boot-flow"><a class="doc-anchor" href="#nuttx-boot-flow">§</a>12 NuttX Boot Flow</h1>
 <p><em>Inside the Unicorn Log: Why the funny arrows?</em></p>
