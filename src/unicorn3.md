@@ -835,7 +835,7 @@ call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
 
-That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Clickable Mermaid Flowchart...
+That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Clickable Mermaid Flowchart, that describes how NuttX boots on Arm64...
 
 - [__Download the PDF__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf) / [__PNG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png) / [__SVG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg)
 
