@@ -799,20 +799,19 @@ _Inside the Unicorn Log: Why the funny arrows?_
 ```bash
 call_graph:  enable_mmu_el1 --> setup_page_tables
 call_graph:  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L616" "arch/arm64/src/common/arm64_mmu.c " _blank
-hook_block:  address=0x40280614, size=16, enable_mmu_el1, arch/arm64/src/common/arm64_mmu.c:608:3
 call_graph:  setup_page_tables --> enable_mmu_el1
 call_graph:  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L546" "arch/arm64/src/common/arm64_mmu.c " _blank
 call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 ```
 
-That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Clickable Mermaid Flowchart, that describes how NuttX boots on Arm64...
+That's because our Unicorn Emulator renders the __NuttX Boot Flow__ (pic above) as a Clickable Mermaid Flowchart. It describes how NuttX boots on Arm64...
 
 - [__Download the PDF__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf) / [__PNG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png) / [__SVG__](https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg)
 
 Here are the steps to produce the __Mermaid Flowchart__...
 
 ```bash
-## Boot NuttX in Unicorn Emulator. Capture the Mermaid Output.
+## Boot NuttX in Unicorn Emulator. Capture the Mermaid Flowchart.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
 cd $HOME/pinephone-emulator
@@ -822,7 +821,7 @@ cargo run | grep call_graph | colrm 1 13 \
 ## Omitted: Clean up the bad syntax in nuttx-boot-flow.mmd
 vi $HOME/pinephone-emulator/nuttx-boot-flow.mmd
 
-## Convert the Mermaid Output to PDF
+## Convert the Mermaid Flowchart to PDF
 sudo docker pull minlag/mermaid-cli
 sudo docker run \
   --rm -u `id -u`:`id -g` -v \
@@ -831,7 +830,7 @@ sudo docker run \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
 
-## Or change ".pdf" above to ".png" or ".svg"
+## Then change ".pdf" above to ".png" or ".svg"
 ```
 
 [(__nuttx-boot-flow.mmd__ is here)](https://raw.githubusercontent.com/lupyuen/pinephone-emulator/refs/heads/qemu/nuttx-boot-flow.mmd)
