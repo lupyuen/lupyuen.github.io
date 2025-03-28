@@ -1,6 +1,6 @@
 # Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS
 
-📝 _9 Apr 2025_
+📝 _30 Mar 2025_
 
 ![A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!](https://lupyuen.org/images/unicorn3-title.png)
 
@@ -657,85 +657,6 @@ According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097
 Why Two Levels? Because we're mapping __8 MB of RAM__, instead of a Complete 1 GB Chunk. Thus we break up into Level 2 with __Smaller 2 MB Chunks__...
 
 ![Level 2 Page Table for NuttX](https://lupyuen.org/images/unicorn3-table3.jpg)
-
-TODO: [Before Fix: QEMU Log](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884)
-
-```bash
-arm64_mmu_init: base table(L1): 0x402b2000, 64 entries
-arm64_mmu_init: xlat table #0: 0x402b1000
-
-init_xlat_tables: mmap: virt 0 phys 0 size 0x40000000
-set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
-set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
-set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_OUTER_SHAR=2
-set_pte_block_desc: Bit 53:    PTE_BLOCK_DESC_PXN=1
-set_pte_block_desc: Bit 54:    PTE_BLOCK_DESC_UXN=1
-set_pte_block_desc: addr_pa=0
-set_pte_block_desc: level=1
-set_pte_block_desc: pte=0x402b2000
-set_pte_block_desc: mem_type=DEV
-set_pte_block_desc: Bit 03:    MT_RW=RW
-set_pte_block_desc: Bit 04:    MT_NS=S
-set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
-set_pte_block_desc: PTE @ 0x402b2000 set to desc=0x60000000000601
-
-init_xlat_tables: mmap: virt 0x40000000 phys 0x40000000 size 0x8000000
-set_pte_table_desc:   
-set_pte_table_desc: 0x402b2008: [Table] 0x402b1000
-set_pte_table_desc: PTE @ 0x402b2008 points to Xlat Table 0x402b1000
-set_pte_table_desc: Bit 00-01: PTE_TABLE_DESC=3
-
-set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
-set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
-set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-set_pte_block_desc: addr_pa=0x40000000
-set_pte_block_desc: level=2
-set_pte_block_desc: pte=0x402b1000
-set_pte_block_desc: mem_type=MEM
-set_pte_block_desc: Bit 03:    MT_RW=RW
-set_pte_block_desc: Bit 04:    MT_NS=S
-set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
-set_pte_block_desc: PTE @ 0x402b1000 set to desc=0x40000711
-
-set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
-set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
-set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-set_pte_block_desc: addr_pa=0x40200000
-set_pte_block_desc: level=2
-set_pte_block_desc: pte=0x402b1008
-set_pte_block_desc: mem_type=MEM
-set_pte_block_desc: Bit 03:    MT_RW=RW
-set_pte_block_desc: Bit 04:    MT_NS=S
-set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
-set_pte_block_desc: PTE @ 0x402b1008 set to desc=0x40200711
-
-set_pte_block_desc: Bit 00-01: PTE_BLOCK_DESC=1
-set_pte_block_desc: Bit 10:    PTE_BLOCK_DESC_AF=1
-set_pte_block_desc: Bit 08-09: PTE_BLOCK_DESC_INNER_SHARE=3
-set_pte_block_desc: addr_pa=0x40400000
-set_pte_block_desc: level=2
-set_pte_block_desc: pte=0x402b1010
-set_pte_block_desc: mem_type=MEM
-set_pte_block_desc: Bit 03:    MT_RW=RW
-set_pte_block_desc: Bit 04:    MT_NS=S
-set_pte_block_desc: Bit 05:    MT_EXECUTE_NEVER=EXEC
-set_pte_block_desc: PTE @ 0x402b1010 set to desc=0x40400711
-...
-get_tcr: va_bits: 0x24
-get_tcr: Bit 32-33: TCR_EL1_IPS=1
-get_tcr: Bit 23:    TCR_EPD1_DISABLE=1
-get_tcr: Bit 00-05: TCR_T0SZ=0x1c
-get_tcr: Bit 08-09: TCR_IRGN_WBWA=1
-get_tcr: Bit 10-11: TCR_ORGN_WBWA=1
-get_tcr: Bit 12-13: TCR_SHARED_INNER=3
-get_tcr: Bit 14-15: TCR_TG0_4K=0
-get_tcr: Bit 30-31: TCR_TG1_4K=2
-get_tcr: Bit 37-38: TCR_TBI_FLAGS=0
-
-enable_mmu_el1: tcr_el1=0x18080351c
-enable_mmu_el1: mair_el1=0xff440c0400
-enable_mmu_el1: ttbr0_el1=0x402b2000
-```
 
 Looks legit, we move on...
 

@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2025-03-30",
+      "website": "https://lupyuen.github.io/articles/unicorn3",
+      "summary": "Spotted in Unicorn Emulator: A Demo of Arm64 Memory Management Unit (MMU)... in 18 Lines of Arm64 Assembly! Today we decipher the code inside the Arm64 MMU Demo, figure out how it works. Which turns out to be surprisingly helpful for emulating Apache NuttX RTOS, compiled for Arm64 SBCs."
+    },
+    {
       "name": "Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-16",
