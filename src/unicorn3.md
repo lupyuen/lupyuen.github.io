@@ -18,9 +18,9 @@ Today we decipher the code inside the __Arm64 MMU Demo__, figure out how it work
 
 - Aha it's a problem with the __VM Addressable Size__!
 
-- Soon we'll have a Unicorn Emulator for __Avaota-A1 SBC__
-
 - Thanks to Unicorn: We render a detailed __NuttX Boot Flow__
+
+- Soon we'll have a Unicorn Emulator for __Avaota-A1 Arm64 SBC__
 
 ![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
 
@@ -345,6 +345,8 @@ The [__System Control Register__](https://developer.arm.com/documentation/ddi060
   [(NuttX defines them in __arm64_arch.h__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123)
 
 We're ready to run the demo...
+
+![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
 
 # Run the MMU Demo
 
