@@ -177,7 +177,7 @@ msr TTBR0_EL1, X0</code></pre></div>
 <li>
 <p><strong>Enable the MMU</strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Enable caches and the MMU
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Enable Caches and the MMU
 </span>mrs X0, SCTLR_EL1
 orr X0, X0, #<span class="number">0x1         </span><span class="comment">// M bit (MMU)
 </span>orr X0, X0, #(<span class="number">0x1 </span>&lt;&lt; <span class="number">2</span>)  <span class="comment">// C bit (data cache)
@@ -190,8 +190,8 @@ isb</code></pre></div>
 <li>
 <p>Read from <strong>Virtual Address</strong> <em>0x8000_0000</em></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read the same memory area through virtual address
-// Into Regiser X2
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Read the same Memory Area through Virtual Address
+// Into Register X2
 </span>ldr X0, =<span class="number">0x8000_0000
 </span>ldr X2, [X0]</code></pre></div>
 </li>
@@ -525,7 +525,7 @@ qemu-system-aarch64 \
 ## Here&#39;s the funny thing: Unicorn is actually based on QEMU!
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
-cp nuttx.bin nuttx.S \
+cp nuttx nuttx.bin nuttx.S \
   $HOME/pinephone-emulator/nuttx/
 cd $HOME/pinephone-emulator
 cargo run
@@ -743,7 +743,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
-<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware.</p>
+<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware. <a href="https://github.com/lupyuen/pinephone-emulator/blob/avaota/nuttx-boot-flow.pdf">(<strong>NuttX Boot Flow</strong> for Avaota-A1)</a></p>
 <p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
 <p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>. Thanks to Unicorn, we learnt so much about <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a>! One more fun thing to do…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
@@ -786,7 +786,7 @@ sudo docker run \
 </ul>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow3.png" alt="Unicorn is stuck forever in PL011 UART Driver" /></p>
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
-<p>We haven’t emulated the <strong>PL011 UART Hardware</strong>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday! (Pic above)</p>
+<p>We haven’t emulated the <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L70-L76"><strong>PL011 UART Hardware</strong></a>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday! (Pic above)</p>
 <p><em>That should keep us busy for a loooong while?</em></p>
 <p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em> 🤔</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
@@ -796,7 +796,7 @@ sudo docker run \
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=43517823"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
@@ -855,7 +855,7 @@ qemu-system-aarch64 \
 ## Remember to Disable MMU Logging.
 git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
   $HOME/pinephone-emulator
-cp nuttx.bin nuttx.S \
+cp nuttx nuttx.bin nuttx.S \
   $HOME/pinephone-emulator/nuttx/
 cd $HOME/pinephone-emulator
 cargo run
@@ -933,6 +933,7 @@ git clone https://github.com/lupyuen2/wip-nuttx-apps apps \
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/102/files">(After Fix: See the Modified Files)</a></p>
 </li>
 </ol>
+<p><strong>Update:</strong> Unicorn definitely needs <a href="https://github.com/lupyuen2/wip-nuttx/commit/cab2373720e615e6bf2539bbc444ddf23d6f673f"><strong>TCR_TG1_4K</strong></a>, otherwise MMU will fail. We verified with <a href="https://github.com/lupyuen2/wip-nuttx/commit/640084e1fb1692887266716ecda52dc7ea4bf8e0"><strong>Avaota-A1 Emulator</strong></a> on Unicorn. Which means we should patch NuttX too?</p>
 <h1 id="appendix-decoding-the-bits-with-javascript"><a class="doc-anchor" href="#appendix-decoding-the-bits-with-javascript">§</a>15 Appendix: Decoding the Bits with JavaScript</h1>
 <p>Here’s a nifty tricky to <strong>Decode The Bits</strong> for our Arm64 MMU Registers…</p>
 <ol>
