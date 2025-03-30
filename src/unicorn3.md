@@ -851,6 +851,10 @@ _That should keep us busy for a loooong while?_
 
 One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c) look like? Might be fun to take a peek at the Alternate Version of _arm64_mmu.c_ 🤔
 
+![Unicorn Emulator for Avaota-A1 SBC](https://lupyuen.org/images/unicorn3-avaota.jpg)
+
+[_Unicorn Emulator for Avaota-A1 SBC_](https://github.com/lupyuen/pinephone-emulator/tree/avaota)
+
 # What's Next
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
