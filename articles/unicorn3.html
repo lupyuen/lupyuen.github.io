@@ -81,7 +81,7 @@
 <li><a href="#appendix-simplified-nuttx-for-qemu" title="Appendix: Simplified NuttX for QEMU">14 Appendix: Simplified NuttX for QEMU</a><ul></ul></li>
 <li><a href="#appendix-decoding-the-bits-with-javascript" title="Appendix: Decoding the Bits with JavaScript">15 Appendix: Decoding the Bits with JavaScript</a><ul></ul></li></ul></nav><p>📝 <em>30 Mar 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn3-title.png" alt="A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!" /></p>
-<p>Spotted in <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>: A Demo of <strong>Arm64 Memory Management Unit</strong> (MMU)… in <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
+<p>Spotted in <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>: A Demo of <strong>Arm64 Memory Management Unit</strong> (MMU)… in <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L376-L583"><strong>18 Lines of Arm64 Assembly</strong></a>! <em>(Pic above)</em></p>
 <p>Today we decipher the code inside the <strong>Arm64 MMU Demo</strong>, figure out how it works. Which turns out to be surprisingly helpful for emulating <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, compiled for Arm64 SBCs…</p>
 <ul>
 <li>
@@ -149,7 +149,7 @@
 <p>Both reads produce <strong>the same value</strong></p>
 </li>
 </ol>
-<p>Indeed! That’s precisely what our <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583"><strong>MMU Demo</strong></a> above shall do…</p>
+<p>Indeed! That’s precisely what our <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L376-L583"><strong>MMU Demo</strong></a> above shall do…</p>
 <ol>
 <li>
 <p>Read from <strong>Physical Address</strong> <em>0x4000_0000</em></p>
@@ -196,7 +196,7 @@ isb</code></pre></div>
 </span>ldr X2, [X0]</code></pre></div>
 </li>
 <li>
-<p>Assuming that Physical Address <em>0x4000_0000</em> is filled with <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519"><em>44 44 44 44 …</em></a></p>
+<p>Assuming that Physical Address <em>0x4000_0000</em> is filled with <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L503-L519"><em>44 44 44 44 …</em></a></p>
 <p>Both reads will produce <a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0"><strong>the same value</strong></a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Register X1 == Register X2
@@ -250,9 +250,9 @@ isb</code></pre></div>
 </div></div>
 </p>
 <p><a href="https://gist.github.com/lupyuen/6c8cf74ee68a6f11ca61c2fa3c5573d0">(See the <strong>Unicorn Log</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L583">(And the <strong>Unicorn Code</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L376-L583">(And the <strong>Unicorn Code</strong>)</a></p>
 <p><em>What if we read from 0x4000_0000 AFTER enabling MMU? (Physical Address 0xC000_0000)</em></p>
-<p>We’ll see <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519"><em>CC CC CC CC…</em></a> because that’s how we populated Physical Address <em>0xC000_0000</em>. Yep our MMU can remap memory in fun convoluted ways.</p>
+<p>We’ll see <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L503-L519"><em>CC CC CC CC…</em></a> because that’s how we populated Physical Address <em>0xC000_0000</em>. Yep our MMU can remap memory in fun convoluted ways.</p>
 <p><em>Why map 0x0000_0000 to itself?</em></p>
 <p>Our code runs at <em>0x0000_0000</em>. If we don’t map <em>0x0000_0000</em> to itself, there won’t be no runway for our demo.</p>
 <p><em>For TTBR0_EL1: Why Exception Level 1?</em></p>
@@ -389,10 +389,10 @@ isb</code></pre></div>
 <p>We’re ready to run the demo…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-mmu.jpg" alt="Arm64 Memory Management Unit" /></p>
 <h1 id="run-the-mmu-demo"><a class="doc-anchor" href="#run-the-mmu-demo">§</a>6 Run the MMU Demo</h1>
-<p>This is how we run the MMU Demo in <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L376-L451">main.rs</a></p>
+<p>This is how we run the MMU Demo in <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L376-L451">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for our MMU Demo, based on https://github.com/unicorn-engine/unicorn/blob/master/tests/unit/test_arm64.c#L378-L486
-// Disassembly: https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L556-L583
+// Disassembly: https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L556-L583
 </span><span class="kw">let </span>arm64_code = [
   <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x01</span>, <span class="number">0x00</span>, <span class="number">0x40</span>, <span class="number">0xf9</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x40</span>, <span class="number">0x20</span>, <span class="number">0x18</span>,
   <span class="number">0xd5</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0x00</span>, <span class="number">0x58</span>, <span class="number">0x00</span>, <span class="number">0xa2</span>, <span class="number">0x18</span>, <span class="number">0xd5</span>, <span class="number">0x40</span>, <span class="number">0x7f</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x00</span>, <span class="number">0x20</span>,
@@ -425,7 +425,7 @@ emu.mem_write(
   ADDRESS, 
   <span class="kw-2">&amp;</span>arm64_code
 ).expect(<span class="string">"failed to write instructions"</span>);</code></pre></div>
-<p>We populate the <a href="https://lupyuen.github.io/articles/unicorn3#level-1-page-table"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L451-L503">main.rs</a></p>
+<p>We populate the <a href="https://lupyuen.github.io/articles/unicorn3#level-1-page-table"><strong>Level 1 Page Table</strong></a> from earlier: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L451-L503">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Generate the Page Table Entries...
 // Page Table Entry @ 0x1000: 0x0000_0741
@@ -453,7 +453,7 @@ emu.mem_write(<span class="number">0x1020</span>, <span class="kw-2">&amp;</span
 // Data @ 0x1030: 0xFFFF_FFFF
 // Data @ 0x1038: 0x8000_0000
 </span>...</code></pre></div>
-<p>To verify that it works: We <strong>Fill the Physical Memory</strong> with <em>0x44</em> then <em>0x88</em> then <em>0xCC</em>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L503-L519">main.rs</a></p>
+<p>To verify that it works: We <strong>Fill the Physical Memory</strong> with <em>0x44</em> then <em>0x88</em> then <em>0xCC</em>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L503-L519">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// 3 Chunks of Data filled with 0x44, 0x88, 0xCC respectively
 </span><span class="kw">let </span><span class="kw-2">mut </span>data:  [u8; <span class="number">0x1000</span>] = [<span class="number">0x44</span>; <span class="number">0x1000</span>];
@@ -469,7 +469,7 @@ emu.mem_map_ptr(<span class="number">0x80000000</span>, <span class="number">0x1
   data2.as_mut_ptr() <span class="kw">as _</span>).unwrap();
 emu.mem_map_ptr(<span class="number">0xc0000000</span>, <span class="number">0x1000</span>, Permission::READ,
   data3.as_mut_ptr() <span class="kw">as _</span>).unwrap();</code></pre></div>
-<p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L519-L539">main.rs</a></p>
+<p>Finally we <strong>Start the Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L519-L539">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Start the Unicorn Emulator
 </span><span class="kw">let </span>err = emu.emu_start(<span class="number">0</span>, <span class="number">0x44</span>, <span class="number">0</span>, <span class="number">0</span>);
@@ -523,11 +523,11 @@ qemu-system-aarch64 \
 
 ## But NuttX crashes in Unicorn Emulator (Remember to Disable MMU Logging)
 ## Here&#39;s the funny thing: Unicorn is actually based on QEMU!
-git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
-  $HOME/pinephone-emulator
+git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch qemu \
+  $HOME/nuttx-arm64-emulator
 cp nuttx nuttx.bin nuttx.S \
-  $HOME/pinephone-emulator/nuttx/
-cd $HOME/pinephone-emulator
+  $HOME/nuttx-arm64-emulator/nuttx/
+cd $HOME/nuttx-arm64-emulator
 cargo run
 
 ## err=Err(EXCEPTION)
@@ -587,7 +587,7 @@ static void enable_mmu_el1(unsigned int flags) {
   FSR:             0x0000_0205
   Virtual Address: 0x5027_ffff (Why?)
   Target Exception Level: 1</code></pre></div>
-<p>Which means: <a href="https://github.com/lupyuen/pinephone-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
+<p>Which means: <a href="https://github.com/lupyuen/nuttx-arm64-emulator?#arm64-mmu-exception"><strong>“Oops! Can’t enable MMU”</strong></a></p>
 <p>To troubleshoot, we enable <strong>MMU Logging</strong>: <a href="https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu-before/arch/arm64/src/common/arm64_mmu.c#L54-L61">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable MMU Logging
 #define CONFIG_MMU_ASSERT   1
@@ -743,7 +743,7 @@ call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>Needs More Investigation: Maybe NuttX didn’t populate the Page Tables completely for 36 Bits? <em>(Something about 0x5027_FFFF?)</em></p>
 <p>For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!</p>
 <p><em>Why are we doing all this: NuttX on Unicorn?</em></p>
-<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware. <a href="https://github.com/lupyuen/pinephone-emulator/blob/avaota/nuttx-boot-flow.pdf">(<strong>NuttX Boot Flow</strong> for Avaota-A1)</a></p>
+<p>We’re about to create a <strong>NuttX Emulator</strong> for <a href="https://lupyuen.github.io/articles/avaota"><strong>Avaota-A1 Arm64 SBC</strong></a> (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware. <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf">(<strong>NuttX Boot Flow</strong> for Avaota-A1)</a></p>
 <p><em>After switching to 32-bit Virtual Address: Any change to the Page Tables?</em></p>
 <p>The Page Tables <a href="https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884"><strong>are identical</strong></a>. Thanks to Unicorn, we learnt so much about <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a>! One more fun thing to do…</p>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow.jpg" alt="NuttX Boot Flow" /></p>
@@ -756,41 +756,41 @@ call_graph:  click setup_page_tables href &quot;https://github.com/apache/nuttx/
 call_graph:  enable_mmu_el1 --&gt; arm64_boot_el1_init</code></pre></div>
 <p>That’s because our Unicorn Emulator renders the <strong>NuttX Boot Flow</strong> (pic above) as a Clickable Mermaid Flowchart. It describes how NuttX boots on Arm64…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.pdf"><strong>Download the PDF</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.png"><strong>PNG</strong></a> / <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/nuttx-boot-flow.svg"><strong>SVG</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/nuttx-boot-flow.pdf"><strong>Download the PDF</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/nuttx-boot-flow.png"><strong>PNG</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/nuttx-boot-flow.svg"><strong>SVG</strong></a></li>
 </ul>
 <p>Here are the steps to produce the <strong>Mermaid Flowchart</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in Unicorn Emulator. Capture the Mermaid Flowchart.
-git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
-  $HOME/pinephone-emulator
-cd $HOME/pinephone-emulator
+git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch qemu \
+  $HOME/nuttx-arm64-emulator
+cd $HOME/nuttx-arm64-emulator
 cargo run | grep call_graph | colrm 1 13 \
-  &gt;$HOME/pinephone-emulator/nuttx-boot-flow.mmd
+  &gt;$HOME/nuttx-arm64-emulator/nuttx-boot-flow.mmd
 
 ## Omitted: Clean up the bad syntax in nuttx-boot-flow.mmd
-vi $HOME/pinephone-emulator/nuttx-boot-flow.mmd
+vi $HOME/nuttx-arm64-emulator/nuttx-boot-flow.mmd
 
 ## Convert the Mermaid Flowchart to PDF
 sudo docker pull minlag/mermaid-cli
 sudo docker run \
   --rm -u `id -u`:`id -g` -v \
-  $HOME/pinephone-emulator:/data minlag/mermaid-cli \
+  $HOME/nuttx-arm64-emulator:/data minlag/mermaid-cli \
   --configFile=&quot;mermaidRenderConfig.json&quot; \
   -i nuttx-boot-flow.mmd \
   -o nuttx-boot-flow.pdf
 
 ## Then change &quot;.pdf&quot; above to &quot;.png&quot; or &quot;.svg&quot;</code></pre></div>
-<p><a href="https://raw.githubusercontent.com/lupyuen/pinephone-emulator/refs/heads/qemu/nuttx-boot-flow.mmd">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
+<p><a href="https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/qemu/nuttx-boot-flow.mmd">(<strong>nuttx-boot-flow.mmd</strong> is here)</a></p>
 <p>How did we create the Mermaid Flowchart? Check the details here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.org/images/unicorn3-bootflow3.png" alt="Unicorn is stuck forever in PL011 UART Driver" /></p>
 <p><em>Why won’t Unicorn boot to NSH Shell?</em></p>
-<p>We haven’t emulated the <a href="https://github.com/lupyuen/pinephone-emulator/blob/qemu/src/main.rs#L70-L76"><strong>PL011 UART Hardware</strong></a>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday! (Pic above)</p>
+<p>We haven’t emulated the <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L70-L76"><strong>PL011 UART Hardware</strong></a>, that’s why Unicorn is looping forever while printing System Messages. Hope to fix it someday! (Pic above)</p>
 <p><em>That should keep us busy for a loooong while?</em></p>
 <p>One Last Thing: Suppose we’re in some Wacky Alternate Universe in which Rust was invented before C. What would <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>arm64_mmu.c</strong></a> look like? Might be fun to take a peek at the Alternate Version of <em>arm64_mmu.c</em> 🤔</p>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Unicorn Emulator for Avaota-A1 SBC" /></p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/tree/avaota"><em>Unicorn Emulator for Avaota-A1 SBC</em></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/avaota"><em>Unicorn Emulator for Avaota-A1 SBC</em></a></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
@@ -855,11 +855,11 @@ qemu-system-aarch64 \
 
 ## But NuttX crashes in Unicorn Emulator.
 ## Remember to Disable MMU Logging.
-git clone https://github.com/lupyuen/pinephone-emulator --branch qemu \
-  $HOME/pinephone-emulator
+git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch qemu \
+  $HOME/nuttx-arm64-emulator
 cp nuttx nuttx.bin nuttx.S \
-  $HOME/pinephone-emulator/nuttx/
-cd $HOME/pinephone-emulator
+  $HOME/nuttx-arm64-emulator/nuttx/
+cd $HOME/nuttx-arm64-emulator
 cargo run
 
 ## err=Err(EXCEPTION)
