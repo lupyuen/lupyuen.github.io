@@ -503,6 +503,10 @@ Edit [__app.init__](https://forgejo.org/docs/latest/admin/config-cheat-sheet/#se
 ```bash
 [server]
 LANDING_PAGE = explore
+
+## Also recommended: Sync the Max Mermaid Diagram Size with GitHub
+[markup]
+MERMAID_MAX_SOURCE_CHARACTERS = 50000
 ```
 
 Then copy it back to Docker...
