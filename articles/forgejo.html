@@ -498,7 +498,11 @@ Disallow: /</code></pre></div>
   .</code></pre></div>
 <p>Edit <a href="https://forgejo.org/docs/latest/admin/config-cheat-sheet/#server-server"><strong>app.init</strong></a> and set…</p>
 <div class="example-wrap"><pre class="language-bash"><code>[server]
-LANDING_PAGE = explore</code></pre></div>
+LANDING_PAGE = explore
+
+## Also recommended: Sync the Max Mermaid Diagram Size with GitHub
+[markup]
+MERMAID_MAX_SOURCE_CHARACTERS = 50000</code></pre></div>
 <p>Then copy it back to Docker…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo docker cp \
   app.ini \
