@@ -784,6 +784,8 @@ Needs More Investigation: Maybe NuttX didn't populate the Page Tables completely
 
 For Now: 32-bit Virtual Addresses are totally sufficient. And NuttX boots OK on Unicorn!
 
+[(__MMU Translation Logic__ inside Unicorn)](https://github.com/unicorn-engine/unicorn/blob/master/qemu/target/arm/helper.c#L10978-L11172)
+
 _Why are we doing all this: NuttX on Unicorn?_
 
 We're about to create a __NuttX Emulator__ for [__Avaota-A1 Arm64 SBC__](https://lupyuen.github.io/articles/avaota) (Allwinner A527), based on Unicorn Emulator. So that we can Build and Test NuttX on the Avaota-A1 Emulator, without requiring the Actual Hardware. [(__NuttX Boot Flow__ for Avaota-A1)](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf)
