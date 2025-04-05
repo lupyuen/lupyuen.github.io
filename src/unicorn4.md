@@ -12,6 +12,10 @@ _Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :
 
 TODO
 
+- Unicorn doesn't seem to emulate Arm64 SysCalls?
+
+- No worries we'll emulate Arm64 SysCalls ourselves!
+
 ![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
 
 [NuttX Boot Flow in PDF](nuttx-boot-flow.pdf) / [SVG](nuttx-boot-flow.svg) / [PNG](nuttx-boot-flow.png)
