@@ -113,9 +113,6 @@ cargo run | grep "uart output"
 const KERNEL_SIZE: usize = 0x1000_0000;
 static mut kernel_code: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
 
-/// UART Base Address
-const UART0_BASE_ADDRESS: u64 = 0x02500000;
-
 /// Emulate some Arm64 Machine Code
 fn main() {
 
@@ -157,14 +154,8 @@ fn main() {
         ).unwrap();
     }
 
-    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
-    // To indicate that the UART Transmit FIFO is ready:
-    // Set Bit 5 to 1.
-    // https://lupyuen.github.io/articles/serial#wait-to-transmit
-    emu.mem_write(
-        UART0_BASE_ADDRESS + 0x14,  // UART Register Address
-        &[0b10_0000]  // UART Register Value
-    ).unwrap();
+    // Omitted: Indicate that the UART Transmit FIFO is ready
+    ...
 
     // Add Hook for emulating each Basic Block of Arm64 Instructions
     let _ = emu.add_block_hook(1, 0, hook_block)
@@ -199,11 +190,16 @@ fn main() {
 }
 ```
 
-# Emulate UART
+# Emulate 16550 UART
 
 TODO
 
 ```rust
+/// UART Base Address
+const UART0_BASE_ADDRESS: u64 = 0x02500000;
+
+fn main() {
+    ...
     // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
     // To indicate that the UART Transmit FIFO is ready:
     // Set Bit 5 to 1.
