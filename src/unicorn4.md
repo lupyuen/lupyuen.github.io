@@ -111,7 +111,7 @@ cargo run | grep "uart output"
 ```rust
 /// Memory Space for NuttX Kernel
 const KERNEL_SIZE: usize = 0x1000_0000;
-static mut kernel_code: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
+static mut KERNEL_CODE: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
 
 /// Emulate some Arm64 Machine Code
 fn main() {
@@ -123,8 +123,8 @@ fn main() {
     // Copy NuttX Kernel into the above address
     let kernel = include_bytes!("../nuttx/Image");
     unsafe {
-        assert!(kernel_code.len() >= kernel.len());
-        kernel_code[0..kernel.len()].copy_from_slice(kernel);    
+        assert!(KERNEL_CODE.len() >= kernel.len());
+        KERNEL_CODE[0..kernel.len()].copy_from_slice(kernel);    
     }
 
     // Init Emulator in Arm64 mode
@@ -148,9 +148,9 @@ fn main() {
     unsafe {
         emu.mem_map_ptr(
             ADDRESS, 
-            kernel_code.len(), 
+            KERNEL_CODE.len(), 
             Permission::READ | Permission::EXEC,
-            kernel_code.as_mut_ptr() as _
+            KERNEL_CODE.as_mut_ptr() as _
         ).unwrap();
     }
 
@@ -158,11 +158,11 @@ fn main() {
     ...
 
     // Add Hook for emulating each Basic Block of Arm64 Instructions
-    let _ = emu.add_block_hook(1, 0, hook_block)
+    emu.add_block_hook(1, 0, hook_block)
         .unwrap();
 
     // Add Hook for Arm64 Memory Access
-    let _ = emu.add_mem_hook(
+    emu.add_mem_hook(
         HookType::MEM_ALL,  // Intercept Read and Write Accesses
         0,           // Begin Address
         u64::MAX,    // End Address
@@ -170,7 +170,7 @@ fn main() {
     ).unwrap();
 
     // Add Interrupt Hook
-    let _ = emu.add_intr_hook(hook_interrupt).unwrap();
+    emu.add_intr_hook(hook_interrupt).unwrap();
 
     // Emulate Arm64 Machine Code
     let err = emu.emu_start(
@@ -398,7 +398,7 @@ Unicorn expects us to handle the NuttX SysCall. So we hook the SysCall Interrupt
 fn main() {
     ...
     // Add Interrupt Hook
-    let _ = emu.add_intr_hook(hook_interrupt).unwrap();
+    emu.add_intr_hook(hook_interrupt).unwrap();
 
     // Emulate Arm64 Machine Code
     let err = emu.emu_start(
