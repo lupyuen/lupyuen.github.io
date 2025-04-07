@@ -67,7 +67,7 @@
     <nav id="rustdoc"><ul>
 <li><a href="#nuttx-for-avaota-a1" title="NuttX for Avaota-A1">1 NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#unicorn-emulator-for-avaota-a1" title="Unicorn Emulator for Avaota-A1">2 Unicorn Emulator for Avaota-A1</a><ul></ul></li>
-<li><a href="#emulate-uart" title="Emulate UART">3 Emulate UART</a><ul></ul></li>
+<li><a href="#emulate-16550-uart" title="Emulate 16550 UART">3 Emulate 16550 UART</a><ul></ul></li>
 <li><a href="#hook-interrupt" title="Hook Interrupt">4 Hook Interrupt</a><ul></ul></li>
 <li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">5 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
 <li><a href="#unicorn-exception-at-nuttx-syscall" title="Unicorn Exception at NuttX SysCall">6 Unicorn Exception at NuttX SysCall</a><ul></ul></li>
@@ -182,9 +182,6 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
 </span><span class="kw">const </span>KERNEL_SIZE: usize = <span class="number">0x1000_0000</span>;
 <span class="kw">static </span><span class="kw-2">mut </span>kernel_code: [u8; KERNEL_SIZE] = [<span class="number">0</span>; KERNEL_SIZE];
 
-<span class="doccomment">/// UART Base Address
-</span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
-
 <span class="doccomment">/// Emulate some Arm64 Machine Code
 </span><span class="kw">fn </span>main() {
 
@@ -226,14 +223,8 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
         </span>).unwrap();
     }
 
-    <span class="comment">// Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
-    // To indicate that the UART Transmit FIFO is ready:
-    // Set Bit 5 to 1.
-    // https://lupyuen.github.io/articles/serial#wait-to-transmit
-    </span>emu.mem_write(
-        UART0_BASE_ADDRESS + <span class="number">0x14</span>,  <span class="comment">// UART Register Address
-        </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]  <span class="comment">// UART Register Value
-    </span>).unwrap();
+    <span class="comment">// Omitted: Indicate that the UART Transmit FIFO is ready
+    </span>...
 
     <span class="comment">// Add Hook for emulating each Basic Block of Arm64 Instructions
     </span><span class="kw">let _ </span>= emu.add_block_hook(<span class="number">1</span>, <span class="number">0</span>, hook_block)
@@ -266,10 +257,15 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
     <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
 }</code></pre></div>
-<h1 id="emulate-uart"><a class="doc-anchor" href="#emulate-uart">§</a>3 Emulate UART</h1>
+<h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p>TODO</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
+</span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
+
+<span class="kw">fn </span>main() {
+    ...
+    <span class="comment">// Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
     // To indicate that the UART Transmit FIFO is ready:
     // Set Bit 5 to 1.
     // https://lupyuen.github.io/articles/serial#wait-to-transmit
