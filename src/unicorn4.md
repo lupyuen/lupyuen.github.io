@@ -20,6 +20,14 @@ TODO
 
 [Qilin](https://en.wikipedia.org/wiki/Qilin)
 
+Trade Tariffs
+
+Emulator -> Driver
+
+Or driver -> emulator?
+
+Maybe Emulator + Device Farm
+
 # NuttX for Avaota-A1
 
 Earlier we ported NuttX to Avaota-A1 SBC...
