@@ -178,6 +178,7 @@ TODO
         hook_memory  // Hook Function
     ).unwrap();
 
+    // TODO
     // Add Interrupt Hook
     emu.add_intr_hook(hook_interrupt)
       .unwrap();
@@ -198,15 +199,15 @@ TODO
 
     // Print the Emulator Error
     println!("err={:?}", err);
-    println!("PC=0x{:x}",  emu.reg_read(RegisterARM64::PC).unwrap());
-    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
-    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+    println!("PC=0x{:x}", emu.reg_read(RegisterARM64::PC).unwrap());
 }
 ```
 
 # Emulate 16550 UART
+
+_What about I/O? How to emulate in Unicorn?_
+
+Let's do the bare minimum of I/O: Printing to UART Output.
 
 TODO
 
@@ -257,6 +258,13 @@ fn hook_memory(
 ```
 
 # Hook Interrupt
+
+_What happens when we run this?_
+
+We run the [__Barebones Emulator__](TODO) (from earlier).
+
+It terminates at this curious address...
+
 
 ```rust
 /// Hook Function to Handle Interrupt
