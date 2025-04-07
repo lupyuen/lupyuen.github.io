@@ -106,6 +106,185 @@ cargo run
 cargo run | grep "uart output"
 ```
 
+# Unicorn Emulator for Avaota-A1
+
+```rust
+/// Memory Space for NuttX Kernel
+const KERNEL_SIZE: usize = 0x1000_0000;
+static mut kernel_code: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
+
+/// UART Base Address
+const UART0_BASE_ADDRESS: u64 = 0x02500000;
+
+/// Emulate some Arm64 Machine Code
+fn main() {
+
+    // Arm64 Memory Address where emulation starts.
+    // Memory Space for NuttX Kernel also begins here.
+    const ADDRESS: u64 = 0x4080_0000;
+
+    // Copy NuttX Kernel into the above address
+    let kernel = include_bytes!("../nuttx/Image");
+    unsafe {
+        assert!(kernel_code.len() >= kernel.len());
+        kernel_code[0..kernel.len()].copy_from_slice(kernel);    
+    }
+
+    // Init Emulator in Arm64 mode
+    let mut unicorn = Unicorn::new(
+        Arch::ARM64,
+        Mode::LITTLE_ENDIAN
+    ).unwrap();
+
+    // Enable MMU Translation
+    let emu = &mut unicorn;
+    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+
+    // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
+    emu.mem_map(
+        0x0000_0000,  // Address
+        0x4000_0000,  // Size
+        Permission::READ | Permission::WRITE  // Read/Write/Execute Access
+    ).unwrap();
+
+    // Map the NuttX Kernel to 0x4080_0000
+    unsafe {
+        emu.mem_map_ptr(
+            ADDRESS, 
+            kernel_code.len(), 
+            Permission::READ | Permission::EXEC,
+            kernel_code.as_mut_ptr() as _
+        ).unwrap();
+    }
+
+    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+    // To indicate that the UART Transmit FIFO is ready:
+    // Set Bit 5 to 1.
+    // https://lupyuen.github.io/articles/serial#wait-to-transmit
+    emu.mem_write(
+        UART0_BASE_ADDRESS + 0x14,  // UART Register Address
+        &[0b10_0000]  // UART Register Value
+    ).unwrap();
+
+    // Add Hook for emulating each Basic Block of Arm64 Instructions
+    let _ = emu.add_block_hook(1, 0, hook_block)
+        .unwrap();
+
+    // Add Hook for Arm64 Memory Access
+    let _ = emu.add_mem_hook(
+        HookType::MEM_ALL,  // Intercept Read and Write Accesses
+        0,           // Begin Address
+        u64::MAX,    // End Address
+        hook_memory  // Hook Function
+    ).unwrap();
+
+    // Add Interrupt Hook
+    let _ = emu.add_intr_hook(hook_interrupt).unwrap();
+
+    // Emulate Arm64 Machine Code
+    let err = emu.emu_start(
+        ADDRESS,  // Begin Address
+        ADDRESS + KERNEL_SIZE as u64,  // End Address
+        0,  // No Timeout
+        0   // Unlimited number of instructions
+    );
+
+    // Print the Emulator Error
+    println!("err={:?}", err);
+    println!("PC=0x{:x}",  emu.reg_read(RegisterARM64::PC).unwrap());
+    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
+    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
+    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
+    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+}
+```
+
+# Emulate UART
+
+TODO
+
+```rust
+    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+    // To indicate that the UART Transmit FIFO is ready:
+    // Set Bit 5 to 1.
+    // https://lupyuen.github.io/articles/serial#wait-to-transmit
+    emu.mem_write(
+        UART0_BASE_ADDRESS + 0x14,  // UART Register Address
+        &[0b10_0000]  // UART Register Value
+    ).unwrap();
+```
+
+TODO
+
+```rust
+/// Hook Function for Memory Access.
+/// Called once for every Arm64 Memory Access.
+fn hook_memory(
+    _: &mut Unicorn<()>,  // Emulator
+    mem_type: MemType,    // Read or Write Access
+    address: u64,  // Accessed Address
+    size: usize,   // Number of bytes accessed
+    value: i64     // Write Value
+) -> bool {
+    // Ignore RAM access, we only intercept Memory-Mapped Input / Output
+    if address >= 0x4000_0000 { return true; }
+    // println!("hook_memory: address={address:#010x}, size={size:02}, mem_type={mem_type:?}, value={value:#x}");
+
+    // If writing to UART Transmit Holding Register (THR):
+    // Print the UART Output
+    // https://lupyuen.github.io/articles/serial#transmit-uart
+    if address == UART0_BASE_ADDRESS {
+        println!("uart output: {:?}", value as u8 as char);
+        // print!("{}", value as u8 as char);
+    }
+
+    // Always return true, value is unused by caller
+    // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+    true
+}
+```
+
+# Hook Interrupt
+
+```rust
+/// Hook Function to Handle Interrupt
+fn hook_interrupt(
+    emu: &mut Unicorn<()>,  // Emulator
+    intno: u32, // Interrupt Number
+) {
+    let pc = emu.reg_read(RegisterARM64::PC).unwrap();
+    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+    println!("hook_interrupt: intno={intno}");
+    println!("PC=0x{pc:08x}");
+    println!("X0=0x{x0:08x}");
+    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
+    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
+    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
+    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+
+    // We don't handle SysCalls from NuttX Apps yet
+    if pc >= 0xC000_0000 {
+        println!("TODO: Handle SysCall from NuttX Apps");
+        finish();
+    }
+
+    if intno == 2 {
+        // We are doing SVC (Synchronous Exception) at EL1.
+        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
+        let esr_el1 = 0x15 << 26;  // Exception is SVC
+        let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
+        let svc = vbar_el1 + 0x200;
+        println!("esr_el1=0x{esr_el1:08x}");
+        println!("vbar_el1=0x{vbar_el1:08x}");
+        println!("jump to svc=0x{svc:08x}");
+        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
+        emu.reg_write(RegisterARM64::PC, svc).unwrap();
+    } else {
+        sleep(time::Duration::from_secs(10));
+    }
+}
+```
+
 # Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
 
 Read the articles...
