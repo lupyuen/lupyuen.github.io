@@ -14,6 +14,12 @@ TODO
 
 [NuttX Boot Flow in PDF](nuttx-boot-flow.pdf) / [SVG](nuttx-boot-flow.svg) / [PNG](nuttx-boot-flow.png)
 
+[qiling/core_hooks.py](https://github.com/qilingframework/qiling/blob/master/qiling/core_hooks.py)
+
+[qiling/os/linux/syscall.py](https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py)
+
+[Qilin](https://en.wikipedia.org/wiki/Qilin)
+
 # NuttX for Avaota-A1
 
 Earlier we ported NuttX to Avaota-A1 SBC...
