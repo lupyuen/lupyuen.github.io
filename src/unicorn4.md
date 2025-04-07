@@ -39,6 +39,74 @@ Earlier we ported NuttX to Avaota-A1 SBC...
 
     So we can verify that NuttX SysCalls are OK.
 
+TODO
+
+```bash
+## Compile Modified NuttX for Avaota-A1 SBC
+git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-avaota
+git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-avaota
+cd nuttx
+
+## Build NuttX
+make -j distclean
+tools/configure.sh avaota-a1:nsh
+make -j
+cp .config nuttx.config
+
+## Build Apps Filesystem
+make -j export
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make -j import
+popd
+
+## Generate the Initial RAM Disk
+## Prepare a Padding with 64 KB of zeroes
+## Append Padding and Initial RAM Disk to the NuttX Kernel
+genromfs -f nuttx-initrd -d ../apps/bin -V "NuttXBootVol"
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+cat nuttx.bin /tmp/nuttx.pad nuttx-initrd \
+  >nuttx-Image
+
+## Dump the NuttX Kernel disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+## Dump the NSH Shell disassembly to nuttx-init.S
+aarch64-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide --debugging \
+  ../apps/bin/init \
+  >nuttx-init.S \
+  2>&1
+
+## Dump the Hello disassembly to nuttx-hello.S
+aarch64-none-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide --debugging \
+  ../apps/bin/hello \
+  >nuttx-hello.S \
+  2>&1
+
+## Copy NuttX Image to Unicorn Emulator
+cp nuttx nuttx.S nuttx.config nuttx.hash \
+  nuttx-init.S nuttx-hello.S \
+  $HOME/nuttx-arm64-emulator/nuttx
+cp nuttx-Image \
+  $HOME/nuttx-arm64-emulator/nuttx/Image
+```
+
+TODO
+
+```bash
+git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
+cd nuttx-arm64-emulator
+cargo run
+
+cargo run | grep "uart output"
+```
+
 # Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
 
 Read the articles...
@@ -111,7 +179,7 @@ Based on [ESR-EL1 Doc](https://developer.arm.com/documentation/ddi0601/2025-03/A
 - Syndrome / FSR = 6 = 0b000110	
 - Meaning "Translation fault, level 2"
 - But why halt at sys_call0?
-- NuttX seems to be triggering the SysCall for Initial Context Switch, according to the [Call Graph](https://raw.githubusercontent.com/lupyuen/pinephone-emulator/refs/heads/avaota/nuttx-boot-flow.mmd)
+- NuttX seems to be triggering the SysCall for Initial Context Switch, according to the [Call Graph](https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd)
 
 Unicorn prints `invalid memory accessed, STOP = 21!!!`
 - 21 means UC_ERR_EXCEPTION
