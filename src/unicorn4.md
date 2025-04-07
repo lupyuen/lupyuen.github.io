@@ -4,12 +4,6 @@
 
 ![TODO](https://lupyuen.org/images/unicorn4-title.jpg)
 
-<span style="font-size:80%">
-
-_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :-)_
-
-</span>
-
 TODO
 
 - Unicorn doesn't seem to emulate Arm64 SysCalls?
@@ -763,3 +757,11 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/unicorn4.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn4.md)
+
+![TODO](https://lupyuen.org/images/unicorn4-title.jpg)
+
+<span style="font-size:80%">
+
+_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :-)_
+
+</span>
