@@ -141,16 +141,16 @@ TODO
 TODO
 
 ```rust
-    // Arm64 Memory Address where emulation starts.
-    // Memory Space for NuttX Kernel also begins here.
-    const ADDRESS: u64 = 0x4080_0000;
-
-    // Copy NuttX Kernel into the above address
+    // Copy NuttX Kernel into memory
     let kernel = include_bytes!("../nuttx/Image");
     unsafe {
         assert!(KERNEL_CODE.len() >= kernel.len());
         KERNEL_CODE[0..kernel.len()].copy_from_slice(kernel);    
     }
+
+    // Arm64 Memory Address where emulation starts.
+    // Memory Space for NuttX Kernel also begins here.
+    const ADDRESS: u64 = 0x4080_0000;
 
     // Map the NuttX Kernel to 0x4080_0000
     unsafe {
