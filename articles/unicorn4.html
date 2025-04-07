@@ -238,7 +238,8 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
         </span>hook_memory  <span class="comment">// Hook Function
     </span>).unwrap();
 
-    <span class="comment">// Add Interrupt Hook
+    <span class="comment">// TODO
+    // Add Interrupt Hook
     </span>emu.add_intr_hook(hook_interrupt)
       .unwrap();
 
@@ -255,13 +256,11 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
 
     <span class="comment">// Print the Emulator Error
     </span><span class="macro">println!</span>(<span class="string">"err={:?}"</span>, err);
-    <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>,  emu.reg_read(RegisterARM64::PC).unwrap());
-    <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
+    <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
+<p><em>What about I/O? How to emulate in Unicorn?</em></p>
+<p>Let’s do the bare minimum of I/O: Printing to UART Output.</p>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
@@ -305,6 +304,10 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     </span><span class="bool-val">true
 </span>}</code></pre></div>
 <h1 id="hook-interrupt"><a class="doc-anchor" href="#hook-interrupt">§</a>4 Hook Interrupt</h1>
+<p><em>What happens when we run this?</em></p>
+<p>We run the <a href="TODO"><strong>Barebones Emulator</strong></a> (from earlier).</p>
+<p>It terminates at this curious address…</p>
+
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
     emu: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
