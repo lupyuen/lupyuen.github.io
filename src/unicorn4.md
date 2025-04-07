@@ -116,6 +116,31 @@ static mut KERNEL_CODE: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
 /// Emulate some Arm64 Machine Code
 fn main() {
 
+    // Init Emulator in Arm64 mode
+    let mut unicorn = Unicorn::new(
+        Arch::ARM64,
+        Mode::LITTLE_ENDIAN
+    ).unwrap();
+
+    // Enable MMU Translation
+    let emu = &mut unicorn;
+    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+```
+
+TODO
+
+```rust
+    // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
+    emu.mem_map(
+        0x0000_0000,  // Address
+        0x4000_0000,  // Size
+        Permission::READ | Permission::WRITE  // Read/Write/Execute Access
+    ).unwrap();
+```
+
+TODO
+
+```rust
     // Arm64 Memory Address where emulation starts.
     // Memory Space for NuttX Kernel also begins here.
     const ADDRESS: u64 = 0x4080_0000;
@@ -127,23 +152,6 @@ fn main() {
         KERNEL_CODE[0..kernel.len()].copy_from_slice(kernel);    
     }
 
-    // Init Emulator in Arm64 mode
-    let mut unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).unwrap();
-
-    // Enable MMU Translation
-    let emu = &mut unicorn;
-    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
-
-    // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
-    emu.mem_map(
-        0x0000_0000,  // Address
-        0x4000_0000,  // Size
-        Permission::READ | Permission::WRITE  // Read/Write/Execute Access
-    ).unwrap();
-
     // Map the NuttX Kernel to 0x4080_0000
     unsafe {
         emu.mem_map_ptr(
@@ -153,10 +161,11 @@ fn main() {
             KERNEL_CODE.as_mut_ptr() as _
         ).unwrap();
     }
+```
 
-    // Omitted: Indicate that the UART Transmit FIFO is ready
-    ...
+TODO
 
+```rust
     // Add Hook for emulating each Basic Block of Arm64 Instructions
     emu.add_block_hook(1, 0, hook_block)
         .unwrap();
@@ -170,8 +179,15 @@ fn main() {
     ).unwrap();
 
     // Add Interrupt Hook
-    emu.add_intr_hook(hook_interrupt).unwrap();
+    emu.add_intr_hook(hook_interrupt)
+      .unwrap();
 
+    // Omitted: Indicate that the UART Transmit FIFO is ready
+```
+
+TODO
+
+```rust
     // Emulate Arm64 Machine Code
     let err = emu.emu_start(
         ADDRESS,  // Begin Address
