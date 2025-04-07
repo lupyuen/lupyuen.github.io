@@ -14,6 +14,31 @@ TODO
 
 [NuttX Boot Flow in PDF](nuttx-boot-flow.pdf) / [SVG](nuttx-boot-flow.svg) / [PNG](nuttx-boot-flow.png)
 
+# NuttX for Avaota-A1
+
+Earlier we ported NuttX to Avaota-A1 SBC...
+
+- TODO: Article
+
+[Unicorn for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/106)
+
+
+1.  [__Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0)
+
+    From the [__Previous Article__](TODO): Unicorn Emulator requires __TCR_TG1_4K__ (TODO what?). And the __Physical / Virtual Address Size__ should be 32 Bits.
+
+1.  [__Disable PSCI__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88)
+
+    We don't have the __PSCI Driver__ in Unicorn, so we disable this.
+
+1.  [__Enable Scheduler Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/878e78eb40f334e6e128595dbb27ae08aed1e969)
+
+    So we can see NuttX booting.
+
+1.  [__Enable SysCall Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d)
+
+    So we can verify that NuttX SysCalls are OK.
+
 # Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
 
 Read the articles...
