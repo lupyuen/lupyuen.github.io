@@ -204,17 +204,28 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     </span>).unwrap();</code></pre></div>
 <p>TODO</p>
 
+<<<<<<< HEAD
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Arm64 Memory Address where emulation starts.
     // Memory Space for NuttX Kernel also begins here.
     </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x4080_0000</span>;
 
     <span class="comment">// Copy NuttX Kernel into the above address
+=======
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Copy NuttX Kernel into memory
+>>>>>>> f3e0310adf47c750e288649dfa492aaa47840705
     </span><span class="kw">let </span>kernel = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/Image"</span>);
     <span class="kw">unsafe </span>{
         <span class="macro">assert!</span>(KERNEL_CODE.len() &gt;= kernel.len());
         KERNEL_CODE[<span class="number">0</span>..kernel.len()].copy_from_slice(kernel);    
     }
 
+<<<<<<< HEAD
+=======
+    <span class="comment">// Arm64 Memory Address where emulation starts.
+    // Memory Space for NuttX Kernel also begins here.
+    </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x4080_0000</span>;
+
+>>>>>>> f3e0310adf47c750e288649dfa492aaa47840705
     <span class="comment">// Map the NuttX Kernel to 0x4080_0000
     </span><span class="kw">unsafe </span>{
         emu.mem_map_ptr(
