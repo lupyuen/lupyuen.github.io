@@ -20,8 +20,7 @@ Earlier we ported NuttX to Avaota-A1 SBC...
 
 - TODO: Article
 
-[Unicorn for Avaota-A1](https://github.com/lupyuen2/wip-nuttx/pull/106)
-
+To boot __NuttX on Unicorn__: We made [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106) to NuttX...
 
 1.  [__Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0)
 
