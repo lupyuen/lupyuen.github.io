@@ -180,7 +180,7 @@ cargo run
 cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Memory Space for NuttX Kernel
 </span><span class="kw">const </span>KERNEL_SIZE: usize = <span class="number">0x1000_0000</span>;
-<span class="kw">static </span><span class="kw-2">mut </span>kernel_code: [u8; KERNEL_SIZE] = [<span class="number">0</span>; KERNEL_SIZE];
+<span class="kw">static </span><span class="kw-2">mut </span>KERNEL_CODE: [u8; KERNEL_SIZE] = [<span class="number">0</span>; KERNEL_SIZE];
 
 <span class="doccomment">/// Emulate some Arm64 Machine Code
 </span><span class="kw">fn </span>main() {
@@ -192,8 +192,8 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     <span class="comment">// Copy NuttX Kernel into the above address
     </span><span class="kw">let </span>kernel = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/Image"</span>);
     <span class="kw">unsafe </span>{
-        <span class="macro">assert!</span>(kernel_code.len() &gt;= kernel.len());
-        kernel_code[<span class="number">0</span>..kernel.len()].copy_from_slice(kernel);    
+        <span class="macro">assert!</span>(KERNEL_CODE.len() &gt;= kernel.len());
+        KERNEL_CODE[<span class="number">0</span>..kernel.len()].copy_from_slice(kernel);    
     }
 
     <span class="comment">// Init Emulator in Arm64 mode
@@ -217,9 +217,9 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     </span><span class="kw">unsafe </span>{
         emu.mem_map_ptr(
             ADDRESS, 
-            kernel_code.len(), 
+            KERNEL_CODE.len(), 
             Permission::READ | Permission::EXEC,
-            kernel_code.as_mut_ptr() <span class="kw">as _
+            KERNEL_CODE.as_mut_ptr() <span class="kw">as _
         </span>).unwrap();
     }
 
@@ -227,11 +227,11 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     </span>...
 
     <span class="comment">// Add Hook for emulating each Basic Block of Arm64 Instructions
-    </span><span class="kw">let _ </span>= emu.add_block_hook(<span class="number">1</span>, <span class="number">0</span>, hook_block)
+    </span>emu.add_block_hook(<span class="number">1</span>, <span class="number">0</span>, hook_block)
         .unwrap();
 
     <span class="comment">// Add Hook for Arm64 Memory Access
-    </span><span class="kw">let _ </span>= emu.add_mem_hook(
+    </span>emu.add_mem_hook(
         HookType::MEM_ALL,  <span class="comment">// Intercept Read and Write Accesses
         </span><span class="number">0</span>,           <span class="comment">// Begin Address
         </span>u64::MAX,    <span class="comment">// End Address
@@ -239,7 +239,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     </span>).unwrap();
 
     <span class="comment">// Add Interrupt Hook
-    </span><span class="kw">let _ </span>= emu.add_intr_hook(hook_interrupt).unwrap();
+    </span>emu.add_intr_hook(hook_interrupt).unwrap();
 
     <span class="comment">// Emulate Arm64 Machine Code
     </span><span class="kw">let </span>err = emu.emu_start(
@@ -447,7 +447,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>main() {
     ...
     <span class="comment">// Add Interrupt Hook
-    </span><span class="kw">let _ </span>= emu.add_intr_hook(hook_interrupt).unwrap();
+    </span>emu.add_intr_hook(hook_interrupt).unwrap();
 
     <span class="comment">// Emulate Arm64 Machine Code
     </span><span class="kw">let </span>err = emu.emu_start(
