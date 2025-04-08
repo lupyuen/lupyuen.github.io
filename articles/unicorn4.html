@@ -68,8 +68,8 @@
 <li><a href="#nuttx-for-avaota-a1" title="NuttX for Avaota-A1">1 NuttX for Avaota-A1</a><ul></ul></li>
 <li><a href="#unicorn-emulator-for-avaota-a1" title="Unicorn Emulator for Avaota-A1">2 Unicorn Emulator for Avaota-A1</a><ul></ul></li>
 <li><a href="#emulate-16550-uart" title="Emulate 16550 UART">3 Emulate 16550 UART</a><ul></ul></li>
-<li><a href="#nuttx-wont-boot" title="NuttX Won’t Boot">4 NuttX Won’t Boot</a><ul></ul></li>
-<li><a href="#hook-interrupt" title="Hook Interrupt">5 Hook Interrupt</a><ul></ul></li>
+<li><a href="#nuttx-halts-at-syscall" title="NuttX Halts at SysCall">4 NuttX Halts at SysCall</a><ul></ul></li>
+<li><a href="#handle-the-unicorn-interrupt" title="Handle The Unicorn Interrupt">5 Handle The Unicorn Interrupt</a><ul></ul></li>
 <li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">6 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
 <li><a href="#handle-nuttx-syscall-in-unicorn" title="Handle NuttX SysCall in Unicorn">7 Handle NuttX SysCall in Unicorn</a><ul></ul></li>
 <li><a href="#nuttx-syscall-0" title="NuttX SysCall 0">8 NuttX SysCall 0</a><ul></ul></li>
@@ -310,12 +310,10 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
     </span><span class="bool-val">true
 </span>}</code></pre></div>
-<h1 id="nuttx-wont-boot"><a class="doc-anchor" href="#nuttx-wont-boot">§</a>4 NuttX Won’t Boot</h1>
+<h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>What happens when we run this?</em></p>
 <p>We run the <a href="TODO"><strong>Barebones Emulator</strong></a> (from earlier).</p>
-<p>NuttX terminates at this curious address…</p>
-<p>TODO</p>
-<p>While booting NuttX on Unicorn: NuttX triggers an Arm64 Exception is stuck at sys_call0. Is syscall supported in Unicorn?</p>
+<p>NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_block:  address=0x40806d4c, size=04, sched_unlock, sched/sched/sched_unlock.c:90:18
@@ -329,16 +327,9 @@ call_graph:  click sched_unlock href &quot;https://github.com/apache/nuttx/blob/
 AAAAAAAAAAAA
 &gt;&gt;&gt; invalid memory accessed, STOP = 21!!!
 err=Err(EXCEPTION)
-PC=0x40806d60
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  sys_call0 --&gt; ***_HALT_***
-call_graph:  click sys_call0 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L151&quot; &quot;arch/arm64/include/syscall.h &quot; _blank</code></pre></div>
-<p>PC 0x40806d60 points to Arm64 SysCall <code>svc 0</code>: <a href="./nuttx/nuttx.S">nuttx.S</a></p>
+PC=0x40806d60</code></pre></div>
+<p><em>What’s at 0x4080_6D60?</em></p>
+<p>We look up the <a href="TODO"><strong>NuttX Kernel Disassembly</strong></a>. We see that <em>0x4080_6D60</em> points to an <strong>Arm64 SysCall <code>svc 0</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>sys_call0():
 /Users/luppy/avaota/nuttx/include/arch/syscall.h:152
 /* SVC with SYS_ call number and no parameters */
@@ -350,50 +341,32 @@ static inline uintptr_t sys_call0(unsigned int nbr)
   __asm__ __volatile__
     40806d5c:	d4000001 	svc	#0x0
 // 0x40806d60 is the next instruction to be executed on return from SysCall</code></pre></div>
-<p>Unicorn reports the exception as…</p>
-<ul>
-<li>syndrome=0x86000006</li>
-<li>fsr=0x206</li>
-<li>vaddress=0x507fffff</li>
-</ul>
-<p>Based on <a href="https://developer.arm.com/documentation/ddi0601/2025-03/AArch64-Registers/ESR-EL1--Exception-Syndrome-Register--EL1-">ESR-EL1 Doc</a>…</p>
-<ul>
-<li>Syndrome / FSR = 6 = 0b000110</li>
-<li>Meaning “Translation fault, level 2”</li>
-<li>But why halt at sys_call0?</li>
-<li>NuttX seems to be triggering the SysCall for Initial Context Switch, according to the <a href="https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd">Call Graph</a></li>
-</ul>
-<p>Unicorn prints <code>invalid memory accessed, STOP = 21!!!</code></p>
-<ul>
-<li>21 means UC_ERR_EXCEPTION</li>
-</ul>
-<p>Unicorn Exception is triggered here: unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</p>
+<p><em>Isn’t Unicorn supposed to handle Arm64 SysCalls?</em></p>
+<p>We step through Unicorn with the excellent <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a>. Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
   // Unicorn: call registered interrupt callbacks
   catched = false;
   HOOK_FOREACH_VAR_DECLARE;
   HOOK_FOREACH(uc, hook, UC_HOOK_INTR) {
-      if (hook-&gt;to_delete) {
-          continue;
-      }
-      JIT_CALLBACK_GUARD(((uc_cb_hookintr_t)hook-&gt;callback)(uc, cpu-&gt;exception_index, hook-&gt;user_data));
-      catched = true;
+    if (hook-&gt;to_delete) { continue; }
+    JIT_CALLBACK_GUARD(((uc_cb_hookintr_t)hook-&gt;callback)(uc, cpu-&gt;exception_index, hook-&gt;user_data));
+    catched = true;
   }
   // Unicorn: If un-catched interrupt, stop executions.
   if (!catched) {
-      printf(&quot;AAAAAAAAAAAA\n&quot;); // qq
-      if (uc-&gt;invalid_error == UC_ERR_OK) {
-          //// EXCEPTION HAPPENS HERE
-          uc-&gt;invalid_error = UC_ERR_EXCEPTION;
-      }
-      cpu-&gt;halted = 1;
-      *ret = EXCP_HLT;
-      return true;
+    printf(&quot;AAAAAAAAAAAA\n&quot;); // qq
+    if (uc-&gt;invalid_error == UC_ERR_OK) {
+      // OOPS! EXCEPTION HAPPENS HERE
+      uc-&gt;invalid_error = UC_ERR_EXCEPTION;
+    }
+    cpu-&gt;halted = 1;
+    *ret = EXCP_HLT;
+    return true;
   }</code></pre></div>
-<p>The above is more complex than Original QEMU: <a href="https://github.com/qemu/qemu/blob/0f15892acaf3f50ecc20c6dad4b3ebdd701aa93e/accel/tcg/cpu-exec.c#L705">accel/tcg/cpu-exec.c</a></p>
-<p>Is Unicorn expecting us to Hook this Interrupt and handle it?</p>
-<h1 id="hook-interrupt"><a class="doc-anchor" href="#hook-interrupt">§</a>5 Hook Interrupt</h1>
+<p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
+<p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall via our Interrupt Callback. Let’s do it…</p>
+<h1 id="handle-the-unicorn-interrupt"><a class="doc-anchor" href="#handle-the-unicorn-interrupt">§</a>5 Handle The Unicorn Interrupt</h1>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
@@ -410,6 +383,9 @@ static inline uintptr_t sys_call0(unsigned int nbr)
     <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
     <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
     <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
+
+    <span class="comment">// Omitted: Handle the SysCall
+    </span>...
 
     <span class="comment">// We don't handle SysCalls from NuttX Apps yet
     </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{
