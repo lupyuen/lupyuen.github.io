@@ -310,6 +310,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
     </span><span class="bool-val">true
 </span>}</code></pre></div>
+<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>What happens when we run this?</em></p>
 <p>We run the <a href="TODO"><strong>Barebones Emulator</strong></a> (from earlier).</p>
@@ -342,7 +343,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
     40806d5c:	d4000001 	svc	#0x0
 // 0x40806d60 is the next instruction to be executed on return from SysCall</code></pre></div>
 <p><em>Isn’t Unicorn supposed to handle Arm64 SysCalls?</em></p>
-<p>We step through Unicorn with the excellent <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a>. Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
+<p>We step through Unicorn with the excellent <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic above). Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
   // Unicorn: call registered interrupt callbacks
@@ -947,7 +948,6 @@ value 0x15, and the value of the immediate argument.</code></pre></div>
 <li>https://github.com/search?q=repo%3Aunicorn-engine/unicorn%20do_arm_semihosting&amp;type=code</li>
 </ul>
 <p>vbar_el1 = 1082290176</p>
-<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Unicorn Emulator for Avaota-A1 SBC" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>17 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
