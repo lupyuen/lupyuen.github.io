@@ -407,7 +407,7 @@ uint64_t *arm64_syscall(uint64_t *regs) {
         break;
 ```
 
-Ah now we see the light. TODO
+Ah now we see the light. NuttX makes a SysCall during startup, to trigger the __Very First Context Switch__! Which will start the other NuttX Tasks and boot successfully.
 
 FYI NuttX SysCalls are defined here...
 
@@ -423,19 +423,11 @@ SYSCALL_LOOKUP(sched_unlock,               0)
 SYSCALL_LOOKUP(sched_yield,                0)
 ```
 
-Who calls arm64_syscall? It's called by arm64_sync_exc to handle Synchronous Exception for AArch64:
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195
-
-Who calls arm64_sync_exc? It's called by the Vector Table for:
-- Synchronous Exception from same exception level, when using the SP_EL0 stack pointer
-- Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we're using EL1)
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158
-
 # Handle The Unicorn Interrupt
 
-TODO
+_To boot NuttX: We need to Emulate the SysCall. How?_
+
+We saw earlier that Unicorn expects us to [__Hook The Interrupt__](TODO) and emulate the SysCall. This is how we Hook the Interrupt: TODO
 
 ```rust
 /// Hook Function to Handle Interrupt
@@ -497,8 +489,17 @@ Previously...
 
 -   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
 
-
 # Handle NuttX SysCall in Unicorn
+
+Who calls arm64_syscall? It's called by arm64_sync_exc to handle Synchronous Exception for AArch64:
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195
+
+Who calls arm64_sync_exc? It's called by the Vector Table for:
+- Synchronous Exception from same exception level, when using the SP_EL0 stack pointer
+- Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we're using EL1)
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158
 
 Unicorn expects us to handle the NuttX SysCall. So we hook the SysCall Interrupt: [src/main.rs](src/main.rs)
 
