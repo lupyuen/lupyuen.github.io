@@ -410,7 +410,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
         addrenv_switch(tcb);
 #endif
         break;</code></pre></div>
-<p>Ah now we see the light. TODO</p>
+<p>Ah now we see the light. NuttX makes a SysCall during startup, to trigger the <strong>Very First Context Switch</strong>! Which will start the other NuttX Tasks and boot successfully.</p>
 <p>FYI NuttX SysCalls are defined here…</p>
 <p>https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h</p>
 <div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(getpid,                     0)
@@ -419,17 +419,9 @@ SYSCALL_LOOKUP(sched_getcpu,               0)
 SYSCALL_LOOKUP(sched_lock,                 0)
 SYSCALL_LOOKUP(sched_lockcount,            0)
 SYSCALL_LOOKUP(sched_unlock,               0)
-SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
-<p>Who calls arm64_syscall? It’s called by arm64_sync_exc to handle Synchronous Exception for AArch64:</p>
-<p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195</p>
-<p>Who calls arm64_sync_exc? It’s called by the Vector Table for:</p>
-<ul>
-<li>Synchronous Exception from same exception level, when using the SP_EL0 stack pointer</li>
-<li>Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we’re using EL1)</li>
-</ul>
-<p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158</p>
-<h1 id="handle-the-unicorn-interrupt"><a class="doc-anchor" href="#handle-the-unicorn-interrupt">§</a>6 Handle The Unicorn Interrupt</h1>
-<p>TODO</p>
+SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="handle-the-unicorn-interrupt"><a class="doc-anchor" href="#handle-the-unicorn-interrupt">§</a>6 Handle The Unicorn Interrupt</h1>
+<p><em>To boot NuttX: We need to Emulate the SysCall. How?</em></p>
+<p>We saw earlier that Unicorn expects us to <a href="TODO"><strong>Hook The Interrupt</strong></a> and emulate the SysCall. This is how we Hook the Interrupt: TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
@@ -496,6 +488,14 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
 </li>
 </ul>
 <h1 id="handle-nuttx-syscall-in-unicorn"><a class="doc-anchor" href="#handle-nuttx-syscall-in-unicorn">§</a>8 Handle NuttX SysCall in Unicorn</h1>
+<p>Who calls arm64_syscall? It’s called by arm64_sync_exc to handle Synchronous Exception for AArch64:</p>
+<p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195</p>
+<p>Who calls arm64_sync_exc? It’s called by the Vector Table for:</p>
+<ul>
+<li>Synchronous Exception from same exception level, when using the SP_EL0 stack pointer</li>
+<li>Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we’re using EL1)</li>
+</ul>
+<p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158</p>
 <p>Unicorn expects us to handle the NuttX SysCall. So we hook the SysCall Interrupt: <a href="src/main.rs">src/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>main() {
