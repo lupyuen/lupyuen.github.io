@@ -348,7 +348,7 @@ Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 Sys
 
 # NuttX SysCall
 
-_Why is NuttX doing an Arm64 SysCall?_
+_Why is NuttX doing an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
 
 Earlier we saw NuttX making an Arm64 SysCall, let's find out why.
 
