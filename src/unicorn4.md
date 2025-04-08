@@ -344,6 +344,8 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   }
 ```
 
+[(Set these __Debug Breakpoints__)](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/.vscode/bookmarks.json)
+
 [(Compare with __Original QEMU__)](https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769)
 
 Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback. Let's do it...
@@ -472,6 +474,10 @@ fn hook_interrupt(
     }
 }
 ```
+
+# Emulate the Arm64 SysCall
+
+TODO
 
 # Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
 
