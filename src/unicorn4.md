@@ -346,6 +346,93 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 
 Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback. Let's do it...
 
+# NuttX SysCall
+
+_Why is NuttX doing an Arm64 SysCall?_
+
+Earlier we saw NuttX making an Arm64 SysCall, let's find out why.
+
+NuttX passes a __Parameter to SysCall__ in Register X0. The value is 2...
+
+```c
+/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
+                {
+                  up_switch_context(this_task(), rtcb);
+    40807230:	d538d080 	mrs	x0, tpidr_el1
+    40807234:	37000060 	tbnz	w0, #0, 40807240 <sched_unlock+0x80>
+sys_call0():
+/Users/luppy/avaota/nuttx/include/arch/syscall.h:152
+/* SVC with SYS_ call number and no parameters */
+static inline uintptr_t sys_call0(unsigned int nbr)
+{
+  register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
+    40807238:	d2800040 	mov	x0, #0x2                   	// #2
+/Users/luppy/avaota/nuttx/include/arch/syscall.h:154
+  __asm__ __volatile__
+    4080723c:	d4000001 	svc	#0x0
+```
+
+What is SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks...
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83
+
+```c
+/* SYS call 2:
+ * void arm64_switchcontext(void **saveregs, void *restoreregs);
+ */
+#define SYS_switch_context        (2)
+```
+
+Which is implemented here...
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_syscall.c#L201-L216
+
+```c
+uint64_t *arm64_syscall(uint64_t *regs) {
+  ...
+      case SYS_switch_context:
+
+        /* Update scheduler parameters */
+
+        nxsched_suspend_scheduler(*running_task);
+        nxsched_resume_scheduler(tcb);
+        *running_task = tcb;
+
+        /* Restore the cpu lock */
+
+        restore_critical_section(tcb, cpu);
+#ifdef CONFIG_ARCH_ADDRENV
+        addrenv_switch(tcb);
+#endif
+        break;
+```
+
+Ah now we see the light. TODO
+
+FYI NuttX SysCalls are defined here...
+
+https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h
+
+```c
+SYSCALL_LOOKUP(getpid,                     0)
+SYSCALL_LOOKUP(gettid,                     0)
+SYSCALL_LOOKUP(sched_getcpu,               0)
+SYSCALL_LOOKUP(sched_lock,                 0)
+SYSCALL_LOOKUP(sched_lockcount,            0)
+SYSCALL_LOOKUP(sched_unlock,               0)
+SYSCALL_LOOKUP(sched_yield,                0)
+```
+
+Who calls arm64_syscall? It's called by arm64_sync_exc to handle Synchronous Exception for AArch64:
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195
+
+Who calls arm64_sync_exc? It's called by the Vector Table for:
+- Synchronous Exception from same exception level, when using the SP_EL0 stack pointer
+- Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we're using EL1)
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158
+
 # Handle The Unicorn Interrupt
 
 TODO
@@ -507,89 +594,6 @@ up_idle():
 NuttX Scheduler seems to be waiting for Timer Interrupt, to continue booting.
 
 TODO: Should we simulate the timer to start NuttX? https://lupyuen.org/articles/interrupt.html#timer-interrupt-isnt-handled
-
-# NuttX SysCall 0
-
-_What's NuttX SysCall 0?_
-
-Look for SysCall 0 in the list below, it includes plenty of Scheduler Functions...
-
-https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h
-
-```c
-SYSCALL_LOOKUP(getpid,                     0)
-SYSCALL_LOOKUP(gettid,                     0)
-SYSCALL_LOOKUP(sched_getcpu,               0)
-SYSCALL_LOOKUP(sched_lock,                 0)
-SYSCALL_LOOKUP(sched_lockcount,            0)
-SYSCALL_LOOKUP(sched_unlock,               0)
-SYSCALL_LOOKUP(sched_yield,                0)
-```
-
-Parameter to SysCall 0 is 2...
-
-```c
-/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
-                {
-                  up_switch_context(this_task(), rtcb);
-    40807230:	d538d080 	mrs	x0, tpidr_el1
-    40807234:	37000060 	tbnz	w0, #0, 40807240 <sched_unlock+0x80>
-sys_call0():
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:152
-/* SVC with SYS_ call number and no parameters */
-static inline uintptr_t sys_call0(unsigned int nbr)
-{
-  register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
-    40807238:	d2800040 	mov	x0, #0x2                   	// #2
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:154
-  __asm__ __volatile__
-    4080723c:	d4000001 	svc	#0x0
-```
-
-Which means Switch Context...
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83
-
-```c
-/* SYS call 2:
- * void arm64_switchcontext(void **saveregs, void *restoreregs);
- */
-#define SYS_switch_context        (2)
-```
-
-Which is implemented here...
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_syscall.c#L201-L216
-
-```c
-uint64_t *arm64_syscall(uint64_t *regs) {
-  ...
-      case SYS_switch_context:
-
-        /* Update scheduler parameters */
-
-        nxsched_suspend_scheduler(*running_task);
-        nxsched_resume_scheduler(tcb);
-        *running_task = tcb;
-
-        /* Restore the cpu lock */
-
-        restore_critical_section(tcb, cpu);
-#ifdef CONFIG_ARCH_ADDRENV
-        addrenv_switch(tcb);
-#endif
-        break;
-```
-
-Who calls arm64_syscall? It's called by arm64_sync_exc to handle Synchronous Exception for AArch64:
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L195
-
-Who calls arm64_sync_exc? It's called by the Vector Table for:
-- Synchronous Exception from same exception level, when using the SP_EL0 stack pointer
-- Synchronous Exception from same exception level, when using the SP_ELx stack pointer (we're using EL1)
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L158
 
 # Arm64 Vector Table
 
