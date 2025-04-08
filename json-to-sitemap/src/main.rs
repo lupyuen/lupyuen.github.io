@@ -51,7 +51,7 @@ fn main() {
         "%Y-%m-%d %H:%M:%S"
     ).unwrap();  //  "2018-03-20"
     let url_entry = UrlEntry::builder()
-        .loc("https://lupyuen.github.io/")
+        .loc("https://lupyuen.org/")
         .lastmod(date.into())
         .build()
         .expect("valid");
@@ -67,7 +67,7 @@ fn main() {
         //  println!("{}", date);
 
         //  Skip non-articles.
-        if !article.website.starts_with("https://lupyuen.github.io/articles/") { continue; }
+        if !article.website.starts_with("https://lupyuen.org/articles/") { continue; }
 
         //  Compose the item.
         let url_entry = UrlEntry::builder()
@@ -78,7 +78,7 @@ fn main() {
         urlwriter.url(url_entry).expect("Can't write the file");
         /*
         <url>
-            <loc>https://lupyuen.github.io/articles/lte</loc>
+            <loc>https://lupyuen.org/articles/lte.html</loc>
             <lastmod>2023-04-12T00:00:00+00:00</lastmod>
         </url>
         */

@@ -2,7 +2,7 @@
   "basics": {
     "name": "Lup Yuen LEE",
     "label": "IoT Techie and Educator",
-    "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
+    "picture": "https://lupyuen.org/images/lupyuen.jpg",
     "email": "luppy@appkaki.com",
     "website": "https://lupyuen.org",
     "summary": "Hands-on IoT advisor and educator. Passionate about helping everyone create IoT products that will make a difference.",
@@ -32,12 +32,12 @@
       {
         "network": "Download PDF",
         "username": "Download PDF",
-        "url": "https://lupyuen.github.io/lupyuen.pdf"
+        "url": "https://lupyuen.org/lupyuen.pdf"
       },
       {
         "network": "JSON",
         "username": "JSON",
-        "url": "https://lupyuen.github.io/resume.json"
+        "url": "https://lupyuen.org/resume.json"
       }
     ]
   },
@@ -165,175 +165,175 @@
       "name": "Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-30",
-      "website": "https://lupyuen.github.io/articles/unicorn3",
+      "website": "https://lupyuen.org/articles/unicorn3.html",
       "summary": "Spotted in Unicorn Emulator: A Demo of Arm64 Memory Management Unit (MMU)... in 18 Lines of Arm64 Assembly! Today we decipher the code inside the Arm64 MMU Demo, figure out how it works. Which turns out to be surprisingly helpful for emulating Apache NuttX RTOS, compiled for Arm64 SBCs."
     },
     {
       "name": "Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-16",
-      "website": "https://lupyuen.github.io/articles/avaota",
+      "website": "https://lupyuen.org/articles/avaota.html",
       "summary": "This article explains how we ported NuttX from QEMU Arm64 Kernel Build to PINE64 Yuzuki Avaota-A1 SBC based on Allwinner A527 SoC ... Completed within 24 Hours!"
     },
     {
       "name": "PR Test Bot for PinePhone (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-09",
-      "website": "https://lupyuen.github.io/articles/testbot3",
+      "website": "https://lupyuen.org/articles/testbot3.html",
       "summary": "Earlier we created a PR Test Bot that will Build and Test the Pull Requests for Apache NuttX RTOS. Today we extend our Test Bot to Build and Test the Pull Requests for PINE64 PinePhone. Yep on the Real Arm64 PinePhone Hardware!"
     },
     {
       "name": "StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-02",
-      "website": "https://lupyuen.github.io/articles/starpro64",
+      "website": "https://lupyuen.org/articles/starpro64.html",
       "summary": "StarPro64 EIC7700X is the (literally) Hot New RISC-V SBC by PINE64. Let's chat about ESWIN EIC7700X, the RISC-V SoC inside, how its Neural Processing Unit supports Large Language Models. And how we port Apache NuttX RTOS to StarPro64."
     },
     {
       "name": "QEMU Test Bot for Pull Requests: Beware of Semihosting Breakout (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-02-23",
-      "website": "https://lupyuen.github.io/articles/testbot2",
+      "website": "https://lupyuen.org/articles/testbot2.html",
       "summary": "Last week we saw our new Test Bot for NuttX Pull Requests, that will test on Real Hardware: Oz64 SG2000 RISC-V SBC. Today we extend our Test Bot to QEMU Emulators: Arm64 QEMU and RISC-V QEMU."
     },
     {
       "name": "Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-02-16",
-      "website": "https://lupyuen.github.io/articles/testbot",
+      "website": "https://lupyuen.org/articles/testbot.html",
       "summary": "We're always Making Things Better (and making better things) with Apache NuttX RTOS. Our new Test Bot shall watch for Comments on Pull Requests and start a NuttX Build and Test on Real Hardware: PINE64 Oz64 SG2000 RISC-V SBC."
     },
     {
       "name": "Auto-Rewind for Daily Test (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-02-09",
-      "website": "https://lupyuen.github.io/articles/rewind",
+      "website": "https://lupyuen.org/articles/rewind.html",
       "summary": "If the Daily Test fails for Apache NuttX RTOS... Can we Auto-Rewind and discover the Breaking Commit? Let's do it with Prometheus Time-Series Database and Mastodon Server"
     },
     {
       "name": "Rust Standard Library on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-26",
-      "website": "https://lupyuen.github.io/articles/rust7",
+      "website": "https://lupyuen.org/articles/rust7.html",
       "summary": "Rust Standard Library is now available on Apache NuttX RTOS, thanks to awesome work by Huang Qi! In this article we explain (1) How to build NuttX + Rust Standard Library (2) Handling JSON with the Serde Crate (3) Async Functions with the Tokio Crate (4) Blinking LEDs with the Nix Crate"
     },
     {
       "name": "Fixing a uname bug (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-19",
-      "website": "https://lupyuen.github.io/articles/uname",
+      "website": "https://lupyuen.org/articles/uname.html",
       "summary": "Earlier This Week: uname became unusually quieter on Apache NuttX RTOS... The Commit Hash is missing! Watch as we stomp the seemingly simple bug, that turns out to be something seriously sinister! (Spoiler: Static Vars are broken)"
     },
     {
       "name": "Forgejo Git Forge for Apache NuttX RTOS (Experimental)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-12",
-      "website": "https://lupyuen.github.io/articles/forgejo",
+      "website": "https://lupyuen.org/articles/forgejo.html",
       "summary": "Life Without GitHub: What's it like? Today we talk about Forgejo Git Forge, and whether Apache NuttX RTOS could possibly switch from GitHub to our own Git Forge."
     },
     {
       "name": "Git Bisecting a Bug (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-01-05",
-      "website": "https://lupyuen.github.io/articles/bisect",
+      "website": "https://lupyuen.org/articles/bisect.html",
       "summary": "Suppose we hit a Runtime Bug in Apache NuttX RTOS. We think that the Breaking Commit (causing the bug) is somewhere inside these hundreds of NuttX Commits. But which one? In this article: We run Git Bisect to discover the Breaking Commit."
     },
     {
       "name": "Mastodon Server for Continuous Integration (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-29",
-      "website": "https://lupyuen.github.io/articles/mastodon",
+      "website": "https://lupyuen.org/articles/mastodon.html",
       "summary": "We're out for a 50 km overnight hike. Our Build Farm for Apache NuttX RTOS runs non-stop all day, all night. Continuously compiling over 1,000 NuttX Targets. Can we be 100% sure that NuttX is OK? Without getting spammed by alert emails all night? In this article: We talk about Mastodon as a fun new way to broadcast NuttX Alerts in real time."
     },
     {
       "name": "Buy a Coffee for Lup Yuen Lee",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-28",
-      "website": "https://lupyuen.github.io/articles/sponsor",
+      "website": "https://lupyuen.org/articles/sponsor.html",
       "summary": "Please sponsor my open-source writing and projects. Thank you so much!"
     },
     {
       "name": "Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-22",
-      "website": "https://lupyuen.github.io/articles/ci7",
+      "website": "https://lupyuen.org/articles/ci7.html",
       "summary": "Every Day: Apache NuttX RTOS on QEMU RISC-V Emulator fails our Continuous Integration Test. The Bug Stops Here! In this article, we study the internals of a NuttX CI Test (Continuous Integration) as we fix the bug."
     },
     {
       "name": "Rewinding a Build for Apache NuttX RTOS (Docker)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-15",
-      "website": "https://lupyuen.github.io/articles/ci6",
+      "website": "https://lupyuen.org/articles/ci6.html",
       "summary": "When something breaks the Daily Build for Apache NuttX RTOS: Our NuttX Maintainers will scramble to identify the Breaking Commit. Not any more! Now we can go back in time and Rewind The Build."
     },
     {
       "name": "macOS Build Farm for Apache NuttX RTOS (Apple Silicon)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-12-08",
-      "website": "https://lupyuen.github.io/articles/ci5",
+      "website": "https://lupyuen.org/articles/ci5.html",
       "summary": "Folks on macOS: Compiling Apache NuttX RTOS used to be so tiresome. Not any more! In this article, we explain how to build anything on macOS, by patching the NuttX CI Script. Which also becomes our macOS Build Farm."
     },
     {
       "name": "Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-11-24",
-      "website": "https://lupyuen.github.io/articles/ci4",
+      "website": "https://lupyuen.org/articles/ci4.html",
       "summary": "Last article we spoke about the (Twice) Daily Builds for Apache NuttX RTOS. Today we talk about Monitoring the Daily Builds (also the NuttX Build Farm) with our new NuttX Dashboard."
     },
     {
       "name": "Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-11-10",
-      "website": "https://lupyuen.github.io/articles/ci3",
+      "website": "https://lupyuen.org/articles/ci3.html",
       "summary": "Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890. Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours! This article explains everything we did in the (Semi-Chaotic) Two Weeks for Apache NuttX RTOS."
     },
     {
       "name": "Your very own Build Farm for Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-10-27",
-      "website": "https://lupyuen.github.io/articles/ci2",
+      "website": "https://lupyuen.org/articles/ci2.html",
       "summary": "Refurbished Ubuntu PCs have become quite affordable. Let's turn them into a (Low-Cost) Build Farm for Apache NuttX RTOS, thanks to the Docker Image provided by NuttX."
     },
     {
       "name": "LLM Bot that reviews Pull Requests for Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-09-29",
-      "website": "https://lupyuen.github.io/articles/llm",
+      "website": "https://lupyuen.org/articles/llm.html",
       "summary": "We’re experimenting with an LLM Bot (Large Language Model) that will review Pull Requests for Apache NuttX RTOS. This article explains how we created the Bot in One Week... By sheer accident!"
     },
     {
       "name": "Continuous Integration for Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-09-11",
-      "website": "https://lupyuen.github.io/articles/ci",
+      "website": "https://lupyuen.org/articles/ci.html",
       "summary": "This article explains how Apache NuttX RTOS is running Continuous Integration with GitHub Actions. Every NuttX Pull Request will trigger 1,594 NuttX Builds!"
     },
     {
       "name": "Early Days of Rust Apps on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-08-19",
-      "website": "https://lupyuen.github.io/articles/rust6",
+      "website": "https://lupyuen.org/articles/rust6.html",
       "summary": "My student Rushabh Gala has just completed his project for Google Summer of Code, on creating Safer Rust Apps for Apache NuttX RTOS. In this article we walk through Rushabh’s contributions, and understand how we’re evolving Rust Apps for NuttX."
     },
     {
       "name": "RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-07-07",
-      "website": "https://lupyuen.github.io/articles/sg2000b",
+      "website": "https://lupyuen.org/articles/sg2000b.html",
       "summary": "Earlier this year we made a RISC-V Emulator for Ox64 BL808 SBC, thanks to our customised TinyEMU RISC-V Emulator. (Not the small flightless bird) Now that NuttX supports Sophgo SG2000 SoC: Let's create a similar emulator for Pine64 Oz64 SBC and Milk-V Duo S!"
     },
     {
       "name": "Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-06-23",
-      "website": "https://lupyuen.github.io/articles/sg2000a",
+      "website": "https://lupyuen.org/articles/sg2000a.html",
       "summary": "Last week we upstreamed Milk-V Duo S SBC to Apache NuttX RTOS. (Based on Sophgo SG2000 RISC-V SoC) But NuttX Mainline changes every day. Will Milk-V Duo S suffer “Software Bit Rot”? And fail to boot NuttX someday? Let’s do Daily Automated Testing for NuttX on a Milk-V Duo S SBC, controlled by an IKEA Smart Power Plug with Home Assistant API."
     },
     {
       "name": "(Slides) TinyEMU RISC-V Emulator for Apache NuttX RTOS",
       "publisher": "NuttX International Workshop 2024",
       "releaseDate": "2023-06-13",
-      "website": "https://lupyuen.github.io/nuttx#tinyemu-risc-v-emulator-for-apache-nuttx-rtos",
+      "website": "https://lupyuen.org/nuttx#tinyemu-risc-v-emulator-for-apache-nuttx-rtos",
       "summary": "What if we could boot and test Apache NuttX RTOS inside a Web Browser? This presentation explains how we created a NuttX Emulator in WebAssembly, based on TinyEMU RISC-V Emulator."
     },
     {
@@ -347,7 +347,7 @@
       "name": "(Slides) Adventures of Ox64 BL808 RISC-V SBC with Apache NuttX RTOS",
       "publisher": "NuttX International Workshop 2024",
       "releaseDate": "2023-06-13",
-      "website": "https://lupyuen.github.io/nuttx#adventures-of-ox64-bl808-risc-v-sbc-with-apache-nuttx-rtos",
+      "website": "https://lupyuen.org/nuttx#adventures-of-ox64-bl808-risc-v-sbc-with-apache-nuttx-rtos",
       "summary": "We ported Apache NuttX RTOS to PINE64’s Ox64 BL808 64-bit Single-Board Computer. And we created an Emulator for Ox64 SBC that runs in the Web Browser, thanks to TinyEMU RISC-V Emulator. Today we run Daily Automated Testing of NuttX on the Ox64 Emulator. In this presentation we explain how we used the Ox64 Emulator in our experiments with WebAssembly and NuttX: (1) Testing the TCC RISC-V Compiler in WebAssembly (2) Porting the QuickJS JavaScript Engine to NuttX (3) Creating a Drag-n-Drop App Builder for NuttX"
     },
     {
@@ -361,7 +361,7 @@
       "name": "(Slides) Analysis of Real-Time Logs for Apache NuttX RTOS with PureScript",
       "publisher": "NuttX International Workshop 2024",
       "releaseDate": "2023-06-13",
-      "website": "https://lupyuen.github.io/nuttx#analysis-of-real-time-logs-for-apache-nuttx-rtos-with-purescript",
+      "website": "https://lupyuen.org/nuttx#analysis-of-real-time-logs-for-apache-nuttx-rtos-with-purescript",
       "summary": "Today we can get Real-Time NuttX Logs from our RISC-V Devices: Ox64 SBC (Web Serial API) and Ox64 Emulator (Term.js). What if we could analyse the RISC-V Logs in Real-Time? And show the results in the Web Browser? Let’s do it with PureScript, the Functional Language that compiles to JavaScript. We’ll also support Online Scripting of PureScript for Log Parsing. Can we enhance the NuttX Developer Experience with Functional Programming Tools like PureScript? Or newer hardware like PINE64 Ox64 SBC and Sophgo SG2000 / Milk-V Duo S? Let’s chat about this."
     },
     {
@@ -375,91 +375,91 @@
       "name": "Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S / Oz64 SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-05-19",
-      "website": "https://lupyuen.github.io/articles/sg2000",
+      "website": "https://lupyuen.org/articles/sg2000.html",
       "summary": "Soon we'll see many new 64-bit RISC-V SBCs based on the Sophgo SG2000 RISC-V SoC. Will they work with Apache NuttX RTOS? Let's find out!"
     },
     {
       "name": "Rust Apps on Ox64 BL808 RISC-V SBC and Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-05-05",
-      "website": "https://lupyuen.github.io/articles/rust5",
+      "website": "https://lupyuen.org/articles/rust5.html",
       "summary": "Will Rust Apps run on a 64-bit RISC-V SBC? Like Ox64 BL808 SBC? Let's find out with Apache NuttX RTOS!"
     },
     {
       "name": "Rust Custom Target for QEMU RISC-V on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-04-21",
-      "website": "https://lupyuen.github.io/articles/rust4",
+      "website": "https://lupyuen.org/articles/rust4.html",
       "summary": "Our Rust App compiles for Software Floating-Point, but Apache NuttX RTOS expects Hardware Floating-Point... Let's fix this with a Rust Custom Target for QEMU RISC-V"
     },
     {
       "name": "Rust Apps on Apache NuttX RTOS and QEMU RISC-V",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-04-07",
-      "website": "https://lupyuen.github.io/articles/rust3",
+      "website": "https://lupyuen.org/articles/rust3.html",
       "summary": "Here's how we run Rust Apps on Apache NuttX RTOS and QEMU RISC-V Emulator."
     },
     {
       "name": "Too many Embedded Logs? PureScript might help (Ox64 BL808 SBC / Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-03-03",
-      "website": "https://lupyuen.github.io/articles/purescript",
+      "website": "https://lupyuen.org/articles/purescript.html",
       "summary": "Troubleshooting Crash Dumps for Apache NuttX RTOS will become a little less painful... Thanks to our new NuttX Log Parser! This is how we created with PureScript, a Real-Time Parser and Explainer for RISC-V Exceptions and Stack Dumps."
     },
     {
       "name": "(Homage to MakeCode) Coding Ox64 BL808 SBC the Drag-n-Drop Way",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-25",
-      "website": "https://lupyuen.github.io/articles/quickjs2",
+      "website": "https://lupyuen.org/articles/quickjs2.html",
       "summary": "Remember Makecode? BBC micro:bit and its Drag-n-Drop App Builder? Let's give MakeCode a wholesome wholesale makeover... With Blockly, QuickJS JavaScript Engine, Apache NuttX RTOS and Ox64 BL808 64-bit RISC-V SBC"
     },
     {
       "name": "QuickJS JavaScript Engine on a Real-Time Operating System (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-18",
-      "website": "https://lupyuen.github.io/articles/quickjs",
+      "website": "https://lupyuen.org/articles/quickjs.html",
       "summary": "Can we run QuickJS JavaScript Engine on Apache NuttX RTOS? And Blink the LED on Ox64 BL808 RISC-V SBC... In 4 lines of JavaScript? Let’s do it!"
     },
     {
       "name": "Zig runs ROM FS Filesystem in the Web Browser (thanks to Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-11",
-      "website": "https://lupyuen.github.io/articles/romfs",
+      "website": "https://lupyuen.org/articles/romfs.html",
       "summary": "We solve a hefty headache in our port of TCC Compiler to WebAssembly: Missing C Header Files... Thanks to the ROM FS Filesystem and the ROM FS Driver from Apache NuttX RTOS"
     },
     {
       "name": "TCC RISC-V Compiler runs in the Web Browser (thanks to Zig Compiler)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-02-04",
-      "website": "https://lupyuen.github.io/articles/tcc",
+      "website": "https://lupyuen.org/articles/tcc.html",
       "summary": "Today we're running Apache NuttX RTOS inside a Web Browser. What if we could compile and test NuttX Apps in the Web Browser? Let's explore with TCC 64-bit RISC-V Compiler, compiled to WebAssembly with Zig Compiler."
     },
     {
       "name": "Automated Testing with Ox64 BL808 Emulator (Apache NuttX RTOS)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-28",
-      "website": "https://lupyuen.github.io/articles/tinyemu3",
+      "website": "https://lupyuen.org/articles/tinyemu3.html",
       "summary": "Every day we're auto-building Apache NuttX RTOS for Ox64 BL808 SBC... Can we test NuttX on Ox64 Emulator automatically after building? Let's find out!"
     },
     {
       "name": "Emulate Ox64 BL808 in the Web Browser: Experiments with TinyEMU RISC-V Emulator and Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-21",
-      "website": "https://lupyuen.github.io/articles/tinyemu2",
+      "website": "https://lupyuen.org/articles/tinyemu2.html",
       "summary": "Let's create a barebones Ox64 BL808 Emulator that runs in the Web Browser... By tweaking TinyEMU RISC-V Emulator and booting Apache NuttX RTOS without any modification"
     },
     {
       "name": "Apache NuttX RTOS in a Web Browser? Adventures with TinyEMU and VirtIO",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-14",
-      "website": "https://lupyuen.github.io/articles/tinyemu",
+      "website": "https://lupyuen.org/articles/tinyemu.html",
       "summary": "Here's how we boot and run Apache NuttX RTOS in the Web Browser... Thanks to TinyEMU RISC-V Emulator, VirtIO Virtual Devices and OpenAMP Library"
     },
     {
       "name": "Nim on a Real-Time Operating System: Apache NuttX RTOS + Ox64 BL808 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2024-01-01",
-      "website": "https://lupyuen.github.io/articles/nim",
+      "website": "https://lupyuen.org/articles/nim.html",
       "summary": "Let's blink an LED on Pine64 Ox64 BL808 64-bit RISC-V Single-Board Computer... With Nim Programming Language and Apache NuttX Real-Time Operating System"
     },
     {
@@ -473,56 +473,56 @@
       "name": "Fixed the UART Interrupt and Platform-Level Interrupt Controller (Ox64 BL808)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-12-10",
-      "website": "https://lupyuen.github.io/articles/plic3",
+      "website": "https://lupyuen.org/articles/plic3.html",
       "summary": "Weak Ordering in the Ox64 BL808 Memory Management Unit (T-Head C906)... Causes problems with UART Interrupts and the Platform-Level Interrupt Controller"
     },
     {
       "name": "RISC-V Ox64 BL808 SBC: UART Interrupt and Platform-Level Interrupt Controller (PLIC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-12-03",
-      "website": "https://lupyuen.github.io/articles/plic2",
+      "website": "https://lupyuen.org/articles/plic2.html",
       "summary": "We dive into the Platform-Level Interrupt Controller (PLIC) for the tiny adorable Pine64 Ox64 BL808 64-bit Single-Board Computer... Using Apache NuttX Real-Time Operating System to explain the inner workings of PLIC"
     },
     {
       "name": "RISC-V Ox64 BL808 SBC: NuttX Apps and Initial RAM Disk",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-26",
-      "website": "https://lupyuen.github.io/articles/app",
+      "website": "https://lupyuen.org/articles/app.html",
       "summary": "(1) What's inside an Application for Apache NuttX RTOS (2) How it calls the NuttX Kernel (3) How NuttX Apps are bundled into the Initial RAM Disk for Pine64 Ox64 BL808 RISC-V SBC"
     },
     {
       "name": "RISC-V Ox64 BL808 SBC: Sv39 Memory Management Unit",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-19",
-      "website": "https://lupyuen.github.io/articles/mmu",
+      "website": "https://lupyuen.org/articles/mmu.html",
       "summary": "Let's boot Apache NuttX RTOS on Pine64 Ox64 64-bit RISC-V SBC... And figure out how the Sv39 Memory Management Unit works"
     },
     {
       "name": "RISC-V Ox64 BL808 SBC: Starting Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-12",
-      "website": "https://lupyuen.github.io/articles/ox2",
+      "website": "https://lupyuen.org/articles/ox2.html",
       "summary": "Let's boot a tiny bit of Apache NuttX Real-Time Operating System... On Pine64 Ox64 BL808 RISC-V SBC"
     },
     {
       "name": "Ox64 BL808 RISC-V SBC: Booting Linux and (maybe) Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-11-05",
-      "website": "https://lupyuen.github.io/articles/ox64",
+      "website": "https://lupyuen.org/articles/ox64.html",
       "summary": "Let's boot Linux on Pine64 Ox64 BL808 RISC-V SBC... As we figure out how Apache NuttX RTOS might run on Ox64"
     },
     {
       "name": "Star64 JH7110 RISC-V SBC: Experiments with OpenSBI (Supervisor Binary Interface)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-10-29",
-      "website": "https://lupyuen.github.io/articles/sbi",
+      "website": "https://lupyuen.org/articles/sbi.html",
       "summary": "Let's boot Apache NuttX RTOS on the Star64 JH7110 RISC-V SBC (VisionFive5 too)... And experiment with the OpenSBI Supervisor Binary Interface"
     },
     {
       "name": "Strange Workaround for TFTP Timeout in U-Boot Bootloader (Star64 JH7110 RISC-V SBC)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-10-06",
-      "website": "https://lupyuen.github.io/articles/tftp2",
+      "website": "https://lupyuen.org/articles/tftp2.html",
       "summary": "Here's how we fixed TFTP Timeouts in the Star64 JH7110 U-Boot Bootloader... By sending every TFTP Data Packet twice"
     },
     {
@@ -571,14 +571,14 @@
       "name": "RISC-V Star64 JH7110: Power Up the Display Controller with U-Boot Bootloader",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-09-02",
-      "website": "https://lupyuen.github.io/articles/display3",
+      "website": "https://lupyuen.org/articles/display3.html",
       "summary": "Let's power up the DC8200 Display Controller inside Star64 JH7110 RISC-V Single-Board Computer... By running simple commands in the U-Boot Bootloader"
     },
     {
       "name": "RISC-V Star64 JH7110: Inside the Display Controller",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-08-23",
-      "website": "https://lupyuen.github.io/articles/display2",
+      "website": "https://lupyuen.org/articles/display2.html",
       "summary": "Let's take a walk inside the Display Controller for Pine64's Star64 JH7110 RISC-V SBC... And find out how we'll create the Display Driver for Apache NuttX RTOS"
     },
     {
@@ -606,91 +606,91 @@
       "name": "Star64 JH7110 + NuttX RTOS: Creating the First Release for the RISC-V SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-08-07",
-      "website": "https://lupyuen.github.io/articles/release",
+      "website": "https://lupyuen.org/articles/release.html",
       "summary": "Pine64's Star64 JH7110 RISC-V SBC is now supported in Apache NuttX RTOS Mainline! Let's review how we created the first release of NuttX for Star64"
     },
     {
       "name": "Star64 JH7110 + NuttX RTOS: RISC-V PLIC Interrupts and Serial I/O",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-08-02",
-      "website": "https://lupyuen.github.io/articles/plic",
+      "website": "https://lupyuen.org/articles/plic.html",
       "summary": "Apache NuttX RTOS on Pine64's Star64 JH7110 RISC-V SBC has a problem with Serial I/O Interrupts and the RISC-V Platform-Level Interrupt Controller (PLIC)... Let's fix this!"
     },
     {
       "name": "Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-28",
-      "website": "https://lupyuen.github.io/articles/semihost",
+      "website": "https://lupyuen.org/articles/semihost.html",
       "summary": "Apache NuttX RTOS crashes on Pine64's Star64 JH7110 RISC-V SBC because there's no Semihosting. But no worries! We modified NuttX to boot with an Initial RAM Disk instead (initrd)."
     },
     {
       "name": "Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-19",
-      "website": "https://lupyuen.github.io/articles/privilege",
+      "website": "https://lupyuen.org/articles/privilege.html",
       "summary": "We're porting Apache NuttX RTOS to Pine64's Star64 JH7110 RISC-V SBC... And we see interesting issues with RISC-V Privilege Levels and 16550 UART Registers"
     },
     {
       "name": "Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-13",
-      "website": "https://lupyuen.github.io/articles/tftp",
+      "website": "https://lupyuen.org/articles/tftp.html",
       "summary": "Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer"
     },
     {
       "name": "Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-09",
-      "website": "https://lupyuen.github.io/articles/nuttx2",
+      "website": "https://lupyuen.org/articles/nuttx2.html",
       "summary": "(Partially) Booting Apache NuttX Real-Time Operating System on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC"
     },
     {
       "name": "Booting RISC-V Linux on Star64 JH7110 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-04",
-      "website": "https://lupyuen.github.io/articles/linux",
+      "website": "https://lupyuen.org/articles/linux.html",
       "summary": "Watch what happens when we boot Yocto and Armbian Linux on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC"
     },
     {
       "name": "Inspecting the RISC-V Linux Images for Star64 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-30",
-      "website": "https://lupyuen.github.io/articles/star64",
+      "website": "https://lupyuen.org/articles/star64.html",
       "summary": "Let's look inside the Linux Images for Pine64's Star64 64-bit RISC-V Single-Board Computer: Armbian and Yocto"
     },
     {
       "name": "64-bit RISC-V with Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-25",
-      "website": "https://lupyuen.github.io/articles/riscv",
+      "website": "https://lupyuen.org/articles/riscv.html",
       "summary": "Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX"
     },
     {
       "name": "NuttX RTOS for PinePhone: The First Year",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-21",
-      "website": "https://lupyuen.github.io/articles/pinephone2",
+      "website": "https://lupyuen.org/articles/pinephone2.html",
       "summary": "2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next"
     },
     {
       "name": "NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-10",
-      "website": "https://lupyuen.github.io/articles/lvgl4",
+      "website": "https://lupyuen.org/articles/lvgl4.html",
       "summary": "How we created the LVGL Feature Phone UI for Pine64 PinePhone on Apache NuttX RTOS... By tweaking and testing in a Web Browser!"
     },
     {
       "name": "(Possibly) LVGL in WebAssembly with Zig Compiler",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-31",
-      "website": "https://lupyuen.github.io/articles/lvgl3",
+      "website": "https://lupyuen.org/articles/lvgl3.html",
       "summary": "Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!"
     },
     {
       "name": "Recipe for Wholemeal Sourdough with Bread Machine",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-22",
-      "website": "https://lupyuen.github.io/articles/sourdough",
+      "website": "https://lupyuen.org/articles/sourdough.html",
       "summary": "Yep it's a Sourdough Recipe"
     },
     {
@@ -704,658 +704,658 @@
       "name": "NuttX RTOS for PinePhone: Phone Calls and Text Messages",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-04",
-      "website": "https://lupyuen.github.io/articles/lte2",
+      "website": "https://lupyuen.org/articles/lte2.html",
       "summary": "Making Phone Calls and Sending SMS Text Messages with PinePhone's Quectel EG25-G 4G LTE Modem... How we'll do it with Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: 4G LTE Modem",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-04-12",
-      "website": "https://lupyuen.github.io/articles/lte",
+      "website": "https://lupyuen.org/articles/lte.html",
       "summary": "All about the Quectel EG25-G 4G LTE Modem inside Pine64 PinePhone... And how we'll control it with Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-03-24",
-      "website": "https://lupyuen.github.io/articles/usb3",
+      "website": "https://lupyuen.org/articles/usb3.html",
       "summary": "Porting the Enhanced Host Controller Interface (EHCI) USB Driver... From Apache NuttX RTOS to Pine64 PinePhone"
     },
     {
       "name": "(Clickable) Call Graph for Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-03-05",
-      "website": "https://lupyuen.github.io/articles/unicorn2",
+      "website": "https://lupyuen.org/articles/unicorn2.html",
       "summary": "Here's how Apache NuttX RTOS boots on Pine64 PinePhone... Visualised as a Call Graph with Unicorn Emulator and Rust"
     },
     {
       "name": "(Possibly) Emulate PinePhone with Unicorn Emulator",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-02-24",
-      "website": "https://lupyuen.github.io/articles/unicorn",
+      "website": "https://lupyuen.org/articles/unicorn.html",
       "summary": "To make PinePhone testing easier... Can we emulate Arm64 PinePhone with Unicorn Emulator? Let's find out! We'll call the Unicorn Emulator in Rust"
     },
     {
       "name": "NuttX RTOS for PinePhone: Exploring USB",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-02-20",
-      "website": "https://lupyuen.github.io/articles/usb2",
+      "website": "https://lupyuen.org/articles/usb2.html",
       "summary": "What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: LVGL Terminal for NSH Shell",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-02-03",
-      "website": "https://lupyuen.github.io/articles/terminal",
+      "website": "https://lupyuen.org/articles/terminal.html",
       "summary": "Let's build a Terminal App for PinePhone... With LVGL and Apache NuttX RTOS"
     },
     {
       "name": "Apache NuttX RTOS trips ChatGPT",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-29",
-      "website": "https://lupyuen.github.io/articles/chatgpt",
+      "website": "https://lupyuen.org/articles/chatgpt.html",
       "summary": "ChatGPT (the AI chatbot) will gladly answer questions about Apache NuttX RTOS! But the answers aren't always correct. Let's turn this into a learning opportunity, and understand why ChatGPT's answers are incorrect"
     },
     {
       "name": "NuttX RTOS for PinePhone: Boot to LVGL",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-22",
-      "website": "https://lupyuen.github.io/articles/lvgl2",
+      "website": "https://lupyuen.org/articles/lvgl2.html",
       "summary": "How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone"
     },
     {
       "name": "NuttX RTOS for PinePhone: Touch Panel",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-12",
-      "website": "https://lupyuen.github.io/articles/touch2",
+      "website": "https://lupyuen.org/articles/touch2.html",
       "summary": "All about the Capacitive Touch Panel inside Pine64 PinePhone... And how we created the PinePhone Touch Panel Driver for Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: What is it?",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-03",
-      "website": "https://lupyuen.github.io/articles/what",
+      "website": "https://lupyuen.org/articles/what.html",
       "summary": "Let's talk about Apache NuttX RTOS for Pine64 PinePhone: What is it? Why are we doing this? How will we use it?"
     },
     {
       "name": "NuttX RTOS for PinePhone: Framebuffer",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-01",
-      "website": "https://lupyuen.github.io/articles/fb",
+      "website": "https://lupyuen.org/articles/fb.html",
       "summary": "How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone"
     },
     {
       "name": "NuttX RTOS for PinePhone: LCD Panel",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-28",
-      "website": "https://lupyuen.github.io/articles/lcd",
+      "website": "https://lupyuen.org/articles/lcd.html",
       "summary": "Apache NuttX RTOS now boots with a Test Pattern on Pine64 PinePhone! Let's find out what's inside our new NuttX Driver for PinePhone's LCD Panel."
     },
     {
       "name": "NuttX RTOS for PinePhone: Display Engine",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-23",
-      "website": "https://lupyuen.github.io/articles/de3",
+      "website": "https://lupyuen.org/articles/de3.html",
       "summary": "Apache NuttX Kernel now supports Allwinner A64 Display Engine on Pine64 PinePhone! Here's how we call it to render graphics on PinePhone's LCD Display"
     },
     {
       "name": "NuttX RTOS for PinePhone: MIPI Display Serial Interface",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-15",
-      "website": "https://lupyuen.github.io/articles/dsi3",
+      "website": "https://lupyuen.org/articles/dsi3.html",
       "summary": "Apache NuttX Kernel has a driver for MIPI Display Serial Interface... Here's how it will be called for rendering PinePhone's LCD Display"
     },
     {
       "name": "Preparing a Pull Request for Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-11-28",
-      "website": "https://lupyuen.github.io/articles/pr",
+      "website": "https://lupyuen.org/articles/pr.html",
       "summary": "Here are the steps to prepare a Pull Request for Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: Render Graphics in Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-11-15",
-      "website": "https://lupyuen.github.io/articles/de2",
+      "website": "https://lupyuen.org/articles/de2.html",
       "summary": "How we render graphics directly to PinePhone's Display Hardware... With the Zig Programming Language and Apache NuttX RTOS"
     },
     {
       "name": "Rendering PinePhone's Display (DE and TCON0)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-30",
-      "website": "https://lupyuen.github.io/articles/de",
+      "website": "https://lupyuen.org/articles/de.html",
       "summary": "How does Pine64 PinePhone render graphics on its LCD Display? Let's find out about the Allwinner A64 SoC's Display Engine (DE) and Timing Controller (TCON0)."
     },
     {
       "name": "NuttX RTOS for PinePhone: Display Driver in Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-18",
-      "website": "https://lupyuen.github.io/articles/dsi2",
+      "website": "https://lupyuen.org/articles/dsi2.html",
       "summary": "Let's build a PinePhone Display Driver in Zig... That will run on Apache NuttX RTOS"
     },
     {
       "name": "Understanding PinePhone's Display (MIPI DSI)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-02",
-      "website": "https://lupyuen.github.io/articles/dsi",
+      "website": "https://lupyuen.org/articles/dsi.html",
       "summary": "How does Pine64 PinePhone control its LCD Display over MIPI Display Serial Interface? Let's find out!"
     },
     {
       "name": "NuttX on a RISC-V IoT Gadget: PineDio Stack BL604",
       "publisher": "NuttX Online Workshop 2022",
       "releaseDate": "2022-09-25",
-      "website": "https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604",
+      "website": "https://lupyuen.org/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604",
       "summary": "Pine64’s PineDio Stack BL604 is a RISC-V board that’s packed with IoT features: Touchscreen, LoRa, WiFi, BLE, GPS and more. In this presentation we’ll talk about the porting of NuttX to PineDio Stack, how we simplified the developer onboarding, and our plans to support LoRaWAN and LVGL Apps in Zig."
     },
     {
       "name": "Visual Programming with Zig and NuttX Sensors",
       "publisher": "NuttX Online Workshop 2022",
       "releaseDate": "2022-09-24",
-      "website": "https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors",
+      "website": "https://lupyuen.org/nuttx#visual-programming-with-zig-and-nuttx-sensors",
       "summary": "What if we could drag-and-drop NuttX Sensors to create IoT Apps? In this presentation we’ll explore Blockly, the web-based toolkit for Visual Programming, and how we might customise Blockly to create NuttX Sensor Apps. We’ll also discuss the Zig Programming Language, and why Blockly will generate NuttX Sensor Apps as Zig programs."
     },
     {
       "name": "Simpler, safer LVGL Touchscreen Apps with Zig and NuttX",
       "publisher": "NuttX Online Workshop 2022",
       "releaseDate": "2022-09-24",
-      "website": "https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx",
+      "website": "https://lupyuen.org/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx",
       "summary": "Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we’ll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings."
     },
     {
       "name": "NuttX RTOS for PinePhone: Blinking the LEDs",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-22",
-      "website": "https://lupyuen.github.io/articles/pio",
+      "website": "https://lupyuen.org/articles/pio.html",
       "summary": "Let's experiment with the GPIO Hardware on Pine64 PinePhone... With a little help from Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: UART Driver",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-09",
-      "website": "https://lupyuen.github.io/articles/serial",
+      "website": "https://lupyuen.org/articles/serial.html",
       "summary": "Our PinePhone Operating System will be awfully quiet if we don't implement UART Input and Output... Here's how we implemented the UART Driver for Apache NuttX RTOS"
     },
     {
       "name": "NuttX RTOS for PinePhone: Fixing the Interrupts",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-01",
-      "website": "https://lupyuen.github.io/articles/interrupt",
+      "website": "https://lupyuen.org/articles/interrupt.html",
       "summary": "How Pine64 PinePhone handles Arm64 Interrupts with the Generic Interrupt Controller... And how we implemented PinePhone Interrupt Handling in Apache NuttX RTOS"
     },
     {
       "name": "PinePhone boots Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-08-28",
-      "website": "https://lupyuen.github.io/articles/uboot",
+      "website": "https://lupyuen.org/articles/uboot.html",
       "summary": "How we ported Apache NuttX RTOS to PinePhone... And what's inside the U-Boot Bootloader"
     },
     {
       "name": "Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-08-25",
-      "website": "https://lupyuen.github.io/articles/arm",
+      "website": "https://lupyuen.org/articles/arm.html",
       "summary": "Apache NuttX RTOS now runs on 64-bit Arm Cortex-A53 with Multi-Core Symmetric Multi-Processing... Will it run on PinePhone? Let's find out!"
     },
     {
       "name": "Visual Programming with Zig and NuttX Sensors",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-08-19",
-      "website": "https://lupyuen.github.io/articles/visual",
+      "website": "https://lupyuen.org/articles/visual.html",
       "summary": "What if we could drag-and-drop NuttX Sensors... To create IoT Sensor Apps in Zig? Let's find out!"
     },
     {
       "name": "Zig Visual Programming with Blockly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-08-07",
-      "website": "https://lupyuen.github.io/articles/blockly",
+      "website": "https://lupyuen.org/articles/blockly.html",
       "summary": "How we create a Zig program visually with Blockly, the drag-n-drop way... And how we might use it to build Sensor IoT Apps for Apache NuttX RTOS"
     },
     {
       "name": "Read NuttX Sensor Data with Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-07-29",
-      "website": "https://lupyuen.github.io/articles/sensor",
+      "website": "https://lupyuen.org/articles/sensor.html",
       "summary": "Using Zig to read Sensor Data on Apache NuttX RTOS... With Bosch BME280 Temperature / Humidity / Air Pressure Sensor"
     },
     {
       "name": "Build an LVGL Touchscreen App with Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-07-12",
-      "website": "https://lupyuen.github.io/articles/lvgl",
+      "website": "https://lupyuen.org/articles/lvgl.html",
       "summary": "Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Also wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!"
     },
     {
       "name": "Build a PinePhone App with Zig and zgt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-06-25",
-      "website": "https://lupyuen.github.io/articles/pinephone",
+      "website": "https://lupyuen.org/articles/pinephone.html",
       "summary": "Can we use Zig to code PinePhone Apps? Maybe make them simpler and safer? Let's find out!"
     },
     {
       "name": "Build an IoT App with Zig and LoRaWAN",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-06-15",
-      "website": "https://lupyuen.github.io/articles/iot",
+      "website": "https://lupyuen.org/articles/iot.html",
       "summary": "Let's build a complex IoT App with Zig and LoRaWAN... And run it on RISC-V BL602 with Apache NuttX RTOS"
     },
     {
       "name": "Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-06-02",
-      "website": "https://lupyuen.github.io/articles/zig",
+      "website": "https://lupyuen.org/articles/zig.html",
       "summary": "How we run Zig on the BL602 RISC-V SoC... With Apache NuttX RTOS"
     },
     {
       "name": "(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-05-22",
-      "website": "https://lupyuen.github.io/articles/auto2",
+      "website": "https://lupyuen.org/articles/auto2.html",
       "summary": "Pine64 is about to launch the PineDio Stack BL604 RISC-V Board with LoRa and Touch Screen... Here's how we automatically flash and test every new release of Apache NuttX RTOS for PineDio Stack"
     },
     {
       "name": "NuttX GPIO Expander for PineDio Stack BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-05-03",
-      "website": "https://lupyuen.github.io/articles/expander",
+      "website": "https://lupyuen.org/articles/expander.html",
       "summary": "PineDio Stack BL604 RISC-V Board has an interesting problem on Apache NuttX RTOS... Too many GPIOs! Let's fix this with a GPIO Expander"
     },
     {
       "name": "NuttX Touch Panel Driver for PineDio Stack BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-04-21",
-      "website": "https://lupyuen.github.io/articles/touch",
+      "website": "https://lupyuen.org/articles/touch.html",
       "summary": "How we created the Apache NuttX RTOS Driver for Hynitron CST816S I2C Touch Panel... For PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "PineDio Stack BL604 runs Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-04-12",
-      "website": "https://lupyuen.github.io/articles/pinedio2",
+      "website": "https://lupyuen.org/articles/pinedio2.html",
       "summary": "Running Apache NuttX RTOS on PineDio Stack BL604 RISC-V board... With ST7789 Display, LVGL Graphics and LoRaWAN"
     },
     {
       "name": "ST7789 Display with LVGL Graphics on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-04-02",
-      "website": "https://lupyuen.github.io/articles/st7789",
+      "website": "https://lupyuen.org/articles/st7789.html",
       "summary": "RISC-V BL602 SoC with ST7789 SPI Display and LVGL Graphics Library... Let's make it work on Apache NuttX RTOS!"
     },
     {
       "name": "Rust talks I2C on Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-03-22",
-      "website": "https://lupyuen.github.io/articles/rusti2c",
+      "website": "https://lupyuen.org/articles/rusti2c.html",
       "summary": "Reading the Bosch BME280 I2C Sensor with Rust Embedded HAL... On BL602 RISC-V SoC and Apache NuttX RTOS"
     },
     {
       "name": "Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-03-10",
-      "website": "https://lupyuen.github.io/articles/bme280",
+      "website": "https://lupyuen.org/articles/bme280.html",
       "summary": "Apache NuttX OS talks I2C with Bosch BME280 Sensor on BL602 RISC-V SoC... Thanks to the BME280 Driver ported from Zephyr OS"
     },
     {
       "name": "Connect IKEA Air Quality Sensor to Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-02-12",
-      "website": "https://lupyuen.github.io/articles/ikea",
+      "website": "https://lupyuen.org/articles/ikea.html",
       "summary": "How we expose the UART Port on IKEA VINDRIKTNING Air Quality Sensor... And read the PM 2.5 data with PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "BL602 EFlash Loader: Reverse Engineered with Ghidra",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-02-02",
-      "website": "https://lupyuen.github.io/articles/loader",
+      "website": "https://lupyuen.org/articles/loader.html",
       "summary": "What's inside the EFlash Loader that flashes all firmware to the BL602 RISC-V SoC"
     },
     {
       "name": "Auto Flash and Test NuttX on RISC-V BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-26",
-      "website": "https://lupyuen.github.io/articles/auto",
+      "website": "https://lupyuen.org/articles/auto.html",
       "summary": "How we automagically flash and test the daily build of Apache NuttX OS on BL602 RISC-V SoC"
     },
     {
       "name": "Rust on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-12",
-      "website": "https://lupyuen.github.io/articles/rust2",
+      "website": "https://lupyuen.org/articles/rust2.html",
       "summary": "How we run Rust programs on Apache NuttX OS... And transmit a LoRa Message with Rust"
     },
     {
       "name": "Encode Sensor Data with CBOR on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-10",
-      "website": "https://lupyuen.github.io/articles/cbor2",
+      "website": "https://lupyuen.org/articles/cbor2.html",
       "summary": "Compressing Sensor Data with CBOR on Apache NuttX OS... By calling TinyCBOR Library"
     },
     {
       "name": "LoRaWAN on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-03",
-      "website": "https://lupyuen.github.io/articles/lorawan3",
+      "website": "https://lupyuen.org/articles/lorawan3.html",
       "summary": "Porting Semtech's LoRaWAN Stack to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "LoRa SX1262 on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-12-22",
-      "website": "https://lupyuen.github.io/articles/sx1262",
+      "website": "https://lupyuen.org/articles/sx1262.html",
       "summary": "Porting the LoRa Driver for Semtech SX1262 from Linux to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "SPI on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-12-13",
-      "website": "https://lupyuen.github.io/articles/spi2",
+      "website": "https://lupyuen.org/articles/spi2.html",
       "summary": "How we transmit and receive data over SPI on Apache NuttX OS... By coding a NuttX Device Driver"
     },
     {
       "name": "Apache NuttX OS on RISC-V BL602 and BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-11-24",
-      "website": "https://lupyuen.github.io/articles/nuttx",
+      "website": "https://lupyuen.org/articles/nuttx.html",
       "summary": "How we build, flash and test the Apache NuttX operating system on BL602 and BL604 RISC-V SoCs"
     },
     {
       "name": "PineDio LoRa Gateway: Testing The Prototype",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-11-11",
-      "website": "https://lupyuen.github.io/articles/gateway",
+      "website": "https://lupyuen.org/articles/gateway.html",
       "summary": "How we test the pre-production PineDio LoRa Gateway by Pine64... And connect it to The Things Network"
     },
     {
       "name": "Build a Linux Driver for PineDio LoRa SX1262 USB Adapter",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-28",
-      "website": "https://lupyuen.github.io/articles/usb",
+      "website": "https://lupyuen.org/articles/usb.html",
       "summary": "How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on Pinebook Pro"
     },
     {
       "name": "Monitor IoT Devices in The Things Network with Prometheus and Grafana",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-21",
-      "website": "https://lupyuen.github.io/articles/prometheus",
+      "website": "https://lupyuen.org/articles/prometheus.html",
       "summary": "How we monitor our IoT Sensor Devices connected to The Things Network... With Prometheus Time Series Database and Grafana Dashboards"
     },
     {
       "name": "CBOR Payload Formatter for The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-18",
-      "website": "https://lupyuen.github.io/articles/payload",
+      "website": "https://lupyuen.org/articles/payload.html",
       "summary": "How we decode CBOR Sensor Data inside The Things Network... With a CBOR Payload Formatter"
     },
     {
       "name": "Internal Temperature Sensor on BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-14",
-      "website": "https://lupyuen.github.io/articles/tsen",
+      "website": "https://lupyuen.org/articles/tsen.html",
       "summary": "How we read the Internal Temperature Sensor on the BL602 and BL604 RISC-V SoCs... And transmit to The Things Network"
     },
     {
       "name": "IoT Digital Twin with Roblox and The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-08",
-      "website": "https://lupyuen.github.io/articles/roblox",
+      "website": "https://lupyuen.org/articles/roblox.html",
       "summary": "Can we use Roblox to monitor and control an IoT Device... Through LoRaWAN and The Things Network?"
     },
     {
       "name": "Encode Sensor Data with CBOR on BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-05",
-      "website": "https://lupyuen.github.io/articles/cbor",
+      "website": "https://lupyuen.org/articles/cbor.html",
       "summary": "How we compress Sensor Data with CBOR... And transmit over LoRaWAN on the BL602 / BL604 RISC-V SoC"
     },
     {
       "name": "Grafana Data Source for The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-27",
-      "website": "https://lupyuen.github.io/articles/grafana",
+      "website": "https://lupyuen.org/articles/grafana.html",
       "summary": "How we visualise Sensor Data from The Things Network... With a Custom MQTT Data Source in Grafana"
     },
     {
       "name": "The Things Network on PineDio Stack BL604 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-21",
-      "website": "https://lupyuen.github.io/articles/ttn",
+      "website": "https://lupyuen.org/articles/ttn.html",
       "summary": "How we join The Things Network and send data to the cloud on the new PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "LoRaWAN on PineDio Stack BL604 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-16",
-      "website": "https://lupyuen.github.io/articles/lorawan2",
+      "website": "https://lupyuen.org/articles/lorawan2.html",
       "summary": "How we test LoRaWAN on the new PineDio Stack BL604 RISC-V Board"
     },
     {
       "name": "Rust on RISC-V BL602: Rhai Scripting",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-04",
-      "website": "https://lupyuen.github.io/articles/rhai",
+      "website": "https://lupyuen.org/articles/rhai.html",
       "summary": "Can we drag-and-drop Rhai Scripts... And run them on WebAssembly and BL602 RISC-V SoC?"
     },
     {
       "name": "PineDio Stack BL604 RISC-V Board: Testing The Prototype",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-29",
-      "website": "https://lupyuen.github.io/articles/pinedio",
+      "website": "https://lupyuen.org/articles/pinedio.html",
       "summary": "What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!"
     },
     {
       "name": "Rust on RISC-V BL602: Simulated with WebAssembly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-16",
-      "website": "https://lupyuen.github.io/articles/rustsim",
+      "website": "https://lupyuen.org/articles/rustsim.html",
       "summary": "Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?"
     },
     {
       "name": "Rust on RISC-V BL602: Is It Sunny?",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-03",
-      "website": "https://lupyuen.github.io/articles/adc",
+      "website": "https://lupyuen.org/articles/adc.html",
       "summary": "How we create Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602"
     },
     {
       "name": "RISC-V BL706 Audio Video Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-07-14",
-      "website": "https://lupyuen.github.io/articles/bl706",
+      "website": "https://lupyuen.org/articles/bl706.html",
       "summary": "What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602"
     },
     {
       "name": "Reverse Engineering WiFi on RISC-V BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-07-07",
-      "website": "https://lupyuen.github.io/articles/wifi",
+      "website": "https://lupyuen.org/articles/wifi.html",
       "summary": "What happens inside the WiFi Driver on RISC-V BL602... And how we found the incomplete source code for the driver"
     },
     {
       "name": "Machine Learning on RISC-V BL602 with TensorFlow Lite",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-06-22",
-      "website": "https://lupyuen.github.io/articles/tflite",
+      "website": "https://lupyuen.org/articles/tflite.html",
       "summary": "How we run TensorFlow Lite on RISC-V BL602... To create a Glowing LED"
     },
     {
       "name": "BL602 Bootloader",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-06-09",
-      "website": "https://lupyuen.github.io/articles/boot",
+      "website": "https://lupyuen.org/articles/boot.html",
       "summary": "All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory"
     },
     {
       "name": "Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-27",
-      "website": "https://lupyuen.github.io/articles/wasm",
+      "website": "https://lupyuen.org/articles/wasm.html",
       "summary": "How we simulate the BL602 RISC-V SoC with uLisp in WebAssembly... And preview Blockly uLisp Apps in the Web Browser"
     },
     {
       "name": "uLisp and Blockly on PineCone BL602 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-14",
-      "website": "https://lupyuen.github.io/articles/lisp",
+      "website": "https://lupyuen.org/articles/lisp.html",
       "summary": "Porting the uLisp Interpreter to PineCone BL602 RISC-V Board... And writing graphical programs with Blockly (Scratch)"
     },
     {
       "name": "PineCone BL602 Talks LoRaWAN",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-11",
-      "website": "https://lupyuen.github.io/articles/lorawan",
+      "website": "https://lupyuen.org/articles/lorawan.html",
       "summary": "How we connect PineCone BL602 RISC-V Board to LoRaWAN... With the Pine64 RFM90 LoRa Module"
     },
     {
       "name": "Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-30",
-      "website": "https://lupyuen.github.io/articles/wisgate",
+      "website": "https://lupyuen.org/articles/wisgate.html",
       "summary": "How we set up our own LoRaWAN Network with RAKwireless RAK7248 WisGate Developer D4H Gateway... And test it with RAKwireless WisBlock in Arduino"
     },
     {
       "name": "Run Rust RISC-V Firmware with BL602 IoT SDK",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-21",
-      "website": "https://lupyuen.github.io/articles/rust",
+      "website": "https://lupyuen.org/articles/rust.html",
       "summary": "How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK"
     },
     {
       "name": "PineCone BL602 RISC-V Board Receives LoRa Packets",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-04",
-      "website": "https://lupyuen.github.io/articles/lora2",
+      "website": "https://lupyuen.org/articles/lora2.html",
       "summary": "How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock"
     },
     {
       "name": "RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-03-11",
-      "website": "https://lupyuen.github.io/articles/wisblock",
+      "website": "https://lupyuen.org/articles/wisblock.html",
       "summary": "How we receive LoRa packets transmitted by PineCone BL602 RISC-V Board ... With RAKwireless WisBlock in Arduino"
     },
     {
       "name": "Connect PineCone BL602 to LoRa Transceiver",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-03-07",
-      "website": "https://lupyuen.github.io/articles/lora",
+      "website": "https://lupyuen.org/articles/lora.html",
       "summary": "How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96"
     },
     {
       "name": "The RISC-V BL602 Book",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-20",
-      "website": "https://lupyuen.github.io/articles/book",
+      "website": "https://lupyuen.org/articles/book.html",
       "summary": "Your free open-source resource for learning RISC-V BL602 SoC"
     },
     {
       "name": "PineCone BL602 Talks UART to Grove E-Ink Display",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-19",
-      "website": "https://lupyuen.github.io/articles/uart",
+      "website": "https://lupyuen.org/articles/uart.html",
       "summary": "How we render an image with PineCone BL602 RISC-V Board ... On Grove Triple Colour E-Ink Display with UART Interface"
     },
     {
       "name": "PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-16",
-      "website": "https://lupyuen.github.io/articles/display",
+      "website": "https://lupyuen.org/articles/display.html",
       "summary": "How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library"
     },
     {
       "name": "PineCone BL602 talks SPI too!",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-07",
-      "website": "https://lupyuen.github.io/articles/spi",
+      "website": "https://lupyuen.org/articles/spi.html",
       "summary": "PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how"
     },
     {
       "name": "PineCone BL602 talks to I2C Sensors",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-29",
-      "website": "https://lupyuen.github.io/articles/i2c",
+      "website": "https://lupyuen.org/articles/i2c.html",
       "summary": "How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor"
     },
     {
       "name": "Mynewt GPIO ported to PineCone BL602 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-15",
-      "website": "https://lupyuen.github.io/articles/gpio",
+      "website": "https://lupyuen.org/articles/gpio.html",
       "summary": "How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO"
     },
     {
       "name": "Control PineCone BL602 RGB LED with GPIO and PWM",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-06",
-      "website": "https://lupyuen.github.io/articles/led",
+      "website": "https://lupyuen.org/articles/led.html",
       "summary": "Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer"
     },
     {
       "name": "Flashing Firmware to PineCone BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-01",
-      "website": "https://lupyuen.github.io/articles/flash",
+      "website": "https://lupyuen.org/articles/flash.html",
       "summary": "What happens when we flash RISC-V firmware to PineCone BL602 Board... And what's inside the BL602 Boot Image, Partition Table, Device Tree and EFuse Configuration"
     },
     {
       "name": "Porting Mynewt to PineCone BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-21",
-      "website": "https://lupyuen.github.io/articles/mynewt",
+      "website": "https://lupyuen.org/articles/mynewt.html",
       "summary": "How we port Apache Mynewt embedded operating system to the PineCone BL602 RISC-V Board"
     },
     {
       "name": "Better Open Source Advocate",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-15",
-      "website": "https://lupyuen.github.io/articles/advocate",
+      "website": "https://lupyuen.org/articles/advocate.html",
       "summary": "I made mistakes in 2020... Here's how I'll do better in 2021"
     },
     {
       "name": "Debug Rust on PineCone BL602 with VSCode and GDB",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-14",
-      "website": "https://lupyuen.github.io/articles/debug",
+      "website": "https://lupyuen.org/articles/debug.html",
       "summary": "How we build and debug Embedded Rust Firmware for PineCone BL602... With VSCode and GDB"
     },
     {
       "name": "Connect PineCone BL602 to OpenOCD",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-11",
-      "website": "https://lupyuen.github.io/articles/openocd",
+      "website": "https://lupyuen.org/articles/openocd.html",
       "summary": "How we connect PineCone BL602 Evaluation Board to OpenOCD... For flashing and debugging RISC-V firmware"
     },
     {
       "name": "Quick Peek of PineCone BL602 RISC-V Evaluation Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-11-29",
-      "website": "https://lupyuen.github.io/articles/pinecone",
+      "website": "https://lupyuen.org/articles/pinecone.html",
       "summary": "What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem"
     },
     {
       "name": "(UNFINISHED) Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-11-18",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/handdrawn",
       "summary": "How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust"
     },
     {
       "name": "Create Your Own PineTime Watch Face in Rust... And Publish on crates.io",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-10-17",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/watchface",
       "summary": "How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io"
     },
     {
       "name": "Bluetooth Time Sync and LVGL on PineTime Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-10-16",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/timesync",
       "summary": "How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL"
     },
     {
       "name": "Porting PineTime Watch Face from C to Rust On RIOT with LVGL",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-09-13",
-      "website": "https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face",
+      "website": "https://lupyuen.org/pinetime-rust-riot/articles/watch_face",
       "summary": "Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT"
     },
     {
@@ -1376,105 +1376,105 @@
       "name": "Preview PineTime Watch Faces in your Web Browser with WebAssembly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-08-19",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/simulator",
       "summary": "How we build and preview PineTime Watch Faces with only a web browser... No computer needed!"
     },
     {
       "name": "Build PineTime Firmware in the Cloud with GitHub Actions",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-27",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/cloud",
       "summary": "Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!"
     },
     {
       "name": "Wayland and LVGL on PinePhone with Ubuntu Touch",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-25",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/wayland",
       "summary": "Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL"
     },
     {
       "name": "(UNFINISHED) Auto Convert Go to Dart with an Abstract Syntax Tree",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-09",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/ast",
       "summary": "How we convert Go code to Dart and Flutter automatically with an Abstract Syntax Tree"
     },
     {
       "name": "Flutter State Management with Bloc for PineTime Companion App",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-27",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/bloc",
       "summary": "How we manage state with the Bloc Library in the Flutter Companion App (Android and iOS) for PineTime Smart Watch"
     },
     {
       "name": "PineTime doesn't run Linux... But that's OK!",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-19",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/pinetime",
       "summary": "Getting started with PineTime Smart Watch"
     },
     {
       "name": "Your First GTK App with Go and VSCodium",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-18",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/gotk3",
       "summary": "Creating desktop apps on Linux doesn't have to be hard... Let's build GTK+ 3 apps in Go with the gotk3 library!"
     },
     {
       "name": "Convert Go to Flutter and Dart for PineTime Companion App",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-17",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/companion",
       "summary": "How we build the Flutter Companion App (Android and iOS) for PineTime Smart Watch by converting Go to Dart"
     },
     {
       "name": "Your First Bluetooth Low Energy App with Flutter",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-04",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/flutter",
       "summary": "Bluetooth Low Energy apps are ridiculously easy to code with Flutter and Dart, let me show you how!"
     },
     {
       "name": "Porting MicroPython and wasp-os to Mynewt on PineTime Smart Watch (nRF52)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-02",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/micropython",
       "summary": "Making wasp-os truly awesome with full multitasking, interoperable firmware updates and a common companion app"
     },
     {
       "name": "Wireless Firmware Update In Action on PineTime Smart Watch (nRF52)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-20",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/dfutest",
       "summary": "Observe step-by-step the Wireless Firmware Update running on PineTime Smart Watch (nRF52) with MCUBoot Bootloader, NimBLE Bluetooth LE Stack and Apache Mynewt"
     },
     {
       "name": "MCUBoot Bootloader for PineTime Smart Watch (nRF52)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-18",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/mcuboot",
       "summary": "Wireless Firmware Updates done right on PineTime Smart Watch... With the open source MCUBoot Bootloader from Apache Mynewt and Zephyr"
     },
     {
       "name": "Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-15",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/spiflash",
       "summary": "Configure Mynewt OS to enable access to SPI Flash Memory on PineTime Smart Watch"
     },
     {
       "name": "Firmware Update over Bluetooth Low Energy on PineTime Smart Watch",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-11",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/dfu",
       "summary": "Flash any firmware to PineTime from our mobile phone... Without opening the watch!"
     },
     {
       "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-03-05",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8",
+      "website": "https://lupyuen.org/pinetime-rust-mynewt/articles/chip8",
       "summary": "Running Retro Games with Rust is not that hard on PineTime Smart Watch. Here's how I ported a CHIP-8 Game Emulator to PineTime"
     },
     {
@@ -1488,7 +1488,7 @@
       "name": "My First Week As Embedded FOSS Advocate",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-02-04",
-      "website": "https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate",
+      "website": "https://lupyuen.org/articles/my-first-week-as-embedded-foss-advocate.html",
       "summary": "Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?"
     },
     {
@@ -1509,140 +1509,140 @@
       "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-23",
-      "website": "https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi",
+      "website": "https://lupyuen.org/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi.html",
       "summary": "Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!"
     },
     {
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-18",
-      "website": "https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi",
+      "website": "https://lupyuen.org/articles/openocd-on-raspberry-pi-better-with-swd-on-spi.html",
       "summary": "Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?"
     },
     {
       "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-08",
-      "website": "https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch",
+      "website": "https://lupyuen.org/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch.html",
       "summary": "Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!"
     },
     {
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-29",
-      "website": "https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt",
+      "website": "https://lupyuen.org/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt.html",
       "summary": "Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance"
     },
     {
       "name": "Porting [druid] Rust Widgets to PineTime Smart Watch",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-14",
-      "website": "https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch",
+      "website": "https://lupyuen.org/articles/porting-druid-rust-widgets-to-pinetime-smart-watch.html",
       "summary": "Code Watch Apps in Rust the Declarative Way"
     },
     {
       "name": "My 5-Year IoT Mission",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-04",
-      "website": "https://lupyuen.github.io/articles/my-5-year-iot-mission",
+      "website": "https://lupyuen.org/articles/my-5-year-iot-mission.html",
       "summary": "5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way"
     },
     {
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-23",
-      "website": "https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now",
+      "website": "https://lupyuen.org/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now.html",
       "summary": "Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare"
     },
     {
       "name": "Building a Rust Driver for PineTime’s Touch Controller",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-22",
-      "website": "https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller",
+      "website": "https://lupyuen.org/articles/building-a-rust-driver-for-pinetimes-touch-controller.html",
       "summary": "Programming the Hynitron CST816S Capacitive Touch Controller"
     },
     {
       "name": "Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-15",
-      "website": "https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot",
+      "website": "https://lupyuen.org/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot.html",
       "summary": "PineTime is the spiritual successor to BBC micro:bit"
     },
     {
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-30",
-      "website": "https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v",
+      "website": "https://lupyuen.org/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v.html",
       "summary": "Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them"
     },
     {
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-15",
-      "website": "https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt",
+      "website": "https://lupyuen.org/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt.html",
       "summary": "Set up an nRF52 mesh network, step by step, without any coding"
     },
     {
       "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-03",
-      "website": "https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code",
+      "website": "https://lupyuen.org/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code.html",
       "summary": "nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link"
     },
     {
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-09-22",
-      "website": "https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust",
+      "website": "https://lupyuen.org/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust.html",
       "summary": "Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT"
     },
     {
       "name": "Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-09-04",
-      "website": "https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit",
+      "website": "https://lupyuen.org/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit.html",
       "summary": "Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit"
     },
     {
       "name": "Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-30",
-      "website": "https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust",
+      "website": "https://lupyuen.org/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust.html",
       "summary": "Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial"
     },
     {
       "name": "Visual Embedded Rust Programming with Visual Studio Code",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-17",
-      "website": "https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code",
+      "website": "https://lupyuen.org/articles/visual-embedded-rust-programming-with-visual-studio-code.html",
       "summary": "Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!"
     },
     {
       "name": "Advanced Topics for Visual Embedded Rust Programming",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-17",
-      "website": "https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming",
+      "website": "https://lupyuen.org/articles/advanced-topics-for-visual-embedded-rust-programming.html",
       "summary": "Watch what happens behind the scenes when you create a Visual Embedded Rust program"
     },
     {
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-04",
-      "website": "https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt",
+      "website": "https://lupyuen.org/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt.html",
       "summary": "Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!"
     },
     {
       "name": "Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-25",
-      "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt",
+      "website": "https://lupyuen.org/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt.html",
       "summary": "Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!"
     },
     {
       "name": "Get Started with NB-IoT and Quectel modules",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-15",
-      "website": "https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules",
+      "website": "https://lupyuen.org/articles/get-started-with-nb-iot-and-quectel-modules.html",
       "summary": "How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io"
     },
     {
@@ -1656,42 +1656,42 @@
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-07",
-      "website": "https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill",
+      "website": "https://lupyuen.org/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill.html",
       "summary": "Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps"
     },
     {
       "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-06-09",
-      "website": "https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill",
+      "website": "https://lupyuen.org/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill.html",
       "summary": "It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust."
     },
     {
       "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-05-27",
-      "website": "https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io",
+      "website": "https://lupyuen.org/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io.html",
       "summary": "Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266"
     },
     {
       "name": "Super Blue Pill — Like STM32 Blue Pill, But Better!",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-05-21",
-      "website": "https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better",
+      "website": "https://lupyuen.org/articles/super-blue-pill-like-stm32-blue-pill-but-better.html",
       "summary": "Friendlier for newbies, supports ESP8266 WiFi and nRF24L01"
     },
     {
       "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-04-20",
-      "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt",
+      "website": "https://lupyuen.org/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt.html",
       "summary": "And WiFi Geolocation with ESP8266"
     },
     {
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-03-26",
-      "website": "https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill",
+      "website": "https://lupyuen.org/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill.html",
       "summary": "Apache Mynewt is a free, open-source realtime operating system for microcontrollers"
     },
     {
@@ -1719,42 +1719,42 @@
       "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-25",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-bootloading-the-webusb-bootloader.html",
       "summary": "How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”"
     },
     {
       "name": "STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-16",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode.html",
       "summary": "Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill"
     },
     {
       "name": "STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-07",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator.html",
       "summary": "Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain"
     },
     {
       "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-01-30",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib.html",
       "summary": "Filling in tiny math functions with nano-float"
     },
     {
       "name": "STM32 Blue Pill — Analyse and Optimise Your RAM and ROM",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2019-01-24",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom.html",
       "summary": "Learn the tips and tools to prevent Blue Pill Bloat"
     },
     {
       "name": "STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2018-12-18",
-      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces",
+      "website": "https://lupyuen.org/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces.html",
       "summary": "STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!"
     },
     {
