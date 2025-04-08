@@ -367,7 +367,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
 <p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall via our Interrupt Callback. Let’s do it…</p>
 <h1 id="nuttx-syscall"><a class="doc-anchor" href="#nuttx-syscall">§</a>5 NuttX SysCall</h1>
-<p><em>Why is NuttX doing an Arm64 SysCall?</em></p>
+<p><em>Why is NuttX doing an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
 <p>Earlier we saw NuttX making an Arm64 SysCall, let’s find out why.</p>
 <p>NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The value is 2…</p>
 <div class="example-wrap"><pre class="language-c"><code>/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
