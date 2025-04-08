@@ -271,17 +271,13 @@ fn hook_memory(
 }
 ```
 
-# NuttX Won't Boot
+# NuttX Halts at SysCall
 
 _What happens when we run this?_
 
 We run the [__Barebones Emulator__](TODO) (from earlier).
 
-NuttX terminates at this curious address...
-
-TODO
-
-While booting NuttX on Unicorn: NuttX triggers an Arm64 Exception is stuck at sys_call0. Is syscall supported in Unicorn?
+NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
 
 ```bash
 $ cargo run
@@ -298,17 +294,11 @@ AAAAAAAAAAAA
 >>> invalid memory accessed, STOP = 21!!!
 err=Err(EXCEPTION)
 PC=0x40806d60
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  sys_call0 --> ***_HALT_***
-call_graph:  click sys_call0 href "https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L151" "arch/arm64/include/syscall.h " _blank
 ```
 
-PC 0x40806d60 points to Arm64 SysCall `svc 0`: [nuttx.S](./nuttx/nuttx.S)
+_What's at 0x4080_6D60?_
+
+We look up the [__NuttX Kernel Disassembly__](TODO). We see that _0x4080_6D60_ points to an __Arm64 SysCall `svc 0`__...
 
 ```c
 sys_call0():
@@ -324,21 +314,9 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 // 0x40806d60 is the next instruction to be executed on return from SysCall
 ```
 
-Unicorn reports the exception as...
-- syndrome=0x86000006
-- fsr=0x206
-- vaddress=0x507fffff
+_Isn't Unicorn supposed to handle Arm64 SysCalls?_
 
-Based on [ESR-EL1 Doc](https://developer.arm.com/documentation/ddi0601/2025-03/AArch64-Registers/ESR-EL1--Exception-Syndrome-Register--EL1-)...
-- Syndrome / FSR = 6 = 0b000110	
-- Meaning "Translation fault, level 2"
-- But why halt at sys_call0?
-- NuttX seems to be triggering the SysCall for Initial Context Switch, according to the [Call Graph](https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd)
-
-Unicorn prints `invalid memory accessed, STOP = 21!!!`
-- 21 means UC_ERR_EXCEPTION
-
-Unicorn Exception is triggered here: unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c
+We step through Unicorn with the excellent [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
 
 ```c
 static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
@@ -347,30 +325,28 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   catched = false;
   HOOK_FOREACH_VAR_DECLARE;
   HOOK_FOREACH(uc, hook, UC_HOOK_INTR) {
-      if (hook->to_delete) {
-          continue;
-      }
-      JIT_CALLBACK_GUARD(((uc_cb_hookintr_t)hook->callback)(uc, cpu->exception_index, hook->user_data));
-      catched = true;
+    if (hook->to_delete) { continue; }
+    JIT_CALLBACK_GUARD(((uc_cb_hookintr_t)hook->callback)(uc, cpu->exception_index, hook->user_data));
+    catched = true;
   }
   // Unicorn: If un-catched interrupt, stop executions.
   if (!catched) {
-      printf("AAAAAAAAAAAA\n"); // qq
-      if (uc->invalid_error == UC_ERR_OK) {
-          //// EXCEPTION HAPPENS HERE
-          uc->invalid_error = UC_ERR_EXCEPTION;
-      }
-      cpu->halted = 1;
-      *ret = EXCP_HLT;
-      return true;
+    printf("AAAAAAAAAAAA\n"); // qq
+    if (uc->invalid_error == UC_ERR_OK) {
+      // OOPS! EXCEPTION HAPPENS HERE
+      uc->invalid_error = UC_ERR_EXCEPTION;
+    }
+    cpu->halted = 1;
+    *ret = EXCP_HLT;
+    return true;
   }
 ```
 
-The above is more complex than Original QEMU: [accel/tcg/cpu-exec.c](https://github.com/qemu/qemu/blob/0f15892acaf3f50ecc20c6dad4b3ebdd701aa93e/accel/tcg/cpu-exec.c#L705)
+[(Compare with __Original QEMU__)](https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769)
 
-Is Unicorn expecting us to Hook this Interrupt and handle it?
+Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback. Let's do it...
 
-# Hook Interrupt
+# Handle The Unicorn Interrupt
 
 TODO
 
@@ -389,6 +365,9 @@ fn hook_interrupt(
     println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
     println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
     println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+
+    // Omitted: Handle the SysCall
+    ...
 
     // We don't handle SysCalls from NuttX Apps yet
     if pc >= 0xC000_0000 {
