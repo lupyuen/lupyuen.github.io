@@ -271,6 +271,8 @@ fn hook_memory(
 }
 ```
 
+![TODO](https://lupyuen.org/images/unicorn3-avaota.jpg)
+
 # NuttX Halts at SysCall
 
 _What happens when we run this?_
@@ -316,7 +318,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 
 _Isn't Unicorn supposed to handle Arm64 SysCalls?_
 
-We step through Unicorn with the excellent [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
+We step through Unicorn with the excellent [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
 
 ```c
 static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
@@ -1024,8 +1026,6 @@ do_arm_semihosting
 - https://github.com/search?q=repo%3Aunicorn-engine/unicorn%20do_arm_semihosting&type=code
 
 vbar_el1 = 1082290176
-
-![Unicorn Emulator for Avaota-A1 SBC](https://lupyuen.org/images/unicorn3-avaota.jpg)
 
 # What's Next
 
