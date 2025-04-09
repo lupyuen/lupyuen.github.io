@@ -538,58 +538,15 @@ up_idle():
 
 But it halts because we haven't emulated the Arm64 SysCall. Let's do it...
 
-# Emulate the Arm64 SysCall
-
-TODO
-
-```rust
-/// Hook Function to Handle Interrupt
-fn hook_interrupt(
-    emu: &mut Unicorn<()>,  // Emulator
-    intno: u32, // Interrupt Number
-) {
-    let pc = emu.reg_read(RegisterARM64::PC).unwrap();
-    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-    println!("hook_interrupt: intno={intno}");
-    println!("PC=0x{pc:08x}");
-    println!("X0=0x{x0:08x}");
-    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
-    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
-
-    // Omitted: Handle the SysCall
-    ...
-
-    // We don't handle SysCalls from NuttX Apps yet
-    if pc >= 0xC000_0000 {
-        println!("TODO: Handle SysCall from NuttX Apps");
-        finish();
-    }
-
-    if intno == 2 {
-        // We are doing SVC (Synchronous Exception) at EL1.
-        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
-        let esr_el1 = 0x15 << 26;  // Exception is SVC
-        let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-        let svc = vbar_el1 + 0x200;
-        println!("esr_el1=0x{esr_el1:08x}");
-        println!("vbar_el1=0x{vbar_el1:08x}");
-        println!("jump to svc=0x{svc:08x}");
-        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
-        emu.reg_write(RegisterARM64::PC, svc).unwrap();
-    } else {
-        sleep(time::Duration::from_secs(10));
-    }
-}
-```
-
-
 # Arm64 Vector Table
 
-Let's read VBAR_EL1 to fetch Vector Table. Then trigger SVC 0 at EL1...
+_How to emulate the Arm64 SysCall?_
 
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145
+System Register [__VBAR_EL1__](TODO) points to the Arm64 Vector Table for [__Exception Level 1__](TODO). Let's read VBAR_EL1 to fetch the Vector Table. Then we execute the Exception Handler for SVC 0.
+
+_What's inside the Arm64 Vector Table?_
+
+VBAR_EL1 points to this: [arm64_vector_table.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145)
 
 ```c
 /* Four types of exceptions:
@@ -632,6 +589,50 @@ https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_t
 
 We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
 
+# Emulate the Arm64 SysCall
+
+TODO
+
+```rust
+/// Hook Function to Handle Interrupt
+fn hook_interrupt(
+    emu: &mut Unicorn<()>,  // Emulator
+    intno: u32, // Interrupt Number
+) {
+    let pc = emu.reg_read(RegisterARM64::PC).unwrap();
+    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+    println!("hook_interrupt: intno={intno}");
+    println!("PC=0x{pc:08x}");
+    println!("X0=0x{x0:08x}");
+    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
+    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
+    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
+    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+
+    // TODO
+    // We don't handle SysCalls from NuttX Apps yet
+    if pc >= 0xC000_0000 {
+        println!("TODO: Handle SysCall from NuttX Apps");
+        finish();
+    }
+
+    // Handle the SysCall
+    if intno == 2 {
+        // We are doing SVC (Synchronous Exception) at EL1.
+        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
+        let esr_el1 = 0x15 << 26;  // Exception is SVC
+        let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
+        let svc = vbar_el1 + 0x200;
+        println!("esr_el1=0x{esr_el1:08x}");
+        println!("vbar_el1=0x{vbar_el1:08x}");
+        println!("jump to svc=0x{svc:08x}");
+        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
+        emu.reg_write(RegisterARM64::PC, svc).unwrap();
+    } else {
+        sleep(time::Duration::from_secs(10));
+    }
+}
+```
 
 # Jump to SysCall 0
 
