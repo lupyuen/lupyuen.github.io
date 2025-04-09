@@ -427,6 +427,8 @@ SYSCALL_LOOKUP(sched_unlock,               0)
 SYSCALL_LOOKUP(sched_yield,                0)
 ```
 
+TODO: SysCall Spreadsheet
+
 # Handle The Unicorn Interrupt
 
 _To boot NuttX: We need to Emulate the SysCall. How?_
