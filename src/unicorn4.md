@@ -28,6 +28,10 @@ Or driver -> emulator?
 
 Maybe Emulator + Device Farm
 
+[“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
+
+https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6
+
 # NuttX for Avaota-A1
 
 Earlier we ported NuttX to Avaota-A1 SBC...
