@@ -72,9 +72,9 @@
 <li><a href="#nuttx-syscall" title="NuttX SysCall">5 NuttX SysCall</a><ul></ul></li>
 <li><a href="#handle-the-unicorn-interrupt" title="Handle The Unicorn Interrupt">6 Handle The Unicorn Interrupt</a><ul></ul></li>
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">7 Emulate the Arm64 SysCall</a><ul></ul></li>
-<li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">8 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
-<li><a href="#arm64-vector-table" title="Arm64 Vector Table">9 Arm64 Vector Table</a><ul></ul></li>
-<li><a href="#jump-to-syscall-0" title="Jump to SysCall 0">10 Jump to SysCall 0</a><ul></ul></li>
+<li><a href="#arm64-vector-table" title="Arm64 Vector Table">8 Arm64 Vector Table</a><ul></ul></li>
+<li><a href="#jump-to-syscall-0" title="Jump to SysCall 0">9 Jump to SysCall 0</a><ul></ul></li>
+<li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">10 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
 <li><a href="#esr_el1-is-missing" title="ESR_EL1 is missing">11 ESR_EL1 is missing</a><ul></ul></li>
 <li><a href="#fix-esr_el1" title="Fix ESR_EL1">12 Fix ESR_EL1</a><ul></ul></li>
 <li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">13 SysCall from NuttX App</a><ul></ul></li>
@@ -461,7 +461,7 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
     <span class="comment">// Omitted: Handle the SysCall
     </span>...
 }</code></pre></div>
-<p>And it works!</p>
+<p>NuttX boots a bit farther…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_block:  address=0x40806d50, size=08, sched_unlock, sched/sched/sched_unlock.c:92:19
@@ -517,8 +517,7 @@ up_idle():
 #endif
 }
 // 408169d0 is the next instruction after WFI</code></pre></div>
-<p>NuttX Scheduler seems to be waiting for Timer Interrupt, to continue booting.</p>
-<p>TODO: Should we simulate the timer to start NuttX? https://lupyuen.org/articles/interrupt.html#timer-interrupt-isnt-handled</p>
+<p>But it halts because we haven’t emulated the Arm64 SysCall. Let’s do it…</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>7 Emulate the Arm64 SysCall</h1>
 <p>TODO</p>
 
@@ -561,32 +560,7 @@ up_idle():
         sleep(time::Duration::from_secs(<span class="number">10</span>));
     }
 }</code></pre></div>
-<h1 id="unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc"><a class="doc-anchor" href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc">§</a>8 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</h1>
-<p>Read the articles…</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn3.html">“Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/avaota.html">“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn.html">“(Possibly) Emulate PinePhone with Unicorn Emulator”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn2.html">“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</a></p>
-</li>
-</ul>
-<p>Previously…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu">Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/main">Unicorn Emulator for Apache NuttX RTOS on PinePhone</a></p>
-</li>
-</ul>
-<h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>9 Arm64 Vector Table</h1>
+<h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>8 Arm64 Vector Table</h1>
 <p>Let’s read VBAR_EL1 to fetch Vector Table. Then trigger SVC 0 at EL1…</p>
 <p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Four types of exceptions:
@@ -626,7 +600,7 @@ up_idle():
  * |          + 0x780 | SError / vSError |                         |
  * +------------------+------------------+-------------------------+</code></pre></div>
 <p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.</p>
-<h1 id="jump-to-syscall-0"><a class="doc-anchor" href="#jump-to-syscall-0">§</a>10 Jump to SysCall 0</h1>
+<h1 id="jump-to-syscall-0"><a class="doc-anchor" href="#jump-to-syscall-0">§</a>9 Jump to SysCall 0</h1>
 <p>We jump to jump to VBAR_EL1 + 0x200: <a href="src/main.rs">src/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
@@ -702,7 +676,32 @@ dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -----------
 dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x40846770      8176      3088    37.7%    Idle_Task
 dump_task:       1     0 192 RR       Kthread -   Ready              0000000000000000 0x4084a050      8112       832    10.2%    hpwork 0x40836568 0x408365b8
 dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x4084e050      8112       832    10.2%    lpwork 0x408364e8 0x40836538
-dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp</code></pre></div><h1 id="esr_el1-is-missing"><a class="doc-anchor" href="#esr_el1-is-missing">§</a>11 ESR_EL1 is missing</h1>
+dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp</code></pre></div><h1 id="unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc"><a class="doc-anchor" href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc">§</a>10 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</h1>
+<p>Read the articles…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn3.html">“Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/avaota.html">“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn.html">“(Possibly) Emulate PinePhone with Unicorn Emulator”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn2.html">“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</a></p>
+</li>
+</ul>
+<p>Previously…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu">Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/main">Unicorn Emulator for Apache NuttX RTOS on PinePhone</a></p>
+</li>
+</ul>
+<h1 id="esr_el1-is-missing"><a class="doc-anchor" href="#esr_el1-is-missing">§</a>11 ESR_EL1 is missing</h1>
 <p>Why did it fail? Who’s calling arm64_fatal_handler?</p>
 <p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L134-L203</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
