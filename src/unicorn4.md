@@ -433,7 +433,7 @@ SYSCALL_LOOKUP(sched_yield,                0)
 
 TODO: SysCall Spreadsheet
 
-# Handle The Unicorn Interrupt
+# Hook The Unicorn Interrupt
 
 _To boot NuttX: We need to Emulate the SysCall. How?_
 
@@ -476,7 +476,7 @@ fn hook_interrupt(
 }
 ```
 
-NuttX boots a bit farther...
+Now Unicorn calls our Interrupt Handler...
 
 ```bash
 $ cargo run
@@ -520,33 +520,23 @@ call_graph:  up_idle --> ***_HALT_***
 call_graph:  click up_idle href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_idle.c#L61" "arch/arm64/src/common/arm64_idle.c " _blank
 ```
 
-PC 0x408169d0 points to WFI: [nuttx/nuttx.S](nuttx/nuttx.S)
+[(PC 0x408169d0 points to WFI)](TODO)
 
-```c
-00000000408169c8 <up_idle>:
-up_idle():
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:62
-  nxsched_process_timer();
-#else
-  /* Sleep until an interrupt occurs to save power */
-  asm("dsb sy");
-    408169c8:	d5033f9f 	dsb	sy
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:63
-  asm("wfi");
-    408169cc:	d503207f 	wfi
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:65
-#endif
-}
-// 408169d0 is the next instruction after WFI
-```
-
-But it halts because we haven't emulated the Arm64 SysCall. Let's do it...
+But we're not done yet! Unicorn halts because we haven't emulated the Arm64 SysCall. Let's do it...
 
 # Arm64 Vector Table
 
 _How to emulate the Arm64 SysCall?_
 
-System Register [__VBAR_EL1__](TODO) points to the Arm64 Vector Table for [__Exception Level 1__](TODO). Let's read VBAR_EL1 to fetch the Vector Table. Then we execute the Exception Handler for SVC 0.
+Here's our plan...
+
+1.  System Register [__VBAR_EL1__](TODO) points to the Arm64 Vector Table for [__Exception Level 1__](TODO)
+
+1.  We read VBAR_EL1 to fetch the Arm64 Vector Table
+
+1.  Then we jump to the proper place in the Vector Table
+
+1.  Which will execute the Exception Handler for Arm64 SysCall
 
 _What's inside the Arm64 Vector Table?_
 
@@ -595,7 +585,7 @@ We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator sh
 
 # Emulate the Arm64 SysCall
 
-This is how we jump to jump to VBAR_EL1 + 0x200: [main.rs](TODO)
+This is how we jump to VBAR_EL1 + 0x200: [main.rs](TODO)
 
 ```rust
 /// Hook Function to Handle Interrupt
