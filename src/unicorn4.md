@@ -472,7 +472,7 @@ fn hook_interrupt(
 }
 ```
 
-And it works!
+NuttX boots a bit farther...
 
 ```bash
 $ cargo run
@@ -536,9 +536,7 @@ up_idle():
 // 408169d0 is the next instruction after WFI
 ```
 
-NuttX Scheduler seems to be waiting for Timer Interrupt, to continue booting.
-
-TODO: Should we simulate the timer to start NuttX? https://lupyuen.org/articles/interrupt.html#timer-interrupt-isnt-handled
+But it halts because we haven't emulated the Arm64 SysCall. Let's do it...
 
 # Emulate the Arm64 SysCall
 
@@ -586,23 +584,6 @@ fn hook_interrupt(
 }
 ```
 
-# Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
-
-Read the articles...
-
--   ["Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS"](https://lupyuen.org/articles/unicorn3.html)
-
--   ["Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"](https://lupyuen.org/articles/avaota.html)
-
--   ["(Possibly) Emulate PinePhone with Unicorn Emulator"](https://lupyuen.org/articles/unicorn.html)
-
--   ["(Clickable) Call Graph for Apache NuttX Real-Time Operating System"](https://lupyuen.org/articles/unicorn2.html)
-
-Previously...
-
--   [Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64](https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu)
-
--   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
 
 # Arm64 Vector Table
 
@@ -650,6 +631,7 @@ https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_t
 ```
 
 We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
+
 
 # Jump to SysCall 0
 
@@ -735,6 +717,26 @@ dump_task:       1     0 192 RR       Kthread -   Ready              00000000000
 dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x4084e050      8112       832    10.2%    lpwork 0x408364e8 0x40836538
 dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp
 ```
+
+# Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
+
+Read the articles...
+
+-   ["Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS"](https://lupyuen.org/articles/unicorn3.html)
+
+-   ["Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"](https://lupyuen.org/articles/avaota.html)
+
+-   ["(Possibly) Emulate PinePhone with Unicorn Emulator"](https://lupyuen.org/articles/unicorn.html)
+
+-   ["(Clickable) Call Graph for Apache NuttX Real-Time Operating System"](https://lupyuen.org/articles/unicorn2.html)
+
+Previously...
+
+-   [Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64](https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu)
+
+-   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
+
+
 
 # ESR_EL1 is missing
 
