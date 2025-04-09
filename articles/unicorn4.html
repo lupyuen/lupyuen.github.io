@@ -71,8 +71,8 @@
 <li><a href="#nuttx-halts-at-syscall" title="NuttX Halts at SysCall">4 NuttX Halts at SysCall</a><ul></ul></li>
 <li><a href="#nuttx-syscall" title="NuttX SysCall">5 NuttX SysCall</a><ul></ul></li>
 <li><a href="#handle-the-unicorn-interrupt" title="Handle The Unicorn Interrupt">6 Handle The Unicorn Interrupt</a><ul></ul></li>
-<li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">7 Emulate the Arm64 SysCall</a><ul></ul></li>
-<li><a href="#arm64-vector-table" title="Arm64 Vector Table">8 Arm64 Vector Table</a><ul></ul></li>
+<li><a href="#arm64-vector-table" title="Arm64 Vector Table">7 Arm64 Vector Table</a><ul></ul></li>
+<li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
 <li><a href="#jump-to-syscall-0" title="Jump to SysCall 0">9 Jump to SysCall 0</a><ul></ul></li>
 <li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">10 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
 <li><a href="#esr_el1-is-missing" title="ESR_EL1 is missing">11 ESR_EL1 is missing</a><ul></ul></li>
@@ -518,51 +518,11 @@ up_idle():
 }
 // 408169d0 is the next instruction after WFI</code></pre></div>
 <p>But it halts because we haven’t emulated the Arm64 SysCall. Let’s do it…</p>
-<h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>7 Emulate the Arm64 SysCall</h1>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
-</span><span class="kw">fn </span>hook_interrupt(
-    emu: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>intno: u32, <span class="comment">// Interrupt Number
-</span>) {
-    <span class="kw">let </span>pc = emu.reg_read(RegisterARM64::PC).unwrap();
-    <span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-    <span class="macro">println!</span>(<span class="string">"hook_interrupt: intno={intno}"</span>);
-    <span class="macro">println!</span>(<span class="string">"PC=0x{pc:08x}"</span>);
-    <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
-    <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
-
-    <span class="comment">// Omitted: Handle the SysCall
-    </span>...
-
-    <span class="comment">// We don't handle SysCalls from NuttX Apps yet
-    </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{
-        <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>);
-        finish();
-    }
-
-    <span class="kw">if </span>intno == <span class="number">2 </span>{
-        <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
-        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
-        </span><span class="kw">let </span>esr_el1 = <span class="number">0x15 </span>&lt;&lt; <span class="number">26</span>;  <span class="comment">// Exception is SVC
-        </span><span class="kw">let </span>vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-        <span class="kw">let </span>svc = vbar_el1 + <span class="number">0x200</span>;
-        <span class="macro">println!</span>(<span class="string">"esr_el1=0x{esr_el1:08x}"</span>);
-        <span class="macro">println!</span>(<span class="string">"vbar_el1=0x{vbar_el1:08x}"</span>);
-        <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
-        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
-        emu.reg_write(RegisterARM64::PC, svc).unwrap();
-    } <span class="kw">else </span>{
-        sleep(time::Duration::from_secs(<span class="number">10</span>));
-    }
-}</code></pre></div>
-<h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>8 Arm64 Vector Table</h1>
-<p>Let’s read VBAR_EL1 to fetch Vector Table. Then trigger SVC 0 at EL1…</p>
-<p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145</p>
+<h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>7 Arm64 Vector Table</h1>
+<p><em>How to emulate the Arm64 SysCall?</em></p>
+<p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the Arm64 Vector Table for <a href="TODO"><strong>Exception Level 1</strong></a>. Let’s read VBAR_EL1 to fetch the Vector Table. Then we execute the Exception Handler for SVC 0.</p>
+<p><em>What’s inside the Arm64 Vector Table?</em></p>
+<p>VBAR_EL1 points to this: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145">arm64_vector_table.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Four types of exceptions:
  * - synchronous: aborts from MMU, SP/CP alignment checking, unallocated
  *   instructions, SVCs/SMCs/HVCs, ...)
@@ -600,6 +560,47 @@ up_idle():
  * |          + 0x780 | SError / vSError |                         |
  * +------------------+------------------+-------------------------+</code></pre></div>
 <p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.</p>
+<h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
+</span><span class="kw">fn </span>hook_interrupt(
+    emu: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+    </span>intno: u32, <span class="comment">// Interrupt Number
+</span>) {
+    <span class="kw">let </span>pc = emu.reg_read(RegisterARM64::PC).unwrap();
+    <span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+    <span class="macro">println!</span>(<span class="string">"hook_interrupt: intno={intno}"</span>);
+    <span class="macro">println!</span>(<span class="string">"PC=0x{pc:08x}"</span>);
+    <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
+    <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
+    <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
+    <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
+    <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
+
+    <span class="comment">// TODO
+    // We don't handle SysCalls from NuttX Apps yet
+    </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{
+        <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>);
+        finish();
+    }
+
+    <span class="comment">// Handle the SysCall
+    </span><span class="kw">if </span>intno == <span class="number">2 </span>{
+        <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
+        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
+        </span><span class="kw">let </span>esr_el1 = <span class="number">0x15 </span>&lt;&lt; <span class="number">26</span>;  <span class="comment">// Exception is SVC
+        </span><span class="kw">let </span>vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
+        <span class="kw">let </span>svc = vbar_el1 + <span class="number">0x200</span>;
+        <span class="macro">println!</span>(<span class="string">"esr_el1=0x{esr_el1:08x}"</span>);
+        <span class="macro">println!</span>(<span class="string">"vbar_el1=0x{vbar_el1:08x}"</span>);
+        <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
+        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
+        emu.reg_write(RegisterARM64::PC, svc).unwrap();
+    } <span class="kw">else </span>{
+        sleep(time::Duration::from_secs(<span class="number">10</span>));
+    }
+}</code></pre></div>
 <h1 id="jump-to-syscall-0"><a class="doc-anchor" href="#jump-to-syscall-0">§</a>9 Jump to SysCall 0</h1>
 <p>We jump to jump to VBAR_EL1 + 0x200: <a href="src/main.rs">src/main.rs</a></p>
 
