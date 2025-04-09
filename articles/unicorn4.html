@@ -73,15 +73,14 @@
 <li><a href="#handle-the-unicorn-interrupt" title="Handle The Unicorn Interrupt">6 Handle The Unicorn Interrupt</a><ul></ul></li>
 <li><a href="#arm64-vector-table" title="Arm64 Vector Table">7 Arm64 Vector Table</a><ul></ul></li>
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
-<li><a href="#jump-to-syscall-0" title="Jump to SysCall 0">9 Jump to SysCall 0</a><ul></ul></li>
-<li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">10 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
-<li><a href="#esr_el1-is-missing" title="ESR_EL1 is missing">11 ESR_EL1 is missing</a><ul></ul></li>
-<li><a href="#fix-esr_el1" title="Fix ESR_EL1">12 Fix ESR_EL1</a><ul></ul></li>
-<li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">13 SysCall from NuttX App</a><ul></ul></li>
-<li><a href="#unicorn-output" title="Unicorn Output">14 Unicorn Output</a><ul></ul></li>
-<li><a href="#emulate-gicv3-in-unicorn" title="Emulate GICv3 in Unicorn">15 Emulate GICv3 in Unicorn</a><ul></ul></li>
-<li><a href="#todo" title="TODO">16 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">17 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2025</em></p>
+<li><a href="#esr_el1-is-missing" title="ESR_EL1 is missing">9 ESR_EL1 is missing</a><ul></ul></li>
+<li><a href="#fix-esr_el1" title="Fix ESR_EL1">10 Fix ESR_EL1</a><ul></ul></li>
+<li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">11 SysCall from NuttX App</a><ul></ul></li>
+<li><a href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc" title="Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC">12 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</a><ul></ul></li>
+<li><a href="#unicorn-output" title="Unicorn Output">13 Unicorn Output</a><ul></ul></li>
+<li><a href="#emulate-gicv3-in-unicorn" title="Emulate GICv3 in Unicorn">14 Emulate GICv3 in Unicorn</a><ul></ul></li>
+<li><a href="#todo" title="TODO">15 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">16 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <ul>
@@ -561,7 +560,7 @@ up_idle():
  * +------------------+------------------+-------------------------+</code></pre></div>
 <p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
-<p>TODO</p>
+<p>This is how we jump to jump to VBAR_EL1 + 0x200: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
@@ -601,32 +600,10 @@ up_idle():
         sleep(time::Duration::from_secs(<span class="number">10</span>));
     }
 }</code></pre></div>
-<h1 id="jump-to-syscall-0"><a class="doc-anchor" href="#jump-to-syscall-0">§</a>9 Jump to SysCall 0</h1>
-<p>We jump to jump to VBAR_EL1 + 0x200: <a href="src/main.rs">src/main.rs</a></p>
+<p>But it crashes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep TODO
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
-</span><span class="kw">fn </span>hook_interrupt(
-    emu: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>intno: u32, <span class="comment">// Interrupt Number
-</span>) {
-    <span class="macro">println!</span>(<span class="string">"hook_interrupt: intno={intno}"</span>);
-    <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>,  emu.reg_read(RegisterARM64::PC).unwrap());
-    <span class="comment">// println!("CP_REG={:?}",  emu.reg_read(RegisterARM64::CP_REG));
-    </span><span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
-
-    <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
-    // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
-    </span><span class="kw">let </span>vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-    <span class="kw">let </span>svc = vbar_el1 + <span class="number">0x200</span>;
-    <span class="macro">println!</span>(<span class="string">"vbar_el1=0x{vbar_el1:08x}"</span>);
-    <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
-    emu.reg_write(RegisterARM64::PC, svc).unwrap();
-}</code></pre></div>
-<p>And it crashes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>- Ready to Boot Primary CPU
+- Ready to Boot Primary CPU
 - Boot from EL1
 - Boot to C runtime for OS Initialize
 \rnx_start: Entry
@@ -677,33 +654,8 @@ dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -----------
 dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x40846770      8176      3088    37.7%    Idle_Task
 dump_task:       1     0 192 RR       Kthread -   Ready              0000000000000000 0x4084a050      8112       832    10.2%    hpwork 0x40836568 0x408365b8
 dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x4084e050      8112       832    10.2%    lpwork 0x408364e8 0x40836538
-dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp</code></pre></div><h1 id="unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc"><a class="doc-anchor" href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc">§</a>10 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</h1>
-<p>Read the articles…</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn3.html">“Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/avaota.html">“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn.html">“(Possibly) Emulate PinePhone with Unicorn Emulator”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/unicorn2.html">“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</a></p>
-</li>
-</ul>
-<p>Previously…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu">Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/main">Unicorn Emulator for Apache NuttX RTOS on PinePhone</a></p>
-</li>
-</ul>
-<h1 id="esr_el1-is-missing"><a class="doc-anchor" href="#esr_el1-is-missing">§</a>11 ESR_EL1 is missing</h1>
-<p>Why did it fail? Who’s calling arm64_fatal_handler?</p>
+dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp</code></pre></div><h1 id="esr_el1-is-missing"><a class="doc-anchor" href="#esr_el1-is-missing">§</a>9 ESR_EL1 is missing</h1>
+<p><em>Why did it fail? Who’s calling arm64_fatal_handler?</em></p>
 <p>https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L134-L203</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Function: arm64_sync_exc
@@ -784,7 +736,7 @@ reserved_syscall:
     add    x5, x5, #:lo12:arm64_fatal_handler
     br     x5</code></pre></div>
 <p>Aha ESR_EL1 is missing! That’s why it’s calling arm64_fatal_handler!</p>
-<h1 id="fix-esr_el1"><a class="doc-anchor" href="#fix-esr_el1">§</a>12 Fix ESR_EL1</h1>
+<h1 id="fix-esr_el1"><a class="doc-anchor" href="#fix-esr_el1">§</a>10 Fix ESR_EL1</h1>
 <p>We fix ESR_EL1: <a href="src/main.rs">src/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>esr_el1 = <span class="number">0x15 </span>&lt;&lt; <span class="number">26</span>;  <span class="comment">// Exception is SVC
@@ -906,7 +858,7 @@ ESR_EL0=Ok(0)
 ESR_EL1=Ok(1409286144)
 ESR_EL2=Ok(0)
 ESR_EL3=Ok(0)
-TODO: Handle SysCall from NuttX Apps</code></pre></div><h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>13 SysCall from NuttX App</h1>
+TODO: Handle SysCall from NuttX Apps</code></pre></div><h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>11 SysCall from NuttX App</h1>
 <p><em>What is SysCall Command 9? Where in NSH Shell is 0xc0003f00?</em></p>
 <p>It’s from NSH Shell gettid: <a href="nuttx/nuttx-init.S">nuttx/nuttx-init.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>0000000000002ef4 &lt;gettid&gt;:
@@ -918,7 +870,32 @@ gettid():
     2f04:	d65f03c0 	ret</code></pre></div>
 <p>TODO: Who calls gettid?</p>
 <p>TODO: Renegerate nuttx-init.S with Debug Symbols</p>
-<h1 id="unicorn-output"><a class="doc-anchor" href="#unicorn-output">§</a>14 Unicorn Output</h1>
+<h1 id="unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc"><a class="doc-anchor" href="#unicorn-emulator-for-apache-nuttx-rtos-on-avaota-a1-arm64-sbc">§</a>12 Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC</h1>
+<p>Read the articles…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn3.html">“Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/avaota.html">“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn.html">“(Possibly) Emulate PinePhone with Unicorn Emulator”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/unicorn2.html">“(Clickable) Call Graph for Apache NuttX Real-Time Operating System”</a></p>
+</li>
+</ul>
+<p>Previously…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu">Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/tree/main">Unicorn Emulator for Apache NuttX RTOS on PinePhone</a></p>
+</li>
+</ul>
+<h1 id="unicorn-output"><a class="doc-anchor" href="#unicorn-output">§</a>13 Unicorn Output</h1>
 <p>TODO: GICv3 won’t work in Unicorn, so we have to simulate Timer Interrupts and I/O Interrupts</p>
 <p>TODO: Emulate the GIC Version, to make NuttX happy</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
@@ -936,12 +913,12 @@ nxtask_activate: hpwork pid=1,TCB=0x40849e78
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nxtask_activate: lpwork pid=2,TCB=0x4084c008
 nxtask_activate: AppBringUp pid=3,TCB=0x4084c190
-nx_start: CPU0: Beginning Idle Loop</code></pre></div><h1 id="emulate-gicv3-in-unicorn"><a class="doc-anchor" href="#emulate-gicv3-in-unicorn">§</a>15 Emulate GICv3 in Unicorn</h1>
+nx_start: CPU0: Beginning Idle Loop</code></pre></div><h1 id="emulate-gicv3-in-unicorn"><a class="doc-anchor" href="#emulate-gicv3-in-unicorn">§</a>14 Emulate GICv3 in Unicorn</h1>
 <p>TODO: up_enable_irq calls arm64_gic_irq_enable. So we should emulate GICv3:</p>
 <p>arch/arm64/src/common/arm64_gicv3.c:683</p>
 <div class="example-wrap"><pre class="language-text"><code>void up_enable_irq(int irq) {
   arm64_gic_irq_enable(irq);
-  ...</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>16 TODO</h1>
+  ...</code></pre></div><h1 id="todo"><a class="doc-anchor" href="#todo">§</a>15 TODO</h1>
 <p>TODO: Read VBAR_EL1 to fetch Vector Table. Then trigger Timer Interrupt</p>
 <p>TODO: Why is Interrupt Number intno=2?</p>
 <div class="example-wrap"><pre class="language-text"><code>Page C6-2411
@@ -955,7 +932,7 @@ value 0x15, and the value of the immediate argument.</code></pre></div>
 <li>https://github.com/search?q=repo%3Aunicorn-engine/unicorn%20do_arm_semihosting&amp;type=code</li>
 </ul>
 <p>vbar_el1 = 1082290176</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>17 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>16 What’s Next</h1>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
