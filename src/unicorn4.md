@@ -754,9 +754,17 @@ TODO: Why ESR_EL1?
 
 # SysCall from NuttX App
 
-_What is SysCall Command 9? Where in NSH Shell is 0xc0003f00?_
+_What is SysCall Command 9? Where in NSH Shell is 0xC000_3F00?_
 
-It's from NSH Shell gettid: [nuttx/nuttx-init.S](nuttx/nuttx-init.S)
+```bash
+hook_interrupt: intno=2
+PC=0xc0003f00
+X0=0x00000009
+ESR_EL0=Ok(0)
+ESR_EL1=Ok(1409286144)
+```
+
+According to the RISC-V Disassembly of NSH Shell, SysCall Command 9 happens inside `gettid()`: [nuttx-init.S](TODO)
 
 ```c
 0000000000002ef4 <gettid>:
@@ -768,84 +776,15 @@ gettid():
     2f04:	d65f03c0 	ret
 ```
 
-TODO: Who calls gettid?
+Which means that NSH Shell is starting up and calling `gettid()` to fetch the __Current Thread ID__. But it triggers a SysCall from the __NuttX App (EL0)__ into __NuttX Kernel (EL1)__, which we haven't implemented.
 
-TODO: Renegerate nuttx-init.S with Debug Symbols
+We'll implement this soon!
 
-# Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
+TODO: GIC
 
-Read the articles...
+TODO: Timer
 
--   ["Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS"](https://lupyuen.org/articles/unicorn3.html)
-
--   ["Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"](https://lupyuen.org/articles/avaota.html)
-
--   ["(Possibly) Emulate PinePhone with Unicorn Emulator"](https://lupyuen.org/articles/unicorn.html)
-
--   ["(Clickable) Call Graph for Apache NuttX Real-Time Operating System"](https://lupyuen.org/articles/unicorn2.html)
-
-Previously...
-
--   [Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64](https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu)
-
--   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
-
-# Unicorn Output
-
-TODO: GICv3 won't work in Unicorn, so we have to simulate Timer Interrupts and I/O Interrupts
-
-TODO: Emulate the GIC Version, to make NuttX happy
-
-```bash
-$ cargo run | grep "uart output"
-- Ready to Boot Primary CPU
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-nx_start: Entry
-up_allocate_kheap: heap_start=0x0x40849000, heap_size=0x77b7000
-gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nxtask_activate: hpwork pid=1,TCB=0x40849e78
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=2,TCB=0x4084c008
-nxtask_activate: AppBringUp pid=3,TCB=0x4084c190
-nx_start: CPU0: Beginning Idle Loop
-```
-
-# Emulate GICv3 in Unicorn
-
-TODO: up_enable_irq calls arm64_gic_irq_enable. So we should emulate GICv3:
-
-arch/arm64/src/common/arm64_gicv3.c:683
-
-```text
-void up_enable_irq(int irq) {
-  arm64_gic_irq_enable(irq);
-  ...
-```
-
-# TODO
-
-TODO: Read VBAR_EL1 to fetch Vector Table. Then trigger Timer Interrupt
-
-TODO: Why is Interrupt Number intno=2?
-
-```text
-Page C6-2411
-SVC
-Supervisor call
-This instruction causes an exception to be taken to EL1.
-On executing an SVC instruction, the PE records the exception as a Supervisor Call exception in ESR_ELx, using the EC
-value 0x15, and the value of the immediate argument.
-```
-
-do_arm_semihosting
-- https://github.com/search?q=repo%3Aunicorn-engine/unicorn%20do_arm_semihosting&type=code
-
-vbar_el1 = 1082290176
+TODO: Other Peripherals
 
 # What's Next
 
