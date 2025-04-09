@@ -70,7 +70,7 @@
 <li><a href="#emulate-16550-uart" title="Emulate 16550 UART">3 Emulate 16550 UART</a><ul></ul></li>
 <li><a href="#nuttx-halts-at-syscall" title="NuttX Halts at SysCall">4 NuttX Halts at SysCall</a><ul></ul></li>
 <li><a href="#nuttx-syscall" title="NuttX SysCall">5 NuttX SysCall</a><ul></ul></li>
-<li><a href="#handle-the-unicorn-interrupt" title="Handle The Unicorn Interrupt">6 Handle The Unicorn Interrupt</a><ul></ul></li>
+<li><a href="#hook-the-unicorn-interrupt" title="Hook The Unicorn Interrupt">6 Hook The Unicorn Interrupt</a><ul></ul></li>
 <li><a href="#arm64-vector-table" title="Arm64 Vector Table">7 Arm64 Vector Table</a><ul></ul></li>
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
 <li><a href="#fix-esr_el1" title="Fix ESR_EL1">9 Fix ESR_EL1</a><ul></ul></li>
@@ -423,7 +423,7 @@ SYSCALL_LOOKUP(sched_lockcount,            0)
 SYSCALL_LOOKUP(sched_unlock,               0)
 SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
 <p>TODO: SysCall Spreadsheet</p>
-<h1 id="handle-the-unicorn-interrupt"><a class="doc-anchor" href="#handle-the-unicorn-interrupt">§</a>6 Handle The Unicorn Interrupt</h1>
+<h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
 <p><em>To boot NuttX: We need to Emulate the SysCall. How?</em></p>
 <p>We saw earlier that Unicorn expects us to <a href="TODO"><strong>Hook The Interrupt</strong></a> and emulate the SysCall. This is how we Hook the Interrupt: TODO</p>
 
@@ -461,7 +461,7 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
     <span class="comment">// Omitted: Handle the SysCall
     </span>...
 }</code></pre></div>
-<p>NuttX boots a bit farther…</p>
+<p>Now Unicorn calls our Interrupt Handler…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_block:  address=0x40806d50, size=08, sched_unlock, sched/sched/sched_unlock.c:92:19
@@ -501,26 +501,25 @@ ESR_EL2=Ok(0)
 ESR_EL3=Ok(0)
 call_graph:  up_idle --&gt; ***_HALT_***
 call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_idle.c#L61&quot; &quot;arch/arm64/src/common/arm64_idle.c &quot; _blank</code></pre></div>
-<p>PC 0x408169d0 points to WFI: <a href="nuttx/nuttx.S">nuttx/nuttx.S</a></p>
-<div class="example-wrap"><pre class="language-c"><code>00000000408169c8 &lt;up_idle&gt;:
-up_idle():
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:62
-  nxsched_process_timer();
-#else
-  /* Sleep until an interrupt occurs to save power */
-  asm(&quot;dsb sy&quot;);
-    408169c8:	d5033f9f 	dsb	sy
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:63
-  asm(&quot;wfi&quot;);
-    408169cc:	d503207f 	wfi
-/Users/luppy/avaota/nuttx/arch/arm64/src/common/arm64_idle.c:65
-#endif
-}
-// 408169d0 is the next instruction after WFI</code></pre></div>
-<p>But it halts because we haven’t emulated the Arm64 SysCall. Let’s do it…</p>
+<p><a href="TODO">(PC 0x408169d0 points to WFI)</a></p>
+<p>But we’re not done yet! Unicorn halts because we haven’t emulated the Arm64 SysCall. Let’s do it…</p>
 <h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>7 Arm64 Vector Table</h1>
 <p><em>How to emulate the Arm64 SysCall?</em></p>
-<p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the Arm64 Vector Table for <a href="TODO"><strong>Exception Level 1</strong></a>. Let’s read VBAR_EL1 to fetch the Vector Table. Then we execute the Exception Handler for SVC 0.</p>
+<p>Here’s our plan…</p>
+<ol>
+<li>
+<p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the Arm64 Vector Table for <a href="TODO"><strong>Exception Level 1</strong></a></p>
+</li>
+<li>
+<p>We read VBAR_EL1 to fetch the Arm64 Vector Table</p>
+</li>
+<li>
+<p>Then we jump to the proper place in the Vector Table</p>
+</li>
+<li>
+<p>Which will execute the Exception Handler for Arm64 SysCall</p>
+</li>
+</ol>
 <p><em>What’s inside the Arm64 Vector Table?</em></p>
 <p>VBAR_EL1 points to this: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145">arm64_vector_table.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Four types of exceptions:
@@ -561,7 +560,7 @@ up_idle():
  * +------------------+------------------+-------------------------+</code></pre></div>
 <p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
-<p>This is how we jump to jump to VBAR_EL1 + 0x200: <a href="TODO">main.rs</a></p>
+<p>This is how we jump to VBAR_EL1 + 0x200: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
