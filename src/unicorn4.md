@@ -591,7 +591,7 @@ We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator sh
 
 # Emulate the Arm64 SysCall
 
-TODO
+This is how we jump to jump to VBAR_EL1 + 0x200: [main.rs](TODO)
 
 ```rust
 /// Hook Function to Handle Interrupt
@@ -634,37 +634,11 @@ fn hook_interrupt(
 }
 ```
 
-# Jump to SysCall 0
-
-We jump to jump to VBAR_EL1 + 0x200: [src/main.rs](src/main.rs)
-
-```rust
-/// Hook Function to Handle Interrupt
-fn hook_interrupt(
-    emu: &mut Unicorn<()>,  // Emulator
-    intno: u32, // Interrupt Number
-) {
-    println!("hook_interrupt: intno={intno}");
-    println!("PC=0x{:x}",  emu.reg_read(RegisterARM64::PC).unwrap());
-    // println!("CP_REG={:?}",  emu.reg_read(RegisterARM64::CP_REG));
-    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
-    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
-
-    // We are doing SVC (Synchronous Exception) at EL1.
-    // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
-    let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-    let svc = vbar_el1 + 0x200;
-    println!("vbar_el1=0x{vbar_el1:08x}");
-    println!("jump to svc=0x{svc:08x}");
-    emu.reg_write(RegisterARM64::PC, svc).unwrap();
-}
-```
-
-And it crashes...
+But it crashes...
 
 ```bash
+$ cargo run | grep TODO
+
 - Ready to Boot Primary CPU
 - Boot from EL1
 - Boot to C runtime for OS Initialize
@@ -719,29 +693,9 @@ dump_task:       2     0 100 RR       Kthread -   Ready              00000000000
 dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp
 ```
 
-# Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
-
-Read the articles...
-
--   ["Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS"](https://lupyuen.org/articles/unicorn3.html)
-
--   ["Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"](https://lupyuen.org/articles/avaota.html)
-
--   ["(Possibly) Emulate PinePhone with Unicorn Emulator"](https://lupyuen.org/articles/unicorn.html)
-
--   ["(Clickable) Call Graph for Apache NuttX Real-Time Operating System"](https://lupyuen.org/articles/unicorn2.html)
-
-Previously...
-
--   [Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64](https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu)
-
--   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
-
-
-
 # ESR_EL1 is missing
 
-Why did it fail? Who's calling arm64_fatal_handler?
+_Why did it fail? Who's calling arm64_fatal_handler?_
 
 https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L134-L203
 
@@ -978,6 +932,24 @@ gettid():
 TODO: Who calls gettid?
 
 TODO: Renegerate nuttx-init.S with Debug Symbols
+
+# Unicorn Emulator for Apache NuttX RTOS on Avaota-A1 Arm64 SBC
+
+Read the articles...
+
+-   ["Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS"](https://lupyuen.org/articles/unicorn3.html)
+
+-   ["Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"](https://lupyuen.org/articles/avaota.html)
+
+-   ["(Possibly) Emulate PinePhone with Unicorn Emulator"](https://lupyuen.org/articles/unicorn.html)
+
+-   ["(Clickable) Call Graph for Apache NuttX Real-Time Operating System"](https://lupyuen.org/articles/unicorn2.html)
+
+Previously...
+
+-   [Unicorn Emulator for Apache NuttX RTOS on QEMU Arm64](https://github.com/lupyuen/nuttx-arm64-emulator/tree/qemu)
+
+-   [Unicorn Emulator for Apache NuttX RTOS on PinePhone](https://github.com/lupyuen/nuttx-arm64-emulator/tree/main)
 
 # Unicorn Output
 
