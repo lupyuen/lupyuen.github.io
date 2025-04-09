@@ -634,168 +634,9 @@ fn hook_interrupt(
 }
 ```
 
-But it crashes...
+And it works!
 
-```bash
-$ cargo run | grep TODO
-
-- Ready to Boot Primary CPU
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-\rnx_start: Entry
-up_allocate_kheap: heap_start=0x0x40849000, heap_size=0x77b7000
-gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nxtask_activate: hpwork pid=1,TCB=0x40849e78
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nxtask_activate: lpwork pid=2,TCB=0x4084c008
-nxtask_activate: AppBringUp pid=3,TCB=0x4084c190
-
-vbar_el1=0x40827000
-jump to svc=0x40827200
-
-arm64_el1_undef: Undefined instruction at 0x0, dump:
-dump_assert_info: Current Version: NuttX  12.8.0 c9f38c13eb Apr  5 2025 09:08:34 arm64
-dump_assert_info: Assertion failed !(({ uint64_t __val; __asm__ volatile ("mrs %0, " "tpidr_el1" : "=r" (__val) :: "memory"); __val; }) & 1): at file: common/arm64_fatal.c:558 task: Idle_Task process: Kernel 0x40806568
-up_dump_register: stack = 0x408440a0
-up_dump_register: x0:   0x408440a0          x1:   0x408443e0
-up_dump_register: x2:   0x1                 x3:   0x1
-up_dump_register: x4:   0x4                 x5:   0x40801000
-up_dump_register: x6:   0x0                 x7:   0x0
-up_dump_register: x8:   0x80000000008000    x9:   0x0
-up_dump_register: x10:  0x0                 x11:  0x0
-up_dump_register: x12:  0x101010101010101   x13:  0x8
-up_dump_register: x14:  0xffffffffffffffe   x15:  0x0
-up_dump_register: x16:  0x4080d884          x17:  0x0
-up_dump_register: x18:  0x0                 x19:  0x40843048
-up_dump_register: x20:  0x408282ec          x21:  0x40828356
-up_dump_register: x22:  0x408440a0          x23:  0x408440a0
-up_dump_register: x24:  0x40843000          x25:  0x2c0
-up_dump_register: x26:  0x6                 x27:  0x22e
-up_dump_register: x28:  0x0                 x29:  0x0
-up_dump_register: x30:  0x40806ce8        
-up_dump_register: 
-up_dump_register: STATUS Registers:
-up_dump_register: SPSR:      0x0               
-up_dump_register: ELR:       0x0               
-up_dump_register: SP_EL0:    0x0               
-up_dump_register: SP_ELX:    0x40847ea0        
-up_dump_register: EXE_DEPTH: 0x0               
-up_dump_register: SCTLR_EL1: 0x30d0180d        
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- ---------------- 0x40845760      4096         0     0.0%    irq
-dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x40846770      8176      3088    37.7%    Idle_Task
-dump_task:       1     0 192 RR       Kthread -   Ready              0000000000000000 0x4084a050      8112       832    10.2%    hpwork 0x40836568 0x408365b8
-dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x4084e050      8112       832    10.2%    lpwork 0x408364e8 0x40836538
-dump_task:       3     0 240 RR       Kthread -   Running            0000000000000000 0x40852030      8144       832    10.2%    AppBringUp
-```
-
-# ESR_EL1 is missing
-
-_Why did it fail? Who's calling arm64_fatal_handler?_
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L134-L203
-
-```c
-/****************************************************************************
- * Function: arm64_sync_exc
- *
- * Description:
- *   handle synchronous exception for AArch64
- *
- ****************************************************************************/
-
-GTEXT(arm64_sync_exc)
-SECTION_FUNC(text, arm64_sync_exc)
-    /* checking the EC value to see which exception need to be handle */
-
-#if CONFIG_ARCH_ARM64_EXCEPTION_LEVEL == 3
-    mrs    x9, esr_el3
-#else
-    mrs    x9, esr_el1
-#endif
-    lsr    x10, x9, #26
-
-    /* 0x15 = SVC system call */
-
-    cmp    x10, #0x15
-
-    /* if this is a svc call ?*/
-
-    bne    2f
-
-#ifdef CONFIG_LIB_SYSCALL
-    /* Handle user system calls separately */
-
-    cmp    x0, #CONFIG_SYS_RESERVED
-    blt    reserved_syscall
-
-    /* Call dispatch_syscall() on the kernel stack with interrupts enabled */
-
-    mrs    x10, spsr_el1
-    and    x10, x10, #IRQ_SPSR_MASK
-    cmp    x10, xzr
-    bne    1f
-    msr    daifclr, #IRQ_DAIF_MASK /* Re-enable interrupts */
-
-1:
-    bl     dispatch_syscall
-    msr    daifset, #IRQ_DAIF_MASK /* Disable interrupts */
-
-    /* Save the return value into the user context */
-
-    str    x0, [sp, #8 * REG_X0]
-
-    /* Return from exception */
-
-    b      arm64_exit_exception
-
-reserved_syscall:
-#endif
-
-    /* Switch to IRQ stack and save current sp on it. */
-#ifdef CONFIG_SMP
-    get_cpu_id x0
-    ldr    x1, =(g_cpu_int_stacktop)
-    lsl    x0, x0, #3
-    ldr    x1, [x1, x0]
-#else
-    ldr    x1, =(g_interrupt_stack + CONFIG_ARCH_INTERRUPTSTACK)
-#endif
-
-    mov    x0, sp
-    mov    sp, x1
-
-    bl     arm64_syscall        /* Call the handler */
-
-    mov    sp, x0
-    b      arm64_exit_exception
-2:
-    mov    x0, sp
-    adrp   x5, arm64_fatal_handler
-    add    x5, x5, #:lo12:arm64_fatal_handler
-    br     x5
-```
-
-Aha ESR_EL1 is missing! That's why it's calling arm64_fatal_handler!
-
-# Fix ESR_EL1
-
-We fix ESR_EL1: [src/main.rs](src/main.rs)
-
-```rust
-let esr_el1 = 0x15 << 26;  // Exception is SVC
-let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-let svc = vbar_el1 + 0x200;
-println!("esr_el1=0x{esr_el1:08x}");
-println!("vbar_el1=0x{vbar_el1:08x}");
-println!("jump to svc=0x{svc:08x}");
-emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
-emu.reg_write(RegisterARM64::PC, svc).unwrap();
-```
+TODO
 
 NuttX on Unicorn now boots to SysCall from NuttX Apps. Yay!
 
@@ -911,6 +752,120 @@ ESR_EL1=Ok(1409286144)
 ESR_EL2=Ok(0)
 ESR_EL3=Ok(0)
 TODO: Handle SysCall from NuttX Apps
+```
+
+# Fix ESR_EL1
+
+_Why ESR\_EL1?_
+
+```rust
+/// Hook Function to Handle Interrupt
+fn hook_interrupt(
+    emu: &mut Unicorn<()>,  // Emulator
+    intno: u32, // Interrupt Number
+) {
+...
+        let esr_el1 = 0x15 << 26;  // Exception is SVC
+        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1)
+          .unwrap();
+```
+
+https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vectors.S#L134-L203
+
+```c
+/****************************************************************************
+ * Function: arm64_sync_exc
+ *
+ * Description:
+ *   handle synchronous exception for AArch64
+ *
+ ****************************************************************************/
+
+GTEXT(arm64_sync_exc)
+SECTION_FUNC(text, arm64_sync_exc)
+    /* checking the EC value to see which exception need to be handle */
+
+#if CONFIG_ARCH_ARM64_EXCEPTION_LEVEL == 3
+    mrs    x9, esr_el3
+#else
+    mrs    x9, esr_el1
+#endif
+    lsr    x10, x9, #26
+
+    /* 0x15 = SVC system call */
+
+    cmp    x10, #0x15
+
+    /* if this is a svc call ?*/
+
+    bne    2f
+
+#ifdef CONFIG_LIB_SYSCALL
+    /* Handle user system calls separately */
+
+    cmp    x0, #CONFIG_SYS_RESERVED
+    blt    reserved_syscall
+
+    /* Call dispatch_syscall() on the kernel stack with interrupts enabled */
+
+    mrs    x10, spsr_el1
+    and    x10, x10, #IRQ_SPSR_MASK
+    cmp    x10, xzr
+    bne    1f
+    msr    daifclr, #IRQ_DAIF_MASK /* Re-enable interrupts */
+
+1:
+    bl     dispatch_syscall
+    msr    daifset, #IRQ_DAIF_MASK /* Disable interrupts */
+
+    /* Save the return value into the user context */
+
+    str    x0, [sp, #8 * REG_X0]
+
+    /* Return from exception */
+
+    b      arm64_exit_exception
+
+reserved_syscall:
+#endif
+
+    /* Switch to IRQ stack and save current sp on it. */
+#ifdef CONFIG_SMP
+    get_cpu_id x0
+    ldr    x1, =(g_cpu_int_stacktop)
+    lsl    x0, x0, #3
+    ldr    x1, [x1, x0]
+#else
+    ldr    x1, =(g_interrupt_stack + CONFIG_ARCH_INTERRUPTSTACK)
+#endif
+
+    mov    x0, sp
+    mov    sp, x1
+
+    bl     arm64_syscall        /* Call the handler */
+
+    mov    sp, x0
+    b      arm64_exit_exception
+2:
+    mov    x0, sp
+    adrp   x5, arm64_fatal_handler
+    add    x5, x5, #:lo12:arm64_fatal_handler
+    br     x5
+```
+
+Aha ESR_EL1 is missing! That's why it's calling arm64_fatal_handler!
+
+We fix ESR_EL1: [src/main.rs](src/main.rs)
+
+```rust
+let esr_el1 = 0x15 << 26;  // Exception is SVC
+let vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
+let svc = vbar_el1 + 0x200;
+println!("esr_el1=0x{esr_el1:08x}");
+println!("vbar_el1=0x{vbar_el1:08x}");
+println!("jump to svc=0x{svc:08x}");
+emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
+emu.reg_write(RegisterARM64::PC, svc).unwrap();
 ```
 
 # SysCall from NuttX App
