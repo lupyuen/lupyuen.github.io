@@ -243,13 +243,19 @@ Finally we start the __Unicorn Emulator__...
 }
 ```
 
+Thanks to Unicorn: We have a Barebones Emulator for Avaota-A1! Now we fill in the hooks...
+
 # Emulate 16550 UART
 
 _What about I/O? How to emulate in Unicorn?_
 
-Let's do the bare minimum of I/O: Printing to UART Output.
+Let's emulate the Bare Minimum for I/O: Printing output to the __16550 UART__...
 
-TODO
+1.  We intercept all writes to the __UART Transmit Register__, and print them 
+
+1.  We signal to NuttX that __UART Transmit FIFO__ is always ready for output
+
+This will tell NuttX that __UART Transmit FIFO__ is always ready: [main.rs](TODO)
 
 ```rust
 /// UART Base Address
@@ -257,17 +263,17 @@ const UART0_BASE_ADDRESS: u64 = 0x02500000;
 
 fn main() {
     ...
-    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+    // TODO Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
     // To indicate that the UART Transmit FIFO is ready:
     // Set Bit 5 to 1.
-    // https://lupyuen.github.io/articles/serial#wait-to-transmit
+    // TODO https://lupyuen.github.io/articles/serial#wait-to-transmit
     emu.mem_write(
         UART0_BASE_ADDRESS + 0x14,  // UART Register Address
         &[0b10_0000]  // UART Register Value
     ).unwrap();
 ```
 
-TODO
+And this will intercept all writes to the __UART Transmit Register__: [main.rs](TODO)
 
 ```rust
 /// Hook Function for Memory Access.
@@ -295,6 +301,14 @@ fn hook_memory(
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
     true
 }
+```
+
+This means our Barebones Emulator will print the UART Output and show the __NuttX Boot Log__...
+
+```bash
+## To see the Emulated UART Output:
+$ cargo run | grep "uart output"
+TODO
 ```
 
 ![TODO](https://lupyuen.org/images/unicorn3-avaota.jpg)
