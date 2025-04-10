@@ -190,7 +190,15 @@ Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memo
     }
 ```
 
-TODO
+Unicorn lets us hook into its internals, for special processing. We add the Unicorn Hooks for...
+
+- __Block Hook:__ To draw the Call Graph
+
+- __Memory Hook:__ To emulate the UART Hardware
+
+- __Interrupt Hook:__ To emulate Arm64 SysCalls
+
+Like so: [main.rs](TODO)
 
 ```rust
     // Add Hook for emulating each Basic Block of Arm64 Instructions
@@ -212,13 +220,13 @@ TODO
     // Omitted: Indicate that the UART Transmit FIFO is ready
 ```
 
-[(__hook_block__ is for TODO)](TODO)
+[(__hook_block__ will draw the Call Graph)](TODO)
 
 [(__hook_memory__ will be used for UART Emulation)](TODO)
 
 [(__hook_interrupt__ shall be explained)](TODO)
 
-TODO
+Finally we start the __Unicorn Emulator__...
 
 ```rust
     // Emulate Arm64 Machine Code
