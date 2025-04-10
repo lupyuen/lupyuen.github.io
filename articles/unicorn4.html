@@ -282,25 +282,34 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span><span class="macro">println!</span>(<span class="string">"err={:?}"</span>, err);
     <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
+<p>Thanks to Unicorn: We have a Barebones Emulator for Avaota-A1! Now we fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about I/O? How to emulate in Unicorn?</em></p>
-<p>Let’s do the bare minimum of I/O: Printing to UART Output.</p>
-<p>TODO</p>
+<p>Let’s emulate the Bare Minimum for I/O: Printing output to the <strong>16550 UART</strong>…</p>
+<ol>
+<li>
+<p>We intercept all writes to the <strong>UART Transmit Register</strong>, and print them</p>
+</li>
+<li>
+<p>We signal to NuttX that <strong>UART Transmit FIFO</strong> is always ready for output</p>
+</li>
+</ol>
+<p>This will tell NuttX that <strong>UART Transmit FIFO</strong> is always ready: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
 </span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
 
 <span class="kw">fn </span>main() {
     ...
-    <span class="comment">// Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+    <span class="comment">// TODO Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
     // To indicate that the UART Transmit FIFO is ready:
     // Set Bit 5 to 1.
-    // https://lupyuen.github.io/articles/serial#wait-to-transmit
+    // TODO https://lupyuen.github.io/articles/serial#wait-to-transmit
     </span>emu.mem_write(
         UART0_BASE_ADDRESS + <span class="number">0x14</span>,  <span class="comment">// UART Register Address
         </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]  <span class="comment">// UART Register Value
     </span>).unwrap();</code></pre></div>
-<p>TODO</p>
+<p>And this will intercept all writes to the <strong>UART Transmit Register</strong>: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Memory Access.
 /// Called once for every Arm64 Memory Access.
@@ -327,6 +336,10 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
     </span><span class="bool-val">true
 </span>}</code></pre></div>
+<p>This means our Barebones Emulator will print the UART Output and show the <strong>NuttX Boot Log</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## To see the Emulated UART Output:
+$ cargo run | grep &quot;uart output&quot;
+TODO</code></pre></div>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>What happens when we run this?</em></p>
