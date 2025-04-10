@@ -101,7 +101,7 @@
 <ul>
 <li>TODO: Article</li>
 </ul>
-<p>To boot <strong>NuttX on Unicorn</strong>: We made <a href="https://github.com/lupyuen2/wip-nuttx/pull/106"><strong>Four Tiny Tweaks</strong></a> to NuttX…</p>
+<p>To boot <strong>NuttX on Unicorn</strong>: We recompiled NuttX with <a href="https://github.com/lupyuen2/wip-nuttx/pull/106"><strong>Four Tiny Tweaks</strong></a>…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0"><strong>Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits</strong></a></p>
@@ -120,7 +120,7 @@
 <p>So we can verify that NuttX SysCalls are OK.</p>
 </li>
 </ol>
-<p>TODO</p>
+<p>Here are the steps to compile <strong>NuttX for Unicorn</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Modified NuttX for Avaota-A1 SBC
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-avaota
@@ -174,12 +174,19 @@ cp nuttx nuttx.S nuttx.config nuttx.hash \
   $HOME/nuttx-arm64-emulator/nuttx
 cp nuttx-Image \
   $HOME/nuttx-arm64-emulator/nuttx/Image</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
+<p>To boot NuttX in Unicorn Emulator…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in the Unicorn Emulator
+git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
 cd nuttx-arm64-emulator
 cargo run
 
-cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
+## To see the Emulated UART Output:
+cargo run | grep &quot;uart output&quot;</code></pre></div>
+<p>TODO: Log</p>
+<h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
+<p><em>What’s inside the Avaota-A1 Emulator?</em></p>
+<p>Inside our Avaota-A1 Emulator: This is how we create the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
+
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Memory Space for NuttX Kernel
 </span><span class="kw">const </span>KERNEL_SIZE: usize = <span class="number">0x1000_0000</span>;
 <span class="kw">static </span><span class="kw-2">mut </span>KERNEL_CODE: [u8; KERNEL_SIZE] = [<span class="number">0</span>; KERNEL_SIZE];
@@ -195,8 +202,9 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
 
     <span class="comment">// Enable MMU Translation
     </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
-    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();</code></pre></div>
-<p>TODO</p>
+    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
+      .unwrap();</code></pre></div>
+<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for GIC (Interrupt Controller), UART and other Peripherals: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
     </span>emu.mem_map(
@@ -204,9 +212,9 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
         </span><span class="number">0x4000_0000</span>,  <span class="comment">// Size
         </span>Permission::READ | Permission::WRITE  <span class="comment">// Read/Write/Execute Access
     </span>).unwrap();</code></pre></div>
-<p>TODO</p>
+<p>Next we load the <strong>NuttX Image</strong> <em>(NuttX Kernel + NuttX Apps)</em> into Unicorn Memory: <a href="TODO">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Copy NuttX Kernel into memory
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Copy NuttX Image into memory
     </span><span class="kw">let </span>kernel = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/Image"</span>);
     <span class="kw">unsafe </span>{
         <span class="macro">assert!</span>(KERNEL_CODE.len() &gt;= kernel.len());
@@ -240,12 +248,14 @@ cargo run | grep &quot;uart output&quot;</code></pre></div><h1 id="unicorn-emula
         </span>hook_memory  <span class="comment">// Hook Function
     </span>).unwrap();
 
-    <span class="comment">// TODO
-    // Add Interrupt Hook
+    <span class="comment">// Add Interrupt Hook
     </span>emu.add_intr_hook(hook_interrupt)
       .unwrap();
 
     <span class="comment">// Omitted: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
+<p><a href="TODO">(<strong>hook_block</strong> is for TODO)</a></p>
+<p><a href="TODO">(<strong>hook_memory</strong> will be used for UART Emulation)</a></p>
+<p><a href="TODO">(<strong>hook_interrupt</strong> shall be explained)</a></p>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Emulate Arm64 Machine Code
