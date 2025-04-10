@@ -234,7 +234,19 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
             KERNEL_CODE.as_mut_ptr() <span class="kw">as _
         </span>).unwrap();
     }</code></pre></div>
-<p>TODO</p>
+<p>Unicorn lets us hook into its internals, for special processing. We add the Unicorn Hooks for…</p>
+<ul>
+<li>
+<p><strong>Block Hook:</strong> To draw the Call Graph</p>
+</li>
+<li>
+<p><strong>Memory Hook:</strong> To emulate the UART Hardware</p>
+</li>
+<li>
+<p><strong>Interrupt Hook:</strong> To emulate Arm64 SysCalls</p>
+</li>
+</ul>
+<p>Like so: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Add Hook for emulating each Basic Block of Arm64 Instructions
     </span>emu.add_block_hook(<span class="number">1</span>, <span class="number">0</span>, hook_block)
@@ -253,10 +265,10 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
       .unwrap();
 
     <span class="comment">// Omitted: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
-<p><a href="TODO">(<strong>hook_block</strong> is for TODO)</a></p>
+<p><a href="TODO">(<strong>hook_block</strong> will draw the Call Graph)</a></p>
 <p><a href="TODO">(<strong>hook_memory</strong> will be used for UART Emulation)</a></p>
 <p><a href="TODO">(<strong>hook_interrupt</strong> shall be explained)</a></p>
-<p>TODO</p>
+<p>Finally we start the <strong>Unicorn Emulator</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Emulate Arm64 Machine Code
     </span><span class="kw">let </span>err = emu.emu_start(
