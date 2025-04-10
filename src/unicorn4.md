@@ -38,7 +38,7 @@ Earlier we ported NuttX to Avaota-A1 SBC...
 
 - TODO: Article
 
-To boot __NuttX on Unicorn__: We made [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106) to NuttX...
+To boot __NuttX on Unicorn__: We recompiled NuttX with [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106)...
 
 1.  [__Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0)
 
@@ -56,7 +56,7 @@ To boot __NuttX on Unicorn__: We made [__Four Tiny Tweaks__](https://github.com/
 
     So we can verify that NuttX SysCalls are OK.
 
-TODO
+Here are the steps to compile __NuttX for Unicorn__...
 
 ```bash
 ## Compile Modified NuttX for Avaota-A1 SBC
@@ -114,17 +114,25 @@ cp nuttx-Image \
   $HOME/nuttx-arm64-emulator/nuttx/Image
 ```
 
-TODO
+To boot NuttX in Unicorn Emulator...
 
 ```bash
+## Boot NuttX in the Unicorn Emulator
 git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
 cd nuttx-arm64-emulator
 cargo run
 
+## To see the Emulated UART Output:
 cargo run | grep "uart output"
 ```
 
+TODO: Log
+
 # Unicorn Emulator for Avaota-A1
+
+_What's inside the Avaota-A1 Emulator?_
+
+Inside our Avaota-A1 Emulator: This is how we create the __Unicorn Interface__: [main.rs](TODO)
 
 ```rust
 /// Memory Space for NuttX Kernel
@@ -142,10 +150,11 @@ fn main() {
 
     // Enable MMU Translation
     let emu = &mut unicorn;
-    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU).unwrap();
+    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
+      .unwrap();
 ```
 
-TODO
+Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for GIC (Interrupt Controller), UART and other Peripherals: [main.rs](TODO)
 
 ```rust
     // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
@@ -156,10 +165,10 @@ TODO
     ).unwrap();
 ```
 
-TODO
+Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memory: [main.rs](TODO)
 
 ```rust
-    // Copy NuttX Kernel into memory
+    // Copy NuttX Image into memory
     let kernel = include_bytes!("../nuttx/Image");
     unsafe {
         assert!(KERNEL_CODE.len() >= kernel.len());
@@ -196,13 +205,18 @@ TODO
         hook_memory  // Hook Function
     ).unwrap();
 
-    // TODO
     // Add Interrupt Hook
     emu.add_intr_hook(hook_interrupt)
       .unwrap();
 
     // Omitted: Indicate that the UART Transmit FIFO is ready
 ```
+
+[(__hook_block__ is for TODO)](TODO)
+
+[(__hook_memory__ will be used for UART Emulation)](TODO)
+
+[(__hook_interrupt__ shall be explained)](TODO)
 
 TODO
 
