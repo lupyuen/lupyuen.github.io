@@ -263,7 +263,7 @@ sudo docker run -it \
     (./cibuild.sh -c -A -N -R testlist/$job.dat) || (res=\$? ; echo &#39;***** JOB FAILED&#39; ; exit \$res)
   )
 &quot;</code></pre></div>
-<p><a href="https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>Docker Builds for NuttX</strong>)</a></p>
+<p><a href="https://lupyuen.org/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>Docker Builds for NuttX</strong>)</a></p>
 <p>Everything above becomes our <strong>Git Bisect Script</strong> that assesses “Goodness” vs “Badness” for a NuttX Commit: <a href="https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73">run-job-bisect.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## This script will be called by Git Bisect Wrapper...
 ## We run the CI Job in Docker Container

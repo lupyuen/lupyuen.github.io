@@ -140,7 +140,7 @@ cd nuttx/tools/ci
 ./cibuild.sh \
   -c -A -N -R \
   testlist/risc-v-05.dat </code></pre></div>
-<p><a href="https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>NuttX Docker Build</strong>)</a></p>
+<p><a href="https://lupyuen.org/articles/ci2.html#build-nuttx-for-one-target-group">(More about <strong>NuttX Docker Build</strong>)</a></p>
 <p>Docker will build <em>rv-virt:citest</em> and start the <strong>CI Test</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
 python3 -m pytest -m &#39;qemu or rv_virt&#39; ./ -B rv-virt -P /root/nuttx -L /root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu -R qemu -C --json=/root/nuttx/boards/risc-v/qemu-rv/rv-virt/configs/citest/logs/rv-virt/qemu/pytest.json
