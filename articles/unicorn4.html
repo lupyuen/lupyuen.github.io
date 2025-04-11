@@ -197,7 +197,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
   </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
   emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
     .unwrap();</code></pre></div>
-<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for UART and other I/O Peripherals: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43">main.rs</a></p>
+<p>Based on the <a href="https://lupyuen.github.io/articles/avaota.html#fix-the-memory-map"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for UART and other I/O Peripherals: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
   </span>emu.mem_map(
@@ -230,10 +230,10 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>Unicorn lets us hook into its internals, for emulating nifty things. We add the <strong>Unicorn Hooks</strong> for…</p>
 <ul>
 <li>
-<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <a href="TODO"><strong>Call Graph</strong></a></p>
+<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <a href="https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn"><strong>Call Graph</strong></a></p>
 </li>
 <li>
-<p><strong>Memory Hook:</strong> To emulate the <a href="TODO"><strong>UART Hardware</strong></a>, we intercept the Memory Reads and Writes</p>
+<p><strong>Memory Hook:</strong> To emulate the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>UART Hardware</strong></a>, we intercept the Memory Reads and Writes</p>
 </li>
 <li>
 <p><strong>Interrupt Hook:</strong> We emulate <a href="TODO"><strong>Arm64 SysCalls</strong></a> as Unicorn Interrupts</p>
@@ -258,7 +258,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     .unwrap();
 
   <span class="comment">// Upcoming: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
-<p><a href="TODO">(<strong>hook_block</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn">(<strong>hook_block</strong> is explained here)</a></p>
 <p>Finally we start the <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L88-L106">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Emulate Arm64 Machine Code
@@ -276,14 +276,14 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about Avaota I/O? How to emulate in Unicorn?</em></p>
-<p>Let’s emulate the Bare Minimum for I/O: Printing output to the <a href="TODO"><strong>16550 UART</strong></a>…</p>
+<p>Let’s emulate the Bare Minimum for I/O: Printing output to the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>16550 UART</strong></a>…</p>
 <ol>
 <li>
-<p>We intercept all writes to the <a href="TODO"><strong>UART Transmit Register</strong></a>, and print them</p>
+<p>We intercept all writes to the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>UART Transmit Register</strong></a>, and print them</p>
 <p><em>(So we can see the Boot Log from NuttX)</em></p>
 </li>
 <li>
-<p>We signal to NuttX that <a href="TODO"><strong>UART Transmit FIFO</strong></a> is always ready to transmit</p>
+<p>We signal to NuttX that <a href="https://lupyuen.github.io/articles/avaota.html#uart-driver-for-16550"><strong>UART Transmit FIFO</strong></a> is always ready to transmit</p>
 <p><em>(Otherwise NuttX will wait forever for UART)</em></p>
 </li>
 </ol>
@@ -328,7 +328,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 $ cargo run | grep &quot;uart output&quot;
 TODO</code></pre></div>
 <p>We’re ready to boot NuttX on Unicorn!</p>
-<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>Our Barebones Emulator: What happens when we run it?</em></p>
 <p>We boot NuttX on our <a href="TODO"><strong>Barebones Emulator</strong></a>. NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
