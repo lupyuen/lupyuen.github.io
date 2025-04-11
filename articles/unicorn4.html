@@ -69,7 +69,7 @@
 <li><a href="#unicorn-emulator-for-avaota-a1" title="Unicorn Emulator for Avaota-A1">2 Unicorn Emulator for Avaota-A1</a><ul></ul></li>
 <li><a href="#emulate-16550-uart" title="Emulate 16550 UART">3 Emulate 16550 UART</a><ul></ul></li>
 <li><a href="#nuttx-halts-at-syscall" title="NuttX Halts at SysCall">4 NuttX Halts at SysCall</a><ul></ul></li>
-<li><a href="#nuttx-syscall" title="NuttX SysCall">5 NuttX SysCall</a><ul></ul></li>
+<li><a href="#syscall-for-context-switch" title="SysCall for Context Switch">5 SysCall for Context Switch</a><ul></ul></li>
 <li><a href="#hook-the-unicorn-interrupt" title="Hook The Unicorn Interrupt">6 Hook The Unicorn Interrupt</a><ul></ul></li>
 <li><a href="#arm64-vector-table" title="Arm64 Vector Table">7 Arm64 Vector Table</a><ul></ul></li>
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
@@ -231,16 +231,16 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
             KERNEL_CODE.as_mut_ptr() <span class="kw">as _
         </span>).unwrap();
     }</code></pre></div>
-<p>Unicorn lets us hook into its internals, for special processing. We add the Unicorn Hooks for…</p>
+<p>Unicorn lets us hook into its internals, for emulating nifty things. We add the <strong>Unicorn Hooks</strong> for…</p>
 <ul>
 <li>
-<p><strong>Block Hook:</strong> To draw the Call Graph</p>
+<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <strong>Call Graph</strong></p>
 </li>
 <li>
-<p><strong>Memory Hook:</strong> To emulate the UART Hardware</p>
+<p><strong>Memory Hook:</strong> To emulate the <strong>UART Hardware</strong>, we intercept Memory Reads and Writes</p>
 </li>
 <li>
-<p><strong>Interrupt Hook:</strong> To emulate Arm64 SysCalls</p>
+<p><strong>Interrupt Hook:</strong> We emulate <strong>Arm64 SysCalls</strong> as Unicorn Interrupts</p>
 </li>
 </ul>
 <p>Like so: <a href="TODO">main.rs</a></p>
@@ -276,7 +276,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span><span class="macro">println!</span>(<span class="string">"err={:?}"</span>, err);
     <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
-<p>That’s it for our Barebones Emulator! We fill in the hooks…</p>
+<p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about I/O? How to emulate in Unicorn?</em></p>
 <p>Let’s emulate the Bare Minimum for I/O: Printing output to the <strong>16550 UART</strong>…</p>
@@ -392,7 +392,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
 <p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall, via our Interrupt Callback.</p>
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
-<h1 id="nuttx-syscall"><a class="doc-anchor" href="#nuttx-syscall">§</a>5 NuttX SysCall</h1>
+<h1 id="syscall-for-context-switch"><a class="doc-anchor" href="#syscall-for-context-switch">§</a>5 SysCall for Context Switch</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
 <p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
