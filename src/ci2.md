@@ -379,7 +379,7 @@ function run_job {
 }
 ```
 
-Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group)
+Which calls the script we've seen earlier: [__run-job.sh__](https://lupyuen.github.io/articles/ci2.html#build-nuttx-for-one-target-group)
 
 __upload_log__ will upload the log (to GitHub Gist) for further processing (and alerting): [run-ci.sh](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L59-L71)
 
@@ -499,15 +499,15 @@ Probably cheaper to buy our own Refurbished Mac Mini (Intel only), running NuttX
 
 We have more stories about __NuttX Continuous Integration__ in these articles...
 
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3.html)
 
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5.html)
 
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6.html)
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 - [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
 

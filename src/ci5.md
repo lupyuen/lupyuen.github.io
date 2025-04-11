@@ -271,7 +271,7 @@ Earlier we compiled NuttX for One Single Target. Now we scale up and __Compile A
 
 This becomes our Community-Hosted __macOS Build Farm__ for NuttX.
 
-[(Why? So we can __Catch Build Errors__ without depending on GitHub Actions)](https://lupyuen.github.io/articles/ci4)
+[(Why? So we can __Catch Build Errors__ without depending on GitHub Actions)](https://lupyuen.github.io/articles/ci4.html)
 
 If Your Mac has Spare CPU Cycles: Please join our __macOS Build Farm__! 🙏 Like so: [run.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh)
 
@@ -298,7 +298,7 @@ cd nuttx-build-farm
 
 And please tell me your __Gist User ID__. (Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20))
 
-The Build Outcomes will appear in [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)...
+The Build Outcomes will appear in [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html)...
 
 ![macOS Build Farm for Apache NuttX RTOS (Apple Silicon)](https://lupyuen.github.io/images/ci5-dashboard.png)
 
@@ -346,7 +346,7 @@ function run_job {
 
 <span style="font-size:90%">
 
-[(__Some Target Groups__ won't compile)](https://lupyuen.github.io/articles/ci5#except-these-targets)
+[(__Some Target Groups__ won't compile)](https://lupyuen.github.io/articles/ci5.html#except-these-targets)
 
 [(__clean_log__ removes Control Chars)](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55)
 
@@ -358,7 +358,7 @@ function run_job {
 
 _What's inside run-job-macos.sh?_
 
-It will run one single __NuttX CI Job__. Similar to the [__NuttX Build Script__](https://lupyuen.github.io/articles/ci5#patch-the-ci-script) we saw earlier: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
+It will run one single __NuttX CI Job__. Similar to the [__NuttX Build Script__](https://lupyuen.github.io/articles/ci5.html#patch-the-ci-script) we saw earlier: [run-job-macos.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh)
 
 ```bash
 ## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
@@ -418,7 +418,7 @@ I recommend [__TG Pro__](https://www.tunabellysoftware.com/tgpro/) for Fan Contr
 
 Which will trigger the fans at __70°C__ (red bar below), keeping things cooler. (Compare the green bars with above)
 
-Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci5#macos-build-farm)! 🙏
+Do you have a __Mac Pro__ or __M4 Pro__? Please test the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci5.html#macos-build-farm)! 🙏
 
 ([__Xcode Benchmark__](https://github.com/devMEremenko/XcodeBenchmark) suggests Your Mac might be twice as fast as my M2 Pro)
 
@@ -444,11 +444,11 @@ If we're Compiling NuttX for __One Single Target__: Arm32 / RISC-V / Xtensa... Y
 
 But as NuttX Maintainer: I find it tough to reproduce __All Possible NuttX Builds__ on macOS...
 
-- [__Some NuttX Targets__](https://lupyuen.github.io/articles/ci5#except-these-targets) won't compile for macOS
+- [__Some NuttX Targets__](https://lupyuen.github.io/articles/ci5.html#except-these-targets) won't compile for macOS
 
 - We have __Limited Skills__ (and machines) for maintaining NuttX CI on macOS
 
-- My Favourite Setup: [__VSCode on macOS__](https://youtu.be/gPNURDLBu70) controlling a [__Refurbished Xeon Workstation__](https://qoto.org/@lupyuen/113517788288458811) for [__Ubuntu Docker Builds__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group) (which will faithfully compile everything)
+- My Favourite Setup: [__VSCode on macOS__](https://youtu.be/gPNURDLBu70) controlling a [__Refurbished Xeon Workstation__](https://qoto.org/@lupyuen/113517788288458811) for [__Ubuntu Docker Builds__](https://lupyuen.github.io/articles/ci2.html#build-nuttx-for-one-target-group) (which will faithfully compile everything)
 
 - Shall we use [__Docker for macOS Arm64__](https://discord.com/channels/716091708336504884/1280436444141453313)?
 
@@ -481,11 +481,11 @@ clang: error: invalid argument 'medium' to -mcmodel=
 
 Next Article: We chat about a new tool to __"Rewind The Build"__ when something breaks the Daily Build...
 
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6.html)
 
 Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__.
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 - [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
 

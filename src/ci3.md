@@ -156,7 +156,7 @@ Suppose our NuttX Admin __Merges a PR__. (Pic above)
 
 Normally our CI Workflow will trigger a __Merge Job__, to verify that everything compiles OK after Merging the PR.
 
-Which means ploughing through [__34 Sub-Jobs__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets) (2.5 elapsed hours) across __All Architectures__: _Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ..._
+Which means ploughing through [__34 Sub-Jobs__](https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets) (2.5 elapsed hours) across __All Architectures__: _Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, ..._
 
 This is extremely costly, hence we decided to trigger them as __Scheduled Merge Jobs__. I trigger them __Twice Daily__: 00:00 UTC and 12:00 UTC.
 
@@ -212,7 +212,7 @@ Every Day at __00:00 UTC__ and __12:00 UTC__: I do this...
 
 1.  And [__Remove Max Parallel__](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55) to use unlimited concurrent runners. [(Because it's free! Pic below)](https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca)
 
-1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
+1.  If the Merge Job fails with a [__Mystifying Network Timeout__](https://lupyuen.github.io/articles/ci3.html#appendix-network-timeout-at-github): I restart the Failed Sub-Jobs. [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  Wait for the Merge Job to complete. Then [__Ingest the GitHub Logs__](https://github.com/lupyuen/ingest-nuttx-builds) (like an Amoeba) into our [__NuttX Dashboard__](https://github.com/apache/nuttx/issues/14558). (Next article)
 
@@ -232,7 +232,7 @@ _Is it really OK to Disable the Merge Jobs? What about Docs and Docker Builds?_
 
 _Isn't this cheating? Offloading to a Free GitHub Account?_
 
-Yeah that's why we need a [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci3#our-wishlist). (Details below)
+Yeah that's why we need a [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci3.html#our-wishlist). (Details below)
 
 ![Halve the CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
 
@@ -297,7 +297,7 @@ _Sounds awfully complicated. How did we code the rules?_
 
 Indeed! The Build Rules are explained here...
 
-- ["__Build Rules for CI Workflow__"](https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow)
+- ["__Build Rules for CI Workflow__"](https://lupyuen.github.io/articles/ci3.html#appendix-build-rules-for-ci-workflow)
 
 # Live Metric for Full-Time Runners
 
@@ -349,7 +349,7 @@ We publish the data every __15 minutes__...
 
 Next comes the Watchmen...
 
-[(Can we run __All CI Checks__ for All PRs?)](https://lupyuen.github.io/articles/ci3#appendix-self-hosted-github-runners)
+[(Can we run __All CI Checks__ for All PRs?)](https://lupyuen.github.io/articles/ci3.html#appendix-self-hosted-github-runners)
 
 ![PXL_20241020_114213194](https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89)
 
@@ -439,13 +439,13 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 1.  And restarting the __Failed Merge Jobs__ 
 
-    [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github)
+    [(Because of __Mysterious Network Timeouts__)](https://lupyuen.github.io/articles/ci3.html#appendix-network-timeout-at-github)
 
     [(__CI Test__ might overrun)](https://github.com/apache/nuttx/issues/14680)
 
 1.  Track down any bugs that [__Fail the Merge Job__](https://github.com/apache/nuttx/issues/14796)
 
-1.  Maintaining the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) and [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)
+1.  Maintaining the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4.html) and [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html)
 
 1.  New GitHub Org shall host the Official Downloads of __NuttX Compiled Binaries__
 
@@ -461,13 +461,13 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus...
 
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5.html)
 
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6.html)
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 - [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
 
@@ -507,7 +507,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _To run the Complete Suite of CI Checks on every PR... We could use Self-Hosted GitHub Runners?_
 
-Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci)
+Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"Continuous Integration for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci.html)
 
 - __Self-Hosted GitHub Runners__ are actually quite complex to setup. And the machine needs to be [__properly secured__](https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you.), in case any unauthorised code is pushed down from GitHub.
 
@@ -515,7 +515,7 @@ Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: [__"C
 
 - NuttX Project might be a little __too dependent on GitHub__. Even if we had the funds, the ASF contract with GitHub won't allow us to pay more for extra usage. So we're trying alternatives.
 
-- Right now we're testing a __Community-Hosted Build Farm__ based on Ubuntu PCs and macOS: [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
+- Right now we're testing a __Community-Hosted Build Farm__ based on Ubuntu PCs and macOS: [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2.html)
 
 ![CI Checks for a Complex PR](https://lupyuen.github.io/images/ci3-checks.png)
 
@@ -618,7 +618,7 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
 - Is something misconfigured in our __Docker Image__?
 
-  But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
+  But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2.html). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
 
 - Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
 

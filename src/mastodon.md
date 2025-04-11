@@ -4,7 +4,7 @@
 
 ![(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)](https://lupyuen.github.io/images/mastodon-register7.png)
 
-We're out for an [__overnight hike__](https://strava.app.link/DDm6627hzPb), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets): _Arm, RISC-V, Xtensa, x64, ..._
+We're out for an [__overnight hike__](https://strava.app.link/DDm6627hzPb), city to airport. Our [__Build Farm for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4.html) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets): _Arm, RISC-V, Xtensa, x64, ..._
 
 Can we be 100% sure that __NuttX is OK?__ Without getting spammed by __alert emails__ all night? (Sorry we got zero budget for _"paging duty"_ services)
 
@@ -62,9 +62,9 @@ _How to get Mastodon Alerts for NuttX Builds and Continuous Integration? (CI)_
 
 _How did Mastodon get the Failed Builds?_
 
-Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) that continuously compiles All NuttX Targets. _(1,600 Targets!)_
+Thanks to the NuttX Community: We have a (self-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4.html) that continuously compiles All NuttX Targets. _(1,600 Targets!)_
 
-Failed Builds are auto-escalated to our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (Open-source Grafana + Prometheus)
+Failed Builds are auto-escalated to our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html). (Open-source Grafana + Prometheus)
 
 In a while, we'll explain how the Failed Builds are channeled from NuttX Dashboard into __Mastodon Posts__.
 
@@ -425,13 +425,13 @@ And we're done! [__The Appendix__](https://lupyuen.github.io/articles/mastodon#a
 
 1.  _Anything else we should monitor with Mastodon?_
 
-    [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.
+    [__Sync-Build-Ingest__](https://lupyuen.github.io/articles/ci3.html#move-the-merge-jobs) is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.
 
     [__Watching the Watchmen:__](https://lupyuen.github.io/articles/mastodon#prometheus-to-mastodon) How to be sure that our Rust App runs forever, always pushing Mastodon Alerts?
 
-    [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
+    [__Cost of GitHub Runners__](https://lupyuen.github.io/articles/ci3.html#live-metric-for-full-time-runners) shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)
 
-    [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
+    [__Over-Running GitHub Jobs__](https://lupyuen.github.io/articles/ci3.html#present-pains) shall also be monitored, so our (beloved and respected) NuttX Devs won't wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍
 
 1.  _How is Mastodon working out so far?_
 
@@ -495,7 +495,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Query Prometheus for NuttX Builds
 
-[__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4) (pic above) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci#one-thousand-build-targets). 
+[__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4.html) (pic above) runs non-stop all day, all night. Continuously compiling over [__1,000 NuttX Targets__](https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets). 
 
 Outcomes of NuttX Builds are recorded inside our __Prometheus Time-Series Database__...
 
@@ -528,7 +528,7 @@ Build Score is 1.0 for Successful Builds, 0.5 for Warnings, 0.0 for Errors. Thus
 
 _What's returned by Prometheus?_
 
-Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) in detail (pic above)...
+Plenty of fields, describing [__Every Failed Build__](https://lupyuen.github.io/articles/ci4.html#prometheus-metrics) in detail (pic above)...
 
 <span style="font-size:90%">
 
@@ -584,7 +584,7 @@ In the next section: We'll replicate this with Rust.
 
 _How did we get the above Prometheus Query?_
 
-We copied and pasted from our [__NuttX Dashboard in Grafana__](https://lupyuen.github.io/articles/ci4#grafana-dashboard)...
+We copied and pasted from our [__NuttX Dashboard in Grafana__](https://lupyuen.github.io/articles/ci4.html#grafana-dashboard)...
 
 ![Prometheus Query from our NuttX Dashboard in Grafana](https://lupyuen.github.io/images/mastodon-grafana.png)
 

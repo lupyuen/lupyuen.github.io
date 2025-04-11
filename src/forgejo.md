@@ -20,7 +20,7 @@ _Why explore Forgejo for NuttX?_
 
 - Can we __Mirror our NuttX Repo__ outside GitHub? So NuttX Community becomes more inclusive?
 
-- Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3#rescue-plan) at GitHub, might need to move out
+- Also: We're outgrowing our [__Budget Limits__](https://lupyuen.github.io/articles/ci3.html#rescue-plan) at GitHub, might need to move out
 
   [(Though __ASF Policy__ might not allow it)](https://infra.apache.org/project-repo-policy.html)
 
@@ -622,7 +622,7 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
 
 1.  __GitHub Reusable Workflows__ are [__Not Supported__](https://code.forgejo.org/forgejo/runner/issues/63) in Forgejo.
 
-    This means the [__NuttX Build Rules (arch.yml)__](https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow) probably won't run on Forgejo.
+    This means the [__NuttX Build Rules (arch.yml)__](https://lupyuen.github.io/articles/ci3.html#appendix-build-rules-for-ci-workflow) probably won't run on Forgejo.
 
     This appears in the Forgejo Server Log...
 

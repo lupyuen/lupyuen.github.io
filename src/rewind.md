@@ -79,7 +79,7 @@ qemu-system-riscv64 -kernel nuttx
 
 _Build and Test 20 times! Won't it look mighty messy?_
 
-Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4)...
+Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html)...
 
 ![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
@@ -301,11 +301,11 @@ Though there's an easier way...
 
 _Why publish the Test Log as a GitLab Snippet?_
 
-That's because we'll Ingest the Test Log into our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4). (So we can present the logs neatly as __NuttX Build History__)
+That's because we'll Ingest the Test Log into our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html). (So we can present the logs neatly as __NuttX Build History__)
 
 ![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
 
-This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4#prometheus-metrics) (that powers our NuttX Dashboard)
+This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4.html#prometheus-metrics) (that powers our NuttX Dashboard)
 
 ```bash
 # TYPE build_score gauge
@@ -349,7 +349,7 @@ __Hello Prometheus:__ We're sending you this __Test Log__ at the Specified URL..
 
   [(See the __Complete Log__)](https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578)
 
-  [(More about __Build Score__)](https://lupyuen.github.io/articles/ci4#build-score)
+  [(More about __Build Score__)](https://lupyuen.github.io/articles/ci4.html#build-score)
 
 Which is transformed and transmitted by our __Rust App__, from GitLab Snippet to Prometheus: [ingest-nuttx-builds/main.rs](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703)
 

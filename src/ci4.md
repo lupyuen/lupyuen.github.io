@@ -6,9 +6,9 @@
 
 Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3.html)
 
-Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)) with our new __NuttX Dashboard__...
+Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2.html)) with our new __NuttX Dashboard__...
 
 - We created our Dashboard with __Grafana__ (open-source)
 
@@ -18,7 +18,7 @@ Today we talk about __Monitoring the Daily Builds__ (also the [__NuttX Build Far
 
 - Integrated with our __Build Farm__ and __GitHub Actions__
 
-- Why do all this? Because [__we can't afford__](https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
+- Why do all this? Because [__we can't afford__](https://lupyuen.github.io/articles/ci3.html#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
 
 - We expect __some breakage__, and NuttX Dashboard will help with the fixing
 
@@ -30,7 +30,7 @@ We may __Filter the Builds__ by Architecture, Board and Config...
 
 ![Filter the Builds by Architecture, Board and Config](https://lupyuen.github.io/images/ci4-filter.png)
 
-The snapshot includes builds from the (community-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2) as well as [__GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) (twice-daily builds).
+The snapshot includes builds from the (community-hosted) [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2.html) as well as [__GitHub Actions__](https://lupyuen.github.io/articles/ci3.html#move-the-merge-jobs) (twice-daily builds).
 
 To see __GitHub Actions Only__: Click __`[+]`__ and set __`User`__ to __`NuttX`__...
 
@@ -179,9 +179,9 @@ brew services start grafana
 
 1.  How to get there? Watch the steps...
 
-    [__"All Builds Dashboard"__](https://lupyuen.github.io/articles/ci4#appendix-all-builds-dashboard)
+    [__"All Builds Dashboard"__](https://lupyuen.github.io/articles/ci4.html#appendix-all-builds-dashboard)
 
-    [__"Build History Dashboard"__](https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard)
+    [__"Build History Dashboard"__](https://lupyuen.github.io/articles/ci4.html#appendix-build-history-dashboard)
 
 ![Prometheus Metrics](https://lupyuen.github.io/images/ci4-flow4.jpg)
 
@@ -356,15 +356,15 @@ And it's perfectly OK to post the __Latest Build Log__ twice to Pushgateway. Tho
 
 Now we be like an Amoeba and ingest all kinds of Build Logs!
 
-- Build Logs from [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2)
+- Build Logs from [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2.html)
 
   [(Like this)](https://gist.github.com/nuttxlinux/0f065106e8ec31b0e0f1597370609a89#file-ci-risc-v-04-log-L165)
 
-- Build Logs from [__GitHub Actions__](https://lupyuen.github.io/articles/ci3)
+- Build Logs from [__GitHub Actions__](https://lupyuen.github.io/articles/ci3.html)
 
   [(Like this)](https://github.com/NuttX/nuttx/actions/runs/12022165125/job/33513971236#step:7:88)
 
-For NuttX Build Farm, we ingest the [__GitHub Gists__](https://lupyuen.github.io/articles/ci2#build-nuttx-for-all-target-groups) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
+For NuttX Build Farm, we ingest the [__GitHub Gists__](https://lupyuen.github.io/articles/ci2.html#build-nuttx-for-all-target-groups) that contain the Build Logs: [run.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh#L34-L41)
 
 ```bash
 ## Find all defconfig pathnames in NuttX Repo
@@ -570,7 +570,7 @@ Yeah our Build Logs appear in all shapes and sizes. We might need to standardise
 
 _What about the Build Logs from GitHub Actions?_
 
-It gets a little more complicated, we need to download the [__Build Logs from GitHub Actions__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs).
+It gets a little more complicated, we need to download the [__Build Logs from GitHub Actions__](https://lupyuen.github.io/articles/ci3.html#move-the-merge-jobs).
 
 But before that, we need the __GitHub Run ID__ to identify the Build Job: [github.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh#L85-L94)
 
@@ -679,7 +679,7 @@ cargo run -- \
 
 _How to run all this?_
 
-We ingest the GitHub Logs right after the [__Twice-Daily Build__](https://lupyuen.github.io/articles/ci3#move-the-merge-jobs) of NuttX. (00:00 UTC and 12:00 UTC)
+We ingest the GitHub Logs right after the [__Twice-Daily Build__](https://lupyuen.github.io/articles/ci3.html#move-the-merge-jobs) of NuttX. (00:00 UTC and 12:00 UTC)
 
 Thus it makes sense to bundle the __Build and Ingest__ into One Single Script: [build-github-and-ingest.sh](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/build-github-and-ingest.sh)
 
@@ -718,7 +718,7 @@ And that's how we created our Continuous Integration Dashboard for NuttX!
 
 _Why are we doing all this?_
 
-That's because [__we can't afford__](https://lupyuen.github.io/articles/ci3#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
+That's because [__we can't afford__](https://lupyuen.github.io/articles/ci3.html#disable-macos-and-windows-builds) to run Complete CI Checks on Every Pull Request!
 
 We expect __some breakage__, and NuttX Dashboard will help with the fixing.
 
@@ -726,23 +726,23 @@ _What happens when NuttX Dashboard reports a Broken Build?_
 
 Right now we scramble to identify the [__Breaking Commit__](https://github.com/apache/nuttx/issues/14808). And prevent more Broken Commits from piling on.
 
-Yes NuttX Dashboard will tell us the [__Commit Hashes__](https://lupyuen.github.io/articles/ci4#build-score) for the [__Build History__](https://lupyuen.github.io/articles/ci4#appendix-build-history-dashboard). But the Batched Commits aren't __Temporally Precise__, and we race against time to inspect and recompile each Past Commit.
+Yes NuttX Dashboard will tell us the [__Commit Hashes__](https://lupyuen.github.io/articles/ci4.html#build-score) for the [__Build History__](https://lupyuen.github.io/articles/ci4.html#appendix-build-history-dashboard). But the Batched Commits aren't __Temporally Precise__, and we race against time to inspect and recompile each Past Commit.
 
 _Can we automate this?_
 
 Yeah someday our NuttX Build Farm shall __"Rewind The Build"__ when something breaks. Automatically [__Backtrack the Commits__](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh), Compile each Commit and discover the Breaking Commit...
 
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6.html)
 
 _Any more stories of NuttX CI?_
 
 Next Article: We chat about the updated __NuttX Build Farm__ that runs on __macOS for Apple Silicon__. (Great news for NuttX Devs on macOS)
 
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5.html)
 
 Then we study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__. (So it will disappear sooner from NuttX Dashboard)
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 - [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
 
@@ -784,7 +784,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Earlier we spoke about creating the __NuttX Dashboard__ (pic above). And we created a __Rudimentary Dashboard__ with Grafana...
 
-- [__"Grafana Dashboard"__](https://lupyuen.github.io/articles/ci4#grafana-dashboard)
+- [__"Grafana Dashboard"__](https://lupyuen.github.io/articles/ci4.html#grafana-dashboard)
 
 We nearly completed the __Panel JSON__...
 
@@ -798,7 +798,7 @@ Before we begin: Check that our __Prometheus Data Source__ is configured to fetc
 
 ![Configure our Prometheus Data Source](https://lupyuen.github.io/images/ci4-datasource.png)
 
-[(Remember to set __prometheus.yml__)](https://lupyuen.github.io/articles/ci4#prometheus-metrics)
+[(Remember to set __prometheus.yml__)](https://lupyuen.github.io/articles/ci4.html#prometheus-metrics)
 
 Head back to our upcoming dashboard...
 

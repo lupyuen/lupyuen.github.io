@@ -14,7 +14,7 @@ Just to tell you once again <br>
 
 </span>
 
-2 Weeks Ago: We saw a [__Runtime Bug__](https://lupyuen.github.io/articles/ci7) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ (causing the bug) falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
+2 Weeks Ago: We saw a [__Runtime Bug__](https://lupyuen.github.io/articles/ci7.html) in __Apache NuttX RTOS__. We think that the __Breaking Commit__ (causing the bug) falls somewhere between these [__"Good" and "Bad" Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0)...
 
 | | |
 |:-----------:|:--------:|
@@ -26,7 +26,7 @@ That's [__468 Commits__](https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1E
 
 _Maybe we Rewind Each Commit and test?_
 
-With a script, we could rewind and retest 468 Commits for [__Compile Errors__](https://lupyuen.github.io/articles/ci6). But it's probably too slow for __Runtime Errors__. _(Rewind + Recompile + Rerun)_
+With a script, we could rewind and retest 468 Commits for [__Compile Errors__](https://lupyuen.github.io/articles/ci6.html). But it's probably too slow for __Runtime Errors__. _(Rewind + Recompile + Rerun)_
 
 We have a quicker way: __Git Bisect__! (Pic above)
 
@@ -318,7 +318,7 @@ _What happens in Git Bisect?_
     exit 0
     ```
 
-1.  Beware: Every Bisect will be __Super Slow__! Whenever something fails: CI Test will [__hang the CI Job__](https://lupyuen.github.io/articles/ci7#dump-the-ci-log-file).
+1.  Beware: Every Bisect will be __Super Slow__! Whenever something fails: CI Test will [__hang the CI Job__](https://lupyuen.github.io/articles/ci7.html#dump-the-ci-log-file).
 
     (Our script will kill CI Test after 1 hour)
 

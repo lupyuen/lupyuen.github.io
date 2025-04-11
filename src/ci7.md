@@ -4,7 +4,7 @@
 
 ![Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)](https://lupyuen.github.io/images/ci7-title.jpg)
 
-Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) will flag this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
+Every Day: Our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4.html) will flag this bothersome bug, [__since a month ago__](https://github.com/apache/nuttx/issues/14808)...
 
 ![NuttX Dashboard](https://lupyuen.github.io/images/ci7-dashboard.png)
 
@@ -46,7 +46,7 @@ _CI Test runs a bunch of Test Apps and fails. Why?_
 
 __Thanks to Docker:__ We can run __CI Test _risc-v-05___ on our Ubuntu PC. And figure out why it fails _rv-virt:citest_...
 
-[(Steps for __macOS Arm64__)](https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64)
+[(Steps for __macOS Arm64__)](https://lupyuen.github.io/articles/ci7.html#appendix-ci-test-on-macos-arm64)
 
 ```bash
 ## TODO: Install Docker Engine
@@ -248,7 +248,7 @@ Yep we can easily reproduce (and fix) the "__`ps`__" crash using plain old __Mak
 
 _How will we fix the bug?_
 
-We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#whats-next) and retest _rv-virt:citest_ on QEMU RISC-V.
+We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6.html#whats-next) and retest _rv-virt:citest_ on QEMU RISC-V.
 
 [UPDATE: __Tiago Medicci Serrano__ has just fixed the "__`ps`__" crash yay!](https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218)
 
@@ -270,7 +270,7 @@ We'll probably [__Rewind The Build__](https://lupyuen.github.io/articles/ci6#wha
 
 1.  _How does Pytest control QEMU?_
 
-    Remember [__test_helloxx__](https://lupyuen.github.io/articles/ci7#run-the-ci-test) that failed earlier? It calls...
+    Remember [__test_helloxx__](https://lupyuen.github.io/articles/ci7.html#run-the-ci-test) that failed earlier? It calls...
 
     - [__send_command__](https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38) to send an NSH Command, which calls...
 
@@ -356,12 +356,12 @@ _macOS won't work with the NuttX Docker Image. How to run the CI Test on macOS?_
 
 In the previous article we spoke about Compiling Everything NuttX on macOS Arm64...
 
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5.html)
 
 Today we apply the same steps to replicate the CI Test on __macOS Apple Silicon__...
 
 ```bash
-## From https://lupyuen.github.io/articles/ci5
+## From https://lupyuen.github.io/articles/ci5.html
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 

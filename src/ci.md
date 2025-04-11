@@ -146,9 +146,9 @@ Install __Self-Hosted Runners__ for Linux x64 and macOS Arm64...
 
 - [__Follow these Instructions__](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) from GitHub
 
-- Apply the [__Fixes for Linux Runners__](https://lupyuen.github.io/articles/ci#appendix-fixes-for-ubuntu-x64)
+- Apply the [__Fixes for Linux Runners__](https://lupyuen.github.io/articles/ci.html#appendix-fixes-for-ubuntu-x64)
 
-- And the [__Fixes for macOS Runners__](https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64)
+- And the [__Fixes for macOS Runners__](https://lupyuen.github.io/articles/ci.html#appendix-fixes-for-macos-arm64)
 
 They will run like this...
 
@@ -263,9 +263,9 @@ _Anything else we can run on macOS Arm64?_
 
 Unfortunately not, we need some more fixes...
 
-- [__"NuttX CI for macOS"__](https://lupyuen.github.io/articles/ci#appendix-nuttx-ci-for-macos)
+- [__"NuttX CI for macOS"__](https://lupyuen.github.io/articles/ci.html#appendix-nuttx-ci-for-macos)
 
-- [__"Documentation Build for NuttX"__](https://lupyuen.github.io/articles/ci#appendix-documentation-build-for-nuttx)
+- [__"Documentation Build for NuttX"__](https://lupyuen.github.io/articles/ci.html#appendix-documentation-build-for-nuttx)
 
 # UTM Emulator for macOS Arm64
 
@@ -385,17 +385,17 @@ According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.htm
 
 Check out the updates for __NuttX Continuous Integration__ in these articles...
 
-- [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2)
+- [__"Your very own Build Farm for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ci2.html)
 
-- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3)
+- [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3.html)
 
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4)
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
-- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5)
+- [__"macOS Build Farm for Apache NuttX RTOS (Apple Silicon)"__](https://lupyuen.github.io/articles/ci5.html)
 
-- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6)
+- [__"Rewinding a Build for Apache NuttX RTOS (Docker)"__](https://lupyuen.github.io/articles/ci6.html)
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 - [__"(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)"__](https://lupyuen.github.io/articles/mastodon)
 
@@ -419,7 +419,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 We're modifying NuttX CI (Continuous Integration) and GitHub Actions, to comply with ASF Policy. Unfortunately, these changes will extend the Build Duration for a NuttX Pull Request by roughly 15 mins, from 2 hours to 2.25 hours.
 
-Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), [__executing them in parallel__](https://lupyuen.github.io/articles/ci).
+Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), [__executing them in parallel__](https://lupyuen.github.io/articles/ci.html).
 
 According to [__ASF Policy__](https://infra.apache.org/github-actions-policy.html): We should run at most 15 Concurrent Jobs.
 

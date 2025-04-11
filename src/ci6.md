@@ -4,11 +4,11 @@
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
-__2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4) is already __Decked in Red__...
+__2 Dec 2024:__ Christmas ain't here yet, but our [__Dashboard for Apache NuttX RTOS__](https://lupyuen.github.io/articles/ci4.html) is already __Decked in Red__...
 
 ![Dashboard for Apache NuttX RTOS is already Decked in Red](https://lupyuen.github.io/images/ci6-dashboard2.png)
 
-Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2). (More about CI Test next article)
+Which says that NuttX Build is __failing for ESP32-C6__, as reported by [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci2.html). (More about CI Test next article)
 
 <span style="font-size:90%">
 
@@ -245,7 +245,7 @@ In reverse chronological order, __NuttX Build History__ says that...
 
 - Which means: Commit 40023987 is our [__Breaking Commit!__](https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L1-L7)
 
-- See the _"sudo docker"_ entries above? They were helpfully inserted by our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6#rewind-build-script)
+- See the _"sudo docker"_ entries above? They were helpfully inserted by our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6.html#rewind-build-script)
 
 - Much neater than the [__Rewind Build Log__](https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3)!
 
@@ -368,7 +368,7 @@ Which will call _rewind_commit.sh_ to compile One Single Commit...
 
 # Rewind One Commit
 
-Earlier we saw our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6#rewind-build-script) compiling the Latest 20 Commits. (Pic above)
+Earlier we saw our [__Rewind Build Script__](https://lupyuen.github.io/articles/ci6.html#rewind-build-script) compiling the Latest 20 Commits. (Pic above)
 
 This is how we compile __One Single Commit__ for NuttX: [rewind-commit.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L114-L146)
 
@@ -426,7 +426,7 @@ function build_nuttx {
 
 Finally we see the whole picture, closing the loop with NuttX Repo, NuttX Build Farm, NuttX Dashboard and NuttX Build History!
 
-[(How we __Ingest Build Logs__)](https://lupyuen.github.io/articles/ci4#ingest-the-build-logs)
+[(How we __Ingest Build Logs__)](https://lupyuen.github.io/articles/ci4.html#ingest-the-build-logs)
 
 !["Rewinding a Build" for Apache NuttX RTOS (Docker)](https://lupyuen.github.io/images/ci6-title.jpg)
 
@@ -448,7 +448,7 @@ _Happy Holidays! Will we have more stories about NuttX CI?_
 
 Next Article: We study the internals of a [__Mystifying Bug__](https://github.com/apache/nuttx/issues/14808) that concerns __PyTest, QEMU RISC-V and `expect`__...
 
-- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7)
+- [__"Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)"__](https://lupyuen.github.io/articles/ci7.html)
 
 Then we'll chat about an __Experimental Mastodon Server__ for NuttX Continuous Integration.
 

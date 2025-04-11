@@ -599,11 +599,11 @@ Sorry 64-bit __RISC-V Kernel Build__ is [__not supported yet__](https://github.c
 
 _Sounds like we need plenty of Rust Testing? For every NuttX Platform?_
 
-Yeah maybe we need [__Daily Automated Testing__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v) of NuttX + Rust Standard Library on [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4)?
+Yeah maybe we need [__Daily Automated Testing__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v) of NuttX + Rust Standard Library on [__NuttX Build Farm__](https://lupyuen.github.io/articles/ci4.html)?
 
 With [__QEMU Emulator__](https://lupyuen.github.io/articles/rust6#appendix-daily-test-of-nuttx-qemu-risc-v) or a [__Real Device__](https://lupyuen.github.io/articles/sg2000a)?
 
-And when the Daily Test fails: How to [__Auto-Rewind the Build__](https://lupyuen.github.io/articles/ci6) and discover the Breaking Commit? Hmmm...
+And when the Daily Test fails: How to [__Auto-Rewind the Build__](https://lupyuen.github.io/articles/ci6.html) and discover the Breaking Commit? Hmmm...
 
 <hr>
 
