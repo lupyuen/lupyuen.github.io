@@ -284,14 +284,14 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about Avaota I/O? How to emulate in Unicorn?</em></p>
-<p>Let’s emulate the Bare Minimum for I/O: Printing output to the <strong>16550 UART</strong>…</p>
+<p>Let’s emulate the Bare Minimum for I/O: Printing output to the <a href="TODO"><strong>16550 UART</strong></a>…</p>
 <ol>
 <li>
-<p>We intercept all writes to the <strong>UART Transmit Register</strong>, and print them</p>
+<p>We intercept all writes to the <a href="TODO"><strong>UART Transmit Register</strong></a>, and print them</p>
 <p><em>(So we can see the Boot Log from NuttX)</em></p>
 </li>
 <li>
-<p>We signal to NuttX that <strong>UART Transmit FIFO</strong> is always ready to transmit</p>
+<p>We signal to NuttX that <a href="TODO"><strong>UART Transmit FIFO</strong></a> is always ready to transmit</p>
 <p><em>(Otherwise NuttX will wait forever for UART)</em></p>
 </li>
 </ol>
