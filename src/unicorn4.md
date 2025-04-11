@@ -80,33 +80,25 @@ popd
 ## Append Padding and Initial RAM Disk to the NuttX Kernel
 genromfs -f nuttx-initrd -d ../apps/bin -V "NuttXBootVol"
 head -c 65536 /dev/zero >/tmp/nuttx.pad
-cat nuttx.bin /tmp/nuttx.pad nuttx-initrd \
-  >nuttx-Image
+cat nuttx.bin /tmp/nuttx.pad nuttx-initrd >nuttx-Image
 
 ## Dump the NuttX Kernel disassembly to nuttx.S
 aarch64-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide --debugging \
-  nuttx \
-  >nuttx.S \
-  2>&1
+  nuttx >nuttx.S 2>&1
 
 ## Dump the NSH Shell disassembly to nuttx-init.S
 aarch64-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide --debugging \
-  ../apps/bin/init \
-  >nuttx-init.S \
-  2>&1
+  ../apps/bin/init >nuttx-init.S 2>&1
 
 ## Dump the Hello disassembly to nuttx-hello.S
 aarch64-none-elf-objdump \
   --syms --source --reloc --demangle --line-numbers --wide --debugging \
-  ../apps/bin/hello \
-  >nuttx-hello.S \
-  2>&1
+  ../apps/bin/hello >nuttx-hello.S 2>&1
 
 ## Copy NuttX Image to Unicorn Emulator
-cp nuttx nuttx.S nuttx.config nuttx.hash \
-  nuttx-init.S nuttx-hello.S \
+cp nuttx nuttx.S nuttx.config nuttx.hash nuttx-init.S nuttx-hello.S \
   $HOME/nuttx-arm64-emulator/nuttx
 cp nuttx-Image \
   $HOME/nuttx-arm64-emulator/nuttx/Image
@@ -140,52 +132,52 @@ static mut KERNEL_CODE: [u8; KERNEL_SIZE] = [0; KERNEL_SIZE];
 /// Emulate some Arm64 Machine Code
 fn main() {
 
-    // Init Emulator in Arm64 mode
-    let mut unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).unwrap();
+  // Init Emulator in Arm64 mode
+  let mut unicorn = Unicorn::new(
+    Arch::ARM64,
+    Mode::LITTLE_ENDIAN
+  ).unwrap();
 
-    // Enable MMU Translation
-    let emu = &mut unicorn;
-    emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
-      .unwrap();
+  // Enable MMU Translation
+  let emu = &mut unicorn;
+  emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
+    .unwrap();
 ```
 
 Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for UART and other Peripherals: [main.rs](TODO)
 
 ```rust
-    // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
-    emu.mem_map(
-        0x0000_0000,  // Address
-        0x4000_0000,  // Size
-        Permission::READ | Permission::WRITE  // Read/Write/Execute Access
-    ).unwrap();
+  // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
+  emu.mem_map(
+    0x0000_0000,  // Address
+    0x4000_0000,  // Size
+    Permission::READ | Permission::WRITE  // Read/Write/Execute Access
+  ).unwrap();
 ```
 
 Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memory: [main.rs](TODO)
 
 ```rust
-    // Copy NuttX Image into memory
-    let kernel = include_bytes!("../nuttx/Image");
-    unsafe {
-        assert!(KERNEL_CODE.len() >= kernel.len());
-        KERNEL_CODE[0..kernel.len()].copy_from_slice(kernel);    
-    }
+  // Copy NuttX Image into memory
+  let kernel = include_bytes!("../nuttx/Image");
+  unsafe {
+    assert!(KERNEL_CODE.len() >= kernel.len());
+    KERNEL_CODE[0..kernel.len()].copy_from_slice(kernel);    
+  }
 
-    // Arm64 Memory Address where emulation starts.
-    // Memory Space for NuttX Kernel also begins here.
-    const ADDRESS: u64 = 0x4080_0000;
+  // Arm64 Memory Address where emulation starts.
+  // Memory Space for NuttX Kernel also begins here.
+  const ADDRESS: u64 = 0x4080_0000;
 
-    // Map the NuttX Kernel to 0x4080_0000
-    unsafe {
-        emu.mem_map_ptr(
-            ADDRESS, 
-            KERNEL_CODE.len(), 
-            Permission::READ | Permission::EXEC,
-            KERNEL_CODE.as_mut_ptr() as _
-        ).unwrap();
-    }
+  // Map the NuttX Kernel to 0x4080_0000
+  unsafe {
+    emu.mem_map_ptr(
+      ADDRESS, 
+      KERNEL_CODE.len(), 
+      Permission::READ | Permission::EXEC,
+      KERNEL_CODE.as_mut_ptr() as _
+    ).unwrap();
+  }
 ```
 
 Unicorn lets us hook into its internals, for emulating nifty things. We add the __Unicorn Hooks__ for...
@@ -199,23 +191,23 @@ Unicorn lets us hook into its internals, for emulating nifty things. We add the 
 Like so: [main.rs](TODO)
 
 ```rust
-    // Add Hook for emulating each Basic Block of Arm64 Instructions
-    emu.add_block_hook(1, 0, hook_block)
-        .unwrap();
+  // Add Hook for emulating each Basic Block of Arm64 Instructions
+  emu.add_block_hook(1, 0, hook_block)
+    .unwrap();
 
-    // Add Hook for Arm64 Memory Access
-    emu.add_mem_hook(
-        HookType::MEM_ALL,  // Intercept Read and Write Accesses
-        0,           // Begin Address
-        u64::MAX,    // End Address
-        hook_memory  // Hook Function
-    ).unwrap();
+  // Add Hook for Arm64 Memory Access
+  emu.add_mem_hook(
+    HookType::MEM_ALL,  // Intercept Read and Write Accesses
+    0,           // Begin Address
+    u64::MAX,    // End Address
+    hook_memory  // Hook Function
+  ).unwrap();
 
-    // Add Interrupt Hook
-    emu.add_intr_hook(hook_interrupt)
-      .unwrap();
+  // Add Interrupt Hook
+  emu.add_intr_hook(hook_interrupt)
+    .unwrap();
 
-    // Omitted: Indicate that the UART Transmit FIFO is ready
+  // Upcoming: Indicate that the UART Transmit FIFO is ready
 ```
 
 [(__hook_block__ is explained here)](TODO)
@@ -223,17 +215,17 @@ Like so: [main.rs](TODO)
 Finally we start the __Unicorn Emulator__...
 
 ```rust
-    // Emulate Arm64 Machine Code
-    let err = emu.emu_start(
-        ADDRESS,  // Begin Address
-        ADDRESS + KERNEL_SIZE as u64,  // End Address
-        0,  // No Timeout
-        0   // Unlimited number of instructions
-    );
+  // Emulate Arm64 Machine Code
+  let err = emu.emu_start(
+    ADDRESS,  // Begin Address
+    ADDRESS + KERNEL_SIZE as u64,  // End Address
+    0,  // No Timeout
+    0   // Unlimited number of instructions
+  );
 
-    // Print the Emulator Error
-    println!("err={:?}", err);
-    println!("PC=0x{:x}", emu.reg_read(RegisterARM64::PC).unwrap());
+  // Print the Emulator Error
+  println!("err={:?}", err);
+  println!("PC=0x{:x}", emu.reg_read(RegisterARM64::PC).unwrap());
 }
 ```
 
@@ -260,15 +252,14 @@ This will tell NuttX that our __UART Transmit FIFO__ is forever ready: [main.rs]
 const UART0_BASE_ADDRESS: u64 = 0x02500000;
 
 fn main() {
-    ...
-    // TODO Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
-    // To indicate that the UART Transmit FIFO is ready:
-    // Set Bit 5 to 1.
-    // TODO https://lupyuen.github.io/articles/serial#wait-to-transmit
-    emu.mem_write(
-        UART0_BASE_ADDRESS + 0x14,  // UART Register Address
-        &[0b10_0000]                // UART Register Value
-    ).unwrap();
+  ...
+  // Allwinner A527 UART Line Status Register (UART_LSR) is at Offset 0x14.
+  // To indicate that the UART Transmit FIFO is ready:
+  // We set Bit 5 to 1.
+  emu.mem_write(
+    UART0_BASE_ADDRESS + 0x14,  // UART Register Address
+    &[0b10_0000]                // UART Register Value
+  ).unwrap();
 ```
 
 Our __Unicorn Memory Hook__ will intercept all writes to the __UART Transmit Register__, and print them: [main.rs](TODO)
@@ -277,23 +268,22 @@ Our __Unicorn Memory Hook__ will intercept all writes to the __UART Transmit Reg
 /// Hook Function for Memory Access.
 /// Called once for every Arm64 Memory Access.
 fn hook_memory(
-    _: &mut Unicorn<()>,  // Emulator
-    mem_type: MemType,    // Read or Write Access
-    address: u64,  // Accessed Address
-    size: usize,   // Number of bytes accessed
-    value: i64     // Write Value
+  _: &mut Unicorn<()>,  // Emulator
+  mem_type: MemType,    // Read or Write Access
+  address: u64,  // Accessed Address
+  size: usize,   // Number of bytes accessed
+  value: i64     // Write Value
 ) -> bool {
 
-    // If writing to UART Transmit Holding Register (THR):
-    // Print the UART Output
-    // https://lupyuen.github.io/articles/serial#transmit-uart
-    if address == UART0_BASE_ADDRESS {
-        println!("uart output: {:?}", value as u8 as char);
-    }
+  // If writing to UART Transmit Holding Register (THR):
+  // We print the UART Output
+  if address == UART0_BASE_ADDRESS {
+    println!("uart output: {:?}", value as u8 as char);
+  }
 
-    // Always return true, value is unused by caller
-    // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
-    true
+  // Always return true, value is unused by caller
+  // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+  true
 }
 ```
 
@@ -326,7 +316,6 @@ hook_block:  address=0x40806d58, size=08, sys_call0, arch/arm64/include/syscall.
 call_graph:  sched_unlock --> sys_call0
 call_graph:  click sched_unlock href "https://github.com/apache/nuttx/blob/master/sched/sched/sched_unlock.c#L89" "sched/sched/sched_unlock.c " _blank
 >> exception index = 2
-AAAAAAAAAAAA
 >>> invalid memory accessed, STOP = 21!!!
 err=Err(EXCEPTION)
 PC=0x40806d60
@@ -337,18 +326,16 @@ _What's at 0x4080_6D60?_
 We look up the [__Arm64 Disassembly__](TODO) for for NuttX Kernel. We see that _0x4080_6D60_ points to __Arm64 SysCall `SVC` `0`__...
 
 ```c
-sys_call0():
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:152
-/* SVC with SYS_ call number and no parameters */
-static inline uintptr_t sys_call0(unsigned int nbr)
-{
+nuttx/include/arch/syscall.h:152
+// Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
+static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
-    40806d58:	d2800040 	mov	x0, #0x2                   	// #2
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:154
-  __asm__ __volatile__
-    40806d5c:	d4000001 	svc	#0x0
-// 0x40806d60 is the next instruction to be executed on return from SysCall
+    40806d58:	d2800040 	mov	x0, #0x2  // Parameter in Register X0 is 2
+    40806d5c:	d4000001 	svc	#0x0      // Execute SysCall 0
+    40806d60: ... //Next instruction to be executed on return from SysCall
 ```
+
+[(__sys_call0__ is here)](TODO)
 
 Somehow NuttX Kernel is making an Arm64 SysCall, and failing.
 
@@ -357,6 +344,7 @@ _Isn't Unicorn supposed to emulate Arm64 SysCalls?_
 To find out: We step through Unicorn with [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
 
 ```c
+// When Unicorn handles a CPU Exception...
 static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
   // Unicorn: call registered interrupt callbacks
@@ -367,9 +355,9 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
     JIT_CALLBACK_GUARD(((uc_cb_hookintr_t)hook->callback)(uc, cpu->exception_index, hook->user_data));
     catched = true;
   }
-  // Unicorn: If un-catched interrupt, stop executions.
+
+  // Unicorn: If interrupt is uncaught, stop the execution
   if (!catched) {
-    printf("AAAAAAAAAAAA\n"); // qq
     if (uc->invalid_error == UC_ERR_OK) {
       // OOPS! EXCEPTION HAPPENS HERE
       uc->invalid_error = UC_ERR_EXCEPTION;
@@ -395,56 +383,47 @@ _Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps
 Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The Parameter Value is __`2`__: TODO
 
 ```c
-/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
-                {
-                  up_switch_context(this_task(), rtcb);
+nuttx/sched/sched/sched_unlock.c:92
+TODO: Function
+TODO {
+  up_switch_context(this_task(), rtcb);
     40807230:	d538d080 	mrs	x0, tpidr_el1
     40807234:	37000060 	tbnz	w0, #0, 40807240 <sched_unlock+0x80>
-sys_call0():
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:152
-/* SVC with SYS_ call number and no parameters */
-static inline uintptr_t sys_call0(unsigned int nbr)
-{
+
+nuttx/include/arch/syscall.h:152
+// Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
+static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
-    40807238:	d2800040 	mov	x0, #0x2                   	// #2
-/Users/luppy/avaota/nuttx/include/arch/syscall.h:154
-  __asm__ __volatile__
-    4080723c:	d4000001 	svc	#0x0
+    40807238:	d2800040 	mov	x0, #0x2  // Parameter in Register X0 is 2
+    4080723c:	d4000001 	svc	#0x0      // Execute SysCall 0
 ```
 
-What's the NuttX SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks...
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83
+What's the NuttX SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks: [syscall.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83)
 
 ```c
-/* SYS call 2:
- * void arm64_switchcontext(void **saveregs, void *restoreregs);
- */
-#define SYS_switch_context        (2)
+// NuttX SysCall 2 will Switch Context:
+// void arm64_switchcontext(void **saveregs, void *restoreregs)
+#define SYS_switch_context (2)
 ```
 
-Which is implemented here...
-
-https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_syscall.c#L201-L216
+Which is implemented here: [arm64_syscall.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_syscall.c#L201-L216)
 
 ```c
+// NuttX executes the Arm64 SysCall...
 uint64_t *arm64_syscall(uint64_t *regs) {
   ...
-      case SYS_switch_context:
+  // If SysCall is for Switch Context...
+  case SYS_switch_context:
 
-        /* Update scheduler parameters */
+    // Update the Scheduler Parameters
+    nxsched_suspend_scheduler(*running_task);
+    nxsched_resume_scheduler(tcb);
+    *running_task = tcb;
 
-        nxsched_suspend_scheduler(*running_task);
-        nxsched_resume_scheduler(tcb);
-        *running_task = tcb;
-
-        /* Restore the cpu lock */
-
-        restore_critical_section(tcb, cpu);
-#ifdef CONFIG_ARCH_ADDRENV
-        addrenv_switch(tcb);
-#endif
-        break;
+    // Restore the CPU Lock
+    restore_critical_section(tcb, cpu);
+    addrenv_switch(tcb);
+    break;
 ```
 
 Ah we see the light...
@@ -483,42 +462,43 @@ We saw earlier that Unicorn expects us to...
 
 1.  Then __Emulate the Arm64 SysCall__
 
-This is how we Hook the Interrupt: TODO
+This is how we __Hook the Interrupt__: TODO
 
 ```rust
+/// Main Function of Avaota Emulator
 fn main() {
-    ...
-    // Add Interrupt Hook
-    emu.add_intr_hook(hook_interrupt)
-      .unwrap();
+  ...
+  // Add the Interrupt Hook
+  emu.add_intr_hook(hook_interrupt)
+    .unwrap();
 
-    // Emulate Arm64 Machine Code
-    let err = emu.emu_start(
-        ADDRESS,  // Begin Address
-        ADDRESS + KERNEL_SIZE as u64,  // End Address
-        0,  // No Timeout
-        0   // Unlimited number of instructions
-    );
-    ...
+  // Emulate Arm64 Machine Code
+  let err = emu.emu_start(
+    ADDRESS,  // Begin Address
+    ADDRESS + KERNEL_SIZE as u64,  // End Address
+    0,  // No Timeout
+    0   // Unlimited number of instructions
+  );
+  ...
 }
 
-/// Hook Function to Handle Interrupt
+/// Hook Function to handle the Unicorn Interrupt
 fn hook_interrupt(
-    emu: &mut Unicorn<()>,  // Emulator
-    intno: u32, // Interrupt Number
+  emu: &mut Unicorn<()>,  // Emulator
+  intno: u32,             // Interrupt Number
 ) {
-    let pc = emu.reg_read(RegisterARM64::PC).unwrap();
-    let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-    println!("hook_interrupt: intno={intno}");
-    println!("PC=0x{pc:08x}");
-    println!("X0=0x{x0:08x}");
-    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
-    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+  let pc = emu.reg_read(RegisterARM64::PC).unwrap();
+  let x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+  println!("hook_interrupt: intno={intno}");
+  println!("PC=0x{pc:08x}");
+  println!("X0=0x{x0:08x}");
+  println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
+  println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
+  println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
+  println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
 
-    // Upcoming: Handle the SysCall
-    ...
+  // Upcoming: Handle the SysCall
+  ...
 }
 ```
 
