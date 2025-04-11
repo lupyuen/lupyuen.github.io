@@ -215,7 +215,7 @@
 <p><em>What are Merge Jobs? Why move them?</em></p>
 <p>Suppose our NuttX Admin <strong>Merges a PR</strong>. (Pic above)</p>
 <p>Normally our CI Workflow will trigger a <strong>Merge Job</strong>, to verify that everything compiles OK after Merging the PR.</p>
-<p>Which means ploughing through <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across <strong>All Architectures</strong>: <em>Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</em></p>
+<p>Which means ploughing through <a href="https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets"><strong>34 Sub-Jobs</strong></a> (2.5 elapsed hours) across <strong>All Architectures</strong>: <em>Arm32, Arm64, RISC-V, Xtensa, macOS, Windows, …</em></p>
 <p>This is extremely costly, hence we decided to trigger them as <strong>Scheduled Merge Jobs</strong>. I trigger them <strong>Twice Daily</strong>: 00:00 UTC and 12:00 UTC.</p>
 <p><img src="https://github.com/user-attachments/assets/617cc2fe-38ac-474f-8cd8-141d19d5b1f0" alt="Screenshot 2024-10-19 at 11 33 46 AM" /></p>
 <p><em>Is there a problem?</em></p>
@@ -257,7 +257,7 @@
 <p>And <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh#L35-L55"><strong>Remove Max Parallel</strong></a> to use unlimited concurrent runners. <a href="https://github.com/NuttX/nuttx/commit/31aea70d52d1eb6138912619f835693008596eca">(Because it’s free! Pic below)</a></p>
 </li>
 <li>
-<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
+<p>If the Merge Job fails with a <a href="https://lupyuen.github.io/articles/ci3.html#appendix-network-timeout-at-github"><strong>Mystifying Network Timeout</strong></a>: I restart the Failed Sub-Jobs. <a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
 </li>
 <li>
 <p>Wait for the Merge Job to complete. Then <a href="https://github.com/lupyuen/ingest-nuttx-builds"><strong>Ingest the GitHub Logs</strong></a> (like an Amoeba) into our <a href="https://github.com/apache/nuttx/issues/14558"><strong>NuttX Dashboard</strong></a>. (Next article)</p>
@@ -281,7 +281,7 @@
 </li>
 </ul>
 <p><em>Isn’t this cheating? Offloading to a Free GitHub Account?</em></p>
-<p>Yeah that’s why we need a <a href="https://lupyuen.github.io/articles/ci3#our-wishlist"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
+<p>Yeah that’s why we need a <a href="https://lupyuen.github.io/articles/ci3.html#our-wishlist"><strong>NuttX Build Farm</strong></a>. (Details below)</p>
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="Halve the CI Checks for a Complex PR" /></p>
 <h1 id="halve-the-ci-checks"><a class="doc-anchor" href="#halve-the-ci-checks">§</a>5 Halve the CI Checks</h1>
 <p><a href="https://github.com/apache/nuttx/issues/15451#issuecomment-2576576664">(<strong>Update:</strong> Right now we run <strong>100% of CI Jobs</strong> for Complex PRs)</a></p>
@@ -323,7 +323,7 @@
 <p><em>Sounds awfully complicated. How did we code the rules?</em></p>
 <p>Indeed! The Build Rules are explained here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow">“<strong>Build Rules for CI Workflow</strong>”</a></li>
+<li><a href="https://lupyuen.github.io/articles/ci3.html#appendix-build-rules-for-ci-workflow">“<strong>Build Rules for CI Workflow</strong>”</a></li>
 </ul>
 <h1 id="live-metric-for-full-time-runners"><a class="doc-anchor" href="#live-metric-for-full-time-runners">§</a>6 Live Metric for Full-Time Runners</h1>
 <p><em>Hitting the Target Metrics in 2 weeks… Everyone needs to help out right?</em></p>
@@ -370,7 +370,7 @@
 </li>
 </ol>
 <p>Next comes the Watchmen…</p>
-<p><a href="https://lupyuen.github.io/articles/ci3#appendix-self-hosted-github-runners">(Can we run <strong>All CI Checks</strong> for All PRs?)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html#appendix-self-hosted-github-runners">(Can we run <strong>All CI Checks</strong> for All PRs?)</a></p>
 <p><img src="https://github.com/user-attachments/assets/e25badb4-112b-4392-8605-7427aee47b89" alt="PXL_20241020_114213194" /></p>
 <h1 id="monitor-our-ci-servers-24-x-7"><a class="doc-anchor" href="#monitor-our-ci-servers-24-x-7">§</a>7 Monitor our CI Servers 24 x 7</h1>
 <p><em>Doesn’t sound right that an Unpaid Volunteer is monitoring our CI Servers 24 x 7 … But someone’s gotta do it!</em> 👍</p>
@@ -439,14 +439,14 @@
 </li>
 <li>
 <p>And restarting the <strong>Failed Merge Jobs</strong></p>
-<p><a href="https://lupyuen.github.io/articles/ci3#appendix-network-timeout-at-github">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html#appendix-network-timeout-at-github">(Because of <strong>Mysterious Network Timeouts</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/14680">(<strong>CI Test</strong> might overrun)</a></p>
 </li>
 <li>
 <p>Track down any bugs that <a href="https://github.com/apache/nuttx/issues/14796"><strong>Fail the Merge Job</strong></a></p>
 </li>
 <li>
-<p>Maintaining the <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> and <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a></p>
+<p>Maintaining the <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Build Farm</strong></a> and <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a></p>
 </li>
 <li>
 <p>New GitHub Org shall host the Official Downloads of <strong>NuttX Compiled Binaries</strong></p>
@@ -462,16 +462,16 @@
 <p>Next Article: We’ll chat about <strong>NuttX Dashboard</strong>. And how we made it with Grafana and Prometheus…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci4"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci5"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci5.html"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci6"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci6.html"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci7"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci7.html"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mastodon"><strong>“(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)”</strong></a></p>
@@ -523,7 +523,7 @@
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ci3.md"><strong>lupyuen.github.io/src/ci3.md</strong></a></p>
 <h1 id="appendix-self-hosted-github-runners"><a class="doc-anchor" href="#appendix-self-hosted-github-runners">§</a>11 Appendix: Self-Hosted GitHub Runners</h1>
 <p><em>To run the Complete Suite of CI Checks on every PR… We could use Self-Hosted GitHub Runners?</em></p>
-<p>Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: <a href="https://lupyuen.github.io/articles/ci"><strong>“Continuous Integration for Apache NuttX RTOS”</strong></a></p>
+<p>Yep I tested Self-Hosted GitHub Runners, I wrote about my experience here: <a href="https://lupyuen.github.io/articles/ci.html"><strong>“Continuous Integration for Apache NuttX RTOS”</strong></a></p>
 <ul>
 <li>
 <p><strong>Self-Hosted GitHub Runners</strong> are actually quite complex to setup. And the machine needs to be <a href="https://cwiki.apache.org/confluence/display/INFRA/GitHub+self-hosted+runners#:~:text=However%20this%20is%20not%20something%20to%20tackle%20lightly%2C%20as%20Infra%20will%20not%20manage%20or%20secure%20your%20VM%C2%A0%2D%20that%20is%20up%20to%20you."><strong>properly secured</strong></a>, in case any unauthorised code is pushed down from GitHub.</p>
@@ -535,7 +535,7 @@
 <p>NuttX Project might be a little <strong>too dependent on GitHub</strong>. Even if we had the funds, the ASF contract with GitHub won’t allow us to pay more for extra usage. So we’re trying alternatives.</p>
 </li>
 <li>
-<p>Right now we’re testing a <strong>Community-Hosted Build Farm</strong> based on Ubuntu PCs and macOS: <a href="https://lupyuen.github.io/articles/ci2"><strong>“Your very own Build Farm for Apache NuttX RTOS”</strong></a></p>
+<p>Right now we’re testing a <strong>Community-Hosted Build Farm</strong> based on Ubuntu PCs and macOS: <a href="https://lupyuen.github.io/articles/ci2.html"><strong>“Your very own Build Farm for Apache NuttX RTOS”</strong></a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/ci3-checks.png" alt="CI Checks for a Complex PR" /></p>
@@ -633,7 +633,7 @@ make[2]: *** [Makefile:55: /github/workspace/sources/apps/wireless/bluetooth/nim
 $ curl https://github.com/...</code></pre></div></li>
 <li>
 <p>Is something misconfigured in our <strong>Docker Image</strong>?</p>
-<p>But the exact same Docker Image runs fine on <a href="https://lupyuen.github.io/articles/ci2"><strong>our own Build Farm</strong></a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>doesn’t show any errors</strong></a>.</p>
+<p>But the exact same Docker Image runs fine on <a href="https://lupyuen.github.io/articles/ci2.html"><strong>our own Build Farm</strong></a>. It <a href="https://lupyuen.codeberg.page/articles/ci2.html"><strong>doesn’t show any errors</strong></a>.</p>
 </li>
 <li>
 <p>Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔</p>

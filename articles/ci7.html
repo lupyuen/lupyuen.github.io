@@ -73,7 +73,7 @@
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-ci-test-on-macos-arm64" title="Appendix: CI Test on macOS Arm64">7 Appendix: CI Test on macOS Arm64</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)" /></p>
-<p>Every Day: Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> will flag this bothersome bug, <a href="https://github.com/apache/nuttx/issues/14808"><strong>since a month ago</strong></a>…</p>
+<p>Every Day: Our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>Dashboard for Apache NuttX RTOS</strong></a> will flag this bothersome bug, <a href="https://github.com/apache/nuttx/issues/14808"><strong>since a month ago</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ci7-dashboard.png" alt="NuttX Dashboard" /></p>
 <p>Which says that <strong>NuttX on QEMU RISC-V Emulator</strong> (32-bit) has failed our <a href="https://github.com/NuttX/nuttx/actions/runs/12263479539/job/34215189342#step:7:88"><strong>Continuous Integration Test</strong></a>. Again and again (like Kafka on Groundhog Day)</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: rv-virt/citest
@@ -112,7 +112,7 @@ test_usrsocktest FAILED
 <h1 id="run-the-ci-test"><a class="doc-anchor" href="#run-the-ci-test">§</a>1 Run the CI Test</h1>
 <p><em>CI Test runs a bunch of Test Apps and fails. Why?</em></p>
 <p><strong>Thanks to Docker:</strong> We can run <strong>CI Test <em>risc-v-05</em></strong> on our Ubuntu PC. And figure out why it fails <em>rv-virt:citest</em>…</p>
-<p><a href="https://lupyuen.github.io/articles/ci7#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci7.html#appendix-ci-test-on-macos-arm64">(Steps for <strong>macOS Arm64</strong>)</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Install Docker Engine
 ## https://docs.docker.com/engine/install/ubuntu/
 
@@ -273,7 +273,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4ec0df33c2b4b569c010fade5f471940">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep we can easily reproduce (and fix) the “<strong><code>ps</code></strong>” crash using plain old <strong>Make and QEMU</strong>. No need for CI Test Script!</p>
 <p><em>How will we fix the bug?</em></p>
-<p>We’ll probably <a href="https://lupyuen.github.io/articles/ci6#whats-next"><strong>Rewind The Build</strong></a> and retest <em>rv-virt:citest</em> on QEMU RISC-V.</p>
+<p>We’ll probably <a href="https://lupyuen.github.io/articles/ci6.html#whats-next"><strong>Rewind The Build</strong></a> and retest <em>rv-virt:citest</em> on QEMU RISC-V.</p>
 <p><a href="https://github.com/apache/nuttx/pull/15165#issuecomment-2539710218">UPDATE: <strong>Tiago Medicci Serrano</strong> has just fixed the “<strong><code>ps</code></strong>” crash yay!</a></p>
 <p><a href="https://github.com/apache/nuttx/issues/15170">(But <strong>another bug</strong> appears. Exactly like Kafka on Groundhog Day sigh)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci7-title.jpg" alt="Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)" /></p>
@@ -288,7 +288,7 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 </li>
 <li>
 <p><em>How does Pytest control QEMU?</em></p>
-<p>Remember <a href="https://lupyuen.github.io/articles/ci7#run-the-ci-test"><strong>test_helloxx</strong></a> that failed earlier? It calls…</p>
+<p>Remember <a href="https://lupyuen.github.io/articles/ci7.html#run-the-ci-test"><strong>test_helloxx</strong></a> that failed earlier? It calls…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/ci/testrun/script/test_example/test_example.py#L32-L38"><strong>send_command</strong></a> to send an NSH Command, which calls…</p>
@@ -380,10 +380,10 @@ up_dump_register: EPC: 80008bfe</code></pre></div>
 <p><em>macOS won’t work with the NuttX Docker Image. How to run the CI Test on macOS?</em></p>
 <p>In the previous article we spoke about Compiling Everything NuttX on macOS Arm64…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ci5"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ci5.html"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></li>
 </ul>
 <p>Today we apply the same steps to replicate the CI Test on <strong>macOS Apple Silicon</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## From https://lupyuen.github.io/articles/ci5
+<div class="example-wrap"><pre class="language-bash"><code>## From https://lupyuen.github.io/articles/ci5.html
 git clone https://github.com/lupyuen/nuttx-build-farm
 cd nuttx-build-farm
 

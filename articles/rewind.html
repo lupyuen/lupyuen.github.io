@@ -139,7 +139,7 @@ qemu-system-riscv64 -kernel nuttx
 ## Roughly One Hour for 20 Rewinds of Build + Test</code></pre></div>
 <p>(What about Git Bisect? We’ll come back to this)</p>
 <p><em>Build and Test 20 times! Won’t it look mighty messy?</em></p>
-<p>Ah that’s why we present neatly the <strong>20 Outcomes</strong> (Build + Test) as the <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>NuttX Build History</strong></a>, inside our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>…</p>
+<p>Ah that’s why we present neatly the <strong>20 Outcomes</strong> (Build + Test) as the <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>NuttX Build History</strong></a>, inside our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>…</p>
 <p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p>What’s inside our script? We dive in…</p>
 <p><a href="https://lists.apache.org/thread/4oqjrwnzoq41tm0r6bl8bsgwbqokc4kp">(Which <strong>Apps Hash</strong> to use? NuttX Build History can help)</a></p>
@@ -310,9 +310,9 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 <p><img src="https://lupyuen.org/images/rewind-title5.jpg" alt="Ingest the Test Log" /></p>
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
-<p>That’s because we’ll Ingest the Test Log into our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
+<p>That’s because we’ll Ingest the Test Log into our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
 <p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
-<p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)</p>
+<p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4.html#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)</p>
 <div class="example-wrap"><pre class="language-bash"><code># TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
 build_score{ 
@@ -354,7 +354,7 @@ build_score{
 <li>
 <p><strong>This Commit</strong> is NOT OK <em>(This Score = 0)</em></p>
 <p><a href="https://gist.github.com/lupyuen/e5f9d4d3e113b3ed3bc1726c7ebb9897#file-gistfile1-txt-L553-L578">(See the <strong>Complete Log</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/ci4#build-score">(More about <strong>Build Score</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html#build-score">(More about <strong>Build Score</strong>)</a></p>
 </li>
 </ul>
 <p>Which is transformed and transmitted by our <strong>Rust App</strong>, from GitLab Snippet to Prometheus: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/src/main.rs#L589-L703">ingest-nuttx-builds/main.rs</a></p>

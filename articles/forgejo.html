@@ -94,7 +94,7 @@
 <p>Can we <strong>Mirror our NuttX Repo</strong> outside GitHub? So NuttX Community becomes more inclusive?</p>
 </li>
 <li>
-<p>Also: We’re outgrowing our <a href="https://lupyuen.github.io/articles/ci3#rescue-plan"><strong>Budget Limits</strong></a> at GitHub, might need to move out</p>
+<p>Also: We’re outgrowing our <a href="https://lupyuen.github.io/articles/ci3.html#rescue-plan"><strong>Budget Limits</strong></a> at GitHub, might need to move out</p>
 <p><a href="https://infra.apache.org/project-repo-policy.html">(Though <strong>ASF Policy</strong> might not allow it)</a></p>
 </li>
 </ul>
@@ -591,7 +591,7 @@ sudo docker compose up</code></pre></div>
 </li>
 <li>
 <p><strong>GitHub Reusable Workflows</strong> are <a href="https://code.forgejo.org/forgejo/runner/issues/63"><strong>Not Supported</strong></a> in Forgejo.</p>
-<p>This means the <a href="https://lupyuen.github.io/articles/ci3#appendix-build-rules-for-ci-workflow"><strong>NuttX Build Rules (arch.yml)</strong></a> probably won’t run on Forgejo.</p>
+<p>This means the <a href="https://lupyuen.github.io/articles/ci3.html#appendix-build-rules-for-ci-workflow"><strong>NuttX Build Rules (arch.yml)</strong></a> probably won’t run on Forgejo.</p>
 <p>This appears in the Forgejo Server Log…</p>
 <div class="example-wrap"><pre class="language-text"><code>...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow &quot;arch.yml&quot;: unknown on type: map[string]interface {}{&quot;inputs&quot;:map[string]interface {}{&quot;boards&quot;:map[string]interface {}{&quot;description&quot;:&quot;List of All Builds: [arm-01, risc-v-01, xtensa-01, ...]&quot;, &quot;required&quot;:true, &quot;type&quot;:&quot;string&quot;}, &quot;os&quot;:map[string]interface {}{&quot;description&quot;:&quot;Operating System hosting the build: Linux, macOS or msys2&quot;, &quot;required&quot;:true, &quot;type&quot;:&quot;string&quot;}}, &quot;outputs&quot;:map[string]interface {}{&quot;selected_builds&quot;:map[string]interface {}{&quot;description&quot;:&quot;Selected Builds for the PR: [arm-01, risc-v-01, xtensa-01, ...]&quot;, &quot;value&quot;:&quot;${{ jobs.Select-Builds.outputs.selected_builds }}&quot;}, &quot;skip_all_builds&quot;:map[string]interface {}{&quot;description&quot;:&quot;Set to 1 if all builds should be skipped&quot;, &quot;value&quot;:&quot;${{ jobs.Select-Builds.outputs.skip_all_builds }}&quot;}}}
 ...actions/workflows.go:124:DetectWorkflows() [W] ignore invalid workflow &quot;build.yml&quot;: unknown on type: &lt;nil&gt;</code></pre></div></li>

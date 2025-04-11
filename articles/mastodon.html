@@ -92,7 +92,7 @@
 <li><a href="#volumes-and-networks" title="Volumes and Networks">18.7 Volumes and Networks</a><ul></ul></li>
 <li><a href="#simplest-server-for-mastodon" title="Simplest Server for Mastodon">18.8 Simplest Server for Mastodon</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>29 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/mastodon-register7.png" alt="(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)" /></p>
-<p>We’re out for an <a href="https://strava.app.link/DDm6627hzPb"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>: <em>Arm, RISC-V, Xtensa, x64, …</em></p>
+<p>We’re out for an <a href="https://strava.app.link/DDm6627hzPb"><strong>overnight hike</strong></a>, city to airport. Our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>Build Farm for Apache NuttX RTOS</strong></a> runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>: <em>Arm, RISC-V, Xtensa, x64, …</em></p>
 <p>Can we be 100% sure that <strong>NuttX is OK?</strong> Without getting spammed by <strong>alert emails</strong> all night? (Sorry we got zero budget for <em>“paging duty”</em> services)</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="NuttX Failed Builds appear as Mastodon Alerts" /></p>
 <p>In this article: <strong>Mastodon</strong> (pic above) becomes a fun new way to broadcast NuttX Alerts in real time. We shall…</p>
@@ -149,8 +149,8 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/mastodon-mobile3.png" alt="Notification in the Mastodon App links to NuttX Build History" /></p>
 <p><em>How did Mastodon get the Failed Builds?</em></p>
-<p>Thanks to the NuttX Community: We have a (self-hosted) <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> that continuously compiles All NuttX Targets. <em>(1,600 Targets!)</em></p>
-<p>Failed Builds are auto-escalated to our <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>. (Open-source Grafana + Prometheus)</p>
+<p>Thanks to the NuttX Community: We have a (self-hosted) <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Build Farm</strong></a> that continuously compiles All NuttX Targets. <em>(1,600 Targets!)</em></p>
+<p>Failed Builds are auto-escalated to our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>. (Open-source Grafana + Prometheus)</p>
 <p>In a while, we’ll explain how the Failed Builds are channeled from NuttX Dashboard into <strong>Mastodon Posts</strong>.</p>
 <p>First we talk about Mastodon…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow2.jpg" alt="Mastodon Server for Apache NuttX Continuous Integration" /></p>
@@ -439,10 +439,10 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 </li>
 <li>
 <p><em>Anything else we should monitor with Mastodon?</em></p>
-<p><a href="https://lupyuen.github.io/articles/ci3#move-the-merge-jobs"><strong>Sync-Build-Ingest</strong></a> is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.</p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html#move-the-merge-jobs"><strong>Sync-Build-Ingest</strong></a> is a Critical NuttX Job that needs to run non-stop, without fail. We should post a Mastodon Notification if something fails to run.</p>
 <p><a href="https://lupyuen.github.io/articles/mastodon#prometheus-to-mastodon"><strong>Watching the Watchmen:</strong></a> How to be sure that our Rust App runs forever, always pushing Mastodon Alerts?</p>
-<p><a href="https://lupyuen.github.io/articles/ci3#live-metric-for-full-time-runners"><strong>Cost of GitHub Runners</strong></a> shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)</p>
-<p><a href="https://lupyuen.github.io/articles/ci3#present-pains"><strong>Over-Running GitHub Jobs</strong></a> shall also be monitored, so our (beloved and respected) NuttX Devs won’t wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍</p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html#live-metric-for-full-time-runners"><strong>Cost of GitHub Runners</strong></a> shall be continuously monitored. We should push a Mastodon Alert if it exceeds our budget. (Before ASF comes after us)</p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html#present-pains"><strong>Over-Running GitHub Jobs</strong></a> shall also be monitored, so our (beloved and respected) NuttX Devs won’t wait forever for our CI Jobs to complete. Mastodon sounds mightly helpful for watching over Everything NuttX! 👍</p>
 </li>
 <li>
 <p><em>How is Mastodon working out so far?</em></p>
@@ -508,7 +508,7 @@ Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Hefty Ubuntu Xeon Workstation for NuttX Build Farm</em></a></p>
 </span>
 <h1 id="appendix-query-prometheus-for-nuttx-builds"><a class="doc-anchor" href="#appendix-query-prometheus-for-nuttx-builds">§</a>9 Appendix: Query Prometheus for NuttX Builds</h1>
-<p><a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Build Farm</strong></a> (pic above) runs non-stop all day, all night. Continuously compiling over <a href="https://lupyuen.github.io/articles/ci.html#one-thousand-build-targets"><strong>1,000 NuttX Targets</strong></a>.</p>
 <p>Outcomes of NuttX Builds are recorded inside our <strong>Prometheus Time-Series Database</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-flow3.jpg" alt="Prometheus to Mastodon" /></p>
 <p>To fetch the <strong>Failed NuttX Builds</strong> from Prometheus: We browse to Prometheus at <em>http://localhost:9090</em> and enter this <strong>Prometheus Query</strong>…</p>
@@ -530,7 +530,7 @@ build_score{
 </tbody></table>
 </div>
 <p><em>What’s returned by Prometheus?</em></p>
-<p>Plenty of fields, describing <a href="https://lupyuen.github.io/articles/ci4#prometheus-metrics"><strong>Every Failed Build</strong></a> in detail (pic above)…</p>
+<p>Plenty of fields, describing <a href="https://lupyuen.github.io/articles/ci4.html#prometheus-metrics"><strong>Every Failed Build</strong></a> in detail (pic above)…</p>
 <span style="font-size:90%">
 <div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong>timestamp</strong></td><td style="text-align: left">Timestamp of Build <em>(2024-12-06T06:14:54)</em></td></tr>
@@ -576,7 +576,7 @@ build_score{
     error: cast from pointer to integer of different size ...</code></pre></div>
 <p>In the next section: We’ll replicate this with Rust.</p>
 <p><em>How did we get the above Prometheus Query?</em></p>
-<p>We copied and pasted from our <a href="https://lupyuen.github.io/articles/ci4#grafana-dashboard"><strong>NuttX Dashboard in Grafana</strong></a>…</p>
+<p>We copied and pasted from our <a href="https://lupyuen.github.io/articles/ci4.html#grafana-dashboard"><strong>NuttX Dashboard in Grafana</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/mastodon-grafana.png" alt="Prometheus Query from our NuttX Dashboard in Grafana" /></p>
 <h1 id="appendix-post-nuttx-builds-to-mastodon"><a class="doc-anchor" href="#appendix-post-nuttx-builds-to-mastodon">§</a>10 Appendix: Post NuttX Builds to Mastodon</h1>
 <p>In the previous section: We fetched the <strong>Failed NuttX Builds</strong> from Prometheus. Now we post them to <strong>Mastodon</strong>: <a href="https://github.com/lupyuen/nuttx-prometheus-to-mastodon/blob/main/run.sh">run.sh</a></p>

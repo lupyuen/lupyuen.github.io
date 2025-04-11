@@ -85,7 +85,7 @@ Just to tell you once again <br>
 <a href="https://en.wikipedia.org/wiki/Bad_(Michael_Jackson_song)">Who’s bad?</a>”</em></p>
 </blockquote>
 </span>
-<p>2 Weeks Ago: We saw a <a href="https://lupyuen.github.io/articles/ci7"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> (causing the bug) falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
+<p>2 Weeks Ago: We saw a <a href="https://lupyuen.github.io/articles/ci7.html"><strong>Runtime Bug</strong></a> in <strong>Apache NuttX RTOS</strong>. We think that the <strong>Breaking Commit</strong> (causing the bug) falls somewhere between these <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>“Good” and “Bad” Commits</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center"></th><th style="text-align: center"></th></tr></thead><tbody>
 <tr><td style="text-align: center"><a href="https://github.com/apache/nuttx/issues/14808#issue-2661180633"><strong>Commit #1 is Good</strong></a> <br> <em>2024-11-14</em></td><td style="text-align: center">NuttX runs OK <br> <a href="https://github.com/apache/nuttx/tree/6554ed4d668e0c3982aaed8d8fb4b8ae81e5596c"><em>6554ed4</em></a></td></tr>
 <tr><td style="text-align: center"><em>[ many commits ]</em></td><td style="text-align: center"><em>…</em></td></tr>
@@ -94,7 +94,7 @@ Just to tell you once again <br>
 </div>
 <p>That’s <a href="https://docs.google.com/spreadsheets/d/1aNu1OensFc-QA1EfyTe6CcbfduzR3gdbbnZfRTca0fw/edit?gid=0#gid=0"><strong>468 Commits</strong></a>. Which one is the Breaking Commit?</p>
 <p><em>Maybe we Rewind Each Commit and test?</em></p>
-<p>With a script, we could rewind and retest 468 Commits for <a href="https://lupyuen.github.io/articles/ci6"><strong>Compile Errors</strong></a>. But it’s probably too slow for <strong>Runtime Errors</strong>. <em>(Rewind + Recompile + Rerun)</em></p>
+<p>With a script, we could rewind and retest 468 Commits for <a href="https://lupyuen.github.io/articles/ci6.html"><strong>Compile Errors</strong></a>. But it’s probably too slow for <strong>Runtime Errors</strong>. <em>(Rewind + Recompile + Rerun)</em></p>
 <p>We have a quicker way: <strong>Git Bisect</strong>! (Pic above)</p>
 <h1 id="automated-bisect"><a class="doc-anchor" href="#automated-bisect">§</a>1 Automated Bisect</h1>
 <p><em>What’s this Git Bisect?</em></p>
@@ -328,7 +328,7 @@ Configuration/Tool: rv-virt/citest
 test_ostest PASSED
 exit 0</code></pre></div></li>
 <li>
-<p>Beware: Every Bisect will be <strong>Super Slow</strong>! Whenever something fails: CI Test will <a href="https://lupyuen.github.io/articles/ci7#dump-the-ci-log-file"><strong>hang the CI Job</strong></a>.</p>
+<p>Beware: Every Bisect will be <strong>Super Slow</strong>! Whenever something fails: CI Test will <a href="https://lupyuen.github.io/articles/ci7.html#dump-the-ci-log-file"><strong>hang the CI Job</strong></a>.</p>
 <p>(Our script will kill CI Test after 1 hour)</p>
 </li>
 <li>

@@ -214,10 +214,10 @@ Linux:
 <p><a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners"><strong>Follow these Instructions</strong></a> from GitHub</p>
 </li>
 <li>
-<p>Apply the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-ubuntu-x64"><strong>Fixes for Linux Runners</strong></a></p>
+<p>Apply the <a href="https://lupyuen.github.io/articles/ci.html#appendix-fixes-for-ubuntu-x64"><strong>Fixes for Linux Runners</strong></a></p>
 </li>
 <li>
-<p>And the <a href="https://lupyuen.github.io/articles/ci#appendix-fixes-for-macos-arm64"><strong>Fixes for macOS Runners</strong></a></p>
+<p>And the <a href="https://lupyuen.github.io/articles/ci.html#appendix-fixes-for-macos-arm64"><strong>Fixes for macOS Runners</strong></a></p>
 </li>
 </ul>
 <p>They will run like this…</p>
@@ -306,10 +306,10 @@ jobs:
 <p>Unfortunately not, we need some more fixes…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci#appendix-nuttx-ci-for-macos"><strong>“NuttX CI for macOS”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci.html#appendix-nuttx-ci-for-macos"><strong>“NuttX CI for macOS”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci#appendix-documentation-build-for-nuttx"><strong>“Documentation Build for NuttX”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci.html#appendix-documentation-build-for-nuttx"><strong>“Documentation Build for NuttX”</strong></a></p>
 </li>
 </ul>
 <h1 id="utm-emulator-for-macos-arm64"><a class="doc-anchor" href="#utm-emulator-for-macos-arm64">§</a>5 UTM Emulator for macOS Arm64</h1>
@@ -411,22 +411,22 @@ Current runner version: &#39;2.319.1&#39;
 <p>Check out the updates for <strong>NuttX Continuous Integration</strong> in these articles…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci2"><strong>“Your very own Build Farm for Apache NuttX RTOS”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci2.html"><strong>“Your very own Build Farm for Apache NuttX RTOS”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci3"><strong>“Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci3.html"><strong>“Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci4"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci5"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci5.html"><strong>“macOS Build Farm for Apache NuttX RTOS (Apple Silicon)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci6"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci6.html"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci7"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci7.html"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mastodon"><strong>“(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)”</strong></a></p>
@@ -452,7 +452,7 @@ Current runner version: &#39;2.319.1&#39;
 <p><img src="https://lupyuen.github.io/images/nuttx-ci3.png" alt="Phase 1 of CI Upgrade: Limit to 15 GitHub Runners" /></p>
 <h1 id="appendix-phase-1-of-ci-upgrade"><a class="doc-anchor" href="#appendix-phase-1-of-ci-upgrade">§</a>7 Appendix: Phase 1 of CI Upgrade</h1>
 <p>We’re modifying NuttX CI (Continuous Integration) and GitHub Actions, to comply with ASF Policy. Unfortunately, these changes will extend the Build Duration for a NuttX Pull Request by roughly 15 mins, from 2 hours to 2.25 hours.</p>
-<p>Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), <a href="https://lupyuen.github.io/articles/ci"><strong>executing them in parallel</strong></a>.</p>
+<p>Right now, every NuttX Pull Request will trigger 24 Concurrent Jobs (GitHub Runners), <a href="https://lupyuen.github.io/articles/ci.html"><strong>executing them in parallel</strong></a>.</p>
 <p>According to <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Policy</strong></a>: We should run at most 15 Concurrent Jobs.</p>
 <p>Thus we’ll cut down the Concurrent Jobs from 24 down to 15 (pic above). That’s 12 Linux Jobs, 2 macOS, 1 Windows. (Each job takes 30 mins to 2 hours)</p>
 <p>(1) Right now our “Linux &gt; Strategy” is a flat list of 20 Linux Jobs, all executed in parallel…</p>

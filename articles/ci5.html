@@ -303,7 +303,7 @@ pushd nuttx-patched/tools/ci
 <p><em>What’s this macOS Build Farm?</em></p>
 <p>Earlier we compiled NuttX for One Single Target. Now we scale up and <strong>Compile All NuttX Targets</strong>… Non-Stop 24 by 7!</p>
 <p>This becomes our Community-Hosted <strong>macOS Build Farm</strong> for NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/ci4">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html">(Why? So we can <strong>Catch Build Errors</strong> without depending on GitHub Actions)</a></p>
 <p>If Your Mac has Spare CPU Cycles: Please join our <strong>macOS Build Farm</strong>! 🙏 Like so: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run.sh">run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run the NuttX Build Farm for macOS.
 ## Set the GitHub Token: (Should have Gist Permission)
@@ -324,7 +324,7 @@ cd nuttx-build-farm
 ## Run One Single NuttX CI Job on macOS
 ## ./run-job-macos.sh risc-v-01</code></pre></div>
 <p>And please tell me your <strong>Gist User ID</strong>. (Also works for <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L1-L20"><strong>GitLab Snippets</strong></a>)</p>
-<p>The Build Outcomes will appear in <a href="https://lupyuen.github.io/articles/ci4"><strong>NuttX Dashboard</strong></a>…</p>
+<p>The Build Outcomes will appear in <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ci5-dashboard.png" alt="macOS Build Farm for Apache NuttX RTOS (Apple Silicon)" /></p>
 <p><em>How does it work?</em></p>
 <p>macOS Build Farm shall run (nearly) <strong>All NuttX CI Jobs</strong>, forever and ever: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L85-L139">run-ci-macos.sh</a></p>
@@ -363,13 +363,13 @@ function run_job {
     $script_dir/run-job-macos.sh $job
   popd
 }</code></pre></div><span style="font-size:90%">
-<p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets">(<strong>Some Target Groups</strong> won’t compile)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci5.html#except-these-targets">(<strong>Some Target Groups</strong> won’t compile)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L37-L55">(<strong>clean_log</strong> removes Control Chars)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L55-L69">(<strong>find_messages</strong> searches for Errors)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-ci-macos.sh#L69-L81">(<strong>upload_log</strong> uploads to GitLab Snippet or GitHub Gist)</a></p>
 </span>
 <p><em>What’s inside run-job-macos.sh?</em></p>
-<p>It will run one single <strong>NuttX CI Job</strong>. Similar to the <a href="https://lupyuen.github.io/articles/ci5#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
+<p>It will run one single <strong>NuttX CI Job</strong>. Similar to the <a href="https://lupyuen.github.io/articles/ci5.html#patch-the-ci-script"><strong>NuttX Build Script</strong></a> we saw earlier: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/run-job-macos.sh">run-job-macos.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Run one single NuttX CI Job on macOS (e.g. risc-v-01)
 ## Checkout the NuttX Repo and NuttX Apps
 tmp_dir=/tmp/run-job-macos
@@ -418,7 +418,7 @@ popd</code></pre></div>
 <p>Yeah Mac Mini will get (nearly) <strong>Boiling Hot</strong> (90°C) when running the NuttX Build Farm! All CPU Cores will be <strong>100% Maxed Out</strong>. (M2 Pro, pic above)</p>
 <p>I recommend <a href="https://www.tunabellysoftware.com/tgpro/"><strong>TG Pro</strong></a> for Fan Control. Set the <strong>Fan Speed to Auto-Max</strong>. (Pic below)</p>
 <p>Which will trigger the fans at <strong>70°C</strong> (red bar below), keeping things cooler. (Compare the green bars with above)</p>
-<p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please test the <a href="https://lupyuen.github.io/articles/ci5#macos-build-farm"><strong>NuttX Build Farm</strong></a>! 🙏</p>
+<p>Do you have a <strong>Mac Pro</strong> or <strong>M4 Pro</strong>? Please test the <a href="https://lupyuen.github.io/articles/ci5.html#macos-build-farm"><strong>NuttX Build Farm</strong></a>! 🙏</p>
 <p>(<a href="https://github.com/devMEremenko/XcodeBenchmark"><strong>Xcode Benchmark</strong></a> suggests Your Mac might be twice as fast as my M2 Pro)</p>
 <p><img src="https://lupyuen.github.io/images/ci5-fan.png" alt="TG Pro will trigger the fans at 70 deg C" /></p>
 <p><em>Is macOS Arm64 faster than Intel PC? For compiling NuttX Arm32?</em></p>
@@ -433,13 +433,13 @@ popd</code></pre></div>
 <p>But as NuttX Maintainer: I find it tough to reproduce <strong>All Possible NuttX Builds</strong> on macOS…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci5#except-these-targets"><strong>Some NuttX Targets</strong></a> won’t compile for macOS</p>
+<p><a href="https://lupyuen.github.io/articles/ci5.html#except-these-targets"><strong>Some NuttX Targets</strong></a> won’t compile for macOS</p>
 </li>
 <li>
 <p>We have <strong>Limited Skills</strong> (and machines) for maintaining NuttX CI on macOS</p>
 </li>
 <li>
-<p>My Favourite Setup: <a href="https://youtu.be/gPNURDLBu70"><strong>VSCode on macOS</strong></a> controlling a <a href="https://qoto.org/@lupyuen/113517788288458811"><strong>Refurbished Xeon Workstation</strong></a> for <a href="https://lupyuen.github.io/articles/ci2#build-nuttx-for-one-target-group"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
+<p>My Favourite Setup: <a href="https://youtu.be/gPNURDLBu70"><strong>VSCode on macOS</strong></a> controlling a <a href="https://qoto.org/@lupyuen/113517788288458811"><strong>Refurbished Xeon Workstation</strong></a> for <a href="https://lupyuen.github.io/articles/ci2.html#build-nuttx-for-one-target-group"><strong>Ubuntu Docker Builds</strong></a> (which will faithfully compile everything)</p>
 </li>
 <li>
 <p>Shall we use <a href="https://discord.com/channels/716091708336504884/1280436444141453313"><strong>Docker for macOS Arm64</strong></a>?</p>
@@ -463,12 +463,12 @@ clang: error: invalid argument &#39;medium&#39; to -mcmodel=</code></pre></div><
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>8 What’s Next</h1>
 <p>Next Article: We chat about a new tool to <strong>“Rewind The Build”</strong> when something breaks the Daily Build…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ci6"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ci6.html"><strong>“Rewinding a Build for Apache NuttX RTOS (Docker)”</strong></a></li>
 </ul>
 <p>Then we study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>.</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/ci7"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/ci7.html"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mastodon"><strong>“(Experimental) Mastodon Server for Apache NuttX Continuous Integration (macOS Rancher Desktop)”</strong></a></p>

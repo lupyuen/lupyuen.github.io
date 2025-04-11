@@ -73,9 +73,9 @@
 <li><a href="#rewind-one-commit" title="Rewind One Commit">6 Rewind One Commit</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Dec 2024</em></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
-<p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="https://lupyuen.github.io/articles/ci4"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
+<p><strong>2 Dec 2024:</strong> Christmas ain’t here yet, but our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>Dashboard for Apache NuttX RTOS</strong></a> is already <strong>Decked in Red</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ci6-dashboard2.png" alt="Dashboard for Apache NuttX RTOS is already Decked in Red" /></p>
-<p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="https://lupyuen.github.io/articles/ci2"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
+<p>Which says that NuttX Build is <strong>failing for ESP32-C6</strong>, as reported by <a href="https://lupyuen.github.io/articles/ci2.html"><strong>NuttX Build Farm</strong></a>. (More about CI Test next article)</p>
 <span style="font-size:90%">
 <blockquote>
 <p><a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L217"><em>“riscv_exit.c: error: ‘tcb’ undeclared: <br> g_running_tasks[this_cpu()] = tcb”</em></a></p>
@@ -273,7 +273,7 @@ Build Failed for Next Commit:
 <p>Which means: Commit 40023987 is our <a href="https://gist.github.com/lupyuen/588086e525e91db6ab20fdcfe818af5a#file-ci-unknown-log-L1-L7"><strong>Breaking Commit!</strong></a></p>
 </li>
 <li>
-<p>See the <em>“sudo docker”</em> entries above? They were helpfully inserted by our <a href="https://lupyuen.github.io/articles/ci6#rewind-build-script"><strong>Rewind Build Script</strong></a></p>
+<p>See the <em>“sudo docker”</em> entries above? They were helpfully inserted by our <a href="https://lupyuen.github.io/articles/ci6.html#rewind-build-script"><strong>Rewind Build Script</strong></a></p>
 </li>
 <li>
 <p>Much neater than the <a href="https://gist.github.com/lupyuen/0fe795089736c0ab33be2c965d0f4cf3"><strong>Rewind Build Log</strong></a>!</p>
@@ -373,7 +373,7 @@ function run_job {
 </span>
 <p><img src="https://lupyuen.github.io/images/ci6-title4.jpg" alt="Rewind Build Script" /></p>
 <h1 id="rewind-one-commit"><a class="doc-anchor" href="#rewind-one-commit">§</a>6 Rewind One Commit</h1>
-<p>Earlier we saw our <a href="https://lupyuen.github.io/articles/ci6#rewind-build-script"><strong>Rewind Build Script</strong></a> compiling the Latest 20 Commits. (Pic above)</p>
+<p>Earlier we saw our <a href="https://lupyuen.github.io/articles/ci6.html#rewind-build-script"><strong>Rewind Build Script</strong></a> compiling the Latest 20 Commits. (Pic above)</p>
 <p>This is how we compile <strong>One Single Commit</strong> for NuttX: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L114-L146">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>target=$1      ## NuttX Target, like &quot;ox64:nsh&quot;
 nuttx_hash=$2  ## Commit Hash of NuttX Repo, like &quot;7f84a64109f94787d92c2f44465e43fde6f3d28f&quot;
@@ -421,7 +421,7 @@ function build_nuttx {
   res=$?
 }</code></pre></div>
 <p>Finally we see the whole picture, closing the loop with NuttX Repo, NuttX Build Farm, NuttX Dashboard and NuttX Build History!</p>
-<p><a href="https://lupyuen.github.io/articles/ci4#ingest-the-build-logs">(How we <strong>Ingest Build Logs</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ci4.html#ingest-the-build-logs">(How we <strong>Ingest Build Logs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/ci6-title.jpg" alt="“Rewinding a Build” for Apache NuttX RTOS (Docker)" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p><em>Phew that was quick for finding the Breaking Commit?</em></p>
@@ -443,7 +443,7 @@ function build_nuttx {
 <p><em>Happy Holidays! Will we have more stories about NuttX CI?</em></p>
 <p>Next Article: We study the internals of a <a href="https://github.com/apache/nuttx/issues/14808"><strong>Mystifying Bug</strong></a> that concerns <strong>PyTest, QEMU RISC-V and <code>expect</code></strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ci7"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/ci7.html"><strong>“Failing a Continuous Integration Test for Apache NuttX RTOS (QEMU RISC-V)”</strong></a></li>
 </ul>
 <p>Then we’ll chat about an <strong>Experimental Mastodon Server</strong> for NuttX Continuous Integration.</p>
 <ul>
