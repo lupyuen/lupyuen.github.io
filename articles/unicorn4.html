@@ -77,6 +77,7 @@
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
+<p><a href="TODO"><strong>Unicorn Emulator</strong></a></p>
 <ul>
 <li>
 <p>Unicorn doesn’t seem to emulate Arm64 SysCalls?</p>
@@ -182,10 +183,10 @@ cargo run
 
 ## To see the Emulated UART Output:
 cargo run | grep &quot;uart output&quot;</code></pre></div>
-<p>We study the code…</p>
+<p>We study the code inside…</p>
 <h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <p><em>What’s inside the Avaota-A1 Emulator?</em></p>
-<p>Inside our Avaota-A1 Emulator: This is how we create the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
+<p>Inside our Avaota SBC Emulator: We begin by creating the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Memory Space for NuttX Kernel
 </span><span class="kw">const </span>KERNEL_SIZE: usize = <span class="number">0x1000_0000</span>;
@@ -575,7 +576,7 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
 <p>Which will execute the <strong>NuttX Exception Handler</strong> for Arm64 SysCall</p>
 </li>
 </ol>
-<p><em>What’s inside the Arm64 Vector Table?</em></p>
+<p><em>Where exactly in the Arm64 Vector Table?</em></p>
 <p><strong>VBAR_EL1</strong> points to this Vector Table: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145">arm64_vector_table.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Four types of exceptions:
  * - synchronous: aborts from MMU, SP/CP alignment checking, unallocated
@@ -613,7 +614,8 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
  * |          + 0x700 | FIQ / vFIQ       |                         |
  * |          + 0x780 | SError / vSError |                         |
  * +------------------+------------------+-------------------------+</code></pre></div>
-<p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to <strong>VBAR_EL1 + 0x200</strong>. Here’s how…</p>
+<p>We are doing <strong>SVC SysCall</strong> <em>(Synchronous Exception)</em> at Exception Level 1…</p>
+<p>Which means Unicorn Emulator should jump to <strong>VBAR_EL1 + 0x200</strong>. Here’s how…</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
 <p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="TODO">main.rs</a></p>
 
@@ -652,7 +654,7 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
         emu.reg_write(RegisterARM64::PC, svc).unwrap();
     }
 }</code></pre></div>
-<p>And it works: NuttX on Unicorn now boots (almost) to <strong>NSH Shell</strong>. Yay!</p>
+<p>And it works: NuttX on Unicorn boots <em>(almost)</em> to <strong>NSH Shell</strong>. Yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
 - Ready to Boot Primary CPU
 - Boot from EL1
