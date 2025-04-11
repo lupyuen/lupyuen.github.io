@@ -101,23 +101,20 @@
 <ul>
 <li>TODO: Article</li>
 </ul>
-<p>To boot <strong>NuttX on Unicorn</strong>: We recompiled NuttX with <a href="https://github.com/lupyuen2/wip-nuttx/pull/106"><strong>Four Tiny Tweaks</strong></a>…</p>
+<p>To boot <strong>NuttX on Unicorn</strong>: We recompile NuttX with <a href="https://github.com/lupyuen2/wip-nuttx/pull/106"><strong>Four Tiny Tweaks</strong></a>…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0"><strong>Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits</strong></a></p>
-<p>From the <a href="TODO"><strong>Previous Article</strong></a>: Unicorn Emulator requires <strong>TCR_TG1_4K</strong> (TODO what?). And the <strong>Physical / Virtual Address Size</strong> should be 32 Bits.</p>
+<p>From the <a href="TODO"><strong>Previous Article</strong></a>: Unicorn Emulator requires <strong>TCR_TG1_4K</strong>. And the <strong>Physical / Virtual Address Size</strong> should be 32 Bits.</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88"><strong>Disable PSCI</strong></a></p>
-<p>We don’t have the <strong>PSCI Driver</strong> in Unicorn, so we disable this.</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88"><strong>Disable PSCI</strong></a>: We don’t emulate the <strong>PSCI Driver</strong> in Unicorn, so we disable this</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/878e78eb40f334e6e128595dbb27ae08aed1e969"><strong>Enable Scheduler Logging</strong></a></p>
-<p>So we can see NuttX booting.</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/878e78eb40f334e6e128595dbb27ae08aed1e969"><strong>Enable Scheduler Logging</strong></a>: So we can see NuttX booting</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d"><strong>Enable SysCall Logging</strong></a></p>
-<p>So we can verify that NuttX SysCalls are OK.</p>
+<p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d"><strong>Enable SysCall Logging</strong></a>: To verify that NuttX SysCalls are OK</p>
 </li>
 </ol>
 <p>Here are the steps to compile <strong>NuttX for Unicorn</strong>…</p>
@@ -174,7 +171,7 @@ cp nuttx nuttx.S nuttx.config nuttx.hash \
   $HOME/nuttx-arm64-emulator/nuttx
 cp nuttx-Image \
   $HOME/nuttx-arm64-emulator/nuttx/Image</code></pre></div>
-<p>To boot NuttX in Unicorn Emulator…</p>
+<p>To boot NuttX in <strong>Unicorn Emulator</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Boot NuttX in the Unicorn Emulator
 git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
 cd nuttx-arm64-emulator
@@ -182,7 +179,7 @@ cargo run
 
 ## To see the Emulated UART Output:
 cargo run | grep &quot;uart output&quot;</code></pre></div>
-<p>TODO: Log</p>
+<p>We study the code…</p>
 <h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <p><em>What’s inside the Avaota-A1 Emulator?</em></p>
 <p>Inside our Avaota-A1 Emulator: This is how we create the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
@@ -204,7 +201,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
     emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
       .unwrap();</code></pre></div>
-<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for GIC (Interrupt Controller), UART and other Peripherals: <a href="TODO">main.rs</a></p>
+<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for UART and other Peripherals: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
     </span>emu.mem_map(
@@ -265,9 +262,6 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
       .unwrap();
 
     <span class="comment">// Omitted: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
-<p><a href="TODO">(<strong>hook_block</strong> will draw the Call Graph)</a></p>
-<p><a href="TODO">(<strong>hook_memory</strong> will be used for UART Emulation)</a></p>
-<p><a href="TODO">(<strong>hook_interrupt</strong> shall be explained)</a></p>
 <p>Finally we start the <strong>Unicorn Emulator</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Emulate Arm64 Machine Code
@@ -282,7 +276,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span><span class="macro">println!</span>(<span class="string">"err={:?}"</span>, err);
     <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
-<p>Thanks to Unicorn: We have a Barebones Emulator for Avaota-A1! Now we fill in the hooks…</p>
+<p>That’s it for our Barebones Emulator! We fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about I/O? How to emulate in Unicorn?</em></p>
 <p>Let’s emulate the Bare Minimum for I/O: Printing output to the <strong>16550 UART</strong>…</p>
@@ -309,7 +303,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
         UART0_BASE_ADDRESS + <span class="number">0x14</span>,  <span class="comment">// UART Register Address
         </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]  <span class="comment">// UART Register Value
     </span>).unwrap();</code></pre></div>
-<p>And this will intercept all writes to the <strong>UART Transmit Register</strong>: <a href="TODO">main.rs</a></p>
+<p>Our Memory Hook will intercept all writes to the <strong>UART Transmit Register</strong> and print them: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Memory Access.
 /// Called once for every Arm64 Memory Access.
@@ -336,7 +330,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
     </span><span class="bool-val">true
 </span>}</code></pre></div>
-<p>This means our Barebones Emulator will print the UART Output and show the <strong>NuttX Boot Log</strong>…</p>
+<p>When we run this: Our Barebones Emulator will print the UART Output and show the <strong>NuttX Boot Log</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## To see the Emulated UART Output:
 $ cargo run | grep &quot;uart output&quot;
 TODO</code></pre></div>
