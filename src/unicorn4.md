@@ -20,8 +20,6 @@ TODO
 
 [Qilin](https://en.wikipedia.org/wiki/Qilin)
 
-Trade Tariffs
-
 Emulator -> Driver
 
 Or driver -> emulator?
@@ -29,6 +27,8 @@ Or driver -> emulator?
 Maybe Emulator + Device Farm
 
 _Why are we doing this?_
+
+- The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC for now.
 
 [“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
 
