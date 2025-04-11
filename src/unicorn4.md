@@ -749,10 +749,12 @@ ESR_EL1=Ok(1409286144)
 According to Arm64 Disassembly of NSH Shell, __SysCall Command 9__ happens inside the `gettid` function: [nuttx-init.S](TODO)
 
 ```c
+// NSH Shell calls gettid() to fetch Thread ID.
+// Exception Level 0 (NuttX App) calls Exception Level 1 (NuttX Kernel).
 gettid():
   2ef4:	d2800120 	mov	x0,  #0x9  // SysCall Command 9 (Register X0)
   2ef8:	f81f0ffe 	str	x30, [sp, #-16]!
-  2efc:	d4000001 	svc	#0x0      // Execute the SysCall
+  2efc:	d4000001 	svc	#0x0       // Execute the SysCall
   2f00:	f84107fe 	ldr	x30, [sp], #16
   2f04:	d65f03c0 	ret
 ```
