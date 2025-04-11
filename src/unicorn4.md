@@ -184,13 +184,13 @@ Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memo
     }
 ```
 
-Unicorn lets us hook into its internals, for special processing. We add the Unicorn Hooks for...
+Unicorn lets us hook into its internals, for emulating nifty things. We add the __Unicorn Hooks__ for...
 
-- __Block Hook:__ To draw the Call Graph
+- __Block Hook:__ For each block of Arm64 Code, we render the __Call Graph__
 
-- __Memory Hook:__ To emulate the UART Hardware
+- __Memory Hook:__ To emulate the __UART Hardware__, we intercept Memory Reads and Writes
 
-- __Interrupt Hook:__ To emulate Arm64 SysCalls
+- __Interrupt Hook:__ We emulate __Arm64 SysCalls__ as Unicorn Interrupts
 
 Like so: [main.rs](TODO)
 
@@ -231,7 +231,7 @@ Finally we start the __Unicorn Emulator__...
 }
 ```
 
-That's it for our Barebones Emulator! We fill in the hooks...
+That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
 # Emulate 16550 UART
 
@@ -378,7 +378,7 @@ Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 Sys
 
 Before hooking the interrupt, we track down the origin of the SysCall...
 
-# NuttX SysCall
+# SysCall for Context Switch
 
 _Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
 
