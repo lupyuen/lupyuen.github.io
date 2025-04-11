@@ -303,7 +303,7 @@ TODO
 
 # NuttX Halts at SysCall
 
-_We have a Barebones Emulator. What happens when we run it?_
+_Out Barebones Emulator: What happens when we run it?_
 
 We run the [__Barebones Emulator__](TODO) from earlier. NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
 
@@ -382,7 +382,7 @@ Before hooking the interrupt, we track down the origin of the SysCall...
 
 _Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
 
-Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The value is 2...
+Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The Parameter Value is __`2`__...
 
 ```c
 /Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
