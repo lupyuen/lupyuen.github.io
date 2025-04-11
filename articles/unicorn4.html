@@ -304,9 +304,9 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     // TODO https://lupyuen.github.io/articles/serial#wait-to-transmit
     </span>emu.mem_write(
         UART0_BASE_ADDRESS + <span class="number">0x14</span>,  <span class="comment">// UART Register Address
-        </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]  <span class="comment">// UART Register Value
+        </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]                <span class="comment">// UART Register Value
     </span>).unwrap();</code></pre></div>
-<p>Our Memory Hook will intercept all writes to the <strong>UART Transmit Register</strong> and print them: <a href="TODO">main.rs</a></p>
+<p>Our <strong>Unicorn Memory Hook</strong> will intercept all writes to the <strong>UART Transmit Register</strong>, and print them: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Memory Access.
 /// Called once for every Arm64 Memory Access.
@@ -323,8 +323,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     // https://lupyuen.github.io/articles/serial#transmit-uart
     </span><span class="kw">if </span>address == UART0_BASE_ADDRESS {
         <span class="macro">println!</span>(<span class="string">"uart output: {:?}"</span>, value <span class="kw">as </span>u8 <span class="kw">as </span>char);
-        <span class="comment">// print!("{}", value as u8 as char);
-    </span>}
+    }
 
     <span class="comment">// Always return true, value is unused by caller
     // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
@@ -337,8 +336,8 @@ TODO</code></pre></div>
 <p>We’re ready to boot NuttX on Unicorn!</p>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
-<p><em>Out Barebones Emulator: What happens when we run it?</em></p>
-<p>We run the <a href="TODO"><strong>Barebones Emulator</strong></a> from earlier. NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
+<p><em>Our Barebones Emulator: What happens when we run it?</em></p>
+<p>We boot NuttX on our <a href="TODO"><strong>Barebones Emulator</strong></a>. NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_block:  address=0x40806d4c, size=04, sched_unlock, sched/sched/sched_unlock.c:90:18
@@ -354,7 +353,7 @@ AAAAAAAAAAAA
 err=Err(EXCEPTION)
 PC=0x40806d60</code></pre></div>
 <p><em>What’s at 0x4080_6D60?</em></p>
-<p>We look up the <a href="TODO"><strong>NuttX Kernel Disassembly</strong></a>. We see that <em>0x4080_6D60</em> points to an <strong>Arm64 SysCall <code>SVC</code> <code>0</code></strong>…</p>
+<p>We look up the <a href="TODO"><strong>Arm64 Disassembly</strong></a> for for NuttX Kernel. We see that <em>0x4080_6D60</em> points to <strong>Arm64 SysCall <code>SVC</code> <code>0</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>sys_call0():
 /Users/luppy/avaota/nuttx/include/arch/syscall.h:152
 /* SVC with SYS_ call number and no parameters */
@@ -366,8 +365,9 @@ static inline uintptr_t sys_call0(unsigned int nbr)
   __asm__ __volatile__
     40806d5c:	d4000001 	svc	#0x0
 // 0x40806d60 is the next instruction to be executed on return from SysCall</code></pre></div>
+<p>Somehow NuttX Kernel is making an Arm64 SysCall, and failing.</p>
 <p><em>Isn’t Unicorn supposed to emulate Arm64 SysCalls?</em></p>
-<p>We step through Unicorn with the excellent <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic above). Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
+<p>To find out: We step through Unicorn with <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic above). Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
   // Unicorn: call registered interrupt callbacks
@@ -391,11 +391,11 @@ static inline uintptr_t sys_call0(unsigned int nbr)
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/.vscode/bookmarks.json">(Set these <strong>Debug Breakpoints</strong>)</a></p>
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
-<p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall, via our Interrupt Callback.</p>
+<p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and emulate the Arm64 SysCall, inside our Interrupt Callback.</p>
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
 <h1 id="syscall-for-context-switch"><a class="doc-anchor" href="#syscall-for-context-switch">§</a>5 SysCall for Context Switch</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
-<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>…</p>
+<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>: TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
                 {
                   up_switch_context(this_task(), rtcb);
@@ -411,7 +411,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 /Users/luppy/avaota/nuttx/include/arch/syscall.h:154
   __asm__ __volatile__
     4080723c:	d4000001 	svc	#0x0</code></pre></div>
-<p>What’s this NuttX SysCall with Parameter 2? It’s for <strong>Switching The Context</strong> between NuttX Tasks…</p>
+<p>What’s the NuttX SysCall with Parameter 2? It’s for <strong>Switching The Context</strong> between NuttX Tasks…</p>
 <p>https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83</p>
 <div class="example-wrap"><pre class="language-c"><code>/* SYS call 2:
  * void arm64_switchcontext(void **saveregs, void *restoreregs);
@@ -436,7 +436,21 @@ static inline uintptr_t sys_call0(unsigned int nbr)
         addrenv_switch(tcb);
 #endif
         break;</code></pre></div>
-<p>Ah now we see the light. NuttX makes a SysCall during startup, to trigger the <strong>Very First Context Switch</strong>. Which will start the other NuttX Tasks and boot successfully.</p>
+<p>Ah we see the light…</p>
+<ol>
+<li>
+<p>NuttX Kernel makes an <strong>Arm64 SysCall</strong> during Startup</p>
+</li>
+<li>
+<p>To trigger the <strong>Very First Context Switch</strong></p>
+</li>
+<li>
+<p>Which will start the <strong>NuttX Tasks</strong> and boot successfully</p>
+</li>
+<li>
+<p>This means we must emulate the <strong>Arm64 SysCall</strong>!</p>
+</li>
+</ol>
 <p>FYI <strong>NuttX SysCalls</strong> are defined here…</p>
 <ul>
 <li>
@@ -453,7 +467,7 @@ SYSCALL_LOOKUP(sched_lock,                 0)
 SYSCALL_LOOKUP(sched_lockcount,            0)
 SYSCALL_LOOKUP(sched_unlock,               0)
 SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
-<p><em>To Boot NuttX: We need to Emulate the SysCall. How?</em></p>
+<p><em>To Boot NuttX: We need to Emulate the Arm64 SysCall. How?</em></p>
 <p>We saw earlier that Unicorn expects us to…</p>
 <ol>
 <li>
@@ -499,7 +513,7 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the
     <span class="comment">// Upcoming: Handle the SysCall
     </span>...
 }</code></pre></div>
-<p>With this Barebones Interrupt Hook: Now Unicorn calls our Interrupt Handler…</p>
+<p>Our Interrupt Hook is super barebones, barely sufficient for making it past the Arm64 SysCall…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_block:  address=0x40806d50, size=08, sched_unlock, sched/sched/sched_unlock.c:92:19
@@ -549,17 +563,17 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
 <p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the Arm64 Vector Table for <a href="TODO"><strong>Exception Level 1</strong></a></p>
 </li>
 <li>
-<p>We read VBAR_EL1 to fetch the Arm64 Vector Table</p>
+<p>We read <strong>VBAR_EL1</strong> to fetch the <strong>Arm64 Vector Table</strong></p>
 </li>
 <li>
-<p>Then we jump to the proper place in the Vector Table</p>
+<p>Then we <strong>jump into</strong> the Vector Table, at the right spot</p>
 </li>
 <li>
-<p>Which will execute the Exception Handler for Arm64 SysCall</p>
+<p>Which will execute the <strong>NuttX Exception Handler</strong> for Arm64 SysCall</p>
 </li>
 </ol>
 <p><em>What’s inside the Arm64 Vector Table?</em></p>
-<p>VBAR_EL1 points to this: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145">arm64_vector_table.S</a></p>
+<p><strong>VBAR_EL1</strong> points to this Vector Table: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145">arm64_vector_table.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Four types of exceptions:
  * - synchronous: aborts from MMU, SP/CP alignment checking, unallocated
  *   instructions, SVCs/SMCs/HVCs, ...)
@@ -596,9 +610,9 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
  * |          + 0x700 | FIQ / vFIQ       |                         |
  * |          + 0x780 | SError / vSError |                         |
  * +------------------+------------------+-------------------------+</code></pre></div>
-<p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.</p>
+<p>We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to <strong>VBAR_EL1 + 0x200</strong>. Here’s how…</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
-<p>Inside our Interrupt Hook: This is how we jump to VBAR_EL1 + 0x200: <a href="TODO">main.rs</a></p>
+<p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
@@ -615,14 +629,13 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
     <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
     <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
 
-    <span class="comment">// TODO
-    // We don't handle SysCalls from NuttX Apps yet
+    <span class="comment">// SysCall from NuttX Apps: We don't handle it yet
     </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{
         <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>);
         finish();
     }
 
-    <span class="comment">// Handle the SysCall
+    <span class="comment">// SysCall from NuttX Kernel: Handle it here
     </span><span class="kw">if </span>intno == <span class="number">2 </span>{
         <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
         // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
@@ -634,13 +647,9 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
         <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
         emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
         emu.reg_write(RegisterARM64::PC, svc).unwrap();
-    } <span class="kw">else </span>{
-        sleep(time::Duration::from_secs(<span class="number">10</span>));
     }
 }</code></pre></div>
-<p>And it works!</p>
-<p>TODO</p>
-<p>NuttX on Unicorn now boots to NSH Shell. Yay!</p>
+<p>And it works: NuttX on Unicorn now boots (almost) to <strong>NSH Shell</strong>. Yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
 - Ready to Boot Primary CPU
 - Boot from EL1
@@ -756,7 +765,7 @@ TODO: Handle SysCall from NuttX Apps</code></pre></div>
 <p>But NSH Shell won’t start correctly, here’s why…</p>
 <p>TODO: Why ESR_EL1?</p>
 <h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
-<p><em>What is SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
+<p><em>What’s SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
 hook_interrupt: intno=2
@@ -764,7 +773,7 @@ PC=0xc0003f00
 X0=0x00000009
 ESR_EL0=Ok(0)
 ESR_EL1=Ok(1409286144)</code></pre></div>
-<p>According to the RISC-V Disassembly of NSH Shell, SysCall Command 9 happens inside <code>gettid()</code>: <a href="TODO">nuttx-init.S</a></p>
+<p>According to Arm64 Disassembly of NSH Shell, SysCall Command 9 happens inside <code>gettid()</code>: <a href="TODO">nuttx-init.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>0000000000002ef4 &lt;gettid&gt;:
 gettid():
     2ef4:	d2800120 	mov	x0, #0x9                   	// #9
@@ -772,8 +781,25 @@ gettid():
     2efc:	d4000001 	svc	#0x0
     2f00:	f84107fe 	ldr	x30, [sp], #16
     2f04:	d65f03c0 	ret</code></pre></div>
-<p>Which means that NSH Shell is starting up and calling <code>gettid()</code> to fetch the <strong>Current Thread ID</strong>. But it triggers a SysCall from the <strong>NuttX App (EL0)</strong> into <strong>NuttX Kernel (EL1)</strong>, which we haven’t implemented.</p>
-<p>We’ll implement this soon!</p>
+<p>Which says that…</p>
+<ol>
+<li>
+<p><strong>NSH Shell</strong> is starting as a NuttX App</p>
+<p><em>(Exception Level 0)</em></p>
+</li>
+<li>
+<p>NSH Shall calls <code>gettid()</code> to fetch the <strong>Current Thread ID</strong></p>
+</li>
+<li>
+<p>Which triggers an Arm64 SysCall from <strong>NuttX App</strong> into <strong>NuttX Kernel</strong></p>
+<p><em>(Exception Level 0 calls Exception Level 1)</em></p>
+</li>
+<li>
+<p>Which we haven’t implemented yet</p>
+<p><em>(Nope, no SysCalls across Exception Levels)</em></p>
+</li>
+</ol>
+<p>We’ll implement this SysCall soon!</p>
 <p>TODO: GIC</p>
 <p>TODO: Timer</p>
 <p>TODO: Other Peripherals</p>
