@@ -475,9 +475,9 @@ _To Boot NuttX: We need to Emulate the SysCall. How?_
 
 We saw earlier that Unicorn expects us to...
 
-1.  [__Hook The Interrupt__](TODO)
+1.  [__Hook the Unicorn Interrupt__](TODO)
 
-1.  Then __Emulate the SysCall__
+1.  Then __Emulate the Arm64 SysCall__
 
 This is how we Hook the Interrupt: TODO
 
@@ -677,10 +677,11 @@ TODO
 NuttX on Unicorn now boots to NSH Shell. Yay!
 
 ```bash
+$ cargo run | grep "uart output"
 - Ready to Boot Primary CPU
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-\rnx_start: Entry
+x_start: Entry
 up_allocate_kheap: heap_start=0x0x40849000, heap_size=0x77b7000
 gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
@@ -799,6 +800,8 @@ TODO: Why ESR_EL1?
 _What is SysCall Command 9? Where in NSH Shell is 0xC000_3F00?_
 
 ```bash
+$ cargo run
+...
 hook_interrupt: intno=2
 PC=0xc0003f00
 X0=0x00000009
