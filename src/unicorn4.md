@@ -28,6 +28,8 @@ Or driver -> emulator?
 
 Maybe Emulator + Device Farm
 
+_Why are we doing this?_
+
 [“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
 
 https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6
@@ -235,15 +237,19 @@ That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
 # Emulate 16550 UART
 
-_What about I/O? How to emulate in Unicorn?_
+_What about Avaota I/O? How to emulate in Unicorn?_
 
 Let's emulate the Bare Minimum for I/O: Printing output to the __16550 UART__...
 
 1.  We intercept all writes to the __UART Transmit Register__, and print them 
 
-1.  We signal to NuttX that __UART Transmit FIFO__ is always ready for output
+    _(So we can see the Boot Log from NuttX)_
 
-This will tell NuttX that __UART Transmit FIFO__ is always ready: [main.rs](TODO)
+1.  We signal to NuttX that __UART Transmit FIFO__ is always ready to transmit
+
+    _(Otherwise NuttX will wait forever for UART)_
+
+This will tell NuttX that our __UART Transmit FIFO__ is forever ready: [main.rs](TODO)
 
 ```rust
 /// UART Base Address
@@ -273,9 +279,6 @@ fn hook_memory(
     size: usize,   // Number of bytes accessed
     value: i64     // Write Value
 ) -> bool {
-    // Ignore RAM access, we only intercept Memory-Mapped Input / Output
-    if address >= 0x4000_0000 { return true; }
-    // println!("hook_memory: address={address:#010x}, size={size:02}, mem_type={mem_type:?}, value={value:#x}");
 
     // If writing to UART Transmit Holding Register (THR):
     // Print the UART Output
@@ -298,6 +301,8 @@ When we run this: Our Barebones Emulator will print the UART Output and show the
 $ cargo run | grep "uart output"
 TODO
 ```
+
+We're ready to boot NuttX on Unicorn!
 
 ![TODO](https://lupyuen.org/images/unicorn3-avaota.jpg)
 
