@@ -232,7 +232,7 @@ sudo docker run -it \
 "
 ```
 
-[(More about __Docker Builds for NuttX__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
+[(More about __Docker Builds for NuttX__)](https://lupyuen.org/articles/ci2.html#build-nuttx-for-one-target-group)
 
 Everything above becomes our __Git Bisect Script__ that assesses "Goodness" vs "Badness" for a NuttX Commit: [run-job-bisect.sh](https://github.com/lupyuen/nuttx-bisect/blob/main/run-job-bisect.sh#L36-L73)
 

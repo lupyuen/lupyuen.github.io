@@ -565,7 +565,7 @@ We said this [__last time__](https://lupyuen.github.io/articles/plic2#all-things
 
 > _"If RISC-V ain't RISC-V on SiFive vs T-Head: We'll find out!"_
 
-As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.codeberg.page/articles/plic2.html#all-things-considered), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
+As of Today: Yep __RISC-V is indeed RISC-V__ on SiFive vs T-Head... Just beware of [__C906 MMU__](https://lupyuen.org/articles/plic2.html#all-things-considered), [__C906 PLIC__](https://lupyuen.github.io/articles/plic2#all-things-considered) and [__T-Head Errata__](https://lupyuen.github.io/articles/plic3#t-head-errata)!
 
 [(__New T-Head Cores__ will probably migrate to __Svpbmt Extension__)](https://github.com/riscv/riscv-isa-manual/blob/main/src/supervisor.adoc#svpbmt)
 

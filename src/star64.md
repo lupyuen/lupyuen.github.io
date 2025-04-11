@@ -315,7 +315,7 @@ Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
--   Compile [__NuttX Kernel__](https://lupyuen.codeberg.page/articles/riscv.html#qemu-starts-nuttx) to boot at __`0x4020` `0000`__
+-   Compile [__NuttX Kernel__](https://lupyuen.org/articles/riscv.html#qemu-starts-nuttx) to boot at __`0x4020` `0000`__
 
 -   Add a placeholder for __Device Tree__ (since it's missing)
 

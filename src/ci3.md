@@ -289,9 +289,9 @@ A __Simple PR__ concerns only __One Single Architecture__: _Arm32 OR Arm64 OR RI
 
 When we create a Simple PR for Arm32: It will trigger only the CI Checks for _arm-01_ ... _arm-14_.
 
-Which will [__complete earlier__](https://lupyuen.codeberg.page/articles/ci3.html#actual-performance) than a Complex PR.
+Which will [__complete earlier__](https://lupyuen.org/articles/ci3.html#actual-performance) than a Complex PR.
 
-[(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](https://lupyuen.codeberg.page/articles/ci3.html#actual-performance)
+[(__x86_64 Devs__ are the happiest. Their PRs complete in __10 Mins__!)](https://lupyuen.org/articles/ci3.html#actual-performance)
 
 _Sounds awfully complicated. How did we code the rules?_
 
@@ -403,7 +403,7 @@ _Everything is hunky dory?_
 
 Trusting a __Single Provider for Continuous Integration__ is a terrible thing. We got plenty more to do...
 
-- Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.codeberg.page/articles/ci2.html)
+- Become more resilient and self-sufficient with [__Our Own Build Farm__](https://lupyuen.org/articles/ci2.html)
 
   (Away from GitHub)
 
@@ -431,7 +431,7 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
     (Instead of an Unpaid Volunteer)
 
-1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](https://lupyuen.codeberg.page/articles/ci3.html#move-the-merge-jobs)
+1.  Which means clicking Twice Per Day to trigger the [__Scheduled Merge Jobs__](https://lupyuen.org/articles/ci3.html#move-the-merge-jobs)
 
     (My fingers are tired, pic above)
 
@@ -525,7 +525,7 @@ _Before submitting a PR to NuttX: How to check our PR thoroughly?_
 
 Yep it's super important to __thoroughly test our PRs__ before submitting to NuttX.
 
-But NuttX Project [__doesn't have the budget__](https://lupyuen.codeberg.page/articles/ci3.html#disable-macos-and-windows-builds) to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)
+But NuttX Project [__doesn't have the budget__](https://lupyuen.org/articles/ci3.html#disable-macos-and-windows-builds) to run all CI Checks for New PRs. The onus is on us to test our PRs (without depending on the CI Workflow)
 
 1. Run the CI Builds ourselves with __Docker Engine__
 
@@ -618,7 +618,7 @@ Something super strange about __Network Timeouts__ (pic above) in our CI Docker 
 
 - Is something misconfigured in our __Docker Image__?
 
-  But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2.html). It [__doesn't show any errors__](https://lupyuen.codeberg.page/articles/ci2.html).
+  But the exact same Docker Image runs fine on [__our own Build Farm__](https://lupyuen.github.io/articles/ci2.html). It [__doesn't show any errors__](https://lupyuen.org/articles/ci2.html).
 
 - Is GitHub Actions starting our Docker Container with the wrong MTU (Network Packet Size)? 🤔
 

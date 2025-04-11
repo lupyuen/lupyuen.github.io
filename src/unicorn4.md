@@ -46,7 +46,7 @@ To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](htt
 
 1.  [__Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0)
 
-    From the [__Previous Article__](TODO): Unicorn Emulator requires __TCR_TG1_4K__. And the __Physical / Virtual Address Size__ should be 32 Bits.
+    From the [__Previous Article__](https://lupyuen.github.io/articles/unicorn3.html): Unicorn Emulator requires __TCR_TG1_4K__. And the __Physical / Virtual Address Size__ should be 32 Bits.
 
 1.  [__Disable PSCI__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88): We don't emulate the __PSCI Driver__ in Unicorn, so we disable this
 

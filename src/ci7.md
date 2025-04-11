@@ -78,7 +78,7 @@ cd nuttx/tools/ci
   testlist/risc-v-05.dat 
 ```
 
-[(More about __NuttX Docker Build__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
+[(More about __NuttX Docker Build__)](https://lupyuen.org/articles/ci2.html#build-nuttx-for-one-target-group)
 
 Docker will build _rv-virt:citest_ and start the __CI Test__...
 

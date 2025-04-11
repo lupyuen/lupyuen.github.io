@@ -184,7 +184,7 @@ make -j ...
 ## Record everything we've done as evidence
 ```
 
-[(More about __NuttX Docker Build__)](https://lupyuen.codeberg.page/articles/ci2.html#build-nuttx-for-one-target-group)
+[(More about __NuttX Docker Build__)](https://lupyuen.org/articles/ci2.html#build-nuttx-for-one-target-group)
 
 Yep this gets tedious, we __repeat all this 20 times__ (or more) to catch the Breaking Commit!
 
