@@ -353,7 +353,7 @@ AAAAAAAAAAAA
 err=Err(EXCEPTION)
 PC=0x40806d60</code></pre></div>
 <p><em>What’s at 0x4080_6D60?</em></p>
-<p>We look up the <a href="TODO"><strong>NuttX Kernel Disassembly</strong></a>. We see that <em>0x4080_6D60</em> points to an <strong>Arm64 SysCall <code>svc 0</code></strong>…</p>
+<p>We look up the <a href="TODO"><strong>NuttX Kernel Disassembly</strong></a>. We see that <em>0x4080_6D60</em> points to an <strong>Arm64 SysCall <code>SVC</code> <code>0</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>sys_call0():
 /Users/luppy/avaota/nuttx/include/arch/syscall.h:152
 /* SVC with SYS_ call number and no parameters */
@@ -365,7 +365,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
   __asm__ __volatile__
     40806d5c:	d4000001 	svc	#0x0
 // 0x40806d60 is the next instruction to be executed on return from SysCall</code></pre></div>
-<p><em>Isn’t Unicorn supposed to handle Arm64 SysCalls?</em></p>
+<p><em>Isn’t Unicorn supposed to emulate Arm64 SysCalls?</em></p>
 <p>We step through Unicorn with the excellent <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic above). Unicorn triggers the Arm64 Exception here: <a href="TODO">unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
@@ -390,12 +390,11 @@ static inline uintptr_t sys_call0(unsigned int nbr)
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/.vscode/bookmarks.json">(Set these <strong>Debug Breakpoints</strong>)</a></p>
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
-<p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall via our Interrupt Callback.</p>
-<p>Before hooking the interrupt, we track down the SysCall…</p>
+<p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and handle the Arm64 SysCall, via our Interrupt Callback.</p>
+<p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
 <h1 id="nuttx-syscall"><a class="doc-anchor" href="#nuttx-syscall">§</a>5 NuttX SysCall</h1>
-<p><em>Why is NuttX doing an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
-<p>Earlier we saw NuttX making an Arm64 SysCall, let’s find out why.</p>
-<p>NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The value is 2…</p>
+<p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
+<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The value is 2…</p>
 <div class="example-wrap"><pre class="language-c"><code>/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
                 {
                   up_switch_context(this_task(), rtcb);
@@ -436,18 +435,23 @@ static inline uintptr_t sys_call0(unsigned int nbr)
         addrenv_switch(tcb);
 #endif
         break;</code></pre></div>
-<p>Ah now we see the light. NuttX makes a SysCall during startup, to trigger the <strong>Very First Context Switch</strong>! Which will start the other NuttX Tasks and boot successfully.</p>
-<p>FYI NuttX SysCalls are defined here…</p>
-<p>https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h</p>
+<p>Ah now we see the light. NuttX makes a SysCall during startup, to trigger the <strong>Very First Context Switch</strong>. Which will start the other NuttX Tasks and boot successfully.</p>
+<p>FYI <strong>NuttX SysCalls</strong> are defined here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h">SysCall Defines: syscall_lookup.h</a></p>
+</li>
+<li>
+<p><a href="TODO">SysCall CSV: TODO</a></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(getpid,                     0)
 SYSCALL_LOOKUP(gettid,                     0)
 SYSCALL_LOOKUP(sched_getcpu,               0)
 SYSCALL_LOOKUP(sched_lock,                 0)
 SYSCALL_LOOKUP(sched_lockcount,            0)
 SYSCALL_LOOKUP(sched_unlock,               0)
-SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
-<p>TODO: SysCall Spreadsheet</p>
-<h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
+SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
 <p><em>To Boot NuttX: We need to Emulate the SysCall. How?</em></p>
 <p>We saw earlier that Unicorn expects us to…</p>
 <ol>
