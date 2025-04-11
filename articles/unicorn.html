@@ -271,7 +271,7 @@ err=Ok(())</code></pre></div>
   </span>u64::MAX,    <span class="comment">// End Address
   </span>hook_memory  <span class="comment">// Hook Function
 </span>).expect(<span class="string">"failed to add memory hook"</span>);</code></pre></div>
-<p>When we run this, we see the Read and Write Memory Accesses made by our <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>Emulated Arm64 Code</strong></a>…</p>
+<p>When we run this, we see the Read and Write Memory Accesses made by our <a href="https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code"><strong>Emulated Arm64 Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_memory: 
   mem_type=WRITE, 
   address=0x10008, 
@@ -310,7 +310,7 @@ hook_memory:
   </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
   </span>hook_code  <span class="comment">// Hook Function for Code Emulation
 </span>).expect(<span class="string">"failed to add code hook"</span>);</code></pre></div>
-<p>When we run this with our <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>Arm64 Machine Code</strong></a>, we see the Address of <strong>every Arm64 Instruction emulated</strong> (and its size)…</p>
+<p>When we run this with our <a href="https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code"><strong>Arm64 Machine Code</strong></a>, we see the Address of <strong>every Arm64 Instruction emulated</strong> (and its size)…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_code:
   address=0x10000,
   size=4
@@ -345,7 +345,7 @@ hook_code:
 <div class="example-wrap"><pre class="language-text"><code>hook_block: address=0x10000, size=8
 hook_code:  address=0x10000, size=4
 hook_code:  address=0x10004, size=4</code></pre></div>
-<p>Which means that Unicorn Emulator calls our Hook Function only once for the <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>entire Block of two Arm64 Instructions</strong></a>.</p>
+<p>Which means that Unicorn Emulator calls our Hook Function only once for the <a href="https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code"><strong>entire Block of two Arm64 Instructions</strong></a>.</p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#what-is-a-block-of-arm64-instructions">(What’s a Block of Arm64 Instructions?)</a></p>
 <p><em>How is this useful?</em></p>
 <p>The Block Execution Hook is super helpful for monitoring the <strong>Execution Flow</strong> of our emulated code. We can…</p>
@@ -362,7 +362,7 @@ hook_code:  address=0x10004, size=4</code></pre></div>
 </ul>
 <p>This is how we do it…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file"><strong>“Map Address to Function with ELF File”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/unicorn.html#appendix-map-address-to-function-with-elf-file"><strong>“Map Address to Function with ELF File”</strong></a></li>
 </ul>
 <h1 id="unmapped-memory"><a class="doc-anchor" href="#unmapped-memory">§</a>5 Unmapped Memory</h1>
 <p><em>What happens when Unicorn Emulator tries to access memory that isn’t mapped?</em></p>
@@ -550,7 +550,7 @@ hook_memory: address=0x400b6a53, size=1, mem_type=WRITE, value=0x0
 </ul>
 <p>To emulate the UART Output, we use Unicorn’s <strong>Memory Access Hook</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn#memory-access-hook"><strong>“Memory Access Hook”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/unicorn.html#memory-access-hook"><strong>“Memory Access Hook”</strong></a></li>
 </ul>
 <p>In our Memory Access Hook, we intercept all writes to <strong><code>01C2</code> <code>8000</code></strong> and dump the bytes written: <a href="https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111">main.rs</a></p>
 
@@ -666,7 +666,7 @@ write_sysreg(  // Write to System Register...
 </ul>
 <p>Also Unicorn Emulator has produced a <strong>Call Graph</strong> for NuttX on PinePhone, which is extremely valuable for troubleshooting…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/unicorn2.html"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p><em>But our PinePhone Emulator doesn’t handle Console Input…</em></p>
 <p>Yeah we’ll do that later. We have a long wishlist of features to build: Interrupts, Memory Protection, Multiple CPUs, Cortex A53, GIC v2, …</p>
@@ -697,7 +697,7 @@ write_sysreg(  // Write to System Register...
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>11 What’s Next</h1>
 <p>Check out the next article…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/unicorn2.html"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
 <p>Many Thanks to my <a href="https://lupyuen.github.io/articles/sponsor"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -732,7 +732,7 @@ write_sysreg(  // Write to System Register...
 <h1 id="appendix-map-address-to-function-with-elf-file"><a class="doc-anchor" href="#appendix-map-address-to-function-with-elf-file">§</a>12 Appendix: Map Address to Function with ELF File</h1>
 <p>Check out the new article…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn2"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/unicorn2.html"><strong>“(Clickable) Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p>Our <strong>Block Execution Hook</strong> now prints the <strong>Function Name</strong> and the <strong>Filename</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:  
