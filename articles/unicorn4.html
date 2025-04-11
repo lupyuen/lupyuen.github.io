@@ -121,7 +121,7 @@
 <p><a href="https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d"><strong>Enable SysCall Logging</strong></a>: To verify that NuttX SysCalls are OK</p>
 </li>
 </ol>
-<p>Here are the steps to compile <strong>NuttX for Unicorn</strong>: TODO</p>
+<p>Here are the steps to compile <strong>NuttX for Unicorn</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile Modified NuttX for Avaota-A1 SBC
 git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-avaota
@@ -178,7 +178,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>We inspect the code inside…</p>
 <h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <p><em>What’s inside the Avaota-A1 Emulator?</em></p>
-<p>Inside our Avaota SBC Emulator: We begin by creating the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
+<p>Inside our Avaota SBC Emulator: We begin by creating the <strong>Unicorn Interface</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L13-L36">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Memory Space for NuttX Kernel
 </span><span class="kw">const </span>KERNEL_SIZE: usize = <span class="number">0x1000_0000</span>;
@@ -197,7 +197,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
   </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
   emu.ctl_tlb_type(unicorn_engine::TlbType::CPU)
     .unwrap();</code></pre></div>
-<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for UART and other Peripherals: <a href="TODO">main.rs</a></p>
+<p>Based on the <a href="TODO"><strong>Allwinner A527 Memory Map</strong></a>, we reserve <strong>1 GB of I/O Memory</strong> for UART and other I/O Peripherals: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
   </span>emu.mem_map(
@@ -205,7 +205,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span><span class="number">0x4000_0000</span>,  <span class="comment">// Size
     </span>Permission::READ | Permission::WRITE  <span class="comment">// Read/Write/Execute Access
   </span>).unwrap();</code></pre></div>
-<p>Next we load the <strong>NuttX Image</strong> <em>(NuttX Kernel + NuttX Apps)</em> into Unicorn Memory: <a href="TODO">main.rs</a></p>
+<p>Next we load the <strong>NuttX Image</strong> <em>(NuttX Kernel + NuttX Apps)</em> into Unicorn Memory: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L43-L64">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Copy NuttX Image into memory
   </span><span class="kw">let </span>kernel = <span class="macro">include_bytes!</span>(<span class="string">"../nuttx/Image"</span>);
@@ -239,7 +239,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p><strong>Interrupt Hook:</strong> We emulate <a href="TODO"><strong>Arm64 SysCalls</strong></a> as Unicorn Interrupts</p>
 </li>
 </ul>
-<p>Like so: <a href="TODO">main.rs</a></p>
+<p>Like so: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L88">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Add Hook for emulating each Basic Block of Arm64 Instructions
   </span>emu.add_block_hook(<span class="number">1</span>, <span class="number">0</span>, hook_block)
@@ -259,7 +259,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 
   <span class="comment">// Upcoming: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
 <p><a href="TODO">(<strong>hook_block</strong> is explained here)</a></p>
-<p>Finally we start the <strong>Unicorn Emulator</strong>…</p>
+<p>Finally we start the <strong>Unicorn Emulator</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L88-L106">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Emulate Arm64 Machine Code
   </span><span class="kw">let </span>err = emu.emu_start(
@@ -287,7 +287,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p><em>(Otherwise NuttX will wait forever for UART)</em></p>
 </li>
 </ol>
-<p>This will tell NuttX that our <strong>UART Transmit FIFO</strong> is forever ready: <a href="TODO">main.rs</a></p>
+<p>This will tell NuttX that our <strong>UART Transmit FIFO</strong> is forever ready: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L73">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
 </span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
@@ -301,7 +301,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     UART0_BASE_ADDRESS + <span class="number">0x14</span>,  <span class="comment">// UART Register Address
     </span><span class="kw-2">&amp;</span>[<span class="number">0b10_0000</span>]                <span class="comment">// UART Register Value
   </span>).unwrap();</code></pre></div>
-<p>Our <strong>Unicorn Memory Hook</strong> will intercept all writes to the <strong>UART Transmit Register</strong>, and print them: <a href="TODO">main.rs</a></p>
+<p>Our <strong>Unicorn Memory Hook</strong> will intercept all writes to the <strong>UART Transmit Register</strong>, and print them: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L152-L178">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Memory Access.
 /// Called once for every Arm64 Memory Access.
@@ -461,7 +461,7 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the
 <p>Then <strong>Emulate the Arm64 SysCall</strong></p>
 </li>
 </ol>
-<p>This is how we <strong>Hook the Interrupt</strong>: TODO</p>
+<p>This is how we <strong>Hook the Interrupt</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L85-L152">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Main Function of Avaota Emulator
 </span><span class="kw">fn </span>main() {
@@ -587,7 +587,7 @@ PC=0x408169d0</code></pre></div>
 <p>We’re doing <strong>SVC SysCall</strong> <em>(Synchronous Exception)</em> at Exception Level 1…</p>
 <p>Which means Unicorn Emulator should jump to <strong>VBAR_EL1 + 0x200</strong>. Here’s how…</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
-<p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="TODO">main.rs</a></p>
+<p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L115-L152">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Unicorn Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
