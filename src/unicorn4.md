@@ -2,7 +2,7 @@
 
 📝 _30 Apr 2025_
 
-![TODO](https://lupyuen.org/images/unicorn4-title.jpg)
+![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
 
 TODO
 
@@ -38,9 +38,9 @@ https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6
 
 # NuttX for Avaota-A1
 
-Earlier we ported NuttX to Avaota-A1 SBC...
+Weeks ago we ported NuttX to Avaota-A1 SBC...
 
-- TODO: Article
+- [__"Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"__](https://lupyuen.github.io/articles/avaota)
 
 To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106)...
 
@@ -811,6 +811,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 <span style="font-size:80%">
 
-_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :-)_
+_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate_
 
 </span>
