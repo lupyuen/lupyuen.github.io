@@ -615,7 +615,7 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
  * |          + 0x700 | FIQ / vFIQ       |                         |
  * |          + 0x780 | SError / vSError |                         |
  * +------------------+------------------+-------------------------+</code></pre></div>
-<p>We are doing <strong>SVC SysCall</strong> <em>(Synchronous Exception)</em> at Exception Level 1…</p>
+<p>We’re doing <strong>SVC SysCall</strong> <em>(Synchronous Exception)</em> at Exception Level 1…</p>
 <p>Which means Unicorn Emulator should jump to <strong>VBAR_EL1 + 0x200</strong>. Here’s how…</p>
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
 <p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="TODO">main.rs</a></p>
