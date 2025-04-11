@@ -458,10 +458,10 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div>
 <p>We saw earlier that Unicorn expects us to…</p>
 <ol>
 <li>
-<p><a href="TODO"><strong>Hook The Interrupt</strong></a></p>
+<p><a href="TODO"><strong>Hook the Unicorn Interrupt</strong></a></p>
 </li>
 <li>
-<p>Then <strong>Emulate the SysCall</strong></p>
+<p>Then <strong>Emulate the Arm64 SysCall</strong></p>
 </li>
 </ol>
 <p>This is how we Hook the Interrupt: TODO</p>
@@ -642,10 +642,11 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
 <p>And it works!</p>
 <p>TODO</p>
 <p>NuttX on Unicorn now boots to NSH Shell. Yay!</p>
-<div class="example-wrap"><pre class="language-bash"><code>- Ready to Boot Primary CPU
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
+- Ready to Boot Primary CPU
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-\rnx_start: Entry
+x_start: Entry
 up_allocate_kheap: heap_start=0x0x40849000, heap_size=0x77b7000
 gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
@@ -757,7 +758,9 @@ TODO: Handle SysCall from NuttX Apps</code></pre></div>
 <p>TODO: Why ESR_EL1?</p>
 <h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
 <p><em>What is SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
-<div class="example-wrap"><pre class="language-bash"><code>hook_interrupt: intno=2
+<div class="example-wrap"><pre class="language-bash"><code>$ cargo run
+...
+hook_interrupt: intno=2
 PC=0xc0003f00
 X0=0x00000009
 ESR_EL0=Ok(0)
