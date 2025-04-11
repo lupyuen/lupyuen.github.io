@@ -326,7 +326,7 @@ PC=0x40806d60
 
 _What's at 0x4080_6D60?_
 
-We look up the [__NuttX Kernel Disassembly__](TODO). We see that _0x4080_6D60_ points to an __Arm64 SysCall `svc 0`__...
+We look up the [__NuttX Kernel Disassembly__](TODO). We see that _0x4080_6D60_ points to an __Arm64 SysCall `SVC` `0`__...
 
 ```c
 sys_call0():
@@ -342,7 +342,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 // 0x40806d60 is the next instruction to be executed on return from SysCall
 ```
 
-_Isn't Unicorn supposed to handle Arm64 SysCalls?_
+_Isn't Unicorn supposed to emulate Arm64 SysCalls?_
 
 We step through Unicorn with the excellent [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
 
@@ -374,17 +374,15 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 
 [(Compare with __Original QEMU__)](https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769)
 
-Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback.
+Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall, via our Interrupt Callback.
 
-Before hooking the interrupt, we track down the SysCall...
+Before hooking the interrupt, we track down the origin of the SysCall...
 
 # NuttX SysCall
 
-_Why is NuttX doing an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
+_Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
 
-Earlier we saw NuttX making an Arm64 SysCall, let's find out why.
-
-NuttX passes a __Parameter to SysCall__ in Register X0. The value is 2...
+Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The value is 2...
 
 ```c
 /Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
@@ -439,11 +437,13 @@ uint64_t *arm64_syscall(uint64_t *regs) {
         break;
 ```
 
-Ah now we see the light. NuttX makes a SysCall during startup, to trigger the __Very First Context Switch__! Which will start the other NuttX Tasks and boot successfully.
+Ah now we see the light. NuttX makes a SysCall during startup, to trigger the __Very First Context Switch__. Which will start the other NuttX Tasks and boot successfully.
 
-FYI NuttX SysCalls are defined here...
+FYI __NuttX SysCalls__ are defined here...
 
-https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h
+- [SysCall Defines: syscall_lookup.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h)
+
+- [SysCall CSV: TODO](TODO)
 
 ```c
 SYSCALL_LOOKUP(getpid,                     0)
@@ -454,8 +454,6 @@ SYSCALL_LOOKUP(sched_lockcount,            0)
 SYSCALL_LOOKUP(sched_unlock,               0)
 SYSCALL_LOOKUP(sched_yield,                0)
 ```
-
-TODO: SysCall Spreadsheet
 
 # Hook The Unicorn Interrupt
 
