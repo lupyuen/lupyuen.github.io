@@ -243,13 +243,13 @@ That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
 _What about Avaota I/O? How to emulate in Unicorn?_
 
-Let's emulate the Bare Minimum for I/O: Printing output to the __16550 UART__...
+Let's emulate the Bare Minimum for I/O: Printing output to the [__16550 UART__](TODO)...
 
-1.  We intercept all writes to the __UART Transmit Register__, and print them 
+1.  We intercept all writes to the [__UART Transmit Register__](TODO), and print them 
 
     _(So we can see the Boot Log from NuttX)_
 
-1.  We signal to NuttX that __UART Transmit FIFO__ is always ready to transmit
+1.  We signal to NuttX that [__UART Transmit FIFO__](TODO) is always ready to transmit
 
     _(Otherwise NuttX will wait forever for UART)_
 
