@@ -181,9 +181,9 @@ git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
 cd nuttx-arm64-emulator
 cargo run
 
-## To see the Emulated UART Output:
+## To see the Emulated UART Output
 cargo run | grep &quot;uart output&quot;</code></pre></div>
-<p>We study the code inside…</p>
+<p>We inspect the code inside…</p>
 <h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <p><em>What’s inside the Avaota-A1 Emulator?</em></p>
 <p>Inside our Avaota SBC Emulator: We begin by creating the <strong>Unicorn Interface</strong>: <a href="TODO">main.rs</a></p>
@@ -238,13 +238,13 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>Unicorn lets us hook into its internals, for emulating nifty things. We add the <strong>Unicorn Hooks</strong> for…</p>
 <ul>
 <li>
-<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <strong>Call Graph</strong></p>
+<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <a href="TODO"><strong>Call Graph</strong></a></p>
 </li>
 <li>
-<p><strong>Memory Hook:</strong> To emulate the <strong>UART Hardware</strong>, we intercept Memory Reads and Writes</p>
+<p><strong>Memory Hook:</strong> To emulate the <a href="TODO"><strong>UART Hardware</strong></a>, we intercept the Memory Reads and Writes</p>
 </li>
 <li>
-<p><strong>Interrupt Hook:</strong> We emulate <strong>Arm64 SysCalls</strong> as Unicorn Interrupts</p>
+<p><strong>Interrupt Hook:</strong> We emulate <a href="TODO"><strong>Arm64 SysCalls</strong></a> as Unicorn Interrupts</p>
 </li>
 </ul>
 <p>Like so: <a href="TODO">main.rs</a></p>
@@ -266,6 +266,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
       .unwrap();
 
     <span class="comment">// Omitted: Indicate that the UART Transmit FIFO is ready</span></code></pre></div>
+<p><a href="TODO">(<strong>hook_block</strong> is explained here)</a></p>
 <p>Finally we start the <strong>Unicorn Emulator</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Emulate Arm64 Machine Code
