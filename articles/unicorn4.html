@@ -336,7 +336,7 @@ $ cargo run | grep &quot;uart output&quot;
 TODO</code></pre></div>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
-<p><em>We have a Barebones Emulator. What happens when we run it?</em></p>
+<p><em>Out Barebones Emulator: What happens when we run it?</em></p>
 <p>We run the <a href="TODO"><strong>Barebones Emulator</strong></a> from earlier. NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
@@ -394,7 +394,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
 <h1 id="nuttx-syscall"><a class="doc-anchor" href="#nuttx-syscall">§</a>5 NuttX SysCall</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
-<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The value is 2…</p>
+<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/Users/luppy/avaota/nuttx/sched/sched/sched_unlock.c:92
                 {
                   up_switch_context(this_task(), rtcb);
