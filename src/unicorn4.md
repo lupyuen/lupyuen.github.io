@@ -54,7 +54,7 @@ To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](htt
 
 1.  [__Enable SysCall Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d): To verify that NuttX SysCalls are OK
 
-Here are the steps to compile __NuttX for Unicorn__: TODO
+Here are the steps to compile __NuttX for Unicorn__...
 
 ```bash
 ## Compile Modified NuttX for Avaota-A1 SBC
@@ -122,7 +122,7 @@ We inspect the code inside...
 
 _What's inside the Avaota-A1 Emulator?_
 
-Inside our Avaota SBC Emulator: We begin by creating the __Unicorn Interface__: [main.rs](TODO)
+Inside our Avaota SBC Emulator: We begin by creating the __Unicorn Interface__: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L13-L36)
 
 ```rust
 /// Memory Space for NuttX Kernel
@@ -144,7 +144,7 @@ fn main() {
     .unwrap();
 ```
 
-Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for UART and other Peripherals: [main.rs](TODO)
+Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for UART and other I/O Peripherals: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43)
 
 ```rust
   // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
@@ -155,7 +155,7 @@ Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Mem
   ).unwrap();
 ```
 
-Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memory: [main.rs](TODO)
+Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memory: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L43-L64)
 
 ```rust
   // Copy NuttX Image into memory
@@ -188,7 +188,7 @@ Unicorn lets us hook into its internals, for emulating nifty things. We add the 
 
 - __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](TODO) as Unicorn Interrupts
 
-Like so: [main.rs](TODO)
+Like so: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L88)
 
 ```rust
   // Add Hook for emulating each Basic Block of Arm64 Instructions
@@ -212,7 +212,7 @@ Like so: [main.rs](TODO)
 
 [(__hook_block__ is explained here)](TODO)
 
-Finally we start the __Unicorn Emulator__...
+Finally we start the __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L88-L106)
 
 ```rust
   // Emulate Arm64 Machine Code
@@ -245,7 +245,7 @@ Let's emulate the Bare Minimum for I/O: Printing output to the [__16550 UART__](
 
     _(Otherwise NuttX will wait forever for UART)_
 
-This will tell NuttX that our __UART Transmit FIFO__ is forever ready: [main.rs](TODO)
+This will tell NuttX that our __UART Transmit FIFO__ is forever ready: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L73)
 
 ```rust
 /// UART Base Address
@@ -262,7 +262,7 @@ fn main() {
   ).unwrap();
 ```
 
-Our __Unicorn Memory Hook__ will intercept all writes to the __UART Transmit Register__, and print them: [main.rs](TODO)
+Our __Unicorn Memory Hook__ will intercept all writes to the __UART Transmit Register__, and print them: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L152-L178)
 
 ```rust
 /// Hook Function for Memory Access.
@@ -462,7 +462,7 @@ We saw earlier that Unicorn expects us to...
 
 1.  Then __Emulate the Arm64 SysCall__
 
-This is how we __Hook the Interrupt__: TODO
+This is how we __Hook the Interrupt__: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L85-L152)
 
 ```rust
 /// Main Function of Avaota Emulator
@@ -603,7 +603,7 @@ Which means Unicorn Emulator should jump to __VBAR_EL1 + 0x200__. Here's how...
 
 # Emulate the Arm64 SysCall
 
-Inside our __Interrupt Hook__: This is how we jump to __VBAR_EL1 + 0x200__: [main.rs](TODO)
+Inside our __Interrupt Hook__: This is how we jump to __VBAR_EL1 + 0x200__: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L115-L152)
 
 ```rust
 /// Hook Function to Handle Unicorn Interrupt
