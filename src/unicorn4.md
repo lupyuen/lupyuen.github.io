@@ -6,6 +6,8 @@
 
 TODO
 
+[__Unicorn Emulator__](TODO)
+
 - Unicorn doesn't seem to emulate Arm64 SysCalls?
 
 - No worries we'll emulate Arm64 SysCalls ourselves!
@@ -122,13 +124,13 @@ cargo run
 cargo run | grep "uart output"
 ```
 
-We study the code...
+We study the code inside...
 
 # Unicorn Emulator for Avaota-A1
 
 _What's inside the Avaota-A1 Emulator?_
 
-Inside our Avaota-A1 Emulator: This is how we create the __Unicorn Interface__: [main.rs](TODO)
+Inside our Avaota SBC Emulator: We begin by creating the __Unicorn Interface__: [main.rs](TODO)
 
 ```rust
 /// Memory Space for NuttX Kernel
@@ -582,7 +584,7 @@ Here's our plan...
 
 1.  Which will execute the __NuttX Exception Handler__ for Arm64 SysCall
 
-_What's inside the Arm64 Vector Table?_
+_Where exactly in the Arm64 Vector Table?_
 
 __VBAR_EL1__ points to this Vector Table: [arm64_vector_table.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L103-L145)
 
@@ -625,7 +627,9 @@ __VBAR_EL1__ points to this Vector Table: [arm64_vector_table.S](https://github.
  * +------------------+------------------+-------------------------+
 ```
 
-We are doing SVC (Synchronous Exception) at EL1. Which means Unicorn Emulator should jump to __VBAR_EL1 + 0x200__. Here's how...
+We are doing __SVC SysCall__ _(Synchronous Exception)_ at Exception Level 1...
+
+Which means Unicorn Emulator should jump to __VBAR_EL1 + 0x200__. Here's how...
 
 # Emulate the Arm64 SysCall
 
@@ -669,7 +673,7 @@ fn hook_interrupt(
 }
 ```
 
-And it works: NuttX on Unicorn now boots (almost) to __NSH Shell__. Yay!
+And it works: NuttX on Unicorn boots _(almost)_ to __NSH Shell__. Yay!
 
 ```bash
 $ cargo run | grep "uart output"
