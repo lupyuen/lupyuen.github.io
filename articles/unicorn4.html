@@ -95,7 +95,7 @@
 <p>Maybe Emulator + Device Farm</p>
 <p><em>Why are we doing this?</em></p>
 <ul>
-<li>The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC for now.</li>
+<li>The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.</li>
 </ul>
 <p><a href="https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0">“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”</a></p>
 <p>https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6</p>
@@ -562,13 +562,14 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
 <p>Here’s our plan…</p>
 <ol>
 <li>
-<p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the Arm64 Vector Table for <a href="TODO"><strong>Exception Level 1</strong></a></p>
+<p>System Register <a href="TODO"><strong>VBAR_EL1</strong></a> points to the <strong>Arm64 Vector Table</strong></p>
+<p><em>(Exception Level 1, for NuttX Kernel)</em></p>
 </li>
 <li>
 <p>We read <strong>VBAR_EL1</strong> to fetch the <strong>Arm64 Vector Table</strong></p>
 </li>
 <li>
-<p>Then we <strong>jump into</strong> the Vector Table, at the right spot</p>
+<p>We <strong>jump into</strong> the Vector Table, at the right spot</p>
 </li>
 <li>
 <p>Which will execute the <strong>NuttX Exception Handler</strong> for Arm64 SysCall</p>
