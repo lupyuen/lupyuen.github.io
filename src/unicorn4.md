@@ -144,7 +144,7 @@ fn main() {
     .unwrap();
 ```
 
-Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for UART and other I/O Peripherals: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43)
+Based on the [__Allwinner A527 Memory Map__](https://lupyuen.github.io/articles/avaota.html#fix-the-memory-map), we reserve __1 GB of I/O Memory__ for UART and other I/O Peripherals: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L36-L43)
 
 ```rust
   // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
@@ -182,9 +182,9 @@ Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memo
 
 Unicorn lets us hook into its internals, for emulating nifty things. We add the __Unicorn Hooks__ for...
 
-- __Block Hook:__ For each block of Arm64 Code, we render the [__Call Graph__](TODO)
+- __Block Hook:__ For each block of Arm64 Code, we render the [__Call Graph__](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn)
 
-- __Memory Hook:__ To emulate the [__UART Hardware__](TODO), we intercept the Memory Reads and Writes
+- __Memory Hook:__ To emulate the [__UART Hardware__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly), we intercept the Memory Reads and Writes
 
 - __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](TODO) as Unicorn Interrupts
 
@@ -210,7 +210,7 @@ Like so: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/s
   // Upcoming: Indicate that the UART Transmit FIFO is ready
 ```
 
-[(__hook_block__ is explained here)](TODO)
+[(__hook_block__ is explained here)](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn)
 
 Finally we start the __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L88-L106)
 
@@ -235,13 +235,13 @@ That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
 _What about Avaota I/O? How to emulate in Unicorn?_
 
-Let's emulate the Bare Minimum for I/O: Printing output to the [__16550 UART__](TODO)...
+Let's emulate the Bare Minimum for I/O: Printing output to the [__16550 UART__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly)...
 
-1.  We intercept all writes to the [__UART Transmit Register__](TODO), and print them 
+1.  We intercept all writes to the [__UART Transmit Register__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly), and print them 
 
     _(So we can see the Boot Log from NuttX)_
 
-1.  We signal to NuttX that [__UART Transmit FIFO__](TODO) is always ready to transmit
+1.  We signal to NuttX that [__UART Transmit FIFO__](https://lupyuen.github.io/articles/avaota.html#uart-driver-for-16550) is always ready to transmit
 
     _(Otherwise NuttX will wait forever for UART)_
 
@@ -297,7 +297,7 @@ TODO
 
 We're ready to boot NuttX on Unicorn!
 
-![TODO](https://lupyuen.org/images/unicorn3-avaota.jpg)
+![Stepping through Unicorn with CodeLLDB Debugger](https://lupyuen.org/images/unicorn3-avaota.jpg)
 
 # NuttX Halts at SysCall
 
