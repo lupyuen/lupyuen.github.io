@@ -186,7 +186,7 @@ Unicorn lets us hook into its internals, for emulating nifty things. We add the 
 
 - __Memory Hook:__ To emulate the [__UART Hardware__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly), we intercept the Memory Reads and Writes
 
-- __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](TODO) as Unicorn Interrupts
+- __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](https://lupyuen.github.io/articles/unicorn4.html#emulate-the-arm64-syscall) as Unicorn Interrupts
 
 Like so: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L88)
 
@@ -303,7 +303,7 @@ We're ready to boot NuttX on Unicorn!
 
 _Our Barebones Emulator: What happens when we run it?_
 
-We boot NuttX on our [__Barebones Emulator__](TODO). NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
+We boot NuttX on our [__Barebones Emulator__](https://lupyuen.github.io/articles/unicorn4.html#unicorn-emulator-for-avaota-a1). NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
 
 ```bash
 $ cargo run
@@ -323,10 +323,10 @@ PC=0x40806d60
 
 _What's at 0x4080_6D60?_
 
-We look up the [__Arm64 Disassembly__](TODO) for for NuttX Kernel. We see that _0x4080_6D60_ points to __Arm64 SysCall `SVC` `0`__...
+We look up the [__Arm64 Disassembly__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx.S) for for NuttX Kernel. We see that _0x4080_6D60_ points to __Arm64 SysCall `SVC` `0`__...
 
 ```c
-nuttx/include/arch/syscall.h:152
+arch/arm64/include/syscall.h:152
 // Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
 static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
@@ -335,13 +335,13 @@ static inline uintptr_t sys_call0(unsigned int nbr) {
     40806d60: ... //Next instruction to be executed on return from SysCall
 ```
 
-[(__sys_call0__ is here)](TODO)
+[(__sys_call0__ is here)](https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L147-L164)
 
 Somehow NuttX Kernel is making an Arm64 SysCall, and failing.
 
 _Isn't Unicorn supposed to emulate Arm64 SysCalls?_
 
-To find out: We step through Unicorn with [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [unicorn-engine-2.1.3/qemu/accel/tcg/cpu-exec.c](TODO)
+To find out: We step through Unicorn with [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [qemu/accel/tcg/cpu-exec.c](https://github.com/unicorn-engine/unicorn/blob/master/qemu/accel/tcg/cpu-exec.c#L335-L428)
 
 ```c
 // When Unicorn handles a CPU Exception...
@@ -383,14 +383,14 @@ _Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps
 Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The Parameter Value is __`2`__: TODO
 
 ```c
-nuttx/sched/sched/sched_unlock.c:92
+sched/sched/sched_unlock.c:92
 TODO: Function
 TODO {
   up_switch_context(this_task(), rtcb);
     40807230:	d538d080 	mrs	x0, tpidr_el1
     40807234:	37000060 	tbnz	w0, #0, 40807240 <sched_unlock+0x80>
 
-nuttx/include/arch/syscall.h:152
+arch/arm64/include/syscall.h:152
 // Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
 static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
@@ -458,7 +458,7 @@ _To Boot NuttX: We need to Emulate the Arm64 SysCall. How?_
 
 We saw earlier that Unicorn expects us to...
 
-1.  [__Hook the Unicorn Interrupt__](TODO)
+1.  [__Hook the Unicorn Interrupt__](https://lupyuen.github.io/articles/unicorn4.html#nuttx-halts-at-syscall)
 
 1.  Then __Emulate the Arm64 SysCall__
 
@@ -534,7 +534,7 @@ err=Ok(())
 PC=0x408169d0
 ```
 
-[(__0x4081_69D0__ points to WFI)](TODO)
+[(__0x4081_69D0__ points to WFI)](https://github.com/lupyuen/nuttx-arm64-emulator#handle-nuttx-syscall-in-unicorn)
 
 But we're not done yet! Unicorn halts because we haven't emulated the Arm64 SysCall. Let's do it...
 
@@ -544,7 +544,7 @@ _How to emulate the Arm64 SysCall?_
 
 Here's our plan...
 
-1.  System Register [__VBAR_EL1__](TODO) points to the __Arm64 Vector Table__
+1.  System Register [__VBAR_EL1__](https://developer.arm.com/documentation/ddi0601/2025-03/AArch64-Registers/VBAR-EL1--Vector-Base-Address-Register--EL1-) points to the __Arm64 Vector Table__
 
     _(Exception Level 1, for NuttX Kernel)_
 
@@ -717,7 +717,7 @@ arm64_dump_syscall: x4:  0x408432d0          x5:  0x0
 arm64_dump_syscall: x6:  0x0                 x7:  0x0
 ```
 
-[(See the __Unicorn Log__)](TODO)
+[(See the __Unicorn Log__)](https://github.com/lupyuen/nuttx-arm64-emulator#fix-esr_el1)
 
 But NSH Shell won't start correctly, here's why...
 
@@ -746,7 +746,7 @@ ESR_EL0=Ok(0)
 ESR_EL1=Ok(1409286144)
 ```
 
-According to Arm64 Disassembly of NSH Shell, __SysCall Command 9__ happens inside the `gettid` function: [nuttx-init.S](TODO)
+According to Arm64 Disassembly of NSH Shell, __SysCall Command 9__ happens inside the `gettid` function: [nuttx-init.S](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx-init.S)
 
 ```c
 // NSH Shell calls gettid() to fetch Thread ID.
@@ -807,7 +807,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/unicorn4.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn4.md)
 
-![TODO](https://lupyuen.org/images/unicorn4-title.jpg)
+![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
 
 <span style="font-size:80%">
 
