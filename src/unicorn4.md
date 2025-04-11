@@ -315,11 +315,9 @@ TODO
 
 # NuttX Halts at SysCall
 
-_What happens when we run this?_
+_We have a Barebones Emulator. What happens when we run it?_
 
-We run the [__Barebones Emulator__](TODO) (from earlier).
-
-NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
+We run the [__Barebones Emulator__](TODO) from earlier. NuttX halts with an __Arm64 Exception__ at this curious address: _0x4080_6D60_...
 
 ```bash
 $ cargo run
@@ -388,7 +386,9 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 
 [(Compare with __Original QEMU__)](https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769)
 
-Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback. Let's do it...
+Aha! Unicorn is expecting us to __Hook This Interrupt__ and handle the Arm64 SysCall via our Interrupt Callback.
+
+Before hooking the interrupt, we track down the SysCall...
 
 # NuttX SysCall
 
@@ -416,7 +416,7 @@ static inline uintptr_t sys_call0(unsigned int nbr)
     4080723c:	d4000001 	svc	#0x0
 ```
 
-What is SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks...
+What's this NuttX SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks...
 
 https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83
 
@@ -471,9 +471,15 @@ TODO: SysCall Spreadsheet
 
 # Hook The Unicorn Interrupt
 
-_To boot NuttX: We need to Emulate the SysCall. How?_
+_To Boot NuttX: We need to Emulate the SysCall. How?_
 
-We saw earlier that Unicorn expects us to [__Hook The Interrupt__](TODO) and emulate the SysCall. This is how we Hook the Interrupt: TODO
+We saw earlier that Unicorn expects us to...
+
+1.  [__Hook The Interrupt__](TODO)
+
+1.  Then __Emulate the SysCall__
+
+This is how we Hook the Interrupt: TODO
 
 ```rust
 fn main() {
