@@ -38,23 +38,17 @@ Earlier we ported NuttX to Avaota-A1 SBC...
 
 - TODO: Article
 
-To boot __NuttX on Unicorn__: We recompiled NuttX with [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106)...
+To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106)...
 
 1.  [__Set TCR_TG1_4K, Physical / Virtual Address to 32 Bits__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/640084e1fb1692887266716ecda52dc7ea4bf8e0)
 
-    From the [__Previous Article__](TODO): Unicorn Emulator requires __TCR_TG1_4K__ (TODO what?). And the __Physical / Virtual Address Size__ should be 32 Bits.
+    From the [__Previous Article__](TODO): Unicorn Emulator requires __TCR_TG1_4K__. And the __Physical / Virtual Address Size__ should be 32 Bits.
 
-1.  [__Disable PSCI__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88)
+1.  [__Disable PSCI__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/b3782b1ff989667df22b10d5c1023826e2211d88): We don't emulate the __PSCI Driver__ in Unicorn, so we disable this
 
-    We don't have the __PSCI Driver__ in Unicorn, so we disable this.
+1.  [__Enable Scheduler Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/878e78eb40f334e6e128595dbb27ae08aed1e969): So we can see NuttX booting
 
-1.  [__Enable Scheduler Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/878e78eb40f334e6e128595dbb27ae08aed1e969)
-
-    So we can see NuttX booting.
-
-1.  [__Enable SysCall Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d)
-
-    So we can verify that NuttX SysCalls are OK.
+1.  [__Enable SysCall Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d): To verify that NuttX SysCalls are OK
 
 Here are the steps to compile __NuttX for Unicorn__...
 
@@ -114,7 +108,7 @@ cp nuttx-Image \
   $HOME/nuttx-arm64-emulator/nuttx/Image
 ```
 
-To boot NuttX in Unicorn Emulator...
+To boot NuttX in __Unicorn Emulator__...
 
 ```bash
 ## Boot NuttX in the Unicorn Emulator
@@ -126,7 +120,7 @@ cargo run
 cargo run | grep "uart output"
 ```
 
-TODO: Log
+We study the code...
 
 # Unicorn Emulator for Avaota-A1
 
@@ -154,7 +148,7 @@ fn main() {
       .unwrap();
 ```
 
-Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for GIC (Interrupt Controller), UART and other Peripherals: [main.rs](TODO)
+Based on the [__Allwinner A527 Memory Map__](TODO), we reserve __1 GB of I/O Memory__ for UART and other Peripherals: [main.rs](TODO)
 
 ```rust
     // Map 1 GB Read/Write Memory at 0x0000 0000 for Memory-Mapped I/O
@@ -220,12 +214,6 @@ Like so: [main.rs](TODO)
     // Omitted: Indicate that the UART Transmit FIFO is ready
 ```
 
-[(__hook_block__ will draw the Call Graph)](TODO)
-
-[(__hook_memory__ will be used for UART Emulation)](TODO)
-
-[(__hook_interrupt__ shall be explained)](TODO)
-
 Finally we start the __Unicorn Emulator__...
 
 ```rust
@@ -243,7 +231,7 @@ Finally we start the __Unicorn Emulator__...
 }
 ```
 
-Thanks to Unicorn: We have a Barebones Emulator for Avaota-A1! Now we fill in the hooks...
+That's it for our Barebones Emulator! We fill in the hooks...
 
 # Emulate 16550 UART
 
@@ -273,7 +261,7 @@ fn main() {
     ).unwrap();
 ```
 
-And this will intercept all writes to the __UART Transmit Register__: [main.rs](TODO)
+Our Memory Hook will intercept all writes to the __UART Transmit Register__ and print them: [main.rs](TODO)
 
 ```rust
 /// Hook Function for Memory Access.
@@ -303,7 +291,7 @@ fn hook_memory(
 }
 ```
 
-This means our Barebones Emulator will print the UART Output and show the __NuttX Boot Log__...
+When we run this: Our Barebones Emulator will print the UART Output and show the __NuttX Boot Log__...
 
 ```bash
 ## To see the Emulated UART Output:
