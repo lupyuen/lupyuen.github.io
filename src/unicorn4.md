@@ -28,7 +28,7 @@ Maybe Emulator + Device Farm
 
 _Why are we doing this?_
 
-- The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC for now.
+- The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
 
 [“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
 
@@ -572,11 +572,13 @@ _How to emulate the Arm64 SysCall?_
 
 Here's our plan...
 
-1.  System Register [__VBAR_EL1__](TODO) points to the Arm64 Vector Table for [__Exception Level 1__](TODO)
+1.  System Register [__VBAR_EL1__](TODO) points to the __Arm64 Vector Table__
+
+    _(Exception Level 1, for NuttX Kernel)_
 
 1.  We read __VBAR_EL1__ to fetch the __Arm64 Vector Table__
 
-1.  Then we __jump into__ the Vector Table, at the right spot
+1.  We __jump into__ the Vector Table, at the right spot
 
 1.  Which will execute the __NuttX Exception Handler__ for Arm64 SysCall
 
