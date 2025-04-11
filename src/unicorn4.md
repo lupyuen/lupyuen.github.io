@@ -52,7 +52,7 @@ To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](htt
 
 1.  [__Enable SysCall Logging__](https://github.com/lupyuen2/wip-nuttx/pull/106/commits/c9f38c13eb5ac6f6bbcd4d3c1de218828f9f087d): To verify that NuttX SysCalls are OK
 
-Here are the steps to compile __NuttX for Unicorn__...
+Here are the steps to compile __NuttX for Unicorn__: TODO
 
 ```bash
 ## Compile Modified NuttX for Avaota-A1 SBC
