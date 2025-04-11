@@ -120,11 +120,11 @@ git clone https://github.com/lupyuen/nuttx-arm64-emulator --branch avaota
 cd nuttx-arm64-emulator
 cargo run
 
-## To see the Emulated UART Output:
+## To see the Emulated UART Output
 cargo run | grep "uart output"
 ```
 
-We study the code inside...
+We inspect the code inside...
 
 # Unicorn Emulator for Avaota-A1
 
@@ -190,11 +190,11 @@ Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memo
 
 Unicorn lets us hook into its internals, for emulating nifty things. We add the __Unicorn Hooks__ for...
 
-- __Block Hook:__ For each block of Arm64 Code, we render the __Call Graph__
+- __Block Hook:__ For each block of Arm64 Code, we render the [__Call Graph__](TODO)
 
-- __Memory Hook:__ To emulate the __UART Hardware__, we intercept Memory Reads and Writes
+- __Memory Hook:__ To emulate the [__UART Hardware__](TODO), we intercept the Memory Reads and Writes
 
-- __Interrupt Hook:__ We emulate __Arm64 SysCalls__ as Unicorn Interrupts
+- __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](TODO) as Unicorn Interrupts
 
 Like so: [main.rs](TODO)
 
@@ -217,6 +217,8 @@ Like so: [main.rs](TODO)
 
     // Omitted: Indicate that the UART Transmit FIFO is ready
 ```
+
+[(__hook_block__ is explained here)](TODO)
 
 Finally we start the __Unicorn Emulator__...
 
