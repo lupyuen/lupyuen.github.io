@@ -94,6 +94,7 @@
 <p>Emulator -&gt; Driver</p>
 <p>Or driver -&gt; emulator?</p>
 <p>Maybe Emulator + Device Farm</p>
+<p><em>Why are we doing this?</em></p>
 <p><a href="https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0">“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”</a></p>
 <p>https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6</p>
 <h1 id="nuttx-for-avaota-a1"><a class="doc-anchor" href="#nuttx-for-avaota-a1">§</a>1 NuttX for Avaota-A1</h1>
@@ -278,17 +279,19 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 }</code></pre></div>
 <p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
-<p><em>What about I/O? How to emulate in Unicorn?</em></p>
+<p><em>What about Avaota I/O? How to emulate in Unicorn?</em></p>
 <p>Let’s emulate the Bare Minimum for I/O: Printing output to the <strong>16550 UART</strong>…</p>
 <ol>
 <li>
 <p>We intercept all writes to the <strong>UART Transmit Register</strong>, and print them</p>
+<p><em>(So we can see the Boot Log from NuttX)</em></p>
 </li>
 <li>
-<p>We signal to NuttX that <strong>UART Transmit FIFO</strong> is always ready for output</p>
+<p>We signal to NuttX that <strong>UART Transmit FIFO</strong> is always ready to transmit</p>
+<p><em>(Otherwise NuttX will wait forever for UART)</em></p>
 </li>
 </ol>
-<p>This will tell NuttX that <strong>UART Transmit FIFO</strong> is always ready: <a href="TODO">main.rs</a></p>
+<p>This will tell NuttX that our <strong>UART Transmit FIFO</strong> is forever ready: <a href="TODO">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
 </span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
@@ -314,11 +317,8 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
     </span>size: usize,   <span class="comment">// Number of bytes accessed
     </span>value: i64     <span class="comment">// Write Value
 </span>) -&gt; bool {
-    <span class="comment">// Ignore RAM access, we only intercept Memory-Mapped Input / Output
-    </span><span class="kw">if </span>address &gt;= <span class="number">0x4000_0000 </span>{ <span class="kw">return </span><span class="bool-val">true</span>; }
-    <span class="comment">// println!("hook_memory: address={address:#010x}, size={size:02}, mem_type={mem_type:?}, value={value:#x}");
 
-    // If writing to UART Transmit Holding Register (THR):
+    <span class="comment">// If writing to UART Transmit Holding Register (THR):
     // Print the UART Output
     // https://lupyuen.github.io/articles/serial#transmit-uart
     </span><span class="kw">if </span>address == UART0_BASE_ADDRESS {
@@ -334,6 +334,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>## To see the Emulated UART Output:
 $ cargo run | grep &quot;uart output&quot;
 TODO</code></pre></div>
+<p>We’re ready to boot NuttX on Unicorn!</p>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="TODO" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>Out Barebones Emulator: What happens when we run it?</em></p>
