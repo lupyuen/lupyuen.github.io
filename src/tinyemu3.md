@@ -621,7 +621,7 @@ We created a tool that's super helpful for __validating our Daily NuttX Builds__
 
 - Which becomes our __Daily Automated Testing__
 
-Previously we tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
+Previously we tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn2.html), but Arm64 Emulation was way too difficult. Ox64 with RISC-V is so much easier!
 
 Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor) (and the awesome NuttX Community) for supporting my work! This article wouldn't have been possible without your support.
 

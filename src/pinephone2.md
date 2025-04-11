@@ -194,7 +194,7 @@ Yeah these are the __Core Features__ needed to complete our Smartphone OS (pic a
 
 -   __GPU__ will be needed for serious graphics
 
--   [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn) will be super helpful for testing the above features
+-   [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn.html) will be super helpful for testing the above features
 
 Some of these features are probably supported by NuttX already. But we need to test thoroughly on PinePhone. (Hence the PinePhone Emulator)
 

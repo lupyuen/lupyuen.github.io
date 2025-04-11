@@ -383,7 +383,7 @@ Step by step, here's everything that happens when NuttX boots on our SBC...
 
     [__"Initialise RISC-V Supervisor Mode: jh7110_start"__](https://lupyuen.github.io/articles/privilege#initialise-risc-v-supervisor-mode) and [__jh7110_start_s__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/jh7110/jh7110_start.c#L82-L129)
 
-1.  [__NuttX Kernel (nx_start)__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine) starts the __NuttX Drivers__ and mounts the [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (containing the NuttX Shell and Apps)
+1.  [__NuttX Kernel (nx_start)__](https://lupyuen.github.io/articles/unicorn2.html#after-primary-routine) starts the __NuttX Drivers__ and mounts the [__Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk) (containing the NuttX Shell and Apps)
 
 1.  Followed by the [__NuttX Shell (NSH)__](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem), for the Command-Line Interface
 

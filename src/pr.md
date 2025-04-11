@@ -722,9 +722,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Can we extend it to __emulate PinePhone__? Maybe just the UART Hardware? Check out the articles...
 
-    [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
+    [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn.html)
 
-    [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2)
+    [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2.html)
 
 # Appendix: Build NuttX with CMake
 

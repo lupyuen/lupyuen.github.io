@@ -296,9 +296,9 @@ That's the [__Translation Control Register__](https://developer.arm.com/document
 
 - Thus our MMU shall map __32-bit Virtual Addresses__ into __36-bit Physical Addresses__. Each Physical Address points to a __4 KB Memory Page__.
 
-  [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
+  [_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3.html#page-table-entry)
 
-  [_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
+  [_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3.html#appendix-decoding-the-bits-with-javascript)
 
 _What about MAIR?_
 
@@ -389,7 +389,7 @@ emu.mem_write(
 ).expect("failed to write instructions");
 ```
 
-We populate the [__Level 1 Page Table__](https://lupyuen.github.io/articles/unicorn3#level-1-page-table) from earlier: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L451-L503)
+We populate the [__Level 1 Page Table__](https://lupyuen.github.io/articles/unicorn3.html#level-1-page-table) from earlier: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L451-L503)
 
 ```rust
 // Generate the Page Table Entries...
@@ -473,7 +473,7 @@ x2  = 0x4444_4444_4444_4444
 
 _What's Unicorn Emulator got to do with Apache NuttX RTOS?_
 
-Two Years Ago: We tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn) with NuttX and Unicorn. But NuttX kept crashing on Unicorn...
+Two Years Ago: We tried creating a [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn.html) with NuttX and Unicorn. But NuttX kept crashing on Unicorn...
 
 ```bash
 ## Compile Simplified NuttX for QEMU Arm64 (Kernel Build)
@@ -523,7 +523,7 @@ Two Years Later: The bug stops here! Let's fix it today.
 
 _Where does it crash?_
 
-According to [__Unicorn Log__](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754): Our [__Simplified NuttX__](https://lupyuen.github.io/articles/unicorn3#appendix-simplified-nuttx-for-qemu) crashes here in Unicorn Emulator: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
+According to [__Unicorn Log__](https://gist.github.com/lupyuen/67b8dc6f83cb39c0bc6d622f24b96cc1#file-gistfile1-txt-L1731-L1754): Our [__Simplified NuttX__](https://lupyuen.github.io/articles/unicorn3.html#appendix-simplified-nuttx-for-qemu) crashes here in Unicorn Emulator: [arm64_mmu.c](https://github.com/lupyuen2/wip-nuttx/blob/unicorn-qemu/arch/arm64/src/common/arm64_mmu.c#L635-L661)
 
 ```c
 // NuttX enables the MMU for Exception Level 1
@@ -557,7 +557,7 @@ static void enable_mmu_el1(unsigned int flags) {
 
 [(NuttX defines SCTLR_EL1 in __arm64_arch.h__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_arch.h#L74-L123)
 
-Which is mighty similar to the [__MMU Demo__](https://lupyuen.github.io/articles/unicorn3#enable-the-mmu) that we saw earlier...
+Which is mighty similar to the [__MMU Demo__](https://lupyuen.github.io/articles/unicorn3.html#enable-the-mmu) that we saw earlier...
 
 ```rust
 // MMU Demo Works OK:
@@ -651,7 +651,7 @@ Looks legit, we move on...
 
 _What about the Translation Control Register?_
 
-We check the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884), with [__MMU Logging Enabled__](https://lupyuen.github.io/articles/unicorn3#level-1-and-2-page-tables)...
+We check the [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884), with [__MMU Logging Enabled__](https://lupyuen.github.io/articles/unicorn3.html#level-1-and-2-page-tables)...
 
 ```bash
 get_tcr: Virtual Address Bits: 36
@@ -692,9 +692,9 @@ According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2
 
 Hmmm something looks different...
 
-[_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3#page-table-entry)
+[_(We spoke about Innies and Outies earlier)_](https://lupyuen.github.io/articles/unicorn3.html#page-table-entry)
 
-[_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3#appendix-decoding-the-bits-with-javascript)
+[_(Decoding the Bits with JavaScript)_](https://lupyuen.github.io/articles/unicorn3.html#appendix-decoding-the-bits-with-javascript)
 
 # NuttX vs MMU Demo
 
@@ -721,7 +721,7 @@ Ah we see a major discrepancy...
 
 - __Inner / Outer Caching?__ Probably won't matter for our Unicorn Emulator
 
-- Though truthfully: We already made [__plenty of fixes__](https://lupyuen.github.io/articles/unicorn3#appendix-simplified-nuttx-for-qemu)
+- Though truthfully: We already made [__plenty of fixes__](https://lupyuen.github.io/articles/unicorn3.html#appendix-simplified-nuttx-for-qemu)
 
 We fix the Virtual Addresses...
 
@@ -841,7 +841,7 @@ sudo docker run \
 
 How did we create the Mermaid Flowchart? Check the details here...
 
-- [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2)
+- [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2.html)
 
 ![Unicorn is stuck forever in PL011 UART Driver](https://lupyuen.org/images/unicorn3-bootflow3.png)
 
@@ -939,7 +939,7 @@ cargo run
 
 To fix the crashing bug, we reduced the __Virtual Address Size__...
 
-- [__"32 Bits of Virtual Address"__](https://lupyuen.github.io/articles/unicorn3#32-bits-of-virtual-address)
+- [__"32 Bits of Virtual Address"__](https://lupyuen.github.io/articles/unicorn3.html#32-bits-of-virtual-address)
 
 The __Fixed Version__ (that won't crash in Unicorn) is here...
 

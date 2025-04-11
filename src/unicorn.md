@@ -254,7 +254,7 @@ let _ = emu.add_mem_hook(
 ).expect("failed to add memory hook");
 ```
 
-When we run this, we see the Read and Write Memory Accesses made by our [__Emulated Arm64 Code__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code)...
+When we run this, we see the Read and Write Memory Accesses made by our [__Emulated Arm64 Code__](https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code)...
 
 ```text
 hook_memory: 
@@ -310,7 +310,7 @@ let _ = emu.add_code_hook(
 ).expect("failed to add code hook");
 ```
 
-When we run this with our [__Arm64 Machine Code__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code), we see the Address of __every Arm64 Instruction emulated__ (and its size)...
+When we run this with our [__Arm64 Machine Code__](https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code), we see the Address of __every Arm64 Instruction emulated__ (and its size)...
 
 ```text
 hook_code:
@@ -365,7 +365,7 @@ hook_code:  address=0x10000, size=4
 hook_code:  address=0x10004, size=4
 ```
 
-Which means that Unicorn Emulator calls our Hook Function only once for the [__entire Block of two Arm64 Instructions__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code).
+Which means that Unicorn Emulator calls our Hook Function only once for the [__entire Block of two Arm64 Instructions__](https://lupyuen.github.io/articles/unicorn.html#emulate-arm64-machine-code).
 
 [(What's a Block of Arm64 Instructions?)](https://github.com/lupyuen/pinephone-emulator#what-is-a-block-of-arm64-instructions)
 
@@ -381,7 +381,7 @@ The Block Execution Hook is super helpful for monitoring the __Execution Flow__ 
 
 This is how we do it...
 
--   [__"Map Address to Function with ELF File"__](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
+-   [__"Map Address to Function with ELF File"__](https://lupyuen.github.io/articles/unicorn.html#appendix-map-address-to-function-with-elf-file)
 
 # Unmapped Memory
 
@@ -652,7 +652,7 @@ NuttX RTOS will write the UART Output to Allwinner A64's __UART Transmit Holding
 
 To emulate the UART Output, we use Unicorn's __Memory Access Hook__...
 
--   [__"Memory Access Hook"__](https://lupyuen.github.io/articles/unicorn#memory-access-hook)
+-   [__"Memory Access Hook"__](https://lupyuen.github.io/articles/unicorn.html#memory-access-hook)
 
 In our Memory Access Hook, we intercept all writes to __`01C2` `8000`__ and dump the bytes written: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
@@ -798,7 +798,7 @@ Which will be similar to this BL602 setup, except that we'll boot the Daily Buil
 
 Also Unicorn Emulator has produced a __Call Graph__ for NuttX on PinePhone, which is extremely valuable for troubleshooting...
 
--   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2)
+-   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2.html)
 
 _But our PinePhone Emulator doesn't handle Console Input..._
 
@@ -832,7 +832,7 @@ Check out __QEMU Emulator__...
 
 Check out the next article...
 
--   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2)
+-   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2.html)
 
 This has been a fun educational exercise. Now we have a way to run __Automated Daily Tests__ for Apache NuttX RTOS on PinePhone... Kudos to the __Maintainers of Unicorn Emulator__!
 
@@ -862,7 +862,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Check out the new article...
 
--   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2)
+-   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2.html)
 
 Our __Block Execution Hook__ now prints the __Function Name__ and the __Filename__...
 

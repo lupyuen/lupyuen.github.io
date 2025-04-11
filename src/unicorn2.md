@@ -8,9 +8,9 @@
 
 Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/what) (RTOS) on [__Unicorn Emulator__](https://www.unicorn-engine.org/)...
 
--   [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
+-   [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn.html)
 
-And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) in the Unicorn Emulator while booting NuttX.
+And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/unicorn.html#emulator-halts-with-mmu-fault) in the Unicorn Emulator while booting NuttX.
 
 In this article we'll create some tools  to __troubleshoot the Arm64 Exception__ in NuttX...
 
@@ -32,7 +32,7 @@ Let's dive in and learn how...
 
 ![Running Apache NuttX RTOS in Unicorn](https://lupyuen.github.io/images/unicorn-code4.png)
 
-[_Running Apache NuttX RTOS in Unicorn_](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+[_Running Apache NuttX RTOS in Unicorn_](https://lupyuen.github.io/articles/unicorn.html#apache-nuttx-rtos-in-unicorn)
 
 # Intercept Code Execution in Unicorn
 
@@ -40,7 +40,7 @@ _What's Unicorn? How does it work with Apache NuttX RTOS?_
 
 [__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU Emulator__](http://www.qemu.org/).
 
-In the [__last article__](https://lupyuen.github.io/articles/unicorn) we called Unicorn (in Rust) to run the __Arm64 Machine Code__ for Apache NuttX RTOS...
+In the [__last article__](https://lupyuen.github.io/articles/unicorn.html) we called Unicorn (in Rust) to run the __Arm64 Machine Code__ for Apache NuttX RTOS...
 
 ```rust
 // Arm64 Machine Code for Apache NuttX RTOS
@@ -67,7 +67,7 @@ let err = emu.emu_start(
 );
 ```
 
-[(Source)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+[(Source)](https://lupyuen.github.io/articles/unicorn.html#apache-nuttx-rtos-in-unicorn)
 
 When we run this, NuttX starts booting in the Unicorn Emulator!
 
@@ -108,7 +108,7 @@ fn hook_block(
 }
 ```
 
-[(Source)](https://lupyuen.github.io/articles/unicorn#block-execution-hook)
+[(Source)](https://lupyuen.github.io/articles/unicorn.html#block-execution-hook)
 
 Unicorn Emulator calls our Hook Function, passing the...
 
@@ -281,7 +281,7 @@ In the code above, we...
 
 -   Extract the __Source Filename, Line and Column__ from the DWARF Location
 
-Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print meaningful traces of our Emulated Program...
+Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2.html#map-address-to-function) will print meaningful traces of our Emulated Program...
 
 ```text
 → cargo run 
@@ -309,7 +309,7 @@ __ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File.
 
 Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) libraries to parse the Debug Symbols...
 
--   [__"Parse DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2#appendix-parse-dwarf-debug-symbols)
+-   [__"Parse DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2.html#appendix-parse-dwarf-debug-symbols)
 
 ![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
 
@@ -360,7 +360,7 @@ To __preview the flowchart__ and check the hyperlinks, we use this handy web too
 
 _How will we generate the Clickable Call Graph?_
 
-Remember our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn) that intercepts every Block of Arm64 Instructions emulated by Unicorn?
+Remember our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn) that intercepts every Block of Arm64 Instructions emulated by Unicorn?
 
 Let's __print the Call Graph__ inside our Hook Function: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159)
 
@@ -437,7 +437,7 @@ fn call_graph(
   if fname.eq(last_fname.as_str()) { return; }
 ```
 
-__call_graph__ receives the Function Name and Source Filename, which we have [__loaded from the ELF File__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function).
+__call_graph__ receives the Function Name and Source Filename, which we have [__loaded from the ELF File__](https://lupyuen.github.io/articles/unicorn2.html#map-address-to-function).
 
 [(__map_location_to_function__ is defined here)](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L267-L280)
 
@@ -513,31 +513,31 @@ _What can the Call Graph tell us about the fault?_
 
 We click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__ (pic above)...
 
-1.  NuttX starts at [__arm64_head__](https://lupyuen.github.io/articles/unicorn2#arm64-header)
+1.  NuttX starts at [__arm64_head__](https://lupyuen.github.io/articles/unicorn2.html#arm64-header)
 
     (To prepare Arm64 Exception Levels 1 and 2)
 
-1.  Which calls [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)
+1.  Which calls [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2.html#primary-routine)
 
     (To start the NuttX Kernel)
 
-1.  Which calls [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
+1.  Which calls [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip)
 
     (To configure the Arm64 CPU)
 
-1.  Which calls [__arm64_mmu_init__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
+1.  Which calls [__arm64_mmu_init__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip)
 
     (To initialise the Arm64 Memory Management Unit)
 
-1.  Which calls [__setup_page_tables__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
+1.  Which calls [__setup_page_tables__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip)
 
     (To set up the Arm64 Memory Page Tables)
 
-1.  And calls [__enable_mmu_el1__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
+1.  And calls [__enable_mmu_el1__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip)
 
     (To enable the Arm64 Memory Management Unit)
 
-1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
+1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip)
 
 To understand what's really happening, we dive into each of the above functions.
 
@@ -559,11 +559,11 @@ Hence along the way we'll learn how exactly NuttX boots on PinePhone.
 
 The assembly code calls...
 
--   [__arm64_boot_el1_init__](https://lupyuen.github.io/articles/unicorn2#initialise-el1) to prepare __Arm64 Exception Level 1__
+-   [__arm64_boot_el1_init__](https://lupyuen.github.io/articles/unicorn2.html#initialise-el1) to prepare __Arm64 Exception Level 1__
 
     [(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
--   [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine) to boot the __NuttX Kernel__
+-   [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2.html#primary-routine) to boot the __NuttX Kernel__
 
 ![Initialise EL1](https://lupyuen.github.io/images/unicorn2-callgraph4.jpg)
 
@@ -595,7 +595,7 @@ The assembly code calls...
 
 -   [__boot_early_memset__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177) to fill the [__BSS Section__](https://en.wikipedia.org/wiki/.bss) with 0
 
--   [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) to configure the Arm64 CPU
+-   [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip) to configure the Arm64 CPU
 
 And more... We'll come back to the Primary Routine in the next chapter.
 
@@ -611,7 +611,7 @@ And more... We'll come back to the Primary Routine in the next chapter.
 
 -   And calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552): To enable the Arm64 Memory Management Unit and Data Cache for Exception Level 1
 
--   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault): Invalid Arm64 Address Translation or Caching at `0x400C` `3FFF`
+-   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn.html#emulator-halts-with-mmu-fault): Invalid Arm64 Address Translation or Caching at `0x400C` `3FFF`
 
 _What caused the Arm64 Memory Management Fault?_
 
@@ -627,7 +627,7 @@ _Suppose we fix the Arm64 Memory Management Fault..._
 
 _What will happen next?_
 
-Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2#boot-chip) that gets tripped inside [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip).
+Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip) that gets tripped inside [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip).
 
 (Only in __Unicorn Emulator__, not on PinePhone)
 
@@ -637,19 +637,19 @@ When we fix the fault, we expect NuttX to boot successfully to the __NSH Command
 
 _But what happens between arm64_chip_boot and NSH Command Prompt?_
 
-Let's trace the __NuttX Boot Sequence__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
+Let's trace the __NuttX Boot Sequence__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
 
 ![Primary Routine](https://lupyuen.github.io/images/unicorn2-callgraph5.jpg)
 
 ## After Boot Chip
 
-Earlier we saw that [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) initialises the Arm64 Memory Management Unit. After that, it calls...
+Earlier we saw that [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2.html#boot-chip) initialises the Arm64 Memory Management Unit. After that, it calls...
 
 -   [__a64_board_initialize__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85): To initialise the PinePhone "Board" (for LEDs)
 
 -   [__a64_earlyserialinit__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619): To configure the PinePhone Allwinner A64 UART Port (for Console Input / Output)
 
-And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)...
+And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2.html#primary-routine)...
 
 ## After Primary Routine
 
@@ -697,7 +697,7 @@ _How does nx_bringup start the NSH Shell?_
 
 Check out the details here...
 
--   [__"Start NSH Shell"__](https://lupyuen.github.io/articles/unicorn2#appendix-start-nsh-shell)
+-   [__"Start NSH Shell"__](https://lupyuen.github.io/articles/unicorn2.html#appendix-start-nsh-shell)
 
 ## PinePhone Drivers
 
@@ -741,7 +741,7 @@ _Can we fix the Arm64 Memory Management Fault on Unicorn?_
 
 Based on our earlier investigation with Unicorn Emulator...
 
--   [__"Emulator Halts with MMU Fault"__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
+-   [__"Emulator Halts with MMU Fault"__](https://lupyuen.github.io/articles/unicorn.html#emulator-halts-with-mmu-fault)
 
 We deduced that the __Arm64 Address Translation__ (or Caching) has failed in our Emulated Arm64 __Memory Management Unit__ for [__Exception Level 1__](https://lupyuen.github.io/articles/interrupt#exception-levels).
 
@@ -759,7 +759,7 @@ From the Call Graph above, these are the functions involved in the Arm64 __Addre
 
 To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay tuned for updates!
 
-(I might have missed a [__Memory Mapping__](https://lupyuen.github.io/articles/unicorn#unmapped-memory) at `0x400C` `3FFF`)
+(I might have missed a [__Memory Mapping__](https://lupyuen.github.io/articles/unicorn.html#unmapped-memory) at `0x400C` `3FFF`)
 
 ![Without Emulation: Boxful of gadgets for auto-testing](https://lupyuen.github.io/images/auto2-box.jpg)
 
@@ -781,7 +781,7 @@ We tried __Automated Daily Testing__ for a simpler microcontroller gadget (pic a
 
 -   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
 
-But for PinePhone we'll do Automated Daily Testing the gadgetless way... With [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)!
+But for PinePhone we'll do Automated Daily Testing the gadgetless way... With [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn.html#apache-nuttx-rtos-in-unicorn)!
 
 _How will we auto-build and test NuttX for PinePhone every day?_
 
@@ -795,11 +795,11 @@ Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
 
 1.  Run the built NuttX Image with __Unicorn Emulator__
 
-    [(Like this)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+    [(Like this)](https://lupyuen.github.io/articles/unicorn.html#apache-nuttx-rtos-in-unicorn)
 
 1.  Generate the NuttX __Call Graph__ in Rust
 
-    [(Like this)](https://lupyuen.github.io/articles/unicorn2#generate-call-graph)
+    [(Like this)](https://lupyuen.github.io/articles/unicorn2.html#generate-call-graph)
 
 1.  __Match the Call Graph__ with some pattern
 
@@ -815,13 +815,13 @@ Or maybe I'll switch on my SBC every day to run all these. We'll talk more in th
 
 We've done so much today...
 
--   Render the [__Clickable Call Graph__](https://lupyuen.github.io/articles/unicorn2#generate-call-graph) for Apache NuttX RTOS, to understand how it boots...
+-   Render the [__Clickable Call Graph__](https://lupyuen.github.io/articles/unicorn2.html#generate-call-graph) for Apache NuttX RTOS, to understand how it boots...
 
--   By integrating [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn) with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli), to map the Code Addresses to NuttX Kernel Functions
+-   By integrating [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn) with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli), to map the Code Addresses to NuttX Kernel Functions
 
--   Thanks to the Call Graph, we walked through the complete [__Boot Sequence__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx) of NuttX for PinePhone
+-   Thanks to the Call Graph, we walked through the complete [__Boot Sequence__](https://lupyuen.github.io/articles/unicorn2.html#pinephone-boots-nuttx) of NuttX for PinePhone
 
--   Unicorn might be helpful for [__Automated Daily Build and Test__](https://lupyuen.github.io/articles/unicorn2#automated-daily-build-and-test) of NuttX for PinePhone
+-   Unicorn might be helpful for [__Automated Daily Build and Test__](https://lupyuen.github.io/articles/unicorn2.html#automated-daily-build-and-test) of NuttX for PinePhone
 
 I hope you'll join me in the next article as we implement the __Automated Daily Build and Test__ of NuttX for PinePhone.
 
@@ -853,9 +853,9 @@ _How does NuttX start the NSH Shell?_
 
 Earlier we stepped through the __Boot Sequence__ for NuttX...
 
-- [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx)
+- [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/unicorn2.html#pinephone-boots-nuttx)
 
-- [__"PinePhone Continues Booting NuttX"__](https://lupyuen.github.io/articles/unicorn2#pinephone-continues-booting-nuttx)
+- [__"PinePhone Continues Booting NuttX"__](https://lupyuen.github.io/articles/unicorn2.html#pinephone-continues-booting-nuttx)
 
 Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L373-L458) calls...
 
@@ -885,7 +885,7 @@ CONFIG_INIT_ENTRYNAME="nsh_main"
 
 Eventually [__nsh_main__](https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85) will initialise the PinePhone Drivers...
 
-- [__"PinePhone Drivers"__](https://lupyuen.github.io/articles/unicorn2#pinephone-drivers)
+- [__"PinePhone Drivers"__](https://lupyuen.github.io/articles/unicorn2.html#pinephone-drivers)
 
 _Can we configure NuttX to start another app?_
 
@@ -897,7 +897,7 @@ CONFIG_INIT_ENTRYNAME="lvgldemo_main"
 
 NuttX will start our [__LVGL Demo App__](https://lupyuen.github.io/articles/lvgl2#boot-to-lvgl) when it boots.
 
-([__lvgldemo_main__](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L208-L220) will also initialise the [__PinePhone Drivers__](https://lupyuen.github.io/articles/unicorn2#pinephone-drivers))
+([__lvgldemo_main__](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L208-L220) will also initialise the [__PinePhone Drivers__](https://lupyuen.github.io/articles/unicorn2.html#pinephone-drivers))
 
 ![DWARF Debugging Format](https://lupyuen.github.io/images/unicorn2-dwarf.png)
 
@@ -907,9 +907,9 @@ NuttX will start our [__LVGL Demo App__](https://lupyuen.github.io/articles/lvgl
 
 Earlier we talked about parsing the [__DWARF Debug Symbols__](https://en.wikipedia.org/wiki/DWARF) in the [__ELF File__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)...
 
--   [__"Address to Function"__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function)
+-   [__"Address to Function"__](https://lupyuen.github.io/articles/unicorn2.html#map-address-to-function)
 
--   [__"DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2#dwarf-debug-symbols)
+-   [__"DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2.html#dwarf-debug-symbols)
 
 So that we can print the __Function Names and Source Filenames__ for the Arm64 Code Addresses...
 
