@@ -501,44 +501,32 @@ SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the
 <p>Our Interrupt Hook is super barebones, barely sufficient for making it past the Arm64 SysCall…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
-hook_block:  address=0x40806d50, size=08, sched_unlock, sched/sched/sched_unlock.c:92:19
-hook_block:  address=0x40806d58, size=08, sys_call0, arch/arm64/include/syscall.h:152:21
+## NuttX Scheduler calls Arm64 SysCall...
 call_graph:  sched_unlock --&gt; sys_call0
 call_graph:  click sched_unlock href &quot;https://github.com/apache/nuttx/blob/master/sched/sched/sched_unlock.c#L89&quot; &quot;sched/sched/sched_unlock.c &quot; _blank
+
+## Unicorn calls our Interrupt Hook!
 &gt;&gt; exception index = 2
 hook_interrupt: intno=2
 PC=0x40806d60
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-hook_block:  address=0x40806d60, size=16, sched_unlock, sched/sched/sched_unlock.c:104:28
+
+## Our Interrupt Hook returns to Unicorn,
+## without handling the Arm64 SysCall...
 call_graph:  sys_call0 --&gt; sched_unlock
-call_graph:  click sys_call0 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L151&quot; &quot;arch/arm64/include/syscall.h &quot; _blank
-hook_block:  address=0x40806d90, size=04, up_irq_restore, arch/arm64/include/irq.h:383:3
-hook_block:  address=0x40806d94, size=12, sched_unlock, sched/sched/sched_unlock.c:168:1
 call_graph:  up_irq_restore --&gt; sched_unlock
 call_graph:  click up_irq_restore href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/include/irq.h#L382&quot; &quot;arch/arm64/include/irq.h &quot; _blank
-hook_block:  address=0x408062b4, size=04, nx_start, sched/init/nx_start.c:782:7
-hook_block:  address=0x408169c8, size=08, up_idle, arch/arm64/src/common/arm64_idle.c:62:3
+
+## NuttX tries to continue booting, but fails...
 call_graph:  nx_start --&gt; up_idle
 call_graph:  click nx_start href &quot;https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L781&quot; &quot;sched/init/nx_start.c &quot; _blank
+
+## Unicorn says that NuttX has halted at WFI
 &gt;&gt; exception index = 65537
 &gt;&gt;&gt; stop with r = 10001, HLT=10001
 &gt;&gt;&gt; got HLT!!!
 err=Ok(())
-PC=0x408169d0
-WARNING: Your register accessing on id 290 is deprecated and will get UC_ERR_ARG in the future release (2.2.0) because the accessing is either no-op or not defined. If you believe the register should be implemented or there is a bug, please submit an issue to https://github.com/unicorn-engine/unicorn. Set UC_IGNORE_REG_BREAK=1 to ignore this warning.
-CP_REG=Ok(0)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-call_graph:  up_idle --&gt; ***_HALT_***
-call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_idle.c#L61&quot; &quot;arch/arm64/src/common/arm64_idle.c &quot; _blank</code></pre></div>
-<p><a href="TODO">(PC 0x408169d0 points to WFI)</a></p>
+PC=0x408169d0</code></pre></div>
+<p><a href="TODO">(<strong>0x4081_69D0</strong> points to WFI)</a></p>
 <p>But we’re not done yet! Unicorn halts because we haven’t emulated the Arm64 SysCall. Let’s do it…</p>
 <h1 id="arm64-vector-table"><a class="doc-anchor" href="#arm64-vector-table">§</a>7 Arm64 Vector Table</h1>
 <p><em>How to emulate the Arm64 SysCall?</em></p>
@@ -601,47 +589,52 @@ call_graph:  click up_idle href &quot;https://github.com/apache/nuttx/blob/maste
 <h1 id="emulate-the-arm64-syscall"><a class="doc-anchor" href="#emulate-the-arm64-syscall">§</a>8 Emulate the Arm64 SysCall</h1>
 <p>Inside our <strong>Interrupt Hook</strong>: This is how we jump to <strong>VBAR_EL1 + 0x200</strong>: <a href="TODO">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Interrupt
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function to Handle Unicorn Interrupt
 </span><span class="kw">fn </span>hook_interrupt(
     emu: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>intno: u32, <span class="comment">// Interrupt Number
+    </span>intno: u32,             <span class="comment">// Interrupt Number
 </span>) {
-    <span class="kw">let </span>pc = emu.reg_read(RegisterARM64::PC).unwrap();
-    <span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
-    <span class="macro">println!</span>(<span class="string">"hook_interrupt: intno={intno}"</span>);
-    <span class="macro">println!</span>(<span class="string">"PC=0x{pc:08x}"</span>);
-    <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
-    <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-    <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
+  <span class="kw">let </span>pc = emu.reg_read(RegisterARM64::PC).unwrap();
+  <span class="kw">let </span>x0 = emu.reg_read(RegisterARM64::X0).unwrap();
+  <span class="macro">println!</span>(<span class="string">"hook_interrupt: intno={intno}"</span>);
+  <span class="macro">println!</span>(<span class="string">"PC=0x{pc:08x}"</span>);
+  <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
+  <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
+  <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
+  <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
+  <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
 
-    <span class="comment">// SysCall from NuttX Apps: We don't handle it yet
-    </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{
-        <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>);
-        finish();
-    }
+  <span class="comment">// SysCall from NuttX Apps: We don't handle it yet
+  </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{ <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>); finish(); }
 
-    <span class="comment">// SysCall from NuttX Kernel: Handle it here
-    </span><span class="kw">if </span>intno == <span class="number">2 </span>{
-        <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
-        // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
-        </span><span class="kw">let </span>esr_el1 = <span class="number">0x15 </span>&lt;&lt; <span class="number">26</span>;  <span class="comment">// Exception is SVC
-        </span><span class="kw">let </span>vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
-        <span class="kw">let </span>svc = vbar_el1 + <span class="number">0x200</span>;
-        <span class="macro">println!</span>(<span class="string">"esr_el1=0x{esr_el1:08x}"</span>);
-        <span class="macro">println!</span>(<span class="string">"vbar_el1=0x{vbar_el1:08x}"</span>);
-        <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
-        emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
-        emu.reg_write(RegisterARM64::PC, svc).unwrap();
-    }
+  <span class="comment">// SysCall from NuttX Kernel: Handle it here...
+  </span><span class="kw">if </span>intno == <span class="number">2 </span>{
+
+    <span class="comment">// We are doing SVC (Synchronous Exception) at EL1.
+    // Which means Unicorn Emulator should jump to VBAR_EL1 + 0x200.
+    </span><span class="kw">let </span>esr_el1 = <span class="number">0x15 </span>&lt;&lt; <span class="number">26</span>;  <span class="comment">// Exception is SVC
+    </span><span class="kw">let </span>vbar_el1 = emu.reg_read(RegisterARM64::VBAR_EL1).unwrap();
+    <span class="kw">let </span>svc = vbar_el1 + <span class="number">0x200</span>;
+
+    <span class="comment">// Update the ESR_EL1 and Program Counter
+    </span>emu.reg_write(RegisterARM64::ESR_EL1, esr_el1).unwrap();
+    emu.reg_write(RegisterARM64::PC, svc).unwrap();
+
+    <span class="comment">// Print the values
+    </span><span class="macro">println!</span>(<span class="string">"esr_el1=0x{esr_el1:08x}"</span>);
+    <span class="macro">println!</span>(<span class="string">"vbar_el1=0x{vbar_el1:08x}"</span>);
+    <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
+  }
 }</code></pre></div>
+<p>TODO: Why ESR_EL1?</p>
 <p>And it works: NuttX on Unicorn boots <em>(almost)</em> to <strong>NSH Shell</strong>. Yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
+...
+## NuttX begins booting...
 - Ready to Boot Primary CPU
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-x_start: Entry
+nx_start: Entry
 up_allocate_kheap: heap_start=0x0x40849000, heap_size=0x77b7000
 gic_validate_dist_version: No GIC version detect
 arm64_gic_initialize: no distributor detected, giving up ret=-19
@@ -652,123 +645,80 @@ nxtask_activate: hpwork pid=1,TCB=0x40849e78
 work_start_lowpri: Starting low-priority kernel worker thread(s)
 nxtask_activate: lpwork pid=2,TCB=0x4084c008
 nxtask_activate: AppBringUp pid=3,TCB=0x4084c190
+
+## Unicorn calls our Interrupt Hook...
 &gt;&gt; exception index = 2
 hook_interrupt: intno=2
 PC=0x40807300
 X0=0x00000002
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
+
+## We jump to VBAR_EL1 + 0x200
+## Which points to NuttX Exception Handler for Arm64 SysCall
 esr_el1=0x54000000
 vbar_el1=0x40827000
 jump to svc=0x40827200
+
+## Unicorn executes the NuttX Exception Handler for Arm64 SysCall
 &gt;&gt; exception index = 65536
 &gt;&gt;&gt; stop with r = 10000, HLT=10001
 &gt;&gt; exception index = 4294967295
 
+## NuttX dumps the Arm64 SysCall
 arm64_dump_syscall: SYSCALL arm64_syscall: regs: 0x408483c0 cmd: 2
 arm64_dump_syscall: x0:  0x2                 x1:  0x0
 arm64_dump_syscall: x2:  0x4084c008          x3:  0x408432b8
 arm64_dump_syscall: x4:  0x40849e78          x5:  0x2
 arm64_dump_syscall: x6:  0x40843000          x7:  0x3
 
+## NuttX continues booting yay!
 nx_start_application: Starting init task: /system/bin/init
 nxtask_activate: /system/bin/init pid=4,TCB=0x4084c9f0
 nxtask_exit: AppBringUp pid=3,TCB=0x4084c190
-
-&gt;&gt; exception index = 2
-hook_interrupt: intno=2
-PC=0x40816be8
-X0=0x00000001
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(1409286144)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-esr_el1=0x54000000
-vbar_el1=0x40827000
-jump to svc=0x40827200
-&gt;&gt; exception index = 65536
-&gt;&gt;&gt; stop with r = 10000, HLT=10001
-&gt;&gt; exception index = 4294967295
-
+...
+## More Arm64 SysCalls, handled correctly...
 arm64_dump_syscall: SYSCALL arm64_syscall: regs: 0x40853c70 cmd: 1
 arm64_dump_syscall: x0:  0x1                 x1:  0x40843000
 arm64_dump_syscall: x2:  0x0                 x3:  0x1
 arm64_dump_syscall: x4:  0x3                 x5:  0x40844000
 arm64_dump_syscall: x6:  0x4                 x7:  0x0
-
-&gt;&gt; exception index = 2
-hook_interrupt: intno=2
-PC=0x4080b35c
-X0=0x00000002
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(1409286144)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-esr_el1=0x54000000
-vbar_el1=0x40827000
-jump to svc=0x40827200
-&gt;&gt; exception index = 65536
-&gt;&gt;&gt; stop with r = 10000, HLT=10001
-&gt;&gt; exception index = 4294967295
-
+...
 arm64_dump_syscall: SYSCALL arm64_syscall: regs: 0x4084bc20 cmd: 2
 arm64_dump_syscall: x0:  0x2                 x1:  0xc0
 arm64_dump_syscall: x2:  0x4084c008          x3:  0x0
 arm64_dump_syscall: x4:  0x408432d0          x5:  0x0
 arm64_dump_syscall: x6:  0x0                 x7:  0x0
-
-&gt;&gt; exception index = 2
-hook_interrupt: intno=2
-PC=0x4080b35c
-X0=0x00000002
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(1409286144)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-esr_el1=0x54000000
-vbar_el1=0x40827000
-jump to svc=0x40827200
-&gt;&gt; exception index = 65536
-&gt;&gt;&gt; stop with r = 10000, HLT=10001
-&gt;&gt; exception index = 4294967295
-
+...
 arm64_dump_syscall: SYSCALL arm64_syscall: regs: 0x4084fc20 cmd: 2
 arm64_dump_syscall: x0:  0x2                 x1:  0x64
 arm64_dump_syscall: x2:  0x4084c9f0          x3:  0x0
 arm64_dump_syscall: x4:  0x408432d0          x5:  0x0
-arm64_dump_syscall: x6:  0x0                 x7:  0x0
-
+arm64_dump_syscall: x6:  0x0                 x7:  0x0</code></pre></div>
+<p><a href="TODO">(See the <strong>Unicorn Log</strong>)</a></p>
+<p>But NSH Shell won’t start correctly, here’s why…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Our Emulator stops at SysCall Command 9
 &gt;&gt; exception index = 2
 hook_interrupt: intno=2
 PC=0xc0003f00
 X0=0x00000009
-ESR_EL0=Ok(0)
 ESR_EL1=Ok(1409286144)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-TODO: Handle SysCall from NuttX Apps</code></pre></div>
-<p>But NSH Shell won’t start correctly, here’s why…</p>
-<p>TODO: Why ESR_EL1?</p>
-<h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
+TODO: Handle SysCall from NuttX Apps</code></pre></div><h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
 <p><em>What’s SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
+## Our Emulator stops at SysCall Command 9
 hook_interrupt: intno=2
 PC=0xc0003f00
 X0=0x00000009
 ESR_EL0=Ok(0)
 ESR_EL1=Ok(1409286144)</code></pre></div>
-<p>According to Arm64 Disassembly of NSH Shell, SysCall Command 9 happens inside <code>gettid()</code>: <a href="TODO">nuttx-init.S</a></p>
-<div class="example-wrap"><pre class="language-c"><code>0000000000002ef4 &lt;gettid&gt;:
-gettid():
-    2ef4:	d2800120 	mov	x0, #0x9                   	// #9
-    2ef8:	f81f0ffe 	str	x30, [sp, #-16]!
-    2efc:	d4000001 	svc	#0x0
-    2f00:	f84107fe 	ldr	x30, [sp], #16
-    2f04:	d65f03c0 	ret</code></pre></div>
-<p>Which says that…</p>
+<p>According to Arm64 Disassembly of NSH Shell, <strong>SysCall Command 9</strong> happens inside the <code>gettid</code> function: <a href="TODO">nuttx-init.S</a></p>
+<div class="example-wrap"><pre class="language-c"><code>gettid():
+  2ef4:	d2800120 	mov	x0,  #0x9  // SysCall Command 9 (Register X0)
+  2ef8:	f81f0ffe 	str	x30, [sp, #-16]!
+  2efc:	d4000001 	svc	#0x0      // Execute the SysCall
+  2f00:	f84107fe 	ldr	x30, [sp], #16
+  2f04:	d65f03c0 	ret</code></pre></div>
+<p>This says that…</p>
 <ol>
 <li>
 <p><strong>NSH Shell</strong> is starting as a NuttX App</p>
