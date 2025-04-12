@@ -324,9 +324,14 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
   </span><span class="bool-val">true
 </span>}</code></pre></div>
 <p>When we run this: Our Barebones Emulator will print the UART Output and show the <strong>NuttX Boot Log</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## To see the Emulated UART Output:
+<div class="example-wrap"><pre class="language-bash"><code>## To see the Emulated UART Output
 $ cargo run | grep &quot;uart output&quot;
-TODO</code></pre></div>
+...
+## NuttX begins booting...
+- Ready to Boot Primary CPU
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+nx_start: Entry</code></pre></div>
 <p>We’re ready to boot NuttX on Unicorn!</p>
 <p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
@@ -386,20 +391,22 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
 <h1 id="syscall-for-context-switch"><a class="doc-anchor" href="#syscall-for-context-switch">§</a>5 SysCall for Context Switch</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
-<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>: TODO</p>
+<p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-c"><code>sched/sched/sched_unlock.c:92
-TODO: Function
-TODO {
+// To unlock the Task Scheduler...
+void sched_unlock(void) {
+  ...
   up_switch_context(this_task(), rtcb);
     40807230:	d538d080 	mrs	x0, tpidr_el1
     40807234:	37000060 	tbnz	w0, #0, 40807240 &lt;sched_unlock+0x80&gt;
 
 arch/arm64/include/syscall.h:152
-// Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
+// We execute an Arm64 SysCall SVC with SYS_ call number and no parameters
 static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__(&quot;x0&quot;) = (uint64_t)(nbr);
     40807238:	d2800040 	mov	x0, #0x2  // Parameter in Register X0 is 2
     4080723c:	d4000001 	svc	#0x0      // Execute SysCall 0</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/sched/sched_unlock.c#L80-L95">(<strong>sched_unlock</strong> is here)</a></p>
 <p>What’s the NuttX SysCall with Parameter 2? It’s for <strong>Switching The Context</strong> between NuttX Tasks: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83">syscall.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX SysCall 2 will Switch Context:
 // void arm64_switchcontext(void **saveregs, void *restoreregs)
@@ -438,19 +445,13 @@ uint64_t *arm64_syscall(uint64_t *regs) {
 <p>FYI <strong>NuttX SysCalls</strong> are defined here…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h">SysCall Defines: syscall_lookup.h</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h"><strong>SysCall Defines:</strong> syscall_lookup.h</a></p>
 </li>
 <li>
-<p><a href="TODO">SysCall CSV: TODO</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/syscall/syscall.csv"><strong>SysCall CSV:</strong> syscall.csv</a></p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-c"><code>SYSCALL_LOOKUP(getpid,                     0)
-SYSCALL_LOOKUP(gettid,                     0)
-SYSCALL_LOOKUP(sched_getcpu,               0)
-SYSCALL_LOOKUP(sched_lock,                 0)
-SYSCALL_LOOKUP(sched_lockcount,            0)
-SYSCALL_LOOKUP(sched_unlock,               0)
-SYSCALL_LOOKUP(sched_yield,                0)</code></pre></div><h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
+<h1 id="hook-the-unicorn-interrupt"><a class="doc-anchor" href="#hook-the-unicorn-interrupt">§</a>6 Hook The Unicorn Interrupt</h1>
 <p><em>To Boot NuttX: We need to Emulate the Arm64 SysCall. How?</em></p>
 <p>We saw earlier that Unicorn expects us to…</p>
 <ol>
@@ -626,7 +627,7 @@ PC=0x408169d0</code></pre></div>
     <span class="macro">println!</span>(<span class="string">"jump to svc=0x{svc:08x}"</span>);
   }
 }</code></pre></div>
-<p>TODO: Why ESR_EL1?</p>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator#esr_el1-is-missing">(Why we need <strong>ESR_EL1</strong>)</a></p>
 <p>And it works: NuttX on Unicorn boots <em>(almost)</em> to <strong>NSH Shell</strong>. Yay!</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run | grep &quot;uart output&quot;
 ...
@@ -739,10 +740,22 @@ gettid():
 </li>
 </ol>
 <p>We’ll implement this SysCall soon!</p>
-<p>TODO: GIC</p>
-<p>TODO: Timer</p>
-<p>TODO: Other Peripherals</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<p><em>Anything else we need for our Avaota Emulator?</em></p>
+<ul>
+<li>
+<p><strong>Arm64 Timer:</strong> We need emulate the timer for triggering time-based tasks</p>
+</li>
+<li>
+<p><strong>UART Input:</strong> So we can enter commands into the NSH Shell</p>
+</li>
+<li>
+<p><strong>GIC v3:</strong> Arm64 Timer and I/O Interrupts shall be triggered through the GIC Interrupt Controller</p>
+</li>
+<li>
+<p><strong>Emulated Peripherals:</strong> For testing the NuttX Drivers for GPIO, I2C, SPI, … Maybe even the Onboard LCD Display (pic below)</p>
+</li>
+</ul>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
 <li>
