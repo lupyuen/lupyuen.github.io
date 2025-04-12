@@ -290,9 +290,14 @@ fn hook_memory(
 When we run this: Our Barebones Emulator will print the UART Output and show the __NuttX Boot Log__...
 
 ```bash
-## To see the Emulated UART Output:
+## To see the Emulated UART Output
 $ cargo run | grep "uart output"
-TODO
+...
+## NuttX begins booting...
+- Ready to Boot Primary CPU
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+nx_start: Entry
 ```
 
 We're ready to boot NuttX on Unicorn!
@@ -380,23 +385,26 @@ Before hooking the interrupt, we track down the origin of the SysCall...
 
 _Why is NuttX Kernel making an Arm64 SysCall? Aren't SysCalls used by NuttX Apps?_
 
-Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The Parameter Value is __`2`__: TODO
+Let's find out! NuttX passes a __Parameter to SysCall__ in Register X0. The Parameter Value is __`2`__: [nuttx.S](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx.S)
 
 ```c
 sched/sched/sched_unlock.c:92
-TODO: Function
-TODO {
+// To unlock the Task Scheduler...
+void sched_unlock(void) {
+  ...
   up_switch_context(this_task(), rtcb);
     40807230:	d538d080 	mrs	x0, tpidr_el1
     40807234:	37000060 	tbnz	w0, #0, 40807240 <sched_unlock+0x80>
 
 arch/arm64/include/syscall.h:152
-// Execute an Arm64 SysCall SVC with SYS_ call number and no parameters
+// We execute an Arm64 SysCall SVC with SYS_ call number and no parameters
 static inline uintptr_t sys_call0(unsigned int nbr) {
   register uint64_t reg0 __asm__("x0") = (uint64_t)(nbr);
     40807238:	d2800040 	mov	x0, #0x2  // Parameter in Register X0 is 2
     4080723c:	d4000001 	svc	#0x0      // Execute SysCall 0
 ```
+
+[(__sched_unlock__ is here)](https://github.com/apache/nuttx/blob/master/sched/sched/sched_unlock.c#L80-L95)
 
 What's the NuttX SysCall with Parameter 2? It's for __Switching The Context__ between NuttX Tasks: [syscall.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L78-L83)
 
@@ -438,19 +446,9 @@ Ah we see the light...
 
 FYI __NuttX SysCalls__ are defined here...
 
-- [SysCall Defines: syscall_lookup.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h)
+- [__SysCall Defines:__ syscall_lookup.h](https://github.com/apache/nuttx/blob/master/include/sys/syscall_lookup.h)
 
-- [SysCall CSV: TODO](TODO)
-
-```c
-SYSCALL_LOOKUP(getpid,                     0)
-SYSCALL_LOOKUP(gettid,                     0)
-SYSCALL_LOOKUP(sched_getcpu,               0)
-SYSCALL_LOOKUP(sched_lock,                 0)
-SYSCALL_LOOKUP(sched_lockcount,            0)
-SYSCALL_LOOKUP(sched_unlock,               0)
-SYSCALL_LOOKUP(sched_yield,                0)
-```
+- [__SysCall CSV:__ syscall.csv](https://github.com/apache/nuttx/blob/master/syscall/syscall.csv)
 
 # Hook The Unicorn Interrupt
 
@@ -645,7 +643,7 @@ fn hook_interrupt(
 }
 ```
 
-TODO: Why ESR_EL1?
+[(Why we need __ESR_EL1__)](https://github.com/lupyuen/nuttx-arm64-emulator#esr_el1-is-missing)
 
 And it works: NuttX on Unicorn boots _(almost)_ to __NSH Shell__. Yay!
 
@@ -777,13 +775,17 @@ This says that...
 
 We'll implement this SysCall soon!
 
-TODO: GIC
-
-TODO: Timer
-
-TODO: Other Peripherals
-
 # What's Next
+
+_Anything else we need for our Avaota Emulator?_
+
+- __Arm64 Timer:__ We need emulate the timer for triggering time-based tasks
+
+- __UART Input:__ So we can enter commands into the NSH Shell
+
+- __GIC v3:__ Arm64 Timer and I/O Interrupts shall be triggered through the GIC Interrupt Controller
+
+- __Emulated Peripherals:__ For testing the NuttX Drivers for GPIO, I2C, SPI, ... Maybe even the Onboard LCD Display (pic below)
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
