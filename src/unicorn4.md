@@ -12,29 +12,13 @@ TODO
 
 - No worries we'll emulate Arm64 SysCalls ourselves!
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
-
-[NuttX Boot Flow in PDF](nuttx-boot-flow.pdf) / [SVG](nuttx-boot-flow.svg) / [PNG](nuttx-boot-flow.png)
-
-[qiling/core_hooks.py](https://github.com/qilingframework/qiling/blob/master/qiling/core_hooks.py)
-
-[qiling/os/linux/syscall.py](https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py)
-
-[Qilin](https://en.wikipedia.org/wiki/Qilin)
-
-Emulator -> Driver
-
-Or driver -> emulator?
-
-Maybe Emulator + Device Farm
-
 _Why are we doing this?_
 
-- The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
+- So we can create __NuttX Drivers and Apps__ on Avaota SBC Emulator (without the actual hardware)
 
-[“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
+- Avaota Emulator is helpful for __NuttX Continuous Integration__, making sure that all Code Changes will work correctly on Avaota SBC
 
-https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6
+- The __Trade Tariffs__ are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
 
 # NuttX for Avaota-A1
 
@@ -231,6 +215,8 @@ Finally we start the __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/
 
 That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+
 # Emulate 16550 UART
 
 _What about Avaota I/O? How to emulate in Unicorn?_
@@ -302,8 +288,6 @@ nx_start: Entry
 
 We're ready to boot NuttX on Unicorn!
 
-![Stepping through Unicorn with CodeLLDB Debugger](https://lupyuen.org/images/unicorn3-avaota.jpg)
-
 # NuttX Halts at SysCall
 
 _Our Barebones Emulator: What happens when we run it?_
@@ -346,7 +330,7 @@ Somehow NuttX Kernel is making an Arm64 SysCall, and failing.
 
 _Isn't Unicorn supposed to emulate Arm64 SysCalls?_
 
-To find out: We step through Unicorn with [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic above). Unicorn triggers the Arm64 Exception here: [qemu/accel/tcg/cpu-exec.c](https://github.com/unicorn-engine/unicorn/blob/master/qemu/accel/tcg/cpu-exec.c#L335-L428)
+To find out: We step through Unicorn with [__CodeLLDB Debugger__](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) (pic below). Unicorn triggers the Arm64 Exception here: [qemu/accel/tcg/cpu-exec.c](https://github.com/unicorn-engine/unicorn/blob/master/qemu/accel/tcg/cpu-exec.c#L335-L428)
 
 ```c
 // When Unicorn handles a CPU Exception...
@@ -380,6 +364,8 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 Aha! Unicorn is expecting us to __Hook This Interrupt__ and emulate the Arm64 SysCall, inside our Interrupt Callback.
 
 Before hooking the interrupt, we track down the origin of the SysCall...
+
+![Stepping through Unicorn with CodeLLDB Debugger](https://lupyuen.org/images/unicorn3-avaota.jpg)
 
 # SysCall for Context Switch
 
@@ -729,6 +715,12 @@ ESR_EL1=Ok(1409286144)
 TODO: Handle SysCall from NuttX Apps
 ```
 
+[(FYI: Qiling emulates __Linux SysCalls__ with Unicorn)](https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py)
+
+[(__Qiling__ is also a Mythical Beast)](https://en.wikipedia.org/wiki/Qilin)
+
+![NuttX Boot Flow for ROM FS Filesystem](https://lupyuen.org/images/unicorn4-bootflow.png)
+
 # SysCall from NuttX App
 
 _What's SysCall Command 9? Where in NSH Shell is 0xC000_3F00?_
@@ -775,6 +767,30 @@ This says that...
 
 We'll implement this SysCall soon!
 
+_What about the Call Graph?_
+
+Yep our Avaota Emulator has helpfully generated a __Detailed Call Graph__ (pic above) that describes the NuttX Boot Flow...
+
+- [__NuttX Boot Flow in PDF__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf) / [__SVG__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.svg) / [__PNG__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.png)
+
+- Based on the [__Mermaid Flowchat__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd)
+
+_Whoa our eyes are hurting!_
+
+This might help: We feed the above [__Mermaid Flowchat__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd) to an LLM to get these...
+
+- [__LLM explains NuttX Boot Flow (Short Version)__](https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6)
+
+- [__LLM explains NuttX Boot Flow (Long Version)__](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
+
+![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
+
+<span style="font-size:80%">
+
+_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate_
+
+</span>
+
 # What's Next
 
 _Anything else we need for our Avaota Emulator?_
@@ -785,7 +801,7 @@ _Anything else we need for our Avaota Emulator?_
 
 - __GIC v3:__ Arm64 Timer and I/O Interrupts shall be triggered through the GIC Interrupt Controller
 
-- __Emulated Peripherals:__ For testing the NuttX Drivers for GPIO, I2C, SPI, ... Maybe even the Onboard LCD Display (pic below)
+- __Emulated Peripherals:__ For testing the NuttX Drivers for GPIO, I2C, SPI, ... Maybe even the Onboard LCD Display (pic above)
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
@@ -808,11 +824,3 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/unicorn4.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn4.md)
-
-![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
-
-<span style="font-size:80%">
-
-_Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate_
-
-</span>
