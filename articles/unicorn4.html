@@ -76,23 +76,43 @@
 <li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">9 SysCall from NuttX App</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
-<p>TODO</p>
-<p><a href="TODO"><strong>Unicorn Emulator</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/avaota.html"><strong>Avaota-A1 Arm64 SBC</strong></a> is officially supported by <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html"><strong>Apache NuttX RTOS</strong></a> (Allwinner A527 SoC). Let’s take <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a> and create a <strong>Software Emulator</strong> for Avaota SBC…</p>
 <ul>
 <li>
-<p>Unicorn doesn’t seem to handle <strong>Arm64 SysCalls</strong>?</p>
+<p>We call <strong>Unicorn Library</strong> to create our Barebones Emulator</p>
+</li>
+<li>
+<p>Emulate the <strong>16550 UART</strong> hardware by intercepting I/O Memory</p>
+</li>
+<li>
+<p>Recompile NuttX with <strong>4 Tiny Tweaks</strong> and boot on Unicorn</p>
+</li>
+<li>
+<p>NuttX makes a <strong>Context Switch</strong> and fails</p>
+</li>
+<li>
+<p>Because Unicorn doesn’t handle <strong>Arm64 SysCalls?</strong></p>
 </li>
 <li>
 <p>No worries we’ll <strong>Emulate Arm64 SysCalls</strong> ourselves!</p>
 </li>
+<li>
+<p>By jumping into the <strong>Arm64 Vector Table</strong></p>
+</li>
+<li>
+<p>NuttX on Unicorn boots to <strong>NSH Shell!</strong> <em>(Almost)</em></p>
+</li>
+<li>
+<p>How exactly does NuttX boot on Avaota SBC? We have a <strong>Detailed Boot Flow</strong></p>
+</li>
 </ul>
 <p><em>Why are we doing this?</em></p>
-<ul>
+<ol>
 <li>
 <p>So we can create <strong>NuttX Drivers and Apps</strong> on Avaota SBC Emulator (without the actual hardware)</p>
 </li>
 <li>
-<p>Avaota Emulator is helpful for <strong>NuttX Continuous Integration</strong>, making sure that all Code Changes will work correctly on Avaota SBC</p>
+<p>Avaota Emulator is helpful for <strong>NuttX Continuous Integration</strong>, making sure that all Code Changes will run correctly on Avaota SBC</p>
 </li>
 <li>
 <p>The <strong>Trade Tariffs</strong> are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.</p>
@@ -100,11 +120,11 @@
 <li>
 <p>Or maybe we should provide <a href="https://lupyuen.github.io/articles/avaota.html#microsd-multiplexer--smart-power-plug"><strong>Remote Access</strong></a> to a Real Avaota SBC? 🤔</p>
 </li>
-</ul>
+</ol>
 <h1 id="nuttx-for-avaota-a1"><a class="doc-anchor" href="#nuttx-for-avaota-a1">§</a>1 NuttX for Avaota-A1</h1>
 <p>Weeks ago we ported NuttX to Avaota-A1 SBC…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/avaota"><strong>“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/avaota.html"><strong>“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</strong></a></li>
 </ul>
 <p>To boot <strong>NuttX on Unicorn</strong>: We recompile NuttX with <a href="https://github.com/lupyuen2/wip-nuttx/pull/106"><strong>Four Tiny Tweaks</strong></a>…</p>
 <ol>
@@ -128,22 +148,20 @@ git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-avaota
 cd nuttx
 
-## Build NuttX
+## Build the NuttX Kernel
 make -j distclean
 tools/configure.sh avaota-a1:nsh
 make -j
 cp .config nuttx.config
 
-## Build Apps Filesystem
+## Build the NuttX Apps
 make -j export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j import
 popd
 
-## Generate the Initial RAM Disk
-## Prepare a Padding with 64 KB of zeroes
-## Append Padding and Initial RAM Disk to the NuttX Kernel
+## Combine NuttX Kernel and NuttX Apps into NuttX Image
 genromfs -f nuttx-initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
 head -c 65536 /dev/zero &gt;/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad nuttx-initrd &gt;nuttx-Image
@@ -231,13 +249,13 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 <p>Unicorn lets us hook into its internals, for emulating nifty things. We add the <strong>Unicorn Hooks</strong> for…</p>
 <ul>
 <li>
-<p><strong>Block Hook:</strong> For each block of Arm64 Code, we render the <a href="https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn"><strong>Call Graph</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn.html#block-execution-hook"><strong>Block Hook:</strong></a> For each block of Arm64 Code, we render the <a href="https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn"><strong>Call Graph</strong></a></p>
 </li>
 <li>
-<p><strong>Memory Hook:</strong> To emulate the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>UART Hardware</strong></a>, we intercept the Memory Reads and Writes</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn.html#memory-access-hook"><strong>Memory Hook:</strong></a> To emulate the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>UART Hardware</strong></a>, we intercept the Memory Reads and Writes</p>
 </li>
 <li>
-<p><strong>Interrupt Hook:</strong> We emulate <a href="https://lupyuen.github.io/articles/unicorn4.html#emulate-the-arm64-syscall"><strong>Arm64 SysCalls</strong></a> as Unicorn Interrupts</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn4.html#hook-the-unicorn-interrupt"><strong>Interrupt Hook:</strong></a> We emulate <a href="https://lupyuen.github.io/articles/unicorn4.html#emulate-the-arm64-syscall"><strong>Arm64 SysCalls</strong></a> as Unicorn Interrupts</p>
 </li>
 </ul>
 <p>Like so: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L88">main.rs</a></p>
@@ -420,12 +438,12 @@ uint64_t *arm64_syscall(uint64_t *regs) {
   // If SysCall is for Switch Context...
   case SYS_switch_context:
 
-    // Update the Scheduler Parameters
+    // Switch the Running Task
     nxsched_suspend_scheduler(*running_task);
     nxsched_resume_scheduler(tcb);
     *running_task = tcb;
 
-    // Restore the CPU Lock
+    // Switch the Address Enviroment
     restore_critical_section(tcb, cpu);
     addrenv_switch(tcb);
     break;</code></pre></div>
