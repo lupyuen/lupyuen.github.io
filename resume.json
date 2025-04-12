@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Creating the Unicorn Emulator for Avaota-A1 SBC (Apache NuttX RTOS)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2025-04-13",
+      "website": "https://lupyuen.org/articles/unicorn4.html",
+      "summary": "Avaota-A1 Arm64 SBC is officially supported by Apache NuttX RTOS (Allwinner A527 SoC). Let's take Unicorn Emulator and create a Software Emulator for Avaota SBC."
+    },
+    {
       "name": "Inside Arm64 MMU: Unicorn Emulator vs Apache NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2025-03-30",

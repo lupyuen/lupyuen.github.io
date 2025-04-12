@@ -1,6 +1,6 @@
 # Creating the Unicorn Emulator for Avaota-A1 SBC (Apache NuttX RTOS)
 
-📝 _30 Apr 2025_
+📝 _13 Apr 2025_
 
 ![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
 
@@ -713,7 +713,9 @@ arm64_dump_syscall: x4:  0x408432d0          x5:  0x0
 arm64_dump_syscall: x6:  0x0                 x7:  0x0
 ```
 
-[(See the __Unicorn Log__)](https://github.com/lupyuen/nuttx-arm64-emulator#fix-esr_el1)
+[(See the __Unicorn Log__)](https://github.com/lupyuen/nuttx-arm64-emulator/releases/download/avaota-1/unicorn.log)
+
+[(See the __NuttX Log__)](https://github.com/lupyuen/nuttx-arm64-emulator/releases/download/avaota-1/nuttx.log)
 
 But NSH Shell won't start correctly, here's why...
 
