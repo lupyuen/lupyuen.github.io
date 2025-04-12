@@ -4,29 +4,41 @@
 
 ![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
 
-TODO
+[__Avaota-A1 Arm64 SBC__](https://lupyuen.github.io/articles/avaota.html) is officially supported by [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html) (Allwinner A527 SoC). Let's take [__Unicorn Emulator__](https://www.unicorn-engine.org/) and create a __Software Emulator__ for Avaota SBC...
 
-[__Unicorn Emulator__](TODO)
+- We call __Unicorn Library__ to create our Barebones Emulator 
 
-- Unicorn doesn't seem to handle __Arm64 SysCalls__?
+- Emulate the __16550 UART__ hardware by intercepting I/O Memory
+
+- Recompile NuttX with __4 Tiny Tweaks__ and boot on Unicorn 
+
+- NuttX makes a __Context Switch__ and fails
+
+- Because Unicorn doesn't handle __Arm64 SysCalls?__
 
 - No worries we'll __Emulate Arm64 SysCalls__ ourselves!
 
+- By jumping into the __Arm64 Vector Table__
+
+- NuttX on Unicorn boots to __NSH Shell!__ _(Almost)_
+
+- How exactly does NuttX boot on Avaota SBC? We have a __Detailed Boot Flow__
+
 _Why are we doing this?_
 
-- So we can create __NuttX Drivers and Apps__ on Avaota SBC Emulator (without the actual hardware)
+1.  So we can create __NuttX Drivers and Apps__ on Avaota SBC Emulator (without the actual hardware)
 
-- Avaota Emulator is helpful for __NuttX Continuous Integration__, making sure that all Code Changes will work correctly on Avaota SBC
+1.  Avaota Emulator is helpful for __NuttX Continuous Integration__, making sure that all Code Changes will run correctly on Avaota SBC
 
-- The __Trade Tariffs__ are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
+1.  The __Trade Tariffs__ are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
 
-- Or maybe we should provide [__Remote Access__](https://lupyuen.github.io/articles/avaota.html#microsd-multiplexer--smart-power-plug) to a Real Avaota SBC? 🤔
+1.  Or maybe we should provide [__Remote Access__](https://lupyuen.github.io/articles/avaota.html#microsd-multiplexer--smart-power-plug) to a Real Avaota SBC? 🤔
 
 # NuttX for Avaota-A1
 
 Weeks ago we ported NuttX to Avaota-A1 SBC...
 
-- [__"Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"__](https://lupyuen.github.io/articles/avaota)
+- [__"Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)"__](https://lupyuen.github.io/articles/avaota.html)
 
 To boot __NuttX on Unicorn__: We recompile NuttX with [__Four Tiny Tweaks__](https://github.com/lupyuen2/wip-nuttx/pull/106)...
 
@@ -48,22 +60,20 @@ git clone https://github.com/lupyuen2/wip-nuttx nuttx --branch unicorn-avaota
 git clone https://github.com/lupyuen2/wip-nuttx-apps apps --branch unicorn-avaota
 cd nuttx
 
-## Build NuttX
+## Build the NuttX Kernel
 make -j distclean
 tools/configure.sh avaota-a1:nsh
 make -j
 cp .config nuttx.config
 
-## Build Apps Filesystem
+## Build the NuttX Apps
 make -j export
 pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make -j import
 popd
 
-## Generate the Initial RAM Disk
-## Prepare a Padding with 64 KB of zeroes
-## Append Padding and Initial RAM Disk to the NuttX Kernel
+## Combine NuttX Kernel and NuttX Apps into NuttX Image
 genromfs -f nuttx-initrd -d ../apps/bin -V "NuttXBootVol"
 head -c 65536 /dev/zero >/tmp/nuttx.pad
 cat nuttx.bin /tmp/nuttx.pad nuttx-initrd >nuttx-Image
@@ -168,11 +178,11 @@ Next we load the __NuttX Image__ _(NuttX Kernel + NuttX Apps)_ into Unicorn Memo
 
 Unicorn lets us hook into its internals, for emulating nifty things. We add the __Unicorn Hooks__ for...
 
-- __Block Hook:__ For each block of Arm64 Code, we render the [__Call Graph__](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn)
+- [__Block Hook:__](https://lupyuen.github.io/articles/unicorn.html#block-execution-hook) For each block of Arm64 Code, we render the [__Call Graph__](https://lupyuen.github.io/articles/unicorn2.html#intercept-code-execution-in-unicorn)
 
-- __Memory Hook:__ To emulate the [__UART Hardware__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly), we intercept the Memory Reads and Writes
+- [__Memory Hook:__](https://lupyuen.github.io/articles/unicorn.html#memory-access-hook) To emulate the [__UART Hardware__](https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly), we intercept the Memory Reads and Writes
 
-- __Interrupt Hook:__ We emulate [__Arm64 SysCalls__](https://lupyuen.github.io/articles/unicorn4.html#emulate-the-arm64-syscall) as Unicorn Interrupts
+- [__Interrupt Hook:__](https://lupyuen.github.io/articles/unicorn4.html#hook-the-unicorn-interrupt) We emulate [__Arm64 SysCalls__](https://lupyuen.github.io/articles/unicorn4.html#emulate-the-arm64-syscall) as Unicorn Interrupts
 
 Like so: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L88)
 
@@ -411,12 +421,12 @@ uint64_t *arm64_syscall(uint64_t *regs) {
   // If SysCall is for Switch Context...
   case SYS_switch_context:
 
-    // Update the Scheduler Parameters
+    // Switch the Running Task
     nxsched_suspend_scheduler(*running_task);
     nxsched_resume_scheduler(tcb);
     *running_task = tcb;
 
-    // Restore the CPU Lock
+    // Switch the Address Enviroment
     restore_critical_section(tcb, cpu);
     addrenv_switch(tcb);
     break;
