@@ -8,9 +8,9 @@ TODO
 
 [__Unicorn Emulator__](TODO)
 
-- Unicorn doesn't seem to emulate Arm64 SysCalls?
+- Unicorn doesn't seem to handle __Arm64 SysCalls__?
 
-- No worries we'll emulate Arm64 SysCalls ourselves!
+- No worries we'll __Emulate Arm64 SysCalls__ ourselves!
 
 _Why are we doing this?_
 
@@ -19,6 +19,8 @@ _Why are we doing this?_
 - Avaota Emulator is helpful for __NuttX Continuous Integration__, making sure that all Code Changes will work correctly on Avaota SBC
 
 - The __Trade Tariffs__ are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
+
+- Or maybe we should provide [__Remote Access__](https://lupyuen.github.io/articles/avaota.html#microsd-multiplexer--smart-power-plug) to a Real Avaota SBC? 🤔
 
 # NuttX for Avaota-A1
 
@@ -100,7 +102,7 @@ cargo run
 cargo run | grep "uart output"
 ```
 
-We inspect the code inside...
+We dive into the emulator code...
 
 # Unicorn Emulator for Avaota-A1
 
@@ -234,7 +236,7 @@ Let's emulate the Bare Minimum for I/O: Printing output to the [__16550 UART__](
 This will tell NuttX that our __UART Transmit FIFO__ is forever ready: [main.rs](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L73)
 
 ```rust
-/// UART Base Address
+/// UART0 Base Address for Allwinner A527
 const UART0_BASE_ADDRESS: u64 = 0x02500000;
 
 fn main() {
@@ -715,7 +717,7 @@ ESR_EL1=Ok(1409286144)
 TODO: Handle SysCall from NuttX Apps
 ```
 
-[(FYI: Qiling emulates __Linux SysCalls__ with Unicorn)](https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py)
+[(Qiling emulates __Linux SysCalls__ with Unicorn)](https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py)
 
 [(__Qiling__ is also a Mythical Beast)](https://en.wikipedia.org/wiki/Qilin)
 
@@ -765,7 +767,7 @@ This says that...
 
     _(Nope, no SysCalls across Exception Levels)_
 
-We'll implement this SysCall soon!
+1.  We'll implement this SysCall soon!
 
 _What about the Call Graph?_
 
@@ -773,11 +775,11 @@ Yep our Avaota Emulator has helpfully generated a __Detailed Call Graph__ (pic a
 
 - [__NuttX Boot Flow in PDF__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf) / [__SVG__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.svg) / [__PNG__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.png)
 
-- Based on the [__Mermaid Flowchat__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd)
+- Based on the [__Mermaid Flowchat__](https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd)
 
 _Whoa our eyes are hurting!_
 
-This might help: We feed the above [__Mermaid Flowchat__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd) to an LLM to get these...
+This might help: We feed the above [__Mermaid Flowchat__](https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd) to an LLM to get these...
 
 - [__LLM explains NuttX Boot Flow (Short Version)__](https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6)
 
