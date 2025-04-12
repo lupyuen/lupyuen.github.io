@@ -86,20 +86,18 @@
 <p>No worries we’ll emulate Arm64 SysCalls ourselves!</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
-<p><a href="nuttx-boot-flow.pdf">NuttX Boot Flow in PDF</a> / <a href="nuttx-boot-flow.svg">SVG</a> / <a href="nuttx-boot-flow.png">PNG</a></p>
-<p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/core_hooks.py">qiling/core_hooks.py</a></p>
-<p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py">qiling/os/linux/syscall.py</a></p>
-<p><a href="https://en.wikipedia.org/wiki/Qilin">Qilin</a></p>
-<p>Emulator -&gt; Driver</p>
-<p>Or driver -&gt; emulator?</p>
-<p>Maybe Emulator + Device Farm</p>
 <p><em>Why are we doing this?</em></p>
 <ul>
-<li>The Trade Tariffs are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.</li>
+<li>
+<p>So we can create <strong>NuttX Drivers and Apps</strong> on Avaota SBC Emulator (without the actual hardware)</p>
+</li>
+<li>
+<p>Avaota Emulator is helpful for <strong>NuttX Continuous Integration</strong>, making sure that all Code Changes will work correctly on Avaota SBC</p>
+</li>
+<li>
+<p>The <strong>Trade Tariffs</strong> are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.</p>
+</li>
 </ul>
-<p><a href="https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0">“Attached is the Mermaid Flowchart for the Boot Flow for Apache NuttX RTOS. Please explain how NuttX boots.”</a></p>
-<p>https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6</p>
 <h1 id="nuttx-for-avaota-a1"><a class="doc-anchor" href="#nuttx-for-avaota-a1">§</a>1 NuttX for Avaota-A1</h1>
 <p>Weeks ago we ported NuttX to Avaota-A1 SBC…</p>
 <ul>
@@ -274,6 +272,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
   <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
 <p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
+<p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about Avaota I/O? How to emulate in Unicorn?</em></p>
 <p>Let’s emulate the Bare Minimum for I/O: Printing output to the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>16550 UART</strong></a>…</p>
@@ -333,7 +332,6 @@ $ cargo run | grep &quot;uart output&quot;
 - Boot to C runtime for OS Initialize
 nx_start: Entry</code></pre></div>
 <p>We’re ready to boot NuttX on Unicorn!</p>
-<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
 <h1 id="nuttx-halts-at-syscall"><a class="doc-anchor" href="#nuttx-halts-at-syscall">§</a>4 NuttX Halts at SysCall</h1>
 <p><em>Our Barebones Emulator: What happens when we run it?</em></p>
 <p>We boot NuttX on our <a href="https://lupyuen.github.io/articles/unicorn4.html#unicorn-emulator-for-avaota-a1"><strong>Barebones Emulator</strong></a>. NuttX halts with an <strong>Arm64 Exception</strong> at this curious address: <em>0x4080_6D60</em>…</p>
@@ -362,7 +360,7 @@ static inline uintptr_t sys_call0(unsigned int nbr) {
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/syscall.h#L147-L164">(<strong>sys_call0</strong> is here)</a></p>
 <p>Somehow NuttX Kernel is making an Arm64 SysCall, and failing.</p>
 <p><em>Isn’t Unicorn supposed to emulate Arm64 SysCalls?</em></p>
-<p>To find out: We step through Unicorn with <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic above). Unicorn triggers the Arm64 Exception here: <a href="https://github.com/unicorn-engine/unicorn/blob/master/qemu/accel/tcg/cpu-exec.c#L335-L428">qemu/accel/tcg/cpu-exec.c</a></p>
+<p>To find out: We step through Unicorn with <a href="https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb"><strong>CodeLLDB Debugger</strong></a> (pic below). Unicorn triggers the Arm64 Exception here: <a href="https://github.com/unicorn-engine/unicorn/blob/master/qemu/accel/tcg/cpu-exec.c#L335-L428">qemu/accel/tcg/cpu-exec.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When Unicorn handles a CPU Exception...
 static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
   ...
@@ -389,6 +387,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
 <p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and emulate the Arm64 SysCall, inside our Interrupt Callback.</p>
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
+<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
 <h1 id="syscall-for-context-switch"><a class="doc-anchor" href="#syscall-for-context-switch">§</a>5 SysCall for Context Switch</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
 <p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx.S">nuttx.S</a></p>
@@ -702,7 +701,11 @@ hook_interrupt: intno=2
 PC=0xc0003f00
 X0=0x00000009
 ESR_EL1=Ok(1409286144)
-TODO: Handle SysCall from NuttX Apps</code></pre></div><h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
+TODO: Handle SysCall from NuttX Apps</code></pre></div>
+<p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py">(FYI: Qiling emulates <strong>Linux SysCalls</strong> with Unicorn)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Qilin">(<strong>Qiling</strong> is also a Mythical Beast)</a></p>
+<p><img src="https://lupyuen.org/images/unicorn4-bootflow.png" alt="NuttX Boot Flow for ROM FS Filesystem" /></p>
+<h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
 <p><em>What’s SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
 ...
@@ -740,6 +743,30 @@ gettid():
 </li>
 </ol>
 <p>We’ll implement this SysCall soon!</p>
+<p><em>What about the Call Graph?</em></p>
+<p>Yep our Avaota Emulator has helpfully generated a <strong>Detailed Call Graph</strong> (pic above) that describes the NuttX Boot Flow…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf"><strong>NuttX Boot Flow in PDF</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.svg"><strong>SVG</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.png"><strong>PNG</strong></a></p>
+</li>
+<li>
+<p>Based on the <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a></p>
+</li>
+</ul>
+<p><em>Whoa our eyes are hurting!</em></p>
+<p>This might help: We feed the above <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a> to an LLM to get these…</p>
+<ul>
+<li>
+<p><a href="https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6"><strong>LLM explains NuttX Boot Flow (Short Version)</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0"><strong>LLM explains NuttX Boot Flow (Long Version)</strong></a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
+<span style="font-size:80%">
+<p><em>Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate</em></p>
+</span>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
 <p><em>Anything else we need for our Avaota Emulator?</em></p>
 <ul>
@@ -753,7 +780,7 @@ gettid():
 <p><strong>GIC v3:</strong> Arm64 Timer and I/O Interrupts shall be triggered through the GIC Interrupt Controller</p>
 </li>
 <li>
-<p><strong>Emulated Peripherals:</strong> For testing the NuttX Drivers for GPIO, I2C, SPI, … Maybe even the Onboard LCD Display (pic below)</p>
+<p><strong>Emulated Peripherals:</strong> For testing the NuttX Drivers for GPIO, I2C, SPI, … Maybe even the Onboard LCD Display (pic above)</p>
 </li>
 </ul>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
@@ -785,10 +812,6 @@ gettid():
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/unicorn4.md"><strong>lupyuen.org/src/unicorn4.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
-<span style="font-size:80%">
-<p><em>Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate</em></p>
-</span>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
