@@ -12,10 +12,10 @@
     content="Creating the Unicorn Emulator for Avaota-A1 SBC (Apache NuttX RTOS)" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Avaota-A1 Arm64 SBC is officially supported by Apache NuttX RTOS (Allwinner A527 SoC). Let's take Unicorn Emulator and create a Software Emulator for Avaota SBC."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Avaota-A1 Arm64 SBC is officially supported by Apache NuttX RTOS (Allwinner A527 SoC). Let's take Unicorn Emulator and create a Software Emulator for Avaota SBC.">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/unicorn4-title.jpg">
 <meta property="og:type" 
@@ -74,7 +74,7 @@
 <li><a href="#arm64-vector-table" title="Arm64 Vector Table">7 Arm64 Vector Table</a><ul></ul></li>
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
 <li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">9 SysCall from NuttX App</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2025</em></p>
+<li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>13 Apr 2025</em></p>
 <p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
 <p><a href="https://lupyuen.github.io/articles/avaota.html"><strong>Avaota-A1 Arm64 SBC</strong></a> is officially supported by <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html"><strong>Apache NuttX RTOS</strong></a> (Allwinner A527 SoC). Let’s take <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a> and create a <strong>Software Emulator</strong> for Avaota SBC…</p>
 <ul>
@@ -714,7 +714,8 @@ arm64_dump_syscall: x0:  0x2                 x1:  0x64
 arm64_dump_syscall: x2:  0x4084c9f0          x3:  0x0
 arm64_dump_syscall: x4:  0x408432d0          x5:  0x0
 arm64_dump_syscall: x6:  0x0                 x7:  0x0</code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator#fix-esr_el1">(See the <strong>Unicorn Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/releases/download/avaota-1/unicorn.log">(See the <strong>Unicorn Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/releases/download/avaota-1/nuttx.log">(See the <strong>NuttX Log</strong>)</a></p>
 <p>But NSH Shell won’t start correctly, here’s why…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Our Emulator stops at SysCall Command 9
 &gt;&gt; exception index = 2
