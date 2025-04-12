@@ -80,10 +80,10 @@
 <p><a href="TODO"><strong>Unicorn Emulator</strong></a></p>
 <ul>
 <li>
-<p>Unicorn doesn’t seem to emulate Arm64 SysCalls?</p>
+<p>Unicorn doesn’t seem to handle <strong>Arm64 SysCalls</strong>?</p>
 </li>
 <li>
-<p>No worries we’ll emulate Arm64 SysCalls ourselves!</p>
+<p>No worries we’ll <strong>Emulate Arm64 SysCalls</strong> ourselves!</p>
 </li>
 </ul>
 <p><em>Why are we doing this?</em></p>
@@ -96,6 +96,9 @@
 </li>
 <li>
 <p>The <strong>Trade Tariffs</strong> are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.</p>
+</li>
+<li>
+<p>Or maybe we should provide <a href="https://lupyuen.github.io/articles/avaota.html#microsd-multiplexer--smart-power-plug"><strong>Remote Access</strong></a> to a Real Avaota SBC? 🤔</p>
 </li>
 </ul>
 <h1 id="nuttx-for-avaota-a1"><a class="doc-anchor" href="#nuttx-for-avaota-a1">§</a>1 NuttX for Avaota-A1</h1>
@@ -173,7 +176,7 @@ cargo run
 
 ## To see the Emulated UART Output
 cargo run | grep &quot;uart output&quot;</code></pre></div>
-<p>We inspect the code inside…</p>
+<p>We dive into the emulator code…</p>
 <h1 id="unicorn-emulator-for-avaota-a1"><a class="doc-anchor" href="#unicorn-emulator-for-avaota-a1">§</a>2 Unicorn Emulator for Avaota-A1</h1>
 <p><em>What’s inside the Avaota-A1 Emulator?</em></p>
 <p>Inside our Avaota SBC Emulator: We begin by creating the <strong>Unicorn Interface</strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L13-L36">main.rs</a></p>
@@ -288,7 +291,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
 </ol>
 <p>This will tell NuttX that our <strong>UART Transmit FIFO</strong> is forever ready: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/src/main.rs#L64-L73">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART Base Address
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// UART0 Base Address for Allwinner A527
 </span><span class="kw">const </span>UART0_BASE_ADDRESS: u64 = <span class="number">0x02500000</span>;
 
 <span class="kw">fn </span>main() {
@@ -702,7 +705,7 @@ PC=0xc0003f00
 X0=0x00000009
 ESR_EL1=Ok(1409286144)
 TODO: Handle SysCall from NuttX Apps</code></pre></div>
-<p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py">(FYI: Qiling emulates <strong>Linux SysCalls</strong> with Unicorn)</a></p>
+<p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py">(Qiling emulates <strong>Linux SysCalls</strong> with Unicorn)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/Qilin">(<strong>Qiling</strong> is also a Mythical Beast)</a></p>
 <p><img src="https://lupyuen.org/images/unicorn4-bootflow.png" alt="NuttX Boot Flow for ROM FS Filesystem" /></p>
 <h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
@@ -741,8 +744,10 @@ gettid():
 <p>Which we haven’t implemented yet</p>
 <p><em>(Nope, no SysCalls across Exception Levels)</em></p>
 </li>
-</ol>
+<li>
 <p>We’ll implement this SysCall soon!</p>
+</li>
+</ol>
 <p><em>What about the Call Graph?</em></p>
 <p>Yep our Avaota Emulator has helpfully generated a <strong>Detailed Call Graph</strong> (pic above) that describes the NuttX Boot Flow…</p>
 <ul>
@@ -750,11 +755,11 @@ gettid():
 <p><a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.pdf"><strong>NuttX Boot Flow in PDF</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.svg"><strong>SVG</strong></a> / <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.png"><strong>PNG</strong></a></p>
 </li>
 <li>
-<p>Based on the <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a></p>
+<p>Based on the <a href="https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a></p>
 </li>
 </ul>
 <p><em>Whoa our eyes are hurting!</em></p>
-<p>This might help: We feed the above <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a> to an LLM to get these…</p>
+<p>This might help: We feed the above <a href="https://raw.githubusercontent.com/lupyuen/nuttx-arm64-emulator/refs/heads/avaota/nuttx-boot-flow.mmd"><strong>Mermaid Flowchat</strong></a> to an LLM to get these…</p>
 <ul>
 <li>
 <p><a href="https://gist.github.com/lupyuen/b7d937c302d1926f62cea3411ca0b3c6"><strong>LLM explains NuttX Boot Flow (Short Version)</strong></a></p>
