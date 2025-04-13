@@ -513,8 +513,6 @@ uint64_t *arm64_syscall(uint64_t *regs) {
   <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
   <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
   <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-  <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-  <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
 
   <span class="comment">// Upcoming: Handle the SysCall
   </span>...
@@ -622,8 +620,6 @@ PC=0x408169d0</code></pre></div>
   <span class="macro">println!</span>(<span class="string">"X0=0x{x0:08x}"</span>);
   <span class="macro">println!</span>(<span class="string">"ESR_EL0={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL0));
   <span class="macro">println!</span>(<span class="string">"ESR_EL1={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL1));
-  <span class="macro">println!</span>(<span class="string">"ESR_EL2={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL2));
-  <span class="macro">println!</span>(<span class="string">"ESR_EL3={:?}"</span>, emu.reg_read(RegisterARM64::ESR_EL3));
 
   <span class="comment">// SysCall from NuttX Apps: We don't handle it yet
   </span><span class="kw">if </span>pc &gt;= <span class="number">0xC000_0000 </span>{ <span class="macro">println!</span>(<span class="string">"TODO: Handle SysCall from NuttX Apps"</span>); finish(); }
@@ -813,7 +809,7 @@ gettid():
 <p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>Discuss this article on Hacker News</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=43668912"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
