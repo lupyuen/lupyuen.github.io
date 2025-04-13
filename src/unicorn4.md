@@ -28,7 +28,7 @@ _Why are we doing this?_
 
 1.  So we can create __NuttX Drivers and Apps__ on Avaota SBC Emulator (without the actual hardware)
 
-1.  Avaota Emulator is helpful for __NuttX Continuous Integration__, making sure that all Code Changes will run correctly on Avaota SBC
+1.  Avaota Emulator is helpful for [__NuttX Continuous Integration__](https://lupyuen.org/articles/ci4.html), making sure that all Code Changes will run correctly on Avaota SBC
 
 1.  The __Trade Tariffs__ are Terribly Troubling. Some of us NuttX Folks might need to hunker down and emulate Avaota SBC, for now.
 
