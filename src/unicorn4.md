@@ -490,8 +490,6 @@ fn hook_interrupt(
   println!("X0=0x{x0:08x}");
   println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
   println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-  println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-  println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
 
   // Upcoming: Handle the SysCall
   ...
@@ -614,8 +612,6 @@ fn hook_interrupt(
   println!("X0=0x{x0:08x}");
   println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
   println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-  println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-  println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
 
   // SysCall from NuttX Apps: We don't handle it yet
   if pc >= 0xC000_0000 { println!("TODO: Handle SysCall from NuttX Apps"); finish(); }
@@ -821,7 +817,7 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=43668912)
 
 - [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
 
