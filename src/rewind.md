@@ -2,7 +2,7 @@
 
 📝 _9 Feb 2025_
 
-![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
+![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.github.io/images/rewind-title.jpg)
 
 If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) ... Can we __Auto-Rewind__ and discover the __Breaking Commit__? Let's try this (pic above)
 
@@ -14,7 +14,7 @@ If the __Daily Test__ fails for [__Apache NuttX RTOS__](https://nuttx.apache.org
 
 1.  __Bonus:__ The Machine will draft a [__Polite Note__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057) for our NuttX Colleague to investigate the Pull Request, please
 
-    ![Mastodon Alert for Daily Test](https://lupyuen.org/images/rewind-mastodon3.png)
+    ![Mastodon Alert for Daily Test](https://lupyuen.github.io/images/rewind-mastodon3.png)
 
 _Why are we doing this?_
 
@@ -22,7 +22,7 @@ If NuttX Fails on __QEMU RISC-V__: High chance that NuttX will also fail on __RI
 
 Thus it's important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. _(Be Kind, Rewind!)_
 
-![Find the Breaking Commit](https://lupyuen.org/images/rewind-title2.jpg)
+![Find the Breaking Commit](https://lupyuen.github.io/images/rewind-title2.jpg)
 
 # Find the Breaking Commit
 
@@ -81,13 +81,13 @@ _Build and Test 20 times! Won't it look mighty messy?_
 
 Ah that's why we present neatly the __20 Outcomes__ (Build + Test) as the [__NuttX Build History__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=), inside our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html)...
 
-![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
+![NuttX Build History](https://lupyuen.github.io/images/rewind-history.png)
 
 What's inside our script? We dive in...
 
 [(Which __Apps Hash__ to use? NuttX Build History can help)](https://lists.apache.org/thread/4oqjrwnzoq41tm0r6bl8bsgwbqokc4kp)
 
-> ![Testing One Commit](https://lupyuen.org/images/rewind-title3.jpg)
+> ![Testing One Commit](https://lupyuen.github.io/images/rewind-title3.jpg)
 
 # Testing One Commit
 
@@ -152,7 +152,7 @@ function build_nuttx { ...
 
 Our [__Build-Test Log__](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85) becomes this __GitLab Snippet__...
 
-![Build-Test Log in GitLab Snippet](https://lupyuen.org/images/rewind-log.png)
+![Build-Test Log in GitLab Snippet](https://lupyuen.github.io/images/rewind-log.png)
 
 _What's the other stuff inside the GitLab Snippet above?_
 
@@ -184,7 +184,7 @@ fi
 
 Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let's zoom out...
 
-![Testing 20 Commits](https://lupyuen.org/images/rewind-title4.jpg)
+![Testing 20 Commits](https://lupyuen.github.io/images/rewind-title4.jpg)
 
 # Testing 20 Commits
 
@@ -295,7 +295,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 
 Though there's an easier way...
 
-![Ingest the Test Log](https://lupyuen.org/images/rewind-title5.jpg)
+![Ingest the Test Log](https://lupyuen.github.io/images/rewind-title5.jpg)
 
 # Ingest the Test Log
 
@@ -303,7 +303,7 @@ _Why publish the Test Log as a GitLab Snippet?_
 
 That's because we'll Ingest the Test Log into our [__NuttX Dashboard__](https://lupyuen.github.io/articles/ci4.html). (So we can present the logs neatly as __NuttX Build History__)
 
-![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
+![NuttX Build History](https://lupyuen.github.io/images/rewind-history.png)
 
 This is how we __Ingest a Test Log__ into our [__Prometheus Time-Series Database__](https://lupyuen.github.io/articles/ci4.html#prometheus-metrics) (that powers our NuttX Dashboard)
 
@@ -393,7 +393,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 
 Finally we're ready...
 
-![Query Prometheus for Breaking Commit](https://lupyuen.org/images/rewind-title6.jpg)
+![Query Prometheus for Breaking Commit](https://lupyuen.github.io/images/rewind-title6.jpg)
 
 # Query Prometheus for Breaking Commit
 
@@ -428,7 +428,7 @@ The __Test Logs__ in Prometheus will look like this...
 
 Ding ding: __Test Log #6__ will reveal the [__Breaking Commit__](https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&to=now&timezone=browser&var-arch=$__all&var-subarch=$__all&var-board=rv-virt&var-config=knsh64_test6&var-group=$__all&var-Filters=)!
 
-![NuttX Build History](https://lupyuen.org/images/rewind-history.png)
+![NuttX Build History](https://lupyuen.github.io/images/rewind-history.png)
 
 _Inside Prometheus: How to find Test Log #6?_
 
@@ -451,7 +451,7 @@ __Dear Prometheus:__ Please find the __Test Log__ that matches the following...
 
 Prometheus returns the __Breaking Commit__ that we seek...
 
-![Prometheus returns the Breaking Commit that we seek](https://lupyuen.org/images/rewind-prometheus.png)
+![Prometheus returns the Breaking Commit that we seek](https://lupyuen.github.io/images/rewind-prometheus.png)
 
 Coded in our __Rust App__ like so: [nuttx-rewind-notify/main.rs](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73)
 
@@ -482,7 +482,7 @@ let builds = &data["data"]["result"];
 
 One more thing to do with our Breaking Commit...
 
-![Write a Polite Note](https://lupyuen.org/images/rewind-title7.jpg)
+![Write a Polite Note](https://lupyuen.github.io/images/rewind-title7.jpg)
 
 # Write a Polite Note
 
@@ -538,7 +538,7 @@ Exactly! We won't explain the [__Dull Bits__](https://github.com/lupyuen/nuttx-r
 
     _(Because they ain't cheap)_
 
-![Mastodon Alert for Daily Test](https://lupyuen.org/images/rewind-mastodon3.png)
+![Mastodon Alert for Daily Test](https://lupyuen.github.io/images/rewind-mastodon3.png)
 
 _But Mastodon Posts are limited to 500 chars?_
 
@@ -567,7 +567,7 @@ Which [__becomes this function__](https://github.com/lupyuen/nuttx-rewind-notify
 
 [(Searching for __NuttX Commit__ in Prometheus)](https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364)
 
-> ![Cron Job for Daily Test and Rewind](https://lupyuen.org/images/rewind-title8.jpg)
+> ![Cron Job for Daily Test and Rewind](https://lupyuen.github.io/images/rewind-title8.jpg)
 
 # Cron Everything
 
@@ -618,7 +618,7 @@ We'll see the __Test and Rewind__ in action...
 
 [(See the __GitLab Snippets__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets)
 
-> ![Cron Jab for Mastodon Notification](https://lupyuen.org/images/rewind-title9.jpg)
+> ![Cron Jab for Mastodon Notification](https://lupyuen.github.io/images/rewind-title9.jpg)
 
 _And the Polite Note? That goes to our Mastodon Server?_
 
@@ -663,7 +663,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf)
 
-![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.org/images/rewind-title.jpg)
+![Auto-Rewind for Daily Test (Apache NuttX RTOS)](https://lupyuen.github.io/images/rewind-title.jpg)
 
 # Be Kind, Rewind!
 
@@ -701,7 +701,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
     When we Rewind 20 Commits, we'll know if the bug is Reliably Reproducible.
     
-    ![Our bug is NOT Reliably Reproducible](https://lupyuen.org/images/rewind-history2.png)
+    ![Our bug is NOT Reliably Reproducible](https://lupyuen.github.io/images/rewind-history2.png)
 
 1.  _Why aren't we using Docker?_
 
@@ -725,7 +725,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 
     [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
 
-![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot3.jpg)
+![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.github.io/images/rewind-bot3.jpg)
 
 # What's Next
 
@@ -751,7 +751,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/rewind.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rewind.md)
 
-![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
+![Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 
 <span style="font-size:80%">
 

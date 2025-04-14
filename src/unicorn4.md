@@ -2,7 +2,7 @@
 
 📝 _13 Apr 2025_
 
-![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
+![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.github.io/images/unicorn4-title.jpg)
 
 [__Avaota-A1 Arm64 SBC__](https://lupyuen.github.io/articles/avaota.html) is officially supported by [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html) (Allwinner A527 SoC). Let's take [__Unicorn Emulator__](https://www.unicorn-engine.org/) and create a __Software Emulator__ for Avaota SBC...
 
@@ -227,7 +227,7 @@ Finally we start the __Unicorn Emulator__: [main.rs](https://github.com/lupyuen/
 
 That's it for our Barebones Emulator of Avaota SBC! We fill in the hooks...
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.github.io/images/avaota-title.jpg)
 
 # Emulate 16550 UART
 
@@ -377,7 +377,7 @@ Aha! Unicorn is expecting us to __Hook This Interrupt__ and emulate the Arm64 Sy
 
 Before hooking the interrupt, we track down the origin of the SysCall...
 
-![Stepping through Unicorn with CodeLLDB Debugger](https://lupyuen.org/images/unicorn3-avaota.jpg)
+![Stepping through Unicorn with CodeLLDB Debugger](https://lupyuen.github.io/images/unicorn3-avaota.jpg)
 
 # SysCall for Context Switch
 
@@ -729,7 +729,7 @@ TODO: Handle SysCall from NuttX Apps
 
 [(__Qiling__ is also a Mythical Beast)](https://en.wikipedia.org/wiki/Qilin)
 
-![NuttX Boot Flow for ROM FS Filesystem](https://lupyuen.org/images/unicorn4-bootflow.png)
+![NuttX Boot Flow for ROM FS Filesystem](https://lupyuen.github.io/images/unicorn4-bootflow.png)
 
 # SysCall from NuttX App
 
@@ -793,7 +793,7 @@ This might help: We feed the above [__Mermaid Flowchat__](https://raw.githubuser
 
 - [__LLM explains NuttX Boot Flow (Long Version)__](https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0)
 
-![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.org/images/unicorn4-title.jpg)
+![Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate](https://lupyuen.github.io/images/unicorn4-title.jpg)
 
 <span style="font-size:80%">
 

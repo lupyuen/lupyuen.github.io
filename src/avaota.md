@@ -2,7 +2,7 @@
 
 📝 _16 Mar 2025_
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.github.io/images/avaota-title.jpg)
 
 [_(Watch the Demo on YouTube)_](https://youtu.be/XTDw245n5tM)
 
@@ -32,7 +32,7 @@ We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A5
 
 _(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
-![Avaota-A1 SBC connected to USB UART](https://lupyuen.org/images/testbot3-uart.jpg)
+![Avaota-A1 SBC connected to USB UART](https://lupyuen.github.io/images/testbot3-uart.jpg)
 
 # Boot Linux on our SBC
 
@@ -58,7 +58,7 @@ To begin, we observe our SBC and its _Natural Behaviour_... How does it __Boot L
     | __TX__ (Pin 8) |	__RX__ | _Orange_ |
     | __RX__ (Pin 10)	| __TX__ | _Red_ |
 
-    ![UART0 Port of Avaota-A1 SBC](https://lupyuen.org/images/avaota-uart.jpg)
+    ![UART0 Port of Avaota-A1 SBC](https://lupyuen.github.io/images/avaota-uart.jpg)
 
 1.  __Boot Log__ will appear at _/dev/ttyUSB0_...
 
@@ -147,7 +147,7 @@ Hello, World!!
 
 We're ready to boot __`nuttx.bin`__ on our SBC.
 
-> ![NuttX Kernel Build will call out to HostFS Semihosting](https://lupyuen.org/images/semihost-qemu.jpg)
+> ![NuttX Kernel Build will call out to HostFS Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
 
 _What's this semihosting business in QEMU?_
 
@@ -165,7 +165,7 @@ Our SBC is a mighty monster with __Eight Arm64 Cores__ and plenty of RAM _(2 GB)
 
 _(NuttX Flat Build was created for Simpler Microcontrollers with Limited RAM)_
 
-![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.github.io/images/testbot3-sbc.jpg)
 
 # Boot NuttX on our SBC
 
@@ -381,7 +381,7 @@ Kernel addr: 0x40800000
 
 With these mods, our C Code in NuttX shall boot correctly. FYI: Boot Address also appears on the Onboard LCD...
 
-![Avaota-A1 SBC with Onboard LCD](https://lupyuen.org/images/testbot3-lcd.jpg)
+![Avaota-A1 SBC with Onboard LCD](https://lupyuen.github.io/images/testbot3-lcd.jpg)
 
 # UART Driver for 16550
 
@@ -517,7 +517,7 @@ AB
 
 OK the _repeated rebuilding, recopying and rebooting_ of NuttX is getting really tiresome. We automate...
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/testbot2-flow3.jpg)
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.github.io/images/testbot2-flow3.jpg)
 
 # MicroSD Multiplexer + Smart Power Plug
 
@@ -535,7 +535,7 @@ Thankfully our Avaota-A1 SBC is connected to [__SDWire MicroSD Multiplexer__](ht
 
 1.  How it looks? [__Watch the Demo__](https://youtu.be/XTDw245n5tM)
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.github.io/images/avaota-title.jpg)
 
 All this happens in our nifty __Build Script__: [run.sh](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/run.sh)
 
@@ -601,7 +601,7 @@ curl \
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/XTDw245n5tM)
 
-![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/avaota-power1.jpg)
+![Smart Power Plug in IKEA App and Google Home](https://lupyuen.github.io/images/avaota-power1.jpg)
 
 This script assumes that we have...
 
@@ -621,7 +621,7 @@ This script assumes that we have...
 
   _"Avaota Power On"_ and _"Avaota Power Off" (pic below)_
 
-![Smart Power Plug in Home Assistant](https://lupyuen.org/images/avaota-power2.jpg)
+![Smart Power Plug in Home Assistant](https://lupyuen.github.io/images/avaota-power2.jpg)
 
 _What's copy_image.sh?_
 
@@ -770,7 +770,7 @@ Something sus about the above [__Mystery Addresses__](https://gist.github.com/lu
 
 </p>
 
-![A527 Memory Map](https://lupyuen.org/images/avaota-memory.jpg)
+![A527 Memory Map](https://lupyuen.github.io/images/avaota-memory.jpg)
 
 # Fix the Memory Map
 
@@ -984,7 +984,7 @@ gic_validate_dist_version:
 
 We'll call GIC to handle UART Interrupts. Before that: We need NSH Shell...
 
-![NuttX Apps Filesystem on ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
+![NuttX Apps Filesystem on ROMFS](https://lupyuen.github.io/images/avaota-initrd1.jpg)
 
 # NuttX Apps Filesystem
 
@@ -1047,7 +1047,7 @@ How? See this...
 
 NSH Prompt still missing? It won't appear until we handle the UART Interrupt...
 
-![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
+![NuttX on Avaota-A1](https://lupyuen.github.io/images/testbot3-port.png)
 
 # Fix the UART Interrupt
 
@@ -1105,7 +1105,7 @@ It calls the __Serial Driver__. Which will wait for a __UART Interrupt__ to sign
 
 Thus if UART Interrupt is disabled, nothing gets printed in NuttX Apps. [(Explained here)](https://lupyuen.github.io/articles/plic#no-console-output-from-nuttx-apps)
 
-![NuttX might run OK on Radxa Cubie A5E (Allwinner T527)](https://lupyuen.org/images/avaota-cubie.jpg)
+![NuttX might run OK on Radxa Cubie A5E (Allwinner T527)](https://lupyuen.github.io/images/avaota-cubie.jpg)
 
 [_NuttX might run OK on Radxa Cubie A5E (Allwinner T527)_](https://arace.tech/products/radxa-cubie-a5e)
 
@@ -1143,7 +1143,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/avaota.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/avaota.md)
 
-![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.org/images/testbot3-sbc.jpg)
+![Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender](https://lupyuen.github.io/images/testbot3-sbc.jpg)
 
 # Appendix: Build NuttX for Avaota-A1
 
@@ -1181,7 +1181,7 @@ Read on to boot the NuttX Image on our SBC...
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/7296022328dadcfac88a38d4b3eec892)
 
-![NuttX on Avaota-A1](https://lupyuen.org/images/testbot3-port.png)
+![NuttX on Avaota-A1](https://lupyuen.github.io/images/testbot3-port.png)
 
 # Appendix: Boot NuttX on Avaota-A1
 
@@ -1354,7 +1354,7 @@ nsh>
 
 [(See the __NuttX Log__)](https://gist.github.com/lupyuen/6365762343133a843276bb87d2da17a1)
 
-![Upstreaming NuttX for Avaota-A1](https://lupyuen.org/images/avaota-pr.png)
+![Upstreaming NuttX for Avaota-A1](https://lupyuen.github.io/images/avaota-pr.png)
 
 # Appendix: Upstream NuttX for Avaota-A1
 
@@ -1596,19 +1596,19 @@ __Upstreaming__ becomes lotsa copypasta...
 
 1.  Remember to create [__Two Commits Per PR__](https://github.com/apache/nuttx/pull/15996/commits): One Commit for Code, Another Commit for Docs
 
-    ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.org/images/avaota-commit.png)
+    ![Two Commits Per PR: One Commit for Code, Another Commit for Docs](https://lupyuen.github.io/images/avaota-commit.png)
 
 1.  Need to [__Squash the Commits__](https://lupyuen.github.io/articles/pr#squash-the-commits) (or amend them), but another Code or Doc Commit is stuck in between?
 
-    ![Before Reordering the Commit](https://lupyuen.org/images/avaota-commit2.png)
+    ![Before Reordering the Commit](https://lupyuen.github.io/images/avaota-commit2.png)
 
     Try [__Reordering the Commits__](https://docs.github.com/en/desktop/managing-commits/reordering-commits-in-github-desktop) to the top, before squashing or amending.
 
-    ![After Reordering the Commit](https://lupyuen.org/images/avaota-commit3.png)
+    ![After Reordering the Commit](https://lupyuen.github.io/images/avaota-commit3.png)
 
 1.  Meditate on our changes, take a Long Walk [__(50 km)__](https://www.strava.com/activities/13889602722), we're about to make NuttX History...
 
-    ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.org/images/avaota-hike.png)
+    ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.github.io/images/avaota-hike.png)
 
 1.  Finally we Submit our Pull Requests!
 
@@ -1616,7 +1616,7 @@ __Upstreaming__ becomes lotsa copypasta...
 
     [__"boards/arm64/a527/avaota-a1: Add support for PINE64 Yuzuki Avaota-A1 SBC (Allwinner A527 SoC)"__](https://github.com/lupyuen2/wip-nuttx/pull/99)
 
-![SDWire MicroSD Multiplexer](https://lupyuen.org/images/testbot3-mux.jpg)
+![SDWire MicroSD Multiplexer](https://lupyuen.github.io/images/testbot3-mux.jpg)
 
 # Appendix: SDWire MicroSD Multiplexer
 
@@ -1679,7 +1679,7 @@ SDWire needs [__Plenty of Sudo Passwords__](https://lupyuen.github.io/articles/t
 
 _(Actually we could allow anyone in the world to Remotely Build and Test NuttX on our Avaota-A1 SBC hmmm...)_
 
-![NuttX Apps Filesystem in ROMFS](https://lupyuen.org/images/avaota-initrd1.jpg)
+![NuttX Apps Filesystem in ROMFS](https://lupyuen.github.io/images/avaota-initrd1.jpg)
 
 # Appendix: NuttX Apps Filesystem
 
@@ -1785,7 +1785,7 @@ static int mount_ramdisk(void) {
 
 __But Before That:__ We safely copy the __ROMFS Filesystem__ _(Initial RAM Disk)_ from the NuttX Image into the __`ramdisk` Memory Region__...
 
-![Mounting the ROMFS Filesystem](https://lupyuen.org/images/avaota-initrd2.jpg)
+![Mounting the ROMFS Filesystem](https://lupyuen.github.io/images/avaota-initrd2.jpg)
 
 This happens just after Bootloader starts NuttX: [qemu_boot.c](https://github.com/lupyuen2/wip-nuttx/pull/97/files#diff-be208bc5be54608eca3885cf169183ede375400c559700bb423c81d7b2787431)
 
@@ -1893,7 +1893,7 @@ default_fatal_handler:
 
 [_(Strangely: This Alignment isn't needed for RISC-V)_](https://github.com/lupyuen2/wip-nuttx/blob/b92f051e337d095491f8406b2d99fdd2f6fa5b3e/arch/risc-v/src/eic7700x/eic7700x_start.c#L110-L144)
 
-![Porting NuttX to Avaota-A1](https://lupyuen.org/images/avaota-pr2.png)
+![Porting NuttX to Avaota-A1](https://lupyuen.github.io/images/avaota-pr2.png)
 
 # Appendix: Port NuttX to Avaota-A1
 
@@ -2068,7 +2068,7 @@ With these __UART Registers__...
 
 [(Explained here)](https://lupyuen.github.io/articles/avaota#print-to-uart-in-arm64-assembly)
 
-![Mounting the ROMFS Filesystem containing the NuttX Apps](https://lupyuen.org/images/avaota-initrd2.jpg)
+![Mounting the ROMFS Filesystem containing the NuttX Apps](https://lupyuen.github.io/images/avaota-initrd2.jpg)
 
 ## NuttX Start Code
 

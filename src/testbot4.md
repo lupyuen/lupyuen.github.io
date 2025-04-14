@@ -2,7 +2,7 @@
 
 📝 _9 Apr 2025_
 
-![TODO](https://lupyuen.org/images/testbot4-title.jpg)
+![TODO](https://lupyuen.github.io/images/testbot4-title.jpg)
 
 <span style="font-size:80%">
 
@@ -12,7 +12,7 @@ _Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate :
 
 TODO
 
-![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.org/images/avaota-title.jpg)
+![Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug](https://lupyuen.github.io/images/avaota-title.jpg)
 
 # TODO
 
@@ -34,7 +34,7 @@ TODO
 
 1.  Post as PR Comment
 
-![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.github.io/images/testbot-flow.jpg)
 
 1.  Email Notification
 
@@ -42,7 +42,7 @@ TODO
 
 1.  Please gimme 12 hours to respond. In case I'm out on a [__50 km hike__](https://www.strava.com/activities/13889602722)...
 
-    ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.org/images/avaota-hike.png)
+    ![50 km Hike: HarbourFront to East Coast Beach to Changi Beach ... Feet are hurting 😬](https://lupyuen.github.io/images/avaota-hike.png)
 
 # What's Next
 

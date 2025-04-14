@@ -2,7 +2,7 @@
 
 📝 _30 Mar 2025_
 
-![A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!](https://lupyuen.org/images/unicorn3-title.png)
+![A Demo of Arm64 Memory Management Unit (MMU)… in 18 Lines of Arm64 Assembly!](https://lupyuen.github.io/images/unicorn3-title.png)
 
 Spotted in [__Unicorn Emulator__](https://www.unicorn-engine.org/): A Demo of __Arm64 Memory Management Unit__ (MMU)... in [__18 Lines of Arm64 Assembly__](https://github.com/lupyuen/nuttx-arm64-emulator/blob/qemu/src/main.rs#L376-L583)! _(Pic above)_
 
@@ -22,7 +22,7 @@ Today we decipher the code inside the __Arm64 MMU Demo__, figure out how it work
 
 - Soon we'll have a Unicorn Emulator for __Avaota-A1 Arm64 SBC__
 
-![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
+![Arm64 Memory Management Unit](https://lupyuen.github.io/images/unicorn3-mmu.jpg)
 
 _What's this MMU again? (Pic above)_
 
@@ -48,13 +48,13 @@ _Ah so MMU will allow this switcheroo business?_
 
 1.  __MMU is Disabled__ initially
 
-    ![Without MMU](https://lupyuen.org/images/unicorn3-mmu2.jpg)
+    ![Without MMU](https://lupyuen.github.io/images/unicorn3-mmu2.jpg)
 
 1.  We read from __Physical Address__ _0x4000_0000_
 
 1.  __Enable the MMU__: Map Virtual Address _0x8000_0000_ to Physical Address _0x4000_0000_
 
-    ![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
+    ![Arm64 Memory Management Unit](https://lupyuen.github.io/images/unicorn3-mmu.jpg)
 
 1.  We read from __Virtual Address__ _0x8000_0000_
 
@@ -170,7 +170,7 @@ It points to the __Level 1 Page Table__, telling MMU our Virtual-to-Physical Map
 
 Our __Level 1 Page Table__ _(TTBR0_EL1)_ will be this...
 
-![Level 1 Page Table](https://lupyuen.org/images/unicorn3-table1.jpg)
+![Level 1 Page Table](https://lupyuen.github.io/images/unicorn3-table1.jpg)
 
 Which we __Store in RAM__ _(ttb0_base)_ as...
 
@@ -209,7 +209,7 @@ _In the Page Table Entries above: Why 741?_
 
 We decode the __Page Table Entry__ based on [__VMSAv8-64 Block Descriptors__](https://developer.arm.com/documentation/ddi0487/latest/) _(Page D8-6491)_. `0x741` says...
 
-![VMSAv8-64 Block Descriptors](https://lupyuen.org/images/unicorn3-block.png)
+![VMSAv8-64 Block Descriptors](https://lupyuen.github.io/images/unicorn3-block.png)
 
 - __Bits 00-01:__ BLOCK_DESC = 1 <br> _This Page Table Entry describes a Block, not a Page_
 
@@ -249,13 +249,13 @@ _Why Stage 1? Not Stage 2?_
 
 We're doing __Stage 1 Only__: Single-Stage Translation from _Virtual Address (VA)_ to _Physical Address (PA)_. No need for Stage 2 and _Intermediate Physical Address (IPA)_ [(Page D8-6448)](https://developer.arm.com/documentation/ddi0487/latest/)
 
-![Translation Table Walk](https://lupyuen.org/images/unicorn3-stage.png)
+![Translation Table Walk](https://lupyuen.github.io/images/unicorn3-stage.png)
 
 _Why Inner vs Outer Shareable? Something about "Severance"?_
 
 __Inner / Outer Sharing__ is for Multiple CPU Cores, which we'll ignore for now [(Page B2-293)](https://developer.arm.com/documentation/ddi0487/latest/)
 
-![Inner / Outer Sharing](https://lupyuen.org/images/unicorn3-shareable.png)
+![Inner / Outer Sharing](https://lupyuen.github.io/images/unicorn3-shareable.png)
 
 [_(PE = Processing Element = One Arm64 Core)_](https://developer.arm.com/documentation/102404/0202/Common-architecture-terms)
 
@@ -276,7 +276,7 @@ msr MAIR_EL1, X0      // Write X0 into System Register MAIR_EL1
 
 That's the [__Translation Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-) for Exception Level 1. According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1\_8080\_3F20_ decodes as...
 
-![Translation Control Register](https://lupyuen.org/images/unicorn3-tcr.png)
+![Translation Control Register](https://lupyuen.github.io/images/unicorn3-tcr.png)
 
 - __Bits 00-05:__ T0SZ = 0x20 <br> _32 bits of Virtual Address Space_
 
@@ -334,7 +334,7 @@ _SCTLR_EL1 is for?_
 
 The [__System Control Register__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) in Exception Level 1. We set these bits to __Enable the MMU with Caching__...
 
-![System Control Register](https://lupyuen.org/images/unicorn3-sctlr.png)
+![System Control Register](https://lupyuen.github.io/images/unicorn3-sctlr.png)
 
 - __Bit 0:__ M = 1 <br> _Enable MMU for Address Translation_
 
@@ -346,7 +346,7 @@ The [__System Control Register__](https://developer.arm.com/documentation/ddi060
 
 We're ready to run the demo...
 
-![Arm64 Memory Management Unit](https://lupyuen.org/images/unicorn3-mmu.jpg)
+![Arm64 Memory Management Unit](https://lupyuen.github.io/images/unicorn3-mmu.jpg)
 
 # Run the MMU Demo
 
@@ -637,13 +637,13 @@ struct arm_mmu_region g_mmu_regions[] = {
 
 According to [__NuttX QEMU Log__](https://gist.github.com/lupyuen/b9d23fe902c097debc53b3926920045a#file-gistfile1-txt-L78-L884): NuttX creates a __Two-Level Page Table__...
 
-![Level 1 Page Table for NuttX](https://lupyuen.org/images/unicorn3-table2.jpg)
+![Level 1 Page Table for NuttX](https://lupyuen.github.io/images/unicorn3-table2.jpg)
 
 [_(PXN / UXN = Privileged / User Never-Execute)_](https://developer.arm.com/documentation/102376/0200/Permissions/Execution-permissions)
 
 Why Two Levels? Because we're mapping __8 MB of RAM__, instead of a Complete 1 GB Chunk. Thus we break up into Level 2 with __Smaller 2 MB Chunks__...
 
-![Level 2 Page Table for NuttX](https://lupyuen.org/images/unicorn3-table3.jpg)
+![Level 2 Page Table for NuttX](https://lupyuen.github.io/images/unicorn3-table3.jpg)
 
 Looks legit, we move on...
 
@@ -672,7 +672,7 @@ enable_mmu_el1: ttbr0_el1 = 0x402B_2000
 
 According to [__TCR_EL1 Doc__](https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/TCR-EL1--Translation-Control-Register--EL1-), _0x1\_8080\_351C_ decodes as...
 
-![Translation Control Register for NuttX](https://lupyuen.org/images/unicorn3-tcr.png)
+![Translation Control Register for NuttX](https://lupyuen.github.io/images/unicorn3-tcr.png)
 
 - __Bits 00-05:__ T0SZ = 0x1C <br> _36 bits of Virtual Address Space_
 
@@ -725,7 +725,7 @@ Ah we see a major discrepancy...
 
 We fix the Virtual Addresses...
 
-![NuttX Boot Flow with MMU Enabled](https://lupyuen.org/images/unicorn3-bootflow2.png)
+![NuttX Boot Flow with MMU Enabled](https://lupyuen.github.io/images/unicorn3-bootflow2.png)
 
 # 32 Bits of Virtual Address
 
@@ -776,7 +776,7 @@ call_graph:  enable_mmu_el1 --> arm64_boot_el1_init
 
 [(See the __Unicorn Log__)](https://gist.github.com/lupyuen/f9648b37c2b94ec270946c35c1e83c20#file-gistfile1-txt-L627-L635)
 
-![Arm64 Page Tables](https://lupyuen.org/images/unicorn3-table.png)
+![Arm64 Page Tables](https://lupyuen.github.io/images/unicorn3-table.png)
 
 _Reducing Virtual Addresses from 36 Bits to 32 Bits: Why did it work?_
 
@@ -794,7 +794,7 @@ _After switching to 32-bit Virtual Address: Any change to the Page Tables?_
 
 The Page Tables [__are identical__](https://gist.github.com/lupyuen/f66c93314c5b081c1d2fc4bb1027163e#file-gistfile1-txt-L78-L884). Thanks to Unicorn, we learnt so much about [__arm64_mmu.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c)! One more fun thing to do...
 
-![NuttX Boot Flow](https://lupyuen.org/images/unicorn3-bootflow.jpg)
+![NuttX Boot Flow](https://lupyuen.github.io/images/unicorn3-bootflow.jpg)
 
 # NuttX Boot Flow
 
@@ -843,7 +843,7 @@ How did we create the Mermaid Flowchart? Check the details here...
 
 - [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2.html)
 
-![Unicorn is stuck forever in PL011 UART Driver](https://lupyuen.org/images/unicorn3-bootflow3.png)
+![Unicorn is stuck forever in PL011 UART Driver](https://lupyuen.github.io/images/unicorn3-bootflow3.png)
 
 _Why won't Unicorn boot to NSH Shell?_
 
@@ -853,7 +853,7 @@ _That should keep us busy for a loooong while?_
 
 One Last Thing: Suppose we're in some Wacky Alternate Universe in which Rust was invented before C. What would [__arm64_mmu.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c) look like? Might be fun to take a peek at the Alternate Version of _arm64_mmu.c_ 🤔
 
-![Unicorn Emulator for Avaota-A1 SBC](https://lupyuen.org/images/unicorn3-avaota.jpg)
+![Unicorn Emulator for Avaota-A1 SBC](https://lupyuen.github.io/images/unicorn3-avaota.jpg)
 
 [_Unicorn Emulator for Avaota-A1 SBC_](https://github.com/lupyuen/nuttx-arm64-emulator/tree/avaota)
 

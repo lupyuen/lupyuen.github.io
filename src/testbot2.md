@@ -2,7 +2,7 @@
 
 📝 _23 Feb 2025_
 
-![Test Bot for NuttX Pull Requests](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for NuttX Pull Requests](https://lupyuen.github.io/images/testbot-flow.jpg)
 
 Last week we saw our new [__Test Bot__](https://lupyuen.org/articles/testbot.html) for NuttX Pull Requests. When we post this __PR Comment__, it will Build and Test the Pull Request on Real Hardware: [__Oz64 SG2000 RISC-V SBC__](https://lupyuen.github.io/articles/sg2000)
 
@@ -30,7 +30,7 @@ _How about Real Hardware for Arm and ESP32? Can we test our PRs there?_
 
 Yep we might support testing of Pull Requests on Other Hardware: [__Arm32, Arm64 and ESP32__](https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32). Some Boards might require a [__MicroSD Multiplexer__](https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32).
 
-![Testing a Pull Request on Arm64 QEMU](https://lupyuen.org/images/testbot2-arm64.jpg)
+![Testing a Pull Request on Arm64 QEMU](https://lupyuen.github.io/images/testbot2-arm64.jpg)
 
 # Testing Arm64 on QEMU
 
@@ -88,7 +88,7 @@ And validate the [__OSTest Output__](https://github.com/lupyuen/nuttx-build-farm
 
 [(See the __Test Log__)](https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026)
 
-![Testing a Pull Request on QEMU RISC-V](https://lupyuen.org/images/testbot2-riscv.jpg)
+![Testing a Pull Request on QEMU RISC-V](https://lupyuen.github.io/images/testbot2-riscv.jpg)
 
 # Testing RISC-V on QEMU
 
@@ -143,7 +143,7 @@ _Is there a Test Controller for QEMU?_
 
 Nope Test Bot for QEMU doesn't require a [__Test Controller__](https://lupyuen.org/articles/testbot.html#connect-our-oz64-sbc). We run the QEMU Tests directly on our [__Build & Test Server__](https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc). Which might be unsafe...
 
-> ![Beware of Semihosting, it might break out from the QEMU Sandbox and into our Host Computer](https://lupyuen.org/images/semihost-qemu.jpg)
+> ![Beware of Semihosting, it might break out from the QEMU Sandbox and into our Host Computer](https://lupyuen.github.io/images/semihost-qemu.jpg)
 
 # Semihosting Breakout
 
@@ -171,7 +171,7 @@ _Where is /system/bin? Don't recall bundling any ELF Executables?_
 
 The ELF Executables exist on Our Computer's __Local Filesystem__... Outside QEMU and the NuttX Filesystem.
 
-![ELF Executables exist on Our Computer's Local Filesystem... Outside QEMU and the NuttX Filesystem](https://lupyuen.org/images/testbot2-apps.png)
+![ELF Executables exist on Our Computer's Local Filesystem... Outside QEMU and the NuttX Filesystem](https://lupyuen.github.io/images/testbot2-apps.png)
 
 This is called [__Semihosting__](https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting), it gives QEMU direct access to our computer's filesystem. We [__Enabled Semihosting__](https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#configurations) when we started QEMU...
 
@@ -263,7 +263,7 @@ github.com/lupyuen2/wip-nuttx/pull/89.diff
 
 To produce a barebones [__Diff Patch__](https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff) for our "Malicious Pull Request"...
 
-![Diff Patch for our "Malicious Pull Request"](https://lupyuen.org/images/testbot2-diff.png)
+![Diff Patch for our "Malicious Pull Request"](https://lupyuen.github.io/images/testbot2-diff.png)
 
 And we feed the Diff Patch to __Any LLM__...
 
@@ -334,7 +334,7 @@ The LLM we tested _(Gemini Pro 2.0 Experimental)_ says...
 
 OK Smarty Pants LLM, you foiled our "Malicious Pull Request". Could you possibly stop EVERY Malicious Pull Request? 🤔
 
-![Testing PinePhone with MicroSD Multiplexer](https://lupyuen.org/images/testbot2-flow.jpg)
+![Testing PinePhone with MicroSD Multiplexer](https://lupyuen.github.io/images/testbot2-flow.jpg)
 
 # Real Hardware: Arm and ESP32
 

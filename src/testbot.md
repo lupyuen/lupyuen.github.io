@@ -2,7 +2,7 @@
 
 📝 _16 Feb 2025_
 
-![PINE64 Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-title.jpg)
+![PINE64 Oz64 SG2000 RISC-V SBC)](https://lupyuen.github.io/images/testbot-title.jpg)
 
 We're always [__Making Things Better__](https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b) _(and making better things)_ with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). Today we talk about our new __Test Bot for Pull Requests__.
 
@@ -22,7 +22,7 @@ Testing a Pull Request on Real Hardware is a __Compulsory, Cumbersome Chore__. E
 
 (Be Mindful: Pull Requests might have [__Security Concerns__](https://lupyuen.github.io/articles/testbot#securing-our-bot))
 
-![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.org/images/rewind-bot3.jpg)
+![NuttX Bot for Building and Testing Pull Requests](https://lupyuen.github.io/images/rewind-bot3.jpg)
 
 _(Thanks to PINE64 for sponsoring the Oz64 SBC)_
 
@@ -40,7 +40,7 @@ With an _(inexpensive)_ Arm64 Linux SBC, called the __Test Controller__. Oz64 wo
 
 - Test Controller is also our [__TFTP Server__](https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp) for booting NuttX on Oz64
 
-![Connect our Oz64 SBC to Test Controller](https://lupyuen.org/images/testbot-flow2.jpg)
+![Connect our Oz64 SBC to Test Controller](https://lupyuen.github.io/images/testbot-flow2.jpg)
 
 [(__Arm32 Boards__: STM32 and nRF52? Use __OpenOCD + ST-Link__)](https://nuttx.apache.org/docs/latest/quickstart/running.html)
 
@@ -89,7 +89,7 @@ ostest_main: Exiting with status 0
 
 Responses to the above commands are validated by another machine...
 
-![Test Controller (Linux SBC) accepts commands from the Build & Test Server (Ubuntu PC)](https://lupyuen.org/images/testbot-flow3.jpg)
+![Test Controller (Linux SBC) accepts commands from the Build & Test Server (Ubuntu PC)](https://lupyuen.github.io/images/testbot-flow3.jpg)
 
 # Control our Oz64 SBC
 
@@ -151,7 +151,7 @@ expect {
 
 Even though it's NOT running on Test Controller...
 
-![Pass Through to Oz64](https://lupyuen.org/images/testbot-flow4.jpg)
+![Pass Through to Oz64](https://lupyuen.github.io/images/testbot-flow4.jpg)
 
 # Pass Through to Oz64
 
@@ -228,7 +228,7 @@ Before the testing, we need to build NuttX...
 
 [(Combining the __Linux SBC__ and __Ubuntu PC__)](https://lupyuen.github.io/articles/testbot#securing-our-bot)
 
-![Build and Test Script](https://lupyuen.org/images/testbot-flow5.jpg)
+![Build and Test Script](https://lupyuen.github.io/images/testbot-flow5.jpg)
 
 # Build and Test Script
 
@@ -288,7 +288,7 @@ expect ./oz64.exp
 
 Who calls this script? We find out...
 
-![Test Bot for Pull Requests](https://lupyuen.org/images/testbot-flow6.jpg)
+![Test Bot for Pull Requests](https://lupyuen.github.io/images/testbot-flow6.jpg)
 
 # Test Bot for Pull Requests
 
@@ -378,7 +378,7 @@ Finally we're ready for the Big Picture...
 
 [(See the __Bot Log__)](https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97)
 
-![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.github.io/images/testbot-flow.jpg)
 
 # Bot calls Test Script
 
@@ -457,7 +457,7 @@ build-test.sh \
 
 [(Calling the __Build & Test Script__ we saw earlier)](https://lupyuen.github.io/articles/testbot#build-and-test-script)
 
-![Evidence of a Successful Testing](https://lupyuen.org/images/rewind-bot3.jpg)
+![Evidence of a Successful Testing](https://lupyuen.github.io/images/rewind-bot3.jpg)
 
 _What about the essential bits?_
 
@@ -495,7 +495,7 @@ The __Test Evidence__ becomes a [__PR Comment__](https://github.com/apache/nuttx
 
 [(Watch the __Demo on YouTube__)](https://youtu.be/qiBhC5VTkIo)
 
-![IKEA Smart Power Plug and IKEA Zigbee Hub](https://lupyuen.org/images/testbot-ikea.png)
+![IKEA Smart Power Plug and IKEA Zigbee Hub](https://lupyuen.github.io/images/testbot-ikea.png)
 
 # Power Up our Oz64 SBC
 
@@ -548,7 +548,7 @@ This script assumes that we have...
 
 And our Test Bot is complete! Except for these security issues...
 
-![Automations in Home Assistant: Oz64 Power On and Oz64 Power Off](https://lupyuen.org/images/testbot-power.png)
+![Automations in Home Assistant: Oz64 Power On and Oz64 Power Off](https://lupyuen.github.io/images/testbot-power.png)
 
 # Securing Our Bot
 
@@ -568,7 +568,7 @@ And our Test Bot is complete! Except for these security issues...
     
     It gets better! Soon: Test Bot will run non-stop and push a [__Mastodon Alert__](https://lupyuen.github.io/articles/mastodon) to our phones, when it's triggered. To activate the PR Test, we review the PR and click _"Like"_ on the PR Comment.
 
-    ![Remote PineTime Live Stream](https://lupyuen.org/images/remote-pinetime-youtube.png)
+    ![Remote PineTime Live Stream](https://lupyuen.github.io/images/remote-pinetime-youtube.png)
 
 1.  _Speaking of PineTime: How shall we allow auto-testing of firmware?_
 
@@ -580,7 +580,7 @@ And our Test Bot is complete! Except for these security issues...
 
     Yeah we could combine the __Test Controller__ _(Linux SBC)_ with the __Build & Test Server__ _(Ubuntu PC)_. Though the Current Design will scale better with __Multiple Test Controllers__ and a [__MicroSD Multiplexer__](https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/)...
 
-![Multiple Test Controllers](https://lupyuen.org/images/testbot-multi.jpg)
+![Multiple Test Controllers](https://lupyuen.github.io/images/testbot-multi.jpg)
 
 # What's Next
 
@@ -612,7 +612,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/testbot.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md)
 
-![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.org/images/testbot-flow.jpg)
+![Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)](https://lupyuen.github.io/images/testbot-flow.jpg)
 
 # Appendix: Build and Test NuttX
 
@@ -786,7 +786,7 @@ make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6
 
 We might need to tweak the Regex Pattern and catch more errors.
 
-![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.org/images/ci4-thinkstation.jpg)
+![PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation](https://lupyuen.github.io/images/ci4-thinkstation.jpg)
 
 <span style="font-size:80%">
 

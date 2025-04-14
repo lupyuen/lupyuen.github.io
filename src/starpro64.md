@@ -2,7 +2,7 @@
 
 📝 _2 Mar 2025_
 
-![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.org/images/starpro64-title.jpg)
+![StarPro64 EIC7700X RISC-V SBC: Maybe LLM on NPU on NuttX?](https://lupyuen.github.io/images/starpro64-title.jpg)
 
 [__StarPro64 EIC7700X__](https://pine64.org/2024/10/02/september_2024/#starpro64) is the _(literally) Hot_ New RISC-V SBC by PINE64. In this article we chat about...
 
@@ -28,7 +28,7 @@ We begin with the RISC-V SoC...
 
 _(Thanks to PINE64 for providing the Prototype StarPro64)_
 
-![StarPro64 EIC7700X RISC-V SBC](https://lupyuen.org/images/starpro64-fan2.jpg)
+![StarPro64 EIC7700X RISC-V SBC](https://lupyuen.github.io/images/starpro64-fan2.jpg)
 
 # ESWIN EIC7700X RISC-V SoC
 
@@ -38,13 +38,13 @@ Nope it's a totally different beast! _(From a different SoC Maker)_
 
 Inside StarPro64 is the [__ESWIN EIC7700X SoC__](https://www.eswincomputing.com/en/products/index/36.html). EIC7700X has __Four RISC-V Cores__ and it's based on [__SiFive Architecture__](https://www.sifive.com/cores/performance-p550) _(a bit like JH7110 SoC)_
 
-![ESWIN EIC7700X SoC](https://lupyuen.org/images/starpro64-arch.jpg)
+![ESWIN EIC7700X SoC](https://lupyuen.github.io/images/starpro64-arch.jpg)
 
 But its super-speedy [__Neural Processing Unit__](https://www.sifive.com/document-file/eic7700x-datasheet) (NPU) makes it a very special _(llama?)_ beast. Later we'll talk about the [__Fun LLM Experiments__](https://lupyuen.github.io/articles/starpro64#llm-on-npu-on-nuttx) that we can run on the NPU.
 
 _(20 TOPS INT8 = 20 Trillion Ops Per Second for 8-bit Integers)_
 
-> ![ESWIN EIC7700X NPU](https://lupyuen.org/images/starpro64-npu.jpg)
+> ![ESWIN EIC7700X NPU](https://lupyuen.github.io/images/starpro64-npu.jpg)
 
 [__EIC7700X Technical Reference Manual__](https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual) is probably the best among the RISC-V SoCs _(BL808, SG2000, JH7110)_
 
@@ -58,7 +58,7 @@ _(20 TOPS INT8 = 20 Trillion Ops Per Second for 8-bit Integers)_
 
 We go hands-on...
 
-![Connecting USB UART Dongle to StarPro64](https://lupyuen.org/images/starpro64-uart.jpg)
+![Connecting USB UART Dongle to StarPro64](https://lupyuen.github.io/images/starpro64-uart.jpg)
 
 # Boot Without MicroSD
 
@@ -146,7 +146,7 @@ And it stops at U-Boot, waiting to boot from MicroSD or eMMC. Let's init our eMM
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/9db7b36f3cdf26f7b7f75c0d35177ee7)
 
-![HDMI Output will show U-Boot, but not OpenSBI](https://lupyuen.org/images/starpro64-hdmi.jpg)
+![HDMI Output will show U-Boot, but not OpenSBI](https://lupyuen.github.io/images/starpro64-hdmi.jpg)
 
 _HDMI Output will show U-Boot, but not OpenSBI_
 
@@ -195,7 +195,7 @@ $ cp *.bin *.ext4 /media/$USER/YOUR_USB_DRIVE
 
 We'll skip the [__MicroSD Image__](https://fast-mirror.isrc.ac.cn/rockos/images/generic/20241230_20250124/sdcard-rockos-20250123-210346.img.zst), because [__MicroSD Interface__](https://qoto.org/@lupyuen/114036829364673417) wasn't working reliably on our Prototype StarPro64.
 
-![StarPro64 with eMMC](https://lupyuen.org/images/starpro64-emmc.jpg)
+![StarPro64 with eMMC](https://lupyuen.github.io/images/starpro64-emmc.jpg)
 
 # Prepare the Linux Image
 
@@ -264,7 +264,7 @@ Based on the [__ESWIN Official Doc__](https://github.com/eswincomputing/eic7x-im
 
 1. __Beware of Overheating!__ Keep StarPro64 cool, or the previous step might corrupt the __SPI Boot Flash__ and cause unspeakable agony...
 
-![StarPro64 with USB Fan](https://lupyuen.org/images/starpro64-fan.jpg)
+![StarPro64 with USB Fan](https://lupyuen.github.io/images/starpro64-fan.jpg)
 
 # StarPro64 Gets Smokin' Hot!
 
@@ -296,7 +296,7 @@ The [__MicroSD Interface__](https://qoto.org/@lupyuen/114036829364673417) wasn't
 
 Hence the __Headless Ironman__: USB Drive on StarPro64...
 
-![Headless Ironman: USB Drive on StarPro64](https://lupyuen.org/images/starpro64-ironman.jpg)
+![Headless Ironman: USB Drive on StarPro64](https://lupyuen.github.io/images/starpro64-ironman.jpg)
 
 # Boot the Linux Image
 
@@ -341,7 +341,7 @@ Sadly the [__Preview Version__](https://fast-mirror.isrc.ac.cn/rockos/images/gen
 
 [(See the __Boot Log__)](https://gist.github.com/lupyuen/89e1e87e7f213b6f52f31987f254b32f)
 
-![RockOS won't boot correctly on our Prototype StarPro64](https://lupyuen.org/images/starpro64-linux.jpg)
+![RockOS won't boot correctly on our Prototype StarPro64](https://lupyuen.github.io/images/starpro64-linux.jpg)
 
 # Settings for U-Boot Bootloader
 
@@ -381,7 +381,7 @@ A-ha! This says...
 
 Thanks U-Boot! You told us everything we need to Boot NuttX...
 
-![Booting NuttX over TFTP](https://lupyuen.org/images/starpro64-flow2.jpg)
+![Booting NuttX over TFTP](https://lupyuen.github.io/images/starpro64-flow2.jpg)
 
 # Boot NuttX over TFTP
 
@@ -481,7 +481,7 @@ _How to boot NuttX over TFTP? (Pic above)_
 
     [__"Port NuttX to StarPro64"__](https://lupyuen.github.io/articles/starpro64#appendix-port-nuttx-to-starpro64)
 
-![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
+![NuttX boots OK on StarPro64 yay!](https://lupyuen.github.io/images/starpro64-ostest.png)
 
 _We type these commands EVERY TIME we boot?_
 
@@ -517,7 +517,7 @@ Next comes the fun part that turns StarPro64 into a totally different beast from
 
 </span>
 
-![StarPro64 with Touchscreen](https://lupyuen.org/images/starpro64-touchscreen.jpg)
+![StarPro64 with Touchscreen](https://lupyuen.github.io/images/starpro64-touchscreen.jpg)
 
 # LLM on NPU on NuttX?
 
@@ -533,7 +533,7 @@ Hear me out...
 
     _(Qwen 2 with 0.5 Billion Parameters, pic below)_
 
-    ![Qwen LLM on ETC7700X NPU](https://lupyuen.org/images/starpro64-qwen.jpg)
+    ![Qwen LLM on ETC7700X NPU](https://lupyuen.github.io/images/starpro64-qwen.jpg)
 
 1.  __Offline Disconnected LLM on SBC__ might be useful for __Smart Home Security__...
 
@@ -549,7 +549,7 @@ Hear me out...
 
     This is the right time to experiment with an __Offline Disconnected LLM__!
 
-![LLM Creature Sensor: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees becomes ultra-compressed into 16 bytes of text](https://lupyuen.org/images/starpro64-sensor.jpg)
+![LLM Creature Sensor: A Remote Sensor that uses Cameras to identify Rainforest Critters and Underwater Creatures. But everything it sees becomes ultra-compressed into 16 bytes of text](https://lupyuen.github.io/images/starpro64-sensor.jpg)
 
 <span style="font-size:60%">
 
@@ -579,7 +579,7 @@ __Qwen__ will sound confusing to Bilingual Folks...
 
 - Which is short for __"通义千问"__ _(Tong1 Yi4 Qian1 Wen4)_, meaning [__"通情，达义"__](https://baike.baidu.com/item/%E9%80%9A%E4%B9%89/64394178)
 
-![StarPro64 with Smart Power Plug](https://lupyuen.org/images/starpro64-flow.jpg)
+![StarPro64 with Smart Power Plug](https://lupyuen.github.io/images/starpro64-flow.jpg)
 
 # Smart Power Plug
 
@@ -642,7 +642,7 @@ curl \
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/c50c5c7a609b49d2b2cfebc99a38ad98)
 
-![Smart Power Plug in IKEA App and Google Home](https://lupyuen.org/images/starpro64-power1.jpg)
+![Smart Power Plug in IKEA App and Google Home](https://lupyuen.github.io/images/starpro64-power1.jpg)
 
 This script assumes that we have...
 
@@ -662,7 +662,7 @@ This script assumes that we have...
 
   _"StarPro64 Power On"_ and _"StarPro64 Power Off" (pic below)_
 
-![Smart Power Plug in Home Assistant](https://lupyuen.org/images/starpro64-power2.jpg)
+![Smart Power Plug in Home Assistant](https://lupyuen.github.io/images/starpro64-power2.jpg)
 
 _Smart Power Plug might disconnect USB UART sometimes?_
 
@@ -702,7 +702,7 @@ _(We could actually allow a Remote Developer to boot and test NuttX on StarPro64
 
 Remember our [__USB Fan__](https://lupyuen.github.io/articles/starpro64#starpro64-gets-smokin-hot)? It goes into our Smart Power Plug as a Power Jenga like so...
 
-> ![USB Fan goes into our Smart Power Plug as a Power Jenga](https://lupyuen.org/images/starpro64-power3.jpg)
+> ![USB Fan goes into our Smart Power Plug as a Power Jenga](https://lupyuen.github.io/images/starpro64-power3.jpg)
 
 # What's Next
 
@@ -742,7 +742,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/starpro64.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/starpro64.md)
 
-![NuttX boots only on Hart 0](https://lupyuen.org/images/starpro64-hartid0.png)
+![NuttX boots only on Hart 0](https://lupyuen.github.io/images/starpro64-hartid0.png)
 
 # Appendix: Multiple Harts on StarPro64
 
@@ -902,7 +902,7 @@ CONFIG_SMP_NCPUS=4
 
 And remember to fix [__riscv_set_inital_sp__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_macros.S#L383-L423). Meanwhile let's run everything on Hart 0...
 
-![NuttX Build for StarPro64](https://lupyuen.org/images/starpro64-build.png)
+![NuttX Build for StarPro64](https://lupyuen.github.io/images/starpro64-build.png)
 
 # Appendix: Build NuttX for StarPro64
 
@@ -992,7 +992,7 @@ NuttX Flat Mode works well for Small Microcontrollers. But StarPro64 and other S
 
 - [__"NuttX Flat Mode vs Kernel Mode"__](https://lupyuen.github.io/articles/rust5#nuttx-flat-mode-vs-kernel-mode)
 
-![NuttX boots OK on StarPro64 yay!](https://lupyuen.org/images/starpro64-ostest.png)
+![NuttX boots OK on StarPro64 yay!](https://lupyuen.github.io/images/starpro64-ostest.png)
 
 # Appendix: Port NuttX to StarPro64
 
