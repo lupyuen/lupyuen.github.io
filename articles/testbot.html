@@ -75,7 +75,7 @@
 <li><a href="#securing-our-bot" title="Securing Our Bot">8 Securing Our Bot</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-build-and-test-nuttx" title="Appendix: Build and Test NuttX">10 Appendix: Build and Test NuttX</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2025</em></p>
-<p><img src="https://lupyuen.org/images/testbot-title.jpg" alt="PINE64 Oz64 SG2000 RISC-V SBC)" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-title.jpg" alt="PINE64 Oz64 SG2000 RISC-V SBC)" /></p>
 <p>We’re always <a href="https://lists.apache.org/thread/pob88z6pnbg0pzt4syhhfwjyq3067h3b"><strong>Making Things Better</strong></a> <em>(and making better things)</em> with <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. Today we talk about our new <strong>Test Bot for Pull Requests</strong>.</p>
 <p>Test Bot shall watch for <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641277894"><strong>Comments on Pull Requests</strong></a> and start a <strong>NuttX Build + Test</strong> on Real Hardware. This PR Comment…</p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
@@ -84,7 +84,7 @@
 <p><em>Why are we doing this?</em></p>
 <p>Testing a Pull Request on Real Hardware is a <strong>Compulsory, Cumbersome Chore</strong>. Executed by our Unpaid Volunteers who care about Code Quality. Let’s make it a little less painful! 👍</p>
 <p>(Be Mindful: Pull Requests might have <a href="https://lupyuen.github.io/articles/testbot#securing-our-bot"><strong>Security Concerns</strong></a>)</p>
-<p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <p><em>(Thanks to PINE64 for sponsoring the Oz64 SBC)</em></p>
 <h1 id="connect-our-oz64-sbc"><a class="doc-anchor" href="#connect-our-oz64-sbc">§</a>1 Connect our Oz64 SBC</h1>
 <p><em>Our Test Bot shall control Oz64. How?</em></p>
@@ -103,7 +103,7 @@
 <p>Test Controller is also our <a href="https://lupyuen.github.io/articles/sg2000#boot-nuttx-over-tftp"><strong>TFTP Server</strong></a> for booting NuttX on Oz64</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/testbot-flow2.jpg" alt="Connect our Oz64 SBC to Test Controller" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow2.jpg" alt="Connect our Oz64 SBC to Test Controller" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/running.html">(<strong>Arm32 Boards</strong>: STM32 and nRF52? Use <strong>OpenOCD + ST-Link</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/auto#connect-bl602-to-single-board-computer">(<strong>GPIO Wiring</strong> might be needed for RISC-V Boards)</a></p>
 <p><em>How shall we test Oz64?</em></p>
@@ -141,7 +141,7 @@ ostest_main: Exiting with status 0</code></pre></div>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4803688#L456">(See the <strong>Test Log</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/mmu#appendix-flush-the-mmu-cache-for-t-head-c906">(Why we test <strong>hello</strong> and <strong>getprime</strong> twice)</a></p>
 <p>Responses to the above commands are validated by another machine…</p>
-<p><img src="https://lupyuen.org/images/testbot-flow3.jpg" alt="Test Controller (Linux SBC) accepts commands from the Build &amp; Test Server (Ubuntu PC)" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow3.jpg" alt="Test Controller (Linux SBC) accepts commands from the Build &amp; Test Server (Ubuntu PC)" /></p>
 <h1 id="control-our-oz64-sbc"><a class="doc-anchor" href="#control-our-oz64-sbc">§</a>2 Control our Oz64 SBC</h1>
 <p><em>Who controls our Test Controller?</em></p>
 <p>Our Test Controller <em>(Linux SBC)</em> will accept commands from the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC, pic above)</em>.</p>
@@ -190,7 +190,7 @@ expect {
   }
 }</code></pre></div>
 <p>Even though it’s NOT running on Test Controller…</p>
-<p><img src="https://lupyuen.org/images/testbot-flow4.jpg" alt="Pass Through to Oz64" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow4.jpg" alt="Pass Through to Oz64" /></p>
 <h1 id="pass-through-to-oz64"><a class="doc-anchor" href="#pass-through-to-oz64">§</a>3 Pass Through to Oz64</h1>
 <p><em>Erm this Expect Script will run on Build &amp; Test Server? Not Test Controller?</em></p>
 <p>Ah the <strong>NuttX Commands</strong> above will work, no worries! Build &amp; Test Server <em>(Ubuntu PC)</em> will ask Test Controller <em>(Linux SBC)</em> to <strong>pass them through</strong> to Oz64.</p>
@@ -251,7 +251,7 @@ NuttX 10.3.0 d33f654011 ...
 ## Build &amp; Test Server: Validates the responses</code></pre></div>
 <p>Before the testing, we need to build NuttX…</p>
 <p><a href="https://lupyuen.github.io/articles/testbot#securing-our-bot">(Combining the <strong>Linux SBC</strong> and <strong>Ubuntu PC</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/testbot-flow5.jpg" alt="Build and Test Script" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow5.jpg" alt="Build and Test Script" /></p>
 <h1 id="build-and-test-script"><a class="doc-anchor" href="#build-and-test-script">§</a>4 Build and Test Script</h1>
 <p><em>Who runs the above Expect Script?</em></p>
 <p>The Expect Script above is called by our <strong>Build &amp; Test Script</strong> that will…</p>
@@ -309,7 +309,7 @@ ssh test-controller ls -l /tftpboot/Image-sg2000
 expect ./oz64.exp</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sg2000#appendix-build-nuttx-for-sg2000">(Explained here)</a></p>
 <p>Who calls this script? We find out…</p>
-<p><img src="https://lupyuen.org/images/testbot-flow6.jpg" alt="Test Bot for Pull Requests" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow6.jpg" alt="Test Bot for Pull Requests" /></p>
 <h1 id="test-bot-for-pull-requests"><a class="doc-anchor" href="#test-bot-for-pull-requests">§</a>5 Test Bot for Pull Requests</h1>
 <p><em>How will a Pull Request trigger the script above?</em></p>
 <p>With a little help from <a href="https://docs.github.com/en/rest/activity/notifications?apiVersion=2022-11-28#list-notifications-for-the-authenticated-user"><strong>GitHub API</strong></a>. Our Test Bot shall…</p>
@@ -394,7 +394,7 @@ expect ./oz64.exp</code></pre></div>
 <p>Finally we’re ready for the Big Picture…</p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh">(How to run <strong>Test Bot</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ef1bf2b899e6f1b7f036e34500dd9a97">(See the <strong>Bot Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="bot-calls-test-script"><a class="doc-anchor" href="#bot-calls-test-script">§</a>6 Bot calls Test Script</h1>
 <p><em>Test Bot calls build_test. What’s inside build_test?</em></p>
 <p>It will call a script to execute the <strong>Oz64 Build &amp; Test</strong>. And record the Test Log as a <strong>GitLab Snippet</strong>: <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L203-L278">main.rs</a></p>
@@ -460,7 +460,7 @@ build-test.sh \
   $apps_url   $apps_ref</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/testbot#appendix-build-and-test-nuttx">(<strong>build-test.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/testbot#build-and-test-script">(Calling the <strong>Build &amp; Test Script</strong> we saw earlier)</a></p>
-<p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="Evidence of a Successful Testing" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-bot3.jpg" alt="Evidence of a Successful Testing" /></p>
 <p><em>What about the essential bits?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/src/main.rs#L279-L370"><strong>extract_log</strong></a> will pick out the evidence of a <strong>Successful Test</strong>: <em>Commit Hash, Build Steps, OSTest Result (or Crash Dump)</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Extracted Test Log will look like this...
@@ -489,7 +489,7 @@ ostest_main: Exiting with status 0</code></pre></div>
 <p>The <strong>Test Evidence</strong> becomes a <a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672"><strong>PR Comment</strong></a> (pic above). With this evidence, we can safely Merge the Pull Request into NuttX!</p>
 <p><a href="https://github.com/apache/nuttx/pull/15756#issuecomment-2641300672">(See the <strong>Extracted Log</strong>)</a></p>
 <p><a href="https://youtu.be/qiBhC5VTkIo">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-ikea.png" alt="IKEA Smart Power Plug and IKEA Zigbee Hub" /></p>
 <h1 id="power-up-our-oz64-sbc"><a class="doc-anchor" href="#power-up-our-oz64-sbc">§</a>7 Power Up our Oz64 SBC</h1>
 <p><em>We need to power up Oz64 so it will boot NuttX over TFTP. How to control the power?</em></p>
 <p>With an <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>IKEA Smart Power Plug</strong></a> and <a href="https://lupyuen.github.io/articles/sg2000a#ikea-smart-power-plug"><strong>IKEA Zigbee Hub</strong></a>. Here’s our script that <strong>Flips the Oz64 Power</strong>, On and Off: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/oz64-power.sh">oz64-power.sh</a></p>
@@ -535,7 +535,7 @@ curl \
 </li>
 </ul>
 <p>And our Test Bot is complete! Except for these security issues…</p>
-<p><img src="https://lupyuen.org/images/testbot-power.png" alt="Automations in Home Assistant: Oz64 Power On and Oz64 Power Off" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-power.png" alt="Automations in Home Assistant: Oz64 Power On and Oz64 Power Off" /></p>
 <h1 id="securing-our-bot"><a class="doc-anchor" href="#securing-our-bot">§</a>8 Securing Our Bot</h1>
 <ol>
 <li>
@@ -551,7 +551,7 @@ curl \
 <p><em>Thus we’re doing it the wiser, safer way?</em></p>
 <p>Indeed. Today we <a href="https://github.com/lupyuen/nuttx-test-bot/blob/main/run.sh"><strong>Start Manually</strong></a> our Test Bot, after reviewing the code in the PR. We do this for all Pull Requests involving <strong>RISC-V Architecture</strong>.</p>
 <p>It gets better! Soon: Test Bot will run non-stop and push a <a href="https://lupyuen.github.io/articles/mastodon"><strong>Mastodon Alert</strong></a> to our phones, when it’s triggered. To activate the PR Test, we review the PR and click <em>“Like”</em> on the PR Comment.</p>
-<p><img src="https://lupyuen.org/images/remote-pinetime-youtube.png" alt="Remote PineTime Live Stream" /></p>
+<p><img src="https://lupyuen.github.io/images/remote-pinetime-youtube.png" alt="Remote PineTime Live Stream" /></p>
 </li>
 <li>
 <p><em>Speaking of PineTime: How shall we allow auto-testing of firmware?</em></p>
@@ -563,7 +563,7 @@ curl \
 <p>Yeah we could combine the <strong>Test Controller</strong> <em>(Linux SBC)</em> with the <strong>Build &amp; Test Server</strong> <em>(Ubuntu PC)</em>. Though the Current Design will scale better with <strong>Multiple Test Controllers</strong> and a <a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>MicroSD Multiplexer</strong></a>…</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/testbot-multi.jpg" alt="Multiple Test Controllers" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-multi.jpg" alt="Multiple Test Controllers" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>More Test Bots! Check the updates…</p>
 <ul>
@@ -603,7 +603,7 @@ curl \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot.md"><strong>lupyuen.org/src/testbot.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow.jpg" alt="Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)" /></p>
 <h1 id="appendix-build-and-test-nuttx"><a class="doc-anchor" href="#appendix-build-and-test-nuttx">§</a>10 Appendix: Build and Test NuttX</h1>
 <p>Earlier we spoke about our Test Bot calling the <strong>Generic Build &amp; Test Script</strong>…</p>
 <ul>
@@ -731,7 +731,7 @@ function find_messages {
 <div class="example-wrap"><pre class="language-text"><code>curl: (6) Could not resolve host: github.com
 make[1]: *** [open-amp.defs:59: open-amp.zip] Error 6</code></pre></div>
 <p>We might need to tweak the Regex Pattern and catch more errors.</p>
-<p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation" /></p>
 <span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>PR Test Bot is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
 </span>

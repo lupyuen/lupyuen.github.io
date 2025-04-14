@@ -74,7 +74,7 @@
 <li><a href="#cron-everything" title="Cron Everything">7 Cron Everything</a><ul></ul></li>
 <li><a href="#be-kind-rewind" title="Be Kind, Rewind!">8 Be Kind, Rewind!</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Feb 2025</em></p>
-<p><img src="https://lupyuen.org/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
 <p>If the <strong>Daily Test</strong> fails for <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> … Can we <strong>Auto-Rewind</strong> and discover the <strong>Breaking Commit</strong>? Let’s try this (pic above)</p>
 <ol>
 <li>
@@ -88,13 +88,13 @@
 </li>
 <li>
 <p><strong>Bonus:</strong> The Machine will draft a <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4801057"><strong>Polite Note</strong></a> for our NuttX Colleague to investigate the Pull Request, please</p>
-<p><img src="https://lupyuen.org/images/rewind-mastodon3.png" alt="Mastodon Alert for Daily Test" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-mastodon3.png" alt="Mastodon Alert for Daily Test" /></p>
 </li>
 </ol>
 <p><em>Why are we doing this?</em></p>
 <p>If NuttX Fails on <strong>QEMU RISC-V</strong>: High chance that NuttX will also fail on <strong>RISC-V SBCs</strong> like Ox64 BL808 and Oz64 SG2000.</p>
 <p>Thus it’s important to Nip the Bud and Fix the Bug early, before it hurts our RISC-V Devs. <em>(Be Kind, Rewind!)</em></p>
-<p><img src="https://lupyuen.org/images/rewind-title2.jpg" alt="Find the Breaking Commit" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title2.jpg" alt="Find the Breaking Commit" /></p>
 <h1 id="find-the-breaking-commit"><a class="doc-anchor" href="#find-the-breaking-commit">§</a>1 Find the Breaking Commit</h1>
 <p>We wrote a script that will <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh"><strong>Rewind the NuttX Build</strong></a> and discover the Breaking Commit…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitLab Token, check that it&#39;s OK
@@ -140,11 +140,11 @@ qemu-system-riscv64 -kernel nuttx
 <p>(What about Git Bisect? We’ll come back to this)</p>
 <p><em>Build and Test 20 times! Won’t it look mighty messy?</em></p>
 <p>Ah that’s why we present neatly the <strong>20 Outcomes</strong> (Build + Test) as the <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>NuttX Build History</strong></a>, inside our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>…</p>
-<p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p>What’s inside our script? We dive in…</p>
 <p><a href="https://lists.apache.org/thread/4oqjrwnzoq41tm0r6bl8bsgwbqokc4kp">(Which <strong>Apps Hash</strong> to use? NuttX Build History can help)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/rewind-title3.jpg" alt="Testing One Commit" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title3.jpg" alt="Testing One Commit" /></p>
 </blockquote>
 <h1 id="testing-one-commit"><a class="doc-anchor" href="#testing-one-commit">§</a>2 Testing One Commit</h1>
 <p><em>How to find the Breaking Commit?</em></p>
@@ -197,7 +197,7 @@ function build_nuttx { ...
   echo &quot;====================================================================================&quot;
 }</code></pre></div>
 <p>Our <a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4800059#L85"><strong>Build-Test Log</strong></a> becomes this <strong>GitLab Snippet</strong>…</p>
-<p><img src="https://lupyuen.org/images/rewind-log.png" alt="Build-Test Log in GitLab Snippet" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-log.png" alt="Build-Test Log in GitLab Snippet" /></p>
 <p><em>What’s the other stuff inside the GitLab Snippet above?</em></p>
 <p>For Every Commit, we bundle <strong>Three Commits</strong> into a single Log File: <em>This Commit, Previous Commit, Next Commit</em>: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-commit.sh#L133-L169">rewind-commit.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build and Test This Commit
@@ -222,7 +222,7 @@ fi
 
 ## Why the Long Echoes? We&#39;ll ingest them later</code></pre></div>
 <p>Our Three-In-One Log becomes a little easier to read, less flipping back and forth. Let’s zoom out…</p>
-<p><img src="https://lupyuen.org/images/rewind-title4.jpg" alt="Testing 20 Commits" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title4.jpg" alt="Testing 20 Commits" /></p>
 <h1 id="testing-20-commits"><a class="doc-anchor" href="#testing-20-commits">§</a>3 Testing 20 Commits</h1>
 <p><em>Who calls the script above: rewind-commit.sh?</em></p>
 <p>The script above is called by <strong>run_job</strong> below: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/rewind-build.sh#L105-L128">rewind-build.sh</a></p>
@@ -307,11 +307,11 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
   Error: Test Failed</code></pre></div></span>
 <p>Though there’s an easier way…</p>
-<p><img src="https://lupyuen.org/images/rewind-title5.jpg" alt="Ingest the Test Log" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title5.jpg" alt="Ingest the Test Log" /></p>
 <h1 id="ingest-the-test-log"><a class="doc-anchor" href="#ingest-the-test-log">§</a>4 Ingest the Test Log</h1>
 <p><em>Why publish the Test Log as a GitLab Snippet?</em></p>
 <p>That’s because we’ll Ingest the Test Log into our <a href="https://lupyuen.github.io/articles/ci4.html"><strong>NuttX Dashboard</strong></a>. (So we can present the logs neatly as <strong>NuttX Build History</strong>)</p>
-<p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p>This is how we <strong>Ingest a Test Log</strong> into our <a href="https://lupyuen.github.io/articles/ci4.html#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (that powers our NuttX Dashboard)</p>
 <div class="example-wrap"><pre class="language-bash"><code># TYPE build_score gauge
 # HELP build_score 1.0 for successful build, 0.0 for failed build
@@ -383,7 +383,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
   riscv_exception: EXCEPTION: Instruction page fault. MCAUSE: 000000000000000c, EPC: 000000018000001a, MTVAL: 000000018000001a
   Error: Test Failed</code></pre></div></span>
 <p>Finally we’re ready…</p>
-<p><img src="https://lupyuen.org/images/rewind-title6.jpg" alt="Query Prometheus for Breaking Commit" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title6.jpg" alt="Query Prometheus for Breaking Commit" /></p>
 <h1 id="query-prometheus-for-breaking-commit"><a class="doc-anchor" href="#query-prometheus-for-breaking-commit">§</a>5 Query Prometheus for Breaking Commit</h1>
 <p><em>Test Logs are now inside Prometheus Database. How will Prometheus tell us the Breaking Commit?</em></p>
 <p>Recall that our <strong>Prometheus Database</strong> contains…</p>
@@ -411,7 +411,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 </tbody></table>
 </div></span>
 <p>Ding ding: <strong>Test Log #6</strong> will reveal the <a href="https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?from=now-7d&amp;to=now&amp;timezone=browser&amp;var-arch=$__all&amp;var-subarch=$__all&amp;var-board=rv-virt&amp;var-config=knsh64_test6&amp;var-group=$__all&amp;var-Filters="><strong>Breaking Commit</strong></a>!</p>
-<p><img src="https://lupyuen.org/images/rewind-history.png" alt="NuttX Build History" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-history.png" alt="NuttX Build History" /></p>
 <p><em>Inside Prometheus: How to find Test Log #6?</em></p>
 <p>We fetch the Breaking Commit with this <strong>Prometheus Query</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>build_score{
@@ -431,7 +431,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 </li>
 </ul>
 <p>Prometheus returns the <strong>Breaking Commit</strong> that we seek…</p>
-<p><img src="https://lupyuen.org/images/rewind-prometheus.png" alt="Prometheus returns the Breaking Commit that we seek" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-prometheus.png" alt="Prometheus returns the Breaking Commit that we seek" /></p>
 <p>Coded in our <strong>Rust App</strong> like so: <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L44-L73">nuttx-rewind-notify/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Query Prometheus for the Breaking Commit
@@ -457,7 +457,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 <span class="kw">let </span>data: Value = serde_json::from_str(<span class="kw-2">&amp;</span>body).unwrap();
 <span class="kw">let </span>builds = <span class="kw-2">&amp;</span>data[<span class="string">"data"</span>][<span class="string">"result"</span>];</code></pre></div>
 <p>One more thing to do with our Breaking Commit…</p>
-<p><img src="https://lupyuen.org/images/rewind-title7.jpg" alt="Write a Polite Note" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title7.jpg" alt="Write a Polite Note" /></p>
 <h1 id="write-a-polite-note"><a class="doc-anchor" href="#write-a-polite-note">§</a>6 Write a Polite Note</h1>
 <p><em>Great! Our Machine has auto-discovered the Breaking Commit. But Our Machine can’t fix it right?</em></p>
 <p>Here comes the Human-Computer Interface: Our Machine (kinda) <strong>Escalates the Breaking Commit</strong> to a Human Expert for fixing, politely please…</p>
@@ -506,7 +506,7 @@ $ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -kernel nuttx -no
 <p><em>(Because they ain’t cheap)</em></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/rewind-mastodon3.png" alt="Mastodon Alert for Daily Test" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-mastodon3.png" alt="Mastodon Alert for Daily Test" /></p>
 <p><em>But Mastodon Posts are limited to 500 chars?</em></p>
 <p>Bummer. That’s why we <a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L364-L410"><strong>Create a GitLab Snippet</strong></a> for our Polite Note. And embed the Hyperlink in our Mastodon Post.</p>
 <p><em>How to get the Breaking PR from GitHub?</em></p>
@@ -525,7 +525,7 @@ $ curl -L \
 <p><a href="https://gist.github.com/lupyuen/ba6a33c4c021f0437a95117784e5190b">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-rewind-notify/blob/main/src/main.rs#L331-L364">(Searching for <strong>NuttX Commit</strong> in Prometheus)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/rewind-title8.jpg" alt="Cron Job for Daily Test and Rewind" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title8.jpg" alt="Cron Job for Daily Test and Rewind" /></p>
 </blockquote>
 <h1 id="cron-everything"><a class="doc-anchor" href="#cron-everything">§</a>7 Cron Everything</h1>
 <p><em>We coded plenty of goodies over the Lunar New Year. How will they be triggered?</em></p>
@@ -561,7 +561,7 @@ $ tail -f /var/log/syslog</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0fadc12338b5f9a0275c0682b2f72456">(See the <strong>Complete Log</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets">(See the <strong>GitLab Snippets</strong>)</a></p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/rewind-title9.jpg" alt="Cron Jab for Mastodon Notification" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title9.jpg" alt="Cron Jab for Mastodon Notification" /></p>
 </blockquote>
 <p><em>And the Polite Note? That goes to our Mastodon Server?</em></p>
 <p>Every 15 Minutes: Ubuntu Cron shall trigger the <strong>Mastodon Notification</strong> (pic above)</p>
@@ -592,7 +592,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
   Build History: https://nuttx-dashboard.org/d/fe2q876wubc3kc/nuttx-build-history?var-board=rv-virt&amp;var-config=knsh64_test6
   Sorry @USERNAME: The above PR is failing for rv-virt:knsh64_test. Could you please take a look? Thanks!</code></pre></div></span>
 <p><a href="https://gist.github.com/lupyuen/65c58383ffc53f616990995d97667ddf">(See the <strong>Complete Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-title.jpg" alt="Auto-Rewind for Daily Test (Apache NuttX RTOS)" /></p>
 <h1 id="be-kind-rewind"><a class="doc-anchor" href="#be-kind-rewind">§</a>8 Be Kind, Rewind!</h1>
 <ol>
 <li>
@@ -629,7 +629,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 <p><em>Why Rewind every commit? Isn’t Git Bisect quicker?</em></p>
 <p>Ah remember that we’re fixing Runtime Bugs, not Compile Errors. Git Bisect won’t work if the Runtime Bug is <a href="https://lupyuen.github.io/articles/bisect#good-commit-goes-bad"><strong>Not Reliably Reproducible</strong></a>.</p>
 <p>When we Rewind 20 Commits, we’ll know if the bug is Reliably Reproducible.</p>
-<p><img src="https://lupyuen.org/images/rewind-history2.png" alt="Our bug is NOT Reliably Reproducible" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-history2.png" alt="Our bug is NOT Reliably Reproducible" /></p>
 </li>
 <li>
 <p><em>Why aren’t we using Docker?</em></p>
@@ -645,7 +645,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 <p><a href="https://lupyuen.org/articles/testbot.html"><strong>“Test Bot for Pull Requests … Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)”</strong></a></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
+<p><img src="https://lupyuen.github.io/images/rewind-bot3.jpg" alt="NuttX Bot for Building and Testing Pull Requests" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Special Thanks to <strong>Mr Gregory Nutt</strong> for your guidance and kindness. I’m also grateful to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a>, for supporting my writing.</p>
 <ul>
@@ -676,7 +676,7 @@ rv-virt : KNSH64_TEST - Build Failed (rewind)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/rewind.md"><strong>lupyuen.org/src/rewind.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/ci4-thinkstation.jpg" alt="Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation" /></p>
+<p><img src="https://lupyuen.github.io/images/ci4-thinkstation.jpg" alt="Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation" /></p>
 <span style="font-size:80%">
 <p><a href="https://qoto.org/@lupyuen/113517788288458811"><em>Daily Test + Rewind is hosted on this hefty Ubuntu Xeon Workstation</em></a></p>
 </span>

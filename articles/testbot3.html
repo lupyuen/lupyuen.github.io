@@ -74,7 +74,7 @@
 <li><a href="#complications-with-pinephone-battery" title="Complications with PinePhone Battery">7 Complications with PinePhone Battery</a><ul></ul></li>
 <li><a href="#port-nuttx-to-allwinner-a527-soc" title="Port NuttX to Allwinner A527 SoC">8 Port NuttX to Allwinner A527 SoC</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2025</em></p>
-<p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p>Earlier we created a <a href="https://lupyuen.github.io/articles/testbot"><strong>PR Test Bot</strong></a> that will <strong>Build and Test</strong> the Pull Requests for <strong>Apache NuttX RTOS</strong>. Our Test Bot kicks into action when we post a <a href="https://lupyuen.github.io/articles/testbot2"><strong>PR Comment</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For Oz64 SG2000 RISC-V SBC
 @nuttxpr test oz64:nsh
@@ -104,7 +104,7 @@
 <p>Maybe we’ll port NuttX to <strong>Allwinner A527 SoC</strong>?</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-mux.jpg" alt="SDWire MicroSD Multiplexer" /></p>
 <h1 id="sdwire-microsd-multiplexer"><a class="doc-anchor" href="#sdwire-microsd-multiplexer">§</a>1 SDWire MicroSD Multiplexer</h1>
 <p><em>MicroSD Multiplexer: What’s that? (Pic above)</em></p>
 <p><a href="https://www.tindie.com/products/3mdeb/sd-wire-sd-card-reader-sd-card-mux/"><strong>SDWire MicroSD Multiplexer</strong></a> is an ingenious gadget that allows <strong>Two Devices</strong> to access One Single <strong>MicroSD Card</strong>. <em>(One device at a time, not simultaneously)</em></p>
@@ -120,7 +120,7 @@
 </ul>
 <p>Our Test Bot got no fingers and it can’t <strong>Physically Swap</strong> a MicroSD between Test Server and Test Device.</p>
 <p>That’s why I bought a MicroSD Multiplexer to <strong>Electrically Swap</strong> the MicroSD between the two machines…</p>
-<p><img src="https://lupyuen.org/images/testbot2-flow.jpg" alt="MicroSD Multiplexer for Test Bot" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-flow.jpg" alt="MicroSD Multiplexer for Test Bot" /></p>
 <p><em>How does it work?</em></p>
 <p>According to <a href="https://docs.dasharo.com/transparent-validation/sd-wire/specification/#pcb-elements-and-scheme"><strong>SDWire Schematic</strong></a>, the gadget has a <a href="https://www.ti.com/product/TS3A27518E"><strong>TS3A27518EPWR</strong></a> Multiplexer inside. <em>(Works like FTDI, but 6 Data Channels)</em></p>
 <p>Our Test Bot will run a <strong>Command-Line Tool</strong> <em>(provided by SDWire)</em> to “Swap” the MicroSD between our Test Server and Test Device.</p>
@@ -134,7 +134,7 @@
 </li>
 </ol>
 <p>First we prepare our Test Server: Avaota-A1 SBC…</p>
-<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="yuzuki-avaota-a1-sbc"><a class="doc-anchor" href="#yuzuki-avaota-a1-sbc">§</a>2 Yuzuki Avaota-A1 SBC</h1>
 <p><em>What’s this Single-Board Computer? (Pic above)</em></p>
 <p>To assemble our Test Bot, I bought a <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>Yuzuki Avaota-A1</strong></a> Single-Board Computer.  We download the <a href="https://github.com/AvaotaSBC/AvaotaOS/releases"><strong>Latest AvaotaOS Release</strong></a> <em>(Ubuntu Noble GNOME)</em> and uncompress it…</p>
@@ -147,7 +147,7 @@ $ ssh avaota@avaota-a1
 Password: avaota</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dd4beb052ce07c36d41d409631c6d68b">(See the <strong>Boot Log</strong>)</a></p>
 <p>While Booting: Our SBC shows a helpful message on the <strong>Onboard LCD</strong>, it should disappear in a while…</p>
-<p><img src="https://lupyuen.org/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-lcd.jpg" alt="Avaota-A1 SBC with Onboard LCD" /></p>
 <p><em>Hmmm our SBC is forever showing “Booting Linux”?</em></p>
 <p>Make sure we’re booting AvaotaOS, not <a href="https://www.armbian.com/avaota-a1/"><strong>Armbian Ubuntu</strong></a>. Armbian will fail with a <a href="https://gist.github.com/lupyuen/32876ee9696d60e6e95c839c0a937ad4"><strong>Page Table Panic</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Kernel panic - not syncing:
@@ -156,7 +156,7 @@ Failed to allocate page table page</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Linux version 5.15.119-gc08c29131003 (yuzuki@YuzukiKoddo)
 Android (8490178, based on r450784d)
 clang version 14.0.6 (https://android.googlesource.com/toolchain/llvm-project 4c603efb0cca074e9238af8b4106c30add4418f6)</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-uart.jpg" alt="Avaota-A1 SBC connected to USB UART" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-uart.jpg" alt="Avaota-A1 SBC connected to USB UART" /></p>
 <p><em>How to troubleshoot? And see the Boot Logs?</em></p>
 <p>Connect a <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>USB UART Dongle</strong></a> (CH340 or CP2102) to these pins (pic above)</p>
 <div><table><thead><tr><th style="text-align: center">Avaota-A1</th><th style="text-align: center">USB UART</th><th style="text-align: center">Colour</th></tr></thead><tbody>
@@ -175,7 +175,7 @@ logout
 screen /dev/ttyUSB0 115200</code></pre></div>
 <p><em>Why choose Avaota-A1?</em></p>
 <p>It’s <a href="https://liliputing.com/yuzuki-avaota-a1-is-a-55-single-board-pc-with-8-arm-cortex-a55-cpu-cores-and-an-embedded-risc-v-core/"><strong>Open Source Hardware</strong></a>, available from Multiple Makers. <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><em>(Quite affordable too: $55)</em></a></p>
-<p><img src="https://lupyuen.org/images/testbot3-mux2.jpg" alt="SDWire connected to Avaota-A1 SBC" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-mux2.jpg" alt="SDWire connected to Avaota-A1 SBC" /></p>
 <h1 id="connect-sdwire-to-sbc"><a class="doc-anchor" href="#connect-sdwire-to-sbc">§</a>3 Connect SDWire to SBC</h1>
 <p>With a <strong>Micro-USB Data Cable</strong>: Connect <strong>SDWire MicroSD Multiplexer</strong> to our SBC (pic above). Check that it’s a USB Data Cable, <strong>Not Power Cable</strong>. Mini-USB won’t work either.</p>
 <p>On our SBC, run “<strong><code>sudo</code> <code>dmesg</code></strong>” to watch the Magic of SDWire…</p>
@@ -212,7 +212,7 @@ sd 0:0:0:0: [sda] Assuming drive cache: write through
 sd 0:0:0:0: [sda] Attached SCSI removable disk
 sda: sda1</code></pre></div></span>
 <p>Next we test the SDWire Tools…</p>
-<p><img src="https://lupyuen.org/images/testbot3-mux3.jpg" alt="SDWire: Blue for Test Server, Green for Test Device" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-mux3.jpg" alt="SDWire: Blue for Test Server, Green for Test Device" /></p>
 <h1 id="compile-the-sdwire-tools"><a class="doc-anchor" href="#compile-the-sdwire-tools">§</a>4 Compile the SDWire Tools</h1>
 <p><em>How to control SDWire? And flip the MicroSD from Test Server to Test Device?</em></p>
 <p>Based on the <a href="https://docs.dasharo.com/transparent-validation/sd-wire/usage-validation/"><strong>SDWire Instructions</strong></a>, we install the <strong>SDWire Tools</strong>…</p>
@@ -258,7 +258,7 @@ sudo sd-mux-ctrl \
 ## sda: sda1</code></pre></div>
 <p><strong>Blue LED</strong> turns on (pic left above), <em>/dev/sda1</em> is back on our SBC. Everything works hunky dory yay!</p>
 <p><a href="https://lupyuen.github.io/articles/testbot3#test-sdwire-with-pinephone">(We might simplify <strong><code>sudo</code></strong>, see below)</a></p>
-<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 <p><em>What’s inside sd-mux-ctrl?</em></p>
 <p><strong>sd-mux-ctrl</strong> calls the <strong>FTDI Library</strong> to flip the multiplexer. Simple, elegant and very clever: <a href="https://github.com/3mdeb/sd-mux/blob/master/src/main.cpp#L484-L556">sd-mux/main.cpp</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// When we select a Mux Target: Test Server or Test Device...
@@ -300,7 +300,7 @@ $ sudo umount /tmp/sda1
 $ sudo sd-mux-ctrl \
   --device-serial=sd-wire_02-09 \
   --dut</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-pinephone.jpg" alt="SDWire connected to PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-pinephone.jpg" alt="SDWire connected to PinePhone" /></p>
 <h1 id="test-sdwire-with-pinephone"><a class="doc-anchor" href="#test-sdwire-with-pinephone">§</a>6 Test SDWire with PinePhone</h1>
 <p><em>SDWire works OK with our SBC. What next?</em></p>
 <p>Moment of Truth! We connect <strong>SDWire MicroSD Multiplexer</strong> into…</p>
@@ -313,10 +313,10 @@ $ sudo sd-mux-ctrl \
 </li>
 </ul>
 <p>Which is easier with <a href="https://pine64.com/product/pinephone-microsd-extender/"><strong>PinePhone MicroSD Extender</strong></a>…</p>
-<p><img src="https://lupyuen.org/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-title.jpg" alt="SDWire MicroSD Multiplexer with PinePhone MicroSD Extender" /></p>
 <p><em>Does it work?</em></p>
 <p>Let’s assume our <a href="https://lupyuen.github.io/articles/testbot#control-our-oz64-sbc"><strong>Build Server</strong></a> has compiled the PR Code into a <strong>NuttX Image</strong>…</p>
-<p><img src="https://lupyuen.org/images/testbot2-flow.jpg" alt="MicroSD Multiplexer for Test Bot" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-flow.jpg" alt="MicroSD Multiplexer for Test Bot" /></p>
 <ol>
 <li>
 <p>We flip the <strong>MicroSD to SBC</strong> <em>(Test Server)</em>, and mount the MicroSD…</p>
@@ -325,7 +325,7 @@ $ sudo sd-mux-ctrl \
 sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --ts
 mkdir /tmp/sda1
 sudo mount /dev/sda1 /tmp/sda1</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-test1.png" alt="Flip the MicroSD to Test Server" /></p>
 </li>
 <li>
 <p>Copy the <strong>NuttX Image</strong> to MicroSD…</p>
@@ -337,12 +337,12 @@ sudo cp Image.gz /tmp/sda1</code></pre></div></li>
 ## Flip the MicroSD to Test Device
 sudo umount /tmp/sda1
 sudo sd-mux-ctrl --device-serial=sd-wire_02-09 --dut</code></pre></div>
-<p><img src="https://lupyuen.org/images/testbot3-test2.png" alt="Flip the MicroSD to Test Device" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-test2.png" alt="Flip the MicroSD to Test Device" /></p>
 </li>
 <li>
 <p>Power on PinePhone with a <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a></p>
 <p><em>(Thanks to Home Assistant API)</em></p>
-<p><img src="https://lupyuen.org/images/testbot3-test3.png" alt="PinePhone boots NuttX yay" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-test3.png" alt="PinePhone boots NuttX yay" /></p>
 </li>
 <li>
 <p>PinePhone boots NuttX yay!</p>
@@ -384,7 +384,7 @@ ssh thinkcentre \
 ssh thinkcentre \
   sudo /home/user/copy-image.sh</code></pre></div>
 <p>We have a problem with the battery…</p>
-<p><img src="https://lupyuen.org/images/lvgl2-title.jpg" alt="Complications with PinePhone Battery" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="Complications with PinePhone Battery" /></p>
 <h1 id="complications-with-pinephone-battery"><a class="doc-anchor" href="#complications-with-pinephone-battery">§</a>7 Complications with PinePhone Battery</h1>
 <p><em>Huh! PinePhone will power up with a Smart Power Plug?</em></p>
 <p>OK our PinePhone is a little wonky: The <strong>Power Button</strong> won’t work any more. But powering up the <strong>USB-C Port</strong> on PinePhone will boot just fine.</p>
@@ -394,7 +394,7 @@ ssh thinkcentre \
 <p><em>Why not do it on a Battery-Less Device?</em></p>
 <p>I ordered another <em>(battery-less)</em> <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/bcm2711/boards/raspberrypi-4b/index.html"><strong>Arm64 Single-Board Computer</strong></a>. Hope it works better with Test Bot than PinePhone!</p>
 <p>There’s an intriguing solution for the conundrum…</p>
-<p><img src="https://lupyuen.org/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-sbc.jpg" alt="Yuzuki Avaota-A1 SBC with PinePhone MicroSD Extender" /></p>
 <h1 id="port-nuttx-to-allwinner-a527-soc"><a class="doc-anchor" href="#port-nuttx-to-allwinner-a527-soc">§</a>8 Port NuttX to Allwinner A527 SoC</h1>
 <p><em>How about booting and testing NuttX on Avaota-A1 SBC?</em></p>
 <p>Exactly! Here’s why Avaota-A1 SBC should run NuttX…</p>
@@ -423,11 +423,11 @@ ssh thinkcentre \
 <ul>
 <li><a href="https://lupyuen.org/articles/avaota.html"><strong>“Porting Apache NuttX RTOS to Avaota-A1 SBC (Allwinner A527 SoC)”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.org/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-port.png" alt="NuttX on Avaota-A1" /></p>
 <p><em>Isn’t it faster to port NuttX with U-Boot TFTP?</em></p>
 <p>Yeah for RISC-V Ports we boot <a href="https://lupyuen.github.io/articles/starpro64#boot-nuttx-over-tftp"><strong>NuttX over TFTP</strong></a>. But Avaota U-Boot <a href="https://gist.github.com/lupyuen/366f1ffefc8231670ffd58a3b88ae8e5"><strong>doesn’t support TFTP</strong></a>, so it’s back to MicroSD sigh. (Pic below)</p>
 <p>Well thankfully we have a <strong>MicroSD Multiplexer</strong> that will make MicroSD Swapping a lot easier! (Not forgetting our <a href="https://lupyuen.github.io/articles/testbot#power-up-our-oz64-sbc"><strong>Smart Power Plug</strong></a>)</p>
-<p><img src="https://lupyuen.org/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot3-uboot.jpg" alt="Avaota A1: Default U-Boot in eMMC. No network :-(" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
 <p>Next Article: We chat about porting <a href="https://github.com/lupyuen/nuttx-avaota-a1"><strong>NuttX to Avaota-A1 SBC</strong></a>…</p>
 <ul>
@@ -462,7 +462,7 @@ ssh thinkcentre \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/testbot3.md"><strong>lupyuen.org/src/testbot3.md</strong></a></p>
-<p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Porting NuttX to Avaota-A1 SBC" /></p>
+<p><img src="https://lupyuen.github.io/images/avaota-title.jpg" alt="Porting NuttX to Avaota-A1 SBC" /></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->

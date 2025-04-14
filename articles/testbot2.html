@@ -71,7 +71,7 @@
 <li><a href="#llm-says-nope" title="LLM Says Nope!">4 LLM Says Nope!</a><ul></ul></li>
 <li><a href="#real-hardware-arm-and-esp32" title="Real Hardware: Arm and ESP32">5 Real Hardware: Arm and ESP32</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Feb 2025</em></p>
-<p><img src="https://lupyuen.org/images/testbot-flow.jpg" alt="Test Bot for NuttX Pull Requests" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot-flow.jpg" alt="Test Bot for NuttX Pull Requests" /></p>
 <p>Last week we saw our new <a href="https://lupyuen.org/articles/testbot.html"><strong>Test Bot</strong></a> for NuttX Pull Requests. When we post this <strong>PR Comment</strong>, it will Build and Test the Pull Request on Real Hardware: <a href="https://lupyuen.github.io/articles/sg2000"><strong>Oz64 SG2000 RISC-V SBC</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test oz64:nsh</code></pre></div>
 <p>Today we extend our Test Bot to <strong>QEMU Emulators</strong>: <a href="https://lupyuen.github.io/articles/testbot2#testing-arm64-on-qemu"><strong>Arm64 QEMU</strong></a> and <a href="https://lupyuen.github.io/articles/testbot2#testing-risc-v-on-qemu"><strong>RISC-V QEMU</strong></a></p>
@@ -86,7 +86,7 @@
 <p>Not quite, beware of <a href="https://lupyuen.github.io/articles/testbot2#semihosting-breakout"><strong>Semihosting Breakout</strong></a>. Some LLMs might be helpful for flagging the <a href="https://lupyuen.github.io/articles/testbot2#llm-says-nope"><strong>Safety Issues</strong></a>.</p>
 <p><em>How about Real Hardware for Arm and ESP32? Can we test our PRs there?</em></p>
 <p>Yep we might support testing of Pull Requests on Other Hardware: <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>Arm32, Arm64 and ESP32</strong></a>. Some Boards might require a <a href="https://lupyuen.github.io/articles/testbot2#real-hardware-arm-and-esp32"><strong>MicroSD Multiplexer</strong></a>.</p>
-<p><img src="https://lupyuen.org/images/testbot2-arm64.jpg" alt="Testing a Pull Request on Arm64 QEMU" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-arm64.jpg" alt="Testing a Pull Request on Arm64 QEMU" /></p>
 <h1 id="testing-arm64-on-qemu"><a class="doc-anchor" href="#testing-arm64-on-qemu">§</a>1 Testing Arm64 on QEMU</h1>
 <p><em>Testing a Pull Request on Arm64 QEMU: How does it work?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test qemu-armv8a:netnsh</code></pre></div>
@@ -124,7 +124,7 @@ qemu-system-aarch64 \
 <p>And validate the <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/arm64.exp#L76-L98"><strong>OSTest Output</strong></a>. <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc">(Explained here)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/15857#issuecomment-2665533412">(See the <strong>Pull Request</strong>)</a></p>
 <p><a href="https://gitlab.com/lupyuen/nuttx-build-log/-/snippets/4808026">(See the <strong>Test Log</strong>)</a></p>
-<p><img src="https://lupyuen.org/images/testbot2-riscv.jpg" alt="Testing a Pull Request on QEMU RISC-V" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-riscv.jpg" alt="Testing a Pull Request on QEMU RISC-V" /></p>
 <h1 id="testing-risc-v-on-qemu"><a class="doc-anchor" href="#testing-risc-v-on-qemu">§</a>2 Testing RISC-V on QEMU</h1>
 <p><em>We just saw QEMU Arm64. What about QEMU RISC-V?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>@nuttxpr test rv-virt:knsh64</code></pre></div>
@@ -160,7 +160,7 @@ qemu-system-riscv64 \
 <p><em>Is there a Test Controller for QEMU?</em></p>
 <p>Nope Test Bot for QEMU doesn’t require a <a href="https://lupyuen.org/articles/testbot.html#connect-our-oz64-sbc"><strong>Test Controller</strong></a>. We run the QEMU Tests directly on our <a href="https://lupyuen.org/articles/testbot.html#control-our-oz64-sbc"><strong>Build &amp; Test Server</strong></a>. Which might be unsafe…</p>
 <blockquote>
-<p><img src="https://lupyuen.org/images/semihost-qemu.jpg" alt="Beware of Semihosting, it might break out from the QEMU Sandbox and into our Host Computer" /></p>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="Beware of Semihosting, it might break out from the QEMU Sandbox and into our Host Computer" /></p>
 </blockquote>
 <h1 id="semihosting-breakout"><a class="doc-anchor" href="#semihosting-breakout">§</a>3 Semihosting Breakout</h1>
 <p><em>Testing a Pull Request with QEMU: Should be Totally Safe right?</em></p>
@@ -176,7 +176,7 @@ nsh&gt; /system/bin/hello
 Hello, World!!</code></pre></div>
 <p><em>Where is /system/bin? Don’t recall bundling any ELF Executables?</em></p>
 <p>The ELF Executables exist on Our Computer’s <strong>Local Filesystem</strong>… Outside QEMU and the NuttX Filesystem.</p>
-<p><img src="https://lupyuen.org/images/testbot2-apps.png" alt="ELF Executables exist on Our Computer’s Local Filesystem… Outside QEMU and the NuttX Filesystem" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-apps.png" alt="ELF Executables exist on Our Computer’s Local Filesystem… Outside QEMU and the NuttX Filesystem" /></p>
 <p>This is called <a href="https://lupyuen.github.io/articles/semihost#nuttx-calls-semihosting"><strong>Semihosting</strong></a>, it gives QEMU direct access to our computer’s filesystem. We <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/qemu-rv/boards/rv-virt/index.html#configurations"><strong>Enabled Semihosting</strong></a> when we started QEMU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## For NuttX Kernel Build: (rv-virt:knsh64)
 ## QEMU must run with Semihosting Enabled
@@ -242,7 +242,7 @@ daemon:*:1:1:System Services:/var/root:/usr/bin/false</code></pre></div>
 <p>We append <strong><code>.diff</code></strong> to the Pull Request URL…</p>
 <div class="example-wrap"><pre class="language-bash"><code>github.com/lupyuen2/wip-nuttx/pull/89.diff</code></pre></div>
 <p>To produce a barebones <a href="https://patch-diff.githubusercontent.com/raw/lupyuen2/wip-nuttx/pull/89.diff"><strong>Diff Patch</strong></a> for our “Malicious Pull Request”…</p>
-<p><img src="https://lupyuen.org/images/testbot2-diff.png" alt="Diff Patch for our “Malicious Pull Request”" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-diff.png" alt="Diff Patch for our “Malicious Pull Request”" /></p>
 <p>And we feed the Diff Patch to <strong>Any LLM</strong>…</p>
 <span style="font-size:80%">
 <blockquote>
@@ -305,7 +305,7 @@ index aa1409d6a05b0..db54f11ae7623 100644
 <p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900#response-from-llm-gemini-advanced-20-flash">(See the <strong>LLM Response</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/d5a6ac395744c1f33e10690105e20900">(Gemini Flash 2.0? It neglected the <strong>Semihosting</strong>)</a></p>
 <p>OK Smarty Pants LLM, you foiled our “Malicious Pull Request”. Could you possibly stop EVERY Malicious Pull Request? 🤔</p>
-<p><img src="https://lupyuen.org/images/testbot2-flow.jpg" alt="Testing PinePhone with MicroSD Multiplexer" /></p>
+<p><img src="https://lupyuen.github.io/images/testbot2-flow.jpg" alt="Testing PinePhone with MicroSD Multiplexer" /></p>
 <h1 id="real-hardware-arm-and-esp32"><a class="doc-anchor" href="#real-hardware-arm-and-esp32">§</a>5 Real Hardware: Arm and ESP32</h1>
 <ol>
 <li>

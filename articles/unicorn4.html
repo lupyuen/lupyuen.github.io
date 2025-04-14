@@ -75,7 +75,7 @@
 <li><a href="#emulate-the-arm64-syscall" title="Emulate the Arm64 SysCall">8 Emulate the Arm64 SysCall</a><ul></ul></li>
 <li><a href="#syscall-from-nuttx-app" title="SysCall from NuttX App">9 SysCall from NuttX App</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>13 Apr 2025</em></p>
-<p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
+<p><img src="https://lupyuen.github.io/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
 <p><a href="https://lupyuen.github.io/articles/avaota.html"><strong>Avaota-A1 Arm64 SBC</strong></a> is officially supported by <a href="https://nuttx.apache.org/docs/latest/platforms/arm64/a527/boards/avaota-a1/index.html"><strong>Apache NuttX RTOS</strong></a> (Allwinner A527 SoC). Let’s take <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a> and create a <strong>Software Emulator</strong> for Avaota SBC…</p>
 <ul>
 <li>
@@ -293,7 +293,7 @@ cargo run | grep &quot;uart output&quot;</code></pre></div>
   <span class="macro">println!</span>(<span class="string">"PC=0x{:x}"</span>, emu.reg_read(RegisterARM64::PC).unwrap());
 }</code></pre></div>
 <p>That’s it for our Barebones Emulator of Avaota SBC! We fill in the hooks…</p>
-<p><img src="https://lupyuen.org/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
+<p><img src="https://lupyuen.github.io/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <h1 id="emulate-16550-uart"><a class="doc-anchor" href="#emulate-16550-uart">§</a>3 Emulate 16550 UART</h1>
 <p><em>What about Avaota I/O? How to emulate in Unicorn?</em></p>
 <p>Let’s emulate the Bare Minimum for I/O: Printing output to the <a href="https://lupyuen.github.io/articles/avaota.html#print-to-uart-in-arm64-assembly"><strong>16550 UART</strong></a>…</p>
@@ -408,7 +408,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret) {
 <p><a href="https://github.com/qemu/qemu/blob/master/accel/tcg/cpu-exec.c#L704-L769">(Compare with <strong>Original QEMU</strong>)</a></p>
 <p>Aha! Unicorn is expecting us to <strong>Hook This Interrupt</strong> and emulate the Arm64 SysCall, inside our Interrupt Callback.</p>
 <p>Before hooking the interrupt, we track down the origin of the SysCall…</p>
-<p><img src="https://lupyuen.org/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
+<p><img src="https://lupyuen.github.io/images/unicorn3-avaota.jpg" alt="Stepping through Unicorn with CodeLLDB Debugger" /></p>
 <h1 id="syscall-for-context-switch"><a class="doc-anchor" href="#syscall-for-context-switch">§</a>5 SysCall for Context Switch</h1>
 <p><em>Why is NuttX Kernel making an Arm64 SysCall? Aren’t SysCalls used by NuttX Apps?</em></p>
 <p>Let’s find out! NuttX passes a <strong>Parameter to SysCall</strong> in Register X0. The Parameter Value is <strong><code>2</code></strong>: <a href="https://github.com/lupyuen/nuttx-arm64-emulator/blob/avaota/nuttx/nuttx.S">nuttx.S</a></p>
@@ -722,7 +722,7 @@ ESR_EL1=Ok(1409286144)
 TODO: Handle SysCall from NuttX Apps</code></pre></div>
 <p><a href="https://github.com/qilingframework/qiling/blob/master/qiling/os/linux/syscall.py">(Qiling emulates <strong>Linux SysCalls</strong> with Unicorn)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/Qilin">(<strong>Qiling</strong> is also a Mythical Beast)</a></p>
-<p><img src="https://lupyuen.org/images/unicorn4-bootflow.png" alt="NuttX Boot Flow for ROM FS Filesystem" /></p>
+<p><img src="https://lupyuen.github.io/images/unicorn4-bootflow.png" alt="NuttX Boot Flow for ROM FS Filesystem" /></p>
 <h1 id="syscall-from-nuttx-app"><a class="doc-anchor" href="#syscall-from-nuttx-app">§</a>9 SysCall from NuttX App</h1>
 <p><em>What’s SysCall Command 9? Where in NSH Shell is 0xC000_3F00?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>$ cargo run
@@ -783,7 +783,7 @@ gettid():
 <p><a href="https://docs.google.com/document/d/1qYkBu3ca3o5BXdwtUpe0EirMv9PpMOdmf7QBnqGFJkA/edit?tab=t.0"><strong>LLM explains NuttX Boot Flow (Long Version)</strong></a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.org/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
+<p><img src="https://lupyuen.github.io/images/unicorn4-title.jpg" alt="Avaota-A1 SBC: Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate" /></p>
 <span style="font-size:80%">
 <p><em>Shot on Sony NEX-7 with IKEA Ring Light, Yeelight Ring Light on Corelle Plate</em></p>
 </span>
