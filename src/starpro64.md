@@ -22,6 +22,8 @@
 
 - __Smart Power Plug__ might be helpful
 
+- [__Daily Test Logs__ for StarPro64 NuttX](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-starpro64%22&s=updated)
+
 We begin with the RISC-V SoC...
 
 [_(Watch the NuttX Demo on YouTube)_](https://youtu.be/Yr7aYNIMUsw)

@@ -30,6 +30,8 @@ We're ready for volunteers to build __NuttX Drivers for Avaota-A1 / Allwinner A5
 
 - [__Avaota-A1 Device Tree__](https://github.com/lupyuen/nuttx-avaota-a1/blob/main/sun55i-t527-avaota-a1.dts)
 
+- [__Daily Test Logs for Avaota-A1 NuttX__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-avaota%22&s=updated)
+
 _(BTW I bought all the hardware covered in this article. Nope, nothing was sponsored: Avaota-A1, SDWire, IKEA TRETAKT)_
 
 ![Avaota-A1 SBC connected to USB UART](https://lupyuen.github.io/images/testbot3-uart.jpg)
