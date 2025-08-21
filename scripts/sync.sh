@@ -262,3 +262,12 @@ do
   echo article=$article
   update_header2 $article
 done
+
+## Direct Upload to Cloudflare Pages
+## https://developers.cloudflare.com/pages/get-started/direct-upload/
+npm i -D wrangler@latest
+npx wrangler --version
+npx wrangler login
+npx wrangler pages deploy $HOME/lupyuen.org --project-name lupyuen-org
+npx wrangler pages deployment list --project-name lupyuen-org
+## Browse to https://lupyuen-org.pages.dev/
