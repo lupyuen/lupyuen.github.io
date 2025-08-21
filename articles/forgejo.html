@@ -606,6 +606,15 @@ git clone \
 ## But SSH isn&#39;t enabled on our server yet
 git clone \
   git@nuttx-forge.org:nuttx/nuttx-mirror</code></pre></div></li>
+<li>
+<p><strong>If the GitHub Sync fails</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>mirror/queue.go:59:func1()
+[E] Unable to push sync request for to the queue for pull mirror repo[2].
+Error: already in queue</code></pre></div>
+<p>Then click “Site Admin &gt; Monitoring &gt; Queues &gt; Mirror &gt; Review”</p>
+<p>Click “Remove All” to clear the Mirror Queue</p>
+<p>Set “Max Number of Workers” to 5 (instead of default 1)</p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/forgejo-flow.jpg" alt="Read-Write Mirror" /></p>
 <h1 id="appendix-read-write-mirror"><a class="doc-anchor" href="#appendix-read-write-mirror">§</a>9 Appendix: Read-Write Mirror</h1>
