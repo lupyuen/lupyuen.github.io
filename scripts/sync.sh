@@ -128,6 +128,11 @@ git pull
 # Sync to ../lupyuen.org
 sync_folder ../lupyuen.org
 
+# Copy PineTime Articles from ../pinetime-rust-mynewt to ../lupyuen.org
+mkdir -p ../lupyuen.org/pinetime-rust-mynewt
+cp -r ../pinetime-rust-mynewt/docs/. \
+  ../lupyuen.org/pinetime-rust-mynewt
+
 # Deploy ../lupyuen.org to Cloudflare Pages lupyuen.org
 pushd ../lupyuen.org
 npx wrangler pages deploy \
