@@ -125,8 +125,15 @@ function sync_folder() {
 commit_msg=$(git --no-pager log -1 --format="%s")
 git pull
 
-# Sync to lupyuen.org
+# Sync to ../lupyuen.org
 sync_folder ../lupyuen.org
+
+# Deploy ../lupyuen.org to Cloudflare Pages lupyuen.org
+pushd ../lupyuen.org
+npx wrangler pages deploy \
+  . \
+  --project-name lupyuen-org
+popd
 
 # Sync to Codeberg Pages
 sync_folder ../lupyuen.codeberg.page
