@@ -645,6 +645,20 @@ Forgejo shall __auto-sync our repo__ (every hour), but it __won't allow Pull Req
       git@nuttx-forge.org:nuttx/nuttx-mirror
     ```
 
+1.  __If the GitHub Sync fails__...
+
+    ```text
+    mirror/queue.go:59:func1()
+    [E] Unable to push sync request for to the queue for pull mirror repo[2].
+    Error: already in queue
+    ```
+    
+    Then click "Site Admin > Monitoring > Queues > Mirror > Review"
+
+    Click "Remove All" to clear the Mirror Queue
+
+    Set "Max Number of Workers" to 5 (instead of default 1)
+
 ![Read-Write Mirror](https://lupyuen.github.io/images/forgejo-flow.jpg)
 
 # Appendix: Read-Write Mirror
