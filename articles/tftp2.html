@@ -179,6 +179,7 @@ sudo --preserve-env \
 
 ## Or use `nohup` to keep it running continuously
 ## nohup sudo --preserve-env $HOME/.cargo/bin/cargo run -- -i 0.0.0.0 -p 69 -d /tftpboot &amp;
+## tail -f nohup.out
 
 ## Test our TFTP Server
 ## TODO: Change `192.168.x.x` to your TFTP Server Address
@@ -222,7 +223,8 @@ sudo $HOME/.cargo/bin/tftpd \
   -d &quot;$HOME/tftproot&quot;
 
 ## Or use `nohup` to keep it running continuously
-nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot; &amp;</code></pre></div>
+nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot; &amp;
+tail -f nohup.out</code></pre></div>
 <p><a href="https://github.com/altugbakan/rs-tftpd/pull/7">(See the <strong>Pull Request</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <h1 id="no-more-timeouts"><a class="doc-anchor" href="#no-more-timeouts">§</a>2 No More Timeouts!</h1>

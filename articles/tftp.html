@@ -153,7 +153,8 @@ sudo $HOME/.cargo/bin/tftpd \
   -d &quot;$HOME/tftproot&quot;
 
 ## Or use `nohup` to keep it running continuously
-nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot; &amp;</code></pre></div>
+nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot; &amp;
+tail -f nohup.out</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/tftp2#send-everything-twice">(<strong><code>duplicate-packets</code></strong> is needed to prevent TFTP Timeouts)</a></p>
 <p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(<strong><code>xinetd</code> + <code>tftpd</code></strong> might cause TFTP Timeouts)</a></p>
 <p>(<a href="https://crates.io/crates/tftp_server"><strong><code>tftp_server</code></strong></a> won’t work, it only supports localhost)</p>
