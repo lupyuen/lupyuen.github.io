@@ -97,6 +97,7 @@ sudo $HOME/.cargo/bin/tftpd \
 
 ## Or use `nohup` to keep it running continuously
 nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d "$HOME/tftproot" &
+tail -f nohup.out
 ```
 
 [(__`duplicate-packets`__ is needed to prevent TFTP Timeouts)](https://lupyuen.github.io/articles/tftp2#send-everything-twice)

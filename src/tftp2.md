@@ -141,6 +141,7 @@ sudo --preserve-env \
 
 ## Or use `nohup` to keep it running continuously
 ## nohup sudo --preserve-env $HOME/.cargo/bin/cargo run -- -i 0.0.0.0 -p 69 -d /tftpboot &
+## tail -f nohup.out
 
 ## Test our TFTP Server
 ## TODO: Change `192.168.x.x` to your TFTP Server Address
@@ -196,6 +197,7 @@ sudo $HOME/.cargo/bin/tftpd \
 
 ## Or use `nohup` to keep it running continuously
 nohup sudo $HOME/.cargo/bin/tftpd --duplicate-packets 1 -i 0.0.0.0 -p 69 -d "$HOME/tftproot" &
+tail -f nohup.out
 ```
 
 [(See the __Pull Request__)](https://github.com/altugbakan/rs-tftpd/pull/7)
