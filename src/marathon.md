@@ -14,6 +14,161 @@ https://www.strava.com/activities/16399545262
 
 42 km Marathon Training - Final Long Run till Taper Down for Actual Marathon yay!
 
+# TODO
+
+Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
+
+That's a bit farther than a Full Marathon 42 km init? In 6 hours
+
+Yeah it sounds mathemagically plausible!
+
+Yeah what if we jogged a little quicker? We might complete the Full marathon in 7 hours!
+
+Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in my body is connected, and why they are in pain 
+
+What's this cadence 
+Edm 168 Bpm bouncing around
+Overstride
+Understride
+Downhill increase cadence
+
+For 167 70 natural cadence is probably??? 
+
+Research paper 
+Please try not to exceed 10% of the distance of our last Long Run over the past 30 days
+
+Lean forward a bit
+Fall forward gracefully, repeatedly 
+Run tall
+Natural harmonics 
+
+10% injury 
+First long run was painful gruelling 42 km
+Today 42 km + 5 km
+Mostly painless 
+Quick recovery within a day 
+
+Whoa running a full marathon every week?
+Overtraining?
+Weirdly it works OK for me. Maybe because 
+7 hours including toilet breaks, snack raids at 7 Eleven 
+Finishing cut off
+Maybe visit regional marathons
+Zero ambition of running quicker at my age
+
+7 hours out in the sun?
+Start at 3am
+Finish at 10am, getting a bit too warm
+7 hours of pure bliss, no phone distractions, just mindful meditation 
+
+Mindfulness?
+Check if knees, hips, ankles, are ok
+Are we thirsty or hungry?
+Sleepy?
+Heart rate
+Breathing 
+Too warm?
+Too sweaty?
+Are my toes bruisin' while I'm cruisin'?
+
+Breathing pattern 
+Musical notation 
+Watch out!
+Sweaty Breathy Monster behind you!
+
+Smart watch?
+Nope plain old casio watch
+ just carry my phone with Strava 
+Km splits are very helpful 
+
+Lose weight?
+Gained 10 kg to 70 kg
+Strength Training with Creatine 
+Intermittent fasting 
+Run an experiment 
+
+AI Vs groundedness
+Maintain sanity and health 
+Putrajaya Miri
+Return to NuttX?
+Not sure
+Still doing day to day operations
+Checking the daily tests for avoata, starpro64, oz64
+Might be the most that i can do for now 
+
+Toenails 
+Bladder injury 
+Energy gels 
+7 Eleven 
+
+Taper
+Acclimatisation 
+24hour public toilet every 2 km
+
+Running the 10 km with friends 
+High cadence, short strides
+Pcm duty cycle 
+Acclimatise the super hot midday sun
+
+Discover new places in neighbouring countries
+50 k ultra 
+Half marathon 
+
+Training in the rain
+Socks shirt chafing 
+
+The flow? Coding for hours on mountain dew
+Nope be mindful of the present, here and now 
+Watch where you're running 
+How you're running 
+Don't get injured or overexert 
+Refreshingly different from coding for hours and hours, high on stimulants
+
+Negative split
+Start slow
+
+Omron wonky
+
+Watch out for LS
+Eat before run
+
+Toes
+Maybe shouldn't run weekly?
+
+Strength training 
+Dumbbells
+No gym
+
+Mindfulness 
+Worries about AI and the Environment 
+Future of Apache NuttX and what's my role in it
+Taking care of my family 
+Will I inherit Alzheimer's?
+Will I ever complete this article?
+Why is USB UART broken?
+
+If you connected me to an oscilloscope (eeg?)
+Oscilloscope graph
+State transition diagram 
+
+Still daily monitoring oz64, starpro64, avaota a1
+
+Paranoid about losing count 
+Stop at 18
+Mis count 
+So much for mindfulness!
+
+Step into a puddle 
+Or a poodle 
+
+Express gratitude 
+Glorious tan
+Sweat moisturising skin
+
+Risk mgmt perspective 
+Running injury takes at most 3 weeks to heal 
+Then 3 weeks to taper
+
 # What's Next
 
 TODO
