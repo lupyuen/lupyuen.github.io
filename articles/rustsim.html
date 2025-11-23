@@ -517,15 +517,13 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <li>
 <p>Our Rust Firmware calls <strong><code>gpio::output_set</code></strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>gpio::output_set(<span class="number">11</span>, <span class="number">0</span>)</code></pre></div>
-</li>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>gpio::output_set(<span class="number">11</span>, <span class="number">0</span>)</code></pre></div></li>
 <li>
 <p>Which is a wrapper function that calls <strong><code>bl_gpio_output_set</code></strong></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; {
   <span class="comment">//  Call the BL602 IoT SDK
-  </span>bl_gpio_output_set(pin <span class="kw">as </span>u8, value <span class="kw">as </span>u8);</code></pre></div>
-</li>
+  </span>bl_gpio_output_set(pin <span class="kw">as </span>u8, value <span class="kw">as </span>u8);</code></pre></div></li>
 <li>
 <p>Which adds the <strong>Set GPIO Output</strong> event to the JSON Stream of Simulation Events</p>
 
@@ -533,8 +531,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
   <span class="comment">//  Create a GPIO Set Output event
   </span><span class="kw">let </span>ev = SimulationEvent::gpio_output_set { pin, value };
   <span class="comment">//  Add the event to the JSON Stream of Simulation Events
-  </span>SIMULATION_EVENTS.push(ev);</code></pre></div>
-</li>
+  </span>SIMULATION_EVENTS.push(ev);</code></pre></div></li>
 </ol>
 <p>And that’s how we <strong>intercept calls to BL602 IoT SDK</strong>… To emit a JSON Stream of Simulation Events!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
@@ -1152,7 +1149,6 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
     <span class="comment">//  Show Rust Backtrace on error
     </span>std::env::set_var(<span class="string">"RUST_BACKTRACE"</span>, <span class="string">"full"</span>);
 }</code></pre></div>
-
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 

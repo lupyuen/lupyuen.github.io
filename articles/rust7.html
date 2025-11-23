@@ -674,15 +674,13 @@ $HOME/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/src/rust/libra
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">fn </span>name_cstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
         <span class="kw">unsafe </span>{ CStr::from_ptr(<span class="self">self</span>.entry.d_name.as_ptr()) }
-    }</code></pre></div>
-</span>
+    }</code></pre></div></span>
 <p>To this…</p>
 <span style="font-size:80%">
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">fn </span>name_cstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
         <span class="kw">unsafe </span>{ CStr::from_ptr(<span class="self">self</span>.entry.d_name.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8) }
-    }</code></pre></div>
-</span>
+    }</code></pre></div></span>
 <p>And verify the change…</p>
 <span style="font-size:80%">
 <div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu
@@ -1018,8 +1016,7 @@ cargo add nix \
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// NuttX works like Redox OS
 </span><span class="attr">#[cfg(not(any(target_os = <span class="string">"redox"</span>,
               target_os = <span class="string">"nuttx"</span>)))]
-</span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...</code></pre></div>
-</li>
+</span><span class="kw">pub const </span>UTIME_OMIT: TimeSpec = ...</code></pre></div></li>
 <li>
 <p><strong>For NuttX ioctl():</strong> It works more like BSD <em>(second parameter is <strong><code>int</code></strong>)</em> than Linux <em>(second parameter is <strong><code>long</code></strong>)</em>: <a href="https://github.com/lupyuen/nix/pull/1/files#diff-96785c020c81b7d3962a7ea3c4ec2f2b1388617a412c92b4d1f0437447f42af4">sys/ioctl/mod.rs</a></p>
 
@@ -1036,8 +1033,7 @@ cargo add nix \
           target_os = <span class="string">"fuchsia"</span>,
           target_os = <span class="string">"redox"</span>))]
 #[macro_use]
-</span><span class="kw">mod </span>linux;</code></pre></div>
-</li>
+</span><span class="kw">mod </span>linux;</code></pre></div></li>
 <li>
 <p>Here are the files we modified for NuttX…</p>
 <p>(Supporting <strong><code>fs</code></strong> and <strong><code>ioctl</code></strong> features only)</p>

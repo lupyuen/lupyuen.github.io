@@ -719,15 +719,13 @@ riscv64-unknown-elf-ld:
   // This might Panic! (Why?)
   </span>buf.len() <span class="kw">as </span>i32 - <span class="number">1</span>,  <span class="comment">// Unsigned Size cast to Signed Integer
   </span>stdin                  <span class="comment">// Standard Input
-</span>);</code></pre></div>
-</li>
+</span>);</code></pre></div></li>
 <li>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/rust2/examples/hello_rust/hello_rust_main.rs#L90"><strong>Divide by Zero</strong></a> will also panic</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Buffer might begin with null
 // Which causes Divide by Zero
-</span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];</code></pre></div>
-</li>
+</span><span class="kw">let </span>i = <span class="number">1 </span>/ buf[<span class="number">0</span>];</code></pre></div></li>
 </ol>
 <p><em>What happens when we compile this?</em></p>
 <p><strong>If we omit <code>RUSTFLAGS=-O</code></strong>: We see Two Undefined Panic Functions…</p>
