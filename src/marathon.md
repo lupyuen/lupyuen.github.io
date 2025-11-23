@@ -16,6 +16,36 @@ https://www.strava.com/activities/16399545262
 
 # TODO
 
+Reasons to run - The Worst Part About Being a Runner
+
+https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm
+
+Why is USB UART failing? 
+
+https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-11-21
+
+Counting / The Simple Breathing Trick That Makes Long Runs Easier
+
+https://youtube.com/shorts/ApxC1ldmurY?si=C1L9hZtZGwayQJJY
+
+Carb Load 48 hours before long run / How Most Runners Get Their Long Run Fuelling Wrong
+
+https://youtu.be/LzYq-2b0URk?si=_urcCzD0MrZOSFOu
+
+The Hidden Reason Runners Get Injured (Revealed by New Study)
+
+https://youtu.be/_5sd9ex0y7k?si=Iprhl7uKyHv7nsJ3
+
+The Truth About That B Race You Think You Should Run (But Maybe Shouldn't!)
+
+https://youtu.be/GrPjCXv7qgY?si=26P2gB-556CrMJsh
+
+5 ways running without music can supercharge your physical and mental wellbeing – and even boost performance
+
+https://share.google/SVtT02kvCFRsKzYdD
+
+# TODO
+
 Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
 
 That's a bit farther than a Full Marathon 42 km init? In 6 hours
