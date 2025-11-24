@@ -2,31 +2,31 @@
 
 📝 _7 Dec 2025_
 
-![TODO](https://lupyuen.github.io/images/marathon-title.jpg)
+![TODO](https://lupyuen.github.io/images/marathon-title.png)
 
 TODO
 
 # TODO
 
-marathon-title.jpg
+![TODO](https://lupyuen.github.io/images/marathon-title.png)
 
 https://www.strava.com/activities/16399545262
 
 42 km Marathon Training - Final Long Run till Taper Down for Actual Marathon yay!
 
-marathon-hike.jpg
+![TODO](https://lupyuen.github.io/images/marathon-hike.png)
 
 https://www.strava.com/activities/14097873953
 
 50 km Hike: HarbourFront to Changi Airport to Changi Village ... Sandals finally broke 😬
 
-marathon-cadence.png
+![TODO](https://lupyuen.github.io/images/marathon-cadence.png)
 
 https://www.strava.com/activities/16440957669/overview
 
 5km cadence = 180 steps per min
 
-marathon-runwalk.png
+![TODO](https://lupyuen.github.io/images/marathon-runwalk.png)
 
 https://www.strava.com/activities/16529249481
 
@@ -36,7 +36,7 @@ https://www.strava.com/activities/16529249481
 
 https://www.strava.com/routes/3420213324753761400
 
-marathon-taper.png
+![TODO](https://lupyuen.github.io/images/marathon-taper.png)
 
 https://www.strava.com/activities/16548726281/relative-effort
 
