@@ -42,6 +42,8 @@ https://www.strava.com/activities/16548726281/relative-effort
 
 3-week taper
 
+??? weekly mileage
+
 # TODO
 
 Reasons to run - The Worst Part About Being a Runner
