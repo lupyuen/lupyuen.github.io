@@ -32,6 +32,16 @@ https://www.strava.com/activities/16529249481
 
 10km run then walk: 6.2 vs 6.9 mins / km
 
+42 km Marathon Training Route - toilets every 2 km, ample vending machines, 7 Eleven
+
+https://www.strava.com/routes/3420213324753761400
+
+marathon-taper.png
+
+https://www.strava.com/activities/16548726281/relative-effort
+
+3-week taper
+
 # TODO
 
 Reasons to run - The Worst Part About Being a Runner
