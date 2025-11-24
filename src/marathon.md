@@ -14,6 +14,24 @@ https://www.strava.com/activities/16399545262
 
 42 km Marathon Training - Final Long Run till Taper Down for Actual Marathon yay!
 
+marathon-hike.jpg
+
+https://www.strava.com/activities/14097873953
+
+50 km Hike: HarbourFront to Changi Airport to Changi Village ... Sandals finally broke 😬
+
+marathon-cadence.png
+
+https://www.strava.com/activities/16440957669/overview
+
+5km cadence = 180 steps per min
+
+marathon-runwalk.png
+
+https://www.strava.com/activities/16529249481
+
+10km run then walk: 6.2 vs 6.9 mins / km
+
 # TODO
 
 Reasons to run - The Worst Part About Being a Runner
@@ -43,6 +61,10 @@ https://youtu.be/GrPjCXv7qgY?si=26P2gB-556CrMJsh
 5 ways running without music can supercharge your physical and mental wellbeing – and even boost performance
 
 https://share.google/SVtT02kvCFRsKzYdD
+
+Cadence controvesy - The Myth That 180 Is the Optimal Cadence When Running Debunked - Again
+
+https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q
 
 # TODO
 
@@ -198,6 +220,40 @@ Sweat moisturising skin
 Risk mgmt perspective 
 Running injury takes at most 3 weeks to heal 
 Then 3 weeks to taper
+
+Walking 
+Shake a leg. Is anything broken? 
+
+Transition diagram 
+I'm running 
+I'm walking 
+Ouch something hurts!
+Don't fight the pain! Stop and walk for one minute 
+
+Toe diagram 
+Large quick dry socks
+Larger shoes
+Size 11
+
+Taper tantrum 
+Blog about our training 
+Plan for the next marathon 
+Book the flight and hotel 
+
+Start slow 
+Finish faster 
+
+Core dump
+Empty bowels 
+Or time yourself 
+And enjoy comfortably 
+
+Whats the #1 thing?
+Running form!
+But running too fast
+Cadence: Steps Per Minute 
+
+Run-Walk-Run is perfectly OK!
 
 # What's Next
 
