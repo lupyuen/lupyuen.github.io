@@ -34,6 +34,8 @@ https://www.strava.com/activities/16529249481
 
 42 km Marathon Training Route - toilets every 2 km, ample vending machines, 7 Eleven
 
+![TODO](https://lupyuen.github.io/images/marathon-route.png)
+
 https://www.strava.com/routes/3420213324753761400
 
 ![TODO](https://lupyuen.github.io/images/marathon-taper.png)
