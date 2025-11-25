@@ -40,6 +40,22 @@ _TODO?_
 
 TODO: Pain Diagram
 
+# Run - Walk - Run
+
+TODO
+
+# Cadence - Steps Per Minute
+
+TODO
+
+# Appendix: Taper Before Marathon
+
+TODO
+
+# Appendix: Remember To Eat!
+
+TODO
+
 # TODO
 
 ??? breathing diagram
