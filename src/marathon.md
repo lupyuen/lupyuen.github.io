@@ -8,6 +8,20 @@ TODO
 
 # TODO
 
+TODO stressful
+
+_Init similar to Full Marathon?_
+
+TODO Yeah what if we could run
+
+_Erm an old man running his first marathon? Isn't that deadly?_
+
+Well this uncle is hitting 60 soon. And the Marathon Training turned out surprisingly successful! (Haven't run since [__10 years ago__](https://en.wikipedia.org/wiki/Individual_physical_proficiency_test))
+
+Let's look back at everything that happened over the past 6 months...
+
+# TODO
+
 ??? breathing diagram
 
 ??? run-walk-run diagram
