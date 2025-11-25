@@ -50,6 +50,12 @@ https://www.strava.com/activities/16548726281/relative-effort
 
 3-week taper
 
+![TODO](https://lupyuen.github.io/images/marathon-taper2.png)
+
+https://www.strava.com/activities/16548726281/relative-effort
+
+3-week taper
+
 ![TODO](https://lupyuen.github.io/images/marathon-mileage.png)
 
 https://www.strava.com/activities/16548726281/relative-effort
