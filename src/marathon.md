@@ -30,7 +30,15 @@ TODO
 
 _Breathing?_
 
-TODO
+TODO: Breathing Diagram
+
+_TODO?_
+
+TODO: Run Walk Run Diagram
+
+_TODO?_
+
+TODO: Pain Diagram
 
 # TODO
 
