@@ -24,7 +24,12 @@ Let's look back at everything that happened over the past 6 months...
 
 _What's the #1 thing we learnt in Marathon Training?_
 
-[__Running Form Really Matters!__](TODO). TODO
+[__Running Form Really Matters!__](TODO). This uncle non-runner suffered knee pain, groin injury, foot pain ... Until switching to the proper running form
+-   Lean forward 
+-   Fall gracefully forward 
+-   Land on midsole or forefoot 
+-   Nope, don't land on the heel like walking 
+-   Short strides, don't overstride
 
 _Falling Forward? Won't it make us run faster?_
 
@@ -183,12 +188,6 @@ TWINCITY® Marathon 2026
 https://share.google/dj2tJUlR9gWIIAlw7
 
 # TODO
-
-Running Form Really Matters! This uncle non-runner suffered knee pain, groin injury, foot pain ... Until switching to the proper running form. Which feels like this:.
-Lean forward 
-Fall gracefully forward 
-Land on midsole or forefoot 
-Nope, don't land on the heel like walking 
 
 Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
 
