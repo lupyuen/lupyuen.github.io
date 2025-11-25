@@ -26,7 +26,11 @@ _What's the #1 thing we learnt in Marathon Training?_
 
 [__Running Form Really Matters!__](TODO). TODO
 
-_Run too fast?_
+_Falling Forward? Won't it make us run faster?_
+
+Yep it increases our [__Cadence (Steps Per Minute)__](TODO).
+
+Breathing becomes super important, while we're maintaing the __Same Cadence__ for 6 hours.
 
 TODO
 
@@ -54,7 +58,7 @@ TODO
 
 TODO
 
-# Appendix: Remember To Eat!
+# Appendix: Eat While Running
 
 TODO
 
