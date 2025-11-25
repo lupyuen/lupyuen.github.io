@@ -8,6 +8,12 @@ TODO
 
 # TODO
 
+??? breathing diagram
+
+??? run-walk-run diagram
+
+??? pain diagram
+
 ![TODO](https://lupyuen.github.io/images/marathon-title.png)
 
 https://www.strava.com/activities/16399545262
@@ -90,7 +96,37 @@ Cadence controvesy - The Myth That 180 Is the Optimal Cadence When Running Debun
 
 https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q
 
+Dont copy others plans / IF I HAD TO START RUNNING AGAIN… HERE'S WHAT I'D NEVER DO
+
+https://youtu.be/ygvMSQ6ZZk8?si=9Xj-8EPdgqNVmzTr
+
+10 Principles of Proper Running Form | RunRepeat
+
+https://share.google/3Te8Gpv2A2qZZyGtT
+
+Up hill / downhill - Mountain running!! Is it okay to use it for training?? [Beginner-Friendl...
+
+https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL
+
+What Is Running Cadence?
+
+https://youtu.be/QUn6vJW1mEI?si=tIJpFHKA33tdfCUY
+
+Miri Marathon 2026 | Run in Miri, Sarawak
+
+https://share.google/YVmbZLPQ9EuqDg7si
+
+TWINCITY® Marathon 2026 
+
+https://share.google/dj2tJUlR9gWIIAlw7
+
 # TODO
+
+Running Form Really Matters! This uncle non-runner suffered knee pain, groin injury, foot pain ... Until switching to the proper running form. Which feels like this:.
+Lean forward 
+Fall gracefully forward 
+Land on midsole or forefoot 
+Nope, don't land on the heel like walking 
 
 Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
 
