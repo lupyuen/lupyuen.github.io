@@ -50,6 +50,12 @@ https://www.strava.com/activities/16548726281/relative-effort
 
 weekly mileage
 
+![TODO](https://lupyuen.github.io/images/marathon-nutrition.jpg)
+
+https://www.strava.com/activities/16399545262
+
+nutrition pic
+
 # TODO
 
 Reasons to run - The Worst Part About Being a Runner
