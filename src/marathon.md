@@ -54,6 +54,8 @@ Yep it increases our [__Cadence (Steps Per Minute)__](TODO).
 
 Breathing becomes super important, while we're maintaing the __Same Cadence__ for 6 hours.
 
+# Breathe Deeply
+
 TODO
 
 _Breathing?_
@@ -71,6 +73,10 @@ _TODO?_
 
 TODO: Pain Diagram
 
+# In Case Of Injury
+
+TODO: Injury pic
+
 # Run - Walk - Run
 
 TODO
@@ -82,6 +88,8 @@ Shake a leg. Is anything broken?
 
 Step into a puddle 
 Or a poodle 
+
+TODO: Run Walk Run Diagram
 
 # Cadence - Steps Per Minute
 
