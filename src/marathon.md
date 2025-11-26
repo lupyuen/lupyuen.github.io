@@ -88,7 +88,7 @@ _But surely we can't walk too much?_
 
 Indeed, we need to complete the Marathon within the __Cut-Off Time__. [(Like 7.5 Hours)](TODO)
 
-We __Count Our Breathing__, to be sure that we run more and walk less...
+We __Count Our Breathing__ (pic above), to be sure that we run more and walk less...
 
 1.  _[Run Phase: Total 50 seconds]_
 
@@ -114,23 +114,17 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As w
 
 - Are our toes bruisin' while we're cruisin'?
 
-- Are we thirsty / hungry / sleepy? Too warm or sweaty?
+- Are we thirsty / hungry / sleepy? Too warm or sweaty? (Beware of abrasion)
 
 - Are we breathless? Heart pounding too fast?
 
 - Are we stepping into a puddle? Or a poodle?
 
-TODO
-
-Walking 
-Shake a leg. Is anything broken? 
-
-
-# In Case Of Injury
-
-TODO: Injury pic
-
 TODO: Pain diagram
+
+_Ouch! Something hurts!_
+
+Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK. (Pic above)
 
 # Cadence - Steps Per Minute
 
