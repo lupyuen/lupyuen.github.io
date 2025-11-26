@@ -122,7 +122,7 @@ Strength Training
 Dumbbells
 No gym
 
-# Training The WRONG Way
+# Train The WRONG Way
 
 TODO
 
@@ -147,7 +147,7 @@ Zero ambition of running quicker at my age
 Toes
 Maybe shouldn't run weekly?
 
-# Running With Mindfulness
+# Run With Mindfulness
 
 TODO
 
