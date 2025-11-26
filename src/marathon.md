@@ -54,42 +54,83 @@ _"Fall Forward Gracefully?" Won't we run too fast?_
 
 Yep it increases our [__Cadence (Steps Per Minute)__](TODO). We might hit 180 Steps Per Minute! (Pic above)
 
-Breathing becomes super important, while we're maintaing the __Same Cadence__ for 6 hours. Here's how...
+Breathing becomes super important, while we're maintaining the __Same Cadence__ for 6 hours. Here's how...
 
 TODO: Breathing Diagram
 
 # Breathe Deeply
 
-TODO
+_What's this Deep Breathing?_
 
-Watch out!
-Sweaty Breathy Monster behind you!
+Do this while running (pic above)
 
-_TODO?_
+1.  Pull into our lungs, as much air as possible
+
+1.  Do it some more, really stretch our Diaphragm
+
+1.  Exhale forcefully. Yep it will sound like a _wheezy grunt_.
+
+1.  Which is a helpful warning for the folks near us: _"Watch out! Sweaty Breathy Monster passing you!"_
+
+_Help I'm panting and breathless!_
+
+Ah here comes the cool trick: We don't really need to run all the way...
 
 TODO: Run Walk Run Diagram
 
-_TODO?_
+# Run - Walk - Run
 
-TODO: Pain Diagram
+_Running 180 Steps Per Minute for 6 Hours, Non-Stop? Impossible!_
+
+Just take a break and walk. [__Run-Walk-Run__](TODO) is perfectly OK for a Marathon!
+
+_But surely we can't walk too much?_
+
+Indeed, we need to complete the Marathon within the __Cut-Off Time__. [(Like 7.5 Hours)](TODO)
+
+We __Count Our Breathing__, to be sure that we run more and walk less...
+
+1.  _[Run Phase: Total 50 seconds]_
+
+    Count Our Breaths: 1 to 40...
+
+    Run At Each Count: __Step Left, Step Right__
+
+1.  _[Walk Phase: Total 25 seconds]_
+
+    Then Count Our Breaths: 1 to 20...
+
+    __Walk Briskly__
+
+1.  Repeat the Run-Walk Phases until we complete the Marathon. We're assuming TODO Breaths Per Minute, 180 Steps Per Minute.
+
+1.  Please tweak the numbers above! Experiment and pick the right numbers so we don't run into breathlessness. While still completing the Marathon.
+
+_So we're busy counting: 40 - 20 - 40 - 20? All 6 hours of the Marathon?_
+
+Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As we're counting / running / walking: Immerse ourselves into the here and now...
+
+- Is Everything OK? Our thighs, knees, calves, ankles, feet, hips, arms, shoulders, ...
+
+- Are our toes bruisin' while we're cruisin'?
+
+- Are we thirsty / hungry / sleepy? Too warm or sweaty?
+
+- Are we breathless? Heart pounding too fast?
+
+- Are we stepping into a puddle? Or a poodle?
+
+TODO
+
+Walking 
+Shake a leg. Is anything broken? 
+
 
 # In Case Of Injury
 
 TODO: Injury pic
 
-# Run - Walk - Run
-
-TODO
-
-Run-Walk-Run is perfectly OK!
-
-Walking 
-Shake a leg. Is anything broken? 
-
-Step into a puddle 
-Or a poodle 
-
-TODO: Run Walk Run Diagram
+TODO: Pain diagram
 
 # Cadence - Steps Per Minute
 
