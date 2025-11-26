@@ -40,7 +40,7 @@ TODO: Pic of injuries
 
 _What's the #1 thing we learnt in Marathon Training?_
 
-[__Running Form Really Matters!__](TODO). This uncle non-runner suffered knee pain, groin injury, foot pain ... Until switching to the proper running form
+[__Running Form Really Matters!__](TODO) This uncle non-runner suffered knee pain, groin injury, sore heels (pic above) ... Until switching to the proper [__Running Form__](TODO)
 1.  Lean slightly forward 
 1.  Fall forward gracefully
 1.  Land on midsole or forefoot 
@@ -48,19 +48,19 @@ _What's the #1 thing we learnt in Marathon Training?_
 1.  Short strides, don't overstride
 1.  No stomping or dragging of feet
 
+TODO: Pic of cadence
+
 _"Fall Forward Gracefully?" Won't we run too fast?_
 
-Yep it increases our [__Cadence (Steps Per Minute)__](TODO).
+Yep it increases our [__Cadence (Steps Per Minute)__](TODO). We might hit 180 Steps Per Minute! (Pic above)
 
-Breathing becomes super important, while we're maintaing the __Same Cadence__ for 6 hours.
+Breathing becomes super important, while we're maintaing the __Same Cadence__ for 6 hours. Here's how...
+
+TODO: Breathing Diagram
 
 # Breathe Deeply
 
 TODO
-
-_Breathing?_
-
-TODO: Breathing Diagram
 
 Watch out!
 Sweaty Breathy Monster behind you!
@@ -317,7 +317,7 @@ Taper
 Acclimatisation 
 Acclimatise the super hot midday sun
 
-# TODO
+# TODO Pics
 
 ??? breathing diagram
 
@@ -383,7 +383,7 @@ https://www.strava.com/activities/16399545262
 
 nutrition pic
 
-# TODO
+# TODO Links
 
 Reasons to run - The Worst Part About Being a Runner
 
@@ -441,7 +441,11 @@ TWINCITY® Marathon 2026
 
 https://share.google/dj2tJUlR9gWIIAlw7
 
-# TODO
+Strength training / How To Run Faster With Less Effort
+
+https://youtu.be/LMtW9uB2Z1o?si=FJ6AaaECxFZpeOWF
+
+# TODO Text
 
 Omron wonky
 
