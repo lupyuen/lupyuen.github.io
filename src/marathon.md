@@ -128,7 +128,7 @@ Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK. (
 
 # Marathon Training Plan
 
-_How do we get started with Marathon Training?_
+_How to get started with Marathon Training?_
 
 Most [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week...
 
@@ -147,6 +147,7 @@ TODO
 Strength Training
 Dumbbells
 No gym
+squats with dumbbells
 
 # Train The WRONG Way
 
