@@ -126,32 +126,23 @@ _Ouch! Something hurts!_
 
 Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK. (Pic above)
 
-# Cadence - Steps Per Minute
-
-TODO
-
-What's this cadence 
-Edm 168 Bpm bouncing around
-Overstride
-Understride
-Downhill increase cadence
-
-For 167 70 natural cadence is probably??? 
-
-Running the 10 km with friends 
-High cadence, short strides
-
 # Marathon Training Plan
 
+_How do we get started with Marathon Training?_
+
+Most [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week...
+
+- One Long, Slower Run (up to 32 km)
+
+- One Short, Faster Run (like 5 km)
+
+BUT to prevent injury from overtraining...
+
+1.  Every Week: We increase at most 10% of the Weekly Mileage OR Intensity
+
+1.  Don't exceed 10% of the distance of our last Long Run over the past 30 days (TODO link)
+
 TODO
-
-Increase 10% distance OR intensity 
-Last 30 days
-Max 32 km for long runs 
-Shorter faster runs e.g. 5 km
-
-Research paper 
-Please try not to exceed 10% of the distance of our last Long Run over the past 30 days
 
 Strength Training
 Dumbbells
@@ -351,6 +342,21 @@ Book the flight and hotel
 Taper
 Acclimatisation 
 Acclimatise the super hot midday sun
+
+# Appendix: Cadence - Steps Per Minute
+
+TODO
+
+What's this cadence 
+Edm 168 Bpm bouncing around
+Overstride
+Understride
+Downhill increase cadence
+
+For 167 70 natural cadence is probably??? 
+
+Running the 10 km with friends 
+High cadence, short strides
 
 # TODO Pics
 
