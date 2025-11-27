@@ -114,7 +114,7 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
 _How slow exactly is Run - Walk - Run?_
 
-Actually: Not that slow!
+Run - Walk - Run is not really that slow...
 
 - Run Continuously: TODO Per km
 
@@ -338,18 +338,33 @@ Finish faster
 Training in the rain
 Socks shirt chafing 
 
+TODO: Pic of nutrition
+
 # Appendix: Eat While Running
 
-TODO
+_Running 6 hours on an Empty Stomach? So inhumane!_
 
-Energy gels 
-7 Eleven 
-Plan route
-24hour public toilet every 2 km
+That's why we [__Eat While We Run__](TODO) (pic above)
+
+- [__Eat More Carbs__](TODO) the day before
+
+- __Light Snack__ just before the run
+
+- Every 30 minutes (or 5 km): Slurp an __Energy Gel__ (23 grams of carbs)
+
+- Which means we'll run with __Plenty of Energy Gels__...
+
+  TODO: Pic of gel
+
+- Plan our Long Runs around __Vending Machines__ and 7-Eleven Stores
+
+- Like this 42 km route, which has 24-hour __Public Toilets__ every 2 km...
+
+TODO: Route map
 
 # Appendix: Taper Before Marathon
 
-TODO
+TODO: Pic of tapering
 
 Risk mgmt perspective 
 Running injury takes at most 3 weeks to heal 
