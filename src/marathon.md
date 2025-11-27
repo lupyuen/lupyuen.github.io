@@ -174,7 +174,7 @@ BUT to prevent injury from overtraining...
 
 1.  Remember to do [__Strength Training__](TODO). Gym not necessary, dumbbells will do. (Think: Squats with Dumbbells, great for strengthening the groin)
 
-_What's the distance for our First Long Run? 10% Weekly Increment: How soon will it reach 42 km?_ 
+_What's the distance for our First Long Run? For 10% Weekly Increment: How soon will it reach 42 km?_ 
 
 Ah remember that 10% is the __Compounded Weekly Increment__...
 
