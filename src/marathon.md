@@ -47,6 +47,8 @@ _What's the #1 thing we learnt in Marathon Training?_
 1.  Landing on the heel? Nope, that's for walking (not running)
 1.  Short strides, don't overstride
 1.  No stomping or dragging of feet
+1.  Every 2 km: Maybe do some stretching. Rotate / revolve the knees.
+Squat down and twerk sideways.
 
 TODO: Pic of cadence
 
@@ -200,7 +202,7 @@ _Whoa running a 42 km Marathon every single week? That's bonkers!_
 
 Weirdly, the __42 km Weekly Run__ works OK for me...
 
-- 7 hours of pure bliss, no distractions, just mindful meditation 
+- 7 hours of pure bliss, no distraction, just mindful meditation 
 - Though we start at 3 am and finish at 10 am, which feels a bit too hot
 - I'm lucky the 42 km run is __Mostly Painless__ (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
 
