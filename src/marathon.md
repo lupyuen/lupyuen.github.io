@@ -306,13 +306,13 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Toenails are turning blue / black / purple!_
 
-    Try [Larger Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape.
+    Try [Larger Blister-Free Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape.
 
     TODO: Toe diagram 
 
 1.  _Outer Knee hurts!_
 
-    Try running one minute with the affected knee / foot turned slightly inward. If OK: continue running with knees and feet pointing straight ahead. Apply some strength to the knee, as the foot strikes the ground.
+    Try running one minute with the affected knee / foot turned slightly inward. If it feels OK: Continue running with knees and feet pointing straight ahead. Apply some strength to the knee, as the foot strikes the ground.
 
 1.  _Bladder seems to be slightly bleeding internally?_
 
