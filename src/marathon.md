@@ -390,9 +390,9 @@ Yeah that's the [__Taper Tantrum__](TODO). Try these fixes...
 
 - Blog about our [__Marathon Training__](TODO)
 
-- Plan for the next marathon
+- Plan for the [__Next Marathon__](TODO)
 
-- Book the flight and hotel 
+- Book the Flight and Hotel 
 
 # Appendix: Cadence - Steps Per Minute
 
