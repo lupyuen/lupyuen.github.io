@@ -286,23 +286,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/marathon.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/marathon.md)
 
+TODO: Pic of Body Glide and Micropore Tape
+
 # Appendix: Troubleshoot Our Marathon
 
-TODO
-
-1.  _Legs are seriously aching!_
-
-    Remember to breathe deep, [stretch the diaphragm](TODO). Drinking too much water might cause [leg cramps](TODO). But if we're peeing too little during a run, please drink up!
+[Wise folks say](https://genius.com/Baz-luhrmann-everybodys-free-to-wear-sunscreen-lyrics): _"The race is long, and in the end, it's only with yourself."_ So let's help ourselves...
 
 1.  _How fast are we running every km? Do we really need a Smart Watch?_
 
-    Nope, Smart Watch not necessary! Bring along a phone with Strava installed. Configure Strava to speak out the Split Timings, for every kilometre / mile.
+    Nope, Smart Watch not necessary! Bring a phone with Strava installed. Configure Strava to speak out the __Split Timings__, for every kilometre / mile.
+
+1.  _Legs are seriously aching!_
+
+    Remember to breathe deep, [stretch the diaphragm](TODO). Drinking too much water might cause [leg cramps](TODO). But if we're peeing too little during a run, please drink up right now!
 
 1.  _Abrasion of thighs, nipples, butt, ..._
 
-    Before Running: Apply Body Glide AND Micropore Tape. If it hurts after the run: Apply more Micropore Tape, and remove the next day.
-
-    TODO: Pic of Body Glide and Micropore Tape
+    Before Running: Apply Body Glide AND Micropore Tape (pic above). If it hurts after the run: Apply more Micropore Tape, and remove the next day.
 
 1.  _Toenails are turning blue / black / purple!_
 
@@ -316,11 +316,13 @@ TODO
 
 1.  _Bladder seems to be slightly bleeding internally?_
 
-    If we're wearing a [__Waist Pouch / Fanny Pack__](TODO): Position the pouch in front of the tummy. Move the Plastic Clip behind. Be careful when bending down.
+    If we're wearing a [Waist Pouch / Fanny Pack](TODO): Position the pouch in front of the tummy. Move the Plastic Clip behind. Be careful when bending down.
 
 1.  _Will we lose weight?_
 
     Actually I gained 10 kg over 6 months of Marathon Training, now weighing 70 kg. Maybe due to Weekly Carbo Loading + Strength Training + Creatine? Now Experimenting: Intermittent Fasting after running.
+
+TODO
 
 Core dump
 Empty bowels 
@@ -364,20 +366,33 @@ TODO: Route map
 
 # Appendix: Taper Before Marathon
 
+_What's this tapering?_
+
+3 Weeks before the Actual Marathon, we [__taper down__](TODO) or reduce the mileage and intensity of our Marathon Training. Why 3 weeks?
+
+- __Risk Management__: Most Running Injuries will (probably) take at most 3 weeks to heal. Makes sense to taper down our running 3 weeks before a Marathon, in case we injure ourselves during training.
+
+- [__30-Day Window__](TODO): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
+
 TODO: Pic of tapering
 
-Risk mgmt perspective 
-Running injury takes at most 3 weeks to heal 
-Then 3 weeks to taper
+_How much to taper down for our runs?_
 
-Taper tantrum 
-Blog about our training 
-Plan for the next marathon 
-Book the flight and hotel 
+- Maybe run 10 km, thrice a week? (Pic above)
 
-Taper
-Acclimatisation 
-Acclimatise the super hot midday sun
+- Have a [__Fun Run with Friends__](TODO), so we don't stress out too much
+
+- In the Short Runs: [__Acclimatise our bodies__](TODO) to the local weather
+
+_But the Taper Period feels really anxious and stressful!_
+
+Yeah that's the [__Taper Tantrum__](TODO). Try these fixes...
+
+- Blog about our [__Marathon Training__](TODO)
+
+- Plan for the next marathon
+
+- Book the flight and hotel 
 
 # Appendix: Cadence - Steps Per Minute
 
