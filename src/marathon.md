@@ -50,8 +50,7 @@ _What's the #1 thing we learnt in Marathon Training?_
 
 1.  No stomping or dragging of feet
 
-1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees.
-Squat down and twerk sideways.
+1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
 TODO: Pic of cadence
 
@@ -143,7 +142,9 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As w
 
 _Ouch! Something hurts!_
 
-Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK...
+Don't fight the pain! Stop and walk. Do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
+
+Continue running ONLY if we're really OK...
 
 TODO: Pain diagram
 
@@ -201,6 +202,8 @@ TODO: Pic of injuries
 
 Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in the body is connected, and why they're hurting!
 
+(Everyone ought to consult a Sports Physician before starting Marathon Training)
+
 TODO: Pic of 42 km weekly run
 
 _Whoa running a 42 km Marathon every single week? That's bonkers!_
@@ -241,7 +244,10 @@ Sweat moisturising skin
 
 TODO
 
-Putrajaya Miri
+Putrajaya
+Miri
+KL Marathon
+
 Return to NuttX?
 Not sure
 Still doing day to day operations
@@ -280,44 +286,37 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Rotate / revolve the knees
-Squat down and twerk sideways 
+1.  _Legs are seriously aching!_
 
-Too much water
+    Remember to breathe deep, [stretch the diaphragm](TODO). Drinking too much water might cause [leg cramps](TODO). But if we're peeing too little during a run, please drink up!
 
-Breathless / Legs aching 
-Diaphragm stretch breathing 
+1.  _How fast are we running every km? Do we really need a Smart Watch?_
 
-Toes
-Toe diagram 
-Large quick dry socks
-Larger shoes
-Size 11
+    Nope, Smart Watch not necessary! Bring along a phone with Strava installed. Configure Strava to speak out the Split Timings, for every kilometre / mile.
 
-Outer Knee pain
-Try running one minute with the affected knee / foot turned slightly inward
-If ok: continue running with knees and feet pointing straight ahead 
-Apply some strength to the knee 
-When the foot strikes the ground 
+1.  _Abrasion of thighs, nipples, butt, ..._
 
-Bladder injury 
+    Before Running: Apply Body Glide AND Micropore Tape. If it hurts after the run: Apply more Micropore Tape, and remove the next day.
 
-Abrasion 
-Body Glide AND Micropore Tape
-If it still hurts after the run
-Apply more Micropore Tape
-And remove it the next day
+    TODO: Pic of Body Glide and Micropore Tape
 
-Smart watch?
-Nope plain old casio watch
- just carry my phone with Strava 
-Km splits are very helpful 
+1.  _Toenails are turning blue / black / purple!_
 
-Lose weight?
-Gained 10 kg to 70 kg
-Strength Training with Creatine 
-Intermittent fasting 
-Run an experiment 
+    Try [Larger Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape.
+
+    TODO: Toe diagram 
+
+1.  _Outer Knee hurts!_
+
+    Try running one minute with the affected knee / foot turned slightly inward. If OK: continue running with knees and feet pointing straight ahead. Apply some strength to the knee, as the foot strikes the ground.
+
+1.  _Bladder seems to be slightly bleeding internally?_
+
+    If we're wearing a [__Waist Pouch / Fanny Pack__](TODO): Position the pouch in front of the tummy. Move the Plastic Clip behind. Be careful when bending down.
+
+1.  _Will we lose weight?_
+
+    Actually I gained 10 kg over 6 months of Marathon Training, now weighing 70 kg. Maybe due to Weekly Carbo Loading + Strength Training + Creatine? I'm experimenting with Intermittent Fasting after every run.
 
 Core dump
 Empty bowels 
