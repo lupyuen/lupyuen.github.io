@@ -242,6 +242,10 @@ Sweat moisturising skin
 
 # What's Next
 
+_Will we chase Marathon PBs? (Personal Best, not Peanut Butter)_
+
+Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other marathons happening near home...
+
 TODO
 
 Putrajaya
@@ -316,7 +320,7 @@ TODO
 
 1.  _Will we lose weight?_
 
-    Actually I gained 10 kg over 6 months of Marathon Training, now weighing 70 kg. Maybe due to Weekly Carbo Loading + Strength Training + Creatine? I'm experimenting with Intermittent Fasting after every run.
+    Actually I gained 10 kg over 6 months of Marathon Training, now weighing 70 kg. Maybe due to Weekly Carbo Loading + Strength Training + Creatine? Now Experimenting: Intermittent Fasting after running.
 
 Core dump
 Empty bowels 
