@@ -116,9 +116,11 @@ _How slow exactly is Run - Walk - Run?_
 
 Run - Walk - Run is not really that slow...
 
-- Run Continuously: TODO Per km
+- __Run Continuously__: TODO Per km
 
-- Run - Walk - Run: TODO Per km
+- __Run - Walk - Run__: TODO Per km
+
+- Thus we probably ought to [__Start Slower, Finish Faster__](TODO)
 
 TODO: Run-Walk-Run pic
 
@@ -154,9 +156,9 @@ _How to get started with Marathon Training?_
 
 Most 6-month [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week: We do...
 
-- One Long _(Slower)_ Run (up to 32 km)
+- One _(Slower)_ __Long Run__ (up to 32 km)
 
-- One Short _(Faster)_ Run (like 5 km)
+- One _(Faster)_ __Short Run__ (like 5 km)
 
 - Eventually hitting 42 km Total Mileage per week (almost)
 
@@ -331,11 +333,6 @@ And enjoy comfortably
 
 Watch out for LS
 Eat before run
-
-Negative split
-Start slow
-Start slow 
-Finish faster 
 
 Training in the rain
 Socks shirt chafing 
