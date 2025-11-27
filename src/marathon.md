@@ -6,10 +6,6 @@
 
 ![TODO](https://lupyuen.github.io/images/marathon-title2.png)
 
-TODO
-
-# TODO
-
 TODO stressful
 
 Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
@@ -110,6 +106,18 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
 1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk.
 
+_How slow exactly is Run - Walk - Run?_
+
+Actually: Not that slow!
+
+- Run Continuously: TODO Per km
+
+- Run - Walk - Run: TODO Per km
+
+TODO: Run-Walk-Run pic
+
+# Run With Mindfulness
+
 _So we're busy counting: 40 - 20 - 40 - 20? All 6 hours of the Marathon?_
 
 Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As we're counting / running / walking: Immerse ourselves into the here and now...
@@ -126,21 +134,11 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As w
 
 - Concentrate 100% on our running and breathing. No worries about Phone Notifications, Emails, Social Media, AI, The Environment, ...
 
-TODO: Pain diagram
-
 _Ouch! Something hurts!_
 
-Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK. (Pic above)
+Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK...
 
-TODO: Run-Walk-Run pic
-
-_How slow exactly is Run - Walk - Run?_
-
-Actually: Not that slow!
-
-- Run Continuously: TODO Per km
-
-- Run - Walk - Run: TODO Per km
+TODO: Pain diagram
 
 # Marathon Training Plan
 
@@ -203,12 +201,12 @@ _Whoa running a 42 km Marathon every single week? That's bonkers!_
 Weirdly, the __42 km Weekly Run__ works OK for me...
 
 - 7 hours of pure bliss, no distraction, just mindful meditation 
+
 - Though we start at 3 am and finish at 10 am, which feels a bit too hot
+
 - I'm lucky the 42 km run is __Mostly Painless__ (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
 
-# Run With Mindfulness
-
-TODO
+# TODO
 
 Mindfulness 
 Worries about AI and the Environment 
