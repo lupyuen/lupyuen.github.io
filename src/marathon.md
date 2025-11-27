@@ -106,6 +106,8 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
 1.  Please tweak the numbers above! Experiment and pick the right numbers so we don't run into breathlessness. While still completing the Marathon.
 
+1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk.
+
 _So we're busy counting: 40 - 20 - 40 - 20? All 6 hours of the Marathon?_
 
 Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As we're counting / running / walking: Immerse ourselves into the here and now...
@@ -120,21 +122,39 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As w
 
 - Are we stepping into a puddle? Or a poodle?
 
+- Concentrate 100% on our running and breathing. No worries about Phone Notifications, Emails, Social Media, AI, The Environment, ...
+
 TODO: Pain diagram
 
 _Ouch! Something hurts!_
 
 Don't fight the pain! Stop and walk. Continue running ONLY if we're really OK. (Pic above)
 
+TODO: Run-Walk-Run pic
+
+_How slow exactly is Run - Walk - Run?_
+
+Actually: Not that slow!
+
+- Run Continuously: TODO Per km
+
+- Run - Walk - Run: TODO Per km
+
 # Marathon Training Plan
 
 _How to get started with Marathon Training?_
 
-Most [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week...
+Most 6-month [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week: We do...
 
-- One Long, Slower Run (up to 32 km)
+- One Long _(Slower)_ Run (up to 32 km)
 
-- One Short, Faster Run (like 5 km)
+- One Short _(Faster)_ Run (like 5 km)
+
+- Eventually hitting 42 km Total Mileage per week (almost)
+
+- 3 Weeks Before Actual Marathon: Taper Down the Total Mileage
+
+  [(More about Tapering for Marathon)](TODO)
 
 BUT to prevent injury from overtraining...
 
@@ -142,56 +162,51 @@ BUT to prevent injury from overtraining...
 
 1.  Don't exceed 10% of the distance of our last Long Run over the past 30 days (TODO link)
 
-TODO
+1.  Remember to do [__Strength Training__](TODO). Gym not necessary, dumbbells will do. (Think: Squats with Dumbbells, great for strengthening the groin)
 
-Strength Training
-Dumbbells
-No gym
-squats with dumbbells
+_What's the distance for our First Long Run? 10% Weekly Increment: How soon will it reach 42 km?_ 
+
+Ah remember that 10% is the __Compounded Weekly Increment__...
+
+- Suppose we're comfortable with [__hiking 20 km__](TODO)
+
+- Then our very first Long Slow Run could probably be __20 km__
+
+- We extend the distance every week by 10%
+
+- We'll hit 42 km in 8 weeks
+
+TODO: Pic of calculator
+
+Now watch what happens if we disrespect the 10% rule...
 
 # Train The WRONG Way
 
-TODO
+_The 10% Rule for Weekly Mileage / Intensity: What happens if we DON'T follow it?_
 
-This reckless uncle did everything the wrong way, asking for trouble 
+This reckless uncle did everything the wrong way, asking for trouble...
 
-Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in my body is connected, and why they are in pain 
+TODO: Pic of distance
 
-10% injury 
-First long run was painful gruelling 42 km
-Today 42 km + 5 km
-Mostly painless 
-Quick recovery within a day 
+Subsequently suffering Knee Injury / Groin Injury / Toenail Fallout...
 
-Whoa running a full marathon every week?
-Overtraining?
-Weirdly it works OK for me. Maybe because 
-7 hours including toilet breaks, snack raids at 7 Eleven 
-Finishing cut off
-Maybe visit regional marathons
-Zero ambition of running quicker at my age
+TODO: Pic of injuries
 
-Toes
-Maybe shouldn't run weekly?
+Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in the body is connected, and why they're hurting!
+
+TODO: Pic of 42 km weekly run
+
+_Whoa running a 42 km Marathon every single week? That's bonkers!_
+
+Weirdly, the __42 km Weekly Run__ works OK for me...
+
+- 7 hours of pure bliss, no distractions, just mindful meditation 
+- Though we start at 3 am and finish at 10 am, which feels a bit too hot
+- I'm lucky the 42 km run is __Mostly Painless__ (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
 
 # Run With Mindfulness
 
 TODO
-
-7 hours out in the sun?
-Start at 3am
-Finish at 10am, getting a bit too warm
-7 hours of pure bliss, no phone distractions, just mindful meditation 
-
-Mindfulness?
-Check if knees, hips, ankles, are ok
-Are we thirsty or hungry?
-Sleepy?
-Heart rate
-Breathing 
-Too warm?
-Too sweaty?
-Are my toes bruisin' while I'm cruisin'?
 
 Mindfulness 
 Worries about AI and the Environment 
@@ -210,11 +225,6 @@ Watch where you're running
 How you're running 
 Don't get injured or overexert 
 Refreshingly different from coding for hours and hours, high on stimulants
-
-Paranoid about losing count 
-Stop at 18
-Mis count 
-So much for mindfulness!
 
 Express gratitude 
 Glorious tan
