@@ -37,13 +37,20 @@ TODO: Pic of injuries
 _What's the #1 thing we learnt in Marathon Training?_
 
 [__Running Form Really Matters!__](TODO) This uncle non-runner suffered knee pain, groin injury, sore heels (pic above) ... Until switching to the proper [__Running Form__](TODO)
+
 1.  Lean slightly forward 
+
 1.  Fall forward gracefully
+
 1.  Land on midsole or forefoot 
+
 1.  Landing on the heel? Nope, that's for walking (not running)
+
 1.  Short strides, don't overstride
+
 1.  No stomping or dragging of feet
-1.  Every 2 km: Maybe do some stretching. Rotate / revolve the knees.
+
+1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees.
 Squat down and twerk sideways.
 
 TODO: Pic of cadence
