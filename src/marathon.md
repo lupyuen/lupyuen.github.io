@@ -6,6 +6,8 @@
 
 ![TODO](https://lupyuen.github.io/images/marathon-title2.png)
 
+[_"42 km Final Marathon Training"_](https://www.strava.com/activities/16399545262)
+
 TODO stressful
 
 Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
@@ -20,7 +22,9 @@ _Innit similar to Full Marathon?_
 
 TODO Yeah what if we could run
 
-TODO: Pic of hike
+![TODO](https://lupyuen.github.io/images/marathon-hike.png)
+
+[_"50 km Hike: HarbourFront to Changi Airport to Changi Village"_](https://www.strava.com/activities/14097873953)
 
 _Erm an old man running his First Marathon? Isn't that lethal?_
 
@@ -52,7 +56,9 @@ _What's the #1 thing we learnt in Marathon Training?_
 
 1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
-TODO: Pic of cadence
+![TODO](https://lupyuen.github.io/images/marathon-cadence.png)
+
+[_5km cadence = 180 steps per min_](https://www.strava.com/activities/16440957669/overview)
 
 _"Fall Forward Gracefully?" Won't we run too fast?_
 
@@ -122,7 +128,9 @@ Run - Walk - Run is not really that slow...
 
 - Thus we probably ought to [__Start Slower, Finish Faster__](TODO)
 
-TODO: Run-Walk-Run pic
+![TODO](https://lupyuen.github.io/images/marathon-runwalk.png)
+
+[_10km run then walk: 6.2 vs 6.9 mins / km_](https://www.strava.com/activities/16529249481)
 
 # Run With Mindfulness
 
@@ -364,7 +372,9 @@ That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
 
 - Like this [__42 km Bestest Route__](TODO), which has 24-hour __Public Toilets__ every 2 km...
 
-TODO: Route map
+![TODO](https://lupyuen.github.io/images/marathon-route.png)
+
+[_42 km Marathon Training Route - toilets every 2 km, ample vending machines, 7 Eleven_](https://www.strava.com/routes/3420213324753761400)
 
 # Appendix: Taper Before Marathon
 
@@ -376,7 +386,13 @@ _What's this tapering?_
 
 - [__30-Day Window__](TODO): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
 
-TODO: Pic of tapering
+![TODO](https://lupyuen.github.io/images/marathon-taper.png)
+
+[_3-week taper_](https://www.strava.com/activities/16548726281/relative-effort)
+
+![TODO](https://lupyuen.github.io/images/marathon-taper2.png)
+
+[_3-week taper_](https://www.strava.com/activities/16548726281/relative-effort)
 
 _How much to taper down for our runs?_
 
@@ -420,56 +436,6 @@ High cadence, short strides
 
 # TODO Pics
 
-??? breathing diagram
-
-??? run-walk-run diagram
-
-??? pain diagram
-
-![TODO](https://lupyuen.github.io/images/marathon-title.png)
-
-![TODO](https://lupyuen.github.io/images/marathon-title2.png)
-
-https://www.strava.com/activities/16399545262
-
-42 km Marathon Training - Final Long Run till Taper Down for Actual Marathon yay!
-
-![TODO](https://lupyuen.github.io/images/marathon-hike.png)
-
-https://www.strava.com/activities/14097873953
-
-50 km Hike: HarbourFront to Changi Airport to Changi Village ... Sandals finally broke 😬
-
-![TODO](https://lupyuen.github.io/images/marathon-cadence.png)
-
-https://www.strava.com/activities/16440957669/overview
-
-5km cadence = 180 steps per min
-
-![TODO](https://lupyuen.github.io/images/marathon-runwalk.png)
-
-https://www.strava.com/activities/16529249481
-
-10km run then walk: 6.2 vs 6.9 mins / km
-
-42 km Marathon Training Route - toilets every 2 km, ample vending machines, 7 Eleven
-
-![TODO](https://lupyuen.github.io/images/marathon-route.png)
-
-https://www.strava.com/routes/3420213324753761400
-
-![TODO](https://lupyuen.github.io/images/marathon-taper.png)
-
-https://www.strava.com/activities/16548726281/relative-effort
-
-3-week taper
-
-![TODO](https://lupyuen.github.io/images/marathon-taper2.png)
-
-https://www.strava.com/activities/16548726281/relative-effort
-
-3-week taper
-
 ![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
 
 https://www.strava.com/activities/16548726281/relative-effort
@@ -480,9 +446,7 @@ weekly mileage
 
 ![TODO](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
 
-https://www.strava.com/activities/16399545262
-
-nutrition pic
+[_nutrition pic_](https://www.strava.com/activities/16399545262)
 
 # TODO Links
 
