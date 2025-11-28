@@ -324,15 +324,12 @@ TODO: Pic of Body Glide and Micropore Tape
 
     Actually I gained 10 kg over 6 months of Marathon Training, now weighing 70 kg. Maybe due to Weekly Carbo Loading + Strength Training + Creatine? Now Experimenting: Intermittent Fasting after running.
 
+1.  _Feeling so moody and irritated!_
+
+    Long Runs might affect [Testosterone Level](TODO).
+
 TODO
 
-Core dump
-Empty bowels 
-Or time yourself 
-And enjoy comfortably 
-
-Watch out for LS
-Eat before run
 
 Training in the rain
 Socks shirt chafing 
@@ -343,21 +340,25 @@ TODO: Pic of nutrition
 
 _Running 6 hours on an Empty Stomach? So inhumane!_
 
-That's why we [__Eat While We Run__](TODO) (pic above)
+That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
 
-- [__Eat More Carbs__](TODO) the day before
+- Day Before Run: [__Eat More Carbs__](TODO)
 
-- __Light Snack__ just before the run
+- Just Before Run: Have a __Light Snack__. If Possible: Have a Core Dump and empty our bowels.
 
-- Every 30 minutes (or 5 km): Slurp an __Energy Gel__ (23 grams of carbs)
+- Every 30 minutes (or 5 km): Slurp an [__Energy Gel__](TODO) (23 grams of carbs)
 
-- Which means we'll run with __Plenty of Energy Gels__...
+- Which means we'll carry __Plenty of Energy Gels__. Got a mix of Caffeine and Non-Caffeine Energy Gels? Save the __Caffeine Energy Gels__ for the Second Half of the run.
 
-  TODO: Pic of gel
+  TODO: Pic of gel packed
 
-- Plan our Long Runs around __Vending Machines__ and 7-Eleven Stores
+- During The Run: Our Digestive System might work a little slower, because the bloodflow is diverted for running. Beware of foods that might [__cause LS__](TODO).
 
-- Like this 42 km route, which has 24-hour __Public Toilets__ every 2 km...
+- After The Run: Drink some __High-Protein Milk + Creatine__, to reboot our Digestive System
+
+- Don't carry too much food: Plan our Long Runs around __Vending Machines__ and 24-hour 7-Eleven Stores
+
+- Like this [__42 km Bestest Route__](TODO), which has 24-hour __Public Toilets__ every 2 km...
 
 TODO: Route map
 
@@ -397,6 +398,13 @@ TODO
 
 What's this cadence 
 Edm 168 Bpm bouncing around
+
+Cadence (Steps Per Minute) is a bit like that, but more chaotic:
+
+Different Folks have Different Cadence
+
+Higher Cadence (180 steps per minute) might improve Running Form and Prevent Injury
+
 Overstride
 Understride
 Downhill increase cadence
