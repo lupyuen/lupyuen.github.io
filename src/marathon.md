@@ -340,13 +340,11 @@ TODO: Pic of Body Glide and Micropore Tape
 
     Long Runs might affect [Testosterone Level](TODO).
 
-TODO
+![TODO](https://lupyuen.github.io/images/marathon-nutrition.jpg)
 
+![TODO](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
 
-Training in the rain
-Socks shirt chafing 
-
-TODO: Pic of nutrition
+[_nutrition pic_](https://www.strava.com/activities/16399545262)
 
 # Appendix: Eat While Running
 
@@ -438,15 +436,7 @@ High cadence, short strides
 
 ![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
 
-https://www.strava.com/activities/16548726281/relative-effort
-
-weekly mileage
-
-![TODO](https://lupyuen.github.io/images/marathon-nutrition.jpg)
-
-![TODO](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
-
-[_nutrition pic_](https://www.strava.com/activities/16399545262)
+[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 # TODO Links
 
