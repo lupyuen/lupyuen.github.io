@@ -306,7 +306,7 @@ TODO: Pic of Body Glide and Micropore Tape
 
     Remember to breathe deep, [stretch the diaphragm](TODO). Drinking too much water might cause [leg cramps](TODO). But if we're peeing too little during a run, please drink up right now!
 
-1.  _Abrasion of thighs, nipples, butt, ..._
+1.  _Abrasion of thighs, nipples, butt, shoulder, ..._
 
     Before Running: Apply Body Glide AND Micropore Tape (pic above). If it hurts after the run: Apply more Micropore Tape, and remove the next day.
 
