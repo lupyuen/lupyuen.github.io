@@ -254,6 +254,10 @@ Putrajaya
 Miri
 KL Marathon
 
+_What about Apache NuttX?_
+
+Life goes on! I'm still monitoring the [__Daily Builds__](TODO) at [__NuttX Build Farm__](TODO). And running [__Daily NuttX Testing__](TODO) on TODO
+
 Return to NuttX?
 Not sure
 Still doing day to day operations
