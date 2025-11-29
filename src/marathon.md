@@ -384,7 +384,7 @@ That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
 
 ![TODO](https://lupyuen.github.io/images/marathon-route.png)
 
-[_42 km Marathon Training Route - toilets every 2 km, ample vending machines, 7 Eleven_](https://www.strava.com/routes/3420213324753761400)
+[_42 km Route - Toilets every 2 km, ample vending machines, 7-Eleven stores_](https://www.strava.com/routes/3420213324753761400)
 
 # Appendix: Taper Before Marathon
 
