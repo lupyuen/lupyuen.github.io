@@ -66,7 +66,7 @@ Yep it increases our [__Cadence (Steps Per Minute)__](TODO). We might hit 180 St
 
 Breathing becomes super important, while we're maintaining the __Same Cadence__ for 6 hours. Here's how...
 
-TODO: Breathing Diagram
+![TODO](https://lupyuen.github.io/images/marathon-breath.jpg)
 
 # Breathe Deeply
 
