@@ -106,7 +106,7 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
     Count Our Breaths: 1 to 40...
 
-    Run At Each Count: __Step Left, Step Right__
+    Run At Each Count: __Step Left - Right - Left - Right__
 
 1.  _[Walk Phase: Total 25 seconds]_
 
