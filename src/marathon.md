@@ -210,9 +210,17 @@ This reckless uncle did everything the wrong way, asking for trouble...
 
 TODO: Pic of distance
 
+![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
+
+[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+
 Subsequently suffering Knee Injury / Groin Injury / Toenail Fallout...
 
 TODO: Pic of injuries
+
+![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
+
+[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in the body is connected, and why they're hurting!
 
@@ -382,15 +390,15 @@ That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
 
 _What's this tapering?_
 
-3 Weeks before the Actual Marathon, we [__taper down__](TODO) or reduce the mileage and intensity of our Marathon Training. Why 3 weeks?
+3 Weeks before the Actual Marathon, we [__taper down__](TODO) or reduce the mileage and intensity of our Marathon Training (to prevent over-training). Why 3 weeks?
 
 - __Risk Management__: Most Running Injuries will (probably) take at most 3 weeks to heal. Makes sense to taper down our running 3 weeks before a Marathon, in case we injure ourselves during training.
 
 - [__30-Day Window__](TODO): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
 
-![TODO](https://lupyuen.github.io/images/marathon-taper.png)
+![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
 
-[_3-week taper_](https://www.strava.com/activities/16548726281/relative-effort)
+[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 ![TODO](https://lupyuen.github.io/images/marathon-taper2.png)
 
@@ -435,12 +443,6 @@ For 167 70 natural cadence is probably???
 
 Running the 10 km with friends 
 High cadence, short strides
-
-# TODO Pics
-
-![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
-
-[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 # TODO Links
 
