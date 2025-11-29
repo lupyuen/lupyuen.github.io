@@ -332,9 +332,9 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Toenails are turning blue / black / purple!_
 
-    Try [Larger Blister-Free Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape.
+    Try [Larger Blister-Free Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape...
 
-    TODO: Toe diagram 
+    ![TODO](https://lupyuen.github.io/images/marathon-toe.jpg)
 
 1.  _Outer Knee hurts!_
 
