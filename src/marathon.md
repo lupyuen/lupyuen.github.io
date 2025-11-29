@@ -74,13 +74,15 @@ _What's this Deep Breathing?_
 
 Do this while running (pic above)
 
-1.  Pull into our lungs, as much air as possible
+1.  __Breathe In:__ Pull deep into our lungs, as much air as possible
 
-1.  Do it some more, really stretch our Diaphragm
+1.  __Breathe Some More:__ Really stretch our Diaphragm
 
-1.  Exhale forcefully. Yep it will sound like a _wheezy grunt_.
+1.  __Exhale Forcefully:__ Yep it will sound like a _wheezy grunt_.
 
 1.  Which is a helpful warning for the folks near us: _"Watch out! Sweaty Breathy Monster passing you!"_
+
+1.  Step __Left - Right - Left - Right__ in One Single Breath
 
 _Help I'm panting and breathless!_
 
@@ -117,6 +119,8 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 1.  Please tweak the numbers above! Experiment and pick the right numbers so we don't run into breathlessness. While still completing the Marathon.
 
 1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk.
+
+![TODO](https://lupyuen.github.io/images/marathon-breath.jpg)
 
 _How slow exactly is Run - Walk - Run?_
 
@@ -499,11 +503,3 @@ https://share.google/dj2tJUlR9gWIIAlw7
 Strength training / How To Run Faster With Less Effort
 
 https://youtu.be/LMtW9uB2Z1o?si=FJ6AaaECxFZpeOWF
-
-# TODO Text
-
-Omron wonky
-
-If you connected me to an oscilloscope (eeg?)
-Oscilloscope graph
-State transition diagram 
