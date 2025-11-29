@@ -88,7 +88,7 @@ _Help I'm panting and breathless!_
 
 Ah here comes the cool trick: We don't really need to run all the way...
 
-TODO: Run Walk Run Diagram
+![TODO](https://lupyuen.github.io/images/marathon-runwalk.jpg)
 
 # Run - Walk - Run
 
@@ -132,7 +132,7 @@ Run - Walk - Run is not really that slow...
 
 - Thus we probably ought to [__Start Slower, Finish Faster__](TODO)
 
-![TODO](https://lupyuen.github.io/images/marathon-runwalk.png)
+![TODO](https://lupyuen.github.io/images/marathon-runvswalk.png)
 
 [_10km run then walk: 6.2 vs 6.9 mins / km_](https://www.strava.com/activities/16529249481)
 
@@ -160,7 +160,7 @@ Don't fight the pain! Stop and walk. Do some stretching to reset our running for
 
 Continue running ONLY if we're really OK...
 
-TODO: Pain diagram
+![TODO](https://lupyuen.github.io/images/marathon-injury.jpg)
 
 # Marathon Training Plan
 
