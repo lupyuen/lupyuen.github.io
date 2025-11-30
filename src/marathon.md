@@ -34,7 +34,9 @@ Thankfully our Marathon Training turned out surprisingly successful! (Haven't ru
 
 Let's look back and __Technically Document__ everything that happened, over the past 6 months...
 
-TODO: Pic of injuries
+![TODO](https://lupyuen.github.io/images/marathon-mileage3.jpg)
+
+[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 # Run Without Injury
 
