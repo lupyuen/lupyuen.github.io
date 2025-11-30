@@ -56,9 +56,9 @@ _What's the #1 thing we learnt in Marathon Training?_
 
 1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
-![Cadence = 180 steps per min](https://lupyuen.github.io/images/marathon-cadence.png)
+![Cadence roughly 180 steps per minute](https://lupyuen.github.io/images/marathon-cadence.png)
 
-[_Cadence = 180 steps per min_](https://www.strava.com/activities/16440957669/overview)
+[_Cadence roughly 180 steps per minute_](https://www.strava.com/activities/16440957669/overview)
 
 _"Fall Forward Gracefully?" Won't we run too fast?_
 
