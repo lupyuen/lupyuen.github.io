@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Uncle Nerd Runs A Marathon",
+      "publisher": "lupyuen.org",
+      "releaseDate": "2025-11-30",
+      "website": "https://lupyuen.org/articles/marathon.html",
+      "summary": "Our 42 km Full Marathon Training turned out surprisingly successful! Let's look back and technically document everything that happened, over the past 6 months."
+    },
+    {
       "name": "Creating the Unicorn Emulator for Avaota-A1 SBC (Apache NuttX RTOS)",
       "publisher": "lupyuen.org",
       "releaseDate": "2025-04-13",
