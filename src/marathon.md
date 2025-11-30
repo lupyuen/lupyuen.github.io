@@ -6,7 +6,7 @@
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
-TODO Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
+TODO Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started [__Hiking 50 km (12 hours)__](TODO) with a [__micro boombox__](TODO)...
 
 > ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?2)
 
@@ -376,32 +376,18 @@ Yeah that's the [__Taper Tantrum__](https://www.runnersworld.com/training/a69042
 
 # Appendix: Cadence - Steps Per Minute
 
-TODO: Cadence controvesy - The Myth That 180 Is the Optimal Cadence When Running Debunked - Again
+_What's this Cadence?_
 
-https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q
+Suppose we're in an __EDM Club__. The DJ plays a song at 168 bpm. Then everyone bounces around, also at 168 bpm.
 
-What Is Running Cadence?
+[__Cadence (Steps Per Minute)__](https://youtu.be/QUn6vJW1mEI?si=tIJpFHKA33tdfCUY) is a bit like that, but more chaotic...
 
-https://youtu.be/QUn6vJW1mEI?si=tIJpFHKA33tdfCUY
+- [__Different Folks__](https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q) have Different Cadence
 
-Up hill / downhill - Mountain running!! Is it okay to use it for training?? [Beginner-Friendl...
+- [__Higher Cadence__](TODO) (say 180 steps per minute) might improve Running Form and Prevent Injury
 
-https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL
+- That's because we're running with [__Shorter Strides__](TODO) (not overstriding)
 
-What's this cadence 
-Edm 168 Bpm bouncing around
+- [__Running Uphill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) Use Shorter Strides
 
-Cadence (Steps Per Minute) is a bit like that, but more chaotic:
-
-Different Folks have Different Cadence
-
-Higher Cadence (180 steps per minute) might improve Running Form and Prevent Injury
-
-Overstride
-Understride
-Downhill increase cadence
-
-For 167 70 natural cadence is probably??? 
-
-Running the 10 km with friends 
-High cadence, short strides
+- [__Running Downhill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) We could use Longer Strides, but Shorter Strides are probably safer for newbies
