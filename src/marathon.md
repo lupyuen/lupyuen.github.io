@@ -222,7 +222,7 @@ Many thanks to Sports Therapist David for teaching this clumsy otaku how everyth
 
 (Everyone ought to consult a Sports Physician before starting Marathon Training)
 
-TODO: Pic of 42 km weekly run
+![Running a 42 km Marathon every single week](https://lupyuen.github.io/images/marathon-nutrition3.jpg)
 
 _Whoa running a 42 km Marathon every single week? That's bonkers!_
 
@@ -232,7 +232,7 @@ Weirdly, the [__42 km Weekly Run__](https://youtu.be/GrPjCXv7qgY?si=26P2gB-556Cr
 
 - Though we start at 3 am and finish at 10 am, which feels a bit too hot
 
-- I'm lucky the 42 km run is __Mostly Painless__ (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
+- I'm lucky the 42 km run is [__Mostly Painless__](https://www.strava.com/activities/16399545262) (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
 
 # What's Next
 
@@ -242,15 +242,13 @@ Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other mar
 
 1.  [__Singapore Marathon__](https://www.singaporemarathon.com/)
 
-1.  [__Twincity Marathon (Malaysia)__](https://twincitymarathon.com/)
+1.  [__Twincity Marathon__](https://twincitymarathon.com/) (Malaysia)
 
-1.  [__Miri Marathon (Malaysia)__](https://www.marathonmiri.com/)
+1.  [__Miri Marathon__](https://www.marathonmiri.com/) (Malaysia)
 
-1.  [__Kuala Lumpur Marathon (Malaysia)__](https://www.kl-marathon.com/)
+1.  [__Kuala Lumpur Marathon__](https://www.kl-marathon.com/) (Malaysia)
 
-TODO: Reasons to run - The Worst Part About Being a Runner
-
-https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm
+1.  [__And many more!__](https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm)
 
 _What about Apache NuttX?_
 
