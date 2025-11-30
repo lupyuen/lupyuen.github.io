@@ -390,9 +390,9 @@ Suppose we're in an __EDM Club__. The DJ plays a song at 168 bpm. Then everyone 
 
 - That's because we're running with [__Shorter Strides__](https://www.runnersworld.com/training/a45303969/what-is-overstriding/) (not overstriding)
 
-- [__Running Uphill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) Use Shorter Strides
+- [__Running Uphill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) Use Shorter Strides. Or Walk.
 
-- [__Running Downhill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) We could use Longer Strides, but Shorter Strides are probably safer for newbies
+- [__Running Downhill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) We could use Longer Strides, to catch up on lost time. But Shorter Strides are probably safer for newbies.
 
 ![Cadence roughly 180 steps per minute](https://lupyuen.github.io/images/marathon-cadence.png)
 
