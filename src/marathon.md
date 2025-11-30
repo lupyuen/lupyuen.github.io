@@ -1,12 +1,12 @@
 # Uncle Nerd Runs A Marathon
 
-📝 _7 Dec 2025_
+📝 _30 Nov 2025_
 
 ![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.jpg)
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
-TODO Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started [__Hiking 50 km (12 hours)__](TODO) with a [__micro boombox__](TODO)...
+Keeping alive the [__Apache NuttX Project__](https://nuttx.apache.org/docs/latest/index.html) can get [__horribly stressful__](https://lupyuen.org/articles/ci3). That's how I started [__Hiking 50 km__](https://www.strava.com/activities/14097873953) over 12 hours...
 
 > ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?2)
 
