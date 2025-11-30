@@ -148,7 +148,7 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](https://www
 
 - Are we stepping into a puddle? Or a poodle?
 
-- Concentrate 100% on our running and breathing. No worries about Phone Notifications, Emails, Social Media, AI, The Environment, ...
+- Concentrate 100% on our running and breathing. No worries about Phone Notifications, Emails, Pull Requests, Social Media, AI, The Environment, ...
 
 _Ouch! Something hurts!_
 
