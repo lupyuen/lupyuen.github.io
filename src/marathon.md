@@ -2,9 +2,7 @@
 
 📝 _7 Dec 2025_
 
-![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.png)
-
-![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title2.png)
+![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.jpg)
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
@@ -22,9 +20,9 @@ _Innit similar to Full Marathon?_
 
 TODO Yeah what if we could run
 
-![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png)
+> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?1)
 
-[_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
+> [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
 
 _Erm an old man running his First Marathon? Isn't that lethal?_
 
@@ -320,9 +318,7 @@ TODO: Pic of Body Glide and Micropore Tape
 
     Long Runs might affect [Testosterone Level](https://runningmagazine.ca/sections/training/what-happens-to-your-body-after-a-marathon/).
 
-![Eating while running 42 km](https://lupyuen.github.io/images/marathon-nutrition.jpg)
-
-![Eating while running 42 km](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
+![Eating while running 42 km](https://lupyuen.github.io/images/marathon-nutrition.jpg?1)
 
 [_Eating while running 42 km_](https://www.strava.com/activities/16399545262)
 
