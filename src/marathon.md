@@ -126,7 +126,7 @@ Run - Walk - Run is not really that slow...
 
 - Thus we probably ought to [__Start Slower, Finish Faster__](https://www.runnersworld.com/beginner/a65510381/negative-splits-racing/)
 
-![Run Continuously vs Run-Walk-Run](https://lupyuen.github.io/images/marathon-runvswalk.png)
+![Run Continuously vs Run-Walk-Run](https://lupyuen.github.io/images/marathon-runvswalk.jpg)
 
 [_Run Continuously vs Run-Walk-Run_](https://www.strava.com/activities/16529249481)
 
@@ -350,7 +350,7 @@ _What's this tapering?_
 
 - [__30-Day Window__](https://www.youtube.com/watch?v=_5sd9ex0y7k): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
 
-![3-week Taper before Marathon](https://lupyuen.github.io/images/marathon-taper2.png?1)
+![3-week Taper before Marathon](https://lupyuen.github.io/images/marathon-taper2.jpg)
 
 [_3-week Taper before Marathon_](https://www.strava.com/athletes/110000425)
 
