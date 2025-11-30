@@ -2,11 +2,11 @@
 
 📝 _7 Dec 2025_
 
-![TODO](https://lupyuen.github.io/images/marathon-title.png)
+![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.png)
 
-![TODO](https://lupyuen.github.io/images/marathon-title2.png)
+![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title2.png)
 
-[_"42 km Final Marathon Training"_](https://www.strava.com/activities/16399545262)
+[_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
 TODO stressful
 
@@ -22,9 +22,9 @@ _Innit similar to Full Marathon?_
 
 TODO Yeah what if we could run
 
-![TODO](https://lupyuen.github.io/images/marathon-hike.png)
+![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png)
 
-[_"50 km Hike: HarbourFront to Changi Airport to Changi Village"_](https://www.strava.com/activities/14097873953)
+[_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
 
 _Erm an old man running his First Marathon? Isn't that lethal?_
 
@@ -34,15 +34,15 @@ Thankfully our Marathon Training turned out surprisingly successful! (Haven't ru
 
 Let's look back and __Technically Document__ everything that happened, over the past 6 months...
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage3.jpg)
+![Injured by Bad Running Form](https://lupyuen.github.io/images/marathon-mileage3.jpg)
 
-[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+[_Injured by Bad Running Form_](https://www.strava.com/activities/16548726281/relative-effort)
 
 # Run Without Injury
 
 _What's the #1 thing we learnt in Marathon Training?_
 
-[__Running Form Really Matters!__](TODO) This uncle non-runner suffered knee pain, groin injury, sore heels (pic above) ... Until switching to the proper [__Running Form__](TODO)
+[__Running Form Really Matters!__](https://runrepeat.com/guides/10-principles-of-proper-running-form) This uncle non-runner suffered knee pain, groin injury, sore heels (pic above) ... Until switching to the proper [__Running Form__](https://runrepeat.com/guides/10-principles-of-proper-running-form)
 
 1.  Lean slightly forward 
 
@@ -58,19 +58,19 @@ _What's the #1 thing we learnt in Marathon Training?_
 
 1.  Every 2 km: Maybe do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
-![TODO](https://lupyuen.github.io/images/marathon-cadence.png)
+![Cadence = 180 steps per min](https://lupyuen.github.io/images/marathon-cadence.png)
 
-[_5km cadence = 180 steps per min_](https://www.strava.com/activities/16440957669/overview)
+[_Cadence = 180 steps per min_](https://www.strava.com/activities/16440957669/overview)
 
 _"Fall Forward Gracefully?" Won't we run too fast?_
 
-Yep it increases our [__Cadence (Steps Per Minute)__](TODO). We might hit 180 Steps Per Minute! (Pic above)
+Yep it increases our [__Cadence (Steps Per Minute)__](https://lupyuen.org/articles/marathon#appendix-cadence---steps-per-minute). We might hit 180 Steps Per Minute! (Pic above)
 
 Breathing becomes super important, while we're maintaining the __Same Cadence__ for 6 hours. Here's how...
 
-[(More about Cadence)](TODO)
+[(More about Cadence)](https://lupyuen.org/articles/marathon#appendix-cadence---steps-per-minute)
 
-![TODO](https://lupyuen.github.io/images/marathon-breath2.jpg)
+![Deep Breathing](https://lupyuen.github.io/images/marathon-breath2.jpg)
 
 # Breathe Deeply
 
@@ -78,7 +78,7 @@ _What's this Deep Breathing?_
 
 Do this while running (pic above)
 
-1.  __Breathe In:__ Pull deep into our lungs, as much air as possible
+1.  [__Breathe In Deep:__](https://www.runnersworld.com/training/a63952723/diaphragm-breathing-exercises/) Pull deep into our lungs, as much air as possible
 
 1.  __Breathe Some More:__ Really stretch our Diaphragm
 
@@ -92,19 +92,19 @@ _Help I'm panting and breathless!_
 
 Ah here comes the cool trick: We don't really need to run all the way...
 
-![TODO](https://lupyuen.github.io/images/marathon-runwalk.jpg)
+![Run - Walk - Run](https://lupyuen.github.io/images/marathon-runwalk.jpg)
 
 # Run - Walk - Run
 
 _Running 180 Steps Per Minute for 6 Hours, Non-Stop? Impossible!_
 
-Just take a break and walk. [__Run-Walk-Run__](TODO) is perfectly OK for a Marathon!
+Just take a break and walk. [__Run-Walk-Run__](https://www.runnersworld.com/training/a62938197/what-is-run-walk-method/) is perfectly OK for a Marathon!
 
 _But surely we can't walk too much?_
 
-Indeed, we need to complete the Marathon within the __Cut-Off Time__. [(Like 7.5 Hours)](TODO)
+Indeed, we need to complete the Marathon within the __Cut-Off Time__. [(Like 7.5 Hours)](https://www.singaporemarathon.com/races/marathon/)
 
-We __Count Our Breathing__ (pic above), to be sure that we run more and walk less...
+We [__Count Our Breathing__](https://youtube.com/shorts/ApxC1ldmurY?si=C1L9hZtZGwayQJJY) (pic above), to be sure that we run more and walk less...
 
 1.  _[Run Phase: Total 50 seconds]_
 
@@ -118,33 +118,33 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
     __Walk Briskly__
 
-1.  Repeat the Run-Walk Phases until we complete the Marathon. We're assuming TODO Breaths Per Minute, 180 Steps Per Minute.
+1.  Repeat the __Run-Walk Phases__ until we complete the Marathon. We're assuming 25 Breaths Per Minute, 180 Steps Per Minute.
 
-1.  Please tweak the numbers above! Experiment and pick the right numbers so we don't run into breathlessness. While still completing the Marathon.
+1.  Please [__tweak the numbers__](https://youtu.be/ygvMSQ6ZZk8?si=9Xj-8EPdgqNVmzTr) above! Experiment and pick the right numbers so we don't run into breathlessness. While still completing the Marathon.
 
-1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk.
+1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk...
 
-![TODO](https://lupyuen.github.io/images/marathon-breath.jpg?1)
+![Count to 40 then walk](https://lupyuen.github.io/images/marathon-breath.jpg?1)
 
 _How slow exactly is Run - Walk - Run?_
 
 Run - Walk - Run is not really that slow...
 
-- __Run Continuously__: TODO Per km
+- __Run Continuously__: 6.2 minutes per km
 
-- __Run - Walk - Run__: TODO Per km
+- __Run - Walk - Run__: 6.9 minutes per km
 
-- Thus we probably ought to [__Start Slower, Finish Faster__](TODO)
+- Thus we probably ought to [__Start Slower, Finish Faster__](https://www.runnersworld.com/beginner/a65510381/negative-splits-racing/)
 
-![TODO](https://lupyuen.github.io/images/marathon-runvswalk.png)
+![Run Continuously vs Run-Walk-Run](https://lupyuen.github.io/images/marathon-runvswalk.png)
 
-[_10km run then walk: 6.2 vs 6.9 mins / km_](https://www.strava.com/activities/16529249481)
+[_Run Continuously vs Run-Walk-Run_](https://www.strava.com/activities/16529249481)
 
 # Run With Mindfulness
 
 _So we're busy counting: 40 - 20 - 40 - 20? All 6 hours of the Marathon?_
 
-Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As we're counting / running / walking: Immerse ourselves into the here and now...
+Yep that's one good way to practice [__Meditation and Mindfulness__](https://share.google/SVtT02kvCFRsKzYdD)! As we're counting / running / walking: Immerse ourselves into the here and now...
 
 - Is Everything OK? Our thighs, knees, calves, ankles, feet, hips, arms, shoulders, ...
 
@@ -160,35 +160,37 @@ Yep that's one good way to practice [__Meditation and Mindfulness__](TODO)! As w
 
 _Ouch! Something hurts!_
 
-Don't fight the pain! Stop and walk. Do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
+__Don't fight the pain!__ Stop and walk. Do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
-Continue running ONLY if we're really OK. [(More Troubleshooting Tips)](TODO)
+Continue running ONLY if we're really OK. [(More Troubleshooting Tips)](https://lupyuen.org/articles/marathon#appendix-troubleshoot-our-marathon)
 
-![TODO](https://lupyuen.github.io/images/marathon-injury.jpg)
+![Continue running ONLY if we're really OK](https://lupyuen.github.io/images/marathon-injury.jpg?1)
 
 # Marathon Training Plan
 
 _How to get started with Marathon Training?_
 
-Most 6-month [__Marathon Training Plans__](TODO) will look a bit like this. For Every Week: We do...
+Most 6-month [__Marathon Training Plans__](https://www.runnersworld.com/uk/training/a760108/basic-marathon-schedules/) will look a bit like this. For Every Week: We do...
 
 - One _(Slower)_ __Long Run__ (up to 32 km)
 
 - One _(Faster)_ __Short Run__ (like 5 km)
 
-- Eventually hitting 42 km Total Mileage per week (almost)
+- Eventually hitting __42 km Total Mileage__ per week (almost)
 
-- 3 Weeks Before Actual Marathon: Taper Down the Total Mileage
+- 3 Weeks Before Actual Marathon: [__Taper Down__](https://lupyuen.org/articles/marathon#appendix-taper-before-marathon) the Weekly Mileage
 
-  [(More about Tapering for Marathon)](TODO)
+  [(More about Tapering for Marathon)](https://lupyuen.org/articles/marathon#appendix-taper-before-marathon)
 
 BUT to prevent injury from overtraining...
 
-1.  Every Week: We increase at most 10% of the Weekly Mileage OR Intensity
+1.  Every Week: We increase at most [__10% of the Weekly Mileage OR Intensity__](https://www.youtube.com/watch?v=cpudk95fWJY)
 
-1.  Don't exceed 10% of the distance of our last Long Run over the past 30 days (TODO link)
+1.  [__Don't Exceed 10%__](https://www.youtube.com/watch?v=_5sd9ex0y7k) of the distance of our last Long Run over the past 30 days
 
-1.  Remember to do [__Strength Training__](TODO). Gym not necessary, dumbbells will do. (Think: Squats with Dumbbells, great for strengthening the groin)
+1.  Remember to do [__Strength Training__](https://youtu.be/LMtW9uB2Z1o?si=FJ6AaaECxFZpeOWF). Gym not needed, dumbbells will do. (Think: Squats with Dumbbells, great for strengthening the groin)
+
+1.  Don't forget to [__Eat During Long Runs__](https://lupyuen.org/articles/marathon#appendix-eat-while-running)
 
 _What's the distance for our First Long Run? For 10% Weekly Increment: How soon will it reach 42 km?_ 
 
@@ -210,17 +212,13 @@ Now watch what happens if we disrespect the 10% rule...
 
 _The 10% Rule for Weekly Mileage / Intensity: What happens if we DON'T follow it?_
 
-This reckless uncle did everything the wrong way, asking for trouble...
+This reckless uncle did everything [__the wrong way__](https://www.strava.com/athletes/110000425), asking for trouble...
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage2.jpg)
-
-[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+![Marathon Overtraining](https://lupyuen.github.io/images/marathon-mileage2.jpg)
 
 Subsequently suffering Knee Injury / Groin Injury / Toenail Fallout...
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg?1)
-
-[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+![Overtraining Injuries](https://lupyuen.github.io/images/marathon-mileage.jpg?1)
 
 Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in the body is connected, and why they're hurting!
 
@@ -230,7 +228,7 @@ TODO: Pic of 42 km weekly run
 
 _Whoa running a 42 km Marathon every single week? That's bonkers!_
 
-Weirdly, the __42 km Weekly Run__ works OK for me...
+Weirdly, the [__42 km Weekly Run__](https://youtu.be/GrPjCXv7qgY?si=26P2gB-556CrMJsh) works OK for me...
 
 - 7 hours of pure bliss, no distraction, just mindful meditation 
 
@@ -238,57 +236,27 @@ Weirdly, the __42 km Weekly Run__ works OK for me...
 
 - I'm lucky the 42 km run is __Mostly Painless__ (except 3 bruised toes and a sore heel). Everything recovers quickly, within a day.
 
-# TODO
-
-Mindfulness 
-Worries about AI and the Environment 
-Future of Apache NuttX and what's my role in it
-Taking care of my family 
-Will I inherit Alzheimer's?
-Will I ever complete this article?
-Why is USB UART broken?
-
-AI Vs groundedness
-Maintain sanity and health 
-
-The flow? Coding for hours on mountain dew
-Nope be mindful of the present, here and now 
-Watch where you're running 
-How you're running 
-Don't get injured or overexert 
-Refreshingly different from coding for hours and hours, high on stimulants
-
-Express gratitude 
-Glorious tan
-Sweat moisturising skin
-
 # What's Next
 
 _Will we chase Marathon PBs? (Personal Best, not Peanut Butter)_
 
 Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other marathons happening near home...
 
-TODO
+1.  [__Singapore Marathon__](https://www.singaporemarathon.com/)
 
-Putrajaya
-Miri
-KL Marathon
+1.  [__Twincity Marathon (Malaysia)__](https://twincitymarathon.com/)
+
+1.  [__Miri Marathon (Malaysia)__](https://www.marathonmiri.com/)
+
+1.  [__Kuala Lumpur Marathon (Malaysia)__](https://www.kl-marathon.com/)
+
+TODO: Reasons to run - The Worst Part About Being a Runner
+
+https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm
 
 _What about Apache NuttX?_
 
-Life goes on! I'm still monitoring the [__Daily Builds__](TODO) at [__NuttX Build Farm__](TODO). And running [__Daily NuttX Testing__](TODO) on TODO
-
-Return to NuttX?
-Not sure
-Still doing day to day operations
-Checking the daily tests for avoata, starpro64, oz64
-Might be the most that i can do for now 
-
-Discover new places in neighbouring countries
-50 k ultra 
-Half marathon 
-
-Still daily monitoring oz64, starpro64, avaota a1
+Life goes on! I'm still monitoring the [__Daily Builds__](https://lupyuen.org/articles/ci3) at [__NuttX Build Farm__](https://lupyuen.org/articles/ci4). And running [__Daily NuttX Testing__](https://gist.github.com/nuttxpr) on [__Avaota-A1__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-avaota%22&s=updated), [__StarPro64 EIC7700X__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-starpro64%22&s=updated) and [__Oz64 SG2000__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-oz64%22&s=updated).
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
@@ -324,7 +292,7 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Legs are seriously aching!_
 
-    Remember to breathe deep, [stretch the diaphragm](TODO). Drinking too much water might cause [leg cramps](TODO). But if we're peeing too little during a run, please drink up right now!
+    Remember to breathe deep, [stretch the diaphragm](https://www.runnersworld.com/training/a63952723/diaphragm-breathing-exercises/). Drinking too much water might cause [leg cramps](https://www.runnersworld.com/uk/nutrition/hydration/a774377/the-dangers-of-over-hydrating-during-a-race/). But if we're peeing too little during a run, please drink up right now!
 
 1.  _Abrasion of thighs, nipples, butt, shoulder, ..._
 
@@ -332,9 +300,9 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Toenails are turning blue / black / purple!_
 
-    Try [Larger Blister-Free Quick-Dry Socks](TODO). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](TODO). Before Running: Wrap the affected toes in Micropore Tape...
+    Try [Larger Blister-Free Quick-Dry Socks](https://www.compressport.com/inter/en/pro-socks/1824-pro-racing-socks-v40-run-low-white-black-7630102563252.html). Or Larger Shoes [(US Size 11, Asics Gel Kayano)](https://www.strava.com/activities/15735312179). Before Running: Wrap the affected toes in Micropore Tape...
 
-    ![TODO](https://lupyuen.github.io/images/marathon-toe.jpg)
+    ![Wrapping injured toes in Micropore Tape](https://lupyuen.github.io/images/marathon-toe.jpg)
 
 1.  _Outer Knee hurts!_
 
@@ -342,7 +310,7 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Bladder seems to be slightly bleeding internally?_
 
-    If we're wearing a [Waist Pouch / Fanny Pack](TODO): Position the pouch in front of the tummy. Move the Plastic Clip behind. Be careful when bending down.
+    If we're wearing a [Waist Pouch / Fanny Pack](https://www.strava.com/activities/16529249481): Position the pouch in front of the tummy. Move the Plastic Clip behind. Be careful when bending down.
 
 1.  _Will we lose weight?_
 
@@ -350,39 +318,39 @@ TODO: Pic of Body Glide and Micropore Tape
 
 1.  _Feeling so moody and irritated!_
 
-    Long Runs might affect [Testosterone Level](TODO).
+    Long Runs might affect [Testosterone Level](https://runningmagazine.ca/sections/training/what-happens-to-your-body-after-a-marathon/).
 
-![TODO](https://lupyuen.github.io/images/marathon-nutrition.jpg)
+![Eating while running 42 km](https://lupyuen.github.io/images/marathon-nutrition.jpg)
 
-![TODO](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
+![Eating while running 42 km](https://lupyuen.github.io/images/marathon-nutrition2.jpg)
 
-[_nutrition pic_](https://www.strava.com/activities/16399545262)
+[_Eating while running 42 km_](https://www.strava.com/activities/16399545262)
 
 # Appendix: Eat While Running
 
 _Running 6 hours on an Empty Stomach? So inhumane!_
 
-That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
+That's why we [__Eat While We Run__](https://www.runnersworld.com/uk/nutrition/diet/a776033/how-to-fuel-your-body-best-during-marathon-training/) (pic above) for Long Runs...
 
-- Day Before Run: [__Eat More Carbs__](TODO)
+- Day Before Run: [__Eat More Carbs__](https://youtu.be/LzYq-2b0URk?si=_urcCzD0MrZOSFOu)
 
-- Just Before Run: Have a __Light Snack__. If Possible: Have a Core Dump and empty our bowels.
+- Just Before Run: Have a [__Light Snack__](https://teamwarrior.com/products/warrior-crunch-protein-bars-12s). If Possible: Have a Core Dump and empty our bowels.
 
-- Every 30 minutes (or 5 km): Slurp an [__Energy Gel__](TODO) (23 grams of carbs)
+- Every 30 minutes (or 5 km): Slurp an [__Energy Gel__](https://guenergy.com/products/energy-gel) (22 grams of carbs)
 
-- Which means we'll carry __Plenty of Energy Gels__. Got a mix of Caffeine and Non-Caffeine Energy Gels? Save the __Caffeine Energy Gels__ for the Second Half of the run.
+- Which means we'll carry [__Plenty of Energy Gels__](https://www.strava.com/activities/16399545262). Got a mix of Caffeine and Non-Caffeine Energy Gels? Save the __Caffeine Energy Gels__ for the Second Half of the run.
 
   TODO: Pic of gel packed
 
-- During The Run: Our Digestive System might work a little slower, because the bloodflow is diverted for running. Beware of foods that might [__cause LS__](TODO).
+- During The Run: Our Digestive System might work a little slower, because the bloodflow is diverted for running. Beware of foods that might [__cause LS__](https://en.wiktionary.org/wiki/lao_sai).
 
 - After The Run: Drink some __High-Protein Milk + Creatine__, to reboot our Digestive System
 
 - Don't carry too much food: Plan our Long Runs around __Vending Machines__ and 24-hour 7-Eleven Stores
 
-- Like this [__42 km Bestest Route__](TODO), which has 24-hour __Public Toilets__ every 2 km...
+- Like this [__42 km Bestest Route__](https://www.strava.com/routes/3420213324753761400), which has 24-hour __Public Toilets__ every 2 km...
 
-![TODO](https://lupyuen.github.io/images/marathon-route.png)
+![42 km Route - Toilets every 2 km, ample vending machines, 7-Eleven stores](https://lupyuen.github.io/images/marathon-route.png)
 
 [_42 km Route - Toilets every 2 km, ample vending machines, 7-Eleven stores_](https://www.strava.com/routes/3420213324753761400)
 
@@ -390,41 +358,49 @@ That's why we [__Eat While We Run__](TODO) (pic above) for Long Runs...
 
 _What's this tapering?_
 
-3 Weeks before the Actual Marathon, we [__taper down__](TODO) or reduce the mileage and intensity of our Marathon Training (to prevent over-training). Why 3 weeks?
+3 Weeks before the Actual Marathon, we [__Taper Down__](https://www.runnersworld.com/training/a68119669/how-to-taper-for-marathon/) or reduce the mileage and intensity of our Marathon Training (to prevent over-training). Why 3 weeks?
 
 - __Risk Management__: Most Running Injuries will (probably) take at most 3 weeks to heal. Makes sense to taper down our running 3 weeks before a Marathon, in case we injure ourselves during training.
 
-- [__30-Day Window__](TODO): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
+- [__30-Day Window__](https://www.youtube.com/watch?v=_5sd9ex0y7k): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
 
-![TODO](https://lupyuen.github.io/images/marathon-taper2.png?1)
+![3-week Taper before Marathon](https://lupyuen.github.io/images/marathon-taper2.png?1)
 
-[_3-week taper_](https://www.strava.com/activities/16548726281/relative-effort)
+[_3-week Taper before Marathon_](https://www.strava.com/athletes/110000425)
 
 _How much to taper down for our runs?_
 
 - Maybe run 10 km, thrice a week? (Pic above)
 
-- Have a [__Fun Run with Friends__](TODO), so we don't stress out too much
+- Have a [__Fun Run with Friends__](https://www.strava.com/activities/16460911748), so we don't stress out too much
 
-- In the Short Runs: [__Acclimatise our bodies__](TODO) to the local weather
+- In the Short Runs: [__Acclimatise our bodies__](https://www.strava.com/activities/16567975390) to the local weather
 
 _But the Taper Period feels really anxious and stressful!_
 
-Yeah that's the [__Taper Tantrum__](TODO). Try these fixes...
+Yeah that's the [__Taper Tantrum__](https://www.runnersworld.com/training/a69042089/how-to-deal-with-taper-stress/). Try these fixes...
 
-- Blog about our [__Marathon Training__](TODO)
+- Blog about our [__Marathon Training__](https://lupyuen.org/articles/marathon)
 
-- Plan for the [__Next Marathon__](TODO)
+- Plan for the [__Next Marathon__](https://lupyuen.org/articles/marathon#whats-next). Book the Flight and Hotel.
 
-- Book the Flight and Hotel
-
-- Do a [__DNA Test__](TODO) and discover our Inherited Traits
+- Do a [__DNA Test__](https://www.23andme.com) and discover our Inherited Traits
 
 TODO: DNA Pic
 
 # Appendix: Cadence - Steps Per Minute
 
-TODO
+TODO: Cadence controvesy - The Myth That 180 Is the Optimal Cadence When Running Debunked - Again
+
+https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q
+
+What Is Running Cadence?
+
+https://youtu.be/QUn6vJW1mEI?si=tIJpFHKA33tdfCUY
+
+Up hill / downhill - Mountain running!! Is it okay to use it for training?? [Beginner-Friendl...
+
+https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL
 
 What's this cadence 
 Edm 168 Bpm bouncing around
@@ -444,64 +420,26 @@ For 167 70 natural cadence is probably???
 Running the 10 km with friends 
 High cadence, short strides
 
-# TODO Links
+# TODO
 
-Reasons to run - The Worst Part About Being a Runner
+Mindfulness 
+Worries about AI and the Environment 
+Future of Apache NuttX and what's my role in it
+Taking care of my family 
+Will I inherit Alzheimer's?
+Will I ever complete this article?
+Why is USB UART broken?
 
-https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm
+AI Vs groundedness
+Maintain sanity and health 
 
-Why is USB UART failing? 
+The flow? Coding for hours on mountain dew
+Nope be mindful of the present, here and now 
+Watch where you're running 
+How you're running 
+Don't get injured or overexert 
+Refreshingly different from coding for hours and hours, high on stimulants
 
-https://github.com/lupyuen/nuttx-sg2000/releases/tag/nuttx-sg2000-2025-11-21
-
-Counting / The Simple Breathing Trick That Makes Long Runs Easier
-
-https://youtube.com/shorts/ApxC1ldmurY?si=C1L9hZtZGwayQJJY
-
-Carb Load 48 hours before long run / How Most Runners Get Their Long Run Fuelling Wrong
-
-https://youtu.be/LzYq-2b0URk?si=_urcCzD0MrZOSFOu
-
-The Hidden Reason Runners Get Injured (Revealed by New Study)
-
-https://youtu.be/_5sd9ex0y7k?si=Iprhl7uKyHv7nsJ3
-
-The Truth About That B Race You Think You Should Run (But Maybe Shouldn't!)
-
-https://youtu.be/GrPjCXv7qgY?si=26P2gB-556CrMJsh
-
-5 ways running without music can supercharge your physical and mental wellbeing – and even boost performance
-
-https://share.google/SVtT02kvCFRsKzYdD
-
-Cadence controvesy - The Myth That 180 Is the Optimal Cadence When Running Debunked - Again
-
-https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q
-
-Dont copy others plans / IF I HAD TO START RUNNING AGAIN… HERE'S WHAT I'D NEVER DO
-
-https://youtu.be/ygvMSQ6ZZk8?si=9Xj-8EPdgqNVmzTr
-
-10 Principles of Proper Running Form | RunRepeat
-
-https://share.google/3Te8Gpv2A2qZZyGtT
-
-Up hill / downhill - Mountain running!! Is it okay to use it for training?? [Beginner-Friendl...
-
-https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL
-
-What Is Running Cadence?
-
-https://youtu.be/QUn6vJW1mEI?si=tIJpFHKA33tdfCUY
-
-Miri Marathon 2026 | Run in Miri, Sarawak
-
-https://share.google/YVmbZLPQ9EuqDg7si
-
-TWINCITY® Marathon 2026 
-
-https://share.google/dj2tJUlR9gWIIAlw7
-
-Strength training / How To Run Faster With Less Effort
-
-https://youtu.be/LMtW9uB2Z1o?si=FJ6AaaECxFZpeOWF
+Express gratitude 
+Glorious tan
+Sweat moisturising skin
