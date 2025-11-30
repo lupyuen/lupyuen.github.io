@@ -202,7 +202,7 @@ Ah remember that 10% is the __Compounded Weekly Increment__...
 
 - We'll hit 42 km in 8 weeks
 
-TODO: Pic of calculator
+  ![Hitting 42 km in 8 weeks](https://lupyuen.github.io/images/marathon-calc.png)
 
 Now watch what happens if we disrespect the 10% rule...
 
@@ -276,7 +276,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/marathon.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/marathon.md)
 
-TODO: Pic of Body Glide and Micropore Tape
+![Body Glide and Micropore Tape](https://lupyuen.github.io/images/marathon-bodyglide.jpg)
 
 # Appendix: Troubleshoot Our Marathon
 
@@ -334,7 +334,7 @@ That's why we [__Eat While We Run__](https://www.runnersworld.com/uk/nutrition/d
 
 - Which means we'll carry [__Plenty of Energy Gels__](https://www.strava.com/activities/16399545262). Got a mix of Caffeine and Non-Caffeine Energy Gels? Save the __Caffeine Energy Gels__ for the Second Half of the run.
 
-  TODO: Pic of gel packed
+  ![Carrying plenty of Energy Gels](https://lupyuen.github.io/images/marathon-gel.jpg)
 
 - During The Run: Our Digestive System might work a little slower, because the bloodflow is diverted for running. Beware of foods that might [__cause LS__](https://en.wiktionary.org/wiki/lao_sai).
 
@@ -380,7 +380,7 @@ Yeah that's the [__Taper Tantrum__](https://www.runnersworld.com/training/a69042
 
 - Do a [__DNA Test__](https://www.23andme.com) and discover our Inherited Traits
 
-TODO: DNA Pic
+> ![DNA Test to discover our Inherited Traits](https://lupyuen.github.io/images/marathon-dna.jpg)
 
 # Appendix: Cadence - Steps Per Minute
 
