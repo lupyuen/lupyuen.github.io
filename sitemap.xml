@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lupyuen.org/</loc>
-    <lastmod>2025-04-13T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-30T00:00:00+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://lupyuen.org/articles/marathon.html</loc>
+    <lastmod>2025-11-30T00:00:00+00:00</lastmod>
   </url>
   <url>
     <loc>https://lupyuen.org/articles/unicorn4.html</loc>

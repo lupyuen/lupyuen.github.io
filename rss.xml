@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Uncle Nerd Runs A Marathon</title>
+            <link>https://lupyuen.org/articles/marathon.html</link>
+            <description><![CDATA[Our 42 km Full Marathon Training turned out surprisingly successful! Let's look back and technically document everything that happened, over the past 6 months.]]></description>
+            <guid>https://lupyuen.org/articles/marathon.html</guid>
+            <pubDate>Sun, 30 Nov 2025 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Creating the Unicorn Emulator for Avaota-A1 SBC (Apache NuttX RTOS)</title>
             <link>https://lupyuen.org/articles/unicorn4.html</link>
             <description><![CDATA[Avaota-A1 Arm64 SBC is officially supported by Apache NuttX RTOS (Allwinner A527 SoC). Let's take Unicorn Emulator and create a Software Emulator for Avaota SBC.]]></description>
