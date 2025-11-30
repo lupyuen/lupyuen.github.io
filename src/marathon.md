@@ -2,7 +2,7 @@
 
 📝 _30 Nov 2025_
 
-![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.jpg)
+![42 km Final Marathon Training](https://lupyuen.github.io/images/marathon-title.jpg?1)
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
@@ -10,7 +10,7 @@ Keeping alive the [__Apache NuttX Project__](https://nuttx.apache.org/docs/lates
 
 That's how I started [__Hiking 50 km__](https://www.strava.com/activities/14097873953) over 12 hours...
 
-> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?2)
+> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?3)
 
 > [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
 
