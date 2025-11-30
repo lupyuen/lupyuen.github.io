@@ -6,7 +6,9 @@
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
-Keeping alive the [__Apache NuttX Project__](https://nuttx.apache.org/docs/latest/index.html) can get [__horribly stressful__](https://lupyuen.org/articles/ci3). That's how I started [__Hiking 50 km__](https://www.strava.com/activities/14097873953) over 12 hours...
+Keeping alive the [__Apache NuttX Project__](https://nuttx.apache.org/docs/latest/index.html) can get [__horribly stressful__](https://lupyuen.org/articles/ci3).
+
+That's how I started [__Hiking 50 km__](https://www.strava.com/activities/14097873953) over 12 hours...
 
 > ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?2)
 
@@ -242,7 +244,7 @@ Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other mar
 
 1.  [__And many more!__](https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm)
 
-_What about Apache NuttX?_
+_What about Apache NuttX RTOS?_
 
 Life goes on! I'm still monitoring the [__Daily Builds__](https://lupyuen.org/articles/ci3) at [__NuttX Build Farm__](https://lupyuen.org/articles/ci4). And running [__Daily NuttX Testing__](https://gist.github.com/nuttxpr) on [__Avaota-A1__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-avaota%22&s=updated), [__StarPro64 EIC7700X__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-starpro64%22&s=updated) and [__Oz64 SG2000__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-oz64%22&s=updated).
 
