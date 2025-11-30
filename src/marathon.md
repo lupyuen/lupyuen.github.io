@@ -384,10 +384,14 @@ Suppose we're in an __EDM Club__. The DJ plays a song at 168 bpm. Then everyone 
 
 - [__Different Folks__](https://youtu.be/9hMPTKSvALo?si=qqDo9CrDwD5zjV3q) have Different Cadence
 
-- [__Higher Cadence__](TODO) (say 180 steps per minute) might improve Running Form and Prevent Injury
+- [__Higher Cadence__](https://www.runnersworld.com/uk/training/beginners/a772845/a-beginners-guide-to-cadence/) (say 180 steps per minute) might improve Running Form and Prevent Injury
 
-- That's because we're running with [__Shorter Strides__](TODO) (not overstriding)
+- That's because we're running with [__Shorter Strides__](https://www.runnersworld.com/training/a45303969/what-is-overstriding/) (not overstriding)
 
 - [__Running Uphill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) Use Shorter Strides
 
 - [__Running Downhill?__](https://youtu.be/HgeTHa_svGI?si=WCxu0Gh09bowfLqL) We could use Longer Strides, but Shorter Strides are probably safer for newbies
+
+![Cadence roughly 180 steps per minute](https://lupyuen.github.io/images/marathon-cadence.png)
+
+[_Cadence roughly 180 steps per minute_](https://www.strava.com/activities/16440957669/overview)
