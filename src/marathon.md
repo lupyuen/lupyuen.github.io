@@ -26,7 +26,7 @@ Let's look back and __Technically Document__ everything that happened, over the 
 
 ![Injured by Bad Running Form](https://lupyuen.github.io/images/marathon-mileage3.jpg)
 
-[_Injured by Bad Running Form_](https://www.strava.com/activities/16548726281/relative-effort)
+[_Injured by Bad Running Form_](https://www.strava.com/athletes/110000425)
 
 # Run Without Injury
 
@@ -120,9 +120,9 @@ _How slow exactly is Run - Walk - Run?_
 
 Run - Walk - Run is not really that slow...
 
-- __Run Continuously__: 6.2 minutes per km
+- __Run Continuously__: 6.4 minutes per km
 
-- __Run - Walk - Run__: 6.9 minutes per km
+- __Run - Walk - Run__: 7.0 minutes per km
 
 - Thus we probably ought to [__Start Slower, Finish Faster__](https://www.runnersworld.com/beginner/a65510381/negative-splits-racing/)
 
@@ -134,7 +134,7 @@ Run - Walk - Run is not really that slow...
 
 _So we're busy counting: 40 - 20 - 40 - 20? All 6 hours of the Marathon?_
 
-Yep that's one good way to practice [__Meditation and Mindfulness__](https://share.google/SVtT02kvCFRsKzYdD)! As we're counting / running / walking: Immerse ourselves into the here and now...
+Yep that's one good way to practice [__Meditation and Mindfulness__](https://www.runnersworld.com/uk/training/motivation/a69424106/running-without-music/)! As we're counting / running / walking: Immerse ourselves into the here and now...
 
 - Is Everything OK? Our thighs, knees, calves, ankles, feet, hips, arms, shoulders, ...
 
@@ -186,13 +186,13 @@ _What's the distance for our First Long Run? For 10% Weekly Increment: How soon 
 
 Ah remember that 10% is the __Compounded Weekly Increment__...
 
-- Suppose we're comfortable with [__hiking 20 km__](TODO)
+- Suppose we're comfortable with [__hiking 20 km__](https://www.strava.com/activities/13251912755)
 
 - Then our very first Long Slow Run could probably be __20 km__
 
 - We extend the distance every week by 10%
 
-- We'll hit 42 km in 8 weeks
+- We'll hit 42 km in __8 weeks__
 
 >>> ![Hitting 42 km in 8 weeks](https://lupyuen.github.io/images/marathon-calc.png)
 
@@ -320,7 +320,7 @@ That's why we [__Eat While We Run__](https://www.runnersworld.com/uk/nutrition/d
 
 - Day Before Run: [__Eat More Carbs__](https://youtu.be/LzYq-2b0URk?si=_urcCzD0MrZOSFOu)
 
-- Just Before Run: Have a [__Light Snack__](https://teamwarrior.com/products/warrior-crunch-protein-bars-12s). If Possible: Have a Core Dump and empty our bowels.
+- Just Before Run: Have a [__Light Snack__](https://teamwarrior.com/products/warrior-crunch-protein-bars-12s). If Possible: Do a Core Dump and empty our bowels.
 
 - Every 30 minutes (or 5 km): Slurp an [__Energy Gel__](https://guenergy.com/products/energy-gel) (22 grams of carbs)
 
