@@ -66,7 +66,9 @@ Yep it increases our [__Cadence (Steps Per Minute)__](TODO). We might hit 180 St
 
 Breathing becomes super important, while we're maintaining the __Same Cadence__ for 6 hours. Here's how...
 
-![TODO](https://lupyuen.github.io/images/marathon-breath.jpg)
+[(More about Cadence)](TODO)
+
+![TODO](https://lupyuen.github.io/images/marathon-breath2.jpg)
 
 # Breathe Deeply
 
@@ -120,7 +122,7 @@ We __Count Our Breathing__ (pic above), to be sure that we run more and walk les
 
 1.  Counting to 40 gets tricky! Let's count in Base 20 instead: 1, 2, ..., 20, 1, 2, ..., 20. Then walk.
 
-![TODO](https://lupyuen.github.io/images/marathon-breath.jpg)
+![TODO](https://lupyuen.github.io/images/marathon-breath.jpg?1)
 
 _How slow exactly is Run - Walk - Run?_
 
@@ -158,7 +160,7 @@ _Ouch! Something hurts!_
 
 Don't fight the pain! Stop and walk. Do some stretching to reset our running form. Rotate / revolve the knees. Squat down and twerk sideways.
 
-Continue running ONLY if we're really OK...
+Continue running ONLY if we're really OK. [(More Troubleshooting Tips)](TODO)
 
 ![TODO](https://lupyuen.github.io/images/marathon-injury.jpg)
 
@@ -208,19 +210,15 @@ _The 10% Rule for Weekly Mileage / Intensity: What happens if we DON'T follow it
 
 This reckless uncle did everything the wrong way, asking for trouble...
 
-TODO: Pic of distance
+![TODO](https://lupyuen.github.io/images/marathon-mileage2.jpg)
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
-
-[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 Subsequently suffering Knee Injury / Groin Injury / Toenail Fallout...
 
-TODO: Pic of injuries
+![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg?1)
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
-
-[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
+[_TODO: weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
 
 Many thanks to Sports Therapist David for teaching this clumsy otaku how everything in the body is connected, and why they're hurting!
 
@@ -396,11 +394,7 @@ _What's this tapering?_
 
 - [__30-Day Window__](TODO): Research says that we shouldn't exceed 10% of the distance of our last Long Run over the past 30 days. So we should probably run 42 km, then taper down 3 weeks before the Marathon.
 
-![TODO](https://lupyuen.github.io/images/marathon-mileage.jpg)
-
-[_weekly mileage_](https://www.strava.com/activities/16548726281/relative-effort)
-
-![TODO](https://lupyuen.github.io/images/marathon-taper2.png)
+![TODO](https://lupyuen.github.io/images/marathon-taper2.png?1)
 
 [_3-week taper_](https://www.strava.com/activities/16548726281/relative-effort)
 
@@ -420,7 +414,11 @@ Yeah that's the [__Taper Tantrum__](TODO). Try these fixes...
 
 - Plan for the [__Next Marathon__](TODO)
 
-- Book the Flight and Hotel 
+- Book the Flight and Hotel
+
+- Do a [__DNA Test__](TODO) and discover our Inherited Traits
+
+TODO: DNA Pic
 
 # Appendix: Cadence - Steps Per Minute
 
