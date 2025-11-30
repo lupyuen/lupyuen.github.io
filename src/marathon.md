@@ -202,7 +202,7 @@ Ah remember that 10% is the __Compounded Weekly Increment__...
 
 - We'll hit 42 km in 8 weeks
 
-  ![Hitting 42 km in 8 weeks](https://lupyuen.github.io/images/marathon-calc.png)
+>>> ![Hitting 42 km in 8 weeks](https://lupyuen.github.io/images/marathon-calc.png)
 
 Now watch what happens if we disrespect the 10% rule...
 
