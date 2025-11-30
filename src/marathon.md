@@ -6,25 +6,17 @@
 
 [_42 km Final Marathon Training_](https://www.strava.com/activities/16399545262)
 
-TODO stressful
+TODO Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
 
-Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
+>> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?1)
 
-That's a bit farther than a Full Marathon 42 km init? In 6 hours
+>> [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
 
-Yeah it sounds mathemagically plausible!
+_Innit similar to 42 km Full Marathon?_
 
-Yeah what if we jogged a little quicker? We might complete the Full marathon in 7 hours!
+Yeah what if we jogged a little quicker? We might complete the __42 km Full Marathon__ in 6 hours... Mathemagically plausible!
 
-_Innit similar to Full Marathon?_
-
-TODO Yeah what if we could run
-
-> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?1)
-
-> [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
-
-_Erm an old man running his First Marathon? Isn't that lethal?_
+_Old man running his First Marathon? Isn't that lethal?_
 
 This cranky uncle is _(nearly)_ aged 60. Our __Marathon Thingy__ has a real [__Risk of Death__](https://www.channelnewsasia.com/singapore/race-participant-dies-standard-chartered-singapore-marathon-2024-4780436) or [__Permanent Injury__](https://www.channelnewsasia.com/singapore/cyclist-jailed-collision-jogger-east-coast-park-5193576).
 
@@ -413,27 +405,3 @@ For 167 70 natural cadence is probably???
 
 Running the 10 km with friends 
 High cadence, short strides
-
-# TODO
-
-Mindfulness 
-Worries about AI and the Environment 
-Future of Apache NuttX and what's my role in it
-Taking care of my family 
-Will I inherit Alzheimer's?
-Will I ever complete this article?
-Why is USB UART broken?
-
-AI Vs groundedness
-Maintain sanity and health 
-
-The flow? Coding for hours on mountain dew
-Nope be mindful of the present, here and now 
-Watch where you're running 
-How you're running 
-Don't get injured or overexert 
-Refreshingly different from coding for hours and hours, high on stimulants
-
-Express gratitude 
-Glorious tan
-Sweat moisturising skin
