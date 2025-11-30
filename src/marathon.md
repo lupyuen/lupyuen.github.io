@@ -16,7 +16,7 @@ _Innit similar to 42 km Full Marathon?_
 
 Yeah what if we jogged a little quicker? We might complete the __42 km Full Marathon__ in 6 hours... Mathemagically plausible!
 
-_Old man running his First Marathon? Isn't that lethal?_
+_Old Man running his First Marathon? Isn't that lethal?_
 
 This cranky uncle is _(nearly)_ aged 60. Our __Marathon Thingy__ has a real [__Risk of Death__](https://www.channelnewsasia.com/singapore/race-participant-dies-standard-chartered-singapore-marathon-2024-4780436) or [__Permanent Injury__](https://www.channelnewsasia.com/singapore/cyclist-jailed-collision-jogger-east-coast-park-5193576).
 
