@@ -8,9 +8,9 @@
 
 TODO Keeping alive the Apache NuttX Project can get horribly stressful. That's how we started Hiking 50 km (12 hours) with a micro boombox
 
->> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?1)
+> ![50 km Hike: HarbourFront to Changi Airport to Changi Village](https://lupyuen.github.io/images/marathon-hike.png?2)
 
->> [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
+> [_50 km Hike: HarbourFront to Changi Airport to Changi Village_](https://www.strava.com/activities/14097873953)
 
 _Innit similar to 42 km Full Marathon?_
 
