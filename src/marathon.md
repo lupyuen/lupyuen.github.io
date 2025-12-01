@@ -372,7 +372,7 @@ Yeah that's the [__Taper Tantrum__](https://www.runnersworld.com/training/a69042
 
 - Plan for the [__Next Marathon__](https://lupyuen.org/articles/marathon#whats-next). Book the Flight and Hotel.
 
-- Do a [__DNA Test__](https://www.23andme.com) and discover our Inherited Traits
+- Do a [__DNA Test__](https://www.23andme.com) and discover our Inherited Traits. Apparently I got the genes for Long Runs, not Short Runs.
 
 > ![DNA Test to discover our Inherited Traits](https://lupyuen.github.io/images/marathon-dna.jpg)
 
