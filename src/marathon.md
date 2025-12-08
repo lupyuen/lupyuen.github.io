@@ -128,6 +128,8 @@ Run - Walk - Run is not really that slow...
 
 - Thus we probably ought to [__Start Slower, Finish Faster__](https://www.runnersworld.com/beginner/a65510381/negative-splits-racing/)
 
+  [(Run - Walk - Run will complete a marathon __within 6 hours__)](https://www.strava.com/activities/16671391778/overview)
+
 ![Run Continuously vs Run-Walk-Run](https://lupyuen.github.io/images/marathon-runvswalk.jpg)
 
 [_Run Continuously vs Run-Walk-Run_](https://www.strava.com/activities/16529249481)
@@ -235,6 +237,8 @@ _Will we chase Marathon PBs? (Personal Best, not Peanut Butter)_
 Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other marathons happening near home...
 
 1.  [__Singapore Marathon__](https://www.singaporemarathon.com/)
+
+    [(__Update:__ Completed the 42 km Singapore Marathon yay!)](https://www.strava.com/activities/16671391778/overview)
 
 1.  [__Twincity Marathon__](https://twincitymarathon.com/) (Malaysia)
 
