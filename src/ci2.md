@@ -359,6 +359,20 @@ sudo gh auth login
 
 ## Run the Build Job forever: arm-01 ... arm-14
 sudo ./run-ci.sh
+
+## To run Mutiple Build Jobs: Repeat these steps...
+## tmux
+## cd $HOME/nuttx-release && sudo sh -c '. ../gitlab-token.sh && ./run-ci.sh '$TMUX_PANE
+
+## To monitor Multiple Build Jobs:
+## for (( ; ; )) do
+##   clear
+##   ps aux | grep bash | grep run-job.sh | colrm 1 109 | sort
+##   ps aux | grep bash | grep run-job-special.sh | colrm 1 98 | sort
+##   set -e
+##   date ; sleep 10
+##   set +e
+## done
 ```
 
 (Also works for [__GitLab Snippets__](https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L1-L21))
