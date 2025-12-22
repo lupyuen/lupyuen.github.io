@@ -94,7 +94,8 @@
 <li><a href="#nuttx-start-code" title="NuttX Start Code">19.4 NuttX Start Code</a><ul></ul></li>
 <li><a href="#board-bringup-code" title="Board Bringup Code">19.5 Board Bringup Code</a><ul></ul></li>
 <li><a href="#linker-script-1" title="Linker Script">19.6 Linker Script</a><ul></ul></li>
-<li><a href="#nuttx-config" title="NuttX Config">19.7 NuttX Config</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
+<li><a href="#nuttx-config" title="NuttX Config">19.7 NuttX Config</a><ul></ul></li></ul></li>
+<li><a href="#appendix-configure-loopspermsec" title="Appendix: Configure LOOPSPERMSEC">20 Appendix: Configure LOOPSPERMSEC</a><ul></ul></li></ul></nav><p>📝 <em>16 Mar 2025</em></p>
 <p><img src="https://lupyuen.github.io/images/avaota-title.jpg" alt="Avaota-A1 SBC with SDWire MicroSD Multiplexer and Smart Power Plug" /></p>
 <p><a href="https://youtu.be/XTDw245n5tM"><em>(Watch the Demo on YouTube)</em></a></p>
 <p>This article explains how we ported NuttX from <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/knsh/defconfig"><strong>QEMU Arm64 Kernel Build</strong></a> to <a href="https://pine64.com/product/yuzuki-avaota-a1-single-board-computer-4gb-32gb/"><strong>PINE64 Yuzuki Avaota-A1 SBC</strong></a> based on <a href="https://linux-sunxi.org/A523"><strong>Allwinner A527 SoC</strong></a> … Completed within <a href="https://github.com/lupyuen2/wip-nuttx/commits/avaota"><strong>24 Hours</strong></a>!</p>
@@ -2017,7 +2018,50 @@ void arm64_serialinit(void) {
   u16550_serialinit();
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/avaota#uart-driver-for-16550">(Explained here)</a></p>
+<h1 id="appendix-configure-loopspermsec"><a class="doc-anchor" href="#appendix-configure-loopspermsec">§</a>20 Appendix: Configure LOOPSPERMSEC</h1>
+<p><em>How to configure CONFIG_BOARD_LOOPSPERMSEC?</em></p>
+<p>Let’s run <em>calib_udelay</em> with the Automated Test Script for Avaota-A1. First we enable the <code>calib_udelay</code> app: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-avaota.sh">nuttx-build-farm/build-test-avaota.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Configure the NuttX Build
+cd nuttx
+tools/configure.sh avaota-a1:nsh
 
+## Insert this:
+## Configure CONFIG_EXAMPLES_CALIB_UDELAY=y
+kconfig-tweak --enable CONFIG_EXAMPLES_CALIB_UDELAY
+
+## Insert this:
+## Update the Kconfig Dependencies
+make olddefconfig</code></pre></div>
+<p>Then we run it in the Expect Script: <a href="https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp">nuttx-build-farm/avaota.exp</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Wait at most 300 seconds for other commands
+set timeout 300
+
+## Insert this:
+## Wait for the prompt and enter `calib_udelay`
+expect &quot;nsh&gt; &quot;
+send -s &quot;calib_udelay\r&quot;</code></pre></div>
+<p>Run the Auto-Test for Avaota-A1. In the output log we’ll see…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ cd nuttx-build-farm
+$ script /tmp/output.log -c ./build-test-avaota.sh
+$ cat /tmp/output.log
+...
+nsh&gt; calib_udelay
+Calibrating timer for main calibration...
+Performing main calibration for udelay.This will take approx. 17.280 seconds.
+Calibration slope for udelay:
+  Y = m*X + b, where
+    X is loop iterations,
+    Y is time in nanoseconds,
+    b is base overhead,
+    m is nanoseconds per loop iteration.
+  m = 4.95426065 nsec/iter
+    b = -615413.53383459 nsec
+  Correlation coefficient, R² = 1.0000
+Without overhead, 0.20184647 iterations per nanosecond and 201846.47 iterations per millisecond.
+Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
+   CONFIG_BOARD_LOOPSPERMSEC=201847   </code></pre></div>
+<p>Thus we’ll set the NuttX Config for Avaota-A1: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a527/avaota-a1/configs/nsh/defconfig">avaota-a1/configs/nsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARD_LOOPSPERMSEC=201847   </code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
