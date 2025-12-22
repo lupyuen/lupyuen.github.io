@@ -338,7 +338,21 @@ sudo gh auth login
 ## See https://stackoverflow.com/questions/78890002/how-to-do-gh-auth-login-when-run-in-headless-mode
 
 ## Run the Build Job forever: arm-01 ... arm-14
-sudo ./run-ci.sh</code></pre></div>
+sudo ./run-ci.sh
+
+## To run Mutiple Build Jobs: Repeat these steps...
+## tmux
+## cd $HOME/nuttx-release &amp;&amp; sudo sh -c &#39;. ../gitlab-token.sh &amp;&amp; ./run-ci.sh &#39;$TMUX_PANE
+
+## To monitor Multiple Build Jobs:
+## for (( ; ; )) do
+##   clear
+##   ps aux | grep bash | grep run-job.sh | colrm 1 109 | sort
+##   ps aux | grep bash | grep run-job-special.sh | colrm 1 98 | sort
+##   set -e
+##   date ; sleep 10
+##   set +e
+## done</code></pre></div>
 <p>(Also works for <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L1-L21"><strong>GitLab Snippets</strong></a>)</p>
 <p><em>How does it work?</em></p>
 <p>Inside our script, <strong>run_job</strong> will compile a single Target Group: <a href="https://github.com/lupyuen/nuttx-release/blob/main/run-ci.sh#L20-L30">run-ci.sh</a></p>
