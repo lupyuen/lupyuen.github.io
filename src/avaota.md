@@ -2349,3 +2349,65 @@ void arm64_serialinit(void) {
 ```
 
 [(Explained here)](https://lupyuen.github.io/articles/avaota#uart-driver-for-16550)
+
+# Appendix: Configure LOOPSPERMSEC
+
+_How to configure CONFIG_BOARD_LOOPSPERMSEC?_
+
+Let's run _calib_udelay_ with the Automated Test Script for Avaota-A1. First we enable the `calib_udelay` app: [nuttx-build-farm/build-test-avaota.sh](https://github.com/lupyuen/nuttx-build-farm/blob/main/build-test-avaota.sh)
+
+```bash
+## Configure the NuttX Build
+cd nuttx
+tools/configure.sh avaota-a1:nsh
+
+## Insert this:
+## Configure CONFIG_EXAMPLES_CALIB_UDELAY=y
+kconfig-tweak --enable CONFIG_EXAMPLES_CALIB_UDELAY
+
+## Insert this:
+## Update the Kconfig Dependencies
+make olddefconfig
+```
+
+Then we run it in the Expect Script: [nuttx-build-farm/avaota.exp](https://github.com/lupyuen/nuttx-build-farm/blob/main/avaota.exp)
+
+```bash
+## Wait at most 300 seconds for other commands
+set timeout 300
+
+## Insert this:
+## Wait for the prompt and enter `calib_udelay`
+expect "nsh> "
+send -s "calib_udelay\r"
+```
+
+Run the Auto-Test for Avaota-A1. In the output log we'll see...
+
+```bash
+$ cd nuttx-build-farm
+$ script /tmp/output.log -c ./build-test-avaota.sh
+$ cat /tmp/output.log
+...
+nsh> calib_udelay
+Calibrating timer for main calibration...
+Performing main calibration for udelay.This will take approx. 17.280 seconds.
+Calibration slope for udelay:
+  Y = m*X + b, where
+    X is loop iterations,
+    Y is time in nanoseconds,
+    b is base overhead,
+    m is nanoseconds per loop iteration.
+  m = 4.95426065 nsec/iter
+    b = -615413.53383459 nsec
+  Correlation coefficient, R² = 1.0000
+Without overhead, 0.20184647 iterations per nanosecond and 201846.47 iterations per millisecond.
+Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
+   CONFIG_BOARD_LOOPSPERMSEC=201847   
+```
+
+Thus we'll set the NuttX Config for Avaota-A1: [avaota-a1/configs/nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a527/avaota-a1/configs/nsh/defconfig)
+
+```bash
+CONFIG_BOARD_LOOPSPERMSEC=201847   
+```
