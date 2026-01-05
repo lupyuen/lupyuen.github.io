@@ -14,5 +14,11 @@ Click "Select Project"
 
 Click "Create a VM"
 
-Click "Compute Engine API > Enable"
+Click "Compute Engine API > Enable" and wait a while
+
+Fill in the Instance Name "nuttx-dashboard-vm". Click "Create"
+
+Click "Connect > SSH"
+
+And SSH Console appears!
 
