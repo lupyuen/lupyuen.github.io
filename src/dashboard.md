@@ -288,8 +288,8 @@ But change ALL references to Prometheus UID:
 ```json
 ...
 "datasource": {
-    "type": "prometheus",
-    "uid": "df998a9io0yrkb"
+  "type": "prometheus",
+  "uid": "df998a9io0yrkb"
 }
 ...
 ```
