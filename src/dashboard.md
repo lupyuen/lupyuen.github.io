@@ -153,7 +153,72 @@ The main configuration file is located at /etc/prometheus/prometheus.yml
 
 https://devopscube.com/setup-prometheus-pushgateway-vm/
 
+```bash
+## From https://devopscube.com/setup-prometheus-pushgateway-vm/
+
+wget https://github.com/prometheus/pushgateway/releases/download/v1.11.2/pushgateway-1.11.2.linux-amd64.tar.gz
+tar xvf pushgateway-1.11.2.linux-amd64.tar.gz
+mv pushgateway-1.11.2.linux-amd64 pushgateway
+cd pushgateway/
+sudo useradd -rs /bin/false pushgateway
+sudo cp pushgateway /usr/local/bin/
+sudo chown pushgateway:pushgateway /usr/local/bin/pushgateway
+
+sudo --shell
+cat <<EOT > /etc/systemd/system/pushgateway.service
+[Unit]
+Description=Prometheus Pushgateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=pushgateway
+Group=pushgateway
+Type=simple
+ExecStart=/usr/local/bin/pushgateway
+
+[Install]
+WantedBy=multi-user.target
+EOT
+exit
+
+sudo systemctl enable pushgateway
+sudo systemctl start pushgateway
+sudo systemctl status pushgateway
+
+## We should see...
+## pushgateway.service - Prometheus Pushgateway
+## Loaded: loaded (/etc/systemd/system/pushgateway.service; enabled; preset: enabled)
+## Active: active (running) since Mon 2026-01-05 08:46:49 UTC; 4s ago
+
+curl localhost:9091/metrics
+
+## We should see...
+## HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
+## TYPE go_gc_duration_seconds summary
+```
+
+VM Instances > Set Up Firewall Rules
+
+Firewall Policies > Create Firewall Rule
+
+allow-tcp-9091
+
+Targets: All instances in the network
+
+IPv4 Ranges: 0.0.0.0/0
+
+Protocol and Ports: TCP 9091
+
+Click "Create"
+
+http://35.198.238.211:9091
+
 # Push Metrics to Prometheus
+
+```bash
++ cargo run -- --user NuttX --repo nuttx --defconfig /tmp/defconfig-github.txt --file /tmp/ci-xtensa-01.log --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b --group xtensa-01 --run-id 20706016275 --job-id 59436813143 --step 10
+```
 
 # Connect Grafana to Prometheus
 
