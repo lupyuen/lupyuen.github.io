@@ -279,8 +279,8 @@ sudo systemctl restart prometheus</code></pre></div>
 <p>But change ALL references to Prometheus UID:</p>
 <div class="example-wrap"><pre class="language-json"><code>...
 &quot;datasource&quot;: {
-    &quot;type&quot;: &quot;prometheus&quot;,
-    &quot;uid&quot;: &quot;df998a9io0yrkb&quot;
+  &quot;type&quot;: &quot;prometheus&quot;,
+  &quot;uid&quot;: &quot;df998a9io0yrkb&quot;
 }
 ...</code></pre></div>
 <p>(Get the UID from the Dashboard JSON before overwriting it)</p>
