@@ -64,8 +64,28 @@ echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stab
 ## Updates the list of available packages
 sudo apt-get update
 
-## Installs the latest OSS release:
+## Installs the latest OSS release
 sudo apt-get install grafana
+
+### Configure grafana to start automatically using systemd
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable grafana-server
+
+### Start grafana-server
+sudo /bin/systemctl start grafana-server
+
+$ netstat -an | grep LISTEN
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:20202           0.0.0.0:*               LISTEN     
+tcp6       0      0 :::22                   :::*                    LISTEN     
+tcp6       0      0 :::3000                 :::*                    LISTEN     
+tcp6       0      0 ::1:25                  :::*                    LISTEN     
+tcp6       0      0 :::5355                 :::*                    LISTEN     
+tcp6       0      0 :::20201                :::*                    LISTEN 
 ```
 
 # Install Prometheus
