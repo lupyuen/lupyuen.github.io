@@ -175,7 +175,57 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p>The main configuration file is located at /etc/prometheus/prometheus.yml</p>
 <h1 id="install-pushgateway"><a class="doc-anchor" href="#install-pushgateway">§</a>4 Install Pushgateway</h1>
 <p>https://devopscube.com/setup-prometheus-pushgateway-vm/</p>
-<h1 id="push-metrics-to-prometheus"><a class="doc-anchor" href="#push-metrics-to-prometheus">§</a>5 Push Metrics to Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://devopscube.com/setup-prometheus-pushgateway-vm/
+
+wget https://github.com/prometheus/pushgateway/releases/download/v1.11.2/pushgateway-1.11.2.linux-amd64.tar.gz
+tar xvf pushgateway-1.11.2.linux-amd64.tar.gz
+mv pushgateway-1.11.2.linux-amd64 pushgateway
+cd pushgateway/
+sudo useradd -rs /bin/false pushgateway
+sudo cp pushgateway /usr/local/bin/
+sudo chown pushgateway:pushgateway /usr/local/bin/pushgateway
+
+sudo --shell
+cat &lt;&lt;EOT &gt; /etc/systemd/system/pushgateway.service
+[Unit]
+Description=Prometheus Pushgateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=pushgateway
+Group=pushgateway
+Type=simple
+ExecStart=/usr/local/bin/pushgateway
+
+[Install]
+WantedBy=multi-user.target
+EOT
+exit
+
+sudo systemctl enable pushgateway
+sudo systemctl start pushgateway
+sudo systemctl status pushgateway
+
+## We should see...
+## pushgateway.service - Prometheus Pushgateway
+## Loaded: loaded (/etc/systemd/system/pushgateway.service; enabled; preset: enabled)
+## Active: active (running) since Mon 2026-01-05 08:46:49 UTC; 4s ago
+
+curl localhost:9091/metrics
+
+## We should see...
+## HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
+## TYPE go_gc_duration_seconds summary</code></pre></div>
+<p>VM Instances &gt; Set Up Firewall Rules</p>
+<p>Firewall Policies &gt; Create Firewall Rule</p>
+<p>allow-tcp-9091</p>
+<p>Targets: All instances in the network</p>
+<p>IPv4 Ranges: 0.0.0.0/0</p>
+<p>Protocol and Ports: TCP 9091</p>
+<p>Click “Create”</p>
+<p>http://35.198.238.211:9091</p>
+<h1 id="push-metrics-to-prometheus"><a class="doc-anchor" href="#push-metrics-to-prometheus">§</a>5 Push Metrics to Prometheus</h1><div class="example-wrap"><pre class="language-bash"><code>+ cargo run -- --user NuttX --repo nuttx --defconfig /tmp/defconfig-github.txt --file /tmp/ci-xtensa-01.log --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b --group xtensa-01 --run-id 20706016275 --job-id 59436813143 --step 10</code></pre></div><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
