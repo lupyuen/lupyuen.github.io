@@ -296,4 +296,8 @@ But change ALL references to Prometheus UID:
 
 (Get the UID from the Dashboard JSON before overwriting it)
 
+Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json
+
+Remember to change ALL references to Prometheus UID. (See above)
+
 # Sync.sh
