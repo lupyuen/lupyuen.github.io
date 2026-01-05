@@ -67,26 +67,40 @@ sudo apt-get update
 ## Installs the latest OSS release
 sudo apt-get install grafana
 
-### Configure grafana to start automatically using systemd
+## Configure grafana to start automatically using systemd
 sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable grafana-server
 
-### Start grafana-server
+## Start grafana-server
 sudo /bin/systemctl start grafana-server
 
+## Grafana Server is listening on http://localhost:3000
 $ netstat -an | grep LISTEN
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
-tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN     
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN     
-tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN     
-tcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN     
-tcp        0      0 0.0.0.0:20202           0.0.0.0:*               LISTEN     
-tcp6       0      0 :::22                   :::*                    LISTEN     
 tcp6       0      0 :::3000                 :::*                    LISTEN     
-tcp6       0      0 ::1:25                  :::*                    LISTEN     
-tcp6       0      0 :::5355                 :::*                    LISTEN     
-tcp6       0      0 :::20201                :::*                    LISTEN 
 ```
+
+VM Instances > External IP
+35.198.238.211
+
+VM Instances > Set Up Firewall Rules
+
+Firewall Policies > Create Firewall Rule
+
+allow-tcp-3000
+
+Targets: All instances in the network
+
+IPv4 Ranges: 0.0.0.0/0
+
+Protocol and Ports: TCP 3000
+
+Click "Create"
+
+http://35.198.238.211:3000
+
+Username: admin
+Password: admin
+Set the new password
 
 # Install Prometheus
 
