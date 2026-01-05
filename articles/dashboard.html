@@ -271,7 +271,20 @@ sudo systemctl restart prometheus</code></pre></div>
 <p>Check http://35.198.238.211:9090</p>
 <p>Enter the query “build_score”</p>
 <p>Press Execute</p>
-<h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
+<h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1>
+<p>Follow these steps to create the dashboard (skip the <code>apt install</code>):</p>
+<p><a href="https://lupyuen.org/articles/ci4#grafana-dashboard">Grafana Dashboard</a></p>
+<p>Add Data Source: https://lupyuen.org/articles/ci4#appendix-all-builds-dashboard</p>
+<p>Copy and overwrite the Dashboard JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json</p>
+<p>But change ALL references to Prometheus UID:</p>
+<div class="example-wrap"><pre class="language-json"><code>...
+&quot;datasource&quot;: {
+    &quot;type&quot;: &quot;prometheus&quot;,
+    &quot;uid&quot;: &quot;df998a9io0yrkb&quot;
+}
+...</code></pre></div>
+<p>(Get the UID from the Dashboard JSON before overwriting it)</p>
+<h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
