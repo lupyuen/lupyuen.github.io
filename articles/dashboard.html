@@ -75,7 +75,7 @@
 <p>Create Project: nuttx-dashboard</p>
 <p>https://console.cloud.google.com/projectcreate</p>
 <p>Click “Select Project”</p>
-<p>Click “Create a VM”</p>
+<p>Click “Create a VM”. General Purpose / Debian Bookworm is OK.</p>
 <p>Click “Compute Engine API &gt; Enable” and wait a while</p>
 <p>Fill in the Instance Name “nuttx-dashboard-vm”. Click “Create”</p>
 <p>Click “Connect &gt; SSH”</p>
@@ -93,7 +93,26 @@ Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.
 luppy@nuttx-dashboard-vm:~$ 
 
 sudo apt update
-sudo apt upgrade</code></pre></div><h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1><h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>4 Connect Grafana to Prometheus</h1>
+sudo apt upgrade</code></pre></div><h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1>
+<p>Install the latest version of Grafana OSS</p>
+<p>https://grafana.com/grafana/download/12.3.0?pg=oss-graf&amp;plcmt=hero-btn-1&amp;edition=oss</p>
+<p>https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Grafana OSS	grafana	https://apt.grafana.com stable main
+## Install the prerequisite packages
+sudo apt-get install -y apt-transport-https wget
+
+## Import the GPG key
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg &gt; /dev/null
+
+## Add a repository for stable releases
+echo &quot;deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main&quot; | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+## Updates the list of available packages
+sudo apt-get update
+
+## Installs the latest OSS release:
+sudo apt-get install grafana</code></pre></div><h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>4 Connect Grafana to Prometheus</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
