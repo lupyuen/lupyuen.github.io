@@ -6,7 +6,7 @@
 
 TODO
 
-# Create Virtual Machine
+# Create Our Virtual Machine
 
 Create Project: nuttx-dashboard
 
@@ -104,5 +104,58 @@ Set the new password
 
 # Install Prometheus
 
+```bash
+## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
+## Install Prometheus server
+sudo apt install prometheus
+
+## Enable services to start on boot
+sudo systemctl enable prometheus
+
+## Start services
+sudo systemctl start prometheus
+
+## Check service status
+sudo systemctl status prometheus
+
+## We should see...
+## ● prometheus.service - Monitoring system and time series database
+## Loaded: loaded (/lib/systemd/system/prometheus.service; enabled; preset: enabled)
+## Active: active (running)
+
+## Check listening ports
+sudo ss -tlnp | grep -E '9090|9100'
+
+## We should see...
+## LISTEN 0      4096               *:9090             *:*    users:(("prometheus",pid=93392,fd=7))     
+## LISTEN 0      4096               *:9100             *:*    users:(("prometheus-node",pid=93237,fd=3))
+```
+
+VM Instances > Set Up Firewall Rules
+
+Firewall Policies > Create Firewall Rule
+
+allow-tcp-9090
+
+Targets: All instances in the network
+
+IPv4 Ranges: 0.0.0.0/0
+
+Protocol and Ports: TCP 9090
+
+Click "Create"
+
+http://35.198.238.211:9090
+
+The main configuration file is located at /etc/prometheus/prometheus.yml
+
+# Install Pushgateway
+
+https://devopscube.com/setup-prometheus-pushgateway-vm/
+
+# Push Metrics to Prometheus
+
 # Connect Grafana to Prometheus
+
+# Sync.sh
 
