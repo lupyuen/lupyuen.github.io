@@ -69,7 +69,7 @@
 <li><a href="#install-grafana" title="Install Grafana">2 Install Grafana</a><ul></ul></li>
 <li><a href="#install-prometheus" title="Install Prometheus">3 Install Prometheus</a><ul></ul></li>
 <li><a href="#install-pushgateway" title="Install Pushgateway">4 Install Pushgateway</a><ul></ul></li>
-<li><a href="#push-metrics-to-prometheus" title="Push Metrics to Prometheus">5 Push Metrics to Prometheus</a><ul></ul></li>
+<li><a href="#ingest-a-sample-nuttx-log" title="Ingest a Sample NuttX Log">5 Ingest a Sample NuttX Log</a><ul></ul></li>
 <li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">6 Connect Grafana to Prometheus</a><ul></ul></li>
 <li><a href="#syncsh" title="Sync.sh">7 Sync.sh</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
@@ -225,7 +225,45 @@ curl localhost:9091/metrics
 <p>Protocol and Ports: TCP 9091</p>
 <p>Click “Create”</p>
 <p>http://35.198.238.211:9091</p>
-<h1 id="push-metrics-to-prometheus"><a class="doc-anchor" href="#push-metrics-to-prometheus">§</a>5 Push Metrics to Prometheus</h1><div class="example-wrap"><pre class="language-bash"><code>+ cargo run -- --user NuttX --repo nuttx --defconfig /tmp/defconfig-github.txt --file /tmp/ci-xtensa-01.log --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b --group xtensa-01 --run-id 20706016275 --job-id 59436813143 --step 10</code></pre></div><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
+<h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1><div class="example-wrap"><pre class="language-bash"><code>pushd /tmp
+wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/defconfig.txt
+wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/ci-xtensa-02.log
+popd
+
+## Install rust: https://rustup.rs/
+## Press Enter for default option
+curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
+. &quot;$HOME/.cargo/env&quot;
+sudo apt install gcc pkg-config libssl-dev
+
+sudo apt install git
+git clone https://github.com/lupyuen/ingest-nuttx-builds
+cd ingest-nuttx-builds
+cargo run \
+  -- \
+  --user NuttX \
+  --repo nuttx \
+  --defconfig /tmp/defconfig.txt \
+  --file /tmp/ci-xtensa-02.log \
+  --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 \
+  --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b \
+  --group xtensa-02 \
+  --run-id 20706016275 \
+  --job-id 59436813170 \
+  --step 10
+
+## We should see...
+## lines[0]=Configuration/Tool: esp32s3-devkit/spi
+## lines.last=  [1/1] Normalize esp32s3-devkit/spi
+## target=esp32s3-devkit:spi
+## timestamp=2026-01-05T08:39:57
+## body=
+## # TYPE build_score gauge
+## # HELP build_score 1.0 for successful build, 0.0 for failed build
+## build_score{ version=&quot;3&quot;, timestamp=&quot;2026-01-05T08:39:57&quot;, timestamp_log=&quot;2026-01-05T08:39:57&quot;, user=&quot;NuttX&quot;, arch=&quot;xtensa&quot;, subarch=&quot;esp32s3&quot;, group=&quot;xtensa-02&quot;, board=&quot;esp32s3-devkit&quot;, config=&quot;spi&quot;, target=&quot;esp32s3-devkit:spi&quot;, url=&quot;https://github.com/NuttX/nuttx/actions/runs/20706016275/job/59436813170#step:10:2455&quot;, url_display=&quot;&quot;, nuttx_hash=&quot;59f200ac4fe6c940dc0eab2155bb3cb566724082&quot;, apps_hash=&quot;4f93ec0a4335d574eeecfd295584fbfb17056e5b&quot; } 1
+## res=Response { url: &quot;http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi&quot;, status: 200, headers: {&quot;date&quot;: &quot;Mon, 05 Jan 2026 10:10:52 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} }</code></pre></div>
+<p>Check http://35.198.238.211:9091</p>
+<h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
