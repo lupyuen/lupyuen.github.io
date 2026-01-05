@@ -258,6 +258,21 @@ cargo run \
 
 Check http://35.198.238.211:9091
 
+TODO: Connect prometheus to pushgateway
+
+```bash
+sudo nano /etc/prometheus/prometheus.yml
+## Erase everything in the file. Replace by contents of
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
+sudo systemctl restart prometheus
+```
+
+Check http://35.198.238.211:9090
+
+Enter the query "build_score"
+
+Press Execute
+
 # Connect Grafana to Prometheus
 
 # Sync.sh
