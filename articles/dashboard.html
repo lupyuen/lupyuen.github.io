@@ -111,8 +111,28 @@ echo &quot;deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com
 ## Updates the list of available packages
 sudo apt-get update
 
-## Installs the latest OSS release:
-sudo apt-get install grafana</code></pre></div><h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>4 Connect Grafana to Prometheus</h1>
+## Installs the latest OSS release
+sudo apt-get install grafana
+
+### Configure grafana to start automatically using systemd
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable grafana-server
+
+### Start grafana-server
+sudo /bin/systemctl start grafana-server
+
+$ netstat -an | grep LISTEN
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:20202           0.0.0.0:*               LISTEN     
+tcp6       0      0 :::22                   :::*                    LISTEN     
+tcp6       0      0 :::3000                 :::*                    LISTEN     
+tcp6       0      0 ::1:25                  :::*                    LISTEN     
+tcp6       0      0 :::5355                 :::*                    LISTEN     
+tcp6       0      0 :::20201                :::*                    LISTEN </code></pre></div><h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>4 Connect Grafana to Prometheus</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
