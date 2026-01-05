@@ -263,6 +263,14 @@ cargo run \
 ## build_score{ version=&quot;3&quot;, timestamp=&quot;2026-01-05T08:39:57&quot;, timestamp_log=&quot;2026-01-05T08:39:57&quot;, user=&quot;NuttX&quot;, arch=&quot;xtensa&quot;, subarch=&quot;esp32s3&quot;, group=&quot;xtensa-02&quot;, board=&quot;esp32s3-devkit&quot;, config=&quot;spi&quot;, target=&quot;esp32s3-devkit:spi&quot;, url=&quot;https://github.com/NuttX/nuttx/actions/runs/20706016275/job/59436813170#step:10:2455&quot;, url_display=&quot;&quot;, nuttx_hash=&quot;59f200ac4fe6c940dc0eab2155bb3cb566724082&quot;, apps_hash=&quot;4f93ec0a4335d574eeecfd295584fbfb17056e5b&quot; } 1
 ## res=Response { url: &quot;http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi&quot;, status: 200, headers: {&quot;date&quot;: &quot;Mon, 05 Jan 2026 10:10:52 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} }</code></pre></div>
 <p>Check http://35.198.238.211:9091</p>
+<p>TODO: Connect prometheus to pushgateway</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo nano /etc/prometheus/prometheus.yml
+## Erase everything in the file. Replace by contents of
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
+sudo systemctl restart prometheus</code></pre></div>
+<p>Check http://35.198.238.211:9090</p>
+<p>Enter the query “build_score”</p>
+<p>Press Execute</p>
 <h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>7 Sync.sh</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
