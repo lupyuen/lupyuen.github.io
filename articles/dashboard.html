@@ -64,9 +64,14 @@
     
 
     <h1 class="title">Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS</h1>
-    <nav id="rustdoc"><ul></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+    <nav id="rustdoc"><ul>
+<li><a href="#create-virtual-machine" title="Create Virtual Machine">1 Create Virtual Machine</a><ul></ul></li>
+<li><a href="#install-grafana" title="Install Grafana">2 Install Grafana</a><ul></ul></li>
+<li><a href="#install-prometheus" title="Install Prometheus">3 Install Prometheus</a><ul></ul></li>
+<li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">4 Connect Grafana to Prometheus</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>TODO</p>
+<h1 id="create-virtual-machine"><a class="doc-anchor" href="#create-virtual-machine">§</a>1 Create Virtual Machine</h1>
 <p>Create Project: nuttx-dashboard</p>
 <p>https://console.cloud.google.com/projectcreate</p>
 <p>Click “Select Project”</p>
@@ -75,7 +80,20 @@
 <p>Fill in the Instance Name “nuttx-dashboard-vm”. Click “Create”</p>
 <p>Click “Connect &gt; SSH”</p>
 <p>And SSH Console appears!</p>
+<div class="example-wrap"><pre class="language-bash"><code>Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64
 
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+luppy@nuttx-dashboard-vm:~$ uname -a
+Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64 GNU/Linux
+luppy@nuttx-dashboard-vm:~$ 
+
+sudo apt update
+sudo apt upgrade</code></pre></div><h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1><h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>4 Connect Grafana to Prometheus</h1>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
