@@ -275,4 +275,25 @@ Press Execute
 
 # Connect Grafana to Prometheus
 
+Follow these steps to create the dashboard (skip the `apt install`):
+
+[Grafana Dashboard](https://lupyuen.org/articles/ci4#grafana-dashboard)
+
+Add Data Source: https://lupyuen.org/articles/ci4#appendix-all-builds-dashboard
+
+Copy and overwrite the Dashboard JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json
+
+But change ALL references to Prometheus UID:
+
+```json
+...
+"datasource": {
+    "type": "prometheus",
+    "uid": "df998a9io0yrkb"
+}
+...
+```
+
+(Get the UID from the Dashboard JSON before overwriting it)
+
 # Sync.sh

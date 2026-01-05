@@ -159,7 +159,7 @@ brew services start grafana
 
 1.  Hmmm it's the same Board and Config... Just different Timestamps.
 
-    We click __Queries__ > __Format: Table__ > __Type: Instant__ > __Refresh__
+    We click __Queries__ > __Options__ > __Format: Table__ > __Type: Instant__ > __Refresh__
 
     ![Change to Instant Query](https://lupyuen.github.io/images/ci4-grafana7.png)
 
