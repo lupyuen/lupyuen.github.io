@@ -214,13 +214,50 @@ Click "Create"
 
 http://35.198.238.211:9091
 
-# Push Metrics to Prometheus
+# Ingest a Sample NuttX Log
 
 ```bash
-+ cargo run -- --user NuttX --repo nuttx --defconfig /tmp/defconfig-github.txt --file /tmp/ci-xtensa-01.log --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b --group xtensa-01 --run-id 20706016275 --job-id 59436813143 --step 10
+pushd /tmp
+wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/defconfig.txt
+wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/ci-xtensa-02.log
+popd
+
+## Install rust: https://rustup.rs/
+## Press Enter for default option
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+. "$HOME/.cargo/env"
+sudo apt install gcc pkg-config libssl-dev
+
+sudo apt install git
+git clone https://github.com/lupyuen/ingest-nuttx-builds
+cd ingest-nuttx-builds
+cargo run \
+  -- \
+  --user NuttX \
+  --repo nuttx \
+  --defconfig /tmp/defconfig.txt \
+  --file /tmp/ci-xtensa-02.log \
+  --nuttx-hash 59f200ac4fe6c940dc0eab2155bb3cb566724082 \
+  --apps-hash 4f93ec0a4335d574eeecfd295584fbfb17056e5b \
+  --group xtensa-02 \
+  --run-id 20706016275 \
+  --job-id 59436813170 \
+  --step 10
+
+## We should see...
+## lines[0]=Configuration/Tool: esp32s3-devkit/spi
+## lines.last=  [1/1] Normalize esp32s3-devkit/spi
+## target=esp32s3-devkit:spi
+## timestamp=2026-01-05T08:39:57
+## body=
+## # TYPE build_score gauge
+## # HELP build_score 1.0 for successful build, 0.0 for failed build
+## build_score{ version="3", timestamp="2026-01-05T08:39:57", timestamp_log="2026-01-05T08:39:57", user="NuttX", arch="xtensa", subarch="esp32s3", group="xtensa-02", board="esp32s3-devkit", config="spi", target="esp32s3-devkit:spi", url="https://github.com/NuttX/nuttx/actions/runs/20706016275/job/59436813170#step:10:2455", url_display="", nuttx_hash="59f200ac4fe6c940dc0eab2155bb3cb566724082", apps_hash="4f93ec0a4335d574eeecfd295584fbfb17056e5b" } 1
+## res=Response { url: "http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi", status: 200, headers: {"date": "Mon, 05 Jan 2026 10:10:52 GMT", "content-length": "0"} }
 ```
+
+Check http://35.198.238.211:9091
 
 # Connect Grafana to Prometheus
 
 # Sync.sh
-
