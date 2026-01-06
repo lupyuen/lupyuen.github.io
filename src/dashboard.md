@@ -300,7 +300,7 @@ Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-
 
 Remember to change ALL references to Prometheus UID. (See above)
 
-# SSH Key
+# SSH Key for VM Login
 
 Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
 
@@ -378,6 +378,56 @@ Host nuttx-dashboard-vm
   HostName 35.198.238.211
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy
+```
+
+# SSH Key for GitHub
+
+Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+```bash
+ssh-keygen \
+  -t ed25519 \
+  -f $HOME/.ssh/nuttxpr@github \
+  -C "nuttxpr@github"
+```
+
+Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub
+
+Test it:
+
+```bash
+ssh -T \
+  -i $HOME/.ssh/nuttxpr@github \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Edit $HOME/.ssh/config
+
+```bash
+nano $HOME/.ssh/config
+```
+
+Add this...
+
+```bash
+Host github.com
+  IdentityFile ~/.ssh/nuttxpr@github
+```
+
+Test it:
+
+```bash
+## Should now work without stating Private Key
+ssh -T \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
 # Sync.sh
