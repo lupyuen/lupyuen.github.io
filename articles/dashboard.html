@@ -73,7 +73,8 @@
 <li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">6 Connect Grafana to Prometheus</a><ul></ul></li>
 <li><a href="#ssh-key-for-vm-login" title="SSH Key for VM Login">7 SSH Key for VM Login</a><ul></ul></li>
 <li><a href="#ssh-key-for-github" title="SSH Key for GitHub">8 SSH Key for GitHub</a><ul></ul></li>
-<li><a href="#syncsh" title="Sync.sh">9 Sync.sh</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#set-the-github-token" title="Set the GitHub Token">9 Set the GitHub Token</a><ul></ul></li>
+<li><a href="#syncsh" title="Sync.sh">10 Sync.sh</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>TODO</p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
@@ -360,7 +361,28 @@ ssh -T \
   git@github.com
 
 ## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>9 Sync.sh</h1>
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="set-the-github-token"><a class="doc-anchor" href="#set-the-github-token">§</a>9 Set the GitHub Token</h1>
+<p>Create $HOME/github-token.sh</p>
+<div class="example-wrap"><pre class="language-bash"><code>## GitHub Settings &gt; Developer Settings &gt; Tokens (Classic) &gt; Generate New Token (Classic)
+## Check the following:
+## repo (Full control of private repositories)
+## repo:status (Access commit status)
+## repo_deployment (Access deployment status)
+## public_repo (Access public repositories)
+## repo:invite (Access repository invitations)
+## security_events (Read and write security events)
+export GITHUB_TOKEN=...
+
+## Enable Rust Logging
+export RUST_LOG=info 
+export RUST_BACKTRACE=1</code></pre></div>
+<p>If we’re ingesting GitLab Snippets: Create $HOME/gitlab-token.sh</p>
+<div class="example-wrap"><pre class="language-bash"><code>## User Settings &gt; Access tokens
+## Select scopes:
+## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
+export GITLAB_TOKEN=...
+export GITLAB_USER=lupyuen
+export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>10 Sync.sh</h1>
 <p>TODO</p>
 
     
