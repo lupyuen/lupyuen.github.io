@@ -430,6 +430,37 @@ ssh -T \
 ## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
+# Set the GitHub Token
+
+Create $HOME/github-token.sh
+
+```bash
+## GitHub Settings > Developer Settings > Tokens (Classic) > Generate New Token (Classic)
+## Check the following:
+## repo (Full control of private repositories)
+## repo:status (Access commit status)
+## repo_deployment (Access deployment status)
+## public_repo (Access public repositories)
+## repo:invite (Access repository invitations)
+## security_events (Read and write security events)
+export GITHUB_TOKEN=...
+
+## Enable Rust Logging
+export RUST_LOG=info 
+export RUST_BACKTRACE=1
+```
+
+If we're ingesting GitLab Snippets: Create $HOME/gitlab-token.sh
+
+```bash
+## User Settings > Access tokens
+## Select scopes:
+## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
+export GITLAB_TOKEN=...
+export GITLAB_USER=lupyuen
+export GITLAB_REPO=nuttx-build-log
+```
+
 # Sync.sh
 
 TODO
