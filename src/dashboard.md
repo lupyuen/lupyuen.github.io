@@ -300,4 +300,86 @@ Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-
 
 Remember to change ALL references to Prometheus UID. (See above)
 
+# SSH Key
+
+Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+
+```bash
+## Do this on our computer, NOT the VM!
+## Change "luppy" to your VM Username
+ssh-keygen \
+  -t rsa \
+  -f $HOME/.ssh/nuttx-dashboard-vm \
+  -C luppy
+
+## Check the output
+ls $HOME/.ssh/nuttx-dashboard-vm*
+
+## We should see...
+## nuttx-dashboard-vm
+## nuttx-dashboard-vm.pub
+```
+
+Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
+
+```bash
+## For macOS:
+brew install gcloud-cli
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+gcloud version
+## We should see: Google Cloud SDK 550.0.0
+```
+
+Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
+
+Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
+
+Click "SSH Keys"
+
+Click "Add SSH Key"
+
+Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
+
+Click "Save"
+
+```bash
+## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+## Change "luppy" to your VM Username
+ssh \
+  -i $HOME/.ssh/nuttx-dashboard-vm \
+  luppy@35.198.238.211
+```
+
+In VSCode: Click "Remote Explorer > SSH > +"
+
+```bash
+ssh -i ~/.ssh/nuttx-dashboard-vm luppy@35.198.238.211 
+```
+
+Select the SSH Config file $HOME/.ssh/config
+
+Click "Connect"
+
+Click "File > Open File / Folder"
+
+$HOME/.ssh/config will look like:
+
+```bash
+Host 35.198.238.211
+  HostName 35.198.238.211
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
+Probably better to rename the "Host", in case the IP Address changes...
+
+```bash
+Host nuttx-dashboard-vm
+  HostName 35.198.238.211
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
 # Sync.sh
+
+TODO
