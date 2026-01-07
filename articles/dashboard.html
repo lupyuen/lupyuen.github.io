@@ -76,7 +76,7 @@
 <li><a href="#set-the-github-token" title="Set the GitHub Token">9 Set the GitHub Token</a><ul></ul></li>
 <li><a href="#nuttx-mirror-repo" title="Nuttx Mirror Repo">10 Nuttx Mirror Repo</a><ul></ul></li>
 <li><a href="#ingest-github-logs" title="Ingest GitHub Logs">11 Ingest GitHub Logs</a><ul></ul></li>
-<li><a href="#start-nuttx-build" title="Start NuttX Build">12 Start NuttX Build</a><ul></ul></li>
+<li><a href="#start-the-build-for-nuttx-mirror-repo" title="Start the Build for NuttX Mirror Repo">12 Start the Build for NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#ingest-gitlab-logs" title="Ingest GitLab Logs">13 Ingest GitLab Logs</a><ul></ul></li>
 <li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">14 Cost of Google Cloud</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
@@ -427,9 +427,13 @@ sudo apt install unzip
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
 ./github.sh</code></pre></div>
-<p>TODO: github.sh log, check gh token</p>
+<p>Log for Ingest NuttX Builds: https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0</p>
+<p>Check Pushgateway http://35.198.238.211:9091</p>
+<p>Check Prometheus: Enter “build_score”, click Execute. http://35.198.238.211:9090</p>
+<p>Check Grafana http://35.198.238.211:3000/d/fe2bqg6uk7nr4a</p>
+<p>And Build History: http://35.198.238.211:3000/d/fe2q876wubc3kc</p>
 <p>TODO: Fix step:10 to ??? for Linux</p>
-<h1 id="start-nuttx-build"><a class="doc-anchor" href="#start-nuttx-build">§</a>12 Start NuttX Build</h1>
+<h1 id="start-the-build-for-nuttx-mirror-repo"><a class="doc-anchor" href="#start-the-build-for-nuttx-mirror-repo">§</a>12 Start the Build for NuttX Mirror Repo</h1>
 <p>Inside the VM:</p>
 <div class="example-wrap"><pre class="language-bash"><code></code></pre></div>
 <p>?gh CLI</p>
