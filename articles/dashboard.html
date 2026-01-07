@@ -74,7 +74,8 @@
 <li><a href="#ssh-key-for-vm-login" title="SSH Key for VM Login">7 SSH Key for VM Login</a><ul></ul></li>
 <li><a href="#ssh-key-for-github" title="SSH Key for GitHub">8 SSH Key for GitHub</a><ul></ul></li>
 <li><a href="#set-the-github-token" title="Set the GitHub Token">9 Set the GitHub Token</a><ul></ul></li>
-<li><a href="#syncsh" title="Sync.sh">10 Sync.sh</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#nuttx-mirror-repo" title="Nuttx Mirror Repo">10 Nuttx Mirror Repo</a><ul></ul></li>
+<li><a href="#syncsh" title="Sync.sh">11 Sync.sh</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>TODO</p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
@@ -382,7 +383,15 @@ export RUST_BACKTRACE=1</code></pre></div>
 ## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
 export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
-export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>10 Sync.sh</h1>
+export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="nuttx-mirror-repo"><a class="doc-anchor" href="#nuttx-mirror-repo">§</a>10 Nuttx Mirror Repo</h1>
+<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
+<p>NuttX Organisation Members: https://github.com/orgs/NuttX/people</p>
+<p>Click “Invite Member”</p>
+<p>Enter <code>nuttxpr</code></p>
+<p>Role In Organisation: Member</p>
+<p>Log in as <code>nuttxpr</code> to accept the invitation</p>
+<p>Check the people: https://github.com/orgs/NuttX/people</p>
+<h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>11 Sync.sh</h1>
 <p>TODO</p>
 
     
