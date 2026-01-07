@@ -567,6 +567,9 @@ nano $HOME/sync.sh
 ## Sync NuttX Mirror, Build NuttX Mirror and Ingest GitHub Actions Logs
 
 set -x  #  Echo commands
+. $HOME/github-token.sh
+gh auth status
+
 for (( ; ; )); do
   cd $HOME/nuttx-release
   ./sync-build-ingest.sh
@@ -686,6 +689,10 @@ tmpfs           412M     0  412M   0% /run/user/1000
 ```
 
 # Ingest GitLab Logs
+
+TODO
+
+# Reverse Proxy from Cloudflare CDN
 
 TODO
 
