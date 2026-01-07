@@ -424,6 +424,7 @@ popd
 
 ## Run github.sh
 sudo apt install unzip
+cd
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
 ./github.sh</code></pre></div>
@@ -434,8 +435,23 @@ cd ingest-nuttx-builds
 <p>And Build History: http://35.198.238.211:3000/d/fe2q876wubc3kc</p>
 <p>TODO: Fix step:10 to ??? for Linux</p>
 <h1 id="start-the-build-for-nuttx-mirror-repo"><a class="doc-anchor" href="#start-the-build-for-nuttx-mirror-repo">§</a>12 Start the Build for NuttX Mirror Repo</h1>
-<p>Inside the VM:</p>
-<div class="example-wrap"><pre class="language-bash"><code></code></pre></div>
+<p>Only one instance of sync-build-ingest.sh should ever be running! Make sure <code>lupyuen</code> isn’t running it on his Home Computer.</p>
+<p>Inside the VM: Run https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh</p>
+<div class="example-wrap"><pre class="language-bash"><code>. $HOME/github-token.sh
+gh auth status
+
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: &#39;read:org&#39;, &#39;repo&#39;
+
+## Run sync-build-ingest.sh
+cd
+git clone https://github.com/lupyuen/nuttx-release
+cd $HOME/nuttx-release
+./sync-build-ingest.sh</code></pre></div>
 <p>?gh CLI</p>
 <p>?Permission</p>
 <p>TODO</p>
