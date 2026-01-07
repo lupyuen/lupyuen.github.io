@@ -558,6 +558,129 @@ cd $HOME/nuttx-release
 
 TODO
 
+# Sync.sh
+
+nano $HOME/sync.sh
+
+```bash
+#!/usr/bin/env bash
+## Sync NuttX Mirror, Build NuttX Mirror and Ingest GitHub Actions Logs
+
+set -x  #  Echo commands
+for (( ; ; )); do
+  cd $HOME/nuttx-release
+  ./sync-build-ingest.sh
+
+  set +x ; echo "**** sync.sh: Waiting" ; set -x
+  date ; sleep 900
+done
+```
+
+Run $HOME/sync.sh
+
+```bash
+tmux
+$HOME/sync.sh
+```
+
+Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.
+
+If we see
+
+```bash
+fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
+warning: Clone succeeded, but checkout failed.
+```
+
+Increase the disk space. Need 5 GB for /tmp
+
+```bash
+## TODO: Out of space in /tmp
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  9.8G     0 100% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+
+## Before:
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  8.5G  1.4G  87% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+
+## Most of the disk space used by /tmp
+$ rm -rf /tmp/sync-build-ingest/
+```
+
+Resize the disk: https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh
+
+Click VM > Details > Storage > Boot Disk
+
+Click Menu > Edit at Top Right
+
+Increase the size from 10 GB to 20 GB. Click Save
+
+Inside the VM:
+
+```bash
+sudo apt install fdisk
+sudo fdisk -l
+
+## We should see
+## Device      Start      End  Sectors  Size Type
+## /dev/sda1  262144 20969471 20707328  9.9G Linux root (x86-64)
+## /dev/sda14   2048     8191     6144    3M BIOS boot
+## /dev/sda15   8192   262143   253952  124M EFI System
+
+## Let's expand /dev/sda to 20 GB
+sudo fdisk /dev/sda
+
+## Ignore the warning
+## Enter: w
+
+## Resize partition 1 (/dev/sda1), which maps to /
+sudo apt install cloud-guest-utils
+sudo growpart /dev/sda 1
+
+## We should see...
+## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
+
+## Resize the Filesystem
+sudo resize2fs /dev/sda1
+
+## We should see...
+## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
+## old_desc_blocks = 2, new_desc_blocks = 3
+## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
+
+## sda1 is bigger now
+$ sudo fdisk -l
+Device      Start      End  Sectors  Size Type
+/dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
+/dev/sda14   2048     8191     6144    3M BIOS boot
+/dev/sda15   8192   262143   253952  124M EFI System
+
+## More space in /tmp yay!
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        21G  8.5G   12G  43% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+```
+
 # Ingest GitLab Logs
 
 TODO
