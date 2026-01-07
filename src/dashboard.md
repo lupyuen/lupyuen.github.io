@@ -583,6 +583,8 @@ tmux
 $HOME/sync.sh
 ```
 
+TODO: Log
+
 Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.
 
 If we see
@@ -593,6 +595,8 @@ warning: Clone succeeded, but checkout failed.
 ```
 
 Increase the disk space. Need 5 GB for /tmp
+
+# Expand the VM Disk
 
 ```bash
 ## TODO: Out of space in /tmp
