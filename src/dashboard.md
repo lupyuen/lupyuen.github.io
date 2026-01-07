@@ -510,6 +510,7 @@ popd
 
 ## Run github.sh
 sudo apt install unzip
+cd
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
 ./github.sh
@@ -529,10 +530,26 @@ TODO: Fix step:10 to ??? for Linux
 
 # Start the Build for NuttX Mirror Repo
 
-Inside the VM:
+Only one instance of sync-build-ingest.sh should ever be running! Make sure `lupyuen` isn't running it on his Home Computer.
+
+Inside the VM: Run https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh
 
 ```bash
+. $HOME/github-token.sh
+gh auth status
 
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: 'read:org', 'repo'
+
+## Run sync-build-ingest.sh
+cd
+git clone https://github.com/lupyuen/nuttx-release
+cd $HOME/nuttx-release
+./sync-build-ingest.sh
 ```
 
 ?gh CLI
