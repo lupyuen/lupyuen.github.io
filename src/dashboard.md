@@ -461,6 +461,22 @@ export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log
 ```
 
+# Nuttx Mirror Repo
+
+`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
+
+NuttX Organisation Members: https://github.com/orgs/NuttX/people
+
+Click "Invite Member"
+
+Enter `nuttxpr`
+
+Role In Organisation: Member
+
+Log in as `nuttxpr` to accept the invitation
+
+Check the people: https://github.com/orgs/NuttX/people
+
 # Sync.sh
 
 TODO
