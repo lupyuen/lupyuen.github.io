@@ -477,6 +477,66 @@ Log in as `nuttxpr` to accept the invitation
 
 Check the people: https://github.com/orgs/NuttX/people
 
-# Sync.sh
+# Ingest GitHub Logs
+
+Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
+
+```bash
+## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
+(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+	&& out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+	&& cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+. $HOME/github-token.sh
+gh auth status
+
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: 'read:org', 'repo'
+
+## github.sh needs the NuttX defconfigs here (yeah we should fix the hardcoded "riscv")
+mkdir $HOME/riscv
+pushd $HOME/riscv
+git clone https://github.com/apache/nuttx
+popd
+
+## Run github.sh
+sudo apt install unzip
+git clone https://github.com/lupyuen/ingest-nuttx-builds
+cd ingest-nuttx-builds
+./github.sh
+```
+
+TODO: github.sh log, check gh token
+
+TODO: Fix step:10 to ??? for Linux
+
+# Start NuttX Build
+
+Inside the VM:
+
+```bash
+
+```
+
+?gh CLI
+
+?Permission
+
+TODO
+
+# Ingest GitLab Logs
+
+TODO
+
+# Cost of Google Cloud
 
 TODO
