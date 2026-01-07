@@ -78,8 +78,9 @@
 <li><a href="#ingest-github-logs" title="Ingest GitHub Logs">11 Ingest GitHub Logs</a><ul></ul></li>
 <li><a href="#start-the-build-for-nuttx-mirror-repo" title="Start the Build for NuttX Mirror Repo">12 Start the Build for NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#syncsh" title="Sync.sh">13 Sync.sh</a><ul></ul></li>
-<li><a href="#ingest-gitlab-logs" title="Ingest GitLab Logs">14 Ingest GitLab Logs</a><ul></ul></li>
-<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">15 Cost of Google Cloud</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#expand-the-vm-disk" title="Expand the VM Disk">14 Expand the VM Disk</a><ul></ul></li>
+<li><a href="#ingest-gitlab-logs" title="Ingest GitLab Logs">15 Ingest GitLab Logs</a><ul></ul></li>
+<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">16 Cost of Google Cloud</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>TODO</p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
@@ -472,12 +473,13 @@ done</code></pre></div>
 <p>Run $HOME/sync.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>tmux
 $HOME/sync.sh</code></pre></div>
+<p>TODO: Log</p>
 <p>Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo.</p>
 <p>If we see</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Increase the disk space. Need 5 GB for /tmp</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
+<h1 id="expand-the-vm-disk"><a class="doc-anchor" href="#expand-the-vm-disk">§</a>14 Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 udev            2.1G     0  2.1G   0% /dev
@@ -552,9 +554,9 @@ tmpfs           412M  574k  411M   1% /run
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="ingest-gitlab-logs"><a class="doc-anchor" href="#ingest-gitlab-logs">§</a>14 Ingest GitLab Logs</h1>
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="ingest-gitlab-logs"><a class="doc-anchor" href="#ingest-gitlab-logs">§</a>15 Ingest GitLab Logs</h1>
 <p>TODO</p>
-<h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>15 Cost of Google Cloud</h1>
+<h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>16 Cost of Google Cloud</h1>
 <p>TODO</p>
 
     
