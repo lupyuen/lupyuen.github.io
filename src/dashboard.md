@@ -515,11 +515,19 @@ cd ingest-nuttx-builds
 ./github.sh
 ```
 
-TODO: github.sh log, check gh token
+Log for Ingest NuttX Builds: https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0
+
+Check Pushgateway http://35.198.238.211:9091
+
+Check Prometheus: Enter "build_score", click Execute. http://35.198.238.211:9090
+
+Check Grafana http://35.198.238.211:3000/d/fe2bqg6uk7nr4a
+
+And Build History: http://35.198.238.211:3000/d/fe2q876wubc3kc
 
 TODO: Fix step:10 to ??? for Linux
 
-# Start NuttX Build
+# Start the Build for NuttX Mirror Repo
 
 Inside the VM:
 
