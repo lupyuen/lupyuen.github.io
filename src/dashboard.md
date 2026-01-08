@@ -545,6 +545,10 @@ gh auth status
 ## - Token: ghp_************************************
 ## - Token scopes: 'read:org', 'repo'
 
+## Configure the Git User
+git config --global user.email "nuttxpr@gmail.com"
+git config --global user.name "nuttxpr (nuttx-dashboard-vm)"
+
 ## Run sync-build-ingest.sh
 cd
 git clone https://github.com/lupyuen/nuttx-release
@@ -552,11 +556,22 @@ cd $HOME/nuttx-release
 ./sync-build-ingest.sh
 ```
 
-?gh CLI
+TODO: Log
 
-?Permission
+We should see the patch that starts the NuttX Build:
 
-TODO
+https://github.com/NuttX/nuttx/commits/master/
+
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
+
+If we see
+
+```bash
+fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
+warning: Clone succeeded, but checkout failed.
+```
+
+Increase the disk space. Need 5 GB for /tmp. See the section below.
 
 # Sync.sh
 
@@ -593,23 +608,6 @@ $HOME/sync.sh
 ```
 
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.)
-
-TODO: Log
-
-We should see the patch that starts the NuttX Build:
-
-https://github.com/NuttX/nuttx/commits/master/
-
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
-
-If we see
-
-```bash
-fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
-warning: Clone succeeded, but checkout failed.
-```
-
-Increase the disk space. Need 5 GB for /tmp. See the next section.
 
 # Expand the VM Disk
 
