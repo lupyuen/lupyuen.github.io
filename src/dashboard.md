@@ -586,12 +586,7 @@ warning: Clone succeeded, but checkout failed.
 
 Increase the disk space. Need 5 GB for /tmp. See the section below.
 
-# Sync.sh
-
-```bash
-$ git push -f
-ERROR: Permission to NuttX/nuttx.git denied to nuttxpr.
-```
+# Forever Build and Ingest
 
 nano $HOME/sync.sh
 
