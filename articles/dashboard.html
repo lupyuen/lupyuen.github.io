@@ -499,6 +499,7 @@ done</code></pre></div>
 chmod +x $HOME/sync.sh
 $HOME/sync.sh</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo.)</p>
+<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync.sh.</p>
 <h1 id="expand-the-vm-disk"><a class="doc-anchor" href="#expand-the-vm-disk">§</a>14 Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
