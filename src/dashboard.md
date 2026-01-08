@@ -6,6 +6,8 @@
 
 TODO
 
+Steps here will work for probably any Debian Bookworm machine.
+
 # Create Our Virtual Machine
 
 Create Project: nuttx-dashboard
