@@ -692,9 +692,13 @@ tmpfs           412M     0  412M   0% /run/user/1000
 
 TODO
 
-# Reverse Proxy from Cloudflare CDN
+# Publish Online with Cloudflare Tunnel
 
 TODO
+
+Create a Cloudflare Tunnel, pointing to http://localhost:3000
+
+Or use Cloudflare CDN.
 
 # Cost of Google Cloud
 
