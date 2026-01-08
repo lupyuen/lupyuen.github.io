@@ -597,7 +597,9 @@ fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on devic
 warning: Clone succeeded, but checkout failed.
 ```
 
-Increase the disk space. Need 5 GB for /tmp
+Increase the disk space. Need 5 GB for /tmp. See the next section.
+
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
 
 # Expand the VM Disk
 
