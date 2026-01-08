@@ -465,17 +465,17 @@ export GITLAB_REPO=nuttx-build-log
 
 `nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
 
-NuttX Organisation Members: https://github.com/orgs/NuttX/people
+NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access
 
-Click "Invite Member"
+Click "Add People"
 
 Enter `nuttxpr`
 
-Role In Organisation: Member
+Role: Write
 
 Log in as `nuttxpr` to accept the invitation
 
-Check the people: https://github.com/orgs/NuttX/people
+Check the collaborators: https://github.com/NuttX/nuttx/settings/access
 
 # Ingest GitHub Logs
 
@@ -560,6 +560,11 @@ TODO
 
 # Sync.sh
 
+```bash
+$ git push -f
+ERROR: Permission to NuttX/nuttx.git denied to nuttxpr.
+```
+
 nano $HOME/sync.sh
 
 ```bash
@@ -583,12 +588,19 @@ Run $HOME/sync.sh
 
 ```bash
 tmux
+chmod +x $HOME/sync.sh
 $HOME/sync.sh
 ```
 
+(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.)
+
 TODO: Log
 
-Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.
+We should see the patch that starts the NuttX Build:
+
+https://github.com/NuttX/nuttx/commits/master/
+
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
 
 If we see
 
@@ -598,8 +610,6 @@ warning: Clone succeeded, but checkout failed.
 ```
 
 Increase the disk space. Need 5 GB for /tmp. See the next section.
-
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
 
 # Expand the VM Disk
 
