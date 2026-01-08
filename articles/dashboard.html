@@ -450,14 +450,23 @@ gh auth status
 ## - Token: ghp_************************************
 ## - Token scopes: &#39;read:org&#39;, &#39;repo&#39;
 
+## Configure the Git User
+git config --global user.email &quot;nuttxpr@gmail.com&quot;
+git config --global user.name &quot;nuttxpr (nuttx-dashboard-vm)&quot;
+
 ## Run sync-build-ingest.sh
 cd
 git clone https://github.com/lupyuen/nuttx-release
 cd $HOME/nuttx-release
 ./sync-build-ingest.sh</code></pre></div>
-<p>?gh CLI</p>
-<p>?Permission</p>
-<p>TODO</p>
+<p>TODO: Log</p>
+<p>We should see the patch that starts the NuttX Build:</p>
+<p>https://github.com/NuttX/nuttx/commits/master/</p>
+<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”</p>
+<p>If we see</p>
+<div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
+warning: Clone succeeded, but checkout failed.</code></pre></div>
+<p>Increase the disk space. Need 5 GB for /tmp. See the section below.</p>
 <h1 id="syncsh"><a class="doc-anchor" href="#syncsh">§</a>13 Sync.sh</h1><div class="example-wrap"><pre class="language-bash"><code>$ git push -f
 ERROR: Permission to NuttX/nuttx.git denied to nuttxpr.</code></pre></div>
 <p>nano $HOME/sync.sh</p>
@@ -480,14 +489,6 @@ done</code></pre></div>
 chmod +x $HOME/sync.sh
 $HOME/sync.sh</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo.)</p>
-<p>TODO: Log</p>
-<p>We should see the patch that starts the NuttX Build:</p>
-<p>https://github.com/NuttX/nuttx/commits/master/</p>
-<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”</p>
-<p>If we see</p>
-<div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
-warning: Clone succeeded, but checkout failed.</code></pre></div>
-<p>Increase the disk space. Need 5 GB for /tmp. See the next section.</p>
 <h1 id="expand-the-vm-disk"><a class="doc-anchor" href="#expand-the-vm-disk">§</a>14 Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
