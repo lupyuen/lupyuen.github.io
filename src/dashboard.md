@@ -554,15 +554,26 @@ cd
 git clone https://github.com/lupyuen/nuttx-release
 cd $HOME/nuttx-release
 ./sync-build-ingest.sh
+
+## If we see: "**** ERROR: Expected Downstream Commit to be 'Enable macOS Builds' but found: ..."
+## Then run this instead:
+## ./enable-macos-windows.sh
+## ./sync-build-ingest.sh
 ```
 
-TODO: Log
+[sync-build-ingest.sh Log](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
+
+TODO: enable-macos-windows.sh Log
 
 We should see the patch that starts the NuttX Build:
 
 https://github.com/NuttX/nuttx/commits/master/
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit"
+And the NuttX Build should be running:
+
+https://github.com/NuttX/nuttx/actions/workflows/build.yml
+
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit". Then run enable-macos-windows.sh followed by sync-build-ingest.sh.
 
 If we see
 
