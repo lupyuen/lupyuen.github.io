@@ -458,11 +458,19 @@ git config --global user.name &quot;nuttxpr (nuttx-dashboard-vm)&quot;
 cd
 git clone https://github.com/lupyuen/nuttx-release
 cd $HOME/nuttx-release
-./sync-build-ingest.sh</code></pre></div>
-<p>TODO: Log</p>
+./sync-build-ingest.sh
+
+## If we see: &quot;**** ERROR: Expected Downstream Commit to be &#39;Enable macOS Builds&#39; but found: ...&quot;
+## Then run this instead:
+## ./enable-macos-windows.sh
+## ./sync-build-ingest.sh</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">sync-build-ingest.sh Log</a></p>
+<p>TODO: enable-macos-windows.sh Log</p>
 <p>We should see the patch that starts the NuttX Build:</p>
 <p>https://github.com/NuttX/nuttx/commits/master/</p>
-<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”</p>
+<p>And the NuttX Build should be running:</p>
+<p>https://github.com/NuttX/nuttx/actions/workflows/build.yml</p>
+<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync-build-ingest.sh.</p>
 <p>If we see</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
