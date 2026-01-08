@@ -382,6 +382,8 @@ Host nuttx-dashboard-vm
 
 # SSH Key for GitHub
 
+nuttxpr is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!
+
 Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 ```bash
@@ -561,9 +563,9 @@ cd $HOME/nuttx-release
 ## ./sync-build-ingest.sh
 ```
 
-[sync-build-ingest.sh Log](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
+TODO: sync-build-ingest.sh Log
 
-TODO: enable-macos-windows.sh Log
+[enable-macos-windows.sh Log](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
 
 We should see the patch that starts the NuttX Build:
 
