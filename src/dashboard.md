@@ -625,6 +625,8 @@ In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, clic
 
 # Ingest the GitHub Gists and GitLab Snippets
 
+Remember to set GitLab Token
+
 ```bash
 tmux
 cd $HOME/ingest-nuttx-builds
@@ -633,7 +635,7 @@ cd $HOME/ingest-nuttx-builds
 
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
 
-TODO: Log
+[Log for Ingest GitHub Gists and GitLab Snippets](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
 # Expand the VM Disk
 
