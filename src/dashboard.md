@@ -6,7 +6,9 @@
 
 TODO
 
-Steps here will work for probably any Debian Bookworm machine.
+_What if we prefer another cloud? Or our own machine?_
+
+The steps below will work for any Debian Bookworm machine.
 
 # Create Our Virtual Machine
 
@@ -565,7 +567,7 @@ cd $HOME/nuttx-release
 ## ./sync-build-ingest.sh
 ```
 
-TODO: sync-build-ingest.sh Log
+[sync-build-ingest.sh Log](https://gist.github.com/lupyuen/c9dd83842ab9b845eadedb968bd63bc1)
 
 [enable-macos-windows.sh Log](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
 
