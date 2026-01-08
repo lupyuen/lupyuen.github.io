@@ -621,6 +621,8 @@ $HOME/sync.sh
 
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo.)
 
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit". Then run enable-macos-windows.sh followed by sync.sh.
+
 # Expand the VM Disk
 
 ```bash
