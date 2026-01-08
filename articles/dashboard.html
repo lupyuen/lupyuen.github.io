@@ -501,11 +501,13 @@ chmod +x $HOME/sync.sh
 $HOME/sync.sh</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo)</p>
 <p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync.sh.</p>
-<h1 id="ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#ingest-the-github-gists-and-gitlab-snippets">§</a>14 Ingest the GitHub Gists and GitLab Snippets</h1><div class="example-wrap"><pre class="language-bash"><code>tmux
+<h1 id="ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#ingest-the-github-gists-and-gitlab-snippets">§</a>14 Ingest the GitHub Gists and GitLab Snippets</h1>
+<p>Remember to set GitLab Token</p>
+<div class="example-wrap"><pre class="language-bash"><code>tmux
 cd $HOME/ingest-nuttx-builds
 ./run.sh</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
-<p>TODO: Log</p>
+<p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">Log for Ingest GitHub Gists and GitLab Snippets</a></p>
 <h1 id="expand-the-vm-disk"><a class="doc-anchor" href="#expand-the-vm-disk">§</a>15 Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
