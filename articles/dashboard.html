@@ -343,6 +343,7 @@ ssh \
   HostName 35.198.238.211
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div><h1 id="ssh-key-for-github"><a class="doc-anchor" href="#ssh-key-for-github">§</a>8 SSH Key for GitHub</h1>
+<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
 <p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
   -t ed25519 \
@@ -464,8 +465,8 @@ cd $HOME/nuttx-release
 ## Then run this instead:
 ## ./enable-macos-windows.sh
 ## ./sync-build-ingest.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">sync-build-ingest.sh Log</a></p>
-<p>TODO: enable-macos-windows.sh Log</p>
+<p>TODO: sync-build-ingest.sh Log</p>
+<p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">enable-macos-windows.sh Log</a></p>
 <p>We should see the patch that starts the NuttX Build:</p>
 <p>https://github.com/NuttX/nuttx/commits/master/</p>
 <p>And the NuttX Build should be running:</p>
