@@ -80,9 +80,10 @@
 <li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">13 Forever Build and Ingest</a><ul></ul></li>
 <li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">14 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
 <li><a href="#expand-the-vm-disk" title="Expand the VM Disk">15 Expand the VM Disk</a><ul></ul></li>
-<li><a href="#configure-our-grafana-dashboard" title="Configure Our Grafana Dashboard">16 Configure Our Grafana Dashboard</a><ul></ul></li>
+<li><a href="#configure-our-grafana-server" title="Configure Our Grafana Server">16 Configure Our Grafana Server</a><ul></ul></li>
 <li><a href="#publish-online-with-cloudflare-tunnel" title="Publish Online with Cloudflare Tunnel">17 Publish Online with Cloudflare Tunnel</a><ul></ul></li>
-<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">18 Cost of Google Cloud</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">18 Cost of Google Cloud</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>TODO</p>
 <p><em>What if we prefer another cloud? Or our own machine?</em></p>
@@ -299,6 +300,11 @@ sudo systemctl restart prometheus</code></pre></div>
 <p>(Get the UID from the Dashboard JSON before overwriting it)</p>
 <p>Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json</p>
 <p>Remember to change ALL references to Prometheus UID. (See above)</p>
+<p>Set permission:</p>
+<ul>
+<li>Settings &gt; Permission &gt; Role Viewer &gt; View</li>
+<li>Same for Build History Dashboard</li>
+</ul>
 <h1 id="ssh-key-for-vm-login"><a class="doc-anchor" href="#ssh-key-for-vm-login">§</a>7 SSH Key for VM Login</h1>
 <p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
@@ -593,31 +599,37 @@ tmpfs           412M  574k  411M   1% /run
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="configure-our-grafana-dashboard"><a class="doc-anchor" href="#configure-our-grafana-dashboard">§</a>16 Configure Our Grafana Dashboard</h1>
-<p>Edit /etc/prometheus/prometheus.yml (Ubuntu)</p>
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>16 Configure Our Grafana Server</h1>
+<p>Edit /etc/grafana/grafana.ini</p>
 <p>Look for these settings and edit them (don’t add them)…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Log web requests
+# Default: router_logging = false
 router_logging = true
 
 # enable gzip
+# Default: enable_gzip = false
 enable_gzip = true
 
 # This enables data proxy logging, default is false
 logging = true
 
 # Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
+# Default: default_theme = dark
 default_theme = light
 
 # Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+# Default: home_page =
 home_page = /d/fe2bqg6uk7nr4a
 
 # Disable usage of Grafana build-in login solution.
+# Default: disable_login = false
 disable_login = true
 
 # Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
 disable_login_form = true
 
 # enable anonymous access
+# Default: enabled = false
 enabled = true
 
 # specify organization name that should be used for unauthenticated users
@@ -627,13 +639,20 @@ org_name = Main Org.
 org_role = Viewer
 
 # mask the Grafana version number for unauthenticated users
+# Default: hide_version = false
 hide_version = true</code></pre></div>
+<p>TODO: Grafana.ini</p>
 <p>Restart grafana</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo systemctl restart grafana-server</code></pre></div><h1 id="publish-online-with-cloudflare-tunnel"><a class="doc-anchor" href="#publish-online-with-cloudflare-tunnel">§</a>17 Publish Online with Cloudflare Tunnel</h1>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
 <p>Or use Cloudflare CDN.</p>
 <h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>18 Cost of Google Cloud</h1>
+<p>TODO</p>
+<p>_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _</p>
+<p>Hmmm interesting… We should try out!</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
+<p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
 <p>TODO</p>
 
     
