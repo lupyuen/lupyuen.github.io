@@ -794,6 +794,29 @@ Create a Cloudflare Tunnel, pointing to http://localhost:3000
 
 Or use Cloudflare CDN.
 
+VM Instances > Set Up Firewall Rules
+
+Firewall Policies > Create Firewall Rule
+
+allow-tcp-80
+
+Targets: All instances in the network
+
+IPv4 Ranges: 0.0.0.0/0
+
+Protocol and Ports: TCP 80
+
+Click "Create"
+
+http://35.198.238.211
+
+VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
+
+```bash
+$ grep duration /var/log/syslog
+2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg="Request Completed" method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error="token needs to be rotated"
+```
+
 # Cost of Google Cloud
 
 TODO
