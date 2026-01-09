@@ -748,17 +748,6 @@ Edit /etc/grafana/grafana.ini
 Look for these settings and edit them (don't add them)...
 
 ```bash
-# Log web requests
-# Default: router_logging = false
-router_logging = true
-
-# enable gzip
-# Default: enable_gzip = false
-enable_gzip = true
-
-# This enables data proxy logging, default is false
-logging = true
-
 # Default UI theme ("dark", "light" or "system")
 # Default: default_theme = dark
 default_theme = light
