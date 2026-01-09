@@ -467,7 +467,7 @@ export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log
 ```
 
-# Nuttx Mirror Repo
+# NuttX Mirror Repo
 
 `nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
 
@@ -729,9 +729,52 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 tmpfs           412M     0  412M   0% /run/user/1000
 ```
 
-# Ingest GitLab Logs
+# Configure Our Grafana Dashboard
 
-TODO
+Edit /etc/prometheus/prometheus.yml (Ubuntu)
+
+Look for these settings and edit them (don't add them)...
+
+```bash
+# Log web requests
+router_logging = true
+
+# enable gzip
+enable_gzip = true
+
+# This enables data proxy logging, default is false
+logging = true
+
+# Default UI theme ("dark", "light" or "system")
+default_theme = light
+
+# Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+home_page = /d/fe2bqg6uk7nr4a
+
+# Disable usage of Grafana build-in login solution.
+disable_login = true
+
+# Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
+disable_login_form = true
+
+# enable anonymous access
+enabled = true
+
+# specify organization name that should be used for unauthenticated users
+org_name = Main Org.
+
+# specify role for unauthenticated users
+org_role = Viewer
+
+# mask the Grafana version number for unauthenticated users
+hide_version = true
+```
+
+Restart grafana
+
+```bash
+sudo systemctl restart grafana-server
+```
 
 # Publish Online with Cloudflare Tunnel
 
