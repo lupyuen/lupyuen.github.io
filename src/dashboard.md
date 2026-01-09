@@ -618,6 +618,10 @@ sudo apt install tmux
 tmux
 chmod +x $HOME/sync.sh
 $HOME/sync.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the sync.sh session...
+## tmux a
 ```
 
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo)
@@ -634,6 +638,10 @@ Remember to set GitLab Token
 tmux
 cd $HOME/ingest-nuttx-builds
 ./run.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the run.sh session...
+## tmux a
 ```
 
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
