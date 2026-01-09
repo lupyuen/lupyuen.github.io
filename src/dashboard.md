@@ -614,6 +614,7 @@ done
 Run $HOME/sync.sh
 
 ```bash
+sudo apt install tmux
 tmux
 chmod +x $HOME/sync.sh
 $HOME/sync.sh
