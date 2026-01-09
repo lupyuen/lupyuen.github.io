@@ -74,13 +74,13 @@
 <li><a href="#ssh-key-for-vm-login" title="SSH Key for VM Login">7 SSH Key for VM Login</a><ul></ul></li>
 <li><a href="#ssh-key-for-github" title="SSH Key for GitHub">8 SSH Key for GitHub</a><ul></ul></li>
 <li><a href="#set-the-github-token" title="Set the GitHub Token">9 Set the GitHub Token</a><ul></ul></li>
-<li><a href="#nuttx-mirror-repo" title="Nuttx Mirror Repo">10 Nuttx Mirror Repo</a><ul></ul></li>
+<li><a href="#nuttx-mirror-repo" title="NuttX Mirror Repo">10 NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#ingest-github-logs" title="Ingest GitHub Logs">11 Ingest GitHub Logs</a><ul></ul></li>
 <li><a href="#start-the-build-for-nuttx-mirror-repo" title="Start the Build for NuttX Mirror Repo">12 Start the Build for NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">13 Forever Build and Ingest</a><ul></ul></li>
 <li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">14 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
 <li><a href="#expand-the-vm-disk" title="Expand the VM Disk">15 Expand the VM Disk</a><ul></ul></li>
-<li><a href="#ingest-gitlab-logs" title="Ingest GitLab Logs">16 Ingest GitLab Logs</a><ul></ul></li>
+<li><a href="#configure-our-grafana-dashboard" title="Configure Our Grafana Dashboard">16 Configure Our Grafana Dashboard</a><ul></ul></li>
 <li><a href="#publish-online-with-cloudflare-tunnel" title="Publish Online with Cloudflare Tunnel">17 Publish Online with Cloudflare Tunnel</a><ul></ul></li>
 <li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">18 Cost of Google Cloud</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
@@ -393,7 +393,7 @@ export RUST_BACKTRACE=1</code></pre></div>
 ## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
 export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
-export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="nuttx-mirror-repo"><a class="doc-anchor" href="#nuttx-mirror-repo">§</a>10 Nuttx Mirror Repo</h1>
+export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="nuttx-mirror-repo"><a class="doc-anchor" href="#nuttx-mirror-repo">§</a>10 NuttX Mirror Repo</h1>
 <p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
 <p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
 <p>Click “Add People”</p>
@@ -585,9 +585,43 @@ tmpfs           412M  574k  411M   1% /run
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="ingest-gitlab-logs"><a class="doc-anchor" href="#ingest-gitlab-logs">§</a>16 Ingest GitLab Logs</h1>
-<p>TODO</p>
-<h1 id="publish-online-with-cloudflare-tunnel"><a class="doc-anchor" href="#publish-online-with-cloudflare-tunnel">§</a>17 Publish Online with Cloudflare Tunnel</h1>
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="configure-our-grafana-dashboard"><a class="doc-anchor" href="#configure-our-grafana-dashboard">§</a>16 Configure Our Grafana Dashboard</h1>
+<p>Edit /etc/prometheus/prometheus.yml (Ubuntu)</p>
+<p>Look for these settings and edit them (don’t add them)…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Log web requests
+router_logging = true
+
+# enable gzip
+enable_gzip = true
+
+# This enables data proxy logging, default is false
+logging = true
+
+# Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
+default_theme = light
+
+# Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+home_page = /d/fe2bqg6uk7nr4a
+
+# Disable usage of Grafana build-in login solution.
+disable_login = true
+
+# Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
+disable_login_form = true
+
+# enable anonymous access
+enabled = true
+
+# specify organization name that should be used for unauthenticated users
+org_name = Main Org.
+
+# specify role for unauthenticated users
+org_role = Viewer
+
+# mask the Grafana version number for unauthenticated users
+hide_version = true</code></pre></div>
+<p>Restart grafana</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo systemctl restart grafana-server</code></pre></div><h1 id="publish-online-with-cloudflare-tunnel"><a class="doc-anchor" href="#publish-online-with-cloudflare-tunnel">§</a>17 Publish Online with Cloudflare Tunnel</h1>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
 <p>Or use Cloudflare CDN.</p>
