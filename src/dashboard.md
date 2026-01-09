@@ -792,6 +792,8 @@ TODO
 
 Create a Cloudflare Tunnel, pointing to http://localhost:3000
 
+Cache URI Path > Wildcard > Value = /public/*
+
 Or use Cloudflare CDN.
 
 ```bash
