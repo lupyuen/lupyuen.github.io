@@ -789,7 +789,7 @@ org_role = Viewer
 hide_version = true
 ```
 
-TODO: Grafana.ini
+[grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana2.ini)
 
 Restart grafana
 
