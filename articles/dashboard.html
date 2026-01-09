@@ -602,18 +602,7 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>16 Configure Our Grafana Server</h1>
 <p>Edit /etc/grafana/grafana.ini</p>
 <p>Look for these settings and edit them (don’t add them)…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Log web requests
-# Default: router_logging = false
-router_logging = true
-
-# enable gzip
-# Default: enable_gzip = false
-enable_gzip = true
-
-# This enables data proxy logging, default is false
-logging = true
-
-# Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
+<div class="example-wrap"><pre class="language-bash"><code># Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
 # Default: default_theme = dark
 default_theme = light
 
