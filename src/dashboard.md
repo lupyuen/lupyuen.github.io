@@ -304,6 +304,10 @@ Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-
 
 Remember to change ALL references to Prometheus UID. (See above)
 
+Set permission: 
+- Settings > Permission > Role Viewer > View
+- Same for Build History Dashboard
+
 # SSH Key for VM Login
 
 Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
@@ -737,35 +741,41 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 tmpfs           412M     0  412M   0% /run/user/1000
 ```
 
-# Configure Our Grafana Dashboard
+# Configure Our Grafana Server
 
-Edit /etc/prometheus/prometheus.yml (Ubuntu)
+Edit /etc/grafana/grafana.ini
 
 Look for these settings and edit them (don't add them)...
 
 ```bash
 # Log web requests
+# Default: router_logging = false
 router_logging = true
 
 # enable gzip
+# Default: enable_gzip = false
 enable_gzip = true
 
 # This enables data proxy logging, default is false
 logging = true
 
 # Default UI theme ("dark", "light" or "system")
+# Default: default_theme = dark
 default_theme = light
 
 # Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+# Default: home_page =
 home_page = /d/fe2bqg6uk7nr4a
 
 # Disable usage of Grafana build-in login solution.
+# Default: disable_login = false
 disable_login = true
 
 # Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
 disable_login_form = true
 
 # enable anonymous access
+# Default: enabled = false
 enabled = true
 
 # specify organization name that should be used for unauthenticated users
@@ -775,8 +785,11 @@ org_name = Main Org.
 org_role = Viewer
 
 # mask the Grafana version number for unauthenticated users
+# Default: hide_version = false
 hide_version = true
 ```
+
+TODO: Grafana.ini
 
 Restart grafana
 
@@ -793,5 +806,15 @@ Create a Cloudflare Tunnel, pointing to http://localhost:3000
 Or use Cloudflare CDN.
 
 # Cost of Google Cloud
+
+TODO
+
+_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _
+
+Hmmm interesting... We should try out! 
+
+# What's Next
+
+Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for Twincity Marathon!
 
 TODO
