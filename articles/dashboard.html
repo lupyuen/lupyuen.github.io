@@ -496,7 +496,8 @@ for (( ; ; )); do
   date ; sleep 900
 done</code></pre></div>
 <p>Run $HOME/sync.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>tmux
+<div class="example-wrap"><pre class="language-bash"><code>sudo apt install tmux
+tmux
 chmod +x $HOME/sync.sh
 $HOME/sync.sh</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo)</p>
