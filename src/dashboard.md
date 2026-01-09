@@ -794,23 +794,22 @@ Create a Cloudflare Tunnel, pointing to http://localhost:3000
 
 Or use Cloudflare CDN.
 
-VM Instances > Set Up Firewall Rules
+```bash
+## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+sudo iptables -t nat -L -n -v
 
-Firewall Policies > Create Firewall Rule
+Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
 
-allow-tcp-80
-
-Targets: All instances in the network
-
-IPv4 Ranges: 0.0.0.0/0
-
-Protocol and Ports: TCP 80
-
-Click "Create"
-
-http://35.198.238.211
+## To delete the rule:
+## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
 
 VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
+
+Check http://35.198.238.211
 
 ```bash
 $ grep duration /var/log/syslog
