@@ -826,6 +826,10 @@ _Will it be cheaper to run on an Asian Cloud? Like AliCloud? _
 
 Hmmm interesting... We should try out! 
 
+_Running the Build Farm on Google Cloud?_
+
+Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
+
 # What's Next
 
 Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for Twincity Marathon!
