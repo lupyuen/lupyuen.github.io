@@ -794,7 +794,7 @@ Create a Cloudflare Tunnel, pointing to http://localhost:3000
 
 Cache URI Path > Wildcard > Value = /public/*
 
-Or use Cloudflare CDN.
+Or use Cloudflare CDN. (Should get Static IP Address for our VM)
 
 ```bash
 ## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
