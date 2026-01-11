@@ -822,6 +822,8 @@ $ grep duration /var/log/syslog
 
 TODO
 
+No budget. Will pay out of our pocket.
+
 _Will it be cheaper to run on an Asian Cloud? Like AliCloud? _
 
 Hmmm interesting... We should try out! 
