@@ -575,6 +575,26 @@ Check the collaborators: https://github.com/NuttX/nuttx/settings/access
 
 ![TODO](https://lupyuen.org/images/dashboard-github6.png)
 
+![TODO](https://lupyuen.org/images/dashboard-github7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github8.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github9.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github10.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github11.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github12.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github13.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github14.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github15.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github16.png)
+
 # Ingest GitHub Logs
 
 Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
