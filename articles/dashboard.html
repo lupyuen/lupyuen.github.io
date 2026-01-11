@@ -636,7 +636,7 @@ hide_version = true</code></pre></div>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
 <p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
-<p>Or use Cloudflare CDN.</p>
+<p>Or use Cloudflare CDN. (Should get Static IP Address for our VM)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 sudo iptables -t nat -L -n -v
