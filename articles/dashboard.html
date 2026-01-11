@@ -142,7 +142,7 @@ sudo /bin/systemctl start grafana-server
 $ netstat -an | grep LISTEN
 tcp6       0      0 :::3000                 :::*                    LISTEN     </code></pre></div>
 <p>VM Instances &gt; External IP
-35.198.238.211</p>
+x.x.x.x</p>
 <p>VM Instances &gt; Set Up Firewall Rules</p>
 <p>Firewall Policies &gt; Create Firewall Rule</p>
 <p>allow-tcp-3000</p>
@@ -150,7 +150,7 @@ tcp6       0      0 :::3000                 :::*                    LISTEN     <
 <p>IPv4 Ranges: 0.0.0.0/0</p>
 <p>Protocol and Ports: TCP 3000</p>
 <p>Click “Create”</p>
-<p>http://35.198.238.211:3000</p>
+<p>http://x.x.x.x:3000</p>
 <p>Username: admin
 Password: admin
 Set the new password</p>
@@ -185,7 +185,7 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p>IPv4 Ranges: 0.0.0.0/0</p>
 <p>Protocol and Ports: TCP 9090</p>
 <p>Click “Create”</p>
-<p>http://35.198.238.211:9090</p>
+<p>http://x.x.x.x:9090</p>
 <p>The main configuration file is located at /etc/prometheus/prometheus.yml</p>
 <h1 id="install-pushgateway"><a class="doc-anchor" href="#install-pushgateway">§</a>4 Install Pushgateway</h1>
 <p>https://devopscube.com/setup-prometheus-pushgateway-vm/</p>
@@ -238,7 +238,7 @@ curl localhost:9091/metrics
 <p>IPv4 Ranges: 0.0.0.0/0</p>
 <p>Protocol and Ports: TCP 9091</p>
 <p>Click “Create”</p>
-<p>http://35.198.238.211:9091</p>
+<p>http://x.x.x.x:9091</p>
 <h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1><div class="example-wrap"><pre class="language-bash"><code>pushd /tmp
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/defconfig.txt
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/ci-xtensa-02.log
@@ -276,13 +276,13 @@ cargo run \
 ## # HELP build_score 1.0 for successful build, 0.0 for failed build
 ## build_score{ version=&quot;3&quot;, timestamp=&quot;2026-01-05T08:39:57&quot;, timestamp_log=&quot;2026-01-05T08:39:57&quot;, user=&quot;NuttX&quot;, arch=&quot;xtensa&quot;, subarch=&quot;esp32s3&quot;, group=&quot;xtensa-02&quot;, board=&quot;esp32s3-devkit&quot;, config=&quot;spi&quot;, target=&quot;esp32s3-devkit:spi&quot;, url=&quot;https://github.com/NuttX/nuttx/actions/runs/20706016275/job/59436813170#step:10:2455&quot;, url_display=&quot;&quot;, nuttx_hash=&quot;59f200ac4fe6c940dc0eab2155bb3cb566724082&quot;, apps_hash=&quot;4f93ec0a4335d574eeecfd295584fbfb17056e5b&quot; } 1
 ## res=Response { url: &quot;http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi&quot;, status: 200, headers: {&quot;date&quot;: &quot;Mon, 05 Jan 2026 10:10:52 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} }</code></pre></div>
-<p>Check http://35.198.238.211:9091</p>
+<p>Check http://x.x.x.x:9091</p>
 <p>TODO: Connect prometheus to pushgateway</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo nano /etc/prometheus/prometheus.yml
 ## Erase everything in the file. Replace by contents of
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
 sudo systemctl restart prometheus</code></pre></div>
-<p>Check http://35.198.238.211:9090</p>
+<p>Check http://x.x.x.x:9090</p>
 <p>Enter the query “build_score”</p>
 <p>Press Execute</p>
 <h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1>
@@ -336,20 +336,20 @@ gcloud version
 ## Change &quot;luppy&quot; to your VM Username
 ssh \
   -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@35.198.238.211</code></pre></div>
+  luppy@x.x.x.x</code></pre></div>
 <p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@35.198.238.211 </code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
 <p>Select the SSH Config file $HOME/.ssh/config</p>
 <p>Click “Connect”</p>
 <p>Click “File &gt; Open File / Folder”</p>
 <p>$HOME/.ssh/config will look like:</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host 35.198.238.211
-  HostName 35.198.238.211
+<div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
+  HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div>
 <p>Probably better to rename the “Host”, in case the IP Address changes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>Host nuttx-dashboard-vm
-  HostName 35.198.238.211
+  HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div><h1 id="ssh-key-for-github"><a class="doc-anchor" href="#ssh-key-for-github">§</a>8 SSH Key for GitHub</h1>
 <p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
@@ -442,10 +442,10 @@ git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
 ./github.sh</code></pre></div>
 <p>Log for Ingest NuttX Builds: https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0</p>
-<p>Check Pushgateway http://35.198.238.211:9091</p>
-<p>Check Prometheus: Enter “build_score”, click Execute. http://35.198.238.211:9090</p>
-<p>Check Grafana http://35.198.238.211:3000/d/fe2bqg6uk7nr4a</p>
-<p>And Build History: http://35.198.238.211:3000/d/fe2q876wubc3kc</p>
+<p>Check Pushgateway http://x.x.x.x:9091</p>
+<p>Check Prometheus: Enter “build_score”, click Execute. http://x.x.x.x:9090</p>
+<p>Check Grafana http://x.x.x.x:3000/d/fe2bqg6uk7nr4a</p>
+<p>And Build History: http://x.x.x.x:3000/d/fe2q876wubc3kc</p>
 <p>TODO: Fix step:10 to ??? for Linux</p>
 <h1 id="start-the-build-for-nuttx-mirror-repo"><a class="doc-anchor" href="#start-the-build-for-nuttx-mirror-repo">§</a>12 Start the Build for NuttX Mirror Repo</h1>
 <p>Only one instance of sync-build-ingest.sh should ever be running! Make sure <code>lupyuen</code> isn’t running it on his Home Computer.</p>
@@ -648,7 +648,7 @@ Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
 ## To delete the rule:
 ## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000</code></pre></div>
 <p>VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic</p>
-<p>Check http://35.198.238.211</p>
+<p>Check http://x.x.x.x</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ grep duration /var/log/syslog
 2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg=&quot;Request Completed&quot; method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error=&quot;token needs to be rotated&quot;</code></pre></div><h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>18 Cost of Google Cloud</h1>
 <p>TODO</p>
