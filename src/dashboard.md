@@ -563,6 +563,18 @@ Log in as `nuttxpr` to accept the invitation
 
 Check the collaborators: https://github.com/NuttX/nuttx/settings/access
 
+![TODO](https://lupyuen.org/images/dashboard-github1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github6.png)
+
 # Ingest GitHub Logs
 
 Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
@@ -613,6 +625,14 @@ Check Grafana http://x.x.x.x:3000/d/fe2bqg6uk7nr4a
 And Build History: http://x.x.x.x:3000/d/fe2q876wubc3kc
 
 TODO: Fix step:10 to ??? for Linux
+
+![TODO](https://lupyuen.org/images/dashboard-ingest1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ingest2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ingest3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ingest4.png)
 
 # Start the Build for NuttX Mirror Repo
 
