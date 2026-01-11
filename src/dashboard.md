@@ -45,6 +45,20 @@ sudo apt update
 sudo apt upgrade
 ```
 
+![TODO](https://lupyuen.org/images/dashboard-vm1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-vm7.png)
+
 # Install Grafana
 
 Install the latest version of Grafana OSS
