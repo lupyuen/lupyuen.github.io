@@ -360,6 +360,14 @@ Set permission:
 - Settings > Permission > Role Viewer > View
 - Same for Build History Dashboard
 
+![TODO](https://lupyuen.org/images/dashboard-json1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-json2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-json3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-json4.png)
+
 # SSH Key for VM Login
 
 Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
@@ -439,6 +447,22 @@ Host nuttx-dashboard-vm
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy
 ```
+
+![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
 
 # SSH Key for GitHub
 
