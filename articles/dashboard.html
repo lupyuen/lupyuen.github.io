@@ -649,7 +649,11 @@ tmpfs           412M  574k  411M   1% /run
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div><h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>16 Configure Our Grafana Server</h1>
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div>
+<p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
+<h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>16 Configure Our Grafana Server</h1>
 <p>Edit /etc/grafana/grafana.ini</p>
 <p>Look for these settings and edit them (don’t add them)…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
@@ -686,6 +690,9 @@ hide_version = true</code></pre></div>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
 <p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="TODO" /></p>
 <p>Or use Cloudflare CDN. (Should get Static IP Address for our VM)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
