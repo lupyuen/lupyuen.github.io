@@ -837,6 +837,12 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 tmpfs           412M     0  412M   0% /run/user/1000
 ```
 
+![TODO](https://lupyuen.org/images/dashboard-disk1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-disk2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-disk3.png)
+
 # Configure Our Grafana Server
 
 Edit /etc/grafana/grafana.ini
@@ -889,6 +895,12 @@ TODO
 Create a Cloudflare Tunnel, pointing to http://localhost:3000
 
 Cache URI Path > Wildcard > Value = /public/*
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
 
 Or use Cloudflare CDN. (Should get Static IP Address for our VM)
 
