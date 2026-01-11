@@ -84,7 +84,7 @@ tcp6       0      0 :::3000                 :::*                    LISTEN
 ```
 
 VM Instances > External IP
-35.198.238.211
+x.x.x.x
 
 VM Instances > Set Up Firewall Rules
 
@@ -100,7 +100,7 @@ Protocol and Ports: TCP 3000
 
 Click "Create"
 
-http://35.198.238.211:3000
+http://x.x.x.x:3000
 
 Username: admin
 Password: admin
@@ -149,7 +149,7 @@ Protocol and Ports: TCP 9090
 
 Click "Create"
 
-http://35.198.238.211:9090
+http://x.x.x.x:9090
 
 The main configuration file is located at /etc/prometheus/prometheus.yml
 
@@ -216,7 +216,7 @@ Protocol and Ports: TCP 9091
 
 Click "Create"
 
-http://35.198.238.211:9091
+http://x.x.x.x:9091
 
 # Ingest a Sample NuttX Log
 
@@ -260,7 +260,7 @@ cargo run \
 ## res=Response { url: "http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi", status: 200, headers: {"date": "Mon, 05 Jan 2026 10:10:52 GMT", "content-length": "0"} }
 ```
 
-Check http://35.198.238.211:9091
+Check http://x.x.x.x:9091
 
 TODO: Connect prometheus to pushgateway
 
@@ -271,7 +271,7 @@ sudo nano /etc/prometheus/prometheus.yml
 sudo systemctl restart prometheus
 ```
 
-Check http://35.198.238.211:9090
+Check http://x.x.x.x:9090
 
 Enter the query "build_score"
 
@@ -355,13 +355,13 @@ Click "Save"
 ## Change "luppy" to your VM Username
 ssh \
   -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@35.198.238.211
+  luppy@x.x.x.x
 ```
 
 In VSCode: Click "Remote Explorer > SSH > +"
 
 ```bash
-ssh -i ~/.ssh/nuttx-dashboard-vm luppy@35.198.238.211 
+ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
 ```
 
 Select the SSH Config file $HOME/.ssh/config
@@ -373,8 +373,8 @@ Click "File > Open File / Folder"
 $HOME/.ssh/config will look like:
 
 ```bash
-Host 35.198.238.211
-  HostName 35.198.238.211
+Host x.x.x.x
+  HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy
 ```
@@ -383,7 +383,7 @@ Probably better to rename the "Host", in case the IP Address changes...
 
 ```bash
 Host nuttx-dashboard-vm
-  HostName 35.198.238.211
+  HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy
 ```
@@ -528,13 +528,13 @@ cd ingest-nuttx-builds
 
 Log for Ingest NuttX Builds: https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0
 
-Check Pushgateway http://35.198.238.211:9091
+Check Pushgateway http://x.x.x.x:9091
 
-Check Prometheus: Enter "build_score", click Execute. http://35.198.238.211:9090
+Check Prometheus: Enter "build_score", click Execute. http://x.x.x.x:9090
 
-Check Grafana http://35.198.238.211:3000/d/fe2bqg6uk7nr4a
+Check Grafana http://x.x.x.x:3000/d/fe2bqg6uk7nr4a
 
-And Build History: http://35.198.238.211:3000/d/fe2q876wubc3kc
+And Build History: http://x.x.x.x:3000/d/fe2q876wubc3kc
 
 TODO: Fix step:10 to ??? for Linux
 
@@ -811,7 +811,7 @@ Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
 
 VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
 
-Check http://35.198.238.211
+Check http://x.x.x.x
 
 ```bash
 $ grep duration /var/log/syslog
