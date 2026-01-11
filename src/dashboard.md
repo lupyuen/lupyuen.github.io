@@ -120,6 +120,24 @@ Username: admin
 Password: admin
 Set the new password
 
+![TODO](https://lupyuen.org/images/dashboard-grafana1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana8.png)
+
+![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
+
 # Install Prometheus
 
 ```bash
