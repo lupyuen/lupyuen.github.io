@@ -185,6 +185,20 @@ http://x.x.x.x:9090
 
 The main configuration file is located at /etc/prometheus/prometheus.yml
 
+![TODO](https://lupyuen.org/images/dashboard-prometheus1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-prometheus7.png)
+
 # Install Pushgateway
 
 https://devopscube.com/setup-prometheus-pushgateway-vm/
@@ -249,6 +263,12 @@ Protocol and Ports: TCP 9091
 Click "Create"
 
 http://x.x.x.x:9091
+
+![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-pushgateway2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-pushgateway3.png)
 
 # Ingest a Sample NuttX Log
 
