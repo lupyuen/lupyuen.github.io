@@ -368,6 +368,10 @@ Set permission:
 
 ![TODO](https://lupyuen.org/images/dashboard-json4.png)
 
+![TODO](https://lupyuen.org/images/dashboard-json5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-json6.png)
+
 # SSH Key for VM Login
 
 Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
@@ -921,6 +925,28 @@ Cache URI Path > Wildcard > Value = /public/*
 ![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
 
 ![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare14.png)
 
 Or use Cloudflare CDN. (Should get Static IP Address for our VM)
 
