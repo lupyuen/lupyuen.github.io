@@ -24,52 +24,44 @@ Hmmm interesting... We should try it sometime!
 
 # Create Our Virtual Machine
 
-Create Project: nuttx-dashboard
+We begin by creating a __Google Cloud Project__ that will operate our VM. We named it _nuttx-dashboard_...
 
-https://console.cloud.google.com/projectcreate
-
-Click "Select Project"
-
-Click "Create a VM". General Purpose / Debian Bookworm is OK.
-
-Click "Compute Engine API > Enable" and wait a while
-
-Fill in the Instance Name "nuttx-dashboard-vm". Click "Create"
-
-Click "Connect > SSH"
-
-And SSH Console appears!
-
-```bash
-Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-luppy@nuttx-dashboard-vm:~$ uname -a
-Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64 GNU/Linux
-luppy@nuttx-dashboard-vm:~$ 
-
-sudo apt update
-sudo apt upgrade
-```
+- [__Create a Google Cloud Project__](https://console.cloud.google.com/projectcreate) _(console.cloud.google.com)_
 
 ![TODO](https://lupyuen.org/images/dashboard-vm1.png)
 
-![TODO](https://lupyuen.org/images/dashboard-vm2.png)
+Then we create our __Virtual Machine__...
 
-![TODO](https://lupyuen.org/images/dashboard-vm3.png)
+1.  Click __"Select Project"__
 
-![TODO](https://lupyuen.org/images/dashboard-vm4.png)
+    ![TODO](https://lupyuen.org/images/dashboard-vm2.png)
 
-![TODO](https://lupyuen.org/images/dashboard-vm5.png)
+1.  Click __"Create a VM"__
 
-![TODO](https://lupyuen.org/images/dashboard-vm6.png)
+    ![TODO](https://lupyuen.org/images/dashboard-vm3.png)
 
-![TODO](https://lupyuen.org/images/dashboard-vm7.png)
+1.  Click __"Compute Engine API > Enable"__ and wait a while
+
+    ![TODO](https://lupyuen.org/images/dashboard-vm4.png)
+
+1.  Fill in the __Instance Name__ _"nuttx-dashboard-vm"_. Our VM shall be __General Purpose / Debian Bookworm__
+
+    Click __"Create"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-vm5.png)
+
+1.  Click __"Connect > SSH"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-vm6.png)
+
+1.  And SSH Console appears! Remember to __Update and Upgrade__ the VM...
+
+    ```bash
+    $ sudo apt update
+    $ sudo apt upgrade
+    ```
+
+    ![TODO](https://lupyuen.org/images/dashboard-vm7.png)
 
 # Install Grafana
 
