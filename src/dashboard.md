@@ -8,7 +8,11 @@
 
 - TODO: Article
 
-TODO
+_Was everything hunky dory?_
+
+Nope! Grafana Dashboard was running on a (macOS) __Home Computer__. Thus if we're overseas for [__Marathon Races__](TODO) and there's a Home Power Outage... NuttX Dashboard goes down and never recovers!
+
+Today, let's migrate NuttX Dashboard to __Google Cloud VM__.
 
 _What if we prefer another cloud? Or our own machine?_
 
