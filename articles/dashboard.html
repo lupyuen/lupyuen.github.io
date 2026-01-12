@@ -133,10 +133,11 @@ $ sudo apt upgrade</code></pre></div>
 </li>
 </ol>
 <h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1>
-<p>Install the latest version of Grafana OSS</p>
-<p>https://grafana.com/grafana/download/12.3.0?pg=oss-graf&amp;plcmt=hero-btn-1&amp;edition=oss</p>
-<p>https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Grafana OSS	grafana	https://apt.grafana.com stable main
+<p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy that renders our NuttX Dashboard…</p>
+<ul>
+<li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository"><strong>Install Grafana OSS on Debian</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-bash"><code>## Grafana OSS from https://apt.grafana.com (stable)
 ## Install the prerequisite packages
 sudo apt-get install -y apt-transport-https wget
 
@@ -147,10 +148,10 @@ wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt
 ## Add a repository for stable releases
 echo &quot;deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main&quot; | sudo tee -a /etc/apt/sources.list.d/grafana.list
 
-## Updates the list of available packages
+## Update the list of available packages
 sudo apt-get update
 
-## Installs the latest OSS release
+## Install the latest OSS release
 sudo apt-get install grafana
 
 ## Configure grafana to start automatically using systemd
@@ -161,30 +162,47 @@ sudo /bin/systemctl enable grafana-server
 sudo /bin/systemctl start grafana-server
 
 ## Grafana Server is listening on http://localhost:3000
-$ netstat -an | grep LISTEN
-tcp6       0      0 :::3000                 :::*                    LISTEN     </code></pre></div>
-<p>VM Instances &gt; External IP
-x.x.x.x</p>
-<p>VM Instances &gt; Set Up Firewall Rules</p>
-<p>Firewall Policies &gt; Create Firewall Rule</p>
-<p>allow-tcp-3000</p>
-<p>Targets: All instances in the network</p>
-<p>IPv4 Ranges: 0.0.0.0/0</p>
-<p>Protocol and Ports: TCP 3000</p>
-<p>Click “Create”</p>
-<p>http://x.x.x.x:3000</p>
-<p>Username: admin
-Password: admin
-Set the new password</p>
+## &quot;tcp6 0 0 :::3000 :::* LISTEN&quot;
+netstat -an | grep LISTEN</code></pre></div>
+<p><em>How to access Grafana Server?</em></p>
+<ol>
+<li>
+<p>Grab the <strong>External IP Address</strong> for our VM…</p>
+<p><strong>VM Instance &gt; External IP</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Allow Incoming Packets for TCP Port 3000…</p>
+<p>Click <strong>VM Instance &gt; Set Up Firewall Rules</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana2.png" alt="TODO" /></p>
+<p>Click <strong>Firewall Policies &gt; Create Firewall Rule</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana3.png" alt="TODO" /></p>
+<p><strong>Name:</strong> allow-tcp-3000</p>
+<p><strong>Targets:</strong> All instances in the network</p>
+<p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
+<p><strong>Protocol and Ports:</strong> TCP 3000</p>
+<p>Click <strong>“Create”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana4.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana5.png" alt="TODO" /></p>
+<p>Verify our Firewall Rule…</p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Browse to port 3000 of our External IP Address…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000</code></pre></div>
+<p><strong>Username:</strong> admin</p>
+<p><strong>Password:</strong> admin</p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana7.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Set the new password</p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana8.png" alt="TODO" /></p>
+</li>
+<li>
+<p>And we’re in Grafana!</p>
 <p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="TODO" /></p>
+</li>
+</ol>
 <h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
 ## Install Prometheus server
 sudo apt install prometheus
