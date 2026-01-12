@@ -990,4 +990,14 @@ Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
 
 Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for Twincity Marathon!
 
+What other jobs?
+
+nuttx-metrics
+
+riscv64
+
+avaota-a1, starpro64, oz64
+
+mastodon, forgejo
+
 TODO
