@@ -4,7 +4,7 @@
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
-12 Months Ago: We created a __Grafana Dashboard__ that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), for every single microcontroller board. So we'll be alerted if NuttX fails to build on (say) RP2040...
+12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), for every single microcontroller board. So we'll be alerted if NuttX fails to build on (say) RP2040...
 
 - TODO: Article
 
@@ -12,11 +12,11 @@ _Was everything hunky dory?_
 
 Nope! Grafana Dashboard was running on a (macOS) __Home Computer__. Thus if we're overseas for [__Marathon Races__](TODO) and there's a Home Power Outage... NuttX Dashboard goes down and never recovers!
 
-Today, let's migrate NuttX Dashboard to __Google Cloud VM__.
+Today, let's migrate NuttX Dashboard to __Google Cloud VM__. It will cost more, and we don't have the Hosting Budget. But at least NuttX Dashboard will continue running when the lights go poof.
 
 _What if we prefer another cloud? Or our own machine?_
 
-The steps below will work for any Debian Bookworm machine.
+The steps below will work for any __Debian Bookworm__ machine. Hopefully someday we'll find a way to budget for the machine. (And secure it too)
 
 # Create Our Virtual Machine
 
