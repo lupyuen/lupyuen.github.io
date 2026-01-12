@@ -4,6 +4,10 @@
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
+12 Months Ago: We created a __Grafana Dashboard__ that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), for every single microcontroller board. So we'll be alerted if NuttX fails to build on (say) RP2040...
+
+- TODO: Article
+
 TODO
 
 _What if we prefer another cloud? Or our own machine?_
