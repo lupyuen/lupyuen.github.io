@@ -65,14 +65,12 @@ Then we create our __Virtual Machine__...
 
 # Install Grafana
 
-Install the latest version of Grafana OSS
+We're ready to install __Grafana OSS Server__! Yep the thingy that renders our NuttX Dashboard...
 
-https://grafana.com/grafana/download/12.3.0?pg=oss-graf&plcmt=hero-btn-1&edition=oss
-
-https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository
+- [__Install Grafana OSS on Debian__](https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository)
 
 ```bash
-## Grafana OSS	grafana	https://apt.grafana.com stable main
+## Grafana OSS from https://apt.grafana.com (stable)
 ## Install the prerequisite packages
 sudo apt-get install -y apt-transport-https wget
 
@@ -83,10 +81,10 @@ wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt
 ## Add a repository for stable releases
 echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 
-## Updates the list of available packages
+## Update the list of available packages
 sudo apt-get update
 
-## Installs the latest OSS release
+## Install the latest OSS release
 sudo apt-get install grafana
 
 ## Configure grafana to start automatically using systemd
@@ -97,50 +95,65 @@ sudo /bin/systemctl enable grafana-server
 sudo /bin/systemctl start grafana-server
 
 ## Grafana Server is listening on http://localhost:3000
-$ netstat -an | grep LISTEN
-tcp6       0      0 :::3000                 :::*                    LISTEN     
+## "tcp6 0 0 :::3000 :::* LISTEN"
+netstat -an | grep LISTEN
 ```
 
-VM Instances > External IP
-x.x.x.x
+_How to access Grafana Server?_
 
-VM Instances > Set Up Firewall Rules
+1.  Grab the __External IP Address__ for our VM...
 
-Firewall Policies > Create Firewall Rule
+    __VM Instance > External IP__
 
-allow-tcp-3000
+    ![TODO](https://lupyuen.org/images/dashboard-grafana1.png)
 
-Targets: All instances in the network
+1.  Allow Incoming Packets for TCP Port 3000...
 
-IPv4 Ranges: 0.0.0.0/0
+    Click __VM Instance > Set Up Firewall Rules__
 
-Protocol and Ports: TCP 3000
+    ![TODO](https://lupyuen.org/images/dashboard-grafana2.png)
 
-Click "Create"
+    Click __Firewall Policies > Create Firewall Rule__
 
-http://x.x.x.x:3000
+    ![TODO](https://lupyuen.org/images/dashboard-grafana3.png)
 
-Username: admin
-Password: admin
-Set the new password
+    __Name:__ allow-tcp-3000
 
-![TODO](https://lupyuen.org/images/dashboard-grafana1.png)
+    __Targets:__ All instances in the network
 
-![TODO](https://lupyuen.org/images/dashboard-grafana2.png)
+    __IPv4 Ranges:__ 0.0.0.0/0
 
-![TODO](https://lupyuen.org/images/dashboard-grafana3.png)
+    __Protocol and Ports:__ TCP 3000
 
-![TODO](https://lupyuen.org/images/dashboard-grafana4.png)
+    Click __"Create"__
 
-![TODO](https://lupyuen.org/images/dashboard-grafana5.png)
+    ![TODO](https://lupyuen.org/images/dashboard-grafana4.png)
 
-![TODO](https://lupyuen.org/images/dashboard-grafana6.png)
+    ![TODO](https://lupyuen.org/images/dashboard-grafana5.png)
 
-![TODO](https://lupyuen.org/images/dashboard-grafana7.png)
+    Verify our Firewall Rule...
 
-![TODO](https://lupyuen.org/images/dashboard-grafana8.png)
+    ![TODO](https://lupyuen.org/images/dashboard-grafana6.png)
 
-![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
+1.  Browse to port 3000 of our External IP Address...
+
+    ```bash
+    http://x.x.x.x:3000
+    ```
+
+    __Username:__ admin
+
+    __Password:__ admin
+
+    ![TODO](https://lupyuen.org/images/dashboard-grafana7.png)
+
+1.  Set the new password
+
+    ![TODO](https://lupyuen.org/images/dashboard-grafana8.png)
+
+1.  And we're in Grafana!
+
+    ![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
 
 # Install Prometheus
 
