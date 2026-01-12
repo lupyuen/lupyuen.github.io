@@ -97,35 +97,41 @@
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
 <p>Hmmm interesting… We should try it sometime!</p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
-<p>Create Project: nuttx-dashboard</p>
-<p>https://console.cloud.google.com/projectcreate</p>
-<p>Click “Select Project”</p>
-<p>Click “Create a VM”. General Purpose / Debian Bookworm is OK.</p>
-<p>Click “Compute Engine API &gt; Enable” and wait a while</p>
-<p>Fill in the Instance Name “nuttx-dashboard-vm”. Click “Create”</p>
-<p>Click “Connect &gt; SSH”</p>
-<p>And SSH Console appears!</p>
-<div class="example-wrap"><pre class="language-bash"><code>Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-luppy@nuttx-dashboard-vm:~$ uname -a
-Linux nuttx-dashboard-vm 6.1.0-41-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.158-1 (2025-11-09) x86_64 GNU/Linux
-luppy@nuttx-dashboard-vm:~$ 
-
-sudo apt update
-sudo apt upgrade</code></pre></div>
+<p>We begin by creating a <strong>Google Cloud Project</strong> that will operate our VM. We named it <em>nuttx-dashboard</em>…</p>
+<ul>
+<li><a href="https://console.cloud.google.com/projectcreate"><strong>Create a Google Cloud Project</strong></a> <em>(console.cloud.google.com)</em></li>
+</ul>
 <p><img src="https://lupyuen.org/images/dashboard-vm1.png" alt="TODO" /></p>
+<p>Then we create our <strong>Virtual Machine</strong>…</p>
+<ol>
+<li>
+<p>Click <strong>“Select Project”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-vm2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Create a VM”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-vm3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Compute Engine API &gt; Enable”</strong> and wait a while</p>
 <p><img src="https://lupyuen.org/images/dashboard-vm4.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Fill in the <strong>Instance Name</strong> <em>“nuttx-dashboard-vm”</em>. Our VM shall be <strong>General Purpose / Debian Bookworm</strong></p>
+<p>Click <strong>“Create”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-vm5.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Connect &gt; SSH”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-vm6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>And SSH Console appears! Remember to <strong>Update and Upgrade</strong> the VM…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ sudo apt update
+$ sudo apt upgrade</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
+</li>
+</ol>
 <h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1>
 <p>Install the latest version of Grafana OSS</p>
 <p>https://grafana.com/grafana/download/12.3.0?pg=oss-graf&amp;plcmt=hero-btn-1&amp;edition=oss</p>
