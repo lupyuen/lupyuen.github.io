@@ -85,15 +85,15 @@
 <li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">18 Cost of Google Cloud</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
-<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, for every single microcontroller board. So we’ll be alerted if NuttX fails to build on (say) RP2040…</p>
+<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, for every single microcontroller board. So we’ll be alerted if NuttX fails to build on (say) RP2040…</p>
 <ul>
 <li>TODO: Article</li>
 </ul>
 <p><em>Was everything hunky dory?</em></p>
 <p>Nope! Grafana Dashboard was running on a (macOS) <strong>Home Computer</strong>. Thus if we’re overseas for <a href="TODO"><strong>Marathon Races</strong></a> and there’s a Home Power Outage… NuttX Dashboard goes down and never recovers!</p>
-<p>Today, let’s migrate NuttX Dashboard to <strong>Google Cloud VM</strong>.</p>
+<p>Today, let’s migrate NuttX Dashboard to <strong>Google Cloud VM</strong>. It will cost more, and we don’t have the Hosting Budget. But at least NuttX Dashboard will continue running when the lights go poof.</p>
 <p><em>What if we prefer another cloud? Or our own machine?</em></p>
-<p>The steps below will work for any Debian Bookworm machine.</p>
+<p>The steps below will work for any <strong>Debian Bookworm</strong> machine. Hopefully someday we’ll find a way to budget for the machine. (And secure it too)</p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
 <p>Create Project: nuttx-dashboard</p>
 <p>https://console.cloud.google.com/projectcreate</p>
