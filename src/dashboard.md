@@ -20,7 +20,7 @@ The steps below will work for any __Debian Bookworm__ machine. Hopefully someday
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
-Hmmm interesting... We should try it sometime!
+Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
 
 # Create Our Virtual Machine
 
