@@ -16,11 +16,11 @@ Today, let's migrate NuttX Dashboard to __Google Cloud VM__. It will cost more, 
 
 _What if we prefer another cloud? Or our own machine?_
 
-The steps below will work for any __Debian Bookworm__ machine. Hopefully someday we'll find a way to budget for the machine. (And secure it too)
+The steps below will work for any __Debian Bookworm__ machine. Hopefully someday we'll budget for the machine. (And secure it too)
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
-Hmmm interesting... We should try it!
+Hmmm interesting... We should try it sometime!
 
 # Create Our Virtual Machine
 
