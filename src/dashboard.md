@@ -61,7 +61,7 @@ Then we create our __Virtual Machine__...
     $ sudo apt upgrade
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm7.png)
+![TODO](https://lupyuen.org/images/dashboard-vm7.png)
 
 # Install Grafana OSS Server
 
@@ -221,7 +221,7 @@ To see Prometheus: We create a __Firewall Rule__ to allow incoming access to __T
     http://x.x.x.x:9090
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
+![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
 
 _Why Prometheus? Why not SQL Database?_
 
@@ -313,7 +313,7 @@ Prometheus Pushgateway has an Admin UI at __TCP Port 9091__. We grant access...
     http://x.x.x.x:9091
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
+![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
 
 # Ingest a Sample NuttX Log
 
