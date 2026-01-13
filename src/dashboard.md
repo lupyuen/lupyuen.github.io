@@ -526,7 +526,7 @@ TODO: nuttxpr permissions
 
 We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) for all microcontroller boards.
 
-Let's ingest the __GitHub Actions Logs__ from the Mirror Repo Builds. Inside our VM: Run this...
+Let's ingest the __GitHub Actions Logs__ from the Mirror Repo Builds. Inside our VM: Do this...
 
 ```bash
 ## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
@@ -602,11 +602,13 @@ TODO: Fix step:10 to ??? for Linux
 
 # Start the NuttX Mirror Build
 
-TODO: nuttxpr permissions
+_What triggers the Daily Build at NuttX Mirror Repo?_
 
-Only one instance of sync-build-ingest.sh should ever be running! Make sure _lupyuen_ isn't running it on his Home Computer.
+Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
-Inside the VM: Run 
+Only one instance of _sync-build-ingest.sh_ should ever be running! Make sure _lupyuen_ isn't running it on his Home Computer.
+
+Inside our VM: Do this...
 
 ```bash
 ## Set the GitHub Token
@@ -643,13 +645,17 @@ cd $HOME/nuttx-release
 
 We should see the patch that starts the NuttX Build:
 
+```bash
 https://github.com/NuttX/nuttx/commits/master/
+```
 
 And the NuttX Build should be running:
 
+```bash
 https://github.com/NuttX/nuttx/actions/workflows/build.yml
+```
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit". Then run enable-macos-windows.sh followed by sync-build-ingest.sh.
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Discard Commit"__. Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
 If we see
 
