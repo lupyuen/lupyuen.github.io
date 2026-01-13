@@ -85,7 +85,7 @@
 <li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">18 Appendix: SSH Key for GitHub</a><ul></ul></li>
 <li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">19 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
-<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, for every single microcontroller board. So we’ll be alerted if NuttX fails to build on (say) RP2040…</p>
+<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
 <ul>
 <li>TODO: Article</li>
 </ul>
@@ -205,7 +205,7 @@ netstat -an | grep LISTEN</code></pre></div>
 </ol>
 <h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
 <p><em>Where’s the data store for Grafana?</em></p>
-<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a>, to record the successful and failed builds of NuttX for every microcontroller board…</p>
+<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a>, to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
 ## Install Prometheus Server
 sudo apt install prometheus
@@ -497,7 +497,7 @@ export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>TODO: nuttxpr permissions</p>
 <h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
-<p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> for all microcontroller boards.</p>
+<p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
 <p>Let’s ingest the <strong>GitHub Actions Logs</strong> from the Mirror Repo Builds. Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
