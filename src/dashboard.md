@@ -223,15 +223,26 @@ To see Prometheus: We create a __Firewall Rule__ to allow incoming access to __T
 
     ![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
 
+_Why Prometheus? Why not SQL Database?_
+
+Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.
+
 # Install Prometheus Pushgateway
 
 _What's this Prometheus Pushgateway?_
 
-https://devopscube.com/setup-prometheus-pushgateway-vm/
+Funny Thing about Prometheus: We can't push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this...
+
+1.  We install [__Prometheus Pushgateway__](TODO) (as a Staging Area for Time-Series Data)
+
+1.  We push our __Time-Series Data__ to Prometheus Pushgateway (over HTTP)
+
+1.  __Prometheus Server__ shall scrape our Time-Series Data from Pushgateway (and store the data)
+
+Here's how we install __Prometheus Pushgateway__...
 
 ```bash
 ## From https://devopscube.com/setup-prometheus-pushgateway-vm/
-
 wget https://github.com/prometheus/pushgateway/releases/download/v1.11.2/pushgateway-1.11.2.linux-amd64.tar.gz
 tar xvf pushgateway-1.11.2.linux-amd64.tar.gz
 mv pushgateway-1.11.2.linux-amd64 pushgateway
@@ -274,42 +285,54 @@ curl localhost:9091/metrics
 ## TYPE go_gc_duration_seconds summary
 ```
 
-VM Instances > Set Up Firewall Rules
+Prometheus Pushgateway has an Admin UI at __TCP Port 9091__. We grant access...
 
-Firewall Policies > Create Firewall Rule
+1.  Click __"VM Instance > Set Up Firewall Rules"__
 
-allow-tcp-9091
+1.  Click __"Firewall Policies > Create Firewall Rule"__
 
-Targets: All instances in the network
+    __Name:__ allow-tcp-9091
 
-IPv4 Ranges: 0.0.0.0/0
+    __Targets:__ All instances in the network
 
-Protocol and Ports: TCP 9091
+    __IPv4 Ranges:__ 0.0.0.0/0
 
-Click "Create"
+    __Protocol and Ports:__ TCP 9091
 
-http://x.x.x.x:9091
+    Click __"Create"__
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus5.png)
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway2.png)
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus6.png)
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway3.png)
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus7.png)
+
+1.  Prometheus Pushgateway appears on our External IP Address at...
+
+    ```bash
+    http://x.x.x.x:9091
+    ```
+
+    ![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
 
 # Ingest a Sample NuttX Log
 
+We're all done with installation! Now we ingest some __NuttX Build Logs__ to verify that Prometheus Server and Pushgateway are talking...
+
 ```bash
+## Download the Sample NuttX Build Log
 pushd /tmp
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/defconfig.txt
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/ci-xtensa-02.log
 popd
 
-## Install rust: https://rustup.rs/
+## Install Rust: https://rustup.rs/
 ## Press Enter for default option
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . "$HOME/.cargo/env"
 sudo apt install gcc pkg-config libssl-dev
 
+## Ingest the Sample NuttX Build Log into Prometheus Pushgateway
 sudo apt install git
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
@@ -338,22 +361,55 @@ cargo run \
 ## res=Response { url: "http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi", status: 200, headers: {"date": "Mon, 05 Jan 2026 10:10:52 GMT", "content-length": "0"} }
 ```
 
-Check http://x.x.x.x:9091
+Browse to Prometheus Pushgateway at our __External IP Address__, port 9091. We'll see the __NuttX Build Logs__ that we have ingested...
+
+```bash
+http://x.x.x.x:9091
+```
+
+![TODO](https://lupyuen.org/images/dashboard-pushgateway2.png)
 
 TODO: Connect prometheus to pushgateway
 
 ```bash
+## Edit the Prometheus Server Config
 sudo nano /etc/prometheus/prometheus.yml
+
 ## Erase everything in the file. Replace by contents of
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
+
+## Restart our Prometheus Server
 sudo systemctl restart prometheus
+
+## Which will scrape the Metrics from Prometheus Pushgateway every 15 seconds...
+## global:
+##   scrape_interval: 15s
+## scrape_configs:
+##   - job_name: "prometheus"
+##     static_configs:
+##     - targets: ["localhost:9090"]
+##   - job_name: "pushgateway"
+##     static_configs:
+##     - targets: ["localhost:9091"]
 ```
 
-Check http://x.x.x.x:9090
+__Wait One Minute:__ Prometheus Server shall scrape the Ingested Build Logs from Pushgateway.
 
-Enter the query "build_score"
+Browse to Prometheus Server at our __External IP Address__, port 9090...
 
-Press Execute
+```bash
+http://x.x.x.x:9090
+```
+
+Enter this Prometheus Query...
+
+```bash
+build_score
+```
+
+And click __"Execute"__. Yep Prometheus Server has successfully scraped and stored the __NuttX Build Logs__ from Pushgateway yay!
+
+![TODO](https://lupyuen.org/images/dashboard-pushgateway3.png)
 
 # Connect Grafana to Prometheus
 
@@ -1016,7 +1072,9 @@ Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
 
 Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for Twincity Marathon!
 
-What other jobs?
+_Anything else we're running on our Home Computer?_
+
+Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
 
 nuttx-metrics
 
