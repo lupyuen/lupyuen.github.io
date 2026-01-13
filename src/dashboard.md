@@ -448,7 +448,7 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
     (Get the UID from the Dashboard JSON before overwriting it)
 
-1.  Allow everyone to view: Click __"Settings > Permission > Role Viewer > View"__
+1.  Allow everyone to view: Click __"Settings > Add Permission > Role > Viewer > View"__
 
     ![TODO](https://lupyuen.org/images/dashboard-json5.png)
 
@@ -479,7 +479,7 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
     (Get the UID from the Dashboard JSON before overwriting it)
 
-1.  Allow everyone to view: Click __"Settings > Permission > Role Viewer > View"__
+1.  Allow everyone to view: Click __"Settings > Add Permission > Role > Viewer > View"__
 
     ![TODO](https://lupyuen.org/images/dashboard-json6.png)
 
@@ -487,157 +487,11 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
     ![TODO](https://lupyuen.org/images/dashboard-json4.png)
 
-# SSH Key for VM Login
-
-Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
-
-```bash
-## Do this on our computer, NOT the VM!
-## Change "luppy" to your VM Username
-ssh-keygen \
-  -t rsa \
-  -f $HOME/.ssh/nuttx-dashboard-vm \
-  -C luppy
-
-## Check the output
-ls $HOME/.ssh/nuttx-dashboard-vm*
-
-## We should see...
-## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub
-```
-
-Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
-
-```bash
-## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
-gcloud version
-## We should see: Google Cloud SDK 550.0.0
-```
-
-Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
-
-Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
-
-Click "SSH Keys"
-
-Click "Add SSH Key"
-
-Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
-
-Click "Save"
-
-```bash
-## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
-## Change "luppy" to your VM Username
-ssh \
-  -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x
-```
-
-In VSCode: Click "Remote Explorer > SSH > +"
-
-```bash
-ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
-```
-
-Select the SSH Config file $HOME/.ssh/config
-
-Click "Connect"
-
-Click "File > Open File / Folder"
-
-$HOME/.ssh/config will look like:
-
-```bash
-Host x.x.x.x
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy
-```
-
-Probably better to rename the "Host", in case the IP Address changes...
-
-```bash
-Host nuttx-dashboard-vm
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy
-```
-
-![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
-
-# SSH Key for GitHub
-
-nuttxpr is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!
-
-Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-
-```bash
-ssh-keygen \
-  -t ed25519 \
-  -f $HOME/.ssh/nuttxpr@github \
-  -C "nuttxpr@github"
-```
-
-Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-
-Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub
-
-Test it:
-
-```bash
-ssh -T \
-  -i $HOME/.ssh/nuttxpr@github \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
-```
-
-Edit $HOME/.ssh/config
-
-```bash
-nano $HOME/.ssh/config
-```
-
-Add this...
-
-```bash
-Host github.com
-  IdentityFile ~/.ssh/nuttxpr@github
-```
-
-Test it:
-
-```bash
-## Should now work without stating Private Key
-ssh -T \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
-```
-
 # Set the GitHub Token
 
-Create $HOME/github-token.sh
+TODO
+
+Inside our VM: Create _$HOME/github-token.sh_ and fill in the __GitHub Token__. Any Plain GitHub Account will do (like _nuttxpr_). Don't use an Admin Account!
 
 ```bash
 ## GitHub Settings > Developer Settings > Tokens (Classic) > Generate New Token (Classic)
@@ -655,7 +509,7 @@ export RUST_LOG=info
 export RUST_BACKTRACE=1
 ```
 
-If we're ingesting GitLab Snippets: Create $HOME/gitlab-token.sh
+If we're ingesting [__GitLab Snippets__](TODO): Create _$HOME/gitlab-token.sh_ and fill in the __GitLab Token__...
 
 ```bash
 ## User Settings > Access tokens
@@ -666,55 +520,9 @@ export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log
 ```
 
-# NuttX Mirror Repo
+TODO: nuttxpr permissions
 
-`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
-
-NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access
-
-Click "Add People"
-
-Enter `nuttxpr`
-
-Role: Write
-
-Log in as `nuttxpr` to accept the invitation
-
-Check the collaborators: https://github.com/NuttX/nuttx/settings/access
-
-![TODO](https://lupyuen.org/images/dashboard-github1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github3.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github4.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github5.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github6.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github7.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github8.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github9.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github10.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github11.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github12.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github13.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github14.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github15.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github16.png)
-
-# Ingest GitHub Logs
+# Ingest the GitHub Logs
 
 Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 
@@ -773,7 +581,9 @@ TODO: Fix step:10 to ??? for Linux
 
 ![TODO](https://lupyuen.org/images/dashboard-ingest4.png)
 
-# Start the Build for NuttX Mirror Repo
+# Start the NuttX Mirror Build
+
+TODO: nuttxpr permissions
 
 Only one instance of sync-build-ingest.sh should ever be running! Make sure `lupyuen` isn't running it on his Home Computer.
 
@@ -886,101 +696,6 @@ cd $HOME/ingest-nuttx-builds
 (Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
 
 [Log for Ingest GitHub Gists and GitLab Snippets](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
-
-# Expand the VM Disk
-
-```bash
-## TODO: Out of space in /tmp
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        11G  9.8G     0 100% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-
-## Before:
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        11G  8.5G  1.4G  87% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-
-## Most of the disk space used by /tmp
-$ rm -rf /tmp/sync-build-ingest/
-```
-
-Resize the disk: https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh
-
-Click VM > Details > Storage > Boot Disk
-
-Click Menu > Edit at Top Right
-
-Increase the size from 10 GB to 20 GB. Click Save
-
-Inside the VM:
-
-```bash
-sudo apt install fdisk
-sudo fdisk -l
-
-## We should see
-## Device      Start      End  Sectors  Size Type
-## /dev/sda1  262144 20969471 20707328  9.9G Linux root (x86-64)
-## /dev/sda14   2048     8191     6144    3M BIOS boot
-## /dev/sda15   8192   262143   253952  124M EFI System
-
-## Let's expand /dev/sda to 20 GB
-sudo fdisk /dev/sda
-
-## Ignore the warning
-## Enter: w
-
-## Resize partition 1 (/dev/sda1), which maps to /
-sudo apt install cloud-guest-utils
-sudo growpart /dev/sda 1
-
-## We should see...
-## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
-
-## Resize the Filesystem
-sudo resize2fs /dev/sda1
-
-## We should see...
-## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
-## old_desc_blocks = 2, new_desc_blocks = 3
-## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
-
-## sda1 is bigger now
-$ sudo fdisk -l
-Device      Start      End  Sectors  Size Type
-/dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
-/dev/sda14   2048     8191     6144    3M BIOS boot
-/dev/sda15   8192   262143   253952  124M EFI System
-
-## More space in /tmp yay!
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        21G  8.5G   12G  43% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-```
-
-![TODO](https://lupyuen.org/images/dashboard-disk1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-disk2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-disk3.png)
 
 # Configure Our Grafana Server
 
@@ -1118,3 +833,295 @@ avaota-a1, starpro64, oz64
 mastodon, forgejo
 
 TODO
+
+# Appendix: NuttX Mirror Repo
+
+`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
+
+NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access
+
+Click "Add People"
+
+Enter `nuttxpr`
+
+Role: Write
+
+Log in as `nuttxpr` to accept the invitation
+
+Check the collaborators: https://github.com/NuttX/nuttx/settings/access
+
+![TODO](https://lupyuen.org/images/dashboard-github1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github8.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github9.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github10.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github11.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github12.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github13.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github14.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github15.png)
+
+![TODO](https://lupyuen.org/images/dashboard-github16.png)
+
+# Appendix: Expand the VM Disk
+
+```bash
+## TODO: Out of space in /tmp
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  9.8G     0 100% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+
+## Before:
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  8.5G  1.4G  87% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+
+## Most of the disk space used by /tmp
+$ rm -rf /tmp/sync-build-ingest/
+```
+
+Resize the disk: https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh
+
+Click VM > Details > Storage > Boot Disk
+
+Click Menu > Edit at Top Right
+
+Increase the size from 10 GB to 20 GB. Click Save
+
+Inside the VM:
+
+```bash
+sudo apt install fdisk
+sudo fdisk -l
+
+## We should see
+## Device      Start      End  Sectors  Size Type
+## /dev/sda1  262144 20969471 20707328  9.9G Linux root (x86-64)
+## /dev/sda14   2048     8191     6144    3M BIOS boot
+## /dev/sda15   8192   262143   253952  124M EFI System
+
+## Let's expand /dev/sda to 20 GB
+sudo fdisk /dev/sda
+
+## Ignore the warning
+## Enter: w
+
+## Resize partition 1 (/dev/sda1), which maps to /
+sudo apt install cloud-guest-utils
+sudo growpart /dev/sda 1
+
+## We should see...
+## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
+
+## Resize the Filesystem
+sudo resize2fs /dev/sda1
+
+## We should see...
+## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
+## old_desc_blocks = 2, new_desc_blocks = 3
+## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
+
+## sda1 is bigger now
+$ sudo fdisk -l
+Device      Start      End  Sectors  Size Type
+/dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
+/dev/sda14   2048     8191     6144    3M BIOS boot
+/dev/sda15   8192   262143   253952  124M EFI System
+
+## More space in /tmp yay!
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        21G  8.5G   12G  43% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+```
+
+![TODO](https://lupyuen.org/images/dashboard-disk1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-disk2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-disk3.png)
+
+# Appendix: SSH Key for VM Login
+
+Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+
+```bash
+## Do this on our computer, NOT the VM!
+## Change "luppy" to your VM Username
+ssh-keygen \
+  -t rsa \
+  -f $HOME/.ssh/nuttx-dashboard-vm \
+  -C luppy
+
+## Check the output
+ls $HOME/.ssh/nuttx-dashboard-vm*
+
+## We should see...
+## nuttx-dashboard-vm
+## nuttx-dashboard-vm.pub
+```
+
+Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
+
+```bash
+## For macOS:
+brew install gcloud-cli
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+gcloud version
+## We should see: Google Cloud SDK 550.0.0
+```
+
+Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
+
+Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
+
+Click "SSH Keys"
+
+Click "Add SSH Key"
+
+Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
+
+Click "Save"
+
+```bash
+## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+## Change "luppy" to your VM Username
+ssh \
+  -i $HOME/.ssh/nuttx-dashboard-vm \
+  luppy@x.x.x.x
+```
+
+In VSCode: Click "Remote Explorer > SSH > +"
+
+```bash
+ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
+```
+
+Select the SSH Config file $HOME/.ssh/config
+
+Click "Connect"
+
+Click "File > Open File / Folder"
+
+$HOME/.ssh/config will look like:
+
+```bash
+Host x.x.x.x
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
+Probably better to rename the "Host", in case the IP Address changes...
+
+```bash
+Host nuttx-dashboard-vm
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
+![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
+
+# Appendix: SSH Key for GitHub
+
+nuttxpr is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!
+
+Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+```bash
+ssh-keygen \
+  -t ed25519 \
+  -f $HOME/.ssh/nuttxpr@github \
+  -C "nuttxpr@github"
+```
+
+Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub
+
+Test it:
+
+```bash
+ssh -T \
+  -i $HOME/.ssh/nuttxpr@github \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Edit $HOME/.ssh/config
+
+```bash
+nano $HOME/.ssh/config
+```
+
+Add this...
+
+```bash
+Host github.com
+  IdentityFile ~/.ssh/nuttxpr@github
+```
+
+Test it:
+
+```bash
+## Should now work without stating Private Key
+ssh -T \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
