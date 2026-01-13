@@ -431,7 +431,7 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
 1.  Click __"Settings > JSON Model"__
 
-    Copy and overwrite the Dashboard JSON from [__dashboard.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
+    Copy and overwrite the Dashboard JSON from here: [__dashboard.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
 
     ![TODO](https://lupyuen.org/images/dashboard-json1.png)
 
@@ -462,7 +462,7 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
 1.  Click __"Settings > JSON Model"__
 
-    Copy and overwite the Dashboard History JSON from [__dashboard-history.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
+    Copy and overwite the Dashboard History JSON from here: [__dashboard-history.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 
     ![TODO](https://lupyuen.org/images/dashboard-json3.png)
 
@@ -643,17 +643,21 @@ cd $HOME/nuttx-release
 
 [(Log for enable-macos-windows.sh)](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
 
-We should see the patch that starts the NuttX Build:
+We should see the patch that starts the NuttX Build...
 
 ```bash
 https://github.com/NuttX/nuttx/commits/master/
 ```
 
-And the NuttX Build should be running:
+TODO: Pic
+
+And the NuttX Build should be running...
 
 ```bash
 https://github.com/NuttX/nuttx/actions/workflows/build.yml
 ```
+
+TODO: Pic
 
 In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Discard Commit"__. Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
@@ -664,7 +668,7 @@ fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on devic
 warning: Clone succeeded, but checkout failed.
 ```
 
-Increase the disk space. Need 5 GB for /tmp. See the section below.
+Increase the disk space. Need 5 GB for /tmp. See the section below. TODO
 
 # Forever Build and Ingest
 
@@ -724,11 +728,11 @@ cd $HOME/ingest-nuttx-builds
 
 [Log for Ingest GitHub Gists and GitLab Snippets](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
-# Configure Our Grafana Server
+# Secure Our Grafana Server
 
-Edit /etc/grafana/grafana.ini
+We're ready to Go Live! We tweak some Grafana Settings to make NuttX Dashboard more secure.
 
-Look for these settings and edit them (don't add them)...
+Inside our VM: Edit _/etc/grafana/grafana.ini_. Look for these settings and change them (don't add them)
 
 ```bash
 # Default UI theme ("dark", "light" or "system")
@@ -761,73 +765,21 @@ org_role = Viewer
 hide_version = true
 ```
 
-[grafana.ini](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana2.ini)
+[(See the modified grafana.ini)](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana2.ini)
 
-Restart grafana
+Restart Grafana...
 
 ```bash
 sudo systemctl restart grafana-server
 ```
 
-# Publish Online with Cloudflare Tunnel
+Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN...
 
-TODO
+- TODO: Publish online with Cloudflare
 
-Create a Cloudflare Tunnel, pointing to http://localhost:3000
+NuttX Dashboard is ready to serve. Yay!
 
-Cache URI Path > Wildcard > Value = /public/*
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare5.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare6.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare7.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
-
-![TODO](https://lupyuen.org/images/dashboard-cloudflare14.png)
-
-Or use Cloudflare CDN. (Should get Static IP Address for our VM)
-
-```bash
-## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-sudo iptables -t nat -L -n -v
-
-Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
-    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
-
-## To delete the rule:
-## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-```
-
-VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
-
-Check http://x.x.x.x
-
-```bash
-$ grep duration /var/log/syslog
-2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg="Request Completed" method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error="token needs to be rotated"
-```
+TODO: Pic
 
 # Cost of Google Cloud
 
@@ -1152,3 +1104,62 @@ ssh -T \
 ## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
+# Appendix: Publish Online with Cloudflare
+
+TODO
+
+Create a Cloudflare Tunnel, pointing to http://localhost:3000
+
+Cache URI Path > Wildcard > Value = /public/*
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
+
+![TODO](https://lupyuen.org/images/dashboard-cloudflare14.png)
+
+Or use Cloudflare CDN. (Should get Static IP Address for our VM)
+
+```bash
+## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+sudo iptables -t nat -L -n -v
+
+Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
+
+## To delete the rule:
+## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+```
+
+VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
+
+Check http://x.x.x.x
+
+```bash
+$ grep duration /var/log/syslog
+2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg="Request Completed" method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error="token needs to be rotated"
+```
