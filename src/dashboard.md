@@ -4,7 +4,7 @@
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
-12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), for every single microcontroller board. So we'll be alerted if NuttX fails to build on (say) RP2040...
+12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), across all 339 microcontroller boards. So we'll be alerted if NuttX fails to build for (say) RP2040...
 
 - TODO: Article
 
@@ -161,7 +161,7 @@ Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allo
 
 _Where's the data store for Grafana?_
 
-We'll install [__Prometheus Time-Series Database__](TODO), to record the successful and failed builds of NuttX for every microcontroller board...
+We'll install [__Prometheus Time-Series Database__](TODO), to record the successful and failed builds of NuttX across all 339 microcontroller boards...
 
 ```bash
 ## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
@@ -524,7 +524,7 @@ TODO: nuttxpr permissions
 
 # Ingest the GitHub Actions Logs
 
-We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) for all microcontroller boards.
+We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) across all 339 microcontroller boards.
 
 Let's ingest the __GitHub Actions Logs__ from the Mirror Repo Builds. Inside our VM: Do this...
 
