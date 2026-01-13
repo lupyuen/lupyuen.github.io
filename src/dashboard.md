@@ -672,7 +672,7 @@ Increase the disk space. Need 5 GB for /tmp. See the section below. TODO
 
 # Forever Build and Ingest
 
-nano $HOME/sync.sh
+Everything We've Done: Needs to be looped forever. Edit _$HOME/sync.sh_ and fill this in...
 
 ```bash
 #!/usr/bin/env bash
@@ -691,7 +691,7 @@ for (( ; ; )); do
 done
 ```
 
-Run $HOME/sync.sh
+Whenever our VM Boots: Run _$HOME/sync.sh_...
 
 ```bash
 sudo apt install tmux
@@ -710,23 +710,7 @@ $HOME/sync.sh
 
 In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit". Then run enable-macos-windows.sh followed by sync.sh.
 
-# Ingest the GitHub Gists and GitLab Snippets
-
-Remember to set GitLab Token
-
-```bash
-tmux
-cd $HOME/ingest-nuttx-builds
-./run.sh
-
-## If the SSH Session Disconnects:
-## Do this to reconnect the run.sh session...
-## tmux a
-```
-
-(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
-
-[Log for Ingest GitHub Gists and GitLab Snippets](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
+TODO: Ingest the GitHub Gists and GitLab Snippets
 
 # Secure Our Grafana Server
 
@@ -787,9 +771,9 @@ TODO
 
 No budget. Will pay out of our pocket.
 
-_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _
+_Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
-Hmmm interesting... We should try out! 
+Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
 
 _Running the Build Farm on Google Cloud?_
 
@@ -812,6 +796,30 @@ avaota-a1, starpro64, oz64
 mastodon, forgejo
 
 TODO
+
+# Appendix: Ingest the GitHub Gists and GitLab Snippets
+
+_What's with the GitHub Gists and GitLab Snippets_
+
+We have a [__NuttX Build Farm__](TODO) hosted at home. Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
+
+Whenever our VM Boots: Do this...
+
+```bash
+## Ingest the GitHub Gists and GitLab Snippets
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
+tmux
+cd $HOME/ingest-nuttx-builds
+./run.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the run.sh session...
+## tmux a
+```
+
+(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
+
+[(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
 # Appendix: NuttX Mirror Repo
 
