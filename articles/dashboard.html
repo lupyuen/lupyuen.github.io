@@ -71,19 +71,19 @@
 <li><a href="#install-prometheus-pushgateway" title="Install Prometheus Pushgateway">4 Install Prometheus Pushgateway</a><ul></ul></li>
 <li><a href="#ingest-a-sample-nuttx-log" title="Ingest a Sample NuttX Log">5 Ingest a Sample NuttX Log</a><ul></ul></li>
 <li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">6 Connect Grafana to Prometheus</a><ul></ul></li>
-<li><a href="#ssh-key-for-vm-login" title="SSH Key for VM Login">7 SSH Key for VM Login</a><ul></ul></li>
-<li><a href="#ssh-key-for-github" title="SSH Key for GitHub">8 SSH Key for GitHub</a><ul></ul></li>
-<li><a href="#set-the-github-token" title="Set the GitHub Token">9 Set the GitHub Token</a><ul></ul></li>
-<li><a href="#nuttx-mirror-repo" title="NuttX Mirror Repo">10 NuttX Mirror Repo</a><ul></ul></li>
-<li><a href="#ingest-github-logs" title="Ingest GitHub Logs">11 Ingest GitHub Logs</a><ul></ul></li>
-<li><a href="#start-the-build-for-nuttx-mirror-repo" title="Start the Build for NuttX Mirror Repo">12 Start the Build for NuttX Mirror Repo</a><ul></ul></li>
-<li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">13 Forever Build and Ingest</a><ul></ul></li>
-<li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">14 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
-<li><a href="#expand-the-vm-disk" title="Expand the VM Disk">15 Expand the VM Disk</a><ul></ul></li>
-<li><a href="#configure-our-grafana-server" title="Configure Our Grafana Server">16 Configure Our Grafana Server</a><ul></ul></li>
-<li><a href="#publish-online-with-cloudflare-tunnel" title="Publish Online with Cloudflare Tunnel">17 Publish Online with Cloudflare Tunnel</a><ul></ul></li>
-<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">18 Cost of Google Cloud</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">19 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#set-the-github-token" title="Set the GitHub Token">7 Set the GitHub Token</a><ul></ul></li>
+<li><a href="#ingest-the-github-logs" title="Ingest the GitHub Logs">8 Ingest the GitHub Logs</a><ul></ul></li>
+<li><a href="#start-the-nuttx-mirror-build" title="Start the NuttX Mirror Build">9 Start the NuttX Mirror Build</a><ul></ul></li>
+<li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">10 Forever Build and Ingest</a><ul></ul></li>
+<li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">11 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
+<li><a href="#configure-our-grafana-server" title="Configure Our Grafana Server">12 Configure Our Grafana Server</a><ul></ul></li>
+<li><a href="#publish-online-with-cloudflare-tunnel" title="Publish Online with Cloudflare Tunnel">13 Publish Online with Cloudflare Tunnel</a><ul></ul></li>
+<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">14 Cost of Google Cloud</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">15 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">16 Appendix: NuttX Mirror Repo</a><ul></ul></li>
+<li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">17 Appendix: Expand the VM Disk</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">18 Appendix: SSH Key for VM Login</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">19 Appendix: SSH Key for GitHub</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, for every single microcontroller board. So we’ll be alerted if NuttX fails to build on (say) RP2040…</p>
 <ul>
@@ -440,7 +440,7 @@ sudo systemctl restart prometheus
 <p>(Get the UID from the Dashboard JSON before overwriting it)</p>
 </li>
 <li>
-<p>Allow everyone to view: Click <strong>“Settings &gt; Permission &gt; Role Viewer &gt; View”</strong></p>
+<p>Allow everyone to view: Click <strong>“Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-json5.png" alt="TODO" /></p>
 </li>
 <li>
@@ -467,7 +467,7 @@ sudo systemctl restart prometheus
 <p>(Get the UID from the Dashboard JSON before overwriting it)</p>
 </li>
 <li>
-<p>Allow everyone to view: Click <strong>“Settings &gt; Permission &gt; Role Viewer &gt; View”</strong></p>
+<p>Allow everyone to view: Click <strong>“Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-json6.png" alt="TODO" /></p>
 </li>
 <li>
@@ -475,90 +475,9 @@ sudo systemctl restart prometheus
 <p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="TODO" /></p>
 </li>
 </ol>
-<h1 id="ssh-key-for-vm-login"><a class="doc-anchor" href="#ssh-key-for-vm-login">§</a>7 SSH Key for VM Login</h1>
-<p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
-## Change &quot;luppy&quot; to your VM Username
-ssh-keygen \
-  -t rsa \
-  -f $HOME/.ssh/nuttx-dashboard-vm \
-  -C luppy
-
-## Check the output
-ls $HOME/.ssh/nuttx-dashboard-vm*
-
-## We should see...
-## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub</code></pre></div>
-<p>Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:&quot;$PATH&quot;
-gcloud version
-## We should see: Google Cloud SDK 550.0.0</code></pre></div>
-<p>Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata</p>
-<p>Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata</p>
-<p>Click “SSH Keys”</p>
-<p>Click “Add SSH Key”</p>
-<p>Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub</p>
-<p>Click “Save”</p>
-<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
-## Change &quot;luppy&quot; to your VM Username
-ssh \
-  -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x</code></pre></div>
-<p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
-<p>Select the SSH Config file $HOME/.ssh/config</p>
-<p>Click “Connect”</p>
-<p>Click “File &gt; Open File / Folder”</p>
-<p>$HOME/.ssh/config will look like:</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy</code></pre></div>
-<p>Probably better to rename the “Host”, in case the IP Address changes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host nuttx-dashboard-vm
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
-<h1 id="ssh-key-for-github"><a class="doc-anchor" href="#ssh-key-for-github">§</a>8 SSH Key for GitHub</h1>
-<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
-<p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
-  -t ed25519 \
-  -f $HOME/.ssh/nuttxpr@github \
-  -C &quot;nuttxpr@github&quot;</code></pre></div>
-<p>Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account</p>
-<p>Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub</p>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
-  -i $HOME/.ssh/nuttxpr@github \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
-<p>Edit $HOME/.ssh/config</p>
-<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
-<p>Add this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host github.com
-  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
-ssh -T \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="set-the-github-token"><a class="doc-anchor" href="#set-the-github-token">§</a>9 Set the GitHub Token</h1>
-<p>Create $HOME/github-token.sh</p>
+<h1 id="set-the-github-token"><a class="doc-anchor" href="#set-the-github-token">§</a>7 Set the GitHub Token</h1>
+<p>TODO</p>
+<p>Inside our VM: Create <em>$HOME/github-token.sh</em> and fill in the <strong>GitHub Token</strong>. Any Plain GitHub Account will do (like <em>nuttxpr</em>). Don’t use an Admin Account!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## GitHub Settings &gt; Developer Settings &gt; Tokens (Classic) &gt; Generate New Token (Classic)
 ## Check the following:
 ## repo (Full control of private repositories)
@@ -572,37 +491,15 @@ export GITHUB_TOKEN=...
 ## Enable Rust Logging
 export RUST_LOG=info 
 export RUST_BACKTRACE=1</code></pre></div>
-<p>If we’re ingesting GitLab Snippets: Create $HOME/gitlab-token.sh</p>
+<p>If we’re ingesting <a href="TODO"><strong>GitLab Snippets</strong></a>: Create <em>$HOME/gitlab-token.sh</em> and fill in the <strong>GitLab Token</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## User Settings &gt; Access tokens
 ## Select scopes:
 ## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
 export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
-export GITLAB_REPO=nuttx-build-log</code></pre></div><h1 id="nuttx-mirror-repo"><a class="doc-anchor" href="#nuttx-mirror-repo">§</a>10 NuttX Mirror Repo</h1>
-<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
-<p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
-<p>Click “Add People”</p>
-<p>Enter <code>nuttxpr</code></p>
-<p>Role: Write</p>
-<p>Log in as <code>nuttxpr</code> to accept the invitation</p>
-<p>Check the collaborators: https://github.com/NuttX/nuttx/settings/access</p>
-<p><img src="https://lupyuen.org/images/dashboard-github1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github8.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github9.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github10.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github11.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github12.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github13.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
-<h1 id="ingest-github-logs"><a class="doc-anchor" href="#ingest-github-logs">§</a>11 Ingest GitHub Logs</h1>
+export GITLAB_REPO=nuttx-build-log</code></pre></div>
+<p>TODO: nuttxpr permissions</p>
+<h1 id="ingest-the-github-logs"><a class="doc-anchor" href="#ingest-the-github-logs">§</a>8 Ingest the GitHub Logs</h1>
 <p>Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
@@ -646,7 +543,8 @@ cd ingest-nuttx-builds
 <p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ingest3.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ingest4.png" alt="TODO" /></p>
-<h1 id="start-the-build-for-nuttx-mirror-repo"><a class="doc-anchor" href="#start-the-build-for-nuttx-mirror-repo">§</a>12 Start the Build for NuttX Mirror Repo</h1>
+<h1 id="start-the-nuttx-mirror-build"><a class="doc-anchor" href="#start-the-nuttx-mirror-build">§</a>9 Start the NuttX Mirror Build</h1>
+<p>TODO: nuttxpr permissions</p>
 <p>Only one instance of sync-build-ingest.sh should ever be running! Make sure <code>lupyuen</code> isn’t running it on his Home Computer.</p>
 <p>Inside the VM: Run https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>. $HOME/github-token.sh
@@ -684,7 +582,7 @@ cd $HOME/nuttx-release
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Increase the disk space. Need 5 GB for /tmp. See the section below.</p>
-<h1 id="forever-build-and-ingest"><a class="doc-anchor" href="#forever-build-and-ingest">§</a>13 Forever Build and Ingest</h1>
+<h1 id="forever-build-and-ingest"><a class="doc-anchor" href="#forever-build-and-ingest">§</a>10 Forever Build and Ingest</h1>
 <p>nano $HOME/sync.sh</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Sync NuttX Mirror, Build NuttX Mirror and Ingest GitHub Actions Logs
@@ -712,7 +610,7 @@ $HOME/sync.sh
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo)</p>
 <p><a href="https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log">Log for NuttX Build and Ingest</a></p>
 <p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync.sh.</p>
-<h1 id="ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#ingest-the-github-gists-and-gitlab-snippets">§</a>14 Ingest the GitHub Gists and GitLab Snippets</h1>
+<h1 id="ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#ingest-the-github-gists-and-gitlab-snippets">§</a>11 Ingest the GitHub Gists and GitLab Snippets</h1>
 <p>Remember to set GitLab Token</p>
 <div class="example-wrap"><pre class="language-bash"><code>tmux
 cd $HOME/ingest-nuttx-builds
@@ -723,7 +621,112 @@ cd $HOME/ingest-nuttx-builds
 ## tmux a</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
 <p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">Log for Ingest GitHub Gists and GitLab Snippets</a></p>
-<h1 id="expand-the-vm-disk"><a class="doc-anchor" href="#expand-the-vm-disk">§</a>15 Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
+<h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>12 Configure Our Grafana Server</h1>
+<p>Edit /etc/grafana/grafana.ini</p>
+<p>Look for these settings and edit them (don’t add them)…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
+# Default: default_theme = dark
+default_theme = light
+
+# Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
+# Default: home_page =
+home_page = /d/fe2bqg6uk7nr4a
+
+# Disable usage of Grafana build-in login solution.
+# Default: disable_login = false
+disable_login = true
+
+# Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
+disable_login_form = true
+
+# enable anonymous access
+# Default: enabled = false
+enabled = true
+
+# specify organization name that should be used for unauthenticated users
+org_name = Main Org.
+
+# specify role for unauthenticated users
+org_role = Viewer
+
+# mask the Grafana version number for unauthenticated users
+# Default: hide_version = false
+hide_version = true</code></pre></div>
+<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana2.ini">grafana.ini</a></p>
+<p>Restart grafana</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo systemctl restart grafana-server</code></pre></div><h1 id="publish-online-with-cloudflare-tunnel"><a class="doc-anchor" href="#publish-online-with-cloudflare-tunnel">§</a>13 Publish Online with Cloudflare Tunnel</h1>
+<p>TODO</p>
+<p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
+<p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare12.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare13.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare14.png" alt="TODO" /></p>
+<p>Or use Cloudflare CDN. (Should get Static IP Address for our VM)</p>
+<div class="example-wrap"><pre class="language-bash"><code>## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+sudo iptables -t nat -L -n -v
+
+Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
+
+## To delete the rule:
+## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000</code></pre></div>
+<p>VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic</p>
+<p>Check http://x.x.x.x</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ grep duration /var/log/syslog
+2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg=&quot;Request Completed&quot; method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error=&quot;token needs to be rotated&quot;</code></pre></div><h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>14 Cost of Google Cloud</h1>
+<p>TODO</p>
+<p>No budget. Will pay out of our pocket.</p>
+<p>_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _</p>
+<p>Hmmm interesting… We should try out!</p>
+<p><em>Running the Build Farm on Google Cloud?</em></p>
+<p>Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>15 What’s Next</h1>
+<p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
+<p><em>Anything else we’re running on our Home Computer?</em></p>
+<p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
+<p>nuttx-metrics</p>
+<p>riscv64</p>
+<p>avaota-a1, starpro64, oz64</p>
+<p>mastodon, forgejo</p>
+<p>TODO</p>
+<h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>16 Appendix: NuttX Mirror Repo</h1>
+<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
+<p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
+<p>Click “Add People”</p>
+<p>Enter <code>nuttxpr</code></p>
+<p>Role: Write</p>
+<p>Log in as <code>nuttxpr</code> to accept the invitation</p>
+<p>Check the collaborators: https://github.com/NuttX/nuttx/settings/access</p>
+<p><img src="https://lupyuen.org/images/dashboard-github1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github9.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github10.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github11.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github12.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github13.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
+<h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>17 Appendix: Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 udev            2.1G     0  2.1G   0% /dev
@@ -802,88 +805,89 @@ tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
-<h1 id="configure-our-grafana-server"><a class="doc-anchor" href="#configure-our-grafana-server">§</a>16 Configure Our Grafana Server</h1>
-<p>Edit /etc/grafana/grafana.ini</p>
-<p>Look for these settings and edit them (don’t add them)…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
-# Default: default_theme = dark
-default_theme = light
+<h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>18 Appendix: SSH Key for VM Login</h1>
+<p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
+## Change &quot;luppy&quot; to your VM Username
+ssh-keygen \
+  -t rsa \
+  -f $HOME/.ssh/nuttx-dashboard-vm \
+  -C luppy
 
-# Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash.
-# Default: home_page =
-home_page = /d/fe2bqg6uk7nr4a
+## Check the output
+ls $HOME/.ssh/nuttx-dashboard-vm*
 
-# Disable usage of Grafana build-in login solution.
-# Default: disable_login = false
-disable_login = true
+## We should see...
+## nuttx-dashboard-vm
+## nuttx-dashboard-vm.pub</code></pre></div>
+<p>Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install gcloud-cli
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:&quot;$PATH&quot;
+gcloud version
+## We should see: Google Cloud SDK 550.0.0</code></pre></div>
+<p>Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata</p>
+<p>Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata</p>
+<p>Click “SSH Keys”</p>
+<p>Click “Add SSH Key”</p>
+<p>Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub</p>
+<p>Click “Save”</p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+## Change &quot;luppy&quot; to your VM Username
+ssh \
+  -i $HOME/.ssh/nuttx-dashboard-vm \
+  luppy@x.x.x.x</code></pre></div>
+<p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
+<p>Select the SSH Config file $HOME/.ssh/config</p>
+<p>Click “Connect”</p>
+<p>Click “File &gt; Open File / Folder”</p>
+<p>$HOME/.ssh/config will look like:</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy</code></pre></div>
+<p>Probably better to rename the “Host”, in case the IP Address changes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host nuttx-dashboard-vm
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy</code></pre></div>
+<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
+<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>19 Appendix: SSH Key for GitHub</h1>
+<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
+<p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
+  -t ed25519 \
+  -f $HOME/.ssh/nuttxpr@github \
+  -C &quot;nuttxpr@github&quot;</code></pre></div>
+<p>Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account</p>
+<p>Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub</p>
+<p>Test it:</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
+  -i $HOME/.ssh/nuttxpr@github \
+  git@github.com
 
-# Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
-disable_login_form = true
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
+<p>Edit $HOME/.ssh/config</p>
+<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
+<p>Add this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host github.com
+  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div>
+<p>Test it:</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
+ssh -T \
+  git@github.com
 
-# enable anonymous access
-# Default: enabled = false
-enabled = true
-
-# specify organization name that should be used for unauthenticated users
-org_name = Main Org.
-
-# specify role for unauthenticated users
-org_role = Viewer
-
-# mask the Grafana version number for unauthenticated users
-# Default: hide_version = false
-hide_version = true</code></pre></div>
-<p><a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/grafana2.ini">grafana.ini</a></p>
-<p>Restart grafana</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo systemctl restart grafana-server</code></pre></div><h1 id="publish-online-with-cloudflare-tunnel"><a class="doc-anchor" href="#publish-online-with-cloudflare-tunnel">§</a>17 Publish Online with Cloudflare Tunnel</h1>
-<p>TODO</p>
-<p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
-<p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare7.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare12.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare13.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare14.png" alt="TODO" /></p>
-<p>Or use Cloudflare CDN. (Should get Static IP Address for our VM)</p>
-<div class="example-wrap"><pre class="language-bash"><code>## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-sudo iptables -t nat -L -n -v
-
-Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
-    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
-
-## To delete the rule:
-## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000</code></pre></div>
-<p>VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic</p>
-<p>Check http://x.x.x.x</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ grep duration /var/log/syslog
-2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg=&quot;Request Completed&quot; method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error=&quot;token needs to be rotated&quot;</code></pre></div><h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>18 Cost of Google Cloud</h1>
-<p>TODO</p>
-<p>No budget. Will pay out of our pocket.</p>
-<p>_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _</p>
-<p>Hmmm interesting… We should try out!</p>
-<p><em>Running the Build Farm on Google Cloud?</em></p>
-<p>Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
-<p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
-<p><em>Anything else we’re running on our Home Computer?</em></p>
-<p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
-<p>nuttx-metrics</p>
-<p>riscv64</p>
-<p>avaota-a1, starpro64, oz64</p>
-<p>mastodon, forgejo</p>
-<p>TODO</p>
-
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
