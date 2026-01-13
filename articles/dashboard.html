@@ -128,10 +128,9 @@
 <li>
 <p>And SSH Console appears! Remember to <strong>Update and Upgrade</strong> the VM…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ sudo apt update
-$ sudo apt upgrade</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
-</li>
+$ sudo apt upgrade</code></pre></div></li>
 </ol>
+<p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
 <h1 id="install-grafana-oss-server"><a class="doc-anchor" href="#install-grafana-oss-server">§</a>2 Install Grafana OSS Server</h1>
 <p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy that renders our NuttX Dashboard…</p>
 <ul>
@@ -254,10 +253,9 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 </li>
 <li>
 <p>Prometheus appears when we browse to Port 9090 of our <strong>External IP Address</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div></li>
 </ol>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
 <p><em>Why Prometheus? Why not SQL Database?</em></p>
 <p>Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.</p>
 <h1 id="install-prometheus-pushgateway"><a class="doc-anchor" href="#install-prometheus-pushgateway">§</a>4 Install Prometheus Pushgateway</h1>
@@ -334,10 +332,9 @@ curl localhost:9091/metrics
 </li>
 <li>
 <p>Prometheus Pushgateway appears on our External IP Address at…</p>
-<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway1.png" alt="TODO" /></p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div></li>
 </ol>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway1.png" alt="TODO" /></p>
 <h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1>
 <p>We’re all done with installation! Now we ingest some <strong>NuttX Build Logs</strong> to verify that Prometheus Server and Pushgateway are talking…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Sample NuttX Build Log
