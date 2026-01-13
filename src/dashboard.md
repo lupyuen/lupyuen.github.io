@@ -233,7 +233,7 @@ _What's this Prometheus Pushgateway?_
 
 Funny Thing about Prometheus: We can't push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this...
 
-1.  We install [__Prometheus Pushgateway__](TODO) (as a Staging Area for Time-Series Data)
+1.  We install [__Prometheus Pushgateway__](TODO) (as the in-memory Staging Area for Time-Series Data)
 
 1.  We push our __Time-Series Data__ to Prometheus Pushgateway (over HTTP)
 
@@ -369,7 +369,7 @@ http://x.x.x.x:9091
 
 ![TODO](https://lupyuen.org/images/dashboard-pushgateway2.png)
 
-TODO: Connect prometheus to pushgateway
+We configure __Prometheus Server__ to talk to Pushgateway...
 
 ```bash
 ## Edit the Prometheus Server Config
@@ -393,7 +393,7 @@ sudo systemctl restart prometheus
 ##     - targets: ["localhost:9091"]
 ```
 
-__Wait One Minute:__ Prometheus Server shall scrape the Ingested Build Logs from Pushgateway.
+__Wait One Minute:__ Prometheus Server shall scrape and store the Ingested Build Logs from Pushgateway.
 
 Browse to Prometheus Server at our __External IP Address__, port 9090...
 
@@ -413,46 +413,79 @@ And click __"Execute"__. Yep Prometheus Server has successfully scraped and stor
 
 # Connect Grafana to Prometheus
 
-Follow these steps to create the dashboard (skip the `apt install`):
+_How will Grafana Dashboard talk to our Prometheus Database?_
 
-[Grafana Dashboard](https://lupyuen.org/articles/ci4#grafana-dashboard)
+1.  Inside Grafana: Click __"Menu > Data Sources > Prometheus"__.
 
-Add Data Source: https://lupyuen.org/articles/ci4#appendix-all-builds-dashboard
+1.  Set the __Prometheus Server URL__ to...
 
-Copy and overwrite the Dashboard JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json
+    ```bash
+    http://localhost:9090
+    ```
 
-But change ALL references to Prometheus UID:
+    ![TODO](https://lupyuen.org/images/ci4-datasource.png)
 
-```json
-...
-"datasource": {
-  "type": "prometheus",
-  "uid": "df998a9io0yrkb"
-}
-...
-```
+1.  Click __"Dashboards > New > New Dashboard"__
 
-(Get the UID from the Dashboard JSON before overwriting it)
+    ![TODO](https://lupyuen.org/images/ci4-grafana3.png)
 
-Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json
+1.  Click __"Settings > JSON Model"__
 
-Remember to change ALL references to Prometheus UID. (See above)
+    Copy and overwrite the Dashboard JSON from [__dashboard.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
 
-Set permission: 
-- Settings > Permission > Role Viewer > View
-- Same for Build History Dashboard
+    ![TODO](https://lupyuen.org/images/dashboard-json1.png)
 
-![TODO](https://lupyuen.org/images/dashboard-json1.png)
+1.  But change ALL references to __Prometheus UID__...
 
-![TODO](https://lupyuen.org/images/dashboard-json2.png)
+    ```json
+    ...
+    "datasource": {
+      "type": "prometheus",
+      "uid": "df998a9io0yrkb"
+    }
+    ...
+    ```
 
-![TODO](https://lupyuen.org/images/dashboard-json3.png)
+    (Get the UID from the Dashboard JSON before overwriting it)
 
-![TODO](https://lupyuen.org/images/dashboard-json4.png)
+1.  Allow everyone to view: Click __"Settings > Permission > Role Viewer > View"__
 
-![TODO](https://lupyuen.org/images/dashboard-json5.png)
+    ![TODO](https://lupyuen.org/images/dashboard-json5.png)
 
-![TODO](https://lupyuen.org/images/dashboard-json6.png)
+1.  Save the dashboard. That's our First Dashboard: __"Build Logs Dashboard"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-json2.png)
+
+1.  Once Again: Click __"Dashboards > New > New Dashboard"__
+
+    ![TODO](https://lupyuen.org/images/ci4-grafana3.png)
+
+1.  Click __"Settings > JSON Model"__
+
+    Copy and overwite the Dashboard History JSON from [__dashboard-history.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
+
+    ![TODO](https://lupyuen.org/images/dashboard-json3.png)
+
+1.  But change ALL references to __Prometheus UID__...
+
+    ```json
+    ...
+    "datasource": {
+      "type": "prometheus",
+      "uid": "df998a9io0yrkb"
+    }
+    ...
+    ```
+
+    (Get the UID from the Dashboard JSON before overwriting it)
+
+1.  Allow everyone to view: Click __"Settings > Permission > Role Viewer > View"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-json6.png)
+
+1.  Save the dashboard. That's our Second and Final Dashboard: __"NuttX Build History Dashboard"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-json4.png)
 
 # SSH Key for VM Login
 
