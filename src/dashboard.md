@@ -63,7 +63,7 @@ Then we create our __Virtual Machine__...
 
     ![TODO](https://lupyuen.org/images/dashboard-vm7.png)
 
-# Install Grafana
+# Install Grafana OSS Server
 
 We're ready to install __Grafana OSS Server__! Yep the thingy that renders our NuttX Dashboard...
 
@@ -100,6 +100,8 @@ netstat -an | grep LISTEN
 ```
 
 _How to access Grafana Server?_
+
+Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allow incoming packets for Port 3000...
 
 1.  Grab the __External IP Address__ for our VM...
 
@@ -155,20 +157,24 @@ _How to access Grafana Server?_
 
     ![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
 
-# Install Prometheus
+# Install Prometheus Server
+
+_Where's the data store for Grafana?_
+
+We'll install [__Prometheus Time-Series Database__](TODO), to record the successful and failed builds of NuttX for every microcontroller board...
 
 ```bash
 ## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
-## Install Prometheus server
+## Install Prometheus Server
 sudo apt install prometheus
 
-## Enable services to start on boot
+## Start Prometheus Server on boot
 sudo systemctl enable prometheus
 
-## Start services
+## Start Prometheus Server right now
 sudo systemctl start prometheus
 
-## Check service status
+## Check the status of Prometheus Server
 sudo systemctl status prometheus
 
 ## We should see...
@@ -176,47 +182,50 @@ sudo systemctl status prometheus
 ## Loaded: loaded (/lib/systemd/system/prometheus.service; enabled; preset: enabled)
 ## Active: active (running)
 
-## Check listening ports
+## Verify that Prometheus is listening on TCP Port 9090
 sudo ss -tlnp | grep -E '9090|9100'
 
 ## We should see...
-## LISTEN 0      4096               *:9090             *:*    users:(("prometheus",pid=93392,fd=7))     
-## LISTEN 0      4096               *:9100             *:*    users:(("prometheus-node",pid=93237,fd=3))
+## LISTEN 0 4096 *:9090 *:* users:(("prometheus",pid=93392,fd=7))     
+## LISTEN 0 4096 *:9100 *:* users:(("prometheus-node",pid=93237,fd=3))
+
+## Later we'll configure Prometheus...
+## /etc/prometheus/prometheus.yml
 ```
 
-VM Instances > Set Up Firewall Rules
+To see Prometheus: We create a __Firewall Rule__ to allow incoming access to __TCP Port 9090__...
 
-Firewall Policies > Create Firewall Rule
+1.  Click __"VM Instance > Set Up Firewall Rules"__
 
-allow-tcp-9090
+1.  Click __"Firewall Policies > Create Firewall Rule"__
 
-Targets: All instances in the network
+    __Name:__ allow-tcp-9090
 
-IPv4 Ranges: 0.0.0.0/0
+    __Targets:__ All instances in the network
 
-Protocol and Ports: TCP 9090
+    __IPv4 Ranges:__ 0.0.0.0/0
 
-Click "Create"
+    __Protocol and Ports:__ TCP 9090
 
-http://x.x.x.x:9090
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus1.png)
 
-The main configuration file is located at /etc/prometheus/prometheus.yml
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus2.png)
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus1.png)
+1.  Click __"Create"__. Verify that Port 9090 is open...
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus2.png)
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus3.png)
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus3.png)
+1.  Prometheus appears when we browse to Port 9090 of our __External IP Address__...
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
+    ```bash
+    http://x.x.x.x:9090
+    ```
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus5.png)
+    ![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus6.png)
+# Install Prometheus Pushgateway
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus7.png)
-
-# Install Pushgateway
+_What's this Prometheus Pushgateway?_
 
 https://devopscube.com/setup-prometheus-pushgateway-vm/
 
