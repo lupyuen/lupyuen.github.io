@@ -72,7 +72,7 @@
 <li><a href="#ingest-a-sample-nuttx-log" title="Ingest a Sample NuttX Log">5 Ingest a Sample NuttX Log</a><ul></ul></li>
 <li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">6 Connect Grafana to Prometheus</a><ul></ul></li>
 <li><a href="#set-the-github-token" title="Set the GitHub Token">7 Set the GitHub Token</a><ul></ul></li>
-<li><a href="#ingest-the-github-logs" title="Ingest the GitHub Logs">8 Ingest the GitHub Logs</a><ul></ul></li>
+<li><a href="#ingest-the-github-actions-logs" title="Ingest the GitHub Actions Logs">8 Ingest the GitHub Actions Logs</a><ul></ul></li>
 <li><a href="#start-the-nuttx-mirror-build" title="Start the NuttX Mirror Build">9 Start the NuttX Mirror Build</a><ul></ul></li>
 <li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">10 Forever Build and Ingest</a><ul></ul></li>
 <li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">11 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
@@ -499,8 +499,9 @@ export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>TODO: nuttxpr permissions</p>
-<h1 id="ingest-the-github-logs"><a class="doc-anchor" href="#ingest-the-github-logs">§</a>8 Ingest the GitHub Logs</h1>
-<p>Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh</p>
+<h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
+<p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> for all microcontroller boards.</p>
+<p>Let’s ingest the <strong>GitHub Actions Logs</strong> from the Mirror Repo Builds. Inside our VM: Run this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
 	&amp;&amp; sudo mkdir -p -m 755 /etc/apt/keyrings \
@@ -527,7 +528,8 @@ pushd $HOME/riscv
 git clone https://github.com/apache/nuttx
 popd
 
-## Run github.sh
+## Ingest the GitHub Actions Logs
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 sudo apt install unzip
 cd
 git clone https://github.com/lupyuen/ingest-nuttx-builds
