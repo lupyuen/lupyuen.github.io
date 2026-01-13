@@ -659,7 +659,7 @@ https://github.com/NuttX/nuttx/actions/workflows/build.yml
 
 TODO: Pic
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Discard Commit"__. Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Update Branch (or Discard Commit)"__. Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
 If we see
 
