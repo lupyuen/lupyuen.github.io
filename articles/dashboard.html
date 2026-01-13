@@ -258,11 +258,24 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
 </li>
 </ol>
+<p><em>Why Prometheus? Why not SQL Database?</em></p>
+<p>Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.</p>
 <h1 id="install-prometheus-pushgateway"><a class="doc-anchor" href="#install-prometheus-pushgateway">§</a>4 Install Prometheus Pushgateway</h1>
 <p><em>What’s this Prometheus Pushgateway?</em></p>
-<p>https://devopscube.com/setup-prometheus-pushgateway-vm/</p>
+<p>Funny Thing about Prometheus: We can’t push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this…</p>
+<ol>
+<li>
+<p>We install <a href="TODO"><strong>Prometheus Pushgateway</strong></a> (as a Staging Area for Time-Series Data)</p>
+</li>
+<li>
+<p>We push our <strong>Time-Series Data</strong> to Prometheus Pushgateway (over HTTP)</p>
+</li>
+<li>
+<p><strong>Prometheus Server</strong> shall scrape our Time-Series Data from Pushgateway (and store the data)</p>
+</li>
+</ol>
+<p>Here’s how we install <strong>Prometheus Pushgateway</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://devopscube.com/setup-prometheus-pushgateway-vm/
-
 wget https://github.com/prometheus/pushgateway/releases/download/v1.11.2/pushgateway-1.11.2.linux-amd64.tar.gz
 tar xvf pushgateway-1.11.2.linux-amd64.tar.gz
 mv pushgateway-1.11.2.linux-amd64 pushgateway
@@ -303,28 +316,43 @@ curl localhost:9091/metrics
 ## We should see...
 ## HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
 ## TYPE go_gc_duration_seconds summary</code></pre></div>
-<p>VM Instances &gt; Set Up Firewall Rules</p>
-<p>Firewall Policies &gt; Create Firewall Rule</p>
-<p>allow-tcp-9091</p>
-<p>Targets: All instances in the network</p>
-<p>IPv4 Ranges: 0.0.0.0/0</p>
-<p>Protocol and Ports: TCP 9091</p>
-<p>Click “Create”</p>
-<p>http://x.x.x.x:9091</p>
+<p>Prometheus Pushgateway has an Admin UI at <strong>TCP Port 9091</strong>. We grant access…</p>
+<ol>
+<li>
+<p>Click <strong>“VM Instance &gt; Set Up Firewall Rules”</strong></p>
+</li>
+<li>
+<p>Click <strong>“Firewall Policies &gt; Create Firewall Rule”</strong></p>
+<p><strong>Name:</strong> allow-tcp-9091</p>
+<p><strong>Targets:</strong> All instances in the network</p>
+<p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
+<p><strong>Protocol and Ports:</strong> TCP 9091</p>
+<p>Click <strong>“Create”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus7.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Prometheus Pushgateway appears on our External IP Address at…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-pushgateway1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway3.png" alt="TODO" /></p>
-<h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1><div class="example-wrap"><pre class="language-bash"><code>pushd /tmp
+</li>
+</ol>
+<h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1>
+<p>We’re all done with installation! Now we ingest some <strong>NuttX Build Logs</strong> to verify that Prometheus Server and Pushgateway are talking…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download the Sample NuttX Build Log
+pushd /tmp
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/defconfig.txt
 wget https://github.com/lupyuen/ingest-nuttx-builds/releases/download/v1.0.0/ci-xtensa-02.log
 popd
 
-## Install rust: https://rustup.rs/
+## Install Rust: https://rustup.rs/
 ## Press Enter for default option
 curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . &quot;$HOME/.cargo/env&quot;
 sudo apt install gcc pkg-config libssl-dev
 
+## Ingest the Sample NuttX Build Log into Prometheus Pushgateway
 sudo apt install git
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
@@ -351,15 +379,36 @@ cargo run \
 ## # HELP build_score 1.0 for successful build, 0.0 for failed build
 ## build_score{ version=&quot;3&quot;, timestamp=&quot;2026-01-05T08:39:57&quot;, timestamp_log=&quot;2026-01-05T08:39:57&quot;, user=&quot;NuttX&quot;, arch=&quot;xtensa&quot;, subarch=&quot;esp32s3&quot;, group=&quot;xtensa-02&quot;, board=&quot;esp32s3-devkit&quot;, config=&quot;spi&quot;, target=&quot;esp32s3-devkit:spi&quot;, url=&quot;https://github.com/NuttX/nuttx/actions/runs/20706016275/job/59436813170#step:10:2455&quot;, url_display=&quot;&quot;, nuttx_hash=&quot;59f200ac4fe6c940dc0eab2155bb3cb566724082&quot;, apps_hash=&quot;4f93ec0a4335d574eeecfd295584fbfb17056e5b&quot; } 1
 ## res=Response { url: &quot;http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi&quot;, status: 200, headers: {&quot;date&quot;: &quot;Mon, 05 Jan 2026 10:10:52 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} }</code></pre></div>
-<p>Check http://x.x.x.x:9091</p>
+<p>Browse to Prometheus Pushgateway at our <strong>External IP Address</strong>, port 9091. We’ll see the <strong>NuttX Build Logs</strong> that we have ingested…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway2.png" alt="TODO" /></p>
 <p>TODO: Connect prometheus to pushgateway</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo nano /etc/prometheus/prometheus.yml
+<div class="example-wrap"><pre class="language-bash"><code>## Edit the Prometheus Server Config
+sudo nano /etc/prometheus/prometheus.yml
+
 ## Erase everything in the file. Replace by contents of
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/prometheus.yml
-sudo systemctl restart prometheus</code></pre></div>
-<p>Check http://x.x.x.x:9090</p>
-<p>Enter the query “build_score”</p>
-<p>Press Execute</p>
+
+## Restart our Prometheus Server
+sudo systemctl restart prometheus
+
+## Which will scrape the Metrics from Prometheus Pushgateway every 15 seconds...
+## global:
+##   scrape_interval: 15s
+## scrape_configs:
+##   - job_name: &quot;prometheus&quot;
+##     static_configs:
+##     - targets: [&quot;localhost:9090&quot;]
+##   - job_name: &quot;pushgateway&quot;
+##     static_configs:
+##     - targets: [&quot;localhost:9091&quot;]</code></pre></div>
+<p><strong>Wait One Minute:</strong> Prometheus Server shall scrape the Ingested Build Logs from Pushgateway.</p>
+<p>Browse to Prometheus Server at our <strong>External IP Address</strong>, port 9090…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
+<p>Enter this Prometheus Query…</p>
+<div class="example-wrap"><pre class="language-bash"><code>build_score</code></pre></div>
+<p>And click <strong>“Execute”</strong>. Yep Prometheus Server has successfully scraped and stored the <strong>NuttX Build Logs</strong> from Pushgateway yay!</p>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway3.png" alt="TODO" /></p>
 <h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1>
 <p>Follow these steps to create the dashboard (skip the <code>apt install</code>):</p>
 <p><a href="https://lupyuen.org/articles/ci4#grafana-dashboard">Grafana Dashboard</a></p>
@@ -787,7 +836,8 @@ Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
 <p>Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>19 What’s Next</h1>
 <p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
-<p>What other jobs?</p>
+<p><em>Anything else we’re running on our Home Computer?</em></p>
+<p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
 <p>nuttx-metrics</p>
 <p>riscv64</p>
 <p>avaota-a1, starpro64, oz64</p>
