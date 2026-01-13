@@ -75,10 +75,10 @@
 <li><a href="#ingest-the-github-actions-logs" title="Ingest the GitHub Actions Logs">8 Ingest the GitHub Actions Logs</a><ul></ul></li>
 <li><a href="#start-the-nuttx-mirror-build" title="Start the NuttX Mirror Build">9 Start the NuttX Mirror Build</a><ul></ul></li>
 <li><a href="#forever-build-and-ingest" title="Forever Build and Ingest">10 Forever Build and Ingest</a><ul></ul></li>
-<li><a href="#ingest-the-github-gists-and-gitlab-snippets" title="Ingest the GitHub Gists and GitLab Snippets">11 Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
-<li><a href="#secure-our-grafana-server" title="Secure Our Grafana Server">12 Secure Our Grafana Server</a><ul></ul></li>
-<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">13 Cost of Google Cloud</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">14 What’s Next</a><ul></ul></li>
+<li><a href="#secure-our-grafana-server" title="Secure Our Grafana Server">11 Secure Our Grafana Server</a><ul></ul></li>
+<li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">12 Cost of Google Cloud</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-ingest-the-github-gists-and-gitlab-snippets" title="Appendix: Ingest the GitHub Gists and GitLab Snippets">14 Appendix: Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
 <li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">15 Appendix: NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">16 Appendix: Expand the VM Disk</a><ul></ul></li>
 <li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">17 Appendix: SSH Key for VM Login</a><ul></ul></li>
@@ -604,7 +604,7 @@ cd $HOME/nuttx-release
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Increase the disk space. Need 5 GB for /tmp. See the section below. TODO</p>
 <h1 id="forever-build-and-ingest"><a class="doc-anchor" href="#forever-build-and-ingest">§</a>10 Forever Build and Ingest</h1>
-<p>nano $HOME/sync.sh</p>
+<p>Everything We’ve Done: Needs to be looped forever. Edit <em>$HOME/sync.sh</em> and fill this in…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Sync NuttX Mirror, Build NuttX Mirror and Ingest GitHub Actions Logs
 
@@ -619,7 +619,7 @@ for (( ; ; )); do
   set +x ; echo &quot;**** sync.sh: Waiting&quot; ; set -x
   date ; sleep 900
 done</code></pre></div>
-<p>Run $HOME/sync.sh</p>
+<p>Whenever our VM Boots: Run <em>$HOME/sync.sh</em>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo apt install tmux
 tmux
 chmod +x $HOME/sync.sh
@@ -631,18 +631,8 @@ $HOME/sync.sh
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo)</p>
 <p><a href="https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log">Log for NuttX Build and Ingest</a></p>
 <p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync.sh.</p>
-<h1 id="ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#ingest-the-github-gists-and-gitlab-snippets">§</a>11 Ingest the GitHub Gists and GitLab Snippets</h1>
-<p>Remember to set GitLab Token</p>
-<div class="example-wrap"><pre class="language-bash"><code>tmux
-cd $HOME/ingest-nuttx-builds
-./run.sh
-
-## If the SSH Session Disconnects:
-## Do this to reconnect the run.sh session...
-## tmux a</code></pre></div>
-<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
-<p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">Log for Ingest GitHub Gists and GitLab Snippets</a></p>
-<h1 id="secure-our-grafana-server"><a class="doc-anchor" href="#secure-our-grafana-server">§</a>12 Secure Our Grafana Server</h1>
+<p>TODO: Ingest the GitHub Gists and GitLab Snippets</p>
+<h1 id="secure-our-grafana-server"><a class="doc-anchor" href="#secure-our-grafana-server">§</a>11 Secure Our Grafana Server</h1>
 <p>We’re ready to Go Live! We tweak some Grafana Settings to make NuttX Dashboard more secure.</p>
 <p>Inside our VM: Edit <em>/etc/grafana/grafana.ini</em>. Look for these settings and change them (don’t add them)</p>
 <div class="example-wrap"><pre class="language-bash"><code># Default UI theme (&quot;dark&quot;, &quot;light&quot; or &quot;system&quot;)
@@ -682,14 +672,14 @@ hide_version = true</code></pre></div>
 </ul>
 <p>NuttX Dashboard is ready to serve. Yay!</p>
 <p>TODO: Pic</p>
-<h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>13 Cost of Google Cloud</h1>
+<h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>12 Cost of Google Cloud</h1>
 <p>TODO</p>
 <p>No budget. Will pay out of our pocket.</p>
-<p>_Will it be cheaper to run on an Asian Cloud? Like AliCloud? _</p>
-<p>Hmmm interesting… We should try out!</p>
+<p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
+<p>Hmmm interesting… We should <a href="https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d"><strong>try it sometime</strong></a>!</p>
 <p><em>Running the Build Farm on Google Cloud?</em></p>
 <p>Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
-<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>14 What’s Next</h1>
+<h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
 <p><em>Anything else we’re running on our Home Computer?</em></p>
 <p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
@@ -698,6 +688,21 @@ hide_version = true</code></pre></div>
 <p>avaota-a1, starpro64, oz64</p>
 <p>mastodon, forgejo</p>
 <p>TODO</p>
+<h1 id="appendix-ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#appendix-ingest-the-github-gists-and-gitlab-snippets">§</a>14 Appendix: Ingest the GitHub Gists and GitLab Snippets</h1>
+<p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
+<p>We have a <a href="TODO"><strong>NuttX Build Farm</strong></a> hosted at home. Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
+<p>Whenever our VM Boots: Do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ingest the GitHub Gists and GitLab Snippets
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
+tmux
+cd $HOME/ingest-nuttx-builds
+./run.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the run.sh session...
+## tmux a</code></pre></div>
+<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
+<p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>15 Appendix: NuttX Mirror Repo</h1>
 <p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
 <p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
