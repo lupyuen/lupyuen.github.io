@@ -535,21 +535,36 @@ cd
 git clone https://github.com/lupyuen/ingest-nuttx-builds
 cd ingest-nuttx-builds
 ./github.sh</code></pre></div>
-<p>Log for Ingest NuttX Builds: https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0</p>
-<p>Check Pushgateway http://x.x.x.x:9091</p>
-<p>Check Prometheus: Enter “build_score”, click Execute. http://x.x.x.x:9090</p>
-<p>Check Grafana http://x.x.x.x:3000/d/fe2bqg6uk7nr4a</p>
-<p>And Build History: http://x.x.x.x:3000/d/fe2q876wubc3kc</p>
-<p>TODO: Fix step:10 to ??? for Linux</p>
+<p><a href="https://gist.github.com/lupyuen/8cf82eab994c2bca77f129ffa118acf0">(See the log for github.sh)</a></p>
+<ol>
+<li>
+<p>Check <strong>Prometheus Pushgateway</strong> at our External IP Address, port 9091. We should see the logs ingested from GitHub Actions…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Check <strong>Prometheus Server</strong> at our External IP Address, port 9090. Enter the Prometheus Query <strong>“build_score”</strong>, click <strong>Execute</strong>.</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Check <strong>Grafana Dashboard</strong> at our External IP Address, port 3000. We’ll see the GitHub Actions Logs…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000/d/fe2bqg6uk7nr4a</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Finally check the <strong>Build History</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000/d/fe2q876wubc3kc</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest4.png" alt="TODO" /></p>
+</li>
+</ol>
+<p>TODO: Fix step:10 to ??? for Linux</p>
 <h1 id="start-the-nuttx-mirror-build"><a class="doc-anchor" href="#start-the-nuttx-mirror-build">§</a>9 Start the NuttX Mirror Build</h1>
 <p>TODO: nuttxpr permissions</p>
-<p>Only one instance of sync-build-ingest.sh should ever be running! Make sure <code>lupyuen</code> isn’t running it on his Home Computer.</p>
-<p>Inside the VM: Run https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh</p>
-<div class="example-wrap"><pre class="language-bash"><code>. $HOME/github-token.sh
+<p>Only one instance of sync-build-ingest.sh should ever be running! Make sure <em>lupyuen</em> isn’t running it on his Home Computer.</p>
+<p>Inside the VM: Run</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the GitHub Token
+. $HOME/github-token.sh
 gh auth status
 
 ## We should see...
@@ -563,7 +578,8 @@ gh auth status
 git config --global user.email &quot;nuttxpr@gmail.com&quot;
 git config --global user.name &quot;nuttxpr (nuttx-dashboard-vm)&quot;
 
-## Run sync-build-ingest.sh
+## Start the NuttX Mirror Build and ingest the logs from GitHub Actions
+## https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh
 cd
 git clone https://github.com/lupyuen/nuttx-release
 cd $HOME/nuttx-release
@@ -573,8 +589,8 @@ cd $HOME/nuttx-release
 ## Then run this instead:
 ## ./enable-macos-windows.sh
 ## ./sync-build-ingest.sh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c9dd83842ab9b845eadedb968bd63bc1">sync-build-ingest.sh Log</a></p>
-<p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">enable-macos-windows.sh Log</a></p>
+<p><a href="https://gist.github.com/lupyuen/c9dd83842ab9b845eadedb968bd63bc1">(Log for sync-build-ingest.sh)</a></p>
+<p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">(Log for enable-macos-windows.sh)</a></p>
 <p>We should see the patch that starts the NuttX Build:</p>
 <p>https://github.com/NuttX/nuttx/commits/master/</p>
 <p>And the NuttX Build should be running:</p>
