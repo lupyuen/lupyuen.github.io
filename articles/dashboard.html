@@ -265,7 +265,7 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p>Funny Thing about Prometheus: We can’t push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this…</p>
 <ol>
 <li>
-<p>We install <a href="TODO"><strong>Prometheus Pushgateway</strong></a> (as a Staging Area for Time-Series Data)</p>
+<p>We install <a href="TODO"><strong>Prometheus Pushgateway</strong></a> (as the in-memory Staging Area for Time-Series Data)</p>
 </li>
 <li>
 <p>We push our <strong>Time-Series Data</strong> to Prometheus Pushgateway (over HTTP)</p>
@@ -382,7 +382,7 @@ cargo run \
 <p>Browse to Prometheus Pushgateway at our <strong>External IP Address</strong>, port 9091. We’ll see the <strong>NuttX Build Logs</strong> that we have ingested…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-pushgateway2.png" alt="TODO" /></p>
-<p>TODO: Connect prometheus to pushgateway</p>
+<p>We configure <strong>Prometheus Server</strong> to talk to Pushgateway…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Edit the Prometheus Server Config
 sudo nano /etc/prometheus/prometheus.yml
 
@@ -402,7 +402,7 @@ sudo systemctl restart prometheus
 ##   - job_name: &quot;pushgateway&quot;
 ##     static_configs:
 ##     - targets: [&quot;localhost:9091&quot;]</code></pre></div>
-<p><strong>Wait One Minute:</strong> Prometheus Server shall scrape the Ingested Build Logs from Pushgateway.</p>
+<p><strong>Wait One Minute:</strong> Prometheus Server shall scrape and store the Ingested Build Logs from Pushgateway.</p>
 <p>Browse to Prometheus Server at our <strong>External IP Address</strong>, port 9090…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p>Enter this Prometheus Query…</p>
@@ -410,11 +410,27 @@ sudo systemctl restart prometheus
 <p>And click <strong>“Execute”</strong>. Yep Prometheus Server has successfully scraped and stored the <strong>NuttX Build Logs</strong> from Pushgateway yay!</p>
 <p><img src="https://lupyuen.org/images/dashboard-pushgateway3.png" alt="TODO" /></p>
 <h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1>
-<p>Follow these steps to create the dashboard (skip the <code>apt install</code>):</p>
-<p><a href="https://lupyuen.org/articles/ci4#grafana-dashboard">Grafana Dashboard</a></p>
-<p>Add Data Source: https://lupyuen.org/articles/ci4#appendix-all-builds-dashboard</p>
-<p>Copy and overwrite the Dashboard JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json</p>
-<p>But change ALL references to Prometheus UID:</p>
+<p><em>How will Grafana Dashboard talk to our Prometheus Database?</em></p>
+<ol>
+<li>
+<p>Inside Grafana: Click <strong>“Menu &gt; Data Sources &gt; Prometheus”</strong>.</p>
+</li>
+<li>
+<p>Set the <strong>Prometheus Server URL</strong> to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://localhost:9090</code></pre></div>
+<p><img src="https://lupyuen.org/images/ci4-datasource.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Dashboards &gt; New &gt; New Dashboard”</strong></p>
+<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Settings &gt; JSON Model”</strong></p>
+<p>Copy and overwrite the Dashboard JSON from <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json"><strong>dashboard.json</strong></a></p>
+<p><img src="https://lupyuen.org/images/dashboard-json1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>But change ALL references to <strong>Prometheus UID</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>...
 &quot;datasource&quot;: {
   &quot;type&quot;: &quot;prometheus&quot;,
@@ -422,19 +438,43 @@ sudo systemctl restart prometheus
 }
 ...</code></pre></div>
 <p>(Get the UID from the Dashboard JSON before overwriting it)</p>
-<p>Copy and overwite the Dashboard History JSON: https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json</p>
-<p>Remember to change ALL references to Prometheus UID. (See above)</p>
-<p>Set permission:</p>
-<ul>
-<li>Settings &gt; Permission &gt; Role Viewer &gt; View</li>
-<li>Same for Build History Dashboard</li>
-</ul>
-<p><img src="https://lupyuen.org/images/dashboard-json1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-json2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-json3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Allow everyone to view: Click <strong>“Settings &gt; Permission &gt; Role Viewer &gt; View”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-json5.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Save the dashboard. That’s our First Dashboard: <strong>“Build Logs Dashboard”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-json2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Once Again: Click <strong>“Dashboards &gt; New &gt; New Dashboard”</strong></p>
+<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Settings &gt; JSON Model”</strong></p>
+<p>Copy and overwite the Dashboard History JSON from <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json"><strong>dashboard-history.json</strong></a></p>
+<p><img src="https://lupyuen.org/images/dashboard-json3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>But change ALL references to <strong>Prometheus UID</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>...
+&quot;datasource&quot;: {
+  &quot;type&quot;: &quot;prometheus&quot;,
+  &quot;uid&quot;: &quot;df998a9io0yrkb&quot;
+}
+...</code></pre></div>
+<p>(Get the UID from the Dashboard JSON before overwriting it)</p>
+</li>
+<li>
+<p>Allow everyone to view: Click <strong>“Settings &gt; Permission &gt; Role Viewer &gt; View”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-json6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Save the dashboard. That’s our Second and Final Dashboard: <strong>“NuttX Build History Dashboard”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="TODO" /></p>
+</li>
+</ol>
 <h1 id="ssh-key-for-vm-login"><a class="doc-anchor" href="#ssh-key-for-vm-login">§</a>7 SSH Key for VM Login</h1>
 <p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
