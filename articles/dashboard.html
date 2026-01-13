@@ -66,9 +66,9 @@
     <h1 class="title">Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS</h1>
     <nav id="rustdoc"><ul>
 <li><a href="#create-our-virtual-machine" title="Create Our Virtual Machine">1 Create Our Virtual Machine</a><ul></ul></li>
-<li><a href="#install-grafana" title="Install Grafana">2 Install Grafana</a><ul></ul></li>
-<li><a href="#install-prometheus" title="Install Prometheus">3 Install Prometheus</a><ul></ul></li>
-<li><a href="#install-pushgateway" title="Install Pushgateway">4 Install Pushgateway</a><ul></ul></li>
+<li><a href="#install-grafana-oss-server" title="Install Grafana OSS Server">2 Install Grafana OSS Server</a><ul></ul></li>
+<li><a href="#install-prometheus-server" title="Install Prometheus Server">3 Install Prometheus Server</a><ul></ul></li>
+<li><a href="#install-prometheus-pushgateway" title="Install Prometheus Pushgateway">4 Install Prometheus Pushgateway</a><ul></ul></li>
 <li><a href="#ingest-a-sample-nuttx-log" title="Ingest a Sample NuttX Log">5 Ingest a Sample NuttX Log</a><ul></ul></li>
 <li><a href="#connect-grafana-to-prometheus" title="Connect Grafana to Prometheus">6 Connect Grafana to Prometheus</a><ul></ul></li>
 <li><a href="#ssh-key-for-vm-login" title="SSH Key for VM Login">7 SSH Key for VM Login</a><ul></ul></li>
@@ -132,7 +132,7 @@ $ sudo apt upgrade</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
 </li>
 </ol>
-<h1 id="install-grafana"><a class="doc-anchor" href="#install-grafana">§</a>2 Install Grafana</h1>
+<h1 id="install-grafana-oss-server"><a class="doc-anchor" href="#install-grafana-oss-server">§</a>2 Install Grafana OSS Server</h1>
 <p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy that renders our NuttX Dashboard…</p>
 <ul>
 <li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository"><strong>Install Grafana OSS on Debian</strong></a></li>
@@ -165,6 +165,7 @@ sudo /bin/systemctl start grafana-server
 ## &quot;tcp6 0 0 :::3000 :::* LISTEN&quot;
 netstat -an | grep LISTEN</code></pre></div>
 <p><em>How to access Grafana Server?</em></p>
+<p>Grafana is listening at <strong>TCP Port 3000</strong>. We create a <strong>Firewall Rule</strong> to allow incoming packets for Port 3000…</p>
 <ol>
 <li>
 <p>Grab the <strong>External IP Address</strong> for our VM…</p>
@@ -203,17 +204,20 @@ netstat -an | grep LISTEN</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="TODO" /></p>
 </li>
 </ol>
-<h1 id="install-prometheus"><a class="doc-anchor" href="#install-prometheus">§</a>3 Install Prometheus</h1><div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
-## Install Prometheus server
+<h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
+<p><em>Where’s the data store for Grafana?</em></p>
+<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a>, to record the successful and failed builds of NuttX for every microcontroller board…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
+## Install Prometheus Server
 sudo apt install prometheus
 
-## Enable services to start on boot
+## Start Prometheus Server on boot
 sudo systemctl enable prometheus
 
-## Start services
+## Start Prometheus Server right now
 sudo systemctl start prometheus
 
-## Check service status
+## Check the status of Prometheus Server
 sudo systemctl status prometheus
 
 ## We should see...
@@ -221,29 +225,41 @@ sudo systemctl status prometheus
 ## Loaded: loaded (/lib/systemd/system/prometheus.service; enabled; preset: enabled)
 ## Active: active (running)
 
-## Check listening ports
+## Verify that Prometheus is listening on TCP Port 9090
 sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 
 ## We should see...
-## LISTEN 0      4096               *:9090             *:*    users:((&quot;prometheus&quot;,pid=93392,fd=7))     
-## LISTEN 0      4096               *:9100             *:*    users:((&quot;prometheus-node&quot;,pid=93237,fd=3))</code></pre></div>
-<p>VM Instances &gt; Set Up Firewall Rules</p>
-<p>Firewall Policies &gt; Create Firewall Rule</p>
-<p>allow-tcp-9090</p>
-<p>Targets: All instances in the network</p>
-<p>IPv4 Ranges: 0.0.0.0/0</p>
-<p>Protocol and Ports: TCP 9090</p>
-<p>Click “Create”</p>
-<p>http://x.x.x.x:9090</p>
-<p>The main configuration file is located at /etc/prometheus/prometheus.yml</p>
+## LISTEN 0 4096 *:9090 *:* users:((&quot;prometheus&quot;,pid=93392,fd=7))     
+## LISTEN 0 4096 *:9100 *:* users:((&quot;prometheus-node&quot;,pid=93237,fd=3))
+
+## Later we&#39;ll configure Prometheus...
+## /etc/prometheus/prometheus.yml</code></pre></div>
+<p>To see Prometheus: We create a <strong>Firewall Rule</strong> to allow incoming access to <strong>TCP Port 9090</strong>…</p>
+<ol>
+<li>
+<p>Click <strong>“VM Instance &gt; Set Up Firewall Rules”</strong></p>
+</li>
+<li>
+<p>Click <strong>“Firewall Policies &gt; Create Firewall Rule”</strong></p>
+<p><strong>Name:</strong> allow-tcp-9090</p>
+<p><strong>Targets:</strong> All instances in the network</p>
+<p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
+<p><strong>Protocol and Ports:</strong> TCP 9090</p>
 <p><img src="https://lupyuen.org/images/dashboard-prometheus1.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-prometheus2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Create”</strong>. Verify that Port 9090 is open…</p>
 <p><img src="https://lupyuen.org/images/dashboard-prometheus3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Prometheus appears when we browse to Port 9090 of our <strong>External IP Address</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus7.png" alt="TODO" /></p>
-<h1 id="install-pushgateway"><a class="doc-anchor" href="#install-pushgateway">§</a>4 Install Pushgateway</h1>
+</li>
+</ol>
+<h1 id="install-prometheus-pushgateway"><a class="doc-anchor" href="#install-prometheus-pushgateway">§</a>4 Install Prometheus Pushgateway</h1>
+<p><em>What’s this Prometheus Pushgateway?</em></p>
 <p>https://devopscube.com/setup-prometheus-pushgateway-vm/</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://devopscube.com/setup-prometheus-pushgateway-vm/
 
