@@ -522,9 +522,11 @@ export GITLAB_REPO=nuttx-build-log
 
 TODO: nuttxpr permissions
 
-# Ingest the GitHub Logs
+# Ingest the GitHub Actions Logs
 
-Inside the VM: Run https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
+We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) for all microcontroller boards.
+
+Let's ingest the __GitHub Actions Logs__ from the Mirror Repo Builds. Inside our VM: Run this...
 
 ```bash
 ## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
@@ -553,7 +555,8 @@ pushd $HOME/riscv
 git clone https://github.com/apache/nuttx
 popd
 
-## Run github.sh
+## Ingest the GitHub Actions Logs
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/github.sh
 sudo apt install unzip
 cd
 git clone https://github.com/lupyuen/ingest-nuttx-builds
