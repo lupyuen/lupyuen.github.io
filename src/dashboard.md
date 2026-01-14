@@ -22,9 +22,11 @@ _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
 Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
 
+![TODO](https://lupyuen.org/images/dashboard-flow.jpg)
+
 # Create Our Virtual Machine
 
-We begin by creating a __Google Cloud Project__ that will operate our VM. We named it _nuttx-dashboard_...
+We begin by creating a __Google Cloud Project__ that will operate our VM (pic above). We named it _nuttx-dashboard_...
 
 - [__Create a Google Cloud Project__](https://console.cloud.google.com/projectcreate) _(console.cloud.google.com)_
 
@@ -63,9 +65,13 @@ Then we create our __Virtual Machine__...
 
 ![TODO](https://lupyuen.org/images/dashboard-vm7.png)
 
+Let's populate our new VM...
+
+![TODO](https://lupyuen.org/images/dashboard-flow1.jpg)
+
 # Install Grafana OSS Server
 
-We're ready to install __Grafana OSS Server__! Yep the thingy that renders our NuttX Dashboard...
+We're ready to install __Grafana OSS Server__! Yep the thingy (pic above) that renders our NuttX Dashboard...
 
 - [__Install Grafana OSS on Debian__](https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository)
 
@@ -157,11 +163,13 @@ Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allo
 
     ![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
 
+![TODO](https://lupyuen.org/images/dashboard-flow2.jpg)
+
 # Install Prometheus Server
 
 _Where's the data store for Grafana?_
 
-We'll install [__Prometheus Time-Series Database__](TODO), to record the successful and failed builds of NuttX across all 339 microcontroller boards...
+We'll install [__Prometheus Time-Series Database__](TODO) (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards...
 
 ```bash
 ## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
@@ -227,6 +235,8 @@ _Why Prometheus? Why not SQL Database?_
 
 Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.
 
+![TODO](https://lupyuen.org/images/dashboard-flow3.jpg)
+
 # Install Prometheus Pushgateway
 
 _What's this Prometheus Pushgateway?_
@@ -235,7 +245,7 @@ Funny Thing about Prometheus: We can't push Time-Series Data to Prometheus Serve
 
 1.  We install [__Prometheus Pushgateway__](TODO) (as the in-memory Staging Area for Time-Series Data)
 
-1.  We push our __Time-Series Data__ to Prometheus Pushgateway (over HTTP)
+1.  We push our __Time-Series Data__ to Prometheus Pushgateway (over HTTP, pic above)
 
 1.  __Prometheus Server__ shall scrape our Time-Series Data from Pushgateway (and store the data)
 
@@ -522,11 +532,13 @@ export GITLAB_REPO=nuttx-build-log
 
 TODO: nuttxpr permissions
 
+![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
+
 # Ingest the GitHub Actions Logs
 
 We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) across all 339 microcontroller boards.
 
-Let's ingest the __GitHub Actions Logs__ from the Mirror Repo Builds. Inside our VM: Do this...
+Let's ingest the __GitHub Actions Logs__ (pic above) from the Mirror Repo Builds. Inside our VM: Do this...
 
 ```bash
 ## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
@@ -574,13 +586,17 @@ cd ingest-nuttx-builds
 
     ![TODO](https://lupyuen.org/images/dashboard-ingest1.png)
 
-1.  Check __Prometheus Server__ at our External IP Address, port 9090. Enter the Prometheus Query __"build_score"__, click __Execute__. 
+1.  Check __Prometheus Server__ at our External IP Address, port 9090. Enter the Prometheus Query __"build_score"__, click __Execute__. We'll see the same logs...
 
     ```bash
     http://x.x.x.x:9090
     ```
 
     ![TODO](https://lupyuen.org/images/dashboard-ingest2.png)
+
+    __Bonus:__ This query will reveal that NuttX has 339 microcontroller boards: __"count by (board) (build_score)"__
+
+    TODO: Pic
 
 1.  Check __Grafana Dashboard__ at our External IP Address, port 3000. We'll see the GitHub Actions Logs...
 
@@ -771,6 +787,10 @@ TODO
 
 No budget. Will pay out of our pocket.
 
+50% CPU. How much?
+
+TODO: Pic
+
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
 Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
@@ -797,33 +817,11 @@ mastodon, forgejo
 
 TODO
 
-# Appendix: Ingest the GitHub Gists and GitLab Snippets
-
-_What's with the GitHub Gists and GitLab Snippets_
-
-We have a [__NuttX Build Farm__](TODO) hosted at home. Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
-
-Whenever our VM Boots: Do this...
-
-```bash
-## Ingest the GitHub Gists and GitLab Snippets
-## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
-tmux
-cd $HOME/ingest-nuttx-builds
-./run.sh
-
-## If the SSH Session Disconnects:
-## Do this to reconnect the run.sh session...
-## tmux a
-```
-
-(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
-
-[(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
+![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Appendix: NuttX Mirror Repo
 
-`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to `nuttxpr`
+`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo (pic above). We grant permission to `nuttxpr`
 
 NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access
 
@@ -868,6 +866,34 @@ Check the collaborators: https://github.com/NuttX/nuttx/settings/access
 ![TODO](https://lupyuen.org/images/dashboard-github15.png)
 
 ![TODO](https://lupyuen.org/images/dashboard-github16.png)
+
+TODO
+
+![TODO](https://lupyuen.org/images/dashboard-flow5.jpg)
+
+# Appendix: Ingest the GitHub Gists
+
+_What's with the GitHub Gists and GitLab Snippets_
+
+We have a [__NuttX Build Farm__](TODO) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
+
+Whenever our VM Boots: Do this...
+
+```bash
+## Ingest the GitHub Gists and GitLab Snippets
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
+tmux
+cd $HOME/ingest-nuttx-builds
+./run.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the run.sh session...
+## tmux a
+```
+
+(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
+
+[(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
 # Appendix: Expand the VM Disk
 
@@ -964,102 +990,6 @@ tmpfs           412M     0  412M   0% /run/user/1000
 
 ![TODO](https://lupyuen.org/images/dashboard-disk3.png)
 
-# Appendix: SSH Key for VM Login
-
-Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
-
-```bash
-## Do this on our computer, NOT the VM!
-## Change "luppy" to your VM Username
-ssh-keygen \
-  -t rsa \
-  -f $HOME/.ssh/nuttx-dashboard-vm \
-  -C luppy
-
-## Check the output
-ls $HOME/.ssh/nuttx-dashboard-vm*
-
-## We should see...
-## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub
-```
-
-Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
-
-```bash
-## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
-gcloud version
-## We should see: Google Cloud SDK 550.0.0
-```
-
-Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
-
-Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
-
-Click "SSH Keys"
-
-Click "Add SSH Key"
-
-Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
-
-Click "Save"
-
-```bash
-## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
-## Change "luppy" to your VM Username
-ssh \
-  -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x
-```
-
-In VSCode: Click "Remote Explorer > SSH > +"
-
-```bash
-ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
-```
-
-Select the SSH Config file $HOME/.ssh/config
-
-Click "Connect"
-
-Click "File > Open File / Folder"
-
-$HOME/.ssh/config will look like:
-
-```bash
-Host x.x.x.x
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy
-```
-
-Probably better to rename the "Host", in case the IP Address changes...
-
-```bash
-Host nuttx-dashboard-vm
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy
-```
-
-![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
-
 # Appendix: SSH Key for GitHub
 
 nuttxpr is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!
@@ -1111,6 +1041,106 @@ ssh -T \
 ## We should see...
 ## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
 ```
+
+# Appendix: SSH Key for VM Login
+
+Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+
+```bash
+## Do this on our computer, NOT the VM!
+## Change "luppy" to your VM Username
+ssh-keygen \
+  -t rsa \
+  -f $HOME/.ssh/nuttx-dashboard-vm \
+  -C luppy
+
+## Check the output
+ls $HOME/.ssh/nuttx-dashboard-vm*
+
+## We should see...
+## nuttx-dashboard-vm
+## nuttx-dashboard-vm.pub
+```
+
+Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
+
+```bash
+## For macOS:
+brew install gcloud-cli
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+gcloud version
+## We should see: Google Cloud SDK 550.0.0
+```
+
+Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
+
+Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
+
+Click "SSH Keys"
+
+Click "Add SSH Key"
+
+Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
+
+Click "Save"
+
+```bash
+## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+## Change "luppy" to your VM Username
+ssh \
+  -i $HOME/.ssh/nuttx-dashboard-vm \
+  luppy@x.x.x.x
+```
+
+# Appendix: Remote Connect in VSCode
+
+In VSCode: Click "Remote Explorer > SSH > +"
+
+```bash
+ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
+```
+
+Select the SSH Config file $HOME/.ssh/config
+
+Click "Connect"
+
+Click "File > Open File / Folder"
+
+$HOME/.ssh/config will look like:
+
+```bash
+Host x.x.x.x
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
+Probably better to rename the "Host", in case the IP Address changes...
+
+```bash
+Host nuttx-dashboard-vm
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy
+```
+
+TODO: Port forward pic
+
+![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
+
+![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
 
 # Appendix: Publish Online with Cloudflare
 
