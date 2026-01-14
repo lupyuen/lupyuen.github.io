@@ -573,8 +573,8 @@ cd ingest-nuttx-builds
 </ol>
 <h1 id="start-the-nuttx-mirror-build"><a class="doc-anchor" href="#start-the-nuttx-mirror-build">§</a>9 Start the NuttX Mirror Build</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
-<p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
-<p>Only one instance of <em>sync-build-ingest.sh</em> should ever be running! Make sure <em>lupyuen</em> isn’t running it on his Home Computer.</p>
+<p>Our script <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
+<p>Only one instance of <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a> should ever be running! Make sure <em>lupyuen</em> isn’t running it on his Home Computer.</p>
 <p>Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Set the GitHub Token
 . $HOME/github-token.sh
@@ -610,7 +610,7 @@ cd $HOME/nuttx-release
 <p>And the <strong>NuttX Build</strong> should be running…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/actions/workflows/build.yml</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="NuttX Build should be running" /></p>
-<p>If the Patching and Building ain’t happening: Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
+<p>If the Patching and Building ain’t happening: Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh"><em>enable-macos-windows.sh</em></a> followed by <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a>.</p>
 <p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="Sync Fork &gt; Update Branch (or Discard Commit)" /></p>
 <p>If we see this error…</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;:
@@ -652,7 +652,7 @@ $HOME/sync.sh
 <ul>
 <li><a href="https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists"><strong>“Ingest the GitHub Gists”</strong></a></li>
 </ul>
-<p><strong>In Case of Sync Problems:</strong> Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Discard Commit”</strong>. Then run <em>enable-macos-windows.sh</em> followed by <em>sync.sh</em>. <em>(Hmmm this seems to happen often in our VM. Why?)</em></p>
+<p><strong>In Case of Sync Problems:</strong> Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong>. Then run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh"><em>enable-macos-windows.sh</em></a> followed by <em>sync.sh</em>. <em>(Hmmm this seems to happen often in our VM. Why?)</em></p>
 <h1 id="secure-our-grafana-server"><a class="doc-anchor" href="#secure-our-grafana-server">§</a>11 Secure Our Grafana Server</h1>
 <p>We’re ready to Go Live! We tweak some Grafana Settings to make NuttX Dashboard more secure.</p>
 <p>Inside our VM: Edit <em>/etc/grafana/grafana.ini</em>. Look for these settings and change them (don’t add them)</p>
@@ -781,7 +781,7 @@ hide_version = true</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="NuttX Mirror Repo" /></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
-<p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
+<p>Our script <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
 <p>Inside the script: Our Regular GitHub Account <em>nuttxpr</em> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we grant the <strong>Push Permission</strong> to <em>nuttxpr</em>…</p>
 <ol>
 <li>
@@ -830,7 +830,7 @@ cd $HOME/ingest-nuttx-builds
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="SSH Key for GitHub" /></p>
 <h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>16 Appendix: SSH Key for GitHub</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
-<p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
+<p>Our script <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
 <p>Inside the script: Our Regular GitHub Account <em>nuttxpr</em> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we create an SSH Key for GitHub that will allow <em>nuttxpr</em> to push the patch…</p>
 <p>(<em>nuttxpr</em> is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!)</p>
 <ol>
