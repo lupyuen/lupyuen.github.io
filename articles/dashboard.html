@@ -97,44 +97,44 @@
 <p>The steps below will work for any <strong>Debian Bookworm</strong> machine. Hopefully someday we’ll budget for the machine. (And secure it too)</p>
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
 <p>Hmmm interesting… We should <a href="https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d"><strong>try it sometime</strong></a>!</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow.jpg" alt="NuttX Dashboard" /></p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
 <p>We begin by creating a <strong>Google Cloud Project</strong> that will operate our VM (pic above). We named it <em>nuttx-dashboard</em>…</p>
 <ul>
 <li><a href="https://console.cloud.google.com/projectcreate"><strong>Create a Google Cloud Project</strong></a> <em>(console.cloud.google.com)</em></li>
 </ul>
-<p><img src="https://lupyuen.org/images/dashboard-vm1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm1.png" alt="Create a Google Cloud Project" /></p>
 <p>Then we create our <strong>Virtual Machine</strong>…</p>
 <ol>
 <li>
 <p>Click <strong>“Select Project”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-vm2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm2.png" alt="Select Project" /></p>
 </li>
 <li>
 <p>Click <strong>“Create a VM”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-vm3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm3.png" alt="Create a VM" /></p>
 </li>
 <li>
 <p>Click <strong>“Compute Engine API &gt; Enable”</strong> and wait a while</p>
-<p><img src="https://lupyuen.org/images/dashboard-vm4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm4.png" alt="Compute Engine API &gt; Enable" /></p>
 </li>
 <li>
 <p>Fill in the <strong>Instance Name</strong> <em>“nuttx-dashboard-vm”</em>. Our VM shall be <strong>General Purpose / Debian Bookworm</strong></p>
 <p>Click <strong>“Create”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-vm5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm5.png" alt="Create VM" /></p>
 </li>
 <li>
 <p>Click <strong>“Connect &gt; SSH”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-vm6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm6.png" alt="Connect &gt; SSH" /></p>
 </li>
 <li>
 <p>And SSH Console appears! Remember to <strong>Update and Upgrade</strong> the VM…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo apt update
 sudo apt upgrade</code></pre></div></li>
 </ol>
-<p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="SSH Console" /></p>
 <p>Let’s populate our new VM…</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow1.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow1.jpg" alt="Grafana OSS Server" /></p>
 <h1 id="install-grafana-oss-server"><a class="doc-anchor" href="#install-grafana-oss-server">§</a>2 Install Grafana OSS Server</h1>
 <p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy (pic above) that renders our NuttX Dashboard…</p>
 <ul>
@@ -173,42 +173,42 @@ netstat -an | grep LISTEN</code></pre></div>
 <li>
 <p>Grab the <strong>External IP Address</strong> for our VM…</p>
 <p><strong>VM Instance &gt; External IP</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana1.png" alt="VM Instance &gt; External IP" /></p>
 </li>
 <li>
 <p>Allow Incoming Packets for TCP Port 3000…</p>
 <p>Click <strong>VM Instance &gt; Set Up Firewall Rules</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana2.png" alt="VM Instance &gt; Set Up Firewall Rules" /></p>
 <p>Click <strong>Firewall Policies &gt; Create Firewall Rule</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana3.png" alt="Firewall Policies &gt; Create Firewall Rule" /></p>
 <p><strong>Name:</strong> allow-tcp-3000</p>
 <p><strong>Targets:</strong> All instances in the network</p>
 <p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
 <p><strong>Protocol and Ports:</strong> TCP 3000</p>
 <p>Click <strong>“Create”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana4.png" alt="Create Firewall Rule" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana5.png" alt="Create Firewall Rule" /></p>
 <p>Verify our Firewall Rule…</p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana6.png" alt="Verify our Firewall Rule" /></p>
 </li>
 <li>
 <p>Browse to port 3000 of our External IP Address…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000</code></pre></div>
 <p><strong>Username:</strong> admin</p>
 <p><strong>Password:</strong> admin</p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana7.png" alt="Grafana Login" /></p>
 </li>
 <li>
 <p>Set the new password</p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana8.png" alt="Set the Grafana Password" /></p>
 </li>
 <li>
 <p>And we’re in Grafana!</p>
-<p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="Grafana Home" /></p>
 </li>
 </ol>
 <p>Our Grafana Dashboard needs data…</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow2.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow2.jpg" alt="Prometheus Server" /></p>
 <h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
 <p><em>Where’s the data store for Grafana?</em></p>
 <p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a> (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
@@ -250,21 +250,21 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p><strong>Targets:</strong> All instances in the network</p>
 <p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
 <p><strong>Protocol and Ports:</strong> TCP 9090</p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus1.png" alt="Create Firewall Rule" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus2.png" alt="Create Firewall Rule" /></p>
 </li>
 <li>
 <p>Click <strong>“Create”</strong>. Verify that Port 9090 is open…</p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus3.png" alt="Verify Port 9090" /></p>
 </li>
 <li>
 <p>Prometheus appears when we browse to Port 9090 of our <strong>External IP Address</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div></li>
 </ol>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="Prometheus Web UI" /></p>
 <p><em>Why Prometheus? Why not SQL Database?</em></p>
 <p>Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow3.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow3.jpg" alt="Prometheus Pushgateway" /></p>
 <h1 id="install-prometheus-pushgateway"><a class="doc-anchor" href="#install-prometheus-pushgateway">§</a>4 Install Prometheus Pushgateway</h1>
 <p><em>What’s this Prometheus Pushgateway?</em></p>
 <p>Funny Thing about Prometheus: We can’t push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this…</p>
@@ -333,15 +333,15 @@ curl localhost:9091/metrics
 <p><strong>IPv4 Ranges:</strong> 0.0.0.0/0</p>
 <p><strong>Protocol and Ports:</strong> TCP 9091</p>
 <p>Click <strong>“Create”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-prometheus7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus5.png" alt="Create Firewall Rule" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus6.png" alt="Create Firewall Rule" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-prometheus7.png" alt="Verify Firewall Rule" /></p>
 </li>
 <li>
 <p>Prometheus Pushgateway appears on our External IP Address at…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div></li>
 </ol>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway1.png" alt="Prometheus Pushgateway Web UI" /></p>
 <h1 id="ingest-a-sample-nuttx-log"><a class="doc-anchor" href="#ingest-a-sample-nuttx-log">§</a>5 Ingest a Sample NuttX Log</h1>
 <p>We’re all done with installation! Now we ingest some <strong>NuttX Build Logs</strong> to verify that Prometheus Server and Pushgateway are talking…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Download the Sample NuttX Build Log
@@ -385,7 +385,7 @@ cargo run \
 ## res=Response { url: &quot;http://localhost:9091/metrics/job/NuttX/instance/esp32s3-devkit:spi&quot;, status: 200, headers: {&quot;date&quot;: &quot;Mon, 05 Jan 2026 10:10:52 GMT&quot;, &quot;content-length&quot;: &quot;0&quot;} }</code></pre></div>
 <p>Browse to Prometheus Pushgateway at our <strong>External IP Address</strong>, port 9091. We’ll see the <strong>NuttX Build Logs</strong> that we have ingested…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway2.png" alt="Prometheus Pushgateway shows NuttX Build Logs" /></p>
 <p>We configure <strong>Prometheus Server</strong> to talk to Pushgateway…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Edit the Prometheus Server Config
 sudo nano /etc/prometheus/prometheus.yml
@@ -412,7 +412,7 @@ sudo systemctl restart prometheus
 <p>Enter this Prometheus Query…</p>
 <div class="example-wrap"><pre class="language-bash"><code>build_score</code></pre></div>
 <p>And click <strong>“Execute”</strong>. Yep Prometheus Server has successfully scraped and stored the <strong>NuttX Build Logs</strong> from Pushgateway yay!</p>
-<p><img src="https://lupyuen.org/images/dashboard-pushgateway3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-pushgateway3.png" alt="Prometheus Server has successfully scraped and stored the NuttX Build Logs from Pushgateway" /></p>
 <h1 id="connect-grafana-to-prometheus"><a class="doc-anchor" href="#connect-grafana-to-prometheus">§</a>6 Connect Grafana to Prometheus</h1>
 <p><em>How will Grafana Dashboard talk to our Prometheus Database?</em></p>
 <ol>
@@ -422,16 +422,16 @@ sudo systemctl restart prometheus
 <li>
 <p>Set the <strong>Prometheus Server URL</strong> to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://localhost:9090</code></pre></div>
-<p><img src="https://lupyuen.org/images/ci4-datasource.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/ci4-datasource.png" alt="Prometheus Data Source" /></p>
 </li>
 <li>
 <p>Click <strong>“Dashboards &gt; New &gt; New Dashboard”</strong></p>
-<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="Dashboards &gt; New &gt; New Dashboard" /></p>
 </li>
 <li>
 <p>Click <strong>“Settings &gt; JSON Model”</strong></p>
 <p>Copy and overwrite the Dashboard JSON from here: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json"><strong>dashboard.json</strong></a></p>
-<p><img src="https://lupyuen.org/images/dashboard-json1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json1.png" alt="Settings &gt; JSON Model" /></p>
 </li>
 <li>
 <p>But change ALL references to <strong>Prometheus UID</strong>…</p>
@@ -445,20 +445,20 @@ sudo systemctl restart prometheus
 </li>
 <li>
 <p>Allow everyone to view: Click <strong>“Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-json5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json5.png" alt="Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View" /></p>
 </li>
 <li>
 <p>Save the dashboard. That’s our First Dashboard: <strong>“Build Logs Dashboard”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-json2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json2.png" alt="Build Logs Dashboard" /></p>
 </li>
 <li>
 <p>Once Again: Click <strong>“Dashboards &gt; New &gt; New Dashboard”</strong></p>
-<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/ci4-grafana3.png" alt="Dashboards &gt; New &gt; New Dashboard" /></p>
 </li>
 <li>
 <p>Click <strong>“Settings &gt; JSON Model”</strong></p>
 <p>Copy and overwite the Dashboard History JSON from here: <a href="https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json"><strong>dashboard-history.json</strong></a></p>
-<p><img src="https://lupyuen.org/images/dashboard-json3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json3.png" alt="TSettings &gt; JSON ModelODO" /></p>
 </li>
 <li>
 <p>But change ALL references to <strong>Prometheus UID</strong>…</p>
@@ -472,11 +472,11 @@ sudo systemctl restart prometheus
 </li>
 <li>
 <p>Allow everyone to view: Click <strong>“Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-json6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json6.png" alt="Settings &gt; Add Permission &gt; Role &gt; Viewer &gt; View" /></p>
 </li>
 <li>
 <p>Save the dashboard. That’s our Second and Final Dashboard: <strong>“NuttX Build History Dashboard”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="NuttX Build History Dashboard" /></p>
 </li>
 </ol>
 <h1 id="set-the-github-token"><a class="doc-anchor" href="#set-the-github-token">§</a>7 Set the GitHub Token</h1>
@@ -503,7 +503,7 @@ export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>TODO: nuttxpr permissions</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="Ingest the GitHub Actions Logs" /></p>
 <h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
 <p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
 <p>Let’s ingest the <strong>GitHub Actions Logs</strong> (pic above) from the Mirror Repo Builds. Inside our VM: Do this…</p>
@@ -545,24 +545,24 @@ cd ingest-nuttx-builds
 <li>
 <p>Check <strong>Prometheus Pushgateway</strong> at our External IP Address, port 9091. We should see the logs ingested from GitHub Actions…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9091</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ingest1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ingest1.png" alt="Prometheus Pushgateway shows the logs ingested from GitHub Actions" /></p>
 </li>
 <li>
 <p>Check <strong>Prometheus Server</strong> at our External IP Address, port 9090. Enter the Prometheus Query <strong>“build_score”</strong>, click <strong>Execute</strong>. We’ll see the same logs…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="Prometheus Server shows the logs ingested from GitHub Actions" /></p>
 <p><strong>Bonus:</strong> This query will reveal that NuttX has 339 microcontroller boards: <strong>“count by (board) (build_score)”</strong></p>
 <p>TODO: Pic</p>
 </li>
 <li>
 <p>Check <strong>Grafana Dashboard</strong> at our External IP Address, port 3000. We’ll see the GitHub Actions Logs…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000/d/fe2bqg6uk7nr4a</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ingest3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ingest3.png" alt="Grafana Dashboard shows the logs ingested from GitHub Actions" /></p>
 </li>
 <li>
 <p>Finally check the <strong>Build History</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:3000/d/fe2q876wubc3kc</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ingest4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ingest4.png" alt="Build History Dashboard" /></p>
 </li>
 </ol>
 <p>TODO: Fix step:10 to ??? for Linux</p>
@@ -601,18 +601,18 @@ cd $HOME/nuttx-release
 <p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">(Log for enable-macos-windows.sh)</a></p>
 <p>We’ll see the <strong>“Enable macOS Patch”</strong> that starts the NuttX Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/commits/master/</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="Enable macOS Patch" /></p>
 <p>And the <strong>NuttX Build</strong> should be running…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/actions/workflows/build.yml</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
-<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
-<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="NuttX Build should be running" /></p>
+<p>In case of sync problems: Go to <a href="https://github.com/NuttX/nuttx/tree/master">github.com/NuttX/nuttx</a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
+<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="Sync Fork &gt; Update Branch (or Discard Commit)" /></p>
 <p>If we see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Increase the disk space. Need 5 GB for /tmp. See the section below. TODO</p>
 <h1 id="forever-build-and-ingest"><a class="doc-anchor" href="#forever-build-and-ingest">§</a>10 Forever Build and Ingest</h1>
-<p>Everything We’ve Done: Needs to be looped forever. Edit <em>$HOME/sync.sh</em> and fill this in…</p>
+<p>Everything We’ve Done for NuttX Build and Ingest: Needs to be looped forever. Edit <em>$HOME/sync.sh</em> and fill this in…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 ## Sync NuttX Mirror, Build NuttX Mirror and Ingest GitHub Actions Logs
 
@@ -698,7 +698,7 @@ hide_version = true</code></pre></div>
 <p>avaota-a1, starpro64, oz64</p>
 <p>mastodon, forgejo</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="NuttX Mirror Repo" /></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
 <p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
@@ -710,26 +710,26 @@ hide_version = true</code></pre></div>
 <li>
 <p>Click <strong>“Add People”</strong></p>
 <p>Enter <strong>nuttxpr</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-github8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github8.png" alt="Add People" /></p>
 </li>
 <li>
 <p>Set the Role to <strong>“Write”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-github9.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github10.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github9.png" alt="Set the Role to “Write”" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github10.png" alt="Set the Role to “Write”" /></p>
 </li>
 <li>
 <p>Log in as <em>nuttxpr</em> to accept the invitation</p>
-<p><img src="https://lupyuen.org/images/dashboard-github11.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github12.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github13.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github11.png" alt="Accept the invitation" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github12.png" alt="Accept the invitation" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github13.png" alt="Accept the invitation" /></p>
 </li>
 <li>
 <p>Check that <em>nuttxpr</em> has become a collaborator</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/settings/access</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="Check collaborators" /></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="Ingest the GitHub Gists" /></p>
 <h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
 <p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
 <p>We have a <a href="TODO"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
@@ -745,7 +745,7 @@ cd $HOME/ingest-nuttx-builds
 ## tmux a</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
 <p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
-<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="SSH Key for GitHub" /></p>
 <h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>16 Appendix: SSH Key for GitHub</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
 <p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
@@ -811,13 +811,13 @@ ls $HOME/.ssh/nuttx-dashboard-vm*
 <p><a href="https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata"><strong>Follow the steps here</strong></a></p>
 <p>Browse to <strong>“Google Cloud Console &gt; Metadata”</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>https://console.cloud.google.com/compute/metadata</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="Google Cloud Console &gt; Metadata" /></p>
 <p>Click <strong>“SSH Keys &gt; Add SSH Key”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
-<p>Copy and paste the contents of <em>$HOME/.ssh/nuttx-dashboard-vm.pub</em></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="SSH Keys &gt; Add SSH Key" /></p>
+<p>Copy and paste the contents of our Public Key: <em>$HOME/.ssh/nuttx-dashboard-vm.pub</em></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="Copy and paste the Public Key" /></p>
 <p>Click <strong>“Save”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="Save the SSH Key" /></p>
 </li>
 <li>
 <p>Test the SSH Key with VM Login</p>
@@ -828,22 +828,27 @@ ssh \
   luppy@x.x.x.x</code></pre></div></li>
 </ol>
 <h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>18 Appendix: Remote Connect in VSCode</h1>
-<p>TODO</p>
+<p><em>Is there an easier way to work with our VM?</em></p>
+<p>Yep use a <strong>SSH Remote Connection in VSCode</strong>!</p>
 <ol>
 <li>
+<p>Assume that we have added an SSH Key for VM Login</p>
+<p>TODO: Add SSH Key for VM Login</p>
+</li>
+<li>
 <p>In VSCode: Click <strong>“Remote Explorer &gt; SSH &gt; +”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="Remote Explorer &gt; SSH &gt; +" /></p>
 </li>
 <li>
 <p>Enter the SSH Command</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="SSH Command" /></p>
 </li>
 <li>
 <p>Select the SSH Config file <em>$HOME/.ssh/config</em></p>
 <p>Click <strong>“Connect”</strong></p>
-<p>To open a Remote File / Folder: Click <strong>“File &gt; Open File / Folder”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
+<p>To open a Remote File or Remote Folder: Click <strong>“File &gt; Open File / Folder”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="File &gt; Open File / Folder" /></p>
 </li>
 </ol>
 <p><em>$HOME/.ssh/config</em> will look like:</p>
@@ -856,7 +861,7 @@ ssh \
   HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="Should rename the Host" /></p>
 <p>TODO: Port forward pic</p>
 <h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>19 Appendix: Expand the VM Disk</h1>
 <p>By Default: Google Cloud allocates <strong>10 GB of Disk Space</strong>…</p>
@@ -887,15 +892,15 @@ $ rm -rf /tmp/sync-build-ingest/</code></pre></div>
 <ol>
 <li>
 <p>Click <strong>“VM &gt; Details &gt; Storage &gt; Boot Disk”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="VM &gt; Details &gt; Storage &gt; Boot Disk" /></p>
 </li>
 <li>
 <p>Click <strong>“Menu &gt; Edit”</strong> (Top Right)</p>
-<p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="Menu &gt; Edit" /></p>
 </li>
 <li>
 <p>Increase the size from 10 GB to 20 GB. Click <strong>Save</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="Increase the size from 10 GB to 20 GB" /></p>
 </li>
 <li>
 <p>Inside our VM: Do this…</p>
@@ -963,16 +968,16 @@ tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div></li>
 <li>
 <p>We create a Cloudflare Tunnel, pointing to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://localhost:3000</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="Cloudflare Tunnel" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="Cloudflare Tunnel" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="Cloudflare Tunnel" /></p>
 </li>
 <li>
 <p>Remember to set the cache…</p>
 <p>Set <strong>“Cache URI Path &gt; Wildcard &gt; Value”</strong> to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>/public/*</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare12.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare13.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare12.png" alt="Cloudflare Cache" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare13.png" alt="Cloudflare Cache" /></p>
 </li>
 </ol>
 <p><strong>Option Two: Cloudflare CDN</strong></p>
@@ -994,13 +999,13 @@ pkts bytes target     prot opt in     out     source               destination
 <li>
 <p>Configure our <strong>VM Firewall</strong> to allow HTTP traffic…</p>
 <p>Click <strong>“VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic”</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic" /></p>
 </li>
 <li>
 <p>Why does this work? That’s because there’s a Default Firewall Rule <strong>“default-allow-http”</strong> that wil allow incoming TCP Port 80, whenever the Target Tag matches <strong>“http_server”</strong>…</p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="Default Firewall Rule “default-allow-http” allows incoming TCP Port 80, whenever the Target Tag matches “http_server”" /></p>
 </li>
 <li>
 <p>Check that our <strong>External IP Address</strong> is now accessible via HTTP Port 80:</p>
@@ -1009,7 +1014,7 @@ pkts bytes target     prot opt in     out     source               destination
 <p>Under Cloudflare DNS: Create an <strong>“A Record”</strong> that points to our External IP Address.</p>
 <p>Remember to <strong>Enable the HTTP Proxy</strong>.</p>
 <p>(Actually we should get a <strong>Static IP Address</strong> for our VM)</p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="Create the “A Record” for DNS" /></p>
 </li>
 <li>
 <p>And our NuttX Dashboard is live on the web!</p>
