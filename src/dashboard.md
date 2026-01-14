@@ -606,7 +606,7 @@ cd ingest-nuttx-builds
 
     __Bonus:__ This query will reveal that NuttX has 339 microcontroller boards: __"count by (board) (build_score)"__
 
-    TODO: Pic of 339 boards
+    ![This query will reveal that NuttX has 339 microcontroller boards](https://lupyuen.org/images/dashboard-ingest5.png)
 
 1.  Check __Grafana Dashboard__ at our External IP Address, port 3000. We'll see the GitHub Actions Logs...
 
@@ -1091,7 +1091,9 @@ Host nuttx-dashboard-vm
 
 ![Should rename the Host](https://lupyuen.org/images/dashboard-ssh8.png)
 
-TODO: Port forward pic
+__Port Forwarding over SSH__ works great with VSCode. Thus we can redirect the TCP Ports from the VM to Our Computer. And disable all the Firewall Rules!
+
+![Port Forwarding over SSH works great with VSCode](https://lupyuen.org/images/dashboard-ssh9.png)
 
 # Appendix: Expand the VM Disk
 
