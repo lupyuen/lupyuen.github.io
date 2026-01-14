@@ -22,7 +22,7 @@ _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
 Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
 
-![TODO](https://lupyuen.org/images/dashboard-flow.jpg)
+![NuttX Dashboard](https://lupyuen.org/images/dashboard-flow.jpg)
 
 # Create Our Virtual Machine
 
@@ -30,31 +30,31 @@ We begin by creating a __Google Cloud Project__ that will operate our VM (pic ab
 
 - [__Create a Google Cloud Project__](https://console.cloud.google.com/projectcreate) _(console.cloud.google.com)_
 
-![TODO](https://lupyuen.org/images/dashboard-vm1.png)
+![Create a Google Cloud Project](https://lupyuen.org/images/dashboard-vm1.png)
 
 Then we create our __Virtual Machine__...
 
 1.  Click __"Select Project"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm2.png)
+    ![Select Project](https://lupyuen.org/images/dashboard-vm2.png)
 
 1.  Click __"Create a VM"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm3.png)
+    ![Create a VM](https://lupyuen.org/images/dashboard-vm3.png)
 
 1.  Click __"Compute Engine API > Enable"__ and wait a while
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm4.png)
+    ![Compute Engine API > Enable](https://lupyuen.org/images/dashboard-vm4.png)
 
 1.  Fill in the __Instance Name__ _"nuttx-dashboard-vm"_. Our VM shall be __General Purpose / Debian Bookworm__
 
     Click __"Create"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm5.png)
+    ![Create VM](https://lupyuen.org/images/dashboard-vm5.png)
 
 1.  Click __"Connect > SSH"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-vm6.png)
+    ![Connect > SSH](https://lupyuen.org/images/dashboard-vm6.png)
 
 1.  And SSH Console appears! Remember to __Update and Upgrade__ the VM...
 
@@ -63,11 +63,11 @@ Then we create our __Virtual Machine__...
     sudo apt upgrade
     ```
 
-![TODO](https://lupyuen.org/images/dashboard-vm7.png)
+![SSH Console](https://lupyuen.org/images/dashboard-vm7.png)
 
 Let's populate our new VM...
 
-![TODO](https://lupyuen.org/images/dashboard-flow1.jpg)
+![Grafana OSS Server](https://lupyuen.org/images/dashboard-flow1.jpg)
 
 # Install Grafana OSS Server
 
@@ -113,17 +113,17 @@ Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allo
 
     __VM Instance > External IP__
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana1.png)
+    ![VM Instance > External IP](https://lupyuen.org/images/dashboard-grafana1.png)
 
 1.  Allow Incoming Packets for TCP Port 3000...
 
     Click __VM Instance > Set Up Firewall Rules__
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana2.png)
+    ![VM Instance > Set Up Firewall Rules](https://lupyuen.org/images/dashboard-grafana2.png)
 
     Click __Firewall Policies > Create Firewall Rule__
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana3.png)
+    ![Firewall Policies > Create Firewall Rule](https://lupyuen.org/images/dashboard-grafana3.png)
 
     __Name:__ allow-tcp-3000
 
@@ -135,13 +135,13 @@ Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allo
 
     Click __"Create"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana4.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-grafana4.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana5.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-grafana5.png)
 
     Verify our Firewall Rule...
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana6.png)
+    ![Verify our Firewall Rule](https://lupyuen.org/images/dashboard-grafana6.png)
 
 1.  Browse to port 3000 of our External IP Address...
 
@@ -153,19 +153,19 @@ Grafana is listening at __TCP Port 3000__. We create a __Firewall Rule__ to allo
 
     __Password:__ admin
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana7.png)
+    ![Grafana Login](https://lupyuen.org/images/dashboard-grafana7.png)
 
 1.  Set the new password
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana8.png)
+    ![Set the Grafana Password](https://lupyuen.org/images/dashboard-grafana8.png)
 
 1.  And we're in Grafana!
 
-    ![TODO](https://lupyuen.org/images/dashboard-grafana9.png)
+    ![Grafana Home](https://lupyuen.org/images/dashboard-grafana9.png)
 
 Our Grafana Dashboard needs data...
 
-![TODO](https://lupyuen.org/images/dashboard-flow2.jpg)
+![Prometheus Server](https://lupyuen.org/images/dashboard-flow2.jpg)
 
 # Install Prometheus Server
 
@@ -217,13 +217,13 @@ To see Prometheus: We create a __Firewall Rule__ to allow incoming access to __T
 
     __Protocol and Ports:__ TCP 9090
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus1.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-prometheus1.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus2.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-prometheus2.png)
 
 1.  Click __"Create"__. Verify that Port 9090 is open...
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus3.png)
+    ![Verify Port 9090](https://lupyuen.org/images/dashboard-prometheus3.png)
 
 1.  Prometheus appears when we browse to Port 9090 of our __External IP Address__...
 
@@ -231,13 +231,13 @@ To see Prometheus: We create a __Firewall Rule__ to allow incoming access to __T
     http://x.x.x.x:9090
     ```
 
-![TODO](https://lupyuen.org/images/dashboard-prometheus4.png)
+![Prometheus Web UI](https://lupyuen.org/images/dashboard-prometheus4.png)
 
 _Why Prometheus? Why not SQL Database?_
 
 Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.
 
-![TODO](https://lupyuen.org/images/dashboard-flow3.jpg)
+![Prometheus Pushgateway](https://lupyuen.org/images/dashboard-flow3.jpg)
 
 # Install Prometheus Pushgateway
 
@@ -313,11 +313,11 @@ Prometheus Pushgateway has an Admin UI at __TCP Port 9091__. We grant access...
 
     Click __"Create"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus5.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-prometheus5.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus6.png)
+    ![Create Firewall Rule](https://lupyuen.org/images/dashboard-prometheus6.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-prometheus7.png)
+    ![Verify Firewall Rule](https://lupyuen.org/images/dashboard-prometheus7.png)
 
 1.  Prometheus Pushgateway appears on our External IP Address at...
 
@@ -325,7 +325,7 @@ Prometheus Pushgateway has an Admin UI at __TCP Port 9091__. We grant access...
     http://x.x.x.x:9091
     ```
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway1.png)
+![Prometheus Pushgateway Web UI](https://lupyuen.org/images/dashboard-pushgateway1.png)
 
 # Ingest a Sample NuttX Log
 
@@ -379,7 +379,7 @@ Browse to Prometheus Pushgateway at our __External IP Address__, port 9091. We'l
 http://x.x.x.x:9091
 ```
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway2.png)
+![Prometheus Pushgateway shows NuttX Build Logs](https://lupyuen.org/images/dashboard-pushgateway2.png)
 
 We configure __Prometheus Server__ to talk to Pushgateway...
 
@@ -421,7 +421,7 @@ build_score
 
 And click __"Execute"__. Yep Prometheus Server has successfully scraped and stored the __NuttX Build Logs__ from Pushgateway yay!
 
-![TODO](https://lupyuen.org/images/dashboard-pushgateway3.png)
+![Prometheus Server has successfully scraped and stored the NuttX Build Logs from Pushgateway](https://lupyuen.org/images/dashboard-pushgateway3.png)
 
 # Connect Grafana to Prometheus
 
@@ -435,17 +435,17 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
     http://localhost:9090
     ```
 
-    ![TODO](https://lupyuen.org/images/ci4-datasource.png)
+    ![Prometheus Data Source](https://lupyuen.org/images/ci4-datasource.png)
 
 1.  Click __"Dashboards > New > New Dashboard"__
 
-    ![TODO](https://lupyuen.org/images/ci4-grafana3.png)
+    ![Dashboards > New > New Dashboard](https://lupyuen.org/images/ci4-grafana3.png)
 
 1.  Click __"Settings > JSON Model"__
 
     Copy and overwrite the Dashboard JSON from here: [__dashboard.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard.json)
 
-    ![TODO](https://lupyuen.org/images/dashboard-json1.png)
+    ![Settings > JSON Model](https://lupyuen.org/images/dashboard-json1.png)
 
 1.  But change ALL references to __Prometheus UID__...
 
@@ -462,21 +462,21 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
 1.  Allow everyone to view: Click __"Settings > Add Permission > Role > Viewer > View"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-json5.png)
+    ![Settings > Add Permission > Role > Viewer > View](https://lupyuen.org/images/dashboard-json5.png)
 
 1.  Save the dashboard. That's our First Dashboard: __"Build Logs Dashboard"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-json2.png)
+    ![Build Logs Dashboard](https://lupyuen.org/images/dashboard-json2.png)
 
 1.  Once Again: Click __"Dashboards > New > New Dashboard"__
 
-    ![TODO](https://lupyuen.org/images/ci4-grafana3.png)
+    ![Dashboards > New > New Dashboard](https://lupyuen.org/images/ci4-grafana3.png)
 
 1.  Click __"Settings > JSON Model"__
 
     Copy and overwite the Dashboard History JSON from here: [__dashboard-history.json__](https://github.com/lupyuen/ingest-nuttx-builds/blob/main/dashboard-history.json)
 
-    ![TODO](https://lupyuen.org/images/dashboard-json3.png)
+    ![TSettings > JSON ModelODO](https://lupyuen.org/images/dashboard-json3.png)
 
 1.  But change ALL references to __Prometheus UID__...
 
@@ -493,11 +493,11 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
 1.  Allow everyone to view: Click __"Settings > Add Permission > Role > Viewer > View"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-json6.png)
+    ![Settings > Add Permission > Role > Viewer > View](https://lupyuen.org/images/dashboard-json6.png)
 
 1.  Save the dashboard. That's our Second and Final Dashboard: __"NuttX Build History Dashboard"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-json4.png)
+    ![NuttX Build History Dashboard](https://lupyuen.org/images/dashboard-json4.png)
 
 # Set the GitHub Token
 
@@ -534,7 +534,7 @@ export GITLAB_REPO=nuttx-build-log
 
 TODO: nuttxpr permissions
 
-![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
+![Ingest the GitHub Actions Logs](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Ingest the GitHub Actions Logs
 
@@ -586,7 +586,7 @@ cd ingest-nuttx-builds
     http://x.x.x.x:9091
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ingest1.png)
+    ![Prometheus Pushgateway shows the logs ingested from GitHub Actions](https://lupyuen.org/images/dashboard-ingest1.png)
 
 1.  Check __Prometheus Server__ at our External IP Address, port 9090. Enter the Prometheus Query __"build_score"__, click __Execute__. We'll see the same logs...
 
@@ -594,7 +594,7 @@ cd ingest-nuttx-builds
     http://x.x.x.x:9090
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ingest2.png)
+    ![Prometheus Server shows the logs ingested from GitHub Actions](https://lupyuen.org/images/dashboard-ingest2.png)
 
     __Bonus:__ This query will reveal that NuttX has 339 microcontroller boards: __"count by (board) (build_score)"__
 
@@ -606,7 +606,7 @@ cd ingest-nuttx-builds
     http://x.x.x.x:3000/d/fe2bqg6uk7nr4a
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ingest3.png)
+    ![Grafana Dashboard shows the logs ingested from GitHub Actions](https://lupyuen.org/images/dashboard-ingest3.png)
 
 1.  Finally check the __Build History__
 
@@ -614,7 +614,7 @@ cd ingest-nuttx-builds
     http://x.x.x.x:3000/d/fe2q876wubc3kc
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ingest4.png)
+    ![Build History Dashboard](https://lupyuen.org/images/dashboard-ingest4.png)
 
 TODO: Fix step:10 to ??? for Linux
 
@@ -667,7 +667,7 @@ We'll see the __"Enable macOS Patch"__ that starts the NuttX Build...
 https://github.com/NuttX/nuttx/commits/master/
 ```
 
-![TODO](https://lupyuen.org/images/dashboard-github15.png)
+![Enable macOS Patch](https://lupyuen.org/images/dashboard-github15.png)
 
 And the __NuttX Build__ should be running...
 
@@ -675,11 +675,11 @@ And the __NuttX Build__ should be running...
 https://github.com/NuttX/nuttx/actions/workflows/build.yml
 ```
 
-![TODO](https://lupyuen.org/images/dashboard-github16.png)
+![NuttX Build should be running](https://lupyuen.org/images/dashboard-github16.png)
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
+In case of sync problems: Go to [github.com/NuttX/nuttx](https://github.com/NuttX/nuttx/tree/master), click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
-![TODO](https://lupyuen.org/images/dashboard-github7.png)
+![Sync Fork > Update Branch (or Discard Commit)](https://lupyuen.org/images/dashboard-github7.png)
 
 If we see...
 
@@ -692,7 +692,7 @@ Increase the disk space. Need 5 GB for /tmp. See the section below. TODO
 
 # Forever Build and Ingest
 
-Everything We've Done: Needs to be looped forever. Edit _$HOME/sync.sh_ and fill this in...
+Everything We've Done for NuttX Build and Ingest: Needs to be looped forever. Edit _$HOME/sync.sh_ and fill this in...
 
 ```bash
 #!/usr/bin/env bash
@@ -821,7 +821,7 @@ mastodon, forgejo
 
 TODO
 
-![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
+![NuttX Mirror Repo](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Appendix: NuttX Mirror Repo
 
@@ -841,21 +841,21 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
     Enter __nuttxpr__
 
-    ![TODO](https://lupyuen.org/images/dashboard-github8.png)
+    ![Add People](https://lupyuen.org/images/dashboard-github8.png)
 
 1.  Set the Role to __"Write"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-github9.png)
+    ![Set the Role to "Write"](https://lupyuen.org/images/dashboard-github9.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-github10.png)
+    ![Set the Role to "Write"](https://lupyuen.org/images/dashboard-github10.png)
 
 1.  Log in as _nuttxpr_ to accept the invitation
 
-    ![TODO](https://lupyuen.org/images/dashboard-github11.png)
+    ![Accept the invitation](https://lupyuen.org/images/dashboard-github11.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-github12.png)
+    ![Accept the invitation](https://lupyuen.org/images/dashboard-github12.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-github13.png)
+    ![Accept the invitation](https://lupyuen.org/images/dashboard-github13.png)
 
 1.  Check that _nuttxpr_ has become a collaborator
 
@@ -863,9 +863,9 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
     https://github.com/NuttX/nuttx/settings/access
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-github14.png)
+    ![Check collaborators](https://lupyuen.org/images/dashboard-github14.png)
 
-![TODO](https://lupyuen.org/images/dashboard-flow5.jpg)
+![Ingest the GitHub Gists](https://lupyuen.org/images/dashboard-flow5.jpg)
 
 # Appendix: Ingest the GitHub Gists
 
@@ -891,7 +891,7 @@ cd $HOME/ingest-nuttx-builds
 
 [(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
-![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
+![SSH Key for GitHub](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Appendix: SSH Key for GitHub
 
@@ -987,19 +987,19 @@ Connecting to our VM gets tedious. Let's create an __SSH Key for VM Login__...
     https://console.cloud.google.com/compute/metadata
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
+    ![Google Cloud Console > Metadata](https://lupyuen.org/images/dashboard-ssh1.png)
 
     Click __"SSH Keys > Add SSH Key"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
+    ![SSH Keys > Add SSH Key](https://lupyuen.org/images/dashboard-ssh2.png)
 
-    Copy and paste the contents of _$HOME/.ssh/nuttx-dashboard-vm.pub_
+    Copy and paste the contents of our Public Key: _$HOME/.ssh/nuttx-dashboard-vm.pub_
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
+    ![Copy and paste the Public Key](https://lupyuen.org/images/dashboard-ssh3.png)
 
     Click __"Save"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
+    ![Save the SSH Key](https://lupyuen.org/images/dashboard-ssh4.png)
 
 1.  Test the SSH Key with VM Login
 
@@ -1013,12 +1013,17 @@ Connecting to our VM gets tedious. Let's create an __SSH Key for VM Login__...
 
 # Appendix: Remote Connect in VSCode
 
-TODO
+_Is there an easier way to work with our VM?_
+
+Yep use a __SSH Remote Connection in VSCode__!
+
+1.  Assume that we have added an SSH Key for VM Login
+
+    TODO: Add SSH Key for VM Login
 
 1.  In VSCode: Click __"Remote Explorer > SSH > +"__
 
-
-    ![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
+    ![Remote Explorer > SSH > +](https://lupyuen.org/images/dashboard-ssh5.png)
 
 1.  Enter the SSH Command
 
@@ -1026,15 +1031,15 @@ TODO
     ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
+    ![SSH Command](https://lupyuen.org/images/dashboard-ssh6.png)
 
 1.  Select the SSH Config file _$HOME/.ssh/config_
 
     Click __"Connect"__
 
-    To open a Remote File / Folder: Click __"File > Open File / Folder"__
+    To open a Remote File or Remote Folder: Click __"File > Open File / Folder"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
+    ![File > Open File / Folder](https://lupyuen.org/images/dashboard-ssh7.png)
 
 _$HOME/.ssh/config_ will look like:
 
@@ -1054,7 +1059,7 @@ Host nuttx-dashboard-vm
   User luppy
 ```
 
-![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
+![Should rename the Host](https://lupyuen.org/images/dashboard-ssh8.png)
 
 TODO: Port forward pic
 
@@ -1096,15 +1101,15 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
 
 1.  Click __"VM > Details > Storage > Boot Disk"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-disk1.png)
+    ![VM > Details > Storage > Boot Disk](https://lupyuen.org/images/dashboard-disk1.png)
 
 1.  Click __"Menu > Edit"__ (Top Right)
 
-    ![TODO](https://lupyuen.org/images/dashboard-disk2.png)
+    ![Menu > Edit](https://lupyuen.org/images/dashboard-disk2.png)
 
 1.  Increase the size from 10 GB to 20 GB. Click __Save__
 
-    ![TODO](https://lupyuen.org/images/dashboard-disk3.png)
+    ![Increase the size from 10 GB to 20 GB](https://lupyuen.org/images/dashboard-disk3.png)
 
 1.  Inside our VM: Do this...
 
@@ -1176,11 +1181,11 @@ __Option One: Cloudflare Tunnel__
     http://localhost:3000
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
+    ![Cloudflare Tunnel](https://lupyuen.org/images/dashboard-cloudflare2.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
+    ![Cloudflare Tunnel](https://lupyuen.org/images/dashboard-cloudflare1.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
+    ![Cloudflare Tunnel](https://lupyuen.org/images/dashboard-cloudflare3.png)
 
 1.  Remember to set the cache...
 
@@ -1190,9 +1195,9 @@ __Option One: Cloudflare Tunnel__
     /public/*
     ```
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
+    ![Cloudflare Cache](https://lupyuen.org/images/dashboard-cloudflare12.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
+    ![Cloudflare Cache](https://lupyuen.org/images/dashboard-cloudflare13.png)
 
 __Option Two: Cloudflare CDN__
 
@@ -1217,15 +1222,15 @@ __Option Two: Cloudflare CDN__
 
     Click __"VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic"__
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
+    ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare8.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
+    ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare9.png)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
+    ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare10.png)
 
 1.  Why does this work? That's because there's a Default Firewall Rule __"default-allow-http"__ that wil allow incoming TCP Port 80, whenever the Target Tag matches __"http_server"__...
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
+    ![Default Firewall Rule "default-allow-http" allows incoming TCP Port 80, whenever the Target Tag matches "http_server"](https://lupyuen.org/images/dashboard-cloudflare11.png)
 
 1.  Check that our __External IP Address__ is now accessible via HTTP Port 80:
 
@@ -1239,7 +1244,7 @@ __Option Two: Cloudflare CDN__
 
     (Actually we should get a __Static IP Address__ for our VM)
 
-    ![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
+    ![Create the "A Record" for DNS](https://lupyuen.org/images/dashboard-cloudflare4.png)
 
 1.  And our NuttX Dashboard is live on the web!
 
