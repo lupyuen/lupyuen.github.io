@@ -1,6 +1,6 @@
 # Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS
 
-📝 _20 Feb 2025_
+📝 _14 Jan 2025_
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
@@ -823,6 +823,10 @@ Google recommends that we bump up the VM Capacity, __increasing USD 16__ per mon
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
 Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
+
+![42 km Singapore Marathon - Completed yay!](https://lupyuen.org/images/dashboard-marathon.png)
+
+[_42 km Singapore Marathon - Completed yay!_](https://www.strava.com/activities/16671391778/overview)
 
 # What's Next
 
