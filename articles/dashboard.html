@@ -207,6 +207,7 @@ netstat -an | grep LISTEN</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="TODO" /></p>
 </li>
 </ol>
+<p>Our Grafana Dashboard needs data…</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow2.jpg" alt="TODO" /></p>
 <h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
 <p><em>Where’s the data store for Grafana?</em></p>
@@ -508,14 +509,14 @@ export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>Let’s ingest the <strong>GitHub Actions Logs</strong> (pic above) from the Mirror Repo Builds. Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
-	&amp;&amp; sudo mkdir -p -m 755 /etc/apt/keyrings \
-	&amp;&amp; out=$(mktemp) &amp;&amp; wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-	&amp;&amp; cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg &gt; /dev/null \
-	&amp;&amp; sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-	&amp;&amp; sudo mkdir -p -m 755 /etc/apt/sources.list.d \
-	&amp;&amp; echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main&quot; | sudo tee /etc/apt/sources.list.d/github-cli.list &gt; /dev/null \
-	&amp;&amp; sudo apt update \
-	&amp;&amp; sudo apt install gh -y
+  &amp;&amp; sudo mkdir -p -m 755 /etc/apt/keyrings \
+  &amp;&amp; out=$(mktemp) &amp;&amp; wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  &amp;&amp; cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg &gt; /dev/null \
+  &amp;&amp; sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+  &amp;&amp; sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+  &amp;&amp; echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main&quot; | sudo tee /etc/apt/sources.list.d/github-cli.list &gt; /dev/null \
+  &amp;&amp; sudo apt update \
+  &amp;&amp; sudo apt install gh -y
 . $HOME/github-token.sh
 gh auth status
 
