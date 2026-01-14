@@ -78,12 +78,13 @@
 <li><a href="#secure-our-grafana-server" title="Secure Our Grafana Server">11 Secure Our Grafana Server</a><ul></ul></li>
 <li><a href="#cost-of-google-cloud" title="Cost of Google Cloud">12 Cost of Google Cloud</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-ingest-the-github-gists-and-gitlab-snippets" title="Appendix: Ingest the GitHub Gists and GitLab Snippets">14 Appendix: Ingest the GitHub Gists and GitLab Snippets</a><ul></ul></li>
-<li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">15 Appendix: NuttX Mirror Repo</a><ul></ul></li>
+<li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">14 Appendix: NuttX Mirror Repo</a><ul></ul></li>
+<li><a href="#appendix-ingest-the-github-gists" title="Appendix: Ingest the GitHub Gists">15 Appendix: Ingest the GitHub Gists</a><ul></ul></li>
 <li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">16 Appendix: Expand the VM Disk</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">17 Appendix: SSH Key for VM Login</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">18 Appendix: SSH Key for GitHub</a><ul></ul></li>
-<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">19 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
+<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">17 Appendix: SSH Key for GitHub</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">18 Appendix: SSH Key for VM Login</a><ul></ul></li>
+<li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">19 Appendix: Remote Connect in VSCode</a><ul></ul></li>
+<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
 <ul>
@@ -96,8 +97,9 @@
 <p>The steps below will work for any <strong>Debian Bookworm</strong> machine. Hopefully someday we’ll budget for the machine. (And secure it too)</p>
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
 <p>Hmmm interesting… We should <a href="https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d"><strong>try it sometime</strong></a>!</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow.jpg" alt="TODO" /></p>
 <h1 id="create-our-virtual-machine"><a class="doc-anchor" href="#create-our-virtual-machine">§</a>1 Create Our Virtual Machine</h1>
-<p>We begin by creating a <strong>Google Cloud Project</strong> that will operate our VM. We named it <em>nuttx-dashboard</em>…</p>
+<p>We begin by creating a <strong>Google Cloud Project</strong> that will operate our VM (pic above). We named it <em>nuttx-dashboard</em>…</p>
 <ul>
 <li><a href="https://console.cloud.google.com/projectcreate"><strong>Create a Google Cloud Project</strong></a> <em>(console.cloud.google.com)</em></li>
 </ul>
@@ -131,8 +133,10 @@
 $ sudo apt upgrade</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
+<p>Let’s populate our new VM…</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow1.jpg" alt="TODO" /></p>
 <h1 id="install-grafana-oss-server"><a class="doc-anchor" href="#install-grafana-oss-server">§</a>2 Install Grafana OSS Server</h1>
-<p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy that renders our NuttX Dashboard…</p>
+<p>We’re ready to install <strong>Grafana OSS Server</strong>! Yep the thingy (pic above) that renders our NuttX Dashboard…</p>
 <ul>
 <li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/#install-from-apt-repository"><strong>Install Grafana OSS on Debian</strong></a></li>
 </ul>
@@ -203,9 +207,10 @@ netstat -an | grep LISTEN</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-grafana9.png" alt="TODO" /></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.org/images/dashboard-flow2.jpg" alt="TODO" /></p>
 <h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
 <p><em>Where’s the data store for Grafana?</em></p>
-<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a>, to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
+<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a> (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
 ## Install Prometheus Server
 sudo apt install prometheus
@@ -258,6 +263,7 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p><img src="https://lupyuen.org/images/dashboard-prometheus4.png" alt="TODO" /></p>
 <p><em>Why Prometheus? Why not SQL Database?</em></p>
 <p>Remember we got Zero Budget for hosting NuttX Dashboard? Prometheus seems to be the Cheapest Way of hosting Time-Series Data.</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow3.jpg" alt="TODO" /></p>
 <h1 id="install-prometheus-pushgateway"><a class="doc-anchor" href="#install-prometheus-pushgateway">§</a>4 Install Prometheus Pushgateway</h1>
 <p><em>What’s this Prometheus Pushgateway?</em></p>
 <p>Funny Thing about Prometheus: We can’t push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this…</p>
@@ -266,7 +272,7 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p>We install <a href="TODO"><strong>Prometheus Pushgateway</strong></a> (as the in-memory Staging Area for Time-Series Data)</p>
 </li>
 <li>
-<p>We push our <strong>Time-Series Data</strong> to Prometheus Pushgateway (over HTTP)</p>
+<p>We push our <strong>Time-Series Data</strong> to Prometheus Pushgateway (over HTTP, pic above)</p>
 </li>
 <li>
 <p><strong>Prometheus Server</strong> shall scrape our Time-Series Data from Pushgateway (and store the data)</p>
@@ -496,9 +502,10 @@ export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>TODO: nuttxpr permissions</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
 <h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
 <p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
-<p>Let’s ingest the <strong>GitHub Actions Logs</strong> from the Mirror Repo Builds. Inside our VM: Do this…</p>
+<p>Let’s ingest the <strong>GitHub Actions Logs</strong> (pic above) from the Mirror Repo Builds. Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
 	&amp;&amp; sudo mkdir -p -m 755 /etc/apt/keyrings \
@@ -540,9 +547,11 @@ cd ingest-nuttx-builds
 <p><img src="https://lupyuen.org/images/dashboard-ingest1.png" alt="TODO" /></p>
 </li>
 <li>
-<p>Check <strong>Prometheus Server</strong> at our External IP Address, port 9090. Enter the Prometheus Query <strong>“build_score”</strong>, click <strong>Execute</strong>.</p>
+<p>Check <strong>Prometheus Server</strong> at our External IP Address, port 9090. Enter the Prometheus Query <strong>“build_score”</strong>, click <strong>Execute</strong>. We’ll see the same logs…</p>
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="TODO" /></p>
+<p><strong>Bonus:</strong> This query will reveal that NuttX has 339 microcontroller boards: <strong>“count by (board) (build_score)”</strong></p>
+<p>TODO: Pic</p>
 </li>
 <li>
 <p>Check <strong>Grafana Dashboard</strong> at our External IP Address, port 3000. We’ll see the GitHub Actions Logs…</p>
@@ -672,6 +681,8 @@ hide_version = true</code></pre></div>
 <h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>12 Cost of Google Cloud</h1>
 <p>TODO</p>
 <p>No budget. Will pay out of our pocket.</p>
+<p>50% CPU. How much?</p>
+<p>TODO: Pic</p>
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
 <p>Hmmm interesting… We should <a href="https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d"><strong>try it sometime</strong></a>!</p>
 <p><em>Running the Build Farm on Google Cloud?</em></p>
@@ -685,23 +696,9 @@ hide_version = true</code></pre></div>
 <p>avaota-a1, starpro64, oz64</p>
 <p>mastodon, forgejo</p>
 <p>TODO</p>
-<h1 id="appendix-ingest-the-github-gists-and-gitlab-snippets"><a class="doc-anchor" href="#appendix-ingest-the-github-gists-and-gitlab-snippets">§</a>14 Appendix: Ingest the GitHub Gists and GitLab Snippets</h1>
-<p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
-<p>We have a <a href="TODO"><strong>NuttX Build Farm</strong></a> hosted at home. Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
-<p>Whenever our VM Boots: Do this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Ingest the GitHub Gists and GitLab Snippets
-## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
-tmux
-cd $HOME/ingest-nuttx-builds
-./run.sh
-
-## If the SSH Session Disconnects:
-## Do this to reconnect the run.sh session...
-## tmux a</code></pre></div>
-<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
-<p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
-<h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>15 Appendix: NuttX Mirror Repo</h1>
-<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo. We grant permission to <code>nuttxpr</code></p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
+<h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
+<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). We grant permission to <code>nuttxpr</code></p>
 <p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
 <p>Click “Add People”</p>
 <p>Enter <code>nuttxpr</code></p>
@@ -724,6 +721,23 @@ cd $HOME/ingest-nuttx-builds
 <p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="TODO" /></p>
+<h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
+<p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
+<p>We have a <a href="TODO"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
+<p>Whenever our VM Boots: Do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Ingest the GitHub Gists and GitLab Snippets
+## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
+tmux
+cd $HOME/ingest-nuttx-builds
+./run.sh
+
+## If the SSH Session Disconnects:
+## Do this to reconnect the run.sh session...
+## tmux a</code></pre></div>
+<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
+<p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
 <h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>16 Appendix: Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
@@ -803,7 +817,34 @@ tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
-<h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>17 Appendix: SSH Key for VM Login</h1>
+<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>17 Appendix: SSH Key for GitHub</h1>
+<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
+<p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
+  -t ed25519 \
+  -f $HOME/.ssh/nuttxpr@github \
+  -C &quot;nuttxpr@github&quot;</code></pre></div>
+<p>Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account</p>
+<p>Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub</p>
+<p>Test it:</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
+  -i $HOME/.ssh/nuttxpr@github \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
+<p>Edit $HOME/.ssh/config</p>
+<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
+<p>Add this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host github.com
+  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div>
+<p>Test it:</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
+ssh -T \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>18 Appendix: SSH Key for VM Login</h1>
 <p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
 ## Change &quot;luppy&quot; to your VM Username
@@ -834,7 +875,7 @@ gcloud version
 ## Change &quot;luppy&quot; to your VM Username
 ssh \
   -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x</code></pre></div>
+  luppy@x.x.x.x</code></pre></div><h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>19 Appendix: Remote Connect in VSCode</h1>
 <p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
 <p>Select the SSH Config file $HOME/.ssh/config</p>
@@ -850,6 +891,7 @@ ssh \
   HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div>
+<p>TODO: Port forward pic</p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
@@ -858,34 +900,7 @@ ssh \
 <p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
-<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>18 Appendix: SSH Key for GitHub</h1>
-<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
-<p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
-  -t ed25519 \
-  -f $HOME/.ssh/nuttxpr@github \
-  -C &quot;nuttxpr@github&quot;</code></pre></div>
-<p>Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account</p>
-<p>Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub</p>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
-  -i $HOME/.ssh/nuttxpr@github \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
-<p>Edit $HOME/.ssh/config</p>
-<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
-<p>Add this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host github.com
-  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
-ssh -T \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>19 Appendix: Publish Online with Cloudflare</h1>
+<h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>20 Appendix: Publish Online with Cloudflare</h1>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
 <p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
