@@ -84,7 +84,7 @@
 <li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">17 Appendix: SSH Key for VM Login</a><ul></ul></li>
 <li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">18 Appendix: Remote Connect in VSCode</a><ul></ul></li>
 <li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">19 Appendix: Expand the VM Disk</a><ul></ul></li>
-<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2025</em></p>
+<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2026</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
 <ul>
@@ -719,13 +719,27 @@ hide_version = true</code></pre></div>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for <a href="https://lupyuen.org/articles/marathon#whats-next"><strong>Twincity Marathon</strong></a>!</p>
 <p><em>Anything else we’re running on our Home Computer?</em></p>
-<p>TODO: Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
-<p>nuttx-metrics</p>
-<p>riscv64</p>
-<p>avaota-a1, starpro64, oz64</p>
-<p>mastodon, forgejo</p>
-<p><em>Running the Build Farm on Google Cloud?</em></p>
-<p>TODO: Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
+<p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.org/articles/ci2"><strong>NuttX Build Farm</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners"><strong>Live Metric for GitHub Runners</strong></a></p>
+</li>
+<li>
+<p><strong>Daily Tests of NuttX</strong> on <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-avaota%22&amp;s=updated"><strong>Avaota-A1</strong></a>, <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-starpro64%22&amp;s=updated"><strong>StarPro64</strong></a>, <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-oz64%22&amp;s=updated"><strong>Oz64</strong></a>, <a href="https://github.com/lupyuen/nuttx-riscv64/releases"><strong>RISC-V</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/mastodon"><strong>Mastodon for NuttX CI</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/forgejo"><strong>Forgejo for NuttX</strong></a></p>
+</li>
+</ul>
+<p><em>Can’t we run NuttX Build Farm in the Cloud?</em></p>
+<p>Noooo…. Too expensive! Much cheaper with a <a href="https://qoto.org/@lupyuen/113517788288458811"><strong>Refurbished Ubuntu Xeon Server</strong></a>.</p>
+<p>TODO: Thanks</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="NuttX Mirror Repo" /></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
