@@ -661,25 +661,27 @@ cd $HOME/nuttx-release
 
 [(Log for enable-macos-windows.sh)](https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1)
 
-We should see the patch that starts the NuttX Build...
+We'll see the __"Enable macOS Patch"__ that starts the NuttX Build...
 
 ```bash
 https://github.com/NuttX/nuttx/commits/master/
 ```
 
-TODO: Pic
+![TODO](https://lupyuen.org/images/dashboard-github15.png)
 
-And the NuttX Build should be running...
+And the __NuttX Build__ should be running...
 
 ```bash
 https://github.com/NuttX/nuttx/actions/workflows/build.yml
 ```
 
-TODO: Pic
+![TODO](https://lupyuen.org/images/dashboard-github16.png)
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Update Branch (or Discard Commit)"__. Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
+In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
-If we see
+![TODO](https://lupyuen.org/images/dashboard-github7.png)
+
+If we see...
 
 ```bash
 fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
@@ -823,51 +825,45 @@ TODO
 
 # Appendix: NuttX Mirror Repo
 
-`nuttxpr` will start the build by pushing a patch to the NuttX Mirror Repo (pic above). We grant permission to `nuttxpr`
+_What triggers the Daily Build at NuttX Mirror Repo?_
 
-NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access
+Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
-Click "Add People"
+Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we grant the __Push Permission__ to _nuttxpr_...
 
-Enter `nuttxpr`
+1.  Browse to the Collaborators for NuttX Mirror Repo
 
-Role: Write
+    ```bash
+    https://github.com/NuttX/nuttx/settings/access
+    ```
 
-Log in as `nuttxpr` to accept the invitation
+1.  Click __"Add People"__
 
-Check the collaborators: https://github.com/NuttX/nuttx/settings/access
+    Enter __nuttxpr__
 
-![TODO](https://lupyuen.org/images/dashboard-github1.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github8.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github2.png)
+1.  Set the Role to __"Write"__
 
-![TODO](https://lupyuen.org/images/dashboard-github3.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github9.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github4.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github10.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github5.png)
+1.  Log in as _nuttxpr_ to accept the invitation
 
-![TODO](https://lupyuen.org/images/dashboard-github6.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github11.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github7.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github12.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github8.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github13.png)
 
-![TODO](https://lupyuen.org/images/dashboard-github9.png)
+1.  Check that _nuttxpr_ has become a collaborator
 
-![TODO](https://lupyuen.org/images/dashboard-github10.png)
+    ```bash
+    https://github.com/NuttX/nuttx/settings/access
+    ```
 
-![TODO](https://lupyuen.org/images/dashboard-github11.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github12.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github13.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github14.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github15.png)
-
-![TODO](https://lupyuen.org/images/dashboard-github16.png)
+    ![TODO](https://lupyuen.org/images/dashboard-github14.png)
 
 TODO
 
