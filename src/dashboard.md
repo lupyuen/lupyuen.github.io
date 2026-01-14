@@ -538,7 +538,9 @@ export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log
 ```
 
-TODO: nuttxpr permissions
+Make sure that _nuttxpr_ has __Push Permission__ for NuttX Mirror Repo...
+
+- [__"NuttX Mirror Repo"__](https://lupyuen.org/articles/dashboard#appendix-nuttx-mirror-repo)
 
 ![Ingest the GitHub Actions Logs](https://lupyuen.org/images/dashboard-flow4.jpg)
 
@@ -604,7 +606,7 @@ cd ingest-nuttx-builds
 
     __Bonus:__ This query will reveal that NuttX has 339 microcontroller boards: __"count by (board) (build_score)"__
 
-    TODO: Pic
+    TODO: Pic of 339 boards
 
 1.  Check __Grafana Dashboard__ at our External IP Address, port 3000. We'll see the GitHub Actions Logs...
 
@@ -685,14 +687,16 @@ In case of sync problems: Go to [github.com/NuttX/nuttx](https://github.com/Nutt
 
 ![Sync Fork > Update Branch (or Discard Commit)](https://lupyuen.org/images/dashboard-github7.png)
 
-If we see...
+If we see this error...
 
 ```bash
 fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
 warning: Clone succeeded, but checkout failed.
 ```
 
-Increase the disk space. Need 5 GB for /tmp. See the section below. TODO
+Then increase the Disk Space, we need 5 GB for _/tmp_...
+
+- [__"Expand the VM Disk"__](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
 
 # Forever Build and Ingest
 
@@ -718,6 +722,8 @@ done
 Whenever our VM Boots: Run _$HOME/sync.sh_...
 
 ```bash
+## Don't use cron, need to monitor manually so that
+## we don't overuse the GitHub Runners of the Mirror Repo
 sudo apt install tmux
 tmux
 chmod +x $HOME/sync.sh
@@ -728,13 +734,13 @@ $HOME/sync.sh
 ## tmux a
 ```
 
-(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub Runners of the Mirror Repo)
+[(Log for NuttX Build and Ingest)](https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log)
 
-[Log for NuttX Build and Ingest](https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log)
+__One More Step:__ We need to ingest the GitHub Gists and GitLab Snippets...
 
-In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click "Sync Fork > Discard Commit". Then run enable-macos-windows.sh followed by sync.sh.
+- [__"Ingest the GitHub Gists"__](https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists)
 
-TODO: Ingest the GitHub Gists and GitLab Snippets
+__In Case of Sync Problems:__ Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Discard Commit"__. Then run _enable-macos-windows.sh_ followed by _sync.sh_. _(Hmmm this seems to happen often in our VM. Why?)_
 
 # Secure Our Grafana Server
 
@@ -783,11 +789,14 @@ sudo systemctl restart grafana-server
 
 Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN...
 
-- TODO: Publish online with Cloudflare
+- [__"Publish Online with Cloudflare"__](https://lupyuen.org/articles/dashboard#appendix-publish-online-with-cloudflare)
+
+
+![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
 NuttX Dashboard is ready to serve. Yay!
 
-TODO: Pic
+TODO: Pic of Cost of Google Cloud
 
 # Cost of Google Cloud
 
@@ -797,7 +806,7 @@ No budget. Will pay out of our own pocket.
 
 50% CPU. How much?
 
-TODO: Pic
+TODO: Pic of CPU usage
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
@@ -873,7 +882,7 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
 _What's with the GitHub Gists and GitLab Snippets_
 
-We have a [__NuttX Build Farm__](https://lupyuen.org/articles/ci2) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
+We have a [__NuttX Build Farm__](https://lupyuen.org/articles/ci2) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](https://lupyuen.org/articles/dashboard#set-the-github-token)
 
 Whenever our VM Boots: Do this...
 
@@ -887,9 +896,10 @@ cd $HOME/ingest-nuttx-builds
 ## If the SSH Session Disconnects:
 ## Do this to reconnect the run.sh session...
 ## tmux a
-```
 
-(Don't use cron, need to monitor manually so that we don't run into overuse of the GitHub API and GitLab API)
+## Don't use cron, need to monitor manually so that we don't 
+## overuse the GitHub API and GitLab API
+```
 
 [(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
@@ -1019,9 +1029,9 @@ _Is there an easier way to work with our VM?_
 
 Yep use a __SSH Remote Connection in VSCode__!
 
-1.  Assume that we have added an SSH Key for VM Login
+1.  Assume that we have added an SSH Key for VM Login...
 
-    TODO: Add SSH Key for VM Login
+    [__"SSH Key for VM Login"__](https://lupyuen.org/articles/dashboard#appendix-ssh-key-for-vm-login)
 
 1.  In VSCode: Click __"Remote Explorer > SSH > +"__
 
