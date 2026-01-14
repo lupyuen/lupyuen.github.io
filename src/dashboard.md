@@ -683,14 +683,15 @@ https://github.com/NuttX/nuttx/actions/workflows/build.yml
 
 ![NuttX Build should be running](https://lupyuen.org/images/dashboard-github16.png)
 
-In case of sync problems: Go to [github.com/NuttX/nuttx](https://github.com/NuttX/nuttx/tree/master), click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
+If the Patching and Building ain't happening: Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
 
 ![Sync Fork > Update Branch (or Discard Commit)](https://lupyuen.org/images/dashboard-github7.png)
 
 If we see this error...
 
 ```bash
-fatal: cannot create directory at 'arch/arm/src/kinetis': No space left on device
+fatal: cannot create directory at 'arch/arm/src/kinetis':
+No space left on device
 warning: Clone succeeded, but checkout failed.
 ```
 
