@@ -956,69 +956,87 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
 # Appendix: SSH Key for VM Login
 
-Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+Connecting to our VM gets tedious. Let's create an __SSH Key for VM Login__...
 
-```bash
-## Do this on our computer, NOT the VM!
-## Change "luppy" to your VM Username
-ssh-keygen \
-  -t rsa \
-  -f $HOME/.ssh/nuttx-dashboard-vm \
-  -C luppy
+1.  Create the SSH Key on __Our Computer__ (NOT the VM)
 
-## Check the output
-ls $HOME/.ssh/nuttx-dashboard-vm*
+    ```bash
+    ## From https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+    ## Do this on our computer, NOT the VM!
+    ## Change "luppy" to your VM Username
+    ssh-keygen \
+      -t rsa \
+      -f $HOME/.ssh/nuttx-dashboard-vm \
+      -C luppy
 
-## We should see...
-## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub
-```
+    ## Check the output
+    ls $HOME/.ssh/nuttx-dashboard-vm*
 
-Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk
+    ## We should see...
+    ## nuttx-dashboard-vm
+    ## nuttx-dashboard-vm.pub
+    ```
 
-```bash
-## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
-gcloud version
-## We should see: Google Cloud SDK 550.0.0
-```
+1.  Add the SSH Public Key to our VM...
 
-Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata
+    [__Follow the steps here__](https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata)
 
-Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata
+    Browse to __"Google Cloud Console > Metadata"__
+    
+    ```bash
+    https://console.cloud.google.com/compute/metadata
+    ```
 
-Click "SSH Keys"
+    ![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
 
-Click "Add SSH Key"
+    Click __"SSH Keys > Add SSH Key"__
 
-Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub
+    ![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
 
-Click "Save"
+    Copy and paste the contents of _$HOME/.ssh/nuttx-dashboard-vm.pub_
 
-```bash
-## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
-## Change "luppy" to your VM Username
-ssh \
-  -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x
-```
+    ![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
+
+    Click __"Save"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
+
+1.  Test the SSH Key with VM Login
+
+    ```bash
+    ## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+    ## Change "luppy" to your VM Username
+    ssh \
+      -i $HOME/.ssh/nuttx-dashboard-vm \
+      luppy@x.x.x.x
+    ```
 
 # Appendix: Remote Connect in VSCode
 
-In VSCode: Click "Remote Explorer > SSH > +"
+TODO
 
-```bash
-ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
-```
+1.  In VSCode: Click __"Remote Explorer > SSH > +"__
 
-Select the SSH Config file $HOME/.ssh/config
 
-Click "Connect"
+    ![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
 
-Click "File > Open File / Folder"
+1.  Enter the SSH Command
 
-$HOME/.ssh/config will look like:
+    ```bash
+    ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
+    ```
+
+    ![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
+
+1.  Select the SSH Config file _$HOME/.ssh/config_
+
+    Click __"Connect"__
+
+    To open a Remote File / Folder: Click __"File > Open File / Folder"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
+
+_$HOME/.ssh/config_ will look like:
 
 ```bash
 Host x.x.x.x
@@ -1036,23 +1054,9 @@ Host nuttx-dashboard-vm
   User luppy
 ```
 
-TODO: Port forward pic
-
-![TODO](https://lupyuen.org/images/dashboard-ssh1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh3.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh4.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh5.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh6.png)
-
-![TODO](https://lupyuen.org/images/dashboard-ssh7.png)
-
 ![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
+
+TODO: Port forward pic
 
 # Appendix: Expand the VM Disk
 
@@ -1156,61 +1160,87 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
 
 # Appendix: Publish Online with Cloudflare
 
-TODO
+_Our VM is running. How do we actually publish it at a Web URL?_
 
-Create a Cloudflare Tunnel, pointing to http://localhost:3000
+Here are two ways...
 
-Cache URI Path > Wildcard > Value = /public/*
+- Option One: We publish it with a __Cloudflare Tunnel__
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
+- Option Two: We publish to __Any CDN__
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
+__Option One: Cloudflare Tunnel__
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
+1.  We create a Cloudflare Tunnel, pointing to...
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
+    ```bash
+    http://localhost:3000
+    ```
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare5.png)
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare2.png)
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare6.png)
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare1.png)
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare7.png)
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare3.png)
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
+1.  Remember to set the cache...
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
+    Set __"Cache URI Path > Wildcard > Value"__ to...
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
+    ```bash
+    /public/*
+    ```
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare12.png)
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare13.png)
+__Option Two: Cloudflare CDN__
 
-![TODO](https://lupyuen.org/images/dashboard-cloudflare14.png)
+1.  Remember that Grafana listens at __Port 3000__? We configure __iptables__ to route incoming packets from __Port 80 to Port 3000__...
 
-Or use Cloudflare CDN. (Should get Static IP Address for our VM)
+    ```bash
+    ## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
 
-```bash
-## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-sudo iptables -t nat -L -n -v
+    $ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 
-Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
-    0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
+    $ sudo iptables -t nat -L -n -v
 
-## To delete the rule:
-## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-```
+    Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
+    pkts bytes target     prot opt in     out     source               destination         
+        0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
 
-VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic
+    ## To delete the rule:
+    ## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+    ```
 
-Check http://x.x.x.x
+1.  Configure our __VM Firewall__ to allow HTTP traffic...
 
-```bash
-$ grep duration /var/log/syslog
-2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg="Request Completed" method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error="token needs to be rotated"
-```
+    Click __"VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic"__
 
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare8.png)
+
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare9.png)
+
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare10.png)
+
+1.  Why does this work? That's because there's a Default Firewall Rule __"default-allow-http"__ that wil allow incoming TCP Port 80, whenever the Target Tag matches __"http_server"__...
+
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare11.png)
+
+1.  Check that our __External IP Address__ is now accessible via HTTP Port 80:
+
+    ```bash    
+    http://x.x.x.x
+    ```
+
+1.  Under Cloudflare DNS: Create an __"A Record"__ that points to our External IP Address.
+
+    Remember to __Enable the HTTP Proxy__.
+
+    (Actually we should get a __Static IP Address__ for our VM)
+
+    ![TODO](https://lupyuen.org/images/dashboard-cloudflare4.png)
+
+1.  And our NuttX Dashboard is live on the web!
+
+![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
