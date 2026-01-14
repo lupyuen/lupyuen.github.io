@@ -479,8 +479,11 @@ sudo systemctl restart prometheus
 <p><img src="https://lupyuen.org/images/dashboard-json4.png" alt="NuttX Build History Dashboard" /></p>
 </li>
 </ol>
+<p>Let’s integrate our dashboard with GitHub Actions…</p>
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="Ingest the GitHub Actions Logs" /></p>
 <h1 id="set-the-github-token"><a class="doc-anchor" href="#set-the-github-token">§</a>7 Set the GitHub Token</h1>
-<p>TODO</p>
+<p><em>What’s this GitHub Token?</em></p>
+<p>Our VM shall download and ingest the <strong>GitHub Actions Logs</strong>. This requires a GitHub Token to access the GitHub Actions Logs.</p>
 <p>Inside our VM: Create <em>$HOME/github-token.sh</em> and fill in the <strong>GitHub Token</strong>. Any Plain GitHub Account will do (like <em>nuttxpr</em>). Don’t use an Admin Account!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## GitHub Settings &gt; Developer Settings &gt; Tokens (Classic) &gt; Generate New Token (Classic)
 ## Check the following:
@@ -681,8 +684,8 @@ hide_version = true</code></pre></div>
 <p>NuttX Dashboard is ready to serve. Yay!</p>
 <p>TODO: Pic</p>
 <h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>12 Cost of Google Cloud</h1>
-<p>TODO</p>
-<p>No budget. Will pay out of our pocket.</p>
+<p>TODO: Cost of Google Cloud</p>
+<p>No budget. Will pay out of our own pocket.</p>
 <p>50% CPU. How much?</p>
 <p>TODO: Pic</p>
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
@@ -692,12 +695,11 @@ hide_version = true</code></pre></div>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
 <p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
 <p><em>Anything else we’re running on our Home Computer?</em></p>
-<p>Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
+<p>TODO: Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
 <p>nuttx-metrics</p>
 <p>riscv64</p>
 <p>avaota-a1, starpro64, oz64</p>
 <p>mastodon, forgejo</p>
-<p>TODO</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="NuttX Mirror Repo" /></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
