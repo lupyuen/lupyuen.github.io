@@ -850,6 +850,14 @@ _Can't we run NuttX Build Farm in the Cloud?_
 
 Noooo.... Too expensive! Much cheaper with a [__Refurbished Ubuntu Xeon Server__](https://qoto.org/@lupyuen/113517788288458811).
 
+![Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!](https://lupyuen.org/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
+
 TODO: Thanks
 
 ![NuttX Mirror Repo](https://lupyuen.org/images/dashboard-flow4.jpg)

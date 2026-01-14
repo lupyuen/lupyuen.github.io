@@ -22,6 +22,14 @@ It's probably a bad idea to be locked-in and over-dependent on a __Single Provid
 
 [__"[URGENT] Reducing our usage of GitHub Runners"__](https://github.com/apache/nuttx/issues/14376)
 
+![Refurbished 12-Core Xeon ThinkStation ($400 / 24 kg!) becomes (hefty) Ubuntu Build Farm for Apache NuttX RTOS. 4 times the throughput of a PC!](https://lupyuen.org/images/ci4-thinkstation.jpg)
+
+<span style="font-size:80%">
+
+[_UPDATE: NuttX Build Farm now runs on a Refurbished 12-Core Xeon Ubuntu ThinkStation ($400 / 24 kg!) ... 4 times the throughput of a PC!_](https://qoto.org/@lupyuen/113517788288458811)
+
+</span>
+
 ![Build Logs for All Boards](https://lupyuen.github.io/images/ci2-log.jpg)
 
 # Target Groups in NuttX
