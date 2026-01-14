@@ -59,8 +59,8 @@ Then we create our __Virtual Machine__...
 1.  And SSH Console appears! Remember to __Update and Upgrade__ the VM...
 
     ```bash
-    $ sudo apt update
-    $ sudo apt upgrade
+    sudo apt update
+    sudo apt upgrade
     ```
 
 ![TODO](https://lupyuen.org/images/dashboard-vm7.png)
@@ -865,8 +865,6 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
     ![TODO](https://lupyuen.org/images/dashboard-github14.png)
 
-TODO
-
 ![TODO](https://lupyuen.org/images/dashboard-flow5.jpg)
 
 # Appendix: Ingest the GitHub Gists
@@ -893,152 +891,68 @@ cd $HOME/ingest-nuttx-builds
 
 [(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
-# Appendix: Expand the VM Disk
-
-```bash
-## TODO: Out of space in /tmp
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        11G  9.8G     0 100% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-
-## Before:
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        11G  8.5G  1.4G  87% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-
-## Most of the disk space used by /tmp
-$ rm -rf /tmp/sync-build-ingest/
-```
-
-Resize the disk: https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh
-
-Click VM > Details > Storage > Boot Disk
-
-Click Menu > Edit at Top Right
-
-Increase the size from 10 GB to 20 GB. Click Save
-
-Inside the VM:
-
-```bash
-sudo apt install fdisk
-sudo fdisk -l
-
-## We should see
-## Device      Start      End  Sectors  Size Type
-## /dev/sda1  262144 20969471 20707328  9.9G Linux root (x86-64)
-## /dev/sda14   2048     8191     6144    3M BIOS boot
-## /dev/sda15   8192   262143   253952  124M EFI System
-
-## Let's expand /dev/sda to 20 GB
-sudo fdisk /dev/sda
-
-## Ignore the warning
-## Enter: w
-
-## Resize partition 1 (/dev/sda1), which maps to /
-sudo apt install cloud-guest-utils
-sudo growpart /dev/sda 1
-
-## We should see...
-## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
-
-## Resize the Filesystem
-sudo resize2fs /dev/sda1
-
-## We should see...
-## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
-## old_desc_blocks = 2, new_desc_blocks = 3
-## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
-
-## sda1 is bigger now
-$ sudo fdisk -l
-Device      Start      End  Sectors  Size Type
-/dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
-/dev/sda14   2048     8191     6144    3M BIOS boot
-/dev/sda15   8192   262143   253952  124M EFI System
-
-## More space in /tmp yay!
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        21G  8.5G   12G  43% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-```
-
-![TODO](https://lupyuen.org/images/dashboard-disk1.png)
-
-![TODO](https://lupyuen.org/images/dashboard-disk2.png)
-
-![TODO](https://lupyuen.org/images/dashboard-disk3.png)
+![TODO](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Appendix: SSH Key for GitHub
 
-nuttxpr is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!
+_What triggers the Daily Build at NuttX Mirror Repo?_
 
-Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
-```bash
-ssh-keygen \
-  -t ed25519 \
-  -f $HOME/.ssh/nuttxpr@github \
-  -C "nuttxpr@github"
-```
+Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we create an SSH Key for GitHub that will allow _nuttxpr_ to push the patch...
 
-Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+(_nuttxpr_ is an Ordinary GitHub Account with Read Access. Don't use a GitHub Admin Account!)
 
-Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub
+1.  Inside our VM: Create the __GitHub SSH Key__
 
-Test it:
+    ```bash
+    ## From https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+    ssh-keygen \
+      -t ed25519 \
+      -f $HOME/.ssh/nuttxpr@github \
+      -C "nuttxpr@github"
+    ```
 
-```bash
-ssh -T \
-  -i $HOME/.ssh/nuttxpr@github \
-  git@github.com
+1.  Add the SSH Key to GitHub Account
 
-## We should see...
-## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
-```
+    [Follow the steps here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
-Edit $HOME/.ssh/config
+    Copy from our Public Key at _$HOME/.ssh/nuttxpr@github.pub_, paste into to GitHub
 
-```bash
-nano $HOME/.ssh/config
-```
+1.  Test the SSH Key
 
-Add this...
+    ```bash
+    ssh -T \
+      -i $HOME/.ssh/nuttxpr@github \
+      git@github.com
 
-```bash
-Host github.com
-  IdentityFile ~/.ssh/nuttxpr@github
-```
+    ## We should see...
+    ## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
+    ```
 
-Test it:
+1.  Add the SSH Key to our SSH Config. Edit _$HOME/.ssh/config_
 
-```bash
-## Should now work without stating Private Key
-ssh -T \
-  git@github.com
+    ```bash
+    nano $HOME/.ssh/config
+    ```
 
-## We should see...
-## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
-```
+    Add this...
+
+    ```bash
+    Host github.com
+      IdentityFile ~/.ssh/nuttxpr@github
+    ```
+
+1.  Test our updated SSH Config
+
+    ```bash
+    ## Should now work without stating Private Key
+    ssh -T \
+      git@github.com
+
+    ## We should see...
+    ## Hi nuttxpr! You've successfully authenticated, but GitHub does not provide shell access.
+    ```
 
 # Appendix: SSH Key for VM Login
 
@@ -1140,6 +1054,106 @@ TODO: Port forward pic
 
 ![TODO](https://lupyuen.org/images/dashboard-ssh8.png)
 
+# Appendix: Expand the VM Disk
+
+By Default: Google Cloud allocates __10 GB of Disk Space__...
+
+```bash
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  8.5G  1.4G  87% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+```
+
+But _/tmp_ and _/dev/sda1_ will __Run Out of Disk Space__ while ingesting NuttX Build Logs...
+
+```bash
+## Out of space in /tmp
+$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  9.8G     0 100% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000
+
+## Most of the disk space used by /tmp
+$ rm -rf /tmp/sync-build-ingest/
+```
+
+This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh), from 10 GB to 20 GB...
+
+1.  Click __"VM > Details > Storage > Boot Disk"__
+
+    ![TODO](https://lupyuen.org/images/dashboard-disk1.png)
+
+1.  Click __"Menu > Edit"__ (Top Right)
+
+    ![TODO](https://lupyuen.org/images/dashboard-disk2.png)
+
+1.  Increase the size from 10 GB to 20 GB. Click __Save__
+
+    ![TODO](https://lupyuen.org/images/dashboard-disk3.png)
+
+1.  Inside our VM: Do this...
+
+    ```bash
+    sudo apt install fdisk
+    sudo fdisk -l
+
+    ## We should see
+    ## Device      Start      End  Sectors  Size Type
+    ## /dev/sda1  262144 20969471 20707328  9.9G Linux root (x86-64)
+    ## /dev/sda14   2048     8191     6144    3M BIOS boot
+    ## /dev/sda15   8192   262143   253952  124M EFI System
+
+    ## Let's expand /dev/sda to 20 GB
+    sudo fdisk /dev/sda
+
+    ## Ignore the warning
+    ## Enter: w
+
+    ## Resize partition 1 (/dev/sda1), which maps to /
+    sudo apt install cloud-guest-utils
+    sudo growpart /dev/sda 1
+
+    ## We should see...
+    ## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
+
+    ## Resize the Filesystem
+    sudo resize2fs /dev/sda1
+
+    ## We should see...
+    ## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
+    ## old_desc_blocks = 2, new_desc_blocks = 3
+    ## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
+
+    ## sda1 is bigger now
+    $ sudo fdisk -l
+    Device      Start      End  Sectors  Size Type
+    /dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
+    /dev/sda14   2048     8191     6144    3M BIOS boot
+    /dev/sda15   8192   262143   253952  124M EFI System
+
+    ## More space in /tmp yay!
+    $ df -H
+    Filesystem      Size  Used Avail Use% Mounted on
+    udev            2.1G     0  2.1G   0% /dev
+    tmpfs           412M  574k  411M   1% /run
+    /dev/sda1        21G  8.5G   12G  43% /
+    tmpfs           2.1G     0  2.1G   0% /dev/shm
+    tmpfs           5.3M     0  5.3M   0% /run/lock
+    /dev/sda15      130M   13M  118M  10% /boot/efi
+    tmpfs           412M     0  412M   0% /run/user/1000
+    ```
+
 # Appendix: Publish Online with Cloudflare
 
 TODO
@@ -1199,3 +1213,4 @@ Check http://x.x.x.x
 $ grep duration /var/log/syslog
 2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg="Request Completed" method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error="token needs to be rotated"
 ```
+
