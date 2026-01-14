@@ -1,6 +1,6 @@
 # Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS
 
-📝 _14 Jan 2025_
+📝 _14 Jan 2026_
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
@@ -834,19 +834,23 @@ Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're goin
 
 _Anything else we're running on our Home Computer?_
 
-TODO: Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
+Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
 
-nuttx-metrics
+- [__NuttX Build Farm__](https://lupyuen.org/articles/ci2)
 
-riscv64
+- [__Live Metric for GitHub Runners__](https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners)
 
-avaota-a1, starpro64, oz64
+- __Daily Tests of NuttX__ on [__Avaota-A1__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-avaota%22&s=updated), [__StarPro64__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-starpro64%22&s=updated), [__Oz64__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-oz64%22&s=updated), [__RISC-V__](https://github.com/lupyuen/nuttx-riscv64/releases)
 
-mastodon, forgejo
+- [__Mastodon for NuttX CI__](https://lupyuen.org/articles/mastodon)
 
-_Running the Build Farm on Google Cloud?_
+- [__Forgejo for NuttX__](https://lupyuen.org/articles/forgejo)
 
-TODO: Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
+_Can't we run NuttX Build Farm in the Cloud?_
+
+Noooo.... Too expensive! Much cheaper with a [__Refurbished Ubuntu Xeon Server__](https://qoto.org/@lupyuen/113517788288458811).
+
+TODO: Thanks
 
 ![NuttX Mirror Repo](https://lupyuen.org/images/dashboard-flow4.jpg)
 
