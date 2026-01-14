@@ -1047,9 +1047,7 @@ Yep use a __SSH Remote Connection in VSCode__!
 
 1.  In VSCode: Click __"Remote Explorer > SSH > +"__
 
-    ![Remote Explorer > SSH > +](https://lupyuen.org/images/dashboard-ssh5.png)
-
-1.  Enter the SSH Command
+    Enter the SSH Command...
 
     ```bash
     ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x 
@@ -1246,9 +1244,9 @@ __Option Two: Cloudflare CDN__
 
     Click __"VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic"__
 
-    ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare8.png)
-
     ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare9.png)
+
+    ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare8.png)
 
     ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare10.png)
 
