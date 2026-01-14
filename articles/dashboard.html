@@ -80,10 +80,10 @@
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">14 Appendix: NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#appendix-ingest-the-github-gists" title="Appendix: Ingest the GitHub Gists">15 Appendix: Ingest the GitHub Gists</a><ul></ul></li>
-<li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">16 Appendix: Expand the VM Disk</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">17 Appendix: SSH Key for GitHub</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">18 Appendix: SSH Key for VM Login</a><ul></ul></li>
-<li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">19 Appendix: Remote Connect in VSCode</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">16 Appendix: SSH Key for GitHub</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">17 Appendix: SSH Key for VM Login</a><ul></ul></li>
+<li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">18 Appendix: Remote Connect in VSCode</a><ul></ul></li>
+<li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">19 Appendix: Expand the VM Disk</a><ul></ul></li>
 <li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
@@ -129,8 +129,8 @@
 </li>
 <li>
 <p>And SSH Console appears! Remember to <strong>Update and Upgrade</strong> the VM…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ sudo apt update
-$ sudo apt upgrade</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo apt update
+sudo apt upgrade</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.org/images/dashboard-vm7.png" alt="TODO" /></p>
 <p>Let’s populate our new VM…</p>
@@ -729,7 +729,6 @@ hide_version = true</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
 </li>
 </ol>
-<p>TODO</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="TODO" /></p>
 <h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
 <p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
@@ -746,7 +745,117 @@ cd $HOME/ingest-nuttx-builds
 ## tmux a</code></pre></div>
 <p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
 <p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
-<h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>16 Appendix: Expand the VM Disk</h1><div class="example-wrap"><pre class="language-bash"><code>## TODO: Out of space in /tmp
+<p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
+<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>16 Appendix: SSH Key for GitHub</h1>
+<p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
+<p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
+<p>Inside the script: Our Regular GitHub Account <em>nuttxpr</em> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we create an SSH Key for GitHub that will allow <em>nuttxpr</em> to push the patch…</p>
+<p>(<em>nuttxpr</em> is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!)</p>
+<ol>
+<li>
+<p>Inside our VM: Create the <strong>GitHub SSH Key</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+ssh-keygen \
+  -t ed25519 \
+  -f $HOME/.ssh/nuttxpr@github \
+  -C &quot;nuttxpr@github&quot;</code></pre></div></li>
+<li>
+<p>Add the SSH Key to GitHub Account</p>
+<p><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">Follow the steps here</a></p>
+<p>Copy from our Public Key at <em>$HOME/.ssh/nuttxpr@github.pub</em>, paste into to GitHub</p>
+</li>
+<li>
+<p>Test the SSH Key</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
+  -i $HOME/.ssh/nuttxpr@github \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div></li>
+<li>
+<p>Add the SSH Key to our SSH Config. Edit <em>$HOME/.ssh/config</em></p>
+<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
+<p>Add this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host github.com
+  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div></li>
+<li>
+<p>Test our updated SSH Config</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
+ssh -T \
+  git@github.com
+
+## We should see...
+## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div></li>
+</ol>
+<h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>17 Appendix: SSH Key for VM Login</h1>
+<p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
+## Change &quot;luppy&quot; to your VM Username
+ssh-keygen \
+  -t rsa \
+  -f $HOME/.ssh/nuttx-dashboard-vm \
+  -C luppy
+
+## Check the output
+ls $HOME/.ssh/nuttx-dashboard-vm*
+
+## We should see...
+## nuttx-dashboard-vm
+## nuttx-dashboard-vm.pub</code></pre></div>
+<p>Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
+brew install gcloud-cli
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:&quot;$PATH&quot;
+gcloud version
+## We should see: Google Cloud SDK 550.0.0</code></pre></div>
+<p>Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata</p>
+<p>Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata</p>
+<p>Click “SSH Keys”</p>
+<p>Click “Add SSH Key”</p>
+<p>Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub</p>
+<p>Click “Save”</p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
+## Change &quot;luppy&quot; to your VM Username
+ssh \
+  -i $HOME/.ssh/nuttx-dashboard-vm \
+  luppy@x.x.x.x</code></pre></div><h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>18 Appendix: Remote Connect in VSCode</h1>
+<p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
+<p>Select the SSH Config file $HOME/.ssh/config</p>
+<p>Click “Connect”</p>
+<p>Click “File &gt; Open File / Folder”</p>
+<p>$HOME/.ssh/config will look like:</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy</code></pre></div>
+<p>Probably better to rename the “Host”, in case the IP Address changes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Host nuttx-dashboard-vm
+  HostName x.x.x.x
+  IdentityFile ~/.ssh/nuttx-dashboard-vm
+  User luppy</code></pre></div>
+<p>TODO: Port forward pic</p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
+<h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>19 Appendix: Expand the VM Disk</h1>
+<p>By Default: Google Cloud allocates <strong>10 GB of Disk Space</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ df -H
+Filesystem      Size  Used Avail Use% Mounted on
+udev            2.1G     0  2.1G   0% /dev
+tmpfs           412M  574k  411M   1% /run
+/dev/sda1        11G  8.5G  1.4G  87% /
+tmpfs           2.1G     0  2.1G   0% /dev/shm
+tmpfs           5.3M     0  5.3M   0% /run/lock
+/dev/sda15      130M   13M  118M  10% /boot/efi
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div>
+<p>But <em>/tmp</em> and <em>/dev/sda1</em> will <strong>Run Out of Disk Space</strong> while ingesting NuttX Build Logs…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Out of space in /tmp
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 udev            2.1G     0  2.1G   0% /dev
@@ -757,24 +866,24 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
 tmpfs           412M     0  412M   0% /run/user/1000
 
-## Before:
-$ df -H
-Filesystem      Size  Used Avail Use% Mounted on
-udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        11G  8.5G  1.4G  87% /
-tmpfs           2.1G     0  2.1G   0% /dev/shm
-tmpfs           5.3M     0  5.3M   0% /run/lock
-/dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000
-
 ## Most of the disk space used by /tmp
 $ rm -rf /tmp/sync-build-ingest/</code></pre></div>
-<p>Resize the disk: https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh</p>
-<p>Click VM &gt; Details &gt; Storage &gt; Boot Disk</p>
-<p>Click Menu &gt; Edit at Top Right</p>
-<p>Increase the size from 10 GB to 20 GB. Click Save</p>
-<p>Inside the VM:</p>
+<p>This is how we <a href="https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh"><strong>Expand the VM Disk</strong></a>, from 10 GB to 20 GB…</p>
+<ol>
+<li>
+<p>Click <strong>“VM &gt; Details &gt; Storage &gt; Boot Disk”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Click <strong>“Menu &gt; Edit”</strong> (Top Right)</p>
+<p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Increase the size from 10 GB to 20 GB. Click <strong>Save</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo apt install fdisk
 sudo fdisk -l
 
@@ -821,93 +930,8 @@ tmpfs           412M  574k  411M   1% /run
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
-tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div>
-<p><img src="https://lupyuen.org/images/dashboard-disk1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="TODO" /></p>
-<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>17 Appendix: SSH Key for GitHub</h1>
-<p>nuttxpr is an Ordinary GitHub Account with Read Access. Don’t use a GitHub Admin Account!</p>
-<p>Create the GitHub SSH Key on VM: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh-keygen \
-  -t ed25519 \
-  -f $HOME/.ssh/nuttxpr@github \
-  -C &quot;nuttxpr@github&quot;</code></pre></div>
-<p>Add SSH Key to GitHub Account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account</p>
-<p>Copy from Public Key $HOME/.ssh/nuttxpr@github.pub to GitHub</p>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -T \
-  -i $HOME/.ssh/nuttxpr@github \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div>
-<p>Edit $HOME/.ssh/config</p>
-<div class="example-wrap"><pre class="language-bash"><code>nano $HOME/.ssh/config</code></pre></div>
-<p>Add this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host github.com
-  IdentityFile ~/.ssh/nuttxpr@github</code></pre></div>
-<p>Test it:</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Should now work without stating Private Key
-ssh -T \
-  git@github.com
-
-## We should see...
-## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div><h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>18 Appendix: SSH Key for VM Login</h1>
-<p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
-## Change &quot;luppy&quot; to your VM Username
-ssh-keygen \
-  -t rsa \
-  -f $HOME/.ssh/nuttx-dashboard-vm \
-  -C luppy
-
-## Check the output
-ls $HOME/.ssh/nuttx-dashboard-vm*
-
-## We should see...
-## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub</code></pre></div>
-<p>Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:&quot;$PATH&quot;
-gcloud version
-## We should see: Google Cloud SDK 550.0.0</code></pre></div>
-<p>Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata</p>
-<p>Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata</p>
-<p>Click “SSH Keys”</p>
-<p>Click “Add SSH Key”</p>
-<p>Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub</p>
-<p>Click “Save”</p>
-<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
-## Change &quot;luppy&quot; to your VM Username
-ssh \
-  -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x</code></pre></div><h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>19 Appendix: Remote Connect in VSCode</h1>
-<p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
-<p>Select the SSH Config file $HOME/.ssh/config</p>
-<p>Click “Connect”</p>
-<p>Click “File &gt; Open File / Folder”</p>
-<p>$HOME/.ssh/config will look like:</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy</code></pre></div>
-<p>Probably better to rename the “Host”, in case the IP Address changes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>Host nuttx-dashboard-vm
-  HostName x.x.x.x
-  IdentityFile ~/.ssh/nuttx-dashboard-vm
-  User luppy</code></pre></div>
-<p>TODO: Port forward pic</p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
+tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div></li>
+</ol>
 <h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>20 Appendix: Publish Online with Cloudflare</h1>
 <p>TODO</p>
 <p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
