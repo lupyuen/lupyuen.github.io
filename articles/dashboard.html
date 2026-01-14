@@ -788,8 +788,12 @@ ssh -T \
 ## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div></li>
 </ol>
 <h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>17 Appendix: SSH Key for VM Login</h1>
-<p>Create SSH Key: https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Do this on our computer, NOT the VM!
+<p>Connecting to our VM gets tedious. Let’s create an <strong>SSH Key for VM Login</strong>…</p>
+<ol>
+<li>
+<p>Create the SSH Key on <strong>Our Computer</strong> (NOT the VM)</p>
+<div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/create-ssh-keys
+## Do this on our computer, NOT the VM!
 ## Change &quot;luppy&quot; to your VM Username
 ssh-keygen \
   -t rsa \
@@ -801,30 +805,48 @@ ls $HOME/.ssh/nuttx-dashboard-vm*
 
 ## We should see...
 ## nuttx-dashboard-vm
-## nuttx-dashboard-vm.pub</code></pre></div>
-<p>Install the GCloud CLI: https://docs.cloud.google.com/sdk/docs/install-sdk</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For macOS:
-brew install gcloud-cli
-export PATH=/opt/homebrew/share/google-cloud-sdk/bin:&quot;$PATH&quot;
-gcloud version
-## We should see: Google Cloud SDK 550.0.0</code></pre></div>
-<p>Add SSH keys to VMs that use metadata-based SSH keys: https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata</p>
-<p>Google Cloud Console: Metadata: https://console.cloud.google.com/compute/metadata</p>
-<p>Click “SSH Keys”</p>
-<p>Click “Add SSH Key”</p>
-<p>Copy and paste the contents of $HOME/.ssh/nuttx-dashboard-vm.pub</p>
-<p>Click “Save”</p>
+## nuttx-dashboard-vm.pub</code></pre></div></li>
+<li>
+<p>Add the SSH Public Key to our VM…</p>
+<p><a href="https://docs.cloud.google.com/compute/docs/connect/add-ssh-keys?cloudshell=false#metadata"><strong>Follow the steps here</strong></a></p>
+<p>Browse to <strong>“Google Cloud Console &gt; Metadata”</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>https://console.cloud.google.com/compute/metadata</code></pre></div>
+<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
+<p>Click <strong>“SSH Keys &gt; Add SSH Key”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
+<p>Copy and paste the contents of <em>$HOME/.ssh/nuttx-dashboard-vm.pub</em></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
+<p>Click <strong>“Save”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Test the SSH Key with VM Login</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://docs.cloud.google.com/compute/docs/connect/standard-ssh#openssh-client
 ## Change &quot;luppy&quot; to your VM Username
 ssh \
   -i $HOME/.ssh/nuttx-dashboard-vm \
-  luppy@x.x.x.x</code></pre></div><h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>18 Appendix: Remote Connect in VSCode</h1>
-<p>In VSCode: Click “Remote Explorer &gt; SSH &gt; +”</p>
+  luppy@x.x.x.x</code></pre></div></li>
+</ol>
+<h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>18 Appendix: Remote Connect in VSCode</h1>
+<p>TODO</p>
+<ol>
+<li>
+<p>In VSCode: Click <strong>“Remote Explorer &gt; SSH &gt; +”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Enter the SSH Command</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh -i ~/.ssh/nuttx-dashboard-vm luppy@x.x.x.x </code></pre></div>
-<p>Select the SSH Config file $HOME/.ssh/config</p>
-<p>Click “Connect”</p>
-<p>Click “File &gt; Open File / Folder”</p>
-<p>$HOME/.ssh/config will look like:</p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Select the SSH Config file <em>$HOME/.ssh/config</em></p>
+<p>Click <strong>“Connect”</strong></p>
+<p>To open a Remote File / Folder: Click <strong>“File &gt; Open File / Folder”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
+</li>
+</ol>
+<p><em>$HOME/.ssh/config</em> will look like:</p>
 <div class="example-wrap"><pre class="language-bash"><code>Host x.x.x.x
   HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
@@ -834,15 +856,8 @@ ssh \
   HostName x.x.x.x
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div>
-<p>TODO: Port forward pic</p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-ssh7.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="TODO" /></p>
+<p>TODO: Port forward pic</p>
 <h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>19 Appendix: Expand the VM Disk</h1>
 <p>By Default: Google Cloud allocates <strong>10 GB of Disk Space</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ df -H
@@ -933,38 +948,75 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div></li>
 </ol>
 <h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>20 Appendix: Publish Online with Cloudflare</h1>
-<p>TODO</p>
-<p>Create a Cloudflare Tunnel, pointing to http://localhost:3000</p>
-<p>Cache URI Path &gt; Wildcard &gt; Value = /public/*</p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
+<p><em>Our VM is running. How do we actually publish it at a Web URL?</em></p>
+<p>Here are two ways…</p>
+<ul>
+<li>
+<p>Option One: We publish it with a <strong>Cloudflare Tunnel</strong></p>
+</li>
+<li>
+<p>Option Two: We publish to <strong>Any CDN</strong></p>
+</li>
+</ul>
+<p><strong>Option One: Cloudflare Tunnel</strong></p>
+<ol>
+<li>
+<p>We create a Cloudflare Tunnel, pointing to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://localhost:3000</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-cloudflare2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare1.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-cloudflare3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare7.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Remember to set the cache…</p>
+<p>Set <strong>“Cache URI Path &gt; Wildcard &gt; Value”</strong> to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>/public/*</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-cloudflare12.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-cloudflare13.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-cloudflare14.png" alt="TODO" /></p>
-<p>Or use Cloudflare CDN. (Should get Static IP Address for our VM)</p>
+</li>
+</ol>
+<p><strong>Option Two: Cloudflare CDN</strong></p>
+<ol>
+<li>
+<p>Remember that Grafana listens at <strong>Port 3000</strong>? We configure <strong>iptables</strong> to route incoming packets from <strong>Port 80 to Port 3000</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## https://askubuntu.com/questions/444729/redirect-port-80-to-8080-and-make-it-work-on-local-machine
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-sudo iptables -t nat -L -n -v
+
+$ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+
+$ sudo iptables -t nat -L -n -v
 
 Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
- pkts bytes target     prot opt in     out     source               destination         
+pkts bytes target     prot opt in     out     source               destination         
     0     0 REDIRECT   6    --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 redir ports 3000
 
 ## To delete the rule:
-## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000</code></pre></div>
-<p>VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic</p>
-<p>Check http://x.x.x.x</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ grep duration /var/log/syslog
-2026-01-09T10:05:42.667620+00:00 nuttx-dashboard-vm grafana[886254]: logger=context userId=0 orgId=0 uname= t=2026-01-09T10:05:42.666933436Z level=info msg=&quot;Request Completed&quot; method=GET path=/api/live/ws status=401 remote_addr=116.15.131.176 time_ms=1 duration=1.722829ms size=105 referer= handler=/api/live/ws status_source=server errorReason=Unauthorized errorMessageID=session.token.rotate error=&quot;token needs to be rotated&quot;</code></pre></div>
+## sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000</code></pre></div></li>
+<li>
+<p>Configure our <strong>VM Firewall</strong> to allow HTTP traffic…</p>
+<p>Click <strong>“VM &gt; Edit &gt; Dynamic Network Interfaces &gt; Allow HTTP traffic”</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare8.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare9.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare10.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Why does this work? That’s because there’s a Default Firewall Rule <strong>“default-allow-http”</strong> that wil allow incoming TCP Port 80, whenever the Target Tag matches <strong>“http_server”</strong>…</p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare11.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Check that our <strong>External IP Address</strong> is now accessible via HTTP Port 80:</p>
+<div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x</code></pre></div></li>
+<li>
+<p>Under Cloudflare DNS: Create an <strong>“A Record”</strong> that points to our External IP Address.</p>
+<p>Remember to <strong>Enable the HTTP Proxy</strong>.</p>
+<p>(Actually we should get a <strong>Static IP Address</strong> for our VM)</p>
+<p><img src="https://lupyuen.org/images/dashboard-cloudflare4.png" alt="TODO" /></p>
+</li>
+<li>
+<p>And our NuttX Dashboard is live on the web!</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
+
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
 
