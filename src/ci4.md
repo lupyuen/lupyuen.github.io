@@ -4,6 +4,8 @@
 
 ![Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)](https://lupyuen.github.io/images/ci4-dashboard.png)
 
+[__Update: NuttX Dashboard is now in Google Cloud__](https://lupyuen.org/articles/dashboard)
+
 Last article we spoke about the __(Twice) Daily Builds__ for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html)...
 
 - [__"Optimising the Continuous Integration for Apache NuttX RTOS (GitHub Actions)"__](https://lupyuen.github.io/articles/ci3.html)
