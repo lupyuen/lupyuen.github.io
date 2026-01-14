@@ -4,7 +4,7 @@
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
-12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html), across all 339 microcontroller boards. So we'll be alerted if NuttX fails to build for (say) RP2040...
+12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html), across all 339 microcontroller boards. So we'll be alerted (via Mastodon) if NuttX fails to build for (say) RP2040...
 
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS"__](https://lupyuen.org/articles/ci4)
 
@@ -812,7 +812,7 @@ NuttX Dashboard on __Google Cloud VM__ (pic above) is costing us...
 
 Since we have __Zero Budget__ for NuttX Dashboard: We'll pay this out of our own pocket.
 
-![Google recommends that we bump up the VM Capacity, increasing 16 SGD per month. Yikes!](https://lupyuen.org/images/dashboard-cost2.png)
+> ![Google recommends that we bump up the VM Capacity, increasing 16 SGD per month. Yikes!](https://lupyuen.org/images/dashboard-cost2.png)
 
 _How's our VM Utilisation?_
 
