@@ -982,7 +982,7 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
     [__Follow the steps here__](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
-    Copy from our Public Key at _$HOME/.ssh/nuttxpr@github.pub_, paste into to GitHub
+    Copy from our Public Key at _$HOME/.ssh/nuttxpr@github.pub_, paste into GitHub
 
 1.  Test the SSH Key
 
