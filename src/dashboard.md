@@ -892,7 +892,7 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
 # Appendix: Ingest the GitHub Gists
 
-_What's with the GitHub Gists and GitLab Snippets_
+_What's with the GitHub Gists and GitLab Snippets?_
 
 We have a [__NuttX Build Farm__](https://lupyuen.org/articles/ci2) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](https://lupyuen.org/articles/dashboard#set-the-github-token)
 
