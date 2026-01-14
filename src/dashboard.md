@@ -4,13 +4,13 @@
 
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
-12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](TODO), across all 339 microcontroller boards. So we'll be alerted if NuttX fails to build for (say) RP2040...
+12 Months Ago: We created a __Grafana Dashboard__ (pic above) that monitors the successful / failed __Daily Builds__ of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html), across all 339 microcontroller boards. So we'll be alerted if NuttX fails to build for (say) RP2040...
 
-- TODO: Article
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS"__](https://lupyuen.org/articles/ci4)
 
 _Was everything hunky dory?_
 
-Nope! Grafana Dashboard was running on a (macOS) __Home Computer__. Thus if we're overseas for [__Marathon Races__](TODO) and there's a Home Power Outage... NuttX Dashboard goes down and never recovers!
+Nope! Grafana Dashboard was running on a (macOS) __Home Computer__. Thus if we're overseas for [__Marathon Races__](https://lupyuen.org/articles/marathon#whats-next) and there's a Home Power Outage... NuttX Dashboard goes down and never recovers!
 
 Today, let's migrate NuttX Dashboard from our Home Computer to __Google Cloud VM__. It will cost more, and we don't have the Hosting Budget. But at least NuttX Dashboard will continue running when the lights go poof.
 
@@ -171,7 +171,7 @@ Our Grafana Dashboard needs data...
 
 _Where's the data store for Grafana?_
 
-We'll install [__Prometheus Time-Series Database__](TODO) (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards...
+We'll install [__Prometheus Time-Series Database__](https://lupyuen.org/articles/ci4#prometheus-metrics) (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards...
 
 ```bash
 ## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
@@ -245,7 +245,7 @@ _What's this Prometheus Pushgateway?_
 
 Funny Thing about Prometheus: We can't push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this...
 
-1.  We install [__Prometheus Pushgateway__](TODO) (as the in-memory Staging Area for Time-Series Data)
+1.  We install [__Prometheus Pushgateway__](https://lupyuen.org/articles/ci4#prometheus-metrics) (as the in-memory Staging Area for Time-Series Data)
 
 1.  We push our __Time-Series Data__ to Prometheus Pushgateway (over HTTP, pic above)
 
@@ -527,7 +527,7 @@ export RUST_LOG=info
 export RUST_BACKTRACE=1
 ```
 
-If we're ingesting [__GitLab Snippets__](TODO): Create _$HOME/gitlab-token.sh_ and fill in the __GitLab Token__...
+If we're ingesting [__GitLab Snippets__](https://lupyuen.org/articles/ci2#build-nuttx-for-all-target-groups): Create _$HOME/gitlab-token.sh_ and fill in the __GitLab Token__...
 
 ```bash
 ## User Settings > Access tokens
@@ -544,7 +544,7 @@ TODO: nuttxpr permissions
 
 # Ingest the GitHub Actions Logs
 
-We have a [__NuttX Mirror Repo__](TODO) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](TODO) across all 339 microcontroller boards.
+We have a [__NuttX Mirror Repo__](https://github.com/NuttX/nuttx) _(github.com/NuttX/nuttx)_ that will run [__Daily Builds of NuttX__](https://lupyuen.org/articles/ci3#move-the-merge-jobs) across all 339 microcontroller boards.
 
 Let's ingest the __GitHub Actions Logs__ (pic above) from the Mirror Repo Builds. Inside our VM: Do this...
 
@@ -621,8 +621,6 @@ cd ingest-nuttx-builds
     ```
 
     ![Build History Dashboard](https://lupyuen.org/images/dashboard-ingest4.png)
-
-TODO: Fix step:10 to ??? for Linux
 
 # Start the NuttX Mirror Build
 
@@ -811,7 +809,7 @@ Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
 
 # What's Next
 
-Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for Twincity Marathon!
+Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're going overseas for [__Twincity Marathon__](https://lupyuen.org/articles/marathon#whats-next)!
 
 _Anything else we're running on our Home Computer?_
 
@@ -875,7 +873,7 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
 _What's with the GitHub Gists and GitLab Snippets_
 
-We have a [__NuttX Build Farm__](TODO) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
+We have a [__NuttX Build Farm__](https://lupyuen.org/articles/ci2) hosted at home (pic above). Our Build Farm will build NuttX all day, and record the __Build Logs__ into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. [(Remember to set GitLab Token)](TODO)
 
 Whenever our VM Boots: Do this...
 
