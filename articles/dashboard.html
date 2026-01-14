@@ -86,7 +86,7 @@
 <li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">19 Appendix: Expand the VM Disk</a><ul></ul></li>
 <li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2026</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
-<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
+<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted (via Mastodon) if NuttX fails to build for (say) RP2040…</p>
 <ul>
 <li><a href="https://lupyuen.org/articles/ci4"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS”</strong></a></li>
 </ul>
@@ -708,7 +708,9 @@ hide_version = true</code></pre></div>
 </li>
 </ul>
 <p>Since we have <strong>Zero Budget</strong> for NuttX Dashboard: We’ll pay this out of our own pocket.</p>
+<blockquote>
 <p><img src="https://lupyuen.org/images/dashboard-cost2.png" alt="Google recommends that we bump up the VM Capacity, increasing 16 SGD per month. Yikes!" /></p>
+</blockquote>
 <p><em>How’s our VM Utilisation?</em></p>
 <p>Our VM runs continuously at <strong>50% CPU</strong> (pic above), forever busy ingesting the NuttX Build Logs.</p>
 <p>Google recommends that we bump up the VM Capacity, <strong>increasing USD 16</strong> per month. Yikes!</p>
