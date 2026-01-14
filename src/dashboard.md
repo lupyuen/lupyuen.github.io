@@ -48,6 +48,8 @@ Then we create our __Virtual Machine__...
 
 1.  Fill in the __Instance Name__ _"nuttx-dashboard-vm"_. Our VM shall be __General Purpose / Debian Bookworm__
 
+    Set the __Disk Size to 20 GB__ [(or expand it later)](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
+
     Click __"Create"__
 
     ![Create VM](https://lupyuen.org/images/dashboard-vm5.png)
