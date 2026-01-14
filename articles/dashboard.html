@@ -610,10 +610,11 @@ cd $HOME/nuttx-release
 <p>And the <strong>NuttX Build</strong> should be running…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/actions/workflows/build.yml</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="NuttX Build should be running" /></p>
-<p>In case of sync problems: Go to <a href="https://github.com/NuttX/nuttx/tree/master">github.com/NuttX/nuttx</a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
+<p>If the Patching and Building ain’t happening: Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
 <p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="Sync Fork &gt; Update Branch (or Discard Commit)" /></p>
 <p>If we see this error…</p>
-<div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
+<div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;:
+No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Then increase the Disk Space, we need 5 GB for <em>/tmp</em>…</p>
 <ul>
