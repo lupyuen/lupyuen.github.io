@@ -67,7 +67,13 @@ Then we create our __Virtual Machine__...
 
 ![SSH Console](https://lupyuen.org/images/dashboard-vm7.png)
 
-Let's populate our new VM...
+_Is there a simpler way to access our VM?_
+
+Yep just use an __SSH Key with VSCode Remote__...
+
+- [__"SSH Key for VM Login"__](https://lupyuen.org/articles/dashboard#appendix-ssh-key-for-vm-login)
+
+- [__"Remote Connect in VSCode"__](https://lupyuen.org/articles/dashboard#appendix-remote-connect-in-vscode)
 
 ![Grafana OSS Server](https://lupyuen.org/images/dashboard-flow1.jpg)
 
