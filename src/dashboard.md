@@ -939,7 +939,7 @@ Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by 
 
 1.  Add the SSH Key to GitHub Account
 
-    [Follow the steps here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+    [__Follow the steps here__](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
     Copy from our Public Key at _$HOME/.ssh/nuttxpr@github.pub_, paste into to GitHub
 
