@@ -796,17 +796,34 @@ Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN...
 
 NuttX Dashboard is ready to serve. Yay!
 
-TODO: Pic of Cost of Google Cloud
+![TODO](https://lupyuen.org/images/dashboard-cost1.png)
 
 # Cost of Google Cloud
 
+_Hosting our dashboard on Google Cloud: Is it expensive?_
+
+NuttX Dashboard on __Google Cloud VM__ (pic above) is costing us...
+
 TODO: Cost of Google Cloud
+
+SGD 1.6 per day
+USD 1.2 per day
+
+SGD 49 per month
+USD 38 per month
+
+SGD 584 per year
+USD 453 per year
 
 No budget. Will pay out of our own pocket.
 
 50% CPU. How much?
 
-TODO: Pic of CPU usage
+21 SGD more per month. 
+16 SGD more per month. 
+Yikes!
+
+![TODO](https://lupyuen.org/images/dashboard-cost2.png)
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
