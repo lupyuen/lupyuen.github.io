@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS",
+      "publisher": "lupyuen.org",
+      "releaseDate": "2026-01-14",
+      "website": "https://lupyuen.org/articles/dashboard",
+      "summary": "12 Months Ago: We created a Grafana Dashboard that monitors the successful / failed Daily Builds of Apache NuttX RTOS, across all 339 microcontroller boards. Today, let's migrate NuttX Dashboard from our Home Computer to Google Cloud VM."
+    },
+    {
       "name": "Uncle Nerd Runs A Marathon",
       "publisher": "lupyuen.org",
       "releaseDate": "2025-11-30",

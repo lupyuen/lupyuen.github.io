@@ -865,7 +865,7 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
+- [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=46615707)
 
 - [__My Current Project: "Apache NuttX RTOS for Avaota-A1"__](https://github.com/lupyuen/nuttx-avaota-a1)
 
@@ -1293,11 +1293,11 @@ __Option Two: Cloudflare CDN__
 
     ![VM > Edit > Dynamic Network Interfaces > Allow HTTP traffic](https://lupyuen.org/images/dashboard-cloudflare10.png)
 
-1.  Why does this work? That's because there's a Default Firewall Rule __"default-allow-http"__ that wil allow incoming TCP Port 80, whenever the Target Tag matches __"http_server"__...
+1.  Why does this work? That's because there's a Default Firewall Rule __"default-allow-http"__ that will allow incoming TCP Port 80, whenever the Target Tag matches __"http-server"__...
 
-    ![Default Firewall Rule "default-allow-http" allows incoming TCP Port 80, whenever the Target Tag matches "http_server"](https://lupyuen.org/images/dashboard-cloudflare11.png)
+    ![Default Firewall Rule "default-allow-http" allows incoming TCP Port 80, whenever the Target Tag matches "http-server"](https://lupyuen.org/images/dashboard-cloudflare11.png)
 
-1.  Check that our __External IP Address__ is now accessible via HTTP Port 80:
+1.  Check that our __External IP Address__ is now accessible via HTTP Port 80...
 
     ```bash    
     http://x.x.x.x

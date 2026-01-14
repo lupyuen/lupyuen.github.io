@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS</title>
+            <link>https://lupyuen.org/articles/dashboard</link>
+            <description><![CDATA[12 Months Ago: We created a Grafana Dashboard that monitors the successful / failed Daily Builds of Apache NuttX RTOS, across all 339 microcontroller boards. Today, let's migrate NuttX Dashboard from our Home Computer to Google Cloud VM.]]></description>
+            <guid>https://lupyuen.org/articles/dashboard</guid>
+            <pubDate>Wed, 14 Jan 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Uncle Nerd Runs A Marathon</title>
             <link>https://lupyuen.org/articles/marathon.html</link>
             <description><![CDATA[Our 42 km Full Marathon Training turned out surprisingly successful! Let's look back and technically document everything that happened, over the past 6 months.]]></description>
