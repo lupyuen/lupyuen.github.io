@@ -505,7 +505,10 @@ export RUST_BACKTRACE=1</code></pre></div>
 export GITLAB_TOKEN=...
 export GITLAB_USER=lupyuen
 export GITLAB_REPO=nuttx-build-log</code></pre></div>
-<p>TODO: nuttxpr permissions</p>
+<p>Make sure that <em>nuttxpr</em> has <strong>Push Permission</strong> for NuttX Mirror Repo…</p>
+<ul>
+<li><a href="https://lupyuen.org/articles/dashboard#appendix-nuttx-mirror-repo"><strong>“NuttX Mirror Repo”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="Ingest the GitHub Actions Logs" /></p>
 <h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
 <p>We have a <a href="https://github.com/NuttX/nuttx"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="https://lupyuen.org/articles/ci3#move-the-merge-jobs"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
@@ -555,7 +558,7 @@ cd ingest-nuttx-builds
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="Prometheus Server shows the logs ingested from GitHub Actions" /></p>
 <p><strong>Bonus:</strong> This query will reveal that NuttX has 339 microcontroller boards: <strong>“count by (board) (build_score)”</strong></p>
-<p>TODO: Pic</p>
+<p>TODO: Pic of 339 boards</p>
 </li>
 <li>
 <p>Check <strong>Grafana Dashboard</strong> at our External IP Address, port 3000. We’ll see the GitHub Actions Logs…</p>
@@ -609,10 +612,13 @@ cd $HOME/nuttx-release
 <p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="NuttX Build should be running" /></p>
 <p>In case of sync problems: Go to <a href="https://github.com/NuttX/nuttx/tree/master">github.com/NuttX/nuttx</a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
 <p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="Sync Fork &gt; Update Branch (or Discard Commit)" /></p>
-<p>If we see…</p>
+<p>If we see this error…</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
-<p>Increase the disk space. Need 5 GB for /tmp. See the section below. TODO</p>
+<p>Then increase the Disk Space, we need 5 GB for <em>/tmp</em>…</p>
+<ul>
+<li><a href="https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk"><strong>“Expand the VM Disk”</strong></a></li>
+</ul>
 <h1 id="forever-build-and-ingest"><a class="doc-anchor" href="#forever-build-and-ingest">§</a>10 Forever Build and Ingest</h1>
 <p>Everything We’ve Done for NuttX Build and Ingest: Needs to be looped forever. Edit <em>$HOME/sync.sh</em> and fill this in…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
@@ -630,7 +636,9 @@ for (( ; ; )); do
   date ; sleep 900
 done</code></pre></div>
 <p>Whenever our VM Boots: Run <em>$HOME/sync.sh</em>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo apt install tmux
+<div class="example-wrap"><pre class="language-bash"><code>## Don&#39;t use cron, need to monitor manually so that
+## we don&#39;t overuse the GitHub Runners of the Mirror Repo
+sudo apt install tmux
 tmux
 chmod +x $HOME/sync.sh
 $HOME/sync.sh
@@ -638,10 +646,12 @@ $HOME/sync.sh
 ## If the SSH Session Disconnects:
 ## Do this to reconnect the sync.sh session...
 ## tmux a</code></pre></div>
-<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub Runners of the Mirror Repo)</p>
-<p><a href="https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log">Log for NuttX Build and Ingest</a></p>
-<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click “Sync Fork &gt; Discard Commit”. Then run enable-macos-windows.sh followed by sync.sh.</p>
-<p>TODO: Ingest the GitHub Gists and GitLab Snippets</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log">(Log for NuttX Build and Ingest)</a></p>
+<p><strong>One More Step:</strong> We need to ingest the GitHub Gists and GitLab Snippets…</p>
+<ul>
+<li><a href="https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists"><strong>“Ingest the GitHub Gists”</strong></a></li>
+</ul>
+<p><strong>In Case of Sync Problems:</strong> Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Discard Commit”</strong>. Then run <em>enable-macos-windows.sh</em> followed by <em>sync.sh</em>. <em>(Hmmm this seems to happen often in our VM. Why?)</em></p>
 <h1 id="secure-our-grafana-server"><a class="doc-anchor" href="#secure-our-grafana-server">§</a>11 Secure Our Grafana Server</h1>
 <p>We’re ready to Go Live! We tweak some Grafana Settings to make NuttX Dashboard more secure.</p>
 <p>Inside our VM: Edit <em>/etc/grafana/grafana.ini</em>. Look for these settings and change them (don’t add them)</p>
@@ -678,15 +688,16 @@ hide_version = true</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>sudo systemctl restart grafana-server</code></pre></div>
 <p>Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN…</p>
 <ul>
-<li>TODO: Publish online with Cloudflare</li>
+<li><a href="https://lupyuen.org/articles/dashboard#appendix-publish-online-with-cloudflare"><strong>“Publish Online with Cloudflare”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>NuttX Dashboard is ready to serve. Yay!</p>
-<p>TODO: Pic</p>
+<p>TODO: Pic of Cost of Google Cloud</p>
 <h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>12 Cost of Google Cloud</h1>
 <p>TODO: Cost of Google Cloud</p>
 <p>No budget. Will pay out of our own pocket.</p>
 <p>50% CPU. How much?</p>
-<p>TODO: Pic</p>
+<p>TODO: Pic of CPU usage</p>
 <p><em>Will it be cheaper on an Asian Cloud? Like AliCloud?</em></p>
 <p>Hmmm interesting… We should <a href="https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d"><strong>try it sometime</strong></a>!</p>
 <p><em>Running the Build Farm on Google Cloud?</em></p>
@@ -733,7 +744,7 @@ hide_version = true</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="Ingest the GitHub Gists" /></p>
 <h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
 <p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
-<p>We have a <a href="https://lupyuen.org/articles/ci2"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
+<p>We have a <a href="https://lupyuen.org/articles/ci2"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="https://lupyuen.org/articles/dashboard#set-the-github-token">(Remember to set GitLab Token)</a></p>
 <p>Whenever our VM Boots: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ingest the GitHub Gists and GitLab Snippets
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
@@ -743,8 +754,10 @@ cd $HOME/ingest-nuttx-builds
 
 ## If the SSH Session Disconnects:
 ## Do this to reconnect the run.sh session...
-## tmux a</code></pre></div>
-<p>(Don’t use cron, need to monitor manually so that we don’t run into overuse of the GitHub API and GitLab API)</p>
+## tmux a
+
+## Don&#39;t use cron, need to monitor manually so that we don&#39;t 
+## overuse the GitHub API and GitLab API</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="SSH Key for GitHub" /></p>
 <h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>16 Appendix: SSH Key for GitHub</h1>
@@ -833,8 +846,8 @@ ssh \
 <p>Yep use a <strong>SSH Remote Connection in VSCode</strong>!</p>
 <ol>
 <li>
-<p>Assume that we have added an SSH Key for VM Login</p>
-<p>TODO: Add SSH Key for VM Login</p>
+<p>Assume that we have added an SSH Key for VM Login…</p>
+<p><a href="https://lupyuen.org/articles/dashboard#appendix-ssh-key-for-vm-login"><strong>“SSH Key for VM Login”</strong></a></p>
 </li>
 <li>
 <p>In VSCode: Click <strong>“Remote Explorer &gt; SSH &gt; +”</strong></p>
