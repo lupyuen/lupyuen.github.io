@@ -499,9 +499,15 @@ _How will Grafana Dashboard talk to our Prometheus Database?_
 
     ![NuttX Build History Dashboard](https://lupyuen.org/images/dashboard-json4.png)
 
+Let's integrate our dashboard with GitHub Actions...
+
+![Ingest the GitHub Actions Logs](https://lupyuen.org/images/dashboard-flow4.jpg)
+
 # Set the GitHub Token
 
-TODO
+_What's this GitHub Token?_
+
+Our VM shall download and ingest the __GitHub Actions Logs__. This requires a GitHub Token to access the GitHub Actions Logs.
 
 Inside our VM: Create _$HOME/github-token.sh_ and fill in the __GitHub Token__. Any Plain GitHub Account will do (like _nuttxpr_). Don't use an Admin Account!
 
@@ -787,9 +793,9 @@ TODO: Pic
 
 # Cost of Google Cloud
 
-TODO
+TODO: Cost of Google Cloud
 
-No budget. Will pay out of our pocket.
+No budget. Will pay out of our own pocket.
 
 50% CPU. How much?
 
@@ -809,7 +815,7 @@ Now that NuttX Dashboard is running in the Cloud (and not at Home)... We're goin
 
 _Anything else we're running on our Home Computer?_
 
-Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
+TODO: Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
 
 nuttx-metrics
 
@@ -818,8 +824,6 @@ riscv64
 avaota-a1, starpro64, oz64
 
 mastodon, forgejo
-
-TODO
 
 ![NuttX Mirror Repo](https://lupyuen.org/images/dashboard-flow4.jpg)
 
