@@ -86,12 +86,12 @@
 <li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">19 Appendix: Expand the VM Disk</a><ul></ul></li>
 <li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2025</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
-<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="TODO"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
+<p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted if NuttX fails to build for (say) RP2040…</p>
 <ul>
-<li>TODO: Article</li>
+<li><a href="https://lupyuen.org/articles/ci4"><strong>“Continuous Integration Dashboard for Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p><em>Was everything hunky dory?</em></p>
-<p>Nope! Grafana Dashboard was running on a (macOS) <strong>Home Computer</strong>. Thus if we’re overseas for <a href="TODO"><strong>Marathon Races</strong></a> and there’s a Home Power Outage… NuttX Dashboard goes down and never recovers!</p>
+<p>Nope! Grafana Dashboard was running on a (macOS) <strong>Home Computer</strong>. Thus if we’re overseas for <a href="https://lupyuen.org/articles/marathon#whats-next"><strong>Marathon Races</strong></a> and there’s a Home Power Outage… NuttX Dashboard goes down and never recovers!</p>
 <p>Today, let’s migrate NuttX Dashboard from our Home Computer to <strong>Google Cloud VM</strong>. It will cost more, and we don’t have the Hosting Budget. But at least NuttX Dashboard will continue running when the lights go poof.</p>
 <p><em>What if we prefer another cloud? Or our own machine?</em></p>
 <p>The steps below will work for any <strong>Debian Bookworm</strong> machine. Hopefully someday we’ll budget for the machine. (And secure it too)</p>
@@ -211,7 +211,7 @@ netstat -an | grep LISTEN</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-flow2.jpg" alt="Prometheus Server" /></p>
 <h1 id="install-prometheus-server"><a class="doc-anchor" href="#install-prometheus-server">§</a>3 Install Prometheus Server</h1>
 <p><em>Where’s the data store for Grafana?</em></p>
-<p>We’ll install <a href="TODO"><strong>Prometheus Time-Series Database</strong></a> (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
+<p>We’ll install <a href="https://lupyuen.org/articles/ci4#prometheus-metrics"><strong>Prometheus Time-Series Database</strong></a> (pic above), to record the successful and failed builds of NuttX across all 339 microcontroller boards…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## From https://ecintelligence.ma/en/blog/complete-guide-to-prometheus-and-grafana-monitorin/
 ## Install Prometheus Server
 sudo apt install prometheus
@@ -270,7 +270,7 @@ sudo ss -tlnp | grep -E &#39;9090|9100&#39;
 <p>Funny Thing about Prometheus: We can’t push Time-Series Data to Prometheus Server, and expect it to be stored. Instead we do this…</p>
 <ol>
 <li>
-<p>We install <a href="TODO"><strong>Prometheus Pushgateway</strong></a> (as the in-memory Staging Area for Time-Series Data)</p>
+<p>We install <a href="https://lupyuen.org/articles/ci4#prometheus-metrics"><strong>Prometheus Pushgateway</strong></a> (as the in-memory Staging Area for Time-Series Data)</p>
 </li>
 <li>
 <p>We push our <strong>Time-Series Data</strong> to Prometheus Pushgateway (over HTTP, pic above)</p>
@@ -498,7 +498,7 @@ export GITHUB_TOKEN=...
 ## Enable Rust Logging
 export RUST_LOG=info 
 export RUST_BACKTRACE=1</code></pre></div>
-<p>If we’re ingesting <a href="TODO"><strong>GitLab Snippets</strong></a>: Create <em>$HOME/gitlab-token.sh</em> and fill in the <strong>GitLab Token</strong>…</p>
+<p>If we’re ingesting <a href="https://lupyuen.org/articles/ci2#build-nuttx-for-all-target-groups"><strong>GitLab Snippets</strong></a>: Create <em>$HOME/gitlab-token.sh</em> and fill in the <strong>GitLab Token</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## User Settings &gt; Access tokens
 ## Select scopes:
 ## api: Grants complete read/write access to the API, including all groups and projects, the container registry, the dependency proxy, and the package registry.
@@ -508,7 +508,7 @@ export GITLAB_REPO=nuttx-build-log</code></pre></div>
 <p>TODO: nuttxpr permissions</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="Ingest the GitHub Actions Logs" /></p>
 <h1 id="ingest-the-github-actions-logs"><a class="doc-anchor" href="#ingest-the-github-actions-logs">§</a>8 Ingest the GitHub Actions Logs</h1>
-<p>We have a <a href="TODO"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="TODO"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
+<p>We have a <a href="https://github.com/NuttX/nuttx"><strong>NuttX Mirror Repo</strong></a> <em>(github.com/NuttX/nuttx)</em> that will run <a href="https://lupyuen.org/articles/ci3#move-the-merge-jobs"><strong>Daily Builds of NuttX</strong></a> across all 339 microcontroller boards.</p>
 <p>Let’s ingest the <strong>GitHub Actions Logs</strong> (pic above) from the Mirror Repo Builds. Inside our VM: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install GitHub CLI: https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
 (type -p wget &gt;/dev/null || (sudo apt update &amp;&amp; sudo apt install wget -y)) \
@@ -568,7 +568,6 @@ cd ingest-nuttx-builds
 <p><img src="https://lupyuen.org/images/dashboard-ingest4.png" alt="Build History Dashboard" /></p>
 </li>
 </ol>
-<p>TODO: Fix step:10 to ??? for Linux</p>
 <h1 id="start-the-nuttx-mirror-build"><a class="doc-anchor" href="#start-the-nuttx-mirror-build">§</a>9 Start the NuttX Mirror Build</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
 <p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
@@ -693,7 +692,7 @@ hide_version = true</code></pre></div>
 <p><em>Running the Build Farm on Google Cloud?</em></p>
 <p>Noooo…. Too expensive! We’ll run a Second-Hand Ubuntu Xeon Server.</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>13 What’s Next</h1>
-<p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for Twincity Marathon!</p>
+<p>Now that NuttX Dashboard is running in the Cloud (and not at Home)… We’re going overseas for <a href="https://lupyuen.org/articles/marathon#whats-next"><strong>Twincity Marathon</strong></a>!</p>
 <p><em>Anything else we’re running on our Home Computer?</em></p>
 <p>TODO: Yeah sadly these home-based <strong>NuttX Monitoring Jobs</strong> will probably stop running while we’re overseas for Marathon Races…</p>
 <p>nuttx-metrics</p>
@@ -734,7 +733,7 @@ hide_version = true</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="Ingest the GitHub Gists" /></p>
 <h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
 <p><em>What’s with the GitHub Gists and GitLab Snippets</em></p>
-<p>We have a <a href="TODO"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
+<p>We have a <a href="https://lupyuen.org/articles/ci2"><strong>NuttX Build Farm</strong></a> hosted at home (pic above). Our Build Farm will build NuttX all day, and record the <strong>Build Logs</strong> into GitHub Gists or GitLab Snippets. We run the script below to ingest the Build Logs into NuttX Dashboard. <a href="TODO">(Remember to set GitLab Token)</a></p>
 <p>Whenever our VM Boots: Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Ingest the GitHub Gists and GitLab Snippets
 ## https://github.com/lupyuen/ingest-nuttx-builds/blob/main/run.sh
