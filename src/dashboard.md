@@ -818,7 +818,7 @@ _How's our VM Utilisation?_
 
 Our VM runs continuously at __50% CPU__ (pic above), forever busy ingesting the NuttX Build Logs.
 
-Google recommends that we bump up the VM Capacity, __increasing 16 SGD__ per month. Yikes!
+Google recommends that we bump up the VM Capacity, __increasing USD 16__ per month. Yikes!
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
