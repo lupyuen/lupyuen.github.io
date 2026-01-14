@@ -599,14 +599,15 @@ cd $HOME/nuttx-release
 ## ./sync-build-ingest.sh</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c9dd83842ab9b845eadedb968bd63bc1">(Log for sync-build-ingest.sh)</a></p>
 <p><a href="https://gist.github.com/lupyuen/3d21869dae705d6c9d3acc1e8d94ffd1">(Log for enable-macos-windows.sh)</a></p>
-<p>We should see the patch that starts the NuttX Build…</p>
+<p>We’ll see the <strong>“Enable macOS Patch”</strong> that starts the NuttX Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/commits/master/</code></pre></div>
-<p>TODO: Pic</p>
-<p>And the NuttX Build should be running…</p>
+<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
+<p>And the <strong>NuttX Build</strong> should be running…</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/actions/workflows/build.yml</code></pre></div>
-<p>TODO: Pic</p>
-<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong>. Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
-<p>If we see</p>
+<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
+<p>In case of sync problems: Go to https://github.com/NuttX/nuttx/tree/master, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong> (pic below). Then run <em>enable-macos-windows.sh</em> followed by <em>sync-build-ingest.sh</em>.</p>
+<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="TODO" /></p>
+<p>If we see…</p>
 <div class="example-wrap"><pre class="language-bash"><code>fatal: cannot create directory at &#39;arch/arm/src/kinetis&#39;: No space left on device
 warning: Clone succeeded, but checkout failed.</code></pre></div>
 <p>Increase the disk space. Need 5 GB for /tmp. See the section below. TODO</p>
@@ -699,29 +700,35 @@ hide_version = true</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="TODO" /></p>
 <h1 id="appendix-nuttx-mirror-repo"><a class="doc-anchor" href="#appendix-nuttx-mirror-repo">§</a>14 Appendix: NuttX Mirror Repo</h1>
-<p><code>nuttxpr</code> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). We grant permission to <code>nuttxpr</code></p>
-<p>NuttX Mirror Collaborators: https://github.com/NuttX/nuttx/settings/access</p>
-<p>Click “Add People”</p>
-<p>Enter <code>nuttxpr</code></p>
-<p>Role: Write</p>
-<p>Log in as <code>nuttxpr</code> to accept the invitation</p>
-<p>Check the collaborators: https://github.com/NuttX/nuttx/settings/access</p>
-<p><img src="https://lupyuen.org/images/dashboard-github1.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github2.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github3.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github4.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github5.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github6.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github7.png" alt="TODO" /></p>
+<p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
+<p>Our script <em>sync-build-ingest.sh</em> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
+<p>Inside the script: Our Regular GitHub Account <em>nuttxpr</em> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we grant the <strong>Push Permission</strong> to <em>nuttxpr</em>…</p>
+<ol>
+<li>
+<p>Browse to the Collaborators for NuttX Mirror Repo</p>
+<div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/settings/access</code></pre></div></li>
+<li>
+<p>Click <strong>“Add People”</strong></p>
+<p>Enter <strong>nuttxpr</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-github8.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Set the Role to <strong>“Write”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-github9.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-github10.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Log in as <em>nuttxpr</em> to accept the invitation</p>
 <p><img src="https://lupyuen.org/images/dashboard-github11.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-github12.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.org/images/dashboard-github13.png" alt="TODO" /></p>
+</li>
+<li>
+<p>Check that <em>nuttxpr</em> has become a collaborator</p>
+<div class="example-wrap"><pre class="language-bash"><code>https://github.com/NuttX/nuttx/settings/access</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-github14.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github15.png" alt="TODO" /></p>
-<p><img src="https://lupyuen.org/images/dashboard-github16.png" alt="TODO" /></p>
+</li>
+</ol>
 <p>TODO</p>
 <p><img src="https://lupyuen.org/images/dashboard-flow5.jpg" alt="TODO" /></p>
 <h1 id="appendix-ingest-the-github-gists"><a class="doc-anchor" href="#appendix-ingest-the-github-gists">§</a>15 Appendix: Ingest the GitHub Gists</h1>
