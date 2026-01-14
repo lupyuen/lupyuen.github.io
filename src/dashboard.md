@@ -796,7 +796,7 @@ Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN...
 
 NuttX Dashboard is ready to serve. Yay!
 
-![TODO](https://lupyuen.org/images/dashboard-cost1.png)
+![Cost of Google Cloud VM](https://lupyuen.org/images/dashboard-cost1.png)
 
 # Cost of Google Cloud
 
@@ -804,34 +804,25 @@ _Hosting our dashboard on Google Cloud: Is it expensive?_
 
 NuttX Dashboard on __Google Cloud VM__ (pic above) is costing us...
 
-TODO: Cost of Google Cloud
+- __USD 1.24__ per day
 
-SGD 1.6 per day
-USD 1.2 per day
+- __USD 38__ per month
 
-SGD 49 per month
-USD 38 per month
+- __USD 453__ per year
 
-SGD 584 per year
-USD 453 per year
+Since we have __Zero Budget__ for NuttX Dashboard: We'll pay this out of our own pocket.
 
-No budget. Will pay out of our own pocket.
+![Google recommends that we bump up the VM Capacity, increasing 16 SGD per month. Yikes!](https://lupyuen.org/images/dashboard-cost2.png)
 
-50% CPU. How much?
+_How's our VM Utilisation?_
 
-21 SGD more per month. 
-16 SGD more per month. 
-Yikes!
+Our VM runs continuously at __50% CPU__ (pic above), forever busy ingesting the NuttX Build Logs.
 
-![TODO](https://lupyuen.org/images/dashboard-cost2.png)
+Google recommends that we bump up the VM Capacity, __increasing 16 SGD__ per month. Yikes!
 
 _Will it be cheaper on an Asian Cloud? Like AliCloud?_
 
 Hmmm interesting... We should [__try it sometime__](https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d)!
-
-_Running the Build Farm on Google Cloud?_
-
-Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
 
 # What's Next
 
@@ -848,6 +839,10 @@ riscv64
 avaota-a1, starpro64, oz64
 
 mastodon, forgejo
+
+_Running the Build Farm on Google Cloud?_
+
+TODO: Noooo.... Too expensive! We'll run a Second-Hand Ubuntu Xeon Server.
 
 ![NuttX Mirror Repo](https://lupyuen.org/images/dashboard-flow4.jpg)
 
