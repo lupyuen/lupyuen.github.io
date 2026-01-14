@@ -558,7 +558,7 @@ cd ingest-nuttx-builds
 <div class="example-wrap"><pre class="language-bash"><code>http://x.x.x.x:9090</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ingest2.png" alt="Prometheus Server shows the logs ingested from GitHub Actions" /></p>
 <p><strong>Bonus:</strong> This query will reveal that NuttX has 339 microcontroller boards: <strong>“count by (board) (build_score)”</strong></p>
-<p>TODO: Pic of 339 boards</p>
+<p><img src="https://lupyuen.org/images/dashboard-ingest5.png" alt="This query will reveal that NuttX has 339 microcontroller boards" /></p>
 </li>
 <li>
 <p>Check <strong>Grafana Dashboard</strong> at our External IP Address, port 3000. We’ll see the GitHub Actions Logs…</p>
@@ -905,7 +905,8 @@ ssh \
   IdentityFile ~/.ssh/nuttx-dashboard-vm
   User luppy</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="Should rename the Host" /></p>
-<p>TODO: Port forward pic</p>
+<p><strong>Port Forwarding over SSH</strong> works great with VSCode. Thus we can redirect the TCP Ports from the VM to Our Computer. And disable all the Firewall Rules!</p>
+<p><img src="https://lupyuen.org/images/dashboard-ssh9.png" alt="Port Forwarding over SSH works great with VSCode" /></p>
 <h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>19 Appendix: Expand the VM Disk</h1>
 <p>By Default: Google Cloud allocates <strong>10 GB of Disk Space</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ df -H
