@@ -628,9 +628,9 @@ cd ingest-nuttx-builds
 
 _What triggers the Daily Build at NuttX Mirror Repo?_
 
-Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
+Our script [_sync-build-ingest.sh_](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh) will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
-Only one instance of _sync-build-ingest.sh_ should ever be running! Make sure _lupyuen_ isn't running it on his Home Computer.
+Only one instance of [_sync-build-ingest.sh_](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh) should ever be running! Make sure _lupyuen_ isn't running it on his Home Computer.
 
 Inside our VM: Do this...
 
@@ -683,7 +683,7 @@ https://github.com/NuttX/nuttx/actions/workflows/build.yml
 
 ![NuttX Build should be running](https://lupyuen.org/images/dashboard-github16.png)
 
-If the Patching and Building ain't happening: Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run _enable-macos-windows.sh_ followed by _sync-build-ingest.sh_.
+If the Patching and Building ain't happening: Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Update Branch (or Discard Commit)"__ (pic below). Then run [_enable-macos-windows.sh_](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh) followed by [_sync-build-ingest.sh_](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh).
 
 ![Sync Fork > Update Branch (or Discard Commit)](https://lupyuen.org/images/dashboard-github7.png)
 
@@ -741,7 +741,7 @@ __One More Step:__ We need to ingest the GitHub Gists and GitLab Snippets...
 
 - [__"Ingest the GitHub Gists"__](https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists)
 
-__In Case of Sync Problems:__ Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Discard Commit"__. Then run _enable-macos-windows.sh_ followed by _sync.sh_. _(Hmmm this seems to happen often in our VM. Why?)_
+__In Case of Sync Problems:__ Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Update Branch (or Discard Commit)"__. Then run [_enable-macos-windows.sh_](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh) followed by _sync.sh_. _(Hmmm this seems to happen often in our VM. Why?)_
 
 # Secure Our Grafana Server
 
@@ -889,7 +889,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _What triggers the Daily Build at NuttX Mirror Repo?_
 
-Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
+Our script [_sync-build-ingest.sh_](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh) will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
 Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we grant the __Push Permission__ to _nuttxpr_...
 
@@ -960,7 +960,7 @@ cd $HOME/ingest-nuttx-builds
 
 _What triggers the Daily Build at NuttX Mirror Repo?_
 
-Our script _sync-build-ingest.sh_ will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
+Our script [_sync-build-ingest.sh_](https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh) will trigger the __Daily Build__, followed by the ingestion of the GitHub Actions Logs.
 
 Inside the script: Our Regular GitHub Account _nuttxpr_ will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we create an SSH Key for GitHub that will allow _nuttxpr_ to push the patch...
 
