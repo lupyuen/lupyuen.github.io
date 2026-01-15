@@ -962,6 +962,37 @@ cd $HOME/ingest-nuttx-builds
 
 [(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
+# Appendix: Live Metric for GitHub Runners
+
+We have a job that computes the Live Metric for GitHub Runners...
+
+- [__Live Metric for GitHub Runners__](https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners)
+
+Whenever our VM Boots: Do this...
+
+```bash
+## Run the job inside tmux for easier monitoring
+tmux
+
+## Set the GitHub Token
+. $HOME/github-token.sh
+gh auth status
+
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: 'read:org', 'repo'
+
+## Remember to grant Write Access to nuttxpr for nuttx-metrics repo
+## (Invite nuttxpr as Collaborator)
+sudo apt install bc imagemagick
+git clone https://github.com/lupyuen/nuttx-metrics
+cd nuttx-metrics
+./run2.sh
+```
+
 ![SSH Key for GitHub](https://lupyuen.org/images/dashboard-flow4.jpg)
 
 # Appendix: SSH Key for GitHub
