@@ -745,9 +745,11 @@ $HOME/sync.sh
 
 [(Log for NuttX Build and Ingest)](https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log)
 
-__One More Step:__ We need to ingest the GitHub Gists and GitLab Snippets...
+__One More Step:__ We need to ingest the GitHub Gists and GitLab Snippets (and compute the metrics)...
 
 - [__"Ingest the GitHub Gists"__](https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists)
+
+- [__"Live Metric for GitHub Runners"__](https://lupyuen.org/articles/dashboard#appendix-live-metric-for-github-runners)
 
 __In Case of Sync Problems:__ Go to [_github.com/NuttX/nuttx_](https://github.com/NuttX/nuttx), click __"Sync Fork > Update Branch (or Discard Commit)"__. Then run [_enable-macos-windows.sh_](https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh) followed by _sync.sh_. _(Hmmm this seems to happen often in our VM. Why?)_
 
@@ -846,8 +848,6 @@ _Anything else we're running on our Home Computer?_
 Yeah sadly these home-based __NuttX Monitoring Jobs__ will probably stop running while we're overseas for Marathon Races...
 
 - [__NuttX Build Farm__](https://lupyuen.org/articles/ci2)
-
-- [__Live Metric for GitHub Runners__](https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners)
 
 - __Daily Tests of NuttX__ on [__Avaota-A1__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-avaota%22&s=updated), [__StarPro64__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-starpro64%22&s=updated), [__Oz64__](https://gist.github.com/search?o=desc&q=user%3Anuttxpr+%22daily-build-test-oz64%22&s=updated), [__RISC-V__](https://github.com/lupyuen/nuttx-riscv64/releases)
 
