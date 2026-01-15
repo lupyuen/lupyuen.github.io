@@ -659,9 +659,14 @@ $HOME/sync.sh
 ## Do this to reconnect the sync.sh session...
 ## tmux a</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-release/releases/download/v1.0.0/sync.log">(Log for NuttX Build and Ingest)</a></p>
-<p><strong>One More Step:</strong> We need to ingest the GitHub Gists and GitLab Snippets…</p>
+<p><strong>One More Step:</strong> We need to ingest the GitHub Gists and GitLab Snippets (and compute the metrics)…</p>
 <ul>
-<li><a href="https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists"><strong>“Ingest the GitHub Gists”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.org/articles/dashboard#appendix-ingest-the-github-gists"><strong>“Ingest the GitHub Gists”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.org/articles/dashboard#appendix-live-metric-for-github-runners"><strong>“Live Metric for GitHub Runners”</strong></a></p>
+</li>
 </ul>
 <p><strong>In Case of Sync Problems:</strong> Go to <a href="https://github.com/NuttX/nuttx"><em>github.com/NuttX/nuttx</em></a>, click <strong>“Sync Fork &gt; Update Branch (or Discard Commit)”</strong>. Then run <a href="https://github.com/lupyuen/nuttx-release/blob/main/enable-macos-windows.sh"><em>enable-macos-windows.sh</em></a> followed by <em>sync.sh</em>. <em>(Hmmm this seems to happen often in our VM. Why?)</em></p>
 <h1 id="secure-our-grafana-server"><a class="doc-anchor" href="#secure-our-grafana-server">§</a>11 Secure Our Grafana Server</h1>
@@ -737,9 +742,6 @@ hide_version = true</code></pre></div>
 <ul>
 <li>
 <p><a href="https://lupyuen.org/articles/ci2"><strong>NuttX Build Farm</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners"><strong>Live Metric for GitHub Runners</strong></a></p>
 </li>
 <li>
 <p><strong>Daily Tests of NuttX</strong> on <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-avaota%22&amp;s=updated"><strong>Avaota-A1</strong></a>, <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-starpro64%22&amp;s=updated"><strong>StarPro64</strong></a>, <a href="https://gist.github.com/search?o=desc&amp;q=user%3Anuttxpr+%22daily-build-test-oz64%22&amp;s=updated"><strong>Oz64</strong></a>, <a href="https://github.com/lupyuen/nuttx-riscv64/releases"><strong>RISC-V</strong></a></p>
