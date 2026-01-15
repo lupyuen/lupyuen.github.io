@@ -80,11 +80,12 @@
 <li><a href="#whats-next" title="What’s Next">13 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-nuttx-mirror-repo" title="Appendix: NuttX Mirror Repo">14 Appendix: NuttX Mirror Repo</a><ul></ul></li>
 <li><a href="#appendix-ingest-the-github-gists" title="Appendix: Ingest the GitHub Gists">15 Appendix: Ingest the GitHub Gists</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">16 Appendix: SSH Key for GitHub</a><ul></ul></li>
-<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">17 Appendix: SSH Key for VM Login</a><ul></ul></li>
-<li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">18 Appendix: Remote Connect in VSCode</a><ul></ul></li>
-<li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">19 Appendix: Expand the VM Disk</a><ul></ul></li>
-<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">20 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2026</em></p>
+<li><a href="#appendix-live-metric-for-github-runners" title="Appendix: Live Metric for GitHub Runners">16 Appendix: Live Metric for GitHub Runners</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-github" title="Appendix: SSH Key for GitHub">17 Appendix: SSH Key for GitHub</a><ul></ul></li>
+<li><a href="#appendix-ssh-key-for-vm-login" title="Appendix: SSH Key for VM Login">18 Appendix: SSH Key for VM Login</a><ul></ul></li>
+<li><a href="#appendix-remote-connect-in-vscode" title="Appendix: Remote Connect in VSCode">19 Appendix: Remote Connect in VSCode</a><ul></ul></li>
+<li><a href="#appendix-expand-the-vm-disk" title="Appendix: Expand the VM Disk">20 Appendix: Expand the VM Disk</a><ul></ul></li>
+<li><a href="#appendix-publish-online-with-cloudflare" title="Appendix: Publish Online with Cloudflare">21 Appendix: Publish Online with Cloudflare</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2026</em></p>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>12 Months Ago: We created a <strong>Grafana Dashboard</strong> (pic above) that monitors the successful / failed <strong>Daily Builds</strong> of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>, across all 339 microcontroller boards. So we’ll be alerted (via Mastodon) if NuttX fails to build for (say) RP2040…</p>
 <ul>
@@ -837,8 +838,34 @@ cd $HOME/ingest-nuttx-builds
 ## Don&#39;t use cron, need to monitor manually so that we don&#39;t 
 ## overuse the GitHub API and GitLab API</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d">(Log for ingest-nuttx-builds/run.sh)</a></p>
+<h1 id="appendix-live-metric-for-github-runners"><a class="doc-anchor" href="#appendix-live-metric-for-github-runners">§</a>16 Appendix: Live Metric for GitHub Runners</h1>
+<p>We have a job that computes the Live Metric for GitHub Runners…</p>
+<ul>
+<li><a href="https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners"><strong>Live Metric for GitHub Runners</strong></a></li>
+</ul>
+<p>Whenever our VM Boots: Do this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run the job inside tmux for easier monitoring
+tmux
+
+## Set the GitHub Token
+. $HOME/github-token.sh
+gh auth status
+
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: &#39;read:org&#39;, &#39;repo&#39;
+
+## Remember to grant Write Access to nuttxpr for nuttx-metrics repo
+## (Invite nuttxpr as Collaborator)
+sudo apt install bc imagemagick
+git clone https://github.com/lupyuen/nuttx-metrics
+cd nuttx-metrics
+./run2.sh</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-flow4.jpg" alt="SSH Key for GitHub" /></p>
-<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>16 Appendix: SSH Key for GitHub</h1>
+<h1 id="appendix-ssh-key-for-github"><a class="doc-anchor" href="#appendix-ssh-key-for-github">§</a>17 Appendix: SSH Key for GitHub</h1>
 <p><em>What triggers the Daily Build at NuttX Mirror Repo?</em></p>
 <p>Our script <a href="https://github.com/lupyuen/nuttx-release/blob/main/sync-build-ingest.sh"><em>sync-build-ingest.sh</em></a> will trigger the <strong>Daily Build</strong>, followed by the ingestion of the GitHub Actions Logs.</p>
 <p>Inside the script: Our Regular GitHub Account <em>nuttxpr</em> will start the build by pushing a patch to the NuttX Mirror Repo (pic above). This is how we create an SSH Key for GitHub that will allow <em>nuttxpr</em> to push the patch…</p>
@@ -879,7 +906,7 @@ ssh -T \
 ## We should see...
 ## Hi nuttxpr! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></pre></div></li>
 </ol>
-<h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>17 Appendix: SSH Key for VM Login</h1>
+<h1 id="appendix-ssh-key-for-vm-login"><a class="doc-anchor" href="#appendix-ssh-key-for-vm-login">§</a>18 Appendix: SSH Key for VM Login</h1>
 <p>Connecting to our VM gets tedious. Let’s create an <strong>SSH Key for VM Login</strong>…</p>
 <ol>
 <li>
@@ -919,7 +946,7 @@ ssh \
   -i $HOME/.ssh/nuttx-dashboard-vm \
   luppy@x.x.x.x</code></pre></div></li>
 </ol>
-<h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>18 Appendix: Remote Connect in VSCode</h1>
+<h1 id="appendix-remote-connect-in-vscode"><a class="doc-anchor" href="#appendix-remote-connect-in-vscode">§</a>19 Appendix: Remote Connect in VSCode</h1>
 <p><em>Is there an easier way to work with our VM?</em></p>
 <p>Yep use a <strong>SSH Remote Connection in VSCode</strong>!</p>
 <ol>
@@ -953,7 +980,7 @@ ssh \
 <p><img src="https://lupyuen.org/images/dashboard-ssh8.png" alt="Should rename the Host" /></p>
 <p><strong>Port Forwarding over SSH</strong> works great with VSCode. Thus we can redirect the TCP Ports from the VM to Our Computer. And disable all the Firewall Rules!</p>
 <p><img src="https://lupyuen.org/images/dashboard-ssh9.png" alt="Port Forwarding over SSH works great with VSCode" /></p>
-<h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>19 Appendix: Expand the VM Disk</h1>
+<h1 id="appendix-expand-the-vm-disk"><a class="doc-anchor" href="#appendix-expand-the-vm-disk">§</a>20 Appendix: Expand the VM Disk</h1>
 <p>By Default: Google Cloud allocates <strong>10 GB of Disk Space</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ df -H
 Filesystem      Size  Used Avail Use% Mounted on
@@ -1042,7 +1069,7 @@ tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
 tmpfs           412M     0  412M   0% /run/user/1000</code></pre></div></li>
 </ol>
-<h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>20 Appendix: Publish Online with Cloudflare</h1>
+<h1 id="appendix-publish-online-with-cloudflare"><a class="doc-anchor" href="#appendix-publish-online-with-cloudflare">§</a>21 Appendix: Publish Online with Cloudflare</h1>
 <p><em>Our VM is running. How do we actually publish it at a Web URL?</em></p>
 <p>Here are two ways…</p>
 <ul>
