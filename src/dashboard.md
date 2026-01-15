@@ -962,9 +962,11 @@ cd $HOME/ingest-nuttx-builds
 
 [(Log for ingest-nuttx-builds/run.sh)](https://gist.github.com/lupyuen/d29be01f9e5ad256c6bb6df1e1ddea6d)
 
+![Live Metric for GitHub Runners](https://lupyuen.github.io/nuttx-metrics/github-fulltime-runners.png)
+
 # Appendix: Live Metric for GitHub Runners
 
-We have a job that computes the Live Metric for GitHub Runners...
+We have a job that computes the Live Metric for GitHub Runners (utilisation of GitHub Actions, pic above)
 
 - [__Live Metric for GitHub Runners__](https://lupyuen.org/articles/ci3#live-metric-for-full-time-runners)
 
