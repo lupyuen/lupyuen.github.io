@@ -988,7 +988,7 @@ gh auth status
 ## Remember to grant Write Access to nuttxpr for nuttx-metrics repo
 ## (Invite nuttxpr as Collaborator)
 sudo apt install bc imagemagick
-git clone https://github.com/lupyuen/nuttx-metrics
+git clone git@github.com:lupyuen/nuttx-metrics.git
 cd nuttx-metrics
 ./run2.sh
 ```
