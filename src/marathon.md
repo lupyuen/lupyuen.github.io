@@ -242,6 +242,8 @@ Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other mar
 
 1.  [__Twincity Marathon__](https://twincitymarathon.com/) (Malaysia)
 
+    [(__Update:__ Completed the 42 km Twincity Marathon!)](https://www.strava.com/activities/17087264023)
+
 1.  [__Miri Marathon__](https://www.marathonmiri.com/) (Malaysia)
 
 1.  [__Kuala Lumpur Marathon__](https://www.kl-marathon.com/) (Malaysia)
@@ -258,7 +260,9 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=46098166)
 
-- [__My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
+- [__My Current Project: "Apache NuttX RTOS for Avaota-A1"__](https://github.com/lupyuen/nuttx-avaota-a1)
+
+- [__Also My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
 
 - [__My Other Project: "NuttX for Oz64 SG2000"__](https://nuttx-forge.org/lupyuen/nuttx-sg2000)
 
