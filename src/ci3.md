@@ -459,6 +459,16 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 # What's Next
 
+_Shouldn't we implement NuttX CI so that it's totally User-Proof?_
+
+_If the GitHub Load is too high... It's a problem with our CI System, not our NuttX Developers. Right?_
+
+Well we could revamp NuttX CI to make it totally User-Proof and unbreakable. But sadly we can't because...
+
+1.  NuttX CI is way too complex with Legacy Stuff. It's brittle and will break easily when we make changes.
+
+1.  We don't have folks with the right expertise to revamp NuttX CI. And after the revamp: NuttX CI requires dedicated people to monitor the system 24 x 7... Which we can't afford.
+
 Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus...
 
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
