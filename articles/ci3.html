@@ -459,6 +459,17 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/ci3-title.jpg" alt="Optimising the Continuous Integration for Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>10 What’s Next</h1>
+<p><em>Shouldn’t we implement NuttX CI so that it’s totally User-Proof?</em></p>
+<p><em>If the GitHub Load is too high… It’s a problem with our CI System, not our NuttX Developers. Right?</em></p>
+<p>Well we could revamp NuttX CI to make it totally User-Proof and unbreakable. But sadly we can’t because…</p>
+<ol>
+<li>
+<p>NuttX CI is way too complex with Legacy Stuff. It’s brittle and will break easily when we make changes.</p>
+</li>
+<li>
+<p>We don’t have folks with the right expertise to revamp NuttX CI. And after the revamp: NuttX CI requires dedicated people to monitor the system 24 x 7… Which we can’t afford.</p>
+</li>
+</ol>
 <p>Next Article: We’ll chat about <strong>NuttX Dashboard</strong>. And how we made it with Grafana and Prometheus…</p>
 <ul>
 <li>
