@@ -302,7 +302,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![Wrapping injured toes in Micropore Tape](https://lupyuen.github.io/images/marathon-toe.jpg)
 
-    If the Toe Nail starts growing away from the Nail Bed (because of a scar or blister underneath): Use a Nail File to file away the gnarly bits.
+    If the Toe Nail grows away from the Nail Bed (because of a scab or blister underneath): Use a Nail File to file away the gnarly bits.
 
 1.  _Outer Knee hurts!_
 
