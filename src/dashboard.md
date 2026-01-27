@@ -48,7 +48,7 @@ Then we create our __Virtual Machine__...
 
 1.  Fill in the __Instance Name__ _"nuttx-dashboard-vm"_. Our VM shall be __General Purpose / Debian Bookworm__
 
-    Set the __Disk Size to 20 GB__ [(or expand it later)](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
+    Set the __Disk Size to 40 GB__ [(or expand it later)](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
 
     Click __"Create"__
 
@@ -1216,7 +1216,7 @@ tmpfs           412M     0  412M   0% /run/user/1000
 $ rm -rf /tmp/sync-build-ingest/
 ```
 
-This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh), from 10 GB to 20 GB...
+This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh), from 10 GB to 40 GB...
 
 1.  Click __"VM > Details > Storage > Boot Disk"__
 
@@ -1226,9 +1226,9 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
 
     ![Menu > Edit](https://lupyuen.org/images/dashboard-disk2.png)
 
-1.  Increase the size from 10 GB to 20 GB. Click __Save__
+1.  Increase the size from 10 GB to 40 GB. Click __Save__
 
-    ![Increase the size from 10 GB to 20 GB](https://lupyuen.org/images/dashboard-disk3.png)
+    ![Increase the size from 10 GB to 40 GB](https://lupyuen.org/images/dashboard-disk3.png)
 
 1.  Inside our VM: Do this...
 
@@ -1242,7 +1242,7 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
     ## /dev/sda14   2048     8191     6144    3M BIOS boot
     ## /dev/sda15   8192   262143   253952  124M EFI System
 
-    ## Let's expand /dev/sda to 20 GB
+    ## Let's expand /dev/sda to 40 GB
     sudo fdisk /dev/sda
 
     ## Ignore the warning
@@ -1266,7 +1266,7 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
     ## sda1 is bigger now
     $ sudo fdisk -l
     Device      Start      End  Sectors  Size Type
-    /dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
+    /dev/sda1  262144 83886046 83623903 39.9G Linux root (x86-64)
     /dev/sda14   2048     8191     6144    3M BIOS boot
     /dev/sda15   8192   262143   253952  124M EFI System
 
@@ -1274,8 +1274,8 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
     $ df -H
     Filesystem      Size  Used Avail Use% Mounted on
     udev            2.1G     0  2.1G   0% /dev
-    tmpfs           412M  574k  411M   1% /run
-    /dev/sda1        21G  8.5G   12G  43% /
+    tmpfs           412M  603k  411M   1% /run
+    /dev/sda1        43G   27G   14G  67% /
     tmpfs           2.1G     0  2.1G   0% /dev/shm
     tmpfs           5.3M     0  5.3M   0% /run/lock
     /dev/sda15      130M   13M  118M  10% /boot/efi
