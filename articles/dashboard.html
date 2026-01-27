@@ -121,7 +121,7 @@
 </li>
 <li>
 <p>Fill in the <strong>Instance Name</strong> <em>“nuttx-dashboard-vm”</em>. Our VM shall be <strong>General Purpose / Debian Bookworm</strong></p>
-<p>Set the <strong>Disk Size to 20 GB</strong> <a href="https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk">(or expand it later)</a></p>
+<p>Set the <strong>Disk Size to 40 GB</strong> <a href="https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk">(or expand it later)</a></p>
 <p>Click <strong>“Create”</strong></p>
 <p><img src="https://lupyuen.org/images/dashboard-vm5.png" alt="Create VM" /></p>
 </li>
@@ -1020,7 +1020,7 @@ tmpfs           412M     0  412M   0% /run/user/1000
 
 ## Most of the disk space used by /tmp
 $ rm -rf /tmp/sync-build-ingest/</code></pre></div>
-<p>This is how we <a href="https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh"><strong>Expand the VM Disk</strong></a>, from 10 GB to 20 GB…</p>
+<p>This is how we <a href="https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh"><strong>Expand the VM Disk</strong></a>, from 10 GB to 40 GB…</p>
 <ol>
 <li>
 <p>Click <strong>“VM &gt; Details &gt; Storage &gt; Boot Disk”</strong></p>
@@ -1031,8 +1031,8 @@ $ rm -rf /tmp/sync-build-ingest/</code></pre></div>
 <p><img src="https://lupyuen.org/images/dashboard-disk2.png" alt="Menu &gt; Edit" /></p>
 </li>
 <li>
-<p>Increase the size from 10 GB to 20 GB. Click <strong>Save</strong></p>
-<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="Increase the size from 10 GB to 20 GB" /></p>
+<p>Increase the size from 10 GB to 40 GB. Click <strong>Save</strong></p>
+<p><img src="https://lupyuen.org/images/dashboard-disk3.png" alt="Increase the size from 10 GB to 40 GB" /></p>
 </li>
 <li>
 <p>Inside our VM: Do this…</p>
@@ -1045,7 +1045,7 @@ sudo fdisk -l
 ## /dev/sda14   2048     8191     6144    3M BIOS boot
 ## /dev/sda15   8192   262143   253952  124M EFI System
 
-## Let&#39;s expand /dev/sda to 20 GB
+## Let&#39;s expand /dev/sda to 40 GB
 sudo fdisk /dev/sda
 
 ## Ignore the warning
@@ -1069,7 +1069,7 @@ sudo resize2fs /dev/sda1
 ## sda1 is bigger now
 $ sudo fdisk -l
 Device      Start      End  Sectors  Size Type
-/dev/sda1  262144 41943006 41680863 19.9G Linux root (x86-64)
+/dev/sda1  262144 83886046 83623903 39.9G Linux root (x86-64)
 /dev/sda14   2048     8191     6144    3M BIOS boot
 /dev/sda15   8192   262143   253952  124M EFI System
 
@@ -1077,8 +1077,8 @@ Device      Start      End  Sectors  Size Type
 $ df -H
 Filesystem      Size  Used Avail Use% Mounted on
 udev            2.1G     0  2.1G   0% /dev
-tmpfs           412M  574k  411M   1% /run
-/dev/sda1        21G  8.5G   12G  43% /
+tmpfs           412M  603k  411M   1% /run
+/dev/sda1        43G   27G   14G  67% /
 tmpfs           2.1G     0  2.1G   0% /dev/shm
 tmpfs           5.3M     0  5.3M   0% /run/lock
 /dev/sda15      130M   13M  118M  10% /boot/efi
