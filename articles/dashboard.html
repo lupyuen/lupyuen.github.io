@@ -709,6 +709,18 @@ hide_version = true</code></pre></div>
 </ul>
 <p><img src="https://lupyuen.org/images/dashboard-title.jpg" alt="Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS" /></p>
 <p>NuttX Dashboard is ready to serve. Yay!</p>
+<p>If we wish to allow <strong>Web Crawlers</strong> to index our <strong>Grafana Server</strong>…</p>
+<ol>
+<li>
+<p>Edit <em>/usr/share/grafana/public/robots.txt</em></p>
+</li>
+<li>
+<p>Change…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Disallow: /</code></pre></div></li>
+<li>
+<p>To…</p>
+<div class="example-wrap"><pre class="language-bash"><code>Disallow:</code></pre></div></li>
+</ol>
 <p><img src="https://lupyuen.org/images/dashboard-cost1.png" alt="Cost of Google Cloud VM" /></p>
 <h1 id="cost-of-google-cloud"><a class="doc-anchor" href="#cost-of-google-cloud">§</a>12 Cost of Google Cloud</h1>
 <p><em>Hosting our dashboard on Google Cloud: Is it expensive?</em></p>
