@@ -301,6 +301,8 @@ Indeed! The Build Rules are explained here...
 
 # Live Metric for Full-Time Runners
 
+[(Now hosted on Google Cloud)](https://lupyuen.org/articles/dashboard#appendix-live-metric-for-github-runners)
+
 _Hitting the Target Metrics in 2 weeks... Everyone needs to help out right?_
 
 Our quota is [__25 Full-Time GitHub Runners__](https://infra.apache.org/github-actions-policy.html) per day.
