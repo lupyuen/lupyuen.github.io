@@ -802,10 +802,25 @@ Publish online our NuttX Dashboard with Cloudflare Tunnel or another CDN...
 
 - [__"Publish Online with Cloudflare"__](https://lupyuen.org/articles/dashboard#appendix-publish-online-with-cloudflare)
 
-
 ![Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS](https://lupyuen.org/images/dashboard-title.jpg)
 
 NuttX Dashboard is ready to serve. Yay!
+
+If we wish to allow __Web Crawlers__ to index our __Grafana Server__...
+
+1.  Edit _/usr/share/grafana/public/robots.txt_
+
+1.  Change...
+
+    ```bash
+    Disallow: /
+    ```
+
+1.  To...
+
+    ```bash
+    Disallow:
+    ```
 
 ![Cost of Google Cloud VM](https://lupyuen.org/images/dashboard-cost1.png)
 
