@@ -588,6 +588,10 @@ Finally it's time to submit our Pull Request!
 
     If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
+1.  __For PR Reviewers:__ Do NOT flag a PR or a Comment with the [__Thumbs Down Emoji__](https://lists.apache.org/thread/9bbbfjngvslv3sc1llo1sq6b0g97lvgq). This is considered offensive in some cultures. 
+
+    Instead, mark the PR as "Request For Changes". And state precisely the changes needed for the PR. 
+
 Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here's how...
 
 1.  Browse to the __`master`__ branch of our __`nuttx`__ repository.
