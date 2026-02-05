@@ -349,7 +349,7 @@ expect ./oz64.exp</code></pre></div>
 
   <span class="comment">// We handle only Mentions
   </span><span class="kw">let </span>reason = <span class="kw-2">&amp;</span>n.reason;
-  <span class="kw">if </span>reason != <span class="string">"mention" </span>{ <span class="kw">continue</span>; }
+  <span class="kw">if </span><span class="macro">reason !</span>= <span class="string">"mention" </span>{ <span class="kw">continue</span>; }
 
   <span class="comment">// We handle only PR Notifications
   // Fetch the PR from the Notification
