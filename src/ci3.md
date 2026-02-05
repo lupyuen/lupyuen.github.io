@@ -473,7 +473,7 @@ Well we could revamp NuttX CI to make it totally User-Proof and unbreakable. But
 
 _One Year Later: Is everything still under control?_
 
-We see brief spikes in usage of GitHub Runners during NuttX Releases. But Jan-Feb 2026 was the busiest sustained peak...
+We see brief spikes in usage of GitHub Runners during NuttX Releases. But Jan-Feb 2026 was the [__busiest sustained peak__](https://github.com/apache/nuttx/issues/17914)...
 
 ![GitHub Full-Time Runners by Date](https://github.com/user-attachments/assets/6a22d6af-b323-47b3-88ab-e5fe76200332)
 
