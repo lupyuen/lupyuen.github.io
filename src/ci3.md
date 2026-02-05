@@ -487,6 +487,8 @@ Maybe something we changed in NuttX CI? Needs more monitoring and analysis (duri
 
 Lesson Learnt: __Continuous Operational Monitoring__ of NuttX CI is super important! Even after revamping NuttX CI into a Distributed Build + Test system. 
 
+[(Hmmm this Sep 2025 build consumed 30 hours of GitHub Runners... Very similar to Feb 2026)](https://github.com/NuttX/nuttx/actions/runs/17600825032/usage)
+
 _What happened when we're using too many GitHub Runners?_
 
 Some of our CI Jobs were [__stuck forever__](https://github.com/apache/nuttx/actions/runs/21600990965/job/62279838438) with this message:
