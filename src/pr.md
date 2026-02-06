@@ -684,6 +684,22 @@ One last thing: Please help to validate that the __NuttX Release works OK__! We 
 
 # What's Next
 
+_Will NuttX accept Pull Requests generated with LLM and AI Tools?_
+
+Check out the [__ASF Generative Tooling Guidance__](https://www.apache.org/legal/generative-tooling.html).
+
+_Why was my Pull Request rejected?_
+
+Some PRs are rejected because they're not consistent with the community guidelines. Refer to the following docs for guidance...
+
+- [__"NuttX Contributing Guidelines"__](https://github.com/apache/nuttx/blob/master/CONTRIBUTING.md)
+
+- [__"The Apache Way"__](https://www.apache.org/theapacheway/)
+
+- [__"ASF Project Independence"__](https://community.apache.org/projectIndependence.html)
+
+<hr>
+
 I hope this article will be helpful for folks contributing code to NuttX for the very first time.
 
 In the next article we'll explain this complex Pull Request that adds a __new SoC and new Board__ to NuttX. Stay Tuned!
