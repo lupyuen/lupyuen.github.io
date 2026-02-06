@@ -684,7 +684,7 @@ One last thing: Please help to validate that the __NuttX Release works OK__! We 
 
 # What's Next
 
-_Will NuttX accept Pull Requests generated with LLM and AI Tools?_
+_Will NuttX accept Pull Requests generated with LLMs and AI Tools?_
 
 Check out the [__ASF Generative Tooling Guidance__](https://www.apache.org/legal/generative-tooling.html).
 
