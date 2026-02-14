@@ -250,7 +250,7 @@ Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other mar
 
 1.  [__Kuala Lumpur Marathon__](https://www.kl-marathon.com/) (Malaysia)
 
-Then pivot to __Trailing Running__ and __Ultra-Marathons__...
+Then pivot to __Trail Running__ and __Ultra-Marathons__...
 
 1.  [__10 km Trail Run__](https://kingtrailevents.online/gu-forest-force-run-series-2026/)
 
