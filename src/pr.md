@@ -600,6 +600,9 @@ Finally it's time to submit our Pull Request!
     brew install zizmor
     git clone YOUR_NUTTX_REPO
     zizmor nuttx
+
+    ## Ignore the message:
+    ## "workflow_run is almost always used insecurely"
     ```
 
 Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here's how...
