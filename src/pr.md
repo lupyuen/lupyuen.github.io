@@ -592,6 +592,16 @@ Finally it's time to submit our Pull Request!
 
     Instead, mark the PR as "Request For Changes". And state precisely the changes needed for the PR. 
 
+1.  __For GitHub Actions:__ Don't use the _pull_request_target_ trigger, it's disallowed by the [__ASF GitHub Actions Security Policy__](https://infra.apache.org/github-actions-policy.html)
+
+1.  Whenever we modify the __GitHub CI Workflow__, remember to run the [__Zizmor Security Scanner__](https://docs.zizmor.sh/). Ignore the messages for _workflow_run_ trigger, because Zizmor can't analyse the code inside the trigger.
+
+    ```bash
+    brew install zizmor
+    git clone YOUR_NUTTX_REPO
+    zizmor nuttx
+    ```
+
 Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here's how...
 
 1.  Browse to the __`master`__ branch of our __`nuttx`__ repository.
