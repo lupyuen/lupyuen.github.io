@@ -566,7 +566,10 @@ int arm64_gic_initialize(void)
 <p>Whenever we modify the <strong>GitHub CI Workflow</strong>, remember to run the <a href="https://docs.zizmor.sh/"><strong>Zizmor Security Scanner</strong></a>. Ignore the messages for <em>workflow_run</em> trigger, because Zizmor can’t analyse the code inside the trigger.</p>
 <div class="example-wrap"><pre class="language-bash"><code>brew install zizmor
 git clone YOUR_NUTTX_REPO
-zizmor nuttx</code></pre></div></li>
+zizmor nuttx
+
+## Ignore the message:
+## &quot;workflow_run is almost always used insecurely&quot;</code></pre></div></li>
 </ol>
 <p>Sometimes we need to <strong>Rebase To The Latest Master</strong> due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here’s how…</p>
 <ol>
