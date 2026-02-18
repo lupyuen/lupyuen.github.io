@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.org/images/prtarget-title.jpg)
 
-In GitHub Actions: This is the typical way that we __Label a Pull Request__. But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
+In GitHub Actions: This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#create-workflow). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
 
 ```yaml
 ## When a Pull Request is submitted...
@@ -16,11 +16,10 @@ jobs:
       ## Checkout the repo
       - uses: actions/checkout@v6
 
-      ## Assign the PR Labels based on the updated paths
+      ## Assign the PR Labels based on the updated Paths
       - uses: actions/labeler@main
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          sync-labels: true
+          repo-token:  "${{ secrets.GITHUB_TOKEN }}"
 
       ## Assign the PR Labels based on the PR Size
       - uses: codelytv/pr-size-labeler@v1.10.3
@@ -31,6 +30,20 @@ jobs:
 TODO
 
 # TODO
+
+_How did we discover this problem?_
+
+We were notified about the [__Unsafe pull_request_target__](https://github.com/apache/nuttx/issues/18359) during a Security Scan...
+
+> "pull_request_target was found as a workflow trigger ... If after after 60 days these problems are not addressed, we will turn off builds"
+
+TODO
+
+# TODO
+
+Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:
+
+https://github.com/apache/nuttx/pull/18404
 
 pr-size-labeler/src/github.sh at main · CodelyTV/pr-size-labeler
 
