@@ -48,7 +48,7 @@ Then we create our __Virtual Machine__...
 
 1.  Fill in the __Instance Name__ _"nuttx-dashboard-vm"_. Our VM shall be __General Purpose / Debian Bookworm__
 
-    Set the __Disk Size to 40 GB__ [(or expand it later)](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
+    Set the __Disk Size to 80 GB__ [(or expand it later)](https://lupyuen.org/articles/dashboard#appendix-expand-the-vm-disk)
 
     Click __"Create"__
 
@@ -1216,7 +1216,7 @@ tmpfs           412M     0  412M   0% /run/user/1000
 $ rm -rf /tmp/sync-build-ingest/
 ```
 
-This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh), from 10 GB to 40 GB...
+This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-size-in-google-cloud-5gkh), from 10 GB to 80 GB...
 
 1.  Click __"VM > Details > Storage > Boot Disk"__
 
@@ -1226,9 +1226,11 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
 
     ![Menu > Edit](https://lupyuen.org/images/dashboard-disk2.png)
 
-1.  Increase the size from 10 GB to 40 GB. Click __Save__
+1.  Increase the size from 10 GB to 80 GB. Click __Save__
 
-    ![Increase the size from 10 GB to 40 GB](https://lupyuen.org/images/dashboard-disk3.png)
+    ![Increase the size from 10 GB to 80 GB](https://lupyuen.org/images/dashboard-disk3.png)
+
+    (Update: Pic should show 80 GB)
 
 1.  Inside our VM: Do this...
 
@@ -1242,7 +1244,7 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
     ## /dev/sda14   2048     8191     6144    3M BIOS boot
     ## /dev/sda15   8192   262143   253952  124M EFI System
 
-    ## Let's expand /dev/sda to 40 GB
+    ## Let's expand /dev/sda to 80 GB
     sudo fdisk /dev/sda
 
     ## Ignore the warning
@@ -1253,29 +1255,29 @@ This is how we [__Expand the VM Disk__](https://dev.to/lovestaco/expanding-disk-
     sudo growpart /dev/sda 1
 
     ## We should see...
-    ## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=41680863 end=41943006
+    ## CHANGED: partition=1 start=262144 old: size=20707328 end=20969471 new: size=167509983 end=167772126
 
     ## Resize the Filesystem
     sudo resize2fs /dev/sda1
 
     ## We should see...
     ## Filesystem at /dev/sda1 is mounted on /; on-line resizing required
-    ## old_desc_blocks = 2, new_desc_blocks = 3
-    ## The filesystem on /dev/sda1 is now 5210107 (4k) blocks long.
+    ## old_desc_blocks = 2, new_desc_blocks = 10
+    ## The filesystem on /dev/sda1 is now 20938747 (4k) blocks long.
 
     ## sda1 is bigger now
     $ sudo fdisk -l
-    Device      Start      End  Sectors  Size Type
-    /dev/sda1  262144 83886046 83623903 39.9G Linux root (x86-64)
-    /dev/sda14   2048     8191     6144    3M BIOS boot
-    /dev/sda15   8192   262143   253952  124M EFI System
+    Device      Start       End   Sectors  Size Type
+    /dev/sda1  262144 167772126 167509983 79.9G Linux root (x86-64)
+    /dev/sda14   2048      8191      6144    3M BIOS boot
+    /dev/sda15   8192    262143    253952  124M EFI System
 
     ## More space in /tmp yay!
     $ df -H
     Filesystem      Size  Used Avail Use% Mounted on
     udev            2.1G     0  2.1G   0% /dev
     tmpfs           412M  603k  411M   1% /run
-    /dev/sda1        43G   27G   14G  67% /
+    /dev/sda1        85G   40G   42G  49% /
     tmpfs           2.1G     0  2.1G   0% /dev/shm
     tmpfs           5.3M     0  5.3M   0% /run/lock
     /dev/sda15      130M   13M  118M  10% /boot/efi
