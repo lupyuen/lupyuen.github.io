@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.org/images/prtarget-title.jpg)
 
-In GitHub Actions: This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#create-workflow). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
+__In GitHub Actions:__ This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#create-workflow). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
 
 ```yaml
 ## When a Pull Request is submitted...
@@ -26,6 +26,8 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+In this article we...
 
 TODO
 
