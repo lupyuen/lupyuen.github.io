@@ -142,16 +142,16 @@ This is how we checkout __One Single File__ from our repo: [.github/workflows/la
 ```yaml
 ## Checkout one file from our trusted source: .github/labeler.yml
 ## Never checkout and execute any untrusted code from the PR.
-- name: Checkout labeler config
-  uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
-  with:
-    repository:  apache/nuttx
-    ref:         master
-    path:        labeler
-    fetch-depth: 1
-    persist-credentials: false
-    sparse-checkout:     .github/labeler.yml
-    sparse-checkout-cone-mode: false
+name: Checkout labeler config
+uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+with:
+  repository:  apache/nuttx
+  ref:         master
+  path:        labeler
+  fetch-depth: 1
+  persist-credentials: false
+  sparse-checkout:     .github/labeler.yml
+  sparse-checkout-cone-mode: false
 ```
 
 _.github/labeler.yml_ contains all the configuration needed by _actions/labeler_. So we don't actually need the Entire Repo when we're Labeling the PR.
@@ -175,13 +175,15 @@ async function getChangedFiles(...): ... {
 
 We'll call the same GitHub API in a while.
 
+[(_pr-size-labeler_ calls GitHub REST inside Docker)](https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh#L4-L54)
+
 _But everyone else is checking out the Entire Repo?_
 
-Yeah we're not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see this in [__GitHub Code Search__](TODO)...
+Yeah we're not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in [__GitHub Code Search__](TODO)...
 
 TODO: Pic of GitHub Code Search
 
-We don't see any __Official GitHub Guidance__ for Safely Labeling a PR. Let's do it our way...
+We don't have any __Official GitHub Guidance__ for Safely Labeling a PR. Let's do it our way...
 
 # Safer GitHub Tokens
 
@@ -206,12 +208,6 @@ TODO
 Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:
 
 https://github.com/apache/nuttx/pull/18404
-
-pr-size-labeler/src/github.sh at main · CodelyTV/pr-size-labeler
-
-https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh
-
-labeler/src/changedFiles.ts at main · actions/labeler
 
 Wow: Apache NuttX Project dies in 60 days... Unless we rip out pull_request_target from GitHub Actions!
 
