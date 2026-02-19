@@ -236,7 +236,7 @@ jobs:
           sparse-checkout-cone-mode: false
 ```
 
-Setting the PR Label becomes interesting...
+Writing the PR Label becomes interesting...
 
 # Compute the PR Labels
 
