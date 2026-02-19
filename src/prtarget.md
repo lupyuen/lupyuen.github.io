@@ -154,12 +154,21 @@ This is how we checkout __One Single File__ from our repo: [.github/workflows/la
 
 _.github/labeler.yml_ contains all the configuration needed by _actions/labeler_. So we don't actually need the Entire Repo when we're Labeling the PR.
 
-_What about the Changed Files in the PR? Shouldn't we check them out?_
+_What about the Changed Files in the PR? Should we check them out?_
 
-Apparently not! _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: TODO
+Apparently not! Internally, _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: [actions/labeler/changedFiles.ts](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
 
 ```javascript
-TODO
+// To fetch the Filenames of the Changed Files in the PR...
+async function getChangedFiles(...): ... {
+
+  // Call the GitHub REST API: pulls.listFiles
+  const listFilesOptions = client.rest.pulls.listFiles.endpoint.merge({
+    owner, repo, pull_number
+  });
+  const listFilesResponse = await client.paginate(listFilesOptions);
+  ...
+}
 ```
 
 We'll call the same GitHub API in a while.
@@ -169,6 +178,10 @@ TODO
 _Why?_
 
 TODO: Everybody else does it
+
+# Safer GitHub Tokens
+
+TODO
 
 # TODO
 
@@ -181,9 +194,6 @@ pr-size-labeler/src/github.sh at main · CodelyTV/pr-size-labeler
 https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh
 
 labeler/src/changedFiles.ts at main · actions/labeler
-
-https://github.com/actions/labeler/blob/main/src/changedFiles.ts
-
 
 Wow: Apache NuttX Project dies in 60 days... Unless we rip out pull_request_target from GitHub Actions!
 
