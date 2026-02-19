@@ -154,9 +154,9 @@ with:
   sparse-checkout-cone-mode: false
 ```
 
-_.github/labeler.yml_ contains all the configuration needed by _actions/labeler_. So we don't actually need the Entire Repo when we're Labeling the PR.
+Config File _.github/labeler.yml_ contains all the settings needed by _actions/labeler_. Thus we don't actually need the Entire Repo, when we're Labeling a PR.
 
-_What about the Changed Files in the PR? Should we check them out?_
+_The Changed Files in the PR: Should we check them out?_
 
 Nope! Internally, _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: [actions/labeler/changedFiles.ts](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
 
@@ -236,7 +236,7 @@ jobs:
           sparse-checkout-cone-mode: false
 ```
 
-TODO
+Setting the PR Label becomes interesting...
 
 # Compute the PR Labels
 
