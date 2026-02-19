@@ -191,7 +191,7 @@ with:
   sparse-checkout:     .github/labeler.yml
   sparse-checkout-cone-mode: false</code></pre></div>
 <p>Config File <em>.github/labeler.yml</em> contains all the settings needed by <em>actions/labeler</em>. Thus we don’t actually need the Entire Repo, when we’re Labeling a PR.</p>
-<p><em>The Changed Files in the PR: Should we check them out?</em></p>
+<p><em>Changed Files in the PR: Should we check them out?</em></p>
 <p>Nope! Internally, <em>actions/labeler</em> calls GitHub API to fetch the <strong>Filenames of the Changed Files</strong> in the PR: <a href="https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46">actions/labeler/changedFiles.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// To fetch the Filenames of the Changed Files in the PR...
 async function getChangedFiles(...): ... {
@@ -272,15 +272,15 @@ jobs:
 <p>Which is OK: We’re doing the PR Labeling ourselves anyway</p>
 </li>
 </ul>
-<p>TODO</p>
+<p><em>Changed Files in the PR: How do we find out what changed?</em></p>
+<p>Inside our Workflow: We call the GitHub API <a href="TODO"><em>pulls.listFiles</em></a>. It returns the <strong>Filenames of the Changed Files</strong>, also the <strong>Number of Lines Changed</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>{ status: &#39;added&#39;,    filename: &#39;arch/arm/test.txt&#39;,              
   additions: 3, deletions: 0,    changes: 3 }
 { status: &#39;removed&#39;,  filename: &#39;Documentation/legacy_README.md&#39;, 
   additions: 0, deletions: 2531, changes: 2531 }
 { status: &#39;modified&#39;, filename: &#39;Documentation/security.rst&#39;,     
   additions: 1, deletions: 0,    changes: 1 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63">.github/workflows/labeler.yml</a></p>
+<p>This is how we call the GitHub API inside our <em>pull_request</em> workflow: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>## Fetch the updated PR filenames. Compute the Size Label and Arch Labels.
 - name: Compute PR labels
   uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
@@ -298,7 +298,7 @@ jobs:
       const listFilesOptions = github.rest.pulls.listFiles
         .endpoint.merge({ owner, repo, pull_number });
       const listFilesResponse = await github.paginate(listFilesOptions);</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81">labeler.yml</a></p>
+<p>We loop through the returned filenames, and total up the <strong>Number of Lines Changed</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81">labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>      // Sum up the number of lines changed
       const sizeFiles = listFilesResponse
         .filter(f =&gt; (f.status != &#39;removed&#39;));  // Ignore deleted files
@@ -317,29 +317,33 @@ jobs:
         : &#39;Size: XL&#39;;
       var prLabels = [ sizeLabel ];
       console.log({ prLabels });</code></pre></div>
-<p>Arch Label: More complicated. See the Appendix…</p>
-<p>TODO: Appendix</p>
-<p>Now we stash the PR Labels safely…</p>
+<p>Which becomes the <strong>Size Label</strong> for the PR, like <em>“Size: XS”</em>.</p>
+<p>We also have <strong>Arch Labels</strong> for the PR, like <em>“Arch: risc-v”</em>. This is how we compute them…</p>
+<ul>
+<li>TODO: Appendix</li>
+</ul>
+<p>Size Label and Arch Labels are all ready. Now we stash the PR Labels safely…</p>
 <p>TODO: Pic of Upload the PR Labels</p>
 <h1 id="upload-the-pr-labels"><a class="doc-anchor" href="#upload-the-pr-labels">§</a>6 Upload the PR Labels</h1>
 <p><em>No Write Permission means we can’t set the PR Labels. How to save the labels?</em></p>
-<p>TODO: <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Recommended by GitHub)</a></p>
-<p>TODO: <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147">.github/workflows/labeler.yml</a></p>
+<p>GitHub offers a safe interim storage for our PR Labels: We save them into a <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>PR Artifact</strong></a> during the Workflow Run.</p>
+<p>First we write the <strong>PR Number and PR Labels</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>      // Save the PR Number and PR Labels into a PR Artifact
       // e.g. &#39;Size: XS\nArch: avr\n&#39;
       const dir = &#39;pr&#39;;
       fs.mkdirSync(dir);
       fs.writeFileSync(dir + &#39;/pr-id.txt&#39;, pull_number + &#39;\n&#39;);
       fs.writeFileSync(dir + &#39;/pr-labels.txt&#39;, prLabels.join(&#39;\n&#39;) + &#39;\n&#39;);</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L141-L147">labeler.yml</a></p>
+<p>Then we upload them as a <strong>PR Artifact</strong>, that will appear in the Workflow Run: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L141-L147">labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Upload the PR Artifact as pr.zip
 - name: Upload PR artifact
   uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
   with:
     name: pr
     path: pr/</code></pre></div>
+<p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Recommended by GitHub)</a></p>
+<p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
+<p>Here comes the Second Part of the PR Workflow…</p>
 <p>TODO: Pic of Set the PR Labels</p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
 <p>TODO</p>
@@ -575,19 +579,19 @@ console.log({ prLabels });</code></pre></div>
 <p><a href="https://github.com/lupyuen7/nuttx/actions/runs/21809066491/job/62917607595">(See the Log)</a></p>
 <p>That’s because the Labeler Action runs on a PR from a Forked Repo, which requires <em>pull_request_target</em>…</p>
 <blockquote>
-<p>However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for <code>pull_request</code> events, at most. If you encounter an <code>Error: HttpError: Resource not accessible by integration</code>, it’s likely due to these permission constraints.</p>
+<p><em>However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for <code>pull_request</code> events, at most. If you encounter an <code>Error: HttpError: Resource not accessible by integration</code>, it’s likely due to these permission constraints.</em></p>
 </blockquote>
 <blockquote>
-<p>To resolve this issue, you can modify the <code>on:</code> section of your workflow to use
-<a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target"><code>pull_request_target</code></a> instead of <code>pull_request</code> (see example <a href="#create-workflow">above</a>). This change allows the action to have write access, because <code>pull_request_target</code> alters the <a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target">context of the action</a> and safely grants additional permissions.</p>
+<p><em>To resolve this issue, you can modify the <code>on:</code> section of your workflow to use
+<a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target"><code>pull_request_target</code></a> instead of <code>pull_request</code> … This change allows the action to have write access, because <code>pull_request_target</code> alters the <a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target">context of the action</a> and safely grants additional permissions.</em></p>
 </blockquote>
 <p><a href="https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions">(Source)</a></p>
 <p>And <em>pull_request_target</em> has <a href="https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions"><strong>security concerns</strong></a>…</p>
 <blockquote>
-<p>There exists a potentially dangerous misuse of the <code>pull_request_target</code> workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets.</p>
+<p><em>There exists a potentially dangerous misuse of the <code>pull_request_target</code> workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets.</em></p>
 </blockquote>
 <blockquote>
-<p>Hence, it is advisable that <code>pull_request_target</code> should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using <code>pull_request_target</code> limit access to sensitive resources. Refer to the <a href="https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub token permissions documentation</a> for more details about access levels and event contexts.</p>
+<p><em>Hence, it is advisable that <code>pull_request_target</code> should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using <code>pull_request_target</code> limit access to sensitive resources. Refer to the <a href="https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">GitHub token permissions documentation</a> for more details about access levels and event contexts.</em></p>
 </blockquote>
 <p>(Then why would GitHub allow us to run an Unsafe Labeler? Sigh)</p>
 
