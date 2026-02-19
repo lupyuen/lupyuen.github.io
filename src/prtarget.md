@@ -86,6 +86,25 @@ jobs:
 
 [(Inspired by this)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
 
+Yep we have a problem...
+
+1.  _actions/checkout_ will checkout our Complete GitHub Repo, applying the changes proposed in the PR. Which might contain __Malicious Code and Scripts__...
+
+    ```yaml
+    ## Checkout the repo based on the PR...
+    ## Including any Malicious Code inside the PR!
+    - uses: actions/checkout@v6
+    ```
+
+1.  Then this will __Execute the Malicious Code__ inside the PR...
+
+    ```yaml
+    ## Run the Malicious Code from the PR. Oops!
+    - run: |
+        npm install
+        npm build
+    ```
+
 TODO
 
 # TODO
