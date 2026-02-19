@@ -248,9 +248,11 @@ Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_targ
 
 - Which means _actions/labeler_ and _pr-size-labeler_ won't work
 
-- Which is OK because we're implementing the PR Labeling ourselves anyway
+- Which is OK: We're implementing the PR Labeling ourselves anyway
 
 TODO
+
+Now we stash the PR Labels safely...
 
 # Upload the PR Labels
 
