@@ -193,9 +193,11 @@ Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.o
 
 Hmmm we can't possibly prove that [_pr-size-labeler_](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45) (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
 
-TODO: Read-only token
+1.  __Switch our GitHub Token:__ _(Unsafe)_ Read-Write Token becomes _(Safer)_ Read-Only Token
 
-TODO: Do ourselves
+2.  __Label the PR Ourselves:__ Without calling another GitHub Action
+
+TODO
 
 # TODO
 
