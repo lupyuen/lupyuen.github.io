@@ -154,7 +154,15 @@ This is how we checkout __One Single File__ from our repo: [.github/workflows/la
 
 _.github/labeler.yml_ contains all the configuration needed by _actions/labeler_. So we don't actually need the Entire Repo when we're Labeling the PR.
 
-_Don't need the Entire Repo?_
+_What about the Changed Files in the PR? Shouldn't we check them out?_
+
+Apparently not! _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: TODO
+
+```javascript
+TODO
+```
+
+We'll call the same GitHub API in a while.
 
 TODO
 
@@ -336,3 +344,9 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
+
+Appendix: TODO
+
+_What happens when we change pull_request_target to pull_request?_
+
+TODO
