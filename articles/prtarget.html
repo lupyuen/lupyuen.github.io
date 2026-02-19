@@ -67,10 +67,11 @@
     <nav id="rustdoc"><ul>
 <li><a href="#todo" title="TODO">1 TODO</a><ul></ul></li>
 <li><a href="#todo-1" title="TODO">2 TODO</a><ul></ul></li>
-<li><a href="#todo-2" title="TODO">3 TODO</a><ul></ul></li>
-<li><a href="#action-list" title="Action List">4 Action List</a><ul></ul></li>
-<li><a href="#todo-3" title="TODO">5 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
+<li><a href="#safer-checkout" title="Safer Checkout">3 Safer Checkout</a><ul></ul></li>
+<li><a href="#todo-2" title="TODO">4 TODO</a><ul></ul></li>
+<li><a href="#action-list" title="Action List">5 Action List</a><ul></ul></li>
+<li><a href="#todo-3" title="TODO">6 TODO</a><ul></ul></li>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
 <p><img src="https://lupyuen.org/images/prtarget-title.jpg" alt="TODO" /></p>
 <p><strong>In GitHub Actions:</strong> This is the typical way that we <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a Pull Request</strong></a>. But it’s <em>potentially dangerous</em>, guess why: <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When a Pull Request is submitted...
@@ -136,6 +137,7 @@ jobs:
           npm build</code></pre></div>
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Inspired by this)</a></p>
 <p>Yep we have a problem…</p>
+<p>TODO: Pic of checkout and execute</p>
 <ol>
 <li>
 <p><em>actions/checkout</em> will checkout our Complete GitHub Repo, applying the changes proposed in the PR. Which might contain <strong>Malicious Code and Scripts</strong>…</p>
@@ -148,9 +150,46 @@ jobs:
 - run: |
     npm install
     npm build</code></pre></div></li>
+<li>
+<p>Executing <strong>Untrusted Code</strong> (from a PR) can have terrible consequences…</p>
+<p>Remember <a href="https://www.sysdig.com/blog/massive-cryptomining-operation-github-actions"><strong>GitHub Crypto-Mining</strong></a>?</p>
+</li>
+<li>
+<p>Another problem: <strong>Leaking GitHub Tokens</strong>. We grant <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml"><strong>Write Permission</strong></a> to the GitHub Token, because it needs to write the PR Labels into the PR…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>## GITHUB_TOKEN has Write Permission
+jobs:
+  labeler:
+    permissions:
+      contents:      read
+      pull-requests: write
+      issues:        write</code></pre></div>
+<p>Which means the Malicious Code could <strong>Steal our GitHub Token</strong>. And do all kinds of tampering mischief.</p>
+</li>
 </ol>
+<p>There’s a safer solution…</p>
+<p>TODO: Pic of Safer Checkout</p>
+<h1 id="safer-checkout"><a class="doc-anchor" href="#safer-checkout">§</a>3 Safer Checkout</h1>
+<p><em>Do we really need the Entire Repo from the PR?</em></p>
+<p>Yeah we should <strong>limit our exposure</strong> to any Malicious Code embedded in the PR.</p>
+<p>This is how we checkout <strong>One Single File</strong> from our repo: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
+<div class="example-wrap"><pre class="language-yaml"><code>## Checkout one file from our trusted source: .github/labeler.yml
+## Never checkout and execute any untrusted code from the PR.
+- name: Checkout labeler config
+  uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+  with:
+    repository:  apache/nuttx
+    ref:         master
+    path:        labeler
+    fetch-depth: 1
+    persist-credentials: false
+    sparse-checkout:     .github/labeler.yml
+    sparse-checkout-cone-mode: false</code></pre></div>
+<p><em>.github/labeler.yml</em> contains all the configuration needed by <em>actions/labeler</em>. So we don’t actually need the Entire Repo when we’re Labeling the PR.</p>
+<p><em>Don’t need the Entire Repo?</em></p>
 <p>TODO</p>
-<h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>3 TODO</h1>
+<p><em>Why?</em></p>
+<p>TODO: Everybody else does it</p>
+<h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>4 TODO</h1>
 <p>Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:</p>
 <p>https://github.com/apache/nuttx/pull/18404</p>
 <p>pr-size-labeler/src/github.sh at main · CodelyTV/pr-size-labeler</p>
@@ -189,7 +228,7 @@ selective build</p>
 <p>We won’t implement the Entire GitHub Labeler actions/labeler, just the bare minimum needed for NuttX. We’re emulating the Labeler Config .github/labeler.yml as is, because someday GitHub might invent a Secure Way to Label PRs inside pull_request_trigger. (Then we’ll switch back to the Official GitHub Labeler actions/labeler)
 There’s something really jinxed about the way GitHub designed PR Labeling in pull_request_trigger, it’s a terrible security hack. I’ll write an article about this someday :-)</p>
 <p>Based on Actual Logs: New PR Labeling completes in 16 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
-<h1 id="action-list"><a class="doc-anchor" href="#action-list">§</a>4 Action List</h1>
+<h1 id="action-list"><a class="doc-anchor" href="#action-list">§</a>5 Action List</h1>
 <p>Thanks @simbit18! Yep eventually we need some GitHub Script (JavaScript), here’s my plan…</p>
 <p>(1) <code>[Done]</code> Verify that PRs can be Labeled using the Two-Step Solution: pull_request trigger + workflow_run trigger <a href="https://github.com/apache/nuttx/issues/18359#issuecomment-3869143242">(explained here)</a>.</p>
 <p>(2) <code>[Done]</code> But the Two-Step Solution won’t work with <code>pr-size-labeler</code> and <code>actions/labeler</code>. These actions will work only with pull_request_target</p>
@@ -215,7 +254,7 @@ Can we save the NuttX Project in 60 days?</p>
 <p>24x7 standby
 Except for Marathon Training (7 hours / 42 km)</p>
 <p>Appendix: Test Cases</p>
-<h1 id="todo-3"><a class="doc-anchor" href="#todo-3">§</a>5 TODO</h1>
+<h1 id="todo-3"><a class="doc-anchor" href="#todo-3">§</a>6 TODO</h1>
 <p><a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>name: &quot;Pull Request Labeler&quot;
 on:
@@ -247,7 +286,7 @@ jobs:
           s_label: &#39;Size: S&#39;
           m_label: &#39;Size: M&#39;
           l_label: &#39;Size: L&#39;
-          xl_label: &#39;Size: XL&#39;</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>6 What’s Next</h1>
+          xl_label: &#39;Size: XL&#39;</code></pre></div><h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>7 What’s Next</h1>
 <p>TODO: It’s complicated</p>
 <p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
 <ul>
