@@ -176,16 +176,16 @@ jobs:
 <p>This is how we checkout <strong>One Single File</strong> from our repo: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Checkout one file from our trusted source: .github/labeler.yml
 ## Never checkout and execute any untrusted code from the PR.
-- name: Checkout labeler config
-  uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
-  with:
-    repository:  apache/nuttx
-    ref:         master
-    path:        labeler
-    fetch-depth: 1
-    persist-credentials: false
-    sparse-checkout:     .github/labeler.yml
-    sparse-checkout-cone-mode: false</code></pre></div>
+name: Checkout labeler config
+uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+with:
+  repository:  apache/nuttx
+  ref:         master
+  path:        labeler
+  fetch-depth: 1
+  persist-credentials: false
+  sparse-checkout:     .github/labeler.yml
+  sparse-checkout-cone-mode: false</code></pre></div>
 <p><em>.github/labeler.yml</em> contains all the configuration needed by <em>actions/labeler</em>. So we don’t actually need the Entire Repo when we’re Labeling the PR.</p>
 <p><em>What about the Changed Files in the PR? Should we check them out?</em></p>
 <p>Nope! Internally, <em>actions/labeler</em> calls GitHub API to fetch the <strong>Filenames of the Changed Files</strong> in the PR: <a href="https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46">actions/labeler/changedFiles.ts</a></p>
@@ -200,10 +200,11 @@ async function getChangedFiles(...): ... {
   ...
 }</code></pre></div>
 <p>We’ll call the same GitHub API in a while.</p>
+<p><a href="https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh#L4-L54">(<em>pr-size-labeler</em> calls GitHub REST inside Docker)</a></p>
 <p><em>But everyone else is checking out the Entire Repo?</em></p>
-<p>Yeah we’re not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see this in <a href="TODO"><strong>GitHub Code Search</strong></a>…</p>
+<p>Yeah we’re not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in <a href="TODO"><strong>GitHub Code Search</strong></a>…</p>
 <p>TODO: Pic of GitHub Code Search</p>
-<p>We don’t see any <strong>Official GitHub Guidance</strong> for Safely Labeling a PR. Let’s do it our way…</p>
+<p>We don’t have any <strong>Official GitHub Guidance</strong> for Safely Labeling a PR. Let’s do it our way…</p>
 <h1 id="safer-github-tokens"><a class="doc-anchor" href="#safer-github-tokens">§</a>4 Safer GitHub Tokens</h1>
 <p><em>We limited our exposure to any Untrusted Code from the PR. What about the Leaky GitHub Tokens?</em></p>
 <p>Indeed we still have a problem. <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a> says…</p>
@@ -224,9 +225,6 @@ async function getChangedFiles(...): ... {
 <p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">Thanks to the ASF Security Guidance</a></p>
 <p>Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:</p>
 <p>https://github.com/apache/nuttx/pull/18404</p>
-<p>pr-size-labeler/src/github.sh at main · CodelyTV/pr-size-labeler</p>
-<p>https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh</p>
-<p>labeler/src/changedFiles.ts at main · actions/labeler</p>
 <p>Wow: Apache NuttX Project dies in 60 days… Unless we rip out pull_request_target from GitHub Actions!</p>
 <p>Asf infra policy says…</p>
 <p>We’re embedded devs, not CI Security Experts
