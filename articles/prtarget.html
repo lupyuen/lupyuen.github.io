@@ -266,17 +266,18 @@ jobs:
 <p>Which means <em>actions/labeler</em> and <em>pr-size-labeler</em> won’t work</p>
 </li>
 <li>
-<p>Which is OK: We’re implementing the PR Labeling ourselves anyway</p>
+<p>Which is OK: We’re doing the PR Labeling ourselves anyway</p>
 </li>
 </ul>
 <p>TODO</p>
 <p>Now we stash the PR Labels safely…</p>
 <h1 id="upload-the-pr-labels"><a class="doc-anchor" href="#upload-the-pr-labels">§</a>6 Upload the PR Labels</h1>
-<p>TODO</p>
+<p><em>No Write Permission means we can’t set the PR Labels. How to save the labels?</em></p>
+<p>TODO: <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Recommended by GitHub)</a></p>
+<p>TODO: <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
 <p>TODO</p>
 <h1 id="todo"><a class="doc-anchor" href="#todo">§</a>8 TODO</h1>
-<p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">Thanks to the ASF Security Guidance</a></p>
 <p>Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:</p>
 <p>https://github.com/apache/nuttx/pull/18404</p>
 <p>Wow: Apache NuttX Project dies in 60 days… Unless we rip out pull_request_target from GitHub Actions!</p>
