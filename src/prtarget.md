@@ -191,7 +191,7 @@ Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.o
 
 > _"You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN."_
 
-We can't possibly prove that _pr-size-labeler_ (and other GitHub Actions) will never ever leak our GitHub Tokens someday.
+Hmmm we can't possibly prove that _pr-size-labeler_ (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
 
 TODO: Read-only token
 
