@@ -257,7 +257,7 @@ jobs:
           persist-credentials: false
           sparse-checkout:     .github/labeler.yml
           sparse-checkout-cone-mode: false</code></pre></div>
-<p>Setting the PR Label becomes interesting…</p>
+<p>Writing the PR Label becomes interesting…</p>
 <h1 id="compute-the-pr-labels"><a class="doc-anchor" href="#compute-the-pr-labels">§</a>5 Compute the PR Labels</h1>
 <p><em>Setting the PR Labels: Can we call actions/labeler and pr-size-labeler?</em></p>
 <p>Sorry we can’t! Remember we changed the trigger from (unsafe) <em>pull_request_target</em> to (safer) <em>pull_request</em>?</p>
