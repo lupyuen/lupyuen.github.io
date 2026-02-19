@@ -197,9 +197,9 @@ Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.o
 
 Hmmm we can't possibly prove that [_pr-size-labeler_](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45) (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
 
-1.  __Switch our GitHub Token:__ _(Unsafe)_ Read-Write Token becomes _(Safer)_ Read-Only Token
+1.  __Switch our GitHub Token:__ _(Unsafe)_ Read-Write Token becomes _(Safer)_ Read-Only Token. Tampering mischief can't happen with a Read-Only Token.
 
-2.  __Label the PR Ourselves:__ Without calling another GitHub Action
+2.  __Label the PR Ourselves:__ Without calling another GitHub Action. No more leaky tokens!
 
 _Don't we need a Read-Write Token to Set the PR Label?_
 
@@ -222,8 +222,8 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      # Checkout one file from our trusted source: .github/labeler.yml
-      # Never checkout and execute any untrusted code from the PR.
+      ## Checkout one file from our trusted source: .github/labeler.yml
+      ## Never checkout and execute any untrusted code from the PR.
       - name: Checkout labeler config
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -239,6 +239,16 @@ jobs:
 TODO
 
 # Compute the PR Labels
+
+_Setting the PR Labels: Can we call actions/labeler and pr-size-labeler?_
+
+Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_target_ to (safer) _pull_request_?
+
+- We just lost __Read-Write Permission__ for the PR (due to Read-Only safety)
+
+- Which means _actions/labeler_ and _pr-size-labeler_ won't work
+
+- Which is OK because we're implementing the PR Labeling ourselves anyway
 
 TODO
 
