@@ -39,7 +39,9 @@ _How did we discover this problem?_
 
 We were notified about the [__Unsafe pull_request_target__](https://github.com/apache/nuttx/issues/18359) during a Security Scan...
 
-> "pull_request_target was found as a workflow trigger ... If after after 60 days these problems are not addressed, we will turn off builds"
+> _"pull_request_target was found as a workflow trigger ... If after after 60 days these problems are not addressed, we will turn off builds"_
+
+Bummer we need to pull out _pull_request_target_ real quick... Or Apache NuttX Project dies!
 
 _How did that unsafe workflow get into Apache NuttX Project?_
 
@@ -173,15 +175,27 @@ async function getChangedFiles(...): ... {
 
 We'll call the same GitHub API in a while.
 
-TODO
+_But everyone else is checking out the Entire Repo?_
 
-_Why?_
+Yeah we're not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see this in [__GitHub Code Search__](TODO)...
 
-TODO: Everybody else does it
+TODO: Pic of GitHub Code Search
+
+We don't see any __Official GitHub Guidance__ for Safely Labeling a PR. Let's do it our way...
 
 # Safer GitHub Tokens
 
-TODO
+_We limited our exposure to any Untrusted Code from the PR. What about the Leaky GitHub Tokens?_
+
+Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.org/github-actions-policy.html) says...
+
+> _"You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN."_
+
+We can't possibly prove that _pr-size-labeler_ (and other GitHub Actions) will never ever leak our GitHub Tokens someday.
+
+TODO: Read-only token
+
+TODO: Do ourselves
 
 # TODO
 
