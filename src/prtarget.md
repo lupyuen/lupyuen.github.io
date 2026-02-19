@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.org/images/prtarget-title.jpg)
 
-__In GitHub Actions:__ This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#create-workflow). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
+__In GitHub Actions:__ This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
 
 ```yaml
 ## When a Pull Request is submitted...
@@ -29,7 +29,9 @@ jobs:
 
 In this article we...
 
-TODO
+TODO: Why it's a problem
+
+TODO: Our Fix
 
 # TODO
 
@@ -38,6 +40,51 @@ _How did we discover this problem?_
 We were notified about the [__Unsafe pull_request_target__](https://github.com/apache/nuttx/issues/18359) during a Security Scan...
 
 > "pull_request_target was found as a workflow trigger ... If after after 60 days these problems are not addressed, we will turn off builds"
+
+_How did that unsafe workflow get into Apache NuttX Project?_
+
+One Year Ago: We added PR Labeling to quicken [__NuttX CI Builds__](TODO). And the GitHub Workflow above is the recommended way to [__Label a PR__](https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action). 
+
+Though we missed this [__ominous warning__](https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions)...
+
+> _"There exists a potentially dangerous misuse of the pull_request_target workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets."_
+
+> _"Hence, it is advisable that pull_request_target should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using pull_request_target limit access to sensitive resources."_
+
+Huh? Let's break it down...
+
+# TODO
+
+_What could possibly go wrong?_
+
+Suppose someday, our devs innocently add some __Build Commands__ into the PR Workflow above...
+
+(Remember: We're Embedded Devs, not Security Experts!)
+
+```yaml
+## Note: This is Unsafe!
+## When a Pull Request is submitted...
+on:
+  - pull_request_target
+jobs:
+  labeler: ...
+    steps:
+      ## Checkout the repo
+      - uses: actions/checkout@v6
+
+      ## Assign the PR Labels based on the updated Paths
+      - uses: actions/labeler@main
+        with:
+          repo-token:  "${{ secrets.GITHUB_TOKEN }}"
+
+      ## STOP: Never do this!!!
+      - uses: actions/setup-node@v1
+      - run: |
+          npm install
+          npm build
+```
+
+[(Inspired by this)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
 
 TODO
 
