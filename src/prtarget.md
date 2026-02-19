@@ -246,7 +246,7 @@ Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_targ
 
 - We just lost __Read-Write Permission__ for the PR (due to Read-Only safety)
 
-- Which means _actions/labeler_ and _pr-size-labeler_ won't work
+- Which means _actions/labeler_ and _pr-size-labeler_ won't work [(explained here)](TODO)
 
 - Which is OK: We're doing the PR Labeling ourselves anyway
 
@@ -432,8 +432,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
 
-Appendix: TODO
+# Appendix: Size Label for PR
 
-_What happens when we change pull_request_target to pull_request?_
+TODO
+
+# Appendix: Arch Label for PR
+
+TODO
+
+# Appendix: Change the Workflow Trigger
+
+_What happens when we change pull_request_target to pull_request? And nothing else?_
 
 TODO
