@@ -547,6 +547,8 @@ TODO
 
 Appendix: Test Cases
 
+Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
+
 _What's an Arch Label?_
 
 TODO
