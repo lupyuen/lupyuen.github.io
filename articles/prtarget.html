@@ -211,8 +211,15 @@ async function getChangedFiles(...): ... {
 <p><em>“You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN.”</em></p>
 </blockquote>
 <p>Hmmm we can’t possibly prove that <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45"><em>pr-size-labeler</em></a> (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let’s solve this…</p>
-<p>TODO: Read-only token</p>
-<p>TODO: Do ourselves</p>
+<ol>
+<li>
+<p><strong>Switch our GitHub Token:</strong> <em>(Unsafe)</em> Read-Write Token becomes <em>(Safer)</em> Read-Only Token</p>
+</li>
+<li>
+<p><strong>Label the PR Ourselves:</strong> Without calling another GitHub Action</p>
+</li>
+</ol>
+<p>TODO</p>
 <h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>5 TODO</h1>
 <p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">Thanks to the ASF Security Guidance</a></p>
 <p>Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:</p>
