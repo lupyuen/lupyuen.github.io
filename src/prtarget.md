@@ -109,7 +109,7 @@ TODO: Pic of checkout and execute
         npm build
     ```
 
-1.  Executing __Untrusted Code__ (from a PR) can have terrible consequences...
+1.  When we __Execute Untrusted Code__ (from a PR): There shall be terrible consequences...
 
     Remember [__GitHub Crypto-Mining__](https://www.sysdig.com/blog/massive-cryptomining-operation-github-actions)?
 
@@ -125,7 +125,7 @@ TODO: Pic of checkout and execute
           issues:        write
     ```
 
-    Which means the Malicious Code could __Steal our GitHub Token__. And do all kinds of tampering mischief.
+    Which means the Malicious Code could __Steal our Permissive GitHub Token__. And do all kinds of tampering mischief.
 
 There's a safer solution...
 
