@@ -248,7 +248,7 @@ Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_targ
 
 - Which means _actions/labeler_ and _pr-size-labeler_ won't work
 
-- Which is OK: We're implementing the PR Labeling ourselves anyway
+- Which is OK: We're doing the PR Labeling ourselves anyway
 
 TODO
 
@@ -256,15 +256,17 @@ Now we stash the PR Labels safely...
 
 # Upload the PR Labels
 
-TODO
+_No Write Permission means we can't set the PR Labels. How to save the labels?_
+
+TODO: [(Recommended by GitHub)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
+
+TODO: [(And ASF Security Guidance)](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
 
 # Set the PR Labels
 
 TODO
 
 # TODO
-
-[Thanks to the ASF Security Guidance](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
 
 Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:
 
