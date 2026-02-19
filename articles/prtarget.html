@@ -192,8 +192,8 @@ with:
   persist-credentials: false
   sparse-checkout:     .github/labeler.yml
   sparse-checkout-cone-mode: false</code></pre></div>
-<p><em>.github/labeler.yml</em> contains all the configuration needed by <em>actions/labeler</em>. So we don’t actually need the Entire Repo when we’re Labeling the PR.</p>
-<p><em>What about the Changed Files in the PR? Should we check them out?</em></p>
+<p>Config File <em>.github/labeler.yml</em> contains all the settings needed by <em>actions/labeler</em>. Thus we don’t actually need the Entire Repo, when we’re Labeling a PR.</p>
+<p><em>The Changed Files in the PR: Should we check them out?</em></p>
 <p>Nope! Internally, <em>actions/labeler</em> calls GitHub API to fetch the <strong>Filenames of the Changed Files</strong> in the PR: <a href="https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46">actions/labeler/changedFiles.ts</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// To fetch the Filenames of the Changed Files in the PR...
 async function getChangedFiles(...): ... {
@@ -257,7 +257,7 @@ jobs:
           persist-credentials: false
           sparse-checkout:     .github/labeler.yml
           sparse-checkout-cone-mode: false</code></pre></div>
-<p>TODO</p>
+<p>Setting the PR Label becomes interesting…</p>
 <h1 id="compute-the-pr-labels"><a class="doc-anchor" href="#compute-the-pr-labels">§</a>5 Compute the PR Labels</h1>
 <p><em>Setting the PR Labels: Can we call actions/labeler and pr-size-labeler?</em></p>
 <p>Sorry we can’t! Remember we changed the trigger from (unsafe) <em>pull_request_target</em> to (safer) <em>pull_request</em>?</p>
