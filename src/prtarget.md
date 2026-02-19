@@ -158,7 +158,7 @@ _.github/labeler.yml_ contains all the configuration needed by _actions/labeler_
 
 _What about the Changed Files in the PR? Should we check them out?_
 
-Apparently not! Internally, _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: [actions/labeler/changedFiles.ts](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
+Nope! Internally, _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: [actions/labeler/changedFiles.ts](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
 
 ```javascript
 // To fetch the Filenames of the Changed Files in the PR...
@@ -191,7 +191,7 @@ Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.o
 
 > _"You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN."_
 
-Hmmm we can't possibly prove that _pr-size-labeler_ (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
+Hmmm we can't possibly prove that [_pr-size-labeler_](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45) (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
 
 TODO: Read-only token
 
