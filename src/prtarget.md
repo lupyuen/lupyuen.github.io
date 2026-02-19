@@ -199,6 +199,8 @@ TODO: Do ourselves
 
 # TODO
 
+[Thanks to the ASF Security Guidance](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
+
 Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:
 
 https://github.com/apache/nuttx/pull/18404
