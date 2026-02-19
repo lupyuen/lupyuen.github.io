@@ -88,6 +88,8 @@ jobs:
 
 Yep we have a problem...
 
+TODO: Pic of checkout and execute
+
 1.  _actions/checkout_ will checkout our Complete GitHub Repo, applying the changes proposed in the PR. Which might contain __Malicious Code and Scripts__...
 
     ```yaml
@@ -105,7 +107,60 @@ Yep we have a problem...
         npm build
     ```
 
+1.  Executing __Untrusted Code__ (from a PR) can have terrible consequences...
+
+    Remember [__GitHub Crypto-Mining__](https://www.sysdig.com/blog/massive-cryptomining-operation-github-actions)?
+
+1.  Another problem: __Leaking GitHub Tokens__. We grant [__Write Permission__](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml) to the GitHub Token, because it needs to write the PR Labels into the PR...
+
+    ```yaml
+    ## GITHUB_TOKEN has Write Permission
+    jobs:
+      labeler:
+        permissions:
+          contents:      read
+          pull-requests: write
+          issues:        write
+    ```
+
+    Which means the Malicious Code could __Steal our GitHub Token__. And do all kinds of tampering mischief.
+
+There's a safer solution...
+
+TODO: Pic of Safer Checkout
+
+# Safer Checkout
+
+_Do we really need the Entire Repo from the PR?_
+
+Yeah we should __limit our exposure__ to any Malicious Code embedded in the PR.
+
+This is how we checkout __One Single File__ from our repo: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml)
+
+```yaml
+## Checkout one file from our trusted source: .github/labeler.yml
+## Never checkout and execute any untrusted code from the PR.
+- name: Checkout labeler config
+  uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+  with:
+    repository:  apache/nuttx
+    ref:         master
+    path:        labeler
+    fetch-depth: 1
+    persist-credentials: false
+    sparse-checkout:     .github/labeler.yml
+    sparse-checkout-cone-mode: false
+```
+
+_.github/labeler.yml_ contains all the configuration needed by _actions/labeler_. So we don't actually need the Entire Repo when we're Labeling the PR.
+
+_Don't need the Entire Repo?_
+
 TODO
+
+_Why?_
+
+TODO: Everybody else does it
 
 # TODO
 
