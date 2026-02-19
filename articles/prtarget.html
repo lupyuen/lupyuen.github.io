@@ -100,8 +100,9 @@ jobs:
 <p><em>How did we discover this problem?</em></p>
 <p>We were notified about the <a href="https://github.com/apache/nuttx/issues/18359"><strong>Unsafe pull_request_target</strong></a> during a Security Scan…</p>
 <blockquote>
-<p>“pull_request_target was found as a workflow trigger … If after after 60 days these problems are not addressed, we will turn off builds”</p>
+<p><em>“pull_request_target was found as a workflow trigger … If after after 60 days these problems are not addressed, we will turn off builds”</em></p>
 </blockquote>
+<p>Bummer we need to pull out <em>pull_request_target</em> real quick… Or Apache NuttX Project dies!</p>
 <p><em>How did that unsafe workflow get into Apache NuttX Project?</em></p>
 <p>One Year Ago: We added PR Labeling to quicken <a href="TODO"><strong>NuttX CI Builds</strong></a>. And the GitHub Workflow above is the recommended way to <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a PR</strong></a>.</p>
 <p>Though we missed this <a href="https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions"><strong>ominous warning</strong></a>…</p>
@@ -199,11 +200,19 @@ async function getChangedFiles(...): ... {
   ...
 }</code></pre></div>
 <p>We’ll call the same GitHub API in a while.</p>
-<p>TODO</p>
-<p><em>Why?</em></p>
-<p>TODO: Everybody else does it</p>
+<p><em>But everyone else is checking out the Entire Repo?</em></p>
+<p>Yeah we’re not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see this in <a href="TODO"><strong>GitHub Code Search</strong></a>…</p>
+<p>TODO: Pic of GitHub Code Search</p>
+<p>We don’t see any <strong>Official GitHub Guidance</strong> for Safely Labeling a PR. Let’s do it our way…</p>
 <h1 id="safer-github-tokens"><a class="doc-anchor" href="#safer-github-tokens">§</a>4 Safer GitHub Tokens</h1>
-<p>TODO</p>
+<p><em>We limited our exposure to any Untrusted Code from the PR. What about the Leaky GitHub Tokens?</em></p>
+<p>Indeed we still have a problem. <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a> says…</p>
+<blockquote>
+<p><em>“You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN.”</em></p>
+</blockquote>
+<p>We can’t possibly prove that <em>pr-size-labeler</em> (and other GitHub Actions) will never ever leak our GitHub Tokens someday.</p>
+<p>TODO: Read-only token</p>
+<p>TODO: Do ourselves</p>
 <h1 id="todo-2"><a class="doc-anchor" href="#todo-2">§</a>5 TODO</h1>
 <p>Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:</p>
 <p>https://github.com/apache/nuttx/pull/18404</p>
