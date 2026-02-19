@@ -252,106 +252,65 @@ Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_targ
 
 TODO
 
-https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63
-
-```yaml
-      # Fetch the updated PR filenames. Compute the Size Label and Arch Labels.
-      - name: Compute PR labels
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const pull_number = context.issue.number;
-
-            // Fetch the array of updated PR filenames:
-            // { status: 'added',    filename: 'arch/arm/test.txt',              additions: 3, deletions: 0,    changes: 3 }
-            // { status: 'removed',  filename: 'Documentation/legacy_README.md', additions: 0, deletions: 2531, changes: 2531 }
-            // { status: 'modified', filename: 'Documentation/security.rst',     additions: 1, deletions: 0,    changes: 1 }
-            const listFilesOptions = github.rest.pulls.listFiles
-              .endpoint.merge({ owner, repo, pull_number });
-            const listFilesResponse = await github.paginate(listFilesOptions);
+```c
+{ status: 'added',    filename: 'arch/arm/test.txt',              
+  additions: 3, deletions: 0,    changes: 3 }
+{ status: 'removed',  filename: 'Documentation/legacy_README.md', 
+  additions: 0, deletions: 2531, changes: 2531 }
+{ status: 'modified', filename: 'Documentation/security.rst',     
+  additions: 1, deletions: 0,    changes: 1 }
 ```
 
-https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81
+TODO
+
+[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63)
 
 ```javascript
-            // Sum up the number of lines changed
-            const sizeFiles = listFilesResponse
-              .filter(f => (f.status != 'removed'));  // Ignore deleted files
-            var linesChanged = 0;
-            for (const file of sizeFiles) {
-              linesChanged += file.changes;
-            }
-            console.log({ linesChanged });
+## Fetch the updated PR filenames. Compute the Size Label and Arch Labels.
+- name: Compute PR labels
+  uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    script: |
+      const owner = context.repo.owner;
+      const repo  = context.repo.repo;
+      const pull_number = context.issue.number;
 
-            // Compute the Size Label
-            const sizeLabel =
-              (linesChanged   <=   10) ? 'Size: XS'
-              : (linesChanged <=  100) ? 'Size: S'
-              : (linesChanged <=  500) ? 'Size: M'
-              : (linesChanged <= 1000) ? 'Size: L'
-              : 'Size: XL';
-            var prLabels = [ sizeLabel ];
+      // Fetch the array of updated PR filenames:
+      // { status: 'added',    filename: 'arch/arm/test.txt',              additions: 3, deletions: 0,    changes: 3 }
+      // { status: 'removed',  filename: 'Documentation/legacy_README.md', additions: 0, deletions: 2531, changes: 2531 }
+      // { status: 'modified', filename: 'Documentation/security.rst',     additions: 1, deletions: 0,    changes: 1 }
+      const listFilesOptions = github.rest.pulls.listFiles
+        .endpoint.merge({ owner, repo, pull_number });
+      const listFilesResponse = await github.paginate(listFilesOptions);
 ```
 
-https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134
+[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81)
 
 ```javascript
-            // Parse the Arch Label Patterns in .github/labeler.yml. Condense into:
-            // "Arch: arm":
-            // - any-glob-to-any-file: 'arch/arm/**'
-            // - any-glob-to-any-file: ...
-            const fs = require('fs');
-            const config = fs.readFileSync('labeler/.github/labeler.yml', 'utf8')
-              .split('\n')             // Split by newline
-              .map(s => s.trim())      // Remove leading and trailing spaces
-              .filter(s => (s != ''))  // Remove empty lines
-              .filter(s => !s.startsWith('#'))                  // Remove comments
-              .filter(s => !s.startsWith('- changed-files:'));  // Remove "changed-files"
+      // Sum up the number of lines changed
+      const sizeFiles = listFilesResponse
+        .filter(f => (f.status != 'removed'));  // Ignore deleted files
+      var linesChanged = 0;
+      for (const file of sizeFiles) {
+        linesChanged += file.changes;
+      }
+      console.log({ linesChanged });
 
-            // Convert the Arch Label Patterns from config to archLabels.
-            // archLabels will contain the mappings for Arch Label and Filename Pattern:
-            // { label: "Arch: arm",   pattern: "arch/arm/.*"   },
-            // { label: "Arch: arm64", pattern: "arch/arm64/.*" }, ...
-            var archLabels = [];
-            var label = "";
-            for (const c of config) {
-              // Get the Arch Label
-              if (c.startsWith('"')) {    // "Arch: arm":
-                label = c.split('"')[1];  // Arch: arm
-
-              } else if (c.startsWith('- any-glob-to-any-file:')) {  // - any-glob-to-any-file: 'arch/arm/**'
-                // Convert the Glob Pattern to Regex Pattern
-                const pattern = c.split("'")[1]      // arch/arm/**
-                  .split('.').join('\\.')            // .  becomes \.
-                  .split('*').join('[^/]*')          // *  becomes [^/]*
-                  .split('[^/]*[^/]*').join('.*');   // ** becomes .*
-                archLabels.push({ label, pattern });
-
-              } else {
-                // We don't support all rules of `actions/labeler`
-                throw new Error('.github/labeler.yml should contain only changed-files and any-glob-to-any-file, not: ' + c);
-              }
-            }
-
-            // Search the filenames for matching Arch Labels
-            for (const archLabel of archLabels) {
-              if (prLabels.includes(archLabel.label)) {
-                break;
-              }
-              for (const file of listFilesResponse) {
-                const re = new RegExp(archLabel.pattern);
-                const match = re.test(file.filename);
-                if (match && !prLabels.includes(archLabel.label)) {
-                  prLabels.push(archLabel.label);
-                  break;
-                }
-              }
-            }
-            console.log({ prLabels });
+      // Compute the Size Label
+      const sizeLabel =
+        (linesChanged   <=   10) ? 'Size: XS'
+        : (linesChanged <=  100) ? 'Size: S'
+        : (linesChanged <=  500) ? 'Size: M'
+        : (linesChanged <= 1000) ? 'Size: L'
+        : 'Size: XL';
+      var prLabels = [ sizeLabel ];
+      console.log({ prLabels });
 ```
+
+Arch Label: More complicated. See the Appendix...
+
+TODO: Appendix
 
 Now we stash the PR Labels safely...
 
@@ -363,27 +322,154 @@ TODO: [(Recommended by GitHub)](https://securitylab.github.com/resources/github-
 
 TODO: [(And ASF Security Guidance)](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
 
-https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147
+[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147)
+
+```javascript
+      // Save the PR Number and PR Labels into a PR Artifact
+      // e.g. 'Size: XS\nArch: avr\n'
+      const dir = 'pr';
+      fs.mkdirSync(dir);
+      fs.writeFileSync(dir + '/pr-id.txt', pull_number + '\n');
+      fs.writeFileSync(dir + '/pr-labels.txt', prLabels.join('\n') + '\n');
+```
+
+TODO
+
+[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L141-L147)
 
 ```yaml
-            // Save the PR Number and PR Labels into a PR Artifact
-            // e.g. 'Size: XS\nArch: avr\n'
-            const dir = 'pr';
-            fs.mkdirSync(dir);
-            fs.writeFileSync(dir + '/pr-id.txt', pull_number + '\n');
-            fs.writeFileSync(dir + '/pr-labels.txt', prLabels.join('\n') + '\n');
-
-      # Upload the PR Artifact as pr.zip
-      - name: Upload PR artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
-        with:
-          name: pr
-          path: pr/
+## Upload the PR Artifact as pr.zip
+- name: Upload PR artifact
+  uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
+  with:
+    name: pr
+    path: pr/
 ```
 
 # Set the PR Labels
 
 TODO
+
+[.github/workflows/pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml)
+
+```yaml
+## When the Pull Request Labeler workflow is completed...
+name: "Set Pull Request Labels"
+on:
+  workflow_run:
+    workflows: ["Pull Request Labeler"]
+    types:
+      - completed
+
+## Download the PR Artifact and write the PR Labels
+## Warning: GitHub Token has Write Permission
+## Don't execute any Untrusted Code
+jobs:
+  pr_labeler:
+    permissions:
+      contents:      read
+      pull-requests: write
+      issues:        write
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      ## Download the PR Artifact, containing PR Number and PR Labels
+      - name: Download PR artifact
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: ${{ github.event.workflow_run.id }},
+            });
+            const matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+
+      ## Unzip the PR Artifact
+      - name: Unzip PR artifact
+        run: unzip pr.zip
+```
+
+[pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml#L64-L90)
+
+```javascript
+      ## Write the PR Labels into the PR
+      - name: Write PR labels
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const fs = require('fs');
+
+            // Read the PR Number and PR Labels from the PR Artifact
+            // e.g. 'Size: XS\nArch: avr\n'
+            const issue_number = Number(fs.readFileSync('pr-id.txt'));
+            const labels = fs.readFileSync('pr-labels.txt', 'utf8')
+              .split('\n')              // Split by newline
+              .filter(s => (s != ''));  // Remove empty lines
+            console.log({ issue_number, labels });
+
+            // Write the PR Labels into the PR
+            // e.g. [ 'Size: XS', 'Arch: avr' ]
+            await github.rest.issues.setLabels({
+              owner,
+              repo,
+              issue_number,
+              labels
+            });
+```
+
+# Zizmor Security Scanner
+
+TODO
+
+Whenever we modify the __GitHub CI Workflow__, remember to run the [__Zizmor Security Scanner__](https://docs.zizmor.sh/)...
+
+```bash
+brew install zizmor
+git clone YOUR_NUTTX_REPO
+zizmor nuttx
+```
+
+We'll see...
+
+```bash
+INFO audit: zizmor: 🌈 completed .github/workflows/labeler.yml
+No findings to report. Good job! (4 suppressed)
+
+INFO audit: zizmor: 🌈 completed .github/workflows/pr_labeler.yml
+error[dangerous-triggers]: use of fundamentally insecure workflow trigger
+  --> .github/workflows/pr_labeler.yml:22:1
+   |
+22 | / on:
+23 | |   workflow_run:
+24 | |     workflows: ["Pull Request Labeler"]
+25 | |     types:
+26 | |       - completed
+   | |_________________^ workflow_run is almost always used insecurely
+   |
+   = note: audit confidence → Medium
+```
+
+[(See the Zizmor Log)](https://gist.github.com/lupyuen/e160cc0a57c72ec95432ee148237c5f0)
+
+Zizmor Security Scan should not report any Security Issues. However Zizmor flags _workflow_run_ as a Potential Security Issue, because it's unable to analyse the code inside the workflow. _workflow_run_ is not forbidden in the [ASF GitHub Actions Security Policy](https://infra.apache.org/github-actions-policy.html).
+
+(Remember: Don't use the _pull_request_target_ trigger, it's disallowed by the [__ASF GitHub Actions Security Policy__](https://infra.apache.org/github-actions-policy.html))
 
 # TODO
 
@@ -484,7 +570,6 @@ Except for Marathon Training (7 hours / 42 km)
 
 Appendix: Test Cases
 
-
 # TODO
 
 [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
@@ -551,13 +636,84 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
 
-# Appendix: Size Label for PR
+# Appendix: Compute the Arch Labels
+
+_What's an Arch Label?_
 
 TODO
 
-# Appendix: Arch Label for PR
+_How to compute the Arch Labels for a NuttX PR?_
 
 TODO
+
+[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134)
+
+```javascript
+// Parse the Arch Label Patterns in .github/labeler.yml. Condense into:
+// "Arch: arm":
+// - any-glob-to-any-file: 'arch/arm/**'
+// - any-glob-to-any-file: ...
+const fs = require('fs');
+const config = fs.readFileSync('labeler/.github/labeler.yml', 'utf8')
+  .split('\n')             // Split by newline
+  .map(s => s.trim())      // Remove leading and trailing spaces
+  .filter(s => (s != ''))  // Remove empty lines
+  .filter(s => !s.startsWith('#'))                  // Remove comments
+  .filter(s => !s.startsWith('- changed-files:'));  // Remove "changed-files"
+```
+
+TODO
+
+[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L93-L118)
+
+```javascript
+// Convert the Arch Label Patterns from config to archLabels.
+// archLabels will contain the mappings for Arch Label and Filename Pattern:
+// { label: "Arch: arm",   pattern: "arch/arm/.*"   },
+// { label: "Arch: arm64", pattern: "arch/arm64/.*" }, ...
+var archLabels = [];
+var label = "";
+for (const c of config) {
+  // Get the Arch Label
+  if (c.startsWith('"')) {    // "Arch: arm":
+    label = c.split('"')[1];  // Arch: arm
+
+  } else if (c.startsWith('- any-glob-to-any-file:')) {  // - any-glob-to-any-file: 'arch/arm/**'
+    // Convert the Glob Pattern to Regex Pattern
+    const pattern = c.split("'")[1]      // arch/arm/**
+      .split('.').join('\\.')            // .  becomes \.
+      .split('*').join('[^/]*')          // *  becomes [^/]*
+      .split('[^/]*[^/]*').join('.*');   // ** becomes .*
+    archLabels.push({ label, pattern });
+
+  } else {
+    // We don't support all rules of `actions/labeler`
+    throw new Error('.github/labeler.yml should contain only changed-files and any-glob-to-any-file, not: ' + c);
+  }
+}
+```
+
+TODO
+
+[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L118-L134)
+
+```javascript
+// Search the filenames for matching Arch Labels
+for (const archLabel of archLabels) {
+  if (prLabels.includes(archLabel.label)) {
+    break;
+  }
+  for (const file of listFilesResponse) {
+    const re = new RegExp(archLabel.pattern);
+    const match = re.test(file.filename);
+    if (match && !prLabels.includes(archLabel.label)) {
+      prLabels.push(archLabel.label);
+      break;
+    }
+  }
+}
+console.log({ prLabels });
+```
 
 # Appendix: Change the Workflow Trigger
 
