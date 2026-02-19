@@ -75,7 +75,10 @@
 <li><a href="#todo" title="TODO">8 TODO</a><ul></ul></li>
 <li><a href="#action-list" title="Action List">9 Action List</a><ul></ul></li>
 <li><a href="#todo-1" title="TODO">10 TODO</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
+<li><a href="#whats-next" title="What’s Next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-size-label-for-pr" title="Appendix: Size Label for PR">12 Appendix: Size Label for PR</a><ul></ul></li>
+<li><a href="#appendix-arch-label-for-pr" title="Appendix: Arch Label for PR">13 Appendix: Arch Label for PR</a><ul></ul></li>
+<li><a href="#appendix-change-the-workflow-trigger" title="Appendix: Change the Workflow Trigger">14 Appendix: Change the Workflow Trigger</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
 <p><img src="https://lupyuen.org/images/prtarget-title.jpg" alt="TODO" /></p>
 <p><strong>In GitHub Actions:</strong> This is the typical way that we <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a Pull Request</strong></a>. But it’s <em>potentially dangerous</em>, guess why: <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When a Pull Request is submitted...
@@ -263,7 +266,7 @@ jobs:
 <p>We just lost <strong>Read-Write Permission</strong> for the PR (due to Read-Only safety)</p>
 </li>
 <li>
-<p>Which means <em>actions/labeler</em> and <em>pr-size-labeler</em> won’t work</p>
+<p>Which means <em>actions/labeler</em> and <em>pr-size-labeler</em> won’t work <a href="TODO">(explained here)</a></p>
 </li>
 <li>
 <p>Which is OK: We’re doing the PR Labeling ourselves anyway</p>
@@ -404,8 +407,12 @@ jobs:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md"><strong>lupyuen.org/src/prtarget.md</strong></a></p>
-<p>Appendix: TODO</p>
-<p><em>What happens when we change pull_request_target to pull_request?</em></p>
+<h1 id="appendix-size-label-for-pr"><a class="doc-anchor" href="#appendix-size-label-for-pr">§</a>12 Appendix: Size Label for PR</h1>
+<p>TODO</p>
+<h1 id="appendix-arch-label-for-pr"><a class="doc-anchor" href="#appendix-arch-label-for-pr">§</a>13 Appendix: Arch Label for PR</h1>
+<p>TODO</p>
+<h1 id="appendix-change-the-workflow-trigger"><a class="doc-anchor" href="#appendix-change-the-workflow-trigger">§</a>14 Appendix: Change the Workflow Trigger</h1>
+<p><em>What happens when we change pull_request_target to pull_request? And nothing else?</em></p>
 <p>TODO</p>
 
     
