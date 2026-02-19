@@ -183,6 +183,8 @@ Yeah we're not sure why other folks are following the same Potentially Unsafe Pa
 
 TODO: Pic of GitHub Code Search
 
+_What exactly is the Safer Way to Label PRs in GitHub Actions?_
+
 We don't have any __Official GitHub Guidance__ for Safely Labeling a PR. Let's do it our way...
 
 # Safer GitHub Tokens
