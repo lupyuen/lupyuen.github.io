@@ -185,7 +185,10 @@ jobs:
     sparse-checkout:     .github/labeler.yml
     sparse-checkout-cone-mode: false</code></pre></div>
 <p><em>.github/labeler.yml</em> contains all the configuration needed by <em>actions/labeler</em>. So we don’t actually need the Entire Repo when we’re Labeling the PR.</p>
-<p><em>Don’t need the Entire Repo?</em></p>
+<p><em>What about the Changed Files in the PR? Shouldn’t we check them out?</em></p>
+<p>Apparently not! <em>actions/labeler</em> calls GitHub API to fetch the <strong>Filenames of the Changed Files</strong> in the PR: TODO</p>
+<div class="example-wrap"><pre class="language-javascript"><code>TODO</code></pre></div>
+<p>We’ll call the same GitHub API in a while.</p>
 <p>TODO</p>
 <p><em>Why?</em></p>
 <p>TODO: Everybody else does it</p>
@@ -320,6 +323,9 @@ jobs:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md"><strong>lupyuen.org/src/prtarget.md</strong></a></p>
+<p>Appendix: TODO</p>
+<p><em>What happens when we change pull_request_target to pull_request?</em></p>
+<p>TODO</p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
