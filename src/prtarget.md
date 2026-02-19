@@ -33,7 +33,7 @@ TODO: Why it's a problem
 
 TODO: Our Fix
 
-# TODO
+# History of NuttX
 
 _How did we discover this problem?_
 
@@ -43,7 +43,7 @@ We were notified about the [__Unsafe pull_request_target__](https://github.com/a
 
 Bummer we need to pull out _pull_request_target_ real quick... Or Apache NuttX Project dies!
 
-_How did that unsafe workflow get into Apache NuttX Project?_
+_How did that unsafe workflow get into NuttX?_
 
 One Year Ago: We added PR Labeling to quicken [__NuttX CI Builds__](TODO). And the GitHub Workflow above is the recommended way to [__Label a PR__](https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action). 
 
@@ -55,7 +55,7 @@ Though we missed this [__ominous warning__](https://github.com/actions/labeler?t
 
 Huh? Let's break it down...
 
-# TODO
+# Malicious Code in PR
 
 _What could possibly go wrong?_
 
@@ -200,6 +200,53 @@ Hmmm we can't possibly prove that [_pr-size-labeler_](https://github.com/apache/
 1.  __Switch our GitHub Token:__ _(Unsafe)_ Read-Write Token becomes _(Safer)_ Read-Only Token
 
 2.  __Label the PR Ourselves:__ Without calling another GitHub Action
+
+_Don't we need a Read-Write Token to Set the PR Label?_
+
+Aha we'll come back to this. First we settle the __Read-Only GitHub Token__: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L21-L45)
+
+```yaml
+## Changed the trigger from "pull_request_target" to "pull_request"
+## GitHub Token becomes Read-Only (previously Read-Write)
+name: "Pull Request Labeler"
+on:
+  - pull_request
+
+## Everything becomes Read-Only (previously Read-Write)
+jobs:
+  labeler:
+    permissions:
+      contents:      read
+      pull-requests: read
+      issues:        read
+
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout one file from our trusted source: .github/labeler.yml
+      # Never checkout and execute any untrusted code from the PR.
+      - name: Checkout labeler config
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          repository:  apache/nuttx
+          ref:         master
+          path:        labeler
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout:     .github/labeler.yml
+          sparse-checkout-cone-mode: false
+```
+
+TODO
+
+# Compute the PR Labels
+
+TODO
+
+# Upload the PR Labels
+
+TODO
+
+# Set the PR Labels
 
 TODO
 
