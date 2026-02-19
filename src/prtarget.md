@@ -320,7 +320,7 @@ We also have __Arch Labels__ for the PR, like _"Arch: risc-v"_. This is how we c
 
 - TODO: Appendix
 
-We have compued the Size Label and Arch Labels. Now we stash the PR Labels safely...
+Size Label and Arch Labels are all ready. Now we stash the PR Labels safely...
 
 TODO: Pic of Upload the PR Labels
 
@@ -328,11 +328,9 @@ TODO: Pic of Upload the PR Labels
 
 _No Write Permission means we can't set the PR Labels. How to save the labels?_
 
-TODO: [(Recommended by GitHub)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
+GitHub offers a safe interim storage for our PR Labels: We save them into a [__PR Artifact__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/) during the Workflow Run.
 
-TODO: [(And ASF Security Guidance)](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
-
-[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147)
+First we write the __PR Number and PR Labels__: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147)
 
 ```javascript
       // Save the PR Number and PR Labels into a PR Artifact
@@ -343,9 +341,7 @@ TODO: [(And ASF Security Guidance)](https://cwiki.apache.org/confluence/pages/vi
       fs.writeFileSync(dir + '/pr-labels.txt', prLabels.join('\n') + '\n');
 ```
 
-TODO
-
-[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L141-L147)
+Then we upload them as a __PR Artifact__, that will appear in the Workflow Run: [labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L141-L147)
 
 ```yaml
 ## Upload the PR Artifact as pr.zip
@@ -355,6 +351,12 @@ TODO
     name: pr
     path: pr/
 ```
+
+[(Recommended by GitHub)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
+
+[(And ASF Security Guidance)](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)
+
+Here comes the Second Part of the PR Workflow...
 
 TODO: Pic of Set the PR Labels
 
