@@ -361,9 +361,9 @@ on:
     types:
       - completed
 
-## Download the PR Artifact and write the PR Labels
-## Warning: GitHub Token has Write Permission
-## Don't execute any Untrusted Code
+## Download the PR Artifact and write the PR Labels.
+## Warning: GitHub Token has Write Permission.
+## Don't execute any Untrusted Code!
 jobs:
   pr_labeler:
     permissions:
@@ -371,18 +371,21 @@ jobs:
       pull-requests: write
       issues:        write
     runs-on: ubuntu-latest
+
+    ## When the Pull Request Labeler workflow is completed...
     if: >
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
     steps:
       ## Download the PR Artifact, containing PR Number and PR Labels
+      ## https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
       - name: Download PR artifact
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
         with:
           script: |
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo:  context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }},
             });
             const matchArtifact = artifacts.data.artifacts.filter((artifact) => {
@@ -390,7 +393,7 @@ jobs:
             })[0];
             const download = await github.rest.actions.downloadArtifact({
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo:  context.repo.repo,
               artifact_id: matchArtifact.id,
               archive_format: 'zip',
             });
@@ -399,7 +402,7 @@ jobs:
 
       ## Unzip the PR Artifact
       - name: Unzip PR artifact
-        run: unzip pr.zip
+        run:  unzip pr.zip
 ```
 
 [pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml#L64-L90)
@@ -412,7 +415,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner = context.repo.owner;
-            const repo = context.repo.repo;
+            const repo  = context.repo.repo;
             const fs = require('fs');
 
             // Read the PR Number and PR Labels from the PR Artifact
@@ -467,9 +470,9 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 
 [(See the Zizmor Log)](https://gist.github.com/lupyuen/e160cc0a57c72ec95432ee148237c5f0)
 
-Zizmor Security Scan should not report any Security Issues. However Zizmor flags _workflow_run_ as a Potential Security Issue, because it's unable to analyse the code inside the workflow. _workflow_run_ is not forbidden in the [ASF GitHub Actions Security Policy](https://infra.apache.org/github-actions-policy.html).
+Zizmor Security Scan should not report any Security Issues. However Zizmor flags _workflow_run_ as a Potential Security Issue, because it's unable to analyse the code inside the workflow. _workflow_run_ is not forbidden in the [__ASF Security Policy__](https://infra.apache.org/github-actions-policy.html).
 
-(Remember: Don't use the _pull_request_target_ trigger, it's disallowed by the [__ASF GitHub Actions Security Policy__](https://infra.apache.org/github-actions-policy.html))
+(Remember: Don't use the _pull_request_target_ trigger, it's disallowed by the [__ASF Security Policy__](https://infra.apache.org/github-actions-policy.html))
 
 # TODO
 
