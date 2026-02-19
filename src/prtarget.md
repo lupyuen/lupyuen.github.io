@@ -55,6 +55,8 @@ Though we missed this [__ominous warning__](https://github.com/actions/labeler?t
 
 Huh? Let's break it down...
 
+TODO: Pic of Malicious Code in PR
+
 # Malicious Code in PR
 
 _What could possibly go wrong?_
@@ -179,13 +181,15 @@ We'll call the same GitHub API in a while.
 
 _But everyone else is checking out the Entire Repo?_
 
-Yeah we're not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in [__GitHub Code Search__](TODO)...
+Yeah we're not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in [__GitHub Code Search__](https://github.com/search?type=code&q=%22actions%2Flabeler%40v6%22+language%3AYAML&l=YAML)...
 
 TODO: Pic of GitHub Code Search
 
 _What exactly is the Safer Way to Label PRs in GitHub Actions?_
 
 We don't have any __Official GitHub Guidance__ for Safely Labeling a PR. Let's do it our way...
+
+TODO: Pic of Safer GitHub Tokens
 
 # Safer GitHub Tokens
 
@@ -237,6 +241,8 @@ jobs:
 ```
 
 Writing the PR Label becomes interesting...
+
+TODO: Pic of Compute the PR Labels
 
 # Compute the PR Labels
 
@@ -314,6 +320,8 @@ TODO: Appendix
 
 Now we stash the PR Labels safely...
 
+TODO: Pic of Upload the PR Labels
+
 # Upload the PR Labels
 
 _No Write Permission means we can't set the PR Labels. How to save the labels?_
@@ -345,6 +353,8 @@ TODO
     name: pr
     path: pr/
 ```
+
+TODO: Pic of Set the PR Labels
 
 # Set the PR Labels
 
@@ -436,6 +446,8 @@ jobs:
             });
 ```
 
+TODO: Pic of entire solution
+
 # Zizmor Security Scanner
 
 TODO
@@ -474,146 +486,23 @@ Zizmor Security Scan should not report any Security Issues. However Zizmor flags
 
 (Remember: Don't use the _pull_request_target_ trigger, it's disallowed by the [__ASF Security Policy__](https://infra.apache.org/github-actions-policy.html))
 
-# TODO
+# What's Next
 
-Hi Infra Team: We have removed the pull_request_target trigger. Here is the completed Pull Request:
+TODO: Here's the completed Pull Request:
 
-https://github.com/apache/nuttx/pull/18404
+- [__Reimplement PR Labeling without pull_request_target__](https://github.com/apache/nuttx/pull/18404)
 
-Wow: Apache NuttX Project dies in 60 days... Unless we rip out pull_request_target from GitHub Actions!
+TODO: Pros and Cons of the new implementation?
 
-Asf infra policy says...
-
-We're embedded devs, not CI Security Experts 
-Thus begins our dive deep into the rabbit hole of pull_request_target. And why did GitHub create the hole in the first place?
-
-But technically we don't export the token right?
-
-(1) We have a nagging worry that pr-size-labeler might (someday) do scary things with the GitHub Token? How do we prove to ASF Infra that pr-size-labeler is 100% safe?
-
-(2) pull_request_target feels generally unsafe. Let's nip this bug in the bud, before someone does something dangerous. (Explained below)
-
-(3) We only have 60 days to pull out pull_request_target. We're all part-time Embedded Devs, not full-time Security Experts. After Fixing: Don't forget the 24 x 7 Continuous Monitoring! Let's all do now, talk later?
-
-Why did we do it in the first place?
-
-Denial, Maybe? Why would ASF stop us from using pull_request_target, if everyone was using? But now we realise it's really unsafe, especially for non-security experts
-
-Why isn't workflow_run in the ASF Security Policy?
-
-Checkout then labeler
-extremely dangerous
-npm install
-since we are embedded devs, not CI Security Experts
-
-Very common to see checkout then labeler
-"actions/labeler@v6" language:YAMLCode search results https://share.google/nhD8pxP82ZzhzeNBt
-
-Why?
-Maybe suggested here: https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action
-Checkout the config file
-Why not checkout one single file like this
-
-TODO: Why use labeler?
-selective build
-
-Pros and Cons of the new implementation?
-
-(1) New Implementation is Safer: We don't use pull_request_target, and we don't checkout the Entire NuttX Repo based on the PR. So we'll never execute any Malicious Code submitted in the PR.
 (2) New Implementation is Quicker: It's faster since we don't checkout the entire repo. Also pr-size-labeler actually runs in a Docker Container, we don't need that any more.
+
 (3) But it might be quirky under Heavy Load. Remember that workflow_run trigger will write the PR Labels as a Second Job? When we run out of GitHub Runners, the PR Labels might never be applied. The Build Logic in arch.yml will execute a Complete NuttX Build if it can't find the PR Labels.
+
 (4) Will the Build Workflow be triggered too early, before the workflow_run trigger? Hopefully not. The Build Workflow begins in the Fetch-Source stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the Select-Builds stage (arch.yml) reading the PR Labels. Before 1.5 minutes, rightfully our workflow_run trigger would have written the PR Labels to the PR.
-
-Are we reimplementing EVERYTHING from the Official GitHub Labeler actions/labeler?
-
-We won't implement the Entire GitHub Labeler actions/labeler, just the bare minimum needed for NuttX. We're emulating the Labeler Config .github/labeler.yml as is, because someday GitHub might invent a Secure Way to Label PRs inside pull_request_trigger. (Then we'll switch back to the Official GitHub Labeler actions/labeler)
-There's something really jinxed about the way GitHub designed PR Labeling in pull_request_trigger, it's a terrible security hack. I'll write an article about this someday :-)
 
 Based on Actual Logs: New PR Labeling completes in 16 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.
 
-# Action List
-
-Thanks @simbit18! Yep eventually we need some GitHub Script (JavaScript), here's my plan...
-
-(1) `[Done]` Verify that PRs can be Labeled using the Two-Step Solution: pull_request trigger + workflow_run trigger [(explained here)](https://github.com/apache/nuttx/issues/18359#issuecomment-3869143242).
-
-(2) `[Done]` But the Two-Step Solution won't work with `pr-size-labeler` and `actions/labeler`. These actions will work only with pull_request_target
-
-(3) `[Done]` Which means we need our own GitHub Script (JavaScript) for doing the Size Labeling (S / M / L) and Arch Labeling (e.g. `arch: risc-v`)
-
-(3a) `[Done]` How do we fetch the added / deleted / modified lines from the PR? We'll call GitHub Script (JavaScript) [`pulls.listFiles.endpoint.merge`](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
-
-(4) `[Done]` Arch Labeling (e.g. `arch: risc-v`) looks straightforward. We just read the rules from [.github/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/labeler.yml) and apply them.
-
-(5) `[Done]` Size Labeling (S / M / L) is more tricky. I suggest we hardcode with `size: unknown` until we find a CLI Tool that can count Lines of Code  accurately.
-
-(5a) `[TODO]` But I'll explore the PR Size Label anyway. It might be easy, because GitHub API already counts the changed lines for us.
-
-(6) That's assuming that the Size Label isn't actually consumed by any of our GitHub Workflows today? I used it for the LLM Bot for PR Review, but I stopped the bot because Gemini upgraded their API and it broke our bot.
-
-(7) Reading all the security docs, I'm pretty convinced that pull_request_target is "evil". Even if we can get an exemption from ASF Infra, someday someone can easily introduce a security hole, because pull_request_target needs to be maintained by a Security Expert.
-
-(8) `[Done]` Thus I would rather write our own simple GitHub Script (JavaScript) + pull_request trigger + workflow_run trigger to do the labeling. And avoid all these potential security holes. 
-
-(9) `[Done]` Remember to run [zizmor](https://woodruffw.github.io/zizmor/) periodically to check for security issues in GitHub Actions
-
-(10) `[TODO]` Work out all the Test Cases for our new implementation of PR Labeling:
-- Simple PR: Arm32-only, Arm64-only, RISC-V-only, ...
-- Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
-- Doc PR, ...
-
-(11) `[TODO]` I'll hang out on Slack and find out how other Apache Projects are handling pull_request_target
-
-60 days ago we received a notification 
-60 days to Miri Marathon!
-Can we save the NuttX Project in 60 days?
-
-24x7 standby 
-Except for Marathon Training (7 hours / 42 km)
-
-Appendix: Test Cases
-
-# TODO
-
-[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
-
-```yaml
-name: "Pull Request Labeler"
-on:
-  - pull_request_target
-
-jobs:
-  labeler:
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Assign labels based on paths
-        uses: actions/labeler@main
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          sync-labels: true
-
-      - name: Assign labels based on the PR's size
-        uses: codelytv/pr-size-labeler@v1.10.3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ignore_file_deletions: true
-          xs_label: 'Size: XS'
-          s_label: 'Size: S'
-          m_label: 'Size: M'
-          l_label: 'Size: L'
-          xl_label: 'Size: XL'
-```
-
-# What's Next
-
-TODO: It's complicated
+TODO: Revamp? It's complicated
 
 Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for supporting my writing. Your support means so much to me 🙏
 
@@ -640,6 +529,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
 
 # Appendix: Compute the Arch Labels
+
+TODO
+
+(3) `[Done]` Which means we need our own GitHub Script (JavaScript) for doing the Size Labeling (S / M / L) and Arch Labeling (e.g. `arch: risc-v`)
+
+(4) `[Done]` Arch Labeling (e.g. `arch: risc-v`) looks straightforward. We just read the rules from [.github/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/labeler.yml) and apply them.
+
+(6) That's assuming that the Size Label isn't actually consumed by any of our GitHub Workflows today? I used it for the LLM Bot for PR Review, but I stopped the bot because Gemini upgraded their API and it broke our bot.
+
+(7) Reading all the security docs, I'm pretty convinced that pull_request_target is "evil". Even if we can get an exemption from ASF Infra, someday someone can easily introduce a security hole, because pull_request_target needs to be maintained by a Security Expert.
+
+(10) `[TODO]` Work out all the Test Cases for our new implementation of PR Labeling:
+- Simple PR: Arm32-only, Arm64-only, RISC-V-only, ...
+- Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
+- Doc PR, ...
+
+Appendix: Test Cases
 
 _What's an Arch Label?_
 
@@ -718,8 +624,39 @@ for (const archLabel of archLabels) {
 console.log({ prLabels });
 ```
 
+_Are we reimplementing EVERYTHING from the Official GitHub Labeler actions/labeler?_
+
+We won't implement the Entire GitHub Labeler _actions/labeler_, just the bare minimum needed for NuttX. We're emulating the Labeler Config .github/labeler.yml as is, because someday GitHub might invent a Secure Way to Label PRs inside _pull_request_target_. (Then we'll switch back to the Official GitHub Labeler actions/labeler)
+
+There's something really jinxed about the way GitHub designed PR Labeling in _pull_request_target_, it's a terrible security hack. This article is the response to that hack :-)
+
 # Appendix: Change the Workflow Trigger
 
 _What happens when we change pull_request_target to pull_request? And nothing else?_
 
-TODO
+Nope it doesn't work! When we changed the trigger from (unsafe) _pull_request_target_ to (safer) _pull_request_: [.github/workflows/labeler.yml](https://github.com/lupyuen7/nuttx/blob/master/.github/workflows/labeler.yml#L17)
+
+![TODO](https://github.com/user-attachments/assets/05a752cc-5ab3-4436-87a9-b7a11bfc0ba8)
+
+The Labeler Workflow fails, even though our GitHub Token has _pull-requests: write_ and _issues: write_ permissions...
+
+![TODO](https://github.com/user-attachments/assets/467db5f1-9102-4472-b62d-70414dc5adba)
+
+[(See the Log)](https://github.com/lupyuen7/nuttx/actions/runs/21809066491/job/62917607595)
+
+That's because the Labeler Action runs on a PR from a Forked Repo, which requires _pull_request_target_...
+
+> However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for `pull_request` events, at most. If you encounter an `Error: HttpError: Resource not accessible by integration`, it's likely due to these permission constraints. 
+
+> To resolve this issue, you can modify the `on:` section of your workflow to use
+[`pull_request_target`](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) instead of `pull_request` (see example [above](#create-workflow)). This change allows the action to have write access, because `pull_request_target` alters the [context of the action](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) and safely grants additional permissions.
+
+[(Source)](https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions)
+
+And _pull_request_target_ has [__security concerns__](https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions)...
+
+> There exists a potentially dangerous misuse of the `pull_request_target` workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets.
+
+> Hence, it is advisable that `pull_request_target` should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using `pull_request_target` limit access to sensitive resources. Refer to the [GitHub token permissions documentation](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) for more details about access levels and event contexts.
+
+(Then why would GitHub allow us to run an Unsafe Labeler? Sigh)
