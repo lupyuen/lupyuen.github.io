@@ -158,7 +158,7 @@ with:
 
 Config File _.github/labeler.yml_ contains all the settings needed by _actions/labeler_. Thus we don't actually need the Entire Repo, when we're Labeling a PR.
 
-_The Changed Files in the PR: Should we check them out?_
+_Changed Files in the PR: Should we check them out?_
 
 Nope! Internally, _actions/labeler_ calls GitHub API to fetch the __Filenames of the Changed Files__ in the PR: [actions/labeler/changedFiles.ts](https://github.com/actions/labeler/blob/main/src/changedFiles.ts#L25-L46)
 
@@ -256,7 +256,9 @@ Sorry we can't! Remember we changed the trigger from (unsafe) _pull_request_targ
 
 - Which is OK: We're doing the PR Labeling ourselves anyway
 
-TODO
+_Changed Files in the PR: How do we find out what changed?_
+
+Inside our Workflow: We call the GitHub API [_pulls.listFiles_](TODO). It returns the __Filenames of the Changed Files__, also the __Number of Lines Changed__...
 
 ```c
 { status: 'added',    filename: 'arch/arm/test.txt',              
@@ -267,9 +269,7 @@ TODO
   additions: 1, deletions: 0,    changes: 1 }
 ```
 
-TODO
-
-[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63)
+This is how we call the GitHub API inside our _pull_request_ workflow: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L45-L63)
 
 ```javascript
 ## Fetch the updated PR filenames. Compute the Size Label and Arch Labels.
@@ -291,7 +291,7 @@ TODO
       const listFilesResponse = await github.paginate(listFilesOptions);
 ```
 
-[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81)
+We loop through the returned filenames, and total up the __Number of Lines Changed__: [labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L63-L81)
 
 ```javascript
       // Sum up the number of lines changed
@@ -314,11 +314,13 @@ TODO
       console.log({ prLabels });
 ```
 
-Arch Label: More complicated. See the Appendix...
+Which becomes the __Size Label__ for the PR, like _"Size: XS"_.
 
-TODO: Appendix
+We also have __Arch Labels__ for the PR, like _"Arch: risc-v"_. This is how we compute them...
 
-Now we stash the PR Labels safely...
+- TODO: Appendix
+
+We have compued the Size Label and Arch Labels. Now we stash the PR Labels safely...
 
 TODO: Pic of Upload the PR Labels
 
@@ -648,17 +650,17 @@ The Labeler Workflow fails, even though our GitHub Token has _pull-requests: wri
 
 That's because the Labeler Action runs on a PR from a Forked Repo, which requires _pull_request_target_...
 
-> However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for `pull_request` events, at most. If you encounter an `Error: HttpError: Resource not accessible by integration`, it's likely due to these permission constraints. 
+> _However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for `pull_request` events, at most. If you encounter an `Error: HttpError: Resource not accessible by integration`, it's likely due to these permission constraints._
 
-> To resolve this issue, you can modify the `on:` section of your workflow to use
-[`pull_request_target`](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) instead of `pull_request` (see example [above](#create-workflow)). This change allows the action to have write access, because `pull_request_target` alters the [context of the action](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) and safely grants additional permissions.
+> _To resolve this issue, you can modify the `on:` section of your workflow to use
+[`pull_request_target`](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) instead of `pull_request` ... This change allows the action to have write access, because `pull_request_target` alters the [context of the action](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target) and safely grants additional permissions._
 
 [(Source)](https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions)
 
 And _pull_request_target_ has [__security concerns__](https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions)...
 
-> There exists a potentially dangerous misuse of the `pull_request_target` workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets.
+> _There exists a potentially dangerous misuse of the `pull_request_target` workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets._
 
-> Hence, it is advisable that `pull_request_target` should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using `pull_request_target` limit access to sensitive resources. Refer to the [GitHub token permissions documentation](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) for more details about access levels and event contexts.
+> _Hence, it is advisable that `pull_request_target` should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using `pull_request_target` limit access to sensitive resources. Refer to the [GitHub token permissions documentation](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) for more details about access levels and event contexts._
 
 (Then why would GitHub allow us to run an Unsafe Labeler? Sigh)
