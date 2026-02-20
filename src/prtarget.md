@@ -13,7 +13,7 @@ on:
 jobs:
   labeler: ...
     steps:
-      ## Checkout the repo
+      ## Checkout the repo from the Main Branch
       - uses: actions/checkout@v6
 
       ## Assign the PR Labels based on the updated Paths
