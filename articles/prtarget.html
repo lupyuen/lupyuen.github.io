@@ -128,19 +128,15 @@ on:
 jobs:
   labeler: ...
     steps:
-      ## Checkout the repo
+      ## Risky: Checkout the repo based on the PR
       - uses: actions/checkout@v6
-
-      ## Assign the PR Labels based on the updated Paths
-      - uses: actions/labeler@main
         with:
-          repo-token:  &quot;${{ secrets.GITHUB_TOKEN }}&quot;
+          ref: ${{ github.event.pull_request.head.sha }}
 
       ## STOP: Never do this!!!
       - uses: actions/setup-node@v1
       - run: |
-          npm install
-          npm build</code></pre></div>
+          npm run build</code></pre></div>
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Inspired by this)</a></p>
 <p>Yep we have a problem…</p>
 <p>TODO: Pic of checkout and execute</p>
@@ -149,13 +145,14 @@ jobs:
 <p><em>actions/checkout</em> will checkout our Complete GitHub Repo, applying the changes proposed in the PR. Which might contain <strong>Malicious Code and Scripts</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Checkout the repo based on the PR...
 ## Including any Malicious Code inside the PR!
-- uses: actions/checkout@v6</code></pre></div></li>
+- uses: actions/checkout@v6
+  with:
+    ref: ${{ github.event.pull_request.head.sha }}</code></pre></div></li>
 <li>
 <p>Then this will <strong>Execute the Malicious Code</strong> inside the PR…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>## Run the Malicious Code from the PR. Oops!
 - run: |
-    npm install
-    npm build</code></pre></div></li>
+    npm run build</code></pre></div></li>
 <li>
 <p>When we <strong>Execute Untrusted Code</strong> (from a PR): There shall be terrible consequences…</p>
 <p>Remember <a href="https://www.sysdig.com/blog/massive-cryptomining-operation-github-actions"><strong>GitHub Crypto-Mining</strong></a>?</p>
