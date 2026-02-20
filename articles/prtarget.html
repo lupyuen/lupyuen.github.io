@@ -76,7 +76,6 @@
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-compute-the-arch-labels" title="Appendix: Compute the Arch Labels">10 Appendix: Compute the Arch Labels</a><ul></ul></li>
 <li><a href="#appendix-change-the-workflow-trigger" title="Appendix: Change the Workflow Trigger">11 Appendix: Change the Workflow Trigger</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
-<p><img src="https://lupyuen.org/images/prtarget-title.jpg" alt="TODO" /></p>
 <p><strong>In GitHub Actions:</strong> This is the typical way that we <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a Pull Request</strong></a>. But it’s <em>potentially dangerous</em>, guess why: <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When a Pull Request is submitted...
 on:
@@ -96,9 +95,7 @@ jobs:
       - uses: codelytv/pr-size-labeler@v1.10.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code></pre></div>
-<p>In this article we…</p>
-<p>TODO: Why it’s a problem</p>
-<p>TODO: Our Fix</p>
+<p>In this article we explain why the workflow above is potentially unsafe, and how we fixed it.</p>
 <h1 id="history-of-nuttx"><a class="doc-anchor" href="#history-of-nuttx">§</a>1 History of NuttX</h1>
 <p><em>How did we discover this problem?</em></p>
 <p>We were notified about the <a href="https://github.com/apache/nuttx/issues/18359"><strong>Unsafe pull_request_target</strong></a> during a Security Scan…</p>
@@ -107,7 +104,7 @@ jobs:
 </blockquote>
 <p>Bummer we need to pull out <em>pull_request_target</em> real quick… Or Apache NuttX Project dies in 60 days!</p>
 <p><em>How did that unsafe workflow get into NuttX?</em></p>
-<p>One Year Ago: We added PR Labeling to quicken <a href="TODO"><strong>NuttX CI Builds</strong></a>. And the GitHub Workflow above is the recommended way to <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a PR</strong></a>.</p>
+<p>One Year Ago: We added PR Labeling to quicken <a href="https://lupyuen.org/articles/ci3"><strong>NuttX CI Builds</strong></a>. And the GitHub Workflow above is the recommended way to <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a PR</strong></a>.</p>
 <p>Though we missed this <a href="https://github.com/actions/labeler?tab=readme-ov-file#recommended-permissions"><strong>ominous warning</strong></a>…</p>
 <blockquote>
 <p><em>“There exists a potentially dangerous misuse of the pull_request_target workflow trigger that may lead to malicious PR authors (i.e. attackers) being able to obtain repository write permissions or stealing repository secrets.”</em></p>
@@ -116,7 +113,6 @@ jobs:
 <p><em>“Hence, it is advisable that pull_request_target should only be used in workflows that are carefully designed to avoid executing untrusted code and to also ensure that workflows using pull_request_target limit access to sensitive resources.”</em></p>
 </blockquote>
 <p>Huh? Let’s break it down…</p>
-<p>TODO: Pic of Malicious Code in PR</p>
 <h1 id="malicious-code-in-pr"><a class="doc-anchor" href="#malicious-code-in-pr">§</a>2 Malicious Code in PR</h1>
 <p><em>What could possibly go wrong?</em></p>
 <p>Suppose someday, our devs innocently add some <strong>Build Commands</strong> into the PR Workflow above…</p>
@@ -139,7 +135,6 @@ jobs:
           npm run build</code></pre></div>
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Inspired by this)</a></p>
 <p>Yep we have a problem…</p>
-<p>TODO: Pic of checkout and execute</p>
 <ol>
 <li>
 <p><em>actions/checkout</em> will checkout our Complete GitHub Repo, applying the changes proposed in the PR. Which might contain <strong>Malicious Code and Scripts</strong>…</p>
@@ -170,7 +165,6 @@ jobs:
 </li>
 </ol>
 <p>There’s a safer solution…</p>
-<p>TODO: Pic of Safer Checkout</p>
 <h1 id="safer-checkout"><a class="doc-anchor" href="#safer-checkout">§</a>3 Safer Checkout</h1>
 <p><em>Do we really need the Entire Repo from the PR?</em></p>
 <p>Yeah we should <strong>limit our exposure</strong> to any Malicious Code embedded in the PR.</p>
@@ -203,11 +197,9 @@ async function getChangedFiles(...): ... {
 <p>We’ll call the same GitHub API in a while.</p>
 <p><a href="https://github.com/CodelyTV/pr-size-labeler/blob/main/src/github.sh#L4-L54">(<em>pr-size-labeler</em> calls GitHub REST inside Docker)</a></p>
 <p><em>But everyone else is checking out the Entire Repo?</em></p>
-<p>Yeah we’re not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in <a href="https://github.com/search?type=code&amp;q=%22actions%2Flabeler%40v6%22+language%3AYAML&amp;l=YAML"><strong>GitHub Code Search</strong></a>…</p>
-<p>TODO: Pic of GitHub Code Search</p>
+<p>Yeah we’re not sure why other folks are following the same Potentially Unsafe Pattern, checking out the Entire Repo from the PR. We see plenty in <a href="https://github.com/search?type=code&amp;q=%22actions%2Flabeler%40v6%22+language%3AYAML&amp;l=YAML"><strong>GitHub Code Search</strong></a>.</p>
 <p><em>What exactly is the Safer Way to Label PRs in GitHub Actions?</em></p>
 <p>We don’t have any <strong>Official GitHub Guidance</strong> for Safely Labeling a PR. Let’s do it our way…</p>
-<p>TODO: Pic of Safer GitHub Tokens</p>
 <h1 id="safer-github-tokens"><a class="doc-anchor" href="#safer-github-tokens">§</a>4 Safer GitHub Tokens</h1>
 <p><em>We limited our exposure to any Untrusted Code from the PR. What about the Leaky GitHub Tokens?</em></p>
 <p>Indeed we still have a problem. <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a> says…</p>
@@ -254,7 +246,6 @@ jobs:
           sparse-checkout:     .github/labeler.yml
           sparse-checkout-cone-mode: false</code></pre></div>
 <p>Writing the PR Label becomes interesting…</p>
-<p>TODO: Pic of Compute the PR Labels</p>
 <h1 id="compute-the-pr-labels"><a class="doc-anchor" href="#compute-the-pr-labels">§</a>5 Compute the PR Labels</h1>
 <p><em>Setting the PR Labels: Can we call actions/labeler and pr-size-labeler?</em></p>
 <p>Sorry we can’t! Remember we changed the trigger from (unsafe) <em>pull_request_target</em> to (safer) <em>pull_request</em>?</p>
@@ -263,14 +254,14 @@ jobs:
 <p>We just lost <strong>Read-Write Permission</strong> for the PR (due to Read-Only safety)</p>
 </li>
 <li>
-<p>Which means <em>actions/labeler</em> and <em>pr-size-labeler</em> won’t work <a href="TODO">(explained here)</a></p>
+<p>Which means <em>actions/labeler</em> and <em>pr-size-labeler</em> won’t work <a href="https://lupyuen.org/articles/prtarget#appendix-change-the-workflow-trigger">(explained here)</a></p>
 </li>
 <li>
 <p>Which is OK: We’re doing the PR Labeling ourselves anyway</p>
 </li>
 </ul>
 <p><em>Changed Files in the PR: How do we find out what changed?</em></p>
-<p>Inside our Workflow: We call the GitHub API <a href="TODO"><em>pulls.listFiles</em></a>. It returns the <strong>Filenames of the Changed Files</strong>, also the <strong>Number of Lines Changed</strong>…</p>
+<p>Inside our Workflow: We call the GitHub API <a href="https://octokit.github.io/rest.js/v22/#pulls-list-files"><em>pulls.listFiles</em></a>. It returns the <strong>Filenames of the Changed Files</strong>, also the <strong>Number of Lines Changed</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>{ status: &#39;added&#39;,    filename: &#39;arch/arm/test.txt&#39;,              
   additions: 3, deletions: 0,    changes: 3 }
 { status: &#39;removed&#39;,  filename: &#39;Documentation/legacy_README.md&#39;, 
@@ -317,10 +308,9 @@ jobs:
 <p>Which becomes the <strong>Size Label</strong> for the PR, like <em>“Size: XS”</em>.</p>
 <p>We also have <strong>Arch Labels</strong> for the PR, like <em>“Arch: risc-v”</em>. This is how we compute them…</p>
 <ul>
-<li>TODO: Appendix</li>
+<li><a href="https://lupyuen.org/articles/prtarget#appendix-compute-the-arch-labels"><strong>“Compute the Arch Labels”</strong></a></li>
 </ul>
 <p>Size Label and Arch Labels are all ready. Now we stash the PR Labels safely…</p>
-<p>TODO: Pic of Upload the PR Labels</p>
 <h1 id="upload-the-pr-labels"><a class="doc-anchor" href="#upload-the-pr-labels">§</a>6 Upload the PR Labels</h1>
 <p><em>No Write Permission means we can’t set the PR Labels. How to save the labels?</em></p>
 <p>GitHub offers a safe interim storage for our PR Labels: We save them into a <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>PR Artifact</strong></a> during the Workflow Run.</p>
@@ -341,7 +331,6 @@ jobs:
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Recommended by GitHub)</a></p>
 <p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
 <p>Here comes the Second Part of the PR Workflow…</p>
-<p>TODO: Pic of Set the PR Labels</p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
@@ -395,6 +384,7 @@ jobs:
       ## Unzip the PR Artifact
       - name: Unzip PR artifact
         run:  unzip pr.zip</code></pre></div>
+<p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml#L64-L90">pr_labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>      ## Write the PR Labels into the PR
       - name: Write PR labels
@@ -421,10 +411,7 @@ jobs:
               repo,
               issue_number,
               labels
-            });</code></pre></div>
-<p>TODO: Pic of entire solution</p>
-<h1 id="zizmor-security-scanner"><a class="doc-anchor" href="#zizmor-security-scanner">§</a>8 Zizmor Security Scanner</h1>
-<p>TODO</p>
+            });</code></pre></div><h1 id="zizmor-security-scanner"><a class="doc-anchor" href="#zizmor-security-scanner">§</a>8 Zizmor Security Scanner</h1>
 <p>Whenever we modify the <strong>GitHub CI Workflow</strong>, remember to run the <a href="https://docs.zizmor.sh/"><strong>Zizmor Security Scanner</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>brew install zizmor
 git clone YOUR_NUTTX_REPO
@@ -449,59 +436,47 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <p>Zizmor Security Scan should not report any Security Issues. However Zizmor flags <em>workflow_run</em> as a Potential Security Issue, because it’s unable to analyse the code inside the workflow. <em>workflow_run</em> is not forbidden in the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a>.</p>
 <p>(Remember: Don’t use the <em>pull_request_target</em> trigger, it’s disallowed by the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a>)</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
-<p>TODO: Here’s the completed Pull Request:</p>
+<p>Here’s the completed Pull Request…</p>
 <ul>
-<li><a href="https://github.com/apache/nuttx/pull/18404"><strong>Reimplement PR Labeling without pull_request_target</strong></a></li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/18404"><strong>Reimplement PR Labeling without pull_request_target</strong></a></p>
+</li>
+<li>
+<p>TODO: Sync the workflow from NuttX Repo to NuttX Apps Repo</p>
+</li>
 </ul>
-<p>TODO: Pros and Cons of the new implementation?</p>
-<p>(2) New Implementation is Quicker: It’s faster since we don’t checkout the entire repo. Also pr-size-labeler actually runs in a Docker Container, we don’t need that any more.</p>
-<p>(3) But it might be quirky under Heavy Load. Remember that workflow_run trigger will write the PR Labels as a Second Job? When we run out of GitHub Runners, the PR Labels might never be applied. The Build Logic in arch.yml will execute a Complete NuttX Build if it can’t find the PR Labels.</p>
-<p>(4) Will the Build Workflow be triggered too early, before the workflow_run trigger? Hopefully not. The Build Workflow begins in the Fetch-Source stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the Select-Builds stage (arch.yml) reading the PR Labels. Before 1.5 minutes, rightfully our workflow_run trigger would have written the PR Labels to the PR.</p>
+<p>Pros and Cons of the new implementation…</p>
+<ul>
+<li>
+<p>New Implementation is Quicker: It’s faster since we don’t checkout the entire repo. Also <em>pr-size-labeler</em> actually runs in a Docker Container, we don’t need that any more.</p>
+</li>
+<li>
+<p>But it might be quirky under Heavy Load. Remember that <em>workflow_run</em> trigger will write the PR Labels as a Second Job? When we run out of GitHub Runners, the PR Labels might never be applied. The Build Logic in <em>arch.yml</em> will execute a Complete NuttX Build if it can’t find the PR Labels.</p>
+</li>
+<li>
+<p>Will the Build Workflow be triggered too early, before the <em>workflow_run</em> trigger? Hopefully not. The Build Workflow begins in the <em>Fetch-Source</em> stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the <em>Select-Builds</em> stage <em>(arch.yml)</em> reading the PR Labels. Before 1.5 minutes, rightfully our <em>workflow_run</em> trigger would have written the PR Labels to the PR.</p>
+</li>
+<li>
 <p>Based on Actual Logs: New PR Labeling completes in 16 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
-<p>TODO: Revamp? It’s complicated</p>
-<p>Special Thanks to <a href="https://lupyuen.org/articles/sponsor"><strong>My Sponsors</strong></a> for supporting my writing. Your support means so much to me 🙏</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.org/articles/sponsor"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-avaota-a1"><strong>My Current Project: “Apache NuttX RTOS for Avaota-A1”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-starpro64"><strong>Also My Current Project: “Apache NuttX RTOS for StarPro64 EIC7700X”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-sg2000"><strong>My Other Project: “NuttX for Oz64 SG2000”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/nuttx-ox64"><strong>Older Project: “NuttX for Ox64 BL808”</strong></a></p>
-</li>
-<li>
-<p><a href="https://nuttx-forge.org/lupyuen/pinephone-nuttx"><strong>Olderer Project: “NuttX for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.org/rss.xml"><strong>RSS Feed</strong></a></p>
 </li>
 </ul>
+<hr>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md"><strong>lupyuen.org/src/prtarget.md</strong></a></p>
 <h1 id="appendix-compute-the-arch-labels"><a class="doc-anchor" href="#appendix-compute-the-arch-labels">§</a>10 Appendix: Compute the Arch Labels</h1>
 <p>TODO</p>
-<p>(3) <code>[Done]</code> Which means we need our own GitHub Script (JavaScript) for doing the Size Labeling (S / M / L) and Arch Labeling (e.g. <code>arch: risc-v</code>)</p>
-<p>(4) <code>[Done]</code> Arch Labeling (e.g. <code>arch: risc-v</code>) looks straightforward. We just read the rules from <a href="https://github.com/apache/nuttx/blob/master/.github/labeler.yml">.github/labeler.yml</a> and apply them.</p>
+<p>(3) Which means we need our own GitHub Script (JavaScript) for doing the Size Labeling (S / M / L) and Arch Labeling (e.g. <code>arch: risc-v</code>)</p>
+<p>(4) Arch Labeling (e.g. <code>arch: risc-v</code>) looks straightforward. We just read the rules from <a href="https://github.com/apache/nuttx/blob/master/.github/labeler.yml">.github/labeler.yml</a> and apply them.</p>
 <p>(6) That’s assuming that the Size Label isn’t actually consumed by any of our GitHub Workflows today? I used it for the LLM Bot for PR Review, but I stopped the bot because Gemini upgraded their API and it broke our bot.</p>
 <p>(7) Reading all the security docs, I’m pretty convinced that pull_request_target is “evil”. Even if we can get an exemption from ASF Infra, someday someone can easily introduce a security hole, because pull_request_target needs to be maintained by a Security Expert.</p>
-<p>(10) <code>[TODO]</code> Work out all the Test Cases for our new implementation of PR Labeling:</p>
+<p>(10) Remember to work out all the Test Cases for our new implementation of PR Labeling:</p>
 <ul>
 <li>Simple PR: Arm32-only, Arm64-only, RISC-V-only, …</li>
 <li>Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, …</li>
 <li>Doc PR, …</li>
 </ul>
-<p>Appendix: Test Cases</p>
-<p>Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.</p>
+<p>TODO: Test Cases</p>
+<p>TODO: Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.</p>
 <p><em>What’s an Arch Label?</em></p>
 <p>TODO</p>
 <p><em>How to compute the Arch Labels for a NuttX PR?</em></p>
@@ -567,9 +542,9 @@ console.log({ prLabels });</code></pre></div>
 <h1 id="appendix-change-the-workflow-trigger"><a class="doc-anchor" href="#appendix-change-the-workflow-trigger">§</a>11 Appendix: Change the Workflow Trigger</h1>
 <p><em>What happens when we change pull_request_target to pull_request? And nothing else?</em></p>
 <p>Nope it doesn’t work! When we changed the trigger from (unsafe) <em>pull_request_target</em> to (safer) <em>pull_request</em>: <a href="https://github.com/lupyuen7/nuttx/blob/master/.github/workflows/labeler.yml#L17">.github/workflows/labeler.yml</a></p>
-<p><img src="https://github.com/user-attachments/assets/05a752cc-5ab3-4436-87a9-b7a11bfc0ba8" alt="TODO" /></p>
+<p><img src="https://github.com/user-attachments/assets/05a752cc-5ab3-4436-87a9-b7a11bfc0ba8" alt="Change the trigger from (unsafe) pull_request_target to (safer) pull_request" /></p>
 <p>The Labeler Workflow fails, even though our GitHub Token has <em>pull-requests: write</em> and <em>issues: write</em> permissions…</p>
-<p><img src="https://github.com/user-attachments/assets/467db5f1-9102-4472-b62d-70414dc5adba" alt="TODO" /></p>
+<p><img src="https://github.com/user-attachments/assets/467db5f1-9102-4472-b62d-70414dc5adba" alt="Labeler Workflow fails" /></p>
 <p><a href="https://github.com/lupyuen7/nuttx/actions/runs/21809066491/job/62917607595">(See the Log)</a></p>
 <p>That’s because the Labeler Action runs on a PR from a Forked Repo, which requires <em>pull_request_target</em>…</p>
 <blockquote>
