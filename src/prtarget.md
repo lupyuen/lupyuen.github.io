@@ -73,19 +73,15 @@ on:
 jobs:
   labeler: ...
     steps:
-      ## Checkout the repo
+      ## Risky: Checkout the repo based on the PR
       - uses: actions/checkout@v6
-
-      ## Assign the PR Labels based on the updated Paths
-      - uses: actions/labeler@main
         with:
-          repo-token:  "${{ secrets.GITHUB_TOKEN }}"
+          ref: ${{ github.event.pull_request.head.sha }}
 
       ## STOP: Never do this!!!
       - uses: actions/setup-node@v1
       - run: |
-          npm install
-          npm build
+          npm run build
 ```
 
 [(Inspired by this)](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/)
@@ -100,6 +96,8 @@ TODO: Pic of checkout and execute
     ## Checkout the repo based on the PR...
     ## Including any Malicious Code inside the PR!
     - uses: actions/checkout@v6
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     ```
 
 1.  Then this will __Execute the Malicious Code__ inside the PR...
@@ -107,8 +105,7 @@ TODO: Pic of checkout and execute
     ```yaml
     ## Run the Malicious Code from the PR. Oops!
     - run: |
-        npm install
-        npm build
+        npm run build
     ```
 
 1.  When we __Execute Untrusted Code__ (from a PR): There shall be terrible consequences...
