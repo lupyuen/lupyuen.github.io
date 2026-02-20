@@ -509,8 +509,6 @@ Special Thanks to [__My Sponsors__](https://lupyuen.org/articles/sponsor) for su
 
 - [__Sponsor me a coffee__](https://lupyuen.org/articles/sponsor)
 
-- [__Discuss this article on Hacker News__](TODO)
-
 - [__My Current Project: "Apache NuttX RTOS for Avaota-A1"__](https://github.com/lupyuen/nuttx-avaota-a1)
 
 - [__Also My Current Project: "Apache NuttX RTOS for StarPro64 EIC7700X"__](https://github.com/lupyuen/nuttx-starpro64)
