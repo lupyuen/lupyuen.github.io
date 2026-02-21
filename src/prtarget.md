@@ -469,7 +469,9 @@ Here's the completed Pull Request...
 
 - [__Reimplement PR Labeling without pull_request_target__](https://github.com/apache/nuttx/pull/18404)
 
-- TODO: Sync the workflow from NuttX Repo to NuttX Apps Repo
+- [__Fix the PR Labeling for Build System__](https://github.com/apache/nuttx/pull/18422)
+
+- TODO: Sync the PR Labeling Workflow from NuttX Repo to NuttX Apps Repo
 
 Pros and Cons of the new implementation...
 
@@ -489,36 +491,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Compute the Arch Labels
 
-TODO
-
-(3) Which means we need our own GitHub Script (JavaScript) for doing the Size Labeling (S / M / L) and Arch Labeling (e.g. `arch: risc-v`)
-
-(4) Arch Labeling (e.g. `arch: risc-v`) looks straightforward. We just read the rules from [.github/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/labeler.yml) and apply them.
-
-(6) That's assuming that the Size Label isn't actually consumed by any of our GitHub Workflows today? I used it for the LLM Bot for PR Review, but I stopped the bot because Gemini upgraded their API and it broke our bot.
-
-(7) Reading all the security docs, I'm pretty convinced that pull_request_target is "evil". Even if we can get an exemption from ASF Infra, someday someone can easily introduce a security hole, because pull_request_target needs to be maintained by a Security Expert.
-
-(10) Remember to work out all the Test Cases for our new implementation of PR Labeling:
-- Simple PR: Arm32-only, Arm64-only, RISC-V-only, ...
-- Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
-- Doc PR, ...
-
-TODO: Test Cases
-
-https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403
-
-TODO: Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
-
 _What's an Arch Label?_
 
-TODO
+Arch Labeling looks like `arch: arm`, `arch: risc-v`, `board: arm`, `area: Build system`, ...
+
+One Year Ago: We added PR Labeling to quicken [__NuttX CI Builds__](https://lupyuen.org/articles/ci3). Depending on the Arch Label, our CI Workflow _(arch.yml)_ will either build __One Specific Architecture__ (like Arm32). Or do a __Complete Build__ across All Architectures.
+
+(Size Label isn't actually consumed by any of our GitHub Workflows today. We used it for the LLM Bot for PR Review, but we stopped the bot because Gemini upgraded their API and it broke our bot)
 
 _How to compute the Arch Labels for a NuttX PR?_
 
-TODO
+We wrote our own GitHub Script (JavaScript) for doing the Arch Labeling (e.g. `arch: risc-v`).
 
-[.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134)
+Arch Labeling (e.g. `arch: risc-v`) looks straightforward. We just read the rules from [_.github/labeler.yml_](https://github.com/apache/nuttx/blob/master/.github/labeler.yml) and apply them.
+
+Remember to work out all the Test Cases for our new implementation of PR Labeling:
+- Simple PR: Arm32-only, Arm64-only, RISC-V-only, ...
+- Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
+- Doc PR, ...
+- [__See the Test Cases__](https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403)
+
+And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
+
+Inside our New PR Labeler: This is how we read the Labeling Rules from _.github/labeler.yml_: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134)
 
 ```javascript
 // Parse the Arch Label Patterns in .github/labeler.yml. Condense into:
@@ -534,9 +529,7 @@ const config = fs.readFileSync('labeler/.github/labeler.yml', 'utf8')
   .filter(s => !s.startsWith('- changed-files:'));  // Remove "changed-files"
 ```
 
-TODO
-
-[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L93-L118)
+We transform the Glob Pattern to Regex Pattern, for easier Filename Matching: [labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L93-L118)
 
 ```javascript
 // Convert the Arch Label Patterns from config to archLabels.
@@ -567,9 +560,7 @@ for (const c of config) {
 }
 ```
 
-TODO
-
-[labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L118-L134)
+This is how we do Regex Matching on the Changed Filenames: [labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L118-L134)
 
 ```javascript
 // Search the filenames for matching Arch Labels
@@ -591,7 +582,7 @@ console.log({ prLabels });
 
 _Are we reimplementing EVERYTHING from the Official GitHub Labeler actions/labeler?_
 
-We won't implement the Entire GitHub Labeler _actions/labeler_, just the bare minimum needed for NuttX. We're emulating the Labeler Config .github/labeler.yml as is, because someday GitHub might invent a Secure Way to Label PRs inside _pull_request_target_. (Then we'll switch back to the Official GitHub Labeler actions/labeler)
+We won't implement the Entire GitHub Labeler _actions/labeler_, just the bare minimum needed for NuttX. We're emulating the Labeler Config _.github/labeler.yml_ as is, because someday GitHub might invent a Secure Way to Label PRs inside _pull_request_target_. (Then we'll switch back to the Official GitHub Labeler actions/labeler)
 
 There's something really jinxed about the way GitHub designed PR Labeling in _pull_request_target_, it's a terrible security hack. This article is the response to that hack :-)
 
