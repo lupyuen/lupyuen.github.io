@@ -457,7 +457,7 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <p>Will the Build Workflow be triggered too early, before the <em>workflow_run</em> trigger? Hopefully not. The Build Workflow begins in the <em>Fetch-Source</em> stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the <em>Select-Builds</em> stage <em>(arch.yml)</em> reading the PR Labels. Before 1.5 minutes, rightfully our <em>workflow_run</em> trigger would have written the PR Labels to the PR.</p>
 </li>
 <li>
-<p>Based on Actual Logs: New PR Labeling completes in 16 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
+<p>Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
 </li>
 </ul>
 <hr>
@@ -476,6 +476,7 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <li>Doc PR, …</li>
 </ul>
 <p>TODO: Test Cases</p>
+<p>https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403</p>
 <p>TODO: Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.</p>
 <p><em>What’s an Arch Label?</em></p>
 <p>TODO</p>
