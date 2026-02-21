@@ -479,7 +479,7 @@ Pros and Cons of the new implementation...
 
 - Will the Build Workflow be triggered too early, before the _workflow_run_ trigger? Hopefully not. The Build Workflow begins in the _Fetch-Source_ stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the _Select-Builds_ stage _(arch.yml)_ reading the PR Labels. Before 1.5 minutes, rightfully our _workflow_run_ trigger would have written the PR Labels to the PR.
 
-- Based on Actual Logs: New PR Labeling completes in 16 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.
+- Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.
 
 <hr>
 
@@ -505,6 +505,8 @@ TODO
 - Doc PR, ...
 
 TODO: Test Cases
+
+https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403
 
 TODO: Remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
 
