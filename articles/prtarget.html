@@ -512,8 +512,10 @@ for (const c of config) {
       .split(&#39;.&#39;).join(&#39;\\.&#39;)            // .  becomes \.
       .split(&#39;*&#39;).join(&#39;[^/]*&#39;)          // *  becomes [^/]*
       .split(&#39;[^/]*[^/]*&#39;).join(&#39;.*&#39;);   // ** becomes .*
-    archLabels.push({ label, pattern });
-
+    archLabels.push({ 
+      label,
+      pattern: &#39;^&#39; + pattern + &#39;$&#39;       // Match the Line Start and Line End
+    });
   } else {
     // We don&#39;t support all rules of `actions/labeler`
     throw new Error(&#39;.github/labeler.yml should contain only changed-files and any-glob-to-any-file, not: &#39; + c);
