@@ -332,8 +332,7 @@ jobs:
 <p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
 <p>Here comes the Second Part of the PR Workflow…</p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
+<p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>As Recommended by GitHub</strong></a>: We added a new <em>workflow_run</em> workflow that will wait for <em>pull_request</em> workflow to complete. Then it downloads the <strong>PR Artifact</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When the Pull Request Labeler workflow is completed...
 name: &quot;Set Pull Request Labels&quot;
 on:
@@ -384,8 +383,7 @@ jobs:
       ## Unzip the PR Artifact
       - name: Unzip PR artifact
         run:  unzip pr.zip</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml#L64-L90">pr_labeler.yml</a></p>
+<p>The PR Artifact contains <strong>PR Number</strong> and <strong>PR Labels</strong>. This is how we write the PR Labels into the PR: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml#L64-L90">pr_labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>      ## Write the PR Labels into the PR
       - name: Write PR labels
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd  # v8.0.0
