@@ -461,13 +461,13 @@ Zizmor Security Scan should not report any Security Issues. However Zizmor flags
 
 # What's Next
 
-Here's the completed Pull Request...
+Here's are completed Pull Requests...
 
 - [__Reimplement PR Labeling without pull_request_target__](https://github.com/apache/nuttx/pull/18404)
 
 - [__Fix the PR Labeling for Build System__](https://github.com/apache/nuttx/pull/18422)
 
-- TODO: Sync the PR Labeling Workflow from NuttX Repo to NuttX Apps Repo
+- [__Sync the new PR Labeling Workflow from NuttX Repo to NuttX Apps__](https://github.com/apache/nuttx-apps/pull/3408)
 
 Pros and Cons of the new implementation...
 
