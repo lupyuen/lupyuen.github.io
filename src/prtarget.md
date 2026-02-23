@@ -506,6 +506,7 @@ Remember to work out all the Test Cases for our new implementation of PR Labelin
 - Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
 - Doc PR, ...
 - [__See the Test Cases__](https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403)
+- [__For NuttX Apps__](https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4)
 
 And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
 
