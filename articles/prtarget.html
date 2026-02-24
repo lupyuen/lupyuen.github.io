@@ -415,7 +415,10 @@ jobs:
               repo,
               issue_number,
               labels
-            });</code></pre></div><h1 id="zizmor-security-scanner"><a class="doc-anchor" href="#zizmor-security-scanner">§</a>8 Zizmor Security Scanner</h1>
+            });</code></pre></div>
+<p>And we’re done! That’s how we changed (Unsafe Trigger) <em>pull_request_target</em> to (Safer Trigger) <em>pull_request</em> in NuttX.</p>
+<h1 id="zizmor-security-scanner"><a class="doc-anchor" href="#zizmor-security-scanner">§</a>8 Zizmor Security Scanner</h1>
+<p><em>Anything else we can do to make GitHub Actions safer?</em></p>
 <p>Whenever we modify the <strong>GitHub CI Workflow</strong>, remember to run the <a href="https://docs.zizmor.sh/"><strong>Zizmor Security Scanner</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>brew install zizmor
 git clone YOUR_NUTTX_REPO
@@ -440,7 +443,7 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <p>Zizmor Security Scan should not report any Security Issues. However Zizmor flags <em>workflow_run</em> as a Potential Security Issue, because it’s unable to analyse the code inside the workflow. <em>workflow_run</em> is not forbidden in the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a>.</p>
 <p>(Remember: Don’t use the <em>pull_request_target</em> trigger, it’s disallowed by the <a href="https://infra.apache.org/github-actions-policy.html"><strong>ASF Security Policy</strong></a>)</p>
 <h1 id="whats-next"><a class="doc-anchor" href="#whats-next">§</a>9 What’s Next</h1>
-<p>Here’s are completed Pull Requests…</p>
+<p>Here are the completed Pull Requests…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/18404"><strong>Reimplement PR Labeling without pull_request_target</strong></a></p>
