@@ -12,12 +12,12 @@
     content="GitHub Actions pull_request_target vs Apache NuttX RTOS" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Let's find out why pull_request_target is unsafe in GitHub Actions. And how we fixed it in Apache NuttX RTOS."
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Let's find out why pull_request_target is unsafe in GitHub Actions. And how we fixed it in Apache NuttX RTOS.">
 <meta property="og:image" 
-    content="https://lupyuen.org/images/prtarget-title.jpg">
+    content="https://lupyuen.org/images/prtarget-title.png">
 <meta property="og:type" 
     content="article" data-rh="true">
 <link rel="canonical"
@@ -75,7 +75,8 @@
 <li><a href="#zizmor-security-scanner" title="Zizmor Security Scanner">8 Zizmor Security Scanner</a><ul></ul></li>
 <li><a href="#whats-next" title="What’s Next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-compute-the-arch-labels" title="Appendix: Compute the Arch Labels">10 Appendix: Compute the Arch Labels</a><ul></ul></li>
-<li><a href="#appendix-change-the-workflow-trigger" title="Appendix: Change the Workflow Trigger">11 Appendix: Change the Workflow Trigger</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2026</em></p>
+<li><a href="#appendix-change-the-workflow-trigger" title="Appendix: Change the Workflow Trigger">11 Appendix: Change the Workflow Trigger</a><ul></ul></li></ul></nav><p>📝 <em>24 Feb 2026</em></p>
+<p><img src="https://lupyuen.org/images/prtarget-title.png" alt="PR Labeling in NuttX" /></p>
 <p><strong>In GitHub Actions:</strong> This is the typical way that we <a href="https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action"><strong>Label a Pull Request</strong></a>. But it’s <em>potentially dangerous</em>, guess why: <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When a Pull Request is submitted...
 on:
@@ -165,6 +166,7 @@ jobs:
 </li>
 </ol>
 <p>There’s a safer solution…</p>
+<p><a href="https://github.com/apache/nuttx-apps/actions/runs/22299411019">(<strong>TODO</strong>: Why does GitHub execute Workflows that are submitted inside a PR? Is this a Security Risk?)</a></p>
 <h1 id="safer-checkout"><a class="doc-anchor" href="#safer-checkout">§</a>3 Safer Checkout</h1>
 <p><em>Do we really need the Entire Repo from the PR?</em></p>
 <p>Yeah we should <strong>limit our exposure</strong> to any Malicious Code embedded in the PR.</p>
@@ -208,6 +210,9 @@ async function getChangedFiles(...): ... {
 </blockquote>
 <p>Hmmm we can’t possibly prove that <a href="https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45"><em>pr-size-labeler</em></a> (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let’s solve this…</p>
 <ol>
+<li>
+<p><strong>Change our Workflow Trigger:</strong> (Unsafe Trigger) <em>pull_request_target</em> becomes (Safer Trigger) <em>pull_request</em> (explained below)</p>
+</li>
 <li>
 <p><strong>Switch our GitHub Token:</strong> <em>(Unsafe)</em> Read-Write Token becomes <em>(Safer)</em> Read-Only Token. Tampering mischief can’t happen with a Read-Only Token.</p>
 </li>
@@ -331,6 +336,7 @@ jobs:
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/">(Recommended by GitHub)</a></p>
 <p><a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166">(And ASF Security Guidance)</a></p>
 <p>Here comes the Second Part of the PR Workflow…</p>
+<p><img src="https://lupyuen.org/images/prtarget-workflowrun.png" alt="workflow_run workflow will wait for pull_request workflow to complete" /></p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
 <p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>As Recommended by GitHub</strong></a>: We added a new <em>workflow_run</em> workflow that will wait for <em>pull_request</em> workflow to complete. Then it downloads the <strong>PR Artifact</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When the Pull Request Labeler workflow is completed...
@@ -461,9 +467,9 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <p>Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
 </li>
 </ul>
-<hr>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md"><strong>lupyuen.org/src/prtarget.md</strong></a></p>
+<p><img src="https://lupyuen.org/images/prtarget-title.png" alt="PR Labeling in NuttX" /></p>
 <h1 id="appendix-compute-the-arch-labels"><a class="doc-anchor" href="#appendix-compute-the-arch-labels">§</a>10 Appendix: Compute the Arch Labels</h1>
 <p><em>What’s an Arch Label?</em></p>
 <p>Arch Labeling looks like <code>arch: arm</code>, <code>arch: risc-v</code>, <code>board: arm</code>, <code>area: Build system</code>, …</p>
@@ -478,7 +484,7 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <li>Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, …</li>
 <li>Doc PR, …</li>
 <li><a href="https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403"><strong>See the Test Cases</strong></a></li>
-<li><a href="https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4"><strong>For NuttX Apps</strong></a></li>
+<li><a href="https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4"><strong>Also for NuttX Apps</strong></a></li>
 </ul>
 <p>And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.</p>
 <p>Inside our New PR Labeler: This is how we read the Labeling Rules from <em>.github/labeler.yml</em>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134">.github/workflows/labeler.yml</a></p>
