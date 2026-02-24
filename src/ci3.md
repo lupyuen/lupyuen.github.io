@@ -545,6 +545,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"__](https://lupyuen.org/articles/testbot.html)
 
+- [__"GitHub Actions pull_request_target vs Apache NuttX RTOS"__](https://lupyuen.org/articles/prtarget)
+
 Many Thanks to the awesome __NuttX Admins__ and __NuttX Devs__! I couldn't have survived the two choatic and stressful weeks without your help. And my [__GitHub Sponsors__](https://lupyuen.github.io/articles/sponsor), for sticking with me all these years.
 
 -   [__Sponsor me a coffee__](https://lupyuen.github.io/articles/sponsor)
@@ -712,6 +714,8 @@ Connection timed out
 ![Previously: Our developers waited 2.5 Hours for a Pull Request to be checked. Now we wait at most 1.5 Hours](https://lupyuen.github.io/images/ci3-beforeafter.jpg)
 
 # Appendix: Build Rules for CI Workflow
+
+[(See Also: __GitHub Actions pull_request_target vs Apache NuttX RTOS__)](https://lupyuen.org/articles/prtarget)
 
 Initially we created the __Build Rules__ for CI Workflow to solve these problems that we observed in Sep 2024...
 
