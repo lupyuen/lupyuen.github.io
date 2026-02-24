@@ -417,6 +417,25 @@ jobs:
               labels
             });</code></pre></div>
 <p>And we’re done! That’s how we changed (Unsafe Trigger) <em>pull_request_target</em> to (Safer Trigger) <em>pull_request</em> in NuttX.</p>
+<p><em>But workflow_run has Write Permission. Isn’t there a Security Risk?</em></p>
+<p>Remember to follow the <a href="https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166"><strong>ASF Security Guidance</strong></a>…</p>
+<ul>
+<li>
+<p>(Read-Only Trigger) <em>pull_request</em> shall (very carefully)</p>
+<ul>
+<li>Handle any <strong>Untrusted Input</strong></li>
+<li>Then pass the <strong>Sanitised Output</strong> to <em>workflow_run</em> (via PR Artifact)</li>
+</ul>
+</li>
+<li>
+<p>(Read-Write Trigger) <em>workflow_run</em> shall</p>
+<ul>
+<li>Read the <strong>Sanitised Output</strong> (via PR Artifact)</li>
+<li>Then <strong>write the changes</strong> into the PR</li>
+<li>Never handle any <strong>Untrusted Input</strong> in <em>workflow_run</em>!</li>
+</ul>
+</li>
+</ul>
 <h1 id="zizmor-security-scanner"><a class="doc-anchor" href="#zizmor-security-scanner">§</a>8 Zizmor Security Scanner</h1>
 <p><em>Anything else we can do to make GitHub Actions safer?</em></p>
 <p>Whenever we modify the <strong>GitHub CI Workflow</strong>, remember to run the <a href="https://docs.zizmor.sh/"><strong>Zizmor Security Scanner</strong></a>…</p>
