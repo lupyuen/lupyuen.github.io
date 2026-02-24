@@ -431,7 +431,11 @@ The PR Artifact contains __PR Number__ and __PR Labels__. This is how we write t
             });
 ```
 
+And we're done! That's how we changed (Unsafe Trigger) _pull_request_target_ to (Safer Trigger) _pull_request_ in NuttX.
+
 # Zizmor Security Scanner
+
+_Anything else we can do to make GitHub Actions safer?_
 
 Whenever we modify the __GitHub CI Workflow__, remember to run the [__Zizmor Security Scanner__](https://docs.zizmor.sh/)...
 
@@ -469,7 +473,7 @@ Zizmor Security Scan should not report any Security Issues. However Zizmor flags
 
 # What's Next
 
-Here's are completed Pull Requests...
+Here are the completed Pull Requests...
 
 - [__Reimplement PR Labeling without pull_request_target__](https://github.com/apache/nuttx/pull/18404)
 
