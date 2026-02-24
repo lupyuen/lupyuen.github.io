@@ -307,11 +307,15 @@ We also have __Arch Labels__ for the PR, like _"Arch: risc-v"_. This is how we c
 
 Size Label and Arch Labels are all ready. Now we stash the PR Labels safely...
 
+![PR Artifact contains PR Number and PR Labels](https://lupyuen.org/images/prtarget-artifact.png)
+
+[_PR Artifact contains PR Number and PR Labels_](https://github.com/apache/nuttx/actions/runs/22334686979)
+
 # Upload the PR Labels
 
 _No Write Permission means we can't set the PR Labels. How to save the labels?_
 
-GitHub offers a safe interim storage for our PR Labels: We save them into a [__PR Artifact__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/) during the Workflow Run.
+GitHub offers a safe interim storage for our PR Labels: We save them into a [__PR Artifact__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/) during the Workflow Run. (Pic above)
 
 First we write the __PR Number and PR Labels__: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147)
 
