@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "GitHub Actions pull_request_target vs Apache NuttX RTOS",
+      "publisher": "lupyuen.org",
+      "releaseDate": "2026-02-24",
+      "website": "https://lupyuen.org/articles/prtarget",
+      "summary": "Let's find out why pull_request_target is unsafe in GitHub Actions. And how we fixed it in Apache NuttX RTOS."
+    },
+    {
       "name": "Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS",
       "publisher": "lupyuen.org",
       "releaseDate": "2026-01-14",

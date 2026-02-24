@@ -1,6 +1,8 @@
 # GitHub Actions pull_request_target vs Apache NuttX RTOS
 
-📝 _1 Mar 2026_
+📝 _24 Feb 2026_
+
+![PR Labeling in NuttX](https://lupyuen.org/images/prtarget-title.png)
 
 __In GitHub Actions:__ This is the typical way that we [__Label a Pull Request__](https://github.com/actions/labeler?tab=readme-ov-file#using-configuration-path-input-together-with-the-actionscheckout-action). But it's _potentially dangerous_, guess why: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml)
 
@@ -118,6 +120,8 @@ Yep we have a problem...
 
 There's a safer solution...
 
+[(__TODO__: Why does GitHub execute Workflows that are submitted inside a PR? Is this a Security Risk?)](https://github.com/apache/nuttx-apps/actions/runs/22299411019)
+
 # Safer Checkout
 
 _Do we really need the Entire Repo from the PR?_
@@ -181,6 +185,8 @@ Indeed we still have a problem. [__ASF Security Policy__](https://infra.apache.o
 > _"You MUST NOT use pull_request_target as a trigger on ANY action that exports ANY confidential credentials or tokens such as GITHUB_TOKEN or NPM_TOKEN."_
 
 Hmmm we can't possibly prove that [_pr-size-labeler_](https://github.com/apache/nuttx/blob/cf30528231a23c7329198bba220e8fcbac98baa2/.github/workflows/labeler.yml#L35-L45) (and other GitHub Actions) will never ever leak our GitHub Tokens someday. Let's solve this...
+
+1.  __Change our Workflow Trigger:__ (Unsafe Trigger) _pull_request_target_ becomes (Safer Trigger) _pull_request_ (explained below)
 
 1.  __Switch our GitHub Token:__ _(Unsafe)_ Read-Write Token becomes _(Safer)_ Read-Only Token. Tampering mischief can't happen with a Read-Only Token.
 
@@ -335,6 +341,8 @@ Then we upload them as a __PR Artifact__, that will appear in the Workflow Run: 
 
 Here comes the Second Part of the PR Workflow...
 
+![workflow_run workflow will wait for pull_request workflow to complete](https://lupyuen.org/images/prtarget-workflowrun.png)
+
 # Set the PR Labels
 
 [__As Recommended by GitHub__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/): We added a new _workflow_run_ workflow that will wait for _pull_request_ workflow to complete. Then it downloads the __PR Artifact__: [.github/workflows/pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml)
@@ -479,11 +487,11 @@ Pros and Cons of the new implementation...
 
 - Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.
 
-<hr>
-
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
+
+![PR Labeling in NuttX](https://lupyuen.org/images/prtarget-title.png)
 
 # Appendix: Compute the Arch Labels
 
@@ -506,7 +514,7 @@ Remember to work out all the Test Cases for our new implementation of PR Labelin
 - Complex PR: Drivers, Arm32 + Arm64, Arm32 + RISC-V, ...
 - Doc PR, ...
 - [__See the Test Cases__](https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403)
-- [__For NuttX Apps__](https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4)
+- [__Also for NuttX Apps__](https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4)
 
 And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
 
