@@ -485,9 +485,9 @@ Pros and Cons of the new implementation...
 
 - New Implementation is Quicker: It's faster since we don't checkout the entire repo. Also _pr-size-labeler_ actually runs in a Docker Container, we don't need that any more.
 
-- But it might be quirky under Heavy Load. Remember that _workflow_run_ trigger will write the PR Labels as a Second Job? When we run out of GitHub Runners, the PR Labels might never be applied. The Build Logic in _arch.yml_ will execute a Complete NuttX Build if it can't find the PR Labels.
+- But it might be quirky under Heavy Load. Remember that _workflow_run_ trigger will write the PR Labels as a Second Job? When we run out of [__GitHub Runners__](https://github.com/apache/nuttx/issues/17914), the PR Labels might never be applied. The Build Logic in [_arch.yml_](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml) will execute a Complete NuttX Build if it can't find the PR Labels.
 
-- Will the Build Workflow be triggered too early, before the _workflow_run_ trigger? Hopefully not. The Build Workflow begins in the _Fetch-Source_ stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the _Select-Builds_ stage _(arch.yml)_ reading the PR Labels. Before 1.5 minutes, rightfully our _workflow_run_ trigger would have written the PR Labels to the PR.
+- Will the Build Workflow be triggered too early, before the _workflow_run_ trigger? Hopefully not. The Build Workflow begins in the _Fetch-Source_ stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the _Select-Builds_ stage [_(arch.yml)_](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml) reading the PR Labels. Before 1.5 minutes, rightfully our _workflow_run_ trigger would have written the PR Labels to the PR.
 
 - Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.
 
@@ -505,7 +505,7 @@ _What's an Arch Label?_
 
 Arch Labeling looks like `arch: arm`, `arch: risc-v`, `board: arm`, `area: Build system`, ...
 
-One Year Ago: We added PR Labeling to quicken [__NuttX CI Builds__](https://lupyuen.org/articles/ci3). Depending on the Arch Label, our CI Workflow _(arch.yml)_ will either build __One Specific Architecture__ (like Arm32). Or do a __Complete Build__ across All Architectures.
+One Year Ago: We added PR Labeling to quicken [__NuttX CI Builds__](https://lupyuen.org/articles/ci3). Depending on the Arch Label, our CI Workflow [_(arch.yml)_](https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml) will either build __One Specific Architecture__ (like Arm32). Or do a __Complete Build__ across All Architectures.
 
 (Size Label isn't actually consumed by any of our GitHub Workflows today. We used it for the LLM Bot for PR Review, but we stopped the bot because Gemini upgraded their API and it broke our bot)
 
