@@ -433,6 +433,19 @@ The PR Artifact contains __PR Number__ and __PR Labels__. This is how we write t
 
 And we're done! That's how we changed (Unsafe Trigger) _pull_request_target_ to (Safer Trigger) _pull_request_ in NuttX.
 
+_But workflow_run has Write Permission. Isn't there a Security Risk?_
+
+Remember to follow the [__ASF Security Guidance__](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)...
+
+- (Read-Only Trigger) _pull_request_ shall (very carefully)
+  - Handle any __Untrusted Input__
+  - Then pass the __Sanitised Output__ to _workflow_run_ (via PR Artifact)
+
+- (Read-Write Trigger) _workflow_run_ shall
+  - Read the __Sanitised Output__ (via PR Artifact)
+  - Then __write the changes__ into the PR
+  - Never handle any __Untrusted Input__ in _workflow_run_!
+
 # Zizmor Security Scanner
 
 _Anything else we can do to make GitHub Actions safer?_
