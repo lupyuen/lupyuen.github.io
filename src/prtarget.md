@@ -349,7 +349,7 @@ Here comes the Second Part of the PR Workflow...
 
 # Set the PR Labels
 
-[__As Recommended by GitHub__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/): We add a new _workflow_run_ workflow that will wait for _pull_request_ workflow to complete. Then it downloads the __PR Artifact__...
+[__As Recommended by GitHub__](https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/): We add a new _workflow_run_ workflow that will wait for _pull_request_ workflow to complete. Then it downloads the __PR Artifact__ and sets the PR Labels...
 
 - (Read-Only Trigger) _pull_request_ shall (very carefully)
   - Handle any __PR Input__
@@ -360,7 +360,7 @@ Here comes the Second Part of the PR Workflow...
   - Then __write the changes__ into the PR
   - Never handle any __Untrusted Input__ in _workflow_run_!
 
-Here's how: [.github/workflows/pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml)
+Here's how we download the __PR Artifact__: [.github/workflows/pr_labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml)
 
 ```yaml
 ## When the Pull Request Labeler workflow is completed...
@@ -453,7 +453,7 @@ _But workflow_run has Write Permission. Isn't there a Security Risk?_
 Remember to follow the [__ASF Security Guidance__](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=321719166)...
 
 - (Read-Only Trigger) _pull_request_ shall (very carefully)
-  - Handle any __Untrusted Input__
+  - Handle any __Untrusted Input__ from the PR
   - Then pass the __Sanitised Output__ to _workflow_run_ (via PR Artifact)
 
 - (Read-Write Trigger) _workflow_run_ shall
