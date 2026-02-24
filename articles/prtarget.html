@@ -340,7 +340,7 @@ jobs:
 <p>Here comes the Second Part of the PR Workflow…</p>
 <p><img src="https://lupyuen.org/images/prtarget-workflowrun.png" alt="workflow_run workflow will wait for pull_request workflow to complete" /></p>
 <h1 id="set-the-pr-labels"><a class="doc-anchor" href="#set-the-pr-labels">§</a>7 Set the PR Labels</h1>
-<p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>As Recommended by GitHub</strong></a>: We add a new <em>workflow_run</em> workflow that will wait for <em>pull_request</em> workflow to complete. Then it downloads the <strong>PR Artifact</strong>…</p>
+<p><a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>As Recommended by GitHub</strong></a>: We add a new <em>workflow_run</em> workflow that will wait for <em>pull_request</em> workflow to complete. Then it downloads the <strong>PR Artifact</strong> and sets the PR Labels…</p>
 <ul>
 <li>
 <p>(Read-Only Trigger) <em>pull_request</em> shall (very carefully)</p>
@@ -358,7 +358,7 @@ jobs:
 </ul>
 </li>
 </ul>
-<p>Here’s how: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
+<p>Here’s how we download the <strong>PR Artifact</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/pr_labeler.yml">.github/workflows/pr_labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>## When the Pull Request Labeler workflow is completed...
 name: &quot;Set Pull Request Labels&quot;
 on:
@@ -443,7 +443,7 @@ jobs:
 <li>
 <p>(Read-Only Trigger) <em>pull_request</em> shall (very carefully)</p>
 <ul>
-<li>Handle any <strong>Untrusted Input</strong></li>
+<li>Handle any <strong>Untrusted Input</strong> from the PR</li>
 <li>Then pass the <strong>Sanitised Output</strong> to <em>workflow_run</em> (via PR Artifact)</li>
 </ul>
 </li>
