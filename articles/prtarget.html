@@ -461,10 +461,10 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 <p>New Implementation is Quicker: It’s faster since we don’t checkout the entire repo. Also <em>pr-size-labeler</em> actually runs in a Docker Container, we don’t need that any more.</p>
 </li>
 <li>
-<p>But it might be quirky under Heavy Load. Remember that <em>workflow_run</em> trigger will write the PR Labels as a Second Job? When we run out of GitHub Runners, the PR Labels might never be applied. The Build Logic in <em>arch.yml</em> will execute a Complete NuttX Build if it can’t find the PR Labels.</p>
+<p>But it might be quirky under Heavy Load. Remember that <em>workflow_run</em> trigger will write the PR Labels as a Second Job? When we run out of <a href="https://github.com/apache/nuttx/issues/17914"><strong>GitHub Runners</strong></a>, the PR Labels might never be applied. The Build Logic in <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml"><em>arch.yml</em></a> will execute a Complete NuttX Build if it can’t find the PR Labels.</p>
 </li>
 <li>
-<p>Will the Build Workflow be triggered too early, before the <em>workflow_run</em> trigger? Hopefully not. The Build Workflow begins in the <em>Fetch-Source</em> stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the <em>Select-Builds</em> stage <em>(arch.yml)</em> reading the PR Labels. Before 1.5 minutes, rightfully our <em>workflow_run</em> trigger would have written the PR Labels to the PR.</p>
+<p>Will the Build Workflow be triggered too early, before the <em>workflow_run</em> trigger? Hopefully not. The Build Workflow begins in the <em>Fetch-Source</em> stage, checking out the Entire Repo and uploading everything in 1.5 minutes, followed by the <em>Select-Builds</em> stage <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml"><em>(arch.yml)</em></a> reading the PR Labels. Before 1.5 minutes, rightfully our <em>workflow_run</em> trigger would have written the PR Labels to the PR.</p>
 </li>
 <li>
 <p>Based on Actual Logs: New PR Labeling completes in 13 elapsed seconds, spanning 2 jobs. Previously: 24 elapsed seconds, in 1 job.</p>
@@ -472,11 +472,12 @@ error[dangerous-triggers]: use of fundamentally insecure workflow trigger
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md"><strong>lupyuen.org/src/prtarget.md</strong></a></p>
+<p><a href="https://news.ycombinator.com/item?id=47132191"><strong>Discuss this article on Hacker News</strong></a></p>
 <p><img src="https://lupyuen.org/images/prtarget-title.png" alt="PR Labeling in NuttX" /></p>
 <h1 id="appendix-compute-the-arch-labels"><a class="doc-anchor" href="#appendix-compute-the-arch-labels">§</a>10 Appendix: Compute the Arch Labels</h1>
 <p><em>What’s an Arch Label?</em></p>
 <p>Arch Labeling looks like <code>arch: arm</code>, <code>arch: risc-v</code>, <code>board: arm</code>, <code>area: Build system</code>, …</p>
-<p>One Year Ago: We added PR Labeling to quicken <a href="https://lupyuen.org/articles/ci3"><strong>NuttX CI Builds</strong></a>. Depending on the Arch Label, our CI Workflow <em>(arch.yml)</em> will either build <strong>One Specific Architecture</strong> (like Arm32). Or do a <strong>Complete Build</strong> across All Architectures.</p>
+<p>One Year Ago: We added PR Labeling to quicken <a href="https://lupyuen.org/articles/ci3"><strong>NuttX CI Builds</strong></a>. Depending on the Arch Label, our CI Workflow <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/arch.yml"><em>(arch.yml)</em></a> will either build <strong>One Specific Architecture</strong> (like Arm32). Or do a <strong>Complete Build</strong> across All Architectures.</p>
 <p>(Size Label isn’t actually consumed by any of our GitHub Workflows today. We used it for the LLM Bot for PR Review, but we stopped the bot because Gemini upgraded their API and it broke our bot)</p>
 <p><em>How to compute the Arch Labels for a NuttX PR?</em></p>
 <p>We wrote our own GitHub Script (JavaScript) for doing the Arch Labeling (e.g. <code>arch: risc-v</code>).</p>
