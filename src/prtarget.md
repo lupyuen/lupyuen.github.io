@@ -495,6 +495,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/prtarget.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/prtarget.md)
 
+[__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=47132191)
+
 ![PR Labeling in NuttX](https://lupyuen.org/images/prtarget-title.png)
 
 # Appendix: Compute the Arch Labels
