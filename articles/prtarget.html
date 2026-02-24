@@ -316,9 +316,11 @@ jobs:
 <li><a href="https://lupyuen.org/articles/prtarget#appendix-compute-the-arch-labels"><strong>“Compute the Arch Labels”</strong></a></li>
 </ul>
 <p>Size Label and Arch Labels are all ready. Now we stash the PR Labels safely…</p>
+<p><img src="https://lupyuen.org/images/prtarget-artifact.png" alt="PR Artifact contains PR Number and PR Labels" /></p>
+<p><a href="https://github.com/apache/nuttx/actions/runs/22334686979"><em>PR Artifact contains PR Number and PR Labels</em></a></p>
 <h1 id="upload-the-pr-labels"><a class="doc-anchor" href="#upload-the-pr-labels">§</a>6 Upload the PR Labels</h1>
 <p><em>No Write Permission means we can’t set the PR Labels. How to save the labels?</em></p>
-<p>GitHub offers a safe interim storage for our PR Labels: We save them into a <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>PR Artifact</strong></a> during the Workflow Run.</p>
+<p>GitHub offers a safe interim storage for our PR Labels: We save them into a <a href="https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"><strong>PR Artifact</strong></a> during the Workflow Run. (Pic above)</p>
 <p>First we write the <strong>PR Number and PR Labels</strong>: <a href="https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L134-L147">.github/workflows/labeler.yml</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>      // Save the PR Number and PR Labels into a PR Artifact
       // e.g. &#39;Size: XS\nArch: avr\n&#39;
