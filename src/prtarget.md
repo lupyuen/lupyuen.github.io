@@ -550,7 +550,7 @@ Remember to work out all the Test Cases for our new implementation of PR Labelin
 - [__See the Test Cases__](https://gist.github.com/lupyuen/5748c468315b5ba0567464a5cca69403)
 - [__Also for NuttX Apps__](https://gist.github.com/lupyuen/a3f75797d49ea7262b9a65dba6eba9e4)
 
-And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP.
+And remember to standby 24 x 7, in case our GitHub Workflow goes haywire and we need to rollback ASAP. [(Unless we're out for Marathon Training)](https://lupyuen.org/articles/marathon)
 
 Inside our New PR Labeler: This is how we read the Labeling Rules from _.github/labeler.yml_: [.github/workflows/labeler.yml](https://github.com/apache/nuttx/blob/master/.github/workflows/labeler.yml#L81-L134)
 
