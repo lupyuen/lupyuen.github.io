@@ -4,6 +4,8 @@
 
 ![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
+[__Update: Watch the Video__](https://youtu.be/lwkMS_bgyXA)
+
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
 ![Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
@@ -460,6 +462,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 ![Optimising the Continuous Integration for Apache NuttX RTOS](https://lupyuen.github.io/images/ci3-title.jpg)
 
 # What's Next
+
+[__Update: Watch the Video__](https://youtu.be/lwkMS_bgyXA)
 
 _Shouldn't we implement NuttX CI so that it's totally User-Proof?_
 
