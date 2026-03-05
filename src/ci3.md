@@ -527,7 +527,9 @@ I have no idea, though we have [__plenty of data to guide us__](https://lupyuen.
 
 Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Grafana and Prometheus...
 
-- [__"Continuous Integration Dashboard for Apache NuttX RTOS  (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
+- [__"Is Apache NuttX RTOS really OK? Daily Routine for NuttX Monitoring"__](https://youtu.be/lwkMS_bgyXA)
+
+- [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
 - [__"Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/dashboard.html)
 
