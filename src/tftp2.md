@@ -474,3 +474,63 @@ Many Thanks to my [__GitHub Sponsors__](https://lupyuen.github.io/articles/spons
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/tftp2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp2.md)
+
+# Appendix: U-Boot Fix
+
+Thanks to __George Pee__: We have a potential fix for U-Boot (which I haven't validated)...
+
+> _Hi, I ran across this tftp issue and ran across your article.
+I have the same issue (and fudging the tftp server to send the packet
+twice worked), but I traced it down to an unclean rx_desc and DMA
+issue._
+
+> _I don't know if your device was the same type as I am using, but this
+fixed the tftp issue for me, but fixing the u-boot driver:_
+
+```c
+--- dwc_eth_qos.c.orig    2026-03-04 20:55:26.471960425 -0600
++++ dwc_eth_qos.c    2026-03-04 20:54:59.446589634 -0600
+@@ -985,7 +985,8 @@
+         addr64 = (ulong)(eqos->rx_dma_buf + (i * EQOS_MAX_PACKET_SIZE));
+         rx_desc->des0 = lower_32_bits(addr64);
+         rx_desc->des1 = upper_32_bits(addr64);
+-        rx_desc->des3 |= EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
++        rx_desc->des2 = EQOS_MAX_PACKET_SIZE;
++        rx_desc->des3 = EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
+         mb();
+         eqos->config->ops->eqos_flush_desc(rx_desc);
+         eqos->config->ops->eqos_inval_buffer((void *)addr64,
+EQOS_MAX_PACKET_SIZE);
+@@ -1175,6 +1176,8 @@
+         return -EINVAL;
+     }
+
++    eqos->config->ops->eqos_inval_buffer(packet, length);
++
+     if (eqos->started && (eqos->rx_desc_idx & idx_mask) == idx_mask) {
+         for (idx = eqos->rx_desc_idx - idx_mask;
+              idx <= eqos->rx_desc_idx;
+@@ -1184,6 +1187,7 @@
+             rx_desc = eqos_get_desc(eqos, idx, true);
+             rx_desc->des0 = 0;
+             rx_desc->des1 = 0;
++            rx_desc->des2 = EQOS_MAX_PACKET_SIZE;
+             mb();
+             eqos->config->ops->eqos_flush_desc(rx_desc);
+             eqos->config->ops->eqos_inval_buffer(packet, length);
+@@ -1197,7 +1201,7 @@
+              * descriptor too.
+              */
+             mb();
+-            rx_desc->des3 |= EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
++            rx_desc->des3 = EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
+             eqos->config->ops->eqos_flush_desc(rx_desc);
+         }
+         writel(lower_32_bits((ulong)rx_desc),
+```
+
+_Part of this change is upstream:_
+
+- [u-boot/commit/4332d8061785b697ae7bdf3945adb55ba4da696b](https://github.com/u-boot/u-boot/commit/4332d8061785b697ae7bdf3945adb55ba4da696b)
+
+_Just curious -- is your device using the same driver?_
