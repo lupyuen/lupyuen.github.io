@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Is Apache NuttX RTOS really OK? Daily Routine for NuttX Monitoring</title>
+            <link>https://www.youtube.com/watch?v=lwkMS_bgyXA</link>
+            <description><![CDATA[This is how I monitor Apache NuttX Project every day, making sure that the Continuous Integration is all OK]]></description>
+            <guid>https://www.youtube.com/watch?v=lwkMS_bgyXA</guid>
+            <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>GitHub Actions pull_request_target vs Apache NuttX RTOS</title>
             <link>https://lupyuen.org/articles/prtarget</link>
             <description><![CDATA[Let's find out why pull_request_target is unsafe in GitHub Actions. And how we fixed it in Apache NuttX RTOS.]]></description>
