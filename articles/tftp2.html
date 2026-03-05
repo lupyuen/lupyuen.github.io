@@ -70,7 +70,8 @@
 <li><a href="#reduce-tftp-timeout-duration" title="Reduce TFTP Timeout Duration">4 Reduce TFTP Timeout Duration</a><ul></ul></li>
 <li><a href="#throttle-tftp-server" title="Throttle TFTP Server">5 Throttle TFTP Server</a><ul></ul></li>
 <li><a href="#all-things-considered" title="All Things Considered">6 All Things Considered</a><ul></ul></li>
-<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2023</em></p>
+<li><a href="#whats-next" title="What’s Next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-u-boot-fix" title="Appendix: U-Boot Fix">8 Appendix: U-Boot Fix</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp2-title.jpg" alt="Strange Workaround for TFTP Timeout in U-Boot Bootloader for Star64 JH7110 SBC" /></p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/release"><strong>Apache NuttX Real-Time Operating System</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> RISC-V Single-Board Computer. (Pic below)</p>
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC, same as the VisionFive2 SBC)</p>
@@ -428,6 +429,62 @@ $ curl --output initrd tftp://192.168.31.10/initrd
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp2.md"><strong>lupyuen.github.io/src/tftp2.md</strong></a></p>
+<h1 id="appendix-u-boot-fix"><a class="doc-anchor" href="#appendix-u-boot-fix">§</a>8 Appendix: U-Boot Fix</h1>
+<p>Thanks to <strong>George Pee</strong>: We have a potential fix for U-Boot (which I haven’t validated)…</p>
+<blockquote>
+<p><em>Hi, I ran across this tftp issue and ran across your article.
+I have the same issue (and fudging the tftp server to send the packet
+twice worked), but I traced it down to an unclean rx_desc and DMA
+issue.</em></p>
+</blockquote>
+<blockquote>
+<p><em>I don’t know if your device was the same type as I am using, but this
+fixed the tftp issue for me, but fixing the u-boot driver:</em></p>
+</blockquote>
+<div class="example-wrap"><pre class="language-c"><code>--- dwc_eth_qos.c.orig    2026-03-04 20:55:26.471960425 -0600
++++ dwc_eth_qos.c    2026-03-04 20:54:59.446589634 -0600
+@@ -985,7 +985,8 @@
+         addr64 = (ulong)(eqos-&gt;rx_dma_buf + (i * EQOS_MAX_PACKET_SIZE));
+         rx_desc-&gt;des0 = lower_32_bits(addr64);
+         rx_desc-&gt;des1 = upper_32_bits(addr64);
+-        rx_desc-&gt;des3 |= EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
++        rx_desc-&gt;des2 = EQOS_MAX_PACKET_SIZE;
++        rx_desc-&gt;des3 = EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
+         mb();
+         eqos-&gt;config-&gt;ops-&gt;eqos_flush_desc(rx_desc);
+         eqos-&gt;config-&gt;ops-&gt;eqos_inval_buffer((void *)addr64,
+EQOS_MAX_PACKET_SIZE);
+@@ -1175,6 +1176,8 @@
+         return -EINVAL;
+     }
+
++    eqos-&gt;config-&gt;ops-&gt;eqos_inval_buffer(packet, length);
++
+     if (eqos-&gt;started &amp;&amp; (eqos-&gt;rx_desc_idx &amp; idx_mask) == idx_mask) {
+         for (idx = eqos-&gt;rx_desc_idx - idx_mask;
+              idx &lt;= eqos-&gt;rx_desc_idx;
+@@ -1184,6 +1187,7 @@
+             rx_desc = eqos_get_desc(eqos, idx, true);
+             rx_desc-&gt;des0 = 0;
+             rx_desc-&gt;des1 = 0;
++            rx_desc-&gt;des2 = EQOS_MAX_PACKET_SIZE;
+             mb();
+             eqos-&gt;config-&gt;ops-&gt;eqos_flush_desc(rx_desc);
+             eqos-&gt;config-&gt;ops-&gt;eqos_inval_buffer(packet, length);
+@@ -1197,7 +1201,7 @@
+              * descriptor too.
+              */
+             mb();
+-            rx_desc-&gt;des3 |= EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
++            rx_desc-&gt;des3 = EQOS_DESC3_OWN | EQOS_DESC3_BUF1V;
+             eqos-&gt;config-&gt;ops-&gt;eqos_flush_desc(rx_desc);
+         }
+         writel(lower_32_bits((ulong)rx_desc),</code></pre></div>
+<p><em>Part of this change is upstream:</em></p>
+<ul>
+<li><a href="https://github.com/u-boot/u-boot/commit/4332d8061785b697ae7bdf3945adb55ba4da696b">u-boot/commit/4332d8061785b697ae7bdf3945adb55ba4da696b</a></li>
+</ul>
+<p><em>Just curious – is your device using the same driver?</em></p>
 
     
     <!-- Begin scripts/rustdoc-after.html: Post-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
