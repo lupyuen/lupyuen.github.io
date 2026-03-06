@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: GitHub Runners and Mystery Spikes</title>
+            <link>https://www.youtube.com/watch?v=SeUCE8xKwlo</link>
+            <description><![CDATA[We have a problem with GitHub Runners in Apache NuttX Project: Sometimes during peak periods ... We use too many of them! In this video I'm documenting everything I know about the problem.]]></description>
+            <guid>https://www.youtube.com/watch?v=SeUCE8xKwlo</guid>
+            <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Is Apache NuttX RTOS really OK? Daily Routine for NuttX Monitoring</title>
             <link>https://www.youtube.com/watch?v=lwkMS_bgyXA</link>
             <description><![CDATA[This is how I monitor Apache NuttX Project every day, making sure that the Continuous Integration is all OK]]></description>

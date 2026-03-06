@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: GitHub Runners and Mystery Spikes",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-06",
+      "website": "https://www.youtube.com/watch?v=SeUCE8xKwlo",
+      "summary": "We have a problem with GitHub Runners in Apache NuttX Project: Sometimes during peak periods ... We use too many of them! In this video I'm documenting everything I know about the problem."
+    },
+    {
       "name": "Is Apache NuttX RTOS really OK? Daily Routine for NuttX Monitoring",
       "publisher": "YouTube",
       "releaseDate": "2026-03-04",
