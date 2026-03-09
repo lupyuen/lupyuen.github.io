@@ -341,19 +341,42 @@ We published our own __Live Metric for Full-Time Runners__, for everyone to trac
 
 We publish the data every __15 minutes__...
 
-1.  [__compute-github-runners.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh) calls GitHub API to add up the __Elapsed Duration__ of All Completed GitHub Jobs for today.
+1.  [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh) calls GitHub API to add up the __Elapsed Duration__ of All Completed GitHub Jobs for today.
 
     Then it extrapolates the Number of __Full-Time GitHub Runners__.
   
     (1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)
 
-1.  [__run.sh__](https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh) calls the script above and render the Full-Time GitHub Runners as a PNG.
+1.  [__run2.sh__](https://github.com/lupyuen/nuttx-metrics/blob/main/run2.sh) calls the script above and render the Full-Time GitHub Runners as a PNG.
 
     (Thanks to ImageMagick)
 
-1.  [__compute-github-runners2.sh__](https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh): Is the Linux Version of the above macOS Script.
+1.  We run the script like so...
 
-    (But less accurate, due to BC Rounding)
+    ```bash
+    ## Run the job inside tmux for easier monitoring
+    tmux
+
+    ## Set the GitHub Token
+    . $HOME/github-token.sh
+    gh auth status
+
+    ## We should see...
+    ## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+    ## - Active account: true
+    ## - Git operations protocol: https
+    ## - Token: ghp_************************************
+    ## - Token scopes: 'read:org', 'repo'
+
+    ## Remember to grant Write Access to nuttxpr for nuttx-metrics repo
+    ## (Invite nuttxpr as Collaborator)
+    sudo apt install bc imagemagick
+    git clone git@github.com:lupyuen/nuttx-metrics.git
+    cd nuttx-metrics
+    ./run2.sh
+    ```
+
+    [(Source)](https://lupyuen.org/articles/dashboard#appendix-live-metric-for-github-runners)
 
 Next comes the Watchmen...
 
