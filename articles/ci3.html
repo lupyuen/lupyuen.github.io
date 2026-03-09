@@ -360,17 +360,37 @@
 <p>We publish the data every <strong>15 minutes</strong>…</p>
 <ol>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners.sh"><strong>compute-github-runners.sh</strong></a> calls GitHub API to add up the <strong>Elapsed Duration</strong> of All Completed GitHub Jobs for today.</p>
+<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a> calls GitHub API to add up the <strong>Elapsed Duration</strong> of All Completed GitHub Jobs for today.</p>
 <p>Then it extrapolates the Number of <strong>Full-Time GitHub Runners</strong>.</p>
 <p>(1 GitHub Job Hour roughly equals 8 GitHub Runner Hours, which equals 8 Full-Time Runners Per Hour)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run.sh"><strong>run.sh</strong></a> calls the script above and render the Full-Time GitHub Runners as a PNG.</p>
+<p><a href="https://github.com/lupyuen/nuttx-metrics/blob/main/run2.sh"><strong>run2.sh</strong></a> calls the script above and render the Full-Time GitHub Runners as a PNG.</p>
 <p>(Thanks to ImageMagick)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-release/blob/main/compute-github-runners2.sh"><strong>compute-github-runners2.sh</strong></a>: Is the Linux Version of the above macOS Script.</p>
-<p>(But less accurate, due to BC Rounding)</p>
+<p>We run the script like so…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Run the job inside tmux for easier monitoring
+tmux
+
+## Set the GitHub Token
+. $HOME/github-token.sh
+gh auth status
+
+## We should see...
+## ✓ Logged in to github.com account nuttxpr (GITHUB_TOKEN)
+## - Active account: true
+## - Git operations protocol: https
+## - Token: ghp_************************************
+## - Token scopes: &#39;read:org&#39;, &#39;repo&#39;
+
+## Remember to grant Write Access to nuttxpr for nuttx-metrics repo
+## (Invite nuttxpr as Collaborator)
+sudo apt install bc imagemagick
+git clone git@github.com:lupyuen/nuttx-metrics.git
+cd nuttx-metrics
+./run2.sh</code></pre></div>
+<p><a href="https://lupyuen.org/articles/dashboard#appendix-live-metric-for-github-runners">(Source)</a></p>
 </li>
 </ol>
 <p>Next comes the Watchmen…</p>
