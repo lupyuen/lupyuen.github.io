@@ -8,6 +8,8 @@
 
 [__Another Video__](https://www.youtube.com/watch?v=SeUCE8xKwlo)
 
+[__Yet Another Video__](https://youtu.be/JEF9_BqHWaY)
+
 __Within Two Weeks:__ We squashed our GitHub Actions spending from __$4,900__ (weekly) down to __$890__...
 
 ![Within Two Weeks: We squashed our GitHub Actions spending from $4,900 (weekly) down to $890](https://lupyuen.github.io/images/ci3-beforeafter7days.jpg)
@@ -469,6 +471,8 @@ We should probably maintain an official __Paid GitHub Org Account__ to execute o
 
 [__Another Video__](https://www.youtube.com/watch?v=SeUCE8xKwlo)
 
+[__Yet Another Video__](https://youtu.be/JEF9_BqHWaY)
+
 _Shouldn't we implement NuttX CI so that it's totally User-Proof?_
 
 _If the GitHub Load is too high... It's a problem with our CI System, not our NuttX Developers. Right?_
@@ -534,6 +538,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 - [__"Is Apache NuttX RTOS really OK? Daily Routine for NuttX Monitoring"__](https://youtu.be/lwkMS_bgyXA)
 
 - [__"Apache NuttX RTOS: GitHub Runners and Mystery Spikes"__](https://www.youtube.com/watch?v=SeUCE8xKwlo)
+
+- [__"Apache NuttX RTOS: Too Many GitHub Runners"__](https://youtu.be/JEF9_BqHWaY)
 
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 

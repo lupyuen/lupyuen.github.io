@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Too Many GitHub Runners",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-09",
+      "website": "https://youtu.be/JEF9_BqHWaY",
+      "summary": "This video explains why we're using too many GitHub Runners in Apache NuttX Project, and discusses potential solutions"
+    },
+    {
       "name": "Apache NuttX RTOS: GitHub Runners and Mystery Spikes",
       "publisher": "YouTube",
       "releaseDate": "2026-03-06",

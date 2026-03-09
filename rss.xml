@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Too Many GitHub Runners</title>
+            <link>https://youtu.be/JEF9_BqHWaY</link>
+            <description><![CDATA[This video explains why we're using too many GitHub Runners in Apache NuttX Project, and discusses potential solutions]]></description>
+            <guid>https://youtu.be/JEF9_BqHWaY</guid>
+            <pubDate>Mon, 09 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: GitHub Runners and Mystery Spikes</title>
             <link>https://www.youtube.com/watch?v=SeUCE8xKwlo</link>
             <description><![CDATA[We have a problem with GitHub Runners in Apache NuttX Project: Sometimes during peak periods ... We use too many of them! In this video I'm documenting everything I know about the problem.]]></description>
