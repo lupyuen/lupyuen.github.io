@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Dumping the GitHub Jobs</title>
+            <link>https://youtu.be/gOgUvyL-XJA</link>
+            <description><![CDATA[Let's dump the PRs, Jobs and Job Durations from GitHub ... So we can understand why Apache NuttX Project is using so many GitHub Runners]]></description>
+            <guid>https://youtu.be/gOgUvyL-XJA</guid>
+            <pubDate>Tue, 10 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Too Many GitHub Runners</title>
             <link>https://youtu.be/JEF9_BqHWaY</link>
             <description><![CDATA[This video explains why we're using too many GitHub Runners in Apache NuttX Project, and discusses potential solutions]]></description>

@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Dumping the GitHub Jobs",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-10",
+      "website": "https://youtu.be/gOgUvyL-XJA",
+      "summary": "Let's dump the PRs, Jobs and Job Durations from GitHub ... So we can understand why Apache NuttX Project is using so many GitHub Runners"
+    },
+    {
       "name": "Apache NuttX RTOS: Too Many GitHub Runners",
       "publisher": "YouTube",
       "releaseDate": "2026-03-09",
