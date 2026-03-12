@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Most Expensive PR</title>
+            <link>https://youtu.be/BxtvnfjlbU4</link>
+            <description><![CDATA[Here are the most expensive PRs in Apache NuttX Project, in terms of GitHub Runner Usage]]></description>
+            <guid>https://youtu.be/BxtvnfjlbU4</guid>
+            <pubDate>Thu, 12 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Dumping the GitHub Jobs</title>
             <link>https://youtu.be/gOgUvyL-XJA</link>
             <description><![CDATA[Let's dump the PRs, Jobs and Job Durations from GitHub ... So we can understand why Apache NuttX Project is using so many GitHub Runners]]></description>

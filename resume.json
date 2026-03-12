@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Most Expensive PR",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-12",
+      "website": "https://youtu.be/BxtvnfjlbU4",
+      "summary": "Here are the most expensive PRs in Apache NuttX Project, in terms of GitHub Runner Usage"
+    },
+    {
       "name": "Apache NuttX RTOS: Dumping the GitHub Jobs",
       "publisher": "YouTube",
       "releaseDate": "2026-03-10",

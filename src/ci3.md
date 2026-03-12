@@ -566,6 +566,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Apache NuttX RTOS: Dumping the GitHub Jobs"__](https://youtu.be/gOgUvyL-XJA)
 
+- [__"Apache NuttX RTOS: Most Expensive PR"__](https://youtu.be/BxtvnfjlbU4)
+
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
 - [__"Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/dashboard.html)
