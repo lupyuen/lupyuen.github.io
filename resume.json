@@ -162,6 +162,20 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Analysing the Most Expensive PR",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-18",
+      "website": "https://youtu.be/swFaxaTCEQg",
+      "summary": "We did a Quantitative Analysis of our Most Expensive PR (in terms of GitHub Runner Usage), here's what we found: (1) We really need to fix the downloading of Build Dependencies (2) We should disable the Build Config for `bl602evb/elf` (3) Later we should show our developers how to build and test PRs in our own repos."
+    },
+    {
+      "name": "Apache NuttX RTOS: Cost of NuttX PRs vs NuttX Apps",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-17",
+      "website": "https://youtu.be/SoBq9nGcpM4",
+      "summary": "Which PRs are consuming more GitHub Runners: NuttX PRs or NuttX Apps PRs? 84% of GitHub Runners were spent on NuttX Repo, 12% was spent on NuttX Apps Repo. What about the past 4 months? The distribution is the same."
+    },
+    {
       "name": "Apache NuttX RTOS: Most Expensive PR",
       "publisher": "YouTube",
       "releaseDate": "2026-03-12",
