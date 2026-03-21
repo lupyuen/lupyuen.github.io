@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Building PRs in Our Own Repo",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-20",
+      "website": "https://youtu.be/19w_CeaANLw",
+      "summary": "Here's a new way to Build PRs in Our Own NuttX Repos"
+    },
+    {
       "name": "Apache NuttX RTOS: Analysing the Most Expensive PR",
       "publisher": "YouTube",
       "releaseDate": "2026-03-18",

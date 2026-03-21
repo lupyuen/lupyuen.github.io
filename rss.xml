@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Building PRs in Our Own Repo</title>
+            <link>https://youtu.be/19w_CeaANLw</link>
+            <description><![CDATA[Here's a new way to Build PRs in Our Own NuttX Repos]]></description>
+            <guid>https://youtu.be/19w_CeaANLw</guid>
+            <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Analysing the Most Expensive PR</title>
             <link>https://youtu.be/swFaxaTCEQg</link>
             <description><![CDATA[We did a Quantitative Analysis of our Most Expensive PR (in terms of GitHub Runner Usage), here's what we found: (1) We really need to fix the downloading of Build Dependencies (2) We should disable the Build Config for `bl602evb/elf` (3) Later we should show our developers how to build and test PRs in our own repos.]]></description>
