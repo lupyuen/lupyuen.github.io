@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Testing of Retry for CI Builds</title>
+            <link>https://youtu.be/RbO4b8sN_do</link>
+            <description><![CDATA[This video explains our script for Retry for NuttX CI Builds. And how we're testing at NuttX Main Repo / NuttX Mirror Repo / NuttX Build Farm.]]></description>
+            <guid>https://youtu.be/RbO4b8sN_do</guid>
+            <pubDate>Mon, 23 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Building PRs in Our Own Repo</title>
             <link>https://youtu.be/19w_CeaANLw</link>
             <description><![CDATA[Here's a new way to Build PRs in Our Own NuttX Repos]]></description>

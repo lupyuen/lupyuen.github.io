@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Testing of Retry for CI Builds",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-23",
+      "website": "https://youtu.be/RbO4b8sN_do",
+      "summary": "This video explains our script for Retry for NuttX CI Builds. And how we're testing at NuttX Main Repo / NuttX Mirror Repo / NuttX Build Farm."
+    },
+    {
       "name": "Apache NuttX RTOS: Building PRs in Our Own Repo",
       "publisher": "YouTube",
       "releaseDate": "2026-03-20",
