@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: NTFC Download Failure",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-25",
+      "website": "https://youtu.be/uSpQkzBogEw",
+      "summary": "This video explains (1) NTFC Download Failures in Most Expensive PR (2) Compile Errors in Second Most Expensive PR (3) Build Quirk in ESP32: Retry Scheduled"
+    },
+    {
       "name": "Apache NuttX RTOS: Testing of Retry for CI Builds",
       "publisher": "YouTube",
       "releaseDate": "2026-03-23",

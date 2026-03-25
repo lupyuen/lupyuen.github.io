@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: NTFC Download Failure</title>
+            <link>https://youtu.be/uSpQkzBogEw</link>
+            <description><![CDATA[This video explains (1) NTFC Download Failures in Most Expensive PR (2) Compile Errors in Second Most Expensive PR (3) Build Quirk in ESP32: Retry Scheduled]]></description>
+            <guid>https://youtu.be/uSpQkzBogEw</guid>
+            <pubDate>Wed, 25 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Testing of Retry for CI Builds</title>
             <link>https://youtu.be/RbO4b8sN_do</link>
             <description><![CDATA[This video explains our script for Retry for NuttX CI Builds. And how we're testing at NuttX Main Repo / NuttX Mirror Repo / NuttX Build Farm.]]></description>
