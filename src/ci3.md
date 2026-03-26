@@ -576,7 +576,9 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Apache NuttX RTOS: Testing of Retry for CI Builds"__](https://youtu.be/RbO4b8sN_do)
 
-- [__"Apache NuttX RTOS: NTFC Download Failure"__](https://youtu.be/uSpQkzBogEw)
+- [__"Apache NuttX RTOS: NTFC Download Failure + Second Most Expensive PR"__](https://youtu.be/uSpQkzBogEw)
+
+- [__"Apache NuttX RTOS: PR Monitoring + Third Most Expensive PR"__](https://youtu.be/J7w1gyjwZ1w)
 
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 

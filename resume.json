@@ -162,7 +162,14 @@
   ],
   "publications": [
     {
-      "name": "Apache NuttX RTOS: NTFC Download Failure",
+      "name": "Apache NuttX RTOS: PR Monitoring + Third Most Expensive PR",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-26",
+      "website": "https://youtu.be/J7w1gyjwZ1w",
+      "summary": "Third Most Expensive PR had Download Errors, NTFC Errors and Compile Errors. We propose a new PR Monitoring Dashboard that shows all errors in real time."
+    },
+    {
+      "name": "Apache NuttX RTOS: NTFC Download Failure + Second Most Expensive PR",
       "publisher": "YouTube",
       "releaseDate": "2026-03-25",
       "website": "https://youtu.be/uSpQkzBogEw",

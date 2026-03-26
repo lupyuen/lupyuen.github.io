@@ -4,7 +4,14 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
-            <title>Apache NuttX RTOS: NTFC Download Failure</title>
+            <title>Apache NuttX RTOS: PR Monitoring + Third Most Expensive PR</title>
+            <link>https://youtu.be/J7w1gyjwZ1w</link>
+            <description><![CDATA[Third Most Expensive PR had Download Errors, NTFC Errors and Compile Errors. We propose a new PR Monitoring Dashboard that shows all errors in real time.]]></description>
+            <guid>https://youtu.be/J7w1gyjwZ1w</guid>
+            <pubDate>Thu, 26 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Apache NuttX RTOS: NTFC Download Failure + Second Most Expensive PR</title>
             <link>https://youtu.be/uSpQkzBogEw</link>
             <description><![CDATA[This video explains (1) NTFC Download Failures in Most Expensive PR (2) Compile Errors in Second Most Expensive PR (3) Build Quirk in ESP32: Retry Scheduled]]></description>
             <guid>https://youtu.be/uSpQkzBogEw</guid>
