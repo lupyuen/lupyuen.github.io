@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Building the PR Monitor + Most Expensive Apps PR",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-27",
+      "website": "https://youtu.be/182h8cRpfvI",
+      "summary": "Most Expensive Apps PR has 6 Compile Errors and 3 Download Errors. Also: How we're building the PR Monitoring Dashboard"
+    },
+    {
       "name": "Apache NuttX RTOS: PR Monitoring + Third Most Expensive PR",
       "publisher": "YouTube",
       "releaseDate": "2026-03-26",

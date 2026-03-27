@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Building the PR Monitor + Most Expensive Apps PR</title>
+            <link>https://youtu.be/182h8cRpfvI</link>
+            <description><![CDATA[Most Expensive Apps PR has 6 Compile Errors and 3 Download Errors. Also: How we're building the PR Monitoring Dashboard]]></description>
+            <guid>https://youtu.be/182h8cRpfvI</guid>
+            <pubDate>Fri, 27 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: PR Monitoring + Third Most Expensive PR</title>
             <link>https://youtu.be/J7w1gyjwZ1w</link>
             <description><![CDATA[Third Most Expensive PR had Download Errors, NTFC Errors and Compile Errors. We propose a new PR Monitoring Dashboard that shows all errors in real time.]]></description>
