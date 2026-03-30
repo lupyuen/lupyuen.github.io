@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Parsing the GitHub Build Logs</title>
+            <link>https://youtu.be/Rr75-gNJT1c</link>
+            <description><![CDATA[How we're Parsing the GitHub Build Logs for NuttX. Also: How we're generating the PR Monitoring Dashboard for NuttX]]></description>
+            <guid>https://youtu.be/Rr75-gNJT1c</guid>
+            <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Building the PR Monitor + Most Expensive Apps PR</title>
             <link>https://youtu.be/182h8cRpfvI</link>
             <description><![CDATA[Most Expensive Apps PR has 6 Compile Errors and 3 Download Errors. Also: How we're building the PR Monitoring Dashboard]]></description>

@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Parsing the GitHub Build Logs",
+      "publisher": "YouTube",
+      "releaseDate": "2026-03-30",
+      "website": "https://youtu.be/Rr75-gNJT1c",
+      "summary": "How we're Parsing the GitHub Build Logs for NuttX. Also: How we're generating the PR Monitoring Dashboard for NuttX"
+    },
+    {
       "name": "Apache NuttX RTOS: Building the PR Monitor + Most Expensive Apps PR",
       "publisher": "YouTube",
       "releaseDate": "2026-03-27",
