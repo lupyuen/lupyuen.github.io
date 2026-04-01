@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: Build Monitor</title>
+            <link>https://youtu.be/K5ENnZkIiT4</link>
+            <description><![CDATA[NuttX Build Monitor displays the recent Errors and Warnings for NuttX GitHub CI. Hopefully our devs will find it useful for monitoring our PRs. Also: NuttX CI Team will use this tool to understand what's happening right now in our GitHub CI.]]></description>
+            <guid>https://youtu.be/K5ENnZkIiT4</guid>
+            <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Parsing the GitHub Build Logs</title>
             <link>https://youtu.be/Rr75-gNJT1c</link>
             <description><![CDATA[How we're Parsing the GitHub Build Logs for NuttX. Also: How we're generating the PR Monitoring Dashboard for NuttX]]></description>

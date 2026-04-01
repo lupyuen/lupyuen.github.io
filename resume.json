@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: Build Monitor",
+      "publisher": "YouTube",
+      "releaseDate": "2026-04-01",
+      "website": "https://youtu.be/K5ENnZkIiT4",
+      "summary": "NuttX Build Monitor displays the recent Errors and Warnings for NuttX GitHub CI. Hopefully our devs will find it useful for monitoring our PRs. Also: NuttX CI Team will use this tool to understand what's happening right now in our GitHub CI."
+    },
+    {
       "name": "Apache NuttX RTOS: Parsing the GitHub Build Logs",
       "publisher": "YouTube",
       "releaseDate": "2026-03-30",

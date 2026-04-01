@@ -584,6 +584,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Apache NuttX RTOS: Parsing the GitHub Build Logs"__](https://youtu.be/Rr75-gNJT1c)
 
+- [__"Apache NuttX RTOS: Build Monitor"__](https://youtu.be/K5ENnZkIiT4)
+
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
 - [__"Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/dashboard.html)
