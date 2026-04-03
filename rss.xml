@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS: More Testing of Retry for CI Builds</title>
+            <link>https://youtu.be/fPYsLWljAHY</link>
+            <description><![CDATA[This video explains how we're using the new NuttX Build Monitor to test the Retry of CI Builds. So far the results look promising!]]></description>
+            <guid>https://youtu.be/fPYsLWljAHY</guid>
+            <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS: Build Monitor</title>
             <link>https://youtu.be/K5ENnZkIiT4</link>
             <description><![CDATA[NuttX Build Monitor displays the recent Errors and Warnings for NuttX GitHub CI. Hopefully our devs will find it useful for monitoring our PRs. Also: NuttX CI Team will use this tool to understand what's happening right now in our GitHub CI.]]></description>

@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: More Testing of Retry for CI Builds",
+      "publisher": "YouTube",
+      "releaseDate": "2026-04-03",
+      "website": "https://youtu.be/fPYsLWljAHY",
+      "summary": "This video explains how we're using the new NuttX Build Monitor to test the Retry of CI Builds. So far the results look promising!"
+    },
+    {
       "name": "Apache NuttX RTOS: Build Monitor",
       "publisher": "YouTube",
       "releaseDate": "2026-04-01",
