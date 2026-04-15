@@ -348,8 +348,8 @@
 </li>
 <li>
 <p><strong>GitHub Runner Hours:</strong> Number of GitHub Runners * Job Duration. Effectively the <em>Chargeable Minutes</em> by GitHub.</p>
-<p>We compute this as 7.4 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346"><strong>averaged from past data</strong></a>.</p>
-<p>(Remember: One GitHub Runner will run One Single Sub-Job, like <em>arm-01</em>)</p>
+<p>We compute this as 7.4 * GitHub Job Hours. This is <a href="https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346"><strong>averaged from past data</strong></a>. (Remember: One GitHub Runner will run One Single Sub-Job, like <em>arm-01</em>)</p>
+<p>Or think of this magic number 7.4 as the <em>Average Number of Sub-Jobs Running in Parallel</em> for a Typical CI Build. The magic number translates Elapsed Job Duration into Actual GitHub Runner Usage. (Sorry we can’t fetch the Actual GitHub Runner Usage from GitHub API, thus we approximate)</p>
 </li>
 <li>
 <p><strong>Full-Time GitHub Runners:</strong> Equals GitHub Runner Hours / Elapsed Hours.</p>
