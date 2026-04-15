@@ -329,9 +329,9 @@ We published our own __Live Metric for Full-Time Runners__, for everyone to trac
 
 - __GitHub Runner Hours:__ Number of GitHub Runners * Job Duration. Effectively the _Chargeable Minutes_ by GitHub.
 
-  We compute this as 7.4 * GitHub Job Hours. This is [__averaged from past data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346).
-  
-  (Remember: One GitHub Runner will run One Single Sub-Job, like _arm-01_)
+  We compute this as 7.4 * GitHub Job Hours. This is [__averaged from past data__](https://docs.google.com/spreadsheets/d/1ujGKmUyy-cGY-l1pDBfle_Y6LKMsNp7o3rbfT1UkiZE/edit?gid=1163309346#gid=1163309346). (Remember: One GitHub Runner will run One Single Sub-Job, like _arm-01_)
+
+  Or think of this magic number 7.4 as the _Average Number of Sub-Jobs Running in Parallel_ for a Typical CI Build. The magic number translates Elapsed Job Duration into Actual GitHub Runner Usage. (Sorry we can't fetch the Actual GitHub Runner Usage from GitHub API, thus we approximate)
 
 - __Full-Time GitHub Runners:__ Equals GitHub Runner Hours / Elapsed Hours.
 
