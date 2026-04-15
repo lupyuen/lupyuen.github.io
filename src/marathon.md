@@ -248,7 +248,15 @@ Sorry we're a bit too old to chase PBs. Instead, let's leisurely enjoy other mar
 
 1.  [__Miri Marathon__](https://www.marathonmiri.com/) (Malaysia)
 
+    [(__Update:__ Completed the 42 km Miri Marathon!)](https://www.strava.com/activities/18072402719)
+
 1.  [__Kuala Lumpur Marathon__](https://www.kl-marathon.com/) (Malaysia)
+
+    (Probably won't do this one, because of the tight balloting)
+
+1.  [__2XU Half Marathon__](https://2xurun.com/) (Singapore)
+
+    [(__Update:__ Completed the 21 km 2XU Half Marathon!)](https://www.strava.com/activities/17981217617)
 
 Then pivot to __Trail Running__ and __Ultra-Marathons__...
 
