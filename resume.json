@@ -162,6 +162,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS: CI Build Retry works OK yay!",
+      "publisher": "YouTube",
+      "releaseDate": "2026-04-21",
+      "website": "https://youtu.be/dT8VppS4qR8",
+      "summary": "NuttX CI Build Retry works OK! Here's the proof."
+    },
+    {
       "name": "Apache NuttX RTOS: More Testing of Retry for CI Builds",
       "publisher": "YouTube",
       "releaseDate": "2026-04-03",

@@ -588,6 +588,8 @@ Next Article: We'll chat about __NuttX Dashboard__. And how we made it with Graf
 
 - [__"Apache NuttX RTOS: More Testing of Retry for CI Builds"__](https://youtu.be/fPYsLWljAHY)
 
+- [__"Apache NuttX RTOS: CI Build Retry works OK yay!"__](https://youtu.be/dT8VppS4qR8)
+
 - [__"Continuous Integration Dashboard for Apache NuttX RTOS (Prometheus and Grafana)"__](https://lupyuen.github.io/articles/ci4.html)
 
 - [__"Grafana Dashboard on Google Cloud VM for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/dashboard.html)
