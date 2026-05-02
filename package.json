@@ -18,6 +18,6 @@
   "homepage": "https://github.com/lupyuen/lupyuen.github.io#readme",
   "dependencies": {
     "jsonresume-theme-stackoverflow": "^1.4.0",
-    "resume-cli": "^0.4.19"
+    "resume-cli": "^3.0.8"
   }
 }
