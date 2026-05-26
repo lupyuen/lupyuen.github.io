@@ -1223,6 +1223,13 @@ Looks hunky dory! We download the __NuttX Source Files__ and start the build...
 
 ```text
 $ docker run -it nuttx:v1 /bin/bash 
+# pip install ntfc
+# mkdir /root/nuttx-ntfc
+# mkdir /root/nuttx-ntfc/external
+# cd /root/nuttx-ntfc
+# git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+# mv nuttx-ntfc-testing nuttx-testing
+# export NTFCDIR=/root/nuttx-ntfc
 # cd
 # pwd
 /root
@@ -1303,6 +1310,13 @@ Just do it the normal NuttX way...
 
 ```text
 $ docker run -it nuttx:v1 /bin/bash 
+# pip install ntfc
+# mkdir /root/nuttx-ntfc
+# mkdir /root/nuttx-ntfc/external
+# cd /root/nuttx-ntfc
+# git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+# mv nuttx-ntfc-testing nuttx-testing
+# export NTFCDIR=/root/nuttx-ntfc
 # cd
 # git clone https://github.com/apache/nuttx
 # git clone https://github.com/apache/nuttx-apps apps
@@ -1349,6 +1363,13 @@ $ docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash
 
 ## Inside Docker Container:
 ## Download the NuttX Source Files and start the build
+$ pip install ntfc
+$ mkdir /root/nuttx-ntfc
+$ mkdir /root/nuttx-ntfc/external
+$ cd /root/nuttx-ntfc
+$ git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+$ mv nuttx-ntfc-testing nuttx-testing
+$ export NTFCDIR=/root/nuttx-ntfc
 $ cd
 $ pwd
 /root
