@@ -1050,6 +1050,13 @@ thumbv7m-none-eabi (installed)
 root@?:/tools# exit</code></pre></div>
 <p>Looks hunky dory! We download the <strong>NuttX Source Files</strong> and start the build…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ docker run -it nuttx:v1 /bin/bash 
+# pip install ntfc
+# mkdir /root/nuttx-ntfc
+# mkdir /root/nuttx-ntfc/external
+# cd /root/nuttx-ntfc
+# git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+# mv nuttx-ntfc-testing nuttx-testing
+# export NTFCDIR=/root/nuttx-ntfc
 # cd
 # pwd
 /root
@@ -1105,6 +1112,13 @@ make: Target &#39;all&#39; not remade because of errors.
 <p><em>What about testing a Single Config?</em></p>
 <p>Just do it the normal NuttX way…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ docker run -it nuttx:v1 /bin/bash 
+# pip install ntfc
+# mkdir /root/nuttx-ntfc
+# mkdir /root/nuttx-ntfc/external
+# cd /root/nuttx-ntfc
+# git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+# mv nuttx-ntfc-testing nuttx-testing
+# export NTFCDIR=/root/nuttx-ntfc
 # cd
 # git clone https://github.com/apache/nuttx
 # git clone https://github.com/apache/nuttx-apps apps
@@ -1135,6 +1149,13 @@ $ docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash
 
 ## Inside Docker Container:
 ## Download the NuttX Source Files and start the build
+$ pip install ntfc
+$ mkdir /root/nuttx-ntfc
+$ mkdir /root/nuttx-ntfc/external
+$ cd /root/nuttx-ntfc
+$ git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
+$ mv nuttx-ntfc-testing nuttx-testing
+$ export NTFCDIR=/root/nuttx-ntfc
 $ cd
 $ pwd
 /root
