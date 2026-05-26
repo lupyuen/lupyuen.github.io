@@ -1226,7 +1226,7 @@ $ docker run -it nuttx:v1 /bin/bash
 # pip install ntfc
 # mkdir /root/nuttx-ntfc
 # mkdir /root/nuttx-ntfc/external
-# cd /root/nuttx-ntfc
+# cd /root/nuttx-ntfc/external
 # git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
 # mv nuttx-ntfc-testing nuttx-testing
 # export NTFCDIR=/root/nuttx-ntfc
@@ -1313,7 +1313,7 @@ $ docker run -it nuttx:v1 /bin/bash
 # pip install ntfc
 # mkdir /root/nuttx-ntfc
 # mkdir /root/nuttx-ntfc/external
-# cd /root/nuttx-ntfc
+# cd /root/nuttx-ntfc/external
 # git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
 # mv nuttx-ntfc-testing nuttx-testing
 # export NTFCDIR=/root/nuttx-ntfc
@@ -1366,7 +1366,7 @@ $ docker run -it ghcr.io/apache/nuttx/apache-nuttx-ci-linux:latest /bin/bash
 $ pip install ntfc
 $ mkdir /root/nuttx-ntfc
 $ mkdir /root/nuttx-ntfc/external
-$ cd /root/nuttx-ntfc
+$ cd /root/nuttx-ntfc/external
 $ git clone -b release-0.0.1 https://github.com/apache/nuttx-ntfc-testing
 $ mv nuttx-ntfc-testing nuttx-testing
 $ export NTFCDIR=/root/nuttx-ntfc
