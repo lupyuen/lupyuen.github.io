@@ -264,7 +264,13 @@ Then pivot to __Trail Running__ and __Ultra-Marathons__...
 
     [(Completed!)](https://www.strava.com/activities/17389355770)
 
+1.  [__21 km Trail Run__](https://kingtrailevents.online/gu-forest-force-run-series-2026/)
+
+1.  [__30 km Trail Run__](https://kingtrailevents.online/gu-forest-force-run-series-2026/)
+
 1.  [__60 km Ultra-Maraathon__](https://utsg.info/utsg26/60km/)
+
+    [(Missed the cut-off time at 35 km sigh)](https://www.strava.com/activities/18818806893)
 
 1.  [__And many more!__](https://youtu.be/kJyJNCuFhTs?si=xPnNq-OsHzoeiBHm)
 
