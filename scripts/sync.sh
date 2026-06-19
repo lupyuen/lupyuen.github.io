@@ -135,6 +135,8 @@ cp -r ../pinetime-rust-mynewt/docs/. \
 
 # Deploy ../lupyuen.org to Cloudflare Pages lupyuen.org
 pushd ../lupyuen.org
+which npx
+export PATH="/opt/homebrew/bin:$PATH"
 npx wrangler pages deploy \
   . \
   --project-name lupyuen-org

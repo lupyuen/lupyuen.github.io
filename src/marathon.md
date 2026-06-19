@@ -302,6 +302,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.org/src/marathon.md__](https://codeberg.org/lupyuen/lupyuen.org/src/branch/master/src/marathon.md)
 
+# Appendix: Running Videos
+
+Since I'm running so slowly: Let's make some videos during our runs and races!
+
+1.  __Kallang River Run:__ [Part 1](https://youtube.com/shorts/k84D3F5wEas?feature=share) / [Part 2](https://youtube.com/shorts/NAz9l7Ji138?feature=share) / [Part 3](https://youtube.com/shorts/HauusKM-hd8?feature=share) / [360-degree](https://youtu.be/mtpor0VBk0o)
+
 ![Body Glide and Micropore Tape](https://lupyuen.github.io/images/marathon-bodyglide.jpg)
 
 # Appendix: Troubleshoot Our Marathon
