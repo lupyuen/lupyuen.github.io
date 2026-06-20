@@ -308,6 +308,8 @@ Since I'm running so slowly: Let's make some videos during our runs and races! I
 
 1.  __Kallang River Run:__ [Part 1](https://youtube.com/shorts/k84D3F5wEas?feature=share) / [Part 2](https://youtube.com/shorts/NAz9l7Ji138?feature=share) / [Part 3](https://youtube.com/shorts/HauusKM-hd8?feature=share) / [360-degree](https://youtu.be/mtpor0VBk0o)
 
+1.  __Dempsey Hill Run:__ [Part 1](https://youtube.com/shorts/pV8RG7voamc) / [Part 2](https://youtube.com/shorts/l0LnB9EZb1U) / [Part 3](https://youtube.com/shorts/cjxNCdsfBDU) / [Part 4](https://youtube.com/shorts/STkZ7j6TfqA) / [Part 5](https://youtube.com/shorts/iJKQcVfBFeA) / [360-degree](https://youtu.be/aJaN1E1G0y4)
+
 ![Body Glide and Micropore Tape](https://lupyuen.github.io/images/marathon-bodyglide.jpg)
 
 # Appendix: Troubleshoot Our Marathon
