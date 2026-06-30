@@ -310,6 +310,12 @@ Since I'm running so slowly: Let's make some videos during our runs and races! I
 
 1.  __Dempsey Hill Run:__ [Part 1](https://youtube.com/shorts/pV8RG7voamc) / [Part 2](https://youtube.com/shorts/l0LnB9EZb1U) / [Part 3](https://youtube.com/shorts/cjxNCdsfBDU) / [Part 4](https://youtube.com/shorts/STkZ7j6TfqA) / [Part 5](https://youtube.com/shorts/iJKQcVfBFeA) / [360-degree](https://youtu.be/aJaN1E1G0y4)
 
+1.  __Sports Hub to Marina Barrage Run:__ [Part 1](https://youtube.com/shorts/xE49Dy5l5q8) / [Part 2](https://youtube.com/shorts/ipdzwsrG2wg) / [Part 3](https://youtube.com/shorts/mTyNkK0Tzzw) / [Part 4](https://youtube.com/shorts/7QUXhn6KJ34) / [360-degree](https://youtu.be/FwIdU9i5-yU)
+
+1.  __Marina Barrage Run:__ [Short](https://youtube.com/shorts/94JpSVBO-jU) / [360-degree](https://youtu.be/PU1I4siTbtQ)
+
+1.  __Pink Fest Run:__ [Part 1](https://youtube.com/shorts/KKx1FuteHMw) / [Part 2](https://youtube.com/shorts/8UXgujTC6t0) / [Part 3](https://youtube.com/shorts/EygIBkz0jfw) / [360-degree](https://youtu.be/cbOaqV-kVPg)
+
 ![Body Glide and Micropore Tape](https://lupyuen.github.io/images/marathon-bodyglide.jpg)
 
 # Appendix: Troubleshoot Our Marathon
